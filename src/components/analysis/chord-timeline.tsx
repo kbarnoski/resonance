@@ -4,6 +4,8 @@ interface ChordTimelineProps {
   chords: { chord: string; time: number; duration: number }[];
   currentTime: number;
   duration: number;
+  hideHeading?: boolean;
+  className?: string;
 }
 
 const CHORD_COLORS = [
@@ -17,10 +19,16 @@ const CHORD_COLORS = [
   "bg-primary/22 text-primary",
 ];
 
-export function ChordTimeline({ chords, currentTime, duration }: ChordTimelineProps) {
+export function ChordTimeline({
+  chords,
+  currentTime,
+  duration,
+  hideHeading,
+  className,
+}: ChordTimelineProps) {
   if (chords.length === 0 || duration === 0) return null;
 
-  // Assign colors to unique chords
+  // Assign colors to unique chords by index
   const uniqueChords = [...new Set(chords.map((c) => c.chord))];
   const colorMap = new Map(
     uniqueChords.map((chord, i) => [chord, CHORD_COLORS[i % CHORD_COLORS.length]])
@@ -32,15 +40,17 @@ export function ChordTimeline({ chords, currentTime, duration }: ChordTimelinePr
   );
 
   return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <h3 className="text-sm font-medium">Chord Timeline</h3>
-        {activeChord && (
-          <span className="rounded-md bg-primary/10 px-2 py-1 text-sm font-bold text-primary">
-            {activeChord.chord}
-          </span>
-        )}
-      </div>
+    <div className={className ?? "space-y-2"}>
+      {!hideHeading && (
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium">Chord Timeline</h3>
+          {activeChord && (
+            <span className="rounded-md bg-primary/10 px-2 py-1 text-sm font-bold text-primary">
+              {activeChord.chord}
+            </span>
+          )}
+        </div>
+      )}
       <div className="relative h-10 rounded-lg border bg-card overflow-hidden">
         {/* Playhead */}
         <div
@@ -59,7 +69,7 @@ export function ChordTimeline({ chords, currentTime, duration }: ChordTimelinePr
             <div
               key={i}
               className={`absolute top-0 bottom-0 flex items-center justify-center text-xs font-medium border-r border-background/50 ${
-                colorMap.get(chord.chord)
+                colorMap.get(chord.chord) ?? CHORD_COLORS[0]
               } ${isActive ? "ring-2 ring-primary z-5" : ""}`}
               style={{ left: `${left}%`, width: `${width}%` }}
               title={`${chord.chord} (${chord.time.toFixed(1)}s)`}

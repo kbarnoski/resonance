@@ -1,11 +1,12 @@
 "use client";
 
 import { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef, startTransition } from "react";
-import { usePathname } from "next/navigation";
 import WaveSurfer from "wavesurfer.js";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, SkipBack, SkipForward, AlertCircle, Flag, Sparkles, Loader2 } from "lucide-react";
 import { useThemeColors } from "@/lib/use-theme-colors";
+import { getAudioEngine } from "@/lib/audio/audio-engine";
+import { useAudioStore } from "@/lib/audio/audio-store";
 
 export interface WaveformPlayerHandle {
   seekTo: (time: number) => void;
@@ -20,6 +21,7 @@ interface MarkerDot {
 interface WaveformPlayerProps {
   audioUrl: string;
   recordingId?: string;
+  title?: string;
   peaks?: number[][] | null;
   duration?: number | null;
   onTimeUpdate?: (currentTime: number) => void;
@@ -125,12 +127,15 @@ async function resolveAudioUrlImpl(
 }
 
 export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerProps>(
-  function WaveformPlayer({ audioUrl, recordingId, peaks, duration: propDuration, onTimeUpdate, markers = [], onVisualizerOpen }, ref) {
+  function WaveformPlayer({ audioUrl, recordingId, title, peaks, duration: propDuration, onTimeUpdate, markers = [], onVisualizerOpen }, ref) {
     const themeColors = useThemeColors();
     const hasPeaks = !!(peaks && peaks.length > 0 && propDuration);
 
-    // --- State (6 variables) ---
-    const [isPlaying, setIsPlaying] = useState(false);
+    // --- Store-driven play state (replaces local isPlaying) ---
+    const storeIsPlaying = useAudioStore(s => s.isPlaying && s.currentTrack?.id === recordingId);
+    const isCurrentTrack = useAudioStore(s => s.currentTrack?.id === recordingId);
+
+    // --- State ---
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(propDuration ?? 0);
     const [isReady, setIsReady] = useState(false);
@@ -140,7 +145,6 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     // --- Refs ---
     const containerRef = useRef<HTMLDivElement>(null);
     const wavesurferRef = useRef<WaveSurfer | null>(null);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const resolvedUrlRef = useRef<string | null>(null);
     const urlResolvePromiseRef = useRef<Promise<string> | null>(null);
     const peaksSavedRef = useRef(false);
@@ -162,7 +166,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         }
       },
       getAudioElement() {
-        return audioRef.current;
+        try { return getAudioEngine().audioElement; } catch { return null; }
       },
     }));
 
@@ -189,7 +193,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       }
     }, [recordingId, audioUrl, propDuration]);
 
-    // --- Callback ref: creates WaveSurfer once ---
+    // --- Callback ref: creates WaveSurfer with the GLOBAL engine's audio element ---
     const initWaveSurfer = useCallback(
       (node: HTMLDivElement | null) => {
         if (!node) return;
@@ -201,11 +205,13 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
           wavesurferRef.current = null;
         }
 
-        // Create a persistent Audio element with no src
-        const audio = new Audio();
-        audio.crossOrigin = "anonymous";
-        audio.preload = "none";
-        audioRef.current = audio;
+        // Use the global audio engine's element — ONE audio source for everything
+        let audio: HTMLAudioElement;
+        try {
+          audio = getAudioEngine().audioElement;
+        } catch {
+          return; // SSR guard
+        }
 
         const ws = WaveSurfer.create({
           container: node,
@@ -243,6 +249,8 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         }
 
         ws.on("audioprocess", () => {
+          // Only update time when this recording is the active track
+          if (useAudioStore.getState().currentTrack?.id !== recordingId) return;
           const now = performance.now();
           if (now - lastTimeUpdateRef.current < 100) return; // ~10fps throttle
           lastTimeUpdateRef.current = now;
@@ -255,14 +263,13 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         });
 
         ws.on("seeking", () => {
+          if (useAudioStore.getState().currentTrack?.id !== recordingId) return;
           const time = ws.getCurrentTime();
           setCurrentTime(time);
           onTimeUpdateRef.current?.(time);
         });
 
-        ws.on("play", () => setIsPlaying(true));
-        ws.on("pause", () => setIsPlaying(false));
-        ws.on("finish", () => setIsPlaying(false));
+        // No play/pause/finish event handlers needed — store state drives UI
 
         ws.on("error", (err: unknown) => {
           if (err instanceof DOMException && err.name === "AbortError") return;
@@ -292,8 +299,8 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
 
         wavesurferRef.current = ws;
       },
-      // Stable deps only — resolvedUrl is NOT here
-      [hasPeaks, peaks, propDuration, savePeaks]
+      // Stable deps only
+      [hasPeaks, peaks, propDuration, savePeaks, recordingId]
     );
 
     // --- URL resolution effect (runs once on mount) ---
@@ -307,18 +314,17 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
         if (cancelledRef.current) return;
         resolvedUrlRef.current = url;
 
-        const audio = audioRef.current;
-        if (!audio) return;
-
-        audio.src = url;
-
+        // For no-peaks mode: WaveSurfer needs to decode audio for waveform.
+        // ws.load() sets media.src AND fetches+decodes for rendering.
+        // Only safe if nothing else is actively playing.
         if (!hasPeaks && wavesurferRef.current) {
-          // No-peaks path: load audio so WaveSurfer can decode and render waveform.
-          // If fetch fails (CORS/signed URL issues), fall back to playable-only mode.
-          wavesurferRef.current.load(url).catch(() => {
-            if (cancelledRef.current) return;
-            setIsReady(true);
-          });
+          const store = useAudioStore.getState();
+          if (!store.isPlaying || store.currentTrack?.id === recordingId) {
+            wavesurferRef.current.load(url).catch(() => {
+              if (cancelledRef.current) return;
+              setIsReady(true);
+            });
+          }
         }
       });
 
@@ -327,73 +333,76 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
       };
     }, [audioUrl, recordingId, hasPeaks]);
 
-    // --- Update waveform colors when theme changes ---
+    // --- Update waveform colors when theme or active track changes ---
     useEffect(() => {
       if (wavesurferRef.current) {
         const isDark = document.documentElement.classList.contains("dark");
         wavesurferRef.current.setOptions({
           waveColor: isDark ? "rgba(255,255,255,0.25)" : "rgba(0,0,0,0.2)",
-          progressColor: "#6366f1",
-          cursorColor: "#6366f1",
+          // Hide progress/cursor when a different track is playing
+          progressColor: isCurrentTrack ? "#6366f1" : "transparent",
+          cursorColor: isCurrentTrack ? "#6366f1" : "transparent",
         });
       }
-    }, [themeColors]);
+    }, [themeColors, isCurrentTrack]);
 
-    // --- Cleanup on unmount ---
+    // --- Sync current time from store on mount (when returning from viz) ---
+    useEffect(() => {
+      const store = useAudioStore.getState();
+      if (store.currentTrack?.id === recordingId && store.currentTime > 0) {
+        setCurrentTime(store.currentTime);
+        onTimeUpdateRef.current?.(store.currentTime);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [recordingId]);
+
+    // --- Cleanup: destroy WaveSurfer only, NEVER touch the global audio element ---
     useEffect(() => {
       return () => {
         cancelledRef.current = true;
-        // Destroy WaveSurfer first to remove all event listeners
         try { wavesurferRef.current?.destroy(); } catch { /* ignore */ }
         wavesurferRef.current = null;
-        // Then clean up the audio element
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.removeAttribute("src");
-          audioRef.current.load();
-          audioRef.current = null;
-        }
+        // DO NOT pause or reset the audio element — it's the global engine's
       };
     }, []);
 
-    // --- Stop audio on route change (Next.js soft navigation) ---
-    const pathname = usePathname();
-    useEffect(() => {
-      return () => {
-        audioRef.current?.pause();
-      };
-    }, [pathname]);
-
-    // --- togglePlay: no destroying, no recreating ---
+    // --- togglePlay: goes through the store, no WaveSurfer playPause ---
     async function togglePlay() {
       const ws = wavesurferRef.current;
       if (!ws) return;
 
-      // If URL is already resolved, just play/pause
-      if (resolvedUrlRef.current) {
-        ws.playPause();
+      const store = useAudioStore.getState();
+
+      // Same track already in store — just toggle play/pause
+      if (store.currentTrack?.id === recordingId) {
+        store.togglePlayPause();
         return;
       }
 
-      // URL still resolving — show spinner, await, then play
+      // Different track or first play — load onto global engine and play
       setIsLoadingAudio(true);
       try {
-        let promise = urlResolvePromiseRef.current;
-        if (!promise) {
-          // Edge case: resolve fresh
-          promise = resolveAudioUrlImpl(audioUrl, recordingId);
-          urlResolvePromiseRef.current = promise;
+        let url = resolvedUrlRef.current;
+        if (!url) {
+          url = await (urlResolvePromiseRef.current ?? resolveAudioUrlImpl(audioUrl, recordingId));
+          resolvedUrlRef.current = url;
         }
-        const url = await promise;
         if (cancelledRef.current) return;
-        resolvedUrlRef.current = url;
 
-        const audio = audioRef.current;
-        if (audio && !audio.src) {
-          audio.src = url;
-        }
+        const engine = getAudioEngine();
+        await engine.audioContext.resume();
+        engine.audioElement.src = url;
+        engine.audioElement.currentTime = 0;
+        await engine.audioElement.play();
 
-        ws.playPause();
+        // Update store — skipLoad tells AudioProvider not to reload (we already did)
+        store.play(
+          { id: recordingId!, title: title ?? "Untitled", audioUrl, duration: propDuration || null },
+          0,
+          true, // skipLoad
+        );
+      } catch (err) {
+        console.error("Failed to play:", err);
       } finally {
         setIsLoadingAudio(false);
       }
@@ -401,7 +410,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
 
     function skip(seconds: number) {
       const ws = wavesurferRef.current;
-      if (!ws) return;
+      if (!ws || !isCurrentTrack) return;
       const d = ws.getDuration();
       if (d <= 0) return;
       const newTime = Math.max(0, Math.min(ws.getCurrentTime() + seconds, d));
@@ -409,7 +418,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
     }
 
     function handleMarkerClick(time: number) {
-      if (wavesurferRef.current && duration > 0) {
+      if (wavesurferRef.current && duration > 0 && isCurrentTrack) {
         wavesurferRef.current.seekTo(time / duration);
       }
     }
@@ -491,7 +500,7 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
             >
               {isLoadingAudio ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
-              ) : isPlaying ? (
+              ) : storeIsPlaying ? (
                 <Pause className="h-4 w-4" />
               ) : (
                 <Play className="h-4 w-4" />

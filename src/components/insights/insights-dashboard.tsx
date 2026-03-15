@@ -57,8 +57,13 @@ function StatCard({
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
           <Icon className="h-5 w-5 text-primary" />
         </div>
-        <div>
-          <p className="text-2xl font-bold leading-none tracking-tight tabular-nums sm:text-3xl">{value}</p>
+        <div className="min-w-0">
+          <p
+            className="text-xl font-bold leading-none tracking-tight tabular-nums truncate sm:text-2xl"
+            title={value}
+          >
+            {value}
+          </p>
           <p className="mt-1 text-xs uppercase tracking-widest text-muted-foreground">
             {label}
           </p>
@@ -104,9 +109,9 @@ export function InsightsDashboard({ analyses, totalRecordings }: InsightsDashboa
   return (
     <div className="space-y-8">
       {/* Quick Stats */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-6">
+      <div className="grid grid-cols-3 gap-3 sm:gap-4 md:grid-cols-6">
         <StatCard
-          label="Total Recordings"
+          label="Recordings"
           value={String(totalRecordings)}
           icon={Music}
         />
@@ -116,7 +121,7 @@ export function InsightsDashboard({ analyses, totalRecordings }: InsightsDashboa
           icon={Hash}
         />
         <StatCard
-          label="Most Common Key"
+          label="Top Key"
           value={mostCommonKey}
           icon={Music}
         />
@@ -126,12 +131,12 @@ export function InsightsDashboard({ analyses, totalRecordings }: InsightsDashboa
           icon={Gauge}
         />
         <StatCard
-          label="Unique Chords"
+          label="Chords"
           value={String(allUniqueChords.size)}
           icon={Fingerprint}
         />
         <StatCard
-          label="Total Time"
+          label="Duration"
           value={totalDuration > 0 ? formatTotalTime(totalDuration) : "--"}
           icon={Clock}
         />

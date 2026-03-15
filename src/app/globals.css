@@ -122,6 +122,86 @@
   50% { transform: scaleY(1); }
 }
 
+/* ─── Poetry overlay animations — GPU-composited ─── */
+
+/* Character-level entrance animations (per-char with --char-index stagger) */
+@keyframes poetry-char-rise {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes poetry-char-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes poetry-char-perspective {
+  0% { opacity: 0; transform: rotateX(15deg) translateY(6px); }
+  100% { opacity: 1; transform: rotateX(0) translateY(0); }
+}
+
+/* Line-level clip reveals */
+@keyframes poetry-wipe-h {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes poetry-wipe-v {
+  0% { clip-path: inset(100% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+/* Macro lifecycle — controls the full line fade in/out */
+@keyframes poetry-line-lifecycle {
+  0% { opacity: 0; }
+  8% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Hold-phase motions — gentle transform only, no opacity changes */
+@keyframes poetry-float-hold {
+  0% { transform: translateY(0) translateX(0); }
+  33% { transform: translateY(-8px) translateX(4px); }
+  66% { transform: translateY(-4px) translateX(-3px); }
+  100% { transform: translateY(0) translateX(0); }
+}
+
+@keyframes poetry-drift-hold {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes poetry-breathe-hold {
+  0% { transform: scale(1.0); }
+  50% { transform: scale(1.015); }
+  100% { transform: scale(1.0); }
+}
+
+/* Full-lifecycle glitch — kept for intense/chaotic moods */
+@keyframes poetry-glitch {
+  0% { opacity: 0; transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  10% { opacity: var(--poetry-opacity, 0.8); }
+  20% { transform: translate(-2px, 1px); clip-path: inset(10% 0 30% 0); }
+  25% { transform: translate(3px, -1px); clip-path: inset(0 0 0 0); }
+  40% { transform: translate(0, 0); clip-path: inset(40% 0 20% 0); }
+  45% { transform: translate(-1px, 2px); clip-path: inset(0 0 0 0); }
+  60% { transform: translate(2px, 0); clip-path: inset(5% 0 60% 0); }
+  65% { transform: translate(0, -1px); clip-path: inset(0 0 0 0); }
+  80% { transform: translate(-3px, 1px); clip-path: inset(20% 0 10% 0); }
+  85% { transform: translate(0, 0); clip-path: inset(0 0 0 0); }
+  90% { opacity: var(--poetry-opacity, 0.8); }
+  100% { opacity: 0; transform: translate(1px, -1px); }
+}
+
+/* Section transition flash */
+@keyframes sectionFlashPulse {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

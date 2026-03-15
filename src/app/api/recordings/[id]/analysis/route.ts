@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createAnonClient } from "@supabase/supabase-js";
 
 export async function GET(
   _request: NextRequest,
@@ -14,11 +15,26 @@ export async function GET(
     .eq("recording_id", id)
     .single();
 
-  if (error) {
-    return NextResponse.json({ error: error.message }, { status: 404 });
+  if (!error && data) {
+    return NextResponse.json(data);
   }
 
-  return NextResponse.json(data);
+  // Fallback: try anon client for featured recordings
+  const anonClient = createAnonClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+  const { data: anonData, error: anonError } = await anonClient
+    .from("analyses")
+    .select("*")
+    .eq("recording_id", id)
+    .single();
+
+  if (anonError || !anonData) {
+    return NextResponse.json({ error: error?.message ?? "Not found" }, { status: 404 });
+  }
+
+  return NextResponse.json(anonData);
 }
 
 export async function POST(

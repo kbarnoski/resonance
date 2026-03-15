@@ -14,6 +14,7 @@ import {
   BarChart3,
   LogOut,
   GitCompareArrows,
+  Disc3,
   Menu,
   X,
   Sun,
@@ -26,6 +27,7 @@ const navItems = [
   { href: "/compare", label: "Compare", icon: GitCompareArrows },
   { href: "/collections", label: "Collections", icon: FolderOpen },
   { href: "/insights", label: "Insights", icon: BarChart3 },
+  { href: "/visualizer", label: "The Room", icon: Disc3 },
 ];
 
 export function Sidebar() {

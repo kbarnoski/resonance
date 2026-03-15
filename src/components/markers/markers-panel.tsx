@@ -21,6 +21,7 @@ interface MarkersPanelProps {
   duration?: number;
   onSeek: (time: number) => void;
   onMarkersChange?: (markers: Marker[]) => void;
+  embedded?: boolean;
 }
 
 function formatTime(seconds: number): string {
@@ -36,6 +37,7 @@ export function MarkersPanel({
   duration,
   onSeek,
   onMarkersChange,
+  embedded,
 }: MarkersPanelProps) {
   const [markers, setMarkers] = useState<Marker[]>([]);
   const [isAdding, setIsAdding] = useState(false);
@@ -112,6 +114,110 @@ export function MarkersPanel({
     updateParent(updated);
   }
 
+  const header = (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+        <Flag className="h-4 w-4" />
+        Markers ({markers.length})
+      </div>
+      {!isAdding && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setIsAdding(true)}
+        >
+          <Plus className="mr-1 h-3.5 w-3.5" />
+          Add at {formatTime(currentTime)}
+        </Button>
+      )}
+    </div>
+  );
+
+  const body = (
+    <div className="space-y-2">
+      {isAdding && (
+        <div className="flex items-center gap-2 rounded-lg border p-2">
+          <span className="text-xs font-mono text-muted-foreground shrink-0">
+            {formatTime(currentTime)}
+          </span>
+          <Input
+            value={newLabel}
+            onChange={(e) => setNewLabel(e.target.value)}
+            placeholder="Note for this moment..."
+            className="h-8 text-sm"
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === "Enter") addMarker();
+              if (e.key === "Escape") {
+                setIsAdding(false);
+                setNewLabel("");
+              }
+            }}
+          />
+          <Button size="sm" onClick={addMarker} disabled={!newLabel.trim()}>
+            Add
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 shrink-0"
+            onClick={() => {
+              setIsAdding(false);
+              setNewLabel("");
+            }}
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </div>
+      )}
+
+      {markers.length === 0 && !isAdding ? (
+        <p className="text-sm text-muted-foreground text-center py-3">
+          No markers yet. Pause at a moment and click &ldquo;Add&rdquo; to leave a note.
+        </p>
+      ) : (
+        <div className="space-y-1">
+          {markers.map((marker) => (
+            <div
+              key={marker.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => onSeek(marker.time)}
+              onKeyDown={(e) => { if (e.key === "Enter") onSeek(marker.time); }}
+              className="flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm hover:bg-muted transition-colors text-left group cursor-pointer"
+            >
+              <span className="font-mono text-xs text-muted-foreground shrink-0 w-10">
+                {formatTime(marker.time)}
+              </span>
+              <Flag className="h-3 w-3 shrink-0 text-primary" />
+              <span className="flex-1 truncate">{marker.label}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-7 w-7 shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-muted-foreground hover:text-destructive"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deleteMarker(marker.id);
+                }}
+              >
+                <Trash2 className="h-3 w-3" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+
+  if (embedded) {
+    return (
+      <div className="space-y-2">
+        {header}
+        {body}
+      </div>
+    );
+  }
+
   return (
     <Card>
       <CardHeader className="pb-2">
@@ -132,79 +238,7 @@ export function MarkersPanel({
           )}
         </div>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {isAdding && (
-          <div className="flex items-center gap-2 rounded-lg border p-2">
-            <span className="text-xs font-mono text-muted-foreground shrink-0">
-              {formatTime(currentTime)}
-            </span>
-            <Input
-              value={newLabel}
-              onChange={(e) => setNewLabel(e.target.value)}
-              placeholder="Note for this moment..."
-              className="h-8 text-sm"
-              autoFocus
-              onKeyDown={(e) => {
-                if (e.key === "Enter") addMarker();
-                if (e.key === "Escape") {
-                  setIsAdding(false);
-                  setNewLabel("");
-                }
-              }}
-            />
-            <Button size="sm" onClick={addMarker} disabled={!newLabel.trim()}>
-              Add
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8 shrink-0"
-              onClick={() => {
-                setIsAdding(false);
-                setNewLabel("");
-              }}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
-
-        {markers.length === 0 && !isAdding ? (
-          <p className="text-sm text-muted-foreground text-center py-3">
-            No markers yet. Pause at a moment and click &ldquo;Add&rdquo; to leave a note.
-          </p>
-        ) : (
-          <div className="space-y-1">
-            {markers.map((marker) => (
-              <div
-                key={marker.id}
-                role="button"
-                tabIndex={0}
-                onClick={() => onSeek(marker.time)}
-                onKeyDown={(e) => { if (e.key === "Enter") onSeek(marker.time); }}
-                className="flex w-full items-center gap-3 rounded-md px-2 py-1.5 text-sm hover:bg-muted transition-colors text-left group cursor-pointer"
-              >
-                <span className="font-mono text-xs text-muted-foreground shrink-0 w-10">
-                  {formatTime(marker.time)}
-                </span>
-                <Flag className="h-3 w-3 shrink-0 text-primary" />
-                <span className="flex-1 truncate">{marker.label}</span>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-7 w-7 shrink-0 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 text-muted-foreground hover:text-destructive"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteMarker(marker.id);
-                  }}
-                >
-                  <Trash2 className="h-3 w-3" />
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
-      </CardContent>
+      <CardContent>{body}</CardContent>
     </Card>
   );
 }

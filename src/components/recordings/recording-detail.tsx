@@ -23,18 +23,19 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Trash2, Share2, Copy, Check, Link } from "lucide-react";
+import { Trash2, Share2, Copy, Check, Link, Music, Gauge, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { WaveformPlayer, type WaveformPlayerHandle } from "@/components/audio/waveform-player";
 import { AnalyzeButton } from "@/components/analysis/analyze-button";
 import { AnalysisDisplay } from "@/components/analysis/analysis-display";
-import { ChordTimeline } from "@/components/analysis/chord-timeline";
+
 import { PianoRoll } from "@/components/analysis/piano-roll";
 import { ExportMidiButton } from "@/components/analysis/export-midi-button";
 import { ChatPanel } from "@/components/chat/chat-panel";
 import { MarkersPanel, type Marker } from "@/components/markers/markers-panel";
-import { Visualizer } from "@/components/audio/visualizer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAudioStore } from "@/lib/audio/audio-store";
+import { getAudioEngine } from "@/lib/audio/audio-engine";
 
 interface RecordingDetailProps {
   recording: {
@@ -69,7 +70,6 @@ export function RecordingDetail({
   const [currentTime, setCurrentTime] = useState(0);
   const [deleting, setDeleting] = useState(false);
   const [markers, setMarkers] = useState<Marker[]>([]);
-  const [showVisualizer, setShowVisualizer] = useState(false);
   const [description, setDescription] = useState(recording.description ?? "");
   const [shareToken, setShareToken] = useState(recording.share_token);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -149,6 +149,24 @@ export function RecordingDetail({
       toast.error("Failed to copy link");
     }
   }
+
+  const hasAnalysis = analysis?.status === "completed";
+
+  const confidence = analysis?.key_confidence ?? 0;
+  const confidenceLabel = confidence > 0.85 ? "high" : confidence > 0.7 ? "moderate" : "low";
+
+  // Compute effective duration: DB value, or derive from analysis data
+  const effectiveDuration = (() => {
+    if (recording.duration) return recording.duration;
+    if (!hasAnalysis) return 0;
+    // Derive from chord/note end times
+    const chords: { time: number; duration: number }[] = analysis.chords ?? [];
+    const notes: { time: number; duration: number }[] = analysis.notes ?? [];
+    let maxEnd = 0;
+    for (const c of chords) maxEnd = Math.max(maxEnd, c.time + c.duration);
+    for (const n of notes) maxEnd = Math.max(maxEnd, n.time + n.duration);
+    return maxEnd;
+  })();
 
   return (
     <>
@@ -231,17 +249,57 @@ export function RecordingDetail({
         ref={playerRef}
         audioUrl={recording.audio_url}
         recordingId={recording.id}
+        title={recording.title}
         peaks={recording.waveform_peaks}
         duration={recording.duration}
         onTimeUpdate={setCurrentTime}
         markers={markers}
-        onVisualizerOpen={() => setShowVisualizer(true)}
+        onVisualizerOpen={async () => {
+          const store = useAudioStore.getState();
+          // Resume AudioContext in user gesture context
+          try { await getAudioEngine().audioContext.resume(); } catch {}
+          // Ensure track is in store (if not already playing)
+          if (store.currentTrack?.id !== recording.id) {
+            store.play({
+              id: recording.id,
+              title: recording.title,
+              audioUrl: recording.audio_url,
+              duration: recording.duration,
+            }, currentTime);
+          }
+          if (analysis) store.setAnalysis(analysis);
+          router.push("/visualizer");
+        }}
       />
 
+      {/* Compact stats bar */}
+      {hasAnalysis && (
+        <div className="flex flex-wrap items-center gap-3 text-sm">
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
+            <Music className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="font-medium">{analysis.key_signature ?? "Unknown"}</span>
+            {analysis.key_confidence !== undefined && (
+              <span className="text-xs text-muted-foreground">({confidenceLabel})</span>
+            )}
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
+            <Gauge className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="font-medium tabular-nums">
+              {analysis.tempo ? `~${analysis.tempo} BPM` : "Unknown"}
+            </span>
+          </span>
+          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
+            <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+            <span className="font-medium">{analysis.time_signature ?? "Unknown"}</span>
+          </span>
+        </div>
+      )}
+
+      {/* Markers — always visible */}
       <MarkersPanel
         recordingId={recording.id}
         currentTime={currentTime}
-        duration={recording.duration ?? 0}
+        duration={effectiveDuration}
         onSeek={handleSeek}
         onMarkersChange={setMarkers}
       />
@@ -251,43 +309,40 @@ export function RecordingDetail({
         recordingTitle={recording.title}
         audioUrl={recording.audio_url}
         onComplete={setAnalysis}
-        hasExisting={analysis?.status === "completed"}
+        hasExisting={hasAnalysis}
       />
 
-      <Tabs defaultValue={analysis?.status === "completed" ? "analysis" : "chat"}>
+      {/* Two tabs: Analysis | Chat */}
+      <Tabs defaultValue={hasAnalysis ? "analysis" : "chat"}>
         <TabsList>
-          <TabsTrigger value="analysis" disabled={analysis?.status !== "completed"}>
+          <TabsTrigger value="analysis" disabled={!hasAnalysis}>
             Analysis
           </TabsTrigger>
-          <TabsTrigger value="chat" disabled={analysis?.status !== "completed"}>
+          <TabsTrigger value="chat" disabled={!hasAnalysis}>
             Chat
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="analysis" className="space-y-6">
-          {analysis && analysis.status === "completed" && (
+          {hasAnalysis && (
             <>
               <AnalysisDisplay analysis={analysis} />
-              <ExportMidiButton
-                notes={analysis.notes ?? []}
-                filename={`${recording.title}.mid`}
-              />
-              <ChordTimeline
-                chords={analysis.chords ?? []}
-                currentTime={currentTime}
-                duration={recording.duration ?? 0}
-              />
               <PianoRoll
                 notes={analysis.notes ?? []}
                 currentTime={currentTime}
-                duration={recording.duration ?? 0}
+                duration={effectiveDuration}
+                defaultOpen={false}
+              />
+              <ExportMidiButton
+                notes={analysis.notes ?? []}
+                filename={`${recording.title}.mid`}
               />
             </>
           )}
         </TabsContent>
 
         <TabsContent value="chat">
-          {analysis && analysis.status === "completed" && (
+          {hasAnalysis && (
             <ChatPanel
               recordingId={recording.id}
               analysis={analysis}
@@ -297,12 +352,6 @@ export function RecordingDetail({
         </TabsContent>
       </Tabs>
 
-      {showVisualizer && (
-        <Visualizer
-          audioElement={playerRef.current?.getAudioElement() ?? null}
-          onClose={() => setShowVisualizer(false)}
-        />
-      )}
     </>
   );
 }

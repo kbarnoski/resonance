@@ -90,7 +90,7 @@ async function resolveRecording(id: string) {
     .from("recordings")
     .select(RECORDING_COLUMNS)
     .eq("id", id)
-    .not("share_token", "is", null)
+    .or("share_token.not.is.null,is_featured.eq.true")
     .single();
 
   if (shared) return { recording: shared as RecordingRow, client: anonClient, owned: false };

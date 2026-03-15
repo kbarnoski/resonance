@@ -1,12 +1,19 @@
 "use client";
 
+import { useState } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
 interface PianoRollProps {
   notes: { midi: number; time: number; duration: number; velocity: number }[];
   currentTime: number;
   duration: number;
+  defaultOpen?: boolean;
 }
 
-export function PianoRoll({ notes, currentTime, duration }: PianoRollProps) {
+export function PianoRoll({ notes, currentTime, duration, defaultOpen = false }: PianoRollProps) {
+  const [open, setOpen] = useState(defaultOpen);
+
   if (notes.length === 0 || duration === 0) return null;
 
   const SVG_WIDTH = 1200;
@@ -44,7 +51,15 @@ export function PianoRoll({ notes, currentTime, duration }: PianoRollProps) {
 
   return (
     <div className="space-y-2">
-      <h3 className="text-sm font-medium">Piano Roll</h3>
+      <Button
+        variant="ghost"
+        className="w-full justify-between text-sm font-medium text-muted-foreground"
+        onClick={() => setOpen(!open)}
+      >
+        Piano Roll
+        {open ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+      </Button>
+      {open && (
       <div className="rounded-lg border bg-card overflow-x-auto">
         <svg
           viewBox={`0 0 ${SVG_WIDTH} ${SVG_HEIGHT}`}
@@ -111,6 +126,7 @@ export function PianoRoll({ notes, currentTime, duration }: PianoRollProps) {
           />
         </svg>
       </div>
+      )}
     </div>
   );
 }

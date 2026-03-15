@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { createClient } from "@/lib/supabase/client";
 import { AnalysisDisplay } from "@/components/analysis/analysis-display";
 import { ChatMessage } from "@/components/chat/chat-message";
@@ -115,74 +116,72 @@ function CompareChat({
   }, [messages]);
 
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-medium tracking-tight">
-          AI Comparison Chat
-        </CardTitle>
-        <p className="text-xs text-muted-foreground">
-          Ask about the relationship between these two recordings
-        </p>
-      </CardHeader>
-      <CardContent>
-        <div className="flex h-[300px] flex-col rounded-lg border sm:h-[400px]">
-          <ScrollArea ref={scrollRef} className="flex-1 p-4">
-            {messages.length === 0 ? (
-              <div className="flex h-full flex-col items-center justify-center gap-3">
-                <p className="text-sm text-muted-foreground">
-                  Compare &ldquo;{titleA}&rdquo; and &ldquo;{titleB}&rdquo;
-                </p>
-                <div className="flex flex-wrap justify-center gap-2">
-                  {COMPARE_SUGGESTIONS.map((prompt) => (
-                    <Button
-                      key={prompt}
-                      variant="outline"
-                      size="sm"
-                      className="text-xs"
-                      onClick={() => append({ role: "user", content: prompt })}
-                    >
-                      {prompt}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {messages.map((message) => (
-                  <ChatMessage
-                    key={message.id}
-                    role={message.role as "user" | "assistant"}
-                    content={message.content}
-                  />
-                ))}
-                {isLoading && messages[messages.length - 1]?.role === "user" && (
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
-                    Thinking...
-                  </div>
-                )}
+    <div className="flex h-[400px] flex-col rounded-lg border sm:h-[500px]">
+      <ScrollArea ref={scrollRef} className="flex-1 p-4">
+        {messages.length === 0 ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3">
+            <p className="text-sm text-muted-foreground">
+              Compare &ldquo;{titleA}&rdquo; and &ldquo;{titleB}&rdquo;
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {COMPARE_SUGGESTIONS.map((prompt) => (
+                <Button
+                  key={prompt}
+                  variant="outline"
+                  size="sm"
+                  className="text-xs"
+                  onClick={() => append({ role: "user", content: prompt })}
+                >
+                  {prompt}
+                </Button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {messages.map((message) => (
+              <ChatMessage
+                key={message.id}
+                role={message.role as "user" | "assistant"}
+                content={message.content}
+              />
+            ))}
+            {isLoading && messages[messages.length - 1]?.role === "user" && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <div className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+                Thinking...
               </div>
             )}
-          </ScrollArea>
-
-          <div className="border-t p-3">
-            <form onSubmit={handleSubmit} className="flex gap-2">
-              <Input
-                value={input}
-                onChange={handleInputChange}
-                placeholder="Ask about these recordings..."
-                disabled={isLoading}
-              />
-              <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
           </div>
-        </div>
-      </CardContent>
-    </Card>
+        )}
+      </ScrollArea>
+
+      <div className="border-t p-3">
+        <form onSubmit={handleSubmit} className="flex gap-2">
+          <Input
+            value={input}
+            onChange={handleInputChange}
+            placeholder="Ask about these recordings..."
+            disabled={isLoading}
+          />
+          <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+            <Send className="h-4 w-4" />
+          </Button>
+        </form>
+      </div>
+    </div>
   );
 }
+
+type AnalysisDisplaySummary = {
+  overview: string;
+  key_center: string;
+  sections: { label: string; description: string }[];
+  chord_vocabulary: string[];
+  harmonic_highlights: string;
+  rhythm_and_feel: string;
+  relearning_tips: string;
+};
 
 export default function ComparePage() {
   const [recordings, setRecordings] = useState<Recording[]>([]);
@@ -335,7 +334,7 @@ export default function ComparePage() {
                       <div className="grid grid-cols-1 gap-4 pt-4 sm:grid-cols-2 sm:gap-6">
                         <div>
                           <p className="mb-2 text-center text-xs uppercase tracking-widest text-muted-foreground">
-                            Chords
+                            {recA.title} — Chords
                           </p>
                           <div className="flex flex-wrap justify-center gap-1">
                             {analysisA?.chords && analysisA.chords.length > 0 ? (
@@ -357,7 +356,7 @@ export default function ComparePage() {
                         </div>
                         <div>
                           <p className="mb-2 text-center text-xs uppercase tracking-widest text-muted-foreground">
-                            Chords
+                            {recB.title} — Chords
                           </p>
                           <div className="flex flex-wrap justify-center gap-1">
                             {analysisB?.chords && analysisB.chords.length > 0 ? (
@@ -383,50 +382,60 @@ export default function ComparePage() {
                 </CardContent>
               </Card>
 
-              {/* Full analysis side-by-side */}
+              {/* Tabs: Analysis | Chat */}
               {bothAnalyzed && analysisA && analysisB && (
-                <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                  <div>
-                    <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
-                      {recA.title}
-                    </p>
-                    <AnalysisDisplay
-                      analysis={{
-                        key_signature: analysisA.key_signature,
-                        tempo: analysisA.tempo,
-                        time_signature: analysisA.time_signature,
-                        chords: analysisA.chords ?? [],
-                        notes: analysisA.notes ?? [],
-                        summary: analysisA.summary as AnalysisDisplaySummary | null,
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
-                      {recB.title}
-                    </p>
-                    <AnalysisDisplay
-                      analysis={{
-                        key_signature: analysisB.key_signature,
-                        tempo: analysisB.tempo,
-                        time_signature: analysisB.time_signature,
-                        chords: analysisB.chords ?? [],
-                        notes: analysisB.notes ?? [],
-                        summary: analysisB.summary as AnalysisDisplaySummary | null,
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
+                <Tabs defaultValue="analysis">
+                  <TabsList>
+                    <TabsTrigger value="analysis">Analysis</TabsTrigger>
+                    <TabsTrigger value="chat">Chat</TabsTrigger>
+                  </TabsList>
 
-              {/* Compare AI chat */}
-              {bothAnalyzed && analysisA && analysisB && (
-                <CompareChat
-                  titleA={recA.title}
-                  titleB={recB.title}
-                  analysisA={analysisA}
-                  analysisB={analysisB}
-                />
+                  <TabsContent value="analysis">
+                    <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 items-start">
+                      <div className="min-w-0">
+                        <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
+                          {recA.title}
+                        </p>
+                        <AnalysisDisplay
+                          analysis={{
+                            key_signature: analysisA.key_signature,
+                            tempo: analysisA.tempo,
+                            time_signature: analysisA.time_signature,
+                            chords: analysisA.chords ?? [],
+                            notes: analysisA.notes ?? [],
+                            summary: analysisA.summary as AnalysisDisplaySummary | null,
+                          }}
+                          compact
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
+                          {recB.title}
+                        </p>
+                        <AnalysisDisplay
+                          analysis={{
+                            key_signature: analysisB.key_signature,
+                            tempo: analysisB.tempo,
+                            time_signature: analysisB.time_signature,
+                            chords: analysisB.chords ?? [],
+                            notes: analysisB.notes ?? [],
+                            summary: analysisB.summary as AnalysisDisplaySummary | null,
+                          }}
+                          compact
+                        />
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="chat">
+                    <CompareChat
+                      titleA={recA.title}
+                      titleB={recB.title}
+                      analysisA={analysisA}
+                      analysisB={analysisB}
+                    />
+                  </TabsContent>
+                </Tabs>
               )}
             </>
           )}
@@ -445,13 +454,3 @@ export default function ComparePage() {
     </div>
   );
 }
-
-type AnalysisDisplaySummary = {
-  overview: string;
-  key_center: string;
-  sections: { label: string; description: string }[];
-  chord_vocabulary: string[];
-  harmonic_highlights: string;
-  rhythm_and_feel: string;
-  relearning_tips: string;
-};
