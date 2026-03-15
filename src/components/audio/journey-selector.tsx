@@ -51,15 +51,26 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const selectJourney = async (journey: Journey, withAi: boolean) => {
     setAiImageEnabled(withAi);
 
-    // If no track is playing, auto-load the snowflake track first
+    // If no track is playing, auto-load one: prefer "snowflake", fall back to any recording
     if (!useAudioStore.getState().currentTrack) {
       try {
         const supabase = createClient();
-        const { data, error } = await supabase
+
+        // Try snowflake first
+        let { data, error } = await supabase
           .from("recordings")
           .select("id, title, audio_url")
           .ilike("title", "%snowflake%")
           .limit(1);
+
+        // Fall back to most recent recording
+        if (!data?.[0] || error) {
+          ({ data, error } = await supabase
+            .from("recordings")
+            .select("id, title, audio_url")
+            .order("created_at", { ascending: false })
+            .limit(1));
+        }
 
         if (!error && data?.[0]) {
           const row = data[0];
@@ -68,7 +79,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           // Small delay to let audio engine initialize the track
           await new Promise((r) => setTimeout(r, 200));
         } else {
-          console.warn("[journey] no snowflake track found, starting journey without audio");
+          console.warn("[journey] no recordings found, starting journey without audio");
         }
       } catch (err) {
         console.warn("[journey] failed to load default track:", err);
