@@ -36,8 +36,13 @@ interface AudioState {
   // The Room UI
   roomOpen: boolean;
   vizMode: string;
-  vizPoetry: boolean;
+  textOverlayMode: "off" | "poetry" | "story";
   vizWhisper: boolean;
+
+  // Story Mode
+  storyData: { title: string; paragraphs: { phaseId: string; text: string; imagePrompt: string; mood: string }[] } | null;
+  storyLoading: boolean;
+  storyCurrentParagraphIndex: number;
 
   // Installation mode
   installationMode: boolean;
@@ -72,8 +77,11 @@ interface AudioState {
   openRoom: () => void;
   closeRoom: () => void;
   setVizMode: (mode: string) => void;
-  setVizPoetry: (enabled: boolean) => void;
+  setTextOverlayMode: (mode: "off" | "poetry" | "story") => void;
   setVizWhisper: (enabled: boolean) => void;
+  setStoryData: (data: AudioState["storyData"]) => void;
+  setStoryLoading: (loading: boolean) => void;
+  setStoryCurrentParagraphIndex: (index: number) => void;
   setQueue: (tracks: Track[], startIndex?: number) => void;
   addToQueue: (track: Track) => void;
   playNext: () => void;
@@ -87,6 +95,7 @@ interface AudioState {
 
   // Journey actions
   startJourney: (journeyId: string) => void;
+  startCustomJourney: (journey: Journey) => void;
   stopJourney: () => void;
   setJourneyPhase: (phase: JourneyPhaseId) => void;
   setAiImageEnabled: (enabled: boolean) => void;
@@ -106,8 +115,11 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   analysisLoading: false,
   roomOpen: false,
   vizMode: "orb",
-  vizPoetry: true,
+  textOverlayMode: "off",
   vizWhisper: false,
+  storyData: null,
+  storyLoading: false,
+  storyCurrentParagraphIndex: 0,
   installationMode: false,
   vizModeSequence: null,
   vizModeSequenceIndex: 0,
@@ -151,8 +163,11 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   openRoom: () => set({ roomOpen: true }),
   closeRoom: () => set({ roomOpen: false }),
   setVizMode: (mode) => set({ vizMode: mode }),
-  setVizPoetry: (enabled) => set({ vizPoetry: enabled }),
+  setTextOverlayMode: (mode) => set({ textOverlayMode: mode }),
   setVizWhisper: (enabled) => set({ vizWhisper: enabled }),
+  setStoryData: (data) => set({ storyData: data }),
+  setStoryLoading: (loading) => set({ storyLoading: loading }),
+  setStoryCurrentParagraphIndex: (index) => set({ storyCurrentParagraphIndex: index }),
 
   setQueue: (tracks, startIndex) => {
     const idx = startIndex ?? 0;
@@ -287,10 +302,34 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       journeyPhase: null,
       journeyProgress: 0,
       vizMode: firstMode,
-      vizPoetry: true,
       vizWhisper: false,
       vizModeSequence: null, // Journey engine handles mode switching
+      storyData: null,
+      storyLoading: false,
+      storyCurrentParagraphIndex: 0,
+      aiImageEnabled: true,
       // Ensure playback is active if a track is loaded
+      isPlaying: !!get().currentTrack ? true : get().isPlaying,
+    });
+  },
+
+  startCustomJourney: (journey) => {
+    const realm = getRealm(journey.realmId);
+    const engine = getJourneyEngine();
+    engine.start(journey);
+    const firstMode = journey.phases[0]?.shaderModes[0] ?? "mandala";
+    set({
+      activeJourney: journey,
+      activeRealm: realm ?? null,
+      journeyPhase: null,
+      journeyProgress: 0,
+      vizMode: firstMode,
+      vizWhisper: false,
+      storyData: null,
+      storyLoading: false,
+      storyCurrentParagraphIndex: 0,
+      vizModeSequence: null,
+      aiImageEnabled: true,
       isPlaying: !!get().currentTrack ? true : get().isPlaying,
     });
   },

@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,8 +16,6 @@ import {
   Disc3,
   Menu,
   X,
-  Sun,
-  Moon,
 } from "lucide-react";
 
 const navItems = [
@@ -33,10 +30,6 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { setTheme, resolvedTheme } = useTheme();
-
-  useEffect(() => setMounted(true), []);
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -67,7 +60,7 @@ export function Sidebar() {
       <svg
         viewBox="0 0 24 24"
         fill="none"
-        className="h-6 w-6 text-primary"
+        className="h-6 w-6 text-white/70"
         strokeWidth="1.5"
         stroke="currentColor"
       >
@@ -88,7 +81,7 @@ export function Sidebar() {
           strokeLinecap="round"
         />
       </svg>
-      <span className="text-base font-semibold tracking-tight">Resonance</span>
+      <span className="text-base font-light tracking-tight text-white/90">Resonance</span>
     </div>
   );
 
@@ -105,8 +98,8 @@ export function Sidebar() {
               className={cn(
                 "flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors",
                 isActive
-                  ? "bg-primary/10 text-primary font-medium"
-                  : "text-muted-foreground hover:text-foreground hover:bg-accent"
+                  ? "bg-white/[0.08] text-white/90"
+                  : "text-white/40 hover:text-white/70 hover:bg-white/[0.05]"
               )}
             >
               <Icon className="h-4 w-4" />
@@ -120,40 +113,23 @@ export function Sidebar() {
         <Link
           href="/room"
           className="flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm transition-all
-            bg-primary/5 border border-primary/10 text-primary/80 hover:text-primary
-            hover:bg-primary/10 hover:border-primary/20"
+            bg-white/[0.05] border border-white/10 text-white/60 hover:text-white
+            hover:bg-white/10 hover:border-white/15"
         >
           <Disc3 className="h-4 w-4" />
           Enter The Room
         </Link>
       </div>
 
-      <div className="border-t px-2 py-2">
-        <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            className="flex-1 justify-start gap-2.5 text-muted-foreground hover:text-foreground text-sm h-9"
-            onClick={handleSignOut}
-          >
-            <LogOut className="h-4 w-4" />
-            Sign Out
-          </Button>
-          {mounted && (
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-9 w-9 shrink-0 text-muted-foreground hover:text-foreground"
-              onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-              title={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {resolvedTheme === "dark" ? (
-                <Sun className="h-4 w-4" />
-              ) : (
-                <Moon className="h-4 w-4" />
-              )}
-            </Button>
-          )}
-        </div>
+      <div className="border-t border-white/[0.06] px-2 py-2">
+        <Button
+          variant="ghost"
+          className="w-full justify-start gap-2.5 text-white/30 hover:text-white/60 hover:bg-white/[0.05] text-sm h-9"
+          onClick={handleSignOut}
+        >
+          <LogOut className="h-4 w-4" />
+          Sign Out
+        </Button>
       </div>
     </>
   );
@@ -161,12 +137,12 @@ export function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <div className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b bg-background px-4 md:hidden">
+      <div className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-white/[0.06] bg-black px-4 md:hidden">
         {logo}
         <Button
           variant="ghost"
           size="icon"
-          className="h-9 w-9"
+          className="h-9 w-9 text-white/40 hover:text-white/70"
           onClick={() => setMobileOpen(!mobileOpen)}
         >
           {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -184,7 +160,7 @@ export function Sidebar() {
       {/* Mobile slide-over sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r bg-background pt-14 transition-transform duration-200 ease-in-out md:hidden",
+          "fixed inset-y-0 left-0 z-50 flex w-64 flex-col border-r border-white/[0.06] bg-black pt-14 transition-transform duration-200 ease-in-out md:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -192,7 +168,7 @@ export function Sidebar() {
       </aside>
 
       {/* Desktop sidebar */}
-      <aside className="hidden h-full w-56 flex-col border-r md:flex">
+      <aside className="hidden h-full w-56 flex-col border-r border-white/[0.06] md:flex">
         <div className="px-5 py-4">
           {logo}
         </div>

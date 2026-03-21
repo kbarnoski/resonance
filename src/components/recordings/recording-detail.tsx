@@ -23,7 +23,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Trash2, Share2, Copy, Check, Link, Music, Gauge, Clock } from "lucide-react";
+import { Trash2, Share2, Copy, Check, Link, Music, Gauge, Clock, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { WaveformPlayer, type WaveformPlayerHandle } from "@/components/audio/waveform-player";
 import { AnalyzeButton } from "@/components/analysis/analyze-button";
@@ -36,6 +36,7 @@ import { MarkersPanel, type Marker } from "@/components/markers/markers-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getAudioEngine } from "@/lib/audio/audio-engine";
+import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog";
 
 interface RecordingDetailProps {
   recording: {
@@ -75,6 +76,7 @@ export function RecordingDetail({
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [journeyDialogOpen, setJourneyDialogOpen] = useState(false);
   const playerRef = useRef<WaveformPlayerHandle>(null);
 
   const handleSeek = useCallback((time: number) => {
@@ -182,6 +184,23 @@ export function RecordingDetail({
           variant="ghost"
           size="icon"
           className="shrink-0 text-muted-foreground hover:text-foreground"
+          onClick={() => setJourneyDialogOpen(true)}
+          title="Create a journey"
+        >
+          <Sparkles className="h-4 w-4" />
+        </Button>
+
+        <CreateJourneyDialog
+          open={journeyDialogOpen}
+          onOpenChange={setJourneyDialogOpen}
+          recordingId={recording.id}
+          onCreated={(j) => toast.success(`Journey "${j.name}" created`)}
+        />
+
+        <Button
+          variant="ghost"
+          size="icon"
+          className="shrink-0 text-muted-foreground hover:text-foreground"
           onClick={handleShare}
           disabled={sharing}
         >
@@ -277,20 +296,20 @@ export function RecordingDetail({
         <div className="flex flex-wrap items-center gap-3 text-sm">
           <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
             <Music className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="font-medium">{analysis.key_signature ?? "Unknown"}</span>
+            <span className="font-light">{analysis.key_signature ?? "Unknown"}</span>
             {analysis.key_confidence !== undefined && (
               <span className="text-xs text-muted-foreground">({confidenceLabel})</span>
             )}
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
             <Gauge className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="font-medium tabular-nums">
+            <span className="font-light tabular-nums">
               {analysis.tempo ? `~${analysis.tempo} BPM` : "Unknown"}
             </span>
           </span>
           <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1">
             <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-            <span className="font-medium">{analysis.time_signature ?? "Unknown"}</span>
+            <span className="font-light">{analysis.time_signature ?? "Unknown"}</span>
           </span>
         </div>
       )}

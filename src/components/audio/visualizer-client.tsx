@@ -14,7 +14,10 @@ import { MODES_AI, AI_MODE_PROMPTS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, ensureResumed } from "@/lib/audio/audio-engine";
 import { useInstallationMode } from "@/lib/audio/use-installation-mode";
 import { useJourney, usePhaseChange } from "@/lib/journeys/use-journey";
+import { useStoryGeneration } from "@/lib/journeys/use-story";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { createClient } from "@/lib/supabase/client";
+import { ShareSheet } from "@/components/ui/share-sheet";
 import { Mic, ArrowLeft } from "lucide-react";
 
 // ─── Speech Recognition types ───
@@ -79,10 +82,14 @@ export function VisualizerClient({
   // Local analyser state (for VisualizerCore)
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null);
   const [dataArray, setDataArray] = useState<Uint8Array<ArrayBuffer> | null>(null);
+  const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
 
   // Journey system
   const { frame: journeyFrame, active: journeyActive, phase: journeyPhase } = useJourney();
   const audioFeaturesRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
+
+  // Story mode generation
+  useStoryGeneration();
 
   // Journey guidance phrases
   const [guidancePhrase, setGuidancePhrase] = useState<string | null>(null);
@@ -188,7 +195,7 @@ export function VisualizerClient({
   useInstallationMode();
 
   // Visualizer config ref (for share)
-  const configRef = useRef<{ mode: VisualizerMode; poetryEnabled: boolean; whisperEnabled: boolean } | null>(null);
+  const configRef = useRef<{ mode: VisualizerMode; textOverlayMode: "off" | "poetry" | "story"; whisperEnabled: boolean } | null>(null);
 
   // Section flash
   const [sectionFlash, setSectionFlash] = useState(false);
@@ -205,7 +212,7 @@ export function VisualizerClient({
     if (!config) return;
     const payload = {
       shaderMode: config.mode,
-      poetryEnabled: config.poetryEnabled,
+      textOverlayMode: config.textOverlayMode,
       whisperEnabled: config.whisperEnabled,
       hudVisible,
     };
@@ -214,10 +221,9 @@ export function VisualizerClient({
       .replace(/\//g, "_")
       .replace(/=+$/, "");
     const url = `${window.location.origin}/room/${token}`;
-    navigator.clipboard.writeText(url).then(() => {
-      // Brief visual feedback — could be a toast, but we'll keep it simple
-    });
-  }, [hudVisible]);
+    const trackTitle = currentTrack?.title ?? "The Room";
+    setShareSheet({ url, title: `${trackTitle} — Resonance` });
+  }, [hudVisible, currentTrack]);
 
   // Live speech
   const [liveEnabled, setLiveEnabled] = useState(false);
@@ -389,12 +395,32 @@ export function VisualizerClient({
   const handleExit = useCallback(() => {
     const track = useAudioStore.getState().currentTrack;
     if (track) {
-      // Navigate to the current track's detail page so WaveSurfer syncs
       router.push(`/recording/${track.id}`);
     } else {
       router.push("/library");
     }
   }, [router]);
+
+  // Load the most recent track from user's library and start playing
+  const handleEnterRoom = useCallback(async () => {
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase
+        .from("recordings")
+        .select("id, title, audio_url")
+        .order("created_at", { ascending: false })
+        .limit(1);
+      if (!error && data?.[0]) {
+        const row = data[0];
+        play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
+      } else {
+        // No tracks — open library so user can upload
+        setLibraryOpen(true);
+      }
+    } catch {
+      setLibraryOpen(true);
+    }
+  }, [play]);
 
   // Seek by offset
   const seekBy = useCallback((offset: number) => {
@@ -445,9 +471,18 @@ export function VisualizerClient({
           e.preventDefault();
           seekBy(-10);
           break;
-        case "p":
-          useAudioStore.getState().setVizPoetry(!useAudioStore.getState().vizPoetry);
+        case "p": {
+          const state = useAudioStore.getState();
+          const hasJourney = !!state.activeJourney;
+          const modes: Array<"off" | "poetry" | "story"> = hasJourney
+            ? ["off", "poetry", "story"]
+            : ["off", "poetry"];
+          const currentIdx = modes.indexOf(state.textOverlayMode);
+          const nextMode = modes[(currentIdx + 1) % modes.length];
+          if (nextMode === "off") state.setVizWhisper(false);
+          state.setTextOverlayMode(nextMode);
           break;
+        }
         case "v":
           useAudioStore.getState().setVizWhisper(!useAudioStore.getState().vizWhisper);
           break;
@@ -510,12 +545,14 @@ export function VisualizerClient({
           controlsVisible={controlsVisible}
           configRef={configRef}
           journeyShaderMode={journeyFrame?.shaderMode}
+          journeyDualShaderMode={journeyFrame?.dualShaderMode}
           journeyPhase={journeyFrame?.phase}
           journeyVoice={journeyFrame?.voice}
           journeyPoetryInterval={journeyFrame?.poetryIntervalSeconds}
           journeyPoetryMood={journeyFrame?.poetryMood}
           journeyRealmImagery={activeRealm?.poetryImagery}
           journeyRealmId={activeRealm?.id}
+          journeyStoryText={activeJourney?.storyText}
           journeyActive={journeyActive}
           onStopJourney={() => {
             useAudioStore.getState().stopJourney();
@@ -587,7 +624,7 @@ export function VisualizerClient({
             </p>
             <div className="flex items-center justify-center gap-4">
               <button
-                onClick={() => setLibraryOpen(true)}
+                onClick={handleEnterRoom}
                 className="px-6 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-colors"
                 style={{
                   fontFamily: "var(--font-geist-mono)",
@@ -596,7 +633,7 @@ export function VisualizerClient({
                   backgroundColor: "rgba(255,255,255,0.05)",
                 }}
               >
-                Browse Library
+                Explore Visuals
               </button>
               <button
                 onClick={() => setJourneyOpen(true)}
@@ -678,6 +715,15 @@ export function VisualizerClient({
       <JourneySelector
         open={journeyOpen}
         onClose={() => setJourneyOpen(false)}
+      />
+
+      {/* Share sheet */}
+      <ShareSheet
+        open={!!shareSheet}
+        onClose={() => setShareSheet(null)}
+        url={shareSheet?.url ?? ""}
+        title={shareSheet?.title ?? ""}
+        text="Check out this experience on Resonance"
       />
     </div>
   );

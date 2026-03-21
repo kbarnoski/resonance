@@ -1,16 +1,31 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { X, Type, AudioLines, ArrowLeft, Activity, Library, Hexagon, Share2, ChevronUp, Compass, Pause, Play, SkipBack, SkipForward, RotateCcw, BookOpen, Globe } from "lucide-react";
+import { X, Type, AudioLines, ArrowLeft, Activity, Library, Hexagon, Share2, ChevronUp, ChevronDown, Compass, Pause, Play, SkipBack, SkipForward, RotateCcw, BookOpen, Globe, Search } from "lucide-react";
 import { getAudioEngine, ensureResumed } from "@/lib/audio/audio-engine";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
 import type { VisualizerMode } from "@/lib/audio/vibe-detection";
 import type { AnalysisResult } from "@/lib/audio/types";
 import { PoetryOverlay } from "./poetry-overlay";
+import { StoryOverlay } from "./story-overlay";
 import { Visualizer3D, type Visualizer3DMode } from "./visualizer-3d";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
+
+// Ambient shaders used as backdrop underneath AI imagery modes
+const AI_BACKDROP_SHADERS: VisualizerMode[] = [
+  "cosmos", "ethereal", "liquid", "fog", "nebula", "drift",
+  "haze", "vapor", "abyss", "tide", "dusk",
+  "stardust", "horizon", "ember", "permafrost",
+];
+
+/** Pick a deterministic backdrop shader for an AI mode */
+function getAiBackdropShader(aiMode: string): VisualizerMode {
+  let hash = 0;
+  for (let i = 0; i < aiMode.length; i++) hash = (hash * 31 + aiMode.charCodeAt(i)) | 0;
+  return AI_BACKDROP_SHADERS[Math.abs(hash) % AI_BACKDROP_SHADERS.length];
+}
 
 // ─── Shared types ───
 
@@ -40,10 +55,12 @@ export interface VisualizerCoreProps {
   showJourneyButton?: boolean;
   showTransport?: boolean;
   controlsVisible?: boolean;
-  configRef?: React.MutableRefObject<{ mode: VisualizerMode; poetryEnabled: boolean; whisperEnabled: boolean } | null>;
+  configRef?: React.MutableRefObject<{ mode: VisualizerMode; textOverlayMode: "off" | "poetry" | "story"; whisperEnabled: boolean } | null>;
   children?: React.ReactNode;
   /** Journey mode override — when set, shader mode comes from journey engine */
   journeyShaderMode?: string | null;
+  /** Optional second shader layered during peak journey moments */
+  journeyDualShaderMode?: string | null;
   /** Journey phase for poetry */
   journeyPhase?: string | null;
   /** Journey voice override */
@@ -56,6 +73,8 @@ export interface VisualizerCoreProps {
   journeyRealmImagery?: string | null;
   /** Journey realm ID for typography theming */
   journeyRealmId?: string | null;
+  /** Story text from custom journey for poetry context */
+  journeyStoryText?: string | null;
   /** When true, simplify controls to journey-only actions */
   journeyActive?: boolean;
   /** Callback to stop the active journey */
@@ -141,11 +160,14 @@ export function ShaderVisualizer({
   dataArray,
   fragShader,
   style,
+  smoothMotion = false,
 }: {
   analyser: AnalyserNode;
   dataArray: Uint8Array<ArrayBuffer>;
   fragShader: string;
   style?: React.CSSProperties;
+  /** When true, use smooth time-based motion instead of audio reactivity */
+  smoothMotion?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
@@ -177,47 +199,65 @@ export function ShaderVisualizer({
 
     let animId: number;
     const startTime = performance.now();
-    const SMOOTHING = 0.06;
+    const SMOOTHING = 0.035;     // Slow smoothing — gentle transitions
+    const REACTIVITY = 0.45;     // Scale factor — subtle audio response
+    let lastW = 0;
+    let lastH = 0;
 
     function render() {
       if (!canvas || !gl) return;
-      canvas.width = canvas.clientWidth * devicePixelRatio;
-      canvas.height = canvas.clientHeight * devicePixelRatio;
-      gl.viewport(0, 0, canvas.width, canvas.height);
+      const w = Math.round(canvas.clientWidth * devicePixelRatio);
+      const h = Math.round(canvas.clientHeight * devicePixelRatio);
+      if (w !== lastW || h !== lastH) {
+        canvas.width = w;
+        canvas.height = h;
+        gl.viewport(0, 0, w, h);
+        lastW = w;
+        lastH = h;
+      }
 
       const time = (performance.now() - startTime) / 1000;
 
-      analyser.getByteFrequencyData(dataArray);
-
-      // Extract frequency bands
-      let bassSum = 0, midSum = 0, trebleSum = 0, totalSum = 0;
-      const len = dataArray.length; // 128 bins (fftSize=256)
-      for (let i = 0; i < len; i++) {
-        const v = dataArray[i];
-        totalSum += v;
-        if (i <= 5) bassSum += v;        // bins 0-5: ~0-860Hz
-        else if (i <= 30) midSum += v;    // bins 6-30: ~860-5160Hz
-        else if (i <= 63) trebleSum += v; // bins 31-63: ~5160-11kHz
-      }
-      const rawBass = bassSum / (6 * 255);
-      const rawMid = midSum / (25 * 255);
-      const rawTreble = trebleSum / (33 * 255);
-      const rawAmplitude = totalSum / (len * 255);
-
-      // Exponential smoothing
       const s = smoothRef.current;
-      s.bass += (rawBass - s.bass) * SMOOTHING;
-      s.mid += (rawMid - s.mid) * SMOOTHING;
-      s.treble += (rawTreble - s.treble) * SMOOTHING;
-      s.amplitude += (rawAmplitude - s.amplitude) * SMOOTHING;
+
+      if (smoothMotion) {
+        // Smooth continuous motion — gentle sine waves, no audio reactivity
+        s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
+        s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
+        s.treble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
+        s.amplitude = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
+      } else {
+        analyser.getByteFrequencyData(dataArray);
+
+        // Extract frequency bands
+        let bassSum = 0, midSum = 0, trebleSum = 0, totalSum = 0;
+        const len = dataArray.length; // 128 bins (fftSize=256)
+        for (let i = 0; i < len; i++) {
+          const v = dataArray[i];
+          totalSum += v;
+          if (i <= 5) bassSum += v;        // bins 0-5: ~0-860Hz
+          else if (i <= 30) midSum += v;    // bins 6-30: ~860-5160Hz
+          else if (i <= 63) trebleSum += v; // bins 31-63: ~5160-11kHz
+        }
+        const rawBass = bassSum / (6 * 255);
+        const rawMid = midSum / (25 * 255);
+        const rawTreble = trebleSum / (33 * 255);
+        const rawAmplitude = totalSum / (len * 255);
+
+        // Exponential smoothing
+        s.bass += (rawBass - s.bass) * SMOOTHING;
+        s.mid += (rawMid - s.mid) * SMOOTHING;
+        s.treble += (rawTreble - s.treble) * SMOOTHING;
+        s.amplitude += (rawAmplitude - s.amplitude) * SMOOTHING;
+      }
 
       gl.useProgram(program);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
-      gl.uniform1f(uBass, s.bass);
-      gl.uniform1f(uMid, s.mid);
-      gl.uniform1f(uTreble, s.treble);
-      gl.uniform1f(uAmplitude, s.amplitude);
+      gl.uniform1f(uBass, s.bass * REACTIVITY);
+      gl.uniform1f(uMid, s.mid * REACTIVITY);
+      gl.uniform1f(uTreble, s.treble * REACTIVITY);
+      gl.uniform1f(uAmplitude, s.amplitude * REACTIVITY);
 
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       animId = requestAnimationFrame(render);
@@ -276,12 +316,14 @@ export function VisualizerCore({
   configRef,
   children,
   journeyShaderMode,
+  journeyDualShaderMode,
   journeyPhase,
   journeyVoice,
   journeyPoetryInterval,
   journeyPoetryMood,
   journeyRealmImagery,
   journeyRealmId,
+  journeyStoryText,
   journeyActive,
   onStopJourney,
   onStudy,
@@ -295,10 +337,12 @@ export function VisualizerCore({
   const typographyTheme = journeyRealmId
     ?? MODE_META.find((m) => m.mode === mode)?.category
     ?? null;
-  const poetryEnabled = useAudioStore((s) => s.vizPoetry);
+  const textOverlayMode = useAudioStore((s) => s.textOverlayMode);
+  const poetryEnabled = textOverlayMode === "poetry";
+  const storyEnabled = textOverlayMode === "story";
   const whisperEnabled = useAudioStore((s) => s.vizWhisper);
   const setMode = useAudioStore((s) => s.setVizMode);
-  const setPoetryEnabled = useAudioStore((s) => s.setVizPoetry);
+  const setTextOverlayMode = useAudioStore((s) => s.setTextOverlayMode);
   const setWhisperEnabled = useAudioStore((s) => s.setVizWhisper);
 
   const installationMode = useAudioStore((s) => s.installationMode);
@@ -338,6 +382,9 @@ export function VisualizerCore({
 
   const [vibe, setVibe] = useState<Mood | null>(defaultMood ?? null);
   const [modePaletteOpen, setModePaletteOpen] = useState(false);
+  const [modeSearch, setModeSearch] = useState("");
+  const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [langPickerOpen, setLangPickerOpen] = useState(false);
 
   // Smooth dual-shader crossfade when viz mode changes
@@ -348,6 +395,11 @@ export function VisualizerCore({
   const prevModeRef = useRef(mode);
   const prevLayerRef = useRef<HTMLDivElement>(null);
   const nextLayerRef = useRef<HTMLDivElement>(null);
+
+  // Dual shader smooth fade — keep it mounted while fading out
+  const [dualShaderVisible, setDualShaderVisible] = useState<string | null>(null);
+  const dualShaderRef = useRef<HTMLDivElement>(null);
+  const dualFadeRef = useRef<number>(0);
 
   useEffect(() => {
     if (mode !== prevModeRef.current) {
@@ -361,7 +413,7 @@ export function VisualizerCore({
 
       let progress = 0;
       const animate = () => {
-        progress = Math.min(1, progress + 0.008); // ~125 frames (~2s at 60fps)
+        progress = Math.min(1, progress + 0.011); // ~90 frames (~1.5s at 60fps)
         // Ease-in-out for smoother feel
         const eased = progress < 0.5
           ? 2 * progress * progress
@@ -382,10 +434,60 @@ export function VisualizerCore({
     }
   }, [mode]);
 
+  // Smooth fade for dual shader layer (peak journey moments)
+  // Keep it always mounted when there's a mode, use CSS transition for the fade
+  const dualShaderTarget = journeyDualShaderMode && SHADERS[journeyDualShaderMode as VisualizerMode]
+    ? journeyDualShaderMode : null;
+
+  useEffect(() => {
+    if (dualShaderTarget) {
+      // Mount the shader, start fading in on next frame
+      setDualShaderVisible(dualShaderTarget);
+      cancelAnimationFrame(dualFadeRef.current);
+      let progress = 0;
+      const fadeIn = () => {
+        progress = Math.min(1, progress + 0.012);
+        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        if (dualShaderRef.current) dualShaderRef.current.style.opacity = String(eased * 0.45);
+        if (progress < 1) dualFadeRef.current = requestAnimationFrame(fadeIn);
+      };
+      // Wait two frames for React to mount the element
+      dualFadeRef.current = requestAnimationFrame(() => {
+        if (dualShaderRef.current) dualShaderRef.current.style.opacity = "0";
+        dualFadeRef.current = requestAnimationFrame(fadeIn);
+      });
+    } else {
+      // Fade out, then unmount
+      cancelAnimationFrame(dualFadeRef.current);
+      if (!dualShaderRef.current) {
+        setDualShaderVisible(null);
+        return;
+      }
+      const startOpacity = parseFloat(dualShaderRef.current.style.opacity || "0");
+      if (startOpacity <= 0.001) {
+        setDualShaderVisible(null);
+        return;
+      }
+      let progress = 0;
+      const fadeOut = () => {
+        progress = Math.min(1, progress + 0.015);
+        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        if (dualShaderRef.current) dualShaderRef.current.style.opacity = String(startOpacity * (1 - eased));
+        if (progress < 1) {
+          dualFadeRef.current = requestAnimationFrame(fadeOut);
+        } else {
+          setDualShaderVisible(null);
+        }
+      };
+      dualFadeRef.current = requestAnimationFrame(fadeOut);
+    }
+    return () => cancelAnimationFrame(dualFadeRef.current);
+  }, [dualShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Sync config ref for parent to read
   useEffect(() => {
-    if (configRef) configRef.current = { mode, poetryEnabled, whisperEnabled };
-  }, [configRef, mode, poetryEnabled, whisperEnabled]);
+    if (configRef) configRef.current = { mode, textOverlayMode, whisperEnabled };
+  }, [configRef, mode, textOverlayMode, whisperEnabled]);
 
   // Detect vibe for poetry mood — never touches mode
   useEffect(() => {
@@ -406,6 +508,16 @@ export function VisualizerCore({
     };
 
     if (layerIsAI) {
+      // Render a backdrop shader underneath AI images for visual movement
+      const backdropMode = getAiBackdropShader(layerMode);
+      const backdropFrag = SHADERS[backdropMode];
+      if (backdropFrag) {
+        return (
+          <div key={layerMode} ref={ref} style={{ ...wrapStyle, opacity: 0.6 }}>
+            <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion={journeyActive} />
+          </div>
+        );
+      }
       return <div key={layerMode} ref={ref} style={{ ...wrapStyle, backgroundColor: "#000" }} />;
     }
     if (layerIs3D) {
@@ -417,7 +529,7 @@ export function VisualizerCore({
     }
     return (
       <div key={layerMode} ref={ref} style={wrapStyle}>
-        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} />
+        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={journeyActive} />
       </div>
     );
   };
@@ -429,6 +541,18 @@ export function VisualizerCore({
 
       {/* Current shader (fading in, or full opacity when no crossfade) */}
       {renderShaderLayer(renderMode, 1, prevRenderMode ? nextLayerRef : undefined)}
+
+      {/* Dual shader — second layer during peak journey moments (smooth fade) */}
+      {dualShaderVisible && SHADERS[dualShaderVisible as VisualizerMode] && (
+        <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: 0, mixBlendMode: "screen" }}>
+          <ShaderVisualizer
+            analyser={analyser}
+            dataArray={dataArray}
+            fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
+            smoothMotion={journeyActive}
+          />
+        </div>
+      )}
 
       {poetryEnabled && (
         <PoetryOverlay
@@ -445,6 +569,17 @@ export function VisualizerCore({
           moodOverride={journeyPoetryMood}
           realmImagery={journeyRealmImagery}
           typographyTheme={typographyTheme}
+          isPlaying={isPlaying}
+          storyContext={journeyStoryText}
+        />
+      )}
+
+      {storyEnabled && (
+        <StoryOverlay
+          currentPhase={journeyPhase ?? null}
+          whisperEnabled={whisperEnabled}
+          voiceOverride={journeyVoice}
+          language={language}
           isPlaying={isPlaying}
         />
       )}
@@ -467,46 +602,99 @@ export function VisualizerCore({
         <>
           <div
             className="fixed inset-0 z-30"
-            onClick={() => setModePaletteOpen(false)}
+            onClick={() => { setModePaletteOpen(false); setModeSearch(""); }}
           />
           <div
-            className="absolute bottom-16 left-4 z-40 p-4 rounded-xl max-h-[70vh] overflow-y-auto scrollbar-thin"
+            className="absolute bottom-16 left-4 z-40 rounded-xl flex flex-col"
             style={{
               backdropFilter: "blur(24px) saturate(1.3)",
               WebkitBackdropFilter: "blur(24px) saturate(1.3)",
               backgroundColor: "rgba(0, 0, 0, 0.6)",
               border: "1px solid rgba(255, 255, 255, 0.1)",
+              maxHeight: "70vh",
+              width: "min(420px, calc(100vw - 2rem))",
             }}
           >
-            {MODE_CATEGORIES.map((category) => {
-              const categoryModes = MODE_META.filter((m) => m.category === category);
-              if (categoryModes.length === 0) return null;
-              return (
-                <div key={category} className="mb-3 last:mb-0">
-                  <p
-                    className="text-white/30 mb-2"
-                    style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
-                  >
-                    {category}
-                  </p>
-                  <div className="grid grid-cols-4 gap-1.5">
-                    {categoryModes.map(({ mode: m, label }) => (
-                      <button
-                        key={m}
-                        onClick={() => { setMode(m); setModePaletteOpen(false); }}
-                        className={`flex flex-col items-center gap-1 rounded-lg px-3 py-2 transition-all ${
-                          mode === m
-                            ? "bg-white/15 text-white"
-                            : "text-white/50 hover:bg-white/8 hover:text-white/80"
-                        }`}
+            {/* Search bar */}
+            <div className="flex items-center gap-2 px-4 pt-3 pb-2" style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
+              <Search className="h-3.5 w-3.5 text-white/30 flex-shrink-0" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={modeSearch}
+                onChange={(e) => setModeSearch(e.target.value)}
+                placeholder="Search modes..."
+                autoFocus
+                className="bg-transparent text-white/80 placeholder-white/25 outline-none w-full"
+                style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") { setModePaletteOpen(false); setModeSearch(""); }
+                }}
+              />
+              {modeSearch && (
+                <button onClick={() => { setModeSearch(""); searchInputRef.current?.focus(); }} className="text-white/30 hover:text-white/60">
+                  <X className="h-3 w-3" />
+                </button>
+              )}
+            </div>
+
+            {/* Scrollable mode list */}
+            <div className="overflow-y-auto scrollbar-thin p-3 flex-1">
+              {MODE_CATEGORIES.map((category) => {
+                const search = modeSearch.toLowerCase();
+                const categoryModes = MODE_META.filter((m) => m.category === category && (!search || m.label.toLowerCase().includes(search)));
+                if (categoryModes.length === 0) return null;
+                const isCollapsed = !search && collapsedCategories.has(category);
+                return (
+                  <div key={category} className="mb-2.5 last:mb-0">
+                    <button
+                      onClick={() => {
+                        if (search) return;
+                        setCollapsedCategories((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(category)) next.delete(category);
+                          else next.add(category);
+                          return next;
+                        });
+                      }}
+                      className="flex items-center gap-1.5 mb-1.5 group w-full text-left"
+                    >
+                      <p
+                        className="text-white/30 group-hover:text-white/50 transition-colors"
+                        style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
                       >
-                        <span style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
-                      </button>
-                    ))}
+                        {category}
+                      </p>
+                      <span className="text-white/20" style={{ fontSize: "0.55rem", fontFamily: "var(--font-geist-mono)" }}>
+                        {categoryModes.length}
+                      </span>
+                      {!search && (
+                        isCollapsed
+                          ? <ChevronDown className="h-2.5 w-2.5 text-white/20" />
+                          : <ChevronUp className="h-2.5 w-2.5 text-white/20" />
+                      )}
+                    </button>
+                    {!isCollapsed && (
+                      <div className="grid grid-cols-5 gap-1">
+                        {categoryModes.map(({ mode: m, label }) => (
+                          <button
+                            key={m}
+                            onClick={() => { setMode(m); setModePaletteOpen(false); setModeSearch(""); }}
+                            className={`flex items-center justify-center rounded-md px-1.5 py-1.5 transition-all ${
+                              mode === m
+                                ? "bg-white/15 text-white"
+                                : "text-white/50 hover:bg-white/8 hover:text-white/80"
+                            }`}
+                          >
+                            <span style={{ fontSize: "0.55rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </>
       )}
@@ -557,13 +745,29 @@ export function VisualizerCore({
 
                 <div className="w-px h-5 bg-white/10 mx-1" />
 
+                {/* Text overlay mode cycler (during journey) */}
                 <button
-                  onClick={() => setWhisperEnabled(!whisperEnabled)}
-                  className={`p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                  title="Whisper"
+                  onClick={() => {
+                    const modes: Array<"off" | "poetry" | "story"> = ["off", "poetry", "story"];
+                    const currentIdx = modes.indexOf(textOverlayMode);
+                    const nextMode = modes[(currentIdx + 1) % modes.length];
+                    if (nextMode === "off") setWhisperEnabled(false);
+                    setTextOverlayMode(nextMode);
+                  }}
+                  className={`p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                  title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
                 >
-                  <AudioLines className="h-4 w-4" />
+                  {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
                 </button>
+                {textOverlayMode !== "off" && (
+                  <button
+                    onClick={() => setWhisperEnabled(!whisperEnabled)}
+                    className={`p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    title="Whisper"
+                  >
+                    <AudioLines className="h-4 w-4" />
+                  </button>
+                )}
               </>
             ) : (
               <>
@@ -584,15 +788,23 @@ export function VisualizerCore({
 
                 <div className="w-px h-5 bg-white/10 mx-1" />
 
-                {/* Toggle buttons — icon only */}
+                {/* Text overlay mode cycler */}
                 <button
-                  onClick={() => { if (poetryEnabled) setWhisperEnabled(false); setPoetryEnabled(!poetryEnabled); }}
-                  className={`p-2.5 rounded-lg transition-colors ${poetryEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                  title="Poetry"
+                  onClick={() => {
+                    const modes: Array<"off" | "poetry" | "story"> = journeyActive
+                      ? ["off", "poetry", "story"]
+                      : ["off", "poetry"];
+                    const currentIdx = modes.indexOf(textOverlayMode);
+                    const nextMode = modes[(currentIdx + 1) % modes.length];
+                    if (nextMode === "off") setWhisperEnabled(false);
+                    setTextOverlayMode(nextMode);
+                  }}
+                  className={`p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                  title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
                 >
-                  <Type className="h-4 w-4" />
+                  {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
                 </button>
-                {poetryEnabled && (
+                {textOverlayMode !== "off" && (
                   <button
                     onClick={() => setWhisperEnabled(!whisperEnabled)}
                     className={`p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}

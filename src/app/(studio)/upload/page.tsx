@@ -187,7 +187,7 @@ export default function UploadPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">Upload Recordings</h1>
+        <h1 className="text-3xl font-extralight tracking-tight">Upload Recordings</h1>
         <p className="text-muted-foreground">
           Drag and drop your voice memos or click to browse
         </p>
@@ -195,7 +195,7 @@ export default function UploadPage() {
 
       <Card
         className={`border-2 border-dashed transition-colors cursor-pointer ${
-          isDragging ? "border-primary bg-primary/5" : "border-muted-foreground/25"
+          isDragging ? "border-white/30 bg-white/[0.03]" : "border-white/10"
         }`}
         onClick={() => fileInputRef.current?.click()}
         onDragOver={(e) => {
@@ -207,7 +207,7 @@ export default function UploadPage() {
       >
         <CardContent className="flex flex-col items-center justify-center py-12">
           <Upload className="mb-4 h-10 w-10 text-muted-foreground" />
-          <p className="mb-2 text-lg font-medium">Drop audio files here</p>
+          <p className="mb-2 text-lg font-light">Drop audio files here</p>
           <p className="mb-4 text-sm text-muted-foreground">
             M4A, MP3, WAV &middot; Up to 100 files &middot; 60 min max
           </p>
@@ -228,7 +228,7 @@ export default function UploadPage() {
       {files.length > 0 && (
         <div className="space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="font-semibold">{files.length} file(s) selected</h2>
+            <h2 className="font-light">{files.length} file(s) selected</h2>
             <Button onClick={uploadAll} disabled={pendingCount === 0}>
               Upload {pendingCount > 0 ? `(${pendingCount})` : ""}
             </Button>

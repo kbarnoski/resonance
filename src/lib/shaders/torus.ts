@@ -46,13 +46,7 @@ void main() {
   float rotX = t * 0.7 + u_mid * 0.3;
   float rotY = t * 0.5 + u_bass * 0.2;
 
-  // Rotate both camera and ray
-  // Apply rotation to the scene instead (rotate the torus)
-  // We'll rotate the ray and cam in the inverse direction
-  vec2 rotXY = rot2(rotX);
-  vec2 rotXZ = rot2(rotY);
-
-  // Rotate ray: tilt around X then Y
+  // Rotate ray and camera around X then Y
   rayDir.yz = rot2(rotX) * rayDir.yz;
   rayDir.xz = rot2(rotY) * rayDir.xz;
   camPos.yz  = rot2(rotX) * camPos.yz;

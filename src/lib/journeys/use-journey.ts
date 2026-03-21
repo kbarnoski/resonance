@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getJourneyEngine } from "./journey-engine";
-import { getAmbientEngine } from "@/lib/audio/ambient-engine";
-import { getAudioEngine } from "@/lib/audio/audio-engine";
+// import { getAmbientEngine } from "@/lib/audio/ambient-engine";
+// import { getAudioEngine } from "@/lib/audio/audio-engine";
 import type { JourneyFrame, JourneyPhaseId } from "./types";
 
 interface UseJourneyReturn {
@@ -42,8 +42,10 @@ export function useJourney(): UseJourneyReturn {
 
   // Compute progress
   const progress = duration > 0 ? currentTime / duration : 0;
+  const progressRef = useRef(progress);
+  progressRef.current = progress;
 
-  // Update frame — throttled to avoid cascading re-renders
+  // Update frame from audio progress
   useEffect(() => {
     if (!activeJourney) {
       if (frameRef.current !== null) {
@@ -56,16 +58,40 @@ export function useJourney(): UseJourneyReturn {
     const now = performance.now();
     const engine = engineRef.current;
 
-    // Always compute the frame (cheap ref update)
     const newFrame = engine.getFrame(progress);
     frameRef.current = newFrame;
 
-    // Only push to React state at throttled rate
     if (now - lastFrameTimeRef.current >= FRAME_THROTTLE_MS) {
       lastFrameTimeRef.current = now;
       setFrame(newFrame);
     }
   }, [activeJourney, progress]);
+
+  // Poll engine for shader/state changes independent of audio progress.
+  // The engine rotates shaders on a timer — this ensures React picks up
+  // those changes even when audio isn't playing (progress stays static).
+  useEffect(() => {
+    if (!activeJourney) return;
+
+    const id = setInterval(() => {
+      const engine = engineRef.current;
+      const newFrame = engine.getFrame(progressRef.current);
+      if (!newFrame) return;
+
+      const prev = frameRef.current;
+      // Only push to React if something visually changed
+      if (
+        !prev ||
+        prev.shaderMode !== newFrame.shaderMode ||
+        prev.phase !== newFrame.phase
+      ) {
+        frameRef.current = newFrame;
+        setFrame(newFrame);
+      }
+    }, 500);
+
+    return () => clearInterval(id);
+  }, [activeJourney]);
 
   // Subscribe to phase changes and sync to store
   const setJourneyPhase = useAudioStore((s) => s.setJourneyPhase);
@@ -77,53 +103,9 @@ export function useJourney(): UseJourneyReturn {
     return unsub;
   }, [setJourneyPhase]);
 
-  // --- Ambient sound engine: start/stop with journey ---
-  useEffect(() => {
-    if (!activeJourney) {
-      const ambient = getAmbientEngine();
-      if (ambient.isRunning()) ambient.stop();
-      return;
-    }
-
-    // Defer start to avoid blocking the main thread on journey open
-    const timer = setTimeout(() => {
-      const ambient = getAmbientEngine();
-      if (!ambient.isRunning()) {
-        try {
-          const engine = getAudioEngine();
-          ambient.start(engine.audioContext);
-        } catch {
-          ambient.start();
-        }
-      }
-    }, 800);
-
-    return () => {
-      clearTimeout(timer);
-      const a = getAmbientEngine();
-      if (a.isRunning()) a.stop();
-    };
-  }, [activeJourney]);
-
-  // Update ambient layers — driven by phase changes, not every frame
-  const currentPhaseId = frame?.phase ?? null;
-  const updateAmbientLayers = useCallback(() => {
-    const f = frameRef.current;
-    if (!f?.ambientLayers) return;
-    const ambient = getAmbientEngine();
-    if (ambient.isRunning()) {
-      ambient.setLayers(f.ambientLayers);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!currentPhaseId) return;
-    // Update immediately on phase change
-    updateAmbientLayers();
-    // Then periodically during the phase
-    const interval = setInterval(updateAmbientLayers, 2000);
-    return () => clearInterval(interval);
-  }, [currentPhaseId, updateAmbientLayers]);
+  // --- Ambient sound engine: disabled for now ---
+  // To re-enable, uncomment the imports and the block below.
+  // useEffect(() => { ... ambient engine start/stop/theme ... }, [activeJourney]);
 
   return {
     frame,

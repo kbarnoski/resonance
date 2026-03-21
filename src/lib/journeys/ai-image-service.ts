@@ -22,27 +22,36 @@ const DEFAULT_COST_CAP = 5.0; // $5 per session
 
 class AiImageService {
   private available: boolean | null = null;
+  private lastCheckTime = 0;
   private costPerImage = 0.003;
   private sessionCost = 0;
   private costCap = DEFAULT_COST_CAP;
   private generating = false;
 
-  /** Check if the AI image service is available */
+  /** Check if the AI image service is available (retries on failure after 10s) */
   async checkAvailability(): Promise<boolean> {
-    if (this.available !== null) return this.available;
+    // Cache success permanently, but retry failures after 10s
+    if (this.available === true) return true;
+    if (this.available === false && Date.now() - this.lastCheckTime < 10000) return false;
 
     try {
-      const res = await fetch("/api/ai-image/status");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      const res = await fetch("/api/ai-image/status", { signal: controller.signal });
+      clearTimeout(timeout);
       if (!res.ok) {
         this.available = false;
+        this.lastCheckTime = Date.now();
         return false;
       }
       const data: AiImageStatus = await res.json();
       this.available = data.enabled;
+      this.lastCheckTime = Date.now();
       this.costPerImage = data.estimatedCostPerImage;
       return this.available;
     } catch {
       this.available = false;
+      this.lastCheckTime = Date.now();
       return false;
     }
   }

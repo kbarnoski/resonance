@@ -73,7 +73,7 @@ function SortableRecording({
             className="flex flex-1 items-center gap-3 min-w-0"
           >
             <FileAudio className="h-4 w-4 shrink-0 text-muted-foreground" />
-            <span className="truncate font-medium text-sm">{recording.title}</span>
+            <span className="truncate font-light text-sm">{recording.title}</span>
             {recording.duration && (
               <span className="flex items-center gap-1 text-xs text-muted-foreground shrink-0">
                 <Clock className="h-3 w-3" />
@@ -238,7 +238,7 @@ export function CollectionDetail({
                 }
               }}
               onBlur={saveName}
-              className="text-2xl font-bold h-auto py-1 px-2"
+              className="text-2xl font-extralight h-auto py-1 px-2"
             />
           </div>
         ) : (
@@ -249,7 +249,7 @@ export function CollectionDetail({
             }}
             className="group flex items-center gap-2 text-left"
           >
-            <h1 className="text-2xl font-bold">{name}</h1>
+            <h1 className="text-2xl font-extralight">{name}</h1>
             <Pencil className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
           </button>
         )}
@@ -299,7 +299,7 @@ export function CollectionDetail({
       )}
 
       {recordings.length === 0 ? (
-        <div className="rounded-lg border border-dashed py-12 text-center">
+        <div className="rounded-lg border border-dashed border-white/[0.08] py-12 text-center">
           <p className="text-muted-foreground">
             No recordings in this collection yet. Click &ldquo;Add Recording&rdquo; above.
           </p>

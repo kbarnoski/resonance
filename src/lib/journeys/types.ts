@@ -104,6 +104,21 @@ export interface Journey {
   realmId: string;
   phases: JourneyPhase[];
   aiEnabled: boolean;
+  /** Per-journey phase display names (overrides generic "Threshold", "Expansion", etc.) */
+  phaseLabels?: Partial<Record<JourneyPhaseId, string>>;
+  storyText?: string | null;
+  recordingId?: string | null;
+}
+
+/** A user-created journey stored in Supabase */
+export interface CustomJourney extends Journey {
+  userId: string;
+  recordingId: string | null;
+  storyText: string | null;
+  shareToken: string | null;
+  isPublic: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 /** Output from the journey engine each frame */
@@ -138,4 +153,6 @@ export interface JourneyFrame {
   particleDensity: number;
   /** Halation glow 0-1 */
   halation: number;
+  /** Optional second shader to layer underneath during peak moments */
+  dualShaderMode?: string;
 }

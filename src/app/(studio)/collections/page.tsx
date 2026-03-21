@@ -16,7 +16,7 @@ export default async function CollectionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Collections</h1>
+          <h1 className="text-2xl font-extralight">Collections</h1>
           <p className="text-muted-foreground">
             Organize recordings into themed collections
           </p>
@@ -45,7 +45,7 @@ export default async function CollectionsPage() {
           ))}
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-white/[0.08] py-16">
           <FolderOpen className="mb-4 h-10 w-10 text-muted-foreground" />
           <p className="mb-2 text-lg font-medium">No collections yet</p>
           <p className="mb-4 text-sm text-muted-foreground">

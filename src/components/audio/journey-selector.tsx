@@ -1,13 +1,16 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { X, Shuffle, RotateCcw, Sparkles, Play } from "lucide-react";
+import { useState, useEffect, useMemo, useCallback } from "react";
+import { X, Shuffle, RotateCcw, Sparkles, Play, Plus, Share2, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { REALMS } from "@/lib/journeys/realms";
 import { JOURNEYS } from "@/lib/journeys/journeys";
 import { PHASE_ORDER } from "@/lib/journeys/phase-interpolation";
 import { getAiImageService } from "@/lib/journeys/ai-image-service";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { createClient } from "@/lib/supabase/client";
+import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog";
+import { ShareSheet } from "@/components/ui/share-sheet";
 import type { Journey } from "@/lib/journeys/types";
 
 const FEATURED_JOURNEY_ID = "first-snow";
@@ -15,14 +18,14 @@ const FEATURED_JOURNEY_ID = "first-snow";
 // Journeys paired with specific tracks — always load from the beginning
 const PAIRED_TRACKS: Record<string, string> = {
   "first-snow": "%snowflake%",
-  "17th-st-descent": "%17th St 64%",
-  "without-a-brightness": "%without%brightness%",
+  "inferno": "%realized%",
+  "cosmic-drift": "%17th St 61%",
+  "folsom-street": "%Folsom St 5%",
 };
 
 // Storage file search patterns — fallback when track isn't in recordings table
 const PAIRED_STORAGE: Record<string, string> = {
-  "17th-st-descent": "17th St 64",
-  "without-a-brightness": "Without",
+  "folsom-street": "Folsom St 5",
 };
 
 interface JourneySelectorProps {
@@ -32,12 +35,18 @@ interface JourneySelectorProps {
 
 export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const startJourney = useAudioStore((s) => s.startJourney);
+  const startCustomJourney = useAudioStore((s) => s.startCustomJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
   const activeJourney = useAudioStore((s) => s.activeJourney);
   const play = useAudioStore((s) => s.play);
   const setAiImageEnabled = useAudioStore((s) => s.setAiImageEnabled);
 
   const [aiAvailable, setAiAvailable] = useState(false);
+  const [customJourneys, setCustomJourneys] = useState<Journey[]>([]);
+  const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [sharingId, setSharingId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
 
   // Check AI availability on open
   useEffect(() => {
@@ -47,6 +56,120 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         .then(setAiAvailable);
     }
   }, [open]);
+
+  // Fetch custom journeys when selector opens
+  useEffect(() => {
+    if (!open) return;
+    const fetchCustom = async () => {
+      try {
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+        const { data, error } = await supabase
+          .from("journeys")
+          .select("*")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false });
+        if (!error && data) {
+          // Transform DB rows to Journey objects
+          const journeys: Journey[] = data.map((row: Record<string, unknown>) => ({
+            id: row.id as string,
+            name: (row.name as string) ?? "Untitled Journey",
+            subtitle: (row.subtitle as string) ?? "",
+            description: (row.description as string) ?? "",
+            realmId: (row.realm_id as string) ?? "heaven",
+            aiEnabled: true,
+            phases: (row.phases as Journey["phases"]) ?? [],
+            storyText: (row.story_text as string) ?? null,
+            recordingId: (row.recording_id as string) ?? null,
+          }));
+          setCustomJourneys(journeys);
+        }
+      } catch (err) {
+        console.warn("[journey] failed to fetch custom journeys:", err);
+      }
+    };
+    fetchCustom();
+  }, [open]);
+
+  // Share a custom journey — get share token then open share sheet
+  const handleShare = useCallback(async (journeyId: string, journeyName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setSharingId(journeyId);
+    try {
+      const res = await fetch("/api/journeys/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ journeyId }),
+      });
+      if (!res.ok) throw new Error("Failed to share");
+      const { token } = await res.json();
+      const url = `${window.location.origin}/journey/${token}`;
+      setShareSheet({ url, title: `${journeyName} — a Resonance journey` });
+    } catch {
+      toast.error("Failed to share journey");
+    } finally {
+      setSharingId(null);
+    }
+  }, []);
+
+  // Share a built-in journey — direct URL
+  const handleShareBuiltIn = useCallback((journeyId: string, journeyName: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const url = `${window.location.origin}/room?journey=${journeyId}`;
+    setShareSheet({ url, title: `${journeyName} — a Resonance journey` });
+  }, []);
+
+  // Delete a custom journey (with confirmation)
+  const handleDelete = useCallback(async (journeyId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const journey = customJourneys.find((j) => j.id === journeyId);
+    const name = journey?.name ?? "this journey";
+    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    setDeletingId(journeyId);
+    try {
+      const res = await fetch(`/api/journeys/${journeyId}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete");
+      setCustomJourneys((prev) => prev.filter((j) => j.id !== journeyId));
+      if (activeJourney?.id === journeyId) stopJourney();
+      toast.success("Journey deleted");
+    } catch {
+      toast.error("Failed to delete journey");
+    } finally {
+      setDeletingId(null);
+    }
+  }, [activeJourney, stopJourney, customJourneys]);
+
+  // Load a track for a custom journey — specific recording if set, else random
+  const loadCustomJourneyTrack = useCallback(async (journey: Journey) => {
+    const supabase = createClient();
+    try {
+      if (journey.recordingId) {
+        const { data: rec } = await supabase
+          .from("recordings")
+          .select("id, title, audio_url")
+          .eq("id", journey.recordingId)
+          .single();
+        if (rec) {
+          play({ id: rec.id, title: rec.title, audioUrl: `/api/audio/${rec.id}` }, 0);
+          await new Promise((r) => setTimeout(r, 300));
+          return;
+        }
+      }
+      // No specific recording or not found — load a random track
+      const { data } = await supabase
+        .from("recordings")
+        .select("id, title, audio_url")
+        .order("created_at", { ascending: false });
+      if (data && data.length > 0) {
+        const row = data[Math.floor(Math.random() * data.length)];
+        play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
+        await new Promise((r) => setTimeout(r, 300));
+      }
+    } catch (err) {
+      console.warn("[journey] failed to load track for custom journey:", err);
+    }
+  }, [play]);
 
   // Build flat journey list: featured first, then grouped by realm
   const { featured, groupedByRealm } = useMemo(() => {
@@ -88,7 +211,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         if (!error && data?.[0]) {
           const row = data[0];
           console.log("[journey] loading paired track:", row.title);
-          play({ id: row.id, title: row.title, audioUrl: row.audio_url }, 0);
+          play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
           trackLoaded = true;
           await new Promise((r) => setTimeout(r, 300));
         } else {
@@ -122,43 +245,53 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           }
         }
 
-        // If paired track not found anywhere, fall back to most recent recording
-        if (!trackLoaded && !currentTrack) {
+        // If paired track not found anywhere, fall back to a random recording
+        if (!trackLoaded) {
           const { data: fallback } = await supabase
             .from("recordings")
             .select("id, title, audio_url")
-            .order("created_at", { ascending: false })
-            .limit(1);
-          if (fallback?.[0]) {
-            const row = fallback[0];
-            console.log("[journey] paired track not found, falling back to:", row.title);
-            play({ id: row.id, title: row.title, audioUrl: row.audio_url });
-            await new Promise((r) => setTimeout(r, 200));
+            .order("created_at", { ascending: false });
+          if (fallback && fallback.length > 0) {
+            // Exclude Joseph's track from random pool
+            const pool = fallback.filter(
+              (r) => !r.title?.toLowerCase().includes("without") ||
+                     !r.title?.toLowerCase().includes("brightness")
+            );
+            const candidates = pool.length > 0 ? pool : fallback;
+            const row = candidates[Math.floor(Math.random() * candidates.length)];
+            console.log("[journey] paired track not found, random fallback:", row.title);
+            play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
+            await new Promise((r) => setTimeout(r, 300));
           }
         }
       } catch (err) {
         console.warn("[journey] failed to load paired track:", err);
       }
-    } else if (!currentTrack) {
-      // No paired track and nothing playing — fall back to most recent recording
+    } else {
+      // No paired track — load a random recording (excluding Joseph's track)
       try {
         const supabase = createClient();
         const { data, error } = await supabase
           .from("recordings")
           .select("id, title, audio_url")
-          .order("created_at", { ascending: false })
-          .limit(1);
+          .order("created_at", { ascending: false });
 
-        if (!error && data?.[0]) {
-          const row = data[0];
-          console.log("[journey] auto-playing track:", row.title);
-          play({ id: row.id, title: row.title, audioUrl: row.audio_url });
-          await new Promise((r) => setTimeout(r, 200));
+        if (!error && data && data.length > 0) {
+          // Exclude Joseph's track from the random pool
+          const pool = data.filter(
+            (r) => !r.title?.toLowerCase().includes("without") ||
+                   !r.title?.toLowerCase().includes("brightness")
+          );
+          const candidates = pool.length > 0 ? pool : data;
+          const row = candidates[Math.floor(Math.random() * candidates.length)];
+          console.log("[journey] random track:", row.title);
+          play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
+          await new Promise((r) => setTimeout(r, 300));
         } else {
           console.warn("[journey] no recordings found, starting journey without audio");
         }
       } catch (err) {
-        console.warn("[journey] failed to load default track:", err);
+        console.warn("[journey] failed to load random track:", err);
       }
     }
 
@@ -167,13 +300,14 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   };
 
   const handleJourneyClick = (journey: Journey) => {
-    // Auto-enable AI if available, no confirmation needed
-    selectJourney(journey, journey.aiEnabled && aiAvailable);
+    // Always enable AI for journeys — AiImageLayer handles availability internally
+    selectJourney(journey, journey.aiEnabled);
   };
 
   const selectRandom = () => {
-    const random = JOURNEYS[Math.floor(Math.random() * JOURNEYS.length)];
-    selectJourney(random, random.aiEnabled && aiAvailable);
+    const pool = JOURNEYS;
+    const random = pool[Math.floor(Math.random() * pool.length)];
+    selectJourney(random, random.aiEnabled);
   };
 
   const clearJourney = () => {
@@ -260,7 +394,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           {journey.description}
         </p>
 
-        {/* Phase arc + Start button */}
+        {/* Phase arc + Start button + Share */}
         <div className="flex items-center gap-3">
           <div className="flex gap-[2px] flex-1">
             {PHASE_ORDER.map((phaseId) => {
@@ -283,6 +417,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               );
             })}
           </div>
+          <button
+            onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
+            className="p-1.5 rounded-lg text-white/20 hover:text-white/50 hover:bg-white/5 transition-colors shrink-0"
+            title="Share Journey"
+          >
+            <Share2 className="h-3 w-3" />
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation();
@@ -391,6 +532,110 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 </div>
               </div>
             ))}
+
+            {/* Custom journeys */}
+            {customJourneys.length > 0 && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{ backgroundColor: "rgba(255,255,255,0.4)" }}
+                  />
+                  <span
+                    className="text-white/40"
+                    style={{
+                      fontSize: "0.7rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.05em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Your Journeys
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  {customJourneys.map((journey) => {
+                    const isActive = activeJourney?.id === journey.id;
+                    const realm = REALMS.find((r) => r.id === journey.realmId);
+                    const accent = realm?.palette.accent ?? "#888";
+                    return (
+                      <div
+                        key={journey.id}
+                        className={`w-full text-left p-5 rounded-2xl transition-all duration-200 group cursor-pointer ${
+                          isActive ? "ring-1 ring-white/20" : "hover:bg-white/5"
+                        }`}
+                        style={{
+                          backgroundColor: isActive
+                            ? "rgba(255,255,255,0.08)"
+                            : "rgba(255,255,255,0.02)",
+                          border: "1px solid rgba(255,255,255,0.06)",
+                        }}
+                        onClick={async () => {
+                          setAiImageEnabled(journey.aiEnabled);
+                          await loadCustomJourneyTrack(journey);
+                          startCustomJourney(journey);
+                          onClose();
+                        }}
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h3
+                              className="text-white/90 text-lg leading-tight"
+                              style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
+                            >
+                              {journey.name}
+                            </h3>
+                            <p
+                              className="text-white/30 mt-0.5"
+                              style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
+                            >
+                              {journey.subtitle}
+                            </p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+                              style={{
+                                fontSize: "0.6rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                                border: "1px solid rgba(255, 255, 255, 0.08)",
+                                color: "rgba(255, 255, 255, 0.4)",
+                              }}
+                            >
+                              Custom
+                            </div>
+                            <button
+                              onClick={(e) => handleShare(journey.id, journey.name, e)}
+                              className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+                              title="Share Journey"
+                              disabled={sharingId === journey.id}
+                            >
+                              <Share2 className="h-3.5 w-3.5" />
+                            </button>
+                            <button
+                              onClick={(e) => handleDelete(journey.id, e)}
+                              className="p-1.5 rounded-lg text-white/30 hover:text-red-400/70 hover:bg-red-400/5 transition-colors"
+                              title="Delete Journey"
+                              disabled={deletingId === journey.id}
+                            >
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                        <p
+                          className="text-white/20"
+                          style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)" }}
+                        >
+                          {journey.description}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Bottom actions */}
@@ -406,6 +651,18 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             >
               <Shuffle className="h-3.5 w-3.5" />
               Random Journey
+            </button>
+            <button
+              onClick={() => setCreateDialogOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all"
+              style={{
+                fontSize: "0.75rem",
+                fontFamily: "var(--font-geist-mono)",
+                border: "1px solid rgba(255,255,255,0.06)",
+              }}
+            >
+              <Plus className="h-3.5 w-3.5" />
+              Create Journey
             </button>
             {activeJourney && (
               <button
@@ -424,6 +681,28 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           </div>
         </div>
       </div>
+
+      {/* Create Journey Dialog */}
+      <CreateJourneyDialog
+        open={createDialogOpen}
+        onOpenChange={setCreateDialogOpen}
+        onCreated={async (journey) => {
+          setCustomJourneys((prev) => [journey, ...prev]);
+          setAiImageEnabled(true);
+          await loadCustomJourneyTrack(journey);
+          startCustomJourney(journey);
+          onClose();
+        }}
+      />
+
+      {/* Share Sheet */}
+      <ShareSheet
+        open={!!shareSheet}
+        onClose={() => setShareSheet(null)}
+        url={shareSheet?.url ?? ""}
+        title={shareSheet?.title ?? ""}
+        text="Check out this journey on Resonance"
+      />
     </>
   );
 }

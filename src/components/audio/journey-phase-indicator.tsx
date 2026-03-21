@@ -20,9 +20,9 @@ const PHASE_LABELS: Record<JourneyPhaseId, string> = {
 };
 
 /**
- * Centered guidance phrase overlay during journeys.
- * On phase transition: fades in a guidance phrase, holds 5s, fades out over 2s.
- * Phase name shown as small monospace label above the phrase.
+ * Journey phase overlay — centered phase name + guidance phrase.
+ * Fades in on phase transitions, holds, then fades out.
+ * No persistent top bar.
  */
 export function JourneyPhaseIndicator({
   journey,
@@ -57,20 +57,18 @@ export function JourneyPhaseIndicator({
     setDisplayPhaseId(guidancePhaseId);
     setVisible(true);
 
-    // Clear any existing timer
     if (timerRef.current) clearTimeout(timerRef.current);
 
-    // Hide after 5s (CSS handles the 2s fade-out)
     timerRef.current = setTimeout(() => {
       setVisible(false);
-    }, 5000);
+    }, 6000);
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
   }, [guidancePhrase, guidancePhaseId]);
 
-  // Get the realm's accent color from current phase palette
+  // Get accent color from current phase palette
   const currentPhaseData = currentPhase
     ? journey.phases.find((p) => p.id === currentPhase)
     : journey.phases[0];
@@ -81,7 +79,7 @@ export function JourneyPhaseIndicator({
       className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center"
     >
       <div
-        className="flex flex-col items-center gap-3 max-w-[80vw] text-center"
+        className="flex flex-col items-center gap-5 max-w-[80vw] text-center"
         style={{
           opacity: visible ? 1 : 0,
           transition: visible
@@ -89,18 +87,22 @@ export function JourneyPhaseIndicator({
             : "opacity 2s cubic-bezier(0.23, 1, 0.32, 1)",
         }}
       >
-        {/* Phase label */}
+        {/* Phase name — large, prominent */}
         {displayPhaseId && (
           <span
             style={{
-              fontSize: "0.6rem",
-              fontFamily: "var(--font-geist-mono)",
-              letterSpacing: "0.2em",
+              fontSize: "clamp(2rem, 5vw, 3.5rem)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 300,
+              letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "rgba(255, 255, 255, 0.35)",
+              color: "rgba(255, 255, 255, 0.7)",
+              textShadow: `0 2px 8px rgba(0,0,0,0.8), 0 0 60px ${accent}40, 0 0 120px ${accent}20`,
             }}
           >
-            {PHASE_LABELS[displayPhaseId as JourneyPhaseId] ?? displayPhaseId}
+            {journey.phaseLabels?.[displayPhaseId as JourneyPhaseId]
+              ?? PHASE_LABELS[displayPhaseId as JourneyPhaseId]
+              ?? displayPhaseId}
           </span>
         )}
 
@@ -110,11 +112,12 @@ export function JourneyPhaseIndicator({
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontWeight: 300,
-              fontSize: "clamp(1.8rem, 4vw, 3.2rem)",
-              lineHeight: 1.2,
+              fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
+              lineHeight: 1.4,
               letterSpacing: "-0.01em",
-              color: "rgba(255, 255, 255, 0.8)",
-              textShadow: `0 0 40px ${accent}40, 0 0 80px ${accent}20`,
+              color: "rgba(255, 255, 255, 0.55)",
+              textShadow: `0 1px 6px rgba(0,0,0,0.7), 0 0 40px ${accent}30`,
+              maxWidth: "600px",
             }}
           >
             {displayPhrase}

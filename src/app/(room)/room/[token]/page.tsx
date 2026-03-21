@@ -8,7 +8,8 @@ import { MODES_3D } from "@/lib/shaders";
 
 interface RoomConfig {
   shaderMode: string;
-  poetryEnabled: boolean;
+  poetryEnabled?: boolean; // legacy
+  textOverlayMode?: "off" | "poetry" | "story";
   whisperEnabled: boolean;
   hudVisible: boolean;
 }
@@ -98,7 +99,7 @@ export default function SharedRoomPage({
             />
           )}
 
-          {config.poetryEnabled && (
+          {(config.textOverlayMode === "poetry" || config.poetryEnabled) && (
             <PoetryOverlay
               mood="flowing"
               whisperEnabled={config.whisperEnabled}

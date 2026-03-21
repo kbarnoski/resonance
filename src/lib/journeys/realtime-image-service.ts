@@ -18,6 +18,46 @@ type FrameCallback = (imageUrl: string) => void;
 const STYLE_SUFFIX = "mystical art, luminous, sacred, transcendent, visionary, otherworldly beauty";
 const DEFAULT_COST_CAP = 5.0;
 
+// ─── LRU Image Cache ───
+const IMAGE_CACHE_MAX = 20;
+
+class ImageCache {
+  private cache = new Map<string, HTMLImageElement>();
+  private order: string[] = [];
+
+  /** Simple hash of prompt for cache key */
+  private hash(prompt: string): string {
+    let h = 0;
+    for (let i = 0; i < prompt.length; i++) {
+      h = ((h << 5) - h + prompt.charCodeAt(i)) | 0;
+    }
+    return String(h);
+  }
+
+  get(prompt: string): HTMLImageElement | undefined {
+    return this.cache.get(this.hash(prompt));
+  }
+
+  set(prompt: string, img: HTMLImageElement): void {
+    const key = this.hash(prompt);
+    if (this.cache.has(key)) {
+      // Move to end (most recent)
+      this.order = this.order.filter((k) => k !== key);
+    } else if (this.order.length >= IMAGE_CACHE_MAX) {
+      // Evict oldest
+      const evict = this.order.shift()!;
+      this.cache.delete(evict);
+    }
+    this.cache.set(key, img);
+    this.order.push(key);
+  }
+
+  clear(): void {
+    this.cache.clear();
+    this.order = [];
+  }
+}
+
 class RealtimeImageService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private connection: any = null;
@@ -31,11 +71,16 @@ class RealtimeImageService {
   private pendingFrames = 0;
   private maxPendingFrames = 2;
   private restInFlight = false;
+  private imageCache = new ImageCache();
+  private abortController: AbortController | null = null;
 
-  /** Check if AI image generation is available */
+  /** Check if AI image generation is available (5s timeout) */
   async checkAvailability(): Promise<boolean> {
     try {
-      const res = await fetch("/api/ai-image/status");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 5000);
+      const res = await fetch("/api/ai-image/status", { signal: controller.signal });
+      clearTimeout(timeout);
       if (!res.ok) {
         this.available = false;
         return false;
@@ -156,12 +201,12 @@ class RealtimeImageService {
     this.restInFlight = true;
 
     try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 45000);
+      this.abortController = new AbortController();
+      const timeout = setTimeout(() => this.abortController?.abort(), 45000);
       const res = await fetch("/api/ai-image/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
+        signal: this.abortController.signal,
         body: JSON.stringify({
           prompt: options.prompt,
           denoisingStrength: options.denoisingStrength,
@@ -190,11 +235,31 @@ class RealtimeImageService {
   setCostCap(cap: number): void { this.costCap = cap; }
   hasPendingCapacity(): boolean { return this.pendingFrames < this.maxPendingFrames; }
 
+  /** Get cached image for a prompt */
+  getCachedImage(prompt: string): HTMLImageElement | undefined {
+    return this.imageCache.get(prompt);
+  }
+
+  /** Cache an image for a prompt */
+  cacheImage(prompt: string, img: HTMLImageElement): void {
+    this.imageCache.set(prompt, img);
+  }
+
+  /** Cancel in-flight REST request */
+  cancelInFlight(): void {
+    if (this.abortController) {
+      this.abortController.abort();
+      this.abortController = null;
+    }
+  }
+
   resetSession(): void {
     this.sessionCost = 0;
     this.pendingFrames = 0;
     this.available = null;
     this.restInFlight = false;
+    this.imageCache.clear();
+    this.cancelInFlight();
   }
 }
 

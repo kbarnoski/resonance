@@ -4,6 +4,10 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import * as THREE from "three";
+import {
+  ObeliskScene, WaveScene, SilkScene, OrbitScene, PillarScene,
+  SeabedScene, MoleculeScene, BlackholeScene, CageScene, PendulumScene,
+} from "./visualizer-3d-extra";
 
 // ─── Audio data hook — reads analyser every frame ───
 
@@ -673,9 +677,1405 @@ function WormholeScene({ analyser, dataArray }: { analyser: AnalyserNode; dataAr
   );
 }
 
+// ─── Galaxy scene — spiral galaxy of 10000 particles ───
+
+function GalaxyScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 10000;
+
+  const { positions, colors, randoms } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const col = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      const armIndex = i % 2; // Two spiral arms
+      const t = Math.random(); // 0..1 along arm
+      const radius = t * 5.0;
+      const armAngle = armIndex * Math.PI + t * Math.PI * 3.0; // Spiral winding
+      const scatter = (1 - t * 0.5) * 0.6; // More scatter near center
+
+      const x = Math.cos(armAngle) * radius + (Math.random() - 0.5) * scatter * radius * 0.5;
+      const z = Math.sin(armAngle) * radius + (Math.random() - 0.5) * scatter * radius * 0.5;
+      const y = (Math.random() - 0.5) * 0.15 * (1 + radius * 0.1); // Thin disk
+
+      pos[i * 3] = x;
+      pos[i * 3 + 1] = y;
+      pos[i * 3 + 2] = z;
+
+      // Color: inner = blue-white, outer = yellow-red
+      const colorT = Math.min(radius / 5.0, 1.0);
+      if (colorT < 0.3) {
+        // Blue-white core
+        col[i * 3] = 0.7 + Math.random() * 0.3;
+        col[i * 3 + 1] = 0.7 + Math.random() * 0.3;
+        col[i * 3 + 2] = 1.0;
+      } else if (colorT < 0.6) {
+        // Yellow mid
+        col[i * 3] = 1.0;
+        col[i * 3 + 1] = 0.8 + Math.random() * 0.2;
+        col[i * 3 + 2] = 0.3 + Math.random() * 0.3;
+      } else {
+        // Red outer
+        col[i * 3] = 0.8 + Math.random() * 0.2;
+        col[i * 3 + 1] = 0.2 + Math.random() * 0.3;
+        col[i * 3 + 2] = 0.1 + Math.random() * 0.1;
+      }
+
+      rnd[i] = Math.random();
+    }
+    return { positions: pos, colors: col, randoms: rnd };
+  }, []);
+
+  const galaxyVertexShader = `
+    uniform float u_time;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute vec3 aColor;
+    varying vec3 vColor;
+    varying float vRandom;
+
+    void main() {
+      vColor = aColor;
+      vRandom = aRandom;
+      float t = u_time * 0.05;
+
+      vec3 pos = position;
+      float dist = length(pos.xz);
+      float angle = t * (0.3 / (1.0 + dist * 0.3)) + aRandom * 0.1;
+      float ca = cos(angle);
+      float sa = sin(angle);
+      pos.xz = mat2(ca, -sa, sa, ca) * pos.xz;
+
+      // Subtle audio breathing
+      pos *= 1.0 + u_amplitude * 0.08 * sin(dist * 0.5 + u_time * 0.3);
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float size = (1.5 + aRandom * 2.0) * (1.0 + u_amplitude * 0.3);
+      gl_PointSize = size * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const galaxyFragmentShader = `
+    varying vec3 vColor;
+    varying float vRandom;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.1, d);
+      vec3 color = vColor * (0.3 + vRandom * 0.4);
+      gl_FragColor = vec4(color, alpha * 0.8);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 },
+    u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      materialRef.current.uniforms.u_time.value = t;
+      materialRef.current.uniforms.u_amplitude.value = a.amplitude;
+    }
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = t * 0.015;
+      pointsRef.current.rotation.x = Math.sin(t * 0.02) * 0.1 + 0.5; // Tilted view
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aColor" args={[colors, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={galaxyVertexShader}
+          fragmentShader={galaxyFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={1.2} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Depths scene — deep underwater bioluminescent particles ───
+
+function DepthsScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 3000;
+
+  const { positions, randoms, sizes } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+    const sz = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 12;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 12;
+      rnd[i] = Math.random();
+
+      // Occasional larger "jellyfish" particles (5% chance)
+      sz[i] = Math.random() < 0.05 ? 3.0 + Math.random() * 4.0 : 0.5 + Math.random() * 1.5;
+    }
+    return { positions: pos, randoms: rnd, sizes: sz };
+  }, []);
+
+  const depthsVertexShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute float aSize;
+    varying float vRandom;
+    varying float vSize;
+
+    void main() {
+      vRandom = aRandom;
+      vSize = aSize;
+      float t = u_time * 0.08;
+
+      vec3 pos = position;
+
+      // Slow downward drift
+      pos.y -= mod(t * (0.2 + aRandom * 0.3) + aRandom * 20.0, 10.0) - 5.0;
+
+      // Gentle current — sideways sinusoidal drift
+      pos.x += sin(t * 0.3 + pos.y * 0.4 + aRandom * 6.28) * 1.0;
+      pos.z += cos(t * 0.2 + pos.y * 0.3 + aRandom * 3.14) * 0.8;
+
+      // Audio: subtle sway
+      pos.x += u_bass * 0.15 * sin(t * 0.5 + aRandom * 6.28);
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float size = aSize * (1.0 + u_amplitude * 0.4);
+      gl_PointSize = size * (250.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const depthsFragmentShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_treble;
+    varying float vRandom;
+    varying float vSize;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.05, d);
+
+      float t = u_time * 0.1;
+
+      // Bioluminescent blue-green-cyan palette
+      float pulse = 0.5 + 0.5 * sin(t * 2.0 + vRandom * 6.28);
+      vec3 color;
+      if (vSize > 2.0) {
+        // Jellyfish: brighter teal-cyan
+        color = vec3(0.0, 0.3 + pulse * 0.3, 0.4 + pulse * 0.4);
+        alpha *= 0.6 + u_treble * 0.2;
+      } else {
+        // Regular particles: dim blue-green
+        color = vec3(0.0, 0.08 + vRandom * 0.12, 0.15 + vRandom * 0.1);
+        alpha *= 0.4 + u_bass * 0.15;
+      }
+
+      color *= 0.4 + pulse * 0.3;
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 },
+    u_treble: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_treble.value = a.treble; u.u_amplitude.value = a.amplitude;
+    }
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = t * 0.008;
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+          <bufferAttribute attach="attributes-aSize" args={[sizes, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={depthsVertexShader}
+          fragmentShader={depthsFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.15} luminanceSmoothing={0.95} intensity={1.8} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Bonfire scene — fire particle system ───
+
+function BonfireScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 5000;
+
+  const { positions, randoms, lifetimes } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+    const life = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      // Start near base with slight spread
+      const angle = Math.random() * Math.PI * 2;
+      const r = Math.random() * 0.4;
+      pos[i * 3] = Math.cos(angle) * r;
+      pos[i * 3 + 1] = Math.random() * 4.0 - 1.5; // Vertical distribution
+      pos[i * 3 + 2] = Math.sin(angle) * r;
+      rnd[i] = Math.random();
+      life[i] = Math.random(); // Phase offset for lifecycle
+    }
+    return { positions: pos, randoms: rnd, lifetimes: life };
+  }, []);
+
+  const bonfireVertexShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute float aLifetime;
+    varying float vHeight;
+    varying float vRandom;
+
+    void main() {
+      vRandom = aRandom;
+      float t = u_time;
+      float cycleTime = 3.0 + aRandom * 2.0; // Each particle has its own cycle duration
+      float phase = mod(t * 0.4 + aLifetime * cycleTime, cycleTime) / cycleTime; // 0..1 lifecycle
+
+      vec3 pos = position;
+
+      // Rise from center, expanding slightly
+      float height = phase * 4.0 - 1.5;
+      pos.y = height;
+      float spread = phase * (0.8 + aRandom * 0.6);
+      float angle = aRandom * 6.2831 + t * 0.2 * (aRandom - 0.5);
+      pos.x = cos(angle) * spread * 0.5;
+      pos.z = sin(angle) * spread * 0.5;
+
+      // Horizontal drift (wind)
+      pos.x += sin(t * 0.3 + aRandom * 6.28) * phase * 0.3;
+      pos.z += cos(t * 0.25 + aRandom * 3.14) * phase * 0.2;
+
+      // Audio: bass intensifies fire
+      pos.y += u_bass * 0.3 * (1.0 - phase);
+
+      vHeight = phase;
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float fade = smoothstep(0.0, 0.1, phase) * smoothstep(1.0, 0.6, phase);
+      float size = (2.0 + aRandom * 2.5) * fade * (1.0 + u_amplitude * 0.4);
+      gl_PointSize = size * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const bonfireFragmentShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    varying float vHeight;
+    varying float vRandom;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.05, d);
+
+      // Color gradient: white-yellow base -> orange mid -> red top -> fade
+      vec3 color;
+      if (vHeight < 0.15) {
+        // Hot white-yellow base
+        color = vec3(1.0, 0.95, 0.7);
+      } else if (vHeight < 0.4) {
+        float t = (vHeight - 0.15) / 0.25;
+        color = mix(vec3(1.0, 0.85, 0.3), vec3(1.0, 0.5, 0.05), t);
+      } else if (vHeight < 0.7) {
+        float t = (vHeight - 0.4) / 0.3;
+        color = mix(vec3(1.0, 0.5, 0.05), vec3(0.7, 0.1, 0.02), t);
+      } else {
+        float t = (vHeight - 0.7) / 0.3;
+        color = mix(vec3(0.7, 0.1, 0.02), vec3(0.2, 0.02, 0.0), t);
+      }
+
+      // Bass intensifies brightness
+      color *= 0.6 + u_bass * 0.4;
+
+      float fadeOut = smoothstep(1.0, 0.5, vHeight);
+      alpha *= fadeOut * 0.7;
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_amplitude.value = a.amplitude;
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+          <bufferAttribute attach="attributes-aLifetime" args={[lifetimes, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={bonfireVertexShader}
+          fragmentShader={bonfireFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={1.5} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Crystal scene — cluster of elongated crystal shapes ───
+
+function CrystalScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const groupRef = useRef<THREE.Group>(null);
+  const meshRefs = useRef<THREE.Mesh[]>([]);
+  const wireRefs = useRef<THREE.Mesh[]>([]);
+
+  const CRYSTAL_COUNT = 10;
+
+  const crystalData = useMemo(() => {
+    return Array.from({ length: CRYSTAL_COUNT }, (_, i) => {
+      const angle = (i / CRYSTAL_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+      const dist = 0.3 + Math.random() * 1.0;
+      return {
+        position: [
+          Math.cos(angle) * dist,
+          (Math.random() - 0.5) * 0.8,
+          Math.sin(angle) * dist,
+        ] as [number, number, number],
+        rotation: [
+          (Math.random() - 0.5) * 0.6,
+          Math.random() * Math.PI,
+          (Math.random() - 0.5) * 0.3,
+        ] as [number, number, number],
+        scaleY: 1.5 + Math.random() * 2.0,
+        scaleXZ: 0.15 + Math.random() * 0.2,
+        hue: 0.7 + Math.random() * 0.2, // Amethyst to sapphire range (0.7 - 0.9)
+      };
+    });
+  }, []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+
+    if (groupRef.current) {
+      groupRef.current.rotation.y = t * 0.06;
+      groupRef.current.rotation.x = Math.sin(t * 0.03) * 0.1;
+    }
+
+    meshRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      const cd = crystalData[i];
+      const mat = mesh.material as THREE.MeshPhysicalMaterial;
+      const hue = (cd.hue + Math.sin(t * 0.1 + i) * 0.05 + a.mid * 0.05) % 1;
+      mat.color.setHSL(hue, 0.5, 0.3 + a.amplitude * 0.15);
+      mat.emissive.setHSL(hue, 0.8, 0.05 + a.treble * 0.1);
+
+      // Subtle crystal "breathing"
+      const breathe = 1.0 + Math.sin(t * 0.5 + i * 0.8) * 0.03 + a.bass * 0.04;
+      mesh.scale.set(cd.scaleXZ * breathe, cd.scaleY * breathe, cd.scaleXZ * breathe);
+    });
+
+    wireRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      const cd = crystalData[i];
+      const mat = mesh.material as THREE.MeshBasicMaterial;
+      const hue = (cd.hue + Math.sin(t * 0.1 + i) * 0.05) % 1;
+      mat.color.setHSL(hue, 0.6, 0.4 + a.amplitude * 0.2);
+
+      const breathe = 1.0 + Math.sin(t * 0.5 + i * 0.8) * 0.03 + a.bass * 0.04;
+      mesh.scale.set(cd.scaleXZ * breathe, cd.scaleY * breathe, cd.scaleXZ * breathe);
+    });
+  });
+
+  return (
+    <>
+      <ambientLight intensity={0.2} />
+      <pointLight position={[3, 3, 3]} intensity={1.5} color="#aaccff" />
+      <pointLight position={[-2, -1, 2]} intensity={0.8} color="#ffaadd" />
+      <group ref={groupRef}>
+        {crystalData.map((cd, i) => (
+          <group key={i} position={cd.position} rotation={cd.rotation}>
+            {/* Solid crystal body */}
+            <mesh ref={(el) => { if (el) meshRefs.current[i] = el; }}>
+              <boxGeometry args={[1, 1, 1, 1, 1, 1]} />
+              <meshPhysicalMaterial
+                transparent
+                opacity={0.35}
+                roughness={0.1}
+                metalness={0.2}
+                clearcoat={1.0}
+                clearcoatRoughness={0.05}
+              />
+            </mesh>
+            {/* Wireframe overlay */}
+            <mesh ref={(el) => { if (el) wireRefs.current[i] = el; }}>
+              <boxGeometry args={[1, 1, 1, 1, 1, 1]} />
+              <meshBasicMaterial wireframe transparent opacity={0.4} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.15} luminanceSmoothing={0.9} intensity={2.0} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── DNA scene — double helix ───
+
+function DnaScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const groupRef = useRef<THREE.Group>(null);
+  const sphereRefs = useRef<THREE.Mesh[]>([]);
+  const pairRefs = useRef<THREE.Mesh[]>([]);
+
+  const PAIRS = 30;
+  const HELIX_HEIGHT = 8;
+  const HELIX_RADIUS = 1.2;
+  const TURNS = 2.5;
+
+  const helixData = useMemo(() => {
+    const data: Array<{
+      y: number; angle: number;
+      posA: [number, number, number];
+      posB: [number, number, number];
+      midpoint: [number, number, number];
+      pairLength: number;
+      pairAngle: number;
+    }> = [];
+
+    for (let i = 0; i < PAIRS; i++) {
+      const t = i / (PAIRS - 1);
+      const y = (t - 0.5) * HELIX_HEIGHT;
+      const angle = t * Math.PI * 2 * TURNS;
+
+      const ax = Math.cos(angle) * HELIX_RADIUS;
+      const az = Math.sin(angle) * HELIX_RADIUS;
+      const bx = Math.cos(angle + Math.PI) * HELIX_RADIUS;
+      const bz = Math.sin(angle + Math.PI) * HELIX_RADIUS;
+
+      data.push({
+        y, angle,
+        posA: [ax, y, az],
+        posB: [bx, y, bz],
+        midpoint: [(ax + bx) / 2, y, (az + bz) / 2],
+        pairLength: Math.sqrt((bx - ax) ** 2 + (bz - az) ** 2),
+        pairAngle: Math.atan2(bz - az, bx - ax),
+      });
+    }
+    return data;
+  }, []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+
+    if (groupRef.current) {
+      groupRef.current.rotation.y = t * 0.08;
+      groupRef.current.rotation.x = Math.sin(t * 0.04) * 0.1;
+    }
+
+    // Animate strand spheres
+    sphereRefs.current.forEach((mesh, idx) => {
+      if (!mesh) return;
+      const pairIdx = Math.floor(idx / 2);
+      const isStrandB = idx % 2 === 1;
+      const d = helixData[pairIdx];
+
+      const wave = Math.sin(t * 0.5 + pairIdx * 0.3) * 0.05 + a.bass * 0.04;
+      const scale = 0.08 + wave;
+      mesh.scale.setScalar(scale);
+
+      const mat = mesh.material as THREE.MeshBasicMaterial;
+      if (isStrandB) {
+        // Teal-green strand
+        mat.color.setHSL(0.47 + a.mid * 0.03, 0.7, 0.35 + a.amplitude * 0.15);
+      } else {
+        // Blue-purple strand
+        mat.color.setHSL(0.72 + a.treble * 0.03, 0.7, 0.35 + a.amplitude * 0.15);
+      }
+    });
+
+    // Animate base pairs
+    pairRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      const mat = mesh.material as THREE.MeshBasicMaterial;
+      const pulse = 0.3 + Math.sin(t * 0.8 + i * 0.4) * 0.1 + a.amplitude * 0.2;
+      mat.color.setHSL(0.12, 0.6, pulse); // Warm gold
+      mat.opacity = 0.4 + a.mid * 0.2;
+    });
+  });
+
+  return (
+    <>
+      <group ref={groupRef}>
+        {/* Strand spheres */}
+        {helixData.map((d, i) => (
+          <group key={`pair-${i}`}>
+            <mesh
+              position={d.posA}
+              ref={(el) => { if (el) sphereRefs.current[i * 2] = el; }}
+            >
+              <sphereGeometry args={[1, 12, 12]} />
+              <meshBasicMaterial />
+            </mesh>
+            <mesh
+              position={d.posB}
+              ref={(el) => { if (el) sphereRefs.current[i * 2 + 1] = el; }}
+            >
+              <sphereGeometry args={[1, 12, 12]} />
+              <meshBasicMaterial />
+            </mesh>
+            {/* Base pair connector */}
+            <mesh
+              position={d.midpoint}
+              rotation={[0, -d.pairAngle, Math.PI / 2]}
+              ref={(el) => { if (el) pairRefs.current[i] = el; }}
+            >
+              <cylinderGeometry args={[0.015, 0.015, d.pairLength, 4]} />
+              <meshBasicMaterial transparent opacity={0.5} />
+            </mesh>
+          </group>
+        ))}
+      </group>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.15} luminanceSmoothing={0.9} intensity={2.0} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Swarm scene — murmuration of 6000 particles ───
+
+function SwarmScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 6000;
+
+  const { positions, randoms, phases } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+    const phs = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = Math.pow(Math.random(), 0.5) * 3.0;
+      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      pos[i * 3 + 2] = r * Math.cos(phi);
+      rnd[i] = Math.random();
+      phs[i] = Math.random() * Math.PI * 2;
+    }
+    return { positions: pos, randoms: rnd, phases: phs };
+  }, []);
+
+  const swarmVertexShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_mid;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute float aPhase;
+    varying float vRandom;
+    varying float vDensity;
+
+    void main() {
+      vRandom = aRandom;
+      float t = u_time * 0.15;
+
+      vec3 pos = position;
+      float dist = length(pos);
+
+      // Murmuration: smooth swirling paths
+      // Multiple overlapping rotations create organic flocking motion
+      float a1 = t * 0.6 + aPhase;
+      float a2 = t * 0.4 + aPhase * 1.5;
+      float a3 = t * 0.25 + aRandom * 6.28;
+
+      // Rotate in XZ
+      float ca1 = cos(a1 * 0.3); float sa1 = sin(a1 * 0.3);
+      pos.xz = mat2(ca1, -sa1, sa1, ca1) * pos.xz;
+
+      // Rotate in YZ
+      float ca2 = cos(a2 * 0.2); float sa2 = sin(a2 * 0.2);
+      pos.yz = mat2(ca2, -sa2, sa2, ca2) * pos.yz;
+
+      // Condensing/expanding pulsation
+      float breathe = 1.0 + sin(t * 1.5) * 0.3 + u_bass * 0.2;
+      pos *= breathe;
+
+      // Swirl toward/away from center
+      float centerPull = sin(t * 0.8 + aRandom * 6.28) * 0.5;
+      pos += normalize(pos + vec3(0.001)) * centerPull;
+
+      // Shift the swarm center smoothly
+      pos.x += sin(t * 0.4) * 1.5;
+      pos.y += cos(t * 0.3) * 1.0;
+
+      // Audio sway
+      pos += vec3(u_mid * 0.15 * sin(a3), u_bass * 0.1 * cos(a3), 0.0);
+
+      vDensity = 1.0 / (1.0 + length(pos) * 0.3);
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float size = (1.5 + aRandom * 1.0) * (1.0 + u_amplitude * 0.5);
+      gl_PointSize = size * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const swarmFragmentShader = `
+    uniform float u_time;
+    uniform float u_amplitude;
+    varying float vRandom;
+    varying float vDensity;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.1, d);
+
+      // Warm amber-gold particles
+      vec3 color = vec3(0.9, 0.6 + vRandom * 0.2, 0.15 + vRandom * 0.1);
+      color *= 0.3 + vDensity * 0.5 + u_amplitude * 0.2;
+
+      alpha *= 0.6 + vDensity * 0.3;
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 },
+    u_mid: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_mid.value = a.mid; u.u_amplitude.value = a.amplitude;
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+          <bufferAttribute attach="attributes-aPhase" args={[phases, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={swarmVertexShader}
+          fragmentShader={swarmFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={1.3} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Lotus scene — blooming geometric flower ───
+
+function LotusScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const groupRef = useRef<THREE.Group>(null);
+  const petalRefs = useRef<THREE.Mesh[]>([]);
+
+  const LAYERS = 5;
+  const PETALS_PER_LAYER = 8;
+  const TOTAL_PETALS = LAYERS * PETALS_PER_LAYER;
+
+  const petalData = useMemo(() => {
+    const data: Array<{
+      layer: number;
+      index: number;
+      baseAngle: number;
+      baseOpenAngle: number;
+      hue: number;
+      saturation: number;
+      lightness: number;
+    }> = [];
+
+    for (let layer = 0; layer < LAYERS; layer++) {
+      for (let j = 0; j < PETALS_PER_LAYER; j++) {
+        const angle = (j / PETALS_PER_LAYER) * Math.PI * 2 + layer * 0.2;
+        const openAngle = 0.3 + layer * 0.25; // Outer layers open more
+        // Deep rose center -> pale pink outer
+        const t = layer / (LAYERS - 1);
+        data.push({
+          layer,
+          index: j,
+          baseAngle: angle,
+          baseOpenAngle: openAngle,
+          hue: 0.93 + t * 0.04, // Rose-pink range
+          saturation: 0.7 - t * 0.3,
+          lightness: 0.25 + t * 0.2,
+        });
+      }
+    }
+    return data;
+  }, []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+
+    if (groupRef.current) {
+      groupRef.current.rotation.y = t * 0.04;
+    }
+
+    petalRefs.current.forEach((mesh, i) => {
+      if (!mesh) return;
+      const pd = petalData[i];
+
+      // Breathing open/close motion
+      const breathe = Math.sin(t * 0.3 + pd.layer * 0.5) * 0.15;
+      const openAngle = pd.baseOpenAngle + breathe + a.bass * 0.08;
+
+      // Position petal
+      const scale = 0.4 + pd.layer * 0.15;
+      mesh.position.set(0, pd.layer * 0.08, 0);
+      mesh.rotation.set(0, 0, 0);
+
+      // Rotate to petal position
+      mesh.rotation.y = pd.baseAngle + t * 0.02;
+      // Tilt outward (opening)
+      mesh.rotation.x = -openAngle;
+
+      mesh.scale.set(scale, scale * 1.4, scale);
+
+      const mat = mesh.material as THREE.MeshBasicMaterial;
+      const hue = (pd.hue + Math.sin(t * 0.1 + i * 0.1) * 0.02) % 1;
+      mat.color.setHSL(hue, pd.saturation, pd.lightness + a.amplitude * 0.1);
+      mat.opacity = 0.5 + pd.layer * 0.05 + a.mid * 0.1;
+    });
+  });
+
+  return (
+    <>
+      <group ref={groupRef}>
+        {petalData.map((_, i) => (
+          <mesh
+            key={i}
+            ref={(el) => { if (el) petalRefs.current[i] = el; }}
+          >
+            <planeGeometry args={[1, 1.5, 1, 1]} />
+            <meshBasicMaterial
+              transparent
+              depthWrite={false}
+              side={THREE.DoubleSide}
+            />
+          </mesh>
+        ))}
+        {/* Center glow sphere */}
+        <mesh>
+          <sphereGeometry args={[0.15, 16, 16]} />
+          <meshBasicMaterial color="#ffccdd" />
+        </mesh>
+      </group>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.15} luminanceSmoothing={0.9} intensity={1.8} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Cloud scene — volumetric cloud effect ───
+
+function CloudScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 4000;
+
+  const { positions, randoms, sizes } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+    const sz = new Float32Array(COUNT);
+
+    for (let i = 0; i < COUNT; i++) {
+      // Flattened ellipsoid distribution
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(2 * Math.random() - 1);
+      const r = Math.pow(Math.random(), 0.4) * 1.0;
+      pos[i * 3] = r * Math.sin(phi) * Math.cos(theta) * 3.5; // Wide
+      pos[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta) * 1.2; // Flat
+      pos[i * 3 + 2] = r * Math.cos(phi) * 2.5; // Medium depth
+      rnd[i] = Math.random();
+      sz[i] = 3.0 + Math.random() * 5.0; // Large, soft particles
+    }
+    return { positions: pos, randoms: rnd, sizes: sz };
+  }, []);
+
+  const cloudVertexShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute float aSize;
+    varying float vRandom;
+    varying vec3 vWorldPos;
+
+    void main() {
+      vRandom = aRandom;
+      float t = u_time * 0.06;
+
+      vec3 pos = position;
+
+      // Slow drift
+      pos.x += sin(t * 0.5 + aRandom * 6.28) * 0.3;
+      pos.y += cos(t * 0.4 + aRandom * 3.14) * 0.15;
+      pos.z += sin(t * 0.3 + aRandom * 4.71) * 0.2;
+
+      // Gentle overall drift
+      pos.x += t * 0.3;
+
+      // Audio: gentle expansion
+      pos *= 1.0 + u_bass * 0.05;
+
+      vWorldPos = pos;
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float size = aSize * (1.0 + u_amplitude * 0.2);
+      gl_PointSize = size * (250.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const cloudFragmentShader = `
+    uniform float u_time;
+    uniform float u_amplitude;
+    varying float vRandom;
+    varying vec3 vWorldPos;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      // Very soft falloff for cloud effect
+      float alpha = smoothstep(0.5, 0.0, d);
+      alpha = alpha * alpha; // Extra soft
+
+      // Lit from right side (warm) with cool shadow on left
+      float lightDir = smoothstep(-3.0, 3.0, vWorldPos.x);
+
+      vec3 warmLight = vec3(1.0, 0.9, 0.75); // Warm sunlit side
+      vec3 coolShadow = vec3(0.4, 0.45, 0.6); // Cool shadow side
+      vec3 color = mix(coolShadow, warmLight, lightDir);
+
+      // Subtle internal luminance variation
+      color *= 0.3 + vRandom * 0.15 + u_amplitude * 0.05;
+
+      alpha *= 0.06; // Very low opacity for volumetric look
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_amplitude.value = a.amplitude;
+    }
+    if (pointsRef.current) {
+      pointsRef.current.rotation.y = t * 0.005;
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+          <bufferAttribute attach="attributes-aSize" args={[sizes, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={cloudVertexShader}
+          fragmentShader={cloudFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.3} luminanceSmoothing={0.95} intensity={0.8} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Waterfall scene — cascading water particles ───
+
+function WaterfallScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const pointsRef = useRef<THREE.Points>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const COUNT = 8000;
+
+  const { positions, randoms, types } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const rnd = new Float32Array(COUNT);
+    const typ = new Float32Array(COUNT); // 0 = falling, 1 = splash, 2 = mist
+
+    for (let i = 0; i < COUNT; i++) {
+      rnd[i] = Math.random();
+
+      if (i < 5500) {
+        // Falling water
+        pos[i * 3] = (Math.random() - 0.5) * 2.5;
+        pos[i * 3 + 1] = Math.random() * 6.0;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 0.8;
+        typ[i] = 0;
+      } else if (i < 7000) {
+        // Splash particles at bottom
+        const angle = Math.random() * Math.PI * 2;
+        const r = Math.random() * 3.0;
+        pos[i * 3] = Math.cos(angle) * r;
+        pos[i * 3 + 1] = Math.random() * 1.5;
+        pos[i * 3 + 2] = Math.sin(angle) * r * 0.5;
+        typ[i] = 1;
+      } else {
+        // Mist particles rising
+        pos[i * 3] = (Math.random() - 0.5) * 4.0;
+        pos[i * 3 + 1] = Math.random() * 3.0;
+        pos[i * 3 + 2] = (Math.random() - 0.5) * 2.0;
+        typ[i] = 2;
+      }
+    }
+    return { positions: pos, randoms: rnd, types: typ };
+  }, []);
+
+  const waterfallVertexShader = `
+    uniform float u_time;
+    uniform float u_bass;
+    uniform float u_amplitude;
+    attribute float aRandom;
+    attribute float aType;
+    varying float vRandom;
+    varying float vType;
+    varying float vHeight;
+
+    void main() {
+      vRandom = aRandom;
+      vType = aType;
+      float t = u_time;
+
+      vec3 pos = position;
+
+      if (aType < 0.5) {
+        // Falling water — gravity-accelerated fall cycle
+        float fallSpeed = 1.5 + aRandom * 1.0;
+        float cycleTime = 2.5 + aRandom;
+        float phase = mod(t * 0.5 + aRandom * cycleTime, cycleTime) / cycleTime;
+
+        pos.y = 3.0 - phase * phase * 6.5; // Gravity curve
+        pos.x = position.x + sin(t * 0.3 + aRandom * 6.28) * 0.1;
+
+        // Audio: slightly wider fall
+        pos.x *= 1.0 + u_bass * 0.1;
+        vHeight = 1.0 - phase;
+      } else if (aType < 1.5) {
+        // Splash — radial burst at bottom
+        float splashCycle = 1.5 + aRandom * 1.0;
+        float phase = mod(t * 0.6 + aRandom * splashCycle, splashCycle) / splashCycle;
+
+        float angle = aRandom * 6.2831;
+        float speed = 1.0 + aRandom * 2.0;
+        pos.x = cos(angle) * phase * speed;
+        pos.z = sin(angle) * phase * speed * 0.5;
+        pos.y = -3.0 + phase * speed * 0.8 - phase * phase * speed * 1.5; // Arc up then down
+
+        vHeight = 1.0 - phase;
+      } else {
+        // Mist — slow rise
+        float mistCycle = 4.0 + aRandom * 3.0;
+        float phase = mod(t * 0.15 + aRandom * mistCycle, mistCycle) / mistCycle;
+
+        pos.x = position.x + sin(t * 0.2 + aRandom * 6.28) * 1.5;
+        pos.y = -2.5 + phase * 5.0;
+        pos.z = position.z + cos(t * 0.15 + aRandom * 3.14) * 0.8;
+
+        vHeight = phase;
+      }
+
+      vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+      float size;
+      if (aType < 0.5) size = 1.5 + aRandom;
+      else if (aType < 1.5) size = 1.0 + aRandom * 0.8;
+      else size = 2.5 + aRandom * 3.0;
+
+      size *= 1.0 + u_amplitude * 0.3;
+      gl_PointSize = size * (200.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `;
+
+  const waterfallFragmentShader = `
+    uniform float u_time;
+    uniform float u_treble;
+    varying float vRandom;
+    varying float vType;
+    varying float vHeight;
+
+    void main() {
+      float d = length(gl_PointCoord - vec2(0.5));
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.05, d);
+
+      vec3 color;
+      if (vType < 0.5) {
+        // Falling water: blue-white
+        color = vec3(0.6, 0.75, 1.0);
+        alpha *= 0.5 * vHeight;
+      } else if (vType < 1.5) {
+        // Splash: white with slight blue
+        color = vec3(0.8, 0.85, 1.0);
+        alpha *= 0.4 * vHeight;
+      } else {
+        // Mist: very faint, with rainbow hints
+        float rainbow = sin(vRandom * 6.28 + u_time * 0.2) * 0.5 + 0.5;
+        color = vec3(
+          0.5 + rainbow * 0.15 + u_treble * 0.1,
+          0.55 + (1.0 - rainbow) * 0.1,
+          0.6 + rainbow * 0.1
+        );
+        alpha *= 0.08 * (1.0 - vHeight * 0.5);
+      }
+
+      gl_FragColor = vec4(color, alpha);
+    }
+  `;
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 },
+    u_treble: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_treble.value = a.treble; u.u_amplitude.value = a.amplitude;
+    }
+  });
+
+  return (
+    <>
+      <points ref={pointsRef}>
+        <bufferGeometry>
+          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+          <bufferAttribute attach="attributes-aRandom" args={[randoms, 1]} />
+          <bufferAttribute attach="attributes-aType" args={[types, 1]} />
+        </bufferGeometry>
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={waterfallVertexShader}
+          fragmentShader={waterfallFragmentShader}
+          uniforms={uniforms}
+          transparent
+          depthWrite={false}
+          blending={THREE.AdditiveBlending}
+        />
+      </points>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.3} luminanceSmoothing={0.9} intensity={1.0} />
+      </EffectComposer>
+    </>
+  );
+}
+
+// ─── Terrain scene — procedural morphing terrain mesh ───
+
+const terrainVertexShader = `
+  uniform float u_time;
+  uniform float u_bass;
+  uniform float u_mid;
+  uniform float u_amplitude;
+  varying vec3 vWorldPos;
+  varying vec3 vNormal;
+  varying float vHeight;
+
+  // Simplex noise functions
+  vec3 mod289v3(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec4 mod289v4(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+  vec4 permute4(vec4 x) { return mod289v4(((x*34.0)+1.0)*x); }
+  vec4 taylorInvSqrt4(vec4 r) { return 1.79284291400159 - 0.85373472095314 * r; }
+
+  float snoise(vec3 v) {
+    const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+    const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+    vec3 i = floor(v + dot(v, C.yyy));
+    vec3 x0 = v - i + dot(i, C.xxx);
+    vec3 g = step(x0.yzx, x0.xyz);
+    vec3 l = 1.0 - g;
+    vec3 i1 = min(g.xyz, l.zxy);
+    vec3 i2 = max(g.xyz, l.zxy);
+    vec3 x1 = x0 - i1 + C.xxx;
+    vec3 x2 = x0 - i2 + C.yyy;
+    vec3 x3 = x0 - D.yyy;
+    i = mod289v3(i);
+    vec4 p = permute4(permute4(permute4(
+      i.z + vec4(0.0, i1.z, i2.z, 1.0))
+      + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+      + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+    float n_ = 0.142857142857;
+    vec3 ns = n_ * D.wyz - D.xzx;
+    vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+    vec4 x_ = floor(j * ns.z);
+    vec4 y_ = floor(j - 7.0 * x_);
+    vec4 x = x_ * ns.x + ns.yyyy;
+    vec4 y = y_ * ns.x + ns.yyyy;
+    vec4 h = 1.0 - abs(x) - abs(y);
+    vec4 b0 = vec4(x.xy, y.xy);
+    vec4 b1 = vec4(x.zw, y.zw);
+    vec4 s0 = floor(b0)*2.0 + 1.0;
+    vec4 s1 = floor(b1)*2.0 + 1.0;
+    vec4 sh = -step(h, vec4(0.0));
+    vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+    vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+    vec3 p0 = vec3(a0.xy, h.x);
+    vec3 p1 = vec3(a0.zw, h.y);
+    vec3 p2 = vec3(a1.xy, h.z);
+    vec3 p3 = vec3(a1.zw, h.w);
+    vec4 norm = taylorInvSqrt4(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+    p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+    vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+    m = m * m;
+    return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+  }
+
+  void main() {
+    float t = u_time * 0.06;
+
+    vec3 pos = position;
+
+    // Multi-octave noise displacement
+    float n1 = snoise(vec3(pos.x * 0.3 + t, pos.z * 0.3, t * 0.5)) * 1.5;
+    float n2 = snoise(vec3(pos.x * 0.6 + t * 0.3, pos.z * 0.6, t * 0.8)) * 0.6;
+    float n3 = snoise(vec3(pos.x * 1.2 + t * 0.1, pos.z * 1.2, t * 1.2)) * 0.25;
+
+    float height = n1 + n2 + n3;
+
+    // Audio: gentle terrain breathing
+    height *= 1.0 + u_bass * 0.15;
+    height += u_mid * 0.1 * sin(pos.x * 0.5 + t);
+
+    pos.y = height;
+    vHeight = height;
+
+    // Compute approximate normal
+    float eps = 0.1;
+    float hx = snoise(vec3((pos.x + eps) * 0.3 + t, pos.z * 0.3, t * 0.5)) * 1.5
+             + snoise(vec3((pos.x + eps) * 0.6 + t * 0.3, pos.z * 0.6, t * 0.8)) * 0.6;
+    float hz = snoise(vec3(pos.x * 0.3 + t, (pos.z + eps) * 0.3, t * 0.5)) * 1.5
+             + snoise(vec3(pos.x * 0.6 + t * 0.3, (pos.z + eps) * 0.6, t * 0.8)) * 0.6;
+    vec3 computedNormal = normalize(vec3(height - hx, eps * 2.0, height - hz));
+    vNormal = normalize(normalMatrix * computedNormal);
+
+    vWorldPos = (modelMatrix * vec4(pos, 1.0)).xyz;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+  }
+`;
+
+const terrainFragmentShader = `
+  uniform float u_time;
+  uniform float u_amplitude;
+  varying vec3 vWorldPos;
+  varying vec3 vNormal;
+  varying float vHeight;
+
+  void main() {
+    // Low-angle sunlight direction
+    vec3 lightDir = normalize(vec3(0.6, 0.2, 0.4));
+    float diffuse = max(dot(vNormal, lightDir), 0.0);
+    float ambient = 0.15;
+
+    // Height-based color
+    vec3 color;
+    float h = vHeight;
+
+    if (h < -0.5) {
+      // Deep valleys: dark green
+      color = vec3(0.05, 0.15, 0.05);
+    } else if (h < 0.2) {
+      float t = (h + 0.5) / 0.7;
+      // Green to brown-tan
+      color = mix(vec3(0.08, 0.2, 0.05), vec3(0.35, 0.25, 0.12), t);
+    } else if (h < 1.0) {
+      float t = (h - 0.2) / 0.8;
+      // Brown to lighter tan
+      color = mix(vec3(0.35, 0.25, 0.12), vec3(0.5, 0.4, 0.3), t);
+    } else {
+      float t = clamp((h - 1.0) / 0.8, 0.0, 1.0);
+      // Snow caps
+      color = mix(vec3(0.5, 0.4, 0.3), vec3(0.85, 0.88, 0.9), t);
+    }
+
+    // Apply lighting
+    color *= ambient + diffuse * 0.85;
+
+    // Subtle warm light color
+    color *= vec3(1.0, 0.95, 0.85);
+
+    // Audio: slight brightness modulation
+    color *= 1.0 + u_amplitude * 0.1;
+
+    gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+function TerrainScene({ analyser, dataArray }: { analyser: AnalyserNode; dataArray: Uint8Array<ArrayBuffer> }) {
+  const audio = useAudioData(analyser, dataArray);
+  const meshRef = useRef<THREE.Mesh>(null);
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  const uniforms = useMemo(() => ({
+    u_time: { value: 0 }, u_bass: { value: 0 },
+    u_mid: { value: 0 }, u_amplitude: { value: 0 },
+  }), []);
+
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const a = audio.current;
+    if (materialRef.current) {
+      const u = materialRef.current.uniforms;
+      u.u_time.value = t; u.u_bass.value = a.bass;
+      u.u_mid.value = a.mid; u.u_amplitude.value = a.amplitude;
+    }
+    if (meshRef.current) {
+      meshRef.current.rotation.y = t * 0.015;
+    }
+  });
+
+  return (
+    <>
+      <mesh ref={meshRef} rotation={[-0.6, 0, 0]} position={[0, -0.5, 0]}>
+        <planeGeometry args={[12, 12, 200, 200]} />
+        <shaderMaterial
+          ref={materialRef}
+          vertexShader={terrainVertexShader}
+          fragmentShader={terrainFragmentShader}
+          uniforms={uniforms}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <EffectComposer>
+        <Bloom luminanceThreshold={0.5} luminanceSmoothing={0.9} intensity={0.5} />
+      </EffectComposer>
+    </>
+  );
+}
+
 // ─── Mode type ───
 
-export type Visualizer3DMode = "orb" | "field" | "rings" | "aurora" | "totem" | "wormhole";
+export type Visualizer3DMode =
+  | "orb" | "field" | "rings" | "aurora" | "totem" | "wormhole"
+  | "galaxy" | "depths" | "bonfire" | "crystal" | "dna" | "swarm"
+  | "lotus" | "cloud" | "waterfall" | "terrain"
+  | "obelisk" | "wave" | "silk" | "orbit" | "pillar" | "seabed"
+  | "molecule" | "blackhole" | "cage" | "pendulum";
 
 // ─── Main 3D visualizer component ───
 
@@ -702,6 +2102,26 @@ export function Visualizer3D({
       {mode === "aurora" && <AuroraScene analyser={analyser} dataArray={dataArray} />}
       {mode === "totem" && <TotemScene analyser={analyser} dataArray={dataArray} />}
       {mode === "wormhole" && <WormholeScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "galaxy" && <GalaxyScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "depths" && <DepthsScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "bonfire" && <BonfireScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "crystal" && <CrystalScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "dna" && <DnaScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "swarm" && <SwarmScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "lotus" && <LotusScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "cloud" && <CloudScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "waterfall" && <WaterfallScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "terrain" && <TerrainScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "obelisk" && <ObeliskScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "wave" && <WaveScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "silk" && <SilkScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "orbit" && <OrbitScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "pillar" && <PillarScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "seabed" && <SeabedScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "molecule" && <MoleculeScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "blackhole" && <BlackholeScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "cage" && <CageScene analyser={analyser} dataArray={dataArray} />}
+      {mode === "pendulum" && <PendulumScene analyser={analyser} dataArray={dataArray} />}
     </Canvas>
   );
 }

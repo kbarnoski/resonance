@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback } from "react";
+import gsap from "gsap";
 import type { Mood } from "@/lib/audio/vibe-detection";
 import { POETRY_THEMES, TYPOGRAPHY_OVERRIDES, TYPOGRAPHY_FONTS_URL, type PoetryTheme, type TypographicVariant } from "@/lib/audio/poetry-themes";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
@@ -14,32 +15,45 @@ export interface PoetryOverlayProps {
   whisperEnabled?: boolean;
   liveText?: string | null;
   liveEnabled?: boolean;
-  /** Journey phase for phase-aware behavior */
   phase?: string | null;
-  /** Override voice for journey phases */
   voiceOverride?: string | null;
-  /** Override interval between poetry lines (seconds) */
   intervalOverride?: number | null;
-  /** Override mood for journey phases */
   moodOverride?: Mood | null;
-  /** Realm poetry imagery for prompts */
   realmImagery?: string | null;
-  /** Typography theme key — realm ID (journey) or shader category (viz-only) */
   typographyTheme?: string | null;
-  /** When false, no new poetry lines appear (existing lines finish naturally) */
   isPlaying?: boolean;
+  storyContext?: string | null;
 }
 
-interface ActiveLine {
-  id: number;
-  text: string;
-  top: string;
-  left: string;
-  fontSize: string;
-  duration: number;
-  variant: TypographicVariant;
-  color: string;
+// ─── Keyword extraction for dedup ───
+
+const STOP_WORDS = new Set([
+  "the", "a", "an", "in", "on", "at", "to", "for", "of", "and", "or", "but",
+  "is", "are", "was", "were", "be", "been", "being", "have", "has", "had",
+  "do", "does", "did", "will", "would", "could", "should", "may", "might",
+  "shall", "can", "with", "from", "into", "that", "this", "these", "those",
+  "it", "its", "not", "no", "nor", "so", "as", "if", "by", "up", "out",
+  "off", "over", "under", "again", "then", "once", "here", "there", "when",
+  "where", "why", "how", "all", "each", "every", "both", "few", "more",
+  "most", "other", "some", "such", "than", "too", "very", "just", "about",
+  "your", "you", "they", "them", "their", "our", "we", "my", "me", "him",
+  "her", "his", "she", "he", "who", "what", "which",
+]);
+
+function extractKeywords(lines: string[]): string[] {
+  const keywords = new Set<string>();
+  for (const line of lines) {
+    const words = line.toLowerCase().replace(/[^a-z\s]/g, "").split(/\s+/);
+    for (const word of words) {
+      if (word.length > 3 && !STOP_WORDS.has(word)) {
+        keywords.add(word);
+      }
+    }
+  }
+  return Array.from(keywords);
 }
+
+// ─── Constants ───
 
 const STAGGER_SECONDS = 5;
 const MAX_ACTIVE_LINES = 3;
@@ -50,8 +64,36 @@ const WHISPER_VOICES = [
   "nova", "onyx", "shimmer", "sage", "verse", "marin", "cedar",
 ] as const;
 
-const HOLD_ANIMATIONS = ["poetry-float-hold", "poetry-drift-hold", "poetry-breathe-hold"];
-const SWISS_EASE = "cubic-bezier(0.23, 1, 0.32, 1)";
+// Single-word font size range (scaled down for better proportion)
+const SINGLE_WORD_SIZE_RANGE: [number, number] = [1.8, 3.0];
+
+// Scale factor applied to theme sizeRange values
+const SIZE_SCALE = 0.55;
+
+// ─── Collision avoidance ───
+
+interface OccupiedZone {
+  top: number; // percent
+  left: number;
+  width: number; // percent (estimated)
+  height: number; // percent (estimated)
+  expiresAt: number;
+}
+
+function zonesOverlap(a: OccupiedZone, b: OccupiedZone): boolean {
+  return !(a.left + a.width < b.left || b.left + b.width < a.left ||
+           a.top + a.height < b.top || b.top + b.height < a.top);
+}
+
+function estimateZone(top: number, left: number, text: string, fontSize: number): OccupiedZone {
+  // Rough estimate: each char ~0.6em wide, line height ~1.2em
+  const charWidthVw = fontSize * 0.6 * (100 / window.innerWidth) * 16; // rem to vw approx
+  const widthPct = Math.min(80, text.length * charWidthVw);
+  const heightPct = fontSize * 1.3 * (100 / window.innerHeight) * 16;
+  return { top, left, width: widthPct, height: heightPct, expiresAt: 0 };
+}
+
+// ─── Helpers ───
 
 function createCathedralImpulse(ctx: AudioContext): AudioBuffer {
   const duration = 6;
@@ -75,6 +117,12 @@ function pickRandom<T>(arr: readonly T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function isSingleWord(text: string): boolean {
+  return text.trim().split(/\s+/).length <= 2;
+}
+
+// ─── Component ───
+
 export function PoetryOverlay({
   mood,
   keySignature,
@@ -90,12 +138,15 @@ export function PoetryOverlay({
   realmImagery,
   typographyTheme,
   isPlaying,
+  storyContext,
 }: PoetryOverlayProps) {
-  const [activeLines, setActiveLines] = useState<ActiveLine[]>([]);
   const language = useAudioStore((s) => s.language);
   const effectiveMood = moodOverride ?? mood;
-  // Typography override (realm or category) takes priority over mood-based theme
   const theme: PoetryTheme = (typographyTheme ? TYPOGRAPHY_OVERRIDES[typographyTheme] : undefined) ?? POETRY_THEMES[effectiveMood];
+
+  // Container ref for GSAP targets
+  const containerRef = useRef<HTMLDivElement>(null);
+  const activeCountRef = useRef(0);
 
   // Load Google Fonts when a typography override is active
   useEffect(() => {
@@ -111,13 +162,11 @@ export function PoetryOverlay({
 
   const bufferRef = useRef<string[]>([]);
   const fetchingRef = useRef(false);
-  // Session-wide dedup — every line ever shown in this session
   const sessionLinesRef = useRef<Set<string>>(new Set());
-  const lineIdRef = useRef(0);
   const cancelledRef = useRef(false);
-  const activeLinesCountRef = useRef(0);
+  const occupiedZonesRef = useRef<OccupiedZone[]>([]);
 
-  // Refs that sync from props without causing effect re-runs
+  // Refs that sync from props
   const whisperEnabledRef = useRef(whisperEnabled);
   const liveEnabledRef = useRef(liveEnabled);
   const voiceOverrideRef = useRef(voiceOverride);
@@ -125,33 +174,32 @@ export function PoetryOverlay({
   const isPlayingRef = useRef(isPlaying);
   const languageRef = useRef(language);
   const realmImageryRef = useRef(realmImagery);
+  const storyContextRef = useRef(storyContext);
+  const themeRef = useRef(theme);
 
-  // Keep refs in sync
   useEffect(() => { isPlayingRef.current = isPlaying; }, [isPlaying]);
   useEffect(() => { languageRef.current = language; }, [language]);
   useEffect(() => { realmImageryRef.current = realmImagery; }, [realmImagery]);
+  useEffect(() => { storyContextRef.current = storyContext; }, [storyContext]);
   useEffect(() => { whisperEnabledRef.current = whisperEnabled; }, [whisperEnabled]);
   useEffect(() => { liveEnabledRef.current = liveEnabled; }, [liveEnabled]);
   useEffect(() => { voiceOverrideRef.current = voiceOverride; }, [voiceOverride]);
   useEffect(() => { phaseRef.current = phase; }, [phase]);
+  useEffect(() => { themeRef.current = theme; }, [theme]);
 
   const audioCtxRef = useRef<AudioContext | null>(null);
   const convolverRef = useRef<ConvolverNode | null>(null);
   const dryGainRef = useRef<GainNode | null>(null);
   const wetGainRef = useRef<GainNode | null>(null);
 
-  // Stable ref to theme values for the main loop
-  const themeRef = useRef(theme);
-  useEffect(() => { themeRef.current = theme; }, [theme]);
-
-  // Fetch a fresh batch of lines from the API — sends full session history as avoid
+  // ─── Fetch poetry batch ───
   const fetchBatch = useCallback(async () => {
     if (fetchingRef.current || cancelledRef.current) return;
     fetchingRef.current = true;
 
     try {
-      // Send all session lines as avoid list to prevent any repetition
       const avoid = Array.from(sessionLinesRef.current);
+      const avoidKeywords = extractKeywords(avoid);
 
       const res = await fetch("/api/poetry", {
         method: "POST",
@@ -163,17 +211,19 @@ export function PoetryOverlay({
           summary,
           count: BATCH_SIZE,
           avoid,
+          avoidKeywords,
           phase: phase ?? undefined,
           language: languageRef.current,
           imagery: realmImageryRef.current ?? undefined,
           vizTheme: typographyTheme ?? undefined,
+          storyContext: storyContextRef.current ?? undefined,
+          poetryType: "mixed",
         }),
       });
 
       if (!res.ok || cancelledRef.current) return;
       const data = await res.json();
       if (Array.isArray(data.lines)) {
-        // Filter out any lines that somehow match existing ones
         const newLines = data.lines.filter((l: string) => !sessionLinesRef.current.has(l));
         bufferRef.current.push(...newLines);
         for (const line of newLines) {
@@ -181,24 +231,22 @@ export function PoetryOverlay({
         }
       }
     } catch {
-      // Silently fail — show nothing rather than fall back to seed lines
+      // Silently fail
     } finally {
       fetchingRef.current = false;
     }
   }, [mood, moodOverride, keySignature, tempo, summary, phase, realmImagery, typographyTheme]);
 
-  // When viz theme changes, flush stale buffer and fetch fresh poetry for the new theme.
-  // Existing on-screen lines keep their individual fade-out timers — smooth transition.
+  // When viz theme changes, flush stale buffer
   const prevThemeRef = useRef(typographyTheme);
   useEffect(() => {
     if (prevThemeRef.current === typographyTheme) return;
     prevThemeRef.current = typographyTheme;
-    // Clear buffered lines so the next interval pull gets theme-matched poetry
     bufferRef.current = [];
     fetchBatch();
   }, [typographyTheme, fetchBatch]);
 
-  // Initialize Web Audio reverb chain — independent of main loop
+  // ─── Web Audio reverb ───
   useEffect(() => {
     if (!whisperEnabled) return;
 
@@ -229,7 +277,7 @@ export function PoetryOverlay({
     };
   }, [whisperEnabled]);
 
-  // Speak a line — reads whisper state from ref
+  // ─── Speak a line ───
   const speakLine = useCallback(async (text: string) => {
     const ctx = audioCtxRef.current;
     const convolver = convolverRef.current;
@@ -238,7 +286,6 @@ export function PoetryOverlay({
 
     try {
       if (ctx.state === "suspended") await ctx.resume();
-
       const voice = voiceOverrideRef.current ?? pickRandom(WHISPER_VOICES);
 
       const res = await fetch("/api/poetry/speak", {
@@ -262,80 +309,193 @@ export function PoetryOverlay({
     } catch {
       // Silently fail
     }
-  }, []); // No whisperEnabled dep — uses ref
-
-  // Helper to create an ActiveLine from text
-  const createActiveLine = useCallback((lineText: string): ActiveLine => {
-    const t = themeRef.current;
-    const [minSize, maxSize] = t.sizeRange;
-    const [minDur, maxDur] = t.animationDuration;
-    const id = lineIdRef.current++;
-    const duration = minDur + Math.random() * (maxDur - minDur);
-    const variant = pickRandom(t.variants);
-    const color = pickRandom(t.colors);
-
-    return {
-      id,
-      text: lineText,
-      top: `${10 + Math.random() * 60}%`,
-      left: `${5 + Math.random() * 55}%`,
-      fontSize: `${minSize + Math.random() * (maxSize - minSize)}rem`,
-      duration,
-      variant,
-      color,
-    };
   }, []);
 
-  // Main loop — pull from buffer, display, refetch when low
+  // ─── Find non-overlapping position ───
+  const findPosition = useCallback((text: string, fontSize: number): { top: number; left: number } => {
+    const now = Date.now();
+    // Clean expired zones
+    occupiedZonesRef.current = occupiedZonesRef.current.filter((z) => z.expiresAt > now);
+
+    for (let attempt = 0; attempt < 8; attempt++) {
+      const top = 8 + Math.random() * 65;
+      const left = 3 + Math.random() * 55;
+      const candidate = estimateZone(top, left, text, fontSize);
+
+      const collision = occupiedZonesRef.current.some((z) => zonesOverlap(z, candidate));
+      if (!collision) return { top, left };
+    }
+
+    // Fallback: use a less crowded vertical zone
+    const top = 8 + Math.random() * 65;
+    const left = 3 + Math.random() * 55;
+    return { top, left };
+  }, []);
+
+  // ─── Animate a single line with GSAP ───
+  const animateLine = useCallback((lineText: string) => {
+    const container = containerRef.current;
+    if (!container || cancelledRef.current) return;
+
+    const t = themeRef.current;
+    const variant = pickRandom(t.variants);
+    const color = pickRandom(t.colors);
+    const singleWord = isSingleWord(lineText);
+    const wordCount = lineText.trim().split(/\s+/).length;
+
+    // Size: single words get larger, multi-word scaled down
+    const [rawMin, rawMax] = singleWord ? SINGLE_WORD_SIZE_RANGE : t.sizeRange;
+    const [minSize, maxSize] = singleWord ? [rawMin, rawMax] : [rawMin * SIZE_SCALE, rawMax * SIZE_SCALE];
+    const fontSize = minSize + Math.random() * (maxSize - minSize);
+
+    // Hold duration based on word count
+    const holdDuration = Math.max(3, wordCount * 0.8);
+
+    // Text transform
+    const displayText =
+      variant.textTransform === "uppercase" ? lineText.toUpperCase()
+      : variant.textTransform === "lowercase" ? lineText.toLowerCase()
+      : lineText;
+
+    // Find collision-free position
+    const { top, left } = findPosition(displayText, fontSize);
+
+    // Create DOM element
+    const el = document.createElement("span");
+    el.style.position = "absolute";
+    el.style.top = `${top}%`;
+    el.style.left = `${left}%`;
+    el.style.maxWidth = "80vw";
+    el.style.fontFamily = variant.fontFamily;
+    el.style.fontWeight = String(variant.fontWeight);
+    el.style.fontSize = `${fontSize}rem`;
+    el.style.lineHeight = "1.15";
+    el.style.letterSpacing = variant.letterSpacing;
+    el.style.color = color;
+    el.style.textShadow = t.textShadow;
+    el.style.opacity = "0";
+    el.style.willChange = "transform, opacity";
+
+    if (singleWord) {
+      // Per-character spans for staggered animation
+      for (const char of displayText) {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.style.display = "inline-block";
+        span.style.opacity = "0";
+        el.appendChild(span);
+      }
+    } else {
+      el.textContent = displayText;
+    }
+
+    container.appendChild(el);
+    activeCountRef.current++;
+
+    // Register occupied zone
+    const zone = estimateZone(top, left, displayText, fontSize);
+    const totalDuration = 1.5 + holdDuration + 2.0;
+    zone.expiresAt = Date.now() + totalDuration * 1000;
+    occupiedZonesRef.current.push(zone);
+
+    // Build GSAP timeline
+    const tl = gsap.timeline({
+      onComplete: () => {
+        el.remove();
+        activeCountRef.current--;
+      },
+    });
+
+    // Subtle continuous drift direction (random per line)
+    const driftX = (Math.random() - 0.5) * 12; // -6 to 6 px
+    const driftY = (Math.random() - 0.5) * 8;  // -4 to 4 px
+    const totalVisible = holdDuration + 3.5; // fade-in + hold + fade-out
+
+    if (singleWord) {
+      const chars = el.querySelectorAll("span");
+      // Entrance: per-character stagger with slow fade
+      tl.to(el, { opacity: 1, duration: 0.1 });
+      tl.fromTo(
+        chars,
+        { opacity: 0, y: 12, scale: 0.95 },
+        {
+          opacity: 1, y: 0, scale: 1,
+          duration: 1.0,
+          stagger: 0.04,
+          ease: "power2.out",
+        },
+        0
+      );
+      // Subtle drift during entire visible duration
+      tl.to(el, { x: driftX, y: driftY, duration: totalVisible, ease: "none" }, 0);
+      // Hold
+      tl.to(el, { duration: holdDuration });
+      // Exit: slow per-character fade out
+      tl.to(chars, {
+        opacity: 0, y: -8,
+        duration: 1.4,
+        stagger: 0.03,
+        ease: "power1.in",
+      });
+      tl.to(el, { opacity: 0, duration: 0.5 }, "-=0.5");
+    } else {
+      // Entrance: slow, gentle fade
+      tl.fromTo(el,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+      );
+      // Subtle drift during entire visible duration
+      tl.to(el, { x: driftX, y: driftY, duration: totalVisible, ease: "none" }, 0);
+      // Hold
+      tl.to(el, { duration: holdDuration });
+      // Exit: slow fade out
+      tl.to(el,
+        { opacity: 0, y: -8, duration: 2.0, ease: "power1.in" }
+      );
+    }
+
+    // Feed line into journey engine for text→image feedback
+    try {
+      const engine = getJourneyEngine();
+      if (engine.isActive()) {
+        engine.setCurrentPoetryLine(lineText);
+      }
+    } catch {
+      // Journey engine may not be active
+    }
+
+    // Speak
+    if (whisperEnabledRef.current) {
+      speakLine(lineText);
+    }
+  }, [findPosition, speakLine]);
+
+  // ─── Main loop ───
   useEffect(() => {
     cancelledRef.current = false;
-    // NO seed lines preloading — buffer starts empty, all lines from API
     bufferRef.current = [];
     sessionLinesRef.current = new Set();
-    setActiveLines([]);
+    occupiedZonesRef.current = [];
 
-    // Kick off initial API fetch
+    // Clear any existing GSAP-animated children
+    if (containerRef.current) {
+      containerRef.current.innerHTML = "";
+    }
+    activeCountRef.current = 0;
+
     fetchBatch();
 
     const effectiveInterval = intervalOverride ?? STAGGER_SECONDS;
 
     const interval = setInterval(() => {
-      // Pause poetry generation when audio is paused
       if (isPlayingRef.current === false) return;
-      // When live mode is on, pause AI batch pulls
       if (liveEnabledRef.current) return;
-
       if (bufferRef.current.length === 0) return;
-
-      // Cap max simultaneous active lines to avoid visual overload
-      if (activeLinesCountRef.current >= MAX_ACTIVE_LINES) return;
+      if (activeCountRef.current >= MAX_ACTIVE_LINES) return;
 
       const lineText = bufferRef.current.shift()!;
-      const newLine = createActiveLine(lineText);
+      animateLine(lineText);
 
-      setActiveLines((prev) => [...prev, newLine]);
-
-      // Feed line into journey engine for text→image feedback
-      try {
-        const engine = getJourneyEngine();
-        if (engine.isActive()) {
-          engine.setCurrentPoetryLine(lineText);
-        }
-      } catch {
-        // Journey engine may not be active
-      }
-
-      // Speak via ref
-      if (whisperEnabledRef.current) {
-        speakLine(lineText);
-      }
-
-      // Auto-remove after animation completes
-      setTimeout(() => {
-        setActiveLines((prev) => prev.filter((l) => l.id !== newLine.id));
-      }, newLine.duration * 1000);
-
-      // Refetch when buffer is running low
       if (bufferRef.current.length <= REFETCH_THRESHOLD) {
         fetchBatch();
       }
@@ -344,87 +504,25 @@ export function PoetryOverlay({
     return () => {
       cancelledRef.current = true;
       clearInterval(interval);
-      // Don't clear activeLines — let existing lines finish their CSS animation naturally
+      // Kill all active GSAP tweens on our container
+      if (containerRef.current) {
+        gsap.killTweensOf(containerRef.current.querySelectorAll("*"));
+      }
     };
-  }, [fetchBatch, theme.sizeRange, theme.animationDuration, theme.variants, theme.animation, createActiveLine, speakLine, intervalOverride]);
+  }, [fetchBatch, animateLine, intervalOverride]);
 
-  // Live text injection — when liveText changes, inject it as a new line
+  // ─── Live text injection ───
   useEffect(() => {
     if (!liveText) return;
-    const newLine = createActiveLine(liveText);
-    setActiveLines((prev) => [...prev, newLine]);
-
-    // Feed into journey engine
-    try {
-      const engine = getJourneyEngine();
-      if (engine.isActive()) {
-        engine.setCurrentPoetryLine(liveText);
-      }
-    } catch {
-      // ignore
-    }
-
-    if (whisperEnabledRef.current) {
-      speakLine(liveText);
-    }
-
-    setTimeout(() => {
-      setActiveLines((prev) => prev.filter((l) => l.id !== newLine.id));
-    }, newLine.duration * 1000);
-  }, [liveText, createActiveLine, speakLine]);
-
-  // Keep ref in sync for non-React reads (interval callback)
-  activeLinesCountRef.current = activeLines.length;
-
-  if (activeLines.length === 0) return null;
+    animateLine(liveText);
+  }, [liveText, animateLine]);
 
   return (
     <div
+      ref={containerRef}
       className="absolute inset-0 overflow-hidden"
       style={{ pointerEvents: "none", zIndex: 8 }}
       aria-hidden="true"
-    >
-      {activeLines.map((line) => {
-        const variant = line.variant;
-        const text =
-          variant.textTransform === "uppercase"
-            ? line.text.toUpperCase()
-            : variant.textTransform === "lowercase"
-              ? line.text.toLowerCase()
-              : line.text;
-
-        const holdAnimation = pickRandom(HOLD_ANIMATIONS);
-
-        // Single whole-line animation: lifecycle + gentle drift
-        const outerAnimation = [
-          `poetry-line-lifecycle ${line.duration}s ${SWISS_EASE} forwards`,
-          `${holdAnimation} ${line.duration}s ease-in-out infinite`,
-        ].join(", ");
-
-        return (
-          <span
-            key={line.id}
-            className="absolute"
-            style={{
-              top: line.top,
-              left: line.left,
-              maxWidth: "80vw",
-              fontFamily: variant.fontFamily,
-              fontWeight: variant.fontWeight,
-              fontSize: line.fontSize,
-              lineHeight: 1.15,
-              letterSpacing: variant.letterSpacing,
-              color: line.color,
-              textShadow: theme.textShadow,
-              opacity: 0,
-              animation: outerAnimation,
-              willChange: "transform, opacity",
-            }}
-          >
-            {text}
-          </span>
-        );
-      })}
-    </div>
+    />
   );
 }

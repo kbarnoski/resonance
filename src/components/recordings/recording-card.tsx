@@ -96,14 +96,14 @@ export function RecordingCard({
   return (
     <Link href={`/recording/${id}`} className="block">
     <Card
-      className="transition-all duration-200 hover:bg-accent hover:shadow-md dark:hover:shadow-primary/10 dark:hover:border-primary/30 cursor-pointer"
+      className="transition-all duration-200 hover:bg-white/[0.03] cursor-pointer"
     >
       <CardContent className="flex items-center gap-4 py-4">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10">
-          <FileAudio className="h-5 w-5 text-primary" />
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
+          <FileAudio className="h-5 w-5 text-white/40" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="truncate font-medium">{title}</p>
+          <p className="truncate font-light">{title}</p>
           {description && (
             <p className="truncate text-xs text-muted-foreground">{description}</p>
           )}
@@ -134,7 +134,7 @@ export function RecordingCard({
               {tags.map((tag) => (
                 <span
                   key={tag.id}
-                  className="inline-flex items-center rounded-full border border-border px-2 py-0 text-[10px] font-medium text-muted-foreground"
+                  className="inline-flex items-center rounded-full border border-white/[0.08] px-2 py-0 text-[10px] font-medium text-white/30"
                 >
                   {tag.name}
                 </span>
@@ -143,7 +143,7 @@ export function RecordingCard({
           )}
         </div>
         {hasAnalysis && (
-          <span className="shrink-0 inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-2.5 py-0.5 text-xs font-medium text-primary">
+          <span className="shrink-0 inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 font-mono text-[0.65rem] text-white/40">
             Analyzed
           </span>
         )}

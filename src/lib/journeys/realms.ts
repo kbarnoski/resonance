@@ -31,7 +31,11 @@ export const REALMS: Realm[] = [
         "ecstatic stillness",
       ],
     },
-    shaderModes: ["astral", "sacred", "ethereal", "aurora"],
+    shaderModes: [
+      "astral", "sacred", "ethereal", "aurora", "ascension", "revelation",
+      "prismatic", "dissolution", "stardust", "fibonacci", "mandala", "nebula",
+      "solstice", "helix", "drift", "expanse",
+    ],
     palette: {
       primary: "#1a1408",
       secondary: "#2e2410",
@@ -73,7 +77,11 @@ export const REALMS: Realm[] = [
         "the overwhelming presence of something ancient and merciless watching",
       ],
     },
-    shaderModes: ["inferno", "chasm", "crypt", "obsidian"],
+    shaderModes: [
+      "inferno", "chasm", "crypt", "obsidian", "phantom", "wraith",
+      "umbra", "plasma", "torrent", "monolith", "abyss",
+      "warp", "fractal", "eclipse", "rapture",
+    ],
     palette: {
       primary: "#0a0000",
       secondary: "#1a0505",
@@ -115,7 +123,11 @@ export const REALMS: Realm[] = [
         "symbiotic wonder",
       ],
     },
-    shaderModes: ["mycelium", "sacred", "liquid", "ethereal"],
+    shaderModes: [
+      "mycelium", "sacred", "liquid", "ethereal", "bloom", "spore",
+      "chrysalis", "growth", "fibonacci", "dendrite", "membrane", "lichen",
+      "moss", "coral", "plankton", "tide",
+    ],
     palette: {
       primary: "#081a08",
       secondary: "#0a2e0a",
@@ -157,7 +169,11 @@ export const REALMS: Realm[] = [
         "gentle buoyancy",
       ],
     },
-    shaderModes: ["liquid", "cosmos", "void", "ethereal"],
+    shaderModes: [
+      "liquid", "cosmos", "ethereal", "tide", "ocean",
+      "whirlpool", "current", "delta", "plankton", "coral", "membrane",
+      "drift", "nebula", "abyss", "cascade",
+    ],
     palette: {
       primary: "#050a1a",
       secondary: "#0a142e",
@@ -199,7 +215,11 @@ export const REALMS: Realm[] = [
         "synthetic transcendence",
       ],
     },
-    shaderModes: ["neon", "tesseract", "warp", "fractal"],
+    shaderModes: [
+      "neon", "tesseract", "warp", "fractal", "lattice", "helix",
+      "meridian", "prism", "moire", "spiral", "geodesic", "weave",
+      "plasma", "pulsar", "penrose", "torus",
+    ],
     palette: {
       primary: "#08081a",
       secondary: "#0a0a2e",
@@ -241,7 +261,11 @@ export const REALMS: Realm[] = [
         "gravitational awe",
       ],
     },
-    shaderModes: ["cosmos", "astral", "void", "warp"],
+    shaderModes: [
+      "cosmos", "astral", "warp", "nebula", "stardust",
+      "supernova", "pulsar", "quasar", "singularity", "corona", "solstice",
+      "drift", "expanse", "horizon", "abyss",
+    ],
     palette: {
       primary: "#05051a",
       secondary: "#0a0a2e",
@@ -252,48 +276,6 @@ export const REALMS: Realm[] = [
     poetryMood: "dreamy",
     poetryImagery:
       "nebulae forming, star birth, vast silence, gravitational waves, cosmic dust, infinite expansion, interstellar drift",
-  },
-  {
-    id: "void",
-    name: "The Void",
-    subtitle: "the space before being",
-    visualVocabulary: {
-      environments: [
-        "absolute darkness with faint geometry",
-        "space between thoughts",
-        "the moment before the Big Bang",
-        "formless potential energy",
-      ],
-      entities: [
-        "self dissolving into particles",
-        "identity fragmenting into light",
-        "boundaries crumbling silently",
-        "consciousness without a container",
-      ],
-      textures: [
-        "darkness that is not empty",
-        "quantum foam at Planck scale",
-        "static between dimensions",
-        "void with embedded potential",
-      ],
-      atmospheres: [
-        "total dissolution",
-        "formless awareness",
-        "before-birth silence",
-        "pure potential",
-      ],
-    },
-    shaderModes: ["void", "dissolution", "prismatic", "cosmos"],
-    palette: {
-      primary: "#020202",
-      secondary: "#080808",
-      accent: "#808080",
-      glow: "#a0a0a0",
-    },
-    defaultVoice: "alloy",
-    poetryMood: "mystical",
-    poetryImagery:
-      "formless awareness, dissolving boundaries, pure darkness, space before birth, quantum foam, identity fragmenting, absolute silence",
   },
   {
     id: "temple",
@@ -325,7 +307,11 @@ export const REALMS: Realm[] = [
         "sacred stillness",
       ],
     },
-    shaderModes: ["sacred", "mandala", "tesseract", "astral"],
+    shaderModes: [
+      "sacred", "mandala", "tesseract", "astral", "fibonacci", "oracle",
+      "revelation", "prophecy", "glyph", "sigil", "lattice", "helix",
+      "prism", "temple", "geodesic", "penrose",
+    ],
     palette: {
       primary: "#141008",
       secondary: "#1e1810",
@@ -367,7 +353,11 @@ export const REALMS: Realm[] = [
         "time dissolving in a space where every direction is the same",
       ],
     },
-    shaderModes: ["void", "temple", "crypt", "lattice"],
+    shaderModes: [
+      "temple", "crypt", "lattice", "tesseract", "spiral",
+      "moire", "penrose", "meridian", "weave", "portal", "threshold",
+      "fog", "monolith", "phantom", "geodesic",
+    ],
     palette: {
       primary: "#0a0a08",
       secondary: "#1a1810",
@@ -409,7 +399,11 @@ export const REALMS: Realm[] = [
         "the sacred exhaustion of climbing toward something unreachable",
       ],
     },
-    shaderModes: ["astral", "fog", "horizon", "expanse"],
+    shaderModes: [
+      "astral", "fog", "horizon", "expanse", "drift", "solstice",
+      "corona", "aurora", "stardust", "nebula", "oracle", "field",
+      "revelation", "threshold", "dissolution", "cosmos",
+    ],
     palette: {
       primary: "#080a10",
       secondary: "#101520",
@@ -451,7 +445,11 @@ export const REALMS: Realm[] = [
         "the paradox of emptiness that is completely full of light",
       ],
     },
-    shaderModes: ["horizon", "dusk", "expanse", "umbra"],
+    shaderModes: [
+      "horizon", "dusk", "expanse", "umbra", "solstice", "drift",
+      "fog", "corona", "dissolution", "stardust", "ember", "flux",
+      "abyss", "singularity", "mesa",
+    ],
     palette: {
       primary: "#1a1408",
       secondary: "#2e2410",
@@ -493,7 +491,11 @@ export const REALMS: Realm[] = [
         "time measured in pages turned, each page an eternity",
       ],
     },
-    shaderModes: ["temple", "lattice", "prophecy", "fog"],
+    shaderModes: [
+      "temple", "lattice", "prophecy", "fog", "oracle", "glyph",
+      "sacred", "spiral", "moire", "penrose", "sigil", "threshold",
+      "revelation", "weave", "meridian", "chronos",
+    ],
     palette: {
       primary: "#10100a",
       secondary: "#1e1810",
@@ -535,7 +537,11 @@ export const REALMS: Realm[] = [
         "the sublime terror of infinite natural force",
       ],
     },
-    shaderModes: ["storm", "plasma", "chasm", "wraith"],
+    shaderModes: [
+      "storm", "plasma", "chasm", "wraith", "torrent", "inferno",
+      "flux", "cascade", "current", "whirlpool", "warp",
+      "abyss", "eclipse", "delta", "umbra",
+    ],
     palette: {
       primary: "#050510",
       secondary: "#0a0a1a",
@@ -577,7 +583,11 @@ export const REALMS: Realm[] = [
         "hushed reverence",
       ],
     },
-    shaderModes: ["snow", "fog", "aurora", "ethereal"],
+    shaderModes: [
+      "snow", "fog", "aurora", "ethereal", "drift", "expanse",
+      "dissolution", "prismatic", "solstice", "membrane",
+      "threshold", "tide", "stardust", "glacier", "cosmos",
+    ],
     palette: {
       primary: "#080a12",
       secondary: "#101520",
@@ -619,7 +629,11 @@ export const REALMS: Realm[] = [
         "the relief of return",
       ],
     },
-    shaderModes: ["bloom", "mycelium", "liquid", "growth"],
+    shaderModes: [
+      "bloom", "mycelium", "liquid", "growth", "spore", "chrysalis",
+      "dendrite", "lichen", "moss", "ethereal", "coral", "tide",
+      "membrane", "fibonacci", "plankton", "flux",
+    ],
     palette: {
       primary: "#0a1208",
       secondary: "#142010",
@@ -661,7 +675,11 @@ export const REALMS: Realm[] = [
         "warm darkness alive with sound",
       ],
     },
-    shaderModes: ["dusk", "ember", "storm", "prismatic"],
+    shaderModes: [
+      "dusk", "ember", "storm", "prismatic", "solstice", "corona",
+      "horizon", "aurora", "bloom", "flux", "cascade", "fog",
+      "tide", "supernova", "delta", "current",
+    ],
     palette: {
       primary: "#1a1408",
       secondary: "#2e2010",
@@ -703,7 +721,11 @@ export const REALMS: Realm[] = [
         "the beauty of decline",
       ],
     },
-    shaderModes: ["ember", "fog", "dissolution", "dendrite"],
+    shaderModes: [
+      "ember", "fog", "dissolution", "dendrite", "dusk", "drift",
+      "moss", "lichen", "membrane", "tide", "flux", "mycelium",
+      "spore", "cascade", "stardust", "horizon",
+    ],
     palette: {
       primary: "#1a0e08",
       secondary: "#2e1810",
@@ -748,6 +770,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "astral", "sacred", "ethereal", "mandala", "dissolution",
       "aurora", "nebula", "stardust", "mycelium", "fibonacci", "ascension",
+      "revelation", "prismatic", "oracle", "prophecy", "eclipse",
     ],
     palette: {
       primary: "#0a0814",
@@ -790,7 +813,11 @@ export const REALMS: Realm[] = [
         "loneliness so complete it has replaced the blood in your veins",
       ],
     },
-    shaderModes: ["void", "phantom", "obsidian", "umbra", "chasm", "crypt"],
+    shaderModes: [
+      "phantom", "obsidian", "umbra", "chasm", "crypt",
+      "wraith", "monolith", "abyss", "torrent", "dissolution", "plasma",
+      "fog", "singularity", "eclipse", "inferno",
+    ],
     palette: {
       primary: "#020204",
       secondary: "#0a0810",

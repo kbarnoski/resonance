@@ -43,11 +43,7 @@ export async function POST(request: Request) {
       instructionParts.push(VOICE_INSTRUCTIONS[phase]);
     }
     if (language && language !== "en") {
-      const LANGUAGE_NAMES: Record<string, string> = {
-        es: "Spanish", fr: "French", de: "German", it: "Italian",
-        pt: "Portuguese", ja: "Japanese", ko: "Korean", zh: "Chinese",
-        hi: "Hindi", ar: "Arabic", ru: "Russian",
-      };
+      const { LANGUAGE_NAMES } = await import("@/lib/audio/languages");
       const langName = LANGUAGE_NAMES[language] ?? language;
       instructionParts.push(`Speak in ${langName}.`);
     }

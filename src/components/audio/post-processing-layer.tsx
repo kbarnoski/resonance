@@ -2,6 +2,14 @@
 
 import { useRef, useEffect } from "react";
 
+/** Expand 3-char hex (#RGB) to 6-char (#RRGGBB) so alpha bytes can be appended */
+function hex6(color: string): string {
+  if (color.length === 4 && color[0] === "#") {
+    return `#${color[1]}${color[1]}${color[2]}${color[2]}${color[3]}${color[3]}`;
+  }
+  return color;
+}
+
 interface PostProcessingLayerProps {
   chromaticAberration: number; // 0-1
   vignette: number;           // 0-1
@@ -148,8 +156,8 @@ export function PostProcessingLayer({
         const halAlpha = halation * 0.12 * (0.6 + audioAmplitude * 0.4);
         const a1 = Math.round(halAlpha * 255).toString(16).padStart(2, "0");
         const a2 = Math.round(halAlpha * 128).toString(16).padStart(2, "0");
-        halGradient.addColorStop(0, `${palette.glow}${a1}`);
-        halGradient.addColorStop(0.5, `${palette.accent}${a2}`);
+        halGradient.addColorStop(0, `${hex6(palette.glow)}${a1}`);
+        halGradient.addColorStop(0.5, `${hex6(palette.accent)}${a2}`);
         halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.globalCompositeOperation = "screen";
         ctx.fillStyle = halGradient;

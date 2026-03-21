@@ -50,12 +50,6 @@ export const REALM_GUIDANCE: Record<string, Partial<Record<JourneyPhaseId, strin
     transcendence: ["witness the supernova...", "death is creation...", "you are stardust remembering..."],
     integration: ["you are the cosmos looking at itself...", "drift home..."],
   },
-  void: {
-    threshold: ["let go of your name...", "there is nothing to hold...", "be still..."],
-    expansion: ["you are dissolving...", "this is not loss...", "let the edges go..."],
-    transcendence: ["there is no you...", "everything is this...", "..."],
-    integration: ["reborn...", "carry the void gently..."],
-  },
   temple: {
     threshold: ["enter the temple...", "the stones are listening...", "breathe with the ancients..."],
     expansion: ["the geometry reveals itself...", "every angle is intentional...", "feel the golden ratio..."],

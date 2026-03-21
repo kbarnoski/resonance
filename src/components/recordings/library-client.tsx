@@ -95,7 +95,7 @@ export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Library</h1>
+          <h1 className="text-2xl font-extralight tracking-tight">Library</h1>
           <p className="text-muted-foreground">
             {recordings.length} recording{recordings.length !== 1 ? "s" : ""}
           </p>
@@ -137,8 +137,8 @@ export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
                     onClick={() => toggleTag(tag.id)}
                     className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors ${
                       active
-                        ? "border-foreground bg-foreground text-background"
-                        : "border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground/50"
+                        ? "bg-white/15 text-white/90 border-white/20"
+                        : "bg-transparent text-white/40 border-white/[0.08] hover:bg-white/[0.05]"
                     }`}
                   >
                     {tag.name}
@@ -185,7 +185,7 @@ export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
           ))}
         </div>
       ) : recordings.length > 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-white/[0.08] py-16">
           <Search className="mb-4 h-10 w-10 text-muted-foreground" />
           <p className="mb-2 text-lg font-medium">No matches</p>
           <p className="mb-4 text-sm text-muted-foreground">
@@ -196,7 +196,7 @@ export function LibraryClient({ recordings, allTags }: LibraryClientProps) {
           </Button>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
+        <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-white/[0.08] py-16">
           <Library className="mb-4 h-10 w-10 text-muted-foreground" />
           <p className="mb-2 text-lg font-medium">No recordings yet</p>
           <p className="mb-4 text-sm text-muted-foreground">

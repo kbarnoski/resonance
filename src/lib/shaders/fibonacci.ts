@@ -68,7 +68,7 @@ void main() {
     );
 
     // Inner dots (smaller r) are more saturated — depth emphasis
-    float depthMix = clamp(1.0 - dotR / (float(numPoints) * spacing * 0.5), 0.0, 1.0);
+    float depthMix = clamp(1.0 - dotR / (200.0 * spacing * 0.5), 0.0, 1.0);
     vec3 dotCol = mix(dotCol2, dotCol1, depthMix);
 
     color += dotCol * dotGlow * 0.5;

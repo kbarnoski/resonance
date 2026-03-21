@@ -44,6 +44,7 @@ export function JourneyCompositor({
   const effectivePrompt = frame?.aiPrompt ?? aiPrompt ?? "";
   const effectiveDenoising = frame?.denoisingStrength ?? 0.5;
   const effectiveTargetFps = frame?.targetFps ?? 2;
+  const effectiveShaderOpacity = frame?.shaderOpacity ?? 1.0;
   const showAi = aiEnabled && !!effectivePrompt;
 
   if (!showAi && !frame) {
@@ -66,6 +67,7 @@ export function JourneyCompositor({
           enabled={true}
           aiOnly={aiOnly}
           generating={aiGenerating}
+          shaderOpacity={effectiveShaderOpacity}
         />
       )}
 
