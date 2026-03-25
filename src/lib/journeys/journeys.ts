@@ -81,6 +81,16 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
  * 70% from affinity categories, 30% from the rest for variety.
  */
 /** Per-realm shader blocklist — these modes are excluded for that realm */
+/** Shaders blocked from ALL realms except those in REALM_SHADER_ALLOW */
+const GLOBAL_SHADER_BLOCKLIST: string[] = [
+  "snow", // only appropriate for winter/snowflake or user-created journeys
+];
+
+/** Realms that ARE allowed to use globally-blocked shaders */
+const REALM_SHADER_ALLOW: Record<string, string[]> = {
+  winter: ["snow"], // snow is core to the winter realm
+};
+
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
     "magma", "inferno", "bonfire", "flame", // fire
@@ -95,15 +105,21 @@ const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   heaven: [
     "orb", // wrong vibe
   ],
+  cosmos: [
+    "rain", // wrong atmosphere for space
+  ],
   ocean: [
-    "snow", "rain", // wrong climate
+    "rain", // wrong climate
     "sandstorm", // land-based
     "bonfire", "flame", "inferno", // fire
   ],
   garden: [
-    "snow", "rain", // wrong climate
+    "rain", // wrong climate
     "sandstorm", // land-based
     "bonfire", "inferno", // fire
+  ],
+  temple: [
+    "prismatic", // wrong vibe for sacred geometry
   ],
 };
 
@@ -115,7 +131,9 @@ const REALM_SHADER_MUSTINCLUDE: Record<string, string[]> = {
 
 function pickJourneyShaders(realmId: string, random: () => number = Math.random): string[] {
   const affinityCategories = REALM_SHADER_AFFINITY[realmId] ?? [];
-  const blocklist = new Set(REALM_SHADER_BLOCKLIST[realmId] ?? []);
+  const allowedGlobals = new Set(REALM_SHADER_ALLOW[realmId] ?? []);
+  const globalBlocked = GLOBAL_SHADER_BLOCKLIST.filter(s => !allowedGlobals.has(s));
+  const blocklist = new Set([...globalBlocked, ...(REALM_SHADER_BLOCKLIST[realmId] ?? [])]);
   const mustInclude = REALM_SHADER_MUSTINCLUDE[realmId] ?? [];
 
   // Build category lookup from MODE_META (skip AI Imagery category)
