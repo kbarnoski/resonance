@@ -623,6 +623,7 @@ export function VisualizerClient({
           journeyRealmId={activeRealm?.id}
           journeyStoryText={activeJourney?.storyText}
           journeyActive={journeyActive}
+          journeyName={activeJourney?.name ?? null}
           onStopJourney={() => {
             useAudioStore.getState().stopJourney();
             setJourneyOpen(true);

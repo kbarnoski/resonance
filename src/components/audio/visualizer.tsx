@@ -79,6 +79,8 @@ export interface VisualizerCoreProps {
   journeyStoryText?: string | null;
   /** When true, simplify controls to journey-only actions */
   journeyActive?: boolean;
+  /** Name of the active journey (shown in stop button) */
+  journeyName?: string | null;
   /** Callback to stop the active journey */
   onStopJourney?: () => void;
   /** Callback to share the active journey */
@@ -334,6 +336,7 @@ export function VisualizerCore({
   journeyRealmId,
   journeyStoryText,
   journeyActive,
+  journeyName,
   onStopJourney,
   onShareJourney,
   onStudy,
@@ -814,7 +817,7 @@ export function VisualizerCore({
                   style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}
                 >
                   <RotateCcw className="h-3.5 w-3.5" />
-                  Stop Journey
+                  Stop {journeyName || "Journey"}
                 </button>
 
                 <div className="w-px h-5 bg-white/10 mx-1" />

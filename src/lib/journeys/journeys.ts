@@ -547,7 +547,7 @@ export const JOURNEYS: Journey[] = [
         voice: "echo",
       },
       expansion: {
-        aiPrompt: "WHITE BACKGROUND — designed signal lattice architecture sweeping diagonally from upper left toward lower right, connected data-stream forms in orthogonal geometry with subtle dark edges and fine electric blue lines defining the interwoven circuit against brilliant pale ground, warm amber signal pulses glowing at the densest intersections in the upper third trailing into scattered pixel particles and open white space below, infinite depth through layered translucent grid planes, no screens no computers no figures, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "vast data-stream highways radiating outward from a dense node cluster in the upper-left third of infinite black void, hundreds of fine cyan signal-lines stretching in parallel toward infinite distance, the pathways architecturally designed with repeating geometric junction-rings that glow warm amber where data-packets pulse through, scattered pixel particles drifting between the streams into endless dark atmosphere, cosmic scale where each highway is a galactic data-corridor, infinite depth through converging perspective lines disappearing into the void, no screens no computers no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["uploading...", "bandwidth expanding...", "feel the data..."],
         poetryMood: "chaotic",
         voice: "echo",
@@ -559,7 +559,7 @@ export const JOURNEYS: Journey[] = [
         voice: "echo",
       },
       illumination: {
-        aiPrompt: "PALE BACKGROUND — intricate dark circuit threads and connected signal node forms arranged along the left edge and lower third of an immense soft white field, designed data-stream detail like electric blueprints with dispersed pixel particles trailing rightward into open pale space, warm amber light at the circuit junctions, the design clusters asymmetrically leaving the upper right vast and open, quiet power in the contrast of dark interwoven logical intricacy against boundless white, no screens no computers no figures, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "clean architectural logic-gate clusters floating in infinite black atmosphere, three distinct node-groups arranged asymmetrically across the frame — each a different geometric network topology with cyan wireframe edges and warm amber core-light, fine connecting signal-threads bridging between the clusters across vast dark empty space, scattered data-particles suspended motionless in the void between structures like stars, the silence of pure computation rendered as architecture in infinite dark cosmos, composition weighted to the right third with generous black void left, no screens no computers no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["the machine dreams too...", "silicon and carbon are the same...", "pure logic, pure beauty..."],
         poetryMood: "hypnotic",
         voice: "echo",

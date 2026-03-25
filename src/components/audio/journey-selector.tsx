@@ -690,7 +690,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 }}
               >
                 <RotateCcw className="h-3.5 w-3.5" />
-                Stop Journey
+                Stop {activeJourney?.name || "Journey"}
               </button>
             )}
           </div>

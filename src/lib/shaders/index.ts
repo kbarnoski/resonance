@@ -401,7 +401,7 @@ export const MODE_META: ModeMeta[] = [
   { mode: "mangrove", label: "Mangrove", category: "Organic" },
 
   // Geometry
-  { mode: "sacred", label: "Sacred", category: "Geometry" },
+  // sacred removed — grainy resolution effect, not suitable for journeys
   { mode: "tesseract", label: "Tesseract", category: "Geometry" },
   { mode: "neon", label: "Neon", category: "Geometry" },
   { mode: "lattice", label: "Lattice", category: "Geometry" },
