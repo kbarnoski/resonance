@@ -95,6 +95,16 @@ const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   heaven: [
     "orb", // wrong vibe
   ],
+  ocean: [
+    "snow", "rain", // wrong climate
+    "sandstorm", // land-based
+    "bonfire", "flame", "inferno", // fire
+  ],
+  garden: [
+    "snow", "rain", // wrong climate
+    "sandstorm", // land-based
+    "bonfire", "inferno", // fire
+  ],
 };
 
 /** Per-realm must-include shaders — always present in the journey pool */
@@ -489,32 +499,32 @@ export const JOURNEYS: Journey[] = [
     phaseLabels: { threshold: "Surface", expansion: "Sinking", transcendence: "Abyss", illumination: "Glow", return: "Ascending", integration: "Shore" },
     phases: defaultPhases("ocean", {
       threshold: {
-        aiPrompt: "designed bioluminescent jellyfish-like structure entering from the lower right corner against deep blue-black void, phosphorescent cyan tendrils connected by impossibly fine translucent membranes with warm bioluminescent amber pulsing at the bell, fine luminous particles dispersed along the trailing filaments into vast dark negative space above and left, cosmic scale where the form could be a deep-space organism, asymmetric composition with visual weight low and right, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "shafts of caustic light refracting downward from the upper-left corner through deep blue-black water, the light beams impossibly designed with geometric interference patterns and voronoi caustic cells dancing across the illuminated area, fine suspended particles catching the light along diagonal paths into vast dark abyssal negative space below and right, photorealistic underwater light texture at cosmic scale where each caustic pattern could be a galaxy, asymmetric composition with visual weight high and left, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["sink...", "let the water hold you...", "trust the depth..."],
         poetryMood: "flowing",
       },
       expansion: {
-        aiPrompt: "WHITE BACKGROUND — designed deep-water light architecture sweeping diagonally from upper left toward lower right, connected bioluminescent forms with subtle blue-grey shadows and fine cyan edges defining the interwoven membrane structure against brilliant pale ground, warm phosphorescent amber glowing from deep within the densest regions in the upper third trailing into scattered luminous particles and open white space below, infinite abyssal depth through layered translucency, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "WHITE BACKGROUND — designed siphonophore colonial chain sweeping diagonally from upper left toward lower right, the organism impossibly long and architectural with repeating geometric bell-chambers connected by translucent filaments in fibonacci spacing, subtle blue-grey shadows and fine cyan bioluminescent edges defining the chain-structure against brilliant pale ground, warm amber pulsing from the densest cluster in the upper third trailing into scattered luminous zooids and open white space below, infinite depth through layered translucency, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["deeper...", "the light changes here...", "pressure becomes peace..."],
         poetryMood: "dreamy",
       },
       transcendence: {
-        aiPrompt: "cosmic-scale connected bioluminescent lattice sweeping across infinite blue-black in a vast descending spiral arc, deep cyan and electric phosphorescent blue light pulsing within the membrane nodes, the structure dense and intricate where it crosses the frame but dissolving into luminous particle trails and open void at both edges, translucent bridges and caustic light rays stretching toward infinite darkness below, dynamic and powerful, the deep ocean mid-revelation, composition fills the frame but is not centered — the spiral core sits upper right with bioluminescent streamers reaching across, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "cosmic-scale abyssal thermal vent architecture erupting from the lower-left third of infinite blue-black deep, the chimney structures impossibly designed with mineral-encrusted voronoi walls and fractal bacterial mat textures glowing deep orange and electric cyan from within, superheated shimmer-particles billowing upward from the vent openings into vast dark water above and right, the structure dense and intricate at the vent cluster but dissolving into dispersed mineral particles and open void at both edges, dynamic and alive with convection currents, composition not centered with the vent core lower-left and particle plumes rising across, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["the deep sees you...", "you are weightless...", "become the ocean..."],
         poetryMood: "mystical",
       },
       illumination: {
-        aiPrompt: "PALE BACKGROUND — intricate dark deep-water membrane threads and connected bioluminescent node forms arranged along the left edge and lower third of an immense soft white field, designed abyssal detail like phosphorescent blueprints with dispersed luminous particles trailing rightward into open pale space, warm amber bioluminescence at the membrane junctions, the design clusters asymmetrically leaving the upper right vast and open, quiet power in the contrast of dark interwoven deep-water intricacy against boundless white light, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "PALE BACKGROUND — intricate radiolarian glass-skeleton forms and connected diatom lattice arranged along the left edge and lower third of an immense soft blue-white field, microscopic deep-water organisms rendered at cosmic scale with impossible geometric precision — hexagonal silica chambers, spiraling internal architecture, fine spines radiating outward, dispersed crystal particles trailing rightward into open pale space, faint cyan bioluminescence at the lattice joints, the design clusters asymmetrically leaving the upper right vast and open, quiet power in the contrast of dark geometric marine intricacy against boundless white, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["the bottom is quiet...", "listen to the deep...", "ancient water holds ancient truth..."],
         poetryMood: "flowing",
       },
       return: {
-        aiPrompt: "connected bioluminescent lattice arcing from lower left across a deep indigo field, prismatic deep-water light threading through the structure — cyan to blue to violet to warm amber, dispersed luminous particles catching soft spectrum as they drift upward into generous dark negative space above and right, the interwoven membrane form is flowing and ascending not static, composition weighted to the lower half with cosmic ocean darkness opening above, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "ascending ctenophore comb-rows and trailing tentacle architecture arcing upward from lower left across deep indigo water, prismatic iridescence diffracting through the comb-plate structures — cyan to blue to violet to rose to warm amber, the organism impossibly designed with geometric internal channels and fibonacci-spaced ciliary rows, dispersed bioluminescent particles drifting upward into generous dark negative space above and right, the form is dynamic and ascending, composition weighted to the lower half with deep ocean darkness opening above, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["rise gently...", "the surface remembers you...", "warmth returns..."],
         poetryMood: "dreamy",
       },
       integration: {
-        aiPrompt: "sparse dispersed luminous particles and fading bioluminescent membrane traces drifting across vast blue-black silence, the last connected deep-water forms clustered small in the lower left corner dissolving into scattered phosphorescent points that trail diagonally toward infinite upper darkness, faint cyan and warm amber light in the final nodes, enormous open deep everywhere above, the particles carry the abyss's memory as they rise and scatter, asymmetric and quiet — almost nothing against everything, no fish no coral reefs no surface water, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "sparse marine snow — tiny organic particles and fading planktonic traces drifting slowly downward across vast blue-black silence, the last bioluminescent forms clustered small in the lower left corner — a few faint cyan points dissolving into scattered motes that trail diagonally toward infinite upper water, enormous open deep everywhere, each particle catching the faintest light as it sinks through the water column, asymmetric and quiet — almost nothing against everything, no fish no coral reefs no surface water no figures, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["you've surfaced...", "the depth stays with you..."],
         poetryMood: "flowing",
       },
