@@ -737,12 +737,12 @@ export function VisualizerCore({
                       className="flex items-center gap-1.5 mb-1.5 group w-full text-left"
                     >
                       <p
-                        className="text-white/30 group-hover:text-white/50 transition-colors"
-                        style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
+                        className="text-white/40 group-hover:text-white/50 transition-colors"
+                        style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
                       >
                         {category}
                       </p>
-                      <span className="text-white/20" style={{ fontSize: "0.55rem", fontFamily: "var(--font-geist-mono)" }}>
+                      <span className="text-white/30" style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)" }}>
                         {categoryModes.length}
                       </span>
                       {!search && (
@@ -762,8 +762,9 @@ export function VisualizerCore({
                                 ? "bg-white/15 text-white"
                                 : "text-white/50 hover:bg-white/8 hover:text-white/80"
                             }`}
+                            style={{ minHeight: "36px" }}
                           >
-                            <span style={{ fontSize: "0.55rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
+                            <span style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
                           </button>
                         ))}
                       </div>
@@ -785,19 +786,22 @@ export function VisualizerCore({
           pointerEvents: controlsVisible ? "auto" : "none",
         }}
       >
-        {/* Progress bar — 2px, full width, top edge */}
+        {/* Progress bar — 2px visual, 24px hit area */}
         {showTransport && currentTrack && (
           <div
-            className="h-[2px] cursor-pointer overflow-hidden"
+            className="flex items-center cursor-pointer"
+            style={{ minHeight: "24px" }}
             onClick={handleProgressClick}
           >
-            <div
-              className="h-full transition-all duration-300 ease-linear"
-              style={{
-                width: `${progress * 100}%`,
-                background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.5) 100%)",
-              }}
-            />
+            <div className="w-full h-[2px] overflow-hidden">
+              <div
+                className="h-full transition-all duration-300 ease-linear"
+                style={{
+                  width: `${progress * 100}%`,
+                  background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.5) 100%)",
+                }}
+              />
+            </div>
           </div>
         )}
 
@@ -831,7 +835,7 @@ export function VisualizerCore({
                     if (nextMode === "off") setWhisperEnabled(false);
                     setTextOverlayMode(nextMode);
                   }}
-                  className={`p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                  className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                   title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
                 >
                   {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
@@ -839,7 +843,7 @@ export function VisualizerCore({
                 {textOverlayMode !== "off" && (
                   <button
                     onClick={() => setWhisperEnabled(!whisperEnabled)}
-                    className={`p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="Whisper"
                   >
                     <AudioLines className="h-4 w-4" />
@@ -851,7 +855,7 @@ export function VisualizerCore({
                     <div className="w-px h-5 bg-white/10 mx-1" />
                     <button
                       onClick={onShareJourney}
-                      className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                      className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
                       title="Share Journey"
                     >
                       <Share2 className="h-4 w-4" />
@@ -889,7 +893,7 @@ export function VisualizerCore({
                     if (nextMode === "off") setWhisperEnabled(false);
                     setTextOverlayMode(nextMode);
                   }}
-                  className={`p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                  className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                   title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
                 >
                   {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
@@ -897,7 +901,7 @@ export function VisualizerCore({
                 {textOverlayMode !== "off" && (
                   <button
                     onClick={() => setWhisperEnabled(!whisperEnabled)}
-                    className={`p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="Whisper"
                   >
                     <AudioLines className="h-4 w-4" />
@@ -906,7 +910,7 @@ export function VisualizerCore({
                 {showLiveButton && onLiveToggle && (
                   <button
                     onClick={onLiveToggle}
-                    className={`p-2.5 rounded-lg transition-colors ${liveEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${liveEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="Live"
                   >
                     <AudioLines className="h-4 w-4" />
@@ -915,7 +919,7 @@ export function VisualizerCore({
                 {showHudButton && onHudToggle && (
                   <button
                     onClick={onHudToggle}
-                    className={`p-2.5 rounded-lg transition-colors ${hudVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${hudVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="HUD"
                   >
                     <Activity className="h-4 w-4" />
@@ -924,7 +928,7 @@ export function VisualizerCore({
                 {showLibraryButton && onLibraryToggle && (
                   <button
                     onClick={onLibraryToggle}
-                    className={`p-2.5 rounded-lg transition-colors ${libraryOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${libraryOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="Library"
                   >
                     <Library className="h-4 w-4" />
@@ -933,7 +937,7 @@ export function VisualizerCore({
                 {onTonnetzToggle && (
                   <button
                     onClick={onTonnetzToggle}
-                    className={`p-2.5 rounded-lg transition-colors ${tonnetzVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${tonnetzVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                     title="Tonnetz"
                   >
                     <Hexagon className="h-4 w-4" />
@@ -942,7 +946,7 @@ export function VisualizerCore({
                 {showJourneyButton && onJourneyToggle && (
                   <button
                     onClick={onJourneyToggle}
-                    className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
                     title="Journeys"
                   >
                     <Compass className="h-4 w-4" />
@@ -951,7 +955,7 @@ export function VisualizerCore({
                 {onShareRoom && (
                   <button
                     onClick={onShareRoom}
-                    className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
                     title="Share Room"
                   >
                     <Share2 className="h-4 w-4" />
@@ -971,7 +975,7 @@ export function VisualizerCore({
                 {currentTrack.title}
               </span>
               <span
-                className="text-white/30"
+                className="text-white/40"
                 style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
               >
                 {formatTime(currentTime)} / {formatTime(duration)}
@@ -979,7 +983,7 @@ export function VisualizerCore({
               <div className="flex items-center gap-0.5">
                 <button
                   onClick={() => seekBy(-10)}
-                  className="p-1.5 text-white/40 hover:text-white/70 transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
                 >
                   <SkipBack className="h-3.5 w-3.5" />
                 </button>
@@ -988,7 +992,7 @@ export function VisualizerCore({
                     ensureResumed();
                     isPlaying ? storePause() : storeResume();
                   }}
-                  className="p-2 text-white/80 hover:text-white transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors"
                 >
                   {isPlaying ? (
                     <Pause className="h-4.5 w-4.5" fill="currentColor" />
@@ -998,7 +1002,7 @@ export function VisualizerCore({
                 </button>
                 <button
                   onClick={() => seekBy(10)}
-                  className="p-1.5 text-white/40 hover:text-white/70 transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
                 >
                   <SkipForward className="h-3.5 w-3.5" />
                 </button>
@@ -1010,7 +1014,7 @@ export function VisualizerCore({
             {/* Language picker */}
             <button
               onClick={() => setLangPickerOpen((v) => !v)}
-              className={`p-2.5 rounded-lg transition-colors ${langPickerOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${langPickerOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
               title="Language"
             >
               <Globe className="h-4 w-4" />
@@ -1047,7 +1051,7 @@ export function VisualizerCore({
             {onStudy && !journeyActive && (
               <button
                 onClick={onStudy}
-                className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
                 title="Study This Track"
               >
                 <BookOpen className="h-4 w-4" />
@@ -1056,7 +1060,7 @@ export function VisualizerCore({
             {onFullscreenToggle && (
               <button
                 onClick={onFullscreenToggle}
-                className={`p-2.5 rounded-lg transition-colors ${isFullscreen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${isFullscreen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
                 title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               >
                 {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
@@ -1064,7 +1068,7 @@ export function VisualizerCore({
             )}
             <button
               onClick={onExit}
-              className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
               title={exitLabel === "back" ? "Back" : "Close"}
             >
               {exitLabel === "back" ? (

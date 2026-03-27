@@ -290,7 +290,7 @@ export function VisualizerClient({
     if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
     controlsTimerRef.current = setTimeout(() => {
       if (!libraryOpen) setControlsVisible(false);
-    }, 4000);
+    }, 5000);
   }, [libraryOpen]);
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { X, Shuffle, RotateCcw, Sparkles, Play, Plus, Share2, Trash2 } from "lucide-react";
+import { X, Shuffle, RotateCcw, Sparkles, Play, Plus, Share2, Trash2, Wand2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { REALMS } from "@/lib/journeys/realms";
 import { JOURNEYS } from "@/lib/journeys/journeys";
@@ -28,8 +28,11 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const activeJourney = useAudioStore((s) => s.activeJourney);
   const play = useAudioStore((s) => s.play);
   const setAiImageEnabled = useAudioStore((s) => s.setAiImageEnabled);
+  const currentTrack = useAudioStore((s) => s.currentTrack);
+  const analysis = useAudioStore((s) => s.analysis);
 
   const [aiAvailable, setAiAvailable] = useState(false);
+  const [autoGenerating, setAutoGenerating] = useState(false);
   const [customJourneys, setCustomJourneys] = useState<Journey[]>([]);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [sharingId, setSharingId] = useState<string | null>(null);
@@ -141,6 +144,45 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       setDeletingId(null);
     }
   }, [activeJourney, stopJourney, customJourneys]);
+
+  // Auto-generate journey from current track's analysis
+  const handleAutoGenerate = useCallback(async () => {
+    if (!currentTrack || autoGenerating) return;
+    setAutoGenerating(true);
+    try {
+      const res = await fetch("/api/journeys/auto-generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ recordingId: currentTrack.id }),
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to generate");
+      }
+      const { journey } = await res.json();
+      // Add to custom journeys list
+      const customJourney: Journey = {
+        id: journey.id,
+        name: journey.name,
+        subtitle: journey.subtitle,
+        description: journey.description,
+        realmId: journey.realmId,
+        phases: journey.phases,
+        aiEnabled: true,
+        recordingId: currentTrack.id,
+      };
+      setCustomJourneys((prev) => [customJourney, ...prev]);
+      setAiImageEnabled(true);
+      startCustomJourney(customJourney);
+      onClose();
+      toast.success(`Journey "${journey.name}" created`);
+    } catch (err) {
+      console.error("Auto-generate failed:", err);
+      toast.error(err instanceof Error ? err.message : "Failed to generate journey");
+    } finally {
+      setAutoGenerating(false);
+    }
+  }, [currentTrack, autoGenerating, startCustomJourney, setAiImageEnabled, onClose]);
 
   // Load a track for a custom journey — specific recording if set, else random
   const loadCustomJourneyTrack = useCallback(async (journey: Journey) => {
@@ -344,7 +386,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               {journey.name}
             </h3>
             <p
-              className="text-white/30 mt-0.5"
+              className="text-white/40 mt-0.5"
               style={{
                 fontSize: "0.75rem",
                 fontFamily: "var(--font-geist-mono)",
@@ -421,7 +463,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           </div>
           <button
             onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-            className="p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors shrink-0"
+            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors shrink-0"
             title="Share Journey"
             disabled={sharingId === journey.id}
           >
@@ -480,7 +522,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 Journeys
               </h2>
               <p
-                className="text-white/30 mt-1"
+                className="text-white/40 mt-1"
                 style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
               >
                 Immersive audio-visual experiences
@@ -590,7 +632,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                               {journey.name}
                             </h3>
                             <p
-                              className="text-white/30 mt-0.5"
+                              className="text-white/40 mt-0.5"
                               style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
                             >
                               {journey.subtitle}
@@ -611,7 +653,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             </div>
                             <button
                               onClick={(e) => handleShare(journey.id, journey.name, e)}
-                              className="p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
                               title="Share Journey"
                               disabled={sharingId === journey.id}
                             >
@@ -619,7 +661,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             </button>
                             <button
                               onClick={(e) => handleDelete(journey.id, e)}
-                              className="p-1.5 rounded-lg text-white/30 hover:text-red-400/70 hover:bg-red-400/5 transition-colors"
+                              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/30 hover:text-red-400/70 hover:bg-red-400/5 transition-colors"
                               title="Delete Journey"
                               disabled={deletingId === journey.id}
                             >
@@ -667,6 +709,25 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               <Plus className="h-3.5 w-3.5" />
               Create Journey
             </button>
+            {currentTrack && analysis?.status === "completed" && (
+              <button
+                onClick={handleAutoGenerate}
+                disabled={autoGenerating}
+                className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  fontSize: "0.75rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  border: "1px solid rgba(255,255,255,0.06)",
+                }}
+              >
+                {autoGenerating ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  <Wand2 className="h-3.5 w-3.5" />
+                )}
+                {autoGenerating ? "Generating..." : "Generate from Track"}
+              </button>
+            )}
             {activeJourney && (
               <button
                 onClick={clearJourney}

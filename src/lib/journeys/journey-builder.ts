@@ -4,6 +4,8 @@ import { z } from "zod";
 import type { Journey, JourneyPhase, JourneyPhaseId } from "./types";
 import { getRealm } from "./realms";
 import { JOURNEYS } from "./journeys";
+import { detectVibe, MOOD_REALM_MAP } from "@/lib/audio/vibe-detection";
+import type { AnalysisResult } from "@/lib/audio/types";
 
 const PHASE_IDS: JourneyPhaseId[] = [
   "threshold", "expansion", "transcendence",
@@ -93,4 +95,45 @@ Each phase needs a visual scene prompt, mood word, and 2-3 whispered guidance ph
     phases,
     aiEnabled: true,
   };
+}
+
+/**
+ * Build a journey from audio analysis data.
+ * Detects the mood/vibe, maps to a realm, builds context, and generates via AI.
+ */
+export async function buildJourneyFromAnalysis(
+  analysis: AnalysisResult,
+  overrideRealmId?: string,
+): Promise<Journey> {
+  // Detect mood from analysis
+  const vibe = detectVibe(analysis);
+
+  // Pick realm: use override if provided, otherwise map from mood
+  let realmId: string;
+  if (overrideRealmId && getRealm(overrideRealmId)) {
+    realmId = overrideRealmId;
+  } else {
+    const realmCandidates = MOOD_REALM_MAP[vibe.mood];
+    // 70% primary realm, 30% secondary for variety
+    realmId = Math.random() < 0.7
+      ? realmCandidates[0]
+      : realmCandidates[Math.floor(Math.random() * realmCandidates.length)];
+    // Validate the realm exists, fallback to first candidate
+    if (!getRealm(realmId)) realmId = realmCandidates[0];
+  }
+
+  // Build musical context string from analysis fields
+  const parts: string[] = [];
+  if (analysis.key_signature) parts.push(`Key: ${analysis.key_signature}`);
+  if (analysis.tempo) parts.push(`Tempo: ${Math.round(analysis.tempo)} BPM`);
+  if (analysis.time_signature) parts.push(`Time: ${analysis.time_signature}`);
+  if (analysis.chords?.length) {
+    const uniqueChords = [...new Set(analysis.chords.map((c) => c.chord))];
+    parts.push(`Chords: ${uniqueChords.slice(0, 8).join(", ")}`);
+  }
+  parts.push(`Mood: ${vibe.mood}`);
+
+  const contextString = `A ${vibe.mood} musical piece. ${parts.join(". ")}.`;
+
+  return buildJourneyFromStory(contextString, realmId);
 }

@@ -180,6 +180,17 @@ export type VisualizerMode =
   | "monochrome"
   | "aurora-trail"
   | "constellation";
+export const MOOD_REALM_MAP: Record<Mood, string[]> = {
+  melancholic:  ["ocean", "winter", "pain"],
+  intense:      ["hell", "storm", "machine"],
+  dreamy:       ["heaven", "garden", "spring"],
+  mystical:     ["temple", "cosmos", "labyrinth"],
+  chaotic:      ["storm", "machine", "hell"],
+  hypnotic:     ["labyrinth", "machine", "cosmos"],
+  flowing:      ["ocean", "garden", "spring"],
+  transcendent: ["heaven", "cosmos", "temple"],
+};
+
 const MOOD_SHADER_MAP: Record<Mood, VisualizerMode> = {
   melancholic: "cosmos",
   intense: "prismatic",

@@ -225,7 +225,7 @@ export function SharedJourneyClient({
   const resetHideTimer = useCallback(() => {
     setControlsVisible(true);
     if (hideTimerRef.current) clearTimeout(hideTimerRef.current);
-    hideTimerRef.current = setTimeout(() => setControlsVisible(false), 4000);
+    hideTimerRef.current = setTimeout(() => setControlsVisible(false), 5000);
   }, []);
 
   useEffect(() => {
@@ -580,19 +580,22 @@ export function SharedJourneyClient({
           pointerEvents: controlsVisible ? "auto" : "none",
         }}
       >
-        {/* Progress bar — 2px, full width */}
+        {/* Progress bar — 2px visual, 24px hit area */}
         <div
-          className="h-[2px] cursor-pointer overflow-hidden"
+          className="flex items-center cursor-pointer"
+          style={{ minHeight: "24px" }}
           onClick={handleProgressClick}
         >
-          <div
-            ref={progressBarRef}
-            className="h-full"
-            style={{
-              width: "0%",
-              background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.5) 100%)",
-            }}
-          />
+          <div className="w-full h-[2px] overflow-hidden">
+            <div
+              ref={progressBarRef}
+              className="h-full"
+              style={{
+                width: "0%",
+                background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.5) 100%)",
+              }}
+            />
+          </div>
         </div>
 
         <div
@@ -614,7 +617,7 @@ export function SharedJourneyClient({
 
             <button
               onClick={handleShare}
-              className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
               title="Share Journey"
             >
               <Share2 className="h-4 w-4" />
@@ -625,7 +628,7 @@ export function SharedJourneyClient({
           <div className="flex items-center gap-3">
             <span
               ref={timeDisplayRef}
-              className="text-white/30"
+              className="text-white/40"
               style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
             >
               0:00 / 0:00
@@ -634,13 +637,13 @@ export function SharedJourneyClient({
               <div className="flex items-center gap-0.5">
                 <button
                   onClick={() => seekBy(-10)}
-                  className="p-1.5 text-white/40 hover:text-white/70 transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
                 >
                   <SkipBack className="h-3.5 w-3.5" />
                 </button>
                 <button
                   onClick={togglePlay}
-                  className="p-2 text-white/80 hover:text-white transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors"
                 >
                   {isPlaying ? (
                     <Pause className="h-4.5 w-4.5" fill="currentColor" />
@@ -650,7 +653,7 @@ export function SharedJourneyClient({
                 </button>
                 <button
                   onClick={() => seekBy(10)}
-                  className="p-1.5 text-white/40 hover:text-white/70 transition-colors"
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
                 >
                   <SkipForward className="h-3.5 w-3.5" />
                 </button>
@@ -663,14 +666,14 @@ export function SharedJourneyClient({
             {audioUrl && (
               <button
                 onClick={toggleMute}
-                className="p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
               >
                 {muted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
               </button>
             )}
             <button
               onClick={toggleFullscreen}
-              className={`p-2.5 rounded-lg transition-colors ${isFullscreen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${isFullscreen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
               title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
             >
               {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
