@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { X, Shuffle, RotateCcw, Sparkles, Play, Plus, Share2, Trash2, Wand2, Loader2 } from "lucide-react";
+import { Shuffle, Sparkles, Plus, Share2, Trash2, Wand2, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { REALMS } from "@/lib/journeys/realms";
 import { JOURNEYS } from "@/lib/journeys/journeys";
@@ -354,395 +354,429 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     selectJourney(random, random.aiEnabled);
   };
 
-  const clearJourney = () => {
-    stopJourney();
-  };
-
-  const renderJourneyCard = (journey: Journey, realmAccent: string) => {
-    const isActive = activeJourney?.id === journey.id;
-    return (
-      <div
-        key={journey.id}
-        className={`w-full text-left p-5 rounded-2xl transition-all duration-200 group cursor-pointer ${
-          isActive ? "ring-1 ring-white/20" : "hover:bg-white/5"
-        }`}
-        style={{
-          backgroundColor: isActive
-            ? "rgba(255,255,255,0.08)"
-            : "rgba(255,255,255,0.02)",
-          border: "1px solid rgba(255,255,255,0.06)",
-        }}
-        onClick={() => handleJourneyClick(journey)}
-      >
-        <div className="flex items-start justify-between mb-2">
-          <div>
-            <h3
-              className="text-white/90 text-lg leading-tight"
-              style={{
-                fontFamily: "var(--font-geist-sans)",
-                fontWeight: 300,
-              }}
-            >
-              {journey.name}
-            </h3>
-            <p
-              className="text-white/40 mt-0.5"
-              style={{
-                fontSize: "0.75rem",
-                fontFamily: "var(--font-geist-mono)",
-              }}
-            >
-              {journey.subtitle}
-            </p>
-          </div>
-          <div className="flex items-center gap-2">
-            {journey.id === FEATURED_JOURNEY_ID && (
-              <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full"
-                style={{
-                  fontSize: "0.6rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  backgroundColor: "rgba(144, 184, 224, 0.1)",
-                  border: "1px solid rgba(144, 184, 224, 0.2)",
-                  color: "rgba(144, 184, 224, 0.7)",
-                }}
-              >
-                Featured
-              </div>
-            )}
-            {journey.aiEnabled && aiAvailable && (
-              <div
-                className="flex items-center gap-1 px-2 py-0.5 rounded-full"
-                style={{
-                  fontSize: "0.6rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                  border: "1px solid rgba(255, 255, 255, 0.08)",
-                  color: "rgba(255, 255, 255, 0.4)",
-                }}
-              >
-                <Sparkles className="h-2.5 w-2.5" />
-                AI
-              </div>
-            )}
-          </div>
-        </div>
-
-        <p
-          className="text-white/20 mb-3"
-          style={{
-            fontSize: "0.7rem",
-            fontFamily: "var(--font-geist-mono)",
-          }}
-        >
-          {journey.description}
-        </p>
-
-        {/* Phase arc + Start button + Share */}
-        <div className="flex items-center gap-3">
-          <div className="flex gap-[2px] flex-1">
-            {PHASE_ORDER.map((phaseId) => {
-              const phase = journey.phases.find(
-                (p) => p.id === phaseId
-              );
-              if (!phase) return null;
-              const width = (phase.end - phase.start) * 100;
-              return (
-                <div
-                  key={phaseId}
-                  className="h-[3px] rounded-full"
-                  style={{
-                    width: `${width}%`,
-                    backgroundColor: `${realmAccent}${
-                      phaseId === "transcendence" ? "cc" : "40"
-                    }`,
-                  }}
-                />
-              );
-            })}
-          </div>
-          <button
-            onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-colors shrink-0"
-            title="Share Journey"
-            disabled={sharingId === journey.id}
-          >
-            <Share2 className="h-3.5 w-3.5" />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handleJourneyClick(journey);
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all shrink-0"
-            style={{
-              fontSize: "0.7rem",
-              fontFamily: "var(--font-geist-mono)",
-              border: `1px solid ${realmAccent}30`,
-              backgroundColor: `${realmAccent}08`,
-            }}
-          >
-            <Play className="h-3 w-3" style={{ fill: "currentColor" }} />
-            {isActive ? "Restart" : "Start"}
-          </button>
-        </div>
-      </div>
-    );
-  };
-
   const winterRealm = REALMS.find((r) => r.id === "winter");
   const featuredAccent = winterRealm?.palette.accent ?? "#90b8e0";
 
+  // Phase arc renderer
+  const renderPhaseArc = (journey: Journey, accent: string, maxWidth = "200px") => (
+    <div className="flex gap-[2px]" style={{ maxWidth }}>
+      {PHASE_ORDER.map((phaseId) => {
+        const phase = journey.phases.find((p) => p.id === phaseId);
+        if (!phase) return null;
+        const width = (phase.end - phase.start) * 100;
+        return (
+          <div
+            key={phaseId}
+            className="rounded-full"
+            style={{
+              width: `${width}%`,
+              height: "2px",
+              backgroundColor: `${accent}${phaseId === "transcendence" ? "cc" : "40"}`,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+
   return (
     <>
-      {/* Backdrop */}
+      {/* Full-area journey browser — solid black, no blur */}
       <div
-        className="fixed inset-0 z-50 transition-opacity duration-300"
-        style={{
-          backdropFilter: "blur(32px) saturate(1.2)",
-          WebkitBackdropFilter: "blur(32px) saturate(1.2)",
-          backgroundColor: "rgba(0, 0, 0, 0.7)",
-        }}
-        onClick={onClose}
-      />
+        className="absolute inset-0 overflow-y-auto"
+        style={{ zIndex: 7, backgroundColor: "#000" }}
+      >
+        <div className="mx-auto px-8 pt-10 pb-24" style={{ maxWidth: "48rem" }}>
 
-      {/* Content */}
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-8 pointer-events-none">
-        <div
-          className="pointer-events-auto w-full max-w-4xl max-h-[80vh] overflow-hidden flex flex-col"
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2
-                className="text-white/90 text-2xl tracking-tight"
-                style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 200 }}
-              >
-                Journeys
-              </h2>
-              <p
-                className="text-white/40 mt-1"
-                style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
-              >
-                Immersive audio-visual experiences
-              </p>
-            </div>
-            <button
-              onClick={onClose}
-              className="p-2 rounded-lg text-white/30 hover:text-white/60 transition-colors"
+          {/* ── Header ── */}
+          <div className="flex items-center justify-between mb-10">
+            <h1
+              className="text-white/90"
+              style={{
+                fontFamily: "var(--font-geist-sans)",
+                fontWeight: 200,
+                fontSize: "1.8rem",
+                letterSpacing: "-0.02em",
+              }}
             >
-              <X className="h-5 w-5" />
-            </button>
+              Journeys
+            </h1>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={selectRandom}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all"
+                style={{
+                  fontSize: "0.75rem",
+                  fontFamily: "var(--font-geist-mono)",
+                }}
+              >
+                <Shuffle className="h-3.5 w-3.5" />
+                Random
+              </button>
+              <button
+                onClick={() => setCreateDialogOpen(true)}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all"
+                style={{
+                  fontSize: "0.75rem",
+                  fontFamily: "var(--font-geist-mono)",
+                }}
+              >
+                <Plus className="h-3.5 w-3.5" />
+                Create
+              </button>
+              {currentTrack && analysis?.status === "completed" && (
+                <button
+                  onClick={handleAutoGenerate}
+                  disabled={autoGenerating}
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  style={{
+                    fontSize: "0.75rem",
+                    fontFamily: "var(--font-geist-mono)",
+                  }}
+                >
+                  {autoGenerating ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    <Wand2 className="h-3.5 w-3.5" />
+                  )}
+                  {autoGenerating ? "Generating..." : "Generate"}
+                </button>
+              )}
+            </div>
           </div>
 
-          {/* Scrollable content — flat list */}
-          <div className="flex-1 overflow-y-auto scrollbar-thin">
-            {/* Featured journey pinned at top */}
-            {featured && (
-              <div className="mb-6">
-                {renderJourneyCard(featured, featuredAccent)}
-              </div>
-            )}
-
-            {/* Remaining journeys grouped by realm */}
-            {groupedByRealm.map(({ realm, journeys }) => (
-              <div key={realm.id} className="mb-6">
-                {/* Realm section header */}
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{
-                      backgroundColor: realm.palette.accent,
-                      boxShadow: `0 0 8px ${realm.palette.glow}40`,
-                    }}
-                  />
-                  <span
-                    className="text-white/40"
-                    style={{
-                      fontSize: "0.7rem",
-                      fontFamily: "var(--font-geist-mono)",
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    {realm.name}
-                  </span>
-                </div>
-
-                <div className="space-y-3">
-                  {journeys.map((journey) =>
-                    renderJourneyCard(journey, realm.palette.accent)
+          {/* ── Featured Journey ── */}
+          {featured && (
+            <div className="mb-12">
+              <span
+                className="text-white/25 mb-4 block"
+                style={{
+                  fontSize: "0.65rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Featured
+              </span>
+              <div
+                className="cursor-pointer group"
+                onClick={() => handleJourneyClick(featured)}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2
+                      className="text-white/90 mb-1"
+                      style={{
+                        fontFamily: "var(--font-geist-sans)",
+                        fontWeight: 200,
+                        fontSize: "1.5rem",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {featured.name}
+                    </h2>
+                    <p
+                      className="text-white/40 mb-2"
+                      style={{
+                        fontSize: "0.75rem",
+                        fontFamily: "var(--font-geist-mono)",
+                      }}
+                    >
+                      {featured.subtitle}
+                    </p>
+                    <p
+                      className="text-white/45 mb-4"
+                      style={{
+                        fontSize: "0.75rem",
+                        fontFamily: "var(--font-geist-mono)",
+                        lineHeight: 1.6,
+                        maxWidth: "32rem",
+                      }}
+                    >
+                      {featured.description}
+                    </p>
+                  </div>
+                  {featured.aiEnabled && aiAvailable && (
+                    <div
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-full shrink-0 ml-4"
+                      style={{
+                        fontSize: "0.6rem",
+                        fontFamily: "var(--font-geist-mono)",
+                        backgroundColor: "rgba(255, 255, 255, 0.04)",
+                        color: "rgba(255, 255, 255, 0.3)",
+                      }}
+                    >
+                      <Sparkles className="h-2.5 w-2.5" />
+                      AI
+                    </div>
                   )}
                 </div>
-              </div>
-            ))}
-
-            {/* Custom journeys */}
-            {customJourneys.length > 0 && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: "rgba(255,255,255,0.4)" }}
-                  />
-                  <span
-                    className="text-white/40"
+                <div className="flex items-center gap-4">
+                  {renderPhaseArc(featured, featuredAccent, "220px")}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleJourneyClick(featured);
+                    }}
+                    className="px-4 py-1.5 rounded-md text-white/50 hover:text-white/90 transition-all"
                     style={{
                       fontSize: "0.7rem",
                       fontFamily: "var(--font-geist-mono)",
-                      letterSpacing: "0.05em",
-                      textTransform: "uppercase",
+                      border: `1px solid ${featuredAccent}30`,
+                      backgroundColor: `${featuredAccent}08`,
                     }}
                   >
-                    Your Journeys
-                  </span>
+                    {activeJourney?.id === featured.id ? "Restart" : "Begin"}
+                  </button>
+                  <button
+                    onClick={(e) => handleShareBuiltIn(featured.id, featured.name, e)}
+                    className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-colors opacity-0 group-hover:opacity-100"
+                    title="Share"
+                    disabled={sharingId === featured.id}
+                  >
+                    <Share2 className="h-3.5 w-3.5" />
+                  </button>
                 </div>
+              </div>
+            </div>
+          )}
 
-                <div className="space-y-3">
-                  {customJourneys.map((journey) => {
-                    const isActive = activeJourney?.id === journey.id;
-                    const realm = REALMS.find((r) => r.id === journey.realmId);
-                    const accent = realm?.palette.accent ?? "#888";
-                    return (
-                      <div
-                        key={journey.id}
-                        className={`w-full text-left p-5 rounded-2xl transition-all duration-200 group cursor-pointer ${
-                          isActive ? "ring-1 ring-white/20" : "hover:bg-white/5"
-                        }`}
-                        style={{
-                          backgroundColor: isActive
-                            ? "rgba(255,255,255,0.08)"
-                            : "rgba(255,255,255,0.02)",
-                          border: "1px solid rgba(255,255,255,0.06)",
-                        }}
-                        onClick={async () => {
-                          setAiImageEnabled(journey.aiEnabled);
-                          await loadCustomJourneyTrack(journey);
-                          startCustomJourney(journey);
-                          onClose();
-                        }}
-                      >
-                        <div className="flex items-start justify-between mb-2">
-                          <div>
-                            <h3
-                              className="text-white/90 text-lg leading-tight"
-                              style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 300 }}
-                            >
-                              {journey.name}
-                            </h3>
-                            <p
-                              className="text-white/40 mt-0.5"
-                              style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
-                            >
-                              {journey.subtitle}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+          {/* ── Realm Sections ── */}
+          {groupedByRealm.map(({ realm, journeys }) => (
+            <div key={realm.id} className="mb-10">
+              {/* Realm header */}
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{
+                    backgroundColor: realm.palette.accent,
+                    boxShadow: `0 0 6px ${realm.palette.glow}30`,
+                  }}
+                />
+                <span
+                  className="text-white/30"
+                  style={{
+                    fontSize: "0.65rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {realm.name}
+                </span>
+              </div>
+
+              {/* Journey rows */}
+              <div className="divide-y divide-white/[0.04]">
+                {journeys.map((journey) => {
+                  const isActive = activeJourney?.id === journey.id;
+                  return (
+                    <div
+                      key={journey.id}
+                      className="py-3.5 cursor-pointer group transition-colors"
+                      style={{
+                        backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
+                        borderLeft: isActive ? `2px solid ${realm.palette.accent}` : "2px solid transparent",
+                        paddingLeft: "12px",
+                      }}
+                      onClick={() => handleJourneyClick(journey)}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-baseline gap-3 min-w-0">
+                          <span
+                            className="text-white/85 shrink-0"
+                            style={{
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {journey.name}
+                          </span>
+                          <span
+                            className="text-white/30 truncate"
+                            style={{
+                              fontSize: "0.75rem",
+                              fontFamily: "var(--font-geist-mono)",
+                            }}
+                          >
+                            {journey.subtitle}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0 ml-3">
+                          {isActive && (
+                            <span
+                              className="text-white/40"
                               style={{
                                 fontSize: "0.6rem",
                                 fontFamily: "var(--font-geist-mono)",
-                                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                                border: "1px solid rgba(255, 255, 255, 0.08)",
-                                color: "rgba(255, 255, 255, 0.4)",
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
                               }}
                             >
-                              Custom
+                              Playing
+                            </span>
+                          )}
+                          {journey.aiEnabled && aiAvailable && (
+                            <div
+                              className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
+                              style={{
+                                fontSize: "0.55rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                color: "rgba(255, 255, 255, 0.25)",
+                              }}
+                            >
+                              <Sparkles className="h-2 w-2" />
+                              AI
                             </div>
-                            <button
-                              onClick={(e) => handleShare(journey.id, journey.name, e)}
-                              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/30 hover:text-white/60 hover:bg-white/5 transition-colors"
-                              title="Share Journey"
-                              disabled={sharingId === journey.id}
-                            >
-                              <Share2 className="h-3.5 w-3.5" />
-                            </button>
-                            <button
-                              onClick={(e) => handleDelete(journey.id, e)}
-                              className="min-w-[44px] min-h-[44px] flex items-center justify-center p-1.5 rounded-lg text-white/30 hover:text-red-400/70 hover:bg-red-400/5 transition-colors"
-                              title="Delete Journey"
-                              disabled={deletingId === journey.id}
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </button>
-                          </div>
+                          )}
+                          <button
+                            onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Share"
+                            disabled={sharingId === journey.id}
+                          >
+                            <Share2 className="h-3 w-3" />
+                          </button>
                         </div>
+                      </div>
+                      {journey.description && (
                         <p
-                          className="text-white/20"
-                          style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)" }}
+                          className="text-white/40 mb-2"
+                          style={{
+                            fontSize: "0.7rem",
+                            fontFamily: "var(--font-geist-mono)",
+                            lineHeight: 1.5,
+                          }}
                         >
                           {journey.description}
                         </p>
-                      </div>
-                    );
-                  })}
-                </div>
+                      )}
+                      {renderPhaseArc(journey, realm.palette.accent)}
+                    </div>
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          ))}
 
-          {/* Bottom actions */}
-          <div className="flex items-center gap-3 pt-4 border-t border-white/5">
-            <button
-              onClick={selectRandom}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all"
-              style={{
-                fontSize: "0.75rem",
-                fontFamily: "var(--font-geist-mono)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <Shuffle className="h-3.5 w-3.5" />
-              Random Journey
-            </button>
-            <button
-              onClick={() => setCreateDialogOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all"
-              style={{
-                fontSize: "0.75rem",
-                fontFamily: "var(--font-geist-mono)",
-                border: "1px solid rgba(255,255,255,0.06)",
-              }}
-            >
-              <Plus className="h-3.5 w-3.5" />
-              Create Journey
-            </button>
-            {currentTrack && analysis?.status === "completed" && (
-              <button
-                onClick={handleAutoGenerate}
-                disabled={autoGenerating}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{
-                  fontSize: "0.75rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                {autoGenerating ? (
-                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                ) : (
-                  <Wand2 className="h-3.5 w-3.5" />
-                )}
-                {autoGenerating ? "Generating..." : "Generate from Track"}
-              </button>
-            )}
-            {activeJourney && (
-              <button
-                onClick={clearJourney}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg text-white/40 hover:text-white/70 hover:bg-white/5 transition-all"
-                style={{
-                  fontSize: "0.75rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  border: "1px solid rgba(255,255,255,0.06)",
-                }}
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-                Stop {activeJourney?.name || "Journey"}
-              </button>
-            )}
-          </div>
+          {/* ── Custom Journeys ── */}
+          {customJourneys.length > 0 && (
+            <div className="mb-10">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.15)" }}
+                />
+                <span
+                  className="text-white/30"
+                  style={{
+                    fontSize: "0.65rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Your Journeys
+                </span>
+              </div>
+
+              <div className="divide-y divide-white/[0.04]">
+                {customJourneys.map((journey) => {
+                  const isActive = activeJourney?.id === journey.id;
+                  const realm = REALMS.find((r) => r.id === journey.realmId);
+                  const accent = realm?.palette.accent ?? "#888";
+                  return (
+                    <div
+                      key={journey.id}
+                      className="py-3.5 cursor-pointer group transition-colors"
+                      style={{
+                        backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
+                        borderLeft: isActive ? `2px solid ${accent}` : "2px solid transparent",
+                        paddingLeft: "12px",
+                      }}
+                      onClick={async () => {
+                        setAiImageEnabled(journey.aiEnabled);
+                        await loadCustomJourneyTrack(journey);
+                        startCustomJourney(journey);
+                        onClose();
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-baseline gap-3 min-w-0">
+                          <span
+                            className="text-white/85 shrink-0"
+                            style={{
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {journey.name}
+                          </span>
+                          <span
+                            className="text-white/30 truncate"
+                            style={{
+                              fontSize: "0.75rem",
+                              fontFamily: "var(--font-geist-mono)",
+                            }}
+                          >
+                            {journey.subtitle}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0 ml-3">
+                          {isActive && (
+                            <span
+                              className="text-white/40"
+                              style={{
+                                fontSize: "0.6rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              Playing
+                            </span>
+                          )}
+                          <button
+                            onClick={(e) => handleShare(journey.id, journey.name, e)}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Share"
+                            disabled={sharingId === journey.id}
+                          >
+                            <Share2 className="h-3 w-3" />
+                          </button>
+                          <button
+                            onClick={(e) => handleDelete(journey.id, e)}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Delete"
+                            disabled={deletingId === journey.id}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      {journey.description && (
+                        <p
+                          className="text-white/40 mb-2"
+                          style={{
+                            fontSize: "0.7rem",
+                            fontFamily: "var(--font-geist-mono)",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {journey.description}
+                        </p>
+                      )}
+                      {renderPhaseArc(journey, accent)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
 

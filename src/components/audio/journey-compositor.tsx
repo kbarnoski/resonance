@@ -28,14 +28,17 @@ interface JourneyCompositorProps {
  * Outro: When song ends, AI imagery stays visible as shaders fade naturally.
  *
  * Z-index stack (all layers share the same stacking context):
- *   Shader canvas: default (from children) — fades in after first AI image
+ *   Shader canvas: default (from children) — fades in via --shader-opacity
  *   AI images: z-index 2, pointer-events none
  *   Post-processing: z-index 3, pointer-events none
  *   Control bar: z-index 10 (set inside VisualizerCore)
  *   Mode palette: z-index 30-40 (set inside VisualizerCore)
  *   Poetry: z-index 5, pointer-events none
  *
- * Controls stay interactive because they have higher z-index than AI/post layers.
+ * Shader opacity is controlled via the --shader-opacity CSS custom property
+ * instead of wrapping children in an opacity div. This avoids creating a
+ * stacking context that would trap the bottom bar below the AI layer.
+ * VisualizerCore's shader layers consume var(--shader-opacity, 1).
  */
 export function JourneyCompositor({
   frame,
@@ -60,7 +63,7 @@ export function JourneyCompositor({
   const [aiReady, setAiReady] = useState(false);
   const shaderOpacityRef = useRef(0);
   const shaderFadeRef = useRef<number>(0);
-  const shaderDivRef = useRef<HTMLDivElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
 
   const handleFirstImage = useCallback(() => {
     setAiReady(true);
@@ -71,11 +74,15 @@ export function JourneyCompositor({
     if (!aiEnabled) {
       setAiReady(false);
       shaderOpacityRef.current = 0;
+      if (rootRef.current) {
+        rootRef.current.style.setProperty("--shader-opacity", "1");
+      }
     }
   }, [aiEnabled]);
 
   // Animate shader fade-in after first AI image.
-  // Caps at effectiveShaderOpacity so shaders never fully cover AI imagery.
+  // Sets --shader-opacity CSS variable so shader layers fade without
+  // creating a stacking context that would trap the bottom bar.
   useEffect(() => {
     if (!aiReady || !showAi) return;
     cancelAnimationFrame(shaderFadeRef.current);
@@ -84,8 +91,8 @@ export function JourneyCompositor({
     const fadeIn = () => {
       // Fade in over ~3s, capped at the journey's shaderOpacity
       shaderOpacityRef.current = Math.min(target, shaderOpacityRef.current + 0.006);
-      if (shaderDivRef.current) {
-        shaderDivRef.current.style.opacity = String(shaderOpacityRef.current);
+      if (rootRef.current) {
+        rootRef.current.style.setProperty("--shader-opacity", String(shaderOpacityRef.current));
       }
       if (shaderOpacityRef.current < target) {
         shaderFadeRef.current = requestAnimationFrame(fadeIn);
@@ -101,20 +108,12 @@ export function JourneyCompositor({
   }
 
   return (
-    <div className="absolute inset-0">
-      {/* Shader + controls + poetry — fades in after first AI image for intro effect */}
-      {showAi ? (
-        <div
-          ref={shaderDivRef}
-          style={{ opacity: shaderOpacityRef.current }}
-        >
-          {children}
-        </div>
-      ) : (
-        children
-      )}
-
-      {/* AI imagery — z-2, above shader but below controls (z-10+) */}
+    <div
+      ref={rootRef}
+      className="absolute inset-0"
+      style={showAi ? { "--shader-opacity": "0" } as React.CSSProperties : undefined}
+    >
+      {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
         <AiImageLayer
           prompt={effectivePrompt}
@@ -144,6 +143,11 @@ export function JourneyCompositor({
           palette={frame.palette}
         />
       )}
+
+      {/* Children rendered directly — no opacity wrapper.
+          Shader layers in VisualizerCore read var(--shader-opacity, 1).
+          Bottom bar (z-10) stays at full opacity in the normal stacking context. */}
+      {children}
     </div>
   );
 }

@@ -17,17 +17,16 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing recordingId" }, { status: 400 });
     }
 
-    // Fetch completed analysis from DB
+    // Fetch analysis from DB
     const { data: analysisRow, error: analysisError } = await supabase
       .from("analyses")
       .select("key_signature, tempo, time_signature, chords, notes")
       .eq("recording_id", recordingId)
-      .eq("status", "completed")
       .single();
 
     if (analysisError || !analysisRow) {
       return Response.json(
-        { error: "No completed analysis found for this recording" },
+        { error: "No analysis found for this recording" },
         { status: 404 },
       );
     }

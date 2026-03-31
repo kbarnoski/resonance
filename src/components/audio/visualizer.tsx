@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { X, Type, AudioLines, ArrowLeft, Activity, Library, Hexagon, Share2, ChevronUp, ChevronDown, Compass, Pause, Play, SkipBack, SkipForward, RotateCcw, BookOpen, Globe, Search, Maximize2, Minimize2 } from "lucide-react";
+import { X, Type, AudioLines, ArrowLeft, Library, Share2, ChevronUp, ChevronDown, Pause, Play, SkipBack, SkipForward, BookOpen, Globe, Search, Maximize2, Minimize2 } from "lucide-react";
 import { getAudioEngine, ensureResumed } from "@/lib/audio/audio-engine";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
 import type { VisualizerMode } from "@/lib/audio/vibe-detection";
@@ -79,6 +79,8 @@ export interface VisualizerCoreProps {
   journeyStoryText?: string | null;
   /** When true, simplify controls to journey-only actions */
   journeyActive?: boolean;
+  /** When true, the journey browser is open */
+  journeyBrowsing?: boolean;
   /** Name of the active journey (shown in stop button) */
   journeyName?: string | null;
   /** Callback to stop the active journey */
@@ -336,6 +338,7 @@ export function VisualizerCore({
   journeyRealmId,
   journeyStoryText,
   journeyActive,
+  journeyBrowsing,
   journeyName,
   onStopJourney,
   onShareJourney,
@@ -361,6 +364,8 @@ export function VisualizerCore({
   const setWhisperEnabled = useAudioStore((s) => s.setVizWhisper);
 
   const installationMode = useAudioStore((s) => s.installationMode);
+
+  const inJourneyMode = journeyActive || journeyBrowsing;
 
   // Transport state — only read when transport is shown
   const currentTrack = useAudioStore((s) => showTransport ? s.currentTrack : null);
@@ -565,11 +570,15 @@ export function VisualizerCore({
     const layerIs3D = MODES_3D.has(layerMode);
     const layerIsAI = MODES_AI.has(layerMode);
 
+    // Shader layers consume --shader-opacity (set by JourneyCompositor) so
+    // they fade in during AI intro without creating a stacking context that
+    // would trap the bottom bar below the AI layer.
     const wrapStyle: React.CSSProperties = {
       position: "absolute",
       inset: 0,
       zIndex,
       pointerEvents: "none",
+      opacity: "var(--shader-opacity, 1)" as unknown as number,
     };
 
     if (layerIsAI) {
@@ -578,7 +587,7 @@ export function VisualizerCore({
       const backdropFrag = SHADERS[backdropMode];
       if (backdropFrag) {
         return (
-          <div key={layerMode} ref={ref} style={{ ...wrapStyle, opacity: 0.6 }}>
+          <div key={layerMode} ref={ref} style={{ ...wrapStyle, opacity: "calc(var(--shader-opacity, 1) * 0.6)" as unknown as number }}>
             <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion />
           </div>
         );
@@ -607,27 +616,32 @@ export function VisualizerCore({
       {/* Current shader (fading in, or full opacity when no crossfade) */}
       {renderShaderLayer(renderMode, 1, prevRenderMode ? nextLayerRef : undefined)}
 
-      {/* Dual shader — second layer during peak journey moments (smooth fade) */}
+      {/* Dual shader — second layer during peak journey moments (smooth fade).
+          Outer div applies --shader-opacity; inner div handles the crossfade animation. */}
       {dualShaderVisible && SHADERS[dualShaderVisible as VisualizerMode] && (
-        <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: 0, mixBlendMode: "screen" }}>
-          <ShaderVisualizer
-            analyser={analyser}
-            dataArray={dataArray}
-            fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
-            smoothMotion
-          />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+          <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
+            <ShaderVisualizer
+              analyser={analyser}
+              dataArray={dataArray}
+              fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
+              smoothMotion
+            />
+          </div>
         </div>
       )}
 
       {/* Tertiary shader — third layer for rich multi-shader moments */}
       {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
-        <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: 0, mixBlendMode: "screen" }}>
-          <ShaderVisualizer
-            analyser={analyser}
-            dataArray={dataArray}
-            fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
-            smoothMotion
-          />
+        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+          <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
+            <ShaderVisualizer
+              analyser={analyser}
+              dataArray={dataArray}
+              fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
+              smoothMotion
+            />
+          </div>
         </div>
       )}
 
@@ -778,7 +792,7 @@ export function VisualizerCore({
       )}
 
       {/* ─── Bottom control bar ─── */}
-      {!installationMode && (currentTrack || journeyActive) && <div
+      {!installationMode && (currentTrack || journeyActive || journeyBrowsing) && <div
         className="absolute inset-x-0 bottom-0 transition-opacity duration-500 ease-out"
         style={{
           zIndex: 10,
@@ -806,212 +820,174 @@ export function VisualizerCore({
         )}
 
         <div
-          className="flex items-center justify-between px-4 py-3"
+          className="flex items-center px-4 py-3"
           style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)",
+            background: journeyBrowsing || journeyActive
+              ? "#000"
+              : "linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 60%, transparent 100%)",
           }}
         >
+          {/* Group 1: Mode Identity */}
           <div className="flex items-center gap-1.5">
-            {journeyActive ? (
-              <>
-                {/* Journey-only controls */}
+            {/* Mode switcher — segmented control */}
+            {showJourneyButton && onJourneyToggle && (
+              <div
+                className="flex items-center rounded-lg"
+                style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+              >
                 <button
-                  onClick={onStopJourney}
-                  className="flex items-center gap-2 rounded-lg px-3.5 py-2 bg-black/40 text-white/70 hover:bg-white/10 hover:text-white transition-all"
-                  style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}
-                >
-                  <RotateCcw className="h-3.5 w-3.5" />
-                  Stop {journeyName || "Journey"}
-                </button>
-
-                <div className="w-px h-5 bg-white/10 mx-1" />
-
-                {/* Text overlay mode cycler (during journey) */}
-                <button
-                  onClick={() => {
-                    const modes: Array<"off" | "poetry" | "story"> = ["off", "poetry", "story"];
-                    const currentIdx = modes.indexOf(textOverlayMode);
-                    const nextMode = modes[(currentIdx + 1) % modes.length];
-                    if (nextMode === "off") setWhisperEnabled(false);
-                    setTextOverlayMode(nextMode);
-                  }}
-                  className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                  title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
-                >
-                  {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
-                </button>
-                {textOverlayMode !== "off" && (
-                  <button
-                    onClick={() => setWhisperEnabled(!whisperEnabled)}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="Whisper"
-                  >
-                    <AudioLines className="h-4 w-4" />
-                  </button>
-                )}
-
-                {onShareJourney && (
-                  <>
-                    <div className="w-px h-5 bg-white/10 mx-1" />
-                    <button
-                      onClick={onShareJourney}
-                      className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
-                      title="Share Journey"
-                    >
-                      <Share2 className="h-4 w-4" />
-                    </button>
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {/* Full controls */}
-                {/* Mode picker */}
-                <button
-                  onClick={() => setModePaletteOpen((v) => !v)}
-                  className={`flex items-center gap-2 rounded-lg px-3.5 py-2 transition-all ${
-                    modePaletteOpen ? "bg-white/15 text-white" : "bg-black/40 text-white/70 hover:bg-white/10 hover:text-white"
+                  onClick={inJourneyMode ? onStopJourney : undefined}
+                  className={`px-3 py-2 rounded-l-[7px] transition-all ${
+                    !inJourneyMode
+                      ? "bg-white/10 text-white/90"
+                      : "text-white/35 hover:text-white/60 hover:bg-white/5"
                   }`}
-                  style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                  style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
                 >
-                  <span style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}>
-                    {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
-                  </span>
-                  <ChevronUp className={`h-3.5 w-3.5 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
+                  Visualize
                 </button>
-
-                <div className="w-px h-5 bg-white/10 mx-1" />
-
-                {/* Text overlay mode cycler */}
                 <button
-                  onClick={() => {
-                    const modes: Array<"off" | "poetry" | "story"> = journeyActive
-                      ? ["off", "poetry", "story"]
-                      : ["off", "poetry"];
-                    const currentIdx = modes.indexOf(textOverlayMode);
-                    const nextMode = modes[(currentIdx + 1) % modes.length];
-                    if (nextMode === "off") setWhisperEnabled(false);
-                    setTextOverlayMode(nextMode);
-                  }}
-                  className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                  title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
+                  onClick={onJourneyToggle}
+                  className={`px-3 py-2 rounded-r-[7px] transition-all truncate ${
+                    inJourneyMode
+                      ? "bg-white/10 text-white/90"
+                      : "text-white/35 hover:text-white/60 hover:bg-white/5"
+                  }`}
+                  style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)", maxWidth: "160px" }}
                 >
-                  {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
+                  {journeyActive && journeyName ? journeyName : "Journey"}
                 </button>
-                {textOverlayMode !== "off" && (
-                  <button
-                    onClick={() => setWhisperEnabled(!whisperEnabled)}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="Whisper"
-                  >
-                    <AudioLines className="h-4 w-4" />
-                  </button>
-                )}
-                {showLiveButton && onLiveToggle && (
-                  <button
-                    onClick={onLiveToggle}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${liveEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="Live"
-                  >
-                    <AudioLines className="h-4 w-4" />
-                  </button>
-                )}
-                {showHudButton && onHudToggle && (
-                  <button
-                    onClick={onHudToggle}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${hudVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="HUD"
-                  >
-                    <Activity className="h-4 w-4" />
-                  </button>
-                )}
-                {showLibraryButton && onLibraryToggle && (
-                  <button
-                    onClick={onLibraryToggle}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${libraryOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="Library"
-                  >
-                    <Library className="h-4 w-4" />
-                  </button>
-                )}
-                {onTonnetzToggle && (
-                  <button
-                    onClick={onTonnetzToggle}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${tonnetzVisible ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
-                    title="Tonnetz"
-                  >
-                    <Hexagon className="h-4 w-4" />
-                  </button>
-                )}
-                {showJourneyButton && onJourneyToggle && (
-                  <button
-                    onClick={onJourneyToggle}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
-                    title="Journeys"
-                  >
-                    <Compass className="h-4 w-4" />
-                  </button>
-                )}
-                {onShareRoom && (
-                  <button
-                    onClick={onShareRoom}
-                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
-                    title="Share Room"
-                  >
-                    <Share2 className="h-4 w-4" />
-                  </button>
-                )}
-              </>
+              </div>
+            )}
+            {/* Shader picker — visualize mode only */}
+            {!inJourneyMode && (
+              <button
+                onClick={() => setModePaletteOpen((v) => !v)}
+                className={`flex items-center gap-2 rounded-lg px-3.5 py-2 transition-all ${
+                  modePaletteOpen ? "bg-white/15 text-white" : "bg-black/40 text-white/70 hover:bg-white/10 hover:text-white"
+                }`}
+                style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+              >
+                <span style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}>
+                  {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
+                </span>
+                <ChevronUp className={`h-3.5 w-3.5 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
+              </button>
             )}
           </div>
 
-          {/* Transport controls — only when showTransport + track loaded */}
+          <div className="w-px h-5 bg-white/10 mx-2.5" />
+
+          {/* Group 2: Layers */}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={() => {
+                const modes: Array<"off" | "poetry" | "story"> = journeyActive
+                  ? ["off", "poetry", "story"]
+                  : ["off", "poetry"];
+                const currentIdx = modes.indexOf(textOverlayMode);
+                const nextMode = modes[(currentIdx + 1) % modes.length];
+                if (nextMode === "off") setWhisperEnabled(false);
+                setTextOverlayMode(nextMode);
+              }}
+              className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${textOverlayMode !== "off" ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+              title={textOverlayMode === "off" ? "Text: Off" : textOverlayMode === "poetry" ? "Text: Poetry" : "Text: Story"}
+            >
+              {storyEnabled ? <BookOpen className="h-4 w-4" /> : <Type className="h-4 w-4" />}
+            </button>
+            {textOverlayMode !== "off" && (
+              <button
+                onClick={() => setWhisperEnabled(!whisperEnabled)}
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${whisperEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                title="Whisper"
+              >
+                <AudioLines className="h-4 w-4" />
+              </button>
+            )}
+            {!journeyActive && showLiveButton && onLiveToggle && (
+              <button
+                onClick={onLiveToggle}
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${liveEnabled ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                title="Live"
+              >
+                <AudioLines className="h-4 w-4" />
+              </button>
+            )}
+            {!journeyActive && showLibraryButton && onLibraryToggle && (
+              <button
+                onClick={onLibraryToggle}
+                className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${libraryOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
+                title="Library"
+              >
+                <Library className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+
+          <div className="w-px h-5 bg-white/10 mx-2.5" />
+
+          {/* Spacer pushes transport + system right */}
+          <div className="flex-1" />
+
+          {/* Group 3: Transport */}
           {showTransport && currentTrack && (
-            <div className="flex items-center gap-3">
-              <span
-                className="text-white/70 text-sm truncate max-w-[160px]"
-                style={{ fontFamily: "var(--font-geist-sans)" }}
-              >
-                {currentTrack.title}
-              </span>
-              <span
-                className="text-white/40"
-                style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
-              >
-                {formatTime(currentTime)} / {formatTime(duration)}
-              </span>
-              <div className="flex items-center gap-0.5">
-                <button
-                  onClick={() => seekBy(-10)}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
+            <>
+              <div className="flex items-center gap-3">
+                <span
+                  className="text-white/70 text-sm truncate max-w-[160px]"
+                  style={{ fontFamily: "var(--font-geist-sans)" }}
                 >
-                  <SkipBack className="h-3.5 w-3.5" />
-                </button>
-                <button
-                  onClick={() => {
-                    ensureResumed();
-                    isPlaying ? storePause() : storeResume();
-                  }}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors"
+                  {currentTrack.title}
+                </span>
+                <span
+                  className="text-white/40"
+                  style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
                 >
-                  {isPlaying ? (
-                    <Pause className="h-4.5 w-4.5" fill="currentColor" />
-                  ) : (
-                    <Play className="h-4.5 w-4.5" fill="currentColor" />
-                  )}
-                </button>
-                <button
-                  onClick={() => seekBy(10)}
-                  className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
-                >
-                  <SkipForward className="h-3.5 w-3.5" />
-                </button>
+                  {formatTime(currentTime)} / {formatTime(duration)}
+                </span>
+                <div className="flex items-center gap-0.5">
+                  <button
+                    onClick={() => seekBy(-10)}
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
+                  >
+                    <SkipBack className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    onClick={() => {
+                      ensureResumed();
+                      isPlaying ? storePause() : storeResume();
+                    }}
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors"
+                  >
+                    {isPlaying ? (
+                      <Pause className="h-4.5 w-4.5" fill="currentColor" />
+                    ) : (
+                      <Play className="h-4.5 w-4.5" fill="currentColor" />
+                    )}
+                  </button>
+                  <button
+                    onClick={() => seekBy(10)}
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/40 hover:text-white/70 transition-colors"
+                  >
+                    <SkipForward className="h-3.5 w-3.5" />
+                  </button>
+                </div>
               </div>
-            </div>
+              <div className="w-px h-5 bg-white/10 mx-2.5" />
+            </>
           )}
 
+          {/* Group 4: System */}
           <div className="flex items-center gap-1 relative">
-            {/* Language picker */}
+            {(journeyActive ? onShareJourney : onShareRoom) && (
+              <button
+                onClick={journeyActive ? onShareJourney : onShareRoom}
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                title={journeyActive ? "Share Journey" : "Share Room"}
+              >
+                <Share2 className="h-4 w-4" />
+              </button>
+            )}
             <button
               onClick={() => setLangPickerOpen((v) => !v)}
               className={`min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg transition-colors ${langPickerOpen ? "bg-white/15 text-white" : "text-white/50 hover:text-white/80 hover:bg-white/5"}`}
@@ -1048,7 +1024,7 @@ export function VisualizerCore({
                 </div>
               </>
             )}
-            {onStudy && !journeyActive && (
+            {!journeyActive && onStudy && (
               <button
                 onClick={onStudy}
                 className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
@@ -1064,6 +1040,17 @@ export function VisualizerCore({
                 title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
               >
                 {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </button>
+            )}
+            {journeyActive && !journeyBrowsing && onStopJourney && (
+              <button
+                onClick={onStopJourney}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
+                style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)" }}
+                title="End journey"
+              >
+                <X className="h-3.5 w-3.5" />
+                End
               </button>
             )}
             <button

@@ -197,7 +197,8 @@ export function VisualizerClient({
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [tonnetzVisible, setTonnetzVisible] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
-  const [journeyOpen, setJourneyOpen] = useState(false);
+  // Default to journey browser unless entering with a specific recording or journey
+  const [journeyOpen, setJourneyOpen] = useState(!recording && !initialJourney);
   const controlsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Installation mode auto-cycling
@@ -289,9 +290,9 @@ export function VisualizerClient({
     setControlsVisible(true);
     if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
     controlsTimerRef.current = setTimeout(() => {
-      if (!libraryOpen) setControlsVisible(false);
+      if (!libraryOpen && !journeyOpen) setControlsVisible(false);
     }, 5000);
-  }, [libraryOpen]);
+  }, [libraryOpen, journeyOpen]);
 
   useEffect(() => {
     resetControlsTimer();
@@ -305,10 +306,10 @@ export function VisualizerClient({
     };
   }, [resetControlsTimer]);
 
-  // Keep controls visible when library is open
+  // Keep controls visible when library or journey browser is open
   useEffect(() => {
-    if (libraryOpen) setControlsVisible(true);
-  }, [libraryOpen]);
+    if (libraryOpen || journeyOpen) setControlsVisible(true);
+  }, [libraryOpen, journeyOpen]);
 
   // Initialize: connect to the global audio engine's AnalyserNode
   useEffect(() => {
@@ -503,6 +504,7 @@ export function VisualizerClient({
       switch (e.key) {
         case "Escape":
           if (libraryOpen) setLibraryOpen(false);
+          else if (journeyOpen) setJourneyOpen(false);
           else handleExit();
           break;
         case " ":
@@ -563,7 +565,7 @@ export function VisualizerClient({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [handleExit, libraryOpen, togglePlayPause, seekBy, handleFullscreenToggle]);
+  }, [handleExit, libraryOpen, journeyOpen, togglePlayPause, seekBy, handleFullscreenToggle]);
 
   // Show HUD when analysis is available and completed
   const showHud = activeAnalysis?.status === "completed";
@@ -627,10 +629,17 @@ export function VisualizerClient({
           journeyRealmId={activeRealm?.id}
           journeyStoryText={activeJourney?.storyText}
           journeyActive={journeyActive}
+          journeyBrowsing={journeyOpen}
           journeyName={activeJourney?.name ?? null}
           onStopJourney={() => {
-            useAudioStore.getState().stopJourney();
-            setJourneyOpen(true);
+            if (useAudioStore.getState().activeJourney) {
+              // Stop journey but stay on / open the journey browser
+              useAudioStore.getState().stopJourney();
+              setJourneyOpen(true);
+            } else {
+              // No active journey — close browser, return to viz
+              setJourneyOpen(false);
+            }
           }}
           onShareJourney={journeyActive ? handleShareJourney : undefined}
           onStudy={currentTrack ? handleStudy : undefined}
@@ -699,63 +708,26 @@ export function VisualizerClient({
               from your library, or start a journey to experience
               AI-driven visuals, ambient soundscapes, and poetry.
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <button
-                onClick={() => setJourneyOpen(true)}
-                className="px-7 py-3.5 rounded-xl text-white transition-all"
-                style={{
-                  fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.9rem",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  backgroundColor: "rgba(255,255,255,0.12)",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.22)";
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.40)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)";
-                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
-                }}
-              >
-                Start a Journey
-              </button>
-              <button
-                onClick={handleEnterRoom}
-                className="px-5 py-3 rounded-xl text-white/50 hover:text-white/80 hover:bg-white/5 transition-colors"
-                style={{
-                  fontFamily: "var(--font-geist-mono)",
-                  fontSize: "0.8rem",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-              >
-                Explore Visuals
-              </button>
-            </div>
-            <div
-              className="mt-12 grid gap-2"
+            <button
+              onClick={handleEnterRoom}
+              className="px-7 py-3.5 rounded-xl text-white transition-all"
               style={{
                 fontFamily: "var(--font-geist-mono)",
-                fontSize: "0.85rem",
-                color: "rgba(255,255,255,0.35)",
-                gridTemplateColumns: "auto 1fr",
-                columnGap: "1rem",
-                rowGap: "0.5rem",
+                fontSize: "0.9rem",
+                border: "1px solid rgba(255,255,255,0.25)",
+                backgroundColor: "rgba(255,255,255,0.12)",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.22)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.40)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.12)";
+                e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
               }}
             >
-              <span className="text-white/50 text-right">space</span>
-              <span>Play / Pause</span>
-              <span className="text-white/50 text-right">l</span>
-              <span>Library</span>
-              <span className="text-white/50 text-right">&larr; &rarr;</span>
-              <span>Change Viz</span>
-              <span className="text-white/50 text-right">p</span>
-              <span>Poetry</span>
-              <span className="text-white/50 text-right">v</span>
-              <span>Voice</span>
-              <span className="text-white/50 text-right">f</span>
-              <span>Fullscreen</span>
-            </div>
+              Enter
+            </button>
           </div>
           {/* Back button */}
           <button
@@ -768,8 +740,8 @@ export function VisualizerClient({
         </div>
       )}
 
-      {/* Journey phase indicator — hidden in fullscreen/immersive mode */}
-      {journeyActive && activeJourney && !isFullscreen && (
+      {/* Journey phase indicator — hidden in fullscreen/immersive mode and when browsing */}
+      {journeyActive && activeJourney && !isFullscreen && !journeyOpen && (
         <JourneyPhaseIndicator
           journey={activeJourney}
           currentPhase={journeyPhase}
