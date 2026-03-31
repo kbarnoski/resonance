@@ -467,6 +467,7 @@ export function VisualizerClient({
         LIGHT_SHADERS[Math.floor(Math.random() * LIGHT_SHADERS.length)]
       );
     }
+    useAudioStore.setState({ textOverlayMode: "off" });
     setJourneyOpen(false);
     // If no track is loaded, auto-load the most recent one so the user
     // doesn't land on the empty "Enter Room" welcome screen.

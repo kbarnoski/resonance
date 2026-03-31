@@ -325,6 +325,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       storyLoading: false,
       storyCurrentParagraphIndex: 0,
       aiImageEnabled: true,
+      textOverlayMode: "off",
       // Ensure playback is active if a track is loaded
       isPlaying: !!get().currentTrack ? true : get().isPlaying,
     });
@@ -347,6 +348,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       storyCurrentParagraphIndex: 0,
       vizModeSequence: null,
       aiImageEnabled: true,
+      textOverlayMode: "off",
       isPlaying: !!get().currentTrack ? true : get().isPlaying,
     });
   },
