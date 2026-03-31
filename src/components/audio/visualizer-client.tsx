@@ -588,8 +588,9 @@ export function VisualizerClient({
 
   if (!analyser || !dataArray) return null;
 
-  // Always show viz — ambient orb runs on the welcome screen
-  const showViz = true;
+  // Show viz unless journey browser is open from viz mode (no active journey)
+  // This prevents the shader from running behind the opaque journey picker
+  const showViz = !(journeyOpen && !activeJourney);
 
   return (
     <div
@@ -628,7 +629,14 @@ export function VisualizerClient({
           sectionFlash={sectionFlash}
           tonnetzVisible={tonnetzVisible}
           onTonnetzToggle={undefined /* paused — re-enable with: journeyActive ? undefined : () => setTonnetzVisible((v) => !v) */}
-          onJourneyToggle={() => setJourneyOpen((v) => !v)}
+          onJourneyToggle={() => {
+            const wasOpen = journeyOpen;
+            setJourneyOpen((v) => !v);
+            // Switching from viz to journey browser — pause audio
+            if (!wasOpen && !activeJourney && useAudioStore.getState().isPlaying) {
+              useAudioStore.getState().pause();
+            }
+          }}
           showJourneyButton={true}
           showTransport={true}
           controlsVisible={controlsVisible}
