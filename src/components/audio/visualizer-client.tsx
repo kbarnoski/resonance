@@ -672,6 +672,7 @@ export function VisualizerClient({
               setJourneyOpen(false);
             }
           }}
+          onShareRoom={handleShareRoom}
           onShareJourney={journeyActive ? handleShareJourney : undefined}
           isFullscreen={isFullscreen}
           onFullscreenToggle={handleFullscreenToggle}

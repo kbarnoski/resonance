@@ -1073,12 +1073,12 @@ export function VisualizerCore({
 
           {/* RIGHT: Journey actions + Studio / Exit */}
           <div className="flex items-center gap-1.5">
-            {journeyActive && onShareJourney && (
+            {(journeyActive ? onShareJourney : onShareRoom) && (
               <button
-                onClick={onShareJourney}
+                onClick={journeyActive ? onShareJourney : onShareRoom}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
                 style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
-                title="Share Journey"
+                title={journeyActive ? "Share Journey" : "Share Room"}
               >
                 <Share2 className="h-3.5 w-3.5" />
                 Share
