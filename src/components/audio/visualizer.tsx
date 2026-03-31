@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, Pause, Play, BookOpen, Library, Globe, Search, Maximize2, Minimize2 } from "lucide-react";
+import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2 } from "lucide-react";
 import { getAudioEngine, ensureResumed } from "@/lib/audio/audio-engine";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
 import type { VisualizerMode } from "@/lib/audio/vibe-detection";
@@ -377,7 +377,10 @@ export function VisualizerCore({
   const duration = useAudioStore((s) => s.duration);
   const storePause = useAudioStore((s) => s.pause);
   const storeResume = useAudioStore((s) => s.resume);
-
+  const playNext = useAudioStore((s) => s.playNext);
+  const playPrev = useAudioStore((s) => s.playPrev);
+  const queue = useAudioStore((s) => s.queue);
+  const queueIndex = useAudioStore((s) => s.queueIndex);
 
   const language = useAudioStore((s) => s.language);
   const setLanguage = useAudioStore((s) => s.setLanguage);
@@ -986,22 +989,45 @@ export function VisualizerCore({
           {/* Spacer — pushes transport to center */}
           <div className="flex-1" />
 
-          {/* CENTER: Now Playing — play/pause + track title + time + library */}
+          {/* CENTER: Now Playing — prev + play/pause + next + track title + time + library */}
           {showTransport && currentTrack && !inJourneyMode && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              {queue.length > 1 && (
+                <button
+                  onClick={playPrev}
+                  className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-150"
+                  title="Previous track"
+                >
+                  <SkipBack className="h-3.5 w-3.5" fill="currentColor" />
+                </button>
+              )}
               <button
                 onClick={() => {
                   ensureResumed();
                   isPlaying ? storePause() : storeResume();
                 }}
-                className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors"
+                className="flex items-center justify-center p-2 text-white/80 hover:text-white transition-colors duration-150"
               >
                 {isPlaying ? (
-                  <Pause className="h-4.5 w-4.5" fill="currentColor" />
+                  <Pause className="h-4 w-4" fill="currentColor" />
                 ) : (
-                  <Play className="h-4.5 w-4.5" fill="currentColor" />
+                  <Play className="h-4 w-4" fill="currentColor" />
                 )}
               </button>
+              {queue.length > 1 && (
+                <button
+                  onClick={playNext}
+                  className={`flex items-center justify-center p-2 transition-colors duration-150 ${
+                    queueIndex < queue.length - 1
+                      ? "text-white/40 hover:text-white/80"
+                      : "text-white/15 cursor-default"
+                  }`}
+                  disabled={queueIndex >= queue.length - 1}
+                  title="Next track"
+                >
+                  <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
+                </button>
+              )}
               <span
                 className="text-white/60 text-sm truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
