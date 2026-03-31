@@ -428,20 +428,6 @@ export function VisualizerClient({
     };
   }, [liveEnabled, analyser]);
 
-  const handleStudy = useCallback(() => {
-    const track = useAudioStore.getState().currentTrack;
-    if (track) router.push(`/recording/${track.id}`);
-  }, [router]);
-
-  const handleExit = useCallback(() => {
-    const track = useAudioStore.getState().currentTrack;
-    if (track) {
-      router.push(`/recording/${track.id}`);
-    } else {
-      router.push("/library");
-    }
-  }, [router]);
-
   // Load the most recent track from user's library and start playing
   const handleEnterRoom = useCallback(async () => {
     try {
@@ -462,6 +448,36 @@ export function VisualizerClient({
       setLibraryOpen(true);
     }
   }, [play]);
+
+  const handleSwitchToVisualize = useCallback(() => {
+    if (useAudioStore.getState().activeJourney) {
+      useAudioStore.getState().stopJourney();
+      // Override the heavy 3D default — pick a lightweight 2D shader
+      // so the first switch feels instant
+      const LIGHT_SHADERS = ["cosmos", "fog", "nebula", "drift", "dusk", "tide", "ember"];
+      useAudioStore.getState().setVizMode(
+        LIGHT_SHADERS[Math.floor(Math.random() * LIGHT_SHADERS.length)]
+      );
+    }
+    setJourneyOpen(false);
+    // If no track is loaded, auto-load the most recent one so the user
+    // doesn't land on the empty "Enter Room" welcome screen.
+    if (!useAudioStore.getState().currentTrack) {
+      handleEnterRoom();
+    }
+  }, [handleEnterRoom]);
+
+  const handleExit = useCallback(() => {
+    const state = useAudioStore.getState();
+    if (state.activeJourney) {
+      state.stopJourney();
+      router.push("/library");
+    } else if (state.currentTrack) {
+      router.push(`/recording/${state.currentTrack.id}`);
+    } else {
+      router.push("/library");
+    }
+  }, [router]);
 
   // Seek by offset
   const seekBy = useCallback((offset: number) => {
@@ -602,7 +618,7 @@ export function VisualizerClient({
           liveText={liveText}
           liveEnabled={liveEnabled}
           onLiveToggle={hasSpeechApi ? () => setLiveEnabled((v) => !v) : undefined}
-          showLiveButton={hasSpeechApi}
+          showLiveButton={false}
           hudVisible={hudVisible}
           onHudToggle={() => setHudVisible((v) => !v)}
           showHudButton={false /* paused — re-enable with: showHud && !journeyActive */}
@@ -612,7 +628,6 @@ export function VisualizerClient({
           sectionFlash={sectionFlash}
           tonnetzVisible={tonnetzVisible}
           onTonnetzToggle={undefined /* paused — re-enable with: journeyActive ? undefined : () => setTonnetzVisible((v) => !v) */}
-          onShareRoom={handleShareRoom}
           onJourneyToggle={() => setJourneyOpen((v) => !v)}
           showJourneyButton={true}
           showTransport={true}
@@ -642,9 +657,10 @@ export function VisualizerClient({
             }
           }}
           onShareJourney={journeyActive ? handleShareJourney : undefined}
-          onStudy={currentTrack ? handleStudy : undefined}
           isFullscreen={isFullscreen}
           onFullscreenToggle={handleFullscreenToggle}
+          onSwitchToVisualize={handleSwitchToVisualize}
+          journeyAccent={activeRealm?.palette.accent ?? null}
         >
           {/* Analysis HUD — top layer (hidden during journeys) */}
           {hudVisible && showHud && !journeyActive && (

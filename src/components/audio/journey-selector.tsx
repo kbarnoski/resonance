@@ -196,7 +196,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           .single();
         if (rec) {
           play({ id: rec.id, title: rec.title, audioUrl: `/api/audio/${rec.id}` }, 0);
-          await new Promise((r) => setTimeout(r, 300));
+
           return;
         }
       }
@@ -208,7 +208,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       if (data && data.length > 0) {
         const row = data[Math.floor(Math.random() * data.length)];
         play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
-        await new Promise((r) => setTimeout(r, 300));
       }
     } catch (err) {
       console.warn("[journey] failed to load track for custom journey:", err);
@@ -231,6 +230,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
     return { featured: feat, groupedByRealm: groups };
   }, []);
+
+  // Flat list for desktop grid — realm embedded on each card
+  const flatJourneys = useMemo(() => {
+    return groupedByRealm.flatMap(({ realm, journeys }) =>
+      journeys.map((journey) => ({ journey, realm }))
+    );
+  }, [groupedByRealm]);
 
   if (!open) return null;
 
@@ -257,7 +263,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           console.log("[journey] loading paired track:", row.title);
           play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
           trackLoaded = true;
-          await new Promise((r) => setTimeout(r, 300));
+
         } else {
           // Fallback: track not in recordings table — try storage directly
           const storageSearch = PAIRED_STORAGE[journey.id];
@@ -282,7 +288,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     0
                   );
                   trackLoaded = true;
-                  await new Promise((r) => setTimeout(r, 300));
+        
                 }
               }
             }
@@ -305,7 +311,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             const row = candidates[Math.floor(Math.random() * candidates.length)];
             console.log("[journey] paired track not found, random fallback:", row.title);
             play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
-            await new Promise((r) => setTimeout(r, 300));
+  
           }
         }
       } catch (err) {
@@ -330,7 +336,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           const row = candidates[Math.floor(Math.random() * candidates.length)];
           console.log("[journey] random track:", row.title);
           play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
-          await new Promise((r) => setTimeout(r, 300));
+
         } else {
           console.warn("[journey] no recordings found, starting journey without audio");
         }
@@ -381,12 +387,20 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
   return (
     <>
+      {/* Card hover styles — CSS-only, no JS event handlers */}
+      <style>{`
+        .jcard { transition: background-color 0.15s ease, border-color 0.15s ease; }
+        .jcard:not(.jcard-active):hover {
+          background-color: rgba(255,255,255,0.04) !important;
+          border-color: rgba(255,255,255,0.07) !important;
+        }
+      `}</style>
       {/* Full-area journey browser — solid black, no blur */}
       <div
         className="absolute inset-0 overflow-y-auto"
-        style={{ zIndex: 7, backgroundColor: "#000" }}
+        style={{ zIndex: 7, backgroundColor: "#000", willChange: "scroll-position" }}
       >
-        <div className="mx-auto px-8 pt-10 pb-24" style={{ maxWidth: "48rem" }}>
+        <div className="mx-auto px-5 md:px-8 pt-10 pb-24" style={{ maxWidth: "72rem" }}>
 
           {/* ── Header ── */}
           <div className="flex items-center justify-between mb-10">
@@ -404,10 +418,11 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             <div className="flex items-center gap-2">
               <button
                 onClick={selectRandom}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-colors duration-150"
                 style={{
-                  fontSize: "0.75rem",
+                  fontSize: "0.72rem",
                   fontFamily: "var(--font-geist-mono)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
                 <Shuffle className="h-3.5 w-3.5" />
@@ -415,10 +430,11 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               </button>
               <button
                 onClick={() => setCreateDialogOpen(true)}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-colors duration-150"
                 style={{
-                  fontSize: "0.75rem",
+                  fontSize: "0.72rem",
                   fontFamily: "var(--font-geist-mono)",
+                  border: "1px solid rgba(255,255,255,0.1)",
                 }}
               >
                 <Plus className="h-3.5 w-3.5" />
@@ -428,7 +444,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 <button
                   onClick={handleAutoGenerate}
                   disabled={autoGenerating}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/[0.04] transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                   style={{
                     fontSize: "0.75rem",
                     fontFamily: "var(--font-geist-mono)",
@@ -445,9 +461,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             </div>
           </div>
 
-          {/* ── Featured Journey ── */}
+          {/* ── Featured Journey (Mobile) ── */}
           {featured && (
-            <div className="mb-12">
+            <div className="md:hidden mb-12">
               <span
                 className="text-white/25 mb-4 block"
                 style={{
@@ -541,6 +557,131 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               </div>
             </div>
           )}
+
+          {/* ── Featured Journey (Desktop Hero Card) ── */}
+          {featured && (
+            <div
+              className="hidden md:block mb-12 cursor-pointer group rounded-xl p-6 jcard"
+              style={{
+                backgroundColor: activeJourney?.id === featured.id
+                  ? `${featuredAccent}08`
+                  : "rgba(255,255,255,0.03)",
+                border: `1px solid ${activeJourney?.id === featured.id ? `${featuredAccent}20` : "rgba(255,255,255,0.05)"}`,
+                borderLeft: activeJourney?.id === featured.id ? `2px solid ${featuredAccent}` : undefined,
+              }}
+              onClick={() => handleJourneyClick(featured)}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="w-2 h-2 rounded-full"
+                    style={{
+                      backgroundColor: featuredAccent,
+                      boxShadow: `0 0 6px ${featuredAccent}30`,
+                    }}
+                  />
+                  <span
+                    className="text-white/30"
+                    style={{
+                      fontSize: "0.65rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.1em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    {winterRealm?.name?.toUpperCase() ?? "WINTER"}
+                  </span>
+                  <span
+                    className="text-white/20"
+                    style={{
+                      fontSize: "0.6rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Featured
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {featured.aiEnabled && aiAvailable && (
+                    <div
+                      className="flex items-center gap-1 px-2 py-0.5 rounded-full"
+                      style={{
+                        fontSize: "0.6rem",
+                        fontFamily: "var(--font-geist-mono)",
+                        backgroundColor: "rgba(255, 255, 255, 0.04)",
+                        color: "rgba(255, 255, 255, 0.3)",
+                      }}
+                    >
+                      <Sparkles className="h-2.5 w-2.5" />
+                      AI
+                    </div>
+                  )}
+                  <button
+                    onClick={(e) => handleShareBuiltIn(featured.id, featured.name, e)}
+                    className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-colors opacity-0 group-hover:opacity-100"
+                    title="Share"
+                    disabled={sharingId === featured.id}
+                  >
+                    <Share2 className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+              <h2
+                className="text-white/90 mb-1.5"
+                style={{
+                  fontFamily: "var(--font-geist-sans)",
+                  fontWeight: 200,
+                  fontSize: "1.4rem",
+                  letterSpacing: "-0.01em",
+                }}
+              >
+                {featured.name}
+              </h2>
+              <p
+                className="text-white/30 mb-3"
+                style={{
+                  fontSize: "0.72rem",
+                  fontFamily: "var(--font-geist-mono)",
+                }}
+              >
+                {featured.subtitle}
+              </p>
+              <p
+                className="text-white/35 mb-5"
+                style={{
+                  fontSize: "0.68rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  lineHeight: 1.6,
+                  maxWidth: "48rem",
+                }}
+              >
+                {featured.description}
+              </p>
+              <div className="mb-5">
+                {renderPhaseArc(featured, featuredAccent, "100%")}
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleJourneyClick(featured);
+                }}
+                className="px-5 py-2 rounded-md text-white/50 hover:text-white/90 transition-all"
+                style={{
+                  fontSize: "0.72rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  border: `1px solid ${featuredAccent}30`,
+                  backgroundColor: `${featuredAccent}08`,
+                }}
+              >
+                {activeJourney?.id === featured.id ? "Restart" : "Begin"}
+              </button>
+            </div>
+          )}
+
+          {/* ── Mobile List — md:hidden ── */}
+          <div className="md:hidden">
 
           {/* ── Realm Sections ── */}
           {groupedByRealm.map(({ realm, journeys }) => (
@@ -776,6 +917,250 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               </div>
             </div>
           )}
+
+          </div>{/* end md:hidden mobile list */}
+
+          {/* ── Desktop Card Grid — hidden md:block ── */}
+          <div className="hidden md:block">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {flatJourneys.map(({ journey, realm }) => {
+                const isActive = activeJourney?.id === journey.id;
+                const accent = realm.palette.accent;
+                return (
+                  <div
+                    key={journey.id}
+                    className={`jcard cursor-pointer group rounded-xl${isActive ? " jcard-active" : ""}`}
+                    style={{
+                      backgroundColor: isActive
+                        ? `${accent}08`
+                        : "rgba(255,255,255,0.02)",
+                      border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.05)"}`,
+                      borderLeft: isActive ? `2px solid ${accent}` : undefined,
+                      padding: "20px",
+                    }}
+                    onClick={() => handleJourneyClick(journey)}
+                  >
+                    {/* Top row: realm dot + name ... AI badge + share */}
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-2">
+                        <div
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
+                          style={{
+                            backgroundColor: accent,
+                            boxShadow: `0 0 4px ${realm.palette.glow}30`,
+                          }}
+                        />
+                        <span
+                          className="text-white/30"
+                          style={{
+                            fontSize: "0.6rem",
+                            fontFamily: "var(--font-geist-mono)",
+                            letterSpacing: "0.1em",
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          {realm.name.toUpperCase()}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        {journey.aiEnabled && aiAvailable && (
+                          <div
+                            className="flex items-center gap-1 px-1.5 py-0.5 rounded-full"
+                            style={{
+                              fontSize: "0.55rem",
+                              fontFamily: "var(--font-geist-mono)",
+                              color: "rgba(255, 255, 255, 0.25)",
+                            }}
+                          >
+                            <Sparkles className="h-2 w-2" />
+                            AI
+                          </div>
+                        )}
+                        <button
+                          onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
+                          className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all opacity-0 group-hover:opacity-100"
+                          title="Share"
+                          disabled={sharingId === journey.id}
+                        >
+                          <Share2 className="h-3 w-3" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Journey name */}
+                    <h3
+                      className="text-white/85 mb-1"
+                      style={{
+                        fontFamily: "var(--font-geist-sans)",
+                        fontWeight: 300,
+                        fontSize: "1.05rem",
+                      }}
+                    >
+                      {journey.name}
+                    </h3>
+
+                    {/* Subtitle */}
+                    <p
+                      className="text-white/30 mb-2"
+                      style={{
+                        fontSize: "0.72rem",
+                        fontFamily: "var(--font-geist-mono)",
+                      }}
+                    >
+                      {journey.subtitle}
+                    </p>
+
+                    {/* Description — 2 line clamp */}
+                    {journey.description && (
+                      <p
+                        className="text-white/35 mb-3 line-clamp-2"
+                        style={{
+                          fontSize: "0.68rem",
+                          fontFamily: "var(--font-geist-mono)",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        {journey.description}
+                      </p>
+                    )}
+
+                    {/* Phase arc — full card width */}
+                    {renderPhaseArc(journey, accent, "100%")}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* ── Custom Journeys (Desktop) ── */}
+            {customJourneys.length > 0 && (
+              <>
+                <div className="flex items-center gap-4 my-8">
+                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+                  <span
+                    className="text-white/25"
+                    style={{
+                      fontSize: "0.65rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.12em",
+                      textTransform: "uppercase",
+                    }}
+                  >
+                    Your Journeys
+                  </span>
+                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+                </div>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {customJourneys.map((journey) => {
+                    const isActive = activeJourney?.id === journey.id;
+                    const realm = REALMS.find((r) => r.id === journey.realmId);
+                    const accent = realm?.palette.accent ?? "#888";
+                    return (
+                      <div
+                        key={journey.id}
+                        className={`jcard cursor-pointer group rounded-xl${isActive ? " jcard-active" : ""}`}
+                        style={{
+                          backgroundColor: isActive
+                            ? `${accent}08`
+                            : "rgba(255,255,255,0.02)",
+                          border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.05)"}`,
+                          borderLeft: isActive ? `2px solid ${accent}` : undefined,
+                          padding: "20px",
+                        }}
+                        onClick={async () => {
+                          setAiImageEnabled(journey.aiEnabled);
+                          await loadCustomJourneyTrack(journey);
+                          startCustomJourney(journey);
+                          onClose();
+                        }}
+                      >
+                        {/* Top row: realm dot + name ... share + delete */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="w-1.5 h-1.5 rounded-full shrink-0"
+                              style={{
+                                backgroundColor: accent,
+                                boxShadow: `0 0 4px ${realm?.palette.glow ?? accent}30`,
+                              }}
+                            />
+                            <span
+                              className="text-white/30"
+                              style={{
+                                fontSize: "0.6rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                letterSpacing: "0.1em",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              {realm?.name?.toUpperCase() ?? "CUSTOM"}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              onClick={(e) => handleShare(journey.id, journey.name, e)}
+                              className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all opacity-0 group-hover:opacity-100"
+                              title="Share"
+                              disabled={sharingId === journey.id}
+                            >
+                              <Share2 className="h-3 w-3" />
+                            </button>
+                            <button
+                              onClick={(e) => handleDelete(journey.id, e)}
+                              className="p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all opacity-0 group-hover:opacity-100"
+                              title="Delete"
+                              disabled={deletingId === journey.id}
+                            >
+                              <Trash2 className="h-3 w-3" />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Journey name */}
+                        <h3
+                          className="text-white/85 mb-1"
+                          style={{
+                            fontFamily: "var(--font-geist-sans)",
+                            fontWeight: 300,
+                            fontSize: "1.05rem",
+                          }}
+                        >
+                          {journey.name}
+                        </h3>
+
+                        {/* Subtitle */}
+                        <p
+                          className="text-white/30 mb-2"
+                          style={{
+                            fontSize: "0.72rem",
+                            fontFamily: "var(--font-geist-mono)",
+                          }}
+                        >
+                          {journey.subtitle}
+                        </p>
+
+                        {/* Description — 2 line clamp */}
+                        {journey.description && (
+                          <p
+                            className="text-white/35 mb-3 line-clamp-2"
+                            style={{
+                              fontSize: "0.68rem",
+                              fontFamily: "var(--font-geist-mono)",
+                              lineHeight: 1.5,
+                            }}
+                          >
+                            {journey.description}
+                          </p>
+                        )}
+
+                        {/* Phase arc — full card width */}
+                        {renderPhaseArc(journey, accent, "100%")}
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
+          </div>{/* end desktop grid */}
 
         </div>
       </div>
