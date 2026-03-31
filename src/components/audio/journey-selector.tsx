@@ -416,18 +416,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               Journeys
             </h1>
             <div className="flex items-center gap-2">
-              <button
-                onClick={selectRandom}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-colors duration-150"
-                style={{
-                  fontSize: "0.72rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                }}
-              >
-                <Shuffle className="h-3.5 w-3.5" />
-                Random
-              </button>
+              {/* Random and Generate hidden for now */}
+              {/* <button onClick={selectRandom} ...>Random</button> */}
+              {/* <button onClick={handleAutoGenerate} ...>Generate</button> */}
               <button
                 onClick={() => setCreateDialogOpen(true)}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-colors duration-150"
@@ -440,24 +431,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 <Plus className="h-3.5 w-3.5" />
                 Create
               </button>
-              {currentTrack && analysis?.status === "completed" && (
-                <button
-                  onClick={handleAutoGenerate}
-                  disabled={autoGenerating}
-                  className="flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                  style={{
-                    fontSize: "0.75rem",
-                    fontFamily: "var(--font-geist-mono)",
-                  }}
-                >
-                  {autoGenerating ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Wand2 className="h-3.5 w-3.5" />
-                  )}
-                  {autoGenerating ? "Generating..." : "Generate"}
-                </button>
-              )}
             </div>
           </div>
 

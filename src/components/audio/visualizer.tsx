@@ -839,50 +839,56 @@ export function VisualizerCore({
                 </button>
               </div>
             )}
-            {/* Journey name pill with share + close */}
+            {/* Journey name pill + share + end buttons */}
             {journeyActive && journeyName && (
-              <div
-                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg"
-                style={{
-                  backgroundColor: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                }}
-              >
-                <span
-                  className="rounded-full flex-shrink-0"
+              <>
+                <div
+                  className="flex items-center gap-1.5 px-2.5 py-2 rounded-lg"
                   style={{
-                    width: "6px",
-                    height: "6px",
-                    backgroundColor: journeyAccent ?? "rgba(255,255,255,0.5)",
-                  }}
-                />
-                <span
-                  className="text-white/70 truncate"
-                  style={{
-                    fontSize: "0.72rem",
-                    fontFamily: "var(--font-geist-mono)",
-                    maxWidth: "140px",
+                    backgroundColor: "rgba(255,255,255,0.06)",
+                    border: "1px solid rgba(255,255,255,0.08)",
                   }}
                 >
-                  {journeyName}
-                </span>
+                  <span
+                    className="rounded-full flex-shrink-0"
+                    style={{
+                      width: "6px",
+                      height: "6px",
+                      backgroundColor: journeyAccent ?? "rgba(255,255,255,0.5)",
+                    }}
+                  />
+                  <span
+                    className="text-white/70 truncate"
+                    style={{
+                      fontSize: "0.72rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      maxWidth: "140px",
+                    }}
+                  >
+                    {journeyName}
+                  </span>
+                </div>
                 {onShareJourney && (
                   <button
                     onClick={onShareJourney}
-                    className="flex-shrink-0 text-white/30 hover:text-white/70 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-150"
+                    style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
                     title="Share Journey"
                   >
-                    <Share2 className="h-3 w-3" />
+                    <Share2 className="h-3.5 w-3.5" />
+                    Share
                   </button>
                 )}
                 <button
                   onClick={onStopJourney}
-                  className="flex-shrink-0 text-white/30 hover:text-white/70 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-150"
+                  style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
                   title="End journey"
                 >
-                  <X className="h-3 w-3" />
+                  <X className="h-3.5 w-3.5" />
+                  End
                 </button>
-              </div>
+              </>
             )}
             {/* Shader picker — visualize mode only */}
             {!inJourneyMode && (
