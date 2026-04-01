@@ -101,9 +101,9 @@ export function RecordingCard({
       <Card
         className="transition-all duration-200 hover:bg-white/[0.03] cursor-pointer"
       >
-        <CardContent className="flex items-center gap-4 py-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
-            <FileAudio className="h-5 w-5 text-white/40" />
+        <CardContent className="flex items-center gap-2.5 sm:gap-4 px-3 sm:px-6 py-4">
+          <div className="flex h-8 w-8 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.05]">
+            <FileAudio className="h-4 w-4 sm:h-5 sm:w-5 text-white/40" />
           </div>
           <div className="flex-1 min-w-0">
             <p className="truncate font-light">{title}</p>
@@ -146,9 +146,14 @@ export function RecordingCard({
             )}
           </div>
           {hasAnalysis && (
-            <span className="shrink-0 inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 font-mono text-[0.65rem] text-white/40">
-              Analyzed
-            </span>
+            <>
+              {/* Full badge — sm+ only */}
+              <span className="shrink-0 hidden sm:inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-0.5 font-mono text-[0.65rem] text-white/40">
+                Analyzed
+              </span>
+              {/* Dot indicator — mobile only */}
+              <span className="shrink-0 sm:hidden h-2 w-2 rounded-full bg-white/20" />
+            </>
           )}
           <Button
             variant="ghost"

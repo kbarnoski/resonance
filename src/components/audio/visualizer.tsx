@@ -684,7 +684,7 @@ export function VisualizerCore({
             onClick={() => { setModePaletteOpen(false); setModeSearch(""); }}
           />
           <div
-            className="absolute bottom-16 left-4 z-40 rounded-xl flex flex-col"
+            className="absolute bottom-[84px] md:bottom-16 left-4 z-40 rounded-xl flex flex-col"
             style={{
               backgroundColor: "#000",
               border: "1px solid rgba(255, 255, 255, 0.1)",
@@ -1187,6 +1187,21 @@ export function VisualizerCore({
                     {journeyName}
                   </span>
                 </div>
+              )}
+              {/* Mobile shader picker — viz mode only */}
+              {!inJourneyMode && (
+                <button
+                  onClick={() => setModePaletteOpen((v) => !v)}
+                  className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 transition-colors duration-75 ${
+                    modePaletteOpen ? "bg-white/15 text-white" : "text-white/60 hover:bg-white/10 hover:text-white"
+                  }`}
+                  style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                >
+                  <span style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
+                    {MODE_META.find(m => m.mode === mode)?.label ?? "Mandala"}
+                  </span>
+                  <ChevronUp className={`h-3 w-3 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
+                </button>
               )}
             </div>
             {/* Right: track title + time */}
