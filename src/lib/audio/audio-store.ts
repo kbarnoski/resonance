@@ -203,14 +203,14 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   },
 
   playNext: () => {
-    const { queue, queueIndex, installationMode } = get();
+    const { queue, queueIndex, installationMode, isPlaying } = get();
     if (queueIndex < queue.length - 1) {
       const nextIdx = queueIndex + 1;
       const next = queue[nextIdx];
       set({
         queueIndex: nextIdx,
         currentTrack: next,
-        isPlaying: true,
+        isPlaying,
         currentTime: 0,
         duration: next.duration ?? 0,
         analysis: null,
@@ -232,7 +232,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   },
 
   playPrev: () => {
-    const { queue, queueIndex, currentTime } = get();
+    const { queue, queueIndex, currentTime, isPlaying } = get();
     // If more than 3s in, restart current track
     if (currentTime > 3) {
       try { getAudioEngine().audioElement.currentTime = 0; } catch {}
@@ -245,7 +245,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       set({
         queueIndex: prevIdx,
         currentTrack: prev,
-        isPlaying: true,
+        isPlaying,
         currentTime: 0,
         duration: prev.duration ?? 0,
         analysis: null,

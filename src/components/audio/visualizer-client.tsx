@@ -436,26 +436,47 @@ export function VisualizerClient({
     };
   }, [liveEnabled, analyser]);
 
-  // Load the most recent track from user's library and start playing
-  const handleEnterRoom = useCallback(async () => {
+  // Load the full library into the queue so prev/next can navigate
+  const loadLibraryQueue = useCallback(async (autoPlay: boolean) => {
     try {
       const supabase = createClient();
       const { data, error } = await supabase
         .from("recordings")
-        .select("id, title, audio_url")
-        .order("created_at", { ascending: false })
-        .limit(1);
-      if (!error && data?.[0]) {
-        const row = data[0];
-        play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}` }, 0);
+        .select("id, title, audio_url, duration")
+        .order("created_at", { ascending: false });
+      if (!error && data && data.length > 0) {
+        const tracks = data.map((row) => ({
+          id: row.id,
+          title: row.title,
+          audioUrl: `/api/audio/${row.id}`,
+          duration: row.duration ?? undefined,
+        }));
+        if (autoPlay) {
+          useAudioStore.getState().setQueue(tracks, 0);
+        } else {
+          // Load queue without auto-playing
+          useAudioStore.setState({
+            queue: tracks,
+            queueIndex: 0,
+            currentTrack: tracks[0],
+            isPlaying: false,
+            currentTime: 0,
+            duration: tracks[0].duration ?? 0,
+            analysis: null,
+          });
+        }
       } else {
-        // No tracks — open library so user can upload
         setLibraryOpen(true);
       }
     } catch {
       setLibraryOpen(true);
     }
-  }, [play]);
+  }, []);
+
+  // Load the most recent track from user's library and start playing
+  const handleEnterRoom = useCallback(async () => {
+    await loadLibraryQueue(true);
+  }, [loadLibraryQueue]);
 
   const handleSwitchToVisualize = useCallback(() => {
     if (useAudioStore.getState().activeJourney) {
@@ -469,12 +490,12 @@ export function VisualizerClient({
     }
     useAudioStore.setState({ textOverlayMode: "off" });
     setJourneyOpen(false);
-    // If no track is loaded, auto-load the most recent one so the user
-    // doesn't land on the empty "Enter Room" welcome screen.
+    // If no track is loaded, load the full library (paused) so the user
+    // doesn't land on the empty welcome screen.
     if (!useAudioStore.getState().currentTrack) {
-      handleEnterRoom();
+      loadLibraryQueue(false);
     }
-  }, [handleEnterRoom]);
+  }, [loadLibraryQueue]);
 
   const handleExit = useCallback(() => {
     const state = useAudioStore.getState();

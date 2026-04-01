@@ -993,15 +993,13 @@ export function VisualizerCore({
           {/* CENTER: Now Playing — prev + play/pause + next + track title + time + library */}
           {showTransport && currentTrack && !inJourneyMode && (
             <div className="flex items-center gap-1">
-              {queue.length > 1 && (
-                <button
-                  onClick={playPrev}
-                  className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
-                  title="Previous track"
-                >
-                  <SkipBack className="h-3.5 w-3.5" fill="currentColor" />
-                </button>
-              )}
+              <button
+                onClick={playPrev}
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                title="Previous track"
+              >
+                <SkipBack className="h-3.5 w-3.5" fill="currentColor" />
+              </button>
               <button
                 onClick={() => {
                   ensureResumed();
@@ -1015,20 +1013,13 @@ export function VisualizerCore({
                   <Play className="h-4 w-4" fill="currentColor" />
                 )}
               </button>
-              {queue.length > 1 && (
-                <button
-                  onClick={playNext}
-                  className={`flex items-center justify-center p-2 transition-colors duration-75 ${
-                    queueIndex < queue.length - 1
-                      ? "text-white/40 hover:text-white/80"
-                      : "text-white/15 cursor-default"
-                  }`}
-                  disabled={queueIndex >= queue.length - 1}
-                  title="Next track"
-                >
-                  <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
-                </button>
-              )}
+              <button
+                onClick={playNext}
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                title="Next track"
+              >
+                <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
+              </button>
               <span
                 className="text-white/60 text-sm truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
@@ -1203,24 +1194,79 @@ export function VisualizerCore({
                   <ChevronUp className={`h-3 w-3 transition-transform ${modePaletteOpen ? "rotate-180" : ""}`} />
                 </button>
               )}
+              {/* Poetry + Voice toggles */}
+              {(journeyActive || (!inJourneyMode && currentTrack)) && (
+                <>
+                  <button
+                    onClick={() => {
+                      if (poetryEnabled || storyEnabled) {
+                        setWhisperEnabled(false);
+                        setTextOverlayMode("off");
+                      } else {
+                        setTextOverlayMode("poetry");
+                      }
+                    }}
+                    className={`flex items-center justify-center rounded-lg p-1.5 transition-colors duration-75 ${
+                      poetryEnabled || storyEnabled ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
+                    }`}
+                    title={poetryEnabled || storyEnabled ? "Poetry: On" : "Poetry: Off"}
+                  >
+                    <Type className="h-3.5 w-3.5" />
+                  </button>
+                  {(poetryEnabled || storyEnabled) && (
+                    <>
+                      <button
+                        onClick={() => setWhisperEnabled(!whisperEnabled)}
+                        className={`flex items-center justify-center rounded-lg p-1.5 transition-colors duration-75 ${
+                          whisperEnabled ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
+                        }`}
+                        title={whisperEnabled ? "Voice: On" : "Voice: Off"}
+                      >
+                        <AudioLines className="h-3.5 w-3.5" />
+                      </button>
+                      <div className="relative">
+                        <button
+                          onClick={() => setLangPickerOpen((v) => !v)}
+                          className={`flex items-center justify-center rounded-lg p-1.5 transition-colors duration-75 ${
+                            langPickerOpen ? "bg-white/15 text-white" : "text-white/40 hover:text-white/70"
+                          }`}
+                          title="Language"
+                        >
+                          <Globe className="h-3.5 w-3.5" />
+                        </button>
+                        {langPickerOpen && (
+                          <>
+                            <div className="fixed inset-0 z-30" onClick={() => setLangPickerOpen(false)} />
+                            <div
+                              className="absolute bottom-10 left-0 z-40 py-2 rounded-xl overflow-hidden min-w-[140px]"
+                              style={{
+                                backgroundColor: "#000",
+                                border: "1px solid rgba(255, 255, 255, 0.1)",
+                              }}
+                            >
+                              {LANGUAGES.map((lang) => (
+                                <button
+                                  key={lang.code}
+                                  onClick={() => { setLanguage(lang.code); setLangPickerOpen(false); }}
+                                  className={`w-full text-left px-4 py-1.5 transition-colors ${
+                                    language === lang.code
+                                      ? "text-white bg-white/10"
+                                      : "text-white/60 hover:text-white hover:bg-white/5"
+                                  }`}
+                                  style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
+                                >
+                                  {lang.label}
+                                </button>
+                              ))}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  )}
+                </>
+              )}
             </div>
-            {/* Right: track title + time */}
-            {currentTrack && (
-              <div className="flex items-center gap-1.5 min-w-0 ml-2">
-                <span
-                  className="text-white/50 truncate"
-                  style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-sans)", maxWidth: "140px" }}
-                >
-                  {currentTrack.title}
-                </span>
-                <span
-                  className="text-white/25 flex-shrink-0"
-                  style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
-                >
-                  {formatTime(currentTime)}
-                </span>
-              </div>
-            )}
           </div>
 
           {/* Row 2: Transport controls + actions (only when not in journey browsing without active journey) */}
@@ -1228,7 +1274,7 @@ export function VisualizerCore({
             <div className="flex items-center justify-between px-2" style={{ height: "44px" }}>
               {/* Left: prev / play / next */}
               <div className="flex items-center">
-                {showTransport && currentTrack && !journeyActive && queue.length > 1 && (
+                {showTransport && !journeyActive && (
                   <button
                     onClick={playPrev}
                     className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-75"
@@ -1250,21 +1296,34 @@ export function VisualizerCore({
                     <Play className="h-4.5 w-4.5" fill="currentColor" />
                   )}
                 </button>
-                {showTransport && currentTrack && !journeyActive && queue.length > 1 && (
+                {showTransport && !journeyActive && (
                   <button
                     onClick={playNext}
-                    className={`min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors duration-75 ${
-                      queueIndex < queue.length - 1
-                        ? "text-white/40 hover:text-white/80"
-                        : "text-white/15 cursor-default"
-                    }`}
-                    disabled={queueIndex >= queue.length - 1}
+                    className="min-w-[44px] min-h-[44px] flex items-center justify-center text-white/40 hover:text-white/80 transition-colors duration-75"
                     title="Next track"
                   >
                     <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
                   </button>
                 )}
               </div>
+
+              {/* Center: track title + time */}
+              {currentTrack && (
+                <div className="flex items-center gap-1.5 min-w-0 flex-1 justify-center">
+                  <span
+                    className="text-white/50 truncate"
+                    style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-sans)", maxWidth: "140px" }}
+                  >
+                    {currentTrack.title}
+                  </span>
+                  <span
+                    className="text-white/25 flex-shrink-0"
+                    style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)", fontVariantNumeric: "tabular-nums" }}
+                  >
+                    {formatTime(currentTime)}
+                  </span>
+                </div>
+              )}
 
               {/* Right: library + share + studio/exit */}
               <div className="flex items-center gap-0.5">
