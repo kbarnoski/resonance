@@ -180,17 +180,19 @@ export function VisualizerLibrary({ open, onClose }: VisualizerLibraryProps) {
       {/* Backdrop */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/30 transition-opacity duration-300"
+          className="fixed inset-0 bg-black/30 transition-opacity duration-300"
+          style={{ zIndex: 59 }}
           onClick={onClose}
         />
       )}
 
       {/* Panel */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 z-50 flex flex-col transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 h-full w-80 flex flex-col transition-transform duration-300 ease-out ${
           open ? "translate-x-0" : "translate-x-full pointer-events-none"
         }`}
         style={{
+          zIndex: 60,
           backdropFilter: "blur(32px) saturate(1.4)",
           WebkitBackdropFilter: "blur(32px) saturate(1.4)",
           backgroundColor: "rgba(0, 0, 0, 0.5)",

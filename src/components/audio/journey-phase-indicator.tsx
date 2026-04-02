@@ -100,7 +100,8 @@ export function JourneyPhaseIndicator({
 
   return (
     <div
-      className="absolute inset-0 z-30 pointer-events-none flex items-center justify-center"
+      className="absolute inset-0 pointer-events-none flex items-center justify-center"
+      style={{ zIndex: 50 }}
     >
       <div
         className="flex flex-col items-center gap-5 max-w-[80vw] text-center"
@@ -109,6 +110,11 @@ export function JourneyPhaseIndicator({
           transition: visible
             ? "opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1)"
             : "opacity 2s cubic-bezier(0.23, 1, 0.32, 1)",
+          padding: "2rem 3rem",
+          borderRadius: "1rem",
+          background: visible
+            ? "radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 70%, transparent 100%)"
+            : "transparent",
         }}
       >
         {/* Phase name — large, prominent */}
@@ -120,8 +126,8 @@ export function JourneyPhaseIndicator({
               fontWeight: 300,
               letterSpacing: "0.06em",
               textTransform: "uppercase",
-              color: "rgba(255, 255, 255, 0.7)",
-              textShadow: `0 2px 8px rgba(0,0,0,0.8), 0 0 60px ${accent}40, 0 0 120px ${accent}20`,
+              color: "rgba(255, 255, 255, 0.85)",
+              textShadow: `0 2px 12px rgba(0,0,0,0.9), 0 0 60px ${accent}40, 0 0 120px ${accent}20`,
             }}
           >
             {journey.phaseLabels?.[displayPhaseId as JourneyPhaseId]
@@ -139,8 +145,8 @@ export function JourneyPhaseIndicator({
               fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)",
               lineHeight: 1.4,
               letterSpacing: "-0.01em",
-              color: "rgba(255, 255, 255, 0.55)",
-              textShadow: `0 1px 6px rgba(0,0,0,0.7), 0 0 40px ${accent}30`,
+              color: "rgba(255, 255, 255, 0.7)",
+              textShadow: `0 1px 8px rgba(0,0,0,0.9), 0 0 40px ${accent}30`,
               maxWidth: "600px",
             }}
           >

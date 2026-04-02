@@ -785,23 +785,25 @@ export function VisualizerClient({
         />
       )}
 
-      {/* Journey completion overlay — replay or end */}
+      {/* Journey completion overlay — replay or end — above all visual layers */}
       {journeyCompleted && journeyActive && activeJourney && (
         <div
-          className="absolute inset-0 z-40 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex items-center justify-center"
           style={{
+            zIndex: 50,
             animation: "journeyEndFadeIn 2s ease-out forwards",
+            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 60%, rgba(0,0,0,0.2) 100%)",
           }}
         >
-          <div className="flex flex-col items-center gap-6 pointer-events-auto">
+          <div className="flex flex-col items-center gap-6">
             <p
               style={{
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontWeight: 300,
                 fontSize: "clamp(1rem, 2vw, 1.4rem)",
                 letterSpacing: "0.04em",
-                color: "rgba(255, 255, 255, 0.5)",
-                textShadow: "0 1px 6px rgba(0,0,0,0.7)",
+                color: "rgba(255, 255, 255, 0.6)",
+                textShadow: "0 1px 8px rgba(0,0,0,0.9)",
               }}
             >
               journey complete
@@ -811,10 +813,11 @@ export function VisualizerClient({
                 onClick={handleReplayJourney}
                 className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(255,255,255,0.2)",
                   fontSize: "0.8rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.02em",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.8)",
                 }}
               >
                 Replay
@@ -823,10 +826,11 @@ export function VisualizerClient({
                 onClick={handleEndJourney}
                 className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
                 style={{
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(255,255,255,0.2)",
                   fontSize: "0.8rem",
                   fontFamily: "var(--font-geist-mono)",
                   letterSpacing: "0.02em",
+                  textShadow: "0 1px 4px rgba(0,0,0,0.8)",
                 }}
               >
                 End Journey
