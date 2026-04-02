@@ -370,8 +370,10 @@ export function VisualizerCore({
 
   const inJourneyMode = journeyActive || journeyBrowsing;
 
-  // Skip shader rendering when journey browser covers everything (saves GPU)
-  const shadersHidden = journeyBrowsing && !journeyActive;
+  // Keep shaders running at low opacity behind the journey browser
+  const shadersHidden = false;
+  const shaderDimmed = journeyBrowsing && !journeyActive;
+  const JOURNEY_PICKER_SHADER = "depths" as VisualizerMode;
 
   // Transport state — only read when transport is shown
   const currentTrack = useAudioStore((s) => showTransport ? s.currentTrack : null);
@@ -598,40 +600,52 @@ export function VisualizerCore({
 
   return (
     <>
-      {/* Previous shader (fading out) */}
-      {!shadersHidden && prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef)}
+      {/* Shader layers — dimmed when journey browser is open */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: shaderDimmed ? 0.35 : 1,
+          transition: shaderDimmed ? "none" : "opacity 1s ease-in-out",
+          pointerEvents: "none",
+        }}
+      >
+        {/* Previous shader (fading out) — hidden when dimmed behind journey picker */}
+        {!shadersHidden && !shaderDimmed && prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef)}
 
-      {/* Current shader (fading in, or full opacity when no crossfade) */}
-      {!shadersHidden && renderShaderLayer(renderMode, 1, prevRenderMode ? nextLayerRef : undefined)}
+        {/* Current shader (fading in, or full opacity when no crossfade) */}
+        {/* When journey picker is open, render a fixed calm shader instead */}
+        {!shadersHidden && renderShaderLayer(shaderDimmed ? JOURNEY_PICKER_SHADER : renderMode, 1, shaderDimmed ? undefined : (prevRenderMode ? nextLayerRef : undefined))}
 
-      {/* Dual shader — second layer during peak journey moments (smooth fade).
-          Outer div applies --shader-opacity; inner div handles the crossfade animation. */}
-      {dualShaderVisible && SHADERS[dualShaderVisible as VisualizerMode] && (
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
-          <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
-            <ShaderVisualizer
-              analyser={analyser}
-              dataArray={dataArray}
-              fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
-              smoothMotion
-            />
+        {/* Dual shader — second layer during peak journey moments (smooth fade).
+            Outer div applies --shader-opacity; inner div handles the crossfade animation. */}
+        {dualShaderVisible && SHADERS[dualShaderVisible as VisualizerMode] && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+            <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
+              <ShaderVisualizer
+                analyser={analyser}
+                dataArray={dataArray}
+                fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
+                smoothMotion
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Tertiary shader — third layer for rich multi-shader moments */}
-      {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
-        <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
-          <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
-            <ShaderVisualizer
-              analyser={analyser}
-              dataArray={dataArray}
-              fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
-              smoothMotion
-            />
+        {/* Tertiary shader — third layer for rich multi-shader moments */}
+        {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+            <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
+              <ShaderVisualizer
+                analyser={analyser}
+                dataArray={dataArray}
+                fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
+                smoothMotion
+              />
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {poetryEnabled && (
         <PoetryOverlay

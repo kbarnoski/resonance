@@ -398,7 +398,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       {/* Full-area journey browser — solid black, no blur */}
       <div
         className="absolute inset-0 overflow-y-auto"
-        style={{ zIndex: 60, backgroundColor: "#000", willChange: "scroll-position" }}
+        style={{ zIndex: 60, backgroundColor: "rgba(0, 0, 0, 0.75)", willChange: "scroll-position" }}
       >
         <div className="mx-auto px-5 md:px-8 pt-10" style={{ maxWidth: "72rem", paddingBottom: "calc(6rem + env(safe-area-inset-bottom, 0px))" }}>
 
