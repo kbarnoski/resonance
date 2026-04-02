@@ -86,6 +86,7 @@ export function useJourney(): UseJourneyReturn {
     }
   }, [activeJourney, progress]);
 
+
   // Poll engine for progress-based changes (shader switches, phase changes).
   // When audio progress is available, this catches changes at switch boundaries.
   // When audio is unavailable, the wall-clock fallback keeps the journey advancing.

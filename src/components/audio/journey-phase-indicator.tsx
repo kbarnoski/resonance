@@ -6,8 +6,6 @@ import type { JourneyPhaseId, Journey } from "@/lib/journeys/types";
 interface JourneyPhaseIndicatorProps {
   journey: Journey;
   currentPhase: JourneyPhaseId | null;
-  guidancePhrase?: string | null;
-  guidancePhaseId?: string | null;
 }
 
 const PHASE_LABELS: Record<JourneyPhaseId, string> = {
@@ -21,20 +19,21 @@ const PHASE_LABELS: Record<JourneyPhaseId, string> = {
 
 /**
  * Journey phase overlay — centered phase name + guidance phrase.
- * Fades in on phase transitions, holds, then fades out.
- * No persistent top bar.
+ * Detects phase transitions from the currentPhase prop (driven by frame data)
+ * and picks a random guidance phrase from the journey definition.
+ * Fades in on transitions, holds, then fades out.
  */
 export function JourneyPhaseIndicator({
   journey,
   currentPhase,
-  guidancePhrase,
-  guidancePhaseId,
 }: JourneyPhaseIndicatorProps) {
   const [visible, setVisible] = useState(false);
   const [displayPhrase, setDisplayPhrase] = useState<string | null>(null);
   const [displayPhaseId, setDisplayPhaseId] = useState<string | null>(null);
+  const prevPhaseRef = useRef<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fontLoadedRef = useRef(false);
+  const usedIndicesRef = useRef<Map<string, number>>(new Map());
 
   // Load Cormorant Garamond via Google Fonts
   useEffect(() => {
@@ -49,16 +48,41 @@ export function JourneyPhaseIndicator({
     document.head.appendChild(link);
   }, []);
 
-  // Show guidance phrase on change
+  // Reset used indices when journey changes
   useEffect(() => {
-    if (!guidancePhrase || !guidancePhaseId) return;
+    usedIndicesRef.current.clear();
+    prevPhaseRef.current = null;
+  }, [journey.id]);
 
-    setDisplayPhrase(guidancePhrase);
-    setDisplayPhaseId(guidancePhaseId);
+  // Detect phase changes from the frame-driven currentPhase prop
+  useEffect(() => {
+    if (!currentPhase) return;
+
+    // Only trigger on actual phase change
+    if (currentPhase === prevPhaseRef.current) return;
+    prevPhaseRef.current = currentPhase;
+
+    // Find phase data and pick a guidance phrase
+    const phaseData = journey.phases.find((p) => p.id === currentPhase);
+    if (!phaseData) return;
+
+    let guidance: string | null = null;
+    if (phaseData.guidancePhrases.length > 0) {
+      // Pick a random phrase (different from last used for this phase)
+      const lastIdx = usedIndicesRef.current.get(currentPhase) ?? -1;
+      let idx = Math.floor(Math.random() * phaseData.guidancePhrases.length);
+      if (idx === lastIdx && phaseData.guidancePhrases.length > 1) {
+        idx = (idx + 1) % phaseData.guidancePhrases.length;
+      }
+      usedIndicesRef.current.set(currentPhase, idx);
+      guidance = phaseData.guidancePhrases[idx];
+    }
+
+    setDisplayPhaseId(currentPhase);
+    setDisplayPhrase(guidance);
     setVisible(true);
 
     if (timerRef.current) clearTimeout(timerRef.current);
-
     timerRef.current = setTimeout(() => {
       setVisible(false);
     }, 6000);
@@ -66,7 +90,7 @@ export function JourneyPhaseIndicator({
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
     };
-  }, [guidancePhrase, guidancePhaseId]);
+  }, [currentPhase, journey]);
 
   // Get accent color from current phase palette
   const currentPhaseData = currentPhase

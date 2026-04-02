@@ -224,3 +224,26 @@
   .room-bar-desktop { display: flex; }
   .room-bar-mobile { display: none; }
 }
+
+/* Shader picker — full-screen on mobile, popover on desktop */
+.shader-picker-panel {
+  position: fixed;
+  inset: 0;
+  max-height: 100vh;
+  max-height: 100dvh;
+  width: 100%;
+  border-radius: 0;
+  border: none;
+}
+@media (min-width: 768px) {
+  .shader-picker-panel {
+    position: absolute;
+    inset: auto;
+    bottom: 56px;
+    left: 16px;
+    max-height: 70vh;
+    width: min(420px, calc(100vw - 2rem));
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}

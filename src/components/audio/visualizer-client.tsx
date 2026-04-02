@@ -13,7 +13,7 @@ import { useAudioStore } from "@/lib/audio/audio-store";
 import { MODES_AI, AI_MODE_PROMPTS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, getNativeAnalyser, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 import { useInstallationMode } from "@/lib/audio/use-installation-mode";
-import { useJourney, usePhaseChange } from "@/lib/journeys/use-journey";
+import { useJourney } from "@/lib/journeys/use-journey";
 import { useStoryGeneration } from "@/lib/journeys/use-story";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getJourney } from "@/lib/journeys/journeys";
@@ -107,29 +107,7 @@ export function VisualizerClient({
   // Story mode generation
   useStoryGeneration();
 
-  // Journey guidance phrases
-  const [guidancePhrase, setGuidancePhrase] = useState<string | null>(null);
-  const [guidancePhaseId, setGuidancePhaseId] = useState<string | null>(null);
-
-  usePhaseChange((phase, guidance) => {
-    setGuidancePhaseId(phase);
-    setGuidancePhrase(guidance);
-  });
-
-  // Set initial guidance when journey starts (engine skips first callback)
-  useEffect(() => {
-    if (journeyActive && activeJourney && !guidancePhrase) {
-      const firstPhase = activeJourney.phases[0];
-      if (firstPhase?.guidancePhrases?.length) {
-        setGuidancePhaseId(firstPhase.id);
-        setGuidancePhrase(firstPhase.guidancePhrases[0]);
-      }
-    }
-    if (!journeyActive) {
-      setGuidancePhrase(null);
-      setGuidancePhaseId(null);
-    }
-  }, [journeyActive, activeJourney, guidancePhrase]);
+  // Phase guidance is now handled internally by JourneyPhaseIndicator
 
   // Detect journey completion — when audio ends and journey is active
   useEffect(() => {
@@ -526,16 +504,12 @@ export function VisualizerClient({
     }, 50);
   }, [seek]);
 
-  // End the journey after completion
+  // End the journey after completion — return to journey picker
   const handleEndJourney = useCallback(() => {
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     useAudioStore.getState().stopJourney();
-    setJourneyOpen(false);
-    const LIGHT_SHADERS = ["cosmos", "fog", "nebula", "drift", "dusk", "tide", "ember"];
-    useAudioStore.getState().setVizMode(
-      LIGHT_SHADERS[Math.floor(Math.random() * LIGHT_SHADERS.length)]
-    );
+    setJourneyOpen(true);
   }, []);
 
   const handleSwitchToVisualize = useCallback(() => {
@@ -766,15 +740,11 @@ export function VisualizerClient({
           journeyName={activeJourney?.name ?? null}
           onStopJourney={() => {
             if (useAudioStore.getState().activeJourney) {
-              // Stop journey and return to viz mode
+              // Stop journey and open journey picker
               useAudioStore.getState().stopJourney();
-              setJourneyOpen(false);
+              setJourneyOpen(true);
               setJourneyCompleted(false);
-              // Pick a lightweight shader so exit feels instant
-              const LIGHT_SHADERS = ["cosmos", "fog", "nebula", "drift", "dusk", "tide", "ember"];
-              useAudioStore.getState().setVizMode(
-                LIGHT_SHADERS[Math.floor(Math.random() * LIGHT_SHADERS.length)]
-              );
+              completedJourneyRef.current = null;
             } else {
               // No active journey — close browser, return to viz
               setJourneyOpen(false);
@@ -812,8 +782,6 @@ export function VisualizerClient({
         <JourneyPhaseIndicator
           journey={activeJourney}
           currentPhase={journeyPhase}
-          guidancePhrase={guidancePhrase}
-          guidancePhaseId={guidancePhaseId}
         />
       )}
 

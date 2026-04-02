@@ -680,21 +680,16 @@ export function VisualizerCore({
       {!installationMode && modePaletteOpen && (
         <>
           <div
-            className="fixed inset-0 z-30"
+            className="hidden md:block fixed inset-0 z-30"
             onClick={() => { setModePaletteOpen(false); setModeSearch(""); }}
           />
           <div
-            className="absolute bottom-[84px] md:bottom-16 left-4 z-40 rounded-xl flex flex-col"
-            style={{
-              backgroundColor: "#000",
-              border: "1px solid rgba(255, 255, 255, 0.1)",
-              maxHeight: "70vh",
-              width: "min(420px, calc(100vw - 2rem))",
-            }}
+            className="shader-picker-panel z-40 flex flex-col"
+            style={{ backgroundColor: "#000" }}
           >
             {/* Search bar */}
-            <div className="flex items-center gap-2 px-4 pt-3 pb-2" style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
-              <Search className="h-3.5 w-3.5 text-white/30 flex-shrink-0" />
+            <div className="flex items-center gap-2 px-4 pt-4 md:pt-3 pb-2" style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
+              <Search className="h-4 w-4 md:h-3.5 md:w-3.5 text-white/30 flex-shrink-0" />
               <input
                 ref={searchInputRef}
                 type="text"
@@ -703,13 +698,16 @@ export function VisualizerCore({
                 placeholder="Search modes..."
                 autoFocus
                 className="bg-transparent text-white/80 placeholder-white/25 outline-none w-full"
-                style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
+                style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}
                 onKeyDown={(e) => {
                   if (e.key === "Escape") { setModePaletteOpen(false); setModeSearch(""); }
                 }}
               />
+              <button onClick={() => { setModePaletteOpen(false); setModeSearch(""); }} className="text-white/40 hover:text-white/70 md:hidden p-1">
+                <X className="h-4 w-4" />
+              </button>
               {modeSearch && (
-                <button onClick={() => { setModeSearch(""); searchInputRef.current?.focus(); }} className="text-white/30 hover:text-white/60">
+                <button onClick={() => { setModeSearch(""); searchInputRef.current?.focus(); }} className="text-white/30 hover:text-white/60 hidden md:block">
                   <X className="h-3 w-3" />
                 </button>
               )}
@@ -723,7 +721,7 @@ export function VisualizerCore({
                 if (categoryModes.length === 0) return null;
                 const isCollapsed = !search && collapsedCategories.has(category);
                 return (
-                  <div key={category} className="mb-2.5 last:mb-0">
+                  <div key={category} className="mb-3 last:mb-0">
                     <button
                       onClick={() => {
                         if (search) return;
@@ -734,37 +732,37 @@ export function VisualizerCore({
                           return next;
                         });
                       }}
-                      className="flex items-center gap-1.5 mb-1.5 group w-full text-left"
+                      className="flex items-center gap-1.5 mb-2 group w-full text-left"
                     >
                       <p
                         className="text-white/40 group-hover:text-white/50 transition-colors"
-                        style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
+                        style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.1em", textTransform: "uppercase" }}
                       >
                         {category}
                       </p>
-                      <span className="text-white/30" style={{ fontSize: "0.6rem", fontFamily: "var(--font-geist-mono)" }}>
+                      <span className="text-white/30" style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)" }}>
                         {categoryModes.length}
                       </span>
                       {!search && (
                         isCollapsed
-                          ? <ChevronDown className="h-2.5 w-2.5 text-white/20" />
-                          : <ChevronUp className="h-2.5 w-2.5 text-white/20" />
+                          ? <ChevronDown className="h-3 w-3 text-white/20" />
+                          : <ChevronUp className="h-3 w-3 text-white/20" />
                       )}
                     </button>
                     {!isCollapsed && (
-                      <div className="grid grid-cols-5 gap-1">
+                      <div className="grid grid-cols-3 md:grid-cols-4 gap-1.5">
                         {categoryModes.map(({ mode: m, label }) => (
                           <button
                             key={m}
                             onClick={() => { setMode(m); setModePaletteOpen(false); setModeSearch(""); }}
-                            className={`flex items-center justify-center rounded-md px-1.5 py-1.5 transition-all ${
+                            className={`flex items-center justify-center rounded-md px-2 py-2.5 transition-all ${
                               mode === m
                                 ? "bg-white/15 text-white"
                                 : "text-white/50 hover:bg-white/8 hover:text-white/80"
                             }`}
-                            style={{ minHeight: "36px" }}
+                            style={{ minHeight: "40px" }}
                           >
-                            <span style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
+                            <span style={{ fontSize: "0.8rem", fontFamily: "var(--font-geist-mono)" }}>{label}</span>
                           </button>
                         ))}
                       </div>

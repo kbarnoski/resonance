@@ -40,6 +40,7 @@ export async function middleware(request: NextRequest) {
   const isPublicRoute =
     pathname === "/" ||
     pathname.startsWith("/share/") ||
+    pathname.startsWith("/journey/") ||
     (pathname.startsWith("/room/") &&
       pathname !== "/room/installation" &&
       pathname.split("/").length === 3);
