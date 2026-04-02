@@ -73,8 +73,7 @@ export function SharedJourneyClient({
   const frameRef = useRef<JourneyFrame | null>(null);
 
   // Phase changes via engine callback
-  const [guidancePhrase, setGuidancePhrase] = useState<string | null>(null);
-  const [guidancePhaseId, setGuidancePhaseId] = useState<string | null>(null);
+  // Phase guidance is now handled internally by JourneyPhaseIndicator
 
   // ─── Shader crossfade state (matching VisualizerCore) ───
   const shaderMode = journeyFrame?.shaderMode ?? journey.phases[0]?.shaderModes[0] ?? "cosmos";
@@ -317,21 +316,7 @@ export function SharedJourneyClient({
     const seed = playbackSeed ? parseInt(playbackSeed, 10) : undefined;
     engine.start(journey, seed != null && !isNaN(seed) ? { seed } : undefined);
 
-    // Show first phase guidance
-    const firstPhase = journey.phases[0];
-    if (firstPhase?.guidancePhrases?.length) {
-      setGuidancePhaseId(firstPhase.id);
-      setGuidancePhrase(firstPhase.guidancePhrases[0]);
-    }
-
-    // Subscribe to phase changes — same as main app's usePhaseChange
-    const unsub = engine.onPhaseChange((phase, guidance) => {
-      setGuidancePhaseId(phase);
-      setGuidancePhrase(guidance);
-    });
-
     return () => {
-      unsub();
       engine.stop();
     };
   }, [journey, playbackSeed]);
@@ -568,8 +553,6 @@ export function SharedJourneyClient({
       <JourneyPhaseIndicator
         journey={journey}
         currentPhase={journeyFrame?.phase as JourneyPhaseId ?? null}
-        guidancePhrase={guidancePhrase}
-        guidancePhaseId={guidancePhaseId}
       />
 
       {/* Fullscreen toggle — top-right (matching main app) */}
