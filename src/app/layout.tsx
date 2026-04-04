@@ -17,6 +17,14 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Resonance",
   description: "Your personal audio workspace — analyze, visualize, and explore your music",
+  appleWebApp: {
+    capable: true,
+    title: "Resonance",
+    statusBarStyle: "black-translucent",
+  },
+  other: {
+    "theme-color": "#000000",
+  },
 };
 
 export const viewport: Viewport = {

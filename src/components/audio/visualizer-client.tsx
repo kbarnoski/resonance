@@ -557,6 +557,7 @@ export function VisualizerClient({
   const handleReplayJourney = useCallback(() => {
     const journey = useAudioStore.getState().activeJourney;
     if (!journey) return;
+    ensureResumed(); // Unlock audio on mobile — must be in gesture context
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     // Seek to start and replay
@@ -578,6 +579,7 @@ export function VisualizerClient({
 
   // Continue to next journey in the path
   const handleContinuePath = useCallback((nextJourneyId: string) => {
+    ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     seek(0);
@@ -589,6 +591,7 @@ export function VisualizerClient({
 
   // Enter a culmination journey
   const handleEnterCulmination = useCallback((culminationId: string) => {
+    ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     seek(0);

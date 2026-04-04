@@ -13,6 +13,11 @@ import {
   nativeAudioSubscribe,
   type AudioDataPayload,
 } from "@/lib/tauri";
+import {
+  updateMediaSession,
+  setMediaSessionPlaybackState,
+  registerMediaSessionHandlers,
+} from "@/lib/media-session";
 
 /**
  * AudioProvider bridges the Zustand store to the audio engine singleton.
@@ -300,6 +305,24 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       stopAmbient();
     }
   }, [currentTrack]);
+
+  // ─── Media Session — lock screen Now Playing + transport controls ───
+  useEffect(() => {
+    updateMediaSession(currentTrack);
+  }, [currentTrack]);
+
+  useEffect(() => {
+    setMediaSessionPlaybackState(isPlaying ? "playing" : "paused");
+  }, [isPlaying]);
+
+  useEffect(() => {
+    registerMediaSessionHandlers({
+      onPlay: () => useAudioStore.getState().resume(),
+      onPause: () => useAudioStore.getState().pause(),
+      onNextTrack: () => useAudioStore.getState().playNext(),
+      onPreviousTrack: () => useAudioStore.getState().playPrev(),
+    });
+  }, []);
 
   return <>{children}</>;
 }

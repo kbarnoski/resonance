@@ -49,5 +49,10 @@ next-env.d.ts
 # tauri
 src-tauri/target/
 
+# capacitor iOS
+ios/App/App/public/
+ios/App/Pods/
+ios/DerivedData/
+
 # journey feedback log (local testing data)
 journey-feedback.jsonl

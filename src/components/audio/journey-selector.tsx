@@ -8,6 +8,7 @@ import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PHASE_ORDER } from "@/lib/journeys/phase-interpolation";
 import { getAiImageService } from "@/lib/journeys/ai-image-service";
 import { useAudioStore } from "@/lib/audio/audio-store";
+import { ensureResumed } from "@/lib/audio/audio-engine";
 import { createClient } from "@/lib/supabase/client";
 import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog";
 import { ShareSheet } from "@/components/ui/share-sheet";
@@ -248,6 +249,11 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   if (!open) return null;
 
   const selectJourney = async (journey: Journey, withAi: boolean) => {
+    // Unlock AudioContext in user gesture context — must happen before any await.
+    // Mobile browsers require resume() within a tap/click handler; once async work
+    // starts, the gesture context is lost and play() silently fails.
+    ensureResumed();
+
     setAiImageEnabled(withAi);
 
     const pairedSearch = PAIRED_TRACKS[journey.id];
@@ -620,6 +626,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                               className="flex items-center gap-3 cursor-pointer group rounded-md py-1.5 flex-1 hover:bg-white/[0.03] transition-colors"
                               onClick={() => {
                                 if (culmination) {
+                                  ensureResumed();
                                   startJourney(path.culminationJourneyId);
                                   onClose();
                                 }
@@ -678,6 +685,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   padding: "16px 20px",
                 }}
                 onClick={() => {
+                  ensureResumed();
                   startJourney(GRAND_CULMINATION_ID);
                   onClose();
                 }}
@@ -1123,6 +1131,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         paddingLeft: "12px",
                       }}
                       onClick={async () => {
+                        ensureResumed();
                         setAiImageEnabled(journey.aiEnabled);
                         await loadCustomJourneyTrack(journey);
                         startCustomJourney(journey);
@@ -1471,6 +1480,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         open={createDialogOpen}
         onOpenChange={setCreateDialogOpen}
         onCreated={async (journey) => {
+          ensureResumed();
           setCustomJourneys((prev) => [journey, ...prev]);
           setAiImageEnabled(true);
           await loadCustomJourneyTrack(journey);
