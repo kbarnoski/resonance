@@ -4,6 +4,7 @@ import { isDesktopApp, nativeAudioSeek } from "@/lib/tauri";
 import type { Journey, JourneyPhaseId } from "@/lib/journeys/types";
 import type { Realm } from "@/lib/journeys/types";
 import { getJourney } from "@/lib/journeys/journeys";
+import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealm } from "@/lib/journeys/realms";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { MODE_META, MODES_3D } from "@/lib/shaders";
@@ -313,7 +314,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   },
 
   startJourney: (journeyId) => {
-    const journey = getJourney(journeyId);
+    const journey = getJourney(journeyId) ?? getCulminationJourney(journeyId);
     if (!journey) return;
     const realm = getRealm(journey.realmId);
     const engine = getJourneyEngine();

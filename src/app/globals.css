@@ -208,6 +208,14 @@
   100% { opacity: 1; }
 }
 
+/* Journey intro screen — fade in, hold, fade out */
+@keyframes journeyIntroAnim {
+  0% { opacity: 0; }
+  40% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 @layer base {
   html {
     overflow-x: hidden;

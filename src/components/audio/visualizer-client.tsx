@@ -18,7 +18,10 @@ import { useJourney } from "@/lib/journeys/use-journey";
 import { useStoryGeneration } from "@/lib/journeys/use-story";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getJourney } from "@/lib/journeys/journeys";
+import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
+import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
+import { getPathForJourney, getNextInPath, isPathCulminationUnlocked, isGrandCulminationUnlocked, JOURNEY_PATHS, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
 import { createClient } from "@/lib/supabase/client";
 import { ShareSheet } from "@/components/ui/share-sheet";
 import { Mic } from "lucide-react";
@@ -107,23 +110,50 @@ export function VisualizerClient({
   const [journeyCompleted, setJourneyCompleted] = useState(false);
   const completedJourneyRef = useRef<string | null>(null);
 
+  // Journey intro screen — shows name + subtitle on journey start
+  const [journeyIntroVisible, setJourneyIntroVisible] = useState(false);
+  const journeyIntroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Buffer after intro fades out before phase indicator can appear
+  const [phaseIndicatorReady, setPhaseIndicatorReady] = useState(true);
+  const phaseReadyTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   // Story mode generation
   useStoryGeneration();
 
   // Phase guidance is now handled internally by JourneyPhaseIndicator
 
-  // Reset perf monitor + image service when a new journey starts
+  // Reset perf monitor + image service + show intro when a new journey starts
   const prevJourneyIdRef = useRef<string | null>(null);
   useEffect(() => {
     if (activeJourney && activeJourney.id !== prevJourneyIdRef.current) {
+      // Show intro BEFORE updating the ref
+      if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
+      if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
+      setJourneyIntroVisible(true);
+      setPhaseIndicatorReady(false);
+      // Intro fades out after 5s, then 2s buffer before phase indicator
+      journeyIntroTimerRef.current = setTimeout(() => {
+        setJourneyIntroVisible(false);
+      }, 5000);
+      phaseReadyTimerRef.current = setTimeout(() => {
+        setPhaseIndicatorReady(true);
+      }, 7000);
+
       prevJourneyIdRef.current = activeJourney.id;
       resetPerfMonitor();
-      // Reset image service session cost so each journey gets a fresh budget
       getRealtimeImageService().resetSession();
     }
     if (!activeJourney) {
       prevJourneyIdRef.current = null;
+      setJourneyIntroVisible(false);
+      setPhaseIndicatorReady(true);
+      if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
+      if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
     }
+    return () => {
+      if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
+      if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
+    };
   }, [activeJourney]);
 
   // Detect journey completion — when audio ends and journey is active
@@ -150,6 +180,8 @@ export function VisualizerClient({
       );
       setJourneyCompleted(true);
       completedJourneyRef.current = activeJourney.id;
+      // Record completion in path progress store
+      usePathProgressStore.getState().completeJourney(activeJourney.id);
       // Flush any buffered glitch/feedback entries before analysis
       flushFeedbackEntries();
       // Analyze feedback and adapt for next journey
@@ -544,6 +576,28 @@ export function VisualizerClient({
     setJourneyOpen(true);
   }, []);
 
+  // Continue to next journey in the path
+  const handleContinuePath = useCallback((nextJourneyId: string) => {
+    setJourneyCompleted(false);
+    completedJourneyRef.current = null;
+    seek(0);
+    useAudioStore.getState().stopJourney();
+    setTimeout(() => {
+      useAudioStore.getState().startJourney(nextJourneyId);
+    }, 50);
+  }, [seek]);
+
+  // Enter a culmination journey
+  const handleEnterCulmination = useCallback((culminationId: string) => {
+    setJourneyCompleted(false);
+    completedJourneyRef.current = null;
+    seek(0);
+    useAudioStore.getState().stopJourney();
+    setTimeout(() => {
+      useAudioStore.getState().startJourney(culminationId);
+    }, 50);
+  }, [seek]);
+
   const handleSwitchToVisualize = useCallback(() => {
     if (useAudioStore.getState().activeJourney) {
       useAudioStore.getState().stopJourney();
@@ -824,8 +878,8 @@ export function VisualizerClient({
         </VisualizerCore>
       </JourneyCompositor>}
 
-      {/* Journey phase indicator — always mounted to avoid remount retriggering phases */}
-      {journeyActive && activeJourney && !journeyOpen && (
+      {/* Journey phase indicator — hidden during intro + 2s buffer */}
+      {journeyActive && activeJourney && !journeyOpen && phaseIndicatorReady && (
         <JourneyPhaseIndicator
           journey={activeJourney}
           currentPhase={journeyPhase}
@@ -835,18 +889,17 @@ export function VisualizerClient({
       {/* Journey tuning buttons — always visible during journey for love/dislike feedback */}
       <JourneyFeedback visible={journeyActive && !journeyOpen} />
 
-      {/* Journey completion overlay — replay or end — above all visual layers */}
-      {journeyCompleted && journeyActive && activeJourney && (
+      {/* Journey intro screen — exact same treatment as completion overlay */}
+      {journeyIntroVisible && activeJourney && (
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{
             zIndex: 50,
             pointerEvents: "none",
-            animation: "journeyEndFadeIn 2s ease-out forwards",
+            animation: "journeyIntroAnim 5s ease-in-out forwards",
           }}
         >
-          <div className="flex flex-col items-center gap-6" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto" }}>
-            {/* Soft blurred background — matches phase indicator style */}
+          <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw" }}>
             <div
               style={{
                 position: "absolute",
@@ -868,39 +921,299 @@ export function VisualizerClient({
                 textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
-              Journey Complete
+              Journey Started
             </span>
-            <div className="flex items-center gap-3" style={{ position: "relative" }}>
-              <button
-                onClick={handleReplayJourney}
-                className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  fontSize: "0.8rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  letterSpacing: "0.02em",
-                  textShadow: "0 1px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                Replay
-              </button>
-              <button
-                onClick={handleEndJourney}
-                className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  fontSize: "0.8rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  letterSpacing: "0.02em",
-                  textShadow: "0 1px 4px rgba(0,0,0,0.8)",
-                }}
-              >
-                End Journey
-              </button>
-            </div>
+            <span
+              style={{
+                position: "relative",
+                fontFamily: "'Cormorant Garamond', Georgia, serif",
+                fontStyle: "italic",
+                fontWeight: 300,
+                fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
+                letterSpacing: "0.04em",
+                color: "rgba(255, 255, 255, 0.55)",
+                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                marginTop: "-0.5rem",
+              }}
+            >
+              {activeJourney.name}
+            </span>
           </div>
         </div>
       )}
+
+      {/* Journey completion overlay — replay or end — above all visual layers */}
+      {journeyCompleted && journeyActive && activeJourney && (() => {
+        const path = getPathForJourney(activeJourney.id);
+        const progressState = usePathProgressStore.getState();
+        const completedIds = progressState.completedJourneyIds;
+        const isCulmination = JOURNEY_PATHS.some(p => p.culminationJourneyId === activeJourney.id);
+        const isGrandCulm = activeJourney.id === GRAND_CULMINATION_ID;
+
+        // Path context for regular journeys
+        const pathProgress = path ? {
+          completed: path.journeyIds.filter(id => completedIds.includes(id)).length,
+          total: path.journeyIds.length,
+        } : null;
+        const justCompletedPath = path && pathProgress && pathProgress.completed === pathProgress.total;
+        const nextInPath = path && !justCompletedPath ? getNextInPath(path, completedIds) : null;
+
+        // Grand culmination unlock check
+        const justUnlockedGrand = isCulmination && progressState.grandCulminationUnlocked
+          && !progressState.grandCulminationCompleted;
+
+        return (
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              zIndex: 50,
+              pointerEvents: "none",
+              animation: "journeyEndFadeIn 2s ease-out forwards",
+            }}
+          >
+            <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto", maxWidth: "90vw" }}>
+              {/* Soft blurred background */}
+              <div
+                style={{
+                  position: "absolute",
+                  inset: "-40%",
+                  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
+                  filter: "blur(40px)",
+                  pointerEvents: "none",
+                }}
+              />
+
+              {/* Title */}
+              <span
+                style={{
+                  position: "relative",
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontWeight: 300,
+                  fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  color: "rgba(255, 255, 255, 0.85)",
+                  textShadow: "0 2px 12px rgba(0,0,0,0.9)",
+                }}
+              >
+                {isGrandCulm ? "The Spirit" : isCulmination ? activeJourney.name : "Journey Complete"}
+              </span>
+
+              {/* Journey name + subtitle */}
+              <span
+                style={{
+                  position: "relative",
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
+                  letterSpacing: "0.04em",
+                  color: "rgba(255, 255, 255, 0.55)",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                  marginTop: "-0.5rem",
+                  textAlign: "center",
+                }}
+              >
+                {isCulmination || isGrandCulm ? activeJourney.subtitle : activeJourney.name}
+              </span>
+
+              {/* Path progress section — for regular journeys in a path */}
+              {path && !isCulmination && !isGrandCulm && pathProgress && (
+                <div className="flex flex-col items-center gap-2" style={{ position: "relative", marginTop: "0.5rem" }}>
+                  <div
+                    style={{
+                      width: "3rem",
+                      height: "1px",
+                      background: "rgba(255,255,255,0.15)",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontWeight: 300,
+                      fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)",
+                      letterSpacing: "0.03em",
+                      color: justCompletedPath ? path.palette.accent : "rgba(255,255,255,0.45)",
+                      textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+                    }}
+                  >
+                    {path.name}{justCompletedPath ? " — complete" : ""}
+                  </span>
+                  {/* Progress dots */}
+                  <div className="flex items-center gap-1.5" style={{ position: "relative" }}>
+                    {path.journeyIds.map((jid) => (
+                      <div
+                        key={jid}
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          backgroundColor: completedIds.includes(jid)
+                            ? path.palette.accent
+                            : "rgba(255,255,255,0.2)",
+                          transition: "background-color 0.3s ease",
+                        }}
+                      />
+                    ))}
+                    <span
+                      style={{
+                        fontFamily: "var(--font-geist-mono)",
+                        fontSize: "0.65rem",
+                        color: "rgba(255,255,255,0.35)",
+                        marginLeft: "0.5rem",
+                      }}
+                    >
+                      {pathProgress.completed} of {pathProgress.total}
+                    </span>
+                  </div>
+
+                  {/* Culmination unlock message */}
+                  {justCompletedPath && (
+                    <span
+                      style={{
+                        fontFamily: "'Cormorant Garamond', Georgia, serif",
+                        fontStyle: "italic",
+                        fontWeight: 300,
+                        fontSize: "clamp(0.85rem, 1.8vw, 1rem)",
+                        color: "rgba(255,255,255,0.5)",
+                        marginTop: "0.25rem",
+                      }}
+                    >
+                      Something deeper awaits.
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Culmination completion — path fulfilled message */}
+              {isCulmination && path && (
+                <div className="flex flex-col items-center gap-2" style={{ position: "relative", marginTop: "0.5rem" }}>
+                  <div
+                    style={{
+                      width: "3rem",
+                      height: "1px",
+                      background: "rgba(255,255,255,0.15)",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontWeight: 300,
+                      fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)",
+                      letterSpacing: "0.03em",
+                      color: path.palette.accent,
+                      textShadow: "0 1px 6px rgba(0,0,0,0.8)",
+                    }}
+                  >
+                    {path.name} — fulfilled
+                  </span>
+                </div>
+              )}
+
+              {/* Grand culmination special pre-message */}
+              {justUnlockedGrand && (
+                <span
+                  style={{
+                    position: "relative",
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontStyle: "italic",
+                    fontWeight: 300,
+                    fontSize: "clamp(0.9rem, 2vw, 1.2rem)",
+                    color: "rgba(255,255,255,0.55)",
+                    marginTop: "0.25rem",
+                  }}
+                >
+                  Every path has led to this.
+                </span>
+              )}
+
+              {/* Action buttons */}
+              <div className="flex items-center gap-3" style={{ position: "relative", marginTop: "0.25rem" }}>
+                <button
+                  onClick={handleReplayJourney}
+                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    fontSize: "0.8rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.02em",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  Replay
+                </button>
+
+                {/* Continue Path — next journey in sequence */}
+                {nextInPath && (
+                  <button
+                    onClick={() => handleContinuePath(nextInPath)}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    style={{
+                      border: `1px solid ${path?.palette.accent ?? "rgba(255,255,255,0.2)"}`,
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                      textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                    }}
+                  >
+                    Continue Path
+                  </button>
+                )}
+
+                {/* Enter Culmination — when path just completed */}
+                {justCompletedPath && path && (
+                  <button
+                    onClick={() => handleEnterCulmination(path.culminationJourneyId)}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    style={{
+                      border: `1px solid ${path.palette.accent}`,
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                      textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                      color: path.palette.accent,
+                    }}
+                  >
+                    Enter {getCulminationJourney(path.culminationJourneyId)?.name ?? "Culmination"}
+                  </button>
+                )}
+
+                {/* Enter Grand Culmination — when all 5 path culminations done */}
+                {justUnlockedGrand && (
+                  <button
+                    onClick={() => handleEnterCulmination(GRAND_CULMINATION_ID)}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    style={{
+                      border: "1px solid rgba(160,128,208,0.6)",
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                      textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                      color: "#c0a0f0",
+                    }}
+                  >
+                    Enter The Spirit
+                  </button>
+                )}
+
+                <button
+                  onClick={handleEndJourney}
+                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    fontSize: "0.8rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.02em",
+                    textShadow: "0 1px 4px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  End
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Live listening indicator — hidden in fullscreen/immersive mode */}
       {liveEnabled && !isFullscreen && (

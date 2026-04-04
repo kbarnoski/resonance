@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
-import { Shuffle, Sparkles, Plus, Share2, Trash2, Wand2, Loader2 } from "lucide-react";
+import { Shuffle, Sparkles, Plus, Share2, Trash2, Wand2, Loader2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { REALMS } from "@/lib/journeys/realms";
-import { JOURNEYS } from "@/lib/journeys/journeys";
+import { JOURNEYS, getJourney } from "@/lib/journeys/journeys";
 import { PHASE_ORDER } from "@/lib/journeys/phase-interpolation";
 import { getAiImageService } from "@/lib/journeys/ai-image-service";
 import { useAudioStore } from "@/lib/audio/audio-store";
@@ -13,6 +13,9 @@ import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog
 import { ShareSheet } from "@/components/ui/share-sheet";
 import type { Journey } from "@/lib/journeys/types";
 import { PAIRED_TRACKS, PAIRED_STORAGE } from "@/lib/journeys/paired-tracks";
+import { JOURNEY_PATHS, getPathForJourney, isPathCulminationUnlocked, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
+import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
+import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 
 const FEATURED_JOURNEY_ID = "first-snow";
 
@@ -38,6 +41,10 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const [sharingId, setSharingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
+  const [expandedPath, setExpandedPath] = useState<string | null>(null);
+  const completedJourneyIds = usePathProgressStore((s) => s.completedJourneyIds);
+  const completedCulminationIds = usePathProgressStore((s) => s.completedCulminationIds);
+  const grandCulminationUnlocked = usePathProgressStore((s) => s.grandCulminationUnlocked);
 
   // Check AI availability on open
   useEffect(() => {
@@ -444,6 +451,287 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             </div>
           </div>
 
+          {/* ── Paths Section ── */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+              <span
+                className="text-white/25"
+                style={{
+                  fontSize: "0.65rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                }}
+              >
+                Paths
+              </span>
+              <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+              {JOURNEY_PATHS.map((path) => {
+                const isExpanded = expandedPath === path.id;
+                const completed = path.journeyIds.filter((id) => completedJourneyIds.includes(id)).length;
+                const total = path.journeyIds.length;
+                const culminationUnlocked = isPathCulminationUnlocked(path, completedJourneyIds);
+                const culminationCompleted = completedCulminationIds.includes(path.culminationJourneyId);
+                const culmination = getCulminationJourney(path.culminationJourneyId);
+
+                return (
+                  <div
+                    key={path.id}
+                    className="jcard rounded-xl"
+                    style={{
+                      backgroundColor: "rgba(255,255,255,0.01)",
+                      border: `1px solid rgba(255,255,255,0.06)`,
+                      padding: "16px 20px",
+                    }}
+                  >
+                    {/* Collapsed header — always visible */}
+                    <div
+                      className="cursor-pointer"
+                      onClick={() => setExpandedPath(isExpanded ? null : path.id)}
+                    >
+                      <div className="flex items-start gap-2.5 mb-2">
+                        <div
+                          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
+                          style={{
+                            backgroundColor: path.palette.accent,
+                            boxShadow: `0 0 4px ${path.palette.glow}30`,
+                          }}
+                        />
+                        <div className="min-w-0 flex-1">
+                          <span
+                            className="text-white/75 block"
+                            style={{
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "0.95rem",
+                            }}
+                          >
+                            {path.name}
+                          </span>
+                          <span
+                            className="text-white/30 block mt-0.5"
+                            style={{
+                              fontSize: "0.68rem",
+                              fontFamily: "var(--font-geist-mono)",
+                            }}
+                          >
+                            {path.subtitle}
+                          </span>
+                        </div>
+                        <ChevronDown
+                          className="h-3.5 w-3.5 text-white/20 shrink-0 mt-1 transition-transform duration-200"
+                          style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0)" }}
+                        />
+                      </div>
+                      {/* Progress dots + count */}
+                      <div className="flex items-center gap-1.5 ml-4">
+                        {path.journeyIds.map((jid) => (
+                          <div
+                            key={jid}
+                            style={{
+                              width: "5px",
+                              height: "5px",
+                              borderRadius: "50%",
+                              backgroundColor: completedJourneyIds.includes(jid)
+                                ? path.palette.accent
+                                : "rgba(255,255,255,0.15)",
+                            }}
+                          />
+                        ))}
+                        <span
+                          style={{
+                            fontFamily: "var(--font-geist-mono)",
+                            fontSize: "0.6rem",
+                            color: "rgba(255,255,255,0.25)",
+                            marginLeft: "0.4rem",
+                          }}
+                        >
+                          {completed} of {total}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Expanded detail — journey list */}
+                    {isExpanded && (
+                      <div className="mt-4 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                        <div className="flex flex-col gap-1">
+                          {path.journeyIds.map((jid, idx) => {
+                            const journey = getJourney(jid);
+                            if (!journey) return null;
+                            const isComplete = completedJourneyIds.includes(jid);
+                            const isActive = activeJourney?.id === jid;
+                            return (
+                              <div
+                                key={jid}
+                                className="flex items-center gap-3 py-1.5 cursor-pointer group rounded-md px-2 hover:bg-white/[0.03] transition-colors"
+                                onClick={() => handleJourneyClick(journey)}
+                                style={{
+                                  backgroundColor: isActive ? "rgba(255,255,255,0.04)" : undefined,
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontFamily: "var(--font-geist-mono)",
+                                    fontSize: "0.6rem",
+                                    color: "rgba(255,255,255,0.2)",
+                                    width: "1rem",
+                                    textAlign: "right",
+                                  }}
+                                >
+                                  {idx + 1}.
+                                </span>
+                                <span
+                                  className="flex-1"
+                                  style={{
+                                    fontFamily: "var(--font-geist-sans)",
+                                    fontWeight: 300,
+                                    fontSize: "0.85rem",
+                                    color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.65)",
+                                  }}
+                                >
+                                  {journey.name}
+                                </span>
+                                {isComplete && (
+                                  <div
+                                    style={{
+                                      width: "5px",
+                                      height: "5px",
+                                      borderRadius: "50%",
+                                      backgroundColor: path.palette.accent,
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Culmination row */}
+                        <div
+                          className="mt-3 pt-3 flex items-center gap-3 px-2"
+                          style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+                        >
+                          {culminationUnlocked ? (
+                            <div
+                              className="flex items-center gap-3 cursor-pointer group rounded-md py-1.5 flex-1 hover:bg-white/[0.03] transition-colors"
+                              onClick={() => {
+                                if (culmination) {
+                                  startJourney(path.culminationJourneyId);
+                                  onClose();
+                                }
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontFamily: "var(--font-geist-sans)",
+                                  fontWeight: 300,
+                                  fontSize: "0.85rem",
+                                  color: path.palette.accent,
+                                  textShadow: `0 0 8px ${path.palette.glow}40`,
+                                }}
+                              >
+                                {culmination?.name ?? "Culmination"}
+                              </span>
+                              {culminationCompleted && (
+                                <div
+                                  style={{
+                                    width: "5px",
+                                    height: "5px",
+                                    borderRadius: "50%",
+                                    backgroundColor: path.palette.accent,
+                                  }}
+                                />
+                              )}
+                            </div>
+                          ) : (
+                            <div className="flex-1 py-1.5">
+                              <span
+                                style={{
+                                  fontFamily: "var(--font-geist-mono)",
+                                  fontSize: "0.65rem",
+                                  color: "rgba(255,255,255,0.2)",
+                                }}
+                              >
+                                Complete all journeys to reveal
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Grand Culmination — The Spirit */}
+            {grandCulminationUnlocked && (
+              <div
+                className="mt-4 jcard rounded-xl cursor-pointer"
+                style={{
+                  backgroundColor: "rgba(160,128,208,0.03)",
+                  border: "1px solid rgba(160,128,208,0.15)",
+                  padding: "16px 20px",
+                }}
+                onClick={() => {
+                  startJourney(GRAND_CULMINATION_ID);
+                  onClose();
+                }}
+              >
+                <div className="flex items-center gap-2.5">
+                  <div
+                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                    style={{
+                      backgroundColor: "#c0a0f0",
+                      boxShadow: "0 0 6px rgba(192,160,240,0.3)",
+                    }}
+                  />
+                  <span
+                    style={{
+                      fontFamily: "var(--font-geist-sans)",
+                      fontWeight: 300,
+                      fontSize: "0.95rem",
+                      color: "#c0a0f0",
+                      textShadow: "0 0 8px rgba(192,160,240,0.3)",
+                    }}
+                  >
+                    The Spirit
+                  </span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-geist-mono)",
+                      fontSize: "0.65rem",
+                      color: "rgba(255,255,255,0.25)",
+                    }}
+                  >
+                    the infinite inner landscape
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ── All Journeys divider ── */}
+          <div className="flex items-center gap-4 mb-8">
+            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+            <span
+              className="text-white/25"
+              style={{
+                fontSize: "0.65rem",
+                fontFamily: "var(--font-geist-mono)",
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              All Journeys
+            </span>
+            <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
+          </div>
+
           {/* ── Featured Journey (Mobile) ── */}
           {featured && (
             <div className="md:hidden mb-12">
@@ -707,7 +995,21 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       onClick={() => handleJourneyClick(journey)}
                     >
                       <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-baseline gap-3 min-w-0">
+                        <div className="flex items-center gap-2 min-w-0">
+                          {completedJourneyIds.includes(journey.id) && (() => {
+                            const jp = getPathForJourney(journey.id);
+                            return jp ? (
+                              <div
+                                className="shrink-0"
+                                style={{
+                                  width: "4px",
+                                  height: "4px",
+                                  borderRadius: "50%",
+                                  backgroundColor: jp.palette.accent,
+                                }}
+                              />
+                            ) : null;
+                          })()}
                           <span
                             className="text-white/85 shrink-0"
                             style={{
@@ -970,17 +1272,33 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       </div>
                     </div>
 
-                    {/* Journey name */}
-                    <h3
-                      className="text-white/85 mb-1"
-                      style={{
-                        fontFamily: "var(--font-geist-sans)",
-                        fontWeight: 300,
-                        fontSize: "1.05rem",
-                      }}
-                    >
-                      {journey.name}
-                    </h3>
+                    {/* Journey name + completion dot */}
+                    <div className="flex items-center gap-2 mb-1">
+                      {completedJourneyIds.includes(journey.id) && (() => {
+                        const jp = getPathForJourney(journey.id);
+                        return jp ? (
+                          <div
+                            className="shrink-0"
+                            style={{
+                              width: "4px",
+                              height: "4px",
+                              borderRadius: "50%",
+                              backgroundColor: jp.palette.accent,
+                            }}
+                          />
+                        ) : null;
+                      })()}
+                      <h3
+                        className="text-white/85"
+                        style={{
+                          fontFamily: "var(--font-geist-sans)",
+                          fontWeight: 300,
+                          fontSize: "1.05rem",
+                        }}
+                      >
+                        {journey.name}
+                      </h3>
+                    </div>
 
                     {/* Subtitle */}
                     <p

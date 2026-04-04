@@ -62,6 +62,13 @@ class JourneyEngine {
   private static readonly MAX_RECENT_THEMES = 5;
   /** Cached AI prompt — stable within a phase, only recomputed on phase change */
   private phaseAiPrompt = "";
+  /** Phase transition grace — carry old shader/prompt across boundary for smooth handoff */
+  private phaseGraceEnd = 0; // progress at which grace period expires
+  private graceShader = ""; // shader to hold during grace
+  private graceAiPrompt = ""; // AI prompt to hold during grace
+  private graceActive = false;
+  /** ~8 seconds grace at phase boundaries (assuming ~300s track) */
+  private static readonly PHASE_GRACE = 8 / 300;
   /** Random function for this playback session (Math.random or seeded) */
   private random: () => number = Math.random;
 
@@ -83,6 +90,8 @@ class JourneyEngine {
     this.currentStoryImagePrompt = "";
     this.recentPromptThemes = [];
     this.phaseAiPrompt = "";
+    this.graceActive = false;
+    this.phaseGraceEnd = 0;
 
     // Set initial shader from first phase
     if (this.journey.phases.length > 0) {
@@ -112,6 +121,8 @@ class JourneyEngine {
     this.currentPoetryLine = "";
     this.currentStoryImagePrompt = "";
     this.phaseAiPrompt = "";
+    this.graceActive = false;
+    this.phaseGraceEnd = 0;
     this.random = Math.random;
   }
 
@@ -152,12 +163,21 @@ class JourneyEngine {
     const currentPhase = phases[phaseIndex];
     const phaseProgress = getPhaseProgress(clamped, currentPhase);
 
-    // Detect phase change
+    // Detect phase change — start grace period so old shader/prompt carry over smoothly
     if (currentPhase.id !== this.currentPhaseId) {
       const prevPhase = this.currentPhaseId;
+
+      // Capture current visuals before switching — these persist during grace
+      if (prevPhase !== null) {
+        this.graceShader = this.currentShaderMode;
+        this.graceAiPrompt = this.phaseAiPrompt;
+        this.phaseGraceEnd = clamped + JourneyEngine.PHASE_GRACE;
+        this.graceActive = true;
+      }
+
       this.currentPhaseId = currentPhase.id;
 
-      // Fire phase change callbacks
+      // Fire phase change callbacks (guidance text, phase indicator)
       if (prevPhase !== null) {
         const guidanceIdx = this.guidancePhraseIndices.get(currentPhase.id) ?? 0;
         const guidance =
@@ -170,11 +190,16 @@ class JourneyEngine {
         }
       }
 
-      // Build and cache AI prompt for this phase.
+      // Build and cache AI prompt for the NEW phase.
       // IMPORTANT: This is computed ONCE per phase, not per frame.
       // AiImageLayer debounces on prompt changes, so an unstable prompt
       // (e.g. using Date.now() or live audio levels) prevents generation entirely.
       this.phaseAiPrompt = this.buildPhaseAiPrompt(currentPhase, phaseIndex);
+    }
+
+    // End grace period once time is up
+    if (this.graceActive && clamped >= this.phaseGraceEnd) {
+      this.graceActive = false;
     }
 
     // Determine current shader from pre-computed schedule (progress-based, not timer-based)
@@ -184,7 +209,11 @@ class JourneyEngine {
     this.currentShaderIndex = Math.min(switchesPassed, Math.max(0, currentPhase.shaderModes.length - 1));
     this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
 
-    const aiPrompt = this.phaseAiPrompt;
+    // During grace period: hold the old shader and AI prompt so the transition
+    // feels continuous. Numeric values (bloom, palette, etc.) still interpolate
+    // via getPhaseBlend, but the visual shader and AI imagery carry over.
+    const effectiveShader = this.graceActive ? this.graceShader : this.currentShaderMode;
+    const aiPrompt = this.graceActive ? this.graceAiPrompt : this.phaseAiPrompt;
 
     // Interpolate numeric values during crossfade
     const iv = (getter: (p: JourneyPhase) => number) =>
@@ -240,7 +269,7 @@ class JourneyEngine {
       phase: currentPhase.id,
       progress: clamped,
       phaseProgress,
-      shaderMode: this.currentShaderMode,
+      shaderMode: effectiveShader,
       shaderOpacity: iv((p) => p.shaderOpacity),
       aiPrompt,
       denoisingStrength: mapAudioToDenoising(
@@ -304,8 +333,9 @@ class JourneyEngine {
     return this.currentPhaseId;
   }
 
-  /** Get the current shader mode (after regeneration) */
+  /** Get the current shader mode (respects phase transition grace period) */
   getCurrentShaderMode(): string {
+    if (this.graceActive) return this.graceShader || "cosmos";
     return this.currentShaderMode || "cosmos";
   }
 
@@ -376,17 +406,17 @@ class JourneyEngine {
 
   /**
    * Pre-compute shader switch points for each phase as progress fractions.
-   * Uses 15-20s intervals converted to progress (assuming ~300s track).
-   * Every shader gets at least 10s of visible time — no short flashes at
-   * phase boundaries. The crossfade itself is ~1.5s, so 10s minimum means
-   * ~8.5s at full opacity before the next fade starts.
+   * Uses 10-15s intervals converted to progress (assuming ~300s track).
+   * Every shader gets at least 8s of visible time — no short flashes at
+   * phase boundaries. The crossfade itself is ~1.5s, so 8s minimum means
+   * ~6.5s at full opacity before the next fade starts.
    */
   private precomputeShaderSwitchSchedule(random: () => number): void {
     this.shaderSwitchSchedule.clear();
     if (!this.journey) return;
 
-    // 10 seconds expressed as progress fraction (~300s track)
-    const MIN_VISIBLE = 10 / 300;
+    // 8 seconds expressed as progress fraction (~300s track)
+    const MIN_VISIBLE = 8 / 300;
 
     for (const phase of this.journey.phases) {
       if (phase.shaderModes.length <= 1) {
@@ -402,8 +432,8 @@ class JourneyEngine {
       const deadline = phase.end - MIN_VISIBLE;
 
       while (cursor < deadline) {
-        // 15-20s intervals expressed as progress fraction (~300s assumed track)
-        const intervalProgress = (15 + random() * 5) / 300;
+        // 10-15s intervals expressed as progress fraction (~300s assumed track)
+        const intervalProgress = (10 + random() * 5) / 300;
         cursor += intervalProgress;
         if (cursor < deadline) {
           points.push(cursor);

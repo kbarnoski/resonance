@@ -85,6 +85,7 @@ const REALM_SHADER_AFFINITY: Record<string, string[]> = {
 const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "snow", // only appropriate for winter/snowflake or user-created journeys
   "rain", // only appropriate for water-related realms (ocean, storm)
+  "lattice", // grid-lined look — not suited for journeys
 ];
 
 /** Realms that ARE allowed to use globally-blocked shaders */
@@ -105,6 +106,13 @@ const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
     "thermal", "geyser", "lightning", // warm/fiery elemental
     "ember", // warm organic tones
     "redshift", "comet", "magnetar", // warm cosmic
+  ],
+  hell: [
+    "ocean", "cascade", "whirlpool", "tide", "ripple", // water elemental
+    "waterfall", "wave", "seabed", // water 3D worlds
+    "plankton", "kelp", "mangrove", "coral", // aquatic/botanical organic
+    "snow", "aurora", // cold/winter
+    "lotus", "cloud", // serene — wrong vibe
   ],
   heaven: [
     "orb", // wrong vibe
@@ -178,9 +186,9 @@ function pickShaders(pool: string[], count: number, used: Set<string>, random: (
   return picked;
 }
 
-function defaultPhases(
+export function defaultPhases(
   realmId: string,
-  overrides: Partial<Record<string, Partial<JourneyPhase>>>
+  overrides: Partial<Record<string, Partial<JourneyPhase>>> = {}
 ): JourneyPhase[] {
   // Every play gets a fresh random set, biased toward realm-appropriate categories
   const allShaders = pickJourneyShaders(realmId);

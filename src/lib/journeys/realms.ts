@@ -53,28 +53,28 @@ export const REALMS: Realm[] = [
     subtitle: "the last judgement",
     visualVocabulary: {
       environments: [
-        "infinite pit descending into churning fire, writhing figures falling through darkness without end",
-        "Bosch nightmare landscape stretching to every horizon, broken wheels and burning towers in infinite recession",
-        "vast lake of fire under a black sky with no stars, the shore unreachable in every direction",
-        "inverted cathedral sinking infinitely downward, each level darker and more terrible than the last",
+        "infinite vertical void of heat-shimmer and deep charcoal darkness descending without end",
+        "vast abstract wildfire canopy seen from within — burning branches dissolving into pure orange light and billowing smoke against starless black",
+        "layered thermal pressure zones glowing deep orange through infinite smoke-black depth",
+        "boundless charred forest abstracted to dark silhouette forms consumed by sweeping fire-light across the horizon",
       ],
       entities: [
-        "towering demon silhouettes against infinite fire, horned forms judging from impossible heights",
-        "writhing masses of the damned cascading downward forever into the pit",
-        "enormous serpentine leviathan coiling through infinite darkness, scales reflecting hellfire",
-        "skeletal figures with burning eyes emerging from infinite shadow, pointing downward",
+        "monumental smoke architecture coiling upward through infinite darkness like a forest fire's plume rendered at cosmic scale",
+        "cascading ember-streams and burning bark fragments falling in designed fibonacci spirals through the void",
+        "enormous charred timber forms crumbling into glowing ember and prismatic ash against deep black",
+        "sculpted fire-columns with impossible internal geometry — wood grain patterns visible in the white-hot combustion front",
       ],
       textures: [
-        "flesh becoming stone becoming fire becoming darkness in infinite cycle",
-        "cracked earth revealing infinite depths of molten suffering beneath",
-        "smoke and ash rising forever from burning ground that has no end",
-        "blood-red light filtering through infinite layers of tortured stone",
+        "cracked charcoal bark revealing veins of molten orange light in organic branching patterns",
+        "smoke and ash layered in translucent sheets with ember-glow at the seams, fine wood-ash particles drifting",
+        "heat-distortion ripples bending deep red light through infinite dark layers of burning canopy",
+        "charred wood surfaces with fractal cooling patterns and faint amber glow where the fire still lives",
       ],
       atmospheres: [
-        "absolute dread of infinite descent with no bottom",
-        "the weight of eternal judgement pressing from all sides",
-        "terror at the scale of suffering stretching beyond comprehension",
-        "the overwhelming presence of something ancient and merciless watching",
+        "absolute pressure of infinite descent into formless heat and rising smoke",
+        "the weight of a burning world pressing from all directions — wood-smoke and thermal force",
+        "overwhelming scale where wildfire becomes abstract and architectural",
+        "ancient combustion energy radiating from depths beyond comprehension, the scent of burning timber in the light",
       ],
     },
     shaderModes: [
@@ -91,7 +91,7 @@ export const REALMS: Realm[] = [
     defaultVoice: "onyx",
     poetryMood: "intense",
     poetryImagery:
-      "infinite descent, the last judgement, demonic silhouettes, writhing damned, lake of fire, Bosch nightmare, leviathan in darkness, eternal torment, burning horizon, judgement without mercy",
+      "infinite descent, volcanic glass, ember spirals, smoke architecture, heat distortion, obsidian fracture, charcoal void, molten pressure, ash falling through darkness, fire at cosmic scale",
   },
   {
     id: "garden",
