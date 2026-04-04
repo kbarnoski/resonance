@@ -387,18 +387,28 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
   return (
     <>
-      {/* Card hover styles — CSS-only, no JS event handlers */}
+      {/* Card hover styles + shader window effect via backdrop-filter */}
       <style>{`
-        .jcard { transition: background-color 0.15s ease, border-color 0.15s ease; }
+        .jcard {
+          transition: background-color 0.15s ease, border-color 0.15s ease;
+          -webkit-backdrop-filter: brightness(2.2) saturate(1.2) blur(24px);
+          backdrop-filter: brightness(2.2) saturate(1.2) blur(24px);
+        }
         .jcard:not(.jcard-active):hover {
-          background-color: rgba(255,255,255,0.04) !important;
-          border-color: rgba(255,255,255,0.07) !important;
+          background-color: rgba(255,255,255,0.03) !important;
+          border-color: rgba(255,255,255,0.12) !important;
+          -webkit-backdrop-filter: brightness(3.5) saturate(1.4) blur(16px) !important;
+          backdrop-filter: brightness(3.5) saturate(1.4) blur(16px) !important;
+        }
+        .jcard.jcard-active {
+          -webkit-backdrop-filter: brightness(2.8) saturate(1.3) blur(20px);
+          backdrop-filter: brightness(2.8) saturate(1.3) blur(20px);
         }
       `}</style>
       {/* Full-area journey browser — solid black, no blur */}
       <div
         className="absolute inset-0 overflow-y-auto overflow-x-hidden"
-        style={{ zIndex: 60, backgroundColor: "rgba(0, 0, 0, 0.75)", willChange: "scroll-position", overscrollBehaviorY: "contain" }}
+        style={{ zIndex: 60, backgroundColor: "rgba(0, 0, 0, 0.88)", willChange: "scroll-position", overscrollBehaviorY: "contain" }}
       >
         <div className="mx-auto px-5 md:px-8 pt-10" style={{ maxWidth: "72rem", paddingBottom: "calc(6rem + env(safe-area-inset-bottom, 0px))" }}>
 
@@ -534,12 +544,12 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           {/* ── Featured Journey (Desktop Hero Card) ── */}
           {featured && (
             <div
-              className="hidden md:block mb-12 cursor-pointer group rounded-xl p-6 jcard"
+              className={`hidden md:block mb-12 cursor-pointer group rounded-xl p-6 jcard${activeJourney?.id === featured.id ? " jcard-active" : ""}`}
               style={{
                 backgroundColor: activeJourney?.id === featured.id
-                  ? `${featuredAccent}08`
-                  : "rgba(255,255,255,0.03)",
-                border: `1px solid ${activeJourney?.id === featured.id ? `${featuredAccent}20` : "rgba(255,255,255,0.05)"}`,
+                  ? `${featuredAccent}06`
+                  : "rgba(255,255,255,0.01)",
+                border: `1px solid ${activeJourney?.id === featured.id ? `${featuredAccent}20` : "rgba(255,255,255,0.06)"}`,
                 borderLeft: activeJourney?.id === featured.id ? `2px solid ${featuredAccent}` : undefined,
               }}
               onClick={() => handleJourneyClick(featured)}
@@ -905,9 +915,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     className={`jcard cursor-pointer group rounded-xl${isActive ? " jcard-active" : ""}`}
                     style={{
                       backgroundColor: isActive
-                        ? `${accent}08`
-                        : "rgba(255,255,255,0.02)",
-                      border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.05)"}`,
+                        ? `${accent}05`
+                        : "rgba(255,255,255,0.01)",
+                      border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.06)"}`,
                       borderLeft: isActive ? `2px solid ${accent}` : undefined,
                       padding: "20px",
                     }}
@@ -1033,9 +1043,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         className={`jcard cursor-pointer group rounded-xl${isActive ? " jcard-active" : ""}`}
                         style={{
                           backgroundColor: isActive
-                            ? `${accent}08`
-                            : "rgba(255,255,255,0.02)",
-                          border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.05)"}`,
+                            ? `${accent}05`
+                            : "rgba(255,255,255,0.01)",
+                          border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.06)"}`,
                           borderLeft: isActive ? `2px solid ${accent}` : undefined,
                           padding: "20px",
                         }}

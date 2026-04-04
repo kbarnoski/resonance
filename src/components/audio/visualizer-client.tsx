@@ -9,6 +9,7 @@ import { TonnetzOverlay } from "./tonnetz-overlay";
 import { JourneySelector } from "./journey-selector";
 import { JourneyCompositor } from "./journey-compositor";
 import { JourneyPhaseIndicator } from "./journey-phase-indicator";
+import { JourneyFeedback, resetGlitchCount, flushFeedbackEntries } from "./journey-feedback";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { MODES_AI, AI_MODE_PROMPTS } from "@/lib/shaders";
 import { getAudioEngine, getAnalyserNode, getNativeAnalyser, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
@@ -21,6 +22,7 @@ import { createClient } from "@/lib/supabase/client";
 import { ShareSheet } from "@/components/ui/share-sheet";
 import { Mic } from "lucide-react";
 import { isDesktopApp, enterKioskMode, exitKioskMode, nativeAudioSeek } from "@/lib/tauri";
+import { analyzeAndAdapt, refreshAdaptiveProfile } from "@/lib/journeys/adaptive-engine";
 
 // ─── Speech Recognition types ───
 
@@ -109,6 +111,18 @@ export function VisualizerClient({
 
   // Phase guidance is now handled internally by JourneyPhaseIndicator
 
+  // Reset glitch counter when a new journey starts
+  const prevJourneyIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    if (activeJourney && activeJourney.id !== prevJourneyIdRef.current) {
+      prevJourneyIdRef.current = activeJourney.id;
+      resetGlitchCount();
+    }
+    if (!activeJourney) {
+      prevJourneyIdRef.current = null;
+    }
+  }, [activeJourney]);
+
   // Detect journey completion — when audio ends and journey is active
   useEffect(() => {
     if (!journeyActive || !activeJourney) {
@@ -127,8 +141,17 @@ export function VisualizerClient({
     const stoppedLate = duration > 0 && currentTime > 0 && !isPlaying && currentTime >= duration * 0.95;
 
     if (nearEnd || stoppedLate) {
+      console.log(
+        `[Journey] COMPLETED — nearEnd=${nearEnd} stoppedLate=${stoppedLate} ` +
+        `currentTime=${currentTime.toFixed(1)} duration=${duration.toFixed(1)} isPlaying=${isPlaying}`
+      );
       setJourneyCompleted(true);
       completedJourneyRef.current = activeJourney.id;
+      // Flush any buffered glitch/feedback entries before analysis
+      flushFeedbackEntries();
+      // Analyze feedback and adapt for next journey
+      analyzeAndAdapt();
+      refreshAdaptiveProfile();
     }
   }, [journeyActive, activeJourney, currentTime, duration, journeyCompleted, isPlaying]);
 
@@ -208,6 +231,7 @@ export function VisualizerClient({
   // Default to journey browser unless entering with a specific recording or journey
   const [journeyOpen, setJourneyOpen] = useState(!recording && !initialJourney);
   const controlsTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const iosImmersiveRef = useRef(false);
 
   // Installation mode auto-cycling
   useInstallationMode();
@@ -293,13 +317,14 @@ export function VisualizerClient({
     return () => closeRoom();
   }, [openRoom, closeRoom]);
 
-  // Auto-hide controls after inactivity
+  // Auto-hide controls after inactivity (shorter in iOS immersive mode)
   const resetControlsTimer = useCallback(() => {
     setControlsVisible(true);
     if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+    const delay = iosImmersiveRef.current ? 2500 : 5000;
     controlsTimerRef.current = setTimeout(() => {
       if (!libraryOpen && !journeyOpen) setControlsVisible(false);
-    }, 5000);
+    }, delay);
   }, [libraryOpen, journeyOpen]);
 
   useEffect(() => {
@@ -571,7 +596,22 @@ export function VisualizerClient({
   const handleFullscreenToggle = useCallback(() => {
     if (isIOS) {
       // iOS doesn't support Fullscreen API on non-video elements — toggle immersive mode
-      setIsFullscreen((v) => !v);
+      setIsFullscreen((prev) => {
+        const next = !prev;
+        iosImmersiveRef.current = next;
+        if (next) {
+          // Entering immersive: immediately hide controls for a clean experience
+          setControlsVisible(false);
+          if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+          // Scroll to hide Safari/Chrome address bar
+          window.scrollTo(0, 1);
+        } else {
+          // Exiting immersive: show controls
+          setControlsVisible(true);
+          resetControlsTimer();
+        }
+        return next;
+      });
       return;
     }
     if (isDesktopApp()) {
@@ -789,16 +829,20 @@ export function VisualizerClient({
         />
       )}
 
+      {/* Journey tuning buttons — always visible during journey for love/dislike feedback */}
+      <JourneyFeedback visible={journeyActive && !journeyOpen} />
+
       {/* Journey completion overlay — replay or end — above all visual layers */}
       {journeyCompleted && journeyActive && activeJourney && (
         <div
           className="absolute inset-0 flex items-center justify-center"
           style={{
             zIndex: 50,
+            pointerEvents: "none",
             animation: "journeyEndFadeIn 2s ease-out forwards",
           }}
         >
-          <div className="flex flex-col items-center gap-6" style={{ position: "relative", padding: "4rem 6rem" }}>
+          <div className="flex flex-col items-center gap-6" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto" }}>
             {/* Soft blurred background — matches phase indicator style */}
             <div
               style={{
@@ -809,19 +853,20 @@ export function VisualizerClient({
                 pointerEvents: "none",
               }}
             />
-            <p
+            <span
               style={{
                 position: "relative",
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontWeight: 300,
-                fontSize: "clamp(1rem, 2vw, 1.4rem)",
-                letterSpacing: "0.04em",
-                color: "rgba(255, 255, 255, 0.6)",
-                textShadow: "0 1px 8px rgba(0,0,0,0.9)",
+                fontSize: "clamp(2rem, 5vw, 3.5rem)",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+                color: "rgba(255, 255, 255, 0.85)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
-              journey complete
-            </p>
+              Journey Complete
+            </span>
             <div className="flex items-center gap-3" style={{ position: "relative" }}>
               <button
                 onClick={handleReplayJourney}

@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { AiImageLayer } from "./ai-image-layer";
 import { PostProcessingLayer } from "./post-processing-layer";
 import type { JourneyFrame } from "@/lib/journeys/types";
+import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
@@ -56,6 +57,22 @@ export function JourneyCompositor({
   const effectiveTargetFps = frame?.targetFps ?? 2;
   const effectiveShaderOpacity = frame?.shaderOpacity ?? 1.0;
   const showAi = aiEnabled && !!effectivePrompt;
+
+  // Detect light-background phases from prompt — scale down GPU-expensive effects
+  const isLightPhase = /WHITE BACKGROUND|PALE BACKGROUND|LIGHT BACKGROUND/i.test(effectivePrompt);
+  const isMobile = typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent);
+
+  // Adaptive scaling — learned from user feedback patterns
+  const adaptiveConditions = {
+    hasDualShader: !!frame?.dualShaderMode,
+    isLightBg: isLightPhase,
+    isMobile,
+    bloom: frame?.bloomIntensity ?? 0,
+    shader: frame?.shaderMode,
+    dualShader: frame?.dualShaderMode,
+  };
+  const adaptiveScale = getEffectScale(adaptiveConditions);
+  const adaptiveBloom = getBloomScale(adaptiveConditions);
 
   // Intro gating: shaders start hidden, fade in after first AI image arrives.
   // This creates a clean intro where the user sees imagery first, then the
@@ -130,16 +147,16 @@ export function JourneyCompositor({
         />
       )}
 
-      {/* Post-processing — z-3, above AI but below controls */}
+      {/* Post-processing — adaptive scaling from feedback + light-phase reduction */}
       {frame && (
         <PostProcessingLayer
-          chromaticAberration={frame.chromaticAberration}
-          vignette={frame.vignette}
-          bloomIntensity={frame.bloomIntensity}
+          chromaticAberration={frame.chromaticAberration * adaptiveScale}
+          vignette={(isLightPhase ? frame.vignette * 0.3 : frame.vignette) * adaptiveScale}
+          bloomIntensity={(isLightPhase ? frame.bloomIntensity * 0.2 : frame.bloomIntensity) * adaptiveScale * adaptiveBloom}
           audioAmplitude={audioAmplitude}
-          filmGrain={frame.filmGrain}
-          particleDensity={frame.particleDensity}
-          halation={frame.halation}
+          filmGrain={0}
+          particleDensity={(isLightPhase ? frame.particleDensity * 0.3 : frame.particleDensity) * adaptiveScale}
+          halation={(isLightPhase ? 0 : frame.halation) * adaptiveScale}
           palette={frame.palette}
         />
       )}

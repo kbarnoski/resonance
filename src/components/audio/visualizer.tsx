@@ -11,6 +11,7 @@ import { StoryOverlay } from "./story-overlay";
 import { Visualizer3D, type Visualizer3DMode } from "./visualizer-3d";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D, MODES_AI } from "@/lib/shaders";
+import { recordGlitch, getSharedFpsRef, startFpsTracker, stopFpsTracker } from "./journey-feedback";
 export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 
 // Ambient shaders used as backdrop underneath AI imagery modes
@@ -417,6 +418,8 @@ export function VisualizerCore({
   const prevModeRef = useRef(mode);
   const prevLayerRef = useRef<HTMLDivElement>(null);
   const nextLayerRef = useRef<HTMLDivElement>(null);
+  // Captured opacity when a crossfade is interrupted — prevents opacity jump from e.g. 0.5→1
+  const prevCapturedOpacityRef = useRef<number>(1);
 
   // Dual shader smooth fade — keep it mounted while fading out
   const [dualShaderVisible, setDualShaderVisible] = useState<string | null>(null);
@@ -427,22 +430,31 @@ export function VisualizerCore({
     if (mode !== prevModeRef.current) {
       cancelAnimationFrame(crossfadeRef.current);
 
+      // Capture the "next" layer's current DOM opacity BEFORE React re-renders.
+      // When interrupting a mid-crossfade (A→B at 50%, now B→C), the B layer
+      // was at partial opacity. Without this capture, React would reset it to 1
+      // via inline style, causing a visible pop.
+      let capturedOpacity = 1;
+      if (nextLayerRef.current) {
+        const parsed = parseFloat(nextLayerRef.current.style.opacity);
+        if (!isNaN(parsed)) capturedOpacity = parsed;
+      } else if (prevLayerRef.current) {
+        // No active crossfade — current shader is in the "settled" position
+        // (no nextLayerRef). Read from prevLayerRef if it exists, otherwise 1.
+        const parsed = parseFloat(prevLayerRef.current.style.opacity);
+        if (!isNaN(parsed)) capturedOpacity = parsed;
+      }
+      prevCapturedOpacityRef.current = Math.max(0.01, capturedOpacity);
+
       setPrevRenderMode(prevModeRef.current);
       setRenderMode(mode);
       prevModeRef.current = mode;
 
       // Start crossfade on next frame (after React renders the new layers)
       crossfadeRef.current = requestAnimationFrame(() => {
-        // Read current opacity of the outgoing layer — if we're interrupting
-        // an in-progress crossfade, start from where it is (not forced to 1)
-        // parseFloat can return NaN when opacity is a CSS variable like "var(--shader-opacity, 1)"
-        let prevStartOpacity = prevLayerRef.current
-          ? parseFloat(prevLayerRef.current.style.opacity || "1")
-          : 1;
-        if (isNaN(prevStartOpacity)) prevStartOpacity = 1;
-        if (prevLayerRef.current && prevStartOpacity <= 0.01) {
-          prevLayerRef.current.style.opacity = "1";
-        }
+        // Use the pre-captured opacity — the DOM value may have been overwritten
+        // by React's reconciliation between setState and this rAF callback.
+        const prevStartOpacity = prevCapturedOpacityRef.current;
         if (nextLayerRef.current) nextLayerRef.current.style.opacity = "0";
 
         let progress = 0;
@@ -452,7 +464,7 @@ export function VisualizerCore({
             ? 2 * progress * progress
             : 1 - Math.pow(-2 * progress + 2, 2) / 2;
 
-          const outOpacity = Math.max(0, (prevStartOpacity <= 0.01 ? 1 : prevStartOpacity) * (1 - eased));
+          const outOpacity = Math.max(0, prevStartOpacity * (1 - eased));
           if (prevLayerRef.current) prevLayerRef.current.style.opacity = String(outOpacity);
           if (nextLayerRef.current) nextLayerRef.current.style.opacity = String(eased);
 
@@ -476,6 +488,9 @@ export function VisualizerCore({
 
   useEffect(() => {
     if (dualShaderTarget) {
+      // Hide immediately via ref BEFORE React re-renders — prevents 1-2 frame flash
+      // where old WebGL context is destroyed but div is still at old opacity
+      if (dualShaderRef.current) dualShaderRef.current.style.opacity = "0";
       // Mount the shader, start fading in on next frame
       setDualShaderVisible(dualShaderTarget);
       cancelAnimationFrame(dualFadeRef.current);
@@ -486,7 +501,7 @@ export function VisualizerCore({
         if (dualShaderRef.current) dualShaderRef.current.style.opacity = String(eased * 0.75);
         if (progress < 1) dualFadeRef.current = requestAnimationFrame(fadeIn);
       };
-      // Wait two frames for React to mount the element
+      // Wait two frames for React to mount and WebGL to initialize
       dualFadeRef.current = requestAnimationFrame(() => {
         if (dualShaderRef.current) dualShaderRef.current.style.opacity = "0";
         dualFadeRef.current = requestAnimationFrame(fadeIn);
@@ -529,6 +544,8 @@ export function VisualizerCore({
 
   useEffect(() => {
     if (tertiaryShaderTarget) {
+      // Hide immediately via ref BEFORE React re-renders — prevents flash of black canvas
+      if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
       setTertiaryShaderVisible(tertiaryShaderTarget);
       cancelAnimationFrame(tertiaryFadeRef.current);
       let progress = 0;
@@ -568,6 +585,66 @@ export function VisualizerCore({
     }
     return () => cancelAnimationFrame(tertiaryFadeRef.current);
   }, [tertiaryShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // ── Automatic shader glitch detector ──
+  // Polls opacity of all shader layers at 200ms intervals (not per-frame).
+  // If any layer's opacity jumps more than 0.15 between polls, records a
+  // "glitch" snapshot. Uses shared FPS tracker from journey-feedback module.
+  useEffect(() => {
+    startFpsTracker(); // ref-counted — shared with JourneyFeedback
+    const prevOpacities: Record<string, number> = {};
+    // Throttle: max 1 glitch record per 2 seconds to avoid flooding
+    let lastGlitchTime = 0;
+    const fpsRef = getSharedFpsRef();
+
+    const intervalId = setInterval(() => {
+      const now = performance.now();
+      const layers = [
+        { name: "primary-prev", ref: prevLayerRef },
+        { name: "primary-next", ref: nextLayerRef },
+        { name: "dual", ref: dualShaderRef },
+        { name: "tertiary", ref: tertiaryShaderRef },
+      ];
+      for (const { name, ref } of layers) {
+        if (!ref.current) {
+          // Layer unmounted — if it was visible, that's a pop-off
+          if (prevOpacities[name] !== undefined && prevOpacities[name] > 0.1) {
+            const fromOp = prevOpacities[name];
+            console.warn(
+              `[GLITCH] ${name} shader: unmounted at opacity ${fromOp.toFixed(2)} (pop-off) | mode=${renderMode}`
+            );
+            if (now - lastGlitchTime > 2000) {
+              lastGlitchTime = now;
+              recordGlitch(name, fromOp, 0, renderMode, dualShaderVisible, fpsRef);
+            }
+          }
+          delete prevOpacities[name];
+          continue;
+        }
+        const current = parseFloat(ref.current.style.opacity);
+        if (isNaN(current)) continue;
+        const prev = prevOpacities[name];
+        if (prev !== undefined) {
+          const delta = Math.abs(current - prev);
+          if (delta > 0.15) {
+            console.warn(
+              `[GLITCH] ${name} shader: opacity ${prev.toFixed(2)}→${current.toFixed(2)} (Δ${(current - prev) > 0 ? "+" : ""}${(current - prev).toFixed(2)}) | mode=${renderMode}`
+            );
+            if (now - lastGlitchTime > 2000) {
+              lastGlitchTime = now;
+              recordGlitch(name, prev, current, renderMode, dualShaderVisible, fpsRef);
+            }
+          }
+        }
+        prevOpacities[name] = current;
+      }
+    }, 200); // 5Hz polling — catches any visible glitch without per-frame cost
+
+    return () => {
+      clearInterval(intervalId);
+      stopFpsTracker();
+    };
+  }, [renderMode, dualShaderVisible, tertiaryShaderVisible]);
 
   // Sync config ref for parent to read
   useEffect(() => {
@@ -651,8 +728,9 @@ export function VisualizerCore({
           pointerEvents: "none",
         }}
       >
-        {/* Previous shader (fading out) — hidden when dimmed behind journey picker */}
-        {!shadersHidden && !shaderDimmed && prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef)}
+        {/* Previous shader (fading out) — hidden when dimmed behind journey picker.
+            Uses captured opacity from the moment of interruption to prevent jumps. */}
+        {!shadersHidden && !shaderDimmed && prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef, prevCapturedOpacityRef.current)}
 
         {/* Current shader (fading in, or full opacity when no crossfade) */}
         {/* When journey picker is open, render a fixed calm shader instead */}

@@ -2,6 +2,7 @@ import type { Journey, JourneyPhase } from "./types";
 import { getRealm } from "./realms";
 import { MODE_META } from "@/lib/shaders";
 import { seededShuffle } from "./seeded-random";
+import { applyShaderPreferences } from "./adaptive-engine";
 
 // ─── Full shader library: ALL registered shaders ───
 // Every journey draws from this pool — balanced across all categories.
@@ -164,7 +165,8 @@ function pickJourneyShaders(realmId: string, random: () => number = Math.random)
     ...shuffleArray(varietyPool, random).filter(s => !mustInclude.includes(s)).slice(0, varietyCount),
   ];
 
-  return shuffleArray(picked, random);
+  // Apply adaptive preferences — gently promotes loved shaders, preserves variation
+  return applyShaderPreferences(shuffleArray(picked, random), realmId);
 }
 
 /** Pick `count` shaders from pool, avoiding `used` set. Never duplicates. */
@@ -989,7 +991,7 @@ export const JOURNEYS: Journey[] = [
         voice: "shimmer",
       },
       expansion: {
-        aiPrompt: "WHITE BACKGROUND — fractal powder structure sweeping diagonally from upper left toward lower right, connected forms made of dispersed snow particles like white sand in fibonacci geometry, subtle blue-grey shadows and fine dark edges defining the interwoven design against brilliant pale ground, the densest detail in the upper third trailing into scattered particles and open white space below, infinite cosmic depth through layered translucency, spiral paths visible in the particle dispersion, ice blue accents at the finest fractal edges, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "PURE WHITE BACKGROUND — three-dimensional fractal ice architecture sweeping diagonally from upper left toward lower right against brilliant white void, the structure has real depth and volume with ice-blue shadows cast behind translucent crystalline forms, connected branches made of dispersed powder particles in fibonacci spirals with deep cobalt blue and electric violet glowing at the fractal joints and fissures, the densest sculptural detail in the upper third trailing into scattered particles and open white below, layered translucency creating genuine depth where rear structures show through front ones in different focus planes, cool steel-blue and deep indigo color concentrated in the thickest ice sections fading to pale silver at the thinnest edges, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["sound is softening...", "the world is changing...", "let the white take everything..."],
         poetryMood: "dreamy",
         voice: "shimmer",
@@ -1001,7 +1003,7 @@ export const JOURNEYS: Journey[] = [
         voice: "shimmer",
       },
       illumination: {
-        aiPrompt: "PALE BACKGROUND — intricate dark geometric frost threads and connected powder forms arranged along the left edge and lower third of an immense soft white field, fractal detail like ink drawings with dispersed particles like fine sand trailing rightward into open pale space, an infinite cosmic quality to the emptiness, the design clusters asymmetrically leaving the upper right vast and open, quiet power in the contrast of dark interwoven intricacy against boundless white light, no trees no roots, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "vast field of crystalline micro-structures suspended in deep blue-black void like frozen starlight, thousands of tiny interconnected ice forms at different depths creating a sense of infinite three-dimensional space, the densest cluster anchored along the left edge and lower third with the finest particles scattered rightward into open cosmic darkness, each micro-crystal catching pale silver and ice-blue light at different angles revealing internal geometric facets, faint aurora-like veils of cold green and violet light threading between the crystal clusters, the silence of absolute zero rendered as still architecture at galactic scale, asymmetric composition leaving the upper right vast and open, no trees no roots, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["listen to the silence...", "the world is new...", "everything is clean..."],
         poetryMood: "transcendent",
         voice: "shimmer",
@@ -1210,54 +1212,6 @@ export const JOURNEYS: Journey[] = [
         guidancePhrases: ["you are changed...", "carry this gently..."],
         poetryMood: "flowing",
         voice: "onyx",
-      },
-    }),
-  },
-  {
-    id: "folsom-street",
-    name: "Folsom Street",
-    subtitle: "neon reflections on wet pavement",
-    description:
-      "Rain-slicked asphalt mirrors a city that never sleeps. Signals pulse through wires overhead. You walk the circuit until the predawn silence arrives.",
-    realmId: "machine",
-    aiEnabled: true,
-    phaseLabels: { threshold: "Signal", expansion: "Grid", transcendence: "Circuit", illumination: "Pause", return: "Dimming", integration: "Standby" },
-    phases: defaultPhases("machine", {
-      threshold: {
-        aiPrompt: "interconnected neon-reflection lattice entering from the lower-right corner against deep wet black void, cyan signal-lines branching between glowing nodes with internal magenta pulse, fine electric particles dispersed along geometric pathways into vast dark negative space above and left, photorealistic wet-surface texture at impossible scale, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["the street is awake...", "wet pavement mirrors everything...", "walk..."],
-        poetryMood: "hypnotic",
-        voice: "echo",
-      },
-      expansion: {
-        aiPrompt: "WHITE BACKGROUND — signal-lattice structure sweeping diagonally from upper left toward lower right, the network designed and architectural with cyan and amber wire-light threading through interwoven dark geometric forms, subtle magenta reflections and fine dark edges defining the circuit-design against brilliant pale ground, dense neon detail in the upper third trailing into scattered electric particles and open white space below, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["the signals are speaking...", "every wire carries a message...", "the grid expands..."],
-        poetryMood: "intense",
-        voice: "echo",
-      },
-      transcendence: {
-        aiPrompt: "cosmic-scale neon-reflection network sweeping across infinite wet black in a vast circuit-spiral arc, cyan and magenta and amber light pulsing through interconnected signal nodes, the structure dense and intricate where it crosses the upper-right frame but dissolving into electric particle trails and open void at both edges, designed signal bridges and neon rays stretching toward infinite darkness, composition not centered with the circuit core upper right and streamers reaching across, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["you are the signal...", "the city breathes through you...", "every frequency at once..."],
-        poetryMood: "chaotic",
-        voice: "echo",
-      },
-      illumination: {
-        aiPrompt: "PALE BACKGROUND — intricate dark circuit-thread forms and connected neon-reflection nodes arranged along the left edge and lower third of an immense soft warm-grey field, residual cyan and amber light at the joints, dispersed electric particles trailing rightward into open pale space, the design clusters asymmetrically leaving the upper right vast and quiet, the pause between transmissions rendered as architecture, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["the rain paused...", "see what the water reveals...", "the city is quiet for one breath..."],
-        poetryMood: "hypnotic",
-        voice: "echo",
-      },
-      return: {
-        aiPrompt: "dimming signal-lattice arcing from lower-left corner across deep warm grey predawn space, cyan fading to amber to soft rose through the thinning circuit structure, dispersed electric particles carrying last neon color trailing upward into generous dark negative space above and right, the grid powering down with architectural grace, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["the night is ending...", "the signals dim...", "silence arrives like a guest..."],
-        poetryMood: "dreamy",
-        voice: "echo",
-      },
-      integration: {
-        aiPrompt: "sparse remnant signal-nodes and fading circuit traces clustered small in the lower-left corner of vast grey-blue predawn space, one last cyan pulse at the final junction, fine electric particles scattering diagonally toward infinite upper darkness, asymmetric and quiet — the geometry of standby against everything, no buildings no streets no cars no figures, no text no signatures no watermarks no letters no writing",
-        guidancePhrases: ["the street remembers you...", "carry the signal..."],
-        poetryMood: "flowing",
-        voice: "echo",
       },
     }),
   },

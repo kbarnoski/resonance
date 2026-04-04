@@ -48,3 +48,6 @@ next-env.d.ts
 
 # tauri
 src-tauri/target/
+
+# journey feedback log (local testing data)
+journey-feedback.jsonl
