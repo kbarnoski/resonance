@@ -7,6 +7,7 @@ import { JourneyCompositor } from "@/components/audio/journey-compositor";
 import { JourneyPhaseIndicator } from "@/components/audio/journey-phase-indicator";
 import { ShareSheet } from "@/components/ui/share-sheet";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { useAudioStore } from "@/lib/audio/audio-store";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { MODES_3D, MODES_AI } from "@/lib/shaders";
 import type { Journey, JourneyFrame, JourneyPhaseId } from "@/lib/journeys/types";
@@ -329,7 +330,11 @@ export function SharedJourneyClient({
     getRealtimeImageService().resetSession();
     const engine = getJourneyEngine();
     const seed = playbackSeed ? parseInt(playbackSeed, 10) : undefined;
-    engine.start(journey, seed != null && !isNaN(seed) ? { seed } : undefined);
+    const duration = useAudioStore.getState().duration;
+    engine.start(journey, {
+      ...(seed != null && !isNaN(seed) ? { seed } : {}),
+      trackDuration: duration > 0 ? duration : undefined,
+    });
 
     return () => {
       engine.stop();

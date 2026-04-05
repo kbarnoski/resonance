@@ -67,19 +67,28 @@ class JourneyEngine {
   private graceShader = ""; // shader to hold during grace
   private graceAiPrompt = ""; // AI prompt to hold during grace
   private graceActive = false;
-  /** ~8 seconds grace at phase boundaries (assuming ~300s track) */
-  private static readonly PHASE_GRACE = 8 / 300;
+  /** Shader timing constants (in seconds) */
+  private static readonly GRACE_SECONDS = 8;
+  private static readonly MIN_SHADER_SECONDS = 12;
+  private static readonly MAX_SHADER_SECONDS = 25;
+  private static readonly SWITCH_INTERVAL_MIN = 14;
+  private static readonly SWITCH_INTERVAL_MAX = 20;
+  /** Track duration in seconds — used to convert timing to progress fractions */
+  private trackDuration = 300;
   /** Random function for this playback session (Math.random or seeded) */
   private random: () => number = Math.random;
 
   /** Start a journey. Pass a seed for deterministic (shared) playback. */
-  start(journey: Journey, options?: { seed?: number }): void {
+  start(journey: Journey, options?: { seed?: number; trackDuration?: number }): void {
     this.stop();
 
     const random = options?.seed != null
       ? createSeededRandom(options.seed)
       : Math.random;
     this.random = random;
+    this.trackDuration = (options?.trackDuration && options.trackDuration > 0)
+      ? options.trackDuration
+      : 300;
 
     // Fresh shaders — seeded for shared, random for personal
     this.journey = regenerateJourneyShaders(journey, random);
@@ -104,6 +113,16 @@ class JourneyEngine {
     this.scheduleDualShaderMoments(random);
     this.precomputeDualShaderPicks(random);
     this.precomputeGuidancePhraseIndices(random);
+  }
+
+  /** Update track duration — recomputes shader schedule if duration differs significantly */
+  updateTrackDuration(duration: number): void {
+    if (duration <= 0 || !this.running) return;
+    // Only recompute if >20% different from current assumption
+    if (Math.abs(duration - this.trackDuration) / this.trackDuration > 0.2) {
+      this.trackDuration = duration;
+      this.precomputeShaderSwitchSchedule(this.random);
+    }
   }
 
   /** Stop the current journey */
@@ -171,7 +190,7 @@ class JourneyEngine {
       if (prevPhase !== null) {
         this.graceShader = this.currentShaderMode;
         this.graceAiPrompt = this.phaseAiPrompt;
-        this.phaseGraceEnd = clamped + JourneyEngine.PHASE_GRACE;
+        this.phaseGraceEnd = clamped + JourneyEngine.GRACE_SECONDS / this.trackDuration;
         this.graceActive = true;
       }
 
@@ -406,38 +425,85 @@ class JourneyEngine {
 
   /**
    * Pre-compute shader switch points for each phase as progress fractions.
-   * Uses 10-15s intervals converted to progress (assuming ~300s track).
-   * Every shader gets at least 8s of visible time — no short flashes at
-   * phase boundaries. The crossfade itself is ~1.5s, so 8s minimum means
-   * ~6.5s at full opacity before the next fade starts.
+   *
+   * Uses actual track duration to compute real-time intervals:
+   * - Each shader displays for 14-20 seconds (randomized)
+   * - Minimum 12s visible time — no short flashes
+   * - Maximum 25s — no single shader overstays its welcome
+   * - First switch point offset by grace period so shader 0 isn't clipped
+   *   at phase boundaries
+   * - Generates exactly (shaderCount - 1) switch points per phase,
+   *   distributing shaders evenly when intervals don't fill the phase
    */
   private precomputeShaderSwitchSchedule(random: () => number): void {
     this.shaderSwitchSchedule.clear();
     if (!this.journey) return;
 
-    // 8 seconds expressed as progress fraction (~300s track)
-    const MIN_VISIBLE = 8 / 300;
+    const dur = this.trackDuration;
+    const minProg = JourneyEngine.MIN_SHADER_SECONDS / dur;
+    const maxProg = JourneyEngine.MAX_SHADER_SECONDS / dur;
+    const graceProg = JourneyEngine.GRACE_SECONDS / dur;
 
     for (const phase of this.journey.phases) {
-      if (phase.shaderModes.length <= 1) {
+      const shaderCount = phase.shaderModes.length;
+      if (shaderCount <= 1) {
         this.shaderSwitchSchedule.set(phase.id, []);
         continue;
       }
 
-      const points: number[] = [];
-      let cursor = phase.start;
+      const phaseLen = phase.end - phase.start;
+      // How many switch points we need (one less than shaders)
+      const switchCount = shaderCount - 1;
 
-      // Generate switch points within this phase's progress range.
-      // Stop early enough that the last shader gets at least MIN_VISIBLE time.
-      const deadline = phase.end - MIN_VISIBLE;
+      // Start after grace period (so shader 0 isn't hidden behind the
+      // previous phase's grace shader at phase transitions)
+      const effectiveStart = phase.start + graceProg;
+      const availableLen = phase.end - effectiveStart;
 
-      while (cursor < deadline) {
-        // 10-15s intervals expressed as progress fraction (~300s assumed track)
-        const intervalProgress = (10 + random() * 5) / 300;
-        cursor += intervalProgress;
-        if (cursor < deadline) {
-          points.push(cursor);
+      // If phase is too short for all shaders, space them evenly
+      if (availableLen < switchCount * minProg) {
+        const step = availableLen / shaderCount;
+        const points: number[] = [];
+        for (let i = 1; i <= switchCount; i++) {
+          points.push(effectiveStart + step * i);
         }
+        this.shaderSwitchSchedule.set(phase.id, points);
+        continue;
+      }
+
+      // Generate randomized intervals, then clamp and redistribute
+      const intervals: number[] = [];
+      for (let i = 0; i < shaderCount; i++) {
+        const lo = JourneyEngine.SWITCH_INTERVAL_MIN;
+        const hi = JourneyEngine.SWITCH_INTERVAL_MAX;
+        const secs = lo + random() * (hi - lo);
+        intervals.push(secs / dur); // convert to progress fraction
+      }
+
+      // Normalize intervals to fit the available phase length
+      const rawTotal = intervals.reduce((a, b) => a + b, 0);
+      const scale = availableLen / rawTotal;
+      for (let i = 0; i < intervals.length; i++) {
+        intervals[i] = clamp(intervals[i] * scale, minProg, maxProg);
+      }
+
+      // After clamping, redistribute any excess/deficit
+      const clampedTotal = intervals.reduce((a, b) => a + b, 0);
+      const adjustment = (availableLen - clampedTotal) / shaderCount;
+      for (let i = 0; i < intervals.length; i++) {
+        intervals[i] = clamp(intervals[i] + adjustment, minProg, maxProg);
+      }
+
+      // Build switch points from intervals
+      const points: number[] = [];
+      let cursor = effectiveStart;
+      for (let i = 0; i < switchCount; i++) {
+        cursor += intervals[i];
+        // Ensure last shader gets at least minProg
+        if (cursor > phase.end - minProg) {
+          cursor = phase.end - minProg;
+        }
+        points.push(cursor);
       }
 
       this.shaderSwitchSchedule.set(phase.id, points);

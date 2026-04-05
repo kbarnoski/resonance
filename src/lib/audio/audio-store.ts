@@ -178,7 +178,14 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   },
   setVolume: (vol) => set({ volume: Math.max(0, Math.min(1, vol)) }),
   setCurrentTime: (time) => set({ currentTime: time }),
-  setDuration: (duration) => set({ duration }),
+  setDuration: (duration) => {
+    set({ duration });
+    // Update journey engine if active — recomputes shader schedule for accurate timing
+    const engine = getJourneyEngine();
+    if (engine.isActive()) {
+      engine.updateTrackDuration(duration);
+    }
+  },
   setAnalysis: (analysis) => set({ analysis }),
   setAnalysisLoading: (loading) => set({ analysisLoading: loading }),
   setAnalysisInProgress: (info) => set({ analysisInProgress: info }),
@@ -318,7 +325,8 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     if (!journey) return;
     const realm = getRealm(journey.realmId);
     const engine = getJourneyEngine();
-    engine.start(journey);
+    const { duration } = get();
+    engine.start(journey, { trackDuration: duration > 0 ? duration : undefined });
 
     // Read initial shader from the engine (after regeneration) to avoid
     // a flash where the store has a different shader than the engine
@@ -345,7 +353,8 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   startCustomJourney: (journey) => {
     const realm = getRealm(journey.realmId);
     const engine = getJourneyEngine();
-    engine.start(journey);
+    const { duration } = get();
+    engine.start(journey, { trackDuration: duration > 0 ? duration : undefined });
     const firstMode = engine.getCurrentShaderMode();
     set({
       activeJourney: journey,
