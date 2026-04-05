@@ -44,10 +44,13 @@ interface ImageLayer {
   panX: number; // -1 to 1 direction
   panY: number; // -1 to 1 direction
   blendMode: GlobalCompositeOperation;
+  /** Fast fade — used when purging layers for a new journey */
+  purge?: boolean;
 }
 
 const DISSOLVE_DURATION = 4000; // 4s fade-in — smooth cross-dissolve
 const FADEOUT_DURATION = 8000; // 8s fade-out — images linger longer for layered depth
+const PURGE_FADEOUT_DURATION = 2000; // 2s fast fade-out when clearing layers for new journey
 const GEN_INTERVAL_MIN = 6000; // 6s between generations — keep imagery flowing
 const GEN_INTERVAL_MAX = 10000; // 10s max — ensures constant visual movement
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
@@ -113,6 +116,20 @@ export function AiImageLayer({
     getRealtimeImageService().cancelInFlight();
     promptChangeTimeRef.current = performance.now();
     lastGenTimeRef.current = 0;
+
+    // Force-fade all existing layers so old journey imagery doesn't bleed
+    // into a new journey. Without this, layers from the previous journey
+    // linger for up to FADEOUT_DURATION seconds. Purge uses a fast 2s fade.
+    const layers = layersRef.current;
+    const now = performance.now();
+    for (const layer of layers) {
+      if (layer.state !== "fading-out") {
+        layer.fadeStartOpacity = layer.opacity;
+        layer.state = "fading-out";
+        layer.fadeStartTime = now;
+        layer.purge = true;
+      }
+    }
   }, [prompt]);
   useEffect(() => { denoisingRef.current = denoisingStrength; }, [denoisingStrength]);
 
@@ -434,7 +451,9 @@ export function AiImageLayer({
           }
         } else if (layer.state === "fading-out") {
           // Slow fade-out keeps images visible longer during transitions
-          const rawProgress = Math.min(1, elapsed / FADEOUT_DURATION);
+          // Purge layers use a fast 2s fade to clear old journey imagery quickly
+          const fadeDuration = layer.purge ? PURGE_FADEOUT_DURATION : FADEOUT_DURATION;
+          const rawProgress = Math.min(1, elapsed / fadeDuration);
           const easedProgress = easeInOutCubic(rawProgress);
           layer.opacity = layer.fadeStartOpacity * (1 - easedProgress);
           if (rawProgress >= 1) {

@@ -86,6 +86,8 @@ const GLOBAL_SHADER_BLOCKLIST: string[] = [
   "snow", // only appropriate for winter/snowflake or user-created journeys
   "rain", // only appropriate for water-related realms (ocean, storm)
   "lattice", // grid-lined look — not suited for journeys
+  "chitin", // full-screen hexagon pattern chokes performance
+  "aurora", // 3D raymarched — sustained 6-8fps, unusable in journeys
 ];
 
 /** Realms that ARE allowed to use globally-blocked shaders */
@@ -164,8 +166,9 @@ function pickJourneyShaders(realmId: string, random: () => number = Math.random)
   }
 
   // 65% from affinity, 35% from variety — broader palette, more surprise
-  const affinityCount = Math.min(30, affinityPool.length);
-  const varietyCount = Math.min(20, varietyPool.length);
+  // Pull as many as available — long tracks need the full pool
+  const affinityCount = affinityPool.length;
+  const varietyCount = varietyPool.length;
 
   const picked = [
     ...mustInclude, // always first
@@ -566,7 +569,7 @@ export const JOURNEYS: Journey[] = [
     phaseLabels: { threshold: "Signal", expansion: "Bandwidth", transcendence: "Merge", illumination: "Logic", return: "Disconnect", integration: "Standby" },
     phases: defaultPhases("machine", {
       threshold: {
-        aiPrompt: "vintage vacuum tubes and old radio components arranged like a still life on a floating shelf of moss-covered rock emerging from the lower-right corner into deep black void, the vacuum tubes photorealistic with warm amber filament glow inside their glass envelopes, tarnished copper wires and bakelite dials scattered among the components, tiny green plants and delicate moss growing through cracks in the electronics — a fern unfurling from inside a broken tube, roots threading through a circuit board, the rock shelf rough and natural with lichen on its surface, fine particles of warm amber light and tiny spores dispersing upper-left across two thirds generous negative space, asymmetric composition grounded low-right with cosmic emptiness above, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "dark fractured rock formation floating in deep black cosmos, the rock split open to reveal an interior lattice of glowing cyan veins like a mineral nervous system pulsing with faint light, moss and small ferns growing in the crevices where the rock meets the void, roots from the plants threading into the glowing veins as if tapping into the signal, fine luminous cyan particles rising from the fracture lines and dispersing upward into starfield, the formation anchored in the lower-right third with two thirds generous dark cosmic void above and left, distant stars behind, the first spark of connection between earth and data, photorealistic rock and plant textures at impossible cosmic scale, no screens no computers no figures no human elements no lightbulbs no vacuum tubes no circuit boards, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["connecting...", "signal detected...", "initializing..."],
         poetryMood: "hypnotic",
         voice: "echo",
@@ -584,19 +587,19 @@ export const JOURNEYS: Journey[] = [
         voice: "echo",
       },
       illumination: {
-        aiPrompt: "PURE WHITE BACKGROUND — circuit board topography reimagined as an aerial view of a Japanese garden floating in white void, the copper traces become winding stone paths in warm amber, the microchips become miniature rock gardens with photorealistic grey stones and raked sand patterns, capacitors and resistors become tiny mossy boulders and pruned shrubs in deep green, the board edges organic and irregular like a natural coastline, moss growing in the corners where solder points would be, the arrangement asymmetric in the left third and lower edge, fine particles of pale green pollen and warm copper dust dispersing rightward into generous white negative space, three-dimensional depth through layered garden planes, bright and serene, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "a single ancient tree growing from the surface of a massive dark meteorite suspended in deep indigo cosmos, the tree's roots wrapping around and penetrating the meteorite surface where they glow faint electric cyan at the contact points as if exchanging data with the stone, the bark photorealistic and gnarled with age, sparse silver-green leaves catching light from an unseen source, the meteorite pitted and textured with veins of copper ore visible in cross-section, fine luminous particles rising from the leaf tips upward into starfield above, the whole formation anchored in the left third with vast cosmic negative space opening to the right, distant nebula glow in deep violet behind, photorealistic textures at impossible scale — a tree that has grown for millennia on a rock drifting through space, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["the machine dreams too...", "silicon and carbon are the same...", "pure logic, pure beauty..."],
         poetryMood: "hypnotic",
         voice: "echo",
       },
       return: {
-        aiPrompt: "holographic projection of a tree dissolving into static and particles in deep black void, the tree half-real and half-digital — one side photorealistic with bark texture and green leaves, the other side fragmenting into glowing cyan wireframe polygons and data points that scatter into the darkness, the leaves on the digital side becoming individual luminous pixels that drift away like fireflies, the trunk splitting along the boundary between organic and digital, fine particles trailing from lower-left toward upper-right — some leaf-shaped some pixel-shaped, the largest tree form anchored lower-left half-dissolved with generous dark void filling the upper two thirds, the beautiful tension between nature and machine at cosmic scale, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "weathered copper antenna tower standing alone on a small floating island of dark earth and moss in deep space, the tower old and oxidized green with age, vines climbing its lower struts, the island trailing roots and loose soil downward into void, from the antenna tip a single beam of warm amber light extends upward and disperses into thousands of luminous particles that scatter across the starfield like a transmission dissolving into cosmos, the island anchored lower-left with the particle transmission filling the upper-right darkness, distant stars and faint nebula glow behind, the loneliness of a signal sent into infinite space, photorealistic textures on the copper and earth and moss, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["disconnecting...", "saving state...", "you carry the data..."],
         poetryMood: "dreamy",
         voice: "echo",
       },
       integration: {
-        aiPrompt: "single old incandescent lightbulb lying on its side on a bed of dark moss in the lower-left corner of vast black void, the glass bulb photorealistic with a tiny plant growing inside it — a small green sprout with two leaves reaching toward the interior of the glass, the tungsten filament still intact alongside the plant, a faint warm amber glow emanating from within as if the bulb remembers its purpose, the moss dark and damp beneath it with photorealistic texture, one thin trail of warm luminous particles extending diagonally upward-right and dissolving into infinite darkness, enormous open emptiness everywhere above and right, asymmetric and quiet — almost nothing against everything, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
+        aiPrompt: "a single small copper coil resting on a fragment of dark stone in the lower-left corner of infinite black cosmos, the coil tarnished and old with a wisp of pale green lichen growing on one side, from its center a faint thread of warm amber light extends upward and thins into barely-visible particles that dissolve into the starfield, the stone fragment floating with a few loose soil particles drifting beneath it, enormous open darkness and distant stars everywhere above and to the right, the quietest possible signal still transmitting into the void, asymmetric and almost empty — one tiny grounded object against infinite space, no screens no computers no figures no human elements, no text no signatures no watermarks no letters no writing",
         guidancePhrases: ["link closed...", "the machine remembers you..."],
         poetryMood: "flowing",
         voice: "echo",
@@ -1238,14 +1241,26 @@ export function getJourneysByRealm(realmId: string): Journey[] {
  * Called at journey start so every play gets a completely unique set.
  * Returns a shallow copy with new phase arrays — original JOURNEYS untouched.
  */
-export function regenerateJourneyShaders(journey: Journey, random: () => number = Math.random): Journey {
+export function regenerateJourneyShaders(
+  journey: Journey,
+  random: () => number = Math.random,
+  trackDuration = 300,
+): Journey {
   const allShaders = pickJourneyShaders(journey.realmId, random);
   const usedShaders = new Set<string>();
 
-  const phaseBudgets: Record<string, number> = {
+  // Base budgets for a ~5min track (30 total). Scale up for longer tracks
+  // so no shader sits for more than ~60s. For a 20min track this roughly
+  // triples the budget, pulling from the full shader pool.
+  const durationScale = Math.max(1, trackDuration / 300);
+  const baseBudgets: Record<string, number> = {
     threshold: 5, expansion: 6, transcendence: 6,
     illumination: 5, return: 4, integration: 4,
   };
+  const phaseBudgets: Record<string, number> = {};
+  for (const [phase, base] of Object.entries(baseBudgets)) {
+    phaseBudgets[phase] = Math.ceil(base * durationScale);
+  }
 
   const newPhases = journey.phases.map((phase) => ({
     ...phase,

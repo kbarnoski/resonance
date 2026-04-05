@@ -114,13 +114,12 @@ export function JourneyPhaseIndicator({
           position: "relative",
         }}
       >
-        {/* Soft blurred background — always present, fades with parent opacity */}
+        {/* Soft background halo — wide gradient, no blur filter (GPU-friendly) */}
         <div
           style={{
             position: "absolute",
-            inset: "-40%",
-            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
-            filter: "blur(40px)",
+            inset: "-80%",
+            background: "radial-gradient(ellipse at center, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.05) 45%, transparent 60%)",
             pointerEvents: "none",
           }}
         />

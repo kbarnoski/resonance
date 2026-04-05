@@ -67,10 +67,15 @@ class JourneyEngine {
   private graceShader = ""; // shader to hold during grace
   private graceAiPrompt = ""; // AI prompt to hold during grace
   private graceActive = false;
+  /** Bridge prompt — blends outgoing + incoming phase themes for seamless transition */
+  private bridgePrompt = "";
+  private bridgeActive = false;
+  private bridgeEmitted = false; // only emit bridge once per phase boundary
   /** Shader timing constants (in seconds) */
   private static readonly GRACE_SECONDS = 8;
   private static readonly MIN_SHADER_SECONDS = 12;
   private static readonly MAX_SHADER_SECONDS = 25;
+  private static readonly MAX_SHADER_SECONDS_ABSOLUTE = 60;
   private static readonly SWITCH_INTERVAL_MIN = 14;
   private static readonly SWITCH_INTERVAL_MAX = 20;
   /** Track duration in seconds — used to convert timing to progress fractions */
@@ -91,7 +96,8 @@ class JourneyEngine {
       : 300;
 
     // Fresh shaders — seeded for shared, random for personal
-    this.journey = regenerateJourneyShaders(journey, random);
+    // Pass track duration so long tracks get more shaders per phase
+    this.journey = regenerateJourneyShaders(journey, random, this.trackDuration);
     this.running = true;
     this.currentPhaseId = null;
     this.currentShaderIndex = 0;
@@ -101,6 +107,9 @@ class JourneyEngine {
     this.phaseAiPrompt = "";
     this.graceActive = false;
     this.phaseGraceEnd = 0;
+    this.bridgePrompt = "";
+    this.bridgeActive = false;
+    this.bridgeEmitted = false;
 
     // Set initial shader from first phase
     if (this.journey.phases.length > 0) {
@@ -115,12 +124,14 @@ class JourneyEngine {
     this.precomputeGuidancePhraseIndices(random);
   }
 
-  /** Update track duration — recomputes shader schedule if duration differs significantly */
+  /** Update track duration — recomputes shader schedule and budgets if duration differs significantly */
   updateTrackDuration(duration: number): void {
-    if (duration <= 0 || !this.running) return;
+    if (duration <= 0 || !this.running || !this.journey) return;
     // Only recompute if >20% different from current assumption
     if (Math.abs(duration - this.trackDuration) / this.trackDuration > 0.2) {
       this.trackDuration = duration;
+      // Regenerate shader lists with updated budgets for the new duration
+      this.journey = regenerateJourneyShaders(this.journey, this.random, duration);
       this.precomputeShaderSwitchSchedule(this.random);
     }
   }
@@ -142,6 +153,9 @@ class JourneyEngine {
     this.phaseAiPrompt = "";
     this.graceActive = false;
     this.phaseGraceEnd = 0;
+    this.bridgePrompt = "";
+    this.bridgeActive = false;
+    this.bridgeEmitted = false;
     this.random = Math.random;
   }
 
@@ -182,18 +196,23 @@ class JourneyEngine {
     const currentPhase = phases[phaseIndex];
     const phaseProgress = getPhaseProgress(clamped, currentPhase);
 
-    // Detect phase change — start grace period so old shader/prompt carry over smoothly
+    // Detect phase change — start grace period with bridge prompt for seamless transition
     if (currentPhase.id !== this.currentPhaseId) {
       const prevPhase = this.currentPhaseId;
 
-      // Capture current visuals before switching — these persist during grace
+      // Capture current visuals before switching — bridge prompt persists during grace
       if (prevPhase !== null) {
         this.graceShader = this.currentShaderMode;
-        this.graceAiPrompt = this.phaseAiPrompt;
+        // Use bridge prompt if one was built during the crossfade zone, else fall back to old prompt
+        this.graceAiPrompt = this.bridgeActive ? this.bridgePrompt : this.phaseAiPrompt;
         this.phaseGraceEnd = clamped + JourneyEngine.GRACE_SECONDS / this.trackDuration;
         this.graceActive = true;
       }
 
+      // Reset bridge state for next boundary
+      this.bridgeActive = false;
+      this.bridgeEmitted = false;
+      this.bridgePrompt = "";
       this.currentPhaseId = currentPhase.id;
 
       // Fire phase change callbacks (guidance text, phase indicator)
@@ -216,6 +235,16 @@ class JourneyEngine {
       this.phaseAiPrompt = this.buildPhaseAiPrompt(currentPhase, phaseIndex);
     }
 
+    // Bridge prompt: when approaching a phase boundary (crossfade zone),
+    // emit a transitional prompt that blends outgoing + incoming themes.
+    // This creates: pure old → bridge → pure new (instead of abrupt switch).
+    if (nextPhaseIndex !== null && blend > 0 && !this.bridgeEmitted) {
+      this.bridgeEmitted = true;
+      const nextPhase = phases[nextPhaseIndex];
+      this.bridgePrompt = this.buildBridgePrompt(currentPhase, nextPhase);
+      this.bridgeActive = true;
+    }
+
     // End grace period once time is up
     if (this.graceActive && clamped >= this.phaseGraceEnd) {
       this.graceActive = false;
@@ -224,15 +253,21 @@ class JourneyEngine {
     // Determine current shader from pre-computed schedule (progress-based, not timer-based)
     const switchPoints = this.shaderSwitchSchedule.get(currentPhase.id) ?? [];
     const switchesPassed = switchPoints.filter((p) => clamped >= p).length;
-    // Cap index to list length — never wrap around so no shader repeats within a phase
-    this.currentShaderIndex = Math.min(switchesPassed, Math.max(0, currentPhase.shaderModes.length - 1));
+    // Wrap around shader list for long phases that have more switches than shaders
+    const shaderLen = currentPhase.shaderModes.length;
+    this.currentShaderIndex = shaderLen > 0 ? switchesPassed % shaderLen : 0;
     this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
 
-    // During grace period: hold the old shader and AI prompt so the transition
-    // feels continuous. Numeric values (bloom, palette, etc.) still interpolate
-    // via getPhaseBlend, but the visual shader and AI imagery carry over.
+    // AI prompt progression at phase boundaries:
+    //   1. In crossfade zone (end of phase): switch to bridge prompt
+    //   2. During grace (start of new phase): hold bridge prompt
+    //   3. After grace: use new phase's pure prompt
     const effectiveShader = this.graceActive ? this.graceShader : this.currentShaderMode;
-    const aiPrompt = this.graceActive ? this.graceAiPrompt : this.phaseAiPrompt;
+    const aiPrompt = this.graceActive
+      ? this.graceAiPrompt
+      : this.bridgeActive
+        ? this.bridgePrompt
+        : this.phaseAiPrompt;
 
     // Interpolate numeric values during crossfade
     const iv = (getter: (p: JourneyPhase) => number) =>
@@ -424,6 +459,30 @@ class JourneyEngine {
   }
 
   /**
+   * Build a bridge prompt that blends the outgoing and incoming phase themes.
+   * Creates imagery that visually connects both phases — earthly elements
+   * gaining cosmic qualities, or cosmic scenes with grounded anchors emerging.
+   */
+  private buildBridgePrompt(outgoing: JourneyPhase, incoming: JourneyPhase): string {
+    // Extract the core visual concept from each prompt (first ~120 chars before modifiers)
+    const extractCore = (prompt: string): string => {
+      // Take up to the first major comma break or 150 chars
+      const parts = prompt.split(",");
+      let core = "";
+      for (const part of parts) {
+        if (core.length + part.length > 150) break;
+        core += (core ? "," : "") + part;
+      }
+      return core || prompt.slice(0, 150);
+    };
+
+    const outCore = extractCore(outgoing.aiPrompt);
+    const inCore = extractCore(incoming.aiPrompt);
+
+    return `transitional scene bridging two visual worlds — elements of [${outCore}] beginning to dissolve and transform into [${inCore}], the forms from the first scene still partially visible but fragmenting into particles and light that reform into hints of the next scene, a liminal moment where both realities coexist in the same frame, shared particles and light connecting both visual languages, asymmetric composition with the dissolving forms anchored on one side and emerging forms materializing on the other, generous negative space between them filled with luminous particles traveling from old to new, no text no signatures no watermarks no letters no writing`;
+  }
+
+  /**
    * Pre-compute shader switch points for each phase as progress fractions.
    *
    * Uses actual track duration to compute real-time intervals:
@@ -441,7 +500,7 @@ class JourneyEngine {
 
     const dur = this.trackDuration;
     const minProg = JourneyEngine.MIN_SHADER_SECONDS / dur;
-    const maxProg = JourneyEngine.MAX_SHADER_SECONDS / dur;
+    const maxAbsProg = JourneyEngine.MAX_SHADER_SECONDS_ABSOLUTE / dur;
     const graceProg = JourneyEngine.GRACE_SECONDS / dur;
 
     for (const phase of this.journey.phases) {
@@ -451,18 +510,23 @@ class JourneyEngine {
         continue;
       }
 
-      const phaseLen = phase.end - phase.start;
-      // How many switch points we need (one less than shaders)
-      const switchCount = shaderCount - 1;
-
       // Start after grace period (so shader 0 isn't hidden behind the
       // previous phase's grace shader at phase transitions)
       const effectiveStart = phase.start + graceProg;
       const availableLen = phase.end - effectiveStart;
 
-      // If phase is too short for all shaders, space them evenly
+      // Calculate how many switches we need so no shader exceeds 60s.
+      // For short tracks, use the original shaderCount-1. For long tracks,
+      // add more switches so shaders cycle through the list.
+      const minSwitches = shaderCount - 1;
+      const maxSecondsPerSlot = JourneyEngine.MAX_SHADER_SECONDS_ABSOLUTE;
+      const phaseSecs = availableLen * dur;
+      const slotsNeeded = Math.ceil(phaseSecs / maxSecondsPerSlot);
+      const switchCount = Math.max(minSwitches, slotsNeeded - 1);
+
+      // If phase is too short for all switches, space them evenly
       if (availableLen < switchCount * minProg) {
-        const step = availableLen / shaderCount;
+        const step = availableLen / (switchCount + 1);
         const points: number[] = [];
         for (let i = 1; i <= switchCount; i++) {
           points.push(effectiveStart + step * i);
@@ -471,27 +535,28 @@ class JourneyEngine {
         continue;
       }
 
-      // Generate randomized intervals, then clamp and redistribute
+      // Generate randomized intervals for each slot
+      const slotCount = switchCount + 1;
       const intervals: number[] = [];
-      for (let i = 0; i < shaderCount; i++) {
+      for (let i = 0; i < slotCount; i++) {
         const lo = JourneyEngine.SWITCH_INTERVAL_MIN;
         const hi = JourneyEngine.SWITCH_INTERVAL_MAX;
         const secs = lo + random() * (hi - lo);
         intervals.push(secs / dur); // convert to progress fraction
       }
 
-      // Normalize intervals to fit the available phase length
+      // Normalize intervals to fit the available phase length, capped at 60s
       const rawTotal = intervals.reduce((a, b) => a + b, 0);
       const scale = availableLen / rawTotal;
       for (let i = 0; i < intervals.length; i++) {
-        intervals[i] = clamp(intervals[i] * scale, minProg, maxProg);
+        intervals[i] = clamp(intervals[i] * scale, minProg, maxAbsProg);
       }
 
       // After clamping, redistribute any excess/deficit
       const clampedTotal = intervals.reduce((a, b) => a + b, 0);
-      const adjustment = (availableLen - clampedTotal) / shaderCount;
+      const adjustment = (availableLen - clampedTotal) / slotCount;
       for (let i = 0; i < intervals.length; i++) {
-        intervals[i] = clamp(intervals[i] + adjustment, minProg, maxProg);
+        intervals[i] = clamp(intervals[i] + adjustment, minProg, maxAbsProg);
       }
 
       // Build switch points from intervals
@@ -499,7 +564,7 @@ class JourneyEngine {
       let cursor = effectiveStart;
       for (let i = 0; i < switchCount; i++) {
         cursor += intervals[i];
-        // Ensure last shader gets at least minProg
+        // Ensure last slot gets at least minProg
         if (cursor > phase.end - minProg) {
           cursor = phase.end - minProg;
         }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { AiImageLayer } from "./ai-image-layer";
 import { PostProcessingLayer } from "./post-processing-layer";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -59,8 +59,15 @@ export function JourneyCompositor({
   const showAi = aiEnabled && !!effectivePrompt;
 
   // Detect light-background phases from prompt — scale down GPU-expensive effects
-  const isLightPhase = /WHITE BACKGROUND|PALE BACKGROUND|LIGHT BACKGROUND/i.test(effectivePrompt);
-  const isMobile = typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent);
+  // Memoize to avoid regex on every render
+  const isLightPhase = useMemo(
+    () => /WHITE BACKGROUND|PALE BACKGROUND|LIGHT BACKGROUND/i.test(effectivePrompt),
+    [effectivePrompt]
+  );
+  const isMobile = useMemo(
+    () => typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent),
+    []
+  );
 
   // Adaptive scaling — learned from user feedback patterns
   const adaptiveConditions = {
