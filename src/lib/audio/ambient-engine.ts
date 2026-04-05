@@ -677,9 +677,11 @@ class AmbientEngine {
     this.running = false;
   }
 
-  /** Set the ambient theme based on realm ID. Smoothly transitions layer parameters. */
-  setTheme(realmId: string): void {
-    this.currentTheme = getThemeForRealm(realmId);
+  /** Set the ambient theme based on realm ID or theme key. Smoothly transitions layer parameters. */
+  setTheme(themeKey: string): void {
+    // Accept both realm IDs (mapped via REALM_THEME_MAP) and direct theme keys (from JourneyTheme.ambientTheme)
+    const directTheme = AMBIENT_THEMES[themeKey];
+    this.currentTheme = directTheme ?? getThemeForRealm(themeKey);
     if (!this.layers) return;
 
     this.layers.wind.applyTheme(this.currentTheme.wind);

@@ -48,6 +48,7 @@ export function useStoryGeneration() {
         realmId: activeJourney.realmId,
         mood: activeJourney.phases[0]?.poetryMood ?? "flowing",
         language,
+        poetryImagery: activeJourney.theme?.poetryImagery ?? null,
         phases: activeJourney.phases.map((p) => ({
           id: p.id,
           guidancePhrases: p.guidancePhrases,

@@ -19,7 +19,7 @@ const storySchema = z.object({
 
 export async function POST(request: Request) {
   try {
-    const { journeyName, realmId, mood, language, phases } = await request.json();
+    const { journeyName, realmId, mood, language, phases, poetryImagery } = await request.json();
 
     if (!journeyName || !phases) {
       return Response.json({ error: "Missing journeyName or phases" }, { status: 400 });
@@ -50,7 +50,7 @@ threshold, expansion, transcendence, illumination, return, integration
 - Move from quiet anticipation (threshold) through building intensity (expansion) to peak experience (transcendence), then clarity (illumination), gentle descent (return), and peaceful resolution (integration)
 - Use second person ("you") to immerse the listener
 - No clichés, no rhyming — literary quality, like a prose poem
-- Draw imagery from the "${realmId}" realm and the "${mood ?? "flowing"}" mood
+- Draw imagery from ${poetryImagery ? `this visual world: "${poetryImagery}"` : realmId ? `the "${realmId}" realm` : "the journey's visual themes"} and the "${mood ?? "flowing"}" mood
 - Each paragraph's imagePrompt should be a concise visual scene description suitable for AI image generation
 - The imagePrompt should NOT describe text or typography — only visual scenes
 ${languageInstruction}

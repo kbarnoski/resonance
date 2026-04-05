@@ -26,6 +26,9 @@ interface AiImageLayerProps {
   onFirstImage?: () => void;
   /** Optional seed for deterministic prompt variation (shared playback) */
   promptSeed?: number;
+  /** Stable journey identifier — only purge layers when this changes (new journey).
+   *  Phase transitions within the same journey use graceful crossfade instead. */
+  journeyId?: string;
 }
 
 interface ImageLayer {
@@ -50,7 +53,7 @@ interface ImageLayer {
 
 const DISSOLVE_DURATION = 4000; // 4s fade-in — smooth cross-dissolve
 const FADEOUT_DURATION = 8000; // 8s fade-out — images linger longer for layered depth
-const PURGE_FADEOUT_DURATION = 2000; // 2s fast fade-out when clearing layers for new journey
+const PURGE_FADEOUT_DURATION = 500; // 0.5s fast fade — prevents old journey images lingering
 const GEN_INTERVAL_MIN = 6000; // 6s between generations — keep imagery flowing
 const GEN_INTERVAL_MAX = 10000; // 10s max — ensures constant visual movement
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
@@ -88,6 +91,7 @@ export function AiImageLayer({
   shaderOpacity = 1.0,
   onFirstImage,
   promptSeed,
+  journeyId,
 }: AiImageLayerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layersRef = useRef<ImageLayer[]>([]);
@@ -108,29 +112,43 @@ export function AiImageLayer({
   const promptSeedRef = useRef(promptSeed);
   promptSeedRef.current = promptSeed;
 
+  const journeyIdRef = useRef(journeyId);
+
   // Sync props → refs
   useEffect(() => { generatingRef.current = generating; }, [generating]);
   useEffect(() => {
+    const prevJourneyId = journeyIdRef.current;
+    journeyIdRef.current = journeyId;
     promptRef.current = prompt;
-    // Cancel in-flight request for old prompt and debounce
-    getRealtimeImageService().cancelInFlight();
+
+    // Cancel in-flight requests and clear the LRU image cache so old
+    // images can't resurface via cache hits on the new prompt's first generation.
+    const service = getRealtimeImageService();
+    service.cancelInFlight();
+    service.clearImageCache();
     promptChangeTimeRef.current = performance.now();
     lastGenTimeRef.current = 0;
 
-    // Force-fade all existing layers so old journey imagery doesn't bleed
-    // into a new journey. Without this, layers from the previous journey
-    // linger for up to FADEOUT_DURATION seconds. Purge uses a fast 2s fade.
-    const layers = layersRef.current;
-    const now = performance.now();
-    for (const layer of layers) {
-      if (layer.state !== "fading-out") {
-        layer.fadeStartOpacity = layer.opacity;
-        layer.state = "fading-out";
-        layer.fadeStartTime = now;
-        layer.purge = true;
+    // Only PURGE (fast 0.5s fade) when switching to an entirely different journey.
+    // Phase transitions within the same journey use graceful crossfade — old images
+    // fade naturally (8s) while new ones emerge, creating smooth visual flow.
+    const isNewJourney = journeyId !== prevJourneyId && prevJourneyId != null;
+    if (isNewJourney) {
+      const layers = layersRef.current;
+      const now = performance.now();
+      for (const layer of layers) {
+        if (layer.state !== "fading-out") {
+          layer.fadeStartOpacity = layer.opacity;
+          layer.state = "fading-out";
+          layer.fadeStartTime = now;
+          layer.purge = true;
+        }
       }
     }
-  }, [prompt]);
+    // For same-journey phase transitions: old images stay visible and fade naturally
+    // via the normal MAX_LAYERS eviction when new images arrive. This prevents the
+    // "images come and go really fast" flash at phase boundaries.
+  }, [prompt, journeyId]);
   useEffect(() => { denoisingRef.current = denoisingStrength; }, [denoisingStrength]);
 
   // Load image with decode() for off-main-thread processing
@@ -278,6 +296,9 @@ export function AiImageLayer({
     const mood = moods[Math.floor(rng() * moods.length)];
     const variedPrompt = `${currentPrompt}, ${comp}, ${interp}, ${mood}, no snowflakes`;
 
+    // Capture current prompt to discard stale responses after a prompt change
+    const requestPrompt = currentPrompt;
+
     service
       .generateFrameREST({
         prompt: variedPrompt,
@@ -287,6 +308,8 @@ export function AiImageLayer({
       })
       .then(async (url) => {
         if (!url) return;
+        // Discard if prompt changed while request was in flight
+        if (promptRef.current !== requestPrompt) return;
         try {
           const img = await loadImage(url);
           pushImage(img);

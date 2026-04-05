@@ -61,6 +61,7 @@ export default async function SharedJourneyPage({
         realmId: journeyRow.realm_id,
         phases: journeyRow.phases,
         aiEnabled: true,
+        ...(journeyRow.theme ? { theme: journeyRow.theme } : {}),
       }}
       audioUrl={audioUrl}
       shareToken={token}

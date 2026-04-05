@@ -42,7 +42,7 @@ export async function POST(request: Request) {
       midi_data: null,
     };
 
-    // Generate journey from analysis
+    // Generate journey from analysis — realmId is optional
     const journey = await buildJourneyFromAnalysis(analysis, realmId ?? undefined);
 
     // Store in database
@@ -55,6 +55,7 @@ export async function POST(request: Request) {
       story_text: `Auto-generated from audio analysis`,
       realm_id: journey.realmId,
       phases: JSON.parse(JSON.stringify(journey.phases)),
+      theme: journey.theme ? JSON.parse(JSON.stringify(journey.theme)) : null,
     }).select().single();
 
     if (error) {

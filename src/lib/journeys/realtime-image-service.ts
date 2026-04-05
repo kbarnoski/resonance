@@ -249,6 +249,11 @@ class RealtimeImageService {
     this.imageCache.set(prompt, img);
   }
 
+  /** Clear only the image cache (does not reset session cost or availability) */
+  clearImageCache(): void {
+    this.imageCache.clear();
+  }
+
   /** Cancel all in-flight REST requests */
   cancelInFlight(): void {
     for (const c of this.abortControllers) {

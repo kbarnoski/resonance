@@ -12,12 +12,12 @@ export async function POST(request: Request) {
 
     const { storyText, realmId, recordingId, name } = await request.json();
 
-    if (!storyText || !realmId) {
-      return Response.json({ error: "Missing storyText or realmId" }, { status: 400 });
+    if (!storyText) {
+      return Response.json({ error: "Missing storyText" }, { status: 400 });
     }
 
-    // Build journey from story using AI
-    const journey = await buildJourneyFromStory(storyText, realmId);
+    // Build journey from story using AI — realmId is optional now
+    const journey = await buildJourneyFromStory(storyText, realmId || undefined);
 
     // Store in database
     const { data, error } = await supabase.from("journeys").insert({
@@ -27,8 +27,9 @@ export async function POST(request: Request) {
       subtitle: journey.subtitle,
       description: journey.description,
       story_text: storyText,
-      realm_id: realmId,
+      realm_id: journey.realmId,
       phases: JSON.parse(JSON.stringify(journey.phases)),
+      theme: journey.theme ? JSON.parse(JSON.stringify(journey.theme)) : null,
     }).select().single();
 
     if (error) {

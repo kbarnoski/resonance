@@ -16,7 +16,7 @@ export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 
 // Ambient shaders used as backdrop underneath AI imagery modes
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "cosmos", "ethereal", "fog", "nebula", "drift",
+  "cosmos", "fog", "nebula", "drift",
   "tide", "dusk",
   "stardust", "ember",
 ];
@@ -76,6 +76,8 @@ export interface VisualizerCoreProps {
   journeyRealmImagery?: string | null;
   /** Journey realm ID for typography theming */
   journeyRealmId?: string | null;
+  /** Journey theme mood for typography theming (custom journeys) */
+  journeyThemeMood?: string | null;
   /** Story text from custom journey for poetry context */
   journeyStoryText?: string | null;
   /** When true, simplify controls to journey-only actions */
@@ -361,6 +363,7 @@ export function VisualizerCore({
   journeyPoetryMood,
   journeyRealmImagery,
   journeyRealmId,
+  journeyThemeMood,
   journeyStoryText,
   journeyActive,
   journeyBrowsing,
@@ -377,8 +380,9 @@ export function VisualizerCore({
   // When journey is active, mode comes from journey engine
   const mode = (journeyShaderMode as VisualizerMode) ?? storeMode;
 
-  // Derive typography theme: realm ID for journeys, shader category for viz-only
+  // Derive typography theme: realm ID for built-in journeys, theme mood for custom, shader category for viz-only
   const typographyTheme = journeyRealmId
+    ?? journeyThemeMood
     ?? MODE_META.find((m) => m.mode === mode)?.category
     ?? null;
   const textOverlayMode = useAudioStore((s) => s.textOverlayMode);
@@ -885,7 +889,7 @@ export function VisualizerCore({
       {!installationMode && (currentTrack || journeyActive || journeyBrowsing) && <div
         className="absolute inset-x-0 bottom-0 transition-opacity duration-500 ease-out"
         style={{
-          zIndex: 70,
+          zIndex: 90,
           opacity: controlsVisible ? 1 : 0,
           pointerEvents: controlsVisible ? "auto" : "none",
         }}

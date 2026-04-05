@@ -12,16 +12,12 @@ export type VisualizerMode =
   // Original
   | "cosmos"
   | "neon"
-  | "sacred"
-  | "ethereal"
   | "prismatic"
-  | "tesseract"
   | "astral"
   | "ember"
   | "tide"
   // 3D Worlds
   | "orb"
-  | "aurora"
   // Elemental
   | "fog"
   | "dusk"
@@ -40,6 +36,22 @@ export type VisualizerMode =
   | "maelstrom"
   | "deluge"
   | "squall"
+  // Elemental (new)
+  | "glacial"
+  | "tsunami"
+  | "permafrost"
+  | "mistral"
+  | "rime"
+  | "updraft"
+  | "cirrus"
+  | "torrent"
+  | "swell"
+  | "aurora-borealis"
+  | "tempest"
+  | "nimbostratus"
+  | "frost-bloom"
+  | "thermocline"
+  | "estuary"
   // Dark
   | "umbra"
   | "inferno"
@@ -47,6 +59,22 @@ export type VisualizerMode =
   | "vortex"
   | "lament"
   | "hollow"
+  // Dark (new)
+  | "obsidian"
+  | "eclipse-dark"
+  | "entropy"
+  | "miasma"
+  | "penumbra"
+  | "terminus"
+  | "cinder"
+  | "requiem"
+  | "maelstrom-dark"
+  | "obsidian-flow"
+  | "wraith"
+  | "furnace"
+  | "abyssal-zone"
+  | "charcoal"
+  | "shadowplay"
   // Cosmic
   | "pulsar"
   | "quasar"
@@ -67,12 +95,26 @@ export type VisualizerMode =
   | "photon"
   | "selene"
   | "kepler"
-  | "cassini"
   | "hubble"
   | "doppler"
+  // Cosmic (new)
+  | "corona"
+  | "aurora-wave"
+  | "wormhole"
+  | "zodiac"
+  | "solaris"
+  | "perihelion"
+  | "helios"
+  | "crescent"
+  | "eclipse"
+  | "zenith"
+  | "lightyear"
+  | "binary"
+  | "cosmic-web"
+  | "dark-matter"
+  | "event-horizon"
   // Visionary
   | "portal"
-  | "oracle"
   | "revelation"
   | "threshold"
   | "rapture"
@@ -80,6 +122,22 @@ export type VisualizerMode =
   | "seraph"
   | "halo"
   | "nimbus"
+  // Visionary (new)
+  | "anamnesis"
+  | "dharma"
+  | "gnosis"
+  | "chakra"
+  | "vestige"
+  | "empyrean"
+  | "stigmata"
+  | "aureole"
+  | "pleroma"
+  | "apophatic"
+  | "theophany"
+  | "yantra"
+  | "satori"
+  | "merkaba"
+  | "soma"
   // Organic
   | "spore"
   | "chrysalis"
@@ -89,12 +147,26 @@ export type VisualizerMode =
   | "enzyme"
   | "pollen"
   | "symbiosis"
-  | "chitin"
   | "phylum"
   | "kelp"
   | "mangrove"
+  // Organic (new)
+  | "dendrite"
+  | "flagella"
+  | "mycelium"
+  | "coral"
+  | "mitochondria"
+  | "synapse"
+  | "biolume"
+  | "tendril"
+  | "osmosis"
+  | "alveoli"
+  | "diatom"
+  | "protoplasm"
+  | "filament"
+  | "photosynthesis"
+  | "biofilm"
   // Geometry
-  | "lattice"
   | "spiral"
   | "geodesic"
   | "moire"
@@ -179,7 +251,23 @@ export type VisualizerMode =
   | "petrified"
   | "monochrome"
   | "aurora-trail"
-  | "constellation";
+  | "constellation"
+  // Geometry (new batch)
+  | "hyperbola"
+  | "penrose"
+  | "torus"
+  | "helix"
+  | "escher"
+  | "harmonograph"
+  | "voronoi-flow"
+  | "klein"
+  | "mobius-strip"
+  | "fibonacci-spiral"
+  | "interference"
+  | "topology"
+  | "fractal-tree"
+  | "weave"
+  | "kaleidoscope";
 export const MOOD_REALM_MAP: Record<Mood, string[]> = {
   melancholic:  ["ocean", "winter", "pain"],
   intense:      ["hell", "storm", "machine"],
@@ -194,8 +282,8 @@ export const MOOD_REALM_MAP: Record<Mood, string[]> = {
 const MOOD_SHADER_MAP: Record<Mood, VisualizerMode> = {
   melancholic: "cosmos",
   intense: "prismatic",
-  dreamy: "ethereal",
-  mystical: "sacred",
+  dreamy: "drift",
+  mystical: "nebula",
   chaotic: "plasma",
   hypnotic: "cosmos",
   flowing: "drift",

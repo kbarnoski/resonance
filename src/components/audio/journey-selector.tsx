@@ -76,11 +76,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             name: (row.name as string) ?? "Untitled Journey",
             subtitle: (row.subtitle as string) ?? "",
             description: (row.description as string) ?? "",
-            realmId: (row.realm_id as string) ?? "heaven",
+            realmId: (row.realm_id as string) ?? "custom",
             aiEnabled: true,
             phases: (row.phases as Journey["phases"]) ?? [],
             storyText: (row.story_text as string) ?? null,
             recordingId: (row.recording_id as string) ?? null,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ...(row.theme ? { theme: row.theme as any } : {}),
           }));
           setCustomJourneys(journeys);
         }
@@ -178,6 +180,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         phases: journey.phases,
         aiEnabled: true,
         recordingId: currentTrack.id,
+        ...(journey.theme ? { theme: journey.theme } : {}),
       };
       setCustomJourneys((prev) => [customJourney, ...prev]);
       setAiImageEnabled(true);
@@ -1119,8 +1122,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               <div className="divide-y divide-white/[0.04]">
                 {customJourneys.map((journey) => {
                   const isActive = activeJourney?.id === journey.id;
-                  const realm = REALMS.find((r) => r.id === journey.realmId);
-                  const accent = realm?.palette.accent ?? "#888";
+                  const realm = journey.realmId !== "custom" ? REALMS.find((r) => r.id === journey.realmId) : null;
+                  const accent = journey.theme?.palette.accent ?? realm?.palette.accent ?? "#8b5cf6";
                   return (
                     <div
                       key={journey.id}
@@ -1362,8 +1365,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {customJourneys.map((journey) => {
                     const isActive = activeJourney?.id === journey.id;
-                    const realm = REALMS.find((r) => r.id === journey.realmId);
-                    const accent = realm?.palette.accent ?? "#888";
+                    const cRealm = journey.realmId !== "custom" ? REALMS.find((r) => r.id === journey.realmId) : null;
+                    const accent = journey.theme?.palette.accent ?? cRealm?.palette.accent ?? "#8b5cf6";
                     return (
                       <div
                         key={journey.id}
@@ -1383,14 +1386,14 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           onClose();
                         }}
                       >
-                        {/* Top row: realm dot + name ... share + delete */}
+                        {/* Top row: accent dot + name ... share + delete */}
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
                             <div
                               className="w-1.5 h-1.5 rounded-full shrink-0"
                               style={{
                                 backgroundColor: accent,
-                                boxShadow: `0 0 4px ${realm?.palette.glow ?? accent}30`,
+                                boxShadow: `0 0 4px ${journey.theme?.palette.glow ?? cRealm?.palette.glow ?? accent}30`,
                               }}
                             />
                             <span
@@ -1402,7 +1405,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                                 textTransform: "uppercase",
                               }}
                             >
-                              {realm?.name?.toUpperCase() ?? "CUSTOM"}
+                              {cRealm?.name?.toUpperCase() ?? "CUSTOM"}
                             </span>
                           </div>
                           <div className="flex items-center gap-1.5">

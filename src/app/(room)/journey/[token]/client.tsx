@@ -22,7 +22,7 @@ function formatTime(s: number): string {
 
 // Ambient shaders used as backdrop underneath AI imagery modes (same as main app)
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "cosmos", "ethereal", "fog", "nebula", "drift",
+  "cosmos", "fog", "nebula", "drift",
   "tide", "dusk", "stardust", "ember",
 ];
 
@@ -550,6 +550,7 @@ export function SharedJourneyClient({
           aiEnabled={journey.aiEnabled}
           aiGenerating={!ended}
           promptSeed={playbackSeed ? parseInt(playbackSeed, 10) : undefined}
+          journeyId={journey.id}
         >
           {/* Previous shader (fading out during crossfade) */}
           {prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef)}

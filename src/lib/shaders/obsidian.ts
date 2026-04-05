@@ -1,100 +1,86 @@
-import { U, SMOOTH_NOISE, VISIONARY_PALETTE, VORONOI } from "./shared";
+import { U, SMOOTH_NOISE, VISIONARY_PALETTE, ROT2 } from "./shared";
 
-export const FRAG = U + SMOOTH_NOISE + VISIONARY_PALETTE + VORONOI + `
+export const FRAG =
+  U +
+  SMOOTH_NOISE +
+  VISIONARY_PALETTE +
+  ROT2 +
+  `
+// Volcanic glass surface — deep internal reflections, prismatic edge light.
+// Obsidian is nearly opaque but refracts trapped light at fracture boundaries.
+
+float fbm3(vec2 p) {
+  float v = 0.0, a = 0.5;
+  mat2 r = mat2(0.8, 0.6, -0.6, 0.8);
+  for (int i = 0; i < 3; i++) { v += a * snoise(p); p = r * p * 2.0; a *= 0.5; }
+  return v;
+}
+
 void main() {
   vec2 uv = (gl_FragCoord.xy - 0.5 * u_resolution) / min(u_resolution.x, u_resolution.y);
   float t = u_time * 0.06;
-  float paletteShift = u_amplitude * 0.30;
 
-  // Project onto infinite plane receding into distance
-  // uv.y = 0 is horizon, below is the floor extending away
-  float horizon = 0.05 + u_bass * 0.03;
-  float py = uv.y - horizon;
+  // ── Glass surface — layered noise for conchoidal fracture patterns ──
+  vec2 p1 = uv * 3.0 + vec2(t * 0.2, t * 0.15);
+  vec2 p2 = uv * 5.0 * rot2(0.4) - vec2(t * 0.1, t * 0.25);
+  float fracture1 = fbm3(p1);
+  float fracture2 = fbm3(p2);
 
-  vec3 color = vec3(0.0);
+  // Edge detection on fractures — where light refracts
+  float edge1 = abs(fracture1);
+  float edge2 = abs(fracture2);
+  float edges = smoothstep(0.15, 0.0, edge1) + smoothstep(0.12, 0.0, edge2) * 0.6;
 
-  // Sky portion — pure void
-  vec3 skyColor = palette(0.78 + paletteShift,
-    vec3(0.02, 0.015, 0.03),
-    vec3(0.04, 0.03, 0.07),
-    vec3(1.0, 1.0, 1.0),
-    vec3(0.0, 0.1, 0.4));
+  // ── Internal reflection layers ──
+  vec2 deepUV = uv * 2.0 * rot2(t * 0.1) + vec2(fracture1 * 0.2, fracture2 * 0.15);
+  float deepNoise = fbm3(deepUV + vec2(t * 0.3, 0.0));
+  float deepGlow = smoothstep(-0.1, 0.4, deepNoise) * 0.3;
 
-  if (py >= 0.0) {
-    // Above horizon: void sky
-    color = skyColor * exp(-py * 8.0);
-  } else {
-    // Below horizon: perspective-projected obsidian floor
-    // Perspective: depth = -horizon_offset / py
-    float depth = horizon / (-py + 0.0001);
-    depth = clamp(depth, 0.0, 60.0);
+  // ── Prismatic edge refraction ──
+  float prismShift = edges * 3.0 + t * 0.5 + u_amplitude * 0.3;
+  vec3 prismColor = palette(
+    prismShift,
+    vec3(0.2, 0.1, 0.15),
+    vec3(0.3, 0.2, 0.35),
+    vec3(0.8, 0.6, 1.0),
+    vec3(0.0, 0.15, 0.3)
+  );
 
-    // Floor plane UV with perspective
-    vec2 floorUV = vec2(uv.x * depth, depth) * 0.15;
-    floorUV += vec2(0.0, t * 0.4); // slow drift forward
+  // ── Base obsidian surface ──
+  vec3 baseColor = palette(
+    fracture1 * 0.5 + fracture2 * 0.3 + u_amplitude * 0.15,
+    vec3(0.01, 0.01, 0.02),
+    vec3(0.03, 0.02, 0.04),
+    vec3(0.4, 0.3, 0.5),
+    vec3(0.1, 0.05, 0.15)
+  );
 
-    // Voronoi fractures — the obsidian cracking pattern
-    vec3 vor1 = voronoi(floorUV * 2.0 + t * 0.1);
-    vec3 vor2 = voronoi(floorUV * 4.5 - t * 0.07);
-    vec3 vor3 = voronoi(floorUV * 9.0 + t * 0.13);
+  // ── Deep internal glow — bruise purples and cold blues ──
+  vec3 innerColor = palette(
+    deepNoise * 2.0 + t * 0.2,
+    vec3(0.08, 0.02, 0.05),
+    vec3(0.12, 0.05, 0.1),
+    vec3(0.5, 0.3, 0.7),
+    vec3(0.15, 0.1, 0.25)
+  );
 
-    // Crack network: edges of voronoi cells = cracks
-    float crack1 = 1.0 - smoothstep(0.0, 0.04 + u_bass * 0.02, vor1.y - vor1.x);
-    float crack2 = 1.0 - smoothstep(0.0, 0.025, vor2.y - vor2.x);
-    float crack3 = 1.0 - smoothstep(0.0, 0.015, vor3.y - vor3.x);
-    float cracks = max(crack1, max(crack2 * 0.7, crack3 * 0.4));
+  // ── Compositing ──
+  vec3 color = baseColor;
+  color += innerColor * deepGlow * (0.6 + u_bass * 0.4);
+  color += prismColor * edges * 0.6 * (0.7 + u_treble * 0.3);
 
-    // Surface reflectivity — obsidian is a mirror in some places
-    // Fake reflection: distant sky color warped by fbm
-    vec2 reflUV = floorUV * 0.3 + fbm(floorUV * 0.5 + t * 0.2) * 0.2;
-    float reflNoise = fbm(reflUV + t * 0.15);
-    // Reflection is faint and disturbed
-    float reflStrength = exp(-depth * 0.06) * (0.08 + u_mid * 0.06);
+  // Specular highlights on fracture ridges
+  float specular = pow(edges, 3.0) * 0.8;
+  color += vec3(0.7, 0.6, 0.9) * specular * (0.5 + u_mid * 0.5);
 
-    // Depth fog — the far distance vanishes into black
-    float depthFog = exp(-depth * 0.05);
-    float nearFog  = 1.0 - exp(-depth * 0.02);
-
-    // Colors
-    // Obsidian base: near-black with very faint dark teal
-    vec3 obsidianBase = palette(0.55 + paletteShift + vor1.x * 0.05,
-      vec3(0.03, 0.03, 0.04),
-      vec3(0.05, 0.06, 0.08),
-      vec3(1.0, 1.0, 1.0),
-      vec3(0.5, 0.6, 0.7));
-
-    // Crack glow — faint luminescence, deep violet
-    vec3 crackColor = palette(0.72 + paletteShift + u_mid * 0.12,
-      vec3(0.05, 0.03, 0.08),
-      vec3(0.12, 0.07, 0.22),
-      vec3(1.0, 1.0, 1.0),
-      vec3(0.6, 0.7, 0.9));
-
-    // Reflection color
-    vec3 reflColor = palette(0.82 + paletteShift + reflNoise * 0.1,
-      vec3(0.025, 0.02, 0.04),
-      vec3(0.07, 0.06, 0.1),
-      vec3(1.0, 1.0, 1.0),
-      vec3(0.1, 0.3, 0.6));
-
-    // Treble sparkle: tiny glints on obsidian surface
-    float glint = smoothstep(0.88, 1.0, snoise(floorUV * 14.0 + t)) * u_treble * 0.12;
-    glint *= depthFog;
-
-    color = obsidianBase;
-    color += crackColor * cracks * (0.3 + u_bass * 0.2) * depthFog;
-    color += reflColor * reflStrength;
-    color += glint;
-
-    // Fog out toward horizon
-    color *= depthFog;
-    color = mix(color, skyColor * 0.3, 1.0 - depthFog);
-  }
+  // Surface sheen
+  float sheen = smoothstep(0.3, -0.1, uv.y) * 0.04;
+  color += vec3(0.3, 0.25, 0.4) * sheen;
 
   // Vignette
-  float dist = length(uv);
-  float vignette = pow(1.0 - smoothstep(0.3, 1.3, dist), 1.8);
+  float vignette = 1.0 - smoothstep(0.3, 1.2, length(uv));
   color *= vignette;
 
   gl_FragColor = vec4(color, 1.0);
-}`;
+}
+`;

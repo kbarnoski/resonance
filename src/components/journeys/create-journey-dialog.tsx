@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import { X, Loader2, Music } from "lucide-react";
 import { toast } from "sonner";
-import { REALMS } from "@/lib/journeys/realms";
 import { createClient } from "@/lib/supabase/client";
 import type { Journey } from "@/lib/journeys/types";
 
@@ -21,7 +20,6 @@ export function CreateJourneyDialog({
   onCreated,
 }: CreateJourneyDialogProps) {
   const [storyText, setStoryText] = useState("");
-  const [realmId, setRealmId] = useState("heaven");
   const [creating, setCreating] = useState(false);
   const [statusText, setStatusText] = useState("");
   const abortRef = useRef<AbortController | null>(null);
@@ -56,7 +54,8 @@ export function CreateJourneyDialog({
     }
     const messages = [
       "Reading your story...",
-      "Choosing visual themes...",
+      "Imagining the visual world...",
+      "Choosing shaders & palette...",
       "Composing phases...",
       "Building the journey...",
       "Almost there...",
@@ -82,7 +81,6 @@ export function CreateJourneyDialog({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           storyText: storyText.trim(),
-          realmId,
           recordingId: selectedRecordingId || recordingId,
         }),
         signal: abortRef.current.signal,
@@ -124,8 +122,7 @@ export function CreateJourneyDialog({
 
   if (!open) return null;
 
-  const selectedRealm = REALMS.find((r) => r.id === realmId);
-  const accent = selectedRealm?.palette.accent ?? "#888";
+  const accent = "#8b5cf6"; // app purple
 
   return (
     <>
@@ -193,61 +190,6 @@ export function CreateJourneyDialog({
                 lineHeight: 1.6,
               }}
             />
-          </div>
-
-          {/* Realm picker */}
-          <div className="mb-6">
-            <label
-              className="block text-white/40 mb-2"
-              style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
-            >
-              Visual realm
-            </label>
-            <div
-              className="grid grid-cols-3 gap-1.5 max-h-40 overflow-y-auto scrollbar-thin pr-1"
-            >
-              {REALMS.map((realm) => (
-                <button
-                  key={realm.id}
-                  type="button"
-                  onClick={() => !creating && setRealmId(realm.id)}
-                  disabled={creating}
-                  className={`rounded-lg px-3 py-2 text-left transition-all ${
-                    realmId === realm.id
-                      ? "text-white/90"
-                      : "text-white/40 hover:text-white/60 hover:bg-white/3"
-                  }`}
-                  style={{
-                    backgroundColor: realmId === realm.id
-                      ? `${realm.palette.accent}18`
-                      : "transparent",
-                    border: realmId === realm.id
-                      ? `1px solid ${realm.palette.accent}40`
-                      : "1px solid rgba(255,255,255,0.04)",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      fontFamily: "var(--font-geist-sans)",
-                      fontWeight: realmId === realm.id ? 400 : 300,
-                    }}
-                  >
-                    {realm.name}
-                  </div>
-                  <div
-                    className="truncate"
-                    style={{
-                      fontSize: "0.6rem",
-                      fontFamily: "var(--font-geist-mono)",
-                      color: "rgba(255,255,255,0.25)",
-                    }}
-                  >
-                    {realm.subtitle}
-                  </div>
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Song picker */}

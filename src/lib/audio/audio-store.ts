@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { getAudioEngine } from "./audio-engine";
 import { isDesktopApp, nativeAudioSeek } from "@/lib/tauri";
-import type { Journey, JourneyPhaseId } from "@/lib/journeys/types";
+import type { Journey, JourneyPhaseId, JourneyTheme } from "@/lib/journeys/types";
 import type { Realm } from "@/lib/journeys/types";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
@@ -64,6 +64,7 @@ interface AudioState {
   // Journey system
   activeJourney: Journey | null;
   activeRealm: Realm | null;
+  activeTheme: JourneyTheme | null;
   journeyPhase: JourneyPhaseId | null;
   journeyProgress: number;
   aiImageEnabled: boolean;
@@ -141,6 +142,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   vizModeSequenceIndex: 0,
   activeJourney: null,
   activeRealm: null,
+  activeTheme: null,
   journeyPhase: null,
   journeyProgress: 0,
   aiImageEnabled: true,
@@ -335,6 +337,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     set({
       activeJourney: journey,
       activeRealm: realm ?? null,
+      activeTheme: journey.theme ?? null,
       journeyPhase: null,
       journeyProgress: 0,
       vizMode: firstMode,
@@ -359,6 +362,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     set({
       activeJourney: journey,
       activeRealm: realm ?? null,
+      activeTheme: journey.theme ?? null,
       journeyPhase: null,
       journeyProgress: 0,
       vizMode: firstMode,
@@ -379,6 +383,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     set({
       activeJourney: null,
       activeRealm: null,
+      activeTheme: null,
       journeyPhase: null,
       journeyProgress: 0,
       isPlaying: false,

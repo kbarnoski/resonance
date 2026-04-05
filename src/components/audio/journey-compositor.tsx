@@ -19,6 +19,8 @@ interface JourneyCompositorProps {
   aiGenerating?: boolean;
   /** Optional seed for deterministic AI prompt variation (shared playback) */
   promptSeed?: number;
+  /** Stable journey identifier — only purge AI images when this changes */
+  journeyId?: string;
   children: React.ReactNode;
 }
 
@@ -50,6 +52,7 @@ export function JourneyCompositor({
   aiOnly = false,
   aiGenerating = true,
   promptSeed,
+  journeyId,
   children,
 }: JourneyCompositorProps) {
   const effectivePrompt = frame?.aiPrompt ?? aiPrompt ?? "";
@@ -151,6 +154,7 @@ export function JourneyCompositor({
           shaderOpacity={effectiveShaderOpacity}
           onFirstImage={handleFirstImage}
           promptSeed={promptSeed}
+          journeyId={journeyId}
         />
       )}
 

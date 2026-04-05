@@ -74,6 +74,23 @@ export interface JourneyPhase {
   halation: number;
 }
 
+export type VoiceId = "shimmer" | "nova" | "fable" | "alloy" | "echo" | "onyx" | "ash" | "ballad" | "coral" | "sage" | "verse" | "marin" | "cedar";
+
+export interface JourneyTheme {
+  visualVocabulary: {
+    environments: string[];
+    entities: string[];
+    textures: string[];
+    atmospheres: string[];
+  };
+  shaderCategories: string[]; // e.g. ["Cosmic", "Organic", "Elemental"]
+  palette: { primary: string; secondary: string; accent: string; glow: string };
+  voice: VoiceId;
+  poetryImagery: string;
+  poetryMood: Mood;
+  ambientTheme: string; // maps to REALM_THEME_MAP keys or "default"
+}
+
 export interface Realm {
   id: string;
   name: string;
@@ -108,6 +125,8 @@ export interface Journey {
   phaseLabels?: Partial<Record<JourneyPhaseId, string>>;
   storyText?: string | null;
   recordingId?: string | null;
+  /** AI-generated theme for custom journeys (replaces realm lookup) */
+  theme?: JourneyTheme;
 }
 
 /** A user-created journey stored in Supabase */
