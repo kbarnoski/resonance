@@ -11,6 +11,13 @@ export interface ChordEvent {
   duration: number;
 }
 
+export interface MusicalEvent {
+  time: number;
+  type: "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea";
+  intensity: number;    // 0-1
+  label: string;        // "Deep bass impact", "New melodic idea"
+}
+
 export interface AnalysisResult {
   status: "completed" | "error";
   key_signature: string | null;
@@ -23,6 +30,7 @@ export interface AnalysisResult {
   bass_line?: NoteEvent[];
   harmonic_rhythm?: string;
   progressions?: string[];
+  events?: MusicalEvent[];
   midi_data: object | null;
   error?: string;
 }

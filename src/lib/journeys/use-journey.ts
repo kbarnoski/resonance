@@ -41,6 +41,8 @@ export function useJourney(): UseJourneyReturn {
   const frameRef = useRef<JourneyFrame | null>(null);
   /** Wall-clock time when the current journey started — for fallback progress */
   const journeyStartRef = useRef(0);
+  const durationRef = useRef(duration);
+  durationRef.current = duration;
 
   // Record wall-clock start time when a journey begins
   useEffect(() => {
@@ -74,7 +76,7 @@ export function useJourney(): UseJourneyReturn {
     let p = progress;
     if (p <= 0 && journeyStartRef.current > 0) {
       const elapsedSec = (now - journeyStartRef.current) / 1000;
-      p = Math.min(elapsedSec / 300, 1); // assume 300s default track
+      p = Math.min(elapsedSec / (duration > 0 ? duration : 300), 1);
     }
 
     const newFrame = engine.getFrame(p);
@@ -100,7 +102,8 @@ export function useJourney(): UseJourneyReturn {
       let p = progressRef.current;
       if (p <= 0 && journeyStartRef.current > 0) {
         const elapsedSec = (performance.now() - journeyStartRef.current) / 1000;
-        p = Math.min(elapsedSec / 300, 1);
+        const d = durationRef.current;
+        p = Math.min(elapsedSec / (d > 0 ? d : 300), 1);
       }
 
       const newFrame = engine.getFrame(p);

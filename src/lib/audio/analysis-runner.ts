@@ -95,6 +95,7 @@ export async function runAnalysis(
         time_signature: result.time_signature,
         chords: result.chords,
         notes: result.notes,
+        events: result.events ?? [],
         midi_data: result.midi_data,
       }, { onConflict: "recording_id" })
       .select()

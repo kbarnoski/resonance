@@ -3,7 +3,7 @@
 import { useRef, useState, useCallback, useEffect, useImperativeHandle, forwardRef, startTransition } from "react";
 import WaveSurfer from "wavesurfer.js";
 import { Button } from "@/components/ui/button";
-import { Play, Pause, SkipBack, SkipForward, AlertCircle, Flag, Sparkles, Loader2 } from "lucide-react";
+import { Play, Pause, SkipBack, SkipForward, AlertCircle, Flag, Sparkles, Loader2, Zap } from "lucide-react";
 import { useThemeColors } from "@/lib/use-theme-colors";
 import { getAudioEngine } from "@/lib/audio/audio-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
@@ -16,6 +16,7 @@ export interface WaveformPlayerHandle {
 interface MarkerDot {
   time: number;
   label: string;
+  type?: "note" | "cue";
 }
 
 interface WaveformPlayerProps {
@@ -458,7 +459,11 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
                     onClick={() => handleMarkerClick(marker.time)}
                     title={`${formatTime(marker.time)}: ${marker.label}`}
                   >
-                    <Flag className="h-3.5 w-3.5 text-primary -translate-x-1/2" />
+                    {marker.type === "cue" ? (
+                      <Zap className="h-3.5 w-3.5 text-amber-500 -translate-x-1/2" />
+                    ) : (
+                      <Flag className="h-3.5 w-3.5 text-primary -translate-x-1/2" />
+                    )}
                     <div className="absolute left-1/2 -translate-x-1/2 top-4 bg-popover border rounded px-2 py-1 text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity shadow-md z-10">
                       {marker.label}
                     </div>

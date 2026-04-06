@@ -78,6 +78,15 @@ class JourneyEngine {
   private static readonly SHADER_SWITCH_MAX_SECS = 35;
   /** Absolute maximum — no shader may exceed this, period */
   private static readonly SHADER_MAX_SECS_ABSOLUTE = 55;
+  /** Decay duration per event type (seconds) */
+  private static readonly EVENT_DECAY: Record<string, number> = {
+    bass_hit: 1.2,
+    texture_change: 2.5,
+    climax: 3.0,
+    drop: 2.0,
+    silence: 1.5,
+    new_idea: 2.0,
+  };
   /** Wall-clock time when the current primary shader started */
   private shaderStartMs = 0;
   /** How long the current shader should last (randomized each switch) */
@@ -86,6 +95,13 @@ class JourneyEngine {
   private trackDuration = 300;
   /** Random function for this playback session (Math.random or seeded) */
   private random: () => number = Math.random;
+  /** Event markers (auto-detected + manual cues, as progress fractions 0-1) */
+  private eventMarkers: { progress: number; type: string; intensity: number }[] = [];
+  private eventImpulse = 0;
+  private eventType: string | null = null;
+  private eventImpulseStartMs = 0;
+  private firedEvents = new Set<number>();
+  private lastProgress = 0;
 
   /** Start a journey. Pass a seed for deterministic (shared) playback. */
   start(journey: Journey, options?: { seed?: number; trackDuration?: number }): void {
@@ -135,10 +151,9 @@ class JourneyEngine {
   /** Update track duration — regenerates shader budgets if duration differs significantly */
   updateTrackDuration(duration: number): void {
     if (duration <= 0 || !this.running || !this.journey) return;
-    // Only recompute if >20% different from current assumption
-    if (Math.abs(duration - this.trackDuration) / this.trackDuration > 0.2) {
-      this.trackDuration = duration;
-      // Regenerate shader lists with updated budgets for the new duration
+    const needsRegen = Math.abs(duration - this.trackDuration) / this.trackDuration > 0.05;
+    this.trackDuration = duration; // always store precise value
+    if (needsRegen) {
       this.journey = regenerateJourneyShaders(this.journey, this.random, duration);
     }
   }
@@ -165,6 +180,11 @@ class JourneyEngine {
     this.shaderStartMs = 0;
     this.shaderDurationMs = 0;
     this.random = Math.random;
+    this.eventMarkers = [];
+    this.eventImpulse = 0;
+    this.eventType = null;
+    this.firedEvents.clear();
+    this.lastProgress = 0;
   }
 
   /** Update audio features from the visualizer's analyser */
@@ -192,6 +212,22 @@ class JourneyEngine {
     return this.currentStoryImagePrompt;
   }
 
+  /** Set typed events — converts time-based events to progress fractions */
+  setEvents(events: { time: number; type: string; intensity: number }[], trackDuration: number): void {
+    this.eventMarkers = events
+      .map(e => ({ progress: e.time / trackDuration, type: e.type, intensity: e.intensity }))
+      .sort((a, b) => a.progress - b.progress);
+    this.firedEvents.clear();
+  }
+
+  /** Convenience wrapper — converts manual cue markers to events with type "bass_hit" */
+  setCueMarkers(markers: { time: number }[], trackDuration: number): void {
+    this.setEvents(
+      markers.map(m => ({ time: m.time, type: "bass_hit", intensity: 0.8 })),
+      trackDuration,
+    );
+  }
+
   /** Compute the current frame state given song progress (0-1) */
   getFrame(progress: number): JourneyFrame | null {
     if (!this.journey || !this.running) return null;
@@ -200,6 +236,38 @@ class JourneyEngine {
     if (phases.length === 0) return null;
 
     const clamped = clamp(progress, 0, 1);
+    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
+
+    // Event detection — seek backward clears fired events ahead of new position
+    if (clamped < this.lastProgress - 0.01) {
+      for (const p of this.firedEvents) {
+        if (p > clamped) this.firedEvents.delete(p);
+      }
+    }
+    this.lastProgress = clamped;
+
+    // Check event markers
+    for (const evt of this.eventMarkers) {
+      if (!this.firedEvents.has(evt.progress) && clamped >= evt.progress && clamped <= evt.progress + 0.015) {
+        this.firedEvents.add(evt.progress);
+        this.eventImpulse = evt.intensity;
+        this.eventType = evt.type;
+        this.eventImpulseStartMs = now;
+        break;
+      }
+    }
+
+    // Decay impulse — duration depends on event type
+    if (this.eventImpulse > 0) {
+      const decaySeconds = JourneyEngine.EVENT_DECAY[this.eventType ?? "bass_hit"] ?? 1.5;
+      const elapsed = (now - this.eventImpulseStartMs) / 1000;
+      this.eventImpulse = Math.max(0, this.eventImpulse * (1.0 - (elapsed / decaySeconds)));
+      if (this.eventImpulse < 0.01) {
+        this.eventImpulse = 0;
+        this.eventType = null;
+      }
+    }
+
     const { phaseIndex, nextPhaseIndex, blend } = getPhaseBlend(clamped, phases);
     const currentPhase = phases[phaseIndex];
     const phaseProgress = getPhaseProgress(clamped, currentPhase);
@@ -220,7 +288,6 @@ class JourneyEngine {
         this.phaseGraceEnd = clamped + graceSec / this.trackDuration;
         this.graceActive = true;
         // Reset shader timer so we don't get an immediate shader swap right after phase change
-        const now = typeof performance !== "undefined" ? performance.now() : Date.now();
         this.shaderStartMs = now;
       }
 
@@ -268,7 +335,6 @@ class JourneyEngine {
     // Wall-clock shader switching: advance to next shader when timer expires.
     // Simple and reliable — no pre-computed schedules that can drift or fail.
     const shaderLen = currentPhase.shaderModes.length;
-    const now = typeof performance !== "undefined" ? performance.now() : Date.now();
     if (shaderLen > 1 && now - this.shaderStartMs > this.shaderDurationMs) {
       this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
       this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
@@ -371,6 +437,9 @@ class JourneyEngine {
       halation: iv((p) => p.halation),
       dualShaderMode: this.dualShaderMode ?? undefined,
       tertiaryShaderMode: this.tertiaryShaderMode ?? undefined,
+      eventImpulse: this.eventImpulse,
+      eventType: this.eventType as JourneyFrame["eventType"],
+      cueImpulse: this.eventImpulse, // backward compat alias
     };
 
     // Notify frame subscribers

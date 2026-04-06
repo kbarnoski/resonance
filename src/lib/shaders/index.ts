@@ -795,6 +795,14 @@ export const MODE_META: ModeMeta[] = [
   { mode: "monochrome", label: "Monochrome", category: "AI Imagery" },
 ];
 
+// Sort shaders alphabetically within each category
+MODE_META.sort((a, b) => {
+  const catOrder = ["Visionary", "Cosmic", "Organic", "Geometry", "3D Worlds", "Elemental", "Dark", "AI Imagery"];
+  const catDiff = catOrder.indexOf(a.category) - catOrder.indexOf(b.category);
+  if (catDiff !== 0) return catDiff;
+  return a.label.localeCompare(b.label);
+});
+
 export const MODE_CATEGORIES = ["Visionary", "Cosmic", "Organic", "Geometry", "3D Worlds", "Elemental", "Dark", "AI Imagery"] as const;
 
 export const MODES_3D: Set<string> = new Set([

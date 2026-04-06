@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef, forwardRef } from "react";
 import { MODE_META } from "@/lib/shaders";
 import { getProfile } from "@/lib/journeys/adaptive-engine";
 import {
@@ -35,7 +35,10 @@ function groupByCategory(modes: string[]): GroupedShaders[] {
   }
   return Array.from(groups.entries())
     .sort(([a], [b]) => a.localeCompare(b))
-    .map(([category, shaders]) => ({ category, shaders }));
+    .map(([category, shaders]) => ({
+      category,
+      shaders: shaders.sort((a, b) => a.label.localeCompare(b.label)),
+    }));
 }
 
 // ── Component ──
@@ -43,14 +46,16 @@ function groupByCategory(modes: string[]): GroupedShaders[] {
 interface AdminPanelProps {
   visible: boolean;
   onClose: () => void;
+  currentShader?: string;
 }
 
 type Tab = "library" | "blocked" | "deleted" | "loved" | "stats";
 
-export function AdminPanel({ visible, onClose }: AdminPanelProps) {
+export function AdminPanel({ visible, onClose, currentShader }: AdminPanelProps) {
   const [revision, setRevision] = useState(0);
   const [activeTab, setActiveTab] = useState<Tab>("library");
   const refresh = useCallback(() => setRevision((r) => r + 1), []);
+  const activeRowRef = useRef<HTMLDivElement>(null);
 
   // Close on Escape
   useEffect(() => {
@@ -61,6 +66,16 @@ export function AdminPanel({ visible, onClose }: AdminPanelProps) {
     document.addEventListener("keydown", handleKey);
     return () => document.removeEventListener("keydown", handleKey);
   }, [visible, onClose]);
+
+  // Auto-scroll to active shader when it changes
+  useEffect(() => {
+    if (!visible || !currentShader || activeTab !== "library") return;
+    // Small delay to let the DOM update
+    const t = setTimeout(() => {
+      activeRowRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 50);
+    return () => clearTimeout(t);
+  }, [currentShader, visible, activeTab]);
 
   // Read state (re-reads on revision bump)
   const blocked = Array.from(getBlockedShaders());
@@ -187,8 +202,9 @@ export function AdminPanel({ visible, onClose }: AdminPanelProps) {
               const isBlocked = blockedSet.has(mode);
               const isDeleted = deletedSet.has(mode);
               const isLoved = lovedSet.has(mode);
+              const isActive = mode === currentShader;
               return (
-                <ShaderRow key={mode} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined}>
+                <ShaderRow key={mode} ref={isActive ? activeRowRef : undefined} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined} active={isActive}>
                   {isDeleted ? (
                     <SmallButton onClick={() => handleRestore(mode)} color="blue">Restore</SmallButton>
                   ) : isBlocked ? (
@@ -291,27 +307,35 @@ function CategoryGroup({ category, children }: { category: string; children: Rea
   );
 }
 
-function ShaderRow({ label, stats, status, children }: {
+const ShaderRow = forwardRef<HTMLDivElement, {
   label: string;
   stats?: { usageCount: number; lovedCount: number; blockedCount: number };
   status?: "blocked" | "deleted" | "loved";
+  active?: boolean;
   children?: React.ReactNode;
-}) {
+}>(function ShaderRow({ label, stats, status, active, children }, ref) {
   const statusColors: Record<string, string> = {
     blocked: "rgba(239, 68, 68, 0.6)",
     deleted: "rgba(239, 68, 68, 0.4)",
     loved: "rgba(74, 222, 128, 0.6)",
   };
   return (
-    <div style={{
+    <div ref={ref} style={{
       display: "flex",
       alignItems: "center",
       gap: 6,
       minHeight: 28,
       paddingLeft: 8,
       opacity: status === "deleted" ? 0.45 : status === "blocked" ? 0.6 : 1,
+      background: active ? "rgba(255,255,255,0.08)" : undefined,
+      borderRadius: active ? 6 : undefined,
+      transition: "background 200ms ease",
     }}>
-      <span style={shaderLabelStyle}>{label}</span>
+      <span style={{
+        ...shaderLabelStyle,
+        color: active ? "rgba(255,255,255,0.95)" : shaderLabelStyle.color,
+        fontWeight: active ? 600 : shaderLabelStyle.fontWeight,
+      }}>{label}</span>
       {status && (
         <span style={{
           fontFamily: "var(--font-geist-mono)",
@@ -333,7 +357,7 @@ function ShaderRow({ label, stats, status, children }: {
       </div>
     </div>
   );
-}
+});
 
 function SmallButton({ onClick, color, children }: {
   onClick: () => void;

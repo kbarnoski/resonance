@@ -70,6 +70,9 @@ interface AudioState {
   aiImageEnabled: boolean;
   ambientEnabled: boolean;
 
+  // Cue markers for The Room
+  cueMarkers: { time: number; label: string }[];
+
   // Language
   language: string;
 
@@ -107,6 +110,9 @@ interface AudioState {
   setVizModeSequence: (sequence: string[] | null) => void;
   cycleVizMode: () => void;
   cycleVizModePrev: () => void;
+
+  // Cue marker actions
+  setCueMarkers: (markers: { time: number; label: string }[]) => void;
 
   // Journey actions
   startJourney: (journeyId: string) => void;
@@ -147,6 +153,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   journeyProgress: 0,
   aiImageEnabled: true,
   ambientEnabled: true,
+  cueMarkers: [],
   language: "en",
   _skipLoad: false,
 
@@ -275,6 +282,8 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
 
   clearQueue: () => set({ queue: [], queueIndex: -1 }),
 
+  setCueMarkers: (markers) => set({ cueMarkers: markers }),
+
   clear: () =>
     set({
       isPlaying: false,
@@ -284,6 +293,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       analysis: null,
       queue: [],
       queueIndex: -1,
+      cueMarkers: [],
     }),
 
   setInstallationMode: (enabled) => set({ installationMode: enabled }),

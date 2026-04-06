@@ -84,6 +84,32 @@ export function JourneyCompositor({
   const adaptiveScale = getEffectScale(adaptiveConditions);
   const adaptiveBloom = getBloomScale(adaptiveConditions);
 
+  // Per-type event impulse reactions
+  const impulse = frame?.eventImpulse ?? 0;
+  const evtType = frame?.eventType ?? null;
+
+  const eventReaction = useMemo(() => {
+    if (impulse === 0 || !evtType) {
+      return { bloom: 0, chromatic: 0, vignetteOpen: 0, halation: 0 };
+    }
+    switch (evtType) {
+      case "bass_hit":
+        return { bloom: impulse * 0.80, chromatic: impulse * 0.20, vignetteOpen: impulse * 0.40, halation: 0 };
+      case "texture_change":
+        return { bloom: impulse * 0.20, chromatic: 0, vignetteOpen: 0, halation: impulse * 0.15 };
+      case "climax":
+        return { bloom: impulse * 1.00, chromatic: impulse * 0.25, vignetteOpen: impulse * 0.50, halation: impulse * 0.20 };
+      case "drop":
+        return { bloom: impulse * -0.50, chromatic: impulse * 0.10, vignetteOpen: impulse * -0.30, halation: 0 };
+      case "silence":
+        return { bloom: impulse * -0.80, chromatic: 0, vignetteOpen: impulse * -0.60, halation: 0 };
+      case "new_idea":
+        return { bloom: impulse * 0.40, chromatic: impulse * 0.10, vignetteOpen: impulse * 0.20, halation: 0 };
+      default:
+        return { bloom: impulse * 0.60, chromatic: impulse * 0.15, vignetteOpen: impulse * -0.30, halation: 0 };
+    }
+  }, [impulse, evtType]);
+
   // Intro gating: shaders start hidden, fade in after first AI image arrives.
   // This creates a clean intro where the user sees imagery first, then the
   // shader blends in on top — never bare shaders without imagery.
@@ -158,16 +184,16 @@ export function JourneyCompositor({
         />
       )}
 
-      {/* Post-processing — adaptive scaling from feedback + light-phase reduction */}
+      {/* Post-processing — adaptive scaling from feedback + light-phase reduction + typed event reactions */}
       {frame && (
         <PostProcessingLayer
-          chromaticAberration={frame.chromaticAberration * adaptiveScale}
-          vignette={(isLightPhase ? frame.vignette * 0.3 : frame.vignette) * adaptiveScale}
-          bloomIntensity={(isLightPhase ? frame.bloomIntensity * 0.2 : frame.bloomIntensity) * adaptiveScale * adaptiveBloom}
+          chromaticAberration={frame.chromaticAberration * adaptiveScale + eventReaction.chromatic}
+          vignette={(isLightPhase ? frame.vignette * 0.3 : frame.vignette) * adaptiveScale * (1 - eventReaction.vignetteOpen)}
+          bloomIntensity={(isLightPhase ? frame.bloomIntensity * 0.2 : frame.bloomIntensity) * adaptiveScale * adaptiveBloom * (1 + eventReaction.bloom)}
           audioAmplitude={audioAmplitude}
           filmGrain={0}
           particleDensity={(isLightPhase ? frame.particleDensity * 0.3 : frame.particleDensity) * adaptiveScale}
-          halation={(isLightPhase ? 0 : frame.halation) * adaptiveScale}
+          halation={(isLightPhase ? 0 : frame.halation) * adaptiveScale + eventReaction.halation}
           palette={frame.palette}
         />
       )}

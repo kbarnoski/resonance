@@ -1,5 +1,6 @@
 import { Chord } from "tonal";
 import type { NoteEvent, ChordEvent, AnalysisResult } from "./types";
+import { detectEvents } from "./detect-events";
 
 const PITCH_CLASSES = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
 
@@ -330,6 +331,7 @@ export function analyzeNotes(notes: NoteEvent[]): AnalysisResult {
   const bassLine = extractBassLine(notes);
   const harmonicRhythm = analyzeHarmonicRhythm(chords);
   const progressions = detectProgressions(chords);
+  const events = detectEvents(notes, chords, tempo);
 
   return {
     status: "completed",
@@ -343,6 +345,7 @@ export function analyzeNotes(notes: NoteEvent[]): AnalysisResult {
     bass_line: bassLine,
     harmonic_rhythm: harmonicRhythm,
     progressions,
+    events,
     midi_data: null,
   };
 }

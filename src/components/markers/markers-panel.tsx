@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/client";
-import { Flag, Plus, Trash2, X } from "lucide-react";
+import { Flag, Plus, Trash2, X, Zap } from "lucide-react";
 import { toast } from "sonner";
 
 export interface Marker {
@@ -13,6 +13,7 @@ export interface Marker {
   time: number;
   label: string;
   color: string;
+  type: "note" | "cue";
 }
 
 interface MarkersPanelProps {
@@ -56,15 +57,17 @@ export function MarkersPanel({
       const supabase = createClient();
       const { data } = await supabase
         .from("markers")
-        .select("id, time, label, color")
+        .select("id, time, label, color, type")
         .eq("recording_id", recordingId)
         .order("time");
       if (data) {
-        updateParent(data);
+        updateParent(data.map((m: Record<string, unknown>) => ({ ...m, type: m.type ?? "note" })) as Marker[]);
       }
     }
     loadMarkers();
   }, [recordingId, updateParent]);
+
+  const [addingType, setAddingType] = useState<"note" | "cue">("note");
 
   async function addMarker() {
     const label = newLabel.trim();
@@ -81,9 +84,10 @@ export function MarkersPanel({
         user_id: user.id,
         time: currentTime,
         label,
-        color: "#primary",
+        color: addingType === "cue" ? "#f59e0b" : "#primary",
+        type: addingType,
       })
-      .select("id, time, label, color")
+      .select("id, time, label, color, type")
       .single();
 
     if (error) {
@@ -91,11 +95,13 @@ export function MarkersPanel({
       return;
     }
 
-    const updated = [...markers, data].sort((a, b) => a.time - b.time);
+    const markerData = { ...data, type: data.type ?? "note" } as Marker;
+    const updated = [...markers, markerData].sort((a, b) => a.time - b.time);
     updateParent(updated);
     setNewLabel("");
     setIsAdding(false);
-    toast.success("Marker added");
+    setAddingType("note");
+    toast.success(addingType === "cue" ? "Cue marker added" : "Marker added");
   }
 
   async function deleteMarker(id: string) {
@@ -121,14 +127,25 @@ export function MarkersPanel({
         Markers ({markers.length})
       </div>
       {!isAdding && (
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setIsAdding(true)}
-        >
-          <Plus className="mr-1 h-3.5 w-3.5" />
-          Add at {formatTime(currentTime)}
-        </Button>
+        <div className="flex items-center gap-1.5">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => { setAddingType("note"); setIsAdding(true); }}
+          >
+            <Plus className="mr-1 h-3.5 w-3.5" />
+            Add at {formatTime(currentTime)}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => { setAddingType("cue"); setIsAdding(true); }}
+            className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
+          >
+            <Zap className="mr-1 h-3.5 w-3.5" />
+            Add Cue
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -140,10 +157,11 @@ export function MarkersPanel({
           <span className="text-xs font-mono text-muted-foreground shrink-0">
             {formatTime(currentTime)}
           </span>
+          {addingType === "cue" && <Zap className="h-3.5 w-3.5 text-amber-500 shrink-0" />}
           <Input
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
-            placeholder="Note for this moment..."
+            placeholder={addingType === "cue" ? "Cue label (e.g. bass hit)..." : "Note for this moment..."}
             className="h-8 text-sm"
             autoFocus
             onKeyDown={(e) => {
@@ -151,6 +169,7 @@ export function MarkersPanel({
               if (e.key === "Escape") {
                 setIsAdding(false);
                 setNewLabel("");
+                setAddingType("note");
               }
             }}
           />
@@ -164,6 +183,7 @@ export function MarkersPanel({
             onClick={() => {
               setIsAdding(false);
               setNewLabel("");
+              setAddingType("note");
             }}
           >
             <X className="h-4 w-4" />
@@ -189,7 +209,11 @@ export function MarkersPanel({
               <span className="font-mono text-xs text-muted-foreground shrink-0 w-10">
                 {formatTime(marker.time)}
               </span>
-              <Flag className="h-3 w-3 shrink-0 text-primary" />
+              {marker.type === "cue" ? (
+                <Zap className="h-3 w-3 shrink-0 text-amber-500" />
+              ) : (
+                <Flag className="h-3 w-3 shrink-0 text-primary" />
+              )}
               <span className="flex-1 truncate">{marker.label}</span>
               <Button
                 variant="ghost"
@@ -227,14 +251,25 @@ export function MarkersPanel({
             Markers ({markers.length})
           </CardTitle>
           {!isAdding && (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsAdding(true)}
-            >
-              <Plus className="mr-1 h-3.5 w-3.5" />
-              Add at {formatTime(currentTime)}
-            </Button>
+            <div className="flex items-center gap-1.5">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => { setAddingType("note"); setIsAdding(true); }}
+              >
+                <Plus className="mr-1 h-3.5 w-3.5" />
+                Add at {formatTime(currentTime)}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => { setAddingType("cue"); setIsAdding(true); }}
+                className="text-amber-500 border-amber-500/30 hover:bg-amber-500/10"
+              >
+                <Zap className="mr-1 h-3.5 w-3.5" />
+                Add Cue
+              </Button>
+            </div>
           )}
         </div>
       </CardHeader>

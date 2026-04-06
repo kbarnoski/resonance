@@ -18,6 +18,7 @@ import { useInstallationMode } from "@/lib/audio/use-installation-mode";
 import { useJourney } from "@/lib/journeys/use-journey";
 import { useStoryGeneration } from "@/lib/journeys/use-story";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import type { MusicalEvent } from "@/lib/audio/types";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
@@ -63,6 +64,7 @@ interface VisualizerClientProps {
   initialJourney?: string;
   autoplay?: boolean;
   isAdmin?: boolean;
+  cueMarkers?: { time: number; label: string }[];
 }
 
 export function VisualizerClient({
@@ -72,6 +74,7 @@ export function VisualizerClient({
   initialJourney,
   autoplay = true,
   isAdmin = false,
+  cueMarkers: cueMarkersProp = [],
 }: VisualizerClientProps) {
   const router = useRouter();
 
@@ -284,6 +287,7 @@ export function VisualizerClient({
   const [libraryOpen, setLibraryOpen] = useState(false);
   const [tonnetzVisible, setTonnetzVisible] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
+  const [ratingOpen, setRatingOpen] = useState(true);
   const [isolatePrimary, setIsolatePrimary] = useState(false);
   const [hideImagery, setHideImagery] = useState(false);
   const [controlsVisible, setControlsVisible] = useState(true);
@@ -466,6 +470,36 @@ export function VisualizerClient({
     startJourney(initialJourney);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only on mount
+
+  // Push cue markers from server prop to store on mount
+  useEffect(() => {
+    if (cueMarkersProp.length > 0) {
+      useAudioStore.getState().setCueMarkers(cueMarkersProp);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only on mount
+
+  // Wire auto-detected events + manual cue markers to journey engine
+  useEffect(() => {
+    if (!activeJourney) return;
+    const engine = getJourneyEngine();
+    const d = duration > 0 ? duration : 300;
+
+    // Auto-detected events from analysis
+    const analysis = useAudioStore.getState().analysis;
+    const autoEvents = (analysis?.events ?? []) as MusicalEvent[];
+
+    // Manual cue markers from Studio
+    const manualCues = useAudioStore.getState().cueMarkers;
+    const manualAsEvents = manualCues.map(c => ({
+      time: c.time, type: "bass_hit" as const, intensity: 0.8,
+    }));
+
+    const allEvents = [...autoEvents, ...manualAsEvents];
+    if (allEvents.length > 0) {
+      engine.setEvents(allEvents, d);
+    }
+  }, [activeJourney, duration]);
 
   // Don't auto-open library — let the welcome screen guide the user
 
@@ -798,6 +832,9 @@ export function VisualizerClient({
           if (isAdmin) setAdminOpen((v) => !v);
           break;
         case "r":
+          if (isAdmin) setRatingOpen((v) => !v);
+          break;
+        case "s":
           if (isAdmin) setIsolatePrimary((v) => !v);
           break;
         case "i":
@@ -931,12 +968,12 @@ export function VisualizerClient({
       )}
 
       {/* Admin panel — toggle with 'A' key (admin only) */}
-      {isAdmin && <AdminPanel visible={adminOpen} onClose={() => setAdminOpen(false)} />}
+      {isAdmin && <AdminPanel visible={adminOpen} onClose={() => setAdminOpen(false)} currentShader={journeyFrame?.shaderMode ?? storeVizMode} />}
 
-      {/* Rating panel — admin only, visible during journeys or non-journey viz */}
+      {/* Rating panel — admin only, toggle with 'R' key, only during journeys */}
       {isAdmin && (
         <JourneyFeedback
-          visible={(journeyActive && !journeyOpen) || (!journeyActive && !journeyOpen)}
+          visible={ratingOpen && journeyActive && !journeyOpen}
           shaderMode={journeyFrame?.shaderMode ?? storeVizMode}
           dualShaderMode={journeyFrame?.dualShaderMode}
           tertiaryShaderMode={journeyFrame?.tertiaryShaderMode}

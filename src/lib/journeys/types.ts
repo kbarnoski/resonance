@@ -176,4 +176,10 @@ export interface JourneyFrame {
   dualShaderMode?: string;
   /** Optional third shader for even richer layering */
   tertiaryShaderMode?: string;
+  /** Event impulse 0-1 (1 = just triggered, decays over ~1-3s depending on type) */
+  eventImpulse?: number;
+  /** Type of the current event impulse */
+  eventType?: "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea";
+  /** @deprecated Use eventImpulse — kept for backward compat */
+  cueImpulse?: number;
 }

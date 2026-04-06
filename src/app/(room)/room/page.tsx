@@ -19,11 +19,13 @@ export default async function VisualizerPage({
   let recording: { id: string; title?: string; audio_url: string } | null = null;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let analysis: any | null = null;
+  let cueMarkers: { time: number; label: string }[] = [];
 
   if (recordingId) {
-    const [recResult, analysisResult] = await Promise.all([
+    const [recResult, analysisResult, cueResult] = await Promise.all([
       supabase.from("recordings").select("id, title, audio_url").eq("id", recordingId).single(),
       supabase.from("analyses").select("*").eq("recording_id", recordingId).single(),
+      supabase.from("markers").select("time, label").eq("recording_id", recordingId).eq("type", "cue").order("time"),
     ]);
 
     if (recResult.data) {
@@ -34,6 +36,7 @@ export default async function VisualizerPage({
       };
     }
     analysis = analysisResult.data;
+    cueMarkers = (cueResult.data ?? []) as { time: number; label: string }[];
   }
 
   return (
@@ -44,6 +47,7 @@ export default async function VisualizerPage({
       initialJourney={journey}
       autoplay={autoplay}
       isAdmin={isAdmin}
+      cueMarkers={cueMarkers}
     />
   );
 }
