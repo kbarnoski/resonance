@@ -171,7 +171,7 @@ function getUserDeletedShaders(): Set<string> {
 }
 
 function pickJourneyShaders(
-  options: { realmId?: string; shaderCategories?: string[] },
+  options: { realmId?: string; shaderCategories?: string[]; isCustom?: boolean },
   random: () => number = Math.random,
 ): string[] {
   const { realmId, shaderCategories } = options;
@@ -184,9 +184,9 @@ function pickJourneyShaders(
   const globalBlocked = realmId
     ? GLOBAL_SHADER_BLOCKLIST.filter(s => !allowedGlobals.has(s))
     : []; // theme-based journeys have no global blocklist — full creative freedom
-  // User block/delete prefs always apply — stored in localStorage (per-browser, no cross-user leakage)
-  const userBlocked = getUserBlockedShaders();
-  const userDeleted = getUserDeletedShaders();
+  // User block/delete prefs only for custom journeys — built-in are frozen
+  const userBlocked = options.isCustom ? getUserBlockedShaders() : new Set<string>();
+  const userDeleted = options.isCustom ? getUserDeletedShaders() : new Set<string>();
   const blocklist = new Set([
     ...globalBlocked,
     ...(realmId ? REALM_SHADER_BLOCKLIST[realmId] ?? [] : []),
@@ -227,8 +227,10 @@ function pickJourneyShaders(
     ...shuffleArray(varietyPool, random).filter(s => !mustInclude.includes(s)).slice(0, varietyCount),
   ];
 
-  // Apply adaptive preferences — gently promotes loved shaders, preserves variation
-  return applyShaderPreferences(shuffleArray(picked, random), realmId ?? "custom");
+  // Adaptive shader preferences only for custom journeys
+  return options.isCustom
+    ? applyShaderPreferences(shuffleArray(picked, random), realmId ?? "custom")
+    : shuffleArray(picked, random);
 }
 
 /** Pick `count` shaders from pool, avoiding `used` set. Never duplicates. */
@@ -1434,6 +1436,7 @@ export function regenerateJourneyShaders(
     {
       realmId: journey.theme ? undefined : journey.realmId,
       shaderCategories: journey.theme?.shaderCategories,
+      isCustom: !!journey.userId,
     },
     random,
   );

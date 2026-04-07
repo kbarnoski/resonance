@@ -222,10 +222,11 @@ export function VisualizerClient({
   const storeVizMode = useAudioStore((s) => s.vizMode);
   const isAiOnlyMode = MODES_AI.has(storeVizMode);
 
-  // Scoped permissions: any logged-in user can open admin panel,
-  // but only admin or journey owner can rate
-  const canAdmin = !!userId;
-  const canRate = isAdmin || (!!userId && !!activeJourney?.userId && activeJourney.userId === userId);
+  // Only the owner of a custom journey can open admin/rating panels.
+  // Built-in journeys (no userId) are frozen — no tuning in production.
+  const isOwnCustomJourney = !!userId && !!activeJourney?.userId && activeJourney.userId === userId;
+  const canAdmin = isOwnCustomJourney;
+  const canRate = isOwnCustomJourney;
 
   // Mood-based AI prompt for non-journey usage
   const MOOD_AI_PROMPTS: Record<string, string> = useMemo(() => ({
