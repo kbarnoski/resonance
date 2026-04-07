@@ -13,7 +13,7 @@ export default async function LibraryPage() {
       .select(
         "id, user_id, title, duration, created_at, recorded_at, file_name, description, analyses(id, status, key_signature, tempo), recording_tags(tag_id, tags(id, name))"
       )
-      .or(`user_id.eq.${userId},is_featured.eq.true`)
+      .eq("user_id", userId!)
       .order("created_at", { ascending: false }),
     supabase
       .from("tags")
