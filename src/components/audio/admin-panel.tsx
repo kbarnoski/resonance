@@ -88,10 +88,12 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
   const stats = getShaderStats();
 
   const allShaders = MODE_META.filter((m) => m.category !== "AI Imagery");
+  const validModes: Set<string> = new Set(allShaders.map((m) => m.mode));
   const totalShaders = allShaders.length;
-  const blockedSet = new Set(blocked);
-  const deletedSet = new Set(deleted);
-  const lovedSet = new Set(loved);
+  // Filter out stale entries for shaders that no longer exist in the codebase
+  const blockedSet = new Set(blocked.filter((m) => validModes.has(m)));
+  const deletedSet = new Set(deleted.filter((m) => validModes.has(m)));
+  const lovedSet = new Set(loved.filter((m) => validModes.has(m)));
   const activeShaders = allShaders.filter((m) => !blockedSet.has(m.mode) && !deletedSet.has(m.mode));
   const activeCount = activeShaders.length;
   const activeRules = profile.rules.filter((r) => r.confidence >= 0.3).length;
@@ -243,9 +245,9 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
           {([
             ["library", `All (${activeCount})`],
             ...(newCount > 0 ? [["new", `New (${newCount})`]] : []),
-            ["blocked", `Blocked (${blocked.length})`],
-            ...(isAdmin ? [["deleted", `Deleted (${deleted.length})`]] : []),
-            ["loved", `Fav (${loved.length})`],
+            ["blocked", `Blocked (${blockedSet.size})`],
+            ...(isAdmin ? [["deleted", `Deleted (${deletedSet.size})`]] : []),
+            ["loved", `Fav (${lovedSet.size})`],
             ["stats", "Stats"],
           ] as [Tab, string][]).map(([tab, label]) => (
             <button
@@ -340,10 +342,10 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
         ))}
 
         {/* Blocked Shaders */}
-        {activeTab === "blocked" && (blocked.length === 0 ? (
+        {activeTab === "blocked" && (blockedSet.size === 0 ? (
           <EmptyText>No blocked shaders</EmptyText>
         ) : (
-          groupByCategory(blocked).map((group) => (
+          groupByCategory([...blockedSet]).map((group) => (
             <CategoryGroup key={group.category} category={group.category}>
               {group.shaders.map(({ mode, label }) => (
                 <ShaderRow key={mode} label={label} stats={stats[mode]}>
@@ -356,10 +358,10 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
         ))}
 
         {/* Deleted Shaders */}
-        {activeTab === "deleted" && (deleted.length === 0 ? (
+        {activeTab === "deleted" && (deletedSet.size === 0 ? (
           <EmptyText>No deleted shaders</EmptyText>
         ) : (
-          groupByCategory(deleted).map((group) => (
+          groupByCategory([...deletedSet]).map((group) => (
             <CategoryGroup key={group.category} category={group.category}>
               {group.shaders.map(({ mode, label }) => (
                 <ShaderRow key={mode} label={label} stats={stats[mode]}>
@@ -371,10 +373,10 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
         ))}
 
         {/* Loved Shaders */}
-        {activeTab === "loved" && (loved.length === 0 ? (
+        {activeTab === "loved" && (lovedSet.size === 0 ? (
           <EmptyText>No favorite shaders</EmptyText>
         ) : (
-          groupByCategory(loved).map((group) => (
+          groupByCategory([...lovedSet]).map((group) => (
             <CategoryGroup key={group.category} category={group.category}>
               {group.shaders.map(({ mode, label }) => (
                 <ShaderRow key={mode} label={label} stats={stats[mode]} status="loved">
@@ -389,9 +391,9 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
         {activeTab === "stats" && (
           <Section title="stats">
             <StatLine label="Active shaders" value={`${activeCount} / ${totalShaders}`} />
-            <StatLine label="Blocked" value={String(blocked.length)} />
-            <StatLine label="Deleted" value={String(deleted.length)} />
-            <StatLine label="Loved" value={String(loved.length)} />
+            <StatLine label="Blocked" value={String(blockedSet.size)} />
+            <StatLine label="Deleted" value={String(deletedSet.size)} />
+            <StatLine label="Loved" value={String(lovedSet.size)} />
             <StatLine label="Adaptive rules" value={String(activeRules)} />
             <StatLine label="Snapshots processed" value={String(profile.totalProcessed)} />
           </Section>
