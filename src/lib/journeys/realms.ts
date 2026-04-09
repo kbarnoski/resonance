@@ -33,9 +33,9 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "revelation", "mandorla", "seraph", "halo",
-      "stardust", "nebula",
+      "nebula",
       "helix", "drift", "expanse",
-      "kenosis", "agape", "benediction", "paraclete",
+      "kenosis", "agape",
     ],
     palette: {
       primary: "#1a1408",
@@ -82,7 +82,7 @@ export const REALMS: Realm[] = [
       "inferno",
       "umbra", "plasma",
       "rapture",
-      "pyre", "immolation", "crucible", "monolith", "catharsis",
+      "crucible",
     ],
     palette: {
       primary: "#0a0000",
@@ -127,9 +127,9 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "mycelium", "symbiosis", "liquid", "kelp", "bloom", "spore",
-      "chrysalis", "growth", "lichen",
+      "chrysalis", "lichen",
       "coral", "plankton", "tide",
-      "calyx", "canopy", "whorl", "meristem", "tropism",
+      "whorl", "meristem",
     ],
     palette: {
       primary: "#081a08",
@@ -173,10 +173,10 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "liquid", "cosmos", "drift", "tide", "ocean",
+      "liquid", "drift", "tide", "ocean",
       "whirlpool", "plankton", "coral",
       "drift", "nebula", "cascade", "ripple",
-      "pelagic", "laminar", "peristalsis",
+      "pelagic", "laminar",
     ],
     palette: {
       primary: "#050a1a",
@@ -222,7 +222,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "neon", "geodesic", "moire", "helix",
       "prism", "moire", "spiral", "geodesic", "weave",
-      "plasma", "pulsar", "penrose", "torus",
+      "plasma", "pulsar",
     ],
     palette: {
       primary: "#08081a",
@@ -266,10 +266,10 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "cosmos", "astral", "nebula", "stardust",
+      "astral", "nebula",
       "supernova", "pulsar", "quasar", "singularity",
       "drift", "expanse",
-      "versor", "cassegrain", "waveform",
+      "cassegrain", "waveform",
     ],
     palette: {
       primary: "#05051a",
@@ -314,9 +314,9 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "mandorla", "geodesic", "astral", "halo",
-      "revelation", "sigil", "penrose", "helix",
-      "prism", "geodesic", "penrose",
-      "sanctum", "tabernacle", "numinous", "covenant",
+      "revelation", "sigil", "helix",
+      "prism", "geodesic",
+      "numinous", "covenant",
     ],
     palette: {
       primary: "#141008",
@@ -360,8 +360,8 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "moire", "escher", "spiral",
-      "moire", "penrose", "weave", "portal", "threshold",
+      "moire", "spiral",
+      "moire", "weave", "portal", "threshold",
       "fog", "geodesic",
     ],
     palette: {
@@ -407,8 +407,8 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "fog", "expanse", "drift",
-      "cosmos", "stardust", "nebula", "halo",
-      "revelation", "threshold", "cosmos",
+      "nebula", "halo",
+      "revelation", "threshold",
     ],
     palette: {
       primary: "#080a10",
@@ -453,7 +453,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "dusk", "expanse", "umbra", "drift",
-      "fog", "stardust", "ember", "flux",
+      "fog", "ember", "flux",
       "singularity", "mesa",
     ],
     palette: {
@@ -498,8 +498,8 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "escher", "fog", "threshold",
-      "mandorla", "spiral", "moire", "penrose", "sigil", "halo",
+      "fog", "threshold",
+      "mandorla", "spiral", "moire", "sigil", "halo",
       "revelation", "weave", "chronos",
     ],
     palette: {
@@ -590,9 +590,8 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "snow", "fog", "cosmos", "rime", "drift", "expanse",
-      "threshold", "tide", "stardust", "glacier", "cosmos",
-      "eventide", "nocturne", "tenebrae",
+      "snow", "fog", "rime", "drift", "expanse",
+      "threshold", "tide", "glacier",
     ],
     palette: {
       primary: "#080a12",
@@ -636,10 +635,10 @@ export const REALMS: Realm[] = [
       ],
     },
     shaderModes: [
-      "bloom", "mycelium", "liquid", "growth", "spore", "chrysalis",
+      "bloom", "mycelium", "liquid", "spore", "chrysalis",
       "lichen", "coral", "tide",
       "plankton", "flux",
-      "fruiting", "stamen", "epidermis", "cilium",
+      "stamen",
     ],
     palette: {
       primary: "#0a1208",
@@ -731,7 +730,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "ember", "fog", "dusk", "drift",
       "lichen", "tide", "flux", "mycelium",
-      "spore", "cascade", "stardust",
+      "spore", "cascade",
     ],
     palette: {
       primary: "#1a0e08",
@@ -776,7 +775,7 @@ export const REALMS: Realm[] = [
     },
     shaderModes: [
       "astral", "mandorla", "seraph",
-      "cosmos", "nebula", "stardust", "mycelium",
+      "nebula", "mycelium",
       "revelation", "halo",
     ],
     palette: {

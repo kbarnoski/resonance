@@ -118,6 +118,14 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
     prefs.undeleteShader(mode);
   }, [prefs]);
 
+  const handleFavorite = useCallback((mode: string) => {
+    if (prefs.loved.has(mode)) {
+      prefs.unloveShader(mode);
+    } else {
+      prefs.loveShader(mode);
+    }
+  }, [prefs]);
+
   return (
     <div
       style={{
@@ -237,7 +245,7 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
             ...(newCount > 0 ? [["new", `New (${newCount})`]] : []),
             ["blocked", `Blocked (${blocked.length})`],
             ...(isAdmin ? [["deleted", `Deleted (${deleted.length})`]] : []),
-            ["loved", `Loved (${loved.length})`],
+            ["loved", `Fav (${loved.length})`],
             ["stats", "Stats"],
           ] as [Tab, string][]).map(([tab, label]) => (
             <button
@@ -286,6 +294,7 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
                     </>
                   ) : (
                     <>
+                      <FavButton active={isLoved} onClick={() => handleFavorite(mode)} />
                       <SmallButton onClick={() => handleBlock(mode)} color="yellow">Block</SmallButton>
                       {isAdmin && <SmallButton onClick={() => handleDelete(mode)} color="red">Delete</SmallButton>}
                     </>
@@ -318,6 +327,7 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
                       </>
                     ) : (
                       <>
+                        <FavButton active={isLoved} onClick={() => handleFavorite(mode)} />
                         <SmallButton onClick={() => handleBlock(mode)} color="yellow">Block</SmallButton>
                         {isAdmin && <SmallButton onClick={() => handleDelete(mode)} color="red">Delete</SmallButton>}
                       </>
@@ -362,12 +372,14 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
 
         {/* Loved Shaders */}
         {activeTab === "loved" && (loved.length === 0 ? (
-          <EmptyText>No loved shaders</EmptyText>
+          <EmptyText>No favorite shaders</EmptyText>
         ) : (
           groupByCategory(loved).map((group) => (
             <CategoryGroup key={group.category} category={group.category}>
               {group.shaders.map(({ mode, label }) => (
-                <ShaderRow key={mode} label={label} stats={stats[mode]} />
+                <ShaderRow key={mode} label={label} stats={stats[mode]} status="loved">
+                  <FavButton active onClick={() => handleFavorite(mode)} />
+                </ShaderRow>
               ))}
             </CategoryGroup>
           ))
@@ -424,7 +436,7 @@ const ShaderRow = forwardRef<HTMLDivElement, {
   const statusColors: Record<string, string> = {
     blocked: "rgba(239, 68, 68, 0.6)",
     deleted: "rgba(239, 68, 68, 0.4)",
-    loved: "rgba(74, 222, 128, 0.6)",
+    loved: "rgba(251, 191, 36, 0.7)",
   };
   return (
     <div ref={ref} style={{
@@ -474,7 +486,7 @@ const ShaderRow = forwardRef<HTMLDivElement, {
           color: statusColors[status],
           flexShrink: 0,
         }}>
-          {status === "loved" ? "\u2665" : status}
+          {status === "loved" ? "\u2605" : status}
         </span>
       )}
       {stats && stats.usageCount > 0 && (
@@ -486,6 +498,33 @@ const ShaderRow = forwardRef<HTMLDivElement, {
     </div>
   );
 });
+
+function FavButton({ active, onClick }: { active: boolean; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      title={active ? "Remove from favorites" : "Add to favorites"}
+      style={{
+        width: 24,
+        height: 24,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: active ? "rgba(251, 191, 36, 0.15)" : "rgba(255,255,255,0.04)",
+        border: `1px solid ${active ? "rgba(251, 191, 36, 0.30)" : "rgba(255,255,255,0.08)"}`,
+        borderRadius: 5,
+        cursor: "pointer",
+        padding: 0,
+        flexShrink: 0,
+        transition: "all 150ms ease",
+      }}
+    >
+      <svg width={11} height={11} viewBox="0 0 24 24" fill={active ? "rgba(251, 191, 36, 0.9)" : "none"} stroke={active ? "rgba(251, 191, 36, 0.9)" : "rgba(255,255,255,0.25)"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+      </svg>
+    </button>
+  );
+}
 
 function SmallButton({ onClick, color, children }: {
   onClick: () => void;

@@ -1,7 +1,7 @@
 // ─── Shared GLSL utilities for all shaders ───
 
 export const U = `
-precision mediump float;
+precision highp float;
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform float u_bass;

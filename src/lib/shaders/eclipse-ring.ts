@@ -32,29 +32,29 @@ void main() {
 
   // Ring color — warm white/gold corona
   vec3 coronaColor = palette(angle * 0.15 + t * 0.08,
-    vec3(0.06, 0.04, 0.02),
-    vec3(0.06, 0.05, 0.03),
+    vec3(0.18, 0.12, 0.05),
+    vec3(0.14, 0.10, 0.06),
     vec3(1.0, 0.8, 0.5),
     vec3(0.0, 0.05, 0.15)
   );
-  color += coronaColor * ring * 0.12 * (1.0 + 0.15 * u_bass);
+  color += coronaColor * ring * 0.35 * (1.0 + 0.15 * u_bass);
 
   // Outer corona — very faint extended glow
   float outerCorona = exp(-(dist - discRadius) * 5.0) * step(discRadius, dist);
-  color += vec3(0.02, 0.012, 0.005) * outerCorona * 0.3;
+  color += vec3(0.06, 0.035, 0.015) * outerCorona * 0.8;
 
   // Solar prominences — tiny noise bumps on the ring
   float prominence = fbm3(vec2(angle * 3.0, t * 0.5)) * 0.5 + 0.5;
   float promShape = exp(-abs(dist - discRadius - prominence * 0.08) * 30.0);
   promShape *= step(discRadius, dist) * prominence;
-  color += vec3(0.04, 0.02, 0.005) * promShape * 0.06;
+  color += vec3(0.12, 0.06, 0.02) * promShape * 0.2;
 
   // Inner disc is pure black — ensure no light leaks
   color *= smoothstep(discRadius - 0.01, discRadius + 0.01, dist) + 0.001;
 
   // Very faint background stars
   float star = smoothstep(0.65, 0.68, snoise(uv * 30.0));
-  color += vec3(0.01) * star * step(discRadius + 0.1, dist);
+  color += vec3(0.02) * star * step(discRadius + 0.1, dist);
 
   // Vignette
   color *= smoothstep(1.5, 0.5, length(uv));

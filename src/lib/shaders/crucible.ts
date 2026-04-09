@@ -29,8 +29,8 @@ void main() {
   float vesselEdge = exp(-abs(wallDist) * 50.0) * step(-bowlWidth * 1.1, uv.x) * step(uv.x, bowlWidth * 1.1);
 
   // Dark vessel body
-  color += vec3(0.01, 0.008, 0.012) * vessel;
-  color += vec3(0.02, 0.015, 0.01) * vesselEdge * 0.03;
+  color += vec3(0.025, 0.02, 0.03) * vessel;
+  color += vec3(0.06, 0.04, 0.025) * vesselEdge;
 
   // Molten interior — visible from above (above the parabola, within bowl width)
   float inBowl = smoothstep(bowlWidth * 0.9, bowlWidth * 0.7, abs(uv.x));
@@ -41,24 +41,24 @@ void main() {
   // Molten surface — slow-moving hot material
   float moltenTex = fbm3(vec2(uv.x * 4.0 + t * 0.3, uv.y * 2.0 + sin(t * 0.5) * 0.5));
   vec3 moltenColor = palette(moltenTex * 0.5 + t * 0.15,
-    vec3(0.04, 0.01, 0.0),
-    vec3(0.05, 0.02, 0.005),
+    vec3(0.15, 0.04, 0.0),
+    vec3(0.2, 0.08, 0.02),
     vec3(1.0, 0.5, 0.2),
     vec3(0.0, 0.1, 0.2)
   );
-  color += moltenColor * molten * 0.06 * (1.0 + 0.15 * u_bass);
+  color += moltenColor * molten * 0.8 * (1.0 + 0.2 * u_bass);
 
   // Heat glow above the surface — faint upward radiance
   float heatAbove = smoothstep(bowlY + 0.03, bowlY + 0.2, uv.y) *
                     smoothstep(bowlY + 0.35, bowlY + 0.15, uv.y) * inBowl;
-  color += vec3(0.02, 0.008, 0.002) * heatAbove * 0.15;
+  color += vec3(0.08, 0.035, 0.01) * heatAbove;
 
   // Rim highlight
-  float rim = exp(-abs(uv.y - bowlY - 0.03) * 40.0) * inBowl * 0.04;
-  color += vec3(0.03, 0.015, 0.005) * rim;
+  float rim = exp(-abs(uv.y - bowlY - 0.03) * 40.0) * inBowl;
+  color += vec3(0.06, 0.03, 0.012) * rim;
 
   // Audio
-  color *= 1.0 + 0.1 * u_amplitude;
+  color *= 1.0 + 0.15 * u_amplitude;
 
   // Vignette
   color *= smoothstep(1.5, 0.5, length(uv));

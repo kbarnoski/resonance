@@ -22,8 +22,8 @@ function formatTime(s: number): string {
 
 // Ambient shaders used as backdrop underneath AI imagery modes (same as main app)
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "cosmos", "fog", "nebula", "drift",
-  "tide", "dusk", "stardust", "ember",
+  "fog", "nebula", "drift",
+  "tide", "ember",
 ];
 
 function getAiBackdropShader(aiMode: string): VisualizerMode {

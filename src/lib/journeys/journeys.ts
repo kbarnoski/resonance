@@ -30,78 +30,75 @@ function recordUsedShaders(shaders: string[]) {
 // ─── Full shader library: ALL registered shaders ───
 // Every journey draws from this pool — balanced across all categories.
 const ALL_SHADERS_RAW: string[] = [
-  // Elemental (32)
+  // Elemental (21)
   "fog", "dusk", "snow", "ocean", "cascade", "whirlpool", "flux",
-  "monsoon", "geyser", "magma", "typhoon",
+  "monsoon", "magma", "typhoon",
   "chinook", "thermal", "lightning", "maelstrom",
-  "deluge", "squall",
-  "glacial", "tsunami", "permafrost", "mistral", "rime",
-  "updraft", "cirrus", "torrent", "swell", "aurora-borealis",
-  "tempest", "nimbostratus", "frost-bloom", "thermocline", "estuary",
-  // Visionary (42)
+  "deluge",
+  "rime",
+  "cirrus", "torrent", "swell", "aurora-borealis",
+  "estuary",
+  // Visionary (33)
   "astral", "portal",
   "revelation", "threshold", "rapture",
   "mandorla", "seraph",
   "halo",
   "dharma", "gnosis", "chakra", "vestige",
-  "empyrean", "stigmata", "aureole", "pleroma", "apophatic",
-  "theophany", "yantra", "satori", "merkaba", "soma",
-  "kenosis", "numinous", "ruach", "anima", "metanoia",
-  "covenant", "mysterion", "agape", "paraclete", "vespers",
-  "jubilee", "tabernacle", "pilgrimage", "benediction", "cataphatic",
-  "hesychasm", "kairos", "lectio", "credo", "sanctum",
-  // Cosmic (36)
-  "cosmos", "pulsar", "quasar", "supernova",
-  "nebula", "singularity", "stardust", "drift", "expanse",
-  "comet", "protostar", "redshift", "aphelion",
+  "empyrean", "stigmata", "aureole", "apophatic",
+  "yantra", "satori", "merkaba", "soma",
+  "kenosis", "numinous", "anima",
+  "covenant", "agape", "vespers",
+  "jubilee", "pilgrimage", "cataphatic",
+  "hesychasm", "kairos", "lectio", "credo",
+  // Cosmic (22)
+  "pulsar", "quasar", "supernova",
+  "nebula", "singularity", "drift", "expanse",
+  "protostar", "redshift",
   "nadir", "parsec", "nova", "photon",
   "selene", "kepler", "hubble", "doppler",
-  "corona", "aurora-wave", "solaris",
+  "aurora-wave",
   "zenith",
-  "lightyear", "binary", "cosmic-web", "dark-matter", "event-horizon",
-  // Organic (40)
+  "lightyear", "event-horizon",
+  // Organic (23)
   "ember", "tide", "spore",
-  "chrysalis", "plankton", "lichen", "growth",
+  "chrysalis", "plankton", "lichen",
   "enzyme", "pollen", "symbiosis",
-  "kelp", "mangrove",
+  "kelp",
   "flagella", "mycelium", "coral",
-  "synapse", "biolume", "tendril",
+  "synapse", "biolume",
   "diatom", "biofilm",
-  "pelagic", "canopy", "zooid", "cortex", "fruiting",
-  "nectar", "chimerism", "laminar", "peristalsis", "xylem",
-  "calyx", "endospore", "murmuration", "whorl", "capsule",
-  "stamen", "meristem", "tropism", "epidermis", "cilium",
-  // Geometry (53)
+  "pelagic", "zooid",
+  "laminar",
+  "whorl",
+  "stamen", "meristem",
+  // Geometry (41)
   "neon", "spiral",
   "geodesic", "moire",
   "catenary",
   "astroid", "cardioid", "lissajous", "cymatic", "guilloche",
   "trefoil", "quatrefoil", "involute", "rosette", "roulette", "deltoid", "nephroid", "epicycle",
-  "hyperbola", "penrose", "torus", "helix", "escher",
+  "helix",
   "harmonograph", "voronoi-flow", "mobius-strip", "fibonacci-spiral",
-  "interference", "topology", "fractal-tree", "weave",
-  "aurora-trail", "constellation",
-  "parabola", "cassegrain", "conchoid", "cissoid", "agnesi",
-  "strophoid", "brachistochrone", "sinograph", "chladni", "caustic-pool",
-  "zoetrope", "osculating", "tangent-field", "pedal-curve", "cochlea",
-  "ruled-surface", "versor", "waveform", "epicycloid", "catenary-chain",
-  // Dark (40)
+  "interference", "fractal-tree", "weave",
+  "constellation",
+  "parabola", "cassegrain", "cissoid", "agnesi",
+  "strophoid", "brachistochrone", "chladni", "caustic-pool",
+  "zoetrope", "tangent-field", "pedal-curve",
+  "ruled-surface", "waveform", "epicycloid",
+  // Dark (12)
   "umbra", "inferno", "plasma",
   "vortex",
-  "lament", "hollow",
-  "obsidian", "eclipse-dark", "entropy", "miasma", "penumbra",
-  "terminus", "cinder", "requiem", "maelstrom-dark", "obsidian-flow",
-  "wraith", "furnace", "charcoal", "shadowplay",
-  "monolith", "sepulchre", "umbrage", "pyre", "lethe",
-  "catharsis", "tenebrae", "nocturne", "immolation", "void-bloom",
-  "soot", "residuum", "eclipse-ring", "smolder", "vigil",
-  "severance", "aftermath", "crucible", "ossuary", "eventide",
-  // Nature (4)
-  "river", "rain", "ripple", "flame",
+  "hollow",
+  "terminus", "maelstrom-dark", "obsidian-flow",
+  "furnace",
+  "eclipse-ring", "smolder",
+  "crucible",
+  // Nature (3)
+  "rain", "ripple", "flame",
   "starfield", "radiance",
-  // 3D Worlds (13)
+  // 3D Worlds (11)
   "orb",
-  "galaxy", "depths", "bonfire", "crystal", "swarm", "lotus", "cloud",
+  "galaxy", "depths", "crystal", "swarm", "cloud",
   "wave", "seabed", "cage",
 ];
 const ALL_SHADERS = [...new Set(ALL_SHADERS_RAW)];
@@ -163,22 +160,21 @@ const REALM_SHADER_ALLOW: Record<string, string[]> = {
 
 const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   winter: [
-    "magma", "inferno", "bonfire", "flame", // fire
+    "magma", "inferno", "flame", // fire
     "orb", // wrong vibe
     "neon", "moire", // solid/geometric
-    "mangrove", // tree/botanical 2D
     "cage", // geometric/cube — wrong vibe
     "supernova", "nova", "photon", "pulsar", // yellow sun/hot graphics
-    "thermal", "geyser", "lightning", // warm/fiery elemental
+    "thermal", "lightning", // warm/fiery elemental
     "ember", // warm organic tones
-    "redshift", "comet", // warm cosmic
+    "redshift", // warm cosmic
   ],
   hell: [
     "ocean", "cascade", "whirlpool", "tide", "ripple", // water elemental
     "wave", "seabed", // water 3D worlds
-    "plankton", "kelp", "mangrove", "coral", // aquatic/botanical organic
+    "plankton", "kelp", "coral", // aquatic/botanical organic
     "snow", // cold/winter
-    "lotus", "cloud", // serene — wrong vibe
+    "cloud", // serene — wrong vibe
   ],
   heaven: [
     "orb", // wrong vibe
@@ -186,10 +182,10 @@ const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
   cosmos: [
   ],
   ocean: [
-    "bonfire", "flame", "inferno", // fire
+    "flame", "inferno", // fire
   ],
   garden: [
-    "bonfire", "inferno", // fire
+    "inferno", // fire
   ],
   temple: [
   ],

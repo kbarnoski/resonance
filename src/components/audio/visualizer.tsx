@@ -16,9 +16,8 @@ export type { VisualizerMode } from "@/lib/audio/vibe-detection";
 
 // Ambient shaders used as backdrop underneath AI imagery modes
 const AI_BACKDROP_SHADERS: VisualizerMode[] = [
-  "cosmos", "fog", "nebula", "drift",
-  "tide", "dusk",
-  "stardust", "ember",
+  "fog", "nebula", "drift",
+  "tide", "ember",
 ];
 
 /** Pick a deterministic backdrop shader for an AI mode */
@@ -237,8 +236,8 @@ export function ShaderVisualizer({
 
     let animId: number;
     const startTime = performance.now();
-    const SMOOTHING = 0.035;     // Slow smoothing — gentle transitions
-    const REACTIVITY = 0.45;     // Scale factor — subtle audio response
+    const SMOOTHING = 0.06;      // Smooth but responsive
+    const REACTIVITY = 0.85;     // Scale factor — noticeable audio response
     let lastW = 0;
     let lastH = 0;
 
@@ -682,7 +681,7 @@ export function VisualizerCore({
     return (
       <div key={layerMode} style={outerStyle}>
         <div ref={ref} style={innerStyle}>
-          <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={smoothMotionProp ?? true} />
+          <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={smoothMotionProp ?? false} />
         </div>
       </div>
     );
@@ -723,7 +722,7 @@ export function VisualizerCore({
                 analyser={analyser}
                 dataArray={dataArray}
                 fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
-                smoothMotion={smoothMotionProp ?? true}
+                smoothMotion={smoothMotionProp ?? false}
               />
             </div>
           </div>
@@ -737,7 +736,7 @@ export function VisualizerCore({
                 analyser={analyser}
                 dataArray={dataArray}
                 fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
-                smoothMotion={smoothMotionProp ?? true}
+                smoothMotion={smoothMotionProp ?? false}
               />
             </div>
           </div>

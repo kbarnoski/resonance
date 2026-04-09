@@ -74,11 +74,24 @@ export function VisualizerClient({
   initialLive = false,
   initialJourney,
   autoplay = true,
-  isAdmin = false,
+  isAdmin: isAdminProp = false,
   userId,
   cueMarkers: cueMarkersProp = [],
 }: VisualizerClientProps) {
   const router = useRouter();
+
+  // Client-side admin fallback — survives HMR/session disruption
+  const [clientAdmin, setClientAdmin] = useState(false);
+  useEffect(() => {
+    if (isAdminProp) return; // already admin from server
+    const sb = createClient();
+    sb.auth.getUser().then(({ data: { user } }) => {
+      if (user?.email?.toLowerCase().trim() === process.env.NEXT_PUBLIC_ADMIN_EMAIL?.toLowerCase().trim()) {
+        setClientAdmin(true);
+      }
+    });
+  }, [isAdminProp]);
+  const isAdmin = isAdminProp || clientAdmin;
 
   // Global audio store
   const currentTrack = useAudioStore((s) => s.currentTrack);
