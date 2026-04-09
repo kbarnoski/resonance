@@ -490,7 +490,7 @@ export function VisualizerCore({
 
         let progress = 0;
         const animate = () => {
-          progress = Math.min(1, progress + 0.008); // ~125 frames (~2s at 60fps)
+          progress = Math.min(1, progress + 0.011); // ~90 frames (~1.5s at 60fps)
           const eased = progress < 0.5
             ? 2 * progress * progress
             : 1 - Math.pow(-2 * progress + 2, 2) / 2;

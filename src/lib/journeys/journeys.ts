@@ -85,7 +85,7 @@ const ALL_SHADERS_RAW: string[] = [
   "strophoid", "brachistochrone", "chladni", "caustic-pool",
   "zoetrope", "tangent-field", "pedal-curve",
   "ruled-surface", "waveform", "epicycloid",
-  // Dark (12)
+  // Dark (32)
   "umbra", "inferno", "plasma",
   "vortex",
   "hollow",
@@ -93,6 +93,10 @@ const ALL_SHADERS_RAW: string[] = [
   "furnace",
   "eclipse-ring", "smolder",
   "crucible",
+  "ember-drift", "deep-current", "molten-vein", "dark-aurora", "shadow-fire",
+  "dark-tide", "smoke-signal", "iron-forge", "abyss-light", "catacomb-torch",
+  "blood-moon", "witch-light", "dark-crystal", "night-rain", "volcanic",
+  "dark-bloom", "lightning-field", "dark-nebula", "onyx", "night-forest",
   // Nature (3)
   "rain", "ripple", "flame",
   "starfield", "radiance",

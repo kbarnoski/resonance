@@ -83,6 +83,7 @@ export const REALMS: Realm[] = [
       "umbra", "plasma",
       "rapture",
       "crucible",
+      "molten-vein", "iron-forge", "volcanic", "shadow-fire",
     ],
     palette: {
       primary: "#0a0000",
@@ -177,6 +178,7 @@ export const REALMS: Realm[] = [
       "whirlpool", "plankton", "coral",
       "drift", "nebula", "cascade", "ripple",
       "pelagic", "laminar",
+      "deep-current", "dark-tide", "abyss-light",
     ],
     palette: {
       primary: "#050a1a",
@@ -547,6 +549,7 @@ export const REALMS: Realm[] = [
       "plasma", "inferno",
       "flux", "cascade", "whirlpool",
       "umbra",
+      "lightning-field",
     ],
     palette: {
       primary: "#050510",
@@ -592,6 +595,7 @@ export const REALMS: Realm[] = [
     shaderModes: [
       "snow", "fog", "rime", "drift", "expanse",
       "threshold", "tide", "glacier",
+      "dark-aurora", "night-forest",
     ],
     palette: {
       primary: "#080a12",

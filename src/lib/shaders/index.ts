@@ -183,6 +183,27 @@ import { FRAG as MERISTEM_FRAG } from "./meristem";
 import { FRAG as ECLIPSE_RING_FRAG } from "./eclipse-ring";
 import { FRAG as SMOLDER_FRAG } from "./smolder";
 import { FRAG as CRUCIBLE_FRAG } from "./crucible";
+// Dark (April 2026 — visible dark)
+import { FRAG as EMBER_DRIFT_FRAG } from "./ember-drift";
+import { FRAG as DEEP_CURRENT_FRAG } from "./deep-current";
+import { FRAG as MOLTEN_VEIN_FRAG } from "./molten-vein";
+import { FRAG as DARK_AURORA_FRAG } from "./dark-aurora";
+import { FRAG as SHADOW_FIRE_FRAG } from "./shadow-fire";
+import { FRAG as DARK_TIDE_FRAG } from "./dark-tide";
+import { FRAG as SMOKE_SIGNAL_FRAG } from "./smoke-signal";
+import { FRAG as IRON_FORGE_FRAG } from "./iron-forge";
+import { FRAG as ABYSS_LIGHT_FRAG } from "./abyss-light";
+import { FRAG as CATACOMB_TORCH_FRAG } from "./catacomb-torch";
+import { FRAG as BLOOD_MOON_FRAG } from "./blood-moon";
+import { FRAG as WITCH_LIGHT_FRAG } from "./witch-light";
+import { FRAG as DARK_CRYSTAL_FRAG } from "./dark-crystal";
+import { FRAG as NIGHT_RAIN_FRAG } from "./night-rain";
+import { FRAG as VOLCANIC_FRAG } from "./volcanic";
+import { FRAG as DARK_BLOOM_FRAG } from "./dark-bloom";
+import { FRAG as LIGHTNING_FIELD_FRAG } from "./lightning-field";
+import { FRAG as DARK_NEBULA_FRAG } from "./dark-nebula";
+import { FRAG as ONYX_FRAG } from "./onyx";
+import { FRAG as NIGHT_FOREST_FRAG } from "./night-forest";
 // Visionary (April 2026)
 import { FRAG as KENOSIS_FRAG } from "./kenosis";
 import { FRAG as NUMINOUS_FRAG } from "./numinous";
@@ -380,6 +401,27 @@ export const SHADERS: Partial<Record<VisualizerMode, string>> = {
   "eclipse-ring": ECLIPSE_RING_FRAG,
   smolder: SMOLDER_FRAG,
   crucible: CRUCIBLE_FRAG,
+  // Dark (April 2026 — visible dark)
+  "ember-drift": EMBER_DRIFT_FRAG,
+  "deep-current": DEEP_CURRENT_FRAG,
+  "molten-vein": MOLTEN_VEIN_FRAG,
+  "dark-aurora": DARK_AURORA_FRAG,
+  "shadow-fire": SHADOW_FIRE_FRAG,
+  "dark-tide": DARK_TIDE_FRAG,
+  "smoke-signal": SMOKE_SIGNAL_FRAG,
+  "iron-forge": IRON_FORGE_FRAG,
+  "abyss-light": ABYSS_LIGHT_FRAG,
+  "catacomb-torch": CATACOMB_TORCH_FRAG,
+  "blood-moon": BLOOD_MOON_FRAG,
+  "witch-light": WITCH_LIGHT_FRAG,
+  "dark-crystal": DARK_CRYSTAL_FRAG,
+  "night-rain": NIGHT_RAIN_FRAG,
+  volcanic: VOLCANIC_FRAG,
+  "dark-bloom": DARK_BLOOM_FRAG,
+  "lightning-field": LIGHTNING_FIELD_FRAG,
+  "dark-nebula": DARK_NEBULA_FRAG,
+  onyx: ONYX_FRAG,
+  "night-forest": NIGHT_FOREST_FRAG,
   // Visionary (April 2026)
   kenosis: KENOSIS_FRAG,
   numinous: NUMINOUS_FRAG,
@@ -593,6 +635,27 @@ export const MODE_META: ModeMeta[] = [
   { mode: "eclipse-ring", label: "Eclipse Ring", category: "Dark", addedDate: "2026-04-07" },
   { mode: "smolder", label: "Smolder", category: "Dark", addedDate: "2026-04-07" },
   { mode: "crucible", label: "Crucible", category: "Dark", addedDate: "2026-04-07" },
+  // Dark (April 2026 — visible dark)
+  { mode: "ember-drift", label: "Ember Drift", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "deep-current", label: "Deep Current", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "molten-vein", label: "Molten Vein", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "dark-aurora", label: "Dark Aurora", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "shadow-fire", label: "Shadow Fire", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "dark-tide", label: "Dark Tide", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "smoke-signal", label: "Smoke Signal", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "iron-forge", label: "Iron Forge", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "abyss-light", label: "Abyss Light", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "catacomb-torch", label: "Catacomb Torch", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "blood-moon", label: "Blood Moon", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "witch-light", label: "Witch Light", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "dark-crystal", label: "Dark Crystal", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "night-rain", label: "Night Rain", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "volcanic", label: "Volcanic", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "dark-bloom", label: "Dark Bloom", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "lightning-field", label: "Lightning Field", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "dark-nebula", label: "Dark Nebula", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "onyx", label: "Onyx", category: "Dark", addedDate: "2026-04-08" },
+  { mode: "night-forest", label: "Night Forest", category: "Dark", addedDate: "2026-04-08" },
   // Visionary (April 2026)
   { mode: "kenosis", label: "Kenosis", category: "Visionary", addedDate: "2026-04-07" },
   { mode: "numinous", label: "Numinous", category: "Visionary", addedDate: "2026-04-07" },
