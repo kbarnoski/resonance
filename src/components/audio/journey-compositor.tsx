@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { AiImageLayer } from "./ai-image-layer";
 import { PostProcessingLayer } from "./post-processing-layer";
 import type { JourneyFrame } from "@/lib/journeys/types";
@@ -61,15 +61,45 @@ export function JourneyCompositor({
   const effectivePrompt = frame?.aiPrompt ?? aiPrompt ?? "";
   const effectiveDenoising = frame?.denoisingStrength ?? 0.5;
   const effectiveTargetFps = frame?.targetFps ?? 2;
-  const effectiveShaderOpacity = frame?.shaderOpacity ?? 1.0;
   const showAi = aiEnabled && !!effectivePrompt;
 
   // Detect light-background phases from prompt — scale down GPU-expensive effects
-  // Memoize to avoid regex on every render
-  const isLightPhase = useMemo(
+  // Binary detection (target), but we smooth the actual multiplier to prevent flash
+  const isLightPhaseTarget = useMemo(
     () => /WHITE BACKGROUND|PALE BACKGROUND|LIGHT BACKGROUND/i.test(effectivePrompt),
     [effectivePrompt]
   );
+
+  // Smooth light-phase multiplier: 1.0 = normal dark, 0.0 = full light-bg reduction.
+  // Ref-only — no React state. The compositor already re-renders at ~30fps from frame
+  // updates, so the ref value is sampled naturally without extra re-renders.
+  const lightScaleRef = useRef(isLightPhaseTarget ? 0 : 1);
+  const lightScaleRafRef = useRef<number>(0);
+
+  useEffect(() => {
+    const target = isLightPhaseTarget ? 0 : 1;
+    if (Math.abs(lightScaleRef.current - target) < 0.01) {
+      lightScaleRef.current = target;
+      return;
+    }
+    cancelAnimationFrame(lightScaleRafRef.current);
+    const rate = 0.008; // ~125 frames ≈ 2s at 60fps
+    const animate = () => {
+      const cur = lightScaleRef.current;
+      const diff = target - cur;
+      lightScaleRef.current = Math.abs(diff) < 0.01 ? target : cur + Math.sign(diff) * rate;
+      if (lightScaleRef.current !== target) {
+        lightScaleRafRef.current = requestAnimationFrame(animate);
+      }
+    };
+    lightScaleRafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(lightScaleRafRef.current);
+  }, [isLightPhaseTarget]);
+
+  // Read ref value during render — sampled at ~30fps from journey frame updates
+  const lightScale = lightScaleRef.current;
+
+  const effectiveShaderOpacity = frame?.shaderOpacity ?? 1.0;
   const isMobile = useMemo(
     () => typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent),
     []
@@ -78,7 +108,7 @@ export function JourneyCompositor({
   // Adaptive scaling — learned from user feedback patterns
   const adaptiveConditions = {
     hasDualShader: !!frame?.dualShaderMode,
-    isLightBg: isLightPhase,
+    isLightBg: lightScale < 0.5,
     isMobile,
     bloom: frame?.bloomIntensity ?? 0,
     shader: frame?.shaderMode,
@@ -117,51 +147,18 @@ export function JourneyCompositor({
     }
   }, [impulse, evtType, enableBassFlash]);
 
-  // Intro gating: shaders start hidden, fade in after first AI image arrives.
-  // This creates a clean intro where the user sees imagery first, then the
-  // shader blends in on top — never bare shaders without imagery.
-  const [aiReady, setAiReady] = useState(false);
-  const shaderOpacityRef = useRef(0);
-  const shaderFadeRef = useRef<number>(0);
+  // ─── Shader opacity ───
+  // Directly tracks effectiveShaderOpacity via CSS custom property.
+  // No state machine, no fading — every shader (first or last) sees the same value.
+  const shaderOpacityRef = useRef(effectiveShaderOpacity);
   const rootRef = useRef<HTMLDivElement>(null);
 
-  const handleFirstImage = useCallback(() => {
-    setAiReady(true);
-  }, []);
-
-  // Reset when AI is disabled (journey ends)
   useEffect(() => {
-    if (!aiEnabled) {
-      setAiReady(false);
-      shaderOpacityRef.current = 0;
-      if (rootRef.current) {
-        rootRef.current.style.setProperty("--shader-opacity", "1");
-      }
+    shaderOpacityRef.current = effectiveShaderOpacity;
+    if (rootRef.current) {
+      rootRef.current.style.setProperty("--shader-opacity", String(effectiveShaderOpacity));
     }
-  }, [aiEnabled]);
-
-  // Animate shader fade-in after first AI image.
-  // Sets --shader-opacity CSS variable so shader layers fade without
-  // creating a stacking context that would trap the bottom bar.
-  useEffect(() => {
-    if (!aiReady || !showAi) return;
-    cancelAnimationFrame(shaderFadeRef.current);
-
-    const target = effectiveShaderOpacity;
-    const fadeIn = () => {
-      // Fade in over ~3s, capped at the journey's shaderOpacity
-      shaderOpacityRef.current = Math.min(target, shaderOpacityRef.current + 0.006);
-      if (rootRef.current) {
-        rootRef.current.style.setProperty("--shader-opacity", String(shaderOpacityRef.current));
-      }
-      if (shaderOpacityRef.current < target) {
-        shaderFadeRef.current = requestAnimationFrame(fadeIn);
-      }
-    };
-    shaderFadeRef.current = requestAnimationFrame(fadeIn);
-
-    return () => cancelAnimationFrame(shaderFadeRef.current);
-  }, [aiReady, showAi, effectiveShaderOpacity]);
+  }, [effectiveShaderOpacity]);
 
   // Pre-activation + bass hit shader boost (Ghost-only, gated by enableBassFlash).
   // Approach ramp: shaders get brighter ~1.5s before the hit.
@@ -198,7 +195,6 @@ export function JourneyCompositor({
     <div
       ref={rootRef}
       className="absolute inset-0"
-      style={showAi ? { "--shader-opacity": "0" } as React.CSSProperties : undefined}
     >
       {/* AI imagery — z-2, above shader but below controls */}
       {showAi && (
@@ -212,7 +208,6 @@ export function JourneyCompositor({
           aiOnly={aiOnly}
           generating={aiGenerating}
           shaderOpacity={effectiveShaderOpacity}
-          onFirstImage={handleFirstImage}
           promptSeed={promptSeed}
           journeyId={journeyId}
         />
@@ -260,16 +255,18 @@ export function JourneyCompositor({
         </>
       )}
 
-      {/* Post-processing — adaptive scaling from feedback + light-phase reduction + typed event reactions */}
+      {/* Post-processing — adaptive scaling from feedback + smooth light-phase reduction + typed event reactions */}
+      {/* lightScale: 1.0 = dark bg (full effects), 0.0 = light bg (reduced).
+          lerp(reducedValue, fullValue, lightScale) for each property. */}
       {frame && (
         <PostProcessingLayer
           chromaticAberration={frame.chromaticAberration * adaptiveScale + eventReaction.chromatic}
-          vignette={(isLightPhase ? frame.vignette * 0.3 : frame.vignette) * adaptiveScale * Math.max(0, 1 - eventReaction.vignetteOpen)}
-          bloomIntensity={Math.min(1.5, (isLightPhase ? frame.bloomIntensity * 0.2 : frame.bloomIntensity) * adaptiveScale * adaptiveBloom + eventReaction.bloom * 0.3 + approach * approach * 0.4)}
+          vignette={(frame.vignette * (0.3 + 0.7 * lightScale)) * adaptiveScale * Math.max(0, 1 - eventReaction.vignetteOpen)}
+          bloomIntensity={Math.min(1.5, (frame.bloomIntensity * (0.2 + 0.8 * lightScale)) * adaptiveScale * adaptiveBloom + eventReaction.bloom * 0.3 + approach * approach * 0.4)}
           audioAmplitude={audioAmplitude}
           filmGrain={0}
-          particleDensity={(isLightPhase ? frame.particleDensity * 0.3 : frame.particleDensity) * adaptiveScale}
-          halation={Math.min(0.8, (isLightPhase ? 0 : frame.halation) * adaptiveScale + eventReaction.halation)}
+          particleDensity={(frame.particleDensity * (0.3 + 0.7 * lightScale)) * adaptiveScale}
+          halation={Math.min(0.8, (frame.halation * lightScale) * adaptiveScale + eventReaction.halation)}
           palette={frame.palette}
         />
       )}

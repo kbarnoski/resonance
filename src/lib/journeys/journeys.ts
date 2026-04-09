@@ -216,9 +216,9 @@ function pickJourneyShaders(
   const globalBlocked = realmId
     ? GLOBAL_SHADER_BLOCKLIST.filter(s => !allowedGlobals.has(s))
     : []; // theme-based journeys have no global blocklist — full creative freedom
-  // User block/delete prefs only for custom journeys — built-in are frozen
-  const userBlocked = options.isCustom ? getUserBlockedShaders() : new Set<string>();
-  const userDeleted = options.isCustom ? getUserDeletedShaders() : new Set<string>();
+  // User block/delete prefs apply to ALL journeys — never show shaders the user rejected
+  const userBlocked = getUserBlockedShaders();
+  const userDeleted = getUserDeletedShaders();
   const blocklist = new Set([
     ...globalBlocked,
     ...(realmId ? REALM_SHADER_BLOCKLIST[realmId] ?? [] : []),
@@ -274,12 +274,24 @@ function pickJourneyShaders(
     : shuffled;
 }
 
-/** Pick `count` shaders from pool, avoiding `used` set. Never duplicates. */
+/** Pick `count` shaders from pool, avoiding `used` set. Guarantees at least 2 (minimum for layering). */
 function pickShaders(pool: string[], count: number, used: Set<string>, random: () => number = Math.random): string[] {
+  const MIN_SHADERS = 2;
+  const target = Math.max(MIN_SHADERS, count);
   const unused = pool.filter((s) => !used.has(s));
   const shuffled = shuffleArray(unused, random);
-  const picked = shuffled.slice(0, Math.min(count, shuffled.length));
+  const picked = shuffled.slice(0, Math.min(target, shuffled.length));
   for (const s of picked) used.add(s);
+
+  // If we couldn't get enough unique shaders, allow reuse from the full pool
+  if (picked.length < MIN_SHADERS && pool.length >= MIN_SHADERS) {
+    const reuse = shuffleArray(pool.filter(s => !picked.includes(s)), random);
+    for (const s of reuse) {
+      if (picked.length >= MIN_SHADERS) break;
+      picked.push(s);
+    }
+  }
+
   return picked;
 }
 

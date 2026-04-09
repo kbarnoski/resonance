@@ -86,6 +86,11 @@ export function PostProcessingLayer({
   const particlesRef = useRef<Particle[]>([]);
   const grainIndexRef = useRef(0);
 
+  // Store all props in a ref — rAF loop reads from here instead of closure.
+  // This prevents the effect from tearing down/recreating on every prop change.
+  const propsRef = useRef({ vignette, bloomIntensity, audioAmplitude, filmGrain, particleDensity, halation, palette });
+  propsRef.current = { vignette, bloomIntensity, audioAmplitude, filmGrain, particleDensity, halation, palette };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -98,6 +103,9 @@ export function PostProcessingLayer({
 
     function render(now: number) {
       if (!canvas || !ctx) return;
+
+      // Read current prop values from ref (always fresh, no effect restart needed)
+      const pp = propsRef.current;
 
       const dt = Math.min((now - lastTime) / 1000, 0.05); // Cap at 50ms
       lastTime = now;
@@ -119,24 +127,24 @@ export function PostProcessingLayer({
       ctx.clearRect(0, 0, w, h);
 
       // --- Vignette ---
-      if (vignette > 0.01) {
+      if (pp.vignette > 0.01) {
         const gradient = ctx.createRadialGradient(
           w / 2, h / 2, w * 0.3,
           w / 2, h / 2, w * 0.8
         );
         gradient.addColorStop(0, "rgba(0, 0, 0, 0)");
-        gradient.addColorStop(1, `rgba(0, 0, 0, ${vignette * 0.55})`);
+        gradient.addColorStop(1, `rgba(0, 0, 0, ${pp.vignette * 0.55})`);
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, w, h);
       }
 
       // --- Bloom glow ---
-      if (bloomIntensity > 0.2) {
+      if (pp.bloomIntensity > 0.2) {
         const glowGradient = ctx.createRadialGradient(
           w / 2, h / 2, 0,
           w / 2, h / 2, w * 0.5
         );
-        const glowAlpha = (bloomIntensity - 0.2) * 0.15 * (0.5 + audioAmplitude * 0.5);
+        const glowAlpha = (pp.bloomIntensity - 0.2) * 0.15 * (0.5 + pp.audioAmplitude * 0.5);
         glowGradient.addColorStop(0, `rgba(255, 255, 255, ${glowAlpha})`);
         glowGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
         ctx.globalCompositeOperation = "screen";
@@ -146,18 +154,18 @@ export function PostProcessingLayer({
       }
 
       // --- Halation (warm glow) ---
-      if (halation > 0.02) {
+      if (pp.halation > 0.02) {
         const halGradient = ctx.createRadialGradient(
           w * (0.5 + Math.sin(t * 0.3) * 0.1),
           h * (0.5 + Math.cos(t * 0.2) * 0.1),
           0,
           w / 2, h / 2, w * 0.6
         );
-        const halAlpha = halation * 0.12 * (0.6 + audioAmplitude * 0.4);
+        const halAlpha = pp.halation * 0.12 * (0.6 + pp.audioAmplitude * 0.4);
         const a1 = Math.round(halAlpha * 255).toString(16).padStart(2, "0");
         const a2 = Math.round(halAlpha * 128).toString(16).padStart(2, "0");
-        halGradient.addColorStop(0, `${hex6(palette.glow)}${a1}`);
-        halGradient.addColorStop(0.5, `${hex6(palette.accent)}${a2}`);
+        halGradient.addColorStop(0, `${hex6(pp.palette.glow)}${a1}`);
+        halGradient.addColorStop(0.5, `${hex6(pp.palette.accent)}${a2}`);
         halGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
         ctx.globalCompositeOperation = "screen";
         ctx.fillStyle = halGradient;
@@ -166,8 +174,8 @@ export function PostProcessingLayer({
       }
 
       // --- Film grain (pre-generated, cycled) ---
-      if (filmGrain > 0.02 && GRAIN_TEXTURES.length > 0) {
-        const grainAlpha = filmGrain * (0.5 + audioAmplitude * 0.3);
+      if (pp.filmGrain > 0.02 && GRAIN_TEXTURES.length > 0) {
+        const grainAlpha = pp.filmGrain * (0.5 + pp.audioAmplitude * 0.3);
         grainIndexRef.current = (grainIndexRef.current + 1) % GRAIN_TEXTURES.length;
         ctx.globalCompositeOperation = "overlay";
         ctx.globalAlpha = grainAlpha * 0.4;
@@ -177,8 +185,8 @@ export function PostProcessingLayer({
       }
 
       // --- Particles ---
-      if (particleDensity > 0.02) {
-        const targetCount = Math.floor(particleDensity * 60); // Reduced from 150
+      if (pp.particleDensity > 0.02) {
+        const targetCount = Math.floor(pp.particleDensity * 60);
         const particles = particlesRef.current;
 
         // Spawn new particles (capped per frame)
@@ -197,32 +205,32 @@ export function PostProcessingLayer({
           spawned++;
         }
 
-        ctx.fillStyle = palette.glow;
+        ctx.fillStyle = pp.palette.glow;
 
         for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.life += dt;
-          p.x += p.vx + Math.sin(t + p.y * 0.01) * 0.3;
-          p.y += p.vy;
+          const pt = particles[i];
+          pt.life += dt;
+          pt.x += pt.vx + Math.sin(t + pt.y * 0.01) * 0.3;
+          pt.y += pt.vy;
 
-          const lifeProgress = p.life / p.maxLife;
+          const lifeProgress = pt.life / pt.maxLife;
           if (lifeProgress < 0.2) {
-            p.alpha = lifeProgress / 0.2;
+            pt.alpha = lifeProgress / 0.2;
           } else if (lifeProgress > 0.8) {
-            p.alpha = (1 - lifeProgress) / 0.2;
+            pt.alpha = (1 - lifeProgress) / 0.2;
           } else {
-            p.alpha = 1;
+            pt.alpha = 1;
           }
 
-          if (p.life >= p.maxLife || p.y < -10 || p.x < -10 || p.x > w + 10) {
+          if (pt.life >= pt.maxLife || pt.y < -10 || pt.x < -10 || pt.x > w + 10) {
             particles.splice(i, 1);
             continue;
           }
 
           // Single draw call per particle (no separate glow)
-          ctx.globalAlpha = p.alpha * 0.5 * particleDensity;
+          ctx.globalAlpha = pt.alpha * 0.5 * pp.particleDensity;
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * dpr, 0, Math.PI * 2);
+          ctx.arc(pt.x, pt.y, pt.size * dpr, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.globalAlpha = 1;
@@ -236,7 +244,7 @@ export function PostProcessingLayer({
     return () => {
       cancelAnimationFrame(animRef.current);
     };
-  }, [vignette, bloomIntensity, audioAmplitude, filmGrain, particleDensity, halation, palette]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps — props read from propsRef
 
   return (
     <canvas

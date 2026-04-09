@@ -47,6 +47,8 @@ interface AdminPanelProps {
   visible: boolean;
   onClose: () => void;
   currentShader?: string;
+  dualShader?: string;
+  tertiaryShader?: string;
   isAdmin?: boolean;
   onSwitchShader?: (mode: string) => void;
   onPrevShader?: () => void;
@@ -55,7 +57,7 @@ interface AdminPanelProps {
 
 type Tab = "library" | "new" | "blocked" | "deleted" | "loved" | "stats";
 
-export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, onSwitchShader, onPrevShader, onNextShader }: AdminPanelProps) {
+export function AdminPanel({ visible, onClose, currentShader, dualShader, tertiaryShader, isAdmin = false, onSwitchShader, onPrevShader, onNextShader }: AdminPanelProps) {
   const prefs = useShaderPreferences();
   const [activeTab, setActiveTab] = useState<Tab>("library");
   const activeRowRef = useRef<HTMLDivElement>(null);
@@ -283,10 +285,12 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
               const isDeleted = deletedSet.has(mode);
               const isLoved = lovedSet.has(mode);
               const isActive = mode === currentShader;
+              const layer = mode === currentShader ? "primary" as const : mode === dualShader ? "dual" as const : mode === tertiaryShader ? "tertiary" as const : undefined;
+              const shouldScrollTo = isActive || !!layer;
               const metaEntry = MODE_META.find((m) => m.mode === mode);
               const shaderIsNew = metaEntry ? isNewShader(metaEntry) : false;
               return (
-                <ShaderRow key={mode} ref={isActive ? activeRowRef : undefined} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined} isNew={shaderIsNew} active={isActive} onClick={onSwitchShader ? () => onSwitchShader(mode) : undefined}>
+                <ShaderRow key={mode} ref={shouldScrollTo ? activeRowRef : undefined} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined} isNew={shaderIsNew} active={isActive} activeLayer={layer} onClick={onSwitchShader ? () => onSwitchShader(mode) : undefined}>
                   {isDeleted ? (
                     isAdmin && <SmallButton onClick={() => handleRestore(mode)} color="blue">Restore</SmallButton>
                   ) : isBlocked ? (
@@ -318,8 +322,9 @@ export function AdminPanel({ visible, onClose, currentShader, isAdmin = false, o
                 const isDeleted = deletedSet.has(mode);
                 const isLoved = lovedSet.has(mode);
                 const isActive = mode === currentShader;
+                const layer = mode === currentShader ? "primary" as const : mode === dualShader ? "dual" as const : mode === tertiaryShader ? "tertiary" as const : undefined;
                 return (
-                  <ShaderRow key={mode} ref={isActive ? activeRowRef : undefined} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined} isNew active={isActive} onClick={onSwitchShader ? () => onSwitchShader(mode) : undefined}>
+                  <ShaderRow key={mode} ref={(isActive || !!layer) ? activeRowRef : undefined} label={label} stats={stats[mode]} status={isDeleted ? "deleted" : isBlocked ? "blocked" : isLoved ? "loved" : undefined} isNew active={isActive} activeLayer={layer} onClick={onSwitchShader ? () => onSwitchShader(mode) : undefined}>
                     {isDeleted ? (
                       isAdmin && <SmallButton onClick={() => handleRestore(mode)} color="blue">Restore</SmallButton>
                     ) : isBlocked ? (
@@ -426,20 +431,39 @@ function CategoryGroup({ category, children }: { category: string; children: Rea
   );
 }
 
+const LAYER_BG: Record<string, string> = {
+  primary: "rgba(255,255,255,0.12)",
+  dual: "rgba(255,255,255,0.07)",
+  tertiary: "rgba(255,255,255,0.04)",
+};
+const LAYER_LABEL: Record<string, string> = {
+  primary: "1",
+  dual: "2",
+  tertiary: "3",
+};
+const LAYER_LABEL_COLOR: Record<string, string> = {
+  primary: "rgba(255,255,255,0.50)",
+  dual: "rgba(255,255,255,0.35)",
+  tertiary: "rgba(255,255,255,0.25)",
+};
+
 const ShaderRow = forwardRef<HTMLDivElement, {
   label: string;
   stats?: { usageCount: number; lovedCount: number; blockedCount: number };
   status?: "blocked" | "deleted" | "loved";
   isNew?: boolean;
   active?: boolean;
+  activeLayer?: "primary" | "dual" | "tertiary";
   onClick?: () => void;
   children?: React.ReactNode;
-}>(function ShaderRow({ label, stats, status, isNew, active, onClick, children }, ref) {
+}>(function ShaderRow({ label, stats, status, isNew, active, activeLayer, onClick, children }, ref) {
   const statusColors: Record<string, string> = {
     blocked: "rgba(239, 68, 68, 0.6)",
     deleted: "rgba(239, 68, 68, 0.4)",
     loved: "rgba(251, 191, 36, 0.7)",
   };
+  const isHighlighted = active || !!activeLayer;
+  const bgColor = activeLayer ? LAYER_BG[activeLayer] : active ? "rgba(255,255,255,0.08)" : undefined;
   return (
     <div ref={ref} style={{
       display: "flex",
@@ -448,16 +472,27 @@ const ShaderRow = forwardRef<HTMLDivElement, {
       minHeight: 28,
       paddingLeft: 8,
       opacity: status === "deleted" ? 0.45 : status === "blocked" ? 0.6 : 1,
-      background: active ? "rgba(255,255,255,0.08)" : undefined,
-      borderRadius: active ? 6 : undefined,
+      background: bgColor,
+      borderRadius: isHighlighted ? 6 : undefined,
       transition: "background 200ms ease",
     }}>
+      {activeLayer && (
+        <span style={{
+          fontFamily: "var(--font-geist-mono)",
+          fontSize: "0.45rem",
+          fontWeight: 700,
+          color: LAYER_LABEL_COLOR[activeLayer],
+          width: 12,
+          textAlign: "center",
+          flexShrink: 0,
+        }}>{LAYER_LABEL[activeLayer]}</span>
+      )}
       <span
         onClick={onClick}
         style={{
           ...shaderLabelStyle,
-          color: active ? "rgba(255,255,255,0.95)" : shaderLabelStyle.color,
-          fontWeight: active ? 600 : shaderLabelStyle.fontWeight,
+          color: isHighlighted ? "rgba(255,255,255,0.95)" : shaderLabelStyle.color,
+          fontWeight: isHighlighted ? 600 : shaderLabelStyle.fontWeight,
           cursor: onClick ? "pointer" : undefined,
         }}
       >{label}</span>

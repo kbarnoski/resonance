@@ -2,7 +2,8 @@ import type { Journey, JourneyPhase, JourneyPhaseId, JourneyFrame, AmbientLayers
 import { getRealm } from "./realms";
 import { regenerateJourneyShaders } from "./journeys";
 import { createSeededRandom, seededShuffle } from "./seeded-random";
-import { MODES_3D } from "@/lib/shaders";
+import { MODES_3D, MODE_META } from "@/lib/shaders";
+import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import {
   getPhaseBlend,
   getPhaseProgress,
@@ -24,16 +25,21 @@ interface AudioFeatures {
   amplitude: number;
 }
 
-/** A scheduled dual-shader moment during the journey */
-interface DualShaderMoment {
+/** A scheduled tertiary-shader moment during the journey */
+interface TertiaryMoment {
   startProgress: number;  // 0-1 progress when this moment begins
   endProgress: number;    // 0-1 progress when this moment ends
 }
 
-/** Pre-computed shader picks for a dual-shader moment */
-interface DualShaderPick {
-  dual: string;
-  tertiary: string | null;
+/** Set of Geometry shader modes for priority dual-layer picks */
+let _geometryModes: Set<string> | null = null;
+function getGeometryModes(): Set<string> {
+  if (!_geometryModes) {
+    _geometryModes = new Set(
+      MODE_META.filter(m => m.category === "Geometry").map(m => m.mode)
+    );
+  }
+  return _geometryModes;
 }
 
 class JourneyEngine {
@@ -42,14 +48,31 @@ class JourneyEngine {
   private currentPhaseId: JourneyPhaseId | null = null;
   private phaseChangeCallbacks: Set<PhaseChangeCallback> = new Set();
   private frameCallbacks: Set<(frame: JourneyFrame) => void> = new Set();
+
+  // ─── Primary shader ───
   private currentShaderIndex = 0;
   private currentShaderMode = "";
+  /** Wall-clock time when the current primary shader started */
+  private shaderStartMs = 0;
+  /** How long the current shader should last (randomized each switch) */
+  private shaderDurationMs = 0;
+
+  // ─── Dual shader (persistent second layer — always active) ───
   private dualShaderMode: string | null = null;
+  /** Wall-clock time when the current dual shader started */
+  private dualShaderStartMs = 0;
+  /** How long the current dual shader should last */
+  private dualShaderDurationMs = 0;
+  /** Whether the dual shader has been initialized for this journey */
+  private dualShaderInitialized = false;
+
+  // ─── Tertiary shader (occasional third layer — sprinkled in) ───
   private tertiaryShaderMode: string | null = null;
-  private dualShaderActive = false;
-  private dualShaderMoments: DualShaderMoment[] = [];
-  /** Pre-computed dual-shader picks per moment index */
-  private dualShaderPicks: Map<number, DualShaderPick> = new Map();
+  private tertiaryMoments: TertiaryMoment[] = [];
+  /** Pre-computed tertiary shader picks per moment index */
+  private tertiaryPicks: Map<number, string> = new Map();
+  private tertiaryActive = false;
+
   /** Pre-computed guidance phrase index per phase */
   private guidancePhraseIndices: Map<string, number> = new Map();
   private audioFeatures: AudioFeatures = { bass: 0, mid: 0, treble: 0, amplitude: 0 };
@@ -60,24 +83,27 @@ class JourneyEngine {
   private static readonly MAX_RECENT_THEMES = 5;
   /** Cached AI prompt — stable within a phase, only recomputed on phase change */
   private phaseAiPrompt = "";
-  /** Phase transition grace — carry old shader/prompt across boundary for smooth handoff */
+  /** Phase transition grace — carry old AI prompt across boundary for smooth handoff */
   private phaseGraceEnd = 0; // progress at which grace period expires
-  private graceShader = ""; // shader to hold during grace
   private graceAiPrompt = ""; // AI prompt to hold during grace
   private graceActive = false;
   /** Bridge prompt — blends outgoing + incoming phase themes for seamless transition */
   private bridgePrompt = "";
   private bridgeActive = false;
   private bridgeEmitted = false; // only emit bridge once per phase boundary
+
   /** Shader timing constants (in seconds) */
   private static readonly GRACE_SECONDS = 8;
   /** Grace period will never exceed this fraction of the phase's total duration */
   private static readonly GRACE_MAX_PHASE_FRACTION = 0.4;
   /** Wall-clock shader switch timer — simple, reliable, no schedule drift */
-  private static readonly SHADER_SWITCH_MIN_SECS = 18;
-  private static readonly SHADER_SWITCH_MAX_SECS = 35;
-  /** Absolute maximum — no shader may exceed this, period */
-  private static readonly SHADER_MAX_SECS_ABSOLUTE = 55;
+  private static readonly SHADER_SWITCH_MIN_SECS = 10;
+  private static readonly SHADER_SWITCH_MAX_SECS = 16;
+  /** Extra time for the first shader to compensate for compile + fade-in delay */
+  private static readonly FIRST_SHADER_BUFFER_MS = 5000;
+  /** Dual shader switches on a different cadence — slightly longer for visual stability */
+  private static readonly DUAL_SWITCH_MIN_SECS = 25;
+  private static readonly DUAL_SWITCH_MAX_SECS = 45;
   /** Decay duration per event type (seconds) */
   private static readonly EVENT_DECAY: Record<string, number> = {
     bass_hit: 2.5,
@@ -87,10 +113,7 @@ class JourneyEngine {
     silence: 1.5,
     new_idea: 2.0,
   };
-  /** Wall-clock time when the current primary shader started */
-  private shaderStartMs = 0;
-  /** How long the current shader should last (randomized each switch) */
-  private shaderDurationMs = 0;
+
   /** Track duration in seconds — used to convert timing to progress fractions */
   private trackDuration = 300;
   /** Random function for this playback session (Math.random or seeded) */
@@ -134,7 +157,8 @@ class JourneyEngine {
     // Initialize wall-clock shader timer
     const now = typeof performance !== "undefined" ? performance.now() : Date.now();
     this.shaderStartMs = now;
-    this.shaderDurationMs = this.randomShaderDuration(random);
+    this.shaderDurationMs = this.randomDuration(random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS)
+      + JourneyEngine.FIRST_SHADER_BUFFER_MS; // Extra time for compile + fade-in
 
     // Set initial shader from first phase
     if (this.journey.phases.length > 0) {
@@ -142,9 +166,12 @@ class JourneyEngine {
       this.currentShaderMode = firstPhase.shaderModes[0] ?? "cosmos";
     }
 
-    // Pre-compute all scheduling from the random function
-    this.scheduleDualShaderMoments(random);
-    this.precomputeDualShaderPicks(random);
+    // Initialize dual shader — pick from first phase, different from primary
+    this.initDualShader(now, random);
+
+    // Schedule tertiary shader moments (~every 60s)
+    this.scheduleTertiaryMoments(random);
+    this.precomputeTertiaryPicks(random);
     this.precomputeGuidancePhraseIndices(random);
   }
 
@@ -154,7 +181,13 @@ class JourneyEngine {
     const needsRegen = Math.abs(duration - this.trackDuration) / this.trackDuration > 0.05;
     this.trackDuration = duration; // always store precise value
     if (needsRegen) {
+      // Preserve current shaders across regeneration to prevent a visible mid-play switch.
+      // The new pools may differ but the active shaders stay until the next timer expiry.
+      const prevShader = this.currentShaderMode;
+      const prevDual = this.dualShaderMode;
       this.journey = regenerateJourneyShaders(this.journey, this.random, duration);
+      this.currentShaderMode = prevShader;
+      this.dualShaderMode = prevDual;
     }
   }
 
@@ -165,9 +198,10 @@ class JourneyEngine {
     this.currentPhaseId = null;
     this.dualShaderMode = null;
     this.tertiaryShaderMode = null;
-    this.dualShaderActive = false;
-    this.dualShaderMoments = [];
-    this.dualShaderPicks.clear();
+    this.dualShaderInitialized = false;
+    this.tertiaryActive = false;
+    this.tertiaryMoments = [];
+    this.tertiaryPicks.clear();
     this.guidancePhraseIndices.clear();
     this.currentPoetryLine = "";
     this.currentStoryImagePrompt = "";
@@ -179,6 +213,8 @@ class JourneyEngine {
     this.bridgeEmitted = false;
     this.shaderStartMs = 0;
     this.shaderDurationMs = 0;
+    this.dualShaderStartMs = 0;
+    this.dualShaderDurationMs = 0;
     this.random = Math.random;
     this.eventMarkers = [];
     this.eventImpulse = 0;
@@ -269,7 +305,6 @@ class JourneyEngine {
     }
 
     // Approach ramp — builds up ~1.5s before the next bass_hit event.
-    // Shaders and images should get more active right before the impact.
     let eventApproach = 0;
     const approachWindow = this.trackDuration > 0 ? 1.5 / this.trackDuration : 0.007;
     for (const evt of this.eventMarkers) {
@@ -277,7 +312,6 @@ class JourneyEngine {
       if (evt.type !== "bass_hit") continue;
       const distance = evt.progress - clamped;
       if (distance > 0 && distance <= approachWindow) {
-        // 0 at edge of window → 1 at the event marker
         eventApproach = Math.max(eventApproach, 1 - (distance / approachWindow));
       }
     }
@@ -286,23 +320,23 @@ class JourneyEngine {
     const currentPhase = phases[phaseIndex];
     const phaseProgress = getPhaseProgress(clamped, currentPhase);
 
-    // Detect phase change — start grace period with bridge prompt for seamless transition
+    // Detect phase change — start grace period for AI prompt bridging
     if (currentPhase.id !== this.currentPhaseId) {
       const prevPhase = this.currentPhaseId;
 
-      // Capture current visuals before switching — bridge prompt persists during grace
+      // Grace only for AI prompts — shaders use the visualizer's crossfade
       if (prevPhase !== null) {
-        this.graceShader = this.currentShaderMode;
-        // Use bridge prompt if one was built during the crossfade zone, else fall back to old prompt
         this.graceAiPrompt = this.bridgeActive ? this.bridgePrompt : this.phaseAiPrompt;
-        // Adaptive grace: cap at 40% of the new phase's duration so short phases aren't consumed
         const phaseDurationSec = (currentPhase.end - currentPhase.start) * this.trackDuration;
         const maxGrace = phaseDurationSec * JourneyEngine.GRACE_MAX_PHASE_FRACTION;
         const graceSec = Math.min(JourneyEngine.GRACE_SECONDS, maxGrace);
         this.phaseGraceEnd = clamped + graceSec / this.trackDuration;
         this.graceActive = true;
-        // Reset shader timer so we don't get an immediate shader swap right after phase change
-        this.shaderStartMs = now;
+        // DO NOT reset shader timers here. Shaders continue on their natural timer
+        // and pick from the current phase's pool when the timer naturally fires.
+        // Forced resets cause crossfades during phase title display, which the user
+        // perceives as "flash" and "reset" — the new shader's WebGL context starts
+        // u_time from 0 and the shader compilation causes frame drops.
       }
 
       // Reset bridge state for next boundary
@@ -324,16 +358,12 @@ class JourneyEngine {
         }
       }
 
-      // Build and cache AI prompt for the NEW phase.
-      // IMPORTANT: This is computed ONCE per phase, not per frame.
-      // AiImageLayer debounces on prompt changes, so an unstable prompt
-      // (e.g. using Date.now() or live audio levels) prevents generation entirely.
+      // Build and cache AI prompt for the NEW phase (once per phase, not per frame)
       this.phaseAiPrompt = this.buildPhaseAiPrompt(currentPhase, phaseIndex);
     }
 
     // Bridge prompt: when approaching a phase boundary (crossfade zone),
     // emit a transitional prompt that blends outgoing + incoming themes.
-    // This creates: pure old → bridge → pure new (instead of abrupt switch).
     if (nextPhaseIndex !== null && blend > 0 && !this.bridgeEmitted) {
       this.bridgeEmitted = true;
       const nextPhase = phases[nextPhaseIndex];
@@ -346,28 +376,63 @@ class JourneyEngine {
       this.graceActive = false;
     }
 
-    // Wall-clock shader switching: advance to next shader when timer expires.
-    // Simple and reliable — no pre-computed schedules that can drift or fail.
+    // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
     if (shaderLen > 1 && now - this.shaderStartMs > this.shaderDurationMs) {
-      this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
-      this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
+      // Walk through pool, skipping blocked/deleted shaders
+      let picked = false;
+      for (let attempt = 0; attempt < shaderLen; attempt++) {
+        this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
+        const candidate = currentPhase.shaderModes[this.currentShaderIndex];
+        if (this.isShaderAllowed(candidate)) {
+          this.currentShaderMode = candidate;
+          picked = true;
+          break;
+        }
+      }
+      // If every shader in pool is blocked, keep current (don't flash)
+      if (!picked) {
+        this.currentShaderMode = currentPhase.shaderModes[this.currentShaderIndex] ?? "cosmos";
+      }
       this.shaderStartMs = now;
-      this.shaderDurationMs = this.randomShaderDuration(this.random);
+      this.shaderDurationMs = this.randomDuration(this.random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS);
     }
-    // Ensure current mode is valid for this phase (e.g. after phase change)
-    if (shaderLen > 0 && !currentPhase.shaderModes.includes(this.currentShaderMode)) {
-      this.currentShaderIndex = 0;
-      this.currentShaderMode = currentPhase.shaderModes[0] ?? "cosmos";
-      this.shaderStartMs = now;
-      this.shaderDurationMs = this.randomShaderDuration(this.random);
+    // ─── Dual shader (persistent 2nd layer) ───
+    // Switches on its own timer, independent of primary. Prefers Geometry shaders.
+    // The visualizer's existing fade-in/out handles the visual transition.
+    if (this.dualShaderInitialized && shaderLen >= 2) {
+      if (now - this.dualShaderStartMs > this.dualShaderDurationMs) {
+        this.dualShaderMode = this.pickDualShader(currentPhase);
+        this.dualShaderStartMs = now;
+        this.dualShaderDurationMs = this.randomDuration(this.random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
+      }
+    } else if (shaderLen < 2) {
+      this.dualShaderMode = null;
     }
 
-    // AI prompt progression at phase boundaries:
-    //   1. In crossfade zone (end of phase): switch to bridge prompt
-    //   2. During grace (start of new phase): hold bridge prompt
-    //   3. After grace: use new phase's pure prompt
-    const effectiveShader = this.graceActive ? this.graceShader : this.currentShaderMode;
+    // ─── Tertiary shader (sprinkled in every ~60s) ───
+    let inTertiaryMoment = false;
+    for (let i = 0; i < this.tertiaryMoments.length; i++) {
+      const m = this.tertiaryMoments[i];
+      if (clamped >= m.startProgress && clamped <= m.endProgress) {
+        inTertiaryMoment = true;
+        if (!this.tertiaryActive) {
+          const tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
+          // Skip if user blocked/deleted this shader since journey started
+          this.tertiaryShaderMode = tertiaryCandidate && this.isShaderAllowed(tertiaryCandidate)
+            ? tertiaryCandidate
+            : null;
+          this.tertiaryActive = true;
+        }
+        break;
+      }
+    }
+    if (!inTertiaryMoment && this.tertiaryActive) {
+      this.tertiaryShaderMode = null;
+      this.tertiaryActive = false;
+    }
+
+    const effectiveShader = this.currentShaderMode;
     const aiPrompt = this.graceActive
       ? this.graceAiPrompt
       : this.bridgeActive
@@ -396,33 +461,6 @@ class JourneyEngine {
       chime: iv((p) => p.ambientLayers.chime),
       fire: iv((p) => p.ambientLayers.fire),
     };
-
-    // Dual-shader logic: check if we're inside a scheduled dual-shader moment
-    let momentIdx = -1;
-    for (let i = 0; i < this.dualShaderMoments.length; i++) {
-      const m = this.dualShaderMoments[i];
-      if (clamped >= m.startProgress && clamped <= m.endProgress) {
-        momentIdx = i;
-        break;
-      }
-    }
-    const inDualMoment = momentIdx >= 0;
-
-    if (inDualMoment && currentPhase.shaderModes.length >= 2) {
-      if (!this.dualShaderActive) {
-        // Use pre-computed picks for this moment
-        const pick = this.dualShaderPicks.get(momentIdx);
-        if (pick) {
-          this.dualShaderMode = pick.dual;
-          this.tertiaryShaderMode = pick.tertiary;
-          this.dualShaderActive = true;
-        }
-      }
-    } else if (this.dualShaderActive) {
-      this.dualShaderMode = null;
-      this.tertiaryShaderMode = null;
-      this.dualShaderActive = false;
-    }
 
     const frame: JourneyFrame = {
       phase: currentPhase.id,
@@ -496,9 +534,8 @@ class JourneyEngine {
     return this.currentPhaseId;
   }
 
-  /** Get the current shader mode (respects phase transition grace period) */
+  /** Get the current shader mode */
   getCurrentShaderMode(): string {
-    if (this.graceActive) return this.graceShader || "cosmos";
     return this.currentShaderMode || "cosmos";
   }
 
@@ -569,13 +606,9 @@ class JourneyEngine {
 
   /**
    * Build a bridge prompt that blends the outgoing and incoming phase themes.
-   * Creates imagery that visually connects both phases — earthly elements
-   * gaining cosmic qualities, or cosmic scenes with grounded anchors emerging.
    */
   private buildBridgePrompt(outgoing: JourneyPhase, incoming: JourneyPhase): string {
-    // Extract the core visual concept from each prompt (first ~120 chars before modifiers)
     const extractCore = (prompt: string): string => {
-      // Take up to the first major comma break or 150 chars
       const parts = prompt.split(",");
       let core = "";
       for (const part of parts) {
@@ -591,76 +624,102 @@ class JourneyEngine {
     return `transitional scene bridging two visual worlds — elements of [${outCore}] beginning to dissolve and transform into [${inCore}], the forms from the first scene still partially visible but fragmenting into particles and light that reform into hints of the next scene, a liminal moment where both realities coexist in the same frame, shared particles and light connecting both visual languages, asymmetric composition with the dissolving forms anchored on one side and emerging forms materializing on the other, generous negative space between them filled with luminous particles traveling from old to new, no text no signatures no watermarks no letters no writing`;
   }
 
-  /** Generate a random shader duration in milliseconds */
-  private randomShaderDuration(random: () => number): number {
-    const lo = JourneyEngine.SHADER_SWITCH_MIN_SECS;
-    const hi = JourneyEngine.SHADER_SWITCH_MAX_SECS;
-    return (lo + random() * (hi - lo)) * 1000;
+  /** Generate a random duration in milliseconds between lo and hi seconds */
+  private randomDuration(random: () => number, loSec: number, hiSec: number): number {
+    return (loSec + random() * (hiSec - loSec)) * 1000;
+  }
+
+  /** Initialize the persistent dual shader from the first phase's pool */
+  private initDualShader(now: number, random: () => number): void {
+    if (!this.journey || this.journey.phases.length === 0) return;
+    const firstPhase = this.journey.phases[0];
+    if (firstPhase.shaderModes.length < 2) return;
+
+    this.dualShaderMode = this.pickDualShader(firstPhase);
+    this.dualShaderStartMs = now;
+    this.dualShaderDurationMs = this.randomDuration(random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
+    this.dualShaderInitialized = true;
   }
 
   /**
-   * Schedule dense dual-shader moments across the journey.
-   * Goal: ~60-70% of the journey has overlapping shaders for visual richness.
-   * Each moment lasts 24-42 seconds (expressed as progress fraction).
+   * Pick a dual shader from the phase's pool.
+   * Prefers Geometry shaders (~70% of the time) for visual impact.
+   * Avoids picking the same shader as the primary.
    */
-  private scheduleDualShaderMoments(random: () => number): void {
-    this.dualShaderMoments = [];
+  /** Check live user preferences — blocked or deleted shaders should be skipped */
+  private isShaderAllowed(mode: string): boolean {
+    const blocked = getUserBlockedShaders();
+    const deleted = getUserDeletedShaders();
+    return !blocked.has(mode) && !deleted.has(mode);
+  }
 
-    // Moment duration: 0.10-0.16 of progress (~30-48s for a 5min track)
-    // Minimum 30s ensures dual/tertiary shaders have time to fully fade in (~3s)
-    // and hold for a meaningful period before fading out (~2s) — no jarring flashes
-    const momentDuration = () => 0.10 + random() * 0.06;
+  private pickDualShader(phase: JourneyPhase): string {
+    const candidates = phase.shaderModes.filter(
+      m => m !== this.currentShaderMode && !MODES_3D.has(m) && this.isShaderAllowed(m)
+    );
+    if (candidates.length === 0) {
+      // Fallback: skip preference filter — better to show something than nothing
+      const fallback = phase.shaderModes.filter(m => !MODES_3D.has(m))[0] ?? phase.shaderModes[0] ?? "cosmos";
+      return fallback;
+    }
 
-    // 16 anchors every ~6% — dense coverage across the journey
-    const anchors = [
-      0.03, 0.09, 0.15, 0.21, 0.27, 0.33, 0.39, 0.45,
-      0.51, 0.57, 0.63, 0.69, 0.75, 0.81, 0.87, 0.93,
-    ];
-    for (const anchor of anchors) {
-      const jitter = (random() - 0.5) * 0.04;
-      const start = Math.max(0.02, Math.min(0.95, anchor + jitter));
-      const duration = momentDuration();
-      const end = Math.min(0.98, start + duration);
+    const geoModes = getGeometryModes();
+    const geoCandidates = candidates.filter(m => geoModes.has(m));
 
-      // Only reject if moments would directly overlap (no buffer)
-      const overlaps = this.dualShaderMoments.some(
-        (m) => start < m.endProgress && end > m.startProgress
-      );
-      if (!overlaps) {
-        this.dualShaderMoments.push({ startProgress: start, endProgress: end });
-      }
+    // 70% chance to pick a geometry shader if available
+    if (geoCandidates.length > 0 && this.random() < 0.7) {
+      return geoCandidates[Math.floor(this.random() * geoCandidates.length)];
+    }
+    return candidates[Math.floor(this.random() * candidates.length)];
+  }
+
+  /**
+   * Schedule tertiary shader moments — every ~60s, lasting 20-30s.
+   * This creates the "sprinkled in" 3rd layer effect.
+   */
+  private scheduleTertiaryMoments(random: () => number): void {
+    this.tertiaryMoments = [];
+
+    // Convert 60s intervals to progress fractions
+    const intervalProgress = this.trackDuration > 0 ? 60 / this.trackDuration : 0.20;
+    const momentDuration = this.trackDuration > 0
+      ? (20 + random() * 10) / this.trackDuration  // 20-30s in progress
+      : 0.08;
+
+    // Start first tertiary ~45s in (give the journey time to establish)
+    let cursor = this.trackDuration > 0 ? 45 / this.trackDuration : 0.15;
+
+    while (cursor < 0.92) {
+      const duration = momentDuration + (random() - 0.5) * 0.02;
+      const start = cursor;
+      const end = Math.min(0.96, start + duration);
+      this.tertiaryMoments.push({ startProgress: start, endProgress: end });
+      // Next moment ~60s later (with some jitter)
+      cursor = end + intervalProgress + (random() - 0.5) * 0.03;
     }
   }
 
-  /**
-   * Pre-compute which shaders to use for each dual-shader moment.
-   * For each moment, finds which phase it falls in, shuffles that phase's pool
-   * with the seeded random, and stores the picks.
-   */
-  private precomputeDualShaderPicks(random: () => number): void {
-    this.dualShaderPicks.clear();
+  /** Pre-compute which shader to use for each tertiary moment */
+  private precomputeTertiaryPicks(random: () => number): void {
+    this.tertiaryPicks.clear();
     if (!this.journey) return;
 
     const { phases } = this.journey;
 
-    for (let i = 0; i < this.dualShaderMoments.length; i++) {
-      const moment = this.dualShaderMoments[i];
+    for (let i = 0; i < this.tertiaryMoments.length; i++) {
+      const moment = this.tertiaryMoments[i];
       const midPoint = (moment.startProgress + moment.endProgress) / 2;
 
-      // Find which phase this moment falls in
       const phase = phases.find((p) => midPoint >= p.start && midPoint <= p.end);
-      if (!phase || phase.shaderModes.length < 2) continue;
+      if (!phase || phase.shaderModes.length < 3) continue;
 
-      // Filter out heavy 3D modes from dual shader candidates
-      const candidates = phase.shaderModes.filter(m => !MODES_3D.has(m));
+      // Pick a shader different from what primary and dual would likely be
+      const candidates = phase.shaderModes.filter(m => !MODES_3D.has(m) && this.isShaderAllowed(m));
       if (candidates.length < 1) continue;
 
-      // Shuffle the filtered pool and pick dual + tertiary shaders
       const shuffled = seededShuffle(candidates, random);
-      this.dualShaderPicks.set(i, {
-        dual: shuffled[0],
-        tertiary: shuffled.length > 2 ? shuffled[1] : null,
-      });
+      // Pick from the end of the shuffled list (least likely to be primary/dual)
+      this.tertiaryPicks.set(i, shuffled[shuffled.length - 1]);
     }
   }
 

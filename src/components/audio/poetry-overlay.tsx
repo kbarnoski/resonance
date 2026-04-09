@@ -212,7 +212,7 @@ export function PoetryOverlay({
           count: BATCH_SIZE,
           avoid,
           avoidKeywords,
-          phase: phase ?? undefined,
+          phase: phaseRef.current ?? undefined,
           language: languageRef.current,
           imagery: realmImageryRef.current ?? undefined,
           vizTheme: typographyTheme ?? undefined,
@@ -235,7 +235,7 @@ export function PoetryOverlay({
     } finally {
       fetchingRef.current = false;
     }
-  }, [mood, moodOverride, keySignature, tempo, summary, phase, realmImagery, typographyTheme]);
+  }, [mood, moodOverride, keySignature, tempo, summary, realmImagery, typographyTheme]);
 
   // When viz theme changes, flush stale buffer
   const prevThemeRef = useRef(typographyTheme);

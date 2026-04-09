@@ -20,6 +20,11 @@ const AI_BACKDROP_SHADERS: VisualizerMode[] = [
   "tide", "ember",
 ];
 
+/** Consistent ~2s fade duration for all shader transitions (at 60fps) */
+const SHADER_FADE_RATE = 0.008;
+const DUAL_SHADER_MAX_OPACITY = 0.85;
+const TERTIARY_SHADER_MAX_OPACITY = 0.60;
+
 /** Pick a deterministic backdrop shader for an AI mode */
 function getAiBackdropShader(aiMode: string): VisualizerMode {
   let hash = 0;
@@ -145,45 +150,18 @@ void main() {
 }
 `;
 
-interface ShaderProgramResult {
-  program: WebGLProgram;
-  vertShader: WebGLShader;
-  fragShader: WebGLShader;
-}
-
-function createShaderProgram(gl: WebGLRenderingContext, fragSource: string): ShaderProgramResult | null {
-  const vs = gl.createShader(gl.VERTEX_SHADER)!;
-  gl.shaderSource(vs, VERTEX_SHADER);
-  gl.compileShader(vs);
-  if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-    console.error("Vertex shader:", gl.getShaderInfoLog(vs));
-    return null;
-  }
-
-  const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
-  gl.shaderSource(fs, fragSource);
-  gl.compileShader(fs);
-  if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-    console.error("Fragment shader:", gl.getShaderInfoLog(fs));
-    return null;
-  }
-
-  const prog = gl.createProgram()!;
-  gl.attachShader(prog, vs);
-  gl.attachShader(prog, fs);
-  gl.linkProgram(prog);
-  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
-    console.error("Program link:", gl.getProgramInfoLog(prog));
-    return null;
-  }
-
-  return { program: prog, vertShader: vs, fragShader: fs };
-}
+// createShaderProgram removed — compilation is now async inside ShaderVisualizer's
+// rAF loop using KHR_parallel_shader_compile to avoid blocking the main thread.
 
 // SHADERS, MODE_META, MODES_3D, MODE_CATEGORIES now imported from @/lib/shaders
 export { SHADERS, MODE_META, MODE_CATEGORIES, MODES_3D } from "@/lib/shaders";
 
-// ─── ShaderVisualizer (unchanged WebGL canvas) ───
+// ─── ShaderVisualizer (async WebGL compilation) ───
+//
+// Uses KHR_parallel_shader_compile to compile shaders without blocking
+// the main thread. The rAF loop polls for completion status and only
+// starts rendering once the program is ready. This prevents the 50-200ms
+// freezes that caused visible glitches during shader crossfades.
 
 export function ShaderVisualizer({
   analyser,
@@ -191,6 +169,7 @@ export function ShaderVisualizer({
   fragShader,
   style,
   smoothMotion = false,
+  onReady,
 }: {
   analyser: AnalyserLike;
   dataArray: Uint8Array<ArrayBuffer>;
@@ -198,10 +177,14 @@ export function ShaderVisualizer({
   style?: React.CSSProperties;
   /** When true, use smooth time-based motion instead of audio reactivity */
   smoothMotion?: boolean;
+  /** Fires when the shader has compiled and rendered its first frame */
+  onReady?: () => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const smoothRef = useRef({ bass: 0, mid: 0, treble: 0, amplitude: 0 });
   const smoothMotionRef = useRef(smoothMotion);
+  const onReadyRef = useRef(onReady);
+  onReadyRef.current = onReady;
 
   // Keep ref in sync without tearing down GL program
   useEffect(() => {
@@ -215,31 +198,40 @@ export function ShaderVisualizer({
     const gl = canvas.getContext("webgl");
     if (!gl) return;
 
-    const result = createShaderProgram(gl, fragShader);
-    if (!result) return;
-    const { program, vertShader, fragShader: fragShaderObj } = result;
+    // KHR_parallel_shader_compile: supported in Chrome 76+, Firefox 95+, Safari 15.4+.
+    // With this extension, compileShader() and linkProgram() return immediately
+    // and compilation happens on a GPU thread. We poll COMPLETION_STATUS_KHR
+    // each frame to check if done, avoiding 50-200ms main thread freezes.
+    const ext = gl.getExtension("KHR_parallel_shader_compile");
 
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    // Start compilation — non-blocking when extension is available
+    const vs = gl.createShader(gl.VERTEX_SHADER)!;
+    gl.shaderSource(vs, VERTEX_SHADER);
+    gl.compileShader(vs);
 
-    const posLoc = gl.getAttribLocation(program, "a_position");
-    gl.enableVertexAttribArray(posLoc);
-    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
-
-    const uTime = gl.getUniformLocation(program, "u_time");
-    const uRes = gl.getUniformLocation(program, "u_resolution");
-    const uBass = gl.getUniformLocation(program, "u_bass");
-    const uMid = gl.getUniformLocation(program, "u_mid");
-    const uTreble = gl.getUniformLocation(program, "u_treble");
-    const uAmplitude = gl.getUniformLocation(program, "u_amplitude");
+    const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+    gl.shaderSource(fs, fragShader);
+    gl.compileShader(fs);
 
     let animId: number;
-    const startTime = performance.now();
-    const SMOOTHING = 0.06;      // Smooth but responsive
-    const REACTIVITY = 0.85;     // Scale factor — noticeable audio response
+    let program: WebGLProgram | null = null;
+    let buffer: WebGLBuffer | null = null;
+    let posLoc = -1;
+    let uTime: WebGLUniformLocation | null = null;
+    let uRes: WebGLUniformLocation | null = null;
+    let uBass: WebGLUniformLocation | null = null;
+    let uMid: WebGLUniformLocation | null = null;
+    let uTreble: WebGLUniformLocation | null = null;
+    let uAmplitude: WebGLUniformLocation | null = null;
+
+    let lastFrameTime = performance.now();
+    let cumTime = 0;
+    const SMOOTHING = 0.06;
+    const REACTIVITY = 0.85;
     let lastW = 0;
     let lastH = 0;
+    let compilePhase: "compiling" | "linking" | "ready" = "compiling";
+    let readyFired = false;
 
     // Cap at 1x DPR — shaders are abstract/blurry by nature, retina resolution
     // is wasted GPU work. Cuts pixel count by 4x on retina displays.
@@ -247,6 +239,88 @@ export function ShaderVisualizer({
 
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
+
+      const now = performance.now();
+      const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
+      lastFrameTime = now;
+      cumTime += dt;
+      const time = cumTime;
+
+      // ── Async compilation state machine ──
+      // Polls GPU compilation status each frame. Canvas stays blank/transparent
+      // during compilation, which is invisible because the crossfade keeps the
+      // old shader at full opacity until we signal onReady.
+      if (compilePhase === "compiling") {
+        if (ext) {
+          const vsReady = gl.getShaderParameter(vs, ext.COMPLETION_STATUS_KHR);
+          const fsReady = gl.getShaderParameter(fs, ext.COMPLETION_STATUS_KHR);
+          if (!vsReady || !fsReady) {
+            animId = requestAnimationFrame(render);
+            return; // Still compiling on GPU thread, try next frame
+          }
+        }
+        // Compilation finished (or was synchronous without ext) — check status
+        if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
+          console.error("Vertex shader:", gl.getShaderInfoLog(vs));
+          return;
+        }
+        if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
+          console.error("Fragment shader:", gl.getShaderInfoLog(fs));
+          return;
+        }
+        // Start linking (non-blocking with ext)
+        program = gl.createProgram()!;
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.linkProgram(program);
+        compilePhase = "linking";
+        if (ext) {
+          animId = requestAnimationFrame(render);
+          return; // Poll for link completion next frame
+        }
+        // Without ext, linkProgram was synchronous — fall through
+      }
+
+      if (compilePhase === "linking") {
+        if (ext) {
+          if (!gl.getProgramParameter(program!, ext.COMPLETION_STATUS_KHR)) {
+            animId = requestAnimationFrame(render);
+            return; // Still linking on GPU thread
+          }
+        }
+        if (!gl.getProgramParameter(program!, gl.LINK_STATUS)) {
+          console.error("Program link:", gl.getProgramInfoLog(program!));
+          return;
+        }
+        // Set up vertex buffer and attribute
+        buffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        posLoc = gl.getAttribLocation(program!, "a_position");
+        gl.enableVertexAttribArray(posLoc);
+        gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+        // Cache uniform locations
+        uTime = gl.getUniformLocation(program!, "u_time");
+        uRes = gl.getUniformLocation(program!, "u_resolution");
+        uBass = gl.getUniformLocation(program!, "u_bass");
+        uMid = gl.getUniformLocation(program!, "u_mid");
+        uTreble = gl.getUniformLocation(program!, "u_treble");
+        uAmplitude = gl.getUniformLocation(program!, "u_amplitude");
+        compilePhase = "ready";
+      }
+
+      if (compilePhase !== "ready") {
+        animId = requestAnimationFrame(render);
+        return;
+      }
+
+      // Signal readiness on the first rendered frame — triggers crossfade start
+      if (!readyFired) {
+        readyFired = true;
+        onReadyRef.current?.();
+      }
+
+      // ── Normal rendering ──
       const w = Math.round(canvas.clientWidth * dpr);
       const h = Math.round(canvas.clientHeight * dpr);
       if (w !== lastW || h !== lastH) {
@@ -257,42 +331,34 @@ export function ShaderVisualizer({
         lastH = h;
       }
 
-      const time = (performance.now() - startTime) / 1000;
-
       const s = smoothRef.current;
-
       if (smoothMotionRef.current) {
-        // Smooth continuous motion — gentle sine waves, no audio reactivity
         s.bass = 0.3 + 0.12 * Math.sin(time * 0.13);
         s.mid = 0.25 + 0.1 * Math.sin(time * 0.17 + 1.0);
         s.treble = 0.2 + 0.08 * Math.sin(time * 0.23 + 2.0);
         s.amplitude = 0.28 + 0.1 * Math.sin(time * 0.11 + 0.5);
       } else {
         analyser.getByteFrequencyData(dataArray);
-
-        // Extract frequency bands
         let bassSum = 0, midSum = 0, trebleSum = 0, totalSum = 0;
-        const len = dataArray.length; // 128 bins (fftSize=256)
+        const len = dataArray.length;
         for (let i = 0; i < len; i++) {
           const v = dataArray[i];
           totalSum += v;
-          if (i <= 5) bassSum += v;        // bins 0-5: ~0-860Hz
-          else if (i <= 30) midSum += v;    // bins 6-30: ~860-5160Hz
-          else if (i <= 63) trebleSum += v; // bins 31-63: ~5160-11kHz
+          if (i <= 5) bassSum += v;
+          else if (i <= 30) midSum += v;
+          else if (i <= 63) trebleSum += v;
         }
         const rawBass = bassSum / (6 * 255);
         const rawMid = midSum / (25 * 255);
         const rawTreble = trebleSum / (33 * 255);
         const rawAmplitude = totalSum / (len * 255);
-
-        // Exponential smoothing
         s.bass += (rawBass - s.bass) * SMOOTHING;
         s.mid += (rawMid - s.mid) * SMOOTHING;
         s.treble += (rawTreble - s.treble) * SMOOTHING;
         s.amplitude += (rawAmplitude - s.amplitude) * SMOOTHING;
       }
 
-      gl.useProgram(program);
+      gl.useProgram(program!);
       gl.uniform1f(uTime, time);
       gl.uniform2f(uRes, canvas.width, canvas.height);
       gl.uniform1f(uBass, s.bass * REACTIVITY);
@@ -309,18 +375,16 @@ export function ShaderVisualizer({
     return () => {
       cancelAnimationFrame(animId);
       // Full GPU cleanup — prevent memory leaks across 15-20 shader switches per journey
-      gl.disableVertexAttribArray(posLoc);
-      gl.deleteBuffer(buffer);
-      gl.deleteProgram(program);
-      gl.deleteShader(vertShader);
-      gl.deleteShader(fragShaderObj);
-      // Release framebuffer memory by zeroing the canvas dimensions.
-      // We can't use WEBGL_lose_context because React may reuse this canvas
-      // element when the fragShader prop changes (effect re-runs on same canvas).
-      canvas.width = 0;
-      canvas.height = 0;
+      if (posLoc >= 0) gl.disableVertexAttribArray(posLoc);
+      if (buffer) gl.deleteBuffer(buffer);
+      if (program) gl.deleteProgram(program);
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+      // No canvas.width=0 — React unmounts the canvas element on mode change
+      // (key={layerMode}), so zeroing dimensions just wastes GPU cycles on
+      // framebuffer reallocation for a canvas that's about to be removed.
     };
-  }, [analyser, dataArray, fragShader]); // smoothMotion read via ref — no need to tear down GL
+  }, [analyser, dataArray, fragShader]); // smoothMotion + onReady read via refs
 
   return (
     <canvas
@@ -422,7 +486,9 @@ export function VisualizerCore({
   // Transport state — only read when transport is shown
   const currentTrack = useAudioStore((s) => showTransport ? s.currentTrack : null);
   const isPlaying = useAudioStore((s) => showTransport ? s.isPlaying : false);
-  const currentTime = useAudioStore((s) => s.currentTime);
+  // Round to nearest second — only re-render when display changes, not 15x/sec.
+  // The progress bar smoothness comes from CSS transitions, not React re-renders.
+  const currentTime = useAudioStore((s) => showTransport ? Math.round(s.currentTime) : 0);
   const duration = useAudioStore((s) => s.duration);
   const storePause = useAudioStore((s) => s.pause);
   const storeResume = useAudioStore((s) => s.resume);
@@ -441,128 +507,245 @@ export function VisualizerCore({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [langPickerOpen, setLangPickerOpen] = useState(false);
 
-  // Smooth dual-shader crossfade when viz mode changes
-  // Uses refs + direct DOM manipulation to avoid 60fps React re-renders
-  const [renderMode, setRenderMode] = useState<VisualizerMode>(mode);
-  const [prevRenderMode, setPrevRenderMode] = useState<VisualizerMode | null>(null);
-  const crossfadeRef = useRef<number>(0);
-  const prevModeRef = useRef(mode);
-  const prevLayerRef = useRef<HTMLDivElement>(null);
-  const nextLayerRef = useRef<HTMLDivElement>(null);
-  // Captured opacity when a crossfade is interrupted — prevents opacity jump from e.g. 0.5→1
-  const prevCapturedOpacityRef = useRef<number>(1);
+  // ── A/B buffer crossfade ──
+  // Two persistent shader layers swap roles during transitions. The active layer
+  // renders the current shader at full opacity. When mode changes, the INACTIVE
+  // layer silently compiles the new shader (at opacity 0). Once ready, a rAF-based
+  // crossfade swaps them. No React key remounting, no WebGL context destruction.
+  const actualPrimaryMode = (shaderDimmed ? JOURNEY_PICKER_SHADER : mode) as VisualizerMode;
+  const [layerAMode, setLayerAMode] = useState<VisualizerMode>(actualPrimaryMode);
+  const [layerBMode, setLayerBMode] = useState<VisualizerMode | null>(null);
+  const activeLayerRef = useRef<'a' | 'b'>('a');
+  const layerADivRef = useRef<HTMLDivElement>(null);
+  const layerBDivRef = useRef<HTMLDivElement>(null);
+  const primaryFadeRef = useRef<number>(0);
+  const primaryPrevModeRef = useRef(actualPrimaryMode);
+  // Callback refs: set initial opacity exactly once on mount (survives React re-renders)
+  const setLayerARef = useCallback((el: HTMLDivElement | null) => {
+    layerADivRef.current = el;
+    if (el) el.style.opacity = "1";
+  }, []);
+  const setLayerBRef = useCallback((el: HTMLDivElement | null) => {
+    layerBDivRef.current = el;
+    if (el) el.style.opacity = "0";
+  }, []);
 
-  // Dual shader smooth fade — keep it mounted while fading out
-  const [dualShaderVisible, setDualShaderVisible] = useState<string | null>(null);
-  const dualShaderRef = useRef<HTMLDivElement>(null);
+  // Dual shader A/B buffer — same persistent-layer pattern
+  const [dualLayerAMode, setDualLayerAMode] = useState<string | null>(null);
+  const [dualLayerBMode, setDualLayerBMode] = useState<string | null>(null);
+  const dualActiveRef = useRef<'a' | 'b'>('a');
+  const dualLayerADivRef = useRef<HTMLDivElement>(null);
+  const dualLayerBDivRef = useRef<HTMLDivElement>(null);
   const dualFadeRef = useRef<number>(0);
+  const dualPrevTargetRef = useRef<string | null>(null);
+  const setDualLayerARef = useCallback((el: HTMLDivElement | null) => {
+    dualLayerADivRef.current = el;
+    if (el) el.style.opacity = "0";
+  }, []);
+  const setDualLayerBRef = useCallback((el: HTMLDivElement | null) => {
+    dualLayerBDivRef.current = el;
+    if (el) el.style.opacity = "0";
+  }, []);
 
-  useEffect(() => {
-    if (mode !== prevModeRef.current) {
-      cancelAnimationFrame(crossfadeRef.current);
+  // ── A/B ready callbacks ──
+  // Each layer signals readiness after async shader compilation. A crossfade only
+  // starts when the correct layer (tracked by waitingForRef) reports ready.
+  const primaryReadyCbRef = useRef<(() => void) | null>(null);
+  const primaryReadyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const primaryWaitingForRef = useRef<'a' | 'b' | null>(null);
+  const dualReadyCbRef = useRef<(() => void) | null>(null);
+  const dualReadyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const dualWaitingForRef = useRef<'a' | 'b' | null>(null);
+  const tertiaryNextReadyCbRef = useRef<(() => void) | null>(null);
+  const tertiaryNextReadyTimeoutRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-      // Capture the "next" layer's current DOM opacity BEFORE React re-renders.
-      // When interrupting a mid-crossfade (A→B at 50%, now B→C), the B layer
-      // was at partial opacity. Without this capture, React would reset it to 1
-      // via inline style, causing a visible pop.
-      let capturedOpacity = 1;
-      if (nextLayerRef.current) {
-        const parsed = parseFloat(nextLayerRef.current.style.opacity);
-        if (!isNaN(parsed)) capturedOpacity = parsed;
-      } else if (prevLayerRef.current) {
-        // No active crossfade — current shader is in the "settled" position
-        // (no nextLayerRef). Read from prevLayerRef if it exists, otherwise 1.
-        const parsed = parseFloat(prevLayerRef.current.style.opacity);
-        if (!isNaN(parsed)) capturedOpacity = parsed;
-      }
-      prevCapturedOpacityRef.current = Math.max(0.01, capturedOpacity);
-
-      setPrevRenderMode(prevModeRef.current);
-      setRenderMode(mode);
-      prevModeRef.current = mode;
-
-      // Start crossfade on next frame (after React renders the new layers)
-      crossfadeRef.current = requestAnimationFrame(() => {
-        // Use the pre-captured opacity — the DOM value may have been overwritten
-        // by React's reconciliation between setState and this rAF callback.
-        const prevStartOpacity = prevCapturedOpacityRef.current;
-        if (nextLayerRef.current) nextLayerRef.current.style.opacity = "0";
-
-        let progress = 0;
-        const animate = () => {
-          progress = Math.min(1, progress + 0.011); // ~90 frames (~1.5s at 60fps)
-          const eased = progress < 0.5
-            ? 2 * progress * progress
-            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-
-          const outOpacity = Math.max(0, prevStartOpacity * (1 - eased));
-          if (prevLayerRef.current) prevLayerRef.current.style.opacity = String(outOpacity);
-          if (nextLayerRef.current) nextLayerRef.current.style.opacity = String(eased);
-
-          if (progress < 1) {
-            crossfadeRef.current = requestAnimationFrame(animate);
-          } else {
-            setPrevRenderMode(null);
-          }
-        };
-        crossfadeRef.current = requestAnimationFrame(animate);
-      });
-
-      return () => cancelAnimationFrame(crossfadeRef.current);
+  const handleLayerAReady = useCallback(() => {
+    if (primaryWaitingForRef.current === 'a') {
+      clearTimeout(primaryReadyTimeoutRef.current);
+      const cb = primaryReadyCbRef.current;
+      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
     }
-  }, [mode]);
+  }, []);
+  const handleLayerBReady = useCallback(() => {
+    if (primaryWaitingForRef.current === 'b') {
+      clearTimeout(primaryReadyTimeoutRef.current);
+      const cb = primaryReadyCbRef.current;
+      if (cb) { primaryReadyCbRef.current = null; primaryWaitingForRef.current = null; cb(); }
+    }
+  }, []);
+  const handleDualLayerAReady = useCallback(() => {
+    if (dualWaitingForRef.current === 'a') {
+      clearTimeout(dualReadyTimeoutRef.current);
+      const cb = dualReadyCbRef.current;
+      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+    }
+  }, []);
+  const handleDualLayerBReady = useCallback(() => {
+    if (dualWaitingForRef.current === 'b') {
+      clearTimeout(dualReadyTimeoutRef.current);
+      const cb = dualReadyCbRef.current;
+      if (cb) { dualReadyCbRef.current = null; dualWaitingForRef.current = null; cb(); }
+    }
+  }, []);
+  const handleTertiaryShaderReady = useCallback(() => {
+    clearTimeout(tertiaryNextReadyTimeoutRef.current);
+    const cb = tertiaryNextReadyCbRef.current;
+    if (cb) { cb(); tertiaryNextReadyCbRef.current = null; }
+  }, []);
 
-  // Smooth fade for dual shader layer (peak journey moments)
-  // Keep it always mounted when there's a mode, use CSS transition for the fade
+  // Primary shader A/B crossfade — triggered when actualPrimaryMode changes
+  // (from mode change, dimmed→undimmed transition, or journey shader switch)
+  useEffect(() => {
+    if (actualPrimaryMode === primaryPrevModeRef.current) return;
+    primaryPrevModeRef.current = actualPrimaryMode;
+
+    // Cancel any in-progress crossfade
+    cancelAnimationFrame(primaryFadeRef.current);
+    clearTimeout(primaryReadyTimeoutRef.current);
+    primaryReadyCbRef.current = null;
+    primaryWaitingForRef.current = null;
+
+    const active = activeLayerRef.current;
+    const inactive: 'a' | 'b' = active === 'a' ? 'b' : 'a';
+    const activeDivRef = active === 'a' ? layerADivRef : layerBDivRef;
+    const inactiveDivRef = inactive === 'a' ? layerADivRef : layerBDivRef;
+
+    // Snap opacities: active stays visible, inactive stays hidden.
+    // This handles interruptions — if a crossfade was at 50%, snap back cleanly.
+    if (activeDivRef.current) activeDivRef.current.style.opacity = "1";
+    if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
+
+    // Set new shader on the inactive layer (compiles in background at opacity 0)
+    if (inactive === 'a') setLayerAMode(actualPrimaryMode);
+    else setLayerBMode(actualPrimaryMode);
+
+    // Crossfade animation — starts after inactive layer reports ready
+    const startCrossfade = () => {
+      if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
+      let progress = 0;
+      const animate = () => {
+        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const eased = progress < 0.5
+          ? 2 * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        if (activeDivRef.current) activeDivRef.current.style.opacity = String(1 - eased);
+        if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = String(eased);
+        if (progress < 1) {
+          primaryFadeRef.current = requestAnimationFrame(animate);
+        } else {
+          activeLayerRef.current = inactive;
+        }
+      };
+      primaryFadeRef.current = requestAnimationFrame(animate);
+    };
+
+    primaryWaitingForRef.current = inactive;
+    primaryReadyCbRef.current = startCrossfade;
+    // Safety timeout — start crossfade even if onReady never fires (GL context lost, 3D mode)
+    primaryReadyTimeoutRef.current = setTimeout(() => {
+      if (primaryReadyCbRef.current) {
+        primaryReadyCbRef.current();
+        primaryReadyCbRef.current = null;
+        primaryWaitingForRef.current = null;
+      }
+    }, 3000);
+
+    return () => {
+      cancelAnimationFrame(primaryFadeRef.current);
+      clearTimeout(primaryReadyTimeoutRef.current);
+      primaryReadyCbRef.current = null;
+      primaryWaitingForRef.current = null;
+    };
+  }, [actualPrimaryMode]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Dual shader A/B crossfade — handles both shader-to-shader swaps and removal
   const dualShaderTarget = journeyDualShaderMode && SHADERS[journeyDualShaderMode as VisualizerMode]
     ? journeyDualShaderMode : null;
 
   useEffect(() => {
+    if (dualShaderTarget === dualPrevTargetRef.current) return;
+    dualPrevTargetRef.current = dualShaderTarget;
+
+    cancelAnimationFrame(dualFadeRef.current);
+    clearTimeout(dualReadyTimeoutRef.current);
+    dualReadyCbRef.current = null;
+    dualWaitingForRef.current = null;
+
+    const active = dualActiveRef.current;
+    const inactive: 'a' | 'b' = active === 'a' ? 'b' : 'a';
+    const activeDivRef = active === 'a' ? dualLayerADivRef : dualLayerBDivRef;
+    const inactiveDivRef = inactive === 'a' ? dualLayerADivRef : dualLayerBDivRef;
+
     if (dualShaderTarget) {
-      // Hide immediately via ref BEFORE React re-renders — prevents 1-2 frame flash
-      // where old WebGL context is destroyed but div is still at old opacity
-      if (dualShaderRef.current) dualShaderRef.current.style.opacity = "0";
-      // Mount the shader, start fading in on next frame
-      setDualShaderVisible(dualShaderTarget);
-      cancelAnimationFrame(dualFadeRef.current);
-      let progress = 0;
-      const fadeIn = () => {
-        progress = Math.min(1, progress + 0.006);
-        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-        if (dualShaderRef.current) dualShaderRef.current.style.opacity = String(eased * 0.75);
-        if (progress < 1) dualFadeRef.current = requestAnimationFrame(fadeIn);
+      // New or changed dual shader — crossfade from active to inactive
+      if (inactiveDivRef.current) inactiveDivRef.current.style.opacity = "0";
+
+      // Set new shader on inactive layer
+      if (inactive === 'a') setDualLayerAMode(dualShaderTarget);
+      else setDualLayerBMode(dualShaderTarget);
+
+      const startDualCrossfade = () => {
+        const activeStartOpacity = activeDivRef.current
+          ? parseFloat(activeDivRef.current.style.opacity || "0") : 0;
+
+        let progress = 0;
+        const animate = () => {
+          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const eased = progress < 0.5
+            ? 2 * progress * progress
+            : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+          if (activeDivRef.current) {
+            activeDivRef.current.style.opacity = String(Math.max(0, activeStartOpacity * (1 - eased)));
+          }
+          if (inactiveDivRef.current) {
+            inactiveDivRef.current.style.opacity = String(DUAL_SHADER_MAX_OPACITY * eased);
+          }
+          if (progress < 1) {
+            dualFadeRef.current = requestAnimationFrame(animate);
+          } else {
+            dualActiveRef.current = inactive;
+          }
+        };
+        dualFadeRef.current = requestAnimationFrame(animate);
       };
-      // Wait two frames for React to mount and WebGL to initialize
-      dualFadeRef.current = requestAnimationFrame(() => {
-        if (dualShaderRef.current) dualShaderRef.current.style.opacity = "0";
-        dualFadeRef.current = requestAnimationFrame(fadeIn);
-      });
+
+      dualWaitingForRef.current = inactive;
+      dualReadyCbRef.current = startDualCrossfade;
+      dualReadyTimeoutRef.current = setTimeout(() => {
+        if (dualReadyCbRef.current) {
+          dualReadyCbRef.current();
+          dualReadyCbRef.current = null;
+          dualWaitingForRef.current = null;
+        }
+      }, 3000);
     } else {
-      // Fade out, then unmount
-      cancelAnimationFrame(dualFadeRef.current);
-      if (!dualShaderRef.current) {
-        setDualShaderVisible(null);
-        return;
-      }
-      const startOpacity = parseFloat(dualShaderRef.current.style.opacity || "0");
-      if (startOpacity <= 0.001) {
-        setDualShaderVisible(null);
-        return;
-      }
+      // Dual shader removed — fade out the active layer
+      if (!activeDivRef.current) return;
+      const startOpacity = parseFloat(activeDivRef.current.style.opacity || "0");
+      if (startOpacity <= 0.001) return;
+
       let progress = 0;
       const fadeOut = () => {
-        progress = Math.min(1, progress + 0.005); // ~200 frames (~3.3s) — gentle exit
-        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-        if (dualShaderRef.current) dualShaderRef.current.style.opacity = String(startOpacity * (1 - eased));
+        progress = Math.min(1, progress + SHADER_FADE_RATE);
+        const eased = progress < 0.5
+          ? 2 * progress * progress
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+        if (activeDivRef.current) {
+          activeDivRef.current.style.opacity = String(Math.max(0, startOpacity * (1 - eased)));
+        }
         if (progress < 1) {
           dualFadeRef.current = requestAnimationFrame(fadeOut);
-        } else {
-          setDualShaderVisible(null);
         }
       };
       dualFadeRef.current = requestAnimationFrame(fadeOut);
     }
-    return () => cancelAnimationFrame(dualFadeRef.current);
+
+    return () => {
+      cancelAnimationFrame(dualFadeRef.current);
+      clearTimeout(dualReadyTimeoutRef.current);
+      dualReadyCbRef.current = null;
+      dualWaitingForRef.current = null;
+    };
   }, [dualShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Tertiary shader layer — third layer for even richer visuals during journey moments
@@ -579,19 +762,35 @@ export function VisualizerCore({
       if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
       setTertiaryShaderVisible(tertiaryShaderTarget);
       cancelAnimationFrame(tertiaryFadeRef.current);
-      let progress = 0;
-      const fadeIn = () => {
-        progress = Math.min(1, progress + 0.005);
-        const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
-        if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * 0.60);
-        if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
+      clearTimeout(tertiaryNextReadyTimeoutRef.current);
+      tertiaryNextReadyCbRef.current = null;
+
+      const startFadeIn = () => {
+        let progress = 0;
+        const fadeIn = () => {
+          progress = Math.min(1, progress + SHADER_FADE_RATE);
+          const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+          if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(eased * TERTIARY_SHADER_MAX_OPACITY);
+          if (progress < 1) tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
+        };
+        tertiaryFadeRef.current = requestAnimationFrame(() => {
+          if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
+          tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
+        });
       };
-      tertiaryFadeRef.current = requestAnimationFrame(() => {
-        if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = "0";
-        tertiaryFadeRef.current = requestAnimationFrame(fadeIn);
-      });
+
+      // Wait for async compilation to finish before fading in
+      tertiaryNextReadyCbRef.current = startFadeIn;
+      tertiaryNextReadyTimeoutRef.current = setTimeout(() => {
+        if (tertiaryNextReadyCbRef.current) {
+          tertiaryNextReadyCbRef.current();
+          tertiaryNextReadyCbRef.current = null;
+        }
+      }, 3000);
     } else {
       cancelAnimationFrame(tertiaryFadeRef.current);
+      clearTimeout(tertiaryNextReadyTimeoutRef.current);
+      tertiaryNextReadyCbRef.current = null;
       if (!tertiaryShaderRef.current) {
         setTertiaryShaderVisible(null);
         return;
@@ -603,7 +802,7 @@ export function VisualizerCore({
       }
       let progress = 0;
       const fadeOut = () => {
-        progress = Math.min(1, progress + 0.004); // ~250 frames (~4s) — very gentle exit
+        progress = Math.min(1, progress + SHADER_FADE_RATE);
         const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
         if (tertiaryShaderRef.current) tertiaryShaderRef.current.style.opacity = String(startOpacity * (1 - eased));
         if (progress < 1) {
@@ -614,7 +813,11 @@ export function VisualizerCore({
       };
       tertiaryFadeRef.current = requestAnimationFrame(fadeOut);
     }
-    return () => cancelAnimationFrame(tertiaryFadeRef.current);
+    return () => {
+      cancelAnimationFrame(tertiaryFadeRef.current);
+      clearTimeout(tertiaryNextReadyTimeoutRef.current);
+      tertiaryNextReadyCbRef.current = null;
+    };
   }, [tertiaryShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Sync config ref for parent to read
@@ -629,62 +832,25 @@ export function VisualizerCore({
     setVibe(result.mood);
   }, [analysis]);
 
-  const renderShaderLayer = (layerMode: VisualizerMode, zIndex: number, ref?: React.Ref<HTMLDivElement>, initialOpacity?: number) => {
+  // Renders shader content for a given mode — no wrapper divs, no React keys.
+  // Used by A/B buffer layers which handle their own outer/inner wrappers.
+  const renderLayerContent = (layerMode: VisualizerMode, onShaderReady?: () => void) => {
     const layerIs3D = MODES_3D.has(layerMode);
     const layerIsAI = MODES_AI.has(layerMode);
 
-    // Two-layer approach to prevent crossfade ↔ CSS variable conflicts:
-    // Outer div: --shader-opacity from JourneyCompositor (never animated by crossfade)
-    // Inner div: crossfade opacity (animated by rAF via ref, independent of CSS variable)
-    // This prevents flashes when the rAF animation targets opacity=1 but the CSS
-    // variable says opacity should be lower (e.g. during AI image display).
-    const outerStyle: React.CSSProperties = {
-      position: "absolute",
-      inset: 0,
-      zIndex,
-      pointerEvents: "none",
-      opacity: "var(--shader-opacity, 1)" as unknown as number,
-    };
-
-    // initialOpacity: 0 for new layers during crossfade (prevents one-frame flash),
-    // undefined for settled layers (defaults to 1)
-    const innerStyle: React.CSSProperties = {
-      position: "absolute",
-      inset: 0,
-      opacity: initialOpacity !== undefined ? initialOpacity : 1,
-    };
-
     if (layerIsAI) {
-      // Render a backdrop shader underneath AI images for visual movement
       const backdropMode = getAiBackdropShader(layerMode);
       const backdropFrag = SHADERS[backdropMode];
-      if (backdropFrag) {
-        return (
-          <div key={layerMode} style={{ ...outerStyle, opacity: "calc(var(--shader-opacity, 1) * 0.6)" as unknown as number }}>
-            <div ref={ref} style={innerStyle}>
-              <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion />
-            </div>
-          </div>
-        );
-      }
-      return <div key={layerMode} style={{ ...outerStyle, backgroundColor: "#000" }}><div ref={ref} style={innerStyle} /></div>;
+      return backdropFrag ? (
+        <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={backdropFrag} smoothMotion onReady={onShaderReady} />
+      ) : <div style={{ position: "absolute", inset: 0, backgroundColor: "#000" }} />;
     }
     if (layerIs3D) {
-      return (
-        <div key={layerMode} style={outerStyle}>
-          <div ref={ref} style={innerStyle}>
-            <Visualizer3D analyser={analyser} dataArray={dataArray} mode={layerMode as Visualizer3DMode} />
-          </div>
-        </div>
-      );
+      return <Visualizer3D analyser={analyser} dataArray={dataArray} mode={layerMode as Visualizer3DMode} />;
     }
-    return (
-      <div key={layerMode} style={outerStyle}>
-        <div ref={ref} style={innerStyle}>
-          <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={smoothMotionProp ?? false} />
-        </div>
-      </div>
-    );
+    return SHADERS[layerMode] ? (
+      <ShaderVisualizer analyser={analyser} dataArray={dataArray} fragShader={SHADERS[layerMode]!} smoothMotion={smoothMotionProp ?? false} onReady={onShaderReady} />
+    ) : null;
   };
 
   return (
@@ -695,40 +861,68 @@ export function VisualizerCore({
           position: "absolute",
           inset: 0,
           opacity: shaderDimmed ? 0.35 : 1,
-          transition: shaderDimmed ? "none" : "opacity 1s ease-in-out",
+          // Smooth when dimming (entering browser), snap when undimming (starting journey)
+          // so the first shader has identical brightness to all subsequent shaders.
+          transition: shaderDimmed ? "opacity 0.5s ease" : "none",
           pointerEvents: "none",
         }}
       >
-        {/* Previous shader (fading out) — hidden when dimmed behind journey picker.
-            Uses captured opacity from the moment of interruption to prevent jumps. */}
-        {!shadersHidden && !shaderDimmed && prevRenderMode && renderShaderLayer(prevRenderMode, 0, prevLayerRef, prevCapturedOpacityRef.current)}
-
-        {/* Current shader (fading in, or full opacity when no crossfade) */}
-        {/* When journey picker is open, render a fixed calm shader instead */}
-        {/* During crossfade: start at opacity 0 to prevent one-frame flash before rAF kicks in */}
-        {!shadersHidden && renderShaderLayer(
-          shaderDimmed ? JOURNEY_PICKER_SHADER : renderMode,
-          1,
-          shaderDimmed ? undefined : (prevRenderMode ? nextLayerRef : undefined),
-          !shaderDimmed && prevRenderMode ? 0 : undefined
+        {/* ── Primary shader: A/B buffer ──
+            Two persistent layers swap roles. Only opacity changes — no remounting,
+            no WebGL context destruction. Callback refs set initial opacity once. */}
+        {!shadersHidden && (
+          <>
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              opacity: (MODES_AI.has(layerAMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
+            }}>
+              <div ref={setLayerARef} style={{ position: "absolute", inset: 0 }}>
+                {renderLayerContent(layerAMode, handleLayerAReady)}
+              </div>
+            </div>
+            {layerBMode && (
+              <div style={{
+                position: "absolute", inset: 0, pointerEvents: "none",
+                opacity: (MODES_AI.has(layerBMode) ? "calc(var(--shader-opacity, 1) * 0.6)" : "var(--shader-opacity, 1)") as unknown as number,
+              }}>
+                <div ref={setLayerBRef} style={{ position: "absolute", inset: 0 }}>
+                  {renderLayerContent(layerBMode, handleLayerBReady)}
+                </div>
+              </div>
+            )}
+          </>
         )}
 
-        {/* Dual shader — second layer during peak journey moments (smooth fade).
-            Outer div applies --shader-opacity; inner div handles the crossfade animation. */}
-        {dualShaderVisible && SHADERS[dualShaderVisible as VisualizerMode] && (
+        {/* ── Dual shader: A/B buffer ──
+            Same persistent-layer pattern. mixBlendMode: screen for overlay effect. */}
+        {dualLayerAMode && SHADERS[dualLayerAMode as VisualizerMode] && (
           <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
-            <div ref={dualShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
+            <div ref={setDualLayerARef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
               <ShaderVisualizer
                 analyser={analyser}
                 dataArray={dataArray}
-                fragShader={SHADERS[dualShaderVisible as VisualizerMode]!}
+                fragShader={SHADERS[dualLayerAMode as VisualizerMode]!}
                 smoothMotion={smoothMotionProp ?? false}
+                onReady={handleDualLayerAReady}
+              />
+            </div>
+          </div>
+        )}
+        {dualLayerBMode && SHADERS[dualLayerBMode as VisualizerMode] && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
+            <div ref={setDualLayerBRef} style={{ position: "absolute", inset: 0, mixBlendMode: "screen" }}>
+              <ShaderVisualizer
+                analyser={analyser}
+                dataArray={dataArray}
+                fragShader={SHADERS[dualLayerBMode as VisualizerMode]!}
+                smoothMotion={smoothMotionProp ?? false}
+                onReady={handleDualLayerBReady}
               />
             </div>
           </div>
         )}
 
-        {/* Tertiary shader — third layer for rich multi-shader moments */}
+        {/* Tertiary shader — single layer with fade in/out (kept simple) */}
         {tertiaryShaderVisible && SHADERS[tertiaryShaderVisible as VisualizerMode] && (
           <div style={{ position: "absolute", inset: 0, zIndex: 1, pointerEvents: "none", opacity: "var(--shader-opacity, 1)" as unknown as number }}>
             <div ref={tertiaryShaderRef} style={{ position: "absolute", inset: 0, opacity: 0, mixBlendMode: "screen" }}>
@@ -737,6 +931,7 @@ export function VisualizerCore({
                 dataArray={dataArray}
                 fragShader={SHADERS[tertiaryShaderVisible as VisualizerMode]!}
                 smoothMotion={smoothMotionProp ?? false}
+                onReady={handleTertiaryShaderReady}
               />
             </div>
           </div>
