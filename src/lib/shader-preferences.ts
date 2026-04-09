@@ -130,31 +130,63 @@ export const useShaderPreferences = create<ShaderPreferencesState>((set, get) =>
     // Set from localStorage first so UI renders immediately
     set({ blocked: lsBlocked, loved: lsLoved, deleted: lsDeleted, loaded: true });
 
-    // 2. Fetch from Supabase in background — merge/override if Supabase has data
+    // 2. Fetch from Supabase in background — MERGE, never replace
     supabaseFetchAll().then((remote) => {
       if (!remote) return;
-      const remoteHasData = remote.blocked.size > 0 || remote.loved.size > 0 || remote.deleted.size > 0;
 
-      if (remoteHasData) {
-        // Supabase is the source of truth — use it
-        set({ blocked: remote.blocked, loved: remote.loved, deleted: remote.deleted });
-        writeLS(LS_BLOCKED, remote.blocked);
-        writeLS(LS_LOVED, remote.loved);
-        writeLS(LS_DELETED, remote.deleted);
-      } else if (lsHasData) {
-        // localStorage has data but Supabase is empty — push localStorage up
+      // Build a merged map: shader → status
+      // Start with localStorage entries, then layer Supabase on top.
+      // For conflicts (same shader, different status), Supabase wins
+      // because it's the shared cross-device state.
+      // Shaders that only exist in one source are always kept.
+      const merged = new Map<string, "blocked" | "loved" | "deleted">();
+
+      // Local first
+      for (const m of lsBlocked) merged.set(m, "blocked");
+      for (const m of lsLoved) merged.set(m, "loved");
+      for (const m of lsDeleted) merged.set(m, "deleted");
+
+      // Supabase overwrites conflicts, adds new entries
+      for (const m of remote.blocked) merged.set(m, "blocked");
+      for (const m of remote.loved) merged.set(m, "loved");
+      for (const m of remote.deleted) merged.set(m, "deleted");
+
+      // Rebuild sets from merged map
+      const blocked = new Set<string>();
+      const loved = new Set<string>();
+      const deleted = new Set<string>();
+      for (const [m, status] of merged) {
+        if (status === "blocked") blocked.add(m);
+        else if (status === "loved") loved.add(m);
+        else if (status === "deleted") deleted.add(m);
+      }
+
+      // Update store + localStorage
+      set({ blocked, loved, deleted });
+      writeLS(LS_BLOCKED, blocked);
+      writeLS(LS_LOVED, loved);
+      writeLS(LS_DELETED, deleted);
+
+      // Push any local-only entries up to Supabase so they persist
+      const newForSupabase: { shader_mode: string; status: string }[] = [];
+      for (const [m, status] of merged) {
+        const inRemote =
+          remote.blocked.has(m) || remote.loved.has(m) || remote.deleted.has(m);
+        if (!inRemote) {
+          newForSupabase.push({ shader_mode: m, status });
+        }
+      }
+      if (newForSupabase.length > 0) {
         const sb = createClient();
         sb.auth.getUser().then(({ data: { user } }) => {
           if (!user) return;
-          const rows: { user_id: string; shader_mode: string; status: string }[] = [];
-          for (const m of lsBlocked) rows.push({ user_id: user.id, shader_mode: m, status: "blocked" });
-          for (const m of lsLoved) rows.push({ user_id: user.id, shader_mode: m, status: "loved" });
-          for (const m of lsDeleted) rows.push({ user_id: user.id, shader_mode: m, status: "deleted" });
-          if (rows.length > 0) {
-            sb.from("user_shader_preferences")
-              .upsert(rows, { onConflict: "user_id,shader_mode" })
-              .then(() => {});
-          }
+          const rows = newForSupabase.map((r) => ({
+            user_id: user.id,
+            ...r,
+          }));
+          sb.from("user_shader_preferences")
+            .upsert(rows, { onConflict: "user_id,shader_mode" })
+            .then(() => {});
         });
       }
     });
