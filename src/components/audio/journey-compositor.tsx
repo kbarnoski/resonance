@@ -3,6 +3,7 @@
 import { useEffect, useRef, useMemo } from "react";
 import { AiImageLayer } from "./ai-image-layer";
 import { PostProcessingLayer } from "./post-processing-layer";
+import { FlashAngel } from "./flash-angel";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
 
@@ -280,7 +281,7 @@ export function JourneyCompositor({
               backgroundColor: `rgba(255, 255, 255, ${Math.min(1, impulse * impulse * impulse * impulse * 0.95)})`,
             }}
           />
-          {/* Dark particle angel — dissolve filter breaks shape into spiraling particles */}
+          {/* Dark particle angel — canvas-based particle field with fibonacci hair */}
           <div
             style={{
               position: "absolute",
@@ -294,50 +295,7 @@ export function JourneyCompositor({
               filter: `blur(${(1 - impulse) * 1.5}px)`,
             }}
           >
-            <svg
-              viewBox="0 0 1000 1000"
-              style={{ width: "72vmin", height: "92vmin", maxWidth: "100%", maxHeight: "100%" }}
-            >
-              <defs>
-                <filter id="angel-particles-0" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="4" seed="42" result="noise" />
-                  <feColorMatrix in="noise" type="luminanceToAlpha" result="noiseMask" />
-                  <feComponentTransfer in="noiseMask" result="particles">
-                    <feFuncA type="table" tableValues="0 0 0.3 0.85 1 1 0.6 0 0.9 1 0.5" />
-                  </feComponentTransfer>
-                  <feComposite in="SourceGraphic" in2="particles" operator="in" />
-                </filter>
-                <filter id="angel-particles-1" x="-5%" y="-5%" width="110%" height="110%">
-                  <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" seed="137" result="noise" />
-                  <feColorMatrix in="noise" type="luminanceToAlpha" result="noiseMask" />
-                  <feComponentTransfer in="noiseMask" result="particles">
-                    <feFuncA type="table" tableValues="0 0.2 0 0.9 1 0.5 0 1 0.7 0.3 1" />
-                  </feComponentTransfer>
-                  <feComposite in="SourceGraphic" in2="particles" operator="in" />
-                </filter>
-              </defs>
-              {bassHitCountRef.current % 2 === 1 ? (
-                <g filter="url(#angel-particles-0)">
-                  {/* Angel 1: upright, wings spread wide, hair spiraling right */}
-                  <path d="M500,55 C535,53 558,78 558,110 C558,138 542,155 525,162 C545,188 570,228 588,265 C608,302 612,325 602,345 C590,368 560,380 535,388 C528,392 530,408 538,432 C548,462 555,498 552,530 C542,590 500,710 455,840 C442,878 450,905 480,905 L520,905 C550,905 558,878 545,840 C500,710 458,590 448,530 C445,498 452,462 462,432 C470,408 472,392 465,388 C440,380 410,368 398,345 C388,325 392,302 412,265 C430,228 455,188 475,162 C458,155 442,138 442,110 C442,78 465,53 500,55 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M405,260 C342,225 188,148 78,108 C28,90 8,112 28,148 C52,192 182,268 348,318 C392,332 410,312 408,288 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M595,260 C658,225 812,148 922,108 C972,90 992,112 972,148 C948,192 818,268 652,318 C608,332 590,312 592,288 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M515,62 C558,30 638,2 712,2 C772,0 798,25 780,55 C758,88 688,115 615,122" stroke="rgba(5,0,12,0.9)" strokeWidth="12" strokeLinecap="round" fill="none" />
-                  <path d="M485,62 C442,30 362,2 288,2 C228,0 202,25 220,55 C242,88 312,115 385,122" stroke="rgba(5,0,12,0.85)" strokeWidth="10" strokeLinecap="round" fill="none" />
-                  <path d="M522,68 C572,42 658,15 738,10 C808,6 838,28 822,58 C802,90 735,118 660,128" stroke="rgba(5,0,12,0.75)" strokeWidth="8" strokeLinecap="round" fill="none" />
-                </g>
-              ) : (
-                <g filter="url(#angel-particles-1)">
-                  {/* Angel 2: dynamic tilt, left wing higher, hair spiraling left */}
-                  <path d="M480,65 C515,60 540,85 540,115 C540,142 525,158 508,165 C525,190 548,228 565,262 C582,295 585,318 578,338 C568,360 542,375 520,382 C512,386 515,402 522,425 C532,455 540,492 538,525 C530,585 492,700 452,828 C440,868 448,898 475,898 L525,898 C552,898 560,868 548,828 C508,700 470,585 462,525 C460,492 468,455 478,425 C485,402 488,386 480,382 C458,375 432,360 422,338 C415,318 418,295 435,262 C452,228 475,190 492,165 C475,158 460,142 460,115 C460,85 485,60 480,65 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M425,252 C358,215 192,132 75,88 C22,68 2,92 25,130 C52,175 192,258 365,312 C412,328 430,305 428,280 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M578,268 C638,238 798,168 912,135 C965,120 985,142 968,178 C945,220 815,288 645,332 C598,345 580,325 580,300 Z" fill="rgba(5,0,12,0.95)" />
-                  <path d="M468,72 C422,38 338,8 262,5 C200,2 175,28 195,58 C218,92 292,118 368,128" stroke="rgba(5,0,12,0.9)" strokeWidth="12" strokeLinecap="round" fill="none" />
-                  <path d="M502,68 C545,35 628,5 705,2 C765,0 792,25 775,55 C755,88 685,115 612,125" stroke="rgba(5,0,12,0.85)" strokeWidth="10" strokeLinecap="round" fill="none" />
-                  <path d="M458,78 C405,48 318,18 240,12 C175,8 148,32 168,62 C190,95 262,122 340,132" stroke="rgba(5,0,12,0.75)" strokeWidth="8" strokeLinecap="round" fill="none" />
-                </g>
-              )}
-            </svg>
+            <FlashAngel variant={(bassHitCountRef.current % 2) as 0 | 1} />
           </div>
           {/* Subsonic shockwave ring expanding outward beneath the flash */}
           <div
