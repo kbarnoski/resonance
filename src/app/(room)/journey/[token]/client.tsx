@@ -1186,29 +1186,29 @@ export function SharedJourneyClient({
             animation: "journeyEndFadeIn 2s ease-out forwards",
           }}
         >
-          <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto", maxWidth: "90vw" }}>
-            {/* Soft blurred background */}
-            <div
-              style={{
-                position: "absolute",
-                inset: "-40%",
-                background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
-                filter: "blur(40px)",
-                pointerEvents: "none",
-              }}
-            />
+          <div
+            className="flex flex-col items-center gap-5"
+            style={{
+              position: "relative",
+              padding: "3rem 4rem",
+              pointerEvents: "auto",
+              maxWidth: "90vw",
+              borderRadius: "20px",
+              background: "rgba(0, 0, 0, 0.55)",
+              backdropFilter: "blur(32px) saturate(1.1)",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
+            }}
+          >
 
             {/* Title */}
             <span
               style={{
-                position: "relative",
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontWeight: 300,
                 fontSize: "clamp(2rem, 5vw, 3.5rem)",
                 letterSpacing: "0.06em",
                 textTransform: "uppercase",
                 color: "rgba(255, 255, 255, 0.85)",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
               Journey Complete
@@ -1217,14 +1217,12 @@ export function SharedJourneyClient({
             {/* Journey name */}
             <span
               style={{
-                position: "relative",
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontStyle: "italic",
                 fontWeight: 300,
                 fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
                 letterSpacing: "0.04em",
                 color: "rgba(255, 255, 255, 0.55)",
-                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
                 marginTop: "-0.5rem",
                 textAlign: "center",
               }}
@@ -1233,15 +1231,12 @@ export function SharedJourneyClient({
             </span>
 
             {/* Credits */}
-            <div style={{ position: "relative" }}>
-              {creditsBlock}
-            </div>
+            {creditsBlock}
 
             {/* Signup CTA for unauthenticated viewers */}
             {!isAuthenticated && (
               <span
                 style={{
-                  position: "relative",
                   fontFamily: "'Cormorant Garamond', Georgia, serif",
                   fontStyle: "italic",
                   fontWeight: 300,
@@ -1254,7 +1249,7 @@ export function SharedJourneyClient({
             )}
 
             {/* Action buttons */}
-            <div className="flex items-center gap-3 flex-wrap justify-center" style={{ position: "relative", marginTop: "0.25rem" }}>
+            <div className="flex items-center gap-3 flex-wrap justify-center" style={{ marginTop: "0.25rem" }}>
               {!isAuthenticated && (
                 // eslint-disable-next-line @next/next/no-html-link-for-pages
                 <a
