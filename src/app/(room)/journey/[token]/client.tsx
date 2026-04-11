@@ -414,10 +414,7 @@ export function SharedJourneyClient({
     };
   }, [tertiaryShaderTarget]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const [isIOS, setIsIOS] = useState(false);
-  useEffect(() => {
-    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
-  }, []);
+  // iOS detection removed — webkit fullscreen API handles all platforms
 
   // Auto-hide controls
   const resetHideTimer = useCallback(() => {
@@ -637,23 +634,32 @@ export function SharedJourneyClient({
   };
 
   const toggleFullscreen = useCallback(() => {
-    if (isIOS) {
-      setIsFullscreen((v) => !v);
-      return;
-    }
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => setIsFullscreen(false));
+    const doc = document as Document & { webkitFullscreenElement?: Element; webkitExitFullscreen?: () => Promise<void> };
+    const el = document.documentElement as HTMLElement & { webkitRequestFullscreen?: () => Promise<void> };
+
+    const isFS = !!(document.fullscreenElement || doc.webkitFullscreenElement);
+
+    if (isFS) {
+      (doc.webkitExitFullscreen ?? document.exitFullscreen).call(document).catch(() => setIsFullscreen(false));
     } else {
-      document.documentElement.requestFullscreen().catch(() => {
+      (el.webkitRequestFullscreen ?? el.requestFullscreen).call(el).catch(() => {
+        // True fallback for browsers that don't support fullscreen at all
         setIsFullscreen((v) => !v);
       });
     }
-  }, [isIOS]);
+  }, []);
 
   useEffect(() => {
-    const handleChange = () => setIsFullscreen(!!document.fullscreenElement);
+    const handleChange = () => {
+      const doc = document as Document & { webkitFullscreenElement?: Element };
+      setIsFullscreen(!!(document.fullscreenElement || doc.webkitFullscreenElement));
+    };
     document.addEventListener("fullscreenchange", handleChange);
-    return () => document.removeEventListener("fullscreenchange", handleChange);
+    document.addEventListener("webkitfullscreenchange", handleChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleChange);
+      document.removeEventListener("webkitfullscreenchange", handleChange);
+    };
   }, []);
 
   const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -1043,10 +1049,10 @@ export function SharedJourneyClient({
           </div>
 
           {/* Spacer */}
-          <div className="flex-[2]" />
+          <div className="flex-1" />
 
           {/* RIGHT: Share + Fullscreen */}
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-3">
             <button
               onClick={handleShare}
               className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/40 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { SharedJourneyClient } from "./client";
-import { getJourney } from "@/lib/journeys/journeys";
+import { getJourney, JOURNEYS } from "@/lib/journeys/journeys";
 
 function createAnonClient() {
   return createClient(
@@ -27,7 +27,9 @@ export async function generateMetadata({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const metaTheme = metaRow.theme as Record<string, any> | null;
-  const metaBuiltin = metaTheme?.builtinJourneyId ? getJourney(metaTheme.builtinJourneyId) : null;
+  const metaBuiltin = metaTheme?.builtinJourneyId
+    ? getJourney(metaTheme.builtinJourneyId)
+    : JOURNEYS.find((j) => j.name === metaRow.name) ?? null;
   const name = metaBuiltin?.name ?? metaRow.name;
   const subtitle = metaBuiltin?.subtitle ?? metaRow.subtitle;
 
@@ -74,7 +76,10 @@ export default async function SharedJourneyPage({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const themeData = journeyRow.theme as Record<string, any> | null;
   const builtinId = themeData?.builtinJourneyId as string | undefined;
-  const liveJourney = builtinId ? getJourney(builtinId) : null;
+  // Try by explicit ID first, then fall back to name match for old share rows
+  const liveJourney = builtinId
+    ? getJourney(builtinId)
+    : JOURNEYS.find((j) => j.name === journeyRow.name) ?? null;
 
   const journey = liveJourney
     ? {
