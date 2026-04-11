@@ -47,28 +47,44 @@ export async function POST(request: Request) {
     }
     console.log("[share-builtin] resolvedRecordingId:", resolvedRecordingId);
 
-    const token = randomUUID().replace(/-/g, "").slice(0, 16);
-    const seed = String(randomInt(0, 4294967296));
+    // Reuse existing share row if this user already shared this built-in journey
+    const { data: existing } = await supabase
+      .from("journeys")
+      .select("share_token")
+      .eq("user_id", user.id)
+      .eq("theme->>builtinJourneyId", journeyId)
+      .not("share_token", "is", null)
+      .limit(1)
+      .single();
 
-    // Insert a reference to the built-in journey (live link — always uses latest definition).
-    // Snapshot of phases/name stored as fallback if the built-in is ever removed from code.
-    const { error } = await supabase.from("journeys").insert({
-      user_id: user.id,
-      name: journey.name,
-      subtitle: journey.subtitle,
-      description: journey.description,
-      realm_id: journey.realmId,
-      phases: journey.phases,
-      share_token: token,
-      playback_seed: seed,
-      theme: { builtinJourneyId: journeyId },
-      creator_name: creatorName,
-      ...(resolvedRecordingId ? { recording_id: resolvedRecordingId } : {}),
-    });
+    let token: string;
 
-    if (error) {
-      console.error("Share built-in error:", error);
-      return Response.json({ error: "Failed to share journey" }, { status: 500 });
+    if (existing?.share_token) {
+      token = existing.share_token;
+    } else {
+      token = randomUUID().replace(/-/g, "").slice(0, 16);
+      const seed = String(randomInt(0, 4294967296));
+
+      // Insert a reference to the built-in journey (live link — always uses latest definition).
+      // Snapshot of phases/name stored as fallback if the built-in is ever removed from code.
+      const { error } = await supabase.from("journeys").insert({
+        user_id: user.id,
+        name: journey.name,
+        subtitle: journey.subtitle,
+        description: journey.description,
+        realm_id: journey.realmId,
+        phases: journey.phases,
+        share_token: token,
+        playback_seed: seed,
+        theme: { builtinJourneyId: journeyId },
+        creator_name: creatorName,
+        ...(resolvedRecordingId ? { recording_id: resolvedRecordingId } : {}),
+      });
+
+      if (error) {
+        console.error("Share built-in error:", error);
+        return Response.json({ error: "Failed to share journey" }, { status: 500 });
+      }
     }
 
     // Mark the recording as shared so anonymous users can access audio via RLS
