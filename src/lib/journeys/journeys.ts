@@ -184,6 +184,7 @@ const REALM_SHADER_BLOCKLIST: Record<string, string[]> = {
     "orb", // wrong vibe
   ],
   cosmos: [
+    "deluge", // heavy rain/flood — wrong vibe for cosmic journeys
   ],
   ocean: [
     "flame", "inferno", // fire
@@ -1367,14 +1368,14 @@ export const JOURNEYS: Journey[] = [
         voice: "ash",
       },
 
-      // ── Haunting (0:27–1:28) ──
+      // ── Haunting (0:27–1:08) ──
       // Development 1 + Theme A Return + Theme B.
       // Chromaticism grows, harmonic rhythm accelerates.
       // MYSTERIOUS PORTAL: organic stone opening with particles, dark angel leads you in.
-      // Then deepens into underground other-dimension tunnel system.
+      // Shorter — get into the tunnels sooner.
       expansion: {
         start: 0.14,
-        end: 0.44,
+        end: 0.35,
         shaderOpacity: 0.70,
         aiPrompt: "photorealistic view looking into a mysterious ancient stone opening in the earth — rough dark stone framed by tangled roots and pale bioluminescent lichen and organic growth, spectral particles swirling in spiral patterns around the opening mixing with luminous spores and fine dust motes caught in faint light, the portal descends into absolute darkness — not a simple well but something ancient and alive and wrong, at the threshold a dark feminine angelic form draped in ethereal flowing fabric seen from behind — no face visible, she is entering the portal ahead of you, her impossibly long grey wispy hair in divine Leonardo fibonacci spiraling curls streaming down into the dark depth trailing luminous particles that spiral with the hair creating interweaving helixes of grey silk and pale light descending endlessly, beside her a translucent spirit duplicate already deeper — the soul leading the body inward, the stone surface photorealistic with erosion and moisture and organic growth — roots threading through cracks, pale fungal threads, patches of cold bioluminescence, the darkness within the portal magnetic and bottomless, the organic elements alive with faint spectral particle movement — spores drifting, luminous threads pulsing, the mood deeply haunting and mysterious — something ancient waits below, cool silver and organic earth tones with spectral bioluminescent accents, no text no signatures no watermarks no letters no writing",
         aiPromptModifiers: {
@@ -1386,13 +1387,13 @@ export const JOURNEYS: Journey[] = [
         voice: "ash",
       },
 
-      // ── Possession (1:28–2:04) ──
+      // ── Possession (1:08–2:04) ──
       // C Minor Section — tonal shift to darkness. C/Db oscillation.
       // ★ BASS HIT 1 at 1:38 (progress ~0.45) — massive subsonic impact.
       // UNDERGROUND TUNNELS: other-dimension passage system with dark angels.
       // Bioluminescent walls, spectral particles, hair networks threading through stone.
       transcendence: {
-        start: 0.44,
+        start: 0.35,
         end: 0.63,
         aiPrompt: "photorealistic underground tunnel system carved through ancient dark stone — the passage stretches ahead curving and branching revealing impossible depth like an other-dimension labyrinth, the stone walls rough and wet with moisture catching faint light from bioluminescent growth clinging to cracks and crevices, pale organic luminescence and spectral particles swirling through the tunnels like living currents of light, dark feminine angelic forms at different distances in the tunnels — the nearest seen from behind draped in flowing ethereal fabric her grey wispy hair in divine Leonardo fibonacci spiraling curls trailing luminous particles that illuminate the tunnel walls as she moves deeper, beside her a translucent spirit duplicate separating and drifting ahead, a second dark feminine figure further down a branching passage barely visible — only her trailing spiral hair and particle trail marking her path, a third just a wisp of grey luminous hair disappearing around a distant bend, the hair streams from all figures threading along the tunnel walls connecting between passages creating a spiraling luminous web through the underground labyrinth, the stone texture photorealistic — wet dark granite with veins of pale mineral and patches of cold bioluminescence, spectral particles dense in the air like underwater light, in the far distance where the main passage curves the faintest suggestion of warmer light — something ahead, no faces visible — only dark mysterious forms with trailing spiral hair and particles, the mood haunting and subterranean — descending between worlds through ancient passages, deep indigo and spectral silver with amber bioluminescent accents, no text no signatures no watermarks no letters no writing",
         aiPromptModifiers: {
