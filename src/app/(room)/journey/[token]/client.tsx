@@ -858,6 +858,117 @@ export function SharedJourneyClient({
         text={`Check out ${journey.name} on Resonance`}
       />
 
+      {/* Journey complete overlay — replay for authenticated viewers */}
+      {ended && isAuthenticated && (
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{
+            zIndex: 30,
+            animation: "fadeIn 0.8s ease-out both",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "20px",
+              padding: "40px 36px",
+              borderRadius: "16px",
+              background: "rgba(0, 0, 0, 0.45)",
+              backdropFilter: "blur(24px) saturate(1.1)",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
+              maxWidth: "340px",
+              textAlign: "center",
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: "0.6rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  color: "rgba(255, 255, 255, 0.35)",
+                  letterSpacing: "0.12em",
+                  textTransform: "uppercase",
+                  marginBottom: "10px",
+                }}
+              >
+                Journey Complete
+              </div>
+              <div
+                style={{
+                  fontSize: "1.35rem",
+                  fontWeight: 300,
+                  color: "rgba(255, 255, 255, 0.85)",
+                  lineHeight: 1.3,
+                }}
+              >
+                {journey.name}
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: "10px" }}>
+              <button
+                onClick={() => {
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = 0;
+                    endedRef.current = false;
+                    setEnded(false);
+                    audioRef.current.play();
+                  }
+                }}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "8px 18px",
+                  borderRadius: "8px",
+                  background: "rgba(255, 255, 255, 0.9)",
+                  border: "none",
+                  color: "#000",
+                  fontSize: "0.78rem",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "background 0.15s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 1)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.9)")}
+              >
+                <RotateCcw style={{ width: 13, height: 13 }} />
+                Replay
+              </button>
+              <button
+                onClick={handleShare}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "8px 18px",
+                  borderRadius: "8px",
+                  background: "transparent",
+                  border: "1px solid rgba(255, 255, 255, 0.15)",
+                  color: "rgba(255, 255, 255, 0.6)",
+                  fontSize: "0.78rem",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.9)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "rgba(255, 255, 255, 0.6)";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.15)";
+                }}
+              >
+                <Share2 style={{ width: 13, height: 13 }} />
+                Share
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Journey complete overlay — signup CTA for unauthenticated viewers */}
       {ended && !isAuthenticated && (
         <div

@@ -60,6 +60,16 @@ export async function POST(request: Request) {
       return Response.json({ error: "Failed to share journey" }, { status: 500 });
     }
 
+    // Mark the recording as shared so anonymous users can access audio via RLS
+    if (resolvedRecordingId) {
+      const recToken = randomUUID().replace(/-/g, "").slice(0, 16);
+      await supabase
+        .from("recordings")
+        .update({ share_token: recToken })
+        .eq("id", resolvedRecordingId)
+        .is("share_token", null);
+    }
+
     return Response.json({ token });
   } catch (error) {
     console.error("Share built-in error:", error);

@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     // Check ownership
     const { data: journey } = await supabase
       .from("journeys")
-      .select("id, share_token, playback_seed")
+      .select("id, share_token, playback_seed, recording_id")
       .eq("id", journeyId)
       .eq("user_id", user.id)
       .single();
@@ -49,6 +49,16 @@ export async function POST(request: Request) {
 
     if (error) {
       return Response.json({ error: "Failed to generate share token" }, { status: 500 });
+    }
+
+    // Mark the recording as shared so anonymous users can access audio via RLS
+    if (journey.recording_id) {
+      const recToken = randomUUID().replace(/-/g, "").slice(0, 16);
+      await supabase
+        .from("recordings")
+        .update({ share_token: recToken })
+        .eq("id", journey.recording_id)
+        .is("share_token", null);
     }
 
     return Response.json({ token });
