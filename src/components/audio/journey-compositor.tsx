@@ -281,7 +281,7 @@ export function JourneyCompositor({
               backgroundColor: `rgba(255, 255, 255, ${Math.min(1, impulse * impulse * impulse * impulse * 0.95)})`,
             }}
           />
-          {/* Dark particle angel — canvas-based particle field with fibonacci hair */}
+          {/* Dark particle angel — full opacity during hold, linear fade over 1s */}
           <div
             style={{
               position: "absolute",
@@ -291,7 +291,7 @@ export function JourneyCompositor({
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              opacity: Math.min(1, impulse * impulse * 0.92),
+              opacity: impulse,
               filter: `blur(${(1 - impulse) * 1.5}px)`,
             }}
           >

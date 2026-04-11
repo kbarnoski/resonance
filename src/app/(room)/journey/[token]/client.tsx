@@ -785,9 +785,9 @@ export function SharedJourneyClient({
   const creditsBlock = (
     <div
       style={{
-        fontSize: "0.75rem",
+        fontSize: "0.9rem",
         fontFamily: "var(--font-geist-mono)",
-        color: "rgba(255, 255, 255, 0.5)",
+        color: "rgba(255, 255, 255, 0.85)",
         letterSpacing: "0.04em",
         lineHeight: 1.7,
         textAlign: "center",
@@ -845,11 +845,11 @@ export function SharedJourneyClient({
             </div>
             <div
               style={{
-                fontSize: "clamp(1.8rem, 5vw, 2.8rem)",
+                fontSize: "clamp(2.6rem, 7vw, 4rem)",
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontWeight: 300,
                 letterSpacing: "0.04em",
-                color: "rgba(255, 255, 255, 0.9)",
+                color: "#fff",
                 lineHeight: 1.2,
               }}
             >
@@ -1026,9 +1026,9 @@ export function SharedJourneyClient({
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontStyle: "italic",
                 fontWeight: 300,
-                fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
+                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
                 letterSpacing: "0.04em",
-                color: "rgba(255, 255, 255, 0.55)",
+                color: "#fff",
                 textShadow: "0 1px 8px rgba(0,0,0,0.8)",
                 marginTop: "-0.5rem",
               }}
@@ -1295,9 +1295,9 @@ export function SharedJourneyClient({
                 fontFamily: "'Cormorant Garamond', Georgia, serif",
                 fontStyle: "italic",
                 fontWeight: 300,
-                fontSize: "clamp(1rem, 2.5vw, 1.4rem)",
+                fontSize: "clamp(1.4rem, 3.5vw, 2.2rem)",
                 letterSpacing: "0.04em",
-                color: "rgba(255, 255, 255, 0.55)",
+                color: "#fff",
                 marginTop: "-0.5rem",
                 textAlign: "center",
               }}
