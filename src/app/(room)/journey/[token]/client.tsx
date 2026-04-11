@@ -48,6 +48,9 @@ interface SharedJourneyClientProps {
   playbackSeed: string | null;
   creatorName: string | null;
   musicArtist: string | null;
+  analysisEvents: { time: number; type: string; intensity: number }[];
+  cueMarkers: { time: number; label: string }[];
+  recordingDuration: number;
 }
 
 export function SharedJourneyClient({
@@ -57,6 +60,9 @@ export function SharedJourneyClient({
   playbackSeed,
   creatorName,
   musicArtist,
+  analysisEvents,
+  cueMarkers,
+  recordingDuration,
 }: SharedJourneyClientProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ctxRef = useRef<AudioContext | null>(null);
@@ -538,6 +544,75 @@ export function SharedJourneyClient({
       clearTimeout(phaseTimer);
     };
   }, [started, journey, playbackSeed]);
+
+  // Wire cue markers + analysis events to engine for bass flash
+  useEffect(() => {
+    if (!started) return;
+
+    const engine = getJourneyEngine();
+    const audio = audioRef.current;
+    const dur = (audio && audio.duration > 0) ? audio.duration : recordingDuration;
+
+    if (dur <= 0) return;
+
+    // Auto-detected events from analysis
+    const autoEvents = analysisEvents.map((e) => ({
+      time: e.time,
+      type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
+      intensity: e.intensity,
+    }));
+
+    // Cue markers as bass_hit events (only for journeys with enableBassFlash)
+    let allEvents = autoEvents;
+    if (journey.enableBassFlash && cueMarkers.length > 0) {
+      const manualAsEvents = cueMarkers.map((c) => ({
+        time: c.time,
+        type: "bass_hit" as const,
+        intensity: 1.0,
+      }));
+      allEvents = [...autoEvents, ...manualAsEvents];
+    }
+
+    if (allEvents.length > 0) {
+      engine.setEvents(allEvents, dur);
+      console.log(`[shared-journey] wired ${allEvents.length} events (duration: ${dur}s)`);
+    }
+  }, [started, analysisEvents, cueMarkers, journey.enableBassFlash, recordingDuration]);
+
+  // Re-wire events once audio duration is known (more accurate than DB duration)
+  useEffect(() => {
+    if (!started) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const onDurationChange = () => {
+      if (!audio.duration || !isFinite(audio.duration)) return;
+      const engine = getJourneyEngine();
+
+      const autoEvents = analysisEvents.map((e) => ({
+        time: e.time,
+        type: e.type as "bass_hit" | "texture_change" | "climax" | "drop" | "silence" | "new_idea",
+        intensity: e.intensity,
+      }));
+
+      let allEvents = autoEvents;
+      if (journey.enableBassFlash && cueMarkers.length > 0) {
+        const manualAsEvents = cueMarkers.map((c) => ({
+          time: c.time,
+          type: "bass_hit" as const,
+          intensity: 1.0,
+        }));
+        allEvents = [...autoEvents, ...manualAsEvents];
+      }
+
+      if (allEvents.length > 0) {
+        engine.setEvents(allEvents, audio.duration);
+      }
+    };
+
+    audio.addEventListener("durationchange", onDurationChange);
+    return () => audio.removeEventListener("durationchange", onDurationChange);
+  }, [started, analysisEvents, cueMarkers, journey.enableBassFlash]);
 
   // Animation loop — throttled frame updates matching main app
   const startTimeRef = useRef(Date.now());

@@ -60,15 +60,22 @@ export default async function SharedJourneyPage({
     ? `/api/audio/${journeyRow.recording_id}`
     : null;
 
-  // Fetch recording artist for credits
+  // Fetch recording artist, analysis events, and cue markers for credits + bass flash
   let musicArtist: string | null = null;
+  let analysisEvents: { time: number; type: string; intensity: number }[] = [];
+  let cueMarkers: { time: number; label: string }[] = [];
+  let recordingDuration = 0;
+
   if (journeyRow.recording_id) {
-    const { data: rec } = await supabase
-      .from("recordings")
-      .select("artist")
-      .eq("id", journeyRow.recording_id)
-      .single();
-    musicArtist = rec?.artist ?? null;
+    const [recRes, analysisRes, markersRes] = await Promise.all([
+      supabase.from("recordings").select("artist, duration").eq("id", journeyRow.recording_id).single(),
+      supabase.from("analyses").select("events").eq("recording_id", journeyRow.recording_id).single(),
+      supabase.from("markers").select("time, label").eq("recording_id", journeyRow.recording_id).eq("type", "cue").order("time"),
+    ]);
+    musicArtist = recRes.data?.artist ?? null;
+    recordingDuration = recRes.data?.duration ?? 0;
+    analysisEvents = (analysisRes.data?.events ?? []) as { time: number; type: string; intensity: number }[];
+    cueMarkers = (markersRes.data ?? []) as { time: number; label: string }[];
   }
 
   // For built-in journeys, use the live definition so design changes propagate immediately.
@@ -115,6 +122,9 @@ export default async function SharedJourneyPage({
       playbackSeed={journeyRow.playback_seed ?? null}
       creatorName={journeyRow.creator_name ?? null}
       musicArtist={musicArtist}
+      analysisEvents={analysisEvents}
+      cueMarkers={cueMarkers}
+      recordingDuration={recordingDuration}
     />
   );
 }
