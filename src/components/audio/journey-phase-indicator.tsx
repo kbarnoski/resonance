@@ -32,6 +32,8 @@ export function JourneyPhaseIndicator({
   const [displayPhaseId, setDisplayPhaseId] = useState<string | null>(null);
   const prevPhaseRef = useRef<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fadeInTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rafRef = useRef<number>(0);
   const fontLoadedRef = useRef(false);
   const usedIndicesRef = useRef<Map<string, number>>(new Map());
 
@@ -68,7 +70,6 @@ export function JourneyPhaseIndicator({
 
     let guidance: string | null = null;
     if (phaseData.guidancePhrases.length > 0) {
-      // Pick a random phrase (different from last used for this phase)
       const lastIdx = usedIndicesRef.current.get(currentPhase) ?? -1;
       let idx = Math.floor(Math.random() * phaseData.guidancePhrases.length);
       if (idx === lastIdx && phaseData.guidancePhrases.length > 1) {
@@ -78,17 +79,34 @@ export function JourneyPhaseIndicator({
       guidance = phaseData.guidancePhrases[idx];
     }
 
-    setDisplayPhaseId(currentPhase);
-    setDisplayPhrase(guidance);
-    setVisible(true);
-
+    // Clear any pending timers
     if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setVisible(false);
-    }, 6000);
+    if (fadeInTimerRef.current) clearTimeout(fadeInTimerRef.current);
+    cancelAnimationFrame(rafRef.current);
+
+    // Always fade out first, then swap content and fade in.
+    // This ensures a consistent animation even on the first phase
+    // (where the component just mounted) or when switching mid-visible.
+    setVisible(false);
+
+    // Wait for fade-out to register (double rAF ensures browser has painted
+    // the opacity: 0 state), then update content and fade in
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = requestAnimationFrame(() => {
+        setDisplayPhaseId(currentPhase);
+        setDisplayPhrase(guidance);
+        setVisible(true);
+
+        timerRef.current = setTimeout(() => {
+          setVisible(false);
+        }, 6000);
+      });
+    });
 
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current);
+      if (fadeInTimerRef.current) clearTimeout(fadeInTimerRef.current);
+      cancelAnimationFrame(rafRef.current);
     };
   }, [currentPhase, journey]);
 
