@@ -523,7 +523,7 @@ export function AiImageLayer({
       clearTimeout(stagger);
       clearInterval(id);
     };
-  }, [enabled, available, triggerGeneration]);
+  }, [enabled, available, generating, triggerGeneration]);
 
   // Track aiOnly in a ref so the render loop can read it
   const aiOnlyRef = useRef(aiOnly);
