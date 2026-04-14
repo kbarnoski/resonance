@@ -57,6 +57,20 @@ export default async function SharedJourneyPage({
 
   if (!journeyRow) notFound();
 
+  // Culmination journeys have no bound recording — they pick a random track
+  // from theme.randomTrackPool at playback time so every replay surprises.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const culmTheme = journeyRow.theme as Record<string, any> | null;
+  if (
+    !journeyRow.recording_id &&
+    culmTheme?.isCulmination &&
+    Array.isArray(culmTheme.randomTrackPool) &&
+    culmTheme.randomTrackPool.length > 0
+  ) {
+    const pool = culmTheme.randomTrackPool as string[];
+    journeyRow.recording_id = pool[Math.floor(Math.random() * pool.length)];
+  }
+
   // Build audio URL directly from recording_id (audio API handles access for shared journeys)
   const audioUrl = journeyRow.recording_id
     ? `/api/audio/${journeyRow.recording_id}`

@@ -631,83 +631,108 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             {/* Custom user paths — Welcome Home and any future albums */}
             {customPaths.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
-                {customPaths.map((path) => (
-                  <button
-                    key={path.id}
-                    type="button"
-                    onClick={() => {
-                      if (path.shareToken) {
-                        onClose();
-                        router.push(`/path/${path.shareToken}`);
-                      }
-                    }}
-                    className="jcard rounded-xl text-left transition-colors"
-                    style={{
-                      backgroundColor: "rgba(255,255,255,0.01)",
-                      border: `1px solid rgba(255,255,255,0.08)`,
-                      padding: "16px 20px",
-                    }}
-                  >
-                    <div className="flex items-start gap-2.5 mb-2">
-                      <div
-                        className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
-                        style={{
-                          backgroundColor: path.accent,
-                          boxShadow: `0 0 4px ${path.glow}30`,
-                        }}
-                      />
-                      <div className="min-w-0 flex-1">
-                        <span
-                          className="text-white/80 block"
+                {customPaths.map((path) => {
+                  const shareUrl = path.shareToken
+                    ? (typeof window !== "undefined" ? `${window.location.origin}/path/${path.shareToken}` : `/path/${path.shareToken}`)
+                    : null;
+                  const openPath = () => {
+                    if (path.shareToken) {
+                      onClose();
+                      router.push(`/path/${path.shareToken}`);
+                    }
+                  };
+                  const copyLink = async (e: React.MouseEvent) => {
+                    e.stopPropagation();
+                    if (!shareUrl) return;
+                    try {
+                      await navigator.clipboard.writeText(shareUrl);
+                      toast.success("Path link copied");
+                    } catch {
+                      toast.error("Copy failed");
+                    }
+                  };
+                  return (
+                    <div
+                      key={path.id}
+                      className="jcard rounded-xl transition-colors cursor-pointer"
+                      style={{
+                        backgroundColor: "rgba(255,255,255,0.01)",
+                        border: `1px solid rgba(255,255,255,0.08)`,
+                        padding: "16px 20px",
+                      }}
+                      onClick={openPath}
+                    >
+                      <div className="flex items-start gap-2.5 mb-2">
+                        <div
+                          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
                           style={{
-                            fontFamily: "var(--font-geist-sans)",
-                            fontWeight: 300,
-                            fontSize: "0.95rem",
+                            backgroundColor: path.accent,
+                            boxShadow: `0 0 4px ${path.glow}30`,
                           }}
-                        >
-                          {path.name}
-                        </span>
-                        {path.subtitle && (
+                        />
+                        <div className="min-w-0 flex-1">
                           <span
-                            className="text-white/35 block mt-0.5"
+                            className="text-white/80 block"
                             style={{
-                              fontSize: "0.68rem",
-                              fontFamily: "var(--font-geist-mono)",
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "0.95rem",
                             }}
                           >
-                            {path.subtitle}
+                            {path.name}
                           </span>
+                          {path.subtitle && (
+                            <span
+                              className="text-white/35 block mt-0.5"
+                              style={{
+                                fontSize: "0.68rem",
+                                fontFamily: "var(--font-geist-mono)",
+                              }}
+                            >
+                              {path.subtitle}
+                            </span>
+                          )}
+                        </div>
+                        {path.shareToken && (
+                          <button
+                            type="button"
+                            onClick={copyLink}
+                            className="p-1.5 rounded-md text-white/30 hover:text-white/80 transition-colors shrink-0"
+                            title="Copy share link"
+                          >
+                            <Share2 className="h-3.5 w-3.5" />
+                          </button>
                         )}
                       </div>
-                    </div>
-                    <div className="flex items-center justify-between ml-4 mt-2">
-                      <div className="flex items-center gap-1.5">
-                        {path.journeyIds.map((jid) => (
-                          <div
-                            key={jid}
-                            style={{
-                              width: "5px",
-                              height: "5px",
-                              borderRadius: "50%",
-                              backgroundColor: "rgba(255,255,255,0.25)",
-                            }}
-                          />
-                        ))}
+                      <div className="flex items-center justify-between ml-4 mt-2">
+                        <div className="flex items-center gap-1.5">
+                          {path.journeyIds.map((jid) => (
+                            <div
+                              key={jid}
+                              style={{
+                                width: "5px",
+                                height: "5px",
+                                borderRadius: "50%",
+                                backgroundColor: "rgba(255,255,255,0.25)",
+                              }}
+                            />
+                          ))}
+                        </div>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-geist-mono)",
+                            fontSize: "0.6rem",
+                            letterSpacing: "0.14em",
+                            textTransform: "uppercase",
+                            color: path.accent,
+                          }}
+                        >
+                          Open path →
+                        </span>
                       </div>
-                      <span
-                        style={{
-                          fontFamily: "var(--font-geist-mono)",
-                          fontSize: "0.6rem",
-                          letterSpacing: "0.14em",
-                          textTransform: "uppercase",
-                          color: path.accent,
-                        }}
-                      >
-                        Open path →
-                      </span>
                     </div>
-                  </button>
-                ))}
+                  );
+                })}
               </div>
             )}
 

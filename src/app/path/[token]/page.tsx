@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
+import { PathShareButton } from "./share-button";
 
 export const dynamic = "force-dynamic";
 
@@ -60,17 +61,20 @@ export default async function SharedPathPage({
     notFound();
   }
 
-  // Fetch journeys in the order stored in journey_ids
+  // Fetch journeys in the order stored in journey_ids + culmination if present
+  const allIds = [...(path.journey_ids as string[])];
+  if (path.culmination_journey_id) allIds.push(path.culmination_journey_id);
   const { data: unordered } = await supabase
     .from("journeys")
     .select("id, name, subtitle, description, share_token, theme, recording_id, creator_name, photography_credit")
-    .in("id", path.journey_ids as string[]);
+    .in("id", allIds);
 
   const journeyMap = new Map<string, JourneyRow>();
   for (const j of (unordered ?? []) as JourneyRow[]) journeyMap.set(j.id, j);
   const journeys = (path.journey_ids as string[])
     .map((id: string) => journeyMap.get(id))
     .filter((j: JourneyRow | undefined): j is JourneyRow => !!j);
+  const culmination = path.culmination_journey_id ? journeyMap.get(path.culmination_journey_id) ?? null : null;
 
   const accent = path.accent_color ?? "#d0a070";
   const glow = path.glow_color ?? "#e0b080";
@@ -81,7 +85,19 @@ export default async function SharedPathPage({
       className="min-h-dvh w-full overflow-y-auto"
       style={{ backgroundColor: "#000", color: "#fff" }}
     >
-      <div className="mx-auto max-w-2xl px-6 pt-16 pb-24 sm:pt-24">
+      {/* Back + Share row — pinned at top, no vertical overhead */}
+      <div className="mx-auto max-w-2xl px-6 pt-6 flex items-center justify-between">
+        <Link
+          href="/room"
+          className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors"
+          style={{ fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.08em", textTransform: "uppercase" }}
+        >
+          ← back
+        </Link>
+        <PathShareButton token={token} pathName={path.name} />
+      </div>
+
+      <div className="mx-auto max-w-2xl px-6 pt-10 pb-24">
         {/* Hero */}
         <div className="mb-12 text-center">
           <div
@@ -141,6 +157,17 @@ export default async function SharedPathPage({
               {path.description}
             </p>
           )}
+          <div
+            className="mt-5"
+            style={{
+              fontSize: "0.72rem",
+              fontFamily: "var(--font-geist-mono)",
+              color: "rgba(255,255,255,0.45)",
+              letterSpacing: "0.05em",
+            }}
+          >
+            Music by {creator}
+          </div>
         </div>
 
         {/* Track list */}
@@ -228,6 +255,89 @@ export default async function SharedPathPage({
             );
           })}
         </div>
+
+        {/* Culmination — unveiled after the 13 */}
+        {culmination && culmination.share_token && (
+          <div className="mt-10">
+            <div className="flex items-center gap-4 mb-5">
+              <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.08)" }} />
+              <span
+                style={{
+                  fontSize: "0.62rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: accent,
+                }}
+              >
+                Culmination
+              </span>
+              <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.08)" }} />
+            </div>
+            <Link
+              href={`/journey/${culmination.share_token}`}
+              className="group block rounded-xl px-5 py-5 transition-all hover:bg-white/[0.05]"
+              style={{
+                border: `1px solid ${accent}40`,
+                backgroundColor: "rgba(255,255,255,0.02)",
+                boxShadow: `0 0 32px ${glow}12`,
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontSize: "1.5rem",
+                  lineHeight: 1.25,
+                  background: `linear-gradient(180deg, #fff 0%, ${glow} 100%)`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                {culmination.name}
+              </div>
+              {culmination.subtitle && (
+                <div
+                  className="mt-1"
+                  style={{
+                    fontFamily: "var(--font-geist-mono)",
+                    fontSize: "0.7rem",
+                    color: "rgba(255,255,255,0.45)",
+                    letterSpacing: "0.04em",
+                  }}
+                >
+                  {culmination.subtitle}
+                </div>
+              )}
+              {culmination.description && (
+                <p
+                  className="mt-2"
+                  style={{
+                    fontFamily: "var(--font-geist-sans)",
+                    fontSize: "0.82rem",
+                    color: "rgba(255,255,255,0.6)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {culmination.description}
+                </p>
+              )}
+              <div
+                className="mt-3 transition-opacity opacity-60 group-hover:opacity-100"
+                style={{
+                  fontFamily: "var(--font-geist-mono)",
+                  fontSize: "0.62rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: accent,
+                }}
+              >
+                Play →  (a random track from the album)
+              </div>
+            </Link>
+          </div>
+        )}
 
         <div
           className="mt-14 text-center"
