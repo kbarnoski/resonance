@@ -249,11 +249,21 @@ export function ShaderVisualizer({
     const tier = getDeviceTier();
     const tierScale = tier === "low" ? 0.55 : tier === "medium" ? 0.75 : 1.0;
     const dpr = Math.min(devicePixelRatio, 1) * tierScale;
+    // Frame-rate cap on weak hardware — halves GPU work vs uncapped rAF. 30fps
+    // still reads as "smooth" for abstract shader motion; 45fps on medium is a
+    // gentle safety net for hardware that can't quite sustain 60.
+    const minFrameMs = tier === "low" ? 1000 / 30 : tier === "medium" ? 1000 / 45 : 0;
 
     function render() {
       if (!canvas || !gl || gl.isContextLost()) return;
 
       const now = performance.now();
+      // Skip frames under the cap — still request the next rAF to stay synced
+      // with vsync, just skip the draw.
+      if (minFrameMs > 0 && now - lastFrameTime < minFrameMs) {
+        animId = requestAnimationFrame(render);
+        return;
+      }
       const dt = Math.min((now - lastFrameTime) / 1000, 0.05);
       lastFrameTime = now;
       cumTime += dt;
@@ -491,8 +501,11 @@ export function VisualizerCore({
 
   const inJourneyMode = journeyActive || journeyBrowsing;
 
-  // Keep shaders running at low opacity behind the journey browser
-  const shadersHidden = false;
+  // Completely skip the shader layer tree while the journey browser is open.
+  // On older Macs the WebGL render loop was starving the main thread so badly
+  // that even card hover states lagged. Hiding the canvases (not just dimming
+  // them) stops the rAF work dead and restores UI responsiveness.
+  const shadersHidden = journeyBrowsing;
   const shaderDimmed = journeyBrowsing && !journeyActive;
   const JOURNEY_PICKER_SHADER = "depths" as VisualizerMode;
 
