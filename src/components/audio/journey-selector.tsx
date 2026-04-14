@@ -48,10 +48,14 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     subtitle: string | null;
     description: string | null;
     journeyIds: string[];
+    culminationJourneyId: string | null;
     shareToken: string | null;
     accent: string;
     glow: string;
   }>>([]);
+  /** Full Journey objects for every path member — keyed by journey id so we can
+   *  look them up when a path is expanded and the user clicks a track. */
+  const [pathJourneyMap, setPathJourneyMap] = useState<Record<string, Journey>>({});
   const [sharingId, setSharingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
@@ -99,11 +103,47 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             subtitle: (row.subtitle as string) ?? null,
             description: (row.description as string) ?? null,
             journeyIds: (row.journey_ids ?? []) as string[],
+            culminationJourneyId: (row.culmination_journey_id as string) ?? null,
             shareToken: (row.share_token as string) ?? null,
             accent: (row.accent_color as string) ?? "#d0a070",
             glow: (row.glow_color as string) ?? "#e0b080",
           }))
         );
+
+        // Fetch full journey rows for every path member + culmination so we
+        // can render the inline expansion and play tracks via handleJourneyClick.
+        if (pathJourneyIds.size > 0) {
+          const { data: pathJourneyRows } = await supabase
+            .from("journeys")
+            .select("*")
+            .in("id", Array.from(pathJourneyIds));
+          const map: Record<string, Journey> = {};
+          for (const jRow of pathJourneyRows ?? []) {
+            const r = jRow as Record<string, unknown>;
+            map[r.id as string] = {
+              id: r.id as string,
+              name: (r.name as string) ?? "Untitled",
+              subtitle: (r.subtitle as string) ?? "",
+              description: (r.description as string) ?? "",
+              realmId: (r.realm_id as string) ?? "custom",
+              aiEnabled: true,
+              phases: (r.phases as Journey["phases"]) ?? [],
+              storyText: (r.story_text as string) ?? null,
+              recordingId: (r.recording_id as string) ?? null,
+              userId: r.user_id as string,
+              audioReactive: !!(r.audio_reactive),
+              creatorName: (r.creator_name as string) ?? null,
+              photographyCredit: (r.photography_credit as string) ?? null,
+              dedication: (r.dedication as string) ?? null,
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ...(r.theme ? { theme: r.theme as any } : {}),
+              ...(Array.isArray(r.local_image_urls) && r.local_image_urls.length > 0
+                ? { localImageUrls: r.local_image_urls as string[] }
+                : {}),
+            } as Journey;
+          }
+          setPathJourneyMap(map);
+        }
 
         const { data, error } = await supabase
           .from("journeys")
@@ -631,22 +671,20 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
             </div>
 
-            {/* Custom user paths — Welcome Home and any future albums */}
+            {/* Custom user paths — Welcome Home and any future albums. Matches
+                the built-in path expansion pattern exactly: click to expand,
+                list journeys, tap a journey to play via handleJourneyClick. */}
             {customPaths.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3 mb-5">
                 {customPaths.map((path) => {
+                  const isExpanded = expandedPath === path.id;
+                  const completedCount = path.journeyIds.filter((id) => completedJourneyIds.includes(id)).length;
+                  const total = path.journeyIds.length;
+                  const culminationUnlocked = total > 0 && completedCount === total;
+                  const culmJourney = path.culminationJourneyId ? pathJourneyMap[path.culminationJourneyId] : null;
                   const shareUrl = path.shareToken
                     ? (typeof window !== "undefined" ? `${window.location.origin}/path/${path.shareToken}` : `/path/${path.shareToken}`)
                     : null;
-                  const openPath = () => {
-                    if (path.shareToken) {
-                      // Don't call onClose() — it flips the selector closed
-                      // which repaints the shader layer for a frame before
-                      // the route transitions. router.push unmounts the
-                      // selector cleanly via the route change.
-                      router.push(`/path/${path.shareToken}`);
-                    }
-                  };
                   const copyLink = async (e: React.MouseEvent) => {
                     e.stopPropagation();
                     if (!shareUrl) return;
@@ -660,82 +698,224 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   return (
                     <div
                       key={path.id}
-                      className="jcard rounded-xl transition-colors cursor-pointer"
+                      className="jcard rounded-xl"
                       style={{
                         backgroundColor: "rgba(255,255,255,0.01)",
                         border: `1px solid rgba(255,255,255,0.08)`,
                         padding: "16px 20px",
                       }}
-                      onClick={openPath}
                     >
-                      <div className="flex items-start gap-2.5 mb-2">
-                        <div
-                          className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
-                          style={{
-                            backgroundColor: path.accent,
-                            boxShadow: `0 0 4px ${path.glow}30`,
-                          }}
-                        />
-                        <div className="min-w-0 flex-1">
-                          <span
-                            className="text-white/80 block"
+                      {/* Header — click to toggle */}
+                      <div
+                        className="cursor-pointer"
+                        onClick={() => setExpandedPath(isExpanded ? null : path.id)}
+                      >
+                        <div className="flex items-start gap-2.5 mb-2">
+                          <div
+                            className="w-1.5 h-1.5 rounded-full shrink-0 mt-1.5"
                             style={{
-                              fontFamily: "var(--font-geist-sans)",
-                              fontWeight: 300,
-                              fontSize: "0.95rem",
+                              backgroundColor: path.accent,
+                              boxShadow: `0 0 4px ${path.glow}30`,
                             }}
-                          >
-                            {path.name}
-                          </span>
-                          {path.subtitle && (
+                          />
+                          <div className="min-w-0 flex-1">
                             <span
-                              className="text-white/35 block mt-0.5"
+                              className="text-white/80 block"
                               style={{
-                                fontSize: "0.68rem",
-                                fontFamily: "var(--font-geist-mono)",
+                                fontFamily: "var(--font-geist-sans)",
+                                fontWeight: 300,
+                                fontSize: "0.95rem",
                               }}
                             >
-                              {path.subtitle}
+                              {path.name}
                             </span>
+                            {path.subtitle && (
+                              <span
+                                className="text-white/35 block mt-0.5"
+                                style={{
+                                  fontSize: "0.68rem",
+                                  fontFamily: "var(--font-geist-mono)",
+                                }}
+                              >
+                                {path.subtitle}
+                              </span>
+                            )}
+                          </div>
+                          {path.shareToken && (
+                            <button
+                              type="button"
+                              onClick={copyLink}
+                              className="p-1.5 rounded-md text-white/30 hover:text-white/80 transition-colors shrink-0"
+                              title="Copy share link"
+                            >
+                              <Share2 className="h-3.5 w-3.5" />
+                            </button>
                           )}
+                          <ChevronDown
+                            className="h-3.5 w-3.5 text-white/20 shrink-0 mt-1 transition-transform duration-200"
+                            style={{ transform: isExpanded ? "rotate(180deg)" : "rotate(0)" }}
+                          />
                         </div>
-                        {path.shareToken && (
-                          <button
-                            type="button"
-                            onClick={copyLink}
-                            className="p-1.5 rounded-md text-white/30 hover:text-white/80 transition-colors shrink-0"
-                            title="Copy share link"
+                        <div className="flex items-center gap-1.5 ml-4 mt-2">
+                          {path.journeyIds.map((jid) => {
+                            const done = completedJourneyIds.includes(jid);
+                            return (
+                              <div
+                                key={jid}
+                                style={{
+                                  width: "5px",
+                                  height: "5px",
+                                  borderRadius: "50%",
+                                  backgroundColor: done ? path.accent : "rgba(255,255,255,0.15)",
+                                  boxShadow: done ? `0 0 4px ${path.glow}40` : "none",
+                                }}
+                              />
+                            );
+                          })}
+                          <span
+                            style={{
+                              fontFamily: "var(--font-geist-mono)",
+                              fontSize: "0.6rem",
+                              color: "rgba(255,255,255,0.3)",
+                              marginLeft: "0.4rem",
+                            }}
                           >
-                            <Share2 className="h-3.5 w-3.5" />
-                          </button>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-between ml-4 mt-2">
-                        <div className="flex items-center gap-1.5">
-                          {path.journeyIds.map((jid) => (
-                            <div
-                              key={jid}
-                              style={{
-                                width: "5px",
-                                height: "5px",
-                                borderRadius: "50%",
-                                backgroundColor: "rgba(255,255,255,0.25)",
-                              }}
-                            />
-                          ))}
+                            {completedCount} of {total}
+                          </span>
                         </div>
-                        <span
-                          style={{
-                            fontFamily: "var(--font-geist-mono)",
-                            fontSize: "0.6rem",
-                            letterSpacing: "0.14em",
-                            textTransform: "uppercase",
-                            color: path.accent,
-                          }}
-                        >
-                          Open path →
-                        </span>
                       </div>
+
+                      {/* Expanded — inline journey list */}
+                      {isExpanded && (
+                        <div className="mt-4 pt-3" style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+                          <div className="flex flex-col gap-1">
+                            {path.journeyIds.map((jid, idx) => {
+                              const journey = pathJourneyMap[jid];
+                              if (!journey) return null;
+                              const isComplete = completedJourneyIds.includes(jid);
+                              const isActive = activeJourney?.id === jid;
+                              return (
+                                <div
+                                  key={jid}
+                                  className="flex items-center gap-3 py-1.5 cursor-pointer group rounded-md px-2 hover:bg-white/[0.03] transition-colors"
+                                  onClick={() => handleJourneyClick(journey)}
+                                  style={{
+                                    backgroundColor: isActive ? "rgba(255,255,255,0.04)" : undefined,
+                                  }}
+                                >
+                                  <span
+                                    style={{
+                                      fontSize: "0.58rem",
+                                      fontFamily: "var(--font-geist-mono)",
+                                      color: "rgba(255,255,255,0.25)",
+                                      letterSpacing: "0.08em",
+                                      minWidth: "1.25rem",
+                                    }}
+                                  >
+                                    {String(idx + 1).padStart(2, "0")}
+                                  </span>
+                                  <div
+                                    style={{
+                                      width: "6px",
+                                      height: "6px",
+                                      borderRadius: "50%",
+                                      backgroundColor: isComplete ? path.accent : "rgba(255,255,255,0.15)",
+                                      flexShrink: 0,
+                                    }}
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <div
+                                      className="text-white/80 group-hover:text-white truncate"
+                                      style={{
+                                        fontFamily: "var(--font-geist-sans)",
+                                        fontWeight: 300,
+                                        fontSize: "0.85rem",
+                                      }}
+                                    >
+                                      {journey.name}
+                                    </div>
+                                  </div>
+                                  {isActive && (
+                                    <span
+                                      style={{
+                                        fontSize: "0.55rem",
+                                        fontFamily: "var(--font-geist-mono)",
+                                        color: "rgba(255,255,255,0.4)",
+                                        letterSpacing: "0.08em",
+                                        textTransform: "uppercase",
+                                      }}
+                                    >
+                                      Playing
+                                    </span>
+                                  )}
+                                </div>
+                              );
+                            })}
+
+                            {/* Culmination row — locked until all done */}
+                            {culmJourney && (
+                              <div
+                                className={`flex items-center gap-3 py-2 mt-1 rounded-md px-2 transition-colors ${
+                                  culminationUnlocked ? "cursor-pointer hover:bg-white/[0.05]" : "cursor-not-allowed opacity-60"
+                                }`}
+                                onClick={() => culminationUnlocked && handleJourneyClick(culmJourney)}
+                                style={{
+                                  borderTop: "1px solid rgba(255,255,255,0.06)",
+                                  marginTop: "8px",
+                                  paddingTop: "12px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    fontSize: "0.55rem",
+                                    fontFamily: "var(--font-geist-mono)",
+                                    color: path.accent,
+                                    letterSpacing: "0.12em",
+                                    textTransform: "uppercase",
+                                    minWidth: "1.25rem",
+                                  }}
+                                >
+                                  ★
+                                </span>
+                                <div
+                                  style={{
+                                    width: "6px",
+                                    height: "6px",
+                                    borderRadius: "50%",
+                                    backgroundColor: culminationUnlocked ? path.accent : "rgba(255,255,255,0.12)",
+                                    flexShrink: 0,
+                                  }}
+                                />
+                                <div className="flex-1 min-w-0">
+                                  <div
+                                    className="truncate"
+                                    style={{
+                                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                                      fontStyle: "italic",
+                                      fontSize: "0.95rem",
+                                      color: culminationUnlocked ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.4)",
+                                    }}
+                                  >
+                                    {culmJourney.name}
+                                  </div>
+                                  {!culminationUnlocked && (
+                                    <div
+                                      style={{
+                                        fontSize: "0.58rem",
+                                        fontFamily: "var(--font-geist-mono)",
+                                        color: "rgba(255,255,255,0.35)",
+                                        marginTop: "2px",
+                                      }}
+                                    >
+                                      Finish all {total} to unlock
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   );
                 })}
