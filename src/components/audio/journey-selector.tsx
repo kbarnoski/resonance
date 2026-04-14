@@ -1135,13 +1135,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     }}
                     onClick={() => handleJourneyClick(journey)}
                   >
-                    <div className="flex items-center justify-between mb-1.5">
-                      <div className="flex items-center gap-2 min-w-0">
+                    <div className="flex items-start justify-between gap-3 mb-1.5">
+                      <div className="flex items-start gap-2 min-w-0 flex-1">
                         {completedJourneyIds.includes(journey.id) && (() => {
                           const jp = getPathForJourney(journey.id);
                           return jp ? (
                             <div
-                              className="shrink-0"
+                              className="shrink-0 mt-2"
                               style={{
                                 width: "4px",
                                 height: "4px",
@@ -1151,27 +1151,31 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             />
                           ) : null;
                         })()}
-                        <span
-                          className="text-white/85 shrink-0"
-                          style={{
-                            fontFamily: "var(--font-geist-sans)",
-                            fontWeight: 300,
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {journey.name}
-                        </span>
-                        <span
-                          className="text-white/35 truncate"
-                          style={{
-                            fontSize: "0.75rem",
-                            fontFamily: "var(--font-geist-mono)",
-                          }}
-                        >
-                          {journey.subtitle}
-                        </span>
+                        <div className="min-w-0 flex-1">
+                          <span
+                            className="block text-white/85"
+                            style={{
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "1rem",
+                              lineHeight: 1.25,
+                            }}
+                          >
+                            {journey.name}
+                          </span>
+                          <span
+                            className="block text-white/35 mt-0.5"
+                            style={{
+                              fontSize: "0.75rem",
+                              fontFamily: "var(--font-geist-mono)",
+                              lineHeight: 1.35,
+                            }}
+                          >
+                            {journey.subtitle}
+                          </span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2 shrink-0 ml-3">
+                      <div className="flex items-center gap-2 shrink-0">
                         {isActive && (
                           <span
                             className="text-white/40"
@@ -1291,13 +1295,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       }}
                       onClick={() => handleJourneyClick(journey)}
                     >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-center gap-2 min-w-0">
+                      <div className="flex items-start justify-between gap-3 mb-1.5">
+                        <div className="flex items-start gap-2 min-w-0 flex-1">
                           {completedJourneyIds.includes(journey.id) && (() => {
                             const jp = getPathForJourney(journey.id);
                             return jp ? (
                               <div
-                                className="shrink-0"
+                                className="shrink-0 mt-2"
                                 style={{
                                   width: "4px",
                                   height: "4px",
@@ -1307,27 +1311,31 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                               />
                             ) : null;
                           })()}
-                          <span
-                            className="text-white/85 shrink-0"
-                            style={{
-                              fontFamily: "var(--font-geist-sans)",
-                              fontWeight: 300,
-                              fontSize: "1rem",
-                            }}
-                          >
-                            {journey.name}
-                          </span>
-                          <span
-                            className="text-white/35 truncate"
-                            style={{
-                              fontSize: "0.75rem",
-                              fontFamily: "var(--font-geist-mono)",
-                            }}
-                          >
-                            {journey.subtitle}
-                          </span>
+                          <div className="min-w-0 flex-1">
+                            <span
+                              className="block text-white/85"
+                              style={{
+                                fontFamily: "var(--font-geist-sans)",
+                                fontWeight: 300,
+                                fontSize: "1rem",
+                                lineHeight: 1.25,
+                              }}
+                            >
+                              {journey.name}
+                            </span>
+                            <span
+                              className="block text-white/35 mt-0.5"
+                              style={{
+                                fontSize: "0.75rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                lineHeight: 1.35,
+                              }}
+                            >
+                              {journey.subtitle}
+                            </span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2 shrink-0 ml-3">
+                        <div className="flex items-center gap-2 shrink-0">
                           {isActive && (
                             <span
                               className="text-white/40"
