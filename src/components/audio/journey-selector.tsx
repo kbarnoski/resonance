@@ -798,7 +798,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                                 <div
                                   key={jid}
                                   className="flex items-center gap-3 py-1.5 cursor-pointer group rounded-md px-2 hover:bg-white/[0.03] transition-colors"
-                                  onClick={() => handleJourneyClick(journey)}
+                                  onClick={async () => {
+                                    ensureResumed();
+                                    setAiImageEnabled(journey.aiEnabled);
+                                    await loadCustomJourneyTrack(journey);
+                                    startCustomJourney(journey);
+                                    onClose();
+                                  }}
                                   style={{
                                     backgroundColor: isActive ? "rgba(255,255,255,0.04)" : undefined,
                                   }}
@@ -858,7 +864,14 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                                 className={`flex items-center gap-3 py-2 mt-1 rounded-md px-2 transition-colors ${
                                   culminationUnlocked ? "cursor-pointer hover:bg-white/[0.05]" : "cursor-not-allowed opacity-60"
                                 }`}
-                                onClick={() => culminationUnlocked && handleJourneyClick(culmJourney)}
+                                onClick={async () => {
+                                  if (!culminationUnlocked) return;
+                                  ensureResumed();
+                                  setAiImageEnabled(culmJourney.aiEnabled);
+                                  await loadCustomJourneyTrack(culmJourney);
+                                  startCustomJourney(culmJourney);
+                                  onClose();
+                                }}
                                 style={{
                                   borderTop: "1px solid rgba(255,255,255,0.06)",
                                   marginTop: "8px",
