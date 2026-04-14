@@ -9,6 +9,7 @@ import { ShareSheet } from "@/components/ui/share-sheet";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
+import { prepareGhostFlashImages, clearGhostFlashImages } from "@/lib/journeys/ghost-flash-images";
 import { createClient } from "@/lib/supabase/client";
 import { MODES_3D, MODES_AI } from "@/lib/shaders";
 import type { Journey, JourneyFrame, JourneyPhaseId } from "@/lib/journeys/types";
@@ -445,6 +446,16 @@ export function SharedJourneyClient({
     };
   }, [resetHideTimer]);
 
+  // Hide the mouse cursor in sync with the bottom controls — same idle timer
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const prev = document.body.style.cursor;
+    document.body.style.cursor = controlsVisible ? "" : "none";
+    return () => {
+      document.body.style.cursor = prev;
+    };
+  }, [controlsVisible]);
+
   // Pre-resolve audio URL so it's ready when user taps start
   useEffect(() => {
     if (!audioUrl) return;
@@ -527,6 +538,9 @@ export function SharedJourneyClient({
   useEffect(() => {
     if (!started) return;
     getRealtimeImageService().resetSession();
+    if (journey.enableBassFlash) {
+      prepareGhostFlashImages(journey.id);
+    }
     const engine = getJourneyEngine();
     const seed = playbackSeed ? parseInt(playbackSeed, 10) : undefined;
     const duration = useAudioStore.getState().duration;
@@ -538,13 +552,14 @@ export function SharedJourneyClient({
     // Show "Journey Started" intro overlay
     setJourneyIntroVisible(true);
     setPhaseIndicatorReady(false);
-    const introTimer = setTimeout(() => setJourneyIntroVisible(false), 5000);
-    const phaseTimer = setTimeout(() => setPhaseIndicatorReady(true), 7000);
+    const introTimer = setTimeout(() => setJourneyIntroVisible(false), 6000);
+    const phaseTimer = setTimeout(() => setPhaseIndicatorReady(true), 8000);
 
     return () => {
       engine.stop();
       clearTimeout(introTimer);
       clearTimeout(phaseTimer);
+      clearGhostFlashImages();
     };
   }, [started, journey, playbackSeed]);
 
@@ -844,8 +859,8 @@ export function SharedJourneyClient({
       setReplayCount((c) => c + 1); // force fresh DOM elements for overlays
       setJourneyIntroVisible(true);
       setPhaseIndicatorReady(false);
-      introTimerRef.current = setTimeout(() => setJourneyIntroVisible(false), 5000);
-      phaseReadyTimerRef.current = setTimeout(() => setPhaseIndicatorReady(true), 7000);
+      introTimerRef.current = setTimeout(() => setJourneyIntroVisible(false), 6000);
+      phaseReadyTimerRef.current = setTimeout(() => setPhaseIndicatorReady(true), 8000);
     }
   };
 
@@ -976,6 +991,7 @@ export function SharedJourneyClient({
           enableBassFlash={journey.enableBassFlash}
           promptSeed={playbackSeed ? parseInt(playbackSeed, 10) : undefined}
           journeyId={journey.id}
+          localImageUrls={journey.localImageUrls}
         >
           {/* ── Primary shader: A/B buffer ──
               Two persistent layers swap roles. Only opacity changes — no remounting,
@@ -1046,7 +1062,7 @@ export function SharedJourneyClient({
           style={{
             zIndex: 50,
             pointerEvents: "none",
-            animation: "journeyIntroAnim 5s ease-in-out forwards",
+            animation: "journeyIntroAnim 6s ease-in-out forwards",
           }}
         >
           <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw" }}>
@@ -1327,7 +1343,7 @@ export function SharedJourneyClient({
           style={{
             zIndex: 50,
             pointerEvents: "none",
-            animation: "journeyEndFadeIn 2s ease-out forwards",
+            animation: "journeyEndFadeIn 3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
           }}
         >
           <div

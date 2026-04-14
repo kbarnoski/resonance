@@ -11,13 +11,15 @@ interface AiOverlayElementsProps {
 }
 
 /** Max simultaneous active clones on screen */
-const MAX_CLONES = 4;
+const MAX_CLONES = 5;
 
-/** Probability of creating a clone when a new image arrives (0-1) */
-const CLONE_PROBABILITY = 0.85;
+/** Probability of creating a clone when a new image arrives (0-1).
+ *  1.0 = every scene spawns a clone so nothing ever feels like a static slideshow. */
+const CLONE_PROBABILITY = 1.0;
 
-/** Interval to spawn clones from the last image even without new images arriving */
-const RESPAWN_INTERVAL = 6000; // 6s — ensures constant motion between image generations
+/** Interval to spawn clones from the last image even without new images arriving.
+ *  Shorter = more constant subtle motion between image generations. */
+const RESPAWN_INTERVAL = 3500;
 
 let cloneIdCounter = 0;
 
@@ -74,11 +76,11 @@ export function AiOverlayElements({
       const driftY = Math.sin(driftAngle) * driftDist;
 
       // Timing
-      const totalDuration = 12 + Math.random() * 8; // 12-20s — longer for more overlap
+      const totalDuration = 16 + Math.random() * 8; // 16-24s — longer lifetime for more overlap
 
       // Keyframe percentages
-      const fadeInEnd = 12; // 12% of duration = gentle fade in
-      const dissolveStart = 60; // 60% = start dissolving — longer at peak
+      const fadeInEnd = 22; // 22% — longer fade in so clones never pop
+      const dissolveStart = 65; // 65% = start dissolving — generous peak hold
       // 100% = fully gone
 
       const animName = `clone-drift-${id}`;
@@ -182,10 +184,8 @@ export function AiOverlayElements({
     imageCountRef.current++;
     lastImageUrlRef.current = imageUrl;
 
-    // Skip the very first image (let the scene establish first)
-    if (imageCountRef.current <= 1) return;
-
-    // Probability gate — don't clone every image
+    // Every new image spawns a clone — keeps constant motion so scenes never
+    // feel like a slideshow. Subtle by design: clones peak at 0.55 opacity.
     if (Math.random() > CLONE_PROBABILITY) return;
 
     spawnClone(imageUrl);

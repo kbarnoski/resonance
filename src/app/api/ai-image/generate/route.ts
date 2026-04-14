@@ -2,8 +2,14 @@ import { fal } from "@fal-ai/client";
 
 const MODEL_ID = "fal-ai/flux/schnell";
 
+// Appended to every generated prompt across every journey. "Surreal" here means
+// dreamlike-but-lifelike — we want rich imaginative scenes rendered with
+// photographic materials and lighting, not illustration. The NOT clauses catch
+// the most common failure modes where the base prompt drifts toward art styles.
 const STYLE_SUFFIX =
-  "photorealistic, cinematic lighting, surreal, luminous, sacred, transcendent, ethereal";
+  "photorealistic cinematic photograph, real photographic materials and lighting, " +
+  "surreal dreamlike but lifelike, luminous, transcendent, ethereal, " +
+  "NOT illustration, NOT cartoon, NOT painting, NOT anime, NOT concept art, NOT 3d render";
 
 export async function POST(request: Request) {
   if (!process.env.FAL_KEY) {

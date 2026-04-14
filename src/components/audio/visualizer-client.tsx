@@ -22,6 +22,7 @@ import type { MusicalEvent } from "@/lib/audio/types";
 import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
+import { prepareGhostFlashImages, clearGhostFlashImages } from "@/lib/journeys/ghost-flash-images";
 import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
 import { getPathForJourney, getNextInPath, isPathCulminationUnlocked, isGrandCulminationUnlocked, JOURNEY_PATHS, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
 import { createClient } from "@/lib/supabase/client";
@@ -135,6 +136,11 @@ export function VisualizerClient({
 
   // Journey intro screen — shows name + subtitle on journey start
   const [journeyIntroVisible, setJourneyIntroVisible] = useState(false);
+  // Force-remount counter for overlay DOM nodes — bumped on replay so CSS animations restart
+  const [overlayRemountKey, setOverlayRemountKey] = useState(0);
+  // Suppress completion detection for a window after replay — prevents the stale
+  // currentTime-near-end value from immediately re-firing the end overlay.
+  const replayGuardUntilRef = useRef<number>(0);
   const journeyIntroTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Buffer after intro fades out before phase indicator can appear
   const [phaseIndicatorReady, setPhaseIndicatorReady] = useState(true);
@@ -154,18 +160,25 @@ export function VisualizerClient({
       if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
       setJourneyIntroVisible(true);
       setPhaseIndicatorReady(false);
-      // Intro fades out after 5s, then 2s buffer before phase indicator
+      // Intro holds 6s, then 2s buffer before phase indicator
       journeyIntroTimerRef.current = setTimeout(() => {
         setJourneyIntroVisible(false);
-      }, 5000);
+      }, 6000);
       phaseReadyTimerRef.current = setTimeout(() => {
         setPhaseIndicatorReady(true);
-      }, 7000);
+      }, 8000);
 
       prevJourneyIdRef.current = activeJourney.id;
       setAdminOpen(false);
       resetPerfMonitor();
       getRealtimeImageService().resetSession();
+
+      // Kick off flash-angel image generation for journeys that use the
+      // bass flash overlay (currently only Ghost). These images show the
+      // figure's face — the only moment the face is visible in the journey.
+      if (activeJourney.enableBassFlash) {
+        prepareGhostFlashImages(activeJourney.id);
+      }
 
       // Log journey-start lifecycle event
       const startEntry = buildSnapshot("journey-start", getSharedFpsRef());
@@ -178,6 +191,7 @@ export function VisualizerClient({
       setPhaseIndicatorReady(true);
       if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
       if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
+      clearGhostFlashImages();
     }
     return () => {
       if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
@@ -196,6 +210,9 @@ export function VisualizerClient({
     }
     if (journeyCompleted) return; // Already completed
     if (completedJourneyRef.current === activeJourney.id) return; // Already detected for this journey
+    // Suppress firing during the replay guard window — prevents the end
+    // overlay from immediately re-appearing after a replay click.
+    if (performance.now() < replayGuardUntilRef.current) return;
 
     // Detect completion: currentTime within completionOffset of end,
     // OR audio stopped while past 95% of the track (handles RAF sync gaps).
@@ -441,6 +458,18 @@ export function VisualizerClient({
     if (libraryOpen || journeyOpen) setControlsVisible(true);
   }, [libraryOpen, journeyOpen]);
 
+  // Hide the mouse cursor in sync with the bottom controls — same idle timer.
+  // Any input (mousemove / touchstart) already resets controlsVisible=true above,
+  // so this effect just mirrors that state onto document.body.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    const prev = document.body.style.cursor;
+    document.body.style.cursor = controlsVisible ? "" : "none";
+    return () => {
+      document.body.style.cursor = prev;
+    };
+  }, [controlsVisible]);
+
   // Initialize: connect to the global audio engine's AnalyserNode
   // In desktop mode, use the NativeAnalyserNode instead
   useEffect(() => {
@@ -657,8 +686,16 @@ export function VisualizerClient({
     const journey = useAudioStore.getState().activeJourney;
     if (!journey) return;
     ensureResumed(); // Unlock audio on mobile — must be in gesture context
+    // Pre-arm the completion guard — blocks the completion detector from
+    // firing based on stale currentTime for the first 2.5s of replay.
+    replayGuardUntilRef.current = performance.now() + 2500;
+    // Force fresh DOM for overlays so CSS animations restart cleanly
+    setOverlayRemountKey((k) => k + 1);
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
+    // Synchronously reset currentTime in the store so the completion detector
+    // doesn't see the stale end-of-track value between stop and start.
+    useAudioStore.getState().setCurrentTime(0);
     // Seek to start and replay
     seek(0);
     useAudioStore.getState().stopJourney();
@@ -917,6 +954,7 @@ export function VisualizerClient({
         aiGenerating={isPlaying}
         journeyId={activeJourney?.id}
         enableBassFlash={activeJourney?.enableBassFlash}
+        localImageUrls={activeJourney?.localImageUrls}
       >
         {/* Shader layer */}
         <VisualizerCore
@@ -1011,6 +1049,7 @@ export function VisualizerClient({
       {/* Journey phase indicator — hidden during intro + 2s buffer */}
       {journeyActive && activeJourney && !journeyOpen && phaseIndicatorReady && (
         <JourneyPhaseIndicator
+          key={`phase-indicator-${activeJourney.id}-${overlayRemountKey}`}
           journey={activeJourney}
           currentPhase={journeyPhase}
         />
@@ -1035,11 +1074,12 @@ export function VisualizerClient({
       {/* Journey intro screen — exact same treatment as completion overlay */}
       {journeyIntroVisible && activeJourney && (
         <div
+          key={`intro-${overlayRemountKey}`}
           className="absolute inset-0 flex items-center justify-center"
           style={{
             zIndex: 50,
             pointerEvents: "none",
-            animation: "journeyIntroAnim 5s ease-in-out forwards",
+            animation: "journeyIntroAnim 6s ease-in-out forwards",
           }}
         >
           <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw" }}>
@@ -1122,11 +1162,12 @@ export function VisualizerClient({
 
         return (
           <div
+            key={`complete-${overlayRemountKey}`}
             className="absolute inset-0 flex items-center justify-center"
             style={{
               zIndex: 50,
               pointerEvents: "none",
-              animation: "journeyEndFadeIn 2s ease-out forwards",
+              animation: "journeyEndFadeIn 3s cubic-bezier(0.16, 1, 0.3, 1) forwards",
             }}
           >
             <div className="flex flex-col items-center gap-5" style={{ position: "relative", padding: "4rem 6rem", pointerEvents: "auto", maxWidth: "90vw" }}>

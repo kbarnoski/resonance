@@ -99,7 +99,7 @@ export function JourneyPhaseIndicator({
 
         timerRef.current = setTimeout(() => {
           setVisible(false);
-        }, 6000);
+        }, 7000);
       });
     });
 
@@ -126,8 +126,8 @@ export function JourneyPhaseIndicator({
         style={{
           opacity: visible ? 1 : 0,
           transition: visible
-            ? "opacity 1.5s cubic-bezier(0.23, 1, 0.32, 1)"
-            : "opacity 4s cubic-bezier(0.16, 1, 0.3, 1)",
+            ? "opacity 2s cubic-bezier(0.23, 1, 0.32, 1)"
+            : "opacity 3s cubic-bezier(0.16, 1, 0.3, 1)",
           padding: "4rem 6rem",
           position: "relative",
         }}

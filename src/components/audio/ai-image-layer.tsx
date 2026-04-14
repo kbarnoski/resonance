@@ -31,6 +31,9 @@ interface AiImageLayerProps {
   journeyId?: string;
   /** Fires with the image src whenever a new AI image is composited */
   onImageReady?: (src: string) => void;
+  /** When present, cycle through these URLs on the gen interval instead of calling fal.ai.
+   *  The AI generation pipeline is bypassed entirely — zero network calls, no cost cap. */
+  localImageUrls?: string[];
 }
 
 interface ImageLayer {
@@ -55,10 +58,10 @@ interface ImageLayer {
   purge?: boolean;
 }
 
-const DISSOLVE_DURATION = 4200; // 4.2s fade-in — unhurried cross-dissolve
-const FADEOUT_DURATION = 10000; // 10s fade-out — images linger longer for layered depth
-const PURGE_FADEOUT_DURATION = 500; // 0.5s fast fade — prevents old journey images lingering
-const MIN_PEAK_DURATION = 5000; // image must hold at full opacity 5s before eviction
+const DISSOLVE_DURATION = 5500; // 5.5s fade-in — unhurried, deliberate cross-dissolve
+const FADEOUT_DURATION = 12000; // 12s fade-out — long tail keeps images layered deep into the next arrival
+const PURGE_FADEOUT_DURATION = 2500; // 2.5s — gentle fade when a new journey begins, no snap
+const MIN_PEAK_DURATION = 8000; // image must hold at full opacity 8s before eviction — slower scene churn
 const GEN_INTERVAL_MIN = 8000; // 8s between generations — gives each image room to breathe
 const GEN_INTERVAL_MAX = 10000; // 10s max — ensures constant visual movement
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
@@ -193,7 +196,14 @@ export function AiImageLayer({
   promptSeed,
   journeyId,
   onImageReady,
+  localImageUrls,
 }: AiImageLayerProps) {
+  const hasLocalImages = Array.isArray(localImageUrls) && localImageUrls.length > 0;
+  const localImageUrlsRef = useRef(localImageUrls ?? []);
+  useEffect(() => {
+    localImageUrlsRef.current = localImageUrls ?? [];
+  }, [localImageUrls]);
+  const localImageIndexRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const layersRef = useRef<ImageLayer[]>([]);
   const animRef = useRef<number>(0);
@@ -356,6 +366,18 @@ export function AiImageLayer({
   // Trigger an image generation (REST)
   // skipCache=true for periodic refreshes (same prompt, want new image)
   const triggerGeneration = useCallback((skipCache = false) => {
+    // ── Local-image mode: cycle provided URLs instead of calling fal.ai ──
+    if (localImageUrlsRef.current.length > 0) {
+      const urls = localImageUrlsRef.current;
+      const idx = localImageIndexRef.current % urls.length;
+      localImageIndexRef.current = idx + 1;
+      lastGenTimeRef.current = performance.now();
+      loadImage(urls[idx])
+        .then((img) => pushImage(img))
+        .catch(() => { /* broken URL, skip */ });
+      return;
+    }
+
     const service = getRealtimeImageService();
     if (service.isCapped()) return;
     // Allow up to MAX_CONCURRENT_GENS parallel requests
@@ -382,33 +404,47 @@ export function AiImageLayer({
     // one-point perspective, Tarkovsky's contemplative duration, Malick's
     // nature POV, Villeneuve's scale contrast, and Spielberg's low-angle awe.
     // Each phase gets perspectives appropriate to its emotional register.
-    const phase = getJourneyEngine().getCurrentPhase();
-    const perspectives = CINEMATIC_PERSPECTIVES[phase ?? "threshold"] ?? CINEMATIC_PERSPECTIVES.threshold;
+    //
+    // Journeys with strictCameraPrompt=true (e.g. Ghost) have per-phase camera
+    // instructions baked into their prompts and skip the random decoration so
+    // the POVs don't fight the required camera angle.
+    const activeJourney = getJourneyEngine().getJourney();
+    const strictCamera = activeJourney?.strictCameraPrompt === true;
 
-    const interpretations = [
-      "painterly and impressionistic", "photographic and textural",
-      "geometric and structured", "fluid and organic",
-      "minimal and sparse", "dense and layered",
-      "dreamy and soft focus", "sharp and crystalline",
-      "ethereal and translucent", "raw and tactile",
-      "microscopic detail", "atmospheric and hazy",
-    ];
-    const moods = [
-      "quiet solitude", "vast stillness", "gentle motion",
-      "raw power", "delicate fragility", "infinite depth",
-      "emerging from darkness", "dissolving into light",
-      "tension between opposites", "peaceful emptiness",
-    ];
     // When a promptSeed is set (shared playback), derive deterministic variation
     // from seed + genCount so consecutive generations differ but are reproducible.
     const rng = promptSeedRef.current != null
       ? createSeededRandom(promptSeedRef.current + genCountRef.current)
       : Math.random;
-    const pov = perspectives[Math.floor(rng() * perspectives.length)];
-    const interp = interpretations[Math.floor(rng() * interpretations.length)];
-    const mood = moods[Math.floor(rng() * moods.length)];
 
-    const variedPrompt = `${currentPrompt}, ${pov}, ${interp}, ${mood}, no snowflakes`;
+    let variedPrompt: string;
+    if (strictCamera) {
+      // Base prompt already dictates the camera — don't layer random perspectives on top.
+      variedPrompt = `${currentPrompt}, no snowflakes`;
+    } else {
+      const phase = getJourneyEngine().getCurrentPhase();
+      const perspectives = CINEMATIC_PERSPECTIVES[phase ?? "threshold"] ?? CINEMATIC_PERSPECTIVES.threshold;
+
+      const interpretations = [
+        "painterly and impressionistic", "photographic and textural",
+        "geometric and structured", "fluid and organic",
+        "minimal and sparse", "dense and layered",
+        "dreamy and soft focus", "sharp and crystalline",
+        "ethereal and translucent", "raw and tactile",
+        "microscopic detail", "atmospheric and hazy",
+      ];
+      const moods = [
+        "quiet solitude", "vast stillness", "gentle motion",
+        "raw power", "delicate fragility", "infinite depth",
+        "emerging from darkness", "dissolving into light",
+        "tension between opposites", "peaceful emptiness",
+      ];
+      const pov = perspectives[Math.floor(rng() * perspectives.length)];
+      const interp = interpretations[Math.floor(rng() * interpretations.length)];
+      const mood = moods[Math.floor(rng() * moods.length)];
+
+      variedPrompt = `${currentPrompt}, ${pov}, ${interp}, ${mood}, no snowflakes`;
+    }
 
     // Capture current prompt to discard stale responses after a prompt change
     const requestPrompt = currentPrompt;
@@ -424,6 +460,29 @@ export function AiImageLayer({
         if (!url) return;
         // Discard if prompt changed while request was in flight
         if (promptRef.current !== requestPrompt) return;
+
+        // ── Visual compliance gate ──
+        // For journeys with strict visual requirements (e.g. Ghost), every
+        // generated frame is checked against a fast vision model before it
+        // reaches the layer stack. If the check fails, the frame is silently
+        // discarded — the next generation tick will try again.
+        if (strictCamera) {
+          try {
+            const validateRes = await fetch("/api/ai-image/validate", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ imageUrl: url }),
+            });
+            if (validateRes.ok) {
+              const { valid } = await validateRes.json();
+              if (!valid) {
+                // Silent drop — no pushImage, generation loop will fire again
+                return;
+              }
+            }
+          } catch { /* validation error, fall through and show the image */ }
+        }
+
         try {
           const img = await loadImage(url);
           pushImage(img);
@@ -456,6 +515,11 @@ export function AiImageLayer({
   // transient outages without blocking the entire journey.
   useEffect(() => {
     if (!enabled) return;
+    // Local-image mode: skip all network checks, mark ready immediately
+    if (hasLocalImages) {
+      setAvailable(true);
+      return;
+    }
     let cancelled = false;
     const service = getRealtimeImageService();
 

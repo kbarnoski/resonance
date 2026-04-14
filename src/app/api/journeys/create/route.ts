@@ -19,7 +19,11 @@ export async function POST(request: Request) {
       .single();
     const creatorName = profile?.display_name ?? null;
 
-    const { storyText, realmId, recordingId, name, audioReactive } = await request.json();
+    const { storyText, realmId, recordingId, name, audioReactive, localImageUrls } = await request.json();
+    const safeLocalImageUrls: string[] | null =
+      Array.isArray(localImageUrls) && localImageUrls.length > 0
+        ? localImageUrls.filter((u: unknown): u is string => typeof u === "string" && u.length > 0)
+        : null;
 
     if (!storyText) {
       return Response.json({ error: "Missing storyText" }, { status: 400 });
@@ -55,6 +59,7 @@ export async function POST(request: Request) {
       theme: journey.theme ? JSON.parse(JSON.stringify(journey.theme)) : null,
       audio_reactive: audioReactive ?? false,
       creator_name: creatorName,
+      local_image_urls: safeLocalImageUrls,
     }).select().single();
 
     if (error) {
@@ -65,7 +70,10 @@ export async function POST(request: Request) {
       );
     }
 
-    return Response.json({ journey: { ...journey, id: data.id }, dbRecord: data });
+    return Response.json({
+      journey: { ...journey, id: data.id, localImageUrls: safeLocalImageUrls ?? undefined },
+      dbRecord: data,
+    });
   } catch (error) {
     console.error("Journey creation error:", error);
     const message = error instanceof Error ? error.message : "Unknown error";

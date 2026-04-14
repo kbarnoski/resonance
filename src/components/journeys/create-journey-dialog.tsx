@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { X, Loader2, Music } from "lucide-react";
+import { X, Loader2, Music, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import type { Journey } from "@/lib/journeys/types";
@@ -27,6 +27,9 @@ export function CreateJourneyDialog({
   const abortRef = useRef<AbortController | null>(null);
   const [recordings, setRecordings] = useState<{ id: string; title: string }[]>([]);
   const [selectedRecordingId, setSelectedRecordingId] = useState<string | null>(recordingId ?? null);
+  // Local-image source: when files are chosen, journey playback cycles these instead of calling fal.ai
+  const [localImageFiles, setLocalImageFiles] = useState<File[]>([]);
+  const [uploadedImageUrls, setUploadedImageUrls] = useState<string[] | null>(null);
 
   // Fetch recordings when dialog opens
   useEffect(() => {
@@ -78,6 +81,35 @@ export function CreateJourneyDialog({
     abortRef.current = new AbortController();
 
     try {
+      // If local images were chosen, upload them first and collect public URLs
+      let finalImageUrls: string[] | null = uploadedImageUrls;
+      if (localImageFiles.length > 0 && !finalImageUrls) {
+        setStatusText(`Uploading ${localImageFiles.length} photo${localImageFiles.length === 1 ? "" : "s"}...`);
+        const supabase = createClient();
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("Not signed in");
+        const urls: string[] = [];
+        for (const file of localImageFiles) {
+          const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+          const path = `${user.id}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}-${safeName}`;
+          const { error: uploadError } = await supabase.storage
+            .from("journey-images")
+            .upload(path, file, {
+              contentType: file.type || "image/jpeg",
+              upsert: false,
+            });
+          if (uploadError) {
+            throw new Error(`Upload failed: ${uploadError.message}`);
+          }
+          const { data: publicData } = supabase.storage
+            .from("journey-images")
+            .getPublicUrl(path);
+          urls.push(publicData.publicUrl);
+        }
+        finalImageUrls = urls;
+        setUploadedImageUrls(urls);
+      }
+
       const res = await fetch("/api/journeys/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -86,6 +118,7 @@ export function CreateJourneyDialog({
           recordingId: selectedRecordingId || recordingId,
           name: journeyName.trim() || undefined,
           audioReactive,
+          localImageUrls: finalImageUrls ?? undefined,
         }),
         signal: abortRef.current.signal,
       });
@@ -101,6 +134,8 @@ export function CreateJourneyDialog({
       setStoryText("");
       setJourneyName("");
       setAudioReactive(false);
+      setLocalImageFiles([]);
+      setUploadedImageUrls(null);
       const fullJourney: Journey = {
         ...data.journey,
         id: data.dbRecord.id,
@@ -108,6 +143,7 @@ export function CreateJourneyDialog({
         recordingId: selectedRecordingId || recordingId || null,
         userId: data.dbRecord.user_id,
         audioReactive,
+        ...(finalImageUrls && finalImageUrls.length > 0 ? { localImageUrls: finalImageUrls } : {}),
       };
       onCreated?.(fullJourney);
     } catch (err) {
@@ -275,6 +311,35 @@ export function CreateJourneyDialog({
               </div>
             </div>
           )}
+
+          {/* Your own photos — bypass AI imagery, cycle user-provided files */}
+          <div className="mb-5">
+            <label
+              className="block text-white/40 mb-2"
+              style={{ fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)", letterSpacing: "0.05em", textTransform: "uppercase" }}
+            >
+              <ImageIcon className="inline h-3 w-3 mr-1 -mt-0.5" />
+              Your own photos (optional)
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={creating}
+              onChange={(e) => {
+                const files = Array.from(e.target.files ?? []);
+                setLocalImageFiles(files);
+                setUploadedImageUrls(null);
+              }}
+              className="w-full text-xs text-white/60 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:bg-white/10 file:text-white/80 hover:file:bg-white/15 file:cursor-pointer disabled:opacity-50"
+              style={{ fontFamily: "var(--font-geist-mono)" }}
+            />
+            {localImageFiles.length > 0 && (
+              <p className="mt-2 text-white/40" style={{ fontSize: "0.65rem", fontFamily: "var(--font-geist-mono)" }}>
+                {localImageFiles.length} photo{localImageFiles.length === 1 ? "" : "s"} selected — playback will cycle these instead of generating AI imagery
+              </p>
+            )}
+          </div>
 
           {/* Audio reactive toggle */}
           <div className="mb-6">

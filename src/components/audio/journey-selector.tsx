@@ -96,6 +96,9 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             audioReactive: !!(row.audio_reactive),
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ...(row.theme ? { theme: row.theme as any } : {}),
+            ...(Array.isArray(row.local_image_urls) && row.local_image_urls.length > 0
+              ? { localImageUrls: row.local_image_urls as string[] }
+              : {}),
           }));
           setCustomJourneys(journeys);
         }

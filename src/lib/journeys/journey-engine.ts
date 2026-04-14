@@ -116,15 +116,23 @@ class JourneyEngine {
   /** Dual shader switches on a different cadence — offset from primary for variety */
   private static readonly DUAL_SWITCH_MIN_SECS = 14;
   private static readonly DUAL_SWITCH_MAX_SECS = 22;
-  /** Decay duration per event type (seconds) */
+  /** Decay duration per event type (seconds) — longer = softer event tail */
   private static readonly EVENT_DECAY: Record<string, number> = {
-    bass_hit: 0.4,
-    texture_change: 2.5,
-    climax: 3.0,
-    drop: 2.0,
-    silence: 1.5,
-    new_idea: 2.0,
+    bass_hit: 1.2,
+    texture_change: 3.0,
+    climax: 3.5,
+    drop: 2.5,
+    silence: 2.0,
+    new_idea: 2.5,
   };
+  /** Primary shaders that must run solo — never paired with a dual layer.
+   *  These tend to be GPU-expensive enough that stacking a second shader on top
+   *  drops framerate into the teens. The shader still runs happily as primary. */
+  private static readonly NEVER_DUAL_PRIMARIES = new Set<string>(["thermal"]);
+
+  /** Shaders that have already appeared (as primary or dual) in the current journey —
+   *  used for journey-wide uniqueness: picks prefer unused modes first, fall back if exhausted. */
+  private seenShaders = new Set<string>();
 
   /** Track duration in seconds — used to convert timing to progress fractions */
   private trackDuration = 300;
@@ -172,10 +180,14 @@ class JourneyEngine {
     this.shaderDurationMs = this.randomDuration(random, JourneyEngine.SHADER_SWITCH_MIN_SECS, JourneyEngine.SHADER_SWITCH_MAX_SECS)
       + JourneyEngine.FIRST_SHADER_BUFFER_MS; // Extra time for compile + fade-in
 
+    // Reset journey-wide shader uniqueness tracker
+    this.seenShaders = new Set<string>();
+
     // Set initial shader from first phase
     if (this.journey.phases.length > 0) {
       const firstPhase = this.journey.phases[0];
       this.currentShaderMode = firstPhase.shaderModes[0] ?? "cosmos";
+      this.seenShaders.add(this.currentShaderMode);
     }
 
     // Initialize shader history
@@ -424,13 +436,17 @@ class JourneyEngine {
     // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
     if (shaderLen > 1 && now - this.shaderStartMs > this.shaderDurationMs) {
-      // Walk through pool, skipping blocked/deleted shaders
+      // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
+      // second pass falls back to any allowed shader if the pool is exhausted.
       let picked = false;
-      for (let attempt = 0; attempt < shaderLen; attempt++) {
-        this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
-        const candidate = currentPhase.shaderModes[this.currentShaderIndex];
-        if (this.isShaderAllowed(candidate)) {
+      for (let pass = 0; pass < 2 && !picked; pass++) {
+        for (let attempt = 0; attempt < shaderLen; attempt++) {
+          this.currentShaderIndex = (this.currentShaderIndex + 1) % shaderLen;
+          const candidate = currentPhase.shaderModes[this.currentShaderIndex];
+          if (!this.isShaderAllowed(candidate)) continue;
+          if (pass === 0 && this.seenShaders.has(candidate)) continue;
           this.currentShaderMode = candidate;
+          this.seenShaders.add(candidate);
           picked = true;
           break;
         }
@@ -454,10 +470,31 @@ class JourneyEngine {
     // ─── Dual shader (persistent 2nd layer) ───
     // Switches on its own timer, independent of primary. Prefers Geometry shaders.
     // The visualizer's existing fade-in/out handles the visual transition.
-    if (this.dualShaderInitialized && shaderLen >= 2) {
+    // Primary shaders in NEVER_DUAL_PRIMARIES run solo — no second layer stacked on top.
+    const primaryBansDual = JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode);
+    if (primaryBansDual) {
+      if (this.dualShaderMode !== null) {
+        this.closeHistoryEntry("dual", now);
+        this.dualShaderMode = null;
+      }
+    } else if (this.dualShaderInitialized && shaderLen >= 2) {
       if (now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
+        this.seenShaders.add(this.dualShaderMode);
+        this.shaderHistory.push({
+          mode: this.dualShaderMode,
+          role: "dual",
+          phaseId: currentPhase.id,
+          startMs: now,
+          endMs: 0,
+        });
+        this.dualShaderStartMs = now;
+        this.dualShaderDurationMs = this.randomDuration(this.random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
+      } else if (this.dualShaderMode === null) {
+        // Primary just rotated away from a banned shader — re-engage a dual now
+        this.dualShaderMode = this.pickDualShader(currentPhase);
+        this.seenShaders.add(this.dualShaderMode);
         this.shaderHistory.push({
           mode: this.dualShaderMode,
           role: "dual",
@@ -723,7 +760,15 @@ class JourneyEngine {
     const firstPhase = this.journey.phases[0];
     if (firstPhase.shaderModes.length < 2) return;
 
+    // If the first primary bans duals, start without one — it will engage when primary rotates
+    if (JourneyEngine.NEVER_DUAL_PRIMARIES.has(this.currentShaderMode)) {
+      this.dualShaderMode = null;
+      this.dualShaderInitialized = true;
+      return;
+    }
+
     this.dualShaderMode = this.pickDualShader(firstPhase);
+    this.seenShaders.add(this.dualShaderMode);
     this.dualShaderStartMs = now;
     this.dualShaderDurationMs = this.randomDuration(random, JourneyEngine.DUAL_SWITCH_MIN_SECS, JourneyEngine.DUAL_SWITCH_MAX_SECS);
     this.dualShaderInitialized = true;
@@ -751,14 +796,19 @@ class JourneyEngine {
       return fallback;
     }
 
+    // Journey-wide uniqueness: prefer shaders we haven't used yet in this journey.
+    // If every candidate has been seen, fall back to the full candidate list.
+    const unseenCandidates = candidates.filter(m => !this.seenShaders.has(m));
+    const pool = unseenCandidates.length > 0 ? unseenCandidates : candidates;
+
     const geoModes = getGeometryModes();
-    const geoCandidates = candidates.filter(m => geoModes.has(m));
+    const geoCandidates = pool.filter(m => geoModes.has(m));
 
     // 70% chance to pick a geometry shader if available
     if (geoCandidates.length > 0 && this.random() < 0.7) {
       return geoCandidates[Math.floor(this.random() * geoCandidates.length)];
     }
-    return candidates[Math.floor(this.random() * candidates.length)];
+    return pool[Math.floor(this.random() * pool.length)];
   }
 
   /**

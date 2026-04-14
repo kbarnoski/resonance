@@ -25,6 +25,8 @@ interface JourneyCompositorProps {
   journeyId?: string;
   /** Opt-in: enable bass-hit white flash + pre-activation glow (Ghost only) */
   enableBassFlash?: boolean;
+  /** When present, cycle these URLs as imagery instead of generating via AI */
+  localImageUrls?: string[];
   children: React.ReactNode;
 }
 
@@ -58,12 +60,15 @@ export function JourneyCompositor({
   promptSeed,
   journeyId,
   enableBassFlash = false,
+  localImageUrls,
   children,
 }: JourneyCompositorProps) {
   const effectivePrompt = frame?.aiPrompt ?? aiPrompt ?? "";
   const effectiveDenoising = frame?.denoisingStrength ?? 0.5;
   const effectiveTargetFps = frame?.targetFps ?? 2;
-  const showAi = aiEnabled && !!effectivePrompt;
+  const hasLocalImages = Array.isArray(localImageUrls) && localImageUrls.length > 0;
+  // Local-image journeys render imagery from a provided list — no AI prompt required
+  const showAi = aiEnabled && (!!effectivePrompt || hasLocalImages);
 
   // Track latest AI image for overlay cloning
   const [latestAiImage, setLatestAiImage] = useState<string | null>(null);
@@ -143,9 +148,9 @@ export function JourneyCompositor({
   if (impulse <= 0.1 || evtType !== "bass_hit") {
     inBassHitRef.current = false;
   }
-  // White flash opacity — bright for ~0.15s, gone by ~0.5s (independent of impulse hold)
+  // White flash opacity — bright for ~0.2s, gentle long tail out to ~1.0s (softened)
   const flashElapsed = (performance.now() - bassHitStartRef.current) / 1000;
-  const flashOpacity = Math.max(0, 1 - flashElapsed / 0.5) ** 4 * 0.95;
+  const flashOpacity = Math.max(0, 1 - flashElapsed / 1.0) ** 3 * 0.95;
 
   const eventReaction = useMemo(() => {
     if (impulse === 0 || !evtType) {
@@ -229,14 +234,24 @@ export function JourneyCompositor({
       return;
     }
     if (impulse > 0 && evtType === "bass_hit") {
-      // Hit! Spike to max so shaders flash with the white overlay
+      // Hit! Spike to max so shaders flash with the white overlay.
+      // Recovery is ramped (not snapped) over ~450ms so the return to baseline
+      // is as gentle as the pre-activation approach.
       rootRef.current.style.setProperty("--shader-opacity", "1");
-      const timer = setTimeout(() => {
-        if (rootRef.current) {
-          rootRef.current.style.setProperty("--shader-opacity", String(shaderOpacityRef.current));
-        }
-      }, 150);
-      return () => clearTimeout(timer);
+      const startTime = performance.now();
+      const recoverMs = 450;
+      let raf = 0;
+      const tick = () => {
+        if (!rootRef.current) return;
+        const t = Math.min(1, (performance.now() - startTime) / recoverMs);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const target = shaderOpacityRef.current;
+        const current = 1 + (target - 1) * eased;
+        rootRef.current.style.setProperty("--shader-opacity", String(current));
+        if (t < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(raf);
     }
     // Neither approaching nor firing — restore normal
     if (approach <= 0 && impulse <= 0 && rootRef.current) {
@@ -263,6 +278,7 @@ export function JourneyCompositor({
           shaderOpacity={effectiveShaderOpacity}
           promptSeed={promptSeed}
           journeyId={journeyId}
+          localImageUrls={localImageUrls}
           onImageReady={handleImageReady}
         />
       )}
@@ -324,7 +340,7 @@ export function JourneyCompositor({
           </div>
           {/* Subsonic shockwave ring expanding outward beneath the flash */}
           {(() => {
-            const ringT = Math.min(1, flashElapsed / 0.8);
+            const ringT = Math.min(1, flashElapsed / 1.4);
             return (
               <div
                 style={{

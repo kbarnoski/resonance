@@ -138,6 +138,16 @@ export interface Journey {
   /** Seconds before track end to trigger "Journey Complete" (default 0.5).
    *  Use for tracks with silence at the end so completion aligns with the music. */
   completionOffset?: number;
+  /** When present, playback cycles through these image URLs instead of generating AI imagery.
+   *  Used for journeys built from a user's own photos (e.g. photographer collab). */
+  localImageUrls?: string[];
+  /** Shader modes that must never appear in this journey, regardless of realm/theme pool.
+   *  Applied at journey-start before phase shader assignment. */
+  blockedShaders?: string[];
+  /** When true, the AI image generator skips the random cinematic POV / interpretation /
+   *  mood decoration so the journey's per-phase camera instructions aren't overridden by
+   *  random perspective variation. Use for journeys with strict camera requirements (e.g. Ghost). */
+  strictCameraPrompt?: boolean;
 }
 
 /** A user-created journey stored in Supabase */

@@ -114,6 +114,9 @@ export default async function SharedJourneyPage({
         phases: journeyRow.phases,
         aiEnabled: true,
         ...(journeyRow.theme ? { theme: journeyRow.theme } : {}),
+        ...(Array.isArray(journeyRow.local_image_urls) && journeyRow.local_image_urls.length > 0
+          ? { localImageUrls: journeyRow.local_image_urls as string[] }
+          : {}),
       };
 
   return (
