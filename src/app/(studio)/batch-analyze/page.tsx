@@ -17,6 +17,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { runAnalysis } from "@/lib/audio/analysis-runner";
+import { resetTranscribeBackend } from "@/lib/audio/transcribe";
 import { Loader2, CheckCircle2, AlertCircle, Play } from "lucide-react";
 
 type Status = "pending" | "running" | "done" | "error" | "already-done";
@@ -127,8 +128,9 @@ export default function BatchAnalyzePage() {
       // Skip anything already confirmed successful. Re-run `pending` and `error`.
       if (t.status === "already-done" || t.status === "done") continue;
       await runOne(i, t);
-      // Small breather lets the TF WebGL model GC before next track — helped on
-      // weak hardware where back-to-back transcription runs leaked context.
+      // Explicit TF WebGL reset between runs — the shader cache leaks and
+      // eventually throws "Failed to complete fragment shader".
+      await resetTranscribeBackend();
       await new Promise((r) => setTimeout(r, 1500));
     }
 
@@ -143,6 +145,7 @@ export default function BatchAnalyzePage() {
     for (let i = 0; i < tracks.length; i++) {
       if (tracks[i].status !== "error") continue;
       await runOne(i, tracks[i]);
+      await resetTranscribeBackend();
       await new Promise((r) => setTimeout(r, 1500));
     }
     setRunning(false);

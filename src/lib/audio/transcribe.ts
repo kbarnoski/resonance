@@ -1,5 +1,24 @@
 import type { NoteEvent } from "./types";
 
+/** Reset the TensorFlow.js WebGL backend. After several consecutive
+ *  transcriptions the shader cache / context leaks and the next run fails
+ *  with "Failed to complete fragment shader". Calling this between batched
+ *  runs fully rebuilds the backend and clears the WebGL state. */
+export async function resetTranscribeBackend(): Promise<void> {
+  try {
+    const tf = await import("@tensorflow/tfjs");
+    tf.disposeVariables();
+    tf.engine().reset();
+    // Force the backend to be torn down and re-initialized on the next run.
+    await tf.setBackend("cpu");
+    await tf.ready();
+    await tf.setBackend("webgl");
+    await tf.ready();
+  } catch {
+    // Best-effort — if tfjs is unavailable the next run just retries fresh
+  }
+}
+
 export async function transcribeAudio(
   audioUrl: string,
   onProgress?: (stage: string, progress: number) => void
