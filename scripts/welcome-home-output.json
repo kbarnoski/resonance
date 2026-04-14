@@ -1,0 +1,84 @@
+{
+  "pathId": "d3f78085-3918-41af-af33-85221dd62a7a",
+  "pathShareToken": "d2c79111528a46cf",
+  "journeys": [
+    {
+      "journeyId": "27f52cf0-5fad-420f-8324-8017c414f1f8",
+      "name": "Interplay - A Journey Home",
+      "recordingId": "d57cfae6-f234-4d24-85fe-72a8ad93a44a",
+      "cleanTitle": "Interplay"
+    },
+    {
+      "journeyId": "a5b5f0cf-9a6b-451a-8293-3d98f3904342",
+      "name": "Bath",
+      "recordingId": "eba95845-cdbf-41d8-9c5d-8679686811ad",
+      "cleanTitle": "Bath"
+    },
+    {
+      "journeyId": "79e33115-7f1e-44bc-b950-7adf5055dd55",
+      "name": "Welcome Home",
+      "recordingId": "8dafed88-4761-4dd3-a0f4-93f310441093",
+      "cleanTitle": "Welcome Home"
+    },
+    {
+      "journeyId": "00fcca2b-bc1e-461a-8dcd-3fff74587f3e",
+      "name": "The Knife",
+      "recordingId": "aaaa7e9a-a3ac-4cad-9390-6720555f00a7",
+      "cleanTitle": "The Knife"
+    },
+    {
+      "journeyId": "eb79818b-c7e8-45a7-886c-2a432fe83332",
+      "name": "2019",
+      "recordingId": "1f0a541e-df60-44a9-b839-5dc69a007d9f",
+      "cleanTitle": "2019"
+    },
+    {
+      "journeyId": "5a3beb75-4788-4448-a024-4bfae30040c3",
+      "name": "The Knife (Jam) - Musical Journey",
+      "recordingId": "72151c23-f1a0-460f-b2ba-8909b8278e43",
+      "cleanTitle": "The Knife (Jam)"
+    },
+    {
+      "journeyId": "5a3e5044-9da5-404e-b3d6-c0c4fc757a5b",
+      "name": "Playa",
+      "recordingId": "7816dc66-794b-4fb1-8796-c2ef00c3f943",
+      "cleanTitle": "Playa"
+    },
+    {
+      "journeyId": "08f4c26e-4185-440a-a25c-2440e8e7ae47",
+      "name": "Isolation",
+      "recordingId": "dad56bd6-8e53-442f-bb19-75ce4cc3e11c",
+      "cleanTitle": "Isolation"
+    },
+    {
+      "journeyId": "8997623d-8770-41ce-863d-f359d1a213c4",
+      "name": "Rebound",
+      "recordingId": "788fc202-db77-4f36-a7ff-dd0b6702ca20",
+      "cleanTitle": "Rebound"
+    },
+    {
+      "journeyId": "cd517f5a-c4eb-4d50-8a53-044aa668d087",
+      "name": "Stir Crazy",
+      "recordingId": "c3ae569c-bda3-47b2-8f8d-63cd708e2c2f",
+      "cleanTitle": "Stir Crazy"
+    },
+    {
+      "journeyId": "38daff92-ae34-4448-8868-5f1df6029b94",
+      "name": "Rolling",
+      "recordingId": "d2eeee58-832b-4872-a4be-8fbf030b981d",
+      "cleanTitle": "Rolling"
+    },
+    {
+      "journeyId": "019e1e1d-c7e2-4609-a9c6-364a2755b115",
+      "name": "Quarantine",
+      "recordingId": "8a67fc03-181f-46a8-beaa-65468506c920",
+      "cleanTitle": "Quarantine"
+    },
+    {
+      "journeyId": "b207b557-e984-4a06-ae71-83124bcd80d5",
+      "name": "All Together",
+      "recordingId": "eda30871-c82c-45c4-b352-b158c00528fa",
+      "cleanTitle": "All Together"
+    }
+  ]
+}
