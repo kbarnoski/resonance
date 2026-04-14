@@ -14,7 +14,7 @@
  * can run from a local script.
  */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { runAnalysis } from "@/lib/audio/analysis-runner";
 import { resetTranscribeBackend } from "@/lib/audio/transcribe";
@@ -33,11 +33,14 @@ interface Track {
   progress?: number;
 }
 
+const AUTORUN_KEY = "wh-batch-autorun";
+
 export default function BatchAnalyzePage() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
   const [running, setRunning] = useState(false);
   const [finished, setFinished] = useState(false);
+  const hasAutoStartedRef = useRef(false);
 
   const loadTracks = useCallback(async () => {
     const supabase = createClient();
@@ -77,6 +80,29 @@ export default function BatchAnalyzePage() {
   useEffect(() => {
     loadTracks();
   }, [loadTracks]);
+
+  // Auto-resume after a page reload if we're in the middle of a batch.
+  // We reload between tracks to guarantee a fresh WebGL context — this
+  // kicks off the next track as soon as the freshly-loaded tracks list
+  // has one left to do.
+  useEffect(() => {
+    if (loading || hasAutoStartedRef.current) return;
+    try {
+      const flag = localStorage.getItem(AUTORUN_KEY);
+      if (!flag) return;
+      const remaining = tracks.filter((t) => t.status === "pending" || t.status === "error").length;
+      if (remaining === 0) {
+        localStorage.removeItem(AUTORUN_KEY);
+        return;
+      }
+      hasAutoStartedRef.current = true;
+      // Tiny delay so React can paint the list before we start work
+      setTimeout(() => runAll(), 400);
+    } catch {
+      // localStorage blocked — user will have to click Start
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, tracks.length]);
 
   // Verify an analysis row exists and is completed. runAnalysis swallows
   // errors internally (shows a toast) and never throws, so the only honest
@@ -118,38 +144,39 @@ export default function BatchAnalyzePage() {
     }
   };
 
+  // Run exactly ONE pending/errored track, then full-reload the page.
+  // The TF.js WebGL context is irreversibly cooked after a transcription —
+  // reloading the whole page is the only reliable way to reset it on
+  // older GPUs. localStorage flag keeps the loop going across reloads.
   const runAll = async () => {
     if (running) return;
+    try { localStorage.setItem(AUTORUN_KEY, "1"); } catch {}
     setRunning(true);
     setFinished(false);
 
-    for (let i = 0; i < tracks.length; i++) {
-      const t = tracks[i];
-      // Skip anything already confirmed successful. Re-run `pending` and `error`.
-      if (t.status === "already-done" || t.status === "done") continue;
-      await runOne(i, t);
-      // Explicit TF WebGL reset between runs — the shader cache leaks and
-      // eventually throws "Failed to complete fragment shader".
-      await resetTranscribeBackend();
-      await new Promise((r) => setTimeout(r, 1500));
+    const nextIdx = tracks.findIndex((t) => t.status === "pending" || t.status === "error");
+    if (nextIdx === -1) {
+      try { localStorage.removeItem(AUTORUN_KEY); } catch {}
+      setRunning(false);
+      setFinished(true);
+      return;
     }
 
-    setRunning(false);
-    setFinished(true);
+    await runOne(nextIdx, tracks[nextIdx]);
+
+    // Give the DB write a beat, then reload — the useEffect auto-start
+    // picks up from here next time the page loads.
+    await new Promise((r) => setTimeout(r, 800));
+    window.location.reload();
   };
 
-  const retryErrored = async () => {
-    if (running) return;
-    setRunning(true);
-    setFinished(false);
-    for (let i = 0; i < tracks.length; i++) {
-      if (tracks[i].status !== "error") continue;
-      await runOne(i, tracks[i]);
-      await resetTranscribeBackend();
-      await new Promise((r) => setTimeout(r, 1500));
-    }
+  const retryErrored = runAll;
+
+  const stopBatch = () => {
+    try { localStorage.removeItem(AUTORUN_KEY); } catch {}
     setRunning(false);
-    setFinished(true);
+    setFinished(false);
+    hasAutoStartedRef.current = true; // prevent re-auto-start on the current load
   };
 
   const remaining = tracks.filter((t) => t.status === "pending" || t.status === "running").length;
@@ -188,6 +215,20 @@ export default function BatchAnalyzePage() {
               {running ? <Loader2 className="h-4 w-4 animate-spin" /> : <Play className="h-4 w-4" />}
               {running ? `Analyzing… ${doneCount}/${tracks.length}` : remaining === 0 ? "All tracks analyzed" : `Start (${remaining} to go)`}
             </button>
+            {running && (
+              <button
+                onClick={stopBatch}
+                className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-white/60 hover:text-white/90 transition-colors"
+                style={{
+                  fontSize: "0.78rem",
+                  fontFamily: "var(--font-geist-mono)",
+                  backgroundColor: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                }}
+              >
+                Stop batch
+              </button>
+            )}
             {erroredCount > 0 && !running && (
               <button
                 onClick={retryErrored}
