@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
-import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic } from "lucide-react";
+import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
 import type { VisualizerMode } from "@/lib/audio/vibe-detection";
@@ -492,6 +492,8 @@ export function VisualizerCore({
   const duration = useAudioStore((s) => s.duration);
   const storePause = useAudioStore((s) => s.pause);
   const storeResume = useAudioStore((s) => s.resume);
+  const storeVolume = useAudioStore((s) => s.volume);
+  const setStoreVolume = useAudioStore((s) => s.setVolume);
   const playNext = useAudioStore((s) => s.playNext);
   const playPrev = useAudioStore((s) => s.playPrev);
   const queue = useAudioStore((s) => s.queue);
@@ -502,6 +504,17 @@ export function VisualizerCore({
 
   const [vibe, setVibe] = useState<Mood | null>(defaultMood ?? null);
   const [modePaletteOpen, setModePaletteOpen] = useState(false);
+  // Mute toggle: remember pre-mute volume so unmute restores it
+  const preMuteVolumeRef = useRef(storeVolume > 0 ? storeVolume : 0.8);
+  const isMuted = storeVolume === 0;
+  const toggleMute = useCallback(() => {
+    if (storeVolume === 0) {
+      setStoreVolume(preMuteVolumeRef.current || 0.8);
+    } else {
+      preMuteVolumeRef.current = storeVolume;
+      setStoreVolume(0);
+    }
+  }, [storeVolume, setStoreVolume]);
   const [modeSearch, setModeSearch] = useState("");
   const [collapsedCategories, setCollapsedCategories] = useState<Set<string>>(new Set());
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -1359,6 +1372,13 @@ export function VisualizerCore({
               >
                 <SkipForward className="h-3.5 w-3.5" fill="currentColor" />
               </button>
+              <button
+                onClick={toggleMute}
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                title={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+              </button>
               <span
                 className="text-white/60 text-sm truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
@@ -1387,9 +1407,16 @@ export function VisualizerCore({
             </div>
           )}
 
-          {/* CENTER: Track info (read-only) — journey mode */}
+          {/* CENTER: Track info + mute — journey mode */}
           {journeyActive && currentTrack && (
             <div className="flex items-center gap-2">
+              <button
+                onClick={toggleMute}
+                className="flex items-center justify-center p-2 text-white/40 hover:text-white/80 transition-colors duration-75"
+                title={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? <VolumeX className="h-3.5 w-3.5" /> : <Volume2 className="h-3.5 w-3.5" />}
+              </button>
               <span
                 className="text-white/40 text-sm truncate max-w-[180px]"
                 style={{ fontFamily: "var(--font-geist-sans)" }}
@@ -1704,8 +1731,15 @@ export function VisualizerCore({
                 </div>
               )}
 
-              {/* Right: library + share + studio/exit */}
+              {/* Right: mute + library + share + studio/exit */}
               <div className="flex items-center gap-0.5">
+                <button
+                  onClick={toggleMute}
+                  className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-white/40 hover:text-white/70 transition-colors duration-75"
+                  title={isMuted ? "Unmute" : "Mute"}
+                >
+                  {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
+                </button>
                 {showLibraryButton && onLibraryToggle && !journeyActive && (
                   <button
                     onClick={onLibraryToggle}

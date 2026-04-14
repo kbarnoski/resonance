@@ -811,9 +811,8 @@ export function SharedJourneyClient({
         textAlign: "center",
       }}
     >
-      {creatorName && <div>Journey by {creatorName}</div>}
+      <div>by {creatorName || "Karel Barnoski"}</div>
       {musicArtist && <div>Music by {musicArtist}</div>}
-      {!creatorName && !musicArtist && <div>Created on Resonance</div>}
     </div>
   );
 
@@ -923,6 +922,17 @@ export function SharedJourneyClient({
                 {journey.subtitle}
               </div>
             )}
+            <div
+              style={{
+                fontSize: "0.9rem",
+                fontFamily: "var(--font-geist-mono)",
+                color: "rgba(255, 255, 255, 0.85)",
+                letterSpacing: "0.04em",
+                marginTop: "12px",
+              }}
+            >
+              by {creatorName || "Karel Barnoski"}
+            </div>
             {musicArtist && (
               <div
                 style={{
@@ -930,7 +940,7 @@ export function SharedJourneyClient({
                   fontFamily: "var(--font-geist-mono)",
                   color: "rgba(255, 255, 255, 0.85)",
                   letterSpacing: "0.04em",
-                  marginTop: "12px",
+                  marginTop: "4px",
                 }}
               >
                 Music by {musicArtist}
@@ -1104,6 +1114,19 @@ export function SharedJourneyClient({
             >
               {journey.name}
             </span>
+            <span
+              style={{
+                position: "relative",
+                fontFamily: "var(--font-geist-mono)",
+                fontSize: "0.9rem",
+                color: "rgba(255, 255, 255, 0.85)",
+                letterSpacing: "0.04em",
+                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                marginTop: "0.25rem",
+              }}
+            >
+              by {creatorName || "Karel Barnoski"}
+            </span>
             {musicArtist && (
               <span
                 style={{
@@ -1113,7 +1136,6 @@ export function SharedJourneyClient({
                   color: "rgba(255, 255, 255, 0.85)",
                   letterSpacing: "0.04em",
                   textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                  marginTop: "0.25rem",
                 }}
               >
                 Music by {musicArtist}

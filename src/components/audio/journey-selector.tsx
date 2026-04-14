@@ -94,6 +94,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             recordingId: (row.recording_id as string) ?? null,
             userId: row.user_id as string,
             audioReactive: !!(row.audio_reactive),
+            creatorName: (row.creator_name as string) ?? null,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ...(row.theme ? { theme: row.theme as any } : {}),
             ...(Array.isArray(row.local_image_urls) && row.local_image_urls.length > 0

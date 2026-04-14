@@ -1121,6 +1121,19 @@ export function VisualizerClient({
             >
               {activeJourney.name}
             </span>
+            <span
+              style={{
+                position: "relative",
+                fontFamily: "var(--font-geist-mono)",
+                fontSize: "0.9rem",
+                color: "rgba(255, 255, 255, 0.85)",
+                letterSpacing: "0.04em",
+                textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                marginTop: "0.25rem",
+              }}
+            >
+              by {activeJourney.creatorName || "Karel Barnoski"}
+            </span>
             {(currentTrack?.artist || recording?.artist) && (
               <span
                 style={{
@@ -1130,7 +1143,6 @@ export function VisualizerClient({
                   color: "rgba(255, 255, 255, 0.85)",
                   letterSpacing: "0.04em",
                   textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                  marginTop: "0.25rem",
                 }}
               >
                 Music by {currentTrack?.artist || recording?.artist}
@@ -1215,6 +1227,18 @@ export function VisualizerClient({
               >
                 {isCulmination || isGrandCulm ? activeJourney.subtitle : activeJourney.name}
               </span>
+              <span
+                style={{
+                  position: "relative",
+                  fontFamily: "var(--font-geist-mono)",
+                  fontSize: "0.9rem",
+                  color: "rgba(255, 255, 255, 0.85)",
+                  letterSpacing: "0.04em",
+                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                }}
+              >
+                by {activeJourney.creatorName || "Karel Barnoski"}
+              </span>
               {(currentTrack?.artist || recording?.artist) && (
                 <span
                   style={{
@@ -1224,6 +1248,7 @@ export function VisualizerClient({
                     color: "rgba(255, 255, 255, 0.85)",
                     letterSpacing: "0.04em",
                     textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+                    marginTop: "-0.75rem",
                   }}
                 >
                   Music by {currentTrack?.artist || recording?.artist}

@@ -148,6 +148,9 @@ export interface Journey {
    *  mood decoration so the journey's per-phase camera instructions aren't overridden by
    *  random perspective variation. Use for journeys with strict camera requirements (e.g. Ghost). */
   strictCameraPrompt?: boolean;
+  /** Display name of the journey author. Built-in journeys default to "Karel Barnoski"
+   *  at the display layer; custom journeys are populated from the DB creator_name column. */
+  creatorName?: string | null;
 }
 
 /** A user-created journey stored in Supabase */
