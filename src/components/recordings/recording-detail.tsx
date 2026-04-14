@@ -36,7 +36,6 @@ import { MarkersPanel, type Marker } from "@/components/markers/markers-panel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getAudioEngine } from "@/lib/audio/audio-engine";
-import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog";
 
 interface RecordingDetailProps {
   recording: {
@@ -80,7 +79,6 @@ export function RecordingDetail({
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const [sharing, setSharing] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [journeyDialogOpen, setJourneyDialogOpen] = useState(false);
   const playerRef = useRef<WaveformPlayerHandle>(null);
 
   const handleSeek = useCallback((time: number) => {
@@ -216,18 +214,11 @@ export function RecordingDetail({
             variant="ghost"
             size="icon"
             className="shrink-0 text-muted-foreground hover:text-foreground"
-            onClick={() => setJourneyDialogOpen(true)}
+            onClick={() => router.push(`/create?recordingId=${recording.id}`)}
             title="Create a journey"
           >
             <Sparkles className="h-4 w-4" />
           </Button>
-
-          <CreateJourneyDialog
-            open={journeyDialogOpen}
-            onOpenChange={setJourneyDialogOpen}
-            recordingId={recording.id}
-            onCreated={(j) => toast.success(`Journey "${j.name}" created`)}
-          />
 
           <Button
             variant="ghost"

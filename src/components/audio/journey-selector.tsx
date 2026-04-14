@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { Shuffle, Sparkles, Plus, Share2, Trash2, Wand2, Loader2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
 import { REALMS } from "@/lib/journeys/realms";
@@ -10,7 +11,6 @@ import { getAiImageService } from "@/lib/journeys/ai-image-service";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { ensureResumed } from "@/lib/audio/audio-engine";
 import { createClient } from "@/lib/supabase/client";
-import { CreateJourneyDialog } from "@/components/journeys/create-journey-dialog";
 import { ShareSheet } from "@/components/ui/share-sheet";
 import type { Journey } from "@/lib/journeys/types";
 import { PAIRED_TRACKS, PAIRED_STORAGE } from "@/lib/journeys/paired-tracks";
@@ -28,6 +28,7 @@ interface JourneySelectorProps {
 }
 
 export function JourneySelector({ open, onClose }: JourneySelectorProps) {
+  const router = useRouter();
   const startJourney = useAudioStore((s) => s.startJourney);
   const startCustomJourney = useAudioStore((s) => s.startCustomJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
@@ -40,7 +41,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const [aiAvailable, setAiAvailable] = useState(false);
   const [autoGenerating, setAutoGenerating] = useState(false);
   const [customJourneys, setCustomJourneys] = useState<Journey[]>([]);
-  const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [sharingId, setSharingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
@@ -541,7 +541,10 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             </div>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setCreateDialogOpen(true)}
+                onClick={() => {
+                  onClose();
+                  router.push("/create");
+                }}
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/35 hover:text-white/70 hover:bg-white/10 transition-colors duration-75"
                 style={{
                   fontSize: "0.72rem",
@@ -1630,20 +1633,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
         </div>
       </div>
-
-      {/* Create Journey Dialog */}
-      <CreateJourneyDialog
-        open={createDialogOpen}
-        onOpenChange={setCreateDialogOpen}
-        onCreated={async (journey) => {
-          ensureResumed();
-          setCustomJourneys((prev) => [journey, ...prev]);
-          setAiImageEnabled(true);
-          await loadCustomJourneyTrack(journey);
-          startCustomJourney(journey);
-          onClose();
-        }}
-      />
 
       {/* Share Sheet */}
       <ShareSheet
