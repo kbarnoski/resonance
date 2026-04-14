@@ -637,7 +637,10 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     : null;
                   const openPath = () => {
                     if (path.shareToken) {
-                      onClose();
+                      // Don't call onClose() — it flips the selector closed
+                      // which repaints the shader layer for a frame before
+                      // the route transitions. router.push unmounts the
+                      // selector cleanly via the route change.
                       router.push(`/path/${path.shareToken}`);
                     }
                   };

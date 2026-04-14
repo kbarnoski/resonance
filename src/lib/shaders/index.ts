@@ -586,7 +586,6 @@ export const MODE_META: ModeMeta[] = [
   { mode: "orb", label: "Orb", category: "3D Worlds" },
 
   { mode: "galaxy", label: "Galaxy", category: "3D Worlds" },
-  { mode: "depths", label: "Depths", category: "3D Worlds" },
   { mode: "crystal", label: "Crystal", category: "3D Worlds" },
 
   { mode: "swarm", label: "Swarm", category: "3D Worlds" },
@@ -729,7 +728,7 @@ export const MODE_CATEGORIES = ["Visionary", "Cosmic", "Organic", "Geometry", "3
 
 export const MODES_3D: Set<string> = new Set([
   "orb",
-  "galaxy", "depths", "crystal", "swarm",
+  "galaxy", "crystal", "swarm",
   "cloud",
   "wave", "seabed",
   "cage",

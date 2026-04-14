@@ -137,7 +137,6 @@ export type VisualizerMode =
   | "radiance"
   // 3D Worlds (new)
   | "galaxy"
-  | "depths"
   | "crystal"
   | "swarm"
   | "cloud"

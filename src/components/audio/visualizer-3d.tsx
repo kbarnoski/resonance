@@ -1392,7 +1392,7 @@ function CloudScene({ analyser, dataArray }: { analyser: AnalyserLike; dataArray
 
 export type Visualizer3DMode =
   | "orb" | "field" | "aurora"
-  | "galaxy" | "depths" | "bonfire" | "crystal" | "swarm"
+  | "galaxy" | "bonfire" | "crystal" | "swarm"
   | "lotus" | "cloud"
   | "wave" | "seabed" | "cage";
 
@@ -1442,7 +1442,6 @@ export function Visualizer3D({
         {mode === "field" && <FieldScene analyser={analyser} dataArray={dataArray} />}
         {mode === "aurora" && <AuroraScene analyser={analyser} dataArray={dataArray} />}
         {mode === "galaxy" && <GalaxyScene analyser={analyser} dataArray={dataArray} />}
-        {mode === "depths" && <DepthsScene analyser={analyser} dataArray={dataArray} />}
         {mode === "bonfire" && <BonfireScene analyser={analyser} dataArray={dataArray} />}
         {mode === "crystal" && <CrystalScene analyser={analyser} dataArray={dataArray} />}
         {mode === "swarm" && <SwarmScene analyser={analyser} dataArray={dataArray} />}
