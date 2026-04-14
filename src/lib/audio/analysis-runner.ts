@@ -147,7 +147,11 @@ export async function runAnalysis(
     useAudioStore.getState().setAnalysisInProgress(null);
     // Import toast dynamically to avoid SSR issues
     const { toast } = await import("sonner");
-    toast.error("Analysis failed. Please try again.");
+    const msg = err instanceof Error ? err.message : String(err);
+    toast.error(`Analysis failed: ${msg.slice(0, 120)}`);
+    // Re-throw so batch callers can capture the real error — single-call sites
+    // from AnalyzeButton still work because they don't await.
+    throw err;
   } finally {
     if (currentJob?.recordingId === recordingId) {
       currentJob = null;

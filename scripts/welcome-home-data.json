@@ -18,56 +18,445 @@
     "rawTitle": "02_Bath",
     "cleanTitle": "Bath",
     "duration": 148.771,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemplative, impressionistic piano piece in F major with strong modal influences. The harmonic language is lush and modern, featuring extended chords (9ths, 11ths, 13ths) and frequent use of the ♭III chord (A♭) over an F bass pedal, creating a dreamy, suspended atmosphere perfectly suited to its title \"Bath.\" The piece unfolds organically with gentle harmonic shifts and a continuous flowing texture, avoiding traditional functional harmony in favor of coloristic chord progressions.",
+      "sections": [
+        {
+          "label": "Opening Statement (0:00-0:27)",
+          "description": "Establishes the main harmonic palette with F pedal tone in bass. Alternates between F, A♭maj9/F, and various sus4 voicings (C13sus4/F, C11/F). Introduces the characteristic ♭III color and the Gm9/F sonority. Ends with extended A♭maj9/F (2.5 seconds), establishing this as a primary harmonic color."
+        },
+        {
+          "label": "First Development (0:27-0:46)",
+          "description": "Continues F pedal with more chromatic bass motion (F/D#, F/D). Introduces Dm/F and F6add9 voicings. Brief departure from pedal at 0:45 with Dm7add11/C and C13sus4/F, creating slight tension before resolution."
+        },
+        {
+          "label": "A♭ Emphasis Section (0:46-1:06)",
+          "description": "First clear move away from F pedal. Dm → A♭maj7 → A♭ progression repeated twice (0:46-0:56, 1:01-1:05), establishing ♭III as a secondary tonal center. A♭M9sus4/F acts as a bridge back to F. This section has a more grounded, less floating quality."
+        },
+        {
+          "label": "C Major Tonicization (1:06-1:26)",
+          "description": "Builds tension through Gm and C13sus4/F, leading to a strong arrival on C major at 1:13. Extended C major plateau (5 seconds at 1:21-1:26) is the longest single harmony in the piece, functioning as a structural highpoint or climax. Gm → C → F motion suggests brief functional harmony."
+        },
+        {
+          "label": "Recapitulation (1:26-1:53)",
+          "description": "Returns to opening material with F and A♭maj9/F alternation. Reintroduces the Amb6♭9/F color and F/A voicings. More settled and reflective than opening, with slightly longer chord durations. Dm/F and C13sus4/F provide familiar harmonic landmarks."
+        },
+        {
+          "label": "Final Statement (1:53-2:10)",
+          "description": "Simplified texture focusing on core F-A♭maj9/F relationship. Dm/F and C13sus4/F appear briefly but the emphasis is on the ♭III color. Extended Amb6♭9/F at 2:10-2:12 provides a final coloristic moment."
+        },
+        {
+          "label": "Coda (2:10-2:23)",
+          "description": "Gradual dissolution. F and Amb6♭9/F alternate, then settles on F/A (first inversion F) for the final 3 seconds. Ending on F/A rather than root position creates an open, unresolved quality—like water continuing to ripple after the bath is drawn."
+        }
+      ],
+      "key_center": "F Major with modal ambiguity. The piece centers on F but frequently borrows from F Mixolydian and uses the ♭III (A♭) extensively, creating a dreamy, suspended quality. No clear modulations, but strong tonicizations to C major (V) around 1:13-1:26 and brief emphasis on Dm (vi) and A♭ (♭III) throughout.",
+      "relearning_tips": "Start by establishing the left-hand F pedal tone pattern (0:00-0:27), as this is the foundation for most of the piece. Practice the A♭maj9/F voicing separately—this is your most important color chord. Learn the A♭ section (0:46-1:06) next, as it has the clearest harmonic progression (Dm-A♭-F) and will help you understand the piece's modal character. The C major section (1:13-1:26) can be practiced as a standalone unit—it's the emotional peak. For voicings: keep the F bass pedal consistent in the left hand while the right hand voices the upper extensions (9ths, 11ths, 13ths). The Amb6♭9/F is likely A♭-C♭-E♭-G♭ over F bass—experiment with spacing to find what sounds right. Focus on smooth voice leading between chords rather than memorizing exact voicings. The piece is more about color and atmosphere than precise chord shapes. Record yourself to ensure the harmonic rhythm stays spacious and unhurried—resist the urge to rush between chords.",
+      "rhythm_and_feel": "Slow, contemplative feel at ~120 BPM with a gentle, flowing character. Harmonic rhythm is deliberately slow (0.5-3.5 second chord durations), creating a meditative, ambient atmosphere. The 4/4 meter feels spacious rather than metric. Texture suggests arpeggiated or broken chord patterns in the right hand over sustained bass notes in the left. The 1923 notes across 2:23 suggest continuous eighth-note or sixteenth-note movement, likely creating a rippling, water-like effect that matches the \"Bath\" title.",
+      "chord_vocabulary": [
+        "F",
+        "A♭maj9/F",
+        "C13sus4/F",
+        "F/A",
+        "Dm/F",
+        "F6",
+        "F6add9",
+        "Gm9/F",
+        "Am♭6♭9/F",
+        "Dm",
+        "A♭",
+        "A♭maj7",
+        "C",
+        "Gm",
+        "F7",
+        "C11/F",
+        "F5",
+        "C7"
+      ],
+      "harmonic_highlights": "The most distinctive feature is the persistent use of A♭maj9/F (♭III over tonic bass) which creates a floating, bath-like suspension. The Amb6♭9/F chord is particularly colorful and unusual. Strongest cadences occur at 1:21-1:26 (extended C major resolution) and the final F/A at 2:20-2:23. The piece avoids traditional V-I cadences, preferring plagal motion (A♭-F) and sus4 resolutions. Modal borrowing from F Aeolian/Dorian provides the ♭III and ♭VII colors. The harmonic rhythm is slow and meditative, with chords often sustaining for 1-3 seconds."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "F7no5",
+        "duration": 1
+      },
+      {
+        "time": 1,
+        "chord": "F/A",
+        "duration": 0.5
+      },
+      {
+        "time": 2,
+        "chord": "FM",
+        "duration": 0.5
+      },
+      {
+        "time": 2.5,
+        "chord": "A#maj9/F",
+        "duration": 0.5
+      },
+      {
+        "time": 3,
+        "chord": "A#maj7/F",
+        "duration": 0.5
+      },
+      {
+        "time": 3.5,
+        "chord": "C13sus4/F",
+        "duration": 0.5
+      },
+      {
+        "time": 4,
+        "chord": "C11/F",
+        "duration": 0.5
+      },
+      {
+        "time": 4.5,
+        "chord": "A#maj9/F",
+        "duration": 0.5
+      }
+    ],
+    "keyFromAnalysis": "G Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "8dafed88-4761-4dd3-a0f4-93f310441093",
     "rawTitle": "03_Welcome Home",
     "cleanTitle": "Welcome Home",
     "duration": 293.306,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemplative, harmonically rich piano piece in F Major with a contemporary/cinematic character. The composition features extensive use of jazz voicings (9ths, 11ths, 13ths) over a persistent F bass pedal, creating a floating, meditative atmosphere. The ~120 BPM tempo and gentle 4/4 feel suggest a welcoming, introspective mood befitting the title \"Welcome Home\"—warm yet sophisticated, familiar yet harmonically adventurous.",
+      "sections": [
+        {
+          "label": "A Section - Main Theme (0:00-1:13)",
+          "description": "Establishes the primary harmonic material centered on F Major with rich extensions. The progression cycles through FM, FMadd9, F6add9 with suspended C chords over the F bass (C13sus4/F, C11/F). Dm alterations (Dm7♯5/F, Dm♯5/F, D/F) provide chromatic color and voice-leading motion. A♭maj9/F appears as a borrowed chord adding warmth. The texture is likely arpeggiated or gently rolled chords with melodic fragments in the upper register."
+        },
+        {
+          "label": "B Section - Relative Minor Exploration (1:13-1:57)",
+          "description": "Shifts focus to Gm7add11/Gm11 as a new tonal area, creating contrast. The progression moves Gm → A♭6add9 → C9/A♭ → Fmaj9, establishing a vi-♭VII-V/vi-I relationship. This section features the richest jazz voicings with 9th, 11th, and 13th extensions. The Gm9 and A♭maj7 chords create a darker, more introspective mood. Voice leading through Dmadd4/G and various slash chords suggests sophisticated inner-voice movement."
+        },
+        {
+          "label": "A' Section - Return and Development (1:57-2:37)",
+          "description": "Returns to the F Major pedal point material but with increased harmonic density and variation. The same core progression (FM - F6add9 - C13sus4/F - C11/F) appears but with more frequent chord changes and additional color chords. Dm alterations and A♭maj9/F are used more liberally. The texture likely becomes fuller or more active rhythmically while maintaining the contemplative character."
+        },
+        {
+          "label": "B' Section - Extended Bridge (2:37-3:07)",
+          "description": "Second exploration of the Gm-A♭ area, similar to the first bridge but extended and developed. Features the same Gm7add11 → A♭6add9 → C9 progression with additional chromatic passing chords (A♭69♯11, Dm9♯5/A♭). The harmonic rhythm remains spacious, allowing each extended voicing to resonate. This section provides the emotional peak of the piece."
+        },
+        {
+          "label": "Development/Transition (3:07-3:47)",
+          "description": "Alternates between the F Major and Gm-A♭ materials, creating a synthesis of the two harmonic areas. Features more frequent modulation between FM with C sus chords and Gm9/A♭maj7 progressions. The Gm9/D and A♭maj7/D voicings suggest bass movement away from the F pedal for the first time, adding harmonic momentum."
+        },
+        {
+          "label": "Final A Section (3:47-4:33)",
+          "description": "Returns to the opening F Major material with renewed clarity. The progression is similar to the opening but with slight variations in voicing and rhythm. The Gm-A♭ bridge material makes brief appearances, integrating the two harmonic worlds. Gradually simplifies toward the ending."
+        },
+        {
+          "label": "Coda (4:33-4:48)",
+          "description": "Strips away the harmonic complexity, settling on simple FM and F7 chords. The F7 (with its ♭7 scale degree) provides a Mixolydian color that prevents overly saccharine resolution. The final FM chord arrives at 4:45, sustained through 4:48, providing a peaceful, open-ended conclusion. The texture thins to simple sustained chords or single notes, creating space and resolution."
+        }
+      ],
+      "key_center": "F Major throughout, with strong tonicization of Gm (relative minor area) in bridge sections. No true modulation—the piece maintains F as a constant bass pedal point for most of its duration, creating a modal/contemporary sound rather than traditional functional harmony.",
+      "relearning_tips": "Start with the main A section (0:00-1:13) to establish the core FM - F6add9 - C13sus4/F - C11/F progression pattern, which is the harmonic foundation. Focus on voicing the extended chords with the F bass pedal in your left hand while the right hand handles the color tones (9ths, 11ths, 13ths). Next, learn the Gm-A♭ bridge section (1:13-1:57) separately—this is the most harmonically distinct material. The Dm alterations (Dm7♯5/F, Dm♯5/F) are passing chords that connect F and A♭ voicings; think of them as chromatic voice-leading rather than functional harmony. Practice the ending (4:33-4:48) which strips back to simple FM and F7, providing closure. Use the pedal generously to create the sustained, atmospheric quality, and focus on smooth voice leading between the extended chords rather than treating each as a separate entity.",
+      "rhythm_and_feel": "Moderate tempo at ~120 BPM in 4/4 time with a relaxed, flowing character. The harmonic rhythm is relatively slow (chord changes every 0.5-2 seconds), allowing each voicing to breathe and resonate. The feel is contemplative and spacious rather than rhythmically driven—think gentle arpeggiation or sustained voicings rather than percussive attacks. The 6361 detected notes across ~4:48 suggest continuous texture with rolling patterns or sustained chords with melodic embellishment.",
+      "chord_vocabulary": [
+        "FM (F Major)",
+        "FMadd9",
+        "F6add9",
+        "F7",
+        "C13sus4/F",
+        "C11/F",
+        "Gm7add11",
+        "Gm11",
+        "A♭maj9/F",
+        "Dm7♯5/F",
+        "Dm♯5/F",
+        "D/F",
+        "Gm9",
+        "A♭6add9",
+        "A♭maj7",
+        "Dmadd4/G",
+        "Gm7/D",
+        "A♭maj7/D",
+        "Gm9/D",
+        "C9/A♭",
+        "Fmaj9",
+        "Gm7/F",
+        "Csus4",
+        "F9"
+      ],
+      "harmonic_highlights": "The piece features a sophisticated pedal point technique with F in the bass throughout most sections, creating a dreamy, suspended quality. The most striking harmonic moment is the modulation to the Gm-A♭-Gm9 progression (1:13-1:57 and recurring), which functions as a relative minor exploration with rich jazz extensions. The C13sus4/F and C11/F chords create beautiful IV-over-I suspensions that never fully resolve, maintaining harmonic ambiguity. Modal borrowing from F Mixolydian (F7) and occasional chromatic voice leading through diminished/augmented alterations (Dm7♯5, Dm♯5) add color without disrupting the tonal center."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "F7no5",
+        "duration": 0.5
+      },
+      {
+        "time": 0.5,
+        "chord": "Fsus4",
+        "duration": 0.5
+      },
+      {
+        "time": 1,
+        "chord": "FM",
+        "duration": 1.5
+      },
+      {
+        "time": 2.5,
+        "chord": "F6",
+        "duration": 0.5
+      },
+      {
+        "time": 3,
+        "chord": "Dm7#5/F",
+        "duration": 1
+      },
+      {
+        "time": 4,
+        "chord": "F/D",
+        "duration": 0.5
+      },
+      {
+        "time": 4.5,
+        "chord": "Amb6b9/F",
+        "duration": 0.5
+      },
+      {
+        "time": 5,
+        "chord": "FM",
+        "duration": 1.5
+      }
+    ],
+    "keyFromAnalysis": "G Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "aaaa7e9a-a3ac-4cad-9390-6720555f00a7",
     "rawTitle": "04_The Knife",
     "cleanTitle": "The Knife",
     "duration": 145.845,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "\\\"The Knife\\\" is a dark, modal piano piece centered in A♭ minor with dramatic excursions to C♭ major. The composition features extensive use of suspended harmonies, slash chord voicings, and a hypnotic alternation between A♭5/F and D♭sus2/G♭ as its primary harmonic cell. The piece unfolds as an improvisatory meditation, building from sparse opening material to lush major sixth chord plateaus before dissolving back into minimalist power chord fragments.",
+      "sections": [
+        {
+          "label": "Opening/Intro (0:00-0:20)",
+          "description": "Establishes the main harmonic cell: A♭7sus4 and D♭sus2/G♭ alternating with A♭5/F bass. Sparse texture with suspended sonorities creating ambiguity. The Fm7add11 and F4 chords add color before brief chromatic motion (G/D♭, G♭/F)."
+        },
+        {
+          "label": "First Statement (0:20-0:42)",
+          "description": "Development of the opening material with more rhythmic momentum. A♭5 and A♭5/F dominate, punctuated by D♭sus2/G♭ and Fm7add11. Brief chromatic passing motion (G♭/F/A♭, G/D♭/F) adds tension before settling back to D♭sus2 for an extended moment (4 seconds)."
+        },
+        {
+          "label": "Transition to C♭ Section (0:42-0:58)",
+          "description": "Begins with familiar A♭5/F material but pivots dramatically to C♭ major territory. Introduction of C7♯5sus4, C♭M, C♭6, and C♭6add9 — this is the brightest harmonic moment, a modal shift to the relative major area (♭III). The Fm/C and Fmadd4 provide connective tissue."
+        },
+        {
+          "label": "C♭ Major Plateau (0:58-1:04)",
+          "description": "Extended exploration of C♭6 and C♭6add9 sonorities (nearly 6 seconds total). This is the emotional peak — lush, sustained major sixth chords with added color tones. The Fmadd4 provides a brief return to minor before the C♭ harmony resolves."
+        },
+        {
+          "label": "Return and Development (1:04-1:26)",
+          "description": "Returns to A♭5/F material with increased rhythmic activity. A♭7sus4 and C7♯5sus4/A♭ create dominant tension. The D♭sus2/G♭ continues its role as a suspended release. New harmonic color appears with C♭6/G♭ and a brief touch of A♭m7 and A♭m9, darkening the mood."
+        },
+        {
+          "label": "Second C♭ Section (1:26-1:51)",
+          "description": "Another visit to C♭ major, this time with more chromatic approach (Fsus4/C, C♭maj13/C). Extended C♭6 sonority (3 seconds) followed by alternation with D♭sus2/G♭. The C♭6add9 and C♭maj13/F variants add sophisticated color before transitioning back via F/G♭."
+        },
+        {
+          "label": "Final Statement/Outro (1:51-2:20)",
+          "description": "Gradual dissolution back to the core A♭5/F material. Increasingly sparse texture with longer durations on A♭5 and A♭5/F. Brief touches of A♭7sus4 and A♭m7 before settling into a minimalist alternation of A♭5 and A♭5/F, fading with increasing space between attacks. Ends on A♭5."
+        }
+      ],
+      "key_center": "G minor (notated as A♭ minor) — The piece centers around A♭/F bass motion with frequent tonicizations to C♭ major (the ♭III), creating a dark, modal atmosphere. The harmonic language suggests Aeolian mode with borrowed chords.",
+      "relearning_tips": "**Start with the bass line:** The left hand anchors on F and G♭ throughout most of the piece. Practice the A♭5/F to D♭sus2/G♭ alternation first (0:00-0:20) — this is your home base. **Learn the C♭ section separately:** The C♭6 and C♭6add9 passages (0:58-1:04, 1:35-1:38) are distinct islands. Voice these as C♭-E♭-G♭-A♭ (6th) and add D♭ for the add9. Practice these as sustained, rich voicings with G♭ in the bass. **Map the form in three parts:** (1) A♭ minor material with suspended chords, (2) C♭ major plateaus, (3) return and dissolution. This will help you navigate the 2:20 duration. **Focus on voicing, not speed:** With 3270 notes detected across the range A♭0 to F7, this piece uses the full keyboard. The slash chords indicate specific bass notes — keep F and G♭ prominent in the left hand while the right hand explores suspended and extended harmonies. **Practice the transitions:** The pivots to C♭ (around 0:48 and 1:33) use C7♯5sus4 as a chromatic approach. Isolate these moments. **Embrace the rubato:** This is a voice memo, so the rhythm is flexible. Let the harmonic rhythm guide you — move quickly through transitional chords, linger on the C♭6 arrivals and the final A♭5/F alternations.",
+      "rhythm_and_feel": "Moderate tempo (~120 BPM) in 4/4 with a contemplative, searching quality. Harmonic rhythm varies significantly: rapid changes (every 0.5-1 second) during transitional passages contrast with sustained chords (2-4 seconds) at arrival points. The feel is rubato and improvisatory — this is clearly a voice memo capturing spontaneous exploration. The piece breathes, with longer note values in the outro creating a sense of dissolution. Think of it as a slow-motion rock ballad or a minimalist meditation with modal jazz influences.",
+      "chord_vocabulary": [
+        "A♭5/F (A♭ power chord with F bass)",
+        "D♭sus2/G♭ (suspended sonority)",
+        "A♭7sus4 (dominant suspension)",
+        "F/G♭ (F triad over G♭)",
+        "Fm7add11 (minor color chord)",
+        "C♭6 (major sixth chord)",
+        "C♭6add9 (major sixth with added ninth)",
+        "C♭maj7 (major seventh)",
+        "A♭m7 (minor seventh)",
+        "C7♯5sus4 (altered dominant suspension)",
+        "F4 (suspended fourth sonority)"
+      ],
+      "harmonic_highlights": "**Modal borrowing:** The piece lives in A♭ minor/Aeolian but makes dramatic excursions to C♭ major (♭III), creating a bright/dark contrast typical of modal interchange. **Suspended sonorities:** Pervasive use of sus2 and sus4 chords (D♭sus2/G♭, A♭7sus4, F4) creates harmonic ambiguity and avoids traditional resolution. **Slash chord voicings:** Constant use of slash chords (A♭5/F, F/G♭, C♭6/G♭) suggests specific bass motion and open voicings, likely with the left hand anchoring F and G♭ as pedal tones. **Chromatic color:** Brief chromatic passing chords (G/D♭, G♭/F, C7♯5sus4) add tension without establishing new key centers. **Sixth chord plateau:** The extended C♭6 and C♭6add9 passages (0:58-1:04, 1:35-1:38) are the harmonic destination — these are the moments of resolution and beauty in an otherwise suspended, searching piece."
+    },
+    "chordsPreview": [
+      {
+        "time": 1,
+        "chord": "A#7sus4",
+        "duration": 0.5
+      },
+      {
+        "time": 1.5,
+        "chord": "D#sus24/G#",
+        "duration": 4
+      },
+      {
+        "time": 6.5,
+        "chord": "D#sus24/G#",
+        "duration": 0.5
+      },
+      {
+        "time": 7,
+        "chord": "A#5",
+        "duration": 1
+      },
+      {
+        "time": 8,
+        "chord": "A#5/F",
+        "duration": 0.5
+      },
+      {
+        "time": 8.5,
+        "chord": "D#sus24/G#",
+        "duration": 0.5
+      },
+      {
+        "time": 9,
+        "chord": "A#5/F",
+        "duration": 1
+      },
+      {
+        "time": 10,
+        "chord": "D#sus24/G#",
+        "duration": 0.5
+      }
+    ],
+    "keyFromAnalysis": "G Minor",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "1f0a541e-df60-44a9-b839-5dc69a007d9f",
     "rawTitle": "05_2019",
     "cleanTitle": "2019",
     "duration": 221.391,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemplative, modern-classical piano piece in G major with a floating, cinematic quality. Built on a recurring modal progression (I-V/V-IV/I) embellished with lush extensions (add9, maj9, 6/9) and chromatic color chords, it unfolds through multiple variations of the same harmonic material, creating a meditative, cyclical structure. The piece balances long, sustained harmonies with moments of harmonic activity, culminating in a brief but striking bridge section before returning to its opening material and resolving with an open, contemporary ending.",
+      "sections": [
+        {
+          "label": "A Section - Opening Statement (0:00-0:47)",
+          "description": "Establishes the main harmonic loop: GM (11.5s) → DM/A (5.5s) → CM/G with add9 variations (4.5s) → return to GM with chromatic D#M7b6/G passing chord. The extended opening on GM suggests a contemplative introduction with possible arpeggiated or sustained texture. The add9 variations on C/G create shimmering color."
+        },
+        {
+          "label": "A' Section - First Variation (0:47-1:10)",
+          "description": "Repeats the harmonic pattern with slight rhythmic compression. GM (9.5s) → DM/A with add9 (5.5s) → CM/G variations (5s) → GM with D#M7b6/G. The F#mb6b9/A chord appears as chromatic embellishment within the D/A area, adding tension."
+        },
+        {
+          "label": "B Section - Development (1:10-1:44)",
+          "description": "Increased harmonic activity and instability. The D#M7b6/G passing chord becomes more prominent with repeated alternations with GM. Introduction of G6 and Gmaj13 sonorities (1:38-1:43) adds brightness and anticipation before transitioning back to the main progression."
+        },
+        {
+          "label": "A'' Section - Return with Variation (1:44-2:16)",
+          "description": "Return to main progression: DM/A (5s) → CM/G (5s) → extended GM (4s) with G6 alternations. The pattern is familiar but with refined voicings and the G6 chord creating a gentler, more resolved quality."
+        },
+        {
+          "label": "C Section - Bridge/Contrast (2:05-2:16)",
+          "description": "Brief harmonic departure with Cmaj13/G → A/D/C → DM → F#/A → F#/G → C5/G → G/E progression. This is the most harmonically adventurous moment, featuring slash chords and bass movement that breaks from the established pattern. Leads to extended GM pedal (10s)."
+        },
+        {
+          "label": "A''' Section - Restatement (2:16-2:40)",
+          "description": "Return to opening material after the bridge. GM (10s) → DM/A with F#mb6b9/A embellishments → CM/G variations → GM with D#M7b6/G. The long GM pedal suggests emotional settling after the bridge's exploration."
+        },
+        {
+          "label": "Final A Section - Resolution (2:40-3:24)",
+          "description": "Last statement of the main progression with enriched voicings: GM (8.5s) → DM/A → CM/G with extended color chords (Cmaj13/G, C6add9/G, Cmaj7/G) → GM. The progression through various C major extensions suggests a final harmonic summation."
+        },
+        {
+          "label": "Coda (3:24-3:37)",
+          "description": "Final resolution on GM with brief chromatic touches (D#M7b6/G, Gaug) before settling on G5 power chord. The use of G5 at the end creates an open, unresolved quality - modern and contemplative rather than traditionally conclusive."
+        }
+      ],
+      "key_center": "G Major throughout. The piece centers strongly on G major with frequent movement to D/A (dominant function) and C/G (subdominant function), creating a I-V-IV modal progression typical of contemporary piano composition. No true modulations occur, though chromatic color chords (D#M7b6/G, F#mb6b9/A) provide harmonic interest.",
+      "relearning_tips": "**Start with the harmonic skeleton:** Master the basic I-V/V-IV/I progression (GM → DM/A → CM/G → GM) in simple block chords before adding extensions. **Learn in sections:** Begin with the opening A section (0:00-0:47) as it contains the DNA of the entire piece. Once comfortable, the other A sections will come quickly. **Voicing strategy:** The /G and /A bass notes are crucial - practice keeping G or A in the left hand while the right hand moves through chord tones. For add9 and maj9 chords, the 9th (A over G, E over D) should ring clearly. **Tackle the bridge separately:** The C section (2:05-2:16) has different harmonic logic - learn this independently as it's the technical and harmonic climax. **Chromatic chords:** The D#M7b6/G is likely just Eb-G-Bb in practice - think of it as a dark color chord, not a functional harmony. Don't overthink the complex names. **Practice order:** A section → Final A section (2:40-3:24) with rich voicings → B section → Bridge → complete run-through. **Pedal technique:** Given the long chord durations and extensions, half-pedaling and careful pedal changes will be essential to avoid mud while maintaining the lush atmosphere.",
+      "rhythm_and_feel": "Moderate tempo at ~120 BPM with a contemplative, flowing character. The harmonic rhythm varies significantly: long pedals on GM (up to 11.5 seconds) suggest sustained, arpeggiated textures or meditative single-note melodies, while rapid chord changes (0.5-1.0 second durations) in the C/G sections indicate more active right-hand movement or rhythmic comping. The piece likely features rubato and expressive timing given its voice memo origin. The overall feel is introspective and modern-classical, possibly cinematic, with breathing space between harmonic events.",
+      "chord_vocabulary": [
+        "GM (G major)",
+        "DM/A (D major over A bass)",
+        "CM/G (C major over G bass)",
+        "CMadd9/G (C major add9 over G bass)",
+        "Cmaj9/G (C major 9 over G bass)",
+        "D#M7b6/G (chromatic passing chord)",
+        "GMadd9 (G major add9)",
+        "Gmaj9 (G major 9)",
+        "G6 (G major 6)",
+        "DMadd9/A (D major add9 over A bass)",
+        "C69#11/G (C 6/9 #11 over G bass)",
+        "F#mb6b9/A (chromatic/passing harmony)",
+        "Cmaj13/G (C major 13 over G bass)",
+        "DM (D major)",
+        "G5 (G power chord)",
+        "C5/G (C power chord over G)"
+      ],
+      "harmonic_highlights": "**Primary Progression:** The piece is built on a modal I-V/V-IV/I loop (GM → DM/A → CM/G → GM) that avoids traditional dominant-tonic resolution, creating a floating, contemporary sound. **Chromatic Color:** The D#M7b6/G functions as a chromatic lower neighbor to GM (Eb-D relationship), adding dark shimmer without disrupting the tonal center. The F#mb6b9/A serves similarly within the D/A area. **Extended Harmonies:** Extensive use of add9, maj9, 6/9, and #11 extensions creates lush, jazz-influenced sonorities without functional jazz harmony. **Bridge Moment:** The C Section (2:05-2:16) provides the strongest harmonic contrast with its slash chord sequence and bass motion, serving as the piece's emotional peak. **Pedal Points:** Frequent use of G and A bass pedals (indicated by /G and /A) creates harmonic stability while upper voices move, typical of contemporary piano writing."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "GM",
+        "duration": 11.5
+      },
+      {
+        "time": 11.5,
+        "chord": "GMadd9",
+        "duration": 0.5
+      },
+      {
+        "time": 12,
+        "chord": "DM/A",
+        "duration": 5.5
+      },
+      {
+        "time": 17.5,
+        "chord": "C69#11/G",
+        "duration": 0.5
+      },
+      {
+        "time": 18,
+        "chord": "CM/G",
+        "duration": 1
+      },
+      {
+        "time": 19,
+        "chord": "CMadd9/G",
+        "duration": 2
+      },
+      {
+        "time": 21,
+        "chord": "CM/G",
+        "duration": 1
+      },
+      {
+        "time": 22,
+        "chord": "CMadd9/G",
+        "duration": 1
+      }
+    ],
+    "keyFromAnalysis": "F Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "72151c23-f1a0-460f-b2ba-8909b8278e43",
@@ -88,97 +477,818 @@
     "rawTitle": "07_Playa",
     "cleanTitle": "Playa",
     "duration": 166.717,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemplative, harmonically sophisticated piano piece in E minor with a jazz/neo-soul aesthetic. The composition features lush extended chords (9ths, 11ths, 13ths) and a relaxed 120 BPM tempo that creates a reflective, beachy mood befitting the title \"Playa.\" The piece explores modal colors through Dorian-flavored progressions while maintaining a clear tonal center, gradually simplifying from complex jazz voicings to sparse power chords in its conclusion.",
+      "sections": [
+        {
+          "label": "A Section / Main Theme (0:00-0:30)",
+          "description": "Establishes the primary Em7-based progression with extensions. Opens with Em7 and variants (Em7add11, Em11) moving through G major and C major chords with #11 extensions (C69#11/G, CM6#11/E). The harmonic pattern: Em7 → G → C/G with various voicing embellishments. Features the characteristic F#/E/G and G/E/D slash chord voicings that create inner voice movement. Ends with the first appearance of the chromatic C#m7#5/E chord (0:33)."
+        },
+        {
+          "label": "B Section / Development (0:30-0:55)",
+          "description": "Introduces new harmonic colors and tension. Features the D major chord (0:36) and F#m#5 (0:37), suggesting movement toward the relative major or subdominant areas. The F#mb6b9 diminished sonorities appear here (0:40, 0:44), creating chromatic tension. Includes the striking B7#9b13/G altered dominant (0:46). The A5 and E5/B power chords (0:48-0:49) provide textural contrast. Returns to CMadd9/G (0:50) before transitioning back via F# diminished colors."
+        },
+        {
+          "label": "A' Section / Restatement (0:55-1:16)",
+          "description": "Returns to the opening material with slight variations. The familiar Em7 → G → C69#11/G progression is restated with more confidence. The voicings cycle through Em7, Em9, Em11, and Em7add11 variants (0:58-1:02), exploring different colors of the same basic harmony. Two clear statements of the G → C69#11/G resolution (1:03-1:06 and 1:12-1:15)."
+        },
+        {
+          "label": "C Section / Bridge (1:16-1:44)",
+          "description": "Explores new harmonic territory with more adventurous progressions. Features Cmaj13/E and CM13#11/E (1:18-1:19) with rich upper extensions. The C#m7#5/E chord appears multiple times (1:23, 1:31), creating ambiguous tonality. D major chord (1:26) acts as a pivot. The section includes more chromatic movement with F#mb6b9 chords and the second B7#9b13/F# altered dominant (1:35). Ends with a CMadd9/G resolution (1:40-1:41)."
+        },
+        {
+          "label": "D Section / Contrasting Material (1:44-1:56)",
+          "description": "Introduces the Am chord (1:46) for the first time—the subdominant in E minor. The progression Am → D13/A → D6/A (1:46-1:48) suggests a iv-VII movement or possibly ii-V in G major. Features beautiful voice leading through Gmaj9/F#, Em11/F#, CM13#11/F# (1:48-1:49), creating a descending bass line. Multiple C major voicings with extensions (Cmaj9/G, Cmaj13/G, Cmaj13/E) before returning to Em7 (1:53)."
+        },
+        {
+          "label": "A'' Section / Final Restatement (1:56-2:20)",
+          "description": "Returns to the main theme with fuller realization. Clear statements of the core progression: Em7 → GM → C69#11/G (1:57-2:00, 2:01-2:08, 2:09-2:17). The voicings are more settled and confident. Includes the GM9sus4 chord (2:16) adding a suspended quality. Ends with a longer G major chord (2:22, 3 seconds) that serves as a plateau before the outro."
+        },
+        {
+          "label": "Outro / Dissolution (2:20-2:40)",
+          "description": "Gradual simplification and fade. The complex jazz voicings strip away, moving from Em7 (2:20, 2:25) to simple Em and E5 power chords. The harmony becomes increasingly sparse: Em → E/G → Em → E5 → EM (brief major) → E5. The final 5 seconds rest on pure E5 power chords, creating an open, unresolved ending that suggests continuation or meditation. The shift from minor seventh to power chord represents a textural and harmonic dissolution."
+        }
+      ],
+      "key_center": "E minor (not G# minor as detected). The piece is firmly centered in E minor with strong modal mixture, particularly borrowing from E Dorian and E Aeolian. The frequent G major and C major chords suggest Dorian inflections (raised 6th scale degree). No true modulations occur, though there are brief tonicizations of G major and suggestions of related keys through secondary dominants.",
+      "relearning_tips": "**Start with Section A (0:00-0:30)**: Learn the core progression Em7 → G → C/G first with basic voicings before adding extensions. Focus on smooth voice leading between these three chords—the top voices should move minimally. **Voicing Strategy**: The #11 extensions on C chords (F# over C) are crucial to the sound; practice C69#11/G as C-G-D-E-F# from bottom to top. For Em7add11, think Em7 with an added A (the 11th). **Practice Order**: (1) Master the A section progression, (2) Learn the outro's simple E5 voicings to understand the harmonic destination, (3) Add the B section's chromatic F#mb6b9 chords (think F#-A-C-D-G voicings), (4) Tackle the bridge's Am → D13 progression (1:46), (5) Connect all sections. **Key Technical Points**: The slash chords (like F#/E/G) indicate specific bass notes—keep the left hand anchored on those bass tones while the right hand fills in upper voices. The piece likely uses a lot of 2-hand voicing spreads rather than traditional left-hand bass/right-hand chords. **Harmonic Thinking**: Understand this as E Dorian (E-F#-G-A-B-C#-D) rather than pure E minor—this explains the natural relationship between Em, G, and C major. Let the harmony breathe; don't rush the chord changes.\"\n",
+      "rhythm_and_feel": "Moderate tempo at ~120 BPM with a laid-back, flowing feel. The harmonic rhythm is relatively slow, with most chords lasting 0.5-2 seconds, creating space for melodic exploration and voicing color. The piece has an improvisatory, voice-memo quality with rubato tendencies. The feel is contemplative and unhurried—think neo-soul or contemporary jazz ballad rather than strict time. The texture appears to be primarily chordal with arpeggiated or broken chord patterns rather than block chords.",
+      "chord_vocabulary": [
+        "Em7",
+        "Em",
+        "GM (G major)",
+        "Cmaj9/G",
+        "CMadd9/G",
+        "C69#11/G",
+        "Em11",
+        "Em7add11",
+        "G6add9",
+        "Gmaj9",
+        "DM (D major)",
+        "Am",
+        "C#m7#5/E",
+        "F#mb6b9/A",
+        "F#mb6b9/D",
+        "Gmaj9/F# (G/F#)",
+        "B7#9b13",
+        "E5",
+        "A/C#",
+        "Cmaj13/G",
+        "CM13#11/E",
+        "D13/A"
+      ],
+      "harmonic_highlights": "The piece features sophisticated jazz-influenced harmony in E minor with extensive use of upper extensions (#11, 9, 13). Notable moments include: (1) The recurring Em7 → G → C/G progression that forms the harmonic backbone, (2) The chromatic F# diminished/half-diminished sonorities (F#mb6b9) that create tension before resolutions, (3) Modal borrowing from parallel major and Dorian mode (the bright G and C major chords against E minor), (4) The striking B7#9b13 altered dominant (0:46, 1:35) providing colorful tension, (5) The Am → D13 progression (1:46-1:48) suggesting a brief iv-VII in E minor or ii-V in G major, (6) The final section's gradual simplification from complex extensions back to pure E5 power chords, creating a contemplative fade."
+    },
+    "chordsPreview": [
+      {
+        "time": 1,
+        "chord": "Em",
+        "duration": 1.5
+      },
+      {
+        "time": 2.5,
+        "chord": "E/G",
+        "duration": 0.5
+      },
+      {
+        "time": 3,
+        "chord": "G/A/E",
+        "duration": 0.5
+      },
+      {
+        "time": 3.5,
+        "chord": "Em7add11",
+        "duration": 1
+      },
+      {
+        "time": 4.5,
+        "chord": "G/E/D",
+        "duration": 0.5
+      },
+      {
+        "time": 5,
+        "chord": "E/D/G",
+        "duration": 0.5
+      },
+      {
+        "time": 5.5,
+        "chord": "Em7",
+        "duration": 1.5
+      },
+      {
+        "time": 7,
+        "chord": "E/G",
+        "duration": 0.5
+      }
+    ],
+    "keyFromAnalysis": "G# Minor",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "dad56bd6-8e53-442f-bb19-75ce4cc3e11c",
     "rawTitle": "08_Isolation",
     "cleanTitle": "Isolation",
     "duration": 201.407,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a brooding, harmonically sophisticated piano piece in G minor that lives up to its title \"Isolation\" through its use of chromatic voice leading, augmented triads, and unresolved tensions. The 120 BPM tempo and steady 4/4 meter provide a restless, searching quality. The harmonic language blends post-romantic chromaticism with jazz-influenced extended chords, creating an atmosphere of introspection and emotional complexity.",
+      "sections": [
+        {
+          "label": "A Section - Main Theme (0:00-0:26)",
+          "description": "Establishes the core harmonic vocabulary: Gm → D#maj7/G → Gm#5 → Cm7/G with chromatic passing chords. The progression moves through D#/C, D5/A, and Bm7#5 → A#maj7 before returning to D5/A pedal. This section introduces the piece's characteristic chromatic voice leading and augmented sonorities."
+        },
+        {
+          "label": "A' Section - Theme Variation 1 (0:26-0:52)",
+          "description": "Repeats the opening progression with slight variations in the passing chords (Adim/D# appears, Cm69/G adds color). Same resolution pattern through Bm7#5 → A#maj7 → A#maj#4/A → Asus4 → D5/A. The repetition reinforces the main harmonic identity."
+        },
+        {
+          "label": "A'' Section - Theme Variation 2 (0:52-1:08)",
+          "description": "Third statement of the main progression, now with more chromatic embellishment in the middle (D#5/A#, C/A). Ends with an extended D5/A pedal (4.5 seconds), the longest sustained harmony yet, creating anticipation for the next section."
+        },
+        {
+          "label": "B Section - Development/Bridge (1:08-2:15)",
+          "description": "Dramatic shift in harmonic language. Introduces complex altered chords: D#M6#11/C, F#dim, D7b9, Cdim, and chromatic bass motion. Features Gm/ma7 (minor-major seventh) and DMadd9/A, suggesting modal exploration. This is the most harmonically adventurous section, with rapid chord changes and diminished seventh sonorities creating tension. Ends with extended Gm pedal (total ~8.5 seconds from 2:08-2:23), the clearest tonic resolution in the piece."
+        },
+        {
+          "label": "A''' Section - Theme Return (2:24-2:48)",
+          "description": "Return to the opening Gm → D#maj7/G → Gm#5 progression, confirming the ternary form. Includes the familiar Cm7/G, D#5, D5, and Bm7#5 → A#maj7 resolution. This return feels like coming home after the harmonic wandering of the B section."
+        },
+        {
+          "label": "A'''' Section - Theme Variation 3 (2:48-3:05)",
+          "description": "Another variation on the main theme with Cm13/G and Cm9/G providing subtle color changes. Same resolution pattern through Bm7#5 → A#maj7. Ends with extended D5/A pedal (2.5 seconds) and Asus4 suspension."
+        },
+        {
+          "label": "Coda (3:05-3:16)",
+          "description": "Final resolution to Gm with alternating Gsus2, G5, and Gm6 sonorities. The oscillation between Gm and G5 (removing the minor third) creates an ambiguous, unresolved ending—the fifth remains open and hollow. Ends on G5, leaving the piece suspended rather than definitively resolved, reinforcing the sense of isolation."
+        }
+      ],
+      "key_center": "G minor (not F minor as detected). The piece is firmly centered on Gm with extensive chromatic embellishment. No clear modulations, but significant tonicization of D (dominant) through D5/A pedal points, and modal mixture borrowing from parallel major and Phrygian mode. The middle section explores more distant harmonic territory but always returns to the Gm tonic.",
+      "relearning_tips": "Start by mastering the core progression (Gm → D#maj7/G → Gm#5 → Cm13/G) which appears throughout—focus on smooth voice leading with minimal hand movement, keeping G in the bass. Learn the A section (0:00-1:08) first as it establishes the main thematic material. The D5/A pedal sections are your anchors—use these as rest points. For the complex middle section (1:08-2:15), isolate the bass line first, then add upper voices gradually. Practice the Bm7#5 → A#maj7 resolution slowly to internalize the chromatic voice leading. The ending (3:05-3:16) alternates Gm and G5—work on the color change between minor third and perfect fifth. Record yourself to capture the improvisatory feel, as the half-second chord changes suggest rubato and expressive timing rather than strict rhythm.",
+      "rhythm_and_feel": "Moderate tempo at 120 BPM with a contemplative, searching character. The harmonic rhythm is quite active—most chords last only 0.5-1.0 seconds, creating constant motion and instability. Notable exceptions are the longer Gm pedals (2.0-5.5 seconds) and D5/A arrivals (1.5-4.5 seconds) which provide breathing space. The feel is rubato and improvisatory, suggesting this was played expressively rather than metronomically. The quick chord changes imply arpeggiated or broken chord textures rather than block chords, with likely melodic embellishment in the right hand over sustained bass notes.",
+      "chord_vocabulary": [
+        "Gm",
+        "D#maj7/G",
+        "Gm#5",
+        "Cm7/G",
+        "Cm13/G",
+        "D#/C",
+        "D5/A",
+        "Bm7#5",
+        "A#maj7",
+        "A#maj#4/A",
+        "Asus4",
+        "D5",
+        "Gmadd9",
+        "Gsus2",
+        "DM/A",
+        "DMadd9/A",
+        "D#dim",
+        "F#dim",
+        "Cm69",
+        "D#M6#11/C",
+        "F#/C",
+        "Gm/ma7",
+        "D7b9",
+        "Cdim",
+        "G5",
+        "Gm6"
+      ],
+      "harmonic_highlights": "The piece features striking chromatic voice leading, particularly in the recurring Gm → D#maj7/G → Gm#5 progression that creates a haunting, unstable quality. The D5/A acts as a dominant pedal point providing temporary resolution. Notable modal borrowing includes the D#maj7 (bVImaj7) and A#maj7 (bIIImaj7) from G Phrygian/Aeolian. The middle section (1:08-2:15) introduces complex altered chords (D#M6#11, F#dim, D7b9) suggesting exploratory development. The strongest cadential moment is the extended Gm pedal (2:15-2:23) which provides the clearest tonic arrival. The Bm7#5 → A#maj7 progression functions as a chromatic mediant relationship, avoiding traditional dominant function."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "G5",
+        "duration": 0.5
+      },
+      {
+        "time": 0.5,
+        "chord": "Gm",
+        "duration": 2
+      },
+      {
+        "time": 2.5,
+        "chord": "D#maj7/G",
+        "duration": 0.5
+      },
+      {
+        "time": 3,
+        "chord": "Gm#5",
+        "duration": 2
+      },
+      {
+        "time": 5,
+        "chord": "Cm7/G",
+        "duration": 0.5
+      },
+      {
+        "time": 5.5,
+        "chord": "D#/C",
+        "duration": 0.5
+      },
+      {
+        "time": 6,
+        "chord": "D#5",
+        "duration": 0.5
+      },
+      {
+        "time": 7.5,
+        "chord": "C/D#",
+        "duration": 0.5
+      }
+    ],
+    "keyFromAnalysis": "F Minor",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "788fc202-db77-4f36-a7ff-dd0b6702ca20",
     "rawTitle": "09_Rebound",
     "cleanTitle": "Rebound",
     "duration": 171.967,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "\"Rebound\" is a contemporary piano piece in D major with a moderate tempo (120 BPM) that blends pop sensibility with jazz-influenced harmony. The piece features a melancholic yet hopeful character, built around a recurring progression that alternates between D major and a darkly colored F# minor chord with extensions. The 2.5-minute composition follows a clear verse-bridge-verse structure with rich voicings and smooth bass movement that creates an introspective, emotionally resonant atmosphere.",
+      "sections": [
+        {
+          "label": "Verse 1 / A Section (0:00-0:29)",
+          "description": "Establishes the main theme in D major. Core progression: DM - F#mb6b9/D - A variations (AMadd9, Asus2, A6add9) - return to D. The F#m chord creates a bittersweet color against the D bass. Bass moves primarily between D and A, with occasional chromatic passing tones (C#). Right hand likely plays arpeggiated patterns with extensions (9ths, 6ths)."
+        },
+        {
+          "label": "Verse 2 / A Section Variation (0:29-0:57)",
+          "description": "Repeats the verse structure with slight variations in voicing and rhythm. Same harmonic foundation (DM - F#mb6b9 - A chords) but with more movement in inversions (F#mb6b9/A, DM/A, DMadd9/A). The A13no5 and A6add9 chords add jazzy color. Builds intensity toward the bridge transition."
+        },
+        {
+          "label": "Bridge / B Section (0:57-1:36)",
+          "description": "Modulates to B minor (relative minor), creating emotional contrast. Opens with B5 and moves through Bm, Em9/B, G6, and E7sus4 chords. Features descending bass lines (B-A-G-F#) and richer harmonic palette with 9th chords. The G major chords (G6, Gmaj7, GMadd9/A) brighten the texture. Climaxes with Dmaj13/A before E7sus4/D creates tension for the return."
+        },
+        {
+          "label": "Verse 3 / A Section Return (1:36-2:10)",
+          "description": "Returns to D major and the original verse progression. Re-establishes DM - F#mb6b9/D - Asus2/AMadd9 pattern. This section feels like a homecoming after the bridge's exploration. Harmonic rhythm remains consistent with earlier verses, providing structural unity."
+        },
+        {
+          "label": "Outro / Coda (2:10-2:42)",
+          "description": "Final statement of the main progression with gradual simplification. Moves through familiar DM - F#mb6b9 - A variations before introducing Bm7 at 2:34, creating a gentle plagal motion. Ends with sustained D5 power chord (2:41), fading out with open, unresolved quality that suggests continuation or reflection."
+        }
+      ],
+      "key_center": "D Major, with a significant tonicization/modulation to B minor (relative minor) from 0:57-1:36, creating a clear bridge section before returning to D major",
+      "relearning_tips": "Start by isolating the core progression: DM - F#mb6b9/D - A variations - back to D. Practice this 4-bar pattern slowly, focusing on the bass movement (D-D-A-D or similar) and the upper voice extensions. The F#m chord is crucial—voice it as F# minor with added color tones over a D bass note. Next, learn the bridge section (0:57-1:36) separately, as it shifts to B minor with different harmonic rhythm. Pay special attention to the chromatic bass descents (like B-A-G-F#) which appear throughout. Once comfortable with both sections, practice the transitions: the move into the bridge (around 0:57) and the return to D major (1:36). The A chord variations (Asus2, AMadd9, A6add9, A13no5) are mostly the same hand position with slight adjustments—think of them as color variations rather than completely different voicings. Record yourself to match the original's flow and timing, as the harmonic rhythm accelerates and decelerates expressively.",
+      "rhythm_and_feel": "Moderate tempo at 120 BPM in 4/4 time with a flowing, arpeggiated texture. The harmonic rhythm is relatively quick, changing every 0.5-1.5 seconds, creating forward momentum while maintaining a contemplative feel. The piece has a singer-songwriter quality with steady eighth-note or sixteenth-note patterns in the right hand over sustained or gently moving bass notes. The rhythm is expressive rather than metronomic, with slight rubato implied by the varying chord durations.",
+      "chord_vocabulary": [
+        "DM (D major)",
+        "F#mb6b9/D (F# minor b6b9 over D)",
+        "AMadd9 (A major add9)",
+        "A/B (A over B)",
+        "Asus2",
+        "B/D (B over D)",
+        "Bm (B minor)",
+        "Em9 (E minor 9)",
+        "G6 (G major 6)",
+        "Gmaj7 (G major 7)",
+        "A13no5",
+        "A6add9",
+        "Dmaj13/A",
+        "E7sus4",
+        "D5 (D power chord)",
+        "DM/A (D major over A)",
+        "A/C# (A over C#)",
+        "DMadd9/A",
+        "Dsus2",
+        "B5 (B power chord)",
+        "Em/G (E minor over G)",
+        "GMadd9/A",
+        "D6add9/F#",
+        "Bm7 (B minor 7)"
+      ],
+      "harmonic_highlights": "The piece features a sophisticated I-vi relationship in D major, with the recurring F#mb6b9/D creating a dark, introspective color over the tonic. The modulation to B minor at 0:57 (relative minor) provides emotional contrast and serves as the bridge section. Notable moments include the chromatic bass movement (D-C#-B-A) creating smooth voice leading, and the use of extended harmonies (add9, 13no5, maj13) that give the piece a contemporary, jazz-influenced sound. The strongest cadence occurs at 1:36 with E7sus4/D resolving back to DM, marking the return to the main theme."
+    },
+    "chordsPreview": [
+      {
+        "time": 0.5,
+        "chord": "DM",
+        "duration": 1
+      },
+      {
+        "time": 1.5,
+        "chord": "F#mb6b9/D",
+        "duration": 1.5
+      },
+      {
+        "time": 3,
+        "chord": "A/F#",
+        "duration": 0.5
+      },
+      {
+        "time": 3.5,
+        "chord": "B/A",
+        "duration": 1
+      },
+      {
+        "time": 5,
+        "chord": "AMadd9",
+        "duration": 1
+      },
+      {
+        "time": 6,
+        "chord": "D5",
+        "duration": 0.5
+      },
+      {
+        "time": 6.5,
+        "chord": "DM",
+        "duration": 1
+      },
+      {
+        "time": 7.5,
+        "chord": "F#mb6b9/D",
+        "duration": 1.5
+      }
+    ],
+    "keyFromAnalysis": "A# Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "c3ae569c-bda3-47b2-8f8d-63cd708e2c2f",
     "rawTitle": "10_Stir Crazy",
     "cleanTitle": "Stir Crazy",
     "duration": 166.429,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is an energetic, rhythmically driven piano improvisation at a brisk 185 BPM with a restless, exploratory character that lives up to its \"Stir Crazy\" title. The piece features hypnotic alternating bass patterns, chromatic harmonic shifts, and extended passages built on suspended and power chord sonorities. The overall mood is urgent and somewhat manic, with a contemporary post-minimalist aesthetic that favors texture and momentum over traditional melodic development.",
+      "sections": [
+        {
+          "label": "Introduction (0:00-0:20)",
+          "description": "Opens with F5 power chord establishing the tonal anchor, quickly introducing chromatic color through Fsus2 and C#maj7 sonorities. The D#sus2 appears as a suspended plateau (0:08-0:11), followed by the first statement of the characteristic A/F ↔ F/A alternating pattern. Ends with return to C#maj7, establishing the F-C# axis that will dominate the piece."
+        },
+        {
+          "label": "First Verse/A Section (0:20-0:44)",
+          "description": "Built on the core harmonic loop: D#sus2 (extended) → FM/A/F alternations → C#M → D#sus2. The A/F and F/A slash chords create the primary rhythmic/harmonic texture, alternating rapidly to generate momentum. This section establishes the main thematic material with clear phrase structure."
+        },
+        {
+          "label": "Extended Pedal/Build Section (0:44-0:56)",
+          "description": "Dominated by a lengthy A#5 power chord pedal (6+ seconds), creating maximum tension and stasis. This breaks at 0:50 with brief chromatic flourishes (A#m, A#m9/C#, C#maj9, F5) before settling into D#sus2 for another extended passage. Functions as a structural pillar and moment of harmonic suspension."
+        },
+        {
+          "label": "Second Verse/A Section Variant (0:56-1:16)",
+          "description": "Returns to the established pattern with D#sus2 → A/F alternations → C#maj7 → F5 → D#sus2. Nearly identical harmonic content to the first verse but with slight variations in duration and voicing, reinforcing the cyclic nature of the composition."
+        },
+        {
+          "label": "Third Verse (1:16-1:30)",
+          "description": "Another iteration of the core progression, now with D#11 adding color to the suspended sonority. The A/F ↔ F/A alternations become more intricate with faster changes, building intensity before the next structural landmark."
+        },
+        {
+          "label": "Second Extended Pedal (1:30-1:42)",
+          "description": "Another prolonged A#5 section (nearly 8 seconds total), the longest single harmony in the piece. This creates a dramatic plateau before transitioning through C#M7b5 and F5/C voicings, then introducing A#sus4 as a new suspended color alongside the familiar D#sus2."
+        },
+        {
+          "label": "Development/Bridge (1:42-2:04)",
+          "description": "Introduces A#sus4 as a new harmonic element, alternating with A#5. The FM/A/F pattern continues but with new harmonic destinations including C#M7b5 and C#M9b5 variants, adding darker chromatic color. The section feels more harmonically adventurous, exploring variations on the established vocabulary."
+        },
+        {
+          "label": "Final Verse/Return (2:04-2:28)",
+          "description": "Returns to the core D#sus2 → FM/A/F → C#M cycle with renewed clarity. The alternating bass patterns are fully established, and the harmonic rhythm settles into the familiar groove. Includes colorful passing chords (C#7#5, D#11) that enrich the basic progression."
+        },
+        {
+          "label": "Coda/Fade (2:28-2:41)",
+          "description": "Final statement of D#sus2 (extended to 3+ seconds) followed by a gradual dissolution into the FM/F/A alternating pattern. The piece doesn't resolve traditionally but rather fades into the hypnotic rocking motion between F and A, ending mid-gesture as if the pattern could continue indefinitely."
+        }
+      ],
+      "key_center": "Ambiguous tonal center fluctuating between F and C# (enharmonically D♭), with strong emphasis on D# (E♭) suspended sonorities. The piece operates more in a modal/post-tonal space than traditional major/minor tonality, despite the G Major detection. The harmonic language suggests F Lydian or F major with frequent chromatic side-slipping to C# major areas.",
+      "relearning_tips": "Start by mastering the core alternating bass pattern: A/F to F/A (left hand: F-A alternation, right hand fills in the harmony). This is the rhythmic/harmonic backbone of the entire piece. Next, practice the three main \"anchor\" chords in isolation: D#sus2 (or E♭sus2), C#maj7 (or D♭maj7), and F5/FM. These are your resting points. Work on the transitions between these anchors—especially the D#sus2 to A/F motion and the A/F pattern resolving to C#maj7. The extended A#5 pedal sections (0:44 and 1:30) can be practiced separately as moments of stillness within the motion. For tempo, start at 120 BPM to establish the patterns cleanly, then gradually increase to the target 185 BPM. Focus on maintaining the relentless forward drive without rushing—the piece should feel urgent but controlled. Pay attention to voicing: keep the alternating patterns in a comfortable mid-range register to avoid muddiness, and voice the suspended chords (D#sus2, A#sus4) with open fifths and seconds for maximum color. The piece is highly repetitive structurally, so once you've mastered the 20-second core loop (D#sus2 → A/F alternations → C#M → return), you've learned 70% of the composition.\"\n",
+      "rhythm_and_feel": "Fast tempo at ~185 BPM in 4/4 time with a driving, perpetual motion quality. The harmonic rhythm alternates between rapid changes (every 0.3-0.6 seconds in active sections) and extended pedal points (2-6 seconds on single harmonies). The characteristic rhythmic gesture is the rapid alternation between slash chord inversions (A/F to F/A), creating a rocking, ostinato-like texture. The feel is relentless and motoric, with minimal rubato, suggesting an almost trance-like or obsessive quality befitting the title.",
+      "chord_vocabulary": [
+        "F5",
+        "Fsus2",
+        "C#maj7",
+        "D#sus2",
+        "A/F",
+        "F/A",
+        "FM",
+        "A#5",
+        "C#M",
+        "C#Madd9",
+        "F5/C",
+        "A#sus4",
+        "Amb6b9/F",
+        "C#M7b5",
+        "F+add#9/C#",
+        "A#m",
+        "D#11",
+        "F7no5",
+        "C4/D#",
+        "A#5/F"
+      ],
+      "harmonic_highlights": "The piece features striking chromatic mediant relationships, particularly the recurring F to C# major motion (a tritone-related key area). The alternating A/F and F/A slash chords create a hypnotic, rocking texture that defines much of the piece's character. Notable moments include the extended A#5 pedal section (1:30-1:38) which creates tension before resolution, and the sophisticated use of suspended harmonies (D#sus2, A#sus4) that delay harmonic resolution. The piece avoids traditional functional harmony in favor of modal/quartal sonorities and coloristic chord relationships."
+    },
+    "chordsPreview": [
+      {
+        "time": 0.32432432432432434,
+        "chord": "F5",
+        "duration": 0.972972972972973
+      },
+      {
+        "time": 1.2972972972972974,
+        "chord": "Fsus2",
+        "duration": 0.32432432432432434
+      },
+      {
+        "time": 1.6216216216216217,
+        "chord": "F5",
+        "duration": 3.5675675675675684
+      },
+      {
+        "time": 5.189189189189191,
+        "chord": "Fsus2",
+        "duration": 0.32432432432432434
+      },
+      {
+        "time": 5.513513513513516,
+        "chord": "F5/C",
+        "duration": 0.32432432432432434
+      },
+      {
+        "time": 5.83783783783784,
+        "chord": "C#/F",
+        "duration": 0.32432432432432434
+      },
+      {
+        "time": 6.162162162162165,
+        "chord": "C#maj7",
+        "duration": 0.6486486486486487
+      },
+      {
+        "time": 6.810810810810814,
+        "chord": "C#M7b5",
+        "duration": 0.32432432432432434
+      }
+    ],
+    "keyFromAnalysis": "G Major",
+    "tempoFromAnalysis": 185,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "d2eeee58-832b-4872-a4be-8fbf030b981d",
     "rawTitle": "11_Rolling",
     "cleanTitle": "Rolling",
     "duration": 275.386,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemporary jazz-influenced piano piece in G Major with a flowing, contemplative character. The harmonic language blends simple I-IV-V foundations with sophisticated extensions (9ths, 11ths, 13ths) and colorful slash chord voicings. At approximately 120 BPM in 4/4 time, the piece has a gentle, rolling quality that lives up to its title, featuring arpeggiated textures and smooth voice leading across its 4.5-minute duration.",
+      "sections": [
+        {
+          "label": "A Section (0:00-0:58)",
+          "description": "Establishes the main GM-CM/G progression with extended harmonies. Opens with GM moving to various C chord voicings over G bass (CM/G, C6add9/G, Cmaj9/G). The pattern repeats with increasing harmonic sophistication, introducing Gmaj13, DMadd9/A, and the characteristic C69#11/G color chord. This section establishes the rolling arpeggiated texture and the I-IV harmonic foundation."
+        },
+        {
+          "label": "A Section Variation (0:58-1:28)",
+          "description": "Continues the GM-CM pattern but introduces new bass movement and voicings. Notable addition of D/F# and F#/D chords (1:03-1:06) that briefly tonicize the V chord. The C69#11/F# at 1:06 creates an interesting chromatic moment. Returns to the familiar GM-CMadd9/G alternation with added color tones (C6add9/G, A/G)."
+        },
+        {
+          "label": "Bridge 1 (1:28-1:48)",
+          "description": "First major harmonic departure. Introduces Bm/D (iii chord) at 1:34, followed by a progression through D9/A, Am-Am7 (ii chord), C69#11/A, and D7add6. This creates a brief ii-V feel with chromatic passing chords (B/C/F#, C/F#/B). The section explores the relative minor area and secondary dominants before returning to GM via Gmaj7 and Cmaj9#11/G."
+        },
+        {
+          "label": "A Section Return (1:48-2:10)",
+          "description": "Returns to the main GM-CM progression with renewed energy. The familiar pattern of GM, Gmaj13, DMadd9/A, and various C chord extensions (C6add9, Cmaj13, C6, CMadd9) over G bass. The harmonic rhythm is slightly more active here, with quicker changes between C chord voicings."
+        },
+        {
+          "label": "A Section Extended (2:10-2:40)",
+          "description": "Another variation on the main material with more emphasis on the D/F# and F#/D voicings (2:15-2:18, 2:31-2:35). These create a stronger pull toward the dominant before resolving back to CMadd9/G. The Em9#5/F# and Em11/F# chords add modal color, suggesting brief Lydian or Mixolydian flavors."
+        },
+        {
+          "label": "Bridge 2 (2:40-3:07)",
+          "description": "Second bridge section, similar to Bridge 1 but with slight variations. The Bm/D, F#/D, D9/A, Am-Am7, C69#11/A, D7add6 progression returns, creating the same ii-V-I motion. The chromatic passing chords (F#/C/B, C/F#/B) and the resolution through Gmaj7 back to GM are repeated, reinforcing this as a key structural element."
+        },
+        {
+          "label": "A Section Developed (3:07-3:38)",
+          "description": "The main progression returns with increased harmonic density. Multiple repetitions of the GM-Gmaj13-DMadd9/A-C69#11-CM pattern. Notable moment at 3:36 with the C7 chord, the only dominant seventh on C in the piece, which briefly suggests a move toward F major but resolves back to G."
+        },
+        {
+          "label": "A Section Final (3:38-4:14)",
+          "description": "Last statement of the main material with the most elaborate voicings. The D/F# and F#/D section (3:43-3:46) leads to CMadd9/G with extended C6add9/G and Cmaj13/G voicings. A final bridge-like gesture appears at 3:57-4:04 with Bm/F#, F#/D, D9/A, Am-Am7, C69#11/A, D7add6, creating one last ii-V motion before the coda."
+        },
+        {
+          "label": "Coda (4:14-4:30)",
+          "description": "Extended resolution on GMadd9 and G6add9 (4:15-4:24) with sustained harmonies replacing the rolling texture. Brief chromatic color at 4:24 with B7#5#9/G, followed by Emadd4/G suggesting the vi chord. Final gestures with B/G/A and B/A/G create upper-structure tensions before settling on GMadd9, ending the piece with an open, unresolved quality."
+        }
+      ],
+      "key_center": "G Major throughout, with no true modulations. Brief tonicizations of D (V) and Em (vi) occur through the bridge sections, and there's a momentary suggestion of C major (IV) during extended C chord passages, but G remains the clear tonal center.",
+      "relearning_tips": "Start by isolating the core GM-CM/G progression (0:00-0:17) to establish the basic harmonic movement and rolling pattern in your hands. Focus on smooth voice leading between G and C chords, keeping the G bass pedal tone consistent. Next, learn the bridge progression (1:34-1:47) separately: Bm/D → D9/A → Am7 → C69#11/A → D7add6. This is the most harmonically complex section and appears three times, so mastering it will unlock much of the piece. For the extended C chord passages, practice moving between C6add9, Cmaj9, Cmaj13, and CMadd9 voicings while maintaining the arpeggiated texture—these are essentially the same chord with different color tones added. The D/F# and F#/D sections (around 1:03, 2:15, 3:43) should be practiced as transitional moments that lead back to C. Once sections are secure, work on connecting them smoothly, paying attention to how the piece returns to GM after each departure. The coda (4:14-end) requires a shift from rolling to sustained texture, so practice this dynamic change separately. Record yourself to ensure the harmonic rhythm feels natural and the extensions don't sound cluttered.",
+      "rhythm_and_feel": "The piece maintains a steady, flowing feel at ~120 BPM with continuous arpeggiated patterns that create the \"rolling\" character. The harmonic rhythm is relatively quick, with chord changes occurring every 0.5-3 seconds, though the underlying progression moves more slowly. The texture suggests broken chord patterns in the right hand over sustained or walking bass lines in the left. The feel is contemplative and meditative, with the constant motion creating a hypnotic, stream-of-consciousness quality.",
+      "chord_vocabulary": [
+        "GM (G Major)",
+        "CM/G (C Major over G)",
+        "DMadd9/A (D Major add9 over A)",
+        "C69#11/G (C6/9 #11 over G)",
+        "Gmaj13",
+        "C6add9/G",
+        "Cmaj9/G",
+        "Gmaj9",
+        "Am7",
+        "D7add6",
+        "Bm/D",
+        "D/F#",
+        "F#/D",
+        "CMadd9/G",
+        "C6add9",
+        "Cmaj13",
+        "GMadd9",
+        "G6",
+        "Am",
+        "C69#11/A",
+        "Gmaj7",
+        "C7",
+        "Em9#5/G",
+        "Gsus2",
+        "F#m#5"
+      ],
+      "harmonic_highlights": "The piece features sophisticated jazz-influenced harmony built on a simple I-IV foundation (G-C). Notable moments include: (1) The recurring C69#11 chord which adds a bright, modern color to the IV chord; (2) The bridge sections (1:34-1:47, 2:45-3:07) which introduce secondary dominants and modal interchange with Bm/D, Am7, and D7add6 creating a brief tonicization of the ii chord; (3) The use of slash chords (particularly bass notes on G and A) that create pedal tones and smooth voice leading; (4) The single C7 chord at 3:36 which briefly suggests a shift toward F but resolves back to G; (5) Extended harmonies (9ths, 11ths, 13ths) that enrich the basic triads without obscuring the tonal center."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "GM",
+        "duration": 3
+      },
+      {
+        "time": 3,
+        "chord": "Gmaj9",
+        "duration": 0.5
+      },
+      {
+        "time": 3.5,
+        "chord": "DM/A",
+        "duration": 0.5
+      },
+      {
+        "time": 4,
+        "chord": "C69#11/G",
+        "duration": 0.5
+      },
+      {
+        "time": 4.5,
+        "chord": "CM/G",
+        "duration": 3
+      },
+      {
+        "time": 7.5,
+        "chord": "C6add9/G",
+        "duration": 1
+      },
+      {
+        "time": 8.5,
+        "chord": "Cmaj9/G",
+        "duration": 0.5
+      },
+      {
+        "time": 9,
+        "chord": "GM",
+        "duration": 2.5
+      }
+    ],
+    "keyFromAnalysis": "F Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "8a67fc03-181f-46a8-beaa-65468506c920",
     "rawTitle": "12_Quarantine",
     "cleanTitle": "Quarantine",
     "duration": 176.356,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is an introspective, harmonically sophisticated piano piece that captures the contemplative mood suggested by its title \"Quarantine.\" The composition moves through a series of extended jazz-influenced chords, primarily oscillating between E minor and C major sonorities with rich 9th, 11th, and #11 extensions. The piece builds gradually, explores a surprising modulation to the dominant area, and concludes with an unresolved, suspended quality that mirrors emotional uncertainty.",
+      "sections": [
+        {
+          "label": "A Section - Main Theme (0:00-0:30)",
+          "description": "Establishes the primary Em-Cmaj#4 relationship. Opens with a 7-second Em pedal, then introduces the characteristic Cmaj9#11/E and Cmaj#4 voicings. Brief movement through Gmaj13 and D6add9 (0:22-0:23) hints at subdominant color before returning to Em via G6 and G/B bass motion."
+        },
+        {
+          "label": "A' Variation (0:30-0:53)",
+          "description": "Repeats the Em-Cmaj#4 progression with more elaborate extensions. Introduces Em9#5/C (0:34) and Cmaj7/B (0:37) for added color. The section concludes with Em7add11 moving through D6add9 and CM13#11 (0:45-0:46), establishing the D and C as important upper neighbor tones."
+        },
+        {
+          "label": "B Section - Development (0:53-1:39)",
+          "description": "Continues exploring Em-C relationship but with increased harmonic density. Introduces Am9/C and Am13/C voicings (1:02-1:03, 1:09) that add darker color. More frequent bass movement through G, B, and E. The section features the most complex chord changes, with shifts every 0.5 seconds creating forward momentum."
+        },
+        {
+          "label": "C Section - Textural Shift (1:39-2:01)",
+          "description": "Returns to simpler textures with clearer Em-Cmaj7 statements. Introduces C6 and C6add9 voicings (1:43-1:44) for a brighter, more open sound. Builds to a 4.5-second Em pedal (1:57-2:01), the longest sustained harmony since the opening, creating a moment of arrival and breath."
+        },
+        {
+          "label": "Bridge - Modulation (2:01-2:18)",
+          "description": "The piece's harmonic climax. Moves through D6add9 and CM13#11 to establish C major more firmly, then pivots to Bmadd4/Bm (2:09-2:11). This leads to a surprising tonicization of A major (2:12) with C#m#5/E voicings creating tension. Resolves deceptively to E major (2:15-2:18) with a brief G#mb6M7/E color tone before returning to Em."
+        },
+        {
+          "label": "A'' Return (2:18-2:38)",
+          "description": "Returns to opening Em-Cmaj7 material but with simpler, more direct voicings. The Bmadd4 reappears (2:32), again leading to A major (2:35) and the C#m#5/E sonority, creating a parallel to the bridge section but more compressed."
+        },
+        {
+          "label": "Coda - Unresolved Ending (2:38-2:51)",
+          "description": "Shifts to E major/E5 power chord sonority, alternating with Esus2. The oscillation between E5 and Esus2 (2:44-2:51) creates an ambiguous, suspended conclusion that never fully commits to major or minor, leaving the piece emotionally unresolved—a perfect reflection of the quarantine experience."
+        }
+      ],
+      "key_center": "E minor throughout, with significant modal borrowing from E Lydian and C Lydian. Brief tonicization of A major (2:12-2:37) before ambiguous E major/minor ending (2:38-2:51).",
+      "relearning_tips": "Start by learning the core Em-Cmaj7 progression that forms the backbone of the first two minutes. Focus on the Cmaj#4 voicing (C-E-F#-G-B) as it appears constantly—get this shape comfortable in your hands first. The opening section (0:00-0:30) establishes all the main harmonic vocabulary, so master this thoroughly before moving forward. Practice the modulation section (2:09-2:18) separately, as it's the most harmonically adventurous moment. For the ending (2:40-2:51), work on smooth voice leading between E5 and Esus2—keep common tones sustained and move minimal voices. The harmonic rhythm is generally slow (chords change every 0.5-2 seconds), so focus on voicing clarity and smooth transitions rather than speed. Record yourself to capture the improvisatory, voice-memo quality of the original.",
+      "rhythm_and_feel": "Moderate tempo around 120 BPM in 4/4 time with a contemplative, rubato feel. The harmonic rhythm is relatively slow and spacious, with chords sustaining between 0.5-7 seconds. The piece has an improvisatory, stream-of-consciousness quality typical of a voice memo sketch, with longer sustained passages alternating with more active harmonic movement. The feel is introspective and floating, not metrically strict.",
+      "chord_vocabulary": [
+        "Em",
+        "Cmaj7",
+        "Cmaj#4",
+        "Cmaj9",
+        "Em7",
+        "Emadd9",
+        "Cmaj9#11/E",
+        "Am9/C",
+        "Am13/C",
+        "G/B",
+        "Bm",
+        "AM",
+        "C#m#5/E",
+        "EM",
+        "E5",
+        "Esus2",
+        "D6add9",
+        "CM13#11",
+        "Gmaj13",
+        "Em7add11",
+        "Emadd4",
+        "B/G"
+      ],
+      "harmonic_highlights": "The piece features rich extended harmonies throughout, particularly the recurring Cmaj#4 (Lydian color) and Cmaj9#11 voicings that create a dreamy, suspended quality. The most striking moment is the modulation at 2:09 to Bm, followed by a brief tonicization of A major (2:12-2:15) with C#m#5/E voicings, before pivoting dramatically to E major. This E major section (2:15-2:18) acts as a deceptive resolution before returning to Em. The final section (2:40-2:51) alternates between E5 and Esus2, creating an ambiguous Picardy third ending that hovers between major and minor, never fully resolving the piece's emotional tension."
+    },
+    "chordsPreview": [
+      {
+        "time": 0,
+        "chord": "Em",
+        "duration": 7
+      },
+      {
+        "time": 7,
+        "chord": "Em7",
+        "duration": 0.5
+      },
+      {
+        "time": 7.5,
+        "chord": "Cmaj9#11/E",
+        "duration": 0.5
+      },
+      {
+        "time": 8,
+        "chord": "Cmaj#4/E",
+        "duration": 0.5
+      },
+      {
+        "time": 8.5,
+        "chord": "Cmaj#4/G",
+        "duration": 1.5
+      },
+      {
+        "time": 10,
+        "chord": "Cmaj#4",
+        "duration": 2
+      },
+      {
+        "time": 12,
+        "chord": "Emadd9",
+        "duration": 0.5
+      },
+      {
+        "time": 12.5,
+        "chord": "Em",
+        "duration": 1.5
+      }
+    ],
+    "keyFromAnalysis": "G# Minor",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   },
   {
     "id": "eda30871-c82c-45c4-b352-b158c00528fa",
     "rawTitle": "13_All Together",
     "cleanTitle": "All Together",
     "duration": 219.123,
-    "hasAnalysis": false,
-    "analysisStatus": null,
-    "analysisSummary": null,
-    "chordsPreview": null,
-    "keyFromAnalysis": null,
-    "tempoFromAnalysis": null,
-    "hasChords": false,
-    "hasNotes": false
+    "hasAnalysis": true,
+    "analysisStatus": "completed",
+    "analysisSummary": {
+      "overview": "This is a contemplative, harmonically rich piano piece in G Major that explores color and texture through extended chord voicings. The mood is meditative and spacious, with a contemporary jazz/neo-classical character. The piece uses G as a constant anchor while layering 6ths, 9ths, major 7ths, and borrowed chords above it, creating a shimmering, impressionistic sound world.",
+      "sections": [
+        {
+          "label": "Opening Statement (0:00-0:30)",
+          "description": "Establishes the harmonic vocabulary with G/E bass movement, then cycles through GM, G6, GMadd9, and Gmaj7 variations. The Bmb6b9/G chord appears at 0:22 as the first colorful borrowed harmony, creating a brief darker moment. Texture is exploratory and rubato."
+        },
+        {
+          "label": "First Development (0:30-1:08)",
+          "description": "Continues the pattern of G major chord embellishments with more confident phrasing. Introduces Cmaj13/G at 0:54 as a IV chord color over the G pedal. The longest sustained GM chord occurs at 0:58 (5.5 seconds), serving as a breath and structural anchor."
+        },
+        {
+          "label": "Middle Section A (1:08-1:40)",
+          "description": "Harmonic rhythm becomes more active. Em9/G appears at 1:20, F#mb6b9/G at 1:26, and Cmaj13/G returns at 1:29, showing increased harmonic exploration. The C/D/B cluster at 1:29 adds polytonal color. Texture thickens with more complex voicings."
+        },
+        {
+          "label": "Middle Section B (1:40-2:12)",
+          "description": "Peak of harmonic complexity. Bmb6b9/G becomes more frequent, alternating with G6 and GMadd9. The F#mb6b9/G at 1:45 and Cmaj9/G at 1:49 create a sequence of colorful upper structures. Em/G appears at 2:09, and D/C cluster at 2:14 adds tension."
+        },
+        {
+          "label": "Climax and Turn (2:12-2:47)",
+          "description": "Most harmonically dense section. Features Gmaj7/F# (2:17) with descending bass motion, Cmaj9#11/G (2:25) as the most extended harmony, and D#M7b6/G (2:34) as an unusual chromatic color. Multiple C major extensions (Cmaj9/G, Cmaj13/G) at 2:41-2:46 create a suspended, unresolved quality."
+        },
+        {
+          "label": "Resolution and Descent (2:47-3:14)",
+          "description": "Begins to simplify. Gmaj7/F# at 2:53 with G5/D shows bass line movement. Returns to cleaner GM and G6 alternations. Cmaj9/G at 3:09 provides a final colorful moment before settling. Gmaj9 at 3:13 serves as a penultimate sonority."
+        },
+        {
+          "label": "Coda (3:14-3:37)",
+          "description": "Final resolution. Brief return to Cmaj9/G (3:16-3:17) before settling into GMadd9 and GM alternations. Ends with sparse G5 power chords (3:31-3:37), stripping away all extensions to reveal the bare tonic fifth, creating a sense of arrival and emptiness."
+        }
+      ],
+      "key_center": "G Major throughout (not F Major as initially detected). The piece remains firmly centered on G with no modulations, using the tonic as a pedal point with colorful upper-structure harmonies.",
+      "relearning_tips": "Start with the Coda (3:14-3:37) to understand the essential G major foundation, then work backward. Practice the basic GM → G6 → GMadd9 → Gmaj7 cycle first (found throughout 0:00-0:30) to internalize the core vocabulary. Keep G in the bass throughout—this is a pedal point piece. For the Bmb6b9/G chord, think of it as a Bm7b5 with added color over G bass. The Cmaj9/G and Cmaj13/G voicings are simply C major extensions in the right hand over G in the left—experiment with different inversions. Focus on sections in this order: (1) Coda for foundation, (2) Opening Statement for basic vocabulary, (3) Middle Section A for Em9/G and F#mb6b9/G colors, (4) Climax section last. Use sustain pedal generously to create the shimmering texture. The piece is about color and atmosphere, not technical difficulty—prioritize voicing beauty over speed.",
+      "rhythm_and_feel": "Tempo is approximately 120 BPM but feels much slower due to rubato and sustained chords. Harmonic rhythm varies from 0.5 to 5.5 seconds per chord, with longer durations on GM anchors and quicker changes during exploratory passages. The feel is free and improvisatory, like a meditation or prelude. Time signature is 4/4 but the phrasing is elastic, following the natural breath of the harmonic colors rather than strict meter. The piece has a floating, timeless quality.",
+      "chord_vocabulary": [
+        "GM (G Major)",
+        "G6",
+        "GMadd9",
+        "Gmaj7",
+        "Gmaj9",
+        "G5",
+        "Bmb6b9/G",
+        "Cmaj9/G",
+        "Cmaj13/G",
+        "Em9/G",
+        "G/E",
+        "Gmaj7/F#",
+        "F#mb6b9/G",
+        "G/B",
+        "G5/D",
+        "Gmaj9/D",
+        "Em/G",
+        "Csus2",
+        "Cmaj9#11/G",
+        "CMadd9/G",
+        "D#M7b6/G"
+      ],
+      "harmonic_highlights": "The piece uses G as a constant pedal point with no functional harmonic progression—instead, it explores vertical color through chord extensions. Key moments: (1) Bmb6b9/G as the primary borrowed color chord, appearing 20+ times to add darkness; (2) Cmaj9/G and Cmaj13/G functioning as IV over I, creating a suspended, modal quality; (3) The chromatic D#M7b6/G at 2:34 and Cmaj9#11/G at 2:25 as the most adventurous harmonic reaches; (4) The final resolution from GMadd9 to bare G5 power chords (3:31-3:37), stripping away all color to reveal the essential tonic. No traditional cadences exist—the piece breathes through textural density rather than harmonic motion."
+    },
+    "chordsPreview": [
+      {
+        "time": 2.5,
+        "chord": "G/E",
+        "duration": 0.5
+      },
+      {
+        "time": 3,
+        "chord": "D/G/E",
+        "duration": 1
+      },
+      {
+        "time": 4,
+        "chord": "G5",
+        "duration": 0.5
+      },
+      {
+        "time": 4.5,
+        "chord": "GM",
+        "duration": 0.5
+      },
+      {
+        "time": 5,
+        "chord": "G6",
+        "duration": 0.5
+      },
+      {
+        "time": 5.5,
+        "chord": "G6add9",
+        "duration": 0.5
+      },
+      {
+        "time": 6,
+        "chord": "GMadd9",
+        "duration": 2
+      },
+      {
+        "time": 8,
+        "chord": "GM",
+        "duration": 0.5
+      }
+    ],
+    "keyFromAnalysis": "F Major",
+    "tempoFromAnalysis": 120,
+    "hasChords": true,
+    "hasNotes": true
   }
 ]

@@ -33,7 +33,9 @@ export function AnalyzeButton({ recordingId, recordingTitle, audioUrl, onComplet
   const progress = analyzing ? inProgress.progress : 0;
 
   const handleAnalyze = useCallback(() => {
-    runAnalysis(recordingId, audioUrl, recordingTitle);
+    // Fire-and-forget — internal toast handles errors. Swallow the rejection
+    // so it doesn't surface as an unhandled promise warning.
+    runAnalysis(recordingId, audioUrl, recordingTitle).catch(() => {});
   }, [recordingId, audioUrl, recordingTitle]);
 
   if (analyzing) {
