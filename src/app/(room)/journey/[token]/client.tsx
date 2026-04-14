@@ -16,6 +16,7 @@ import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { prepareGhostFlashImages, clearGhostFlashImages } from "@/lib/journeys/ghost-flash-images";
+import { getTierProfile } from "@/lib/audio/device-tier";
 import { createClient } from "@/lib/supabase/client";
 import { MODES_3D, MODES_AI } from "@/lib/shaders";
 import type { Journey, JourneyFrame, JourneyPhaseId } from "@/lib/journeys/types";
@@ -272,7 +273,12 @@ export function SharedJourneyClient({
   }, [shaderMode]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // ─── Dual shader A/B crossfade ───
-  const dualShaderTarget = journeyFrame?.dualShaderMode && SHADERS[journeyFrame.dualShaderMode as VisualizerMode]
+  // Tier gate: low-tier devices skip the dual shader entirely (saves a full
+  // WebGL render pass per frame). The journey's intended dual still appears
+  // on high/medium tiers.
+  const dualShaderTarget = getTierProfile().enableDualShader
+    && journeyFrame?.dualShaderMode
+    && SHADERS[journeyFrame.dualShaderMode as VisualizerMode]
     ? journeyFrame.dualShaderMode : null;
 
   useEffect(() => {

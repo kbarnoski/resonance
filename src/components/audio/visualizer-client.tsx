@@ -10,6 +10,7 @@ import { JourneySelector } from "./journey-selector";
 import { JourneyCompositor } from "./journey-compositor";
 import { JourneyPhaseIndicator } from "./journey-phase-indicator";
 import { JourneyFeedback, resetPerfMonitor, flushFeedbackEntries, buildSnapshot, appendEntry, getSharedFpsRef, updateShaderUsageFromJourney } from "./journey-feedback";
+import { getTierProfile } from "@/lib/audio/device-tier";
 import { AdminPanel } from "./admin-panel";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { MODES_AI, AI_MODE_PROMPTS } from "@/lib/shaders";
@@ -994,7 +995,7 @@ export function VisualizerClient({
           controlsVisible={controlsVisible}
           configRef={configRef}
           journeyShaderMode={journeyFrame?.shaderMode}
-          journeyDualShaderMode={journeyFrame?.dualShaderMode}
+          journeyDualShaderMode={getTierProfile().enableDualShader ? journeyFrame?.dualShaderMode : null}
           journeyTertiaryShaderMode={journeyFrame?.tertiaryShaderMode}
           journeyPhase={journeyFrame?.phase}
           journeyVoice={journeyFrame?.voice}
@@ -1489,6 +1490,29 @@ export function VisualizerClient({
         title={shareSheet?.title ?? ""}
         text={shareSheet?.text ?? "Check out this experience on Resonance"}
       />
+
+      {/* Build identity footer — dim, bottom-left, fades with the controls.
+          Lets you and Johnny verify which build is actually running on a
+          given machine. /api/version returns the same data as JSON. */}
+      <div
+        style={{
+          position: "absolute",
+          left: "12px",
+          bottom: "8px",
+          zIndex: 5,
+          fontFamily: "var(--font-geist-mono)",
+          fontSize: "9px",
+          letterSpacing: "0.05em",
+          color: "rgba(255,255,255,0.18)",
+          textTransform: "uppercase",
+          pointerEvents: "none",
+          opacity: controlsVisible ? 1 : 0,
+          transition: "opacity 0.4s ease",
+          textShadow: "0 1px 2px rgba(0,0,0,0.6)",
+        }}
+      >
+        v0.1.0 · {process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev"}
+      </div>
     </div>
   );
 }

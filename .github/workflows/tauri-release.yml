@@ -1,0 +1,80 @@
+name: Tauri Release
+
+# Triggered by pushing a v* tag, e.g.:
+#   git tag v0.1.1 && git push --tags
+# Builds the macOS Tauri app for both Apple Silicon and Intel and attaches
+# the .dmg files to a GitHub Release named after the tag.
+#
+# NOTE: builds are UNSIGNED for now. macOS will quarantine downloaded .dmg
+# files until you right-click → Open the first time. To enable code signing
+# and notarization later, see .github/workflows/SIGNING.md.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+# Allow this workflow to write to GitHub Releases
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            label: "Apple Silicon"
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+            label: "Intel"
+
+    runs-on: ${{ matrix.platform }}
+    name: ${{ matrix.label }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+
+      - name: Cache Rust build artifacts
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+          key: ${{ matrix.target }}
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "Resonance ${{ github.ref_name }}"
+          releaseBody: |
+            Native macOS desktop build of Resonance ${{ github.ref_name }}.
+
+            **First-time install:** macOS will block this on first launch
+            because the build is unsigned. Right-click the app in
+            Applications and choose "Open" the first time, then "Open" again
+            in the dialog. After that it launches normally.
+
+            UI/journey content auto-updates from getresonance.vercel.app
+            inside the app — you only need to redownload when this native
+            shell changes (Rust audio engine, window APIs, Tauri version).
+          releaseDraft: false
+          prerelease: false
+          args: --target ${{ matrix.target }}

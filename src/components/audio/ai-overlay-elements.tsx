@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
+import { getTierProfile } from "@/lib/audio/device-tier";
 
 interface AiOverlayElementsProps {
   /** Current AI image URL from the main AiImageLayer */
@@ -10,16 +11,15 @@ interface AiOverlayElementsProps {
   journeyId?: string;
 }
 
-/** Max simultaneous active clones on screen */
-const MAX_CLONES = 5;
+/** Base max simultaneous active clones on screen — multiplied by tier.cloneScale. */
+const MAX_CLONES_BASE = 5;
 
-/** Probability of creating a clone when a new image arrives (0-1).
- *  1.0 = every scene spawns a clone so nothing ever feels like a static slideshow. */
-const CLONE_PROBABILITY = 1.0;
+/** Base probability of creating a clone when a new image arrives — multiplied by tier.cloneScale. */
+const CLONE_PROBABILITY_BASE = 1.0;
 
-/** Interval to spawn clones from the last image even without new images arriving.
- *  Shorter = more constant subtle motion between image generations. */
-const RESPAWN_INTERVAL = 3500;
+/** Base interval to spawn clones from the last image even without new images arriving.
+ *  On lower tiers this is divided by cloneScale (so 0.5 scale = 7000ms interval). */
+const RESPAWN_INTERVAL_BASE = 3500;
 
 let cloneIdCounter = 0;
 
@@ -60,7 +60,9 @@ export function AiOverlayElements({
     (src: string) => {
       const container = containerRef.current;
       if (!container) return;
-      if (activeClonesRef.current.length >= MAX_CLONES) return;
+      const tier = getTierProfile();
+      const maxClones = Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale));
+      if (activeClonesRef.current.length >= maxClones) return;
 
       const id = ++cloneIdCounter;
 
@@ -187,9 +189,10 @@ export function AiOverlayElements({
     imageCountRef.current++;
     lastImageUrlRef.current = imageUrl;
 
-    // Every new image spawns a clone — keeps constant motion so scenes never
-    // feel like a slideshow. Subtle by design: clones peak at 0.55 opacity.
-    if (Math.random() > CLONE_PROBABILITY) return;
+    // Every new image spawns a clone (tier-scaled) — keeps constant motion so
+    // scenes never feel like a slideshow. Subtle by design: clones peak at 0.55 opacity.
+    const tier = getTierProfile();
+    if (Math.random() > CLONE_PROBABILITY_BASE * tier.cloneScale) return;
 
     spawnClone(imageUrl);
   }, [imageUrl, enabled, spawnClone]);
@@ -201,12 +204,16 @@ export function AiOverlayElements({
       return;
     }
 
+    const tier = getTierProfile();
+    const tierMax = Math.max(1, Math.round(MAX_CLONES_BASE * tier.cloneScale));
+    // Lower tier = longer interval. Multiply, not divide, so weak hardware spawns less often.
+    const tierInterval = RESPAWN_INTERVAL_BASE / Math.max(0.2, tier.cloneScale);
     respawnTimerRef.current = setInterval(() => {
       const url = lastImageUrlRef.current;
       if (!url) return;
-      if (activeClonesRef.current.length >= MAX_CLONES) return;
+      if (activeClonesRef.current.length >= tierMax) return;
       spawnClone(url);
-    }, RESPAWN_INTERVAL);
+    }, tierInterval);
 
     return () => {
       if (respawnTimerRef.current) clearInterval(respawnTimerRef.current);

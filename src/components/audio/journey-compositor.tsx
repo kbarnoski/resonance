@@ -7,6 +7,7 @@ import { PostProcessingLayer } from "./post-processing-layer";
 import { FlashAngel } from "./flash-angel";
 import type { JourneyFrame } from "@/lib/journeys/types";
 import { getEffectScale, getBloomScale } from "@/lib/journeys/adaptive-engine";
+import { getTierProfile } from "@/lib/audio/device-tier";
 
 interface JourneyCompositorProps {
   frame: JourneyFrame | null;
@@ -59,10 +60,13 @@ export function JourneyCompositor({
   aiGenerating = true,
   promptSeed,
   journeyId,
-  enableBassFlash = false,
+  enableBassFlash: enableBassFlashProp = false,
   localImageUrls,
   children,
 }: JourneyCompositorProps) {
+  // Tier gate: bass flash is heavy (full-screen overlay + animated SVG +
+  // shader spike). Disable on low-tier devices regardless of journey opt-in.
+  const enableBassFlash = enableBassFlashProp && getTierProfile().enableBassFlash;
   const effectivePrompt = frame?.aiPrompt ?? aiPrompt ?? "";
   const effectiveDenoising = frame?.denoisingStrength ?? 0.5;
   const effectiveTargetFps = frame?.targetFps ?? 2;
@@ -129,6 +133,11 @@ export function JourneyCompositor({
   };
   const adaptiveScale = getEffectScale(adaptiveConditions);
   const adaptiveBloom = getBloomScale(adaptiveConditions);
+
+  // Device tier scaling — proactive degrade for weaker hardware. Combined
+  // with the reactive adaptive engine: tier sets the ceiling, adaptive
+  // pulls things down further if FPS still drops.
+  const tier = useMemo(() => getTierProfile(), []);
 
   // Per-type event impulse reactions
   const impulse = frame?.eventImpulse ?? 0;
@@ -365,10 +374,10 @@ export function JourneyCompositor({
         <PostProcessingLayer
           chromaticAberration={frame.chromaticAberration * adaptiveScale + eventReaction.chromatic}
           vignette={(frame.vignette * (0.3 + 0.7 * lightScale)) * adaptiveScale * Math.max(0, 1 - eventReaction.vignetteOpen)}
-          bloomIntensity={Math.min(1.5, (frame.bloomIntensity * (0.2 + 0.8 * lightScale)) * adaptiveScale * adaptiveBloom + eventReaction.bloom * 0.3 + approach * approach * 0.4)}
+          bloomIntensity={Math.min(1.5, (frame.bloomIntensity * (0.2 + 0.8 * lightScale)) * adaptiveScale * adaptiveBloom * tier.bloomScale + eventReaction.bloom * 0.3 + approach * approach * 0.4)}
           audioAmplitude={audioAmplitude}
           filmGrain={0}
-          particleDensity={(frame.particleDensity * (0.3 + 0.7 * lightScale)) * adaptiveScale}
+          particleDensity={(frame.particleDensity * (0.3 + 0.7 * lightScale)) * adaptiveScale * tier.particleScale}
           halation={Math.min(0.8, (frame.halation * lightScale) * adaptiveScale + eventReaction.halation)}
           palette={frame.palette}
         />
