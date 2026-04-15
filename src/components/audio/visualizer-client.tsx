@@ -772,9 +772,19 @@ export function VisualizerClient({
   const handleEndJourney = useCallback(() => {
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
-    useAudioStore.getState().stopJourney();
+    const state = useAudioStore.getState();
+    // If we're inside a custom path, "End" returns to the path screen
+    // rather than opening the generic journey picker.
+    const activePath = state.activePath;
+    if (activePath?.shareToken) {
+      state.stopJourney();
+      state.setActivePath(null);
+      router.push(`/path/${activePath.shareToken}?view=app`);
+      return;
+    }
+    state.stopJourney();
     setJourneyOpen(true);
-  }, []);
+  }, [router]);
 
   // Continue to next journey in the path
   // Looks like a UUID → custom journey in the DB. Built-in journey ids are
@@ -917,6 +927,19 @@ export function VisualizerClient({
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
     const state = useAudioStore.getState();
+    // If the journey was launched from a custom path (Welcome Home etc.),
+    // closing should return to that path's dedicated screen — not the
+    // generic library. Preserve the in-app ?view=app context so the back
+    // arrow stays visible.
+    const activePath = state.activePath;
+    if (activePath && state.activeJourney) {
+      state.stopJourney();
+      state.setActivePath(null);
+      if (activePath.shareToken) {
+        router.push(`/path/${activePath.shareToken}?view=app`);
+        return;
+      }
+    }
     if (state.activeJourney) {
       state.stopJourney();
       router.push("/library");
@@ -1151,9 +1174,22 @@ export function VisualizerClient({
           journeyBrowsing={journeyOpen}
           journeyName={activeJourney?.name ?? null}
           onStopJourney={() => {
-            if (useAudioStore.getState().activeJourney) {
-              // Stop journey and open journey picker
-              useAudioStore.getState().stopJourney();
+            const state = useAudioStore.getState();
+            if (state.activeJourney) {
+              // If we're inside a user path (Welcome Home, etc.) return to
+              // the dedicated path screen instead of opening the journey
+              // picker — that's the screen they launched from.
+              const activePath = state.activePath;
+              if (activePath?.shareToken) {
+                state.stopJourney();
+                state.setActivePath(null);
+                setJourneyCompleted(false);
+                completedJourneyRef.current = null;
+                router.push(`/path/${activePath.shareToken}?view=app`);
+                return;
+              }
+              // Default: stop journey and open journey picker
+              state.stopJourney();
               setJourneyOpen(true);
               setJourneyCompleted(false);
               completedJourneyRef.current = null;
