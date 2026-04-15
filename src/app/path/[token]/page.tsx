@@ -47,19 +47,24 @@ interface JourneyRow {
 
 export default async function SharedPathPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ token: string }>;
+  searchParams: Promise<{ view?: string }>;
 }) {
   const { token } = await params;
+  const { view } = await searchParams;
   const supabase = createAnonClient();
 
-  // Detect signed-in viewer — if they're in Resonance, track clicks route
-  // into The Room (native playback) and the back button is shown. Anonymous
-  // viewers get the pure shared-album experience: no back button, tracks go
-  // to the shared /journey/[share] client.
+  // Two distinct contexts for the same route:
+  //   • In-app (view=app + signed in): shows back arrow, plays tracks
+  //     natively in The Room with full path context.
+  //   • Shared landing (everything else — anon visitors, signed-in users
+  //     who opened the share link directly from email/DM): no back arrow,
+  //     tracks play via the shared /journey/[share] client.
   const authClient = await createServerClient();
   const { data: { user } } = await authClient.auth.getUser();
-  const isSignedIn = !!user;
+  const isInAppContext = view === "app" && !!user;
 
   const { data: path, error: pathErr } = await supabase
     .from("journey_paths")
@@ -95,11 +100,12 @@ export default async function SharedPathPage({
       className="min-h-dvh w-full overflow-y-auto"
       style={{ backgroundColor: "#000", color: "#fff" }}
     >
-      {/* Top bar — back link only visible when the viewer is signed in to
-          Resonance. Shared (anonymous) visitors see no back link so the page
-          feels like a standalone album landing. */}
+      {/* Top bar — back link only in the in-app context. Shared landings
+          (anonymous visitors AND signed-in users opening the share link
+          directly) render without it so the page feels like a standalone
+          album landing. */}
       <div className="mx-auto max-w-2xl px-6 pt-6 flex items-center justify-between">
-        {isSignedIn ? (
+        {isInAppContext ? (
           <Link
             href="/room"
             className="inline-flex items-center gap-1.5 text-white/40 hover:text-white/80 transition-colors"
@@ -190,10 +196,10 @@ export default async function SharedPathPage({
         <div className="space-y-2">
           {journeys.map((j, idx) => {
             const num = String(idx + 1).padStart(2, "0");
-            // Signed-in viewers play tracks natively in The Room with full
-            // path context so the end overlay shows Continue Path / progress.
-            // Anonymous viewers walk the album via the shared journey client.
-            const href = isSignedIn
+            // In-app context plays tracks natively in The Room. Shared
+            // landing routes through the public /journey/[share] client so
+            // the same share URL works for anyone regardless of auth.
+            const href = isInAppContext
               ? `/room?customJourneyId=${j.id}&pathToken=${token}`
               : j.share_token
                 ? `/journey/${j.share_token}?pathToken=${token}`

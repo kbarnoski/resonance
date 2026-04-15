@@ -693,7 +693,11 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     }
                   };
                   const openPath = () => {
-                    if (path.shareToken) router.push(`/path/${path.shareToken}`);
+                    // `view=app` tags the navigation as originating from
+                    // inside Resonance so /path/[token] renders the in-app
+                    // context (back button, native track playback). Without
+                    // this param the page assumes it's a shared landing.
+                    if (path.shareToken) router.push(`/path/${path.shareToken}?view=app`);
                   };
                   return (
                     <div
