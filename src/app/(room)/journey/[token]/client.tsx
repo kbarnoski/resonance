@@ -919,28 +919,6 @@ export function SharedJourneyClient({
         onClick={() => setStarted(true)}
       >
         <style>{`@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }`}</style>
-        {/* Back-to-path text link — in-flow, top-left of the pre-start
-            screen. Only present when launched from a shared path so the
-            listener can exit before starting. */}
-        {pathContext && (
-          // eslint-disable-next-line @next/next/no-html-link-for-pages
-          <a
-            href={`/path/${pathContext.pathToken}`}
-            onClick={(e) => e.stopPropagation()}
-            className="absolute text-white/35 hover:text-white/80 transition-colors"
-            style={{
-              top: "calc(env(safe-area-inset-top, 0px) + 18px)",
-              left: "24px",
-              fontSize: "0.68rem",
-              fontFamily: "var(--font-geist-mono)",
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
-              zIndex: 20,
-            }}
-          >
-            ← {pathContext.pathName}
-          </a>
-        )}
         <div
           style={{
             display: "flex",
@@ -1082,6 +1060,28 @@ export function SharedJourneyClient({
           >
             Tap anywhere to begin
           </div>
+
+          {/* Back to path — sits directly under the pre-start controls
+              when launched from a shared path so the listener can bail
+              without hunting for a top-corner button. */}
+          {pathContext && (
+            // eslint-disable-next-line @next/next/no-html-link-for-pages
+            <a
+              href={`/path/${pathContext.pathToken}`}
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white/45 hover:text-white/90 transition-colors"
+              style={{
+                fontSize: "0.68rem",
+                fontFamily: "var(--font-geist-mono)",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                border: "1px solid rgba(255,255,255,0.12)",
+                marginTop: "8px",
+              }}
+            >
+              ← {pathContext.pathName}
+            </a>
+          )}
         </div>
       </div>
     );
@@ -1383,11 +1383,12 @@ export function SharedJourneyClient({
               // eslint-disable-next-line @next/next/no-html-link-for-pages
               <a
                 href={`/path/${pathContext.pathToken}`}
-                className="flex items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
-                style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
+                style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
                 title={`Close — back to ${pathContext.pathName}`}
               >
                 <X className="h-3.5 w-3.5" />
+                Close
               </a>
             )}
           </div>
@@ -1427,10 +1428,12 @@ export function SharedJourneyClient({
                 // eslint-disable-next-line @next/next/no-html-link-for-pages
                 <a
                   href={`/path/${pathContext.pathToken}`}
-                  className="min-w-[36px] min-h-[32px] flex items-center justify-center rounded-lg text-white/35 hover:text-white/65 transition-colors duration-75"
+                  className="min-h-[32px] flex items-center gap-1 px-2 rounded-lg text-white/35 hover:text-white/65 transition-colors duration-75"
+                  style={{ fontSize: "0.62rem", fontFamily: "var(--font-geist-mono)" }}
                   title={`Close — back to ${pathContext.pathName}`}
                 >
                   <X className="h-3.5 w-3.5" />
+                  Close
                 </a>
               )}
             </div>
