@@ -749,30 +749,6 @@ export function VisualizerClient({
     await loadLibraryQueue(true);
   }, [loadLibraryQueue]);
 
-  // Replay the current journey from the beginning
-  const handleReplayJourney = useCallback(() => {
-    const journey = useAudioStore.getState().activeJourney;
-    if (!journey) return;
-    ensureResumed(); // Unlock audio on mobile — must be in gesture context
-    // Pre-arm the completion guard — blocks the completion detector from
-    // firing based on stale currentTime for the first 2.5s of replay.
-    replayGuardUntilRef.current = performance.now() + 2500;
-    // Force fresh DOM for overlays so CSS animations restart cleanly
-    setOverlayRemountKey((k) => k + 1);
-    setJourneyCompleted(false);
-    completedJourneyRef.current = null;
-    // Synchronously reset currentTime in the store so the completion detector
-    // doesn't see the stale end-of-track value between stop and start.
-    useAudioStore.getState().setCurrentTime(0);
-    // Seek to start and replay
-    seek(0);
-    useAudioStore.getState().stopJourney();
-    // Restart after a tick so the engine resets
-    setTimeout(() => {
-      useAudioStore.getState().startJourney(journey.id);
-    }, 50);
-  }, [seek]);
-
   // End the journey after completion — return to journey picker
   const handleEndJourney = useCallback(() => {
     completedJourneyRef.current = null;
@@ -806,6 +782,11 @@ export function VisualizerClient({
     ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
+    // Arm the replay guard so the completion detector can't fire from
+    // a stale currentTime snapshot during the stop→start transition.
+    replayGuardUntilRef.current = performance.now() + 2500;
+    setOverlayRemountKey((k) => k + 1);
+    useAudioStore.getState().setCurrentTime(0);
     seek(0);
     useAudioStore.getState().stopJourney();
 
@@ -870,6 +851,38 @@ export function VisualizerClient({
       console.warn("[path] startCustomById failed:", err);
     }
   }, [seek]);
+
+  // Replay the current journey from the beginning.
+  // Must be defined AFTER startCustomById — custom-journey replays route
+  // through startCustomById since startJourney() only knows built-in slugs.
+  const handleReplayJourney = useCallback(() => {
+    const journey = useAudioStore.getState().activeJourney;
+    if (!journey) return;
+    ensureResumed(); // Unlock audio on mobile — must be in gesture context
+    // Pre-arm the completion guard — blocks the completion detector from
+    // firing based on stale currentTime for the first 2.5s of replay.
+    replayGuardUntilRef.current = performance.now() + 2500;
+    // Force fresh DOM for overlays so CSS animations restart cleanly
+    setOverlayRemountKey((k) => k + 1);
+    setJourneyCompleted(false);
+    completedJourneyRef.current = null;
+    // Synchronously reset currentTime so the completion detector doesn't
+    // see the stale end-of-track value between stop and start.
+    useAudioStore.getState().setCurrentTime(0);
+    // Custom journeys (Welcome Home etc.) have UUID ids — startJourney only
+    // knows built-in string slugs, so we have to route through the custom
+    // path helper for those. Without this branch startJourney silently
+    // no-ops and the end overlay leaks into the restart.
+    if (isUuid(journey.id)) {
+      startCustomById(journey.id);
+      return;
+    }
+    seek(0);
+    useAudioStore.getState().stopJourney();
+    setTimeout(() => {
+      useAudioStore.getState().startJourney(journey.id);
+    }, 50);
+  }, [seek, startCustomById]);
 
   const handleContinuePath = useCallback((nextJourneyId: string) => {
     if (isUuid(nextJourneyId)) {
@@ -1576,22 +1589,37 @@ export function VisualizerClient({
                   >
                     {path.name}{justCompletedPath ? " — complete" : ""}
                   </span>
-                  {/* Progress dots */}
-                  <div className="flex items-center gap-1.5" style={{ position: "relative" }}>
-                    {path.journeyIds.map((jid: string) => (
-                      <div
-                        key={jid}
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          borderRadius: "50%",
-                          backgroundColor: completedIds.includes(jid)
-                            ? path.palette.accent
-                            : "rgba(255,255,255,0.2)",
-                          transition: "background-color 0.3s ease",
-                        }}
-                      />
-                    ))}
+                  {/* Progress dots — hover for name, click to jump to any
+                      journey in the path. Works for both built-in and
+                      custom paths. */}
+                  <div className="flex items-center gap-1.5 flex-wrap" style={{ position: "relative" }}>
+                    {path.journeyIds.map((jid: string, i: number) => {
+                      const done = completedIds.includes(jid);
+                      // For built-in journeys we can resolve a human-readable
+                      // name. Custom (UUID) journeys fall back to the index.
+                      const builtin = getJourney(jid);
+                      const label = builtin?.name ?? `Step ${i + 1}`;
+                      return (
+                        <button
+                          key={jid}
+                          type="button"
+                          onClick={() => handleContinuePath(jid)}
+                          title={`${String(i + 1).padStart(2, "0")} · ${label}`}
+                          aria-label={label}
+                          style={{
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                            backgroundColor: done ? path.palette.accent : "rgba(255,255,255,0.2)",
+                            boxShadow: done ? `0 0 6px ${path.palette.glow}55` : "none",
+                            border: "none",
+                            padding: 0,
+                            cursor: "pointer",
+                            transition: "all 0.2s ease",
+                          }}
+                        />
+                      );
+                    })}
                     <span
                       style={{
                         fontFamily: "var(--font-geist-mono)",

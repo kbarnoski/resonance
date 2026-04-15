@@ -210,6 +210,7 @@ export default async function SharedPathPage({
           isInAppContext={isInAppContext}
           pathToken={token}
           accent={accent}
+          glow={glow}
         />
 
         {/* Culmination — locked until all journeys in the path are complete */}

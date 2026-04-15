@@ -1583,18 +1583,41 @@ export function SharedJourneyClient({
                 >
                   {pathContext.pathName}
                 </span>
-                <div className="flex items-center gap-1.5">
-                  {pathContext.steps.map((s, i) => (
-                    <div
-                      key={s.journeyId}
-                      style={{
-                        width: "6px",
-                        height: "6px",
-                        borderRadius: "50%",
-                        backgroundColor: i <= pathContext.currentIndex ? pathContext.accent : "rgba(255,255,255,0.2)",
-                      }}
-                    />
-                  ))}
+                <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                  {pathContext.steps.map((s, i) => {
+                    const done = i <= pathContext.currentIndex;
+                    const linkable = !!s.shareToken;
+                    const href = linkable ? `/journey/${s.shareToken}?pathToken=${pathContext.pathToken}` : undefined;
+                    const dot = (
+                      <div
+                        style={{
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          backgroundColor: done ? pathContext.accent : "rgba(255,255,255,0.2)",
+                          boxShadow: done ? `0 0 6px ${pathContext.glow}55` : "none",
+                          cursor: linkable ? "pointer" : "default",
+                          transition: "all 0.2s ease",
+                        }}
+                      />
+                    );
+                    return href ? (
+                      // eslint-disable-next-line @next/next/no-html-link-for-pages
+                      <a
+                        key={s.journeyId}
+                        href={href}
+                        title={`${String(i + 1).padStart(2, "0")} · ${s.name}`}
+                        aria-label={s.name}
+                        className="inline-flex"
+                      >
+                        {dot}
+                      </a>
+                    ) : (
+                      <div key={s.journeyId} title={s.name}>
+                        {dot}
+                      </div>
+                    );
+                  })}
                   <span
                     style={{
                       fontFamily: "var(--font-geist-mono)",
