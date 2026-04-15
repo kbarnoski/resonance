@@ -43,10 +43,13 @@ export async function generateMetadata({
 
 export default async function SharedJourneyPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ token: string }>;
+  searchParams: Promise<{ pathToken?: string }>;
 }) {
   const { token } = await params;
+  const { pathToken } = await searchParams;
   const supabase = createAnonClient();
 
   const { data: journeyRow } = await supabase
@@ -135,6 +138,49 @@ export default async function SharedJourneyPage({
         dedication: journeyRow.dedication ?? null,
       };
 
+  // If the viewer came from a shared path (?pathToken=...), fetch the
+  // path so the shared client can render Continue Path + Back to Path
+  // buttons in the end overlay, matching the in-app experience.
+  let pathContext: {
+    pathToken: string;
+    pathName: string;
+    accent: string;
+    glow: string;
+    steps: Array<{ journeyId: string; shareToken: string | null; name: string }>;
+    currentIndex: number;
+  } | null = null;
+  if (pathToken) {
+    const { data: pRow } = await supabase
+      .from("journey_paths")
+      .select("name, journey_ids, accent_color, glow_color")
+      .eq("share_token", pathToken)
+      .single();
+    if (pRow && Array.isArray(pRow.journey_ids)) {
+      const { data: stepJourneys } = await supabase
+        .from("journeys")
+        .select("id, name, share_token")
+        .in("id", pRow.journey_ids as string[]);
+      const byId = new Map<string, { id: string; name: string; share_token: string | null }>();
+      for (const j of stepJourneys ?? []) byId.set(j.id as string, j as { id: string; name: string; share_token: string | null });
+      const steps = (pRow.journey_ids as string[])
+        .map((jid) => {
+          const row = byId.get(jid);
+          if (!row) return null;
+          return { journeyId: row.id, shareToken: row.share_token ?? null, name: row.name };
+        })
+        .filter((s): s is { journeyId: string; shareToken: string | null; name: string } => !!s);
+      const currentIndex = steps.findIndex((s) => s.journeyId === journeyRow.id);
+      pathContext = {
+        pathToken,
+        pathName: (pRow.name as string) ?? "Path",
+        accent: (pRow.accent_color as string) ?? "#d0a070",
+        glow: (pRow.glow_color as string) ?? "#e0b080",
+        steps,
+        currentIndex,
+      };
+    }
+  }
+
   return (
     <SharedJourneyClient
       journey={journey}
@@ -146,6 +192,7 @@ export default async function SharedJourneyPage({
       analysisEvents={analysisEvents}
       cueMarkers={cueMarkers}
       recordingDuration={recordingDuration}
+      pathContext={pathContext}
     />
   );
 }

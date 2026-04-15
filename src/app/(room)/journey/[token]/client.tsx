@@ -60,6 +60,18 @@ interface SharedJourneyClientProps {
   analysisEvents: { time: number; type: string; intensity: number }[];
   cueMarkers: { time: number; label: string }[];
   recordingDuration: number;
+  /** Optional path context — set when the viewer arrived from a shared
+   *  /path/[token] landing. Drives the Continue Path + Return to Path
+   *  buttons in the end overlay so shared viewers get the same album-
+   *  walkthrough flow as in-app users. */
+  pathContext?: {
+    pathToken: string;
+    pathName: string;
+    accent: string;
+    glow: string;
+    steps: Array<{ journeyId: string; shareToken: string | null; name: string }>;
+    currentIndex: number;
+  } | null;
 }
 
 export function SharedJourneyClient({
@@ -72,6 +84,7 @@ export function SharedJourneyClient({
   analysisEvents,
   cueMarkers,
   recordingDuration,
+  pathContext = null,
 }: SharedJourneyClientProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const ctxRef = useRef<AudioContext | null>(null);
@@ -921,13 +934,15 @@ export function SharedJourneyClient({
               style={{
                 fontSize: "0.6rem",
                 fontFamily: "var(--font-geist-mono)",
-                color: "rgba(255, 255, 255, 0.3)",
+                color: pathContext ? pathContext.accent : "rgba(255, 255, 255, 0.3)",
                 letterSpacing: "0.14em",
                 textTransform: "uppercase",
                 marginBottom: "14px",
               }}
             >
-              Shared Journey
+              {pathContext && pathContext.currentIndex >= 0
+                ? `${pathContext.pathName} · ${pathContext.currentIndex + 1} of ${pathContext.steps.length}`
+                : "Shared Journey"}
             </div>
             <div
               style={{
@@ -1505,25 +1520,112 @@ export function SharedJourneyClient({
             {/* Credits */}
             {creditsBlock}
 
+            {/* Path progress — only rendered when viewing as part of a
+                shared path so the listener sees where they are in the album. */}
+            {pathContext && pathContext.currentIndex >= 0 && (
+              <div className="flex flex-col items-center gap-2" style={{ marginTop: "0.25rem" }}>
+                <div style={{ width: "3rem", height: "1px", background: "rgba(255,255,255,0.12)" }} />
+                <span
+                  style={{
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontWeight: 300,
+                    fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)",
+                    letterSpacing: "0.03em",
+                    color: pathContext.accent,
+                  }}
+                >
+                  {pathContext.pathName}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  {pathContext.steps.map((s, i) => (
+                    <div
+                      key={s.journeyId}
+                      style={{
+                        width: "6px",
+                        height: "6px",
+                        borderRadius: "50%",
+                        backgroundColor: i <= pathContext.currentIndex ? pathContext.accent : "rgba(255,255,255,0.2)",
+                      }}
+                    />
+                  ))}
+                  <span
+                    style={{
+                      fontFamily: "var(--font-geist-mono)",
+                      fontSize: "0.65rem",
+                      color: "rgba(255,255,255,0.35)",
+                      marginLeft: "0.5rem",
+                    }}
+                  >
+                    {pathContext.currentIndex + 1} of {pathContext.steps.length}
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Divider */}
             <div style={{ width: "3rem", height: "1px", background: "rgba(255,255,255,0.12)" }} />
 
-            {/* CTA */}
-            <span
-              style={{
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontStyle: "italic",
-                fontWeight: 300,
-                fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
-                color: "rgba(255,255,255,0.55)",
-                textAlign: "center",
-              }}
-            >
-              Create your own journeys with your music.
-            </span>
+            {/* CTA — hidden when in a path since the buttons below do the
+                same job (continue album / return to cover). */}
+            {!pathContext && (
+              <span
+                style={{
+                  fontFamily: "'Cormorant Garamond', Georgia, serif",
+                  fontStyle: "italic",
+                  fontWeight: 300,
+                  fontSize: "clamp(0.9rem, 2vw, 1.1rem)",
+                  color: "rgba(255,255,255,0.55)",
+                  textAlign: "center",
+                }}
+              >
+                Create your own journeys with your music.
+              </span>
+            )}
 
             {/* Action buttons */}
             <div className="flex items-center gap-3 flex-wrap justify-center" style={{ marginTop: "0.25rem" }}>
+              {/* Continue Path — only when part of a shared path and a
+                  next step exists. Reloads the page to the next journey's
+                  share token while preserving the pathToken so the
+                  breadcrumb keeps working. */}
+              {pathContext && pathContext.currentIndex >= 0 && pathContext.currentIndex < pathContext.steps.length - 1 && (() => {
+                const next = pathContext.steps[pathContext.currentIndex + 1];
+                if (!next.shareToken) return null;
+                return (
+                  <a
+                    href={`/journey/${next.shareToken}?pathToken=${pathContext.pathToken}`}
+                    className="px-5 py-2.5 rounded-lg text-white/90 hover:text-white transition-colors duration-150"
+                    style={{
+                      border: `1px solid ${pathContext.accent}`,
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                      textDecoration: "none",
+                      background: `${pathContext.accent}15`,
+                    }}
+                  >
+                    Continue Path →
+                  </a>
+                );
+              })()}
+
+              {/* Return to Welcome Home landing */}
+              {pathContext && (
+                <a
+                  href={`/path/${pathContext.pathToken}`}
+                  className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                  style={{
+                    border: "1px solid rgba(255,255,255,0.2)",
+                    fontSize: "0.8rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.02em",
+                    textDecoration: "none",
+                  }}
+                >
+                  ← {pathContext.pathName}
+                </a>
+              )}
+
               {!isAuthenticated ? (
                 // eslint-disable-next-line @next/next/no-html-link-for-pages
                 <a
