@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resonance → Y Combinator Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root { --bg: #09090b; --card: #111113; --border: #1e1e22; --purple: #7c5ae0; --glow: rgba(124,90,224,0.12); --white: #fafafa; --dim: #888; --dimmer: #555; }
+  body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--white); line-height: 1.6; }
+  .container { max-width: 860px; margin: 0 auto; padding: 80px 24px 120px; }
+  h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 8px; }
+  h1 span { color: var(--purple); }
+  .subtitle { font-size: 1.1rem; color: var(--dim); margin-bottom: 60px; }
+  .phase { margin-bottom: 64px; }
+  .phase-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--purple); letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px; }
+  h2 { font-size: 1.75rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 24px; }
+  h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 8px; }
+  p, li { font-size: 0.95rem; color: var(--dim); line-height: 1.7; }
+  p { margin-bottom: 16px; }
+  ul { list-style: none; padding: 0; }
+  ul li { padding-left: 16px; position: relative; margin-bottom: 8px; }
+  ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; transition: border-color 0.2s; }
+  .card:hover { border-color: rgba(124,90,224,0.3); }
+  .card h3 { margin-bottom: 6px; }
+  .card p { margin-bottom: 0; font-size: 0.88rem; }
+  blockquote { border-left: 3px solid var(--purple); padding: 16px 20px; background: var(--glow); border-radius: 0 8px 8px 0; margin: 16px 0 24px; }
+  blockquote p { color: var(--white); font-size: 0.95rem; margin: 0; font-style: italic; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } h1 { font-size: 2rem; } }
+  .checklist { margin: 24px 0; }
+  .checklist li { padding: 12px 16px 12px 44px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: all 0.15s; position: relative; }
+  .checklist li::before { content: ''; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; border-radius: 4px; border: 2px solid var(--dimmer); background: transparent; transition: all 0.15s; }
+  .checklist li.done { opacity: 0.5; text-decoration: line-through; }
+  .checklist li.done::before { background: var(--purple); border-color: var(--purple); }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0 24px; }
+  th, td { text-align: left; padding: 12px 16px; font-size: 0.88rem; border-bottom: 1px solid var(--border); }
+  th { color: var(--dimmer); font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  td:first-child { color: var(--white); font-weight: 600; white-space: nowrap; }
+  .timeline { margin: 24px 0; }
+  .timeline-row { display: flex; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .timeline-week { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--purple); letter-spacing: 0.08em; min-width: 100px; padding-top: 2px; }
+  .timeline-what { font-size: 0.9rem; color: var(--dim); }
+  .demo-steps { counter-reset: step; margin: 16px 0; }
+  .demo-steps li { counter-increment: step; padding-left: 36px; position: relative; padding-bottom: 12px; }
+  .demo-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 24px; height: 24px; background: rgba(124,90,224,0.15); border: 1px solid rgba(124,90,224,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--purple); }
+  .pushback-table td:first-child { color: var(--dim); font-weight: 400; font-style: italic; }
+  .pushback-table td:last-child { color: var(--white); }
+  .verdict { margin-top: 48px; padding: 32px; border: 1px solid rgba(124,90,224,0.25); border-radius: 16px; background: linear-gradient(135deg, rgba(124,90,224,0.08), transparent); text-align: center; }
+  .verdict h2 { margin-bottom: 12px; }
+  .verdict p { max-width: 600px; margin: 0 auto; }
+  .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(9,9,11,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
+  .nav-brand { font-weight: 800; font-size: 0.85rem; }
+  .nav a { font-size: 0.72rem; color: var(--dimmer); text-decoration: none; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; transition: color 0.15s; }
+  .nav a:hover { color: var(--purple); }
+  .progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: var(--purple); z-index: 60; transition: width 0.1s; width: 0%; }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<nav class="nav">
+  <span class="nav-brand">Resonance</span>
+  <a href="#phase1">Apply</a>
+  <a href="#phase2">Interview</a>
+  <a href="#phase3">Traction</a>
+  <a href="#phase4">Narrative</a>
+  <a href="#checklist">Checklist</a>
+</nav>
+
+<div class="container">
+
+<h1>Resonance → <span>YC</span></h1>
+<p class="subtitle">A complete plan for getting funded through Y Combinator.</p>
+
+<!-- Assessment -->
+<div class="card" style="border-color: rgba(124,90,224,0.3); background: linear-gradient(135deg, rgba(124,90,224,0.06), var(--card));">
+  <h3 style="color: var(--purple);">Do you have enough?</h3>
+  <p>Yes. YC has funded teams with just a landing page. You have a working product with 200+ shaders, AI-generated journeys, a shareable 13-track album experience, and a desktop app. That puts you ahead of 90% of applicants. Your biggest edge: you're the user.</p>
+</div>
+
+<!-- Phase 1 -->
+<div class="phase" id="phase1">
+  <div class="phase-label">Phase 1</div>
+  <h2>Application (This Week)</h2>
+
+  <h3>Apply at ycombinator.com/apply</h3>
+  <p>Applications are rolling — earlier is better. Apply for the next open batch.</p>
+
+  <h3>The Application Answers</h3>
+
+  <div class="card">
+    <h3>"What does your company do?"</h3>
+    <blockquote><p>Resonance lets musicians upload an album, AI builds an immersive visual experience for each track, and they share the whole thing with a single link.</p></blockquote>
+  </div>
+
+  <div class="card">
+    <h3>"Why did you pick this idea?"</h3>
+    <blockquote><p>I'm a pianist who just released a solo album (Welcome Home). I wanted to share it as more than an audio file. Nothing existed that could turn music into a shareable visual experience, so I built it.</p></blockquote>
+  </div>
+
+  <div class="card">
+    <h3>"What's your progress?"</h3>
+    <blockquote><p>Shipped v1.2 in 6 weeks. 200+ WebGL shaders, AI journey generation, shareable album paths, per-device quality tiers, desktop app. Welcome Home is live as a 13-track shareable path — anyone can walk through it from a single URL.</p></blockquote>
+  </div>
+
+  <div class="card">
+    <h3>"How will you make money?"</h3>
+    <blockquote><p>Three lines: $12/mo pro musician tier, $1.5k/yr installation licenses for galleries/venues, B2B education seats for conservatories. Free tier caps at 10 recordings.</p></blockquote>
+  </div>
+
+  <div class="card">
+    <h3>"How many users?"</h3>
+    <blockquote><p>Pre-launch, 2 active users, but the product is fully functional and the demo speaks for itself. YC respects honesty over inflated numbers.</p></blockquote>
+  </div>
+
+  <h3>The Demo Video (1 minute)</h3>
+  <p>This is your killer asset. Record this exact flow:</p>
+  <ul class="demo-steps">
+    <li>Open the Welcome Home share link on your phone (5 sec)</li>
+    <li>Tap a track — show the journey with shaders + AI imagery (15 sec)</li>
+    <li>Show the end overlay with progress dots + Continue Path (5 sec)</li>
+    <li>Quick cut to Studio — show analysis with chords/key (5 sec)</li>
+    <li>Show journey creation — type a story, AI builds it (15 sec)</li>
+    <li>End on the Welcome Home path screen (5 sec)</li>
+    <li>Voice over: "One link. Thirteen tracks. Built in 6 weeks by one person." (10 sec)</li>
+  </ul>
+  <p>Record with QuickTime screen recording + voiceover. Keep it raw — YC prefers authentic over polished.</p>
+</div>
+
+<!-- Phase 2 -->
+<div class="phase" id="phase2">
+  <div class="phase-label">Phase 2</div>
+  <h2>Prepare for the Interview</h2>
+
+  <p>10-minute Zoom with 2-3 YC partners: 1 min intro, 3 min demo, 6 min rapid-fire.</p>
+
+  <h3>Questions They WILL Ask</h3>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>"Who are your users?"</h3>
+      <p>Musicians and composers who record ideas and want to understand + share them. Starting with solo instrumentalists.</p>
+    </div>
+    <div class="card">
+      <h3>"How big is the market?"</h3>
+      <p>50M+ amateur musicians record ideas monthly. $8B in music tools. Zero products in "music as shareable experience."</p>
+    </div>
+    <div class="card">
+      <h3>"Why hasn't this been built?"</h3>
+      <p>Three things just converged: AI imagery at $0.003/frame, client-side analysis via TF.js, share-link culture.</p>
+    </div>
+    <div class="card">
+      <h3>"Unfair advantage?"</h3>
+      <p>I'm the user. Built the entire product in 6 weeks with Claude as my engineering partner. Proof that AI-augmented solo founders can ship at startup speed.</p>
+    </div>
+    <div class="card">
+      <h3>"Beyond musicians?"</h3>
+      <p>Meditation/wellness, art installations, education, sound designers. But musicians first.</p>
+    </div>
+    <div class="card">
+      <h3>"Biggest risk?"</h3>
+      <p>Retention. The social layer (discovery, profiles) is what makes it sticky. That's the next build.</p>
+    </div>
+  </div>
+
+  <h3>Live Demo Prep</h3>
+  <ul>
+    <li>Welcome Home share link ready on your phone</li>
+    <li>Resonance open on laptop showing The Room</li>
+    <li>Ghost journey queued (most visually impressive)</li>
+    <li>Test your internet — the demo MUST work live</li>
+  </ul>
+</div>
+
+<!-- Phase 3 -->
+<div class="phase" id="phase3">
+  <div class="phase-label">Phase 3</div>
+  <h2>Pre-Batch Traction (Start Now)</h2>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Get 10 Real Users</h3>
+      <p>Post in r/piano, r/musictheory. Share Welcome Home on Twitter/X. DM 10 musician friends. Ask Johnny to share his experience.</p>
+    </div>
+    <div class="card">
+      <h3>Get One Installation Pilot</h3>
+      <p>Reach out to 3 galleries, yoga studios, or hotel lobbies. Offer a free 30-day pilot. One signed pilot = massive YC signal.</p>
+    </div>
+  </div>
+
+  <h3>Metrics to Track</h3>
+  <ul>
+    <li>Unique visitors to Welcome Home share link</li>
+    <li>Journey completion rate</li>
+    <li>Upload count from non-Karel users</li>
+    <li>Time spent in The Room per session</li>
+    <li>Share link forwards (viral coefficient)</li>
+  </ul>
+</div>
+
+<!-- Phase 4 -->
+<div class="phase" id="phase4">
+  <div class="phase-label">Phase 4</div>
+  <h2>The Narrative</h2>
+
+  <blockquote><p>"I'm a pianist who released an album and realized there's no way to share music as an experience. So I built one — in 6 weeks, as a solo founder, using AI as my engineering partner. The product works. Welcome Home is live. Now I need to turn this into a platform."</p></blockquote>
+
+  <h3>Key Narrative Beats</h3>
+  <ul>
+    <li><strong>Founder-market fit</strong> — You ARE the user. You built this for yourself first.</li>
+    <li><strong>Speed</strong> — 6 weeks from idea to v1.2 with shareable album paths.</li>
+    <li><strong>AI-native development</strong> — Proof that a designer + Claude can ship a full-stack product.</li>
+    <li><strong>The demo sells itself</strong> — Welcome Home is a 60-second pitch that doesn't need slides.</li>
+  </ul>
+
+  <h3>Handling Pushback</h3>
+  <table class="pushback-table">
+    <tr><td>"This is a toy"</td><td>Welcome Home has 13 tracks, progress tracking, a culmination journey, works on any device. The installation license is a real revenue line.</td></tr>
+    <tr><td>"Solo founder risk"</td><td>Shipped v1.0 through v1.2 in 6 weeks alone. The AI copilot model means I move at team speed.</td></tr>
+    <tr><td>"No users"</td><td>Pre-launch. But send the share link to anyone right now — full experience in 60 seconds. That IS the distribution model.</td></tr>
+    <tr><td>"Musicians don't pay"</td><td>Musicians pay $10-30/mo for Splice, iReal Pro, Fender Play. Resonance fills the gap between recording and sharing.</td></tr>
+  </table>
+</div>
+
+<!-- Checklist -->
+<div class="phase" id="checklist">
+  <div class="phase-label">Phase 5</div>
+  <h2>Materials Checklist</h2>
+  <ul class="checklist">
+    <li onclick="this.classList.toggle('done')">YC application filled out (ycombinator.com/apply)</li>
+    <li onclick="this.classList.toggle('done')">1-minute demo video uploaded</li>
+    <li onclick="this.classList.toggle('done')">Welcome Home share link working + tested on mobile</li>
+    <li onclick="this.classList.toggle('done')">Pitch deck PDF ready</li>
+    <li onclick="this.classList.toggle('done')">LinkedIn updated with Resonance as current project</li>
+    <li onclick="this.classList.toggle('done')">Landing page with "Try Welcome Home" CTA</li>
+    <li onclick="this.classList.toggle('done')">Twitter/X post about Resonance with share link</li>
+    <li onclick="this.classList.toggle('done')">3-5 beta users who have uploaded their own tracks</li>
+    <li onclick="this.classList.toggle('done')">One installation pilot conversation started</li>
+  </ul>
+</div>
+
+<!-- Timeline -->
+<div class="phase">
+  <div class="phase-label">Timeline</div>
+  <h2>Execute</h2>
+  <div class="timeline">
+    <div class="timeline-row"><div class="timeline-week">This week</div><div class="timeline-what">Submit YC application + record demo video</div></div>
+    <div class="timeline-row"><div class="timeline-week">Week 2</div><div class="timeline-what">Post Welcome Home on Reddit/Twitter, DM 10 musician friends</div></div>
+    <div class="timeline-row"><div class="timeline-week">Week 3</div><div class="timeline-what">Reach out to 3 galleries/studios for installation pilots</div></div>
+    <div class="timeline-row"><div class="timeline-week">Week 4</div><div class="timeline-what">Follow up on beta users, collect feedback, ship one feature based on what they say</div></div>
+    <div class="timeline-row"><div class="timeline-week">Ongoing</div><div class="timeline-what">Track metrics, iterate, practice the 10-minute pitch with a friend</div></div>
+  </div>
+</div>
+
+<!-- Bottom line -->
+<div class="verdict">
+  <h2>Apply this week.</h2>
+  <p>You have a real product, a real demo, a real album, and a real story. The Welcome Home share link does in 60 seconds what most startups spend months trying to explain with slides.</p>
+</div>
+
+</div>
+
+<script>
+window.addEventListener('scroll', () => {
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = (window.scrollY / h) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+</script>
+
+</body>
+</html>
