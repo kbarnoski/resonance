@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       return Response.json({ token: journey.share_token });
     }
 
-    const token = randomUUID().replace(/-/g, "").slice(0, 16);
+    const token = randomUUID().replace(/-/g, "");
     const seed = String(randomInt(0, 4294967296));
 
     const { error } = await supabase
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
     // Mark the recording as shared so anonymous users can access audio via RLS
     if (journey.recording_id) {
-      const recToken = randomUUID().replace(/-/g, "").slice(0, 16);
+      const recToken = randomUUID().replace(/-/g, "");
       await supabase
         .from("recordings")
         .update({ share_token: recToken })

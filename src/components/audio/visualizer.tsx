@@ -282,13 +282,17 @@ export function ShaderVisualizer({
             return; // Still compiling on GPU thread, try next frame
           }
         }
-        // Compilation finished (or was synchronous without ext) — check status
+        // Compilation finished (or was synchronous without ext) — check status.
+        // On failure, signal readiness anyway so the crossfade layer can fall
+        // back. Without this the canvas stays blank indefinitely.
         if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS)) {
-          console.error("Vertex shader:", gl.getShaderInfoLog(vs));
+          console.warn("[shader] Vertex compile failed:", gl.getShaderInfoLog(vs));
+          onReadyRef.current?.();
           return;
         }
         if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS)) {
-          console.error("Fragment shader:", gl.getShaderInfoLog(fs));
+          console.warn("[shader] Fragment compile failed:", gl.getShaderInfoLog(fs));
+          onReadyRef.current?.();
           return;
         }
         // Start linking (non-blocking with ext)

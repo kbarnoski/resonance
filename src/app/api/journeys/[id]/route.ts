@@ -6,6 +6,8 @@ export async function GET(
 ) {
   const { id } = await params;
   const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
   const { data, error } = await supabase
     .from("journeys")

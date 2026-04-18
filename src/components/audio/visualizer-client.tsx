@@ -452,9 +452,13 @@ export function VisualizerClient({
     }, delay);
   }, [libraryOpen, journeyOpen]);
 
+  // Stable listener setup — runs once on mount, reads resetControlsTimer
+  // via ref so the listener doesn't re-register when deps change.
+  const resetTimerRef = useRef(resetControlsTimer);
+  resetTimerRef.current = resetControlsTimer;
   useEffect(() => {
-    resetControlsTimer();
-    const handleMove = () => resetControlsTimer();
+    resetTimerRef.current();
+    const handleMove = () => resetTimerRef.current();
     document.addEventListener("mousemove", handleMove);
     document.addEventListener("touchstart", handleMove);
     return () => {
@@ -462,7 +466,7 @@ export function VisualizerClient({
       document.removeEventListener("touchstart", handleMove);
       if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
     };
-  }, [resetControlsTimer]);
+  }, []); // Only on mount — ref keeps it stable
 
   // Keep controls visible when library or journey browser is open
   useEffect(() => {

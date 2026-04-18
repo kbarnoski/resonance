@@ -1,9 +1,14 @@
 import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
+import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
     const { mood, key_signature, tempo, summary, count = 5, avoid = [], avoidKeywords = [], phase, language, imagery, vizTheme, poetryType, storyContext } = await request.json();
 
     if (!mood) {

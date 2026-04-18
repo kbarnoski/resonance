@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { createClient } from "@/lib/supabase/server";
 
 const FEEDBACK_FILE = path.join(process.cwd(), "journey-feedback.jsonl");
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
     const body = await request.json();
     // Support both single entry and batch array
     const entries = Array.isArray(body) ? body : [body];

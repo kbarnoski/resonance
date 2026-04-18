@@ -1,6 +1,7 @@
 import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { LANGUAGE_NAMES } from "@/lib/audio/languages";
+import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 
 const storySchema = z.object({
@@ -19,6 +20,10 @@ const storySchema = z.object({
 
 export async function POST(request: Request) {
   try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
     const { journeyName, realmId, mood, language, phases, poetryImagery } = await request.json();
 
     if (!journeyName || !phases) {
