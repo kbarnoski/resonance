@@ -69,12 +69,14 @@ export async function middleware(request: NextRequest) {
     "max-age=63072000; includeSubDomains; preload"
   );
   // CSP: self + Supabase + fal.ai WebSocket + inline styles (Tailwind) + data/blob images.
-  // 'unsafe-eval' is required by @tensorflow/tfjs basic-pitch; 'unsafe-inline' by Next.js dev overlay.
+  // 'unsafe-eval' + 'wasm-unsafe-eval' required by @tensorflow/tfjs (basic-pitch
+  // pitch detection compiles WASM at runtime — Chrome separates wasm from
+  // generic eval since 2023). 'unsafe-inline' needed by Next.js runtime.
   supabaseResponse.headers.set(
     "Content-Security-Policy",
     [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob:",
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https:",
       "media-src 'self' blob: https:",

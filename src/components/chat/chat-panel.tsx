@@ -100,6 +100,9 @@ export function ChatPanel({ recordingId, analysis, initialMessages = [] }: ChatP
       <div className="border-t p-3">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
+            id="chat-message"
+            name="message"
+            autoComplete="off"
             value={input}
             onChange={handleInputChange}
             placeholder="Ask about your recording..."

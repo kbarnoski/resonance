@@ -88,6 +88,9 @@ export function InsightsChat({ analyses }: InsightsChatProps) {
       <div className="border-t p-3">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
+            id="insights-chat-message"
+            name="message"
+            autoComplete="off"
             value={input}
             onChange={handleInputChange}
             placeholder="Ask about your library patterns..."
