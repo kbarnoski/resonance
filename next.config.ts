@@ -25,10 +25,12 @@ const BUILD_TIME = new Date().toISOString();
 const CSP_DIRECTIVES = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob:",
-  "style-src 'self' 'unsafe-inline'",
+  // Google Fonts stylesheets are loaded at runtime by journey/poetry code.
+  "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https:",
   "media-src 'self' blob: https:",
-  "font-src 'self' data:",
+  // Google Fonts ship the actual woff2 files from fonts.gstatic.com.
+  "font-src 'self' data: https://fonts.gstatic.com",
   "connect-src 'self' https: wss: blob:",
   "worker-src 'self' blob:",
   "frame-ancestors 'none'",
