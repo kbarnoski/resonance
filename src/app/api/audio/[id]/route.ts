@@ -229,17 +229,24 @@ export async function GET(
   });
 }
 
-const MAX_PEAK_PAIRS = 8192;
+// WaveSurfer's exportPeaks() returns number[][] shaped as
+// [channel0[sample...], channel1[sample...]] — outer = channels (1 mono, 2 stereo),
+// inner = amplitude samples in roughly [-1, 1]. Clients currently pass
+// maxLength:1000 so inner arrays are ~1000 long.
+const MAX_PEAK_CHANNELS = 8;
+const MAX_PEAK_SAMPLES = 16384;
 
 function isValidWaveformPeaks(peaks: unknown): peaks is number[][] {
   if (!Array.isArray(peaks)) return false;
-  if (peaks.length > MAX_PEAK_PAIRS) return false;
-  for (const pair of peaks) {
-    if (!Array.isArray(pair) || pair.length !== 2) return false;
-    const [lo, hi] = pair;
-    if (typeof lo !== "number" || typeof hi !== "number") return false;
-    if (!Number.isFinite(lo) || !Number.isFinite(hi)) return false;
-    if (lo < -1 || lo > 1 || hi < -1 || hi > 1) return false;
+  if (peaks.length === 0 || peaks.length > MAX_PEAK_CHANNELS) return false;
+  for (const channel of peaks) {
+    if (!Array.isArray(channel)) return false;
+    if (channel.length === 0 || channel.length > MAX_PEAK_SAMPLES) return false;
+    for (const v of channel) {
+      if (typeof v !== "number" || !Number.isFinite(v)) return false;
+      // Allow a small overshoot — some codecs round past exact 1.0 after normalization.
+      if (v < -1.5 || v > 1.5) return false;
+    }
   }
   return true;
 }
