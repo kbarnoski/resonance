@@ -139,6 +139,10 @@ export function VisualizerClient({
 
   // Journey completion state
   const [journeyCompleted, setJourneyCompleted] = useState(false);
+  // When the page loads with a customJourneyId (e.g. refresh during a path
+  // journey), we need a user gesture before audio can play on mobile. This
+  // flag gates the start so visuals + audio launch together after a tap.
+  const [needsGesture, setNeedsGesture] = useState(false);
   const completedJourneyRef = useRef<string | null>(null);
 
   // Journey intro screen — shows name + subtitle on journey start
@@ -502,6 +506,12 @@ export function VisualizerClient({
   // (pre-loaded from recording detail), don't interfere — it carries the position.
   useEffect(() => {
     if (!recording) return;
+    // If we're in gesture-gate mode (path journey from URL), skip auto-play
+    // here — the tap handler will call play() with the user gesture.
+    if (initialCustomJourney) {
+      if (initialAnalysis) setAnalysis(initialAnalysis);
+      return;
+    }
     const track = useAudioStore.getState().currentTrack;
     if (track?.id === recording.id) {
       // Already loaded (from recording detail handoff) — just ensure analysis is set
@@ -581,11 +591,13 @@ export function VisualizerClient({
       });
     }
 
-    ensureResumed();
-    useAudioStore.getState().setAiImageEnabled(true);
-    // Recording is already loaded on the page props (audio_url plays via
-    // the normal flow) — just start the journey.
-    useAudioStore.getState().startCustomJourney(journey);
+    // On mobile, a page refresh loses the user gesture context so
+    // AudioContext.resume() and audio.play() silently fail. Instead of
+    // auto-starting (which would play shaders without sound), flag that
+    // we need a tap first. The tap handler below starts everything in
+    // sync: audio + journey engine + AI imagery.
+    setNeedsGesture(true);
+
     // Prefetch the path's dedicated screen so closing the journey feels
     // instant — the page is already cached by the time the user taps X.
     if (initialPath?.share_token) {
@@ -1119,6 +1131,117 @@ export function VisualizerClient({
   const showHud = activeAnalysis?.status === "completed";
 
   if (!analyser || !dataArray) return null;
+
+  // Gesture gate for path-launched journeys (refresh on mobile).
+  // Renders a minimal tap-to-begin overlay so audio + visuals start
+  // together from the user's tap — no desync, no silent shaders.
+  if (needsGesture && initialCustomJourney) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const r = initialCustomJourney as Record<string, any>;
+    const journeyName = (r.name as string) ?? "Journey";
+    return (
+      <div
+        className="h-dvh w-screen bg-black flex items-center justify-center"
+        style={{ cursor: "pointer" }}
+        onClick={() => {
+          setNeedsGesture(false);
+          ensureResumed();
+
+          // Build the journey object (same as the hydration effect)
+          const journey = {
+            id: r.id as string,
+            name: r.name ?? "Untitled",
+            subtitle: r.subtitle ?? "",
+            description: r.description ?? "",
+            realmId: r.realm_id ?? "custom",
+            aiEnabled: true,
+            phases: r.phases ?? [],
+            storyText: r.story_text ?? null,
+            recordingId: r.recording_id ?? null,
+            userId: r.user_id,
+            audioReactive: !!r.audio_reactive,
+            creatorName: r.creator_name ?? null,
+            photographyCredit: r.photography_credit ?? null,
+            dedication: r.dedication ?? null,
+            ...(r.theme ? { theme: r.theme } : {}),
+            ...(Array.isArray(r.local_image_urls) && r.local_image_urls.length > 0
+              ? { localImageUrls: r.local_image_urls as string[] }
+              : {}),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } as any;
+
+          // Set path context
+          if (initialPath) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const p = initialPath as Record<string, any>;
+            useAudioStore.getState().setActivePath({
+              id: p.id as string,
+              name: (p.name as string) ?? "Untitled Path",
+              subtitle: (p.subtitle as string) ?? null,
+              shareToken: (p.share_token as string) ?? null,
+              journeyIds: (p.journey_ids ?? []) as string[],
+              culminationJourneyId: (p.culmination_journey_id as string) ?? null,
+              accent: (p.accent_color as string) ?? "#d0a070",
+              glow: (p.glow_color as string) ?? "#e0b080",
+            });
+          }
+
+          // Play recording (the gesture makes this work on mobile)
+          if (recording) {
+            play({
+              id: recording.id,
+              title: recording.title ?? "Untitled",
+              audioUrl: recording.audio_url,
+              artist: recording.artist ?? undefined,
+            });
+          }
+
+          // Start journey + AI
+          useAudioStore.getState().setAiImageEnabled(true);
+          useAudioStore.getState().startCustomJourney(journey);
+        }}
+      >
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "24px", animation: "journeyEndFadeIn 0.8s ease-out both" }}>
+          <span
+            style={{
+              fontFamily: "var(--font-geist-mono)",
+              fontSize: "0.65rem",
+              letterSpacing: "0.14em",
+              textTransform: "uppercase",
+              color: "rgba(255,255,255,0.35)",
+            }}
+          >
+            {journeyName}
+          </span>
+          <button
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "64px",
+              height: "64px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.18)",
+              color: "rgba(255,255,255,0.9)",
+              cursor: "pointer",
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+          <span
+            style={{
+              fontFamily: "var(--font-geist-mono)",
+              fontSize: "0.6rem",
+              color: "rgba(255,255,255,0.2)",
+            }}
+          >
+            Tap anywhere to begin
+          </span>
+        </div>
+      </div>
+    );
+  }
 
 
   // Always render — compositor contains the bottom bar; journey selector
