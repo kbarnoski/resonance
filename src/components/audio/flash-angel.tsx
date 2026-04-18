@@ -66,23 +66,57 @@ export const FlashAngel = memo(function FlashAngel({ opacity, blurPx }: FlashAng
       if (!ctx) return;
       ctx.drawImage(img, 0, 0);
 
-      // Luminance chroma-key: map brightness to alpha. Near-black becomes
-      // transparent; a narrow falloff smooths edges so the figure doesn't
-      // look cut out with a harsh outline.
-      const BLACK_THRESHOLD = 18;   // lum below this → fully transparent
-      const FALLOFF_END = 70;       // lum above this → fully opaque
+      // Luminance chroma-key with a wide smoothstep falloff + a radial
+      // vignette so the figure fades at the image edges. Together these
+      // two curves eliminate the "pasted cut-out" look: dark areas go
+      // transparent gradually, not at a hard threshold, and whatever
+      // reaches the outer edge of the frame fades to nothing regardless
+      // of its brightness.
+      const BLACK_THRESHOLD = 6;    // lum below this → fully transparent
+      const FALLOFF_END = 130;      // lum above this → fully opaque
       const FALLOFF_RANGE = FALLOFF_END - BLACK_THRESHOLD;
       try {
         const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const px = data.data;
+        const w = canvas.width;
+        const h = canvas.height;
+        const cx = w / 2;
+        const cy = h / 2;
+        // Max distance from center to corner — normalizer for the vignette.
+        const maxDist = Math.hypot(cx, cy);
+        // Vignette starts fading at 78% of the radius and reaches zero at 100%.
+        const VIGNETTE_INNER = 0.78;
+        const VIGNETTE_RANGE = 1.0 - VIGNETTE_INNER;
         for (let i = 0; i < px.length; i += 4) {
+          const p = i >> 2;
+          const x = p % w;
+          const y = (p - x) / w;
+
+          // Luminance → alpha (smoothstep for natural rolloff).
           const lum = 0.299 * px[i] + 0.587 * px[i + 1] + 0.114 * px[i + 2];
+          let lumAlpha: number;
           if (lum <= BLACK_THRESHOLD) {
-            px[i + 3] = 0;
-          } else if (lum < FALLOFF_END) {
-            px[i + 3] = Math.round(((lum - BLACK_THRESHOLD) / FALLOFF_RANGE) * 255);
+            lumAlpha = 0;
+          } else if (lum >= FALLOFF_END) {
+            lumAlpha = 1;
+          } else {
+            const t = (lum - BLACK_THRESHOLD) / FALLOFF_RANGE;
+            lumAlpha = t * t * (3 - 2 * t);
           }
-          // else: keep native alpha (255 for opaque source pixels)
+
+          // Radial vignette — 1 at center, 0 outside VIGNETTE_INNER*radius.
+          const dist = Math.hypot(x - cx, y - cy) / maxDist;
+          let vignette: number;
+          if (dist <= VIGNETTE_INNER) {
+            vignette = 1;
+          } else if (dist >= 1.0) {
+            vignette = 0;
+          } else {
+            const v = 1 - (dist - VIGNETTE_INNER) / VIGNETTE_RANGE;
+            vignette = v * v * (3 - 2 * v);
+          }
+
+          px[i + 3] = Math.round(lumAlpha * vignette * 255);
         }
         ctx.putImageData(data, 0, 0);
       } catch {
@@ -109,7 +143,10 @@ export const FlashAngel = memo(function FlashAngel({ opacity, blurPx }: FlashAng
         maxHeight: "100%",
         objectFit: "contain",
         opacity,
-        filter: blurPx > 0 ? `blur(${blurPx}px)` : undefined,
+        // Baseline 0.8px blur always on so the per-pixel alpha steps never
+        // read as jagged edges; motion blur stacks on top when the flash
+        // is mid-fade.
+        filter: `blur(${0.8 + blurPx}px)`,
       }}
       aria-hidden="true"
     />
