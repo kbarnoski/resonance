@@ -161,6 +161,9 @@ export function MarkersPanel({
           </span>
           {addingType === "cue" && <Zap className="h-3.5 w-3.5 text-amber-500 shrink-0" />}
           <Input
+            id="marker-label"
+            name="markerLabel"
+            autoComplete="off"
             value={newLabel}
             onChange={(e) => setNewLabel(e.target.value)}
             placeholder={addingType === "cue" ? "Cue label (e.g. bass hit)..." : "Note for this moment..."}

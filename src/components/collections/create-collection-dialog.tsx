@@ -67,6 +67,8 @@ export function CreateCollectionDialog() {
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
+              name="name"
+              autoComplete="off"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g., Best Ideas"
@@ -77,6 +79,8 @@ export function CreateCollectionDialog() {
             <Label htmlFor="desc">Description (optional)</Label>
             <Input
               id="desc"
+              name="description"
+              autoComplete="off"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="What's this collection about?"

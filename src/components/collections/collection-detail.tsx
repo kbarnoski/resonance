@@ -228,6 +228,9 @@ export function CollectionDetail({
           <div className="flex items-center gap-2">
             <Input
               ref={nameInputRef}
+              id="collection-name"
+              name="collectionName"
+              autoComplete="off"
               value={editName}
               onChange={(e) => setEditName(e.target.value)}
               onKeyDown={(e) => {

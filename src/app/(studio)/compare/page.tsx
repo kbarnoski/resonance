@@ -159,6 +159,9 @@ function CompareChat({
       <div className="border-t p-3">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Input
+            id="compare-chat-message"
+            name="message"
+            autoComplete="off"
             value={input}
             onChange={handleInputChange}
             placeholder="Ask about these recordings..."

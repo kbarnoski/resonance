@@ -254,6 +254,8 @@ export default function UploadPage() {
                   {f.status !== "done" && (
                     <>
                       <Input
+                        name="artist"
+                        autoComplete="off"
                         placeholder="Artist name (required)"
                         value={f.artist}
                         onChange={(e) => {
@@ -269,6 +271,8 @@ export default function UploadPage() {
                         required
                       />
                       <Input
+                        name="description"
+                        autoComplete="off"
                         placeholder="Add a description (optional)"
                         value={f.description}
                         onChange={(e) => {

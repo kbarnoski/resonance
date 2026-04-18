@@ -197,6 +197,9 @@ export function RecordingDetail({
       {!readOnly && (
         <div className="flex items-center gap-2">
           <Input
+            id="recording-artist"
+            name="artist"
+            autoComplete="off"
             placeholder="Add artist name..."
             value={artist}
             onChange={(e) => setArtist(e.target.value)}
@@ -204,6 +207,9 @@ export function RecordingDetail({
             className="text-sm text-muted-foreground w-48 shrink-0"
           />
           <Input
+            id="recording-description"
+            name="description"
+            autoComplete="off"
             placeholder="Add a description..."
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -240,6 +246,9 @@ export function RecordingDetail({
               </DialogHeader>
               <div className="flex items-center gap-2">
                 <Input
+                  id="recording-share-url"
+                  name="shareUrl"
+                  autoComplete="off"
                   readOnly
                   value={getShareUrl()}
                   className="font-mono text-xs"

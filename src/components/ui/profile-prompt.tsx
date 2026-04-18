@@ -60,6 +60,9 @@ export function ProfilePrompt() {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
+            id="profile-display-name"
+            name="displayName"
+            autoComplete="name"
             placeholder="Your name"
             value={name}
             onChange={(e) => setName(e.target.value)}
