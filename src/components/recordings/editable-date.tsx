@@ -99,6 +99,8 @@ export function EditableDate({ recordingId, recordedAt, createdAt, readOnly }: E
         <input
           ref={inputRef}
           type="text"
+          name="recordedAt"
+          autoComplete="off"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onBlur={handleSubmit}

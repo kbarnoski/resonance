@@ -249,6 +249,8 @@ export function CreateJourneyForm({
         </label>
         <input
           type="text"
+          name="journeyName"
+          autoComplete="off"
           placeholder="Leave blank to auto-generate"
           value={journeyName}
           onChange={(e) => setJourneyName(e.target.value)}
@@ -368,6 +370,8 @@ export function CreateJourneyForm({
           <div className="mt-3 space-y-2">
             <input
               type="text"
+              name="audioTitle"
+              autoComplete="off"
               placeholder="Track title"
               value={audioTitle}
               onChange={(e) => setAudioTitle(e.target.value)}
@@ -382,6 +386,8 @@ export function CreateJourneyForm({
             />
             <input
               type="text"
+              name="audioArtist"
+              autoComplete="off"
               placeholder="Artist (required)"
               value={audioArtist}
               onChange={(e) => setAudioArtist(e.target.value)}

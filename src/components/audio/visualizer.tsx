@@ -1047,7 +1047,9 @@ export function VisualizerCore({
               <Search className="h-4 w-4 md:h-3.5 md:w-3.5 text-white/30 flex-shrink-0" />
               <input
                 ref={searchInputRef}
-                type="text"
+                type="search"
+                name="mode"
+                autoComplete="off"
                 value={modeSearch}
                 onChange={(e) => setModeSearch(e.target.value)}
                 placeholder="Search modes..."
