@@ -7,6 +7,7 @@ import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealm } from "@/lib/journeys/realms";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { MODE_META, MODES_3D } from "@/lib/shaders";
 
 /** Pick a random 3D World shader for the welcome screen ambient viz */
@@ -417,7 +418,6 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     // Clean up the AI image service so orphaned connections and
     // in-flight requests don't accumulate across journey switches.
     try {
-      const { getRealtimeImageService } = require("@/lib/journeys/realtime-image-service");
       const service = getRealtimeImageService();
       service.cancelInFlight();
       service.clearFrameCallback();

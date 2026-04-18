@@ -51,6 +51,7 @@ export default function GlobalError({
           >
             Try again
           </button>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
           <a
             href="/"
             className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-colors"
