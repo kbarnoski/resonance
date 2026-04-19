@@ -1151,9 +1151,16 @@ export function VisualizerClient({
     setOverlayRemountKey((k) => k + 1);
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
-    // Synchronously reset currentTime so the completion detector doesn't
-    // see the stale end-of-track value between stop and start.
+    // Reset audio element and store to absolute 0 — the audio element
+    // stays at `duration` after 'ended', so state-only resets can't
+    // restart playback. Drive the element directly, then play().
+    try {
+      const el = getAudioEngine().audioElement;
+      el.currentTime = 0;
+      el.play().catch(() => {});
+    } catch {}
     useAudioStore.getState().setCurrentTime(0);
+    useAudioStore.getState().resume();
     // Custom journeys (Welcome Home etc.) have UUID ids — startJourney only
     // knows built-in string slugs, so we have to route through the custom
     // path helper for those. Without this branch startJourney silently
@@ -1162,12 +1169,11 @@ export function VisualizerClient({
       startCustomById(journey.id);
       return;
     }
-    seek(0);
     useAudioStore.getState().stopJourney();
     setTimeout(() => {
       useAudioStore.getState().startJourney(journey.id);
     }, 50);
-  }, [seek, startCustomById]);
+  }, [startCustomById]);
 
   const handleContinuePath = useCallback((nextJourneyId: string) => {
     if (isUuid(nextJourneyId)) {
@@ -1177,12 +1183,18 @@ export function VisualizerClient({
     ensureResumed();
     setJourneyCompleted(false);
     completedJourneyRef.current = null;
-    seek(0);
+    try {
+      const el = getAudioEngine().audioElement;
+      el.currentTime = 0;
+      el.play().catch(() => {});
+    } catch {}
+    useAudioStore.getState().setCurrentTime(0);
+    useAudioStore.getState().resume();
     useAudioStore.getState().stopJourney();
     setTimeout(() => {
       useAudioStore.getState().startJourney(nextJourneyId);
     }, 50);
-  }, [seek, startCustomById]);
+  }, [startCustomById]);
 
   // Enter a culmination journey
   const handleEnterCulmination = useCallback((culminationId: string) => {

@@ -520,20 +520,22 @@ export function defaultPhases(
 // same pale skin, same fibonacci-spiral braided hair woven into the dress.
 // Only the hair / dress / wing COLOR changes.
 const GHOST_ANGEL_BASE =
-  "ONE AND ONLY ONE ethereal angel woman (never two, never multiple figures, never any companion figures anywhere in the scene, only one single angel in the entire frame), " +
-  "pale luminous skin, eyes closed peaceful serene expression, " +
+  "ONE AND ONLY ONE ethereal angel woman (only one single angel in the entire frame, never two, never multiple figures, never any companion figures, never crowds, never onlookers, never distant bystanders, never silhouettes of other people anywhere in the scene), " +
+  "pale luminous skin, " +
   "her hair woven into intricate fibonacci spiral da Vinci fractal BRAIDS cascading down her back, each braid wrapped and trailed with dense swirling particles spiraling along its length, the braids flowing seamlessly into her dress so hair and dress read as one continuous translucent ribbon, " +
   "wearing a long floor-length flowing translucent dress of woven mist and light, somewhat see-through, rippling with dense swirling particles, " +
-  "ALWAYS TWO LARGE translucent iridescent rainbow-shimmering wings attached anatomically to her upper BACK like angel wings (BOTH wings rooted at her shoulder blades, symmetrical left and right, always two full wings — NEVER missing a wing, NEVER one-winged, NEVER detached, NEVER floating separately), wings made of ethereal translucent particle mist with a faint iridescent rainbow sheen, NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER bulky — thin wisps of light and particles, not mass, " +
+  "ALWAYS TWO LARGE translucent BUTTERFLY-ANGEL wings attached anatomically to her upper BACK like an angel's wings (BOTH wings rooted at her shoulder blades, symmetrical left and right, always two full wings — NEVER missing a wing, NEVER one-winged, NEVER detached, NEVER floating separately). the wings are TRANSLUCENT MEMBRANE wings like a butterfly's — thin delicate filigree translucent membrane panels with a faint iridescent rainbow sheen, see-through, ethereal, made of light and particle mist. NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER opaque, NEVER bulky. " +
   "dense swirling particles filling the air around her body and streaming from her dress and wings";
 
 export const GHOST_ANGEL_WHITE =
   GHOST_ANGEL_BASE +
-  ", wardrobe: SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold), SNOW WHITE translucent dress, SNOW WHITE iridescent wings, WHITE particles";
+  ", eyes closed peaceful serene expression, " +
+  "wardrobe: SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold), SNOW WHITE translucent dress, SNOW WHITE translucent butterfly-angel wings, WHITE particles";
 
 export const GHOST_ANGEL_BLACK =
   GHOST_ANGEL_BASE +
-  ", wardrobe: the angel has been possessed and transformed into a dark devil angel under a mysterious spell. JET BLACK hair, JET BLACK translucent shadow-mist dress, JET BLACK iridescent oil-slick wings on her back, BLACK particles, a mysterious shadowed character. same identity, same body, same pose, same pale luminous skin — only the wardrobe has changed to pure black shadow, the figure reads as a devil-angel version of the same woman";
+  ", eyes wide OPEN with PURE JET BLACK orbs (entirely black eyes, no whites, no pupils, no iris — just solid void black eyes staring mysteriously, a possessed stare), " +
+  "wardrobe: the angel has been possessed and transformed into a dark devil angel under a mysterious spell. JET BLACK hair, JET BLACK translucent shadow-mist dress, JET BLACK translucent butterfly-angel wings on her back, BLACK particles, a mysterious shadowed devil-angel character. same body, same pose, same pale luminous skin as the white version — only the wardrobe has flipped to pure black shadow AND the eyes are now open as black voids";
 
 /** Marker substituted with the current angel variant at gen time. */
 export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
@@ -1528,10 +1530,18 @@ export const JOURNEYS: Journey[] = [
         vignette: 0.18,
         palette: { primary: "#1a0e05", secondary: "#2a1c10", accent: "#e8b868", glow: "#ffd890" },
         aiPrompt:
-          "photorealistic cinematic view. she has ARRIVED at the dark dead tree on its own spherical planet. she reaches out and TOUCHES the tree trunk — and at the moment of contact delicate pure white flowers with all-white petals and all-white centers (NO yellow, NO color) BURST INTO BLOOM across every branch, waves of blossoms exploding outward from the point of her touch spreading across the whole tree, the previously dead dark branches now alive with white bloom. then her body begins to merge and dissolve into the trunk and branches. " +
-          "VARIED camera per frame, MUST differ between shots — rotate through: close-up of her hand on the trunk with the first blossoms erupting from that point, mid-distance showing the bloom wave spreading across every branch, extreme wide of her tiny against the now-blooming tree on its planet, front view of her body dissolving into the trunk, side view as she melts into a branch, low angle at the tree base looking up with her woven into the blooming branches, overhead view of the tree-planet covered in white blossoms with her body integrated. " +
+          "photorealistic cinematic view. she has ARRIVED at the dark dead tree on its own spherical planet. she reaches out and TOUCHES the tree trunk, and white flowers begin to BLOOM outward from the point of her touch — flowers growing from her light and love. " +
+          "VARIED BLOOM STAGE per frame, MUST differ between shots to show the GROWTH PROGRESSION over time — rotate through: " +
+          "(1) earliest stage — her hand on the dark dead trunk, only the first 2 or 3 tiny white flowers just emerging from the bark right at her fingertips while almost all other branches remain completely bare and dead; " +
+          "(2) early spread — her hand on the trunk with a cluster of ~20 white flowers opened in a halo around her hand but every other branch still bare and dead; " +
+          "(3) mid spread — roughly half the branches partially blooming with white flowers while the other half are still bare and dead, wave of bloom visibly expanding outward; " +
+          "(4) full bloom — every branch completely covered in pure white flowers, the previously dead tree now fully alive with white blossom; " +
+          "(5) merge begins — full bloom plus her body starting to become translucent with the wood grain showing through her skin; " +
+          "(6) merge complete — she has fully dissolved into the blooming tree, her braids now are branches, her butterfly wings now are branch-shapes of light. " +
+          "VARIED camera per frame, MUST also differ — rotate through: close-up of her hand on the trunk with first blossoms, mid-distance showing the bloom wave spreading, extreme wide of the tree-planet partially blooming, front view of her body dissolving, side view as she melts into a branch, low angle at tree base looking up, overhead of the tree-planet covered in blossoms. " +
+          "all flowers are pure white with all-white petals and all-white centers (NO yellow, NO color). " +
           GHOST_ANGEL +
-          " merging and dissolving into the ancient gnarled tree standing on its own perfectly round spherical planet suspended in infinite cosmic space, her body becoming translucent with the wood grain showing through her skin and dress, her fibonacci spiral braided hair flowing seamlessly into the branches and intertwining with the tree's reaching arms, her iridescent particle-mist wings (attached anatomically on her back) spread wide and themselves becoming branch-shapes of light. warm golden light streaming through every newly blooming branch and through her translucent body in radiant shafts. deep indigo cosmos pierced by volumetric amber sunrays behind, the entire universe sky still visible as the backdrop. ethereal transcendent union with the tree, no text no watermarks",
+          " at/merging with the ancient gnarled tree on its own perfectly round spherical planet suspended in infinite cosmic space. warm golden light streaming through branches and her translucent body in radiant shafts. deep indigo cosmos pierced by volumetric amber sunrays behind, the entire universe sky visible as backdrop. ethereal transcendent bloom and union, no text no watermarks",
         aiPromptModifiers: {
           highBass: "subsonic pulse surging through the merged branches, every hair-thread and wood fiber pulsing with gold, particles scattering outward",
           lowAmplitude: "the merge softening to a whisper, the angel barely distinguishable from the tree, only faint gold threads visible",

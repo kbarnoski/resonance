@@ -15,27 +15,33 @@
  * If generation fails or is slow, `FlashAngel` falls back to its static PNG.
  */
 
-// Shared portrait base — same identity, same pose, same skin, same camera
-// in both flashes. The only thing that changes between variants is the
-// wardrobe color (hair + dress + wings). Flash #1 shows the white figure
-// COSTUME-CHANGED to full black; flash #2 returns to white.
+// Shared portrait base — same body, same pale skin, same braided hair,
+// same translucent butterfly wings on her back in both variants. The
+// flashes differ in wardrobe color AND eye state:
+//   Flash #1 (dark devil) — BLACK eyes wide open, black wardrobe
+//   Flash #2 (white return) — soaring transcendent pose, eyes closed,
+//                             white wardrobe (matches integration-phase
+//                             imagery so the two scenes read together)
 const FLASH_PORTRAIT_BASE =
-  "studio isolation shot photorealistic cinematic front view portrait of ONE ethereal angel woman (one single figure, no other people, no duplicates) perfectly isolated against absolute void, " +
+  "studio isolation shot photorealistic cinematic portrait of ONE single ethereal angel woman perfectly isolated against absolute void (one figure only — no other people, no duplicates, no companions, no distant figures anywhere), " +
   "the background is SOLID RGB 0 0 0 PURE MATHEMATICAL BLACK with zero luminosity, zero color, zero gradient, zero haze, zero particles in the background, zero stars — the figure is the ONLY element visible, " +
-  "her face calmly visible with EYES CLOSED peaceful serene expression, BOTH ARMS RAISED high above her head reaching upward in a transcendent gesture, " +
   "pale luminous skin (skin stays pale in both variants), " +
   "hair woven into intricate fibonacci spiral da Vinci fractal braids cascading down her back, each braid wrapped and trailed with dense swirling particles spiraling along its length, the braids flowing seamlessly into her dress so hair and dress read as one continuous ribbon, " +
   "wearing a long floor-length flowing translucent dress of woven mist and light, somewhat see-through, rippling with dense swirling particles, " +
-  "ALWAYS TWO LARGE translucent iridescent rainbow-shimmering wings of pure light and particle mist extending symmetrically from her back (BOTH LEFT and RIGHT wings fully visible and symmetrical, NEVER missing a wing, NEVER one-winged, wings are ethereal translucent particle mist with a faint iridescent sheen, NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER bulky — thin wisps of light and particles, not mass), " +
+  "ALWAYS TWO LARGE translucent BUTTERFLY-ANGEL wings attached anatomically to her upper BACK at the shoulder blades (BOTH LEFT and RIGHT wings fully visible and symmetrical, NEVER missing a wing, NEVER one-winged, NEVER detached). wings are TRANSLUCENT MEMBRANE wings like a butterfly's — thin delicate filigree membrane panels with a faint iridescent rainbow sheen, see-through, ethereal, made of light and particle mist. NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER opaque, NEVER bulky. " +
   "strong rim light from above outlining her edges against the void, dramatic chiaroscuro, photographic product-shot isolation, not illustration, not concept art";
 
 const DARK_FLASH_PROMPT =
   FLASH_PORTRAIT_BASE +
-  ", wardrobe theme: possessed under a dark spell. hair is JET BLACK, dress is JET BLACK translucent shadow-mist, wings are JET BLACK translucent particle mist with a deep iridescent oil-slick sheen, particles wrapped in her braids and streaming from her dress and wings are BLACK. skin remains pale luminous. same identity same pose same serene expression as the white version — only the costume has changed to black";
+  ", pose: standing facing camera front-on, BOTH ARMS RAISED high above her head reaching upward, " +
+  "eyes wide OPEN with PURE JET BLACK orbs (entirely black eyes, no whites, no pupils, no iris — just solid void black eyes staring mysteriously, possessed stare), " +
+  "wardrobe: possessed under a dark spell. hair is JET BLACK, dress is JET BLACK translucent shadow-mist, butterfly-angel wings on her back are JET BLACK translucent membrane with a deep iridescent oil-slick sheen, particles wrapped in her braids and streaming from her dress and wings are BLACK. same identity, same body, same pose as the white version — only the wardrobe has flipped to black AND the eyes are open as black voids";
 
 const WHITE_FLASH_PROMPT =
   FLASH_PORTRAIT_BASE +
-  ", wardrobe theme: returned to light. hair is pure SNOW WHITE (NEVER blonde, NEVER yellow, NEVER gold), dress is SNOW WHITE translucent mist-and-light, wings are SNOW WHITE translucent iridescent particle mist, particles wrapped in her braids and streaming from her dress and wings are WHITE. skin pale luminous";
+  ", pose: SOARING freely with both arms fully outstretched UPWARD in transcendent flight, head tilted BACK, body angled upward rising into infinity — the same transcendent flight pose from the golden cosmos finale scene, " +
+  "eyes closed peaceful serene ecstatic expression, " +
+  "wardrobe: returned to light. hair is SNOW WHITE (NEVER blonde, NEVER yellow, NEVER gold), dress is SNOW WHITE translucent mist-and-light, butterfly-angel wings on her back are SNOW WHITE translucent iridescent membrane, particles wrapped in her braids and streaming from her dress and wings are WHITE";
 
 // Index 0 = dark possessed (shown on flash #1)
 // Index 1 = white returned (shown on flash #2+)

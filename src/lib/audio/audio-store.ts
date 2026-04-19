@@ -208,6 +208,17 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     set({ currentTime: time });
     if (isDesktopApp()) {
       nativeAudioSeek(time).catch(() => {});
+    } else {
+      // Propagate to the actual <audio> element. Without this, setting
+      // state.currentTime doesn't reset the element — which broke replay
+      // from track end: the UI flipped back to 0 while the element stayed
+      // at duration and immediately fired 'ended' again.
+      try {
+        const el = getAudioEngine().audioElement;
+        if (Math.abs(el.currentTime - time) > 0.05) {
+          el.currentTime = time;
+        }
+      } catch {}
     }
   },
   setVolume: (vol) => set({ volume: Math.max(0, Math.min(1, vol)) }),
