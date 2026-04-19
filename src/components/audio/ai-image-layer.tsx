@@ -59,21 +59,19 @@ interface ImageLayer {
   purge?: boolean;
 }
 
-// Pacing targets a single dominant image at a time. At these values a new
-// image arrives just as the previous one is tailing off, so we never get
-// two back-to-back arrivals while an older image is still fading in. Total
-// on-screen life per image ≈ 4s in + 5s hold + 7s out = 16s. Gen cadence
-// 10–14s means next arrival hits as the previous image is entering its
-// fadeout phase — clean handoff, no rush.
-const DISSOLVE_DURATION = 4000;
-const FADEOUT_DURATION = 7000;
-const PURGE_FADEOUT_DURATION = 1800; // snappy clear when a new journey begins
-const MIN_PEAK_DURATION = 5000;
+// Pacing: one fresh image every ~7s with a 2s crossfade. Each image lives
+// about 7s total (2s in + 3s peak + 2s out) and the next arrives right as
+// it begins its fade-out, so the viewer always sees a smooth handoff. No
+// stalled "slideshow" feeling, no back-to-back churn.
+const DISSOLVE_DURATION = 2000;
+const FADEOUT_DURATION = 2000;
+const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
+const MIN_PEAK_DURATION = 3000;
 // Base generation cadence — actual interval is multiplied by the device tier
 // (high: 1×, medium: 1.6×, low: 3×) so weaker hardware gets fewer expensive
 // network round-trips and the main thread has room to breathe.
-const GEN_INTERVAL_MIN_BASE = 10000;
-const GEN_INTERVAL_MAX_BASE = 14000;
+const GEN_INTERVAL_MIN_BASE = 6000;
+const GEN_INTERVAL_MAX_BASE = 8000;
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
 const PROMPT_DEBOUNCE = 1500; // 1.5s debounce on prompt changes
 const KEN_BURNS_DURATION = 50; // seconds — full motion cycle

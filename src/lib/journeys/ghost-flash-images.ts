@@ -14,7 +14,12 @@
  */
 
 const FLASH_PROMPT =
-  "studio isolation shot photorealistic cinematic front view portrait of one ethereal angel woman perfectly isolated against absolute void, the background is SOLID RGB 0 0 0 PURE MATHEMATICAL BLACK with zero luminosity, zero color, zero gradient, zero haze, zero particles in the background, zero stars, zero atmosphere — the figure is the ONLY element visible, her face calmly visible with EYES CLOSED peaceful serene expression, BOTH ARMS RAISED high above her head reaching upward in a transcendent gesture, very long pure white fibonacci spiral curls cascading past her waist, pale luminous skin catching soft light, wearing a long flowing white dress, two LARGE transparent glowing white wings of pure light and mist fully spread behind her, swirling white particles ON HER BODY AND WINGS ONLY not in the surrounding darkness, strong rim light from above outlining her edges against the void, dramatic chiaroscuro, photographic product-shot isolation, not illustration, not concept art";
+  "studio isolation shot photorealistic cinematic front view portrait of one ethereal angel woman perfectly isolated against absolute void, the background is SOLID RGB 0 0 0 PURE MATHEMATICAL BLACK with zero luminosity, zero color, zero gradient, zero haze, zero particles in the background, zero stars, zero atmosphere — the figure is the ONLY element visible. " +
+  "her face calmly visible with EYES CLOSED peaceful serene expression, BOTH ARMS RAISED high above her head reaching upward in a transcendent gesture, " +
+  "very long pure SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold) woven into intricate fibonacci spiral da Vinci fractal braids cascading down her back and flowing seamlessly into the dress so hair and dress read as one continuous translucent white ribbon, " +
+  "wearing a long floor-length flowing translucent white dress of woven mist and light, somewhat see-through, rippling with dense swirling white particles, " +
+  "ALWAYS TWO LARGE transparent translucent white wings of pure light and mist extending symmetrically from her back (BOTH LEFT and RIGHT wings fully visible and symmetrical, NEVER missing a wing, NEVER one-winged, wings made of translucent mist and light NEVER FEATHERED NOT bird feathers NOT plumage), " +
+  "pale luminous skin catching soft rim light, dense swirling white particles ON HER BODY and WINGS and DRESS (never in the surrounding darkness), strong rim light from above outlining her edges against the void, dramatic chiaroscuro, photographic product-shot isolation, not illustration, not concept art";
 
 let flashUrl: string | null = null;
 let preparePromise: Promise<void> | null = null;
