@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Shuffle, Sparkles, Plus, Share2, Trash2, Wand2, Loader2, ChevronDown } from "lucide-react";
 import { toast } from "sonner";
@@ -367,13 +367,32 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
 
   if (!open) return null;
 
+  // Monotonically-increasing token so rapid clicks don't produce mismatched
+  // audio + visuals. Each selectJourney call captures the token at the
+  // moment the click fires; if the token has advanced while we're awaiting
+  // Supabase, we know a newer click superseded us and bail before touching
+  // play() or startJourney(). Without this, fast taps on two journeys
+  // could resolve in opposite order and leave audio=A with visuals=B.
+  const selectTokenRef = useRef(0);
+
   const selectJourney = async (journey: Journey, withAi: boolean) => {
     // Unlock AudioContext in user gesture context — must happen before any await.
     // Mobile browsers require resume() within a tap/click handler; once async work
     // starts, the gesture context is lost and play() silently fails.
     ensureResumed();
 
+    selectTokenRef.current += 1;
+    const myToken = selectTokenRef.current;
+    const isCurrent = () => selectTokenRef.current === myToken;
+
     setAiImageEnabled(withAi);
+
+    // Start the journey visuals immediately so the click never feels dead.
+    // Audio catches up as the paired-track lookup resolves below. If a later
+    // click supersedes this one, the later startJourney() overwrites the
+    // active journey — which is the behavior we want.
+    startJourney(journey.id);
+    onClose();
 
     const pairedSearch = PAIRED_TRACKS[journey.id];
     const currentTrack = useAudioStore.getState().currentTrack;
@@ -398,6 +417,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           .limit(1);
 
         if (!error && data?.[0]) {
+          if (!isCurrent()) return;
           const row = data[0];
           console.log("[journey] loading paired track:", row.title);
           play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}`, duration: row.duration ?? undefined, artist: row.artist ?? undefined }, 0);
@@ -434,6 +454,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                   .from("recordings")
                   .createSignedUrl(filePath, 3600);
                 if (signedData?.signedUrl) {
+                  if (!isCurrent()) return;
                   const title = files[0].name
                     .replace(/^\d+-/, "")
                     .replace(/\.[^.]+$/, "");
@@ -459,6 +480,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             .eq("user_id", user.id)
             .order("created_at", { ascending: false });
           if (fallback && fallback.length > 0) {
+            if (!isCurrent()) return;
             // Exclude Joseph's track from random pool
             const pool = fallback.filter(
               (r) => !r.title?.toLowerCase().includes("without") ||
@@ -468,7 +490,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             const row = candidates[Math.floor(Math.random() * candidates.length)];
             console.log("[journey] paired track not found, random fallback:", row.title);
             play({ id: row.id, title: row.title, audioUrl: `/api/audio/${row.id}`, artist: row.artist ?? undefined }, 0);
-  
+
           }
         }
       } catch (err) {
@@ -487,6 +509,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           .order("created_at", { ascending: false });
 
         if (!error && data && data.length > 0) {
+          if (!isCurrent()) return;
           // Exclude Joseph's track from the random pool
           const pool = data.filter(
             (r) => !r.title?.toLowerCase().includes("without") ||
@@ -505,12 +528,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       }
     }
 
-    startJourney(journey.id);
+    if (!isCurrent()) return;
 
-    // Wire cue marker events directly to the engine AFTER start.
-    // The React effect in visualizer-client may not fire in time because
-    // engine.start() clears eventMarkers and duration may still be 0.
-    // Using the DB duration (pendingDuration) avoids the race condition.
+    // Wire cue marker events directly to the engine AFTER the paired
+    // track is known. The React effect in visualizer-client may not fire
+    // in time because engine.start() clears eventMarkers and duration
+    // may still be 0. Using the DB duration (pendingDuration) avoids
+    // the race condition.
     if (pendingCues.length > 0 && pendingDuration > 0) {
       const engine = getJourneyEngine();
       engine.setEvents(
@@ -519,8 +543,6 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
       );
       console.log(`[journey] direct-wired ${pendingCues.length} cue markers (duration: ${pendingDuration}s)`);
     }
-
-    onClose();
   };
 
   const handleJourneyClick = (journey: Journey) => {
