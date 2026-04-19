@@ -1,46 +1,67 @@
 /**
- * Ghost journey character reference.
+ * Ghost journey character references.
  *
- * On journey start we pre-generate ONE canonical portrait of the Ghost
- * angel — a clean front-facing face shot, neutral scene, good lighting.
- * Every subsequent journey image uses this portrait as a PuLID
- * identity reference via `fal-ai/flux-pulid`, which locks the angel's
- * face and body across every scene. Without this, each gen produced
- * a different random woman because flux has no identity memory.
+ * On journey start we pre-generate TWO canonical portraits of the Ghost
+ * angel — one WHITE variant, one BLACK (possessed) variant — and chain
+ * them so they share the same face. Every subsequent journey gen uses
+ * whichever reference matches the current flash-count theme, so PuLID
+ * gets a reference that already matches the target wardrobe instead of
+ * fighting it.
  *
- * The canonical portrait is the WHITE angel variant — PuLID preserves
- * the face, but the scene prompt drives wardrobe (white vs black),
- * pose, and everything else.
+ * Flow at journey start:
+ *   1. Generate WHITE reference with plain flux/dev
+ *   2. Use that as PuLID face-reference to generate BLACK reference —
+ *      same face, black wardrobe
+ *   3. Subsequent in-journey gens ask for either URL based on theme
+ *
+ * Without chained references every in-journey frame was a different
+ * woman because flux has no identity memory, AND every black-variant
+ * prompt got fought by a white-variant reference.
  */
 
-const CANONICAL_PORTRAIT_PROMPT =
-  "photorealistic portrait of one ethereal angel woman facing camera, soft front lighting, calm neutral studio background, head and shoulders framing, " +
-  "pale luminous skin, eyes closed peaceful serene expression, " +
-  "very long snow white hair woven into fibonacci spiral braids cascading over her shoulders, " +
-  "wearing a translucent white mist dress, " +
-  "clean clear facial features visible, focus on the face";
+import { getGhostAngelTheme } from "./ghost-flash-images";
 
-const CANONICAL_NEGATIVE =
+const WHITE_REFERENCE_PROMPT =
+  "photorealistic portrait close-up of one ethereal angel woman facing camera directly, " +
+  "face fully visible and clearly lit with soft front key light, eyes open calm and serene looking at camera, " +
+  "head and shoulders framing, neutral studio background soft grey, " +
+  "pale luminous skin, very long snow white hair styled into fibonacci spiral braids pulled behind her shoulders so the face is completely unobstructed, " +
+  "wearing a translucent white mist dress at the collarbone, " +
+  "crisp clear facial features, sharp focus on the face, sharp eyes, symmetrical features";
+
+const BLACK_REFERENCE_PROMPT =
+  "photorealistic portrait close-up of one ethereal angel woman facing camera directly, " +
+  "face fully visible and clearly lit with soft front key light, eyes wide open with pure jet black orbs (solid void black eyes, no whites, no pupils), " +
+  "head and shoulders framing, neutral studio background soft grey, " +
+  "pale luminous skin, very long jet black hair styled into fibonacci spiral braids pulled behind her shoulders so the face is completely unobstructed, " +
+  "wearing a translucent jet black shadow-mist dress at the collarbone, " +
+  "dark possessed shadowed character, mysterious devil-angel, " +
+  "crisp clear facial features, sharp focus on the face, sharp eyes, symmetrical features";
+
+const REFERENCE_NEGATIVE =
   "wings, butterfly wings, bird wings, feathers, " +
   "multiple figures, other people, background figures, " +
-  "busy background, complex scene, dramatic lighting, " +
-  "blonde hair, yellow hair, gold hair, dark hair, black hair";
+  "busy background, complex scene, blurry face, obscured face, hair over face";
 
-let referenceUrl: string | null = null;
+let whiteReferenceUrl: string | null = null;
+let blackReferenceUrl: string | null = null;
 let preparePromise: Promise<void> | null = null;
 let currentJourneyId: string | null = null;
 let abortController: AbortController | null = null;
 
 /**
- * Kick off (or reuse) generation of the canonical Ghost angel portrait.
- * Idempotent per journey — if already generating or populated for this
- * journey id, returns the existing promise. Safe to call multiple times.
+ * Pre-generate both canonical Ghost angel portraits. Idempotent per
+ * journey — subsequent calls return the existing promise.
+ *
+ * Step 1: plain flux/dev → white reference
+ * Step 2: flux-pulid with white reference → black reference (same face)
  */
 export function prepareGhostReference(journeyId: string): Promise<void> {
   if (currentJourneyId !== journeyId) {
     abortController?.abort();
     currentJourneyId = journeyId;
-    referenceUrl = null;
+    whiteReferenceUrl = null;
+    blackReferenceUrl = null;
     preparePromise = null;
   }
   if (preparePromise) return preparePromise;
@@ -49,44 +70,88 @@ export function prepareGhostReference(journeyId: string): Promise<void> {
   abortController = controller;
 
   preparePromise = (async () => {
+    // Step 1 — white reference (plain flux/dev)
     try {
       const res = await fetch("/api/ai-image/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: controller.signal,
         body: JSON.stringify({
-          prompt: CANONICAL_PORTRAIT_PROMPT,
-          negativePrompt: CANONICAL_NEGATIVE,
+          prompt: WHITE_REFERENCE_PROMPT,
+          negativePrompt: REFERENCE_NEGATIVE,
           width: 768,
           height: 768,
-          // No referenceImageUrl — this call uses plain flux/dev to
-          // produce the canonical starting face.
         }),
       });
       if (!res.ok) return;
       const data = await res.json();
       if (typeof data.image === "string") {
-        referenceUrl = data.image;
+        whiteReferenceUrl = data.image;
       }
     } catch {
-      // Silent — ai-image-layer will fall back to no-reference flux/dev
-      // for subsequent gens if the reference never landed.
+      return; // abort or network failure — fall back to no-reference
+    }
+
+    if (!whiteReferenceUrl || controller.signal.aborted) return;
+
+    // Step 2 — black reference using white as PuLID face reference.
+    // Chained generation so both portraits share the same face.
+    try {
+      const res = await fetch("/api/ai-image/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: JSON.stringify({
+          prompt: BLACK_REFERENCE_PROMPT,
+          negativePrompt: REFERENCE_NEGATIVE,
+          referenceImageUrl: whiteReferenceUrl,
+          width: 768,
+          height: 768,
+        }),
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (typeof data.image === "string") {
+        blackReferenceUrl = data.image;
+      }
+    } catch {
+      // Black ref failed — in-journey black frames will still try PuLID
+      // against the white reference as a fallback.
     }
   })();
 
   return preparePromise;
 }
 
-/** Get the cached reference portrait URL, or null if not ready yet. */
+/**
+ * Get the reference URL that matches the current flash-count theme.
+ * Returns null if the appropriate reference hasn't landed yet (caller
+ * falls back to plain flux/dev without identity lock for that gen).
+ */
 export function getGhostReferenceUrl(): string | null {
-  return referenceUrl;
+  const theme = getGhostAngelTheme();
+  if (theme === "black") {
+    // Prefer the proper black reference; fall back to white if black
+    // generation hasn't completed yet (better to get SOME identity
+    // lock than none).
+    return blackReferenceUrl ?? whiteReferenceUrl;
+  }
+  return whiteReferenceUrl;
 }
 
-/** Clear the cached reference and abort any in-flight gen — journey stop. */
+/** Get the white reference directly — used to seed the first in-journey
+ *  frame while real gens are still landing, avoids the cold-start dead
+ *  zone at journey start. */
+export function getGhostWhiteReferenceUrl(): string | null {
+  return whiteReferenceUrl;
+}
+
+/** Clear both refs and abort any in-flight gen — journey stop. */
 export function clearGhostReference() {
   abortController?.abort();
   abortController = null;
   currentJourneyId = null;
   preparePromise = null;
-  referenceUrl = null;
+  whiteReferenceUrl = null;
+  blackReferenceUrl = null;
 }
