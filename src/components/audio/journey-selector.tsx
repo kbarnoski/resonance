@@ -365,15 +365,16 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     );
   }, [groupedByRealm, pinnedSet]);
 
-  if (!open) return null;
-
   // Monotonically-increasing token so rapid clicks don't produce mismatched
   // audio + visuals. Each selectJourney call captures the token at the
   // moment the click fires; if the token has advanced while we're awaiting
   // Supabase, we know a newer click superseded us and bail before touching
   // play() or startJourney(). Without this, fast taps on two journeys
   // could resolve in opposite order and leave audio=A with visuals=B.
+  // Must live above any conditional return to respect Rules of Hooks.
   const selectTokenRef = useRef(0);
+
+  if (!open) return null;
 
   const selectJourney = async (journey: Journey, withAi: boolean) => {
     // Unlock AudioContext in user gesture context — must happen before any await.
