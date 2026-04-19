@@ -560,6 +560,19 @@ export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
 /** Marker substituted with the WINGLESS white angel at gen time (always white). */
 export const GHOST_ANGEL_WINGLESS_MARKER = "<<GHOST_ANGEL_WINGLESS>>";
 
+/** Shared negative prompt for every Ghost generation — flux/dev reads this
+ *  as a hard exclusion list. The global API-level negative covers feathers,
+ *  watermarks, and random people; this one adds Ghost-specific exclusions
+ *  (wrong hair color, yellow flower centers, etc.). */
+export const GHOST_NEGATIVE_PROMPT =
+  "blonde hair, gold hair, yellow hair, brown hair, red hair, " +
+  "yellow flower, yellow center, colored flower, pink flower, " +
+  "bird wings, feathered wings, solid opaque wings, bulky wings, " +
+  "missing wing, one wing, detached wings, floating wings, " +
+  "man-made tunnel, brick wall, stone masonry, carved corridor, " +
+  "additional angel, second angel, companion, sibling, child, " +
+  "distant person, background silhouette, figure in distance";
+
 const GHOST_ANGEL = GHOST_ANGEL_MARKER;
 const GHOST_ANGEL_WINGLESS = GHOST_ANGEL_WINGLESS_MARKER;
 

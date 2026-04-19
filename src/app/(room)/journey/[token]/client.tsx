@@ -17,6 +17,7 @@ import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
 import { useAudioStore } from "@/lib/audio/audio-store";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { prepareGhostFlashImages, clearGhostFlashImages } from "@/lib/journeys/ghost-flash-images";
+import { prepareGhostReference, clearGhostReference } from "@/lib/journeys/ghost-reference";
 import { getTierProfile } from "@/lib/audio/device-tier";
 import { createClient } from "@/lib/supabase/client";
 import { MODES_3D, MODES_AI } from "@/lib/shaders";
@@ -574,6 +575,10 @@ export function SharedJourneyClient({
     if (journey.enableBassFlash) {
       prepareGhostFlashImages(journey.id);
     }
+    // Ghost-only: canonical-portrait reference for PuLID identity lock.
+    if (journey.id === "ghost") {
+      prepareGhostReference(journey.id);
+    }
     const engine = getJourneyEngine();
     const seed = playbackSeed ? parseInt(playbackSeed, 10) : undefined;
     const duration = useAudioStore.getState().duration;
@@ -593,6 +598,7 @@ export function SharedJourneyClient({
       clearTimeout(introTimer);
       clearTimeout(phaseTimer);
       clearGhostFlashImages();
+      clearGhostReference();
     };
   }, [started, journey, playbackSeed]);
 

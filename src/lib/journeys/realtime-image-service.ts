@@ -11,6 +11,11 @@ interface RealtimeImageOptions {
   previousFrameDataUrl?: string;
   width?: number;
   height?: number;
+  /** Shared negative prompt passed straight through to fal. */
+  negativePrompt?: string;
+  /** Optional character-reference image. When present, the server
+   *  routes to flux-pulid for identity-locked generation. */
+  referenceImageUrl?: string;
 }
 
 type FrameCallback = (imageUrl: string) => void;
@@ -223,6 +228,8 @@ class RealtimeImageService {
           previousFrame: options.previousFrameDataUrl,
           width: options.width ?? 768,
           height: options.height ?? 768,
+          negativePrompt: options.negativePrompt,
+          referenceImageUrl: options.referenceImageUrl,
         }),
       });
       clearTimeout(timeout);

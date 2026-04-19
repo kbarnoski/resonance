@@ -25,6 +25,7 @@ import { getJourney } from "@/lib/journeys/journeys";
 import { getCulminationJourney } from "@/lib/journeys/culmination-journeys";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { prepareGhostFlashImages, clearGhostFlashImages } from "@/lib/journeys/ghost-flash-images";
+import { prepareGhostReference, clearGhostReference } from "@/lib/journeys/ghost-reference";
 import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
 import { getPathForJourney, getNextInPath, isPathCulminationUnlocked, isGrandCulminationUnlocked, JOURNEY_PATHS, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
 import { createClient } from "@/lib/supabase/client";
@@ -444,6 +445,12 @@ export function VisualizerClient({
       if (activeJourney.enableBassFlash) {
         prepareGhostFlashImages(activeJourney.id);
       }
+      // Ghost-only: pre-generate the canonical angel portrait used as
+      // the PuLID face-reference for every in-journey gen. Locks the
+      // angel's identity across frames.
+      if (activeJourney.id === "ghost") {
+        prepareGhostReference(activeJourney.id);
+      }
 
       // Log journey-start lifecycle event
       const startEntry = buildSnapshot("journey-start", getSharedFpsRef());
@@ -457,6 +464,7 @@ export function VisualizerClient({
       if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
       if (phaseReadyTimerRef.current) clearTimeout(phaseReadyTimerRef.current);
       clearGhostFlashImages();
+      clearGhostReference();
     }
     return () => {
       if (journeyIntroTimerRef.current) clearTimeout(journeyIntroTimerRef.current);
