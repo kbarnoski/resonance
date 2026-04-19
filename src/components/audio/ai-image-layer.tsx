@@ -4,7 +4,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
-import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_MARKER } from "@/lib/journeys/journeys";
+import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER } from "@/lib/journeys/journeys";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 
@@ -437,14 +437,21 @@ export function AiImageLayer({
       ? createSeededRandom(promptSeedRef.current + genCountRef.current)
       : Math.random;
 
-    // Ghost-only: swap the <<GHOST_ANGEL>> marker for either the white or
-    // the possessed-black wardrobe variant depending on the current flash
-    // count. Applied on every gen before any other prompt decoration.
+    // Ghost-only: substitute the angel-descriptor markers for the current
+    // variant. <<GHOST_ANGEL_WINGLESS>> is always the white wingless angel
+    // (used in phases before she finds her wings at the pool).
+    // <<GHOST_ANGEL>> is the winged angel, white or possessed-black
+    // depending on the bass-flash count.
     let basePrompt = currentPrompt;
-    if (activeJourney?.id === "ghost" && basePrompt.includes(GHOST_ANGEL_MARKER)) {
-      const theme = getGhostAngelTheme();
-      const descriptor = theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE;
-      basePrompt = basePrompt.split(GHOST_ANGEL_MARKER).join(descriptor);
+    if (activeJourney?.id === "ghost") {
+      if (basePrompt.includes(GHOST_ANGEL_WINGLESS_MARKER)) {
+        basePrompt = basePrompt.split(GHOST_ANGEL_WINGLESS_MARKER).join(GHOST_ANGEL_WINGLESS_WHITE);
+      }
+      if (basePrompt.includes(GHOST_ANGEL_MARKER)) {
+        const theme = getGhostAngelTheme();
+        const descriptor = theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE;
+        basePrompt = basePrompt.split(GHOST_ANGEL_MARKER).join(descriptor);
+      }
     }
 
     let variedPrompt: string;

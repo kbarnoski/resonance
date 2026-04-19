@@ -519,30 +519,49 @@ export function defaultPhases(
 // The character stays identical between variants — same body, same pose,
 // same pale skin, same fibonacci-spiral braided hair woven into the dress.
 // Only the hair / dress / wing COLOR changes.
-const GHOST_ANGEL_BASE =
+// Shared body — same hair/skin/dress/particles in every variant. Wings and
+// eyes are added on top per variant so we can describe a wingless early
+// journey (phases 1-2 and the approach to the pool) and a winged later
+// journey (after she finds and puts on the wings at the pool).
+const GHOST_ANGEL_BODY =
   "ONE AND ONLY ONE ethereal angel woman (only one single angel in the entire frame, never two, never multiple figures, never any companion figures, never crowds, never onlookers, never distant bystanders, never silhouettes of other people anywhere in the scene), " +
   "pale luminous skin, " +
   "her hair woven into intricate fibonacci spiral da Vinci fractal BRAIDS cascading down her back, each braid wrapped and trailed with dense swirling particles spiraling along its length, the braids flowing seamlessly into her dress so hair and dress read as one continuous translucent ribbon, " +
   "wearing a long floor-length flowing translucent dress of woven mist and light, somewhat see-through, rippling with dense swirling particles, " +
-  "ALWAYS TWO LARGE translucent BUTTERFLY-ANGEL wings attached anatomically to her upper BACK like an angel's wings (BOTH wings rooted at her shoulder blades, symmetrical left and right, always two full wings — NEVER missing a wing, NEVER one-winged, NEVER detached, NEVER floating separately). the wings are TRANSLUCENT MEMBRANE wings like a butterfly's — thin delicate filigree translucent membrane panels with a faint iridescent rainbow sheen, see-through, ethereal, made of light and particle mist. NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER opaque, NEVER bulky. " +
-  "dense swirling particles filling the air around her body and streaming from her dress and wings";
+  "dense swirling particles filling the air around her body and streaming from her dress";
 
+const WINGS_CLAUSE =
+  "ALWAYS TWO LARGE translucent BUTTERFLY-ANGEL wings attached anatomically to her upper BACK like an angel's wings (BOTH wings rooted at her shoulder blades, symmetrical left and right, always two full wings — NEVER missing a wing, NEVER one-winged, NEVER detached, NEVER floating separately). the wings are TRANSLUCENT MEMBRANE wings like a butterfly's — thin delicate filigree translucent membrane panels with a faint iridescent rainbow sheen, see-through, ethereal, made of light and particle mist. NEVER FEATHERED, NEVER bird feathers, NEVER plumage, NEVER opaque, NEVER bulky";
+
+// Wingless — used in phases 1 (window), 2 (underground passage), and the
+// opening of phase 3 before she finds the wings.
+export const GHOST_ANGEL_WINGLESS_WHITE =
+  GHOST_ANGEL_BODY +
+  ", eyes closed peaceful serene expression, NO WINGS YET (her back is bare — she has not yet found her wings, absolutely no wings visible on her back or anywhere near her), " +
+  "wardrobe: SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold), SNOW WHITE translucent dress, WHITE particles";
+
+// Winged white — after she finds and puts on the wings at the pool.
 export const GHOST_ANGEL_WHITE =
-  GHOST_ANGEL_BASE +
+  GHOST_ANGEL_BODY +
   ", eyes closed peaceful serene expression, " +
-  "wardrobe: SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold), SNOW WHITE translucent dress, SNOW WHITE translucent butterfly-angel wings, WHITE particles";
+  WINGS_CLAUSE +
+  ", wardrobe: SNOW WHITE hair (NEVER blonde, NEVER yellow, NEVER gold), SNOW WHITE translucent dress, SNOW WHITE translucent butterfly-angel wings, WHITE particles";
 
+// Winged black — possessed devil variant between flash #1 and flash #2.
+// She already has the wings by the time any flash fires.
 export const GHOST_ANGEL_BLACK =
-  GHOST_ANGEL_BASE +
+  GHOST_ANGEL_BODY +
   ", eyes wide OPEN with PURE JET BLACK orbs (entirely black eyes, no whites, no pupils, no iris — just solid void black eyes staring mysteriously, a possessed stare), " +
-  "wardrobe: the angel has been possessed and transformed into a dark devil angel under a mysterious spell. JET BLACK hair, JET BLACK translucent shadow-mist dress, JET BLACK translucent butterfly-angel wings on her back, BLACK particles, a mysterious shadowed devil-angel character. same body, same pose, same pale luminous skin as the white version — only the wardrobe has flipped to pure black shadow AND the eyes are now open as black voids";
+  WINGS_CLAUSE +
+  ", wardrobe: the angel has been possessed and transformed into a dark devil angel under a mysterious spell. JET BLACK hair, JET BLACK translucent shadow-mist dress, JET BLACK translucent butterfly-angel wings on her back, BLACK particles, a mysterious shadowed devil-angel character. same body, same pose, same pale luminous skin as the white version — only the wardrobe has flipped to pure black shadow AND the eyes are now open as black voids";
 
-/** Marker substituted with the current angel variant at gen time. */
+/** Marker substituted with the WINGED angel (flash-count driven) at gen time. */
 export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
+/** Marker substituted with the WINGLESS white angel at gen time (always white). */
+export const GHOST_ANGEL_WINGLESS_MARKER = "<<GHOST_ANGEL_WINGLESS>>";
 
-// Legacy alias — all existing Ghost phase prompts use GHOST_ANGEL in their
-// template strings, which now evaluates to the marker.
 const GHOST_ANGEL = GHOST_ANGEL_MARKER;
+const GHOST_ANGEL_WINGLESS = GHOST_ANGEL_WINGLESS_MARKER;
 
 export const JOURNEYS: Journey[] = [
   {
@@ -1424,9 +1443,9 @@ export const JOURNEYS: Journey[] = [
         shaderOpacity: 0.75,
         aiPrompt:
           "photorealistic cinematic view. " +
-          "VARIED camera per frame, MUST differ between shots — rotate between extreme wide with her small against the vast chamber, close-up of her hands on the windowsill, low angle looking up the tall window framing her, side profile silhouette against the window, overhead looking down at her figure, three-quarter back view. " +
+          "VARIED camera per frame, MUST differ DRAMATICALLY between shots — rotate through: extreme wide establishing with her tiny against the vast chamber (very far away), close-up of her hands on the windowsill (very close), close-up of her face partly visible through her braids, low angle looking up the tall window framing her figure, side profile silhouette against the moonlit window, overhead top-down looking down at her alone on the floor, three-quarter back view, medium shot from across the room, macro of a braid strand with particles spiraling. " +
           "ancient dark stone chamber at night with a tall arched stone window opening onto cosmic void scattered with faint stars, diagonal shaft of silver moonlight across a worn stone floor cracked with ancient tree roots. " +
-          GHOST_ANGEL +
+          GHOST_ANGEL_WINGLESS +
           " standing alone by the window. mysterious ethereal, deep shadows, no text no watermarks",
         aiPromptModifiers: {
           highBass: "subsonic pressure ripple shuddering the windowpanes, fibonacci hair rippling, white particles scattering",
@@ -1447,14 +1466,14 @@ export const JOURNEYS: Journey[] = [
         end: 0.30,
         shaderOpacity: 0.65,
         aiPrompt:
-          "photorealistic cinematic view. strong sense of forward motion, she is TRAVELING through a natural deep-earth passageway (NEVER a man-made tunnel, NEVER carved masonry, NEVER stone corridor, NEVER brick, NEVER architectural construction — purely an organic cavernous passage through the living earth). " +
-          "VARIED camera per frame, MUST differ between shots — rotate between rear one-point tracking, three-quarter side as she passes root walls, low angle from below as her feet hover past, overhead looking down at her gliding, close up of her face through her braids, extreme wide with her small against the passage's vast depth. " +
-          "the passage is SPACIOUS with a high arched organic ceiling of gnarled tree roots far above her head (ceiling is tall, NEVER close to her head, NEVER cramped, plenty of open air around her), massive ancient gnarled spiraling tree roots forming the walls and high ceiling like a cathedral of living wood, pale bioluminescent teal lichen glowing on the root bark. " +
-          GHOST_ANGEL +
-          " hovering FORWARD deep into the earth passage alone, her dress and braids streaming behind her in the draft of her movement. " +
+          "photorealistic cinematic view. strong sense of forward motion, she is TRAVELING through an INFINITE natural deep-earth underground world (NEVER a man-made tunnel, NEVER carved masonry, NEVER brick, NEVER architectural construction — purely organic cavernous passages through the living earth that stretch in every direction forever). " +
+          "VARIED camera per frame, MUST differ DRAMATICALLY between shots — rotate through: rear one-point tracking deep into a root tunnel, three-quarter side as she passes root walls, low angle from below as her feet hover past, overhead looking down as she glides, close-up of her face through her braids, extreme wide with her tiny against a vast cavern, side view of her moving past a cluster of glowing bioluminescent roots, a view showing a fork in the passages with multiple root-tunnels branching away into infinite darkness, a branching cathedral of root columns, an open cavern with stalactites of living root dripping from the ceiling, close-up of mysterious pure white flowers blooming on the earth floor as she passes. " +
+          "the passages are SPACIOUS with high arched organic ceilings of gnarled tree roots far above her head (ceilings are tall, NEVER close to her head, NEVER cramped, plenty of open air around her), massive ancient gnarled spiraling tree roots forming walls and ceilings like a cathedral of living wood, pale bioluminescent teal lichen glowing on the root bark, an INFINITE UNDERGROUND world unfolding ahead with more passages visible deeper in. " +
+          GHOST_ANGEL_WINGLESS +
+          " hovering FORWARD through this infinite underground alone, her dress and braids streaming behind her in the draft of her movement. " +
           "delicate pure white flowers with all-white petals and all-white centers (NO yellow, NO color) blooming across the earth floor and along the root crevices as she passes, flowers growing in her wake. " +
           "a distant organic living portal visible small behind her, made entirely of intertwining ancient tree roots woven into a natural archway with more pure white flowers blooming along the root edges and a warm golden pulling light glowing at its center, receding into the distance (purely organic root growth, NO man-made stone, NO masonry). " +
-          "the passage stretches far ahead into deep indigo shadows. mysterious ethereal traveling passage, no text no watermarks",
+          "mysterious ethereal traveling through the infinite underground, no text no watermarks",
         aiPromptModifiers: {
           highBass: "subsonic shockwave reverberating through roots, portal light flaring, white particles exploding outward",
           highTreble: "bioluminescent lichen flaring brighter, fibonacci hair spirals glowing at their tips",
@@ -1474,13 +1493,16 @@ export const JOURNEYS: Journey[] = [
         end: 0.55,
         shaderOpacity: 0.72,
         aiPrompt:
-          "photorealistic cinematic view. she has arrived at a MAGNIFICENT NATURAL CAVERN in the deep earth where a vast shallow pool of still dark mirror-water fills the floor. this is an OPEN natural cavern (NEVER man-made, NEVER carved stone, NEVER a cramped tunnel) with a high vaulted ceiling of gnarled tree roots far above her and plenty of open space around her body. " +
-          "VARIED camera per frame, MUST differ between shots — rotate between overhead top-down of her floating on the water with her reflection below, low angle from water-level looking up past lily pads at her hovering, side tracking as she drifts horizontally, macro close-up of a single white lily with her reflected in the petals, extreme wide of the whole cavern with her tiny above the lily pool, a WIDE DEEP perspective looking out along the passage continuing onward showing a DISTANT WARM GOLDEN LIGHT glowing at the far end, three-quarter view of her hovering above the reflection. " +
-          GHOST_ANGEL +
-          " hovering FORWARD above the shallow pool of still dark mirror-water, her body horizontal with arms spread wide as she drifts through the space, her braided hair trailing across the water surface like a halo, her PERFECT REFLECTION clearly visible in the mirror-water beneath her matching her pose exactly (she is alone, just one angel and one reflection). " +
-          "abundant delicate pure white water lilies with all-white petals and all-white centers (NO yellow, NO color) floating across the black water surface scattering and rippling as she passes. " +
-          "the natural earth passage continues onward past the cavern and a DISTANT WARM GOLDEN LIGHT AT THE END OF THE PASSAGE is clearly visible ahead of her direction of travel, growing brighter as she moves toward it. " +
-          "pale bioluminescent teal glow on the roots, deep indigo water. ethereal traveling over mirror stillness, no text no watermarks",
+          "photorealistic cinematic view. she has arrived at a MAGNIFICENT infinite natural cavern deep underground where a vast INFINITE pool of still dark mirror-water fills the floor and stretches impossibly far in every direction, covered in pure white water lilies floating on the surface. this is an OPEN natural cavern (NEVER man-made, NEVER carved stone, NEVER cramped) with a high vaulted ceiling of gnarled tree roots far above, plenty of open space. " +
+          "VARIED moment per frame, MUST differ DRAMATICALLY between shots to tell the story of her finding and putting on the angel wings — rotate through: " +
+          "(A) " + GHOST_ANGEL_WINGLESS + " arriving at the edge of the infinite lily pool, seeing for the first time a pair of translucent white butterfly-angel wings floating on the water between the lilies with a soft glow around them, her hand reaching out toward them; " +
+          "(B) " + GHOST_ANGEL_WINGLESS + " in the water lifting the pair of glowing translucent white butterfly-angel wings from the surface with both hands, the wings shimmering with iridescent light; " +
+          "(C) the exact moment of the wings attaching anatomically to her upper back at her shoulder blades with a soft halo of white light and a burst of white particles; " +
+          "(D) " + GHOST_ANGEL + " newly winged, hovering horizontally just above the infinite lily pool with her body spread wide, her PERFECT REFLECTION clearly visible in the mirror-water beneath her matching her pose exactly, her new translucent butterfly-angel wings fully spread; " +
+          "(E) " + GHOST_ANGEL + " turning to face a distant warm golden light visible at the far end of the cavern passage, wings spread, ready to follow it; " +
+          "(F) " + GHOST_ANGEL + " beginning to hover FORWARD across the infinite pool toward the distant golden light at end, lilies scattering and rippling in her wake. " +
+          "VARIED camera per frame — rotate through: overhead top-down of her above the water with reflection, low angle from water level past lily pads, side tracking as she drifts, macro close-up of a lily with her reflected in the petals, extreme wide of the infinite cavern with her tiny above the pool, wide deep perspective showing the distant warm golden light. " +
+          "abundant delicate pure white water lilies with all-white petals and all-white centers (NO yellow, NO color), pale bioluminescent teal glow on the roots, deep indigo water. a DISTANT WARM GOLDEN LIGHT at the far end of the passage is clearly visible, growing brighter. ethereal mysterious infinite pool, no text no watermarks",
         aiPromptModifiers: {
           highBass: "subsonic pulse rippling the mirror-water, lily pads trembling, fibonacci hair pulsing visibly, white particles exploding outward",
           highAmplitude: "every patch of bioluminescent teal blazing, the distant tunnel-end light swelling brighter, reflection shimmering",
