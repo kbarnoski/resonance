@@ -206,11 +206,11 @@ export interface TierProfile {
 const PROFILES: Record<DeviceTier, TierProfile> = {
   high: {
     aiImageIntervalMultiplier: 1.0,
-    maxAiLayers: 6,
-    // Bumped from 2 to 4: flux-pulid gens take ~8-12s, so with our 6-8s
-    // gen interval we'd stall the pipeline (new gen requests blocked by
-    // earlier in-flight ones). Higher concurrency keeps images flowing
-    // even when any single gen is slow.
+    // Trimmed from 6 to 4: with no-cancel concurrency the previous 6
+    // produced rich layering but the shader backdrop was getting
+    // smothered. 4 keeps the cross-dissolve richness while letting the
+    // shader bleed through between images.
+    maxAiLayers: 4,
     maxConcurrentAiGens: 4,
     enableDualShader: true,
     bloomScale: 1.0,
@@ -221,7 +221,7 @@ const PROFILES: Record<DeviceTier, TierProfile> = {
   },
   medium: {
     aiImageIntervalMultiplier: 1.6, // 8s -> ~13s between gens
-    maxAiLayers: 4,
+    maxAiLayers: 3,
     maxConcurrentAiGens: 3,
     enableDualShader: true,
     bloomScale: 0.7,

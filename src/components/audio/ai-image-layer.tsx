@@ -4,7 +4,6 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
-import { getGhostReferenceUrl } from "@/lib/journeys/ghost-reference";
 import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT } from "@/lib/journeys/journeys";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
@@ -487,11 +486,18 @@ export function AiImageLayer({
     // that, so a strict prompt-match check would drop every frame.
     const requestJourneyId = journeyIdRef.current;
 
-    // Ghost journey: pass character-reference URL (for flux-pulid identity
-    // lock) + the shared negative prompt (to keep random figures, bird
-    // feathers, yellow centers, etc. out of the image).
+    // Ghost journey: pass the shared negative prompt so random people,
+    // bird feathers, yellow centers, etc. stay out of the image.
+    //
+    // PuLID face-reference is NOT passed here. PuLID was locking onto
+    // the reference portrait's front-face camera so aggressively that
+    // every gen looked like a close portrait regardless of the scene
+    // prompt's camera instructions (extreme wide, low angle, overhead,
+    // etc.). Plain flux/dev follows scene composition much better. Face
+    // identity drifts slightly between frames but the detailed angel
+    // descriptor (braids, translucent dress, butterfly wings) keeps the
+    // character recognizable.
     const isGhost = activeJourney?.id === "ghost";
-    const referenceImageUrl = isGhost ? getGhostReferenceUrl() ?? undefined : undefined;
     const negativePrompt = isGhost ? GHOST_NEGATIVE_PROMPT : undefined;
 
     service
@@ -500,7 +506,6 @@ export function AiImageLayer({
         denoisingStrength: denoisingRef.current,
         width: 1024,
         height: 1024,
-        referenceImageUrl,
         negativePrompt,
       })
       .then(async (url) => {
