@@ -273,14 +273,14 @@ export function AiImageLayer({
         if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
     } else {
-      // Same-journey phase transition.
-      // Cancel in-flight requests so old-phase imagery (generated under the
-      // previous prompt) doesn't land after the new phase has started —
-      // this was causing Ghost to keep showing tunnel imagery deep into the
-      // tree/golden phases. Keep the image cache since identical prompts
-      // across replays can still be reused. Old on-screen layers fade
-      // naturally via tier-based eviction; only pending requests die.
-      getRealtimeImageService().cancelInFlight();
+      // Same-journey prompt change (either phase transition OR a within-
+      // phase sequence advance). Do NOT cancel in-flight requests — the
+      // per-sequence cadence changes the prompt every ~5s, and PuLID
+      // gens take ~10s, so cancelling would guarantee no image ever
+      // lands. The landing site only discards outputs if the journey
+      // itself changed mid-flight; within a journey, late-arriving
+      // frames from a previous sequence entry are still visually
+      // relevant, so they're pushed to the stack.
       promptChangeTimeRef.current = performance.now();
     }
   }, [prompt, journeyId]);
@@ -481,8 +481,11 @@ export function AiImageLayer({
       variedPrompt = `${basePrompt}, ${pov}, ${interp}, ${mood}, no snowflakes`;
     }
 
-    // Capture current prompt to discard stale responses after a prompt change
-    const requestPrompt = currentPrompt;
+    // Capture the journey id at dispatch time. We only discard landings if
+    // the journey itself changed — sequence-driven prompt changes happen
+    // every few seconds within a phase, and PuLID gens take longer than
+    // that, so a strict prompt-match check would drop every frame.
+    const requestJourneyId = journeyIdRef.current;
 
     // Ghost journey: pass character-reference URL (for flux-pulid identity
     // lock) + the shared negative prompt (to keep random figures, bird
@@ -502,8 +505,10 @@ export function AiImageLayer({
       })
       .then(async (url) => {
         if (!url) return;
-        // Discard if prompt changed while request was in flight
-        if (promptRef.current !== requestPrompt) return;
+        // Discard only if the journey itself changed mid-flight (hard
+        // discontinuity). Within a journey, let sequenced frames land
+        // even if the prompt has advanced — the scene is still relevant.
+        if (journeyIdRef.current !== requestJourneyId) return;
 
         // ── Visual compliance gate ──
         // For journeys with strict visual requirements (e.g. Ghost), every

@@ -344,7 +344,17 @@ export function JourneyCompositor({
               cleanly above the shader without a rectangular black frame. */}
           {(() => {
             const flashImpulse = impulse > 0 ? impulse : Math.max(0, (approach - 0.92) / 0.08);
-            const flashVariant: 0 | 1 = bassHitCountRef.current <= 1 ? 0 : 1;
+            // During the approach phase (before the impulse crosses the
+            // threshold that increments bassHitCountRef), count is still
+            // the value from the PREVIOUS hit. If we just used
+            // `bassHitCountRef.current`, the approach window of flash #2
+            // would pre-render variant 0 (dark) — the viewer sees dark,
+            // then it snaps to white when the impulse fires. Add +1
+            // during the approach so the variant for the upcoming hit
+            // is used all the way through.
+            const isApproachOnly = impulse <= 0 && approach > 0.92;
+            const effectiveCount = bassHitCountRef.current + (isApproachOnly ? 1 : 0);
+            const flashVariant: 0 | 1 = effectiveCount <= 1 ? 0 : 1;
             return (
               <div
                 style={{
