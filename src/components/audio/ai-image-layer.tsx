@@ -61,17 +61,16 @@ interface ImageLayer {
   purge?: boolean;
 }
 
-// Pacing — spec v2 §6: 4s fade in, 5s visible at peak, 4s fade out,
-// new image arriving ~every 5s. The 4s crossfade blurs major image-
-// theme transitions naturally instead of feeling snappy. With a 5s
-// arrival interval and 4+4s dissolves, 2-3 images always overlap on
-// screen — matches the compositional rule in spec §2.
-const DISSOLVE_DURATION = 4000;
-const FADEOUT_DURATION = 4000;
+// Pacing — spec v3 §6: slow crossfades and long tails so images BUILD
+// and interweave into the "infinite surreal collage" feel the user
+// asked for. 6s fade in, 4s peak, 10s long fade-out tail, new image
+// every ~7s. Total life 20s with ~3 images overlapping at any time.
+const DISSOLVE_DURATION = 6000;
+const FADEOUT_DURATION = 10000;
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
-const MIN_PEAK_DURATION = 5000;
-const GEN_INTERVAL_MIN_BASE = 4500;
-const GEN_INTERVAL_MAX_BASE = 5500;
+const MIN_PEAK_DURATION = 4000;
+const GEN_INTERVAL_MIN_BASE = 6500;
+const GEN_INTERVAL_MAX_BASE = 7500;
 const POETRY_GEN_DELAY = 1500; // 1.5s after new poetry line — react faster
 const PROMPT_DEBOUNCE = 1500; // 1.5s debounce on prompt changes
 const KEN_BURNS_DURATION = 50; // seconds — full motion cycle

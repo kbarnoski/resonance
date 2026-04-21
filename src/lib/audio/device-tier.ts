@@ -208,11 +208,11 @@ export interface TierProfile {
 const PROFILES: Record<DeviceTier, TierProfile> = {
   high: {
     aiImageIntervalMultiplier: 1.0,
-    // 6 layers restored: this is the "super cool moving layers of images"
-    // feel the user liked. Shader still shows through because phase
-    // shaderOpacity caps image opacity at 0.65–0.75 and images cross-
-    // dissolve rather than sitting at full opacity.
-    maxAiLayers: 6,
+    // 8 layers (spec v3 §6): the slower crossfade + long fade-out tail
+    // means more images accumulate — this is the "infinite surreal
+    // collage" feel. Shader still reads through because phase
+    // shaderOpacity caps image opacity at 0.65–0.75.
+    maxAiLayers: 8,
     maxConcurrentAiGens: 4,
     enableDualShader: true,
     bloomScale: 1.0,

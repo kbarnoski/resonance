@@ -33,9 +33,9 @@ const FLASH_PORTRAIT_BASE =
 
 const DARK_FLASH_PROMPT =
   FLASH_PORTRAIT_BASE +
-  ", pose: standing facing camera front-on, BOTH ARMS RAISED high above her head reaching upward, " +
-  "eyes wide OPEN with PURE JET BLACK orbs (entirely black eyes, no whites, no pupils, no iris — just solid void black eyes staring mysteriously, possessed stare), " +
-  "wardrobe: possessed under a dark spell. hair is JET BLACK, dress is JET BLACK translucent shadow-mist, wings on her back are JET BLACK translucent flowing wisps of shadow and dark mist like flowing smoke or silk, particles wrapped in her braids and streaming from her dress and wings are BLACK. same identity, same body, same pose as the white version — only the wardrobe has flipped to black AND the eyes are open as black voids";
+  ", pose: standing facing camera front-on, BOTH ARMS RAISED high above her head, " +
+  "eyes wide OPEN with PURE JET BLACK orbs (solid void black eyes, possessed stare), " +
+  "wardrobe: the dark-reflection possessed form — her SNOW WHITE spiral hair has stayed white (white particles still spiraling along every strand), but her dress has turned JET BLACK translucent shadow-mist and her wings on her back are JET BLACK translucent flowing wisps of shadow and dark mist like flowing smoke or silk with BLACK particles streaming from them. the striking contrast of white spiral hair cascading over jet black translucent wardrobe marks the possession moment";
 
 const WHITE_FLASH_PROMPT =
   FLASH_PORTRAIT_BASE +

@@ -504,3 +504,28 @@ dark-to-white snap.
     - Age progression: young → peak-adult by the bloomed tree
     - Between flashes: dress + wings black, hair stays WHITE
     - Never sexy — spiritual, ethereal, pure
+- **v3:** 2026-04-20. User's refined story-arc directives:
+    - Phase 1 scene is specifically a grand medieval stone castle
+      with natural light; angel appears as a CHILD with spiritual
+      qualities, seen from great distance
+    - Phase 2 portal descends INTO the earth with darkness pulling
+      her inward; arms change position through the underground
+      travel beats
+    - Phase 3 reveals possession via a DARK reflection of herself
+      looking up from the pool; black translucent wings rise FROM
+      the water and attach to her (not found floating + put on)
+    - Phase 4 she flies through the epic cave toward light, then
+      sees a small dark tree on ITS OWN small planet with cosmos
+      and a sunset behind; flash #2 fires on arrival returning her
+      to white
+    - Phase 5 white-angel returned; tree begins with NO flowers and
+      blooms slowly as she merges; seen always from great distance
+    - Phase 6 is a surreal cosmic ZOOM-OUT tableau revealing the
+      castle, portal, and blooming tree all together in one
+      infinite view, then soaring in golden light. Transcendent
+      but explicitly NOT religious.
+    - Pacing: 6s fade in, 4s peak, 10s fade out, new image every
+      ~7s — slower crossfade so images build and interweave
+      instead of switching
+    - Max layers bumped 6→8 on high tier for the "infinite surreal
+      collage" accumulation
