@@ -203,14 +203,16 @@ export interface TierProfile {
   enableBassFlash: boolean;
 }
 
+// Base profiles by device tier. Connection-aware downgrade is applied
+// on top in getTierProfile() — see getConnectionQuality().
 const PROFILES: Record<DeviceTier, TierProfile> = {
   high: {
     aiImageIntervalMultiplier: 1.0,
-    // Trimmed from 6 to 4: with no-cancel concurrency the previous 6
-    // produced rich layering but the shader backdrop was getting
-    // smothered. 4 keeps the cross-dissolve richness while letting the
-    // shader bleed through between images.
-    maxAiLayers: 4,
+    // 6 layers restored: this is the "super cool moving layers of images"
+    // feel the user liked. Shader still shows through because phase
+    // shaderOpacity caps image opacity at 0.65–0.75 and images cross-
+    // dissolve rather than sitting at full opacity.
+    maxAiLayers: 6,
     maxConcurrentAiGens: 4,
     enableDualShader: true,
     bloomScale: 1.0,
@@ -221,7 +223,7 @@ const PROFILES: Record<DeviceTier, TierProfile> = {
   },
   medium: {
     aiImageIntervalMultiplier: 1.6, // 8s -> ~13s between gens
-    maxAiLayers: 3,
+    maxAiLayers: 4,
     maxConcurrentAiGens: 3,
     enableDualShader: true,
     bloomScale: 0.7,
@@ -243,6 +245,50 @@ const PROFILES: Record<DeviceTier, TierProfile> = {
   },
 };
 
+/**
+ * Check the browser's network connection quality via the NetworkInformation
+ * API. Returns "slow" when downlink < 1.5 Mbps or effectiveType is 2g/3g,
+ * "fast" otherwise, "unknown" when the API is unavailable (Safari, etc.).
+ * Called every time getTierProfile() runs so we pick up live network
+ * changes (e.g. wifi -> cellular mid-session).
+ */
+type ConnectionQuality = "fast" | "slow" | "unknown";
+
+function getConnectionQuality(): ConnectionQuality {
+  if (typeof navigator === "undefined") return "unknown";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const conn = (navigator as any).connection
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ?? (navigator as any).mozConnection
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ?? (navigator as any).webkitConnection;
+  if (!conn) return "unknown";
+
+  const effectiveType: string | undefined = conn.effectiveType;
+  const downlink: number | undefined = conn.downlink; // Mbps
+  const saveData: boolean | undefined = conn.saveData;
+
+  if (saveData) return "slow";
+  if (effectiveType === "slow-2g" || effectiveType === "2g" || effectiveType === "3g") {
+    return "slow";
+  }
+  if (typeof downlink === "number" && downlink < 1.5) return "slow";
+  return "fast";
+}
+
+/** Return the tier profile with connection-quality downgrade applied.
+ *  On a slow connection, reduce layers by 2 and concurrency by 1 so
+ *  the pipeline doesn't stall waiting on slow image arrivals. */
 export function getTierProfile(): TierProfile {
-  return PROFILES[getDeviceTier()];
+  const base = PROFILES[getDeviceTier()];
+  const connection = getConnectionQuality();
+  if (connection !== "slow") return base;
+
+  return {
+    ...base,
+    maxAiLayers: Math.max(1, base.maxAiLayers - 2),
+    maxConcurrentAiGens: Math.max(1, base.maxConcurrentAiGens - 1),
+    // Slow connection → generate less often so we don't back up the queue
+    aiImageIntervalMultiplier: base.aiImageIntervalMultiplier * 1.5,
+  };
 }
