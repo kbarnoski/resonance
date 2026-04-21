@@ -519,16 +519,16 @@ export function defaultPhases(
 // The character stays identical between variants — same body, same pose,
 // same pale skin, same fibonacci-spiral braided hair woven into the dress.
 // Only the hair / dress / wing COLOR changes.
-// Shared body — same hair/skin/dress/particles in every variant. Per
-// spec v1 Section 3a: hair is NOT braided — long free-flowing fibonacci
-// spiral strands cascading to the ground and trailing in the air, wrapped
-// with particles. Face always obscured (never front-on).
+// Shared body — spec v2 §3a. Main angel + 2-3 translucent spirit-
+// echoes of herself overlapping (multi-exposure collage effect).
+// Spiritual / NOT sexy. Face always obscured (never front-on).
 const GHOST_ANGEL_BODY =
-  "ONE AND ONLY ONE ethereal angel woman (only one single angel in the entire frame, never two, never multiple figures, never any companion figures, never crowds, never onlookers, never distant bystanders, never silhouettes of other people anywhere in the scene), " +
+  "one main ethereal angel woman (no different people, no companions, no crowds, no onlookers — this is a SOLO figure scene) accompanied by 2 or 3 translucent ghostly spirit-echoes of HERSELF overlapping her at slight offsets like a long-exposure photograph, multi-exposure film effect of her own motion-trails, the echoes are ethereal duplicates of the same angel bleeding through the main figure (not different people), " +
+  "spiritual serene ethereal pure luminous being — NEVER sexy, NEVER sensual, NEVER revealing, NEVER provocative, NEVER seductive, " +
   "pale luminous skin, " +
   "her face always obscured and hidden behind her long flowing hair or turned away from the camera — never a front-on view, never face-forward, never a full face shot, always mysterious, " +
   "her hair is very long and free-flowing (NEVER braided, NEVER plaited) — fibonacci spiral da Vinci fractal strands cascading from her head down past her waist all the way to the ground AND trailing upward and outward in the air like flowing streamers and ribbons floating in space, the hair itself reads as fibonacci spirals and curls, wrapped with dense swirling particles spiraling along every strand, the hair flows seamlessly into her dress so hair and dress read as one continuous translucent ribbon from head to beyond her feet, " +
-  "wearing a long floor-length flowing translucent dress of woven mist and light, somewhat see-through, rippling with dense swirling particles, " +
+  "wearing a long floor-length flowing translucent MODEST dress of woven mist and light that covers her body, somewhat see-through rippling with dense swirling particles (translucent is mist-like NOT skin-revealing), " +
   "dense swirling particles filling the air around her body and streaming from her hair and dress";
 
 // Wing language per spec Section 3a — translucent flowing wisps of light
@@ -558,14 +558,69 @@ export const GHOST_ANGEL_WHITE =
 // She already has the wings by the time any flash fires.
 export const GHOST_ANGEL_BLACK =
   GHOST_ANGEL_BODY +
-  ", eyes closed peaceful serene mysterious expression (face always obscured — the possession reads through wardrobe color not through eyes, since her face is never visible in the main journey imagery anyway), " +
+  ", eyes closed peaceful serene mysterious expression (face obscured as in the white version), " +
   WINGS_CLAUSE +
-  ", wardrobe: the angel has been possessed and transformed into a dark devil angel under a mysterious spell. JET BLACK long flowing spiral fibonacci hair (NEVER braided), JET BLACK translucent shadow-mist dress, JET BLACK translucent wispy wings on her back, BLACK particles, a mysterious shadowed devil-angel character. same body, same long spiral hair shape, same pose, same pale luminous skin as the white version — only the wardrobe has flipped to pure black shadow";
+  ", wardrobe: the angel has been possessed under a mysterious spell — her hair stays SNOW WHITE (NEVER blonde, NEVER yellow, NEVER gold) but her DRESS has turned JET BLACK translucent shadow-mist and her WINGS have turned JET BLACK translucent shadow-mist wisps on her back. BLACK particles stream from the black dress and wings; WHITE particles still spiral along her white hair. the striking contrast of white spiral fibonacci hair cascading over jet black translucent wardrobe marks the possession";
 
 /** Marker substituted with the WINGED angel (flash-count driven) at gen time. */
 export const GHOST_ANGEL_MARKER = "<<GHOST_ANGEL>>";
 /** Marker substituted with the WINGLESS white angel at gen time (always white). */
 export const GHOST_ANGEL_WINGLESS_MARKER = "<<GHOST_ANGEL_WINGLESS>>";
+
+// Per-phase age descriptors (spec v2 §3a). Prepended to the scene so
+// age progression reads across the journey: young → peak adult by the
+// bloomed tree.
+const AGE_YOUNG = "the angel is YOUNG and youthful, in her early form, slight of build";
+const AGE_GROWING = "the angel is still young, growing into her form";
+const AGE_EMERGING = "the angel is growing into her power, young adult";
+const AGE_APPROACHING_PEAK = "the angel is nearing her peak — grown, radiant, almost full-form";
+const AGE_PEAK = "the angel is in her FULLY GROWN peak adult form — her most beautiful spiritual state, longest flowing hair, widest wings, most particles, brightest radiant light";
+
+// Subtle surreal overlay strings (spec v2 §2). Varied per phase so
+// different infinities bleed through different parts of the journey.
+const OVERLAY_STARS = "subtle translucent overlay of distant cosmic stars bleeding through the scene like a dreamlike double-exposure";
+const OVERLAY_HORIZON = "subtle translucent overlay of a distant infinite horizon line bleeding through the scene";
+const OVERLAY_OCEAN = "subtle translucent overlay of a gentle distant ocean and sky bleeding through the scene like a dreamlike double-exposure";
+const OVERLAY_SKY = "subtle translucent overlay of a pale distant sky bleeding through the scene";
+const OVERLAY_COSMOS = "subtle translucent overlay of deep cosmic nebulae bleeding through the scene";
+
+/** Age descriptor for the current Ghost phase (spec v2 §3a). */
+export function getGhostAgeForPhase(phase: string | null): string {
+  switch (phase) {
+    case "threshold":
+    case "expansion":
+      return AGE_YOUNG;
+    case "transcendence":
+      return AGE_GROWING;
+    case "illumination":
+      return AGE_EMERGING;
+    case "return":
+    case "integration":
+      return AGE_PEAK;
+    default:
+      return AGE_APPROACHING_PEAK;
+  }
+}
+
+/** Surreal-overlay descriptor for the current Ghost phase (spec v2 §2). */
+export function getGhostOverlayForPhase(phase: string | null): string {
+  switch (phase) {
+    case "threshold":
+      return OVERLAY_STARS;
+    case "expansion":
+      return OVERLAY_HORIZON;
+    case "transcendence":
+      return OVERLAY_OCEAN;
+    case "illumination":
+      return OVERLAY_COSMOS;
+    case "return":
+      return OVERLAY_SKY;
+    case "integration":
+      return OVERLAY_COSMOS;
+    default:
+      return OVERLAY_HORIZON;
+  }
+}
 
 /** Shared negative prompt for every Ghost generation — flux/dev reads this
  *  as a hard exclusion list. The global API-level negative covers feathers,
@@ -576,13 +631,14 @@ export const GHOST_NEGATIVE_PROMPT =
   "braids, braided hair, plaited hair, cornrows, french braid, " +
   "face visible, front view of face, face-forward shot, full face view, face close-up, portrait, face-focused composition, " +
   "eyes open, visible eyes, eye contact with camera, " +
+  "sexy pose, sensual pose, revealing clothing, revealing dress, provocative, erotic, seductive, sexualized, cleavage, exposed skin, naked, nude, bare shoulders, tight clothing, lingerie, " +
   "yellow flower, yellow center, colored flower, pink flower, " +
   "bird wings, feathered wings, solid opaque wings, bulky wings, " +
   "butterfly wings, butterfly-like wings, insect wings, segmented wings, " +
   "membrane wings, filigree wings, panel wings, wing panels, " +
   "missing wing, one wing, detached wings, floating wings, " +
   "man-made tunnel, brick wall, stone masonry, carved corridor, " +
-  "additional angel, second angel, companion, sibling, child, " +
+  "different people, crowds of angels, group of women, multiple different figures, sibling, child, " +
   "distant person, background silhouette, figure in distance";
 
 const GHOST_ANGEL = GHOST_ANGEL_MARKER;

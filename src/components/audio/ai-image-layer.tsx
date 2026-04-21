@@ -4,7 +4,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
-import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT } from "@/lib/journeys/journeys";
+import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT, getGhostAgeForPhase, getGhostOverlayForPhase } from "@/lib/journeys/journeys";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 
@@ -61,12 +61,13 @@ interface ImageLayer {
   purge?: boolean;
 }
 
-// Pacing — user's explicit target: 2s fade in, 5s visible at peak, 2s
-// fade out, new image arriving ~every 5s. That puts each image's
-// lifecycle at 9s total with a 2s overlap at crossfade. No slideshow,
-// no wait.
-const DISSOLVE_DURATION = 2000;
-const FADEOUT_DURATION = 2000;
+// Pacing — spec v2 §6: 4s fade in, 5s visible at peak, 4s fade out,
+// new image arriving ~every 5s. The 4s crossfade blurs major image-
+// theme transitions naturally instead of feeling snappy. With a 5s
+// arrival interval and 4+4s dissolves, 2-3 images always overlap on
+// screen — matches the compositional rule in spec §2.
+const DISSOLVE_DURATION = 4000;
+const FADEOUT_DURATION = 4000;
 const PURGE_FADEOUT_DURATION = 1500; // snappy clear when a new journey begins
 const MIN_PEAK_DURATION = 5000;
 const GEN_INTERVAL_MIN_BASE = 4500;
@@ -435,12 +436,17 @@ export function AiImageLayer({
       : Math.random;
 
     // Ghost-only: substitute the angel-descriptor markers for the current
-    // variant. <<GHOST_ANGEL_WINGLESS>> is always the white wingless angel
+    // variant and prepend per-phase age + surreal overlay (spec v2 §2 §3a).
+    // <<GHOST_ANGEL_WINGLESS>> is always the white wingless angel
     // (used in phases before she finds her wings at the pool).
     // <<GHOST_ANGEL>> is the winged angel, white or possessed-black
     // depending on the bass-flash count.
     let basePrompt = currentPrompt;
     if (activeJourney?.id === "ghost") {
+      const currentGhostPhase = getJourneyEngine().getCurrentPhase();
+      const age = getGhostAgeForPhase(currentGhostPhase);
+      const overlay = getGhostOverlayForPhase(currentGhostPhase);
+
       if (basePrompt.includes(GHOST_ANGEL_WINGLESS_MARKER)) {
         basePrompt = basePrompt.split(GHOST_ANGEL_WINGLESS_MARKER).join(GHOST_ANGEL_WINGLESS_WHITE);
       }
@@ -449,6 +455,10 @@ export function AiImageLayer({
         const descriptor = theme === "black" ? GHOST_ANGEL_BLACK : GHOST_ANGEL_WHITE;
         basePrompt = basePrompt.split(GHOST_ANGEL_MARKER).join(descriptor);
       }
+
+      // Prepend age + overlay so every Ghost frame carries them without
+      // needing to hand-edit all ~40 sequence entries.
+      basePrompt = `${age}. ${overlay}. ${basePrompt}`;
     }
 
     let variedPrompt: string;

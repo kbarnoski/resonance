@@ -28,11 +28,22 @@ watching close-ups of her.
 - **Close-ups only appear once she merges with the tree (phase 5).**
   And those close-ups are of the tree, her hand on the trunk, or the
   bloom progression — never of her face.
-- **Never show her face directly.** She is mysterious. Her face is
-  always obscured — by her long flowing spiral hair, turned away
-  from camera, in silhouette, or hidden in shadow. Back view,
+- **Never show her face directly.** Ever. She is mysterious. Her
+  face is always obscured — by her long flowing spiral hair, turned
+  away from camera, in silhouette, or hidden in shadow. Back view,
   three-quarter back, side silhouette, extreme wide. Never a
   face-forward or full-face shot anywhere in the journey.
+- **Spirit-echo collage, required.** Every main-imagery frame shows
+  2–3 translucent ghostly ECHOES of the same angel overlapping the
+  main figure at slight offsets — like a long-exposure photograph
+  or multi-exposure film, motion-trails of herself. Not different
+  people, not duplicates at different places — spirit-trails of the
+  SAME angel around her. This creates the surreal Ghost feel.
+- **Subtle surreal overlays.** Every frame has a faint layered
+  overlay of one or more: cosmic stars, a distant sky or horizon,
+  gentle ocean, infinite horizon-line. Subtle, translucent,
+  dreamlike — bleeding through the main scene as if the space
+  itself is porous to other infinities.
 - **Perspective variety across the wide range.** Every phase rotates
   through extreme wide, wide, mid, three-quarter back, low angle,
   overhead, silhouette. No repeats in a row.
@@ -43,8 +54,15 @@ watching close-ups of her.
 
 ### 3a. Shared body (identical in both variants)
 
-- **One and only one angel per frame.** Never two. Never companions.
-  Never crowds, onlookers, distant bystanders, background silhouettes.
+- **One main angel per frame** — no different people, no companions,
+  no crowds, no onlookers, no bystanders. However she IS always
+  accompanied by **2–3 translucent ghostly spirit-echoes of
+  herself** overlapping her at slight offsets, like multi-exposure
+  trails. These are not different figures — they're ethereal motion-
+  trails of the same angel. This is required (Section 2).
+- **Spiritual, NOT sexy.** She reads as a spirit / celestial being.
+  Never sensual. Never revealing. Never seductive. Ethereal,
+  luminous, pure, spiritual, light.
 - **Pale luminous skin.**
 - **Face always obscured.** Her face is never directly visible —
   hidden behind her long spiral hair, turned away from camera, in
@@ -73,6 +91,21 @@ watching close-ups of her.
     - Thin, flowing, ethereal — pure light-and-particle mist.
 - **Dense swirling particles** around her body, streaming from her
   hair, dress, and wings.
+- **Age progression across the journey.** She is YOUNG in the early
+  phases (Phase 1 window scene = youngest / most innocent) and
+  grows over the course of the story. By Phase 5 (the tree in full
+  bloom) she has reached her fully-grown peak adult form — her most
+  beautiful, most powerful state, with the longest flowing hair,
+  the most particles, the widest wings, and the most radiant
+  spiritual light. Phase 6 is this same peak form soaring in cosmos.
+  Specifics per phase:
+    - Phase 1 (chamber/window): young angel, early / youthful form
+    - Phase 2 (underground passage): still young, growing
+    - Phase 3 (pool + wings-find): transitional, growing into her power
+    - Phase 4 (emergence / tree approach): grown, approaching peak
+    - Phase 5 (tree bloom + merge): peak adult form — most beauty,
+      most particles, longest hair, widest wings, most light
+    - Phase 6 (soaring in golden cosmos): same peak adult form
 
 ### 3b. White variant (default — pre-flash-1, post-flash-2)
 
@@ -84,17 +117,18 @@ watching close-ups of her.
 
 ### 3c. Dark variant (post-flash-1, pre-flash-2)
 
-Same body, same pose, same pale skin, same long spiral hair, same
-wing placement — only the wardrobe changes. Face still obscured
-(hair / turned away / silhouette) — we do NOT see the black eyes in
-main journey imagery, only in the flash portrait itself.
+Same body, same pose, same pale skin, same wing placement. Only
+the DRESS and WINGS turn black; hair stays WHITE. Face still
+obscured (hair / turned away / silhouette).
 
-- **Hair:** JET BLACK. Same long spiral flow.
+- **Hair:** SNOW WHITE (unchanged — the white hair against the black
+  dress and wings is the striking possessed contrast).
 - **Dress:** JET BLACK translucent shadow-mist.
 - **Wings:** JET BLACK translucent shadow-mist wisps.
-- **Particles:** BLACK.
-- **Character reads as:** dark devil angel under a spell. Same body
-  as white variant, face still hidden.
+- **Particles:** BLACK streaming from her dress and wings; white
+  particles still along her hair.
+- **Character reads as:** dark devil angel under a spell — white
+  spiral hair cascading over jet black translucent wardrobe.
 
 ### 3d. Wingless state (early journey, before the pool)
 
@@ -355,12 +389,15 @@ dark-to-white snap.
 
 ## 6. Pacing
 
-- **Fade in:** 2s.
+- **Fade in:** 4s (bumped from 2s — the 2s felt too fast between
+  major image themes, 4s gives a natural blur-blend).
 - **Peak visible:** 5s.
-- **Fade out:** 2s.
-- **Total image lifecycle:** 9s.
-- **New image arrival interval:** ~5s (so next image starts fading
-  in as previous begins fading out).
+- **Fade out:** 4s.
+- **Total image lifecycle:** 13s.
+- **New image arrival interval:** ~5s. With the 4s fade in and 4s
+  fade out there are consistently 2–3 images overlapping on screen
+  at once — which lines up with the "always 2–3 overlapping"
+  compositional rule in Section 2.
 - **Max concurrent layers on screen:** 6 on high tier, 4 on medium,
   2 on low. Rich cross-dissolve — the "moving layers of images"
   feel — while the phase shaderOpacity (0.65-0.75) keeps the shader
@@ -394,8 +431,13 @@ dark-to-white snap.
 
 ## 7. Explicit DON'Ts (single consolidated list)
 
-- No other people, figures, crowds, onlookers, bystanders,
-  silhouettes, companions — **ever**. Only the one angel.
+- No DIFFERENT people, companions, crowds, onlookers, bystanders —
+  ever. The 2–3 translucent spirit-echoes of herself (per §2, §3a)
+  are allowed and required; they are not "different people."
+- **No sexy / sensual / revealing / provocative / erotic /
+  seductive / sexualized** imagery. Ever. She is spiritual, pure,
+  ethereal. Modest translucent dress. No cleavage, no skin exposure
+  beyond the face she isn't showing anyway.
 - **No close-up face shots anywhere in the journey. Ever.** Face
   always obscured (hair / turned away / silhouette / shadow).
 - No close-up shots of any kind in phases 1-4. Close shots are
@@ -455,3 +497,10 @@ dark-to-white snap.
     - Close-ups allowed only phase 5+ (and only on the tree/hand/
       bloom, never her face)
     - Documented mobile/desktop strategy explicitly in Section 6
+- **v2:** 2026-04-20. User directives:
+    - Crossfade 2s → 4s for natural blur
+    - 2–3 translucent spirit-echoes of herself required in every frame
+    - Subtle surreal overlays (sky, cosmos, ocean, horizons)
+    - Age progression: young → peak-adult by the bloomed tree
+    - Between flashes: dress + wings black, hair stays WHITE
+    - Never sexy — spiritual, ethereal, pure
