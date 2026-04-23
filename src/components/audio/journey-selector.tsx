@@ -402,6 +402,51 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     let pendingCues: { time: number; label: string }[] = [];
     let pendingDuration = 0;
 
+    // Built-in journeys with a hard-coded recordingId resolve globally —
+    // the Ghost track (and others) live in the admin's library but are
+    // is_featured / share_token-backed so RLS allows any authenticated
+    // user to read the row by id. Without this, non-admin users fell
+    // through to the user-scoped ILIKE fallback below, missed, and got
+    // a RANDOM track from their OWN library playing under the Ghost
+    // visuals. Must run before pairedSearch/random fallbacks.
+    if (journey.recordingId) {
+      try {
+        const supabase = createClient();
+        const { data: rec } = await supabase
+          .from("recordings")
+          .select("id, title, audio_url, duration, artist")
+          .eq("id", journey.recordingId)
+          .single();
+        if (rec) {
+          if (!isCurrent()) return;
+          play({ id: rec.id, title: rec.title, audioUrl: `/api/audio/${rec.id}`, duration: rec.duration ?? undefined, artist: rec.artist ?? undefined }, 0);
+          pendingDuration = rec.duration ?? 0;
+
+          const [analysisRes, markersRes] = await Promise.all([
+            supabase.from("analyses").select("*").eq("recording_id", rec.id).single(),
+            supabase.from("markers").select("time, label").eq("recording_id", rec.id).eq("type", "cue").order("time"),
+          ]);
+          if (analysisRes.data) useAudioStore.getState().setAnalysis(analysisRes.data);
+          const cues = (markersRes.data ?? []) as { time: number; label: string }[];
+          if (cues.length > 0) {
+            useAudioStore.getState().setCueMarkers(cues);
+            pendingCues = cues;
+          }
+
+          if (pendingCues.length > 0 && pendingDuration > 0) {
+            const engine = getJourneyEngine();
+            engine.setEvents(
+              pendingCues.map((c) => ({ time: c.time, type: "bass_hit" as const, intensity: 1.0 })),
+              pendingDuration,
+            );
+          }
+          return;
+        }
+      } catch (err) {
+        console.warn("[journey] journey.recordingId lookup failed, falling back:", err);
+      }
+    }
+
     // If this journey has a paired track, always load it from the beginning
     // (even if another track is currently playing)
     if (pairedSearch) {
