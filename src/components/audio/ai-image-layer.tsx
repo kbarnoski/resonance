@@ -730,7 +730,15 @@ export function AiImageLayer({
         // "peak" layers stay at opacity 1 — no change needed
       }
 
-      // Draw surviving layers with Ken Burns pan/zoom
+      // Draw surviving layers with Ken Burns pan/zoom.
+      // Aspect-preserving COVER fit: fal generates 1024×1024 (square) images
+      // but the canvas is whatever size the viewport has — wide on laptop
+      // fullscreen, narrow in a resized window, portrait on phone. Drawing
+      // with sw=w, sh=h stretched every image to the canvas aspect ratio,
+      // which squished pillars vertically in wide windows and stretched
+      // them in narrow ones. Now: compute cover dimensions from the image's
+      // own aspect ratio so it fills the short axis and overflows on the
+      // long one (center-cropped), which matches object-fit: cover.
       for (let i = 0; i < layers.length; i++) {
         const layer = layers[i];
         if (layer.opacity <= 0.001 || !layer.img.complete) continue;
@@ -748,8 +756,24 @@ export function AiImageLayer({
         const panOffsetX = layer.panX * maxPan * kenBurnsEased * w;
         const panOffsetY = layer.panY * maxPan * kenBurnsEased * h;
 
-        const sw = w * scale;
-        const sh = h * scale;
+        // Cover-fit: fill canvas without distorting the image's own aspect.
+        const imgW = layer.img.naturalWidth || layer.img.width || 1;
+        const imgH = layer.img.naturalHeight || layer.img.height || 1;
+        const imgAspect = imgW / imgH;
+        const canvasAspect = w / h;
+        let baseW: number;
+        let baseH: number;
+        if (imgAspect > canvasAspect) {
+          // Image wider than canvas → match height, overflow sides.
+          baseH = h;
+          baseW = h * imgAspect;
+        } else {
+          // Image taller or equal aspect → match width, overflow top/bottom.
+          baseW = w;
+          baseH = w / imgAspect;
+        }
+        const sw = baseW * scale;
+        const sh = baseH * scale;
         const dx = (w - sw) / 2 + panOffsetX;
         const dy = (h - sh) / 2 + panOffsetY;
 
