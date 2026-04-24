@@ -62,8 +62,17 @@ function detect(): DeviceTier {
   const nav = navigator as any;
   const ua: string = nav.userAgent ?? "";
 
-  // Mobile devices: always low (touch performance is the bigger story than CPU)
-  if (/iPhone|iPad|iPod|Android/i.test(ua)) return "low";
+  // Mobile devices — modern iPhones/iPads (A14+ / M-series iPads) have
+  // 6+ CPU cores and handle medium-tier rendering comfortably. Older
+  // phones (4 or fewer cores) stay on low. Android with 6+ cores also
+  // gets bumped since flagship Android SoCs are plenty capable.
+  // getTierProfile() applies a live connection-quality downgrade on top,
+  // so a capable phone on a slow network still drops back to low-ish.
+  if (/iPhone|iPad|iPod|Android/i.test(ua)) {
+    const cores: number = typeof nav.hardwareConcurrency === "number" ? nav.hardwareConcurrency : 0;
+    if (cores >= 6) return "medium";
+    return "low";
+  }
 
   const cores: number | undefined = typeof nav.hardwareConcurrency === "number" ? nav.hardwareConcurrency : undefined;
   const memory: number | undefined = typeof nav.deviceMemory === "number" ? nav.deviceMemory : undefined;

@@ -1291,26 +1291,6 @@ export function VisualizerClient({
 
   // Fullscreen toggle
   const handleFullscreenToggle = useCallback(() => {
-    if (isIOS) {
-      // iOS doesn't support Fullscreen API on non-video elements — toggle immersive mode
-      setIsFullscreen((prev) => {
-        const next = !prev;
-        iosImmersiveRef.current = next;
-        if (next) {
-          // Entering immersive: immediately hide controls for a clean experience
-          setControlsVisible(false);
-          if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
-          // Scroll to hide Safari/Chrome address bar
-          window.scrollTo(0, 1);
-        } else {
-          // Exiting immersive: show controls
-          setControlsVisible(true);
-          resetControlsTimer();
-        }
-        return next;
-      });
-      return;
-    }
     if (isDesktopApp()) {
       // Native kiosk mode — no browser chrome, no "Press Escape" overlay
       setIsFullscreen((prev) => {
@@ -1320,21 +1300,96 @@ export function VisualizerClient({
       });
       return;
     }
-    if (document.fullscreenElement) {
-      document.exitFullscreen().catch(() => setIsFullscreen(false));
-    } else {
-      document.documentElement.requestFullscreen().catch(() => {
-        // Fullscreen API failed — fall back to immersive mode
-        setIsFullscreen((v) => !v);
+
+    // Try the real Fullscreen API first. iPhone Safari gained document-level
+    // fullscreen support in iOS 16.4 and iPad has had webkit-prefixed
+    // fullscreen since iOS 12. Only fall back to the CSS immersive hack
+    // (position: fixed inset-0) if the native API is unavailable or throws.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const doc = document as any;
+    const root = document.documentElement;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const rootAny = root as any;
+
+    const nativeFullscreenElement =
+      doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+
+    const enterNative = (): Promise<void> | null => {
+      const fn = root.requestFullscreen
+        ? () => root.requestFullscreen()
+        : rootAny.webkitRequestFullscreen
+          ? () => rootAny.webkitRequestFullscreen()
+          : null;
+      return fn ? fn() : null;
+    };
+
+    const exitNative = (): Promise<void> | null => {
+      const fn = document.exitFullscreen
+        ? () => document.exitFullscreen()
+        : doc.webkitExitFullscreen
+          ? () => doc.webkitExitFullscreen()
+          : null;
+      return fn ? fn() : null;
+    };
+
+    if (nativeFullscreenElement) {
+      const p = exitNative();
+      if (p) {
+        p.catch(() => setIsFullscreen(false));
+      } else {
+        setIsFullscreen(false);
+      }
+      return;
+    }
+
+    const enterPromise = enterNative();
+    if (enterPromise) {
+      enterPromise
+        .then(() => setIsFullscreen(true))
+        .catch(() => {
+          // Native rejected (typically iPhone pre-16.4) — fall back to
+          // CSS-based immersive mode below.
+          enterCssImmersive();
+        });
+      return;
+    }
+
+    // No native API at all — CSS immersive fallback.
+    enterCssImmersive();
+
+    function enterCssImmersive() {
+      setIsFullscreen((prev) => {
+        const next = !prev;
+        iosImmersiveRef.current = next;
+        if (next) {
+          setControlsVisible(false);
+          if (controlsTimerRef.current) clearTimeout(controlsTimerRef.current);
+          window.scrollTo(0, 1);
+        } else {
+          setControlsVisible(true);
+          resetControlsTimer();
+        }
+        return next;
       });
     }
-  }, [isIOS]);
+  }, [resetControlsTimer]);
 
-  // Sync fullscreen state when user presses Escape or browser exits fullscreen
+  // Sync fullscreen state when user presses Escape or browser exits fullscreen.
+  // Listen to both standard and webkit-prefixed events so iOS/older Safari
+  // fire the state update when the user swipes to exit native fullscreen.
   useEffect(() => {
-    const handleChange = () => setIsFullscreen(!!document.fullscreenElement);
+    const handleChange = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const doc = document as any;
+      const el = doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+      setIsFullscreen(!!el);
+    };
     document.addEventListener("fullscreenchange", handleChange);
-    return () => document.removeEventListener("fullscreenchange", handleChange);
+    document.addEventListener("webkitfullscreenchange", handleChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleChange);
+      document.removeEventListener("webkitfullscreenchange", handleChange);
+    };
   }, []);
 
   // Keyboard shortcuts
