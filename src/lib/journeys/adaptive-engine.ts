@@ -171,6 +171,72 @@ function saveProfile(profile: AdaptiveProfile) {
   } catch { /* full */ }
 }
 
+// ─── Cross-origin feedback sync (admin / super-user) ───
+//
+// Admin's thumbs up/down should accumulate across every environment they
+// tap in — localhost, preview URLs, prod — because admin is the source of
+// truth for journey tuning. localStorage is per-origin, so without a sync
+// step each environment "learned" only from the thumbs tapped inside it.
+//
+// On session start we fetch the admin's full feedback history from the DB
+// (GET /api/journey-feedback — server gates by ADMIN_EMAIL and returns
+// only admin's own rows). We merge by timestamp into local state and
+// reset the derived profile so the next analyzeAndAdapt() recomputes
+// from the unified history.
+//
+// Non-admin users get a 403 from the endpoint and this call no-ops for
+// them — their localStorage remains the sole source of truth.
+
+let _adminSyncInFlight = false;
+let _adminSyncDone = false;
+
+export async function syncAdminFeedbackFromDb(): Promise<boolean> {
+  if (typeof window === "undefined" || typeof localStorage === "undefined") return false;
+  if (_adminSyncInFlight || _adminSyncDone) return false;
+  _adminSyncInFlight = true;
+  try {
+    const res = await fetch("/api/journey-feedback", { cache: "no-store" });
+    if (!res.ok) {
+      // 401 = not logged in; 403 = not admin — both are silent no-ops.
+      return false;
+    }
+    const dbRaw = await res.json();
+    if (!Array.isArray(dbRaw)) return false;
+
+    // DB payload is the Snapshot object itself.
+    const dbEntries = dbRaw.filter(
+      (e: unknown): e is Snapshot =>
+        !!e && typeof e === "object" && typeof (e as Snapshot).ts === "string",
+    );
+
+    let localEntries: Snapshot[] = [];
+    try {
+      const raw = localStorage.getItem(FEEDBACK_KEY);
+      localEntries = raw ? JSON.parse(raw) : [];
+    } catch { /* corrupt */ }
+
+    // Union by timestamp string — ts is an ISO string embedded in each snapshot.
+    const byTs = new Map<string, Snapshot>();
+    for (const e of localEntries) byTs.set(e.ts, e);
+    for (const e of dbEntries) byTs.set(e.ts, e);
+
+    const merged = Array.from(byTs.values())
+      .sort((a, b) => a.ts.localeCompare(b.ts))
+      .slice(-1000); // keep more than the default 500 — admin is building history
+
+    localStorage.setItem(FEEDBACK_KEY, JSON.stringify(merged));
+    // Reset derived profile so analyzeAndAdapt re-runs over the merged set.
+    localStorage.removeItem(PROFILE_KEY);
+
+    _adminSyncDone = true;
+    return true;
+  } catch {
+    return false;
+  } finally {
+    _adminSyncInFlight = false;
+  }
+}
+
 // ─── Pattern detection ───
 
 function detectPatterns(perfSnapshots: Snapshot[]): Rule[] {

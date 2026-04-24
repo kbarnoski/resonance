@@ -292,10 +292,13 @@ function pickJourneyShaders(
     return aRecent - bRecent;
   });
 
-  // Adaptive shader preferences only for custom journeys
-  return options.isCustom
-    ? applyShaderPreferences(shuffled, realmId ?? "custom")
-    : shuffled;
+  // Apply adaptive shader preferences to EVERY journey — built-in as well
+  // as custom. User directive 2026-04-23: admin thumbs up/down should tune
+  // all journeys, since the admin's feedback is the super-user signal.
+  // applyShaderPreferences reads love/dislike counts from the adaptive
+  // profile (now DB-synced across origins) and softly biases the shader
+  // order — never blocks, never hard-swaps, just nudges.
+  return applyShaderPreferences(shuffled, realmId ?? "custom");
 }
 
 /** Pick `count` shaders from pool, avoiding `used` set. Guarantees at least 2 (minimum for layering). */

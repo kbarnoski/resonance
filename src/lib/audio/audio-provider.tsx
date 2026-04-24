@@ -18,6 +18,7 @@ import {
   setMediaSessionPlaybackState,
   registerMediaSessionHandlers,
 } from "@/lib/media-session";
+import { syncAdminFeedbackFromDb } from "@/lib/journeys/adaptive-engine";
 
 /**
  * AudioProvider bridges the Zustand store to the audio engine singleton.
@@ -50,6 +51,15 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // SSR guard
     }
+  }, []);
+
+  // Admin cross-origin feedback sync — pulls admin's full thumbs history
+  // from the DB into localStorage on page load so the adaptive engine
+  // trains on the unified record (localhost + prod + every other origin
+  // admin has used). The endpoint is server-gated by ADMIN_EMAIL, so
+  // non-admin users silently no-op. Runs once per session.
+  useEffect(() => {
+    syncAdminFeedbackFromDb().catch(() => {});
   }, []);
 
   // ─── Native audio setup (desktop mode) ───
