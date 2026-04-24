@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from "react";
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from "react";
 import { X, Type, AudioLines, Share2, ChevronUp, ChevronDown, ChevronLeft, ChevronRight, Pause, Play, SkipBack, SkipForward, BookOpen, Library, Globe, Search, Maximize2, Minimize2, LogOut, Mic, Volume2, VolumeX } from "lucide-react";
 import { getAudioEngine, ensureResumed, type AnalyserLike } from "@/lib/audio/audio-engine";
 import { detectVibe, type Mood } from "@/lib/audio/vibe-detection";
@@ -645,9 +645,40 @@ export function VisualizerCore({
     };
   }, []);
 
+  // Pre-paint snap when the shader subtree un-hides (picker closes after a
+  // journey was selected). Without this the subtree re-mounts carrying the
+  // pre-picker layerAMode, paints one frame of the OLD shader, then the
+  // crossfade useEffect kicks in — producing a visible "orb flash"
+  // immediately before the Ghost shader shows up. useLayoutEffect runs
+  // synchronously after DOM mutation but before the browser paints, so
+  // we can setState and still commit the corrected mode in the same
+  // frame. We also null layerB and reset refs so the mode-change effect
+  // below sees a clean starting point and skips its own crossfade work.
+  useLayoutEffect(() => {
+    if (shadersHidden) return;
+    if (actualPrimaryMode === layerAMode) return;
+    cancelAnimationFrame(primaryFadeRef.current);
+    clearTimeout(primaryReadyTimeoutRef.current);
+    primaryReadyCbRef.current = null;
+    primaryWaitingForRef.current = null;
+    setLayerAMode(actualPrimaryMode);
+    setLayerBMode(null);
+    primaryPrevModeRef.current = actualPrimaryMode;
+    activeLayerRef.current = "a";
+    if (layerADivRef.current) layerADivRef.current.style.opacity = "1";
+    if (layerBDivRef.current) layerBDivRef.current.style.opacity = "0";
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shadersHidden]);
+
   // Primary shader A/B crossfade — triggered when actualPrimaryMode changes
   // (from mode change, dimmed→undimmed transition, or journey shader switch)
   useEffect(() => {
+    // Skip crossfade work while shaders are hidden — nothing is visible and
+    // the layout-effect above will resync state when we un-hide.
+    if (shadersHidden) {
+      primaryPrevModeRef.current = actualPrimaryMode;
+      return;
+    }
     if (actualPrimaryMode === primaryPrevModeRef.current) return;
     primaryPrevModeRef.current = actualPrimaryMode;
 

@@ -99,7 +99,7 @@ export function JourneyPhaseIndicator({
 
         timerRef.current = setTimeout(() => {
           setVisible(false);
-        }, 7000);
+        }, 4000);
       });
     });
 
