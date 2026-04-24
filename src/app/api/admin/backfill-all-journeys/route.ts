@@ -19,8 +19,19 @@ import type { JourneyPhase } from "@/lib/journeys/types";
  * imagery richness.
  *
  * POST /api/admin/backfill-all-journeys
- *   body: { limit?: number }   // optional cap on how many to process in this call
+ *   body: { limit?: number, batch?: number }
+ *     limit — cap on total journeys processed in this call (default 8).
+ *     batch — same thing, kept for clarity. Keep this small so the call
+ *             stays under Vercel's 300s function ceiling — each Claude
+ *             call is ~4-8s so 8 journeys ≈ 60-70s budget.
+ *
+ * Call repeatedly (the endpoint skips already-enriched rows) until both
+ * customEnriched and builtInEnriched stop incrementing.
  */
+
+// Stretch the Vercel function timeout from the 10s hobby default —
+// this endpoint does multiple sequential Claude generations.
+export const maxDuration = 300;
 
 const backfillSchema = z.object({
   phases: z
@@ -93,11 +104,15 @@ export async function POST(request: Request) {
     auth: { autoRefreshToken: false, persistSession: false },
   });
 
-  let limit = 100;
+  // Default 8 per call to stay under the 300s Vercel ceiling (each
+  // Claude call is ~4-8s, so 8 journeys ≈ 60-70s). Caller repeats until
+  // the summary shows no more enrichments happening.
+  let limit = 8;
   try {
     const body = await request.json().catch(() => ({}));
-    if (typeof body?.limit === "number" && body.limit > 0) {
-      limit = Math.min(body.limit, 500);
+    const fromBody = body?.limit ?? body?.batch;
+    if (typeof fromBody === "number" && fromBody > 0) {
+      limit = Math.min(fromBody, 40);
     }
   } catch { /* ignore */ }
 
@@ -113,13 +128,19 @@ export async function POST(request: Request) {
     errors: [] as string[],
   };
 
+  // Shared enrichment budget across custom + built-in.
+  let enrichedThisCall = 0;
+
   // ── Custom journeys ──
+  // Pull a handful of candidates without sequences — we over-fetch a bit
+  // so if some are already enriched we still find work to do.
   const { data: customs } = await admin
     .from("journeys")
     .select("id, name, subtitle, description, story_text, phases")
-    .limit(limit);
+    .limit(limit * 3);
 
   for (const row of customs ?? []) {
+    if (enrichedThisCall >= limit) break;
     results.customProcessed += 1;
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -152,6 +173,7 @@ export async function POST(request: Request) {
         results.errors.push(`custom ${row.id}: ${writeErr.message}`);
       } else {
         results.customEnriched += 1;
+        enrichedThisCall += 1;
       }
     } catch (err) {
       results.customFailed += 1;
@@ -170,6 +192,7 @@ export async function POST(request: Request) {
   );
 
   for (const journey of JOURNEYS) {
+    if (enrichedThisCall >= limit) break;
     results.builtInProcessed += 1;
     try {
       if (journey.id === "ghost") {
@@ -210,6 +233,7 @@ export async function POST(request: Request) {
         results.errors.push(`built-in ${journey.id}: ${writeErr.message}`);
       } else {
         results.builtInEnriched += 1;
+        enrichedThisCall += 1;
       }
     } catch (err) {
       results.builtInFailed += 1;
