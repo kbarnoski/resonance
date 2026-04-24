@@ -187,6 +187,95 @@ function saveProfile(profile: AdaptiveProfile) {
 // Non-admin users get a 403 from the endpoint and this call no-ops for
 // them — their localStorage remains the sole source of truth.
 
+// Boilerplate phrases common to every AI prompt — skipped during clause
+// extraction so they never count as loved/disliked signal.
+const PROMPT_BOILERPLATE = new Set([
+  "photorealistic cinematic",
+  "photorealistic",
+  "cinematic",
+  "no text no watermarks",
+  "no text",
+  "no watermarks",
+  "mysterious ethereal",
+  "mysterious",
+  "ethereal",
+  "wide shot",
+  "extreme wide shot",
+  "wide establishing shot",
+  "close-up",
+  "three-quarter shot",
+  "overhead shot",
+  "low-angle shot",
+  "back to the camera",
+  "back to camera",
+  "her back to the camera",
+  "warm sunset glow",
+  "universe sky",
+  "universe sky of stars nebulae and spiral galaxies",
+  "universe sky of stars nebulae galaxies",
+  "infinite cosmos",
+]);
+
+function extractDistinctiveClauses(snippet: string): string[] {
+  return snippet
+    .toLowerCase()
+    .split(/[,.]/)
+    .map((s) => s.trim().replace(/\s+/g, " "))
+    .filter((s) => s.length >= 8 && s.length <= 80)
+    .filter((s) => !PROMPT_BOILERPLATE.has(s));
+}
+
+/**
+ * Distinctive prompt clauses that have been thumbed DOWN enough times to
+ * become negative-prompt signal. A clause qualifies when it appears in
+ * ≥ 2 disliked snapshots AND has NEVER appeared in a loved snapshot.
+ * Intended to be passed to fal as additions to the base negative prompt.
+ */
+export function getDislikedImagePhrases(journeyId: string | null): string[] {
+  if (typeof localStorage === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(FEEDBACK_KEY);
+    const snapshots: Snapshot[] = raw ? JSON.parse(raw) : [];
+    // Scope to the active journey so a Ghost dislike doesn't bleed into
+    // Helix etc. — different narrative, different vocabulary.
+    const scoped = journeyId
+      ? snapshots.filter((s) => s.journeyId === journeyId)
+      : snapshots;
+    const dislikes = scoped.filter(
+      (s) => s.type === "dislike" && typeof s.aiPromptSnippet === "string",
+    );
+    const loves = scoped.filter(
+      (s) => s.type === "love" && typeof s.aiPromptSnippet === "string",
+    );
+
+    const lovedClauses = new Set<string>();
+    for (const s of loves) {
+      for (const c of extractDistinctiveClauses(s.aiPromptSnippet as string)) {
+        lovedClauses.add(c);
+      }
+    }
+
+    const counts = new Map<string, number>();
+    for (const s of dislikes) {
+      const seen = new Set<string>();
+      for (const c of extractDistinctiveClauses(s.aiPromptSnippet as string)) {
+        if (lovedClauses.has(c)) continue;
+        if (seen.has(c)) continue; // don't double-count clauses inside one snapshot
+        seen.add(c);
+        counts.set(c, (counts.get(c) ?? 0) + 1);
+      }
+    }
+
+    return [...counts.entries()]
+      .filter(([, n]) => n >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8) // cap to avoid blowing out the negative prompt
+      .map(([c]) => c);
+  } catch {
+    return [];
+  }
+}
+
 let _adminSyncInFlight = false;
 let _adminSyncDone = false;
 

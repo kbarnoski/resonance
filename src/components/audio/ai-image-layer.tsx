@@ -5,6 +5,7 @@ import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { getGhostAngelTheme } from "@/lib/journeys/ghost-flash-images";
 import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST_ANGEL_MARKER, GHOST_ANGEL_WINGLESS_MARKER, GHOST_NEGATIVE_PROMPT, getGhostAgeForPhase, getGhostOverlayForPhase } from "@/lib/journeys/journeys";
+import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
 
@@ -507,7 +508,14 @@ export function AiImageLayer({
     // descriptor (braids, translucent dress, butterfly wings) keeps the
     // character recognizable.
     const isGhost = activeJourney?.id === "ghost";
-    const negativePrompt = isGhost ? GHOST_NEGATIVE_PROMPT : undefined;
+    // Per-image thumbs feedback loop — append distinctive prompt clauses
+    // from past dislikes (scoped to this journey) into the negative
+    // prompt, so fal stops producing variants the user already rejected.
+    // Uses localStorage, which is admin-synced from DB on page load.
+    const dislikedPhrases = getDislikedImagePhrases(activeJourney?.id ?? null);
+    const baseNegative = isGhost ? GHOST_NEGATIVE_PROMPT : "";
+    const mergedNegative = [baseNegative, ...dislikedPhrases].filter(Boolean).join(", ");
+    const negativePrompt = mergedNegative.length > 0 ? mergedNegative : undefined;
 
     service
       .generateFrameREST({
