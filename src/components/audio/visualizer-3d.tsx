@@ -1284,7 +1284,7 @@ function AttractorFlowScene({
   const BETA = 8 / 3;
   // Integration timestep at runtime (slow + meditative). Pre-warm uses
   // the larger PREWARM_DT below so initial spread happens fast.
-  const STEP_DT = 0.0012;
+  const STEP_DT = 0.0008;
   const SUB_STEPS = 1;
   const PREWARM_DT = 0.005;
 
@@ -1410,7 +1410,7 @@ function AttractorFlowScene({
       u.u_time.value = t;
       u.u_bass.value = a.bass;
     }
-    if (pointsRef.current) pointsRef.current.rotation.y = t * 0.008;
+    if (pointsRef.current) pointsRef.current.rotation.y = t * 0.025;
   });
 
   return (
