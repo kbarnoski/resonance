@@ -1335,8 +1335,8 @@ function AttractorFlowScene({
       vec3 pos = vec3(position.x, position.y, position.z - 25.0) * u_scale;
       vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
       vDepth = -mvPos.z;
-      float size = aSize * (1.4 + u_bass * 0.7);
-      gl_PointSize = size * (180.0 / -mvPos.z);
+      float size = aSize * (0.9 + u_bass * 0.4);
+      gl_PointSize = size * (140.0 / -mvPos.z);
       gl_Position = projectionMatrix * mvPos;
     }
   `;
@@ -1355,18 +1355,19 @@ function AttractorFlowScene({
     void main() {
       float d = length(gl_PointCoord - vec2(0.5));
       if (d > 0.5) discard;
-      // Sharper falloff so additive overlap doesn't smear into white haze.
-      float alpha = smoothstep(0.5, 0.18, d);
+      // Hard-edged sprite so additive overlap can't smear via soft halo.
+      float alpha = smoothstep(0.5, 0.35, d);
 
       float hue = mod(vHue + u_time * 0.025, 1.0);
-      // Low value + low alpha so the dense center of the attractor (where
-      // many particles bunch on every orbit) stays color-rich instead of
-      // saturating to white under additive blending.
-      vec3 color = hsv2rgb(vec3(hue, 0.9, 0.45));
-      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.4, 1.0);
+      // Bright color but very low alpha — under additive blending this
+      // means each particle adds a small color contribution. Dense
+      // overlap regions sum to saturated color (not white) instead of
+      // each one already being near-white before stacking.
+      vec3 color = hsv2rgb(vec3(hue, 0.85, 0.7));
+      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.5, 1.0);
       color *= depthDim;
 
-      gl_FragColor = vec4(color, alpha * 0.32);
+      gl_FragColor = vec4(color, alpha * 0.12);
     }
   `;
 
@@ -1434,9 +1435,10 @@ function AttractorFlowScene({
           blending={THREE.AdditiveBlending}
         />
       </points>
-      <EffectComposer>
-        <Bloom luminanceThreshold={0.7} luminanceSmoothing={0.92} intensity={0.3} />
-      </EffectComposer>
+      {/* No EffectComposer — bloom plus 3.5k additive points blew out the
+          dense center of the attractor every time. Without bloom, particles
+          read as crisp colored dots tracing the strange-attractor curves,
+          which is the actual visual we wanted. */}
     </>
   );
 }
