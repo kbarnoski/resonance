@@ -1278,12 +1278,15 @@ function AttractorFlowScene({
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const positionAttrRef = useRef<THREE.BufferAttribute>(null);
 
-  const COUNT = 5000;
+  const COUNT = 3500;
   const SIGMA = 10;
   const RHO = 28;
   const BETA = 8 / 3;
-  const STEP_DT = 0.005;
-  const SUB_STEPS = 2;
+  // Integration timestep at runtime (slow + meditative). Pre-warm uses
+  // the larger PREWARM_DT below so initial spread happens fast.
+  const STEP_DT = 0.0025;
+  const SUB_STEPS = 1;
+  const PREWARM_DT = 0.005;
 
   const { positions, hues, sizes } = useMemo(() => {
     const pos = new Float32Array(COUNT * 3);
@@ -1303,9 +1306,9 @@ function AttractorFlowScene({
         const dx = SIGMA * (y - x);
         const dy = x * (RHO - z) - y;
         const dz = x * y - BETA * z;
-        x += dx * STEP_DT;
-        y += dy * STEP_DT;
-        z += dz * STEP_DT;
+        x += dx * PREWARM_DT;
+        y += dy * PREWARM_DT;
+        z += dz * PREWARM_DT;
       }
       pos[i * 3] = x;
       pos[i * 3 + 1] = y;
@@ -1353,17 +1356,17 @@ function AttractorFlowScene({
       float d = length(gl_PointCoord - vec2(0.5));
       if (d > 0.5) discard;
       // Sharper falloff so additive overlap doesn't smear into white haze.
-      float alpha = smoothstep(0.5, 0.2, d);
+      float alpha = smoothstep(0.5, 0.18, d);
 
-      float hue = mod(vHue + u_time * 0.04, 1.0);
-      // Lower value so additive blending stays in the saturated-color range
-      // instead of blowing out to white when many particles overlap.
-      vec3 color = hsv2rgb(vec3(hue, 0.85, 0.7));
-      // Dim faraway points for depth.
-      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.45, 1.0);
+      float hue = mod(vHue + u_time * 0.025, 1.0);
+      // Low value + low alpha so the dense center of the attractor (where
+      // many particles bunch on every orbit) stays color-rich instead of
+      // saturating to white under additive blending.
+      vec3 color = hsv2rgb(vec3(hue, 0.9, 0.45));
+      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.4, 1.0);
       color *= depthDim;
 
-      gl_FragColor = vec4(color, alpha * 0.55);
+      gl_FragColor = vec4(color, alpha * 0.32);
     }
   `;
 
@@ -1406,7 +1409,7 @@ function AttractorFlowScene({
       u.u_time.value = t;
       u.u_bass.value = a.bass;
     }
-    if (pointsRef.current) pointsRef.current.rotation.y = t * 0.05;
+    if (pointsRef.current) pointsRef.current.rotation.y = t * 0.015;
   });
 
   return (
@@ -1432,7 +1435,7 @@ function AttractorFlowScene({
         />
       </points>
       <EffectComposer>
-        <Bloom luminanceThreshold={0.55} luminanceSmoothing={0.9} intensity={0.45} />
+        <Bloom luminanceThreshold={0.7} luminanceSmoothing={0.92} intensity={0.3} />
       </EffectComposer>
     </>
   );
