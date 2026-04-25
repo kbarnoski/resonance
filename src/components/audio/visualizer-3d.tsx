@@ -1278,29 +1278,43 @@ function AttractorFlowScene({
   const materialRef = useRef<THREE.ShaderMaterial>(null);
   const positionAttrRef = useRef<THREE.BufferAttribute>(null);
 
-  const COUNT = 6000;
-
-  const { positions, hues, sizes } = useMemo(() => {
-    const pos = new Float32Array(COUNT * 3);
-    const hue = new Float32Array(COUNT);
-    const sz = new Float32Array(COUNT);
-    // Start with a small jittered cloud near (1, 1, 1). Particles diverge
-    // onto the attractor surface within ~1 second of integration.
-    for (let i = 0; i < COUNT; i++) {
-      pos[i * 3] = 1 + (Math.random() - 0.5) * 4;
-      pos[i * 3 + 1] = 1 + (Math.random() - 0.5) * 4;
-      pos[i * 3 + 2] = 1 + (Math.random() - 0.5) * 4;
-      hue[i] = i / COUNT;
-      sz[i] = 0.6 + Math.random() * 0.6;
-    }
-    return { positions: pos, hues: hue, sizes: sz };
-  }, []);
-
+  const COUNT = 5000;
   const SIGMA = 10;
   const RHO = 28;
   const BETA = 8 / 3;
   const STEP_DT = 0.005;
   const SUB_STEPS = 2;
+
+  const { positions, hues, sizes } = useMemo(() => {
+    const pos = new Float32Array(COUNT * 3);
+    const hue = new Float32Array(COUNT);
+    const sz = new Float32Array(COUNT);
+    // Pre-warm each particle: seed across the attractor's bounding box
+    // and integrate for a randomized burn-in count so each particle ends
+    // up at a different phase along its orbit. Without this the user
+    // sees a washed-out cloud near origin while the system converges,
+    // which looked like a "blurry white screen pulsing" in testing.
+    for (let i = 0; i < COUNT; i++) {
+      let x = (Math.random() - 0.5) * 30;
+      let y = (Math.random() - 0.5) * 30;
+      let z = Math.random() * 50;
+      const burnSteps = 250 + Math.floor(Math.random() * 750);
+      for (let j = 0; j < burnSteps; j++) {
+        const dx = SIGMA * (y - x);
+        const dy = x * (RHO - z) - y;
+        const dz = x * y - BETA * z;
+        x += dx * STEP_DT;
+        y += dy * STEP_DT;
+        z += dz * STEP_DT;
+      }
+      pos[i * 3] = x;
+      pos[i * 3 + 1] = y;
+      pos[i * 3 + 2] = z;
+      hue[i] = i / COUNT;
+      sz[i] = 0.5 + Math.random() * 0.5;
+    }
+    return { positions: pos, hues: hue, sizes: sz };
+  }, []);
 
   const vertexShader = `
     uniform float u_time;
@@ -1318,8 +1332,8 @@ function AttractorFlowScene({
       vec3 pos = vec3(position.x, position.y, position.z - 25.0) * u_scale;
       vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
       vDepth = -mvPos.z;
-      float size = aSize * (2.4 + u_bass * 1.4);
-      gl_PointSize = size * (220.0 / -mvPos.z);
+      float size = aSize * (1.4 + u_bass * 0.7);
+      gl_PointSize = size * (180.0 / -mvPos.z);
       gl_Position = projectionMatrix * mvPos;
     }
   `;
@@ -1338,15 +1352,18 @@ function AttractorFlowScene({
     void main() {
       float d = length(gl_PointCoord - vec2(0.5));
       if (d > 0.5) discard;
-      float alpha = smoothstep(0.5, 0.05, d);
+      // Sharper falloff so additive overlap doesn't smear into white haze.
+      float alpha = smoothstep(0.5, 0.2, d);
 
       float hue = mod(vHue + u_time * 0.04, 1.0);
-      vec3 color = hsv2rgb(vec3(hue, 0.72, 0.92));
-      // Dim faraway points so the depth read is unmistakable.
-      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.5, 1.0);
+      // Lower value so additive blending stays in the saturated-color range
+      // instead of blowing out to white when many particles overlap.
+      vec3 color = hsv2rgb(vec3(hue, 0.85, 0.7));
+      // Dim faraway points for depth.
+      float depthDim = clamp(1.0 - (vDepth - 4.0) * 0.07, 0.45, 1.0);
       color *= depthDim;
 
-      gl_FragColor = vec4(color, alpha * 0.85);
+      gl_FragColor = vec4(color, alpha * 0.55);
     }
   `;
 
@@ -1354,7 +1371,7 @@ function AttractorFlowScene({
     () => ({
       u_time: { value: 0 },
       u_bass: { value: 0 },
-      u_scale: { value: 0.12 },
+      u_scale: { value: 0.13 },
     }),
     [],
   );
@@ -1415,7 +1432,7 @@ function AttractorFlowScene({
         />
       </points>
       <EffectComposer>
-        <Bloom luminanceThreshold={0.2} luminanceSmoothing={0.9} intensity={1.1} />
+        <Bloom luminanceThreshold={0.55} luminanceSmoothing={0.9} intensity={0.45} />
       </EffectComposer>
     </>
   );
