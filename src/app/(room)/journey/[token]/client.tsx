@@ -134,7 +134,6 @@ export function SharedJourneyClient({
   // Time display — direct DOM updates, no re-renders
   const timeDisplayRef = useRef<HTMLSpanElement>(null);
   const timeDisplayMobileRef = useRef<HTMLSpanElement>(null);
-  const progressBarRef = useRef<HTMLDivElement>(null);
 
   // Frame throttle
   const lastFrameTimeRef = useRef(0);
@@ -696,25 +695,19 @@ export function SharedJourneyClient({
         progress = Math.min(1, elapsed / dur);
       }
 
-      // When song has ended, show 0:00 / duration and full progress, freeze frames
+      // When song has ended, show 0:00 / duration, freeze frames
       if (endedRef.current) {
         const endText = `${formatTime(0)} / ${formatTime(dur)}`;
         if (timeDisplayRef.current) timeDisplayRef.current.textContent = endText;
         if (timeDisplayMobileRef.current) timeDisplayMobileRef.current.textContent = endText;
-        if (progressBarRef.current) {
-          progressBarRef.current.style.width = "100%";
-        }
         animRef.current = requestAnimationFrame(tick);
         return;
       }
 
-      // Update time display + progress bar via DOM (no React re-render)
+      // Update time display via DOM (no React re-render)
       const timeText = `${formatTime(ct)} / ${formatTime(dur)}`;
       if (timeDisplayRef.current) timeDisplayRef.current.textContent = timeText;
       if (timeDisplayMobileRef.current) timeDisplayMobileRef.current.textContent = timeText;
-      if (progressBarRef.current) {
-        progressBarRef.current.style.width = `${progress * 100}%`;
-      }
 
       // Throttled frame updates — only push to React at ~30fps
       const now = performance.now();
@@ -793,13 +786,12 @@ export function SharedJourneyClient({
     };
   }, []);
 
-  const handleProgressClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const audio = audioRef.current;
-    if (!audio || !audio.duration) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const pct = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-    audio.currentTime = pct * audio.duration;
-  }, []);
+  // Progress bar removed 2026-04-26 — its 24px-tall touch target spanned
+  // the full bottom edge and overlapped the fullscreen button on mobile,
+  // causing accidental seeks to near-end that triggered journey
+  // completion. Also a UX remnant per user directive: journeys are not
+  // scrubbing experiences. The handleProgressClick callback that backed
+  // it is gone with the bar.
 
   const audioFeatures = { amplitude: 0, bass: 0 };
 
@@ -1509,32 +1501,6 @@ export function SharedJourneyClient({
               0:00 / 0:00
             </span>
           </div>
-        </div>
-      </div>
-
-      {/* Progress bar — thin overlay at the very bottom of the bar */}
-      <div
-        role="button"
-        tabIndex={0}
-        aria-label="Seek to position"
-        className="absolute bottom-0 inset-x-0 cursor-pointer"
-        style={{ zIndex: 11, height: "24px", display: "flex", alignItems: "flex-end" }}
-        onClick={handleProgressClick}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-          }
-        }}
-      >
-        <div className="w-full h-[2px] overflow-hidden">
-          <div
-            ref={progressBarRef}
-            className="h-full"
-            style={{
-              width: "0%",
-              background: "linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.5) 100%)",
-            }}
-          />
         </div>
       </div>
 
