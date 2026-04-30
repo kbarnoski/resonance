@@ -118,49 +118,43 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Action buttons — visually unified system.
-          Tier 1 (primary, filled): Enter The Room — the marquee experience.
-          Tier 2 (secondary, tinted): Upload Track / Create Journey — creative actions.
-          Both tiers share the same purple accent so they read as one family. */}
-      <div className="px-3 pb-2 space-y-2">
+      {/* Action buttons — sleek, restrained.
+          Tier 2 (Upload, Create): outlined ghost with accent only on the
+          icon. No fill at rest. On hover, a tiny accent tint creeps in.
+          Tier 1 (Enter The Room): a single notch above — same shape, same
+          size, but with a faint accent fill at rest so it reads as the
+          dominant action without shouting. */}
+      <div className="px-3 pb-2 space-y-1">
         <Link
           href="/upload"
-          className="w-full flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer"
-          style={{
-            background: "rgba(139, 92, 246, 0.14)",
-            border: "1px solid rgba(139, 92, 246, 0.4)",
-            color: "rgba(255, 255, 255, 0.9)",
-          }}
+          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/65 hover:text-white/90"
+          style={{ border: "1px solid rgba(255, 255, 255, 0.08)" }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.22)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.6)";
+            e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
+            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.14)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.4)";
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
           }}
         >
-          <Upload className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 1)" }} />
+          <Upload className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
           Upload Track
         </Link>
         <Link
           href="/create"
-          className="w-full flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer"
-          style={{
-            background: "rgba(139, 92, 246, 0.14)",
-            border: "1px solid rgba(139, 92, 246, 0.4)",
-            color: "rgba(255, 255, 255, 0.9)",
-          }}
+          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/65 hover:text-white/90"
+          style={{ border: "1px solid rgba(255, 255, 255, 0.08)" }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.22)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.6)";
+            e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
+            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.14)";
-            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.4)";
+            e.currentTarget.style.background = "transparent";
+            e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
           }}
         >
-          <Sparkles className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 1)" }} />
+          <Sparkles className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
           Create Journey
         </Link>
         <button
@@ -173,19 +167,21 @@ export function Sidebar() {
               router.push("/room");
             }
           }}
-          className="w-full flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-150 cursor-pointer text-white"
+          className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/85 hover:text-white"
           style={{
-            background: "rgba(139, 92, 246, 0.85)",
-            border: "1px solid rgba(139, 92, 246, 0.85)",
+            background: "rgba(139, 92, 246, 0.08)",
+            border: "1px solid rgba(139, 92, 246, 0.28)",
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 1)";
+            e.currentTarget.style.background = "rgba(139, 92, 246, 0.14)";
+            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.4)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "rgba(139, 92, 246, 0.85)";
+            e.currentTarget.style.background = "rgba(139, 92, 246, 0.08)";
+            e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.28)";
           }}
         >
-          <Disc3 className="h-4 w-4" />
+          <Disc3 className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.9)" }} />
           Enter The Room
         </button>
       </div>

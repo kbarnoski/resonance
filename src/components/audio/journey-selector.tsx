@@ -722,34 +722,29 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               ))}
             </div>
             <div className="flex items-center gap-2">
-              {/* Create Journey — accented so first-time users notice it.
-                  Tuned to be findable but not loud: tinted purple bg
-                  (not full saturation), single-color background (no
-                  gradient), soft border. Hover only changes brightness
-                  via background opacity — no transform shift, no
-                  re-layout. Cursor pointer explicit for Tailwind v4
-                  preflight which strips it from <button>. */}
+              {/* Create Journey — same restrained treatment as the
+                  sidebar Tier-2 buttons. Outlined ghost at rest, faint
+                  accent tint on hover, accent only on the icon.
+                  Cursor pointer explicit for Tailwind v4 preflight. */}
               <button
                 onClick={() => router.push("/create")}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-white/90 transition-colors duration-150 cursor-pointer"
+                className="flex items-center gap-2 px-3 py-2 rounded-md text-white/65 hover:text-white/90 transition-colors duration-150 cursor-pointer"
                 style={{
-                  fontSize: "0.82rem",
+                  fontSize: "0.78rem",
                   fontFamily: "var(--font-geist-sans)",
-                  fontWeight: 500,
                   letterSpacing: "0.01em",
-                  background: "rgba(139, 92, 246, 0.18)",
-                  border: "1px solid rgba(139, 92, 246, 0.45)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = "rgba(139, 92, 246, 0.28)";
-                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.65)";
+                  e.currentTarget.style.background = "rgba(139, 92, 246, 0.06)";
+                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.25)";
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = "rgba(139, 92, 246, 0.18)";
-                  e.currentTarget.style.borderColor = "rgba(139, 92, 246, 0.45)";
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
                 }}
               >
-                <Sparkles className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 1)" }} />
+                <Sparkles className="h-3.5 w-3.5" style={{ color: "rgba(196, 181, 253, 0.7)" }} />
                 Create Journey
               </button>
             </div>
