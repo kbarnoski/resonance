@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
   // Redirect authenticated users away from auth pages (except update-password which requires auth)
   if (user && isAuthPage && pathname !== "/update-password") {
     const url = request.nextUrl.clone();
-    url.pathname = "/library";
+    url.pathname = "/journeys";
     return NextResponse.redirect(url);
   }
 

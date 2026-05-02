@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 // no pillar nav of its own.
 const PILLARS = [
   { href: "/library", label: "Studio", icon: SlidersHorizontal, match: ["/library", "/recording", "/compare", "/collections", "/insights", "/settings", "/upload", "/create", "/batch-analyze"] },
-  { href: "/play", label: "Vizes", icon: Disc3, match: ["/vizes"] }, // /vizes browse page is slice 3; for now Vizes routes into the player directly.
-  { href: "/play?picker=journeys", label: "Journeys", icon: Compass, match: ["/journeys"] },
+  { href: "/vizes", label: "Vizes", icon: Disc3, match: ["/vizes"] },
+  { href: "/journeys", label: "Journeys", icon: Compass, match: ["/journeys"] },
   { href: "/paths", label: "Paths", icon: Route, match: ["/paths"] },
 ];
 

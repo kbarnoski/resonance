@@ -539,10 +539,10 @@ export const WaveformPlayer = forwardRef<WaveformPlayerHandle, WaveformPlayerPro
               <Button
                 variant="ghost"
                 size="icon"
-                aria-label="Enter The Room"
+                aria-label="Open in player"
                 onClick={onVisualizerOpen}
                 disabled={!isReady}
-                title="Enter The Room"
+                title="Open in player"
               >
                 <Sparkles className="h-4 w-4" />
               </Button>

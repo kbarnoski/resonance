@@ -39,7 +39,6 @@ export default async function PathsPage() {
         </h1>
         <p className="text-white/40 text-sm" style={{ fontFamily: "var(--font-geist-mono)" }}>
           Curated sequences of your journeys. Open one to play through, or share via link.
-          Featured paths (Welcome Home etc.) and on-the-fly path collections live inside The Room.
         </p>
       </div>
 
@@ -55,10 +54,10 @@ export default async function PathsPage() {
             You haven&apos;t made any paths yet.
           </p>
           <p className="text-white/30 text-xs mb-6" style={{ fontFamily: "var(--font-geist-mono)" }}>
-            Stitch journeys together in The Room to build a path.
+            Stitch journeys together to build a path.
           </p>
           <Link
-            href="/play"
+            href="/journeys"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white transition-colors cursor-pointer"
             style={{
               background: "rgba(139, 92, 246, 0.85)",
@@ -73,7 +72,7 @@ export default async function PathsPage() {
             }}
           >
             <Disc3 className="h-4 w-4" />
-            Open The Room
+            Browse Journeys
           </Link>
         </div>
       ) : (

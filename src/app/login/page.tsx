@@ -15,7 +15,7 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/play";
+  const redirectTo = searchParams.get("redirectTo") || "/journeys";
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();

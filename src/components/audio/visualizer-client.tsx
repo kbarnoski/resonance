@@ -109,6 +109,10 @@ interface VisualizerClientProps {
   /** When "journeys", auto-opens the journey selector on mount.
    *  Used by /play?picker=journeys (the Journeys pillar entry point). */
   initialPicker?: "journeys";
+  /** Which top-level pillar opened the player. Drives the in-player
+   *  "back" target so we land on the same browse surface the user came
+   *  from instead of always defaulting to /library. */
+  fromPillar?: "studio" | "vizes" | "journeys" | "paths";
 }
 
 // Pointer-fine + hover-hover environments are desktops. The CSS media
@@ -334,6 +338,7 @@ export function VisualizerClient({
   initialCustomJourney,
   initialPath,
   initialPicker,
+  fromPillar,
 }: VisualizerClientProps) {
   const router = useRouter();
 
@@ -662,7 +667,7 @@ export function VisualizerClient({
       .replace(/\//g, "_")
       .replace(/=+$/, "");
     const url = `${window.location.origin}/play/${token}`;
-    const trackTitle = currentTrack?.title ?? "The Room";
+    const trackTitle = currentTrack?.title ?? "Resonance";
     const title = `${trackTitle} — Resonance`;
     if (triggerNativeShare(url, title)) return;
     setShareSheet({ url, title });
@@ -1359,7 +1364,14 @@ export function VisualizerClient({
     if (activePath?.shareToken && state.activeJourney) {
       router.push(`/path/${activePath.shareToken}?view=app`);
     } else {
-      router.push("/library");
+      // Return to the pillar that sent us into the player.
+      const PILLAR_HOMES: Record<NonNullable<typeof fromPillar>, string> = {
+        studio: "/library",
+        vizes: "/vizes",
+        journeys: "/journeys",
+        paths: "/paths",
+      };
+      router.push(fromPillar ? PILLAR_HOMES[fromPillar] : "/journeys");
     }
     setJourneyCompleted(false);
     // Defer journey teardown: the small delay lets the route transition
@@ -1369,7 +1381,7 @@ export function VisualizerClient({
       if (s.activeJourney) s.stopJourney();
       s.setActivePath(null);
     }, 80);
-  }, [router]);
+  }, [router, fromPillar]);
 
   // Seek by offset
   const seekBy = useCallback((offset: number) => {

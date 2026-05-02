@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Library, Disc3 } from "lucide-react";
+import { Library, Compass } from "lucide-react";
 
 const PREF_KEY = "resonance-last-experience";
 
@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     const pref = localStorage.getItem(PREF_KEY);
     if (pref) {
-      router.replace("/play");
+      router.replace("/journeys");
     } else {
       setShowChooser(true);
     }
@@ -21,9 +21,9 @@ export default function Home() {
 
   if (!showChooser) return null;
 
-  function handleChoose(experience: "studio" | "room") {
+  function handleChoose(target: "studio" | "journeys") {
     localStorage.setItem(PREF_KEY, "chosen");
-    router.push(experience === "studio" ? "/library" : "/play");
+    router.push(target === "studio" ? "/library" : "/journeys");
   }
 
   return (
@@ -70,21 +70,21 @@ export default function Home() {
         </button>
 
         <button
-          onClick={() => handleChoose("room")}
+          onClick={() => handleChoose("journeys")}
           className="group flex w-72 flex-col items-start rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all hover:border-white/20 hover:bg-white/[0.06]"
         >
-          <Disc3 className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
+          <Compass className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
           <h2
             className="mb-1.5 text-lg font-medium text-white/90"
             style={{ fontFamily: "var(--font-geist-sans)" }}
           >
-            The Room
+            Journeys
           </h2>
           <p
             className="text-sm leading-relaxed text-white/40"
             style={{ fontFamily: "var(--font-geist-sans)" }}
           >
-            An immersive space for music and visuals
+            Guided audiovisual experiences
           </p>
         </button>
       </div>

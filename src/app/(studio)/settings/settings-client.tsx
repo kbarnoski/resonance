@@ -264,8 +264,8 @@ export function SettingsClient({
               </h3>
               <p className="text-sm leading-relaxed text-white/40">
                 Native desktop app with true kiosk mode — no browser chrome, no
-                &ldquo;Press Escape&rdquo; overlays. Ideal for The Room,
-                installation mode, and live performance.
+                &ldquo;Press Escape&rdquo; overlays. Ideal for full-screen
+                playback, installation mode, and live performance.
               </p>
             </div>
             <a
