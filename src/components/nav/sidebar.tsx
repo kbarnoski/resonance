@@ -18,13 +18,14 @@ import {
   X,
   Settings,
   Sparkles,
+  Route,
 } from "lucide-react";
 
-// Studio sub-destinations. Paths used to live here but is now a top-level
-// pillar (see PillarNav). Settings lives at the bottom near sign-out, so
-// it's listed in `accountItems` instead.
+// Studio destinations (browse-mode, not actions). Settings lives at the
+// bottom near sign-out, so it's listed in `accountItems` instead.
 const navItems = [
   { href: "/library", label: "Library", icon: Library },
+  { href: "/paths", label: "Paths", icon: Route },
   { href: "/compare", label: "Compare", icon: GitCompareArrows },
   { href: "/collections", label: "Collections", icon: FolderOpen },
   { href: "/insights", label: "Insights", icon: BarChart3 },
@@ -158,12 +159,12 @@ export function Sidebar() {
         </Link>
         <button
           onClick={() => {
-            // If viewing a recording detail page, carry that track into the player
+            // If viewing a recording detail page, carry that track into the Room
             const match = pathname.match(/^\/recording\/([^/]+)/);
             if (match) {
-              router.push(`/play?recording=${match[1]}&autoplay=0`);
+              router.push(`/room?recording=${match[1]}&autoplay=0`);
             } else {
-              router.push("/play");
+              router.push("/room");
             }
           }}
           className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/85 hover:text-white"
@@ -181,7 +182,7 @@ export function Sidebar() {
           }}
         >
           <Disc3 className="h-4 w-4" style={{ color: "rgba(196, 181, 253, 0.9)" }} />
-          Play
+          Enter The Room
         </button>
       </div>
 

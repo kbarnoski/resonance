@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Library, Compass } from "lucide-react";
+import { Library, Disc3 } from "lucide-react";
 
 const PREF_KEY = "resonance-last-experience";
 
@@ -13,7 +13,10 @@ export default function Home() {
   useEffect(() => {
     const pref = localStorage.getItem(PREF_KEY);
     if (pref) {
-      router.replace("/journeys");
+      // Returning users default to The Room (journeys) — user directive
+      // 2026-04-23. Studio remains accessible via the chooser on first visit
+      // and via the side nav for anyone who wants the analysis experience.
+      router.replace("/room");
     } else {
       setShowChooser(true);
     }
@@ -21,9 +24,9 @@ export default function Home() {
 
   if (!showChooser) return null;
 
-  function handleChoose(target: "studio" | "journeys") {
+  function handleChoose(experience: "studio" | "room") {
     localStorage.setItem(PREF_KEY, "chosen");
-    router.push(target === "studio" ? "/library" : "/journeys");
+    router.push(experience === "studio" ? "/library" : "/room");
   }
 
   return (
@@ -70,21 +73,21 @@ export default function Home() {
         </button>
 
         <button
-          onClick={() => handleChoose("journeys")}
+          onClick={() => handleChoose("room")}
           className="group flex w-72 flex-col items-start rounded-2xl border border-white/10 bg-white/[0.03] p-6 text-left transition-all hover:border-white/20 hover:bg-white/[0.06]"
         >
-          <Compass className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
+          <Disc3 className="mb-4 h-5 w-5 text-white/50 transition-colors group-hover:text-white/70" />
           <h2
             className="mb-1.5 text-lg font-medium text-white/90"
             style={{ fontFamily: "var(--font-geist-sans)" }}
           >
-            Journeys
+            The Room
           </h2>
           <p
             className="text-sm leading-relaxed text-white/40"
             style={{ fontFamily: "var(--font-geist-sans)" }}
           >
-            Guided audiovisual experiences
+            An immersive space for music and visuals
           </p>
         </button>
       </div>

@@ -47,13 +47,13 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
   const completedSet = mounted ? new Set(completedIds) : new Set<string>();
 
   // Prefetch the back destination as soon as the path screen mounts.
-  // /play is dynamic (reads auth cookies) so Next.js skips viewport
+  // /room is dynamic (reads auth cookies) so Next.js skips viewport
   // prefetch for it — we have to ask explicitly. By the time the user
   // clicks ← back, the RSC payload is already cached and the transition
   // back to The Room feels instant.
   useEffect(() => {
     if (!isInAppContext) return;
-    try { router.prefetch("/play"); } catch {}
+    try { router.prefetch("/room"); } catch {}
   }, [isInAppContext, router]);
 
   const preloadTrack = useCallback(
@@ -87,7 +87,7 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
       // hover/touch is an even stronger intent signal.
       try {
         if (isInAppContext) {
-          router.prefetch(`/play?customJourneyId=${journey.id}&pathToken=${pathToken}`);
+          router.prefetch(`/room?customJourneyId=${journey.id}&pathToken=${pathToken}`);
         } else if (journey.share_token) {
           router.prefetch(`/journey/${journey.share_token}?pathToken=${pathToken}`);
         }
@@ -112,7 +112,7 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
           {journeys.map((j, i) => {
             const done = completedSet.has(j.id);
             const href = isInAppContext
-              ? `/play?customJourneyId=${j.id}&pathToken=${pathToken}`
+              ? `/room?customJourneyId=${j.id}&pathToken=${pathToken}`
               : j.share_token
                 ? `/journey/${j.share_token}?pathToken=${pathToken}`
                 : "#";
@@ -188,7 +188,7 @@ export function Tracklist({ journeys, isInAppContext, pathToken, accent, glow }:
           const num = String(idx + 1).padStart(2, "0");
           const done = completedSet.has(j.id);
           const href = isInAppContext
-            ? `/play?customJourneyId=${j.id}&pathToken=${pathToken}`
+            ? `/room?customJourneyId=${j.id}&pathToken=${pathToken}`
             : j.share_token
               ? `/journey/${j.share_token}?pathToken=${pathToken}`
               : "#";

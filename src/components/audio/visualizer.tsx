@@ -1175,11 +1175,11 @@ export function VisualizerCore({
         </>
       )}
 
-      {/* ─── Studio back — top-left, desktop only (mobile bar already has a Studio button) ─── */}
+      {/* ─── Studio back — top-left, fades with controls (mirrors fullscreen) ─── */}
       {!installationMode && exitLabel === "back" && !journeyBrowsing && (currentTrack || journeyActive) && (
         <button
           onClick={onExit}
-          className="hidden md:flex absolute top-6 left-6 items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75 cursor-pointer"
+          className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75 cursor-pointer"
           style={{
             zIndex: 10,
             opacity: controlsVisible ? 1 : 0,
@@ -1620,13 +1620,39 @@ export function VisualizerCore({
             paddingBottom: "env(safe-area-inset-bottom, 0px)",
           }}
         >
-          {/* Row 1: Mode identity + track info. The Journeys/Viz segmented
-              toggle that used to live here was removed once the top-level
-              pillars (Studio · Vizes · Journeys · Paths) became the canonical
-              way to switch modes — keeping it duplicated the label space. */}
+          {/* Row 1: Mode identity + track info */}
           <div className="flex items-center justify-between px-3" style={{ height: "32px" }}>
-            {/* Left: active journey pill (mode toggle moved to top-level pillars) */}
+            {/* Left: mode toggle or journey pill */}
             <div className="flex items-center gap-1.5 min-w-0">
+              {showJourneyButton && onJourneyToggle && !journeyActive && (
+                <div
+                  className="flex items-center rounded-lg"
+                  style={{ border: "1px solid rgba(255,255,255,0.1)" }}
+                >
+                  <button
+                    onClick={onJourneyToggle}
+                    className={`px-2.5 py-1.5 rounded-l-[7px] transition-colors duration-75 ${
+                      inJourneyMode
+                        ? "bg-white/10 text-white/90"
+                        : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                    }`}
+                    style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
+                  >
+                    Journeys
+                  </button>
+                  <button
+                    onClick={inJourneyMode ? onSwitchToVisualize : undefined}
+                    className={`px-2.5 py-1.5 rounded-r-[7px] transition-colors duration-75 ${
+                      !inJourneyMode
+                        ? "bg-white/10 text-white/90"
+                        : "text-white/35 hover:text-white/60 hover:bg-white/10"
+                    }`}
+                    style={{ fontSize: "0.68rem", fontFamily: "var(--font-geist-mono)", lineHeight: 1 }}
+                  >
+                    Viz
+                  </button>
+                </div>
+              )}
               {journeyActive && journeyName && (
                 <div
                   className="flex items-center gap-1.5 pr-2.5 rounded-lg min-w-0"

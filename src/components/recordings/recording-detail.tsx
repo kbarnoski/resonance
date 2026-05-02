@@ -325,12 +325,12 @@ export function RecordingDetail({
             }, currentTime);
           }
           if (analysis) store.setAnalysis(analysis);
-          // Set cue markers for the player
+          // Set cue markers for The Room
           const cueOnly = markers.filter(m => m.type === "cue");
           store.setCueMarkers(
             cueOnly.map(m => ({ time: m.time, label: m.label }))
           );
-          router.push("/play");
+          router.push("/room");
         }}
       />
 

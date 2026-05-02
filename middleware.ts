@@ -41,8 +41,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/share/") ||
     pathname.startsWith("/journey/") ||
     pathname.startsWith("/path/") ||
-    (pathname.startsWith("/play/") &&
-      pathname !== "/play/installation" &&
+    (pathname.startsWith("/room/") &&
+      pathname !== "/room/installation" &&
       pathname.split("/").length === 3);
 
   if (!user && !isAuthPage && !isPublicRoute) {
@@ -55,7 +55,7 @@ export async function middleware(request: NextRequest) {
   // Redirect authenticated users away from auth pages (except update-password which requires auth)
   if (user && isAuthPage && pathname !== "/update-password") {
     const url = request.nextUrl.clone();
-    url.pathname = "/journeys";
+    url.pathname = "/library";
     return NextResponse.redirect(url);
   }
 

@@ -16,7 +16,7 @@ function SignupForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/journeys";
+  const redirectTo = searchParams.get("redirectTo") || "/room";
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();
