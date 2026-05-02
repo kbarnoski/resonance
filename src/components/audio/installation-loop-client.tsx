@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
-import { getAudioEngine, ensureResumed } from "@/lib/audio/audio-engine";
+import { getAudioEngine, ensureResumed, primeAudioElement } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
@@ -46,9 +46,29 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
   const [chromeVisible, setChromeVisible] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  // Browser autoplay gate. The desktop app doesn't enforce autoplay so we
+  // skip the click prompt there; in a normal browser tab one click anywhere
+  // unlocks the audio element + AudioContext for the rest of the session.
+  const [started, setStarted] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return isDesktopApp();
+  });
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const chromeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleStart = useCallback(() => {
+    // Both must run inside the click gesture: primeAudioElement teaches
+    // iOS / Safari that this audio element is "user-allowed", and
+    // ensureResumed wakes a suspended AudioContext. After this one
+    // gesture, every subsequent setQueue + play in the loop just works.
+    try {
+      getAudioEngine();
+      primeAudioElement();
+    } catch { /* engine warming */ }
+    void ensureResumed();
+    setStarted(true);
+  }, []);
 
   // Pick the right track for this index — paired first, then by-index from
   // the fallback pool, wrapping with modulo so any pool size works.
@@ -165,6 +185,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
 
   // ─── Phase machine ────────────────────────────────────────────────
   useEffect(() => {
+    // Hold the loop until the user has tapped to unlock audio. Without
+    // this gate, autoplay rejection silently strands the journey on
+    // phase 0: no sound, currentTime stuck at 0, only one AI image ever
+    // generates.
+    if (!started) return;
     if (phase.kind === "intro") {
       const t = setTimeout(() => {
         if (sequence.length === 0) {
@@ -222,7 +247,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence]);
+  }, [phase, sequence, started]);
 
   return (
     <div ref={containerRef} className="h-full w-full relative">
@@ -255,6 +280,46 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
 
       {phase.kind === "intro" && <InstallationIntro />}
       {phase.kind === "credits" && <InstallationCredits />}
+
+      {/* Browser autoplay gate. One click anywhere unlocks audio for the
+          rest of the session, then this layer goes away and the loop
+          starts. The desktop app skips this entirely because Tauri
+          doesn't enforce autoplay restrictions. */}
+      {!started && (
+        <button
+          type="button"
+          aria-label="Begin"
+          onClick={handleStart}
+          className="absolute inset-0 z-[60] flex items-end justify-center pb-24 cursor-pointer focus:outline-none"
+          style={{
+            background: "rgba(0, 0, 0, 0.0)",
+            animation: "installationGateFadeIn 800ms ease-out forwards",
+          }}
+        >
+          <span
+            className="text-white/35"
+            style={{
+              fontFamily: "var(--font-geist-mono)",
+              fontSize: "0.78rem",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+              animation: "installationGatePulse 2400ms ease-in-out infinite",
+            }}
+          >
+            Click anywhere to begin
+          </span>
+          <style jsx>{`
+            @keyframes installationGateFadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+            @keyframes installationGatePulse {
+              0%, 100% { opacity: 0.5; }
+              50% { opacity: 1; }
+            }
+          `}</style>
+        </button>
+      )}
     </div>
   );
 }
