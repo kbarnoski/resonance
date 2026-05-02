@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
-import { InstallationTitleCard } from "./installation-title-card";
 import { InstallationCredits } from "./installation-credits";
 
 /** One entry in the curated loop sequence. */
@@ -22,17 +22,19 @@ interface Props {
   fallbackTracks: Track[];
 }
 
-const INTRO_MS = 8_000;
-const TITLE_CARD_MS = 6_000;
-const CREDITS_MS = 12_000;
-// Safety net so the loop keeps moving even when a track is missing or has
-// no metadata duration. Tuned to ~6 minutes — longer than any built-in
-// journey but short enough that a stuck phase recovers visibly.
-const MAX_JOURNEY_MS = 6 * 60 * 1_000;
+// ─── Timing ────────────────────────────────────────────────────────────
+// Intro is held longer than a normal journey intro because the viewer is
+// arriving cold; they need time to read the room.
+const INTRO_MS = 14_000;
+// Credits get an even longer hold — the dedication should land.
+const CREDITS_MS = 16_000;
+// Safety net so the loop keeps moving even when a track is missing or
+// has no metadata duration. Tuned generously above the longest journey.
+const MAX_JOURNEY_MS = 8 * 60 * 1_000;
 
 type Phase =
   | { kind: "intro" }
-  | { kind: "journey"; index: number; titleVisible: boolean }
+  | { kind: "journey"; index: number }
   | { kind: "credits" };
 
 export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
@@ -42,19 +44,25 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
   const stopJourney = useAudioStore((s) => s.stopJourney);
 
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
+  const [chromeVisible, setChromeVisible] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const chromeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Pick the right track for this index — paired first, then by-index from
   // the fallback pool, wrapping with modulo so any pool size works.
-  const trackForIndex = (i: number): Track | null => {
-    const entry = sequence[i];
-    if (entry?.track) return entry.track;
-    if (fallbackTracks.length === 0) return null;
-    return fallbackTracks[i % fallbackTracks.length] ?? null;
-  };
+  const trackForIndex = useCallback(
+    (i: number): Track | null => {
+      const entry = sequence[i];
+      if (entry?.track) return entry.track;
+      if (fallbackTracks.length === 0) return null;
+      return fallbackTracks[i % fallbackTracks.length] ?? null;
+    },
+    [sequence, fallbackTracks],
+  );
 
-  // ─── Mount: kiosk + installation flag, cursor hide, key trap ───
+  // ─── Mount: kiosk + installation flag ─────────────────────────────
   useEffect(() => {
     setInstallationMode(true);
     if (isDesktopApp()) enterKioskMode().catch(() => {});
@@ -64,53 +72,105 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
       stopJourney();
       if (isDesktopApp()) exitKioskMode().catch(() => {});
     };
-    // Run only on mount/unmount; the actions are stable references.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Hide cursor after inactivity — same posture as InstallationClient.
+  // ─── Fullscreen state sync ────────────────────────────────────────
+  useEffect(() => {
+    const handleChange = () => {
+      const doc = document as Document & { webkitFullscreenElement?: Element };
+      setIsFullscreen(!!(document.fullscreenElement || doc.webkitFullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", handleChange);
+    document.addEventListener("webkitfullscreenchange", handleChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleChange);
+      document.removeEventListener("webkitfullscreenchange", handleChange);
+    };
+  }, []);
+
+  const toggleFullscreen = useCallback(() => {
+    const doc = document as Document & {
+      webkitFullscreenElement?: Element;
+      webkitExitFullscreen?: () => Promise<void>;
+    };
+    const el = document.documentElement as HTMLElement & {
+      webkitRequestFullscreen?: () => Promise<void>;
+    };
+    const isFs = !!(document.fullscreenElement || doc.webkitFullscreenElement);
+    if (isFs) {
+      (doc.webkitExitFullscreen ?? document.exitFullscreen).call(document).catch(() => {});
+    } else {
+      (el.webkitRequestFullscreen ?? el.requestFullscreen).call(el).catch(() => {});
+    }
+  }, []);
+
+  // ─── Cursor + chrome reveal on activity ───────────────────────────
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
-    const hide = () => {
-      container.style.cursor = "none";
-      setCursorVisible(false).catch(() => {});
-    };
-    const show = () => {
+    const reveal = () => {
       container.style.cursor = "default";
       setCursorVisible(true).catch(() => {});
+      setChromeVisible(true);
       if (cursorTimerRef.current) clearTimeout(cursorTimerRef.current);
-      cursorTimerRef.current = setTimeout(hide, 3000);
+      if (chromeTimerRef.current) clearTimeout(chromeTimerRef.current);
+      cursorTimerRef.current = setTimeout(() => {
+        container.style.cursor = "none";
+        setCursorVisible(false).catch(() => {});
+      }, 3000);
+      chromeTimerRef.current = setTimeout(() => {
+        setChromeVisible(false);
+      }, 3000);
     };
-    container.addEventListener("mousemove", show);
-    cursorTimerRef.current = setTimeout(hide, 3000);
+    container.addEventListener("mousemove", reveal);
+    container.addEventListener("touchstart", reveal);
+    // Initial hide after a beat so chrome doesn't flash on mount.
+    cursorTimerRef.current = setTimeout(() => {
+      container.style.cursor = "none";
+      setCursorVisible(false).catch(() => {});
+    }, 3000);
     return () => {
-      container.removeEventListener("mousemove", show);
+      container.removeEventListener("mousemove", reveal);
+      container.removeEventListener("touchstart", reveal);
       if (cursorTimerRef.current) clearTimeout(cursorTimerRef.current);
+      if (chromeTimerRef.current) clearTimeout(chromeTimerRef.current);
       setCursorVisible(true).catch(() => {});
     };
   }, []);
 
-  // Key trap — only Escape allowed, used by kiosk to exit.
+  // ─── Key handling — capture phase, defense in depth ───────────────
+  // Two goals: stop visualizer-client's Escape handler from navigating
+  // away to /library, and let F still toggle fullscreen even though the
+  // visualizer-client also binds F (we let the bubble continue for F).
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      if (e.key !== "Escape") {
+      // Allow F through — visualizer-client handles it (fullscreen).
+      if (e.key === "f" || e.key === "F") return;
+      // Eat Escape so visualizer-client.handleExit() can't fire.
+      // Browser still handles the native fullscreen-exit before our handler.
+      if (e.key === "Escape") {
         e.preventDefault();
-        e.stopPropagation();
+        e.stopImmediatePropagation();
+        return;
       }
+      // Trap everything else so the audience can't accidentally trigger
+      // shortcuts (space, arrows, h, l, t, p, v, a, etc.).
+      e.preventDefault();
+      e.stopImmediatePropagation();
     };
     document.addEventListener("keydown", handler, true);
     return () => document.removeEventListener("keydown", handler, true);
   }, []);
 
-  // ─── Phase machine ──────────────────────────────────────────────
+  // ─── Phase machine ────────────────────────────────────────────────
   useEffect(() => {
     if (phase.kind === "intro") {
       const t = setTimeout(() => {
         if (sequence.length === 0) {
           setPhase({ kind: "credits" });
         } else {
-          setPhase({ kind: "journey", index: 0, titleVisible: true });
+          setPhase({ kind: "journey", index: 0 });
         }
       }, INTRO_MS);
       return () => clearTimeout(t);
@@ -124,79 +184,117 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
       return () => clearTimeout(t);
     }
 
-    if (phase.kind === "journey") {
-      const entry = sequence[phase.index];
-      if (!entry) {
-        setPhase({ kind: "credits" });
-        return;
-      }
+    // Journey phase — load track, start journey, watch for end
+    const entry = sequence[phase.index];
+    if (!entry) {
+      setPhase({ kind: "credits" });
+      return;
+    }
 
-      // First visit to this index — load track, start journey, then
-      // schedule the title-card hide. The same effect re-runs after
-      // setPhase flips titleVisible to false (no double-load).
-      if (phase.titleVisible) {
-        try {
-          getAudioEngine();
-          ensureResumed();
-        } catch { /* engine warming */ }
-        const track = trackForIndex(phase.index);
-        if (track) {
-          setQueue([track], 0);
-        }
-        startJourney(entry.journey.id);
+    // Warm engine + ensure audio context is resumed (one user gesture
+    // anywhere on the page is enough; this is a no-op afterwards).
+    try {
+      getAudioEngine();
+      ensureResumed();
+    } catch { /* engine warming */ }
 
-        const t = setTimeout(() => {
-          setPhase({ kind: "journey", index: phase.index, titleVisible: false });
-        }, TITLE_CARD_MS);
-        return () => clearTimeout(t);
-      }
+    const track = trackForIndex(phase.index);
+    if (track) setQueue([track], 0);
+    startJourney(entry.journey.id);
 
-      // Title card hidden — watch for journey end (audio finishes or the
-      // safety timer expires) then advance.
-      const startMs = Date.now();
-      let raf = 0;
-      const advance = () => {
+    // Subscribe to store; advance when audio finishes or safety expires.
+    const startMs = Date.now();
+    let raf = 0;
+    const tick = () => {
+      const { currentTime, duration } = useAudioStore.getState();
+      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
+      const timedOut = Date.now() - startMs >= MAX_JOURNEY_MS;
+      if (audioEnded || timedOut) {
         if (phase.index + 1 < sequence.length) {
-          setPhase({ kind: "journey", index: phase.index + 1, titleVisible: true });
+          setPhase({ kind: "journey", index: phase.index + 1 });
         } else {
           setPhase({ kind: "credits" });
         }
-      };
-      const tick = () => {
-        const { currentTime, duration } = useAudioStore.getState();
-        const audioEnded = duration > 0 && currentTime >= duration - 0.5;
-        const timedOut = Date.now() - startMs >= MAX_JOURNEY_MS;
-        if (audioEnded || timedOut) {
-          advance();
-          return;
-        }
-        raf = requestAnimationFrame(tick);
-      };
+        return;
+      }
       raf = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(raf);
-    }
-    // Exhaustive — TS will catch missing branches.
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, sequence]);
-
-  const currentJourney =
-    phase.kind === "journey" ? sequence[phase.index]?.journey : null;
-  const currentTrack =
-    phase.kind === "journey" ? trackForIndex(phase.index) : null;
 
   return (
     <div ref={containerRef} className="h-full w-full relative">
       <VisualizerClient />
 
-      {phase.kind === "intro" && <InstallationIntro />}
-
-      {phase.kind === "journey" && phase.titleVisible && currentJourney && (
-        <InstallationTitleCard
-          journey={currentJourney}
-          trackTitle={currentTrack?.title ?? null}
-        />
+      {/* Sequence progress indicator — fixed bottom, ambient. Always
+          visible during journey playback (subtle dots), so an audience
+          member can see how far in we are and that there's more coming. */}
+      {phase.kind === "journey" && sequence.length > 0 && (
+        <div
+          className="absolute z-30 left-1/2 -translate-x-1/2 flex items-center gap-2"
+          style={{
+            bottom: "calc(28px + env(safe-area-inset-bottom, 0px))",
+            opacity: 0.85,
+            transition: "opacity 600ms ease",
+            pointerEvents: "none",
+          }}
+        >
+          {sequence.map((_, i) => {
+            const done = i < phase.index;
+            const current = i === phase.index;
+            const size = current ? 9 : 6;
+            return (
+              <span
+                key={i}
+                aria-hidden
+                style={{
+                  width: `${size}px`,
+                  height: `${size}px`,
+                  borderRadius: "50%",
+                  background: done
+                    ? "rgba(196, 181, 253, 0.85)" // acc-light
+                    : current
+                      ? "rgba(255, 255, 255, 0.95)"
+                      : "rgba(255, 255, 255, 0.18)",
+                  boxShadow: current
+                    ? "0 0 12px rgba(196, 181, 253, 0.55)"
+                    : "none",
+                  transition: "all 400ms ease",
+                }}
+              />
+            );
+          })}
+        </div>
       )}
 
+      {/* Fullscreen toggle — small, top-right, fades with cursor. F also
+          works (passes through our key trap to visualizer-client). */}
+      <button
+        type="button"
+        aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+        onClick={toggleFullscreen}
+        className="absolute top-6 right-6 z-30 flex items-center justify-center rounded-lg text-white/45 hover:text-white/85 transition-all"
+        style={{
+          width: "44px",
+          height: "44px",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
+          backdropFilter: "blur(8px)",
+          opacity: chromeVisible ? 1 : 0,
+          pointerEvents: chromeVisible ? "auto" : "none",
+        }}
+        title={isFullscreen ? "Exit fullscreen (F)" : "Enter fullscreen (F)"}
+      >
+        {isFullscreen ? (
+          <Minimize2 className="h-4 w-4" />
+        ) : (
+          <Maximize2 className="h-4 w-4" />
+        )}
+      </button>
+
+      {phase.kind === "intro" && <InstallationIntro />}
       {phase.kind === "credits" && <InstallationCredits />}
     </div>
   );
