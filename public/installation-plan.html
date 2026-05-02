@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resonance — Installation Brief</title>
+<meta name="description" content="A contemplative listening room. Generative audiovisual, music-led, slow time.">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #09090b;
+    --card: #111113;
+    --border: #1e1e22;
+    --purple: #7c5ae0;
+    --glow: rgba(124,90,224,0.12);
+    --white: #fafafa;
+    --dim: #888;
+    --dimmer: #555;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    line-height: 1.6;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 100px 24px 120px; }
+
+  h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: 4.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin-bottom: 16px;
+  }
+  h1 .accent { color: var(--purple); font-style: italic; }
+  .lede {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--dim);
+    margin-bottom: 80px;
+    max-width: 620px;
+    line-height: 1.5;
+  }
+
+  section { margin-bottom: 80px; }
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--purple);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: 2.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+  h2 em { color: var(--purple); font-style: italic; }
+  h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+  p, li { font-size: 0.98rem; color: var(--dim); line-height: 1.75; }
+  p { margin-bottom: 18px; }
+  p strong { color: var(--white); font-weight: 600; }
+
+  ul.specs { list-style: none; padding: 0; margin: 24px 0 0; }
+  ul.specs li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 24px;
+    align-items: baseline;
+  }
+  ul.specs li:last-child { border-bottom: none; }
+  ul.specs .key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--purple);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  ul.specs .value { color: var(--dim); font-size: 0.95rem; }
+
+  .phases { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 32px 0; }
+  .phase-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 16px;
+  }
+  .phase-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--purple);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  .phase-card .name { font-size: 0.95rem; font-weight: 600; color: var(--white); margin-bottom: 8px; }
+  .phase-card .desc { font-size: 0.78rem; color: var(--dimmer); line-height: 1.55; }
+  @media (max-width: 720px) {
+    .phases { grid-template-columns: 1fr 1fr; }
+  }
+
+  blockquote.visitor {
+    border-left: 3px solid var(--purple);
+    padding: 24px 28px;
+    background: var(--glow);
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0 24px;
+  }
+  blockquote.visitor p {
+    color: var(--white);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.25rem;
+    font-style: italic;
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .refs { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 24px; }
+  .ref {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .ref .artist { font-size: 1.05rem; font-weight: 600; color: var(--white); margin-bottom: 4px; }
+  .ref .work {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--purple);
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+  .ref .desc { font-size: 0.85rem; color: var(--dim); line-height: 1.6; }
+  @media (max-width: 720px) {
+    .refs { grid-template-columns: 1fr; }
+  }
+
+  .differs {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 300;
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin: 8px 0 24px;
+    letter-spacing: -0.02em;
+  }
+  .differs em { color: var(--purple); font-style: italic; }
+
+  .why-list { list-style: none; padding: 0; margin: 24px 0 0; }
+  .why-list li {
+    padding: 18px 0 18px 28px;
+    position: relative;
+    color: var(--dim);
+    border-bottom: 1px solid var(--border);
+    line-height: 1.7;
+  }
+  .why-list li:last-child { border-bottom: none; }
+  .why-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 28px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--purple);
+  }
+
+  .stills { display: grid; grid-template-columns: 1fr; gap: 12px; margin: 24px 0 0; }
+  .still {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #000;
+    aspect-ratio: 16 / 10;
+    position: relative;
+  }
+  .still img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .still-cap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--dimmer);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .stills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  @media (max-width: 720px) {
+    .stills-grid { grid-template-columns: 1fr; }
+  }
+
+  .bio { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 16px; }
+  @media (max-width: 720px) { .bio { grid-template-columns: 1fr; } }
+
+  .ask {
+    margin-top: 64px;
+    padding: 56px 32px;
+    border: 1px solid rgba(124,90,224,0.25);
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(124,90,224,0.08), transparent);
+    text-align: center;
+  }
+  .ask .label-c { color: var(--purple); }
+  .ask h2 {
+    font-size: 4rem;
+    margin: 16px 0 24px;
+  }
+  .ask p { color: var(--white); font-size: 1.05rem; max-width: 560px; margin: 0 auto 12px; }
+  .ask .small { color: var(--dim); font-size: 0.9rem; font-style: italic; margin-top: 12px; }
+  .ask .contact {
+    margin-top: 36px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--purple);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+  .ask .contact a { color: var(--purple); text-decoration: none; }
+  .ask .contact a:hover { text-decoration: underline; }
+  .ask .url {
+    margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--dimmer);
+    font-size: 0.78rem;
+  }
+  .ask .url a { color: var(--dimmer); text-decoration: none; }
+  .ask .url a:hover { color: var(--purple); }
+
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(9,9,11,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .nav-brand { font-weight: 800; font-size: 0.85rem; }
+  .nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--dimmer);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.15s;
+  }
+  .nav a:hover { color: var(--purple); }
+  .nav .spacer { flex: 1; }
+  .nav .pdf { color: var(--purple); }
+
+  .progress-bar {
+    position: fixed; top: 0; left: 0;
+    height: 2px;
+    background: var(--purple);
+    z-index: 60;
+    transition: width 0.1s;
+    width: 0%;
+  }
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progress"></div>
+<nav class="nav">
+  <span class="nav-brand">Resonance</span>
+  <a href="#room">Room</a>
+  <a href="#piece">Piece</a>
+  <a href="#refs">References</a>
+  <a href="#why">Why now</a>
+  <a href="#who">Who</a>
+  <a href="#ask">Ask</a>
+  <span class="spacer"></span>
+  <a class="pdf" href="/Resonance-Installation-Deck.pdf">PDF ↓</a>
+</nav>
+
+<div class="container">
+
+<h1>Resonance — <span class="accent">Installation</span></h1>
+<p class="lede">A contemplative listening room. Generative audiovisual, music-led, slow time. No interaction required.</p>
+
+<section id="what">
+  <div class="label">What it is</div>
+  <h2>A generative audiovisual instrument.</h2>
+  <p>A composed piece of music drives real-time audio-reactive shaders and AI-curated imagery, producing a 20–40 minute slow-moving visual landscape that never repeats verbatim.</p>
+  <p>Originally built for personal listening. Scales naturally to a shared room: same engine, same patience, just larger and quieter.</p>
+</section>
+
+<section id="room">
+  <div class="label">The room</div>
+  <h2>Planetarium vibes. <em>Eyes up.</em></h2>
+  <p>Start very simple. A darkened space, audience reclining, no interaction required.</p>
+  <ul class="specs">
+    <li><span class="key">Space</span><span class="value">12×12 ft to 30×40 ft. Dome geometry welcome.</span></li>
+    <li><span class="key">Floor</span><span class="value">Mats and pillows. No chairs.</span></li>
+    <li><span class="key">Display</span><span class="value">Single overhead projection, dome, or large wall display.</span></li>
+    <li><span class="key">Audio</span><span class="value">4-corner speaker array. Stereo as a baseline.</span></li>
+    <li><span class="key">Flow</span><span class="value">Visitors enter and leave on their own time. No timed entry. No headphones. No narration.</span></li>
+  </ul>
+</section>
+
+<section id="piece">
+  <div class="label">The piece</div>
+  <h2>A single ~30 minute Path.</h2>
+  <p>Three to five composed tracks, threaded into one continuous arc. Each track triggers its own <em>journey</em>: a sequence of phases where audio-reactive shaders and AI-curated imagery shift slowly with the music.</p>
+  <div class="phases">
+    <div class="phase-card">
+      <div class="num">01</div>
+      <div class="name">Threshold</div>
+      <div class="desc">Open in near-silence. Single tone. Near-black field.</div>
+    </div>
+    <div class="phase-card">
+      <div class="num">02</div>
+      <div class="name">Expansion</div>
+      <div class="desc">Imagery surfaces. Music builds. Caustics, mandalas, figures.</div>
+    </div>
+    <div class="phase-card">
+      <div class="num">03</div>
+      <div class="name">Apex</div>
+      <div class="desc">Full motion and color. The room is loud and alive.</div>
+    </div>
+    <div class="phase-card">
+      <div class="num">04</div>
+      <div class="name">Return</div>
+      <div class="desc">Settle back toward stillness. Cycle resolves and begins again.</div>
+    </div>
+  </div>
+</section>
+
+<section id="visitor">
+  <div class="label">What a visitor experiences</div>
+  <blockquote class="visitor">
+    <p>Enters a dark room. Lies back. The first phase opens with a single low tone and a near-black field — slow caustics, the faint hint of a mandalic form. Imagery surfaces gradually as the music builds: water, light, figures that resolve and dissolve. Around the apex the room is full of motion and color; then everything settles back toward stillness. The visitor leaves when ready.</p>
+  </blockquote>
+
+  <div class="stills">
+    <div>
+      <div class="still"><img src="/installation-stills/01-welcome-home-path.png" alt="Welcome Home — the album as a journey, 13 tracks one path"></div>
+      <div class="still-cap">Welcome Home — the album as a 30-minute path</div>
+    </div>
+    <div class="stills-grid">
+      <div>
+        <div class="still"><img src="/installation-stills/02-journey-a2196bcf.png" alt="Interplay — journey title card"></div>
+        <div class="still-cap">Interplay — opening title</div>
+      </div>
+      <div>
+        <div class="still"><img src="/installation-stills/03-journey-0b34b591.png" alt="A second journey opening"></div>
+        <div class="still-cap">Mid-album opening</div>
+      </div>
+    </div>
+    <div style="margin-top: 16px;">
+      <div class="still">
+        <video src="/installation-stills/journey-reel.webm" controls muted playsinline preload="metadata" style="display:block; width:100%; height:100%; object-fit:cover; background:#000;"></video>
+      </div>
+      <div class="still-cap">Reel — 75 seconds (silent placeholder, replace with full audio + imagery capture)</div>
+    </div>
+  </div>
+</section>
+
+<section id="refs">
+  <div class="label">References</div>
+  <h2>A small canon.</h2>
+  <div class="refs">
+    <div class="ref">
+      <div class="artist">Brian Eno</div>
+      <div class="work">77 Million Paintings</div>
+      <div class="desc">Generative visual companion to ambient music. Proof that slow time finds an audience.</div>
+    </div>
+    <div class="ref">
+      <div class="artist">James Turrell</div>
+      <div class="work">Skyspaces (1974— )</div>
+      <div class="desc">The dark contemplative room as primary form. No narrative scaffolding. Pure perception.</div>
+    </div>
+    <div class="ref">
+      <div class="artist">Ryoji Ikeda</div>
+      <div class="work">test pattern  ·  data.matrix</div>
+      <div class="desc">Sound and light as total sensorium. Room-scale, durational, austere.</div>
+    </div>
+  </div>
+</section>
+
+<section id="differs">
+  <div class="label">Where it differs</div>
+  <p class="differs">Composed first.<br><em>AI second.</em></p>
+  <p>The AI-image installation has become a genre — Anadol-flavored generative spectacle, large-format, often impressive, often hollow.</p>
+  <p>Resonance is the inverse. Each track is a written piece of music with intent. The visuals serve the music — not the other way around. AI sits inside the journey as a tool. It is not the headline.</p>
+</section>
+
+<section id="why">
+  <div class="label">Why now</div>
+  <h2>Slow attention is having a moment.</h2>
+  <ul class="why-list">
+    <li>Hiroshi Yoshimura's <em>Music for Nine Post Cards</em> hit the Billboard charts in 2024 — fifty years after release. Ambient music is mainstream again.</li>
+    <li>Planetariums are reclaiming a cultural foothold. Hayden, Adler, and Morrison have all renovated and reopened their domes for contemporary programming.</li>
+    <li>Sleep No More–era audiences trained themselves on long-form, low-direction experiences. The patience is back.</li>
+  </ul>
+  <p style="margin-top: 24px;">Resonance also runs itself: no live performer, no fragile equipment, no consumables. Unusually low overhead for the venue.</p>
+</section>
+
+<section id="who">
+  <div class="label">Who</div>
+  <h2>Karel Barnoski.</h2>
+  <p style="font-style: italic; color: var(--purple); margin-bottom: 28px;">Pianist · Composer · Designer</p>
+  <div class="bio">
+    <div>
+      <p>Pianist and composer. Released <em>Welcome Home</em>, a solo piano album self-produced during quarantine — the source material for many of the journeys in Resonance.</p>
+      <p>Design Director at Workday. 15+ years leading UX for enterprise products at Workday, GE, and Kodak. BFA Illustration and MFA Computer Graphics from RIT, with classical training from Barnstone Studios.</p>
+    </div>
+    <div>
+      <p>Founder of 2octave, an audio design studio specializing in product sonification. Award-winning sounds for products from digital cameras to kitchen appliances. Published in UX Magazine on the science of sound in product design.</p>
+      <p>Resonance is the current shape of a multi-year practice translating composed music into shared visual experience. The installation is the natural next room.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ask" class="ask">
+  <div class="label label-c">The ask</div>
+  <h2>Let's talk.</h2>
+  <p>A one-night event. A multi-week run. A residency.</p>
+  <p>A slot in an existing program. A conversation. Whatever shape the fit takes.</p>
+  <p class="small">Happy to ship a working prototype, or install in person.</p>
+  <div class="contact"><a href="mailto:kbarnoski@gmail.com">kbarnoski@gmail.com</a></div>
+  <div class="url"><a href="https://getresonance.vercel.app">getresonance.vercel.app</a></div>
+</section>
+
+</div>
+
+<script>
+  // Reading-progress bar
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    progress.style.width = scrolled + '%';
+  });
+</script>
+
+</body>
+</html>
