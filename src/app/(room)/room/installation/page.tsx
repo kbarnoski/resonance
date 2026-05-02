@@ -1,21 +1,100 @@
 import { createClient } from "@/lib/supabase/server";
 import { InstallationClient } from "@/components/audio/installation-client";
+import { InstallationLoopClient, type SequenceEntry } from "@/components/audio/installation-loop-client";
+import { JOURNEYS } from "@/lib/journeys/journeys";
+import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
+import type { Track } from "@/lib/audio/audio-store";
+import type { Journey } from "@/lib/journeys/types";
 
 interface Props {
-  searchParams: Promise<{ journey?: string }>;
+  searchParams: Promise<{ journey?: string; loop?: string }>;
 }
 
 export default async function InstallationPage({ searchParams }: Props) {
-  const { journey } = await searchParams;
+  const { journey, loop } = await searchParams;
+  const isLoop = loop === "1" || loop === "true";
 
-  // Fetch featured content, fall back to all recordings
-  let tracks: { id: string; title: string; audioUrl: string; duration?: number | null }[] = [];
+  // ─── Loop mode: curated sequence of all built-in journeys ─────────
+  // Sequence draft = every featured (built-in) journey in declaration
+  // order. Karel will prune/reorder later. Each journey gets paired with
+  // its hardcoded `recordingId`, then a PAIRED_TRACKS title-pattern
+  // lookup, then a random featured recording, in that order.
+  if (isLoop) {
+    const supabase = await createClient();
 
+    // Pull featured recordings as the fallback pool. Featured is admin-
+    // curated and cross-user readable, so this works for kiosk deploys
+    // that may not have a logged-in user.
+    let featuredRecordings: { id: string; title: string; artist: string | null; duration: number | null }[] = [];
+    try {
+      const { data } = await supabase
+        .from("recordings")
+        .select("id, title, artist, duration")
+        .eq("is_featured", true)
+        .order("created_at", { ascending: true });
+      if (data) featuredRecordings = data as typeof featuredRecordings;
+    } catch {
+      // is_featured column may not exist in all envs; pool stays empty.
+    }
+
+    // Resolve PAIRED_TRACKS patterns → recording rows so we can hand the
+    // exact track to a journey by id rather than mid-flight pattern match.
+    const pairedPatterns = Object.entries(PAIRED_TRACKS); // [journeyId, ilike]
+    const pairedRecordingByJourneyId: Record<string, typeof featuredRecordings[number]> = {};
+    if (pairedPatterns.length > 0) {
+      const orFilter = pairedPatterns.map(([, p]) => `title.ilike.${p}`).join(",");
+      const { data: pairedRows } = await supabase
+        .from("recordings")
+        .select("id, title, artist, duration")
+        .or(orFilter);
+      if (pairedRows) {
+        for (const [jid, ilike] of pairedPatterns) {
+          // Strip % wildcards for substring match.
+          const needle = ilike.replace(/^%|%$/g, "").toLowerCase();
+          const hit = (pairedRows as typeof featuredRecordings).find((r) =>
+            (r.title ?? "").toLowerCase().includes(needle),
+          );
+          if (hit) pairedRecordingByJourneyId[jid] = hit;
+        }
+      }
+    }
+
+    const toTrack = (r: { id: string; title: string; artist: string | null; duration: number | null }): Track => ({
+      id: r.id,
+      title: r.title || "Untitled",
+      audioUrl: `/api/audio/${r.id}`,
+      duration: r.duration,
+      artist: r.artist,
+    });
+
+    const sequence: SequenceEntry[] = JOURNEYS.map((j: Journey) => {
+      // Priority 1: explicit recordingId baked into the journey definition.
+      if (j.recordingId) {
+        const direct = featuredRecordings.find((r) => r.id === j.recordingId);
+        if (direct) return { journey: j, track: toTrack(direct) };
+      }
+      // Priority 2: title-pattern pairing (e.g., "ghost" → KB_GHOST_REF).
+      const paired = pairedRecordingByJourneyId[j.id];
+      if (paired) return { journey: j, track: toTrack(paired) };
+      // Priority 3: leave null; loop client will pick from fallback pool.
+      return { journey: j, track: null };
+    });
+
+    const fallbackTracks = featuredRecordings.map(toTrack);
+
+    return (
+      <div className="h-screen w-screen overflow-hidden bg-black">
+        <InstallationLoopClient sequence={sequence} fallbackTracks={fallbackTracks} />
+      </div>
+    );
+  }
+
+  // ─── Legacy single-journey kiosk mode (unchanged) ──────────────────
+  let tracks: Track[] = [];
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
-    // Try featured recordings first (cross-user, public-facing curation)
     const { data: featured } = await supabase
       .from("recordings")
       .select("id, title, duration")
@@ -30,14 +109,12 @@ export default async function InstallationPage({ searchParams }: Props) {
         duration: r.duration,
       }));
     } else if (user) {
-      // Fallback to the current user's own recordings
       const { data: all } = await supabase
         .from("recordings")
         .select("id, title, duration")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(50);
-
       if (all) {
         tracks = all.map((r) => ({
           id: r.id,
@@ -48,22 +125,22 @@ export default async function InstallationPage({ searchParams }: Props) {
       }
     }
   } catch {
-    // If DB isn't ready (missing column), fall back gracefully
     try {
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return (
-        <div className="h-screen w-screen overflow-hidden bg-black">
-          <InstallationClient tracks={[]} journey={journey} />
-        </div>
-      );
+      if (!user) {
+        return (
+          <div className="h-screen w-screen overflow-hidden bg-black">
+            <InstallationClient tracks={[]} journey={journey} />
+          </div>
+        );
+      }
       const { data: all } = await supabase
         .from("recordings")
         .select("id, title, duration")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
         .limit(50);
-
       if (all) {
         tracks = all.map((r) => ({
           id: r.id,

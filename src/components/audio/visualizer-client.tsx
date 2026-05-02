@@ -1910,8 +1910,10 @@ export function VisualizerClient({
         </div>
       )}
 
-      {/* Journey completion overlay — replay or end — above all visual layers */}
-      {journeyCompleted && journeyActive && activeJourney && (() => {
+      {/* Journey completion overlay — replay or end — above all visual layers.
+          Suppressed in installation mode: the loop client owns advancement
+          to the next journey and shouldn't be interrupted by a Replay UI. */}
+      {!installationMode && journeyCompleted && journeyActive && activeJourney && (() => {
         const builtinPath = getPathForJourney(activeJourney.id);
         const customPathCtx = useAudioStore.getState().activePath;
         const customPathJourneyIds = customPathCtx?.journeyIds ?? [];
@@ -2343,26 +2345,33 @@ export function VisualizerClient({
         </div>
       )}
 
-      {/* Library drawer */}
-      <VisualizerLibrary
-        open={libraryOpen}
-        onClose={() => setLibraryOpen(false)}
-      />
+      {/* Library, selector, and share UI — never available in installation
+          mode. The kiosk experience is passive; these would expose chrome
+          a viewer shouldn't see. */}
+      {!installationMode && (
+        <>
+          {/* Library drawer */}
+          <VisualizerLibrary
+            open={libraryOpen}
+            onClose={() => setLibraryOpen(false)}
+          />
 
-      {/* Journey selector */}
-      <JourneySelector
-        open={journeyOpen}
-        onClose={() => setJourneyOpen(false)}
-      />
+          {/* Journey selector */}
+          <JourneySelector
+            open={journeyOpen}
+            onClose={() => setJourneyOpen(false)}
+          />
 
-      {/* Share sheet */}
-      <ShareSheet
-        open={!!shareSheet}
-        onClose={() => setShareSheet(null)}
-        url={shareSheet?.url ?? ""}
-        title={shareSheet?.title ?? ""}
-        text={shareSheet?.text ?? "Check out this experience on Resonance"}
-      />
+          {/* Share sheet */}
+          <ShareSheet
+            open={!!shareSheet}
+            onClose={() => setShareSheet(null)}
+            url={shareSheet?.url ?? ""}
+            title={shareSheet?.title ?? ""}
+            text={shareSheet?.text ?? "Check out this experience on Resonance"}
+          />
+        </>
+      )}
 
       {/* Build identity footer — dim, bottom-left, fades with the controls.
           Lets you and Johnny verify which build is actually running on a
