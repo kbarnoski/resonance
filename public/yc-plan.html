@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root { --bg: #09090b; --card: #111113; --border: #1e1e22; --purple: #7c5ae0; --glow: rgba(124,90,224,0.12); --white: #fafafa; --dim: #888; --dimmer: #555; }
+  :root { --bg: #09090b; --card: #111113; --border: #1e1e22; --purple: #8B5CF6; --glow: rgba(139,92,246,0.12); --white: #fafafa; --dim: #888; --dimmer: #555; }
   body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--white); line-height: 1.6; }
   .container { max-width: 860px; margin: 0 auto; padding: 80px 24px 120px; }
   h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 8px; }
@@ -23,7 +23,7 @@
   ul li { padding-left: 16px; position: relative; margin-bottom: 8px; }
   ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 6px; height: 6px; border-radius: 50%; background: var(--purple); }
   .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; transition: border-color 0.2s; }
-  .card:hover { border-color: rgba(124,90,224,0.3); }
+  .card:hover { border-color: rgba(139,92,246,0.3); }
   .card h3 { margin-bottom: 6px; }
   .card p { margin-bottom: 0; font-size: 0.88rem; }
   blockquote { border-left: 3px solid var(--purple); padding: 16px 20px; background: var(--glow); border-radius: 0 8px 8px 0; margin: 16px 0 24px; }
@@ -45,10 +45,10 @@
   .timeline-what { font-size: 0.9rem; color: var(--dim); }
   .demo-steps { counter-reset: step; margin: 16px 0; }
   .demo-steps li { counter-increment: step; padding-left: 36px; position: relative; padding-bottom: 12px; }
-  .demo-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 24px; height: 24px; background: rgba(124,90,224,0.15); border: 1px solid rgba(124,90,224,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--purple); }
+  .demo-steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 24px; height: 24px; background: rgba(139,92,246,0.15); border: 1px solid rgba(139,92,246,0.3); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--purple); }
   .pushback-table td:first-child { color: var(--dim); font-weight: 400; font-style: italic; }
   .pushback-table td:last-child { color: var(--white); }
-  .verdict { margin-top: 48px; padding: 32px; border: 1px solid rgba(124,90,224,0.25); border-radius: 16px; background: linear-gradient(135deg, rgba(124,90,224,0.08), transparent); text-align: center; }
+  .verdict { margin-top: 48px; padding: 32px; border: 1px solid rgba(139,92,246,0.25); border-radius: 16px; background: linear-gradient(135deg, rgba(139,92,246,0.08), transparent); text-align: center; }
   .verdict h2 { margin-bottom: 12px; }
   .verdict p { max-width: 600px; margin: 0 auto; }
   .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 50; background: rgba(9,9,11,0.85); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; gap: 16px; }
@@ -76,7 +76,7 @@
 <p class="subtitle">A complete plan for getting funded through Y Combinator.</p>
 
 <!-- Assessment -->
-<div class="card" style="border-color: rgba(124,90,224,0.3); background: linear-gradient(135deg, rgba(124,90,224,0.06), var(--card));">
+<div class="card" style="border-color: rgba(139,92,246,0.3); background: linear-gradient(135deg, rgba(139,92,246,0.06), var(--card));">
   <h3 style="color: var(--purple);">Do you have enough?</h3>
   <p>Yes. YC has funded teams with just a landing page. You have a working product with 200+ shaders, AI-generated journeys, a shareable 13-track album experience, and a desktop app. That puts you ahead of 90% of applicants. Your biggest edge: you're the user.</p>
 </div>

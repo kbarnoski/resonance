@@ -21,7 +21,7 @@ W = Inches(13.333)  # 1440px @ 108dpi → 16:9
 H = Inches(7.5)
 BG = RGBColor(0x0A, 0x0A, 0x0A)
 WHITE = RGBColor(0xFF, 0xFF, 0xFF)
-PURPLE = RGBColor(0x7C, 0x3A, 0xED)
+PURPLE = RGBColor(0x8B, 0x5C, 0xF6)  # canonical app purple — see docs/brand/brand-system.md
 
 # White at decreasing opacities, approximated as solid grey on black
 W90 = WHITE
@@ -35,7 +35,7 @@ W25 = RGBColor(0x40, 0x40, 0x40)
 W20 = RGBColor(0x33, 0x33, 0x33)
 W15 = RGBColor(0x26, 0x26, 0x26)
 
-P60 = RGBColor(0xA7, 0x78, 0xF2)
+P60 = RGBColor(0xC4, 0xB5, 0xFD)  # acc-light — Tailwind violet-300, matches app
 
 prs = Presentation()
 prs.slide_width = W

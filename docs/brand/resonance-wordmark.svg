@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Resonance wordmark — logo + "Resonance" set in Geist Sans Light alongside.
+  For deck title slides, About section openers, etc.
+  Width 360, height 48 — easy to scale at integer multiples (×2 = 720×96).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="48" viewBox="0 0 360 48" fill="none">
+  <g transform="translate(0,12) scale(1)">
+    <g stroke="#FAFAFA" stroke-width="1.5" fill="none" stroke-linecap="round">
+      <path d="M12 3C12 3 12 8 12 12C12 16 12 21 12 21"/>
+      <path d="M12 7C14.5 7 16.5 5.5 16.5 3.5"/>
+      <path d="M12 12C9 12 6.5 10 6.5 7.5"/>
+      <path d="M12 17C15 17 17.5 15 17.5 12.5"/>
+    </g>
+  </g>
+  <text x="36" y="32"
+        font-family="Geist, -apple-system, sans-serif"
+        font-size="22"
+        font-weight="300"
+        letter-spacing="-0.01em"
+        fill="#FAFAFA">Resonance</text>
+</svg>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Resonance logo — extracted from src/components/nav/sidebar.tsx
+  Vertical stem with three branching arcs. Stroke-only mark, scales cleanly.
+  Default fill is currentColor; caller sets stroke via CSS or attribute.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+  <path d="M12 3C12 3 12 8 12 12C12 16 12 21 12 21" stroke-linecap="round"/>
+  <path d="M12 7C14.5 7 16.5 5.5 16.5 3.5" stroke-linecap="round"/>
+  <path d="M12 12C9 12 6.5 10 6.5 7.5" stroke-linecap="round"/>
+  <path d="M12 17C15 17 17.5 15 17.5 12.5" stroke-linecap="round"/>
+</svg>
