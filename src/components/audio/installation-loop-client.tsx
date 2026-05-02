@@ -228,47 +228,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks }: Props) {
     <div ref={containerRef} className="h-full w-full relative">
       <VisualizerClient />
 
-      {/* Sequence progress indicator — fixed bottom, ambient. Always
-          visible during journey playback (subtle dots), so an audience
-          member can see how far in we are and that there's more coming. */}
-      {phase.kind === "journey" && sequence.length > 0 && (
-        <div
-          className="absolute z-30 left-1/2 -translate-x-1/2 flex items-center gap-2"
-          style={{
-            bottom: "calc(28px + env(safe-area-inset-bottom, 0px))",
-            opacity: 0.85,
-            transition: "opacity 600ms ease",
-            pointerEvents: "none",
-          }}
-        >
-          {sequence.map((_, i) => {
-            const done = i < phase.index;
-            const current = i === phase.index;
-            const size = current ? 9 : 6;
-            return (
-              <span
-                key={i}
-                aria-hidden
-                style={{
-                  width: `${size}px`,
-                  height: `${size}px`,
-                  borderRadius: "50%",
-                  background: done
-                    ? "rgba(196, 181, 253, 0.85)" // acc-light
-                    : current
-                      ? "rgba(255, 255, 255, 0.95)"
-                      : "rgba(255, 255, 255, 0.18)",
-                  boxShadow: current
-                    ? "0 0 12px rgba(196, 181, 253, 0.55)"
-                    : "none",
-                  transition: "all 400ms ease",
-                }}
-              />
-            );
-          })}
-        </div>
-      )}
-
       {/* Fullscreen toggle — small, top-right, fades with cursor. F also
           works (passes through our key trap to visualizer-client). */}
       <button
