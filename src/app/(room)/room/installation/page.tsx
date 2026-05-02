@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry } from "@/components/audio/installation-loop-client";
@@ -6,6 +7,11 @@ import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 
+// Belt + suspenders: middleware should auth-gate this route, but if Vercel
+// edge cache or any prerender path bypasses middleware, this in-page check
+// catches it. Also ensures every request actually executes server code.
+export const dynamic = "force-dynamic";
+
 interface Props {
   searchParams: Promise<{ journey?: string; loop?: string }>;
 }
@@ -13,6 +19,17 @@ interface Props {
 export default async function InstallationPage({ searchParams }: Props) {
   const { journey, loop } = await searchParams;
   const isLoop = loop === "1" || loop === "true";
+
+  // Require auth at the page level. The realtime AI image service calls
+  // /api/ai-image/token which is gated to authed users; without a session
+  // the kiosk would run shader-only with no imagery. Redirect cold visitors
+  // through login first so they have a token by the time the loop starts.
+  const supabaseAuth = await createClient();
+  const { data: { user: authUser } } = await supabaseAuth.auth.getUser();
+  if (!authUser) {
+    const target = isLoop ? "/room/installation?loop=1" : "/room/installation";
+    redirect(`/login?redirectTo=${encodeURIComponent(target)}`);
+  }
 
   // ─── Loop mode: curated sequence of all built-in journeys ─────────
   // Sequence draft = every featured (built-in) journey in declaration
