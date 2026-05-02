@@ -656,7 +656,7 @@ export function VisualizerClient({
       .replace(/\+/g, "-")
       .replace(/\//g, "_")
       .replace(/=+$/, "");
-    const url = `${window.location.origin}/room/${token}`;
+    const url = `${window.location.origin}/play/${token}`;
     const trackTitle = currentTrack?.title ?? "The Room";
     const title = `${trackTitle} — Resonance`;
     if (triggerNativeShare(url, title)) return;

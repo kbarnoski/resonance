@@ -1175,11 +1175,11 @@ export function VisualizerCore({
         </>
       )}
 
-      {/* ─── Studio back — top-left, fades with controls (mirrors fullscreen) ─── */}
+      {/* ─── Studio back — top-left, desktop only (mobile bar already has a Studio button) ─── */}
       {!installationMode && exitLabel === "back" && !journeyBrowsing && (currentTrack || journeyActive) && (
         <button
           onClick={onExit}
-          className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75 cursor-pointer"
+          className="hidden md:flex absolute top-6 left-6 items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75 cursor-pointer"
           style={{
             zIndex: 10,
             opacity: controlsVisible ? 1 : 0,

@@ -37,7 +37,7 @@ function CreateJourneyPageInner() {
       <CreateJourneyForm
         recordingId={recordingId}
         onCreated={() => {
-          router.push("/room");
+          router.push("/play");
         }}
         onCancel={() => router.back()}
         cancelLabel="Back"

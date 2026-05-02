@@ -58,7 +58,7 @@ export default async function PathsPage() {
             Stitch journeys together in The Room to build a path.
           </p>
           <Link
-            href="/room"
+            href="/play"
             className="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-white transition-colors cursor-pointer"
             style={{
               background: "rgba(139, 92, 246, 0.85)",

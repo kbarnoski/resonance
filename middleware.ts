@@ -41,8 +41,8 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/share/") ||
     pathname.startsWith("/journey/") ||
     pathname.startsWith("/path/") ||
-    (pathname.startsWith("/room/") &&
-      pathname !== "/room/installation" &&
+    (pathname.startsWith("/play/") &&
+      pathname !== "/play/installation" &&
       pathname.split("/").length === 3);
 
   if (!user && !isAuthPage && !isPublicRoute) {

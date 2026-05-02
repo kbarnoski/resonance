@@ -159,12 +159,12 @@ export function Sidebar() {
         </Link>
         <button
           onClick={() => {
-            // If viewing a recording detail page, carry that track into the Room
+            // If viewing a recording detail page, carry that track into the player
             const match = pathname.match(/^\/recording\/([^/]+)/);
             if (match) {
-              router.push(`/room?recording=${match[1]}&autoplay=0`);
+              router.push(`/play?recording=${match[1]}&autoplay=0`);
             } else {
-              router.push("/room");
+              router.push("/play");
             }
           }}
           className="w-full flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors duration-150 cursor-pointer text-white/85 hover:text-white"

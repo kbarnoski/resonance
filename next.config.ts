@@ -64,8 +64,12 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/visualizer", destination: "/room", permanent: true },
-      { source: "/visualizer/installation", destination: "/room/installation", permanent: true },
+      // /room renamed to /play — keep prior shared links working.
+      { source: "/room", destination: "/play", permanent: true },
+      { source: "/room/:path*", destination: "/play/:path*", permanent: true },
+      // Even older alias from before the /room rename.
+      { source: "/visualizer", destination: "/play", permanent: true },
+      { source: "/visualizer/installation", destination: "/play/installation", permanent: true },
     ];
   },
   experimental: {

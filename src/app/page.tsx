@@ -13,10 +13,7 @@ export default function Home() {
   useEffect(() => {
     const pref = localStorage.getItem(PREF_KEY);
     if (pref) {
-      // Returning users default to The Room (journeys) — user directive
-      // 2026-04-23. Studio remains accessible via the chooser on first visit
-      // and via the side nav for anyone who wants the analysis experience.
-      router.replace("/room");
+      router.replace("/play");
     } else {
       setShowChooser(true);
     }
@@ -26,7 +23,7 @@ export default function Home() {
 
   function handleChoose(experience: "studio" | "room") {
     localStorage.setItem(PREF_KEY, "chosen");
-    router.push(experience === "studio" ? "/library" : "/room");
+    router.push(experience === "studio" ? "/library" : "/play");
   }
 
   return (
