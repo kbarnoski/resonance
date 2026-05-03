@@ -139,10 +139,14 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // visualizer-client also binds F (we let the bubble continue for F).
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // Always let browser shortcuts through (reload, devtools, address
+      // bar, tab switching, etc). Anything with a modifier key is the
+      // operator, not the audience — never trap those.
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
       // Allow F through — visualizer-client handles it (fullscreen).
       if (e.key === "f" || e.key === "F") return;
       // Eat Escape so visualizer-client.handleExit() can't fire.
-      // Browser still handles the native fullscreen-exit before our handler.
+      // Browser still handles native fullscreen-exit before our handler.
       if (e.key === "Escape") {
         e.preventDefault();
         e.stopImmediatePropagation();
