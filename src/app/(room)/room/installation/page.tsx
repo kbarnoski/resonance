@@ -40,9 +40,11 @@ export default async function InstallationPage({ searchParams }: Props) {
   if (isLoop) {
     const supabase = await createClient();
 
-    // Pull featured recordings as the fallback pool. Featured is admin-
-    // curated and cross-user readable, so this works for kiosk deploys
-    // that may not have a logged-in user.
+    // Pull featured recordings as the primary pool, then fall back to
+    // the user's full library if featured is empty. Mirrors the normal
+    // journey-selector behavior: any unpaired journey gets a random
+    // track from the user's recordings rather than silently failing
+    // because no featured tracks are configured for this account.
     let featuredRecordings: { id: string; title: string; artist: string | null; duration: number | null }[] = [];
     try {
       const { data } = await supabase
@@ -53,6 +55,17 @@ export default async function InstallationPage({ searchParams }: Props) {
       if (data) featuredRecordings = data as typeof featuredRecordings;
     } catch {
       // is_featured column may not exist in all envs; pool stays empty.
+    }
+
+    // If no featured tracks (or DB doesn't have the column), use the
+    // user's whole library so every unpaired journey still has audio.
+    if (featuredRecordings.length === 0) {
+      const { data: userRecs } = await supabase
+        .from("recordings")
+        .select("id, title, artist, duration")
+        .eq("user_id", authUser.id)
+        .order("created_at", { ascending: false });
+      if (userRecs) featuredRecordings = userRecs as typeof featuredRecordings;
     }
 
     // Resolve PAIRED_TRACKS patterns → recording rows so we can hand the

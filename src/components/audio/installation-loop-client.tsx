@@ -78,14 +78,20 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     setStarted(true);
   }, []);
 
-  // Pick the right track for this index — paired first, then by-index from
-  // the fallback pool, wrapping with modulo so any pool size works.
+  // Pick the right track for this index — paired first, then a
+  // distributed pick from the fallback pool. We avoid using `i %
+  // length` directly because consecutive unpaired journeys would all
+  // land on adjacent tracks and a single bad track would cluster
+  // failures. Use a simple hash-shuffle instead so picks scatter.
   const trackForIndex = useCallback(
     (i: number): Track | null => {
       const entry = sequence[i];
       if (entry?.track) return entry.track;
       if (fallbackTracks.length === 0) return null;
-      return fallbackTracks[i % fallbackTracks.length] ?? null;
+      // Stable distributed index: multiply by a coprime to the pool
+      // length so picks don't repeat for many cycles.
+      const idx = ((i * 7) + 3) % fallbackTracks.length;
+      return fallbackTracks[idx] ?? fallbackTracks[0] ?? null;
     },
     [sequence, fallbackTracks],
   );
