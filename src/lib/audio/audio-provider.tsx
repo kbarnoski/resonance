@@ -231,12 +231,18 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         useAudioStore.getState().setCurrentTime(audioElement.duration);
       }
 
-      const { installationMode } = useAudioStore.getState();
-      if (installationMode) {
-        // Installation mode: auto-advance through queue
+      const { installationMode, queue } = useAudioStore.getState();
+      // Installation loop client manages its own sequence advancement.
+      // Each journey gets queued as a single-track queue; if we called
+      // playNext() here it would wrap and restart the same track,
+      // racing the loop client's setQueue+startJourney for the next
+      // journey and stranding the audio element in a paused state.
+      // For multi-track queues (the legacy single-journey installation
+      // mode), keep the auto-advance behavior so it still works.
+      if (installationMode && queue.length > 1) {
         useAudioStore.getState().playNext();
       } else {
-        // Normal playback: just stop — keep track loaded, viz keeps running
+        // Just stop — viz keeps running, loop client (or user) decides next
         useAudioStore.getState().pause();
       }
     };

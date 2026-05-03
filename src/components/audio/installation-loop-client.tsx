@@ -273,8 +273,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     const STALLED_THRESHOLD_MS = 8_000;
     let raf = 0;
     const tick = () => {
-      const { currentTime, duration } = useAudioStore.getState();
-      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
+      const { currentTime, duration, isPlaying } = useAudioStore.getState();
+      // Track ended either when currentTime reaches duration OR when
+      // the store flips isPlaying back to false (audio-provider's
+      // onEnded pauses in installation single-track mode now).
+      const audioEnded =
+        (duration > 0 && currentTime >= duration - 0.5) ||
+        (duration > 0 && currentTime > 1 && !isPlaying);
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;
