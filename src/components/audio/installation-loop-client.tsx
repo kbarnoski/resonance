@@ -60,21 +60,21 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
-  // Installation intro stages — three independent layers (bg, cycle
-  // text, journey text) sequenced so the bg fades BEFORE the journey
-  // title shows. That way the journey title lands over the live
-  // shader/AI imagery, not on a black panel.
+  // Installation intro stages — bg-black holds opaque the entire time
+  // the visualizer is alone behind it, then fades on the same clock as
+  // the journey title's inner fade-in. No window where the shader is
+  // visible without the title.
   //
   //   cycle           — bg opaque, "Resonance" cycle text shown
-  //   fading-cycle    — cycle text fades to 0 over 1.5s; bg stays opaque
-  //   fading-bg       — cycle text unmounted; bg fades to 0 over 2.5s,
-  //                     revealing the shader/AI imagery (which has been
-  //                     rendering behind the bg since pre-start)
-  //   journey         — bg gone; journey title fades in via own 2.4s
-  //                     animation, floats over the live visuals
-  //   fading-journey  — journey title fades out over 1.8s
+  //   fading-cycle    — cycle text fades to 0 over 1.5s; bg stays opaque.
+  //                     Pre-start journey 0 fires here. Visualizer
+  //                     compiles + crossfades behind the opaque bg.
+  //   journey         — title mounts (3.8s inner fade-in). bg fades 1→0
+  //                     over the same 3.8s. Title and shader arrive
+  //                     together.
+  //   fading-journey  — title fades out over 1.8s; bg already gone.
   //   gone            — everything unmounted; phase change to journey 0
-  type IntroStage = "cycle" | "fading-cycle" | "fading-bg" | "journey" | "fading-journey" | "gone";
+  type IntroStage = "cycle" | "fading-cycle" | "journey" | "fading-journey" | "gone";
   const [introStage, setIntroStage] = useState<IntroStage>("cycle");
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -122,7 +122,31 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     document.addEventListener("click", onAnyClick, { once: false });
     document.addEventListener("touchstart", onAnyClick, { once: false });
 
+    // ─── Mount-level audio play watchdog ──────────────────────────
+    // Runs from page load, NOT from the journey-phase setup. This is
+    // the critical fix for the "Ascension audio never loaded → skipped
+    // to inferno" bug: pre-starting journey 0 happens during the cycle
+    // intro at t=INTRO_MS, but the journey-phase setup (which used to
+    // own the watchdog) doesn't run until t=INTRO_MS+14.8s. That's a
+    // ~15-second window where audio could be paused (autoplay-block
+    // rejection produces no `error` event, so the early-error listener
+    // doesn't catch it) and nothing is trying to recover.
+    //
+    // Now: every 250ms we check whether the audio element should be
+    // playing and isn't, and call tryPlay. As soon as the user clicks
+    // anywhere (which unlocks the AudioContext via the listener
+    // above), the next watchdog tick succeeds.
+    const mountWatchdog = setInterval(() => {
+      try {
+        const el = getAudioEngine().audioElement;
+        if (el.paused && el.readyState >= 2 && !el.error) {
+          tryPlay(el);
+        }
+      } catch { /* engine warming */ }
+    }, 250);
+
     return () => {
+      clearInterval(mountWatchdog);
       setInstallationMode(false);
       stopJourney();
       if (isDesktopApp()) exitKioskMode().catch(() => {});
@@ -211,39 +235,37 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
-      let fadeBgStart: ReturnType<typeof setTimeout> | null = null;
       let mountJourney: ReturnType<typeof setTimeout> | null = null;
       let fadeJourneyStart: ReturnType<typeof setTimeout> | null = null;
       let finalPhaseChange: ReturnType<typeof setTimeout> | null = null;
       let earlyErrorListener: (() => void) | null = null;
 
-      // Phase machine for the cycle intro — staged so layers (bg,
-      // cycle text, journey text) hand off cleanly with no morph AND
-      // the shader has lead time to compile + crossfade behind the
-      // still-opaque bg, so when bg fades the shader emerges smoothly
-      // (no shader-pop the moment bg becomes transparent).
+      // Phase machine for the cycle intro.
       //
-      //   t=0      → cycle text fades in (1.4s) over opaque bg
-      //   t=7s     → cycle text fades out (1.5s) — fading-cycle stage.
-      //              Pre-start journey 0 NOW: audio/shader/AI begin
-      //              loading behind the still-opaque bg. Audio is
-      //              briefly under the fading cycle text (most journey
-      //              starts are quiet ambient anyway).
-      //   t=8.5s   → cycle text fully gone. bg starts fading (4.5s,
-      //              slow). Shader has had 1.5s to compile + start its
-      //              A/B crossfade — emerges gradually as bg fades, no
-      //              pop. fading-bg stage.
-      //   t=13s    → bg fully gone. Pure shader/AI visible alone.
-      //   t=14s    → journey title mounts (1s pure-shader beat first)
-      //              and fades in slowly (3.8s) over the live shader/AI
-      //              imagery, with its own radial-gradient backdrop for
-      //              legibility (matches the in-journey intro overlay).
-      //   t=20s    → journey title fades out (1.8s) — fading-journey
-      //   t=21.8s  → phase change to journey 0; overlay fully unmounted
+      // The bg-black layer is OPAQUE the entire time the visualizer is
+      // alone behind it. The bg only starts fading once the journey
+      // title has mounted, and the bg fade-out + the title's inner
+      // fade-in run on the same clock — they finish together. The
+      // shader emerges into view alongside the title, never alone.
       //
-      // No competing texts: installation intro shows "Ascension" title
-      // exclusively; visualizer-client's journey intro is suppressed
-      // for journey 0 via the store flag set during pre-start.
+      // This kills the "orb shader briefly visible between intro and
+      // ascension title" bug: there is no longer a window where the
+      // visualizer is visible without the title to anchor it.
+      //
+      //   t=0     → cycle text fades in (1.4s) over opaque bg
+      //   t=7s    → cycle text fades out (1.5s) AND pre-start journey 0
+      //             (audio + shader + AI begin loading behind opaque bg).
+      //             fading-cycle stage.
+      //   t=8.5s  → cycle text fully gone. bg STILL OPAQUE — pure
+      //             black hold while the visualizer compiles + does its
+      //             A/B crossfade, none of which is visible. The hold
+      //             gives audio time to start playing too.
+      //   t=14s   → mount journey title (3.8s inner fade-in) AND start
+      //             fading bg (3.8s — same clock). Title and shader
+      //             arrive together. fading-bg + journey stages.
+      //   t=17.8s → title fully visible, bg fully gone. Shader sustains.
+      //   t=20s   → title fades out (1.8s) — fading-journey stage.
+      //   t=21.8s → phase change to journey 0.
 
       // t=INTRO_MS (7s): begin cycle text fade-out AND pre-start
       // journey 0. The shader needs lead time to compile + start its
@@ -302,20 +324,23 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
               } catch { /* best-effort */ }
             })();
           };
+          // Initial play attempt — this seeds the watchdog. If the
+          // browser is unlocked (desktop / prior gesture), audio
+          // starts playing right away. If not, the mount-level
+          // watchdog will retry every 250ms until the user clicks.
+          tryPlay(el);
           el.addEventListener("error", earlyErrorListener);
         } catch { /* engine warming */ }
       }, INTRO_MS);
 
-      // t=INTRO_MS+1.5s: cycle text gone. Begin bg fade (4.5s — slow,
-      // gradual reveal of the already-running shader behind it).
-      fadeBgStart = setTimeout(() => {
-        setIntroStage("fading-bg");
-      }, INTRO_MS + 1500);
-
-      // t=INTRO_MS+7s: bg has been gone ~1s. Pure shader/AI has had a
-      // moment to read on its own. Mount journey title (fades in 3.8s
-      // via its own animation) over the live imagery, with its own
-      // radial-gradient backdrop for readability.
+      // t=INTRO_MS+7s: title mount AND bg fade start, same clock. The
+      // bg-black has been holding opaque since fading-cycle ended at
+      // t=INTRO_MS+1.5s (5.5s of pure black hold) — plenty of time for
+      // the visualizer to compile, crossfade, and settle. Now we
+      // simultaneously show the title (3.8s fade-in via the
+      // installationContentFade keyframe) and reveal the shader (3.8s
+      // bg-black opacity fade in InstallationIntro). Both peak
+      // together at +10.8s. Title and shader as one composition.
       mountJourney = setTimeout(() => {
         setIntroStage("journey");
       }, INTRO_MS + 7000);
@@ -334,7 +359,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
       return () => {
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
-        if (fadeBgStart) clearTimeout(fadeBgStart);
         if (mountJourney) clearTimeout(mountJourney);
         if (fadeJourneyStart) clearTimeout(fadeJourneyStart);
         if (finalPhaseChange) clearTimeout(finalPhaseChange);
@@ -700,7 +724,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       {sequence.length > 0 && (() => {
         const inIntroJourney = phase.kind === "intro" && introStage === "journey";
         const inIntroFadingJourney = phase.kind === "intro" && introStage === "fading-journey";
-        const inIntroBgFade = phase.kind === "intro" && introStage === "fading-bg";
         const inJourneyTitle = phase.kind === "journey" && titleWindow;
         const inJourneyPostTitle = phase.kind === "journey" && !titleWindow;
         const inCredits = phase.kind === "credits";
@@ -712,7 +735,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         const shouldMount =
           inIntroJourney ||
           inIntroFadingJourney ||
-          inIntroBgFade ||
           phase.kind === "journey" ||
           inCredits;
         if (!shouldMount) return null;

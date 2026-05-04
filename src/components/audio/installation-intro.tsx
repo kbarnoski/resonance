@@ -37,15 +37,16 @@ function useFontReady(fontFamily: string): boolean {
  *   2. Cycle text ("Resonance — A contemplative listening room")
  *   3. Journey text (journey 0's title + credits)
  *
- * Each layer is conditionally mounted AND has its own opacity. The
- * stage machine in installation-loop-client controls the timing so
- * the bg can fade BEFORE the journey title shows — that way the
- * journey title lands over the live shader/AI imagery, not on black.
+ * The bg-black layer holds OPAQUE during the entire visualizer-warmup
+ * window (cycle text + the silent black hold afterward) and only
+ * starts fading at the same moment the journey title mounts. Bg fade
+ * and title inner fade run on the same 3.8s clock — they finish
+ * together, so the shader emerges into view alongside the title and
+ * the user never sees the visualizer alone.
  */
 type Stage =
   | "cycle"
   | "fading-cycle"
-  | "fading-bg"
   | "journey"
   | "fading-journey"
   | "gone";
@@ -57,10 +58,13 @@ interface Props {
 }
 
 export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Props) {
-  // Black background: visible during cycle/fading-cycle/fading-bg,
-  // fades to 0 during fading-bg, gone after.
-  const bgMounted = stage === "cycle" || stage === "fading-cycle" || stage === "fading-bg";
-  const bgOpacity = stage === "fading-bg" ? 0 : 1;
+  // bg-black: opaque during cycle + fading-cycle, fades out during
+  // journey + fading-journey on the SAME 3.8s clock as the journey
+  // title's inner fade-in. This keeps the visualizer hidden until the
+  // title is appearing — no orb-shader-flash window.
+  const bgMounted = stage !== "gone";
+  const bgOpacity =
+    stage === "journey" || stage === "fading-journey" ? 0 : 1;
 
   // Cycle text mounted in cycle + fading-cycle, fades in fading-cycle.
   const cycleMounted = stage === "cycle" || stage === "fading-cycle";
@@ -79,7 +83,9 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
           style={{
             backgroundColor: "black",
             opacity: bgOpacity,
-            transition: "opacity 4500ms ease-out",
+            // Match the journey title's inner-fade clock exactly so
+            // the shader emerges in-step with the title appearing.
+            transition: "opacity 3800ms ease-out",
           }}
         />
       )}
