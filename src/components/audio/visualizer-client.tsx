@@ -431,7 +431,18 @@ export function VisualizerClient({
       // reopen could paint the intro on a DOM node whose animation had
       // already completed, making the title appear "doubled" or stuck.
       setOverlayRemountKey((k) => k + 1);
-      setJourneyIntroVisible(true);
+      // Honor the suppress flag — installation mode sets it true when
+      // pre-starting journey 0 because the installation intro overlay
+      // is itself displaying the journey title (no second intro needed).
+      const suppressIntro = useAudioStore.getState().suppressNextJourneyIntro;
+      if (!suppressIntro) {
+        setJourneyIntroVisible(true);
+      } else {
+        setJourneyIntroVisible(false);
+        // Clear the flag so subsequent journeys (1, 2, ...) get their
+        // intro overlays normally.
+        useAudioStore.getState().setSuppressNextJourneyIntro(false);
+      }
       setPhaseIndicatorReady(false);
       // Intro overlay duration. Installation mode holds longer so the
       // title doubles as a perceptual mask while the AI image layer

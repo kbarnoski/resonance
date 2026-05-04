@@ -61,6 +61,11 @@ interface AudioState {
 
   // Installation mode
   installationMode: boolean;
+  /** When true, the next activeJourney change skips the visualizer's
+   *  built-in journey intro overlay. Used by installation mode to
+   *  prevent the journey intro from overlapping with the installation
+   *  intro overlay (which shows the journey title itself for journey 0). */
+  suppressNextJourneyIntro: boolean;
   vizModeSequence: string[] | null;
   vizModeSequenceIndex: number;
 
@@ -129,6 +134,7 @@ interface AudioState {
   clearQueue: () => void;
   clear: () => void;
   setInstallationMode: (enabled: boolean) => void;
+  setSuppressNextJourneyIntro: (suppress: boolean) => void;
   setVizModeSequence: (sequence: string[] | null) => void;
   cycleVizMode: () => void;
   cycleVizModePrev: () => void;
@@ -168,6 +174,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   storyLoading: false,
   storyCurrentParagraphIndex: 0,
   installationMode: false,
+  suppressNextJourneyIntro: false,
   vizModeSequence: null,
   vizModeSequenceIndex: 0,
   activeJourney: null,
@@ -334,6 +341,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     }),
 
   setInstallationMode: (enabled) => set({ installationMode: enabled }),
+  setSuppressNextJourneyIntro: (suppress) => set({ suppressNextJourneyIntro: suppress }),
 
   setVizModeSequence: (sequence) => set({ vizModeSequence: sequence, vizModeSequenceIndex: 0 }),
 

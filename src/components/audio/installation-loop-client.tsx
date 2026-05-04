@@ -59,6 +59,15 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
+  // Installation intro overlay state.
+  //   "cycle"        — "Resonance — A contemplative listening room"
+  //   "journey"      — journey 0's title (Ascension), shown WITHIN the
+  //                    same overlay so it doesn't compete with another
+  //                    intro overlay
+  //   "fading-out"   — overlay fades to opacity 0 over 1.6s
+  //   "gone"         — overlay unmounted; journey visuals are sole layer
+  type IntroStage = "cycle" | "journey" | "fading-out" | "gone";
+  const [introStage, setIntroStage] = useState<IntroStage>("cycle");
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -191,17 +200,35 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       // already names what the experience is; dots come later at the
       // per-journey title moment.
       setTitleWindow(false);
-      const t = setTimeout(() => {
+      // Reset intro overlay to cycle text at the top of every loop.
+      setIntroStage("cycle");
+
+      // Phase machine for the cycle intro:
+      //   t=0     → show "Resonance" cycle text (this state)
+      //   t=7s    → suppress visualizer's journey intro for journey 0,
+      //             pre-start journey 0 (audio + shader crossfade kicks
+      //             in BEHIND the still-opaque installation intro), and
+      //             swap intro text to journey title (in same overlay,
+      //             so no competing intro overlays appear)
+      //   t=12s   → begin overlay fade-out (1.6s)
+      //   t=13.6s → snap-change phase to journey 0 (overlay unmounts;
+      //             journey shader is fully established underneath)
+      //
+      // No competing texts: installation intro shows "Ascension" title
+      // by swapping its own inner text (1.5s inner fade), then fades
+      // the entire overlay; visualizer-client's journey intro is
+      // suppressed for journey 0 via the store flag set above.
+      const showCycleText = setTimeout(() => {
         if (sequence.length === 0) {
           setPhase({ kind: "credits" });
           return;
         }
-        // Pre-start journey 0 BEFORE removing the intro overlay. This
-        // sets vizMode to the journey's first shader and triggers the
-        // visualizer's A/B shader crossfade. By the time the intro
-        // snap-removes ~1.5s later, the journey shader is established
-        // — viewer never sees the bare ambient/orb shader behind.
         const entry = sequence[0];
+        // Suppress visualizer's intro overlay for journey 0 so it
+        // doesn't fire alongside the installation intro's journey title.
+        useAudioStore.getState().setSuppressNextJourneyIntro(true);
+        // Pre-start journey 0 — shader A/B crossfade begins under the
+        // still-opaque installation intro.
         const track = trackForIndex(0);
         if (track) setQueue([track], 0);
         startJourney(entry.journey.id);
@@ -216,14 +243,28 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
             useAudioStore.getState().setCueMarkers(cues);
           } catch { /* engine warming */ }
         }
-        // Wait for shader crossfade to establish, then snap-change phase
-        // (which removes the intro overlay). The visualizer's per-journey
-        // intro (Ascension title) starts its 6s fade-in at this moment —
-        // no overlap with the installation intro because installation
-        // intro is gone the instant the phase changes.
-        setTimeout(() => setPhase({ kind: "journey", index: 0 }), 1500);
+        // Swap inner text: cycle → journey (1.5s inner fade in).
+        setIntroStage("journey");
       }, INTRO_MS);
-      return () => clearTimeout(t);
+
+      // Hold the journey title for 5s, then fade the whole overlay out.
+      const beginFadeOut = setTimeout(() => {
+        setIntroStage("fading-out");
+      }, INTRO_MS + 5_000);
+
+      // After fade completes, change phase. By now journey shader has
+      // had ~6.6s to establish via the visualizer's A/B crossfade, so
+      // the unmount reveals the journey visuals cleanly.
+      const finalPhaseChange = setTimeout(() => {
+        setIntroStage("gone");
+        setPhase({ kind: "journey", index: 0 });
+      }, INTRO_MS + 6_600);
+
+      return () => {
+        clearTimeout(showCycleText);
+        clearTimeout(beginFadeOut);
+        clearTimeout(finalPhaseChange);
+      };
     }
 
     if (phase.kind === "credits") {
@@ -498,14 +539,27 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
           the prop wiring + page param are still in place. */}
       {false && debug && <InstallationDebugHud />}
 
-      {/* Installation intro: pure snap-mount during intro phase. We
-          pre-start journey 0 (in the intro phase machine above) before
-          phase changes, so by the time this overlay disappears the
-          journey shader is already crossfading in underneath. The
-          per-journey title (visualizer-client's journey intro) starts
-          its 6s fade-in the instant phase changes — no overlap with
-          this overlay because this one is gone the moment phase ≠ intro. */}
-      {phase.kind === "intro" && <InstallationIntro />}
+      {/* Installation intro overlay — staged across the cycle handoff.
+          Shows "Resonance" cycle text, then swaps inner text to the
+          journey title (Ascension), then fades the whole overlay out
+          as the journey shader/imagery take over underneath. This is a
+          single overlay so there's never two competing intros visible
+          (the visualizer's journey intro is suppressed for journey 0). */}
+      {introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && introStage === "fading-out")) && (
+        <div
+          className="absolute inset-0 z-50 pointer-events-none"
+          style={{
+            opacity: introStage === "fading-out" ? 0 : 1,
+            transition: "opacity 1600ms ease-out",
+          }}
+        >
+          <InstallationIntro
+            mode={introStage === "cycle" ? "cycle" : "journey"}
+            journey={sequence[0]?.journey ?? null}
+            trackArtist={sequence[0]?.track?.artist ?? null}
+          />
+        </div>
+      )}
       {phase.kind === "credits" && <InstallationCredits />}
 
       {/* Path dots — only visible during the per-journey title window
