@@ -249,15 +249,20 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     const onError = () => {
       loadingNewSrc.current = false;
-      // In installation mode a broken track must NEVER strand the loop.
-      // Advance to the next queued track (the loop client wraps if past
-      // the end), so a single bad recording doesn't leave the kiosk
-      // silent forever. Outside installation mode, fall back to pausing.
+      // In installation mode the loop client owns recovery + skip
+      // decisions. Earlier this called playNext() to advance, but in
+      // single-track installation queues that wraps to the SAME track
+      // and races the loop client's own retry logic — when both fired
+      // for the same error event, the wrap call would set src on an
+      // already-errored element and prevent the loop client's fresh-
+      // URL retry from succeeding. Now we just log; the loop client
+      // listens for "error" too (early-error listener during cycle
+      // intro, errorListener during journey phase) and runs the
+      // recovery / skip path itself.
       const { installationMode } = useAudioStore.getState();
       if (installationMode) {
         // eslint-disable-next-line no-console
-        console.warn("[audio] track load error in installation mode — advancing");
-        useAudioStore.getState().playNext();
+        console.warn("[audio] track load error in installation mode — loop client will handle");
       } else {
         useAudioStore.getState().pause();
       }

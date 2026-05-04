@@ -273,49 +273,35 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         }
 
         // Early error listener: if Ascension's audio fails during the
-        // cycle intro window, attempt ONE fresh URL resolve (clearing
-        // the sessionStorage cache that may hold a stale signed URL),
-        // then skip to journey 1 only if recovery also fails.
+        // cycle intro window, retry up to 3 times with progressively
+        // fresh URLs (clearing sessionStorage cache each time so the
+        // resolver can't return a stale signed URL). Never skip from
+        // here — phase change to journey 0 happens at INTRO_MS+14.8s
+        // regardless, and the journey-phase setup has its own stalled
+        // detection (30s) and reload attempt (12s) to handle a track
+        // that genuinely cannot be loaded.
         try {
           const el = getAudioEngine().audioElement;
-          let earlyRetried = false;
+          let earlyRetries = 0;
+          const MAX_EARLY_RETRIES = 3;
           earlyErrorListener = () => {
             const errCode = el.error?.code;
             const errMsg = el.error?.message || "(no msg)";
-            if (!earlyRetried) {
-              earlyRetried = true;
-              // eslint-disable-next-line no-console
-              console.warn(`[installation] early audio error (${errCode}: ${errMsg}) — attempting fresh URL`);
-              void (async () => {
-                try {
-                  const t = trackForIndex(0);
-                  if (!t?.audioUrl) throw new Error("no audio url");
-                  // Clear stale signed URL cache for this recording
-                  try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
-                  const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
-                  const fresh = await resolveAudioUrl(t.audioUrl, t.id);
-                  el.src = fresh;
-                  el.load();
-                } catch {
-                  // Recovery failed synchronously — let the second
-                  // error event (if any) take the skip path below.
-                }
-              })();
-              return;
-            }
             // eslint-disable-next-line no-console
-            console.warn("[installation] early audio error after retry — skipping to journey 1");
-            setSkippedIndices((s) => new Set(s).add(0));
-            if (fadeBgStart) clearTimeout(fadeBgStart);
-            if (mountJourney) clearTimeout(mountJourney);
-            if (fadeJourneyStart) clearTimeout(fadeJourneyStart);
-            if (finalPhaseChange) clearTimeout(finalPhaseChange);
-            setIntroStage("gone");
-            if (sequence.length > 1) {
-              setPhase({ kind: "journey", index: 1 });
-            } else {
-              setPhase({ kind: "credits" });
-            }
+            console.warn(`[installation] early audio error (code ${errCode}: ${errMsg}) — retry ${earlyRetries + 1}/${MAX_EARLY_RETRIES}`);
+            if (earlyRetries >= MAX_EARLY_RETRIES) return;
+            earlyRetries++;
+            void (async () => {
+              try {
+                const t = trackForIndex(0);
+                if (!t?.audioUrl) return;
+                try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
+                const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+                const fresh = await resolveAudioUrl(t.audioUrl, t.id);
+                el.src = fresh;
+                el.load();
+              } catch { /* best-effort */ }
+            })();
           };
           el.addEventListener("error", earlyErrorListener);
         } catch { /* engine warming */ }
@@ -499,13 +485,37 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         advance();
       };
       el.addEventListener("ended", endedListener);
+      // On error, try fresh URL recovery up to 3 times before logging
+      // the failure and advancing. Most errors during installation are
+      // stale signed URLs, network blips, or codec hiccups — fresh
+      // resolve usually fixes them. Only after exhausting retries do
+      // we surface the failure + advance.
+      let phaseRetries = 0;
+      const MAX_PHASE_RETRIES = 3;
       errorListener = () => {
         const errCode = el.error?.code;
         const errMsg = el.error?.message || "(no msg)";
         const codes = ["", "ABORTED", "NETWORK", "DECODE", "SRC_NOT_SUPPORTED"];
         const reason = `${codes[errCode || 0] || errCode}: ${errMsg}`;
+        if (phaseRetries < MAX_PHASE_RETRIES) {
+          phaseRetries++;
+          // eslint-disable-next-line no-console
+          console.warn(`[installation] error on ${entry.journey.name}: ${reason} — retry ${phaseRetries}/${MAX_PHASE_RETRIES}`);
+          void (async () => {
+            try {
+              const t = trackForIndex(phase.index);
+              if (!t?.audioUrl) return;
+              try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
+              const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+              const fresh = await resolveAudioUrl(t.audioUrl, t.id);
+              el.src = fresh;
+              el.load();
+            } catch { /* best-effort */ }
+          })();
+          return;
+        }
         // eslint-disable-next-line no-console
-        console.warn(`[installation] audio error on journey ${phase.index} (${entry.journey.name}): ${reason}`);
+        console.warn(`[installation] ${entry.journey.name}: ${reason} — retries exhausted, advancing`);
         logInstallFailure({
           journey: entry.journey.name,
           track: trackForIndex(phase.index)?.title ?? "(none)",
@@ -547,13 +557,16 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     const reloadAttempt = setTimeout(async () => {
       try {
         const el = getAudioEngine().audioElement;
-        if (el.error) return; // already errored — let onError handle skip
         if (el.currentTime > 0.1) return; // already playing — fine
         const t = trackForIndex(phase.index);
         if (!t?.audioUrl) return;
+        // Force-reload regardless of el.error: clearing src and
+        // re-resolving lets us recover from a stale signed URL even
+        // if the element is currently in an error state. Without this,
+        // an element that errored during cycle intro would be stuck
+        // and only the stalled detector at 30s could move us off.
         // eslint-disable-next-line no-console
-        console.warn(`[installation] ${entry.journey.name}: stuck at 0 after 12s — force-reload`);
-        // Clear cached signed URL — likely stale if we got this far.
+        console.warn(`[installation] ${entry.journey.name}: stuck at 0 after 12s (error=${el.error?.code ?? "none"}) — force-reload`);
         try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
         const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
         const fresh = await resolveAudioUrl(t.audioUrl, t.id);
