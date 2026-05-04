@@ -24,7 +24,7 @@ export const PAIRED_TRACKS: Record<string, string> = {
   // album tracks (those play in the WH path). Patterns are unique
   // enough to not collide on substring match — e.g., "17th St 63
   // spectre" includes "spectre" so it doesn't match "17th St 63".
-  "the-ascension":    "%Folsom St 6%",         // 5:20 — atmospheric opener
+  "the-ascension":    "%Rebound%",              // 2:51 — short, name evokes upward motion
   "mycelium-dream":   "%Folsom St 8%",         // 6:25 — organic, longest available
   "abyssal-dive":     "%17th St 62%",          // 4:41
   "dissolution":      "%champa%",              // 2:43
