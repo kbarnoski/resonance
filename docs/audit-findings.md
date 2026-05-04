@@ -94,30 +94,106 @@ fan out their requests across regions and bypass per-user caps. The
 fix is a Redis or Vercel KV backend, with the bucket math unchanged.
 **Tracked as a P1; not currently exploitable.**
 
-### CSP — currently lenient
+### CSP — currently lenient (web app)
 The current Next.js middleware sets standard X-Frame-Options /
 X-Content-Type-Options / Referrer-Policy / Permissions-Policy
 headers, but no Content-Security-Policy. The app inlines styles
 through tailwind, loads Google Fonts, and connects to fal.media,
 Supabase, Anthropic and OpenAI — a CSP would lock those down.
-Recommended path: add CSP in `Content-Security-Policy-Report-Only`
-mode first, gather a week of violation reports from real users
-(installation kiosk uses many remote image hosts), then promote to
-enforcement.
+
+**Recommended rollout (web app):**
+
+1. Add a `Content-Security-Policy-Report-Only` header in
+   `src/middleware.ts` — same value as the desktop CSP committed in
+   `src-tauri/tauri.conf.json` (which was tightened from `null`
+   in commit 6 of this branch). Run for at least a week.
+2. Wire `report-uri /api/csp-report` (or the `report-to` directive)
+   into a small server-side log sink and watch what fires. The
+   installation kiosk pulls AI imagery from many fal.media subdomains
+   in production; some of those probably need explicit allowlisting.
+3. Once the report-only stream is quiet for a release cycle, promote
+   to enforcement by switching the header name to
+   `Content-Security-Policy`.
+4. The desktop Tauri app's CSP is already enforced (commit 6).
+
+**Starting CSP for the web app (mirrors the desktop one):**
+
+```
+default-src 'self';
+script-src 'self' 'unsafe-inline' 'unsafe-eval';
+style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+font-src 'self' data: https://fonts.gstatic.com;
+img-src 'self' data: blob: https://*.supabase.co https://*.fal.media https://fal.media;
+media-src 'self' data: blob: https://*.supabase.co;
+connect-src 'self' https://*.supabase.co https://*.fal.run https://fal.run https://*.fal.ai https://api.openai.com https://api.anthropic.com wss://*.fal.run wss://*.fal.ai;
+frame-ancestors 'none'
+```
+
+Both `'unsafe-inline'` and `'unsafe-eval'` are present as a
+pragmatic concession to Next.js + the AI SDK. A subsequent pass
+with nonce-based scripts would tighten this further; tracked as
+P2 because the practical attack surface (XSS) is small in this
+codebase given there's no user-supplied HTML rendered raw anywhere.
 
 ### Backend posture
-- Supabase service-role key (`SUPABASE_SERVICE_ROLE_KEY`) appears in
-  `src/app/api/admin/backfill-all-journeys/route.ts`. It bypasses
-  RLS — used here intentionally to write across users — but each
-  service-role usage should be reviewed for the narrowest possible
-  scope and an explicit comment noting why RLS is bypassed.
-- The audio API (`src/app/api/audio/[id]/route.ts`) has a transcode
-  path that runs `ffmpeg` on user-supplied files. ffmpeg is invoked
-  via `execFile` (not `exec`) and the input path is in a tempdir —
-  parameter injection is blocked. Resource limits (`-timeout`, max
-  output size) would be a defense-in-depth improvement.
-- The Tauri sidecar (`src-tauri/`) had path-traversal and URL-allowlist
-  gaps that are addressed in commit 6 of this branch.
+
+**Supabase service-role usage**
+- `SUPABASE_SERVICE_ROLE_KEY` appears in
+  `src/app/api/admin/backfill-all-journeys/route.ts` and
+  `src/app/api/journeys/share-builtin/route.ts`. Each call bypasses
+  RLS, which is correct for the use case (cross-user backfill,
+  marking a recording shared) but each instance should keep an
+  explicit comment naming why RLS is bypassed and what bounds the
+  blast radius (e.g. `requireAdmin()` already gating the route).
+- A weekly grep for `SUPABASE_SERVICE_ROLE_KEY` is a cheap check —
+  a new file appearing in the results without a justifying comment
+  is the signal to review.
+
+**ffmpeg sandbox (audio transcode path)**
+- `src/app/api/audio/[id]/route.ts` runs `ffmpeg` on user-supplied
+  recordings. Already safe against shell injection: invocation is
+  `execFile` not `exec`, the input is a tempdir-scoped path that
+  the route just wrote, and the transcode arguments are static.
+- Defense-in-depth ideas (not yet implemented):
+  - Stricter timeout (`{ timeout: 120000 }` is set; could drop to
+    60s for typical track lengths).
+  - Cap output file size (currently unbounded — a malicious input
+    could produce a multi-GB output).
+  - Run inside a containerized worker rather than the Next.js
+    serverless function process.
+
+**Tauri sidecar**
+- Path traversal in `src-tauri/src/cache.rs` (recording_id wasn't
+  validated before being concatenated into a file name) — closed
+  in commit 6.
+- Open URL fetch in `cmd_audio_load` (any HTTPS URL would be
+  downloaded and written to disk) — closed in commit 6 with a
+  Supabase-storage allowlist.
+- `tauri.conf.json` had `csp: null` — closed in commit 6 with a
+  CSP enumerating the actual upstreams.
+
+**Auth flow**
+- Out of scope for this audit. Supabase magic-link auth is the
+  load-bearing mechanism; a follow-up audit should review the
+  email-template configuration, session-rotation behavior, and
+  the `/login` redirect-to surface for open-redirect risk.
+
+**Rate limiting at the edge**
+- The token-bucket rate limiter in `src/lib/rate-limit.ts` is
+  in-process. For deployments that run multiple Vercel regions
+  simultaneously it would need a Redis or Vercel KV backend so
+  cross-region bursts can't bypass it. Tracked as P1; not
+  exploitable today (single region in prod).
+
+**Logging + redaction**
+- Commit 2 routes all `console.*` in API code through
+  `src/lib/logger.ts`. The logger today is a pass-through; the
+  reason for adding the seam is so a future commit can add token
+  redaction and Sentry shipping in one place. Tokens that should
+  never appear in logs: `FAL_KEY`, signed Supabase URLs (which
+  contain time-limited credentials in the query string), session
+  cookies. None of these are currently logged but a redactor
+  pass would prevent regression.
 
 ## Phase 2-5 — code health (this branch)
 
