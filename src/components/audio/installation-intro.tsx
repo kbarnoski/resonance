@@ -141,9 +141,10 @@ function CycleTextInner() {
           lineHeight: 1.65,
         }}
       >
-        Composed music drives a slow audiovisual landscape — shaders, light,
-        AI-curated imagery — that never repeats verbatim. Recline. Stay as long
-        or as briefly as you wish.
+        A five-part journey. Composed music drives a slow audiovisual
+        landscape of generative shaders and original AI-rendered imagery
+        — created live, never the same twice. Recline. Stay as long or
+        as briefly as you wish.
       </p>
       <div
         className="text-white/55 mt-14"
