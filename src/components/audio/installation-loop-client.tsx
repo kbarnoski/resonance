@@ -59,12 +59,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
-  // Intro overlay opacity. Stays at 1 (fully covers shader stack) during
-  // intro phase. When phase advances to journey, we wait ~1.2s for the
-  // new journey's shader to start its A/B crossfade, THEN fade the intro
-  // out over 1.5s. Net effect: viewer never sees the bare ambient/orb
-  // shader — intro covers it until the journey shader is established.
-  const [introOpacity, setIntroOpacity] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -197,14 +191,37 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       // already names what the experience is; dots come later at the
       // per-journey title moment.
       setTitleWindow(false);
-      // Intro overlay starts fully covering the shader stack.
-      setIntroOpacity(1);
       const t = setTimeout(() => {
         if (sequence.length === 0) {
           setPhase({ kind: "credits" });
-        } else {
-          setPhase({ kind: "journey", index: 0 });
+          return;
         }
+        // Pre-start journey 0 BEFORE removing the intro overlay. This
+        // sets vizMode to the journey's first shader and triggers the
+        // visualizer's A/B shader crossfade. By the time the intro
+        // snap-removes ~1.5s later, the journey shader is established
+        // — viewer never sees the bare ambient/orb shader behind.
+        const entry = sequence[0];
+        const track = trackForIndex(0);
+        if (track) setQueue([track], 0);
+        startJourney(entry.journey.id);
+        const cues = entry.cues ?? [];
+        if (cues.length > 0 && track?.duration) {
+          try {
+            const engine = getJourneyEngine();
+            engine.setEvents(
+              cues.map((c) => ({ time: c.time, type: "bass_hit" as const, intensity: 1.0 })),
+              track.duration,
+            );
+            useAudioStore.getState().setCueMarkers(cues);
+          } catch { /* engine warming */ }
+        }
+        // Wait for shader crossfade to establish, then snap-change phase
+        // (which removes the intro overlay). The visualizer's per-journey
+        // intro (Ascension title) starts its 6s fade-in at this moment —
+        // no overlap with the installation intro because installation
+        // intro is gone the instant the phase changes.
+        setTimeout(() => setPhase({ kind: "journey", index: 0 }), 1500);
       }, INTRO_MS);
       return () => clearTimeout(t);
     }
@@ -233,16 +250,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     setTitleWindow(true);
     const titleHideTimer = setTimeout(() => setTitleWindow(false), 10_000);
 
-    // Intro overlay handoff: if this is the FIRST journey of a cycle
-    // (the one right after intro), the intro overlay is still rendered
-    // at full opacity. Wait ~1.2s for the new journey's shader A/B
-    // crossfade to start replacing the bare ambient/orb shader, THEN
-    // fade the intro out over 1.5s. Net result: viewer never sees the
-    // bare orb between intro and journey 1's first shader.
-    let introFadeTimer: ReturnType<typeof setTimeout> | null = null;
-    if (phase.index === 0) {
-      introFadeTimer = setTimeout(() => setIntroOpacity(0), 1200);
-    }
+    // No special intro handoff here — the intro phase pre-started
+    // journey 0 1.5s before the phase change, so by now the journey
+    // shader is established. Installation intro snap-removes via the
+    // phase.kind condition in the render below.
 
     // Warm engine + ensure audio context is resumed (one user gesture
     // anywhere on the page is enough; this is a no-op afterwards).
@@ -251,32 +262,41 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       ensureResumed();
     } catch { /* engine warming */ }
 
-    // Smooth handoff into the new journey. Just pause the previous
-    // track (audio-provider will swap src naturally on the new
-    // currentTrack). No removeAttribute/load — that was abrupt and
-    // caused visible state churn between journeys.
-    try {
-      getAudioEngine().audioElement.pause();
-    } catch { /* engine warming */ }
+    // Detect "already started" — the intro phase pre-starts journey 0
+    // synchronously, so when phase officially changes to journey 0, the
+    // store already has activeJourney = entry.journey. Skip the start
+    // path; just set up listeners and timers.
+    const alreadyStarted =
+      useAudioStore.getState().activeJourney?.id === entry.journey.id;
 
-    const track = trackForIndex(phase.index);
-    if (track) setQueue([track], 0);
-    startJourney(entry.journey.id);
-
-    // Apply cue markers to the journey-engine. Without this, per-cue
-    // events like Ghost's bass_hit flashes never fire because the engine
-    // has no events to trigger on. Mirrors what journey-selector does on
-    // a normal journey click.
-    const cues = entry.cues ?? [];
-    if (cues.length > 0 && track?.duration) {
+    if (!alreadyStarted) {
+      // Smooth handoff into the new journey. Just pause the previous
+      // track (audio-provider will swap src naturally on the new
+      // currentTrack). No removeAttribute/load — that was abrupt and
+      // caused visible state churn between journeys.
       try {
-        const engine = getJourneyEngine();
-        engine.setEvents(
-          cues.map((c) => ({ time: c.time, type: "bass_hit" as const, intensity: 1.0 })),
-          track.duration,
-        );
-        useAudioStore.getState().setCueMarkers(cues);
+        getAudioEngine().audioElement.pause();
       } catch { /* engine warming */ }
+
+      const track = trackForIndex(phase.index);
+      if (track) setQueue([track], 0);
+      startJourney(entry.journey.id);
+
+      // Apply cue markers to the journey-engine. Without this, per-cue
+      // events like Ghost's bass_hit flashes never fire because the engine
+      // has no events to trigger on. Mirrors what journey-selector does on
+      // a normal journey click.
+      const cues = entry.cues ?? [];
+      if (cues.length > 0 && track?.duration) {
+        try {
+          const engine = getJourneyEngine();
+          engine.setEvents(
+            cues.map((c) => ({ time: c.time, type: "bass_hit" as const, intensity: 1.0 })),
+            track.duration,
+          );
+          useAudioStore.getState().setCueMarkers(cues);
+        } catch { /* engine warming */ }
+      }
     }
 
     // Helper: advance to the next journey, or wrap to credits.
@@ -453,7 +473,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
       clearTimeout(titleHideTimer);
-      if (introFadeTimer) clearTimeout(introFadeTimer);
       clearInterval(playWatchdog);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
       if (endedListener) {
@@ -479,21 +498,14 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
           the prop wiring + page param are still in place. */}
       {false && debug && <InstallationDebugHud />}
 
-      {/* Intro stays mounted past the phase change so we can fade it
-          out smoothly while the new journey's shader establishes
-          underneath. introOpacity drives this — 1 during intro phase,
-          fades to 0 after journey 0 starts. */}
-      {(phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && introOpacity > 0)) && (
-        <div
-          className="absolute inset-0 z-50 pointer-events-none"
-          style={{
-            opacity: introOpacity,
-            transition: "opacity 1500ms ease-out",
-          }}
-        >
-          <InstallationIntro />
-        </div>
-      )}
+      {/* Installation intro: pure snap-mount during intro phase. We
+          pre-start journey 0 (in the intro phase machine above) before
+          phase changes, so by the time this overlay disappears the
+          journey shader is already crossfading in underneath. The
+          per-journey title (visualizer-client's journey intro) starts
+          its 6s fade-in the instant phase changes — no overlap with
+          this overlay because this one is gone the moment phase ≠ intro. */}
+      {phase.kind === "intro" && <InstallationIntro />}
       {phase.kind === "credits" && <InstallationCredits />}
 
       {/* Path dots — only visible during the per-journey title window
