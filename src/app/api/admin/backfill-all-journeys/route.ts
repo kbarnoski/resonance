@@ -1,10 +1,10 @@
-import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createClient as createAdminClient } from "@supabase/supabase-js";
 import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { z } from "zod";
 import { JOURNEYS } from "@/lib/journeys/journeys";
 import type { JourneyPhase } from "@/lib/journeys/types";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 /**
  * Admin-only platform-wide sweep: enrich every custom journey in the DB
@@ -80,16 +80,10 @@ For EACH of the 6 phases, produce an aiPromptSequence of 6-7 variant prompts (15
 }
 
 export async function POST(request: Request) {
-  // Admin gate via the user's authenticated session.
-  const supabase = await createServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
-  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
-  if (!adminEmail || user.email?.toLowerCase().trim() !== adminEmail) {
-    return Response.json({ error: "Forbidden" }, { status: 403 });
-  }
+  // Admin gate via the centralized helper. Single source of truth
+  // for "is the caller an admin" — see src/lib/auth/require-admin.ts.
+  const gate = await requireAdmin();
+  if (!gate.ok) return gate.response;
 
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

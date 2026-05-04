@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
 import { createClient } from "@/lib/supabase/server";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 // Legacy .jsonl file kept for GET so historical entries aren't lost.
 // All new writes go to the journey_feedback Supabase table.
@@ -44,15 +45,11 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  // Centralized admin gate (see src/lib/auth/require-admin.ts).
+  const gate = await requireAdmin();
+  if (!gate.ok) return gate.response;
+
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
-  const adminEmail = process.env.ADMIN_EMAIL?.toLowerCase().trim();
-  if (!adminEmail || user.email?.toLowerCase().trim() !== adminEmail) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-  }
-
   const { data: dbRows } = await supabase
     .from("journey_feedback")
     .select("payload, created_at, journey_id")
