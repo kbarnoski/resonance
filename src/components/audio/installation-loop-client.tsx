@@ -371,8 +371,14 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // already names what the experience is; dots come later at the
       // per-journey title moment.
       setTitleWindow(false);
-      // Reset intro overlay to cycle text at the top of every loop.
-      setIntroStage("cycle");
+      // Initial intro stage. For the kiosk auto-start path we begin
+      // at "cycle" so the InstallationIntro fades the cycle text in.
+      // For the gesture-started path the user has already read the
+      // cycle intro on the Begin overlay — we skip directly to
+      // "fading-cycle" so the bg-black is opaque but the cycle text
+      // doesn't mount a second time (the duplicate-titling bug the
+      // user saw on mobile when both overlays rendered cycle text).
+      setIntroStage(needsGesture && started ? "fading-cycle" : "cycle");
 
       // Refs to scoped timers so an early error listener can abort them.
       let fadeCycleStart: ReturnType<typeof setTimeout> | null = null;
@@ -412,9 +418,18 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       //             can read the credits + dedication.)
       //   t=20.8s → phase change to journey 0.
 
-      // t=INTRO_MS (7s): begin cycle text fade-out AND pre-start
-      // journey 0. The shader needs lead time to compile + start its
-      // A/B crossfade before bg starts revealing it.
+      // Timing offsets. Kiosk auto-start path (/installation) waits
+      // 7s for the cycle-text intro then begins; gesture-started
+      // path (/demo) skips that wait because the user has already
+      // read the cycle intro on the Begin overlay.
+      const isGesture = needsGesture && started;
+      const preStartDelay = isGesture ? 0 : INTRO_MS;
+      const mountDelay = isGesture ? 2000 : INTRO_MS + 3500;
+      const fadeOutDelay = isGesture ? 10_000 : INTRO_MS + 11_500;
+      const phaseChangeDelay = isGesture ? 11_800 : INTRO_MS + 13_300;
+
+      // Pre-start journey 0. The shader needs lead time to compile
+      // + start its A/B crossfade before bg starts revealing it.
       fadeCycleStart = setTimeout(() => {
         if (sequence.length === 0) {
           setPhase({ kind: "credits" });
@@ -476,35 +491,30 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           tryPlay(el);
           el.addEventListener("error", earlyErrorListener);
         } catch { /* engine warming */ }
-      }, INTRO_MS);
+      }, preStartDelay);
 
-      // t=INTRO_MS+3.5s: title mount AND bg fade start, same clock.
-      // The bg-black has been holding opaque since fading-cycle ended
-      // at t=INTRO_MS+1.5s (2 seconds of pure black hold) — short
-      // enough not to read as a stall, long enough that the
-      // visualizer's shader compile + A/B crossfade have settled.
-      // Now we simultaneously show the title (3.8s fade-in via the
-      // installationContentFade keyframe) and reveal the shader (3.8s
-      // bg-black opacity fade in InstallationIntro). Both peak
-      // together. Title and shader as one composition.
+      // Mount journey title + start bg fade, same clock. After the
+      // pre-start there's a short black hold while the visualizer's
+      // shader compile + A/B crossfade settle (gesture path: 2s
+      // total; kiosk path: 3.5s including the 1.5s cycle-text
+      // fade-out window). Then both fade in over 3.8s — title and
+      // shader as one composition.
       mountJourney = setTimeout(() => {
         setIntroStage("journey");
-      }, INTRO_MS + 3500);
+      }, mountDelay);
 
-      // t=INTRO_MS+11.5s: title has been fully visible ~4.7s (peak
-      // hold extended again per user feedback — first +1s, now +1.5s
-      // more — so audiences in galleries / public spaces have time
-      // to actually read the credits + dedication). Begin fade.
+      // Title peak hold ~4.2s before fade-out (gallery audiences
+      // need time to read the credits + dedication).
       fadeJourneyStart = setTimeout(() => {
         setIntroStage("fading-journey");
-      }, INTRO_MS + 11_500);
+      }, fadeOutDelay);
 
-      // t=INTRO_MS+13.3s: phase change → overlay fully unmounted,
-      // journey is sole visual layer
+      // Phase change → overlay fully unmounted; journey is the
+      // sole visual layer.
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
         setPhase({ kind: "journey", index: 0 });
-      }, INTRO_MS + 13_300);
+      }, phaseChangeDelay);
 
       return () => {
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
@@ -939,6 +949,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               to { opacity: 1; }
             }
           `}</style>
+          {/* Full cycle intro context on the start screen: hero title,
+              subtitle, the description paragraph, and the by-Karel
+              credit block. The phase machine SKIPS the cycle text
+              after the user taps (sets introStage to "fading-cycle"
+              directly) so this content doesn't render twice. */}
           <div
             className="text-white/90"
             style={{
@@ -953,17 +968,56 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
             Resonance
           </div>
           <div
-            className="text-white/55"
+            className="text-white/65"
             style={{
               fontFamily: "'Cormorant Garamond', Georgia, serif",
               fontStyle: "italic",
               fontWeight: 300,
-              fontSize: "clamp(1.1rem, 2.4vw, 1.6rem)",
+              fontSize: "clamp(1.3rem, 2.8vw, 2rem)",
               letterSpacing: "0.01em",
-              marginBottom: "3rem",
+              marginBottom: "2.5rem",
             }}
           >
             A contemplative listening room
+          </div>
+          <p
+            className="text-white/55 max-w-2xl mx-auto"
+            style={{
+              fontFamily: "var(--font-geist-sans)",
+              fontWeight: 400,
+              fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)",
+              lineHeight: 1.65,
+              marginBottom: "2.5rem",
+            }}
+          >
+            Composed music drives a slow audiovisual landscape — shaders, light,
+            AI-curated imagery — that never repeats verbatim. Recline. Stay as long
+            or as briefly as you wish.
+          </p>
+          <div
+            className="text-white/55"
+            style={{
+              fontFamily: "var(--font-geist-mono)",
+              fontSize: "0.85rem",
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              marginBottom: "0.5rem",
+            }}
+          >
+            by
+          </div>
+          <div
+            className="text-white/85"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
+              letterSpacing: "0.02em",
+              marginBottom: "3rem",
+            }}
+          >
+            Karel Barnoski
           </div>
           {/* Play button — same circular shape + fill the shared
               journey start screen uses, for visual consistency. */}
