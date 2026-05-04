@@ -1823,10 +1823,10 @@ export function VisualizerClient({
       )}
 
       {/* Admin panel — toggle with 'A' key (any logged-in user) */}
-      {canAdmin && !journeyActive && <AdminPanel visible={adminOpen} onClose={() => setAdminOpen(false)} currentShader={storeVizMode} dualShader={undefined} tertiaryShader={undefined} isAdmin={isAdmin} onSwitchShader={(mode) => useAudioStore.getState().setVizMode(mode)} onPrevShader={() => useAudioStore.getState().cycleVizModePrev()} onNextShader={() => useAudioStore.getState().cycleVizMode()} />}
+      {!installationMode && canAdmin && !journeyActive && <AdminPanel visible={adminOpen} onClose={() => setAdminOpen(false)} currentShader={storeVizMode} dualShader={undefined} tertiaryShader={undefined} isAdmin={isAdmin} onSwitchShader={(mode) => useAudioStore.getState().setVizMode(mode)} onPrevShader={() => useAudioStore.getState().cycleVizModePrev()} onNextShader={() => useAudioStore.getState().cycleVizMode()} />}
 
       {/* Rating panel — toggle with 'R' key, own custom journeys or admin */}
-      {canRate && (
+      {!installationMode && canRate && (
         <JourneyFeedback
           visible={ratingOpen && journeyActive && !journeyOpen}
           shaderMode={journeyFrame?.shaderMode ?? storeVizMode}

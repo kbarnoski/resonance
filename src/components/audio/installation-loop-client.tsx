@@ -59,6 +59,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
+  // Intro overlay opacity. Stays at 1 (fully covers shader stack) during
+  // intro phase. When phase advances to journey, we wait ~1.2s for the
+  // new journey's shader to start its A/B crossfade, THEN fade the intro
+  // out over 1.5s. Net effect: viewer never sees the bare ambient/orb
+  // shader — intro covers it until the journey shader is established.
+  const [introOpacity, setIntroOpacity] = useState(1);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -191,6 +197,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       // already names what the experience is; dots come later at the
       // per-journey title moment.
       setTitleWindow(false);
+      // Intro overlay starts fully covering the shader stack.
+      setIntroOpacity(1);
       const t = setTimeout(() => {
         if (sequence.length === 0) {
           setPhase({ kind: "credits" });
@@ -224,6 +232,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     // client to mask the AI/shader handoff), so dots match.
     setTitleWindow(true);
     const titleHideTimer = setTimeout(() => setTitleWindow(false), 10_000);
+
+    // Intro overlay handoff: if this is the FIRST journey of a cycle
+    // (the one right after intro), the intro overlay is still rendered
+    // at full opacity. Wait ~1.2s for the new journey's shader A/B
+    // crossfade to start replacing the bare ambient/orb shader, THEN
+    // fade the intro out over 1.5s. Net result: viewer never sees the
+    // bare orb between intro and journey 1's first shader.
+    let introFadeTimer: ReturnType<typeof setTimeout> | null = null;
+    if (phase.index === 0) {
+      introFadeTimer = setTimeout(() => setIntroOpacity(0), 1200);
+    }
 
     // Warm engine + ensure audio context is resumed (one user gesture
     // anywhere on the page is enough; this is a no-op afterwards).
@@ -434,6 +453,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
       clearTimeout(titleHideTimer);
+      if (introFadeTimer) clearTimeout(introFadeTimer);
       clearInterval(playWatchdog);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
       if (endedListener) {
@@ -456,7 +476,21 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
       {debug && <InstallationDebugHud />}
 
-      {phase.kind === "intro" && <InstallationIntro />}
+      {/* Intro stays mounted past the phase change so we can fade it
+          out smoothly while the new journey's shader establishes
+          underneath. introOpacity drives this — 1 during intro phase,
+          fades to 0 after journey 0 starts. */}
+      {(phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && introOpacity > 0)) && (
+        <div
+          className="absolute inset-0 z-50 pointer-events-none"
+          style={{
+            opacity: introOpacity,
+            transition: "opacity 1500ms ease-out",
+          }}
+        >
+          <InstallationIntro />
+        </div>
+      )}
       {phase.kind === "credits" && <InstallationCredits />}
 
       {/* Path dots — only visible during the per-journey title window
