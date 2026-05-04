@@ -1,15 +1,13 @@
-/** Journeys paired with specific tracks — title search patterns (SQL ILIKE).
- *  When a journey is in this map, the installation loop ALWAYS plays the
- *  matching track for that journey instead of falling back to a random
- *  pick from the user's library.
+/** Journeys paired with specific tracks. Each value is one of:
  *
- *  To pair a new journey: add an entry like `"the-ascension": "%title%"`
- *  where the value is a SQL ILIKE pattern that matches the recording's
- *  title. `%foo%` matches any title containing "foo".
+ *    "%pattern%"  — SQL ILIKE pattern; first matching title wins
+ *    "=Exact"     — exact title match (for cases where ILIKE patterns
+ *                   collide, e.g., "17th St 63" vs "17th St 63 spectre")
  *
- *  Pairings as of 2026-05-03:
- *    Defined: first-snow, inferno, cosmic-drift, neural-link, ghost
- *    TODO: rest of the installation sequence (see comments below)
+ *  When a journey is in this map AND in INSTALLATION_SEQUENCE, the
+ *  installation loop plays the matching track for that journey. The
+ *  page always restricts pairings to the current user's recordings —
+ *  no cross-user track selection.
  */
 export const PAIRED_TRACKS: Record<string, string> = {
   // ─── Already paired ────────────────────────────────────────────
@@ -26,25 +24,26 @@ export const PAIRED_TRACKS: Record<string, string> = {
   //     Playa, Welcome Home, The Knife, The Knife (Jam), Bath,
   //     Interplay, Stir Crazy, Rolling, Quarantine, All Together,
   //     2019, Isolation, Rebound
-  "the-ascension":    "%Naive%",               // 3:36 mp3 — short, distinctive, not WH
-  "mycelium-dream":   "%Folsom St 8%",         // 6:25 alac — organic, longest available
+  // All Karel's tracks; none in Welcome Home album.
+  "the-ascension":    "=17th St 63",           // 3:20 — exact match (avoids "spectre" collision)
+  "mycelium-dream":   "%Folsom St 8%",         // 6:25 alac
   "abyssal-dive":     "%17th St 62%",          // 4:41
-  "dissolution":      "%champa%",              // 2:43 mp3
   "the-ascent":       "%Folsom St 5%",         // 4:41 alac
-  "the-tempest":      "%17th St 63 spectre%",  // "spectre" → distinct from 17th St 63
+  "the-tempest":      "=17th St 63 spectre",   // exact match (counterpart to ascension's exact)
   "the-bloom":        "%Folsom St 9%",         // 3:35 alac
 
-  // ─── Unpaired (TODO — were WH conflicts) ─────────────────────────
-  // These journeys aren't currently in INSTALLATION_SEQUENCE. Their
-  // previous WH-conflicting pairs are commented for reference. When
-  // adding any back to the sequence, pair them with non-WH tracks.
-  // "sacred-resonance": "%2019%",          // 2019 is in WH
-  // "the-maze":         "%Naive%",         // re-pair: Naive now used by Ascension
-  // "the-crossing":     "%Rolling%",       // Rolling is in WH
-  // "the-reading":      "%Grasshopper%",   // Grasshopper is OK (not in WH)
-  // "the-solstice":     "%Stir Crazy%",    // Stir Crazy is in WH
-  // "the-harvest":      "%All Together%",  // All Together is in WH
-  // "the-wound":        "%Quarantine%",    // Quarantine is in WH
+  // ─── Unpaired (TODO) ────────────────────────────────────────────
+  // Not currently in INSTALLATION_SEQUENCE. Previous WH-conflicting
+  // pairs are commented for reference; if adding any back, pair with
+  // non-WH tracks from Karel's library.
+  // "sacred-resonance": "%2019%",           // WH
+  // "the-maze":         "%Naive%",          // not Karel's
+  // "the-crossing":     "%Rolling%",        // WH
+  // "the-reading":      "%Grasshopper%",    // not Karel's
+  // "the-solstice":     "%Stir Crazy%",     // WH
+  // "the-harvest":      "%All Together%",   // WH
+  // "the-wound":        "%Quarantine%",     // WH
+  // "dissolution":      "%champa%",         // not Karel's
 };
 
 /** Storage file search patterns — fallback when track isn't in recordings table */

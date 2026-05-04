@@ -41,52 +41,66 @@ export default async function InstallationPage({ searchParams }: Props) {
   if (isLoop) {
     const supabase = await createClient();
 
-    // Pull featured recordings as the primary pool, then fall back to
-    // the user's full library if featured is empty. Mirrors the normal
-    // journey-selector behavior: any unpaired journey gets a random
-    // track from the user's recordings rather than silently failing
-    // because no featured tracks are configured for this account.
+    // Fallback pool — strictly the current user's recordings. The
+    // installation kiosk should never play someone else's track (even
+    // if RLS would allow cross-user reads of is_featured rows).
     let featuredRecordings: { id: string; title: string; artist: string | null; duration: number | null }[] = [];
-    try {
-      const { data } = await supabase
-        .from("recordings")
-        .select("id, title, artist, duration")
-        .eq("is_featured", true)
-        .order("created_at", { ascending: true });
-      if (data) featuredRecordings = data as typeof featuredRecordings;
-    } catch {
-      // is_featured column may not exist in all envs; pool stays empty.
-    }
-
-    // If no featured tracks (or DB doesn't have the column), use the
-    // user's whole library so every unpaired journey still has audio.
-    if (featuredRecordings.length === 0) {
+    {
       const { data: userRecs } = await supabase
         .from("recordings")
-        .select("id, title, artist, duration")
+        .select("id, title, artist, duration, is_featured")
         .eq("user_id", authUser.id)
         .order("created_at", { ascending: false });
-      if (userRecs) featuredRecordings = userRecs as typeof featuredRecordings;
+      if (userRecs) {
+        // Prefer featured ones at the front (intentional curation),
+        // then non-featured fill the rest.
+        type Row = { id: string; title: string; artist: string | null; duration: number | null; is_featured: boolean | null };
+        const rows = userRecs as Row[];
+        const featured = rows.filter((r) => r.is_featured);
+        const rest = rows.filter((r) => !r.is_featured);
+        featuredRecordings = [...featured, ...rest].map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
+      }
     }
 
     // Resolve PAIRED_TRACKS patterns → recording rows so we can hand the
     // exact track to a journey by id rather than mid-flight pattern match.
-    const pairedPatterns = Object.entries(PAIRED_TRACKS); // [journeyId, ilike]
+    // Each entry value is either:
+    //   "%pattern%"  — SQL ILIKE pattern; first matching title wins
+    //   "=Exact"     — exact title match (no substring); avoids collisions
+    //                  like "17th St 63" vs "17th St 63 spectre".
+    // Always restricted to the current user's recordings — installation
+    // pairings should never play someone else's track.
+    const pairedPatterns = Object.entries(PAIRED_TRACKS);
     const pairedRecordingByJourneyId: Record<string, typeof featuredRecordings[number]> = {};
     if (pairedPatterns.length > 0) {
-      const orFilter = pairedPatterns.map(([, p]) => `title.ilike.${p}`).join(",");
+      const orFilter = pairedPatterns
+        .map(([, p]) =>
+          p.startsWith("=")
+            ? `title.eq.${encodeURIComponent(p.slice(1))}`
+            : `title.ilike.${p}`,
+        )
+        .join(",");
       const { data: pairedRows } = await supabase
         .from("recordings")
         .select("id, title, artist, duration")
+        .eq("user_id", authUser.id)
         .or(orFilter);
       if (pairedRows) {
-        for (const [jid, ilike] of pairedPatterns) {
-          // Strip % wildcards for substring match.
-          const needle = ilike.replace(/^%|%$/g, "").toLowerCase();
-          const hit = (pairedRows as typeof featuredRecordings).find((r) =>
-            (r.title ?? "").toLowerCase().includes(needle),
-          );
-          if (hit) pairedRecordingByJourneyId[jid] = hit;
+        for (const [jid, p] of pairedPatterns) {
+          const isExact = p.startsWith("=");
+          if (isExact) {
+            const exactTitle = p.slice(1);
+            const hit = (pairedRows as typeof featuredRecordings).find(
+              (r) => (r.title ?? "") === exactTitle,
+            );
+            if (hit) pairedRecordingByJourneyId[jid] = hit;
+          } else {
+            const needle = p.replace(/^%|%$/g, "").toLowerCase();
+            const hit = (pairedRows as typeof featuredRecordings).find((r) =>
+              (r.title ?? "").toLowerCase().includes(needle),
+            );
+            if (hit) pairedRecordingByJourneyId[jid] = hit;
+          }
         }
       }
     }
