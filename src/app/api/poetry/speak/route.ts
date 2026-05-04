@@ -45,7 +45,7 @@ export async function POST(request: Request) {
 
   // Per-user rate limit — 10 burst, 1 every 6 seconds steady-state.
   // Comfortably above normal listening usage; well below abuse rate.
-  const rl = checkRateLimit(
+  const rl = await checkRateLimit(
     rateLimitKey({ userId: user.id, request, scope: "poetry-speak" }),
     10,
     1 / 6,

@@ -76,25 +76,48 @@ Tightenings:
 
 ## Known limitations / Phase 2-5 follow-ups
 
-### P1 — fal.ai master key still flows to authenticated clients
-The GET `/api/ai-image/token` endpoint hands the master `FAL_KEY`
-directly to authenticated callers because the fal realtime SDK opens
-its WebSocket with the credential client-side. This is auth-gated and
-rate-limited, but the proper fix is to mint short-lived, scoped fal
-tokens server-side. The fal SDK doesn't currently expose a clean
-helper for this; we'd need to call fal's REST API to mint a JWT and
-return that instead. **Tracked as a P1 in this audit; not blocking.**
+### ~~P1 — fal.ai master key still flows to authenticated clients~~ **RESOLVED**
+The GET `/api/ai-image/token` endpoint now mints a short-lived
+(5-minute) JWT scoped to `fal-ai/flux/schnell` via fal's REST auth
+endpoint and returns that to the client. The master `FAL_KEY` no
+longer leaves the server. The endpoint also returns a `scheme` hint
+("Bearer" for JWTs) so the client knows which auth header format to
+use; the realtime image service was updated to read it. If the
+upstream JWT mint fails, the route returns 502 — fail-closed, never
+falls back to the master key.
 
-### P1 — multi-region rate limiter
-`src/lib/rate-limit.ts` is a per-instance in-memory token bucket.
-That's correct for the current single-region Vercel deploy and any
-single-process desktop kiosk. If the app ever runs behind a
-multi-region edge with sticky-session-less routing, an attacker could
-fan out their requests across regions and bypass per-user caps. The
-fix is a Redis or Vercel KV backend, with the bucket math unchanged.
-**Tracked as a P1; not currently exploitable.**
+### ~~P1 — multi-region rate limiter~~ **RESOLVED**
+`src/lib/rate-limit.ts` now supports an optional KV backend.
+- Default (no env vars): in-memory token bucket — correct for
+  single-region or desktop deploys.
+- KV backend: when `KV_REST_API_URL` + `KV_REST_API_TOKEN` are set
+  (Vercel KV) or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`
+  are set (Upstash direct), the limiter uses an atomic lua-script
+  token bucket via Redis. Cross-region buckets stay coherent and a
+  hostile client can't fan out across regions to bypass caps.
+- KV failures (network, 5xx from the REST endpoint) gracefully fall
+  back to the in-memory bucket so a flaky KV doesn't lock everyone
+  out. Logged via `console.warn` for visibility.
 
-### CSP — currently lenient (web app)
+### ~~CSP — currently lenient (web app)~~ **REPORT-ONLY ACTIVE**
+
+The web app already enforced a CSP (this was missed in the original
+audit walk — `next.config.ts` has had `Content-Security-Policy` set
+since before this engagement). The enforced policy is loose
+(`https:` and `wss:` wildcards in `connect-src` and `https:` in
+`img-src`/`media-src`). A tighter policy now ships in
+`Content-Security-Policy-Report-Only` mode with specific upstream
+allowlists — Supabase, fal.*, OpenAI, Anthropic, Google Fonts. The
+`/api/csp-report` endpoint accepts violation reports in both legacy
+(`report-uri`) and modern (`report-to`) formats and logs structured
+summaries via the standard logger.
+
+**Promotion path:** monitor `/api/csp-report` logs for a release
+cycle. When the report stream is quiet, swap `CSP_DIRECTIVES` in
+`next.config.ts` to point at the tighter set, drop the Report-Only
+header. The historical text on this section is preserved below.
+
+---
 The current Next.js middleware sets standard X-Frame-Options /
 X-Content-Type-Options / Referrer-Policy / Permissions-Policy
 headers, but no Content-Security-Policy. The app inlines styles

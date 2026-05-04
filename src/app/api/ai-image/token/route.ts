@@ -124,7 +124,7 @@ export async function GET(request: Request) {
   // Mint costs us a fal API call per page load; rate limit prevents
   // a hostile client from grinding against fal's auth endpoint with
   // our credential (which would still cost us money even on errors).
-  const rl = checkRateLimit(
+  const rl = await checkRateLimit(
     rateLimitKey({ userId: user.id, request, scope: "fal-token-get" }),
     5,
     1 / 30,
@@ -160,7 +160,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "Missing FAL_KEY" }, { status: 501 });
   }
 
-  const rl = checkRateLimit(
+  const rl = await checkRateLimit(
     rateLimitKey({ userId: user.id, request, scope: "fal-token-post" }),
     60,
     1,
