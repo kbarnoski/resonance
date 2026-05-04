@@ -33,62 +33,17 @@ import { ShareSheet, triggerNativeShare } from "@/components/ui/share-sheet";
 import { Mic } from "lucide-react";
 import { isDesktopApp, enterKioskMode, exitKioskMode, nativeAudioSeek } from "@/lib/tauri";
 import { analyzeAndAdapt, refreshAdaptiveProfile } from "@/lib/journeys/adaptive-engine";
-
-// ─── Speech Recognition types ───
-
-interface SpeechRecognitionEvent extends Event {
-  results: SpeechRecognitionResultList;
-  resultIndex: number;
-}
-
-type SpeechRecognitionType = new () => {
-  continuous: boolean;
-  interimResults: boolean;
-  lang: string;
-  start(): void;
-  stop(): void;
-  onresult: ((event: SpeechRecognitionEvent) => void) | null;
-  onerror: ((event: Event) => void) | null;
-  onend: (() => void) | null;
-};
-
-function getSpeechRecognition(): SpeechRecognitionType | null {
-  if (typeof window === "undefined") return null;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition || null;
-}
-
-// ─── Shared style constants ───
-// Extracted from inline styles that appeared 17+ times. Module-level so
-// they're allocated once and never trigger re-renders.
-const MONO_LABEL: React.CSSProperties = {
-  fontFamily: "var(--font-geist-mono)",
-  fontSize: "0.9rem",
-  color: "rgba(255, 255, 255, 0.85)",
-  letterSpacing: "0.04em",
-  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-};
-const MONO_LABEL_DIM: React.CSSProperties = {
-  ...MONO_LABEL,
-  color: "rgba(255, 255, 255, 0.4)",
-  fontSize: "0.6rem",
-  letterSpacing: "0.08em",
-  textTransform: "uppercase",
-};
-const SERIF_TITLE: React.CSSProperties = {
-  fontFamily: "'Cormorant Garamond', Georgia, serif",
-  fontWeight: 300,
-  letterSpacing: "0.04em",
-  color: "#fff",
-  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-};
-const OVERLAY_BG: React.CSSProperties = {
-  position: "absolute",
-  inset: "-40%",
-  background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
-  filter: "blur(40px)",
-  pointerEvents: "none",
-};
+import {
+  getSpeechRecognition,
+  type SpeechRecognitionEvent,
+  type SpeechRecognitionType,
+} from "@/lib/browser/speech-recognition";
+import {
+  MONO_LABEL,
+  MONO_LABEL_DIM,
+  SERIF_TITLE,
+  OVERLAY_BG,
+} from "./visualizer-styles";
 
 // ─── Component ───
 
