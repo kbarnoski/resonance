@@ -1,33 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import type { Journey } from "@/lib/journeys/types";
 
-/** Wait for a webfont to actually be loaded by the browser before
- *  rendering text in it. Without this gate, the cycle title initially
- *  paints in Georgia (system fallback), then jumps smaller when
- *  Cormorant Garamond finishes loading and CSS swaps the font — read
- *  by the user as "the Resonance text glitches and jumps smaller".
- *  Returns true once the font is loadable OR after a 2s timeout (so a
- *  font failure can't strand the intro screen).
- */
-function useFontReady(fontFamily: string): boolean {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    if (typeof document === "undefined" || !document.fonts?.load) {
-      setReady(true);
-      return;
-    }
-    let cancelled = false;
-    document.fonts
-      .load(`300 1em ${fontFamily}`)
-      .then(() => { if (!cancelled) setReady(true); })
-      .catch(() => { if (!cancelled) setReady(true); });
-    const timeout = setTimeout(() => { if (!cancelled) setReady(true); }, 2000);
-    return () => { cancelled = true; clearTimeout(timeout); };
-  }, [fontFamily]);
-  return ready;
-}
+/* Font readiness is gated upstream in installation-loop-client. By the
+ * time this component renders any text, every Cormorant Garamond
+ * variant we use (300 regular, 300 italic, 400) is loaded — no per-
+ * component race, no font swap mid-display, no variable
+ * black-pause-while-the-font-loads. */
 
 /**
  * Installation loop — intro overlay.
@@ -127,8 +106,6 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
 }
 
 function CycleTextInner() {
-  const fontReady = useFontReady("'Cormorant Garamond'");
-  if (!fontReady) return null;
   return (
     <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
       <div
@@ -184,9 +161,7 @@ function CycleTextInner() {
 }
 
 function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; trackArtist?: string | null }) {
-  const fontReady = useFontReady("'Cormorant Garamond'");
   if (!journey) return null;
-  if (!fontReady) return null;
   const creator = journey.creatorName || "Karel Barnoski";
   return (
     <div
