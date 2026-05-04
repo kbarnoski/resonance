@@ -74,6 +74,47 @@ impl AudioEngine {
 
 // ─── Tauri Commands ───
 
+/// Hostnames the desktop app will download audio from. Anything else
+/// is rejected — closes a "supply arbitrary URL → we download and
+/// write to disk" hole. Includes Supabase storage (where signed URLs
+/// live), our own hosting, and localhost for dev.
+///
+/// Implemented with string parsing (no `url` crate dep) so this stays
+/// minimal. Reqwest is what actually fetches the URL; if we let
+/// something pathological through here, reqwest's parser would
+/// reject it. This check is the auth layer above that.
+fn is_allowed_audio_host(url: &str) -> bool {
+    // Strip scheme.
+    let without_scheme = if let Some(rest) = url.strip_prefix("https://") {
+        rest
+    } else if let Some(rest) = url.strip_prefix("http://") {
+        rest
+    } else {
+        return false;
+    };
+    // Host runs from start to first '/' or '?' or end-of-string.
+    let host_end = without_scheme
+        .find(|c: char| c == '/' || c == '?' || c == '#')
+        .unwrap_or(without_scheme.len());
+    let mut host_part = &without_scheme[..host_end];
+    // Strip port if present (host:port).
+    if let Some(colon) = host_part.find(':') {
+        host_part = &host_part[..colon];
+    }
+    if host_part.is_empty() {
+        return false;
+    }
+    // Reject empty labels (e.g. "..supabase.co") and leading dots —
+    // ends_with(".supabase.co") would otherwise pass on ".supabase.co".
+    if host_part.starts_with('.') || host_part.contains("..") {
+        return false;
+    }
+    host_part.ends_with(".supabase.co")
+        || host_part == "getresonance.vercel.app"
+        || host_part == "localhost"
+        || host_part == "127.0.0.1"
+}
+
 #[tauri::command]
 pub async fn cmd_audio_load(
     app: tauri::AppHandle,
@@ -81,6 +122,9 @@ pub async fn cmd_audio_load(
     url: String,
     recording_id: String,
 ) -> Result<(), String> {
+    if !is_allowed_audio_host(&url) {
+        return Err(format!("URL host not on allowlist: {}", url));
+    }
     // Check cache first
     let file_path = if let Some(cached) = cache::get_cached_path(&app, &recording_id) {
         log::info!("Cache hit for {}", recording_id);
