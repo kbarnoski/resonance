@@ -1,6 +1,7 @@
 import { fal } from "@fal-ai/client";
 import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
+import { isAdmin } from "@/lib/auth/require-admin";
 
 // Default model swapped from flux/schnell → flux/dev. Schnell (4 steps)
 // had very weak prompt adherence: negations were ignored, identity
@@ -51,12 +52,24 @@ export async function POST(request: Request) {
   fal.config({ credentials: process.env.FAL_KEY });
 
   try {
-    const { prompt, negativePrompt, referenceImageUrl, width, height } =
+    const { prompt, negativePrompt, referenceImageUrl, width, height, disableSafetyChecker } =
       await request.json();
 
     if (!prompt || typeof prompt !== "string") {
       return Response.json({ error: "Missing prompt" }, { status: 400 });
     }
+
+    // Safety-checker policy: ON by default for regular users. Only an
+    // authenticated admin can opt out (via disableSafetyChecker:true in
+    // the request body). Previously the checker was hardcoded OFF for
+    // everyone, which was the right default for the creator's own
+    // creative workflow but a real liability for an installation
+    // playing to general audiences (galleries, schools, kids). The
+    // built-in journey prompts go through their own visual-compliance
+    // check (ai-image/validate); the fal safety_checker is the
+    // belt-and-suspenders backstop against truly egregious output.
+    const safetyCheckerOn =
+      !(disableSafetyChecker === true && (await isAdmin()));
 
     const imgWidth = Math.min(width ?? 768, 1024);
     const imgHeight = Math.min(height ?? 768, 1024);
@@ -76,7 +89,7 @@ export async function POST(request: Request) {
       num_inference_steps: 28,
       guidance_scale: 3.5,
       seed,
-      enable_safety_checker: false,
+      enable_safety_checker: safetyCheckerOn,
     };
 
     // PuLID parameters tuned for SCENE + identity lock:
@@ -97,7 +110,7 @@ export async function POST(request: Request) {
       true_cfg: 4.0,
       id_weight: 0.6,
       seed,
-      enable_safety_checker: false,
+      enable_safety_checker: safetyCheckerOn,
     };
 
     let modelId = usePulid ? MODEL_FLUX_PULID : MODEL_FLUX_DEV;

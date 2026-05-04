@@ -200,7 +200,12 @@ class RealtimeImageService {
         width: options.width ?? 768,
         height: options.height ?? 768,
       },
-      enable_safety_checker: false,
+      // Safety checker ON by default. The previous default was OFF
+      // (creator workflow), but installations / shared journeys play
+      // to mixed audiences. The built-in journey prompts already pass
+      // through ai-image/validate for visual compliance; the fal
+      // safety_checker is the belt-and-suspenders layer.
+      enable_safety_checker: true,
     };
 
     if (options.previousFrameDataUrl) {
