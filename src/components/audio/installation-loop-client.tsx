@@ -76,6 +76,15 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   //   gone            — everything unmounted; phase change to journey 0
   type IntroStage = "cycle" | "fading-cycle" | "journey" | "fading-journey" | "gone";
   const [introStage, setIntroStage] = useState<IntroStage>("cycle");
+  // Font readiness gate. We wait until every Cormorant Garamond
+  // variant the intro/title text uses (300 regular, 300 italic, 400)
+  // is loaded BEFORE starting the timing chain. Without this gate the
+  // black-to-title pause was variable: cache hit = near-instant,
+  // cache miss = several hundred ms while JourneyTextInner waited for
+  // the font and rendered null — bg kept fading on its CSS clock and
+  // the user saw "a longer pause of black". Now the timing is
+  // deterministic from the moment fonts.ready resolves.
+  const [fontsReady, setFontsReady] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -186,6 +195,31 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     };
   }, []);
 
+  // ─── Font readiness ────────────────────────────────────────────
+  // Pre-load every Cormorant Garamond variant the intro/title uses,
+  // then resolve fontsReady=true. Failsafe: if fonts haven't loaded
+  // after 3s (network down, font CDN flake), proceed anyway — the
+  // user sees a brief font swap, but the experience doesn't strand.
+  useEffect(() => {
+    if (typeof document === "undefined" || !document.fonts?.load) {
+      setFontsReady(true);
+      return;
+    }
+    let cancelled = false;
+    Promise.all([
+      document.fonts.load("300 1em 'Cormorant Garamond'"),
+      document.fonts.load("italic 300 1em 'Cormorant Garamond'"),
+      document.fonts.load("400 1em 'Cormorant Garamond'"),
+    ])
+      .then(() => document.fonts.ready)
+      .then(() => { if (!cancelled) setFontsReady(true); })
+      .catch(() => { if (!cancelled) setFontsReady(true); });
+    const failsafe = setTimeout(() => {
+      if (!cancelled) setFontsReady(true);
+    }, 3000);
+    return () => { cancelled = true; clearTimeout(failsafe); };
+  }, []);
+
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
   // away to /library, and let F still toggle fullscreen even though the
@@ -216,6 +250,14 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
   // ─── Phase machine ────────────────────────────────────────────────
   useEffect(() => {
+    // Block the entire timing chain on fonts being loaded. The
+    // bg-black overlay shows "cycle" stage by default (set in state
+    // initializer), so the user sees pure black during the wait.
+    // Once fontsReady flips true, this effect re-runs and the timer
+    // chain starts deterministically — no more variable
+    // black-pause-while-the-font-loads.
+    if (!fontsReady) return;
+
     if (phase.kind === "intro") {
       // Reset per-cycle UI state: a fresh audience is arriving. Dots
       // start unfilled, the failure log starts empty so each cycle's
@@ -388,13 +430,20 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       return;
     }
 
-    // Show dots while the per-journey title overlay is up. In
-    // installation mode the title runs 10s (extended in visualizer-
-    // client to mask the AI/shader handoff), so dots match.
-    setTitleWindow(true);
-    // Match the visualizer-client journey intro's 6s window in
-    // installation mode — keeps dots in sync with the title overlay.
-    const titleHideTimer = setTimeout(() => setTitleWindow(false), 6_000);
+    // Show dots while the per-journey title overlay is up — but ONLY
+    // when there's actually a title overlay being shown. For journey 0
+    // (Ascension), the title was already displayed during the cycle
+    // intro and visualizer-client's journey intro is suppressed via
+    // the suppressNextJourneyIntro store flag — so re-showing the
+    // indicator now makes it fade in/out a second time with no title
+    // to anchor it. Skip the titleWindow flash for journey 0.
+    let titleHideTimer: ReturnType<typeof setTimeout> | null = null;
+    if (phase.index > 0) {
+      setTitleWindow(true);
+      // Match the visualizer-client journey intro's 6s window in
+      // installation mode — keeps dots in sync with the title overlay.
+      titleHideTimer = setTimeout(() => setTitleWindow(false), 6_000);
+    }
 
     // No special intro handoff here — the intro phase pre-started
     // journey 0 1.5s before the phase change, so by now the journey
@@ -679,7 +728,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
-      clearTimeout(titleHideTimer);
+      if (titleHideTimer) clearTimeout(titleHideTimer);
       clearInterval(playWatchdog);
       clearTimeout(reloadAttempt);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
@@ -695,7 +744,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence]);
+  }, [phase, sequence, fontsReady]);
 
   return (
     <div ref={containerRef} className="h-full w-full relative">
