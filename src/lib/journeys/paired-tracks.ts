@@ -27,10 +27,12 @@ export const PAIRED_TRACKS: Record<string, string> = {
   // All Karel's tracks; none in Welcome Home album.
   "the-ascension":    "=17th St 63",           // 3:20 — exact match (avoids "spectre" collision)
   "mycelium-dream":   "%Folsom St 8%",         // 6:25 alac
-  "abyssal-dive":     "%17th St 62%",          // 4:41
+  "abyssal-dive":     "%Folsom St 9%",         // 3:35 alac (per user 2026-05-04)
   "the-ascent":       "%Folsom St 5%",         // 4:41 alac
   "the-tempest":      "=17th St 63 spectre",   // exact match (counterpart to ascension's exact)
-  "the-bloom":        "%Folsom St 9%",         // 3:35 alac
+  "the-bloom":        "%Folsom St 9%",         // 3:35 alac (also paired by Abyssal in
+                                                //   the installation; the-bloom isn't in
+                                                //   INSTALLATION_SEQUENCE so no conflict)
 
   // ─── Unpaired (TODO) ────────────────────────────────────────────
   // Not currently in INSTALLATION_SEQUENCE. Previous WH-conflicting
