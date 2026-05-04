@@ -41,6 +41,10 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/share/") ||
     pathname.startsWith("/journey/") ||
     pathname.startsWith("/path/") ||
+    // Browsers POST CSP violation reports without credentials. Without
+    // an allowlist entry, the middleware would redirect those POSTs
+    // to /login and we'd never see violations.
+    pathname === "/api/csp-report" ||
     (pathname.startsWith("/room/") &&
       pathname !== "/room/installation" &&
       pathname.split("/").length === 3);
