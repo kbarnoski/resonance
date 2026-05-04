@@ -344,10 +344,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       //             fading bg (3.8s — same clock). Title and shader
       //             arrive together.
       //   t=14.3s → title fully visible, bg fully gone. Shader sustains.
-      //   t=17.5s → title fades out (1.8s) — fading-journey stage.
-      //             (3.2s hold; 1s longer than before per user request
-      //             for a longer beat in installation mode.)
-      //   t=19.3s → phase change to journey 0.
+      //   t=19s   → title fades out (1.8s) — fading-journey stage.
+      //             (4.7s peak hold; bumped twice per user feedback —
+      //             once +1s, then +1.5s more — so gallery audiences
+      //             can read the credits + dedication.)
+      //   t=20.8s → phase change to journey 0.
 
       // t=INTRO_MS (7s): begin cycle text fade-out AND pre-start
       // journey 0. The shader needs lead time to compile + start its
@@ -428,19 +429,20 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         setIntroStage("journey");
       }, INTRO_MS + 3500);
 
-      // t=INTRO_MS+10s: title has been fully visible ~3.2s (extended
-      // by 1s in installation mode for galleries — same change as the
-      // visualizer-client journey intro animation duration). Begin fade.
+      // t=INTRO_MS+11.5s: title has been fully visible ~4.7s (peak
+      // hold extended again per user feedback — first +1s, now +1.5s
+      // more — so audiences in galleries / public spaces have time
+      // to actually read the credits + dedication). Begin fade.
       fadeJourneyStart = setTimeout(() => {
         setIntroStage("fading-journey");
-      }, INTRO_MS + 10_000);
+      }, INTRO_MS + 11_500);
 
-      // t=INTRO_MS+11.8s: phase change → overlay fully unmounted,
+      // t=INTRO_MS+13.3s: phase change → overlay fully unmounted,
       // journey is sole visual layer
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
         setPhase({ kind: "journey", index: 0 });
-      }, INTRO_MS + 11_800);
+      }, INTRO_MS + 13_300);
 
       return () => {
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
