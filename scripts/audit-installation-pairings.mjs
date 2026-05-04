@@ -45,7 +45,7 @@ const PAIRED = {
   "the-ascension": "=17th St 63",
   "inferno": "%KB_REALIZED%",
   "first-snow": "%KB_SFLAKE%",
-  "abyssal-dive": "%17th St 62%",
+  "abyssal-dive": "%Folsom St 9%",
   "ghost": "%KB_GHOST_REF%",
 };
 

@@ -300,40 +300,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     return () => { cancelled = true; };
   }, []);
 
-  // ─── Tab visibility — pause on hide, reset on long-hide return ────
-  // iOS Safari (especially incognito) backgrounds tabs aggressively:
-  // requestAnimationFrame pauses, the WebGL context can be lost, and
-  // setTimeout is throttled — but the HTMLAudioElement keeps playing.
-  // Returning to the tab can show a black canvas with audio still
-  // running ("loaded demo on iphone, switched tabs, came back to
-  // black + music"). We pause audio on hide so background music
-  // doesn't keep blasting; on long-hide return (>30s) we reset to
-  // the start screen so the user can begin again cleanly.
-  useEffect(() => {
-    if (typeof document === "undefined") return;
-    let hiddenAt: number | null = null;
-    const onVisChange = () => {
-      if (document.hidden) {
-        hiddenAt = Date.now();
-        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
-      } else {
-        const hiddenMs = hiddenAt ? Date.now() - hiddenAt : 0;
-        hiddenAt = null;
-        if (hiddenMs > 30_000) {
-          // Long-hide: reset cleanly. setStarted(false) re-shows the
-          // start button on touch devices; phase=intro restarts the
-          // cycle from the top on desktop.
-          stopJourney();
-          setStarted(false);
-          setPhase({ kind: "intro" });
-          setIntroStage("cycle");
-        }
-      }
-    };
-    document.addEventListener("visibilitychange", onVisChange);
-    return () => document.removeEventListener("visibilitychange", onVisChange);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // (No visibility handler — the cycle keeps playing in background
+  // tabs. Audio + the journey-end DOM events both work even when
+  // hidden, so the loop advances through the full sequence. A prior
+  // implementation paused on hide + reset on long-hide-return; user
+  // explicitly asked for the cycle to "run regardless" of tab focus.)
 
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
