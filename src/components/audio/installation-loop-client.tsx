@@ -10,6 +10,12 @@ import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
+import {
+  INTRO_MS,
+  CREDITS_MS,
+  MAX_JOURNEY_MS,
+  distributedTrackIndex,
+} from "./installation-machine";
 
 /** One entry in the curated loop sequence. */
 export interface SequenceEntry {
@@ -31,14 +37,9 @@ interface Props {
 }
 
 // ─── Timing ────────────────────────────────────────────────────────────
-// Per Karel: 7s intro that doubles as a countdown into each cycle.
-// Auto-starts on page load — no Begin click. Credits are held longer
-// so the dedication lands, then we loop straight back to the intro.
-const INTRO_MS = 7_000;
-const CREDITS_MS = 16_000;
-// Safety net so the loop keeps moving even when a track is missing or
-// has no metadata duration. Tuned generously above the longest journey.
-const MAX_JOURNEY_MS = 8 * 60 * 1_000;
+// Constants live in ./installation-machine so they can be unit-tested
+// and cross-referenced without parsing the loop client's setTimeout
+// chains. Imported above as INTRO_MS, CREDITS_MS, MAX_JOURNEY_MS.
 
 type Phase =
   | { kind: "intro" }
@@ -100,9 +101,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       const entry = sequence[i];
       if (entry?.track) return entry.track;
       if (fallbackTracks.length === 0) return null;
-      // Stable distributed index: multiply by a coprime to the pool
-      // length so picks don't repeat for many cycles.
-      const idx = ((i * 7) + 3) % fallbackTracks.length;
+      const idx = distributedTrackIndex(i, fallbackTracks.length);
       return fallbackTracks[idx] ?? fallbackTracks[0] ?? null;
     },
     [sequence, fallbackTracks],
