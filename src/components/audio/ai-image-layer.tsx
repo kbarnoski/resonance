@@ -250,9 +250,13 @@ export function AiImageLayer({
     const isJourneyStart = journeyId != null && journeyId !== prevJourneyId;
 
     if (isJourneyStart) {
-      // Aggressive reset: cancel everything, clear cache, force-remove layers
-      // so the next journey starts truly fresh with no leftover frames in
-      // flight, no leftover images on the stack, and no stale callbacks.
+      // Soft reset on journey change: cancel anything in-flight from the
+      // previous journey (so wrong-prompt images don't deliver), clear
+      // cache + callbacks, but DELIBERATELY KEEP existing rendered layers
+      // on the canvas. They'll fade out naturally via the per-image
+      // cross-dissolve as new images for the new journey arrive on top.
+      // This produces a true visual handoff — old imagery lingers and
+      // fades while new imagery comes in — instead of an abrupt clear.
       const service = getRealtimeImageService();
       service.cancelInFlight();
       service.clearImageCache();
@@ -261,17 +265,11 @@ export function AiImageLayer({
       lastGenTimeRef.current = 0;
       genCountRef.current = 0;
       firstImageFiredRef.current = false;
-
-      // Hard-purge any existing layers immediately. On first load the array
-      // is empty so this is a no-op; on switches it removes any leftover
-      // imagery from the previous journey instead of letting it fade for 2.5s.
-      layersRef.current = [];
-      // Also clear the canvas so old layer pixels don't persist in GPU memory
-      const canvas = canvasRef.current;
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+      // NOTE: layersRef + canvas intentionally NOT cleared. The render
+      // loop's natural fade-out keeps drawing old images at decreasing
+      // opacity until new ones replace them. First load: layersRef is
+      // already empty so this is a no-op; subsequent switches: smooth
+      // crossfade replaces the previous abrupt clear.
     } else {
       // Same-journey prompt change (either phase transition OR a within-
       // phase sequence advance). Do NOT cancel in-flight requests — the

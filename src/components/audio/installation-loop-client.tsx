@@ -59,15 +59,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // Indices of journeys that were skipped due to audio load failure —
   // shown as red dots so the operator knows which recordings need fixing.
   const [skippedIndices, setSkippedIndices] = useState<Set<number>>(() => new Set());
-  // True crossfade: at the moment of advance(), snapshot the current
-  // AI imagery canvas to a data URL and render it as a fading-out
-  // overlay. The new journey starts behind the snapshot — its shader
-  // crossfades smoothly via the visualizer's existing A/B layer
-  // system, and its AI imagery streams in fresh. The snapshot fades
-  // 1 → 0 over 2.5s, so the user sees real overlap of old and new
-  // visuals rather than a darken/clear/redraw. Old imagery lingers
-  // exactly the way Karel asked for.
-  const [aiSnapshot, setAiSnapshot] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -187,6 +178,15 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
   // ─── Phase machine ────────────────────────────────────────────────
   useEffect(() => {
     if (phase.kind === "intro") {
+      // Reset per-cycle UI state: a fresh audience is arriving. Dots
+      // start unfilled, the failure log starts empty so each cycle's
+      // diagnostic state is its own.
+      setSkippedIndices(new Set());
+      try {
+        if (typeof window !== "undefined") {
+          window.__resonanceInstallFailures = [];
+        }
+      } catch { /* nothing to reset */ }
       // Hide the dot stepper during the installation intro — the intro
       // already names what the experience is; dots come later at the
       // per-journey title moment.
@@ -219,12 +219,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       return;
     }
 
-    // Show dots while the per-journey title overlay is up (matches the
-    // visualizer-client's 6s journey intro animation). Hide them again
-    // when the journey moves into its body so the canvas reads as pure
-    // visual / unframed during playback.
+    // Show dots while the per-journey title overlay is up. In
+    // installation mode the title runs 10s (extended in visualizer-
+    // client to mask the AI/shader handoff), so dots match.
     setTitleWindow(true);
-    const titleHideTimer = setTimeout(() => setTitleWindow(false), 6000);
+    const titleHideTimer = setTimeout(() => setTitleWindow(false), 10_000);
 
     // Warm engine + ensure audio context is resumed (one user gesture
     // anywhere on the page is enough; this is a no-op afterwards).
@@ -262,29 +261,51 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     }
 
     // Helper: advance to the next journey, or wrap to credits.
-    // Snapshots the current AI imagery canvas first so a true
-    // crossfade overlay fades it out as the new journey renders
-    // underneath. The shader's existing A/B crossfade handles the
-    // shader transition; this snapshot handles the AI layer.
+    // No snapshot/veil hacks — the AI image layer's softened reset
+    // (in ai-image-layer.tsx) lets old images linger and fade
+    // naturally as new ones come in. The shader's existing A/B
+    // crossfade handles shader transitions. The lengthened title
+    // overlay (10s in installation mode) draws the eye away from
+    // the background handoff.
     const advance = () => {
-      try {
-        const aiCanvas = document.querySelector<HTMLCanvasElement>("canvas[data-ai-image-canvas]");
-        if (aiCanvas && aiCanvas.width > 0) {
-          // toDataURL throws if the canvas is tainted by cross-origin
-          // images. We catch that case and just advance without snapshot.
-          const dataUrl = aiCanvas.toDataURL("image/png");
-          setAiSnapshot(dataUrl);
-          // Clear after the fade animation finishes.
-          setTimeout(() => setAiSnapshot(null), 3000);
-        }
-      } catch { /* tainted canvas — advance without snapshot */ }
-
       if (phase.index + 1 < sequence.length) {
         setPhase({ kind: "journey", index: phase.index + 1 });
       } else {
         setPhase({ kind: "credits" });
       }
     };
+
+    // ─── Pre-load next journey's audio ────────────────────────────
+    // ~6 seconds before the current track ends, kick off a fetch of
+    // the next journey's audio URL so the swap at advance() time is
+    // gapless. Just resolves the signed URL + warms the browser
+    // cache via a low-priority HEAD-style fetch.
+    let preloadFired = false;
+    const preloadCheckId = setInterval(() => {
+      if (preloadFired) return;
+      const { currentTime, duration } = useAudioStore.getState();
+      if (duration <= 0 || currentTime <= 0) return;
+      const remaining = duration - currentTime;
+      if (remaining > 6 || remaining < 0) return;
+      // Within the 6s pre-load window — find the next journey's track
+      const nextEntry = sequence[phase.index + 1];
+      if (!nextEntry) return;
+      const nextTrack = nextEntry.track ?? trackForIndex(phase.index + 1);
+      if (!nextTrack?.audioUrl) return;
+      preloadFired = true;
+      // Fire-and-forget. resolveAudioUrl caches the signed URL in
+      // sessionStorage; the subsequent fetch warms the CDN edge so
+      // the audio element's load() is near-instant when the swap
+      // happens.
+      void (async () => {
+        try {
+          const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+          const resolved = await resolveAudioUrl(nextTrack.audioUrl, nextTrack.id);
+          // Low-priority byte fetch to warm the network path
+          fetch(resolved, { priority: "low" as RequestPriority }).catch(() => {});
+        } catch { /* preload best-effort; advance will resolve again */ }
+      })();
+    }, 1000);
 
     // Listen for audio element errors AND natural end via DOM events.
     // Critical: requestAnimationFrame is paused when the tab is in the
@@ -411,6 +432,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     return () => {
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
+      clearInterval(preloadCheckId);
       clearTimeout(titleHideTimer);
       clearInterval(playWatchdog);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
@@ -436,35 +458,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
       {phase.kind === "intro" && <InstallationIntro />}
       {phase.kind === "credits" && <InstallationCredits />}
-
-      {/* True crossfade overlay — a snapshot of the previous journey's
-          AI imagery canvas, fading 1 → 0 over 2.5s while the new
-          journey renders underneath. Old visuals literally overlap
-          with new ones. mixBlendMode "screen" matches the AI image
-          layer's own blend mode so the overlap looks identical to a
-          single layer in transition. */}
-      {aiSnapshot && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={aiSnapshot}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 w-full h-full pointer-events-none"
-          style={{
-            objectFit: "cover",
-            mixBlendMode: "screen",
-            zIndex: 25,
-            opacity: 1,
-            animation: "installSnapshotFade 2500ms ease-out forwards",
-          }}
-        />
-      )}
-      <style jsx>{`
-        @keyframes installSnapshotFade {
-          from { opacity: 1; }
-          to { opacity: 0; }
-        }
-      `}</style>
 
       {/* Path dots — only visible during the per-journey title window
           (~6s when each journey starts) and during ending credits.

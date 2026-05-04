@@ -433,13 +433,18 @@ export function VisualizerClient({
       setOverlayRemountKey((k) => k + 1);
       setJourneyIntroVisible(true);
       setPhaseIndicatorReady(false);
-      // Intro holds 6s, then 2s buffer before phase indicator
+      // Intro overlay duration. Installation mode holds longer so the
+      // title doubles as a perceptual mask while the AI image layer
+      // crossfades old → new and the shader's A/B layers swap. Normal
+      // (interactive) playback keeps the original 6s.
+      const introMs = installationMode ? 10000 : 6000;
+      const phaseReadyMs = installationMode ? 12000 : 8000;
       journeyIntroTimerRef.current = setTimeout(() => {
         setJourneyIntroVisible(false);
-      }, 6000);
+      }, introMs);
       phaseReadyTimerRef.current = setTimeout(() => {
         setPhaseIndicatorReady(true);
-      }, 8000);
+      }, phaseReadyMs);
 
       prevJourneyIdRef.current = activeJourney.id;
       setAdminOpen(false);
