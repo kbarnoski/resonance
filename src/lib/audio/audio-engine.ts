@@ -114,14 +114,33 @@ export function tryPlay(el: HTMLAudioElement): Promise<void> {
   );
 }
 
+let primingInFlight = false;
+
 export function primeAudioElement(): void {
   if (audioElementUnlocked) return;
+  // CRITICAL: also early-return if a previous prime call is in flight
+  // OR if the audio element already has a non-silent src loaded. The
+  // installation loop hits a race here — Begin-tap fires
+  // primeAudioElement, which sets src to silent WAV + calls play();
+  // before that play() promise resolves, the loop client's
+  // setQueue+startJourney runs and audio-provider replaces the src
+  // with the journey's track. The silent WAV's play() never resolves
+  // (src was swapped), so audioElementUnlocked stays false. Without
+  // this guard, every subsequent touch event on the page re-ran
+  // primeAudioElement, which yanked src back to the silent WAV mid-
+  // journey — read by the user as "tap stops audio, tap again starts
+  // it" (the second tap let the new prime complete + audio-provider
+  // re-loaded the journey).
+  if (primingInFlight) return;
   const engine = getAudioEngine();
   const el = engine.audioElement;
-  // ALWAYS set the silent WAV. The previous `if (!el.src)` guard meant a
-  // stale src from prior page navigation would skip priming and the next
-  // play() rejected (silently) — which was the actual reason audio never
-  // started in the installation loop.
+  // If src is already set to a non-data URL, the audio-provider has
+  // already loaded a real track. Don't yank it.
+  if (el.src && !el.src.startsWith("data:")) {
+    audioElementUnlocked = true;
+    return;
+  }
+  primingInFlight = true;
   el.src =
     "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAVFYAAKhWAAACABAAZGF0YQAAAAA=";
   el.muted = false;
@@ -130,14 +149,17 @@ export function primeAudioElement(): void {
   if (p && typeof p.then === "function") {
     p.then(() => {
       audioElementUnlocked = true;
+      primingInFlight = false;
       lastPrimingError = null;
     }).catch((err: unknown) => {
       lastPrimingError = err instanceof Error ? err.message : String(err);
+      primingInFlight = false;
       // eslint-disable-next-line no-console
       console.warn("[audio] primeAudioElement play() rejected:", err);
     });
   } else {
     audioElementUnlocked = true;
+    primingInFlight = false;
   }
 }
 
