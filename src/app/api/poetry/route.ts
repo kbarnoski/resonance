@@ -2,6 +2,7 @@ import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -153,7 +154,7 @@ IMPORTANT: Every single fragment must be genuinely novel. If you catch yourself 
 
     return Response.json(object);
   } catch (error) {
-    console.error("Poetry API error:", error);
+    logger.error("poetry", "API error:", error);
     return Response.json(
       { error: "Failed to generate poetry" },
       { status: 500 }

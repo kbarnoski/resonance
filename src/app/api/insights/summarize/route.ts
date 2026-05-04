@@ -2,6 +2,7 @@ import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 // Defaults make every field tolerant of Claude returning a partial
 // structured output. The previous strict version threw a ZodError
@@ -79,7 +80,7 @@ Group similar recordings into clusters based on shared musical characteristics (
 
     return Response.json({ summary });
   } catch (error) {
-    console.error("Insights summarize error:", error);
+    logger.error("insights/summarize", "error:", error);
     return Response.json(
       { error: "Failed to generate insights summary" },
       { status: 500 }

@@ -2,6 +2,7 @@ import { streamText } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { buildRecordingSystemPrompt } from "@/lib/ai/build-system-prompt";
 import { createClient } from "@/lib/supabase/server";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -51,13 +52,13 @@ export async function POST(request: Request) {
           content: lastUserMessage.content,
         })
         .then(({ error }) => {
-          if (error) console.error("chat message save failed:", error.message);
+          if (error) logger.error("chat", "message save failed:", error.message);
         });
     }
 
     return result.toDataStreamResponse();
   } catch (error) {
-    console.error("Chat API error:", error);
+    logger.error("chat", "API error:", error);
     return new Response(
       JSON.stringify({ error: "Failed to process chat request" }),
       { status: 500, headers: { "Content-Type": "application/json" } }

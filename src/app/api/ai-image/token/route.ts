@@ -19,6 +19,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
+import { logger } from "@/lib/logger";
 
 /** Hostnames the proxy will forward POST traffic to. Anything not on
  *  this list returns 400 — closes the open-proxy hole entirely. */
@@ -128,7 +129,7 @@ export async function POST(request: Request) {
       headers: { "Content-Type": contentType },
     });
   } catch (error) {
-    console.error("[AI Proxy] Error:", error);
+    logger.error("ai-image/token", "Proxy error:", error);
     return Response.json({ error: "Proxy request failed" }, { status: 500 });
   }
 }

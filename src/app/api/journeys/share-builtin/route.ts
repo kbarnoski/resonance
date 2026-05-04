@@ -83,7 +83,7 @@ export async function POST(request: Request) {
       });
 
       if (error) {
-        console.error("Share built-in error:", error);
+        logger.error("journeys/share-builtin", "error:", error);
         return Response.json({ error: "Failed to share journey" }, { status: 500 });
       }
     }
@@ -100,7 +100,7 @@ export async function POST(request: Request) {
 
     return Response.json({ token });
   } catch (error) {
-    console.error("Share built-in error:", error);
+    logger.error("journeys/share-builtin", "error:", error);
     return Response.json({ error: "Failed to share journey" }, { status: 500 });
   }
 }

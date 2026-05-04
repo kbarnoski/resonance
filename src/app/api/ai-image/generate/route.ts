@@ -112,7 +112,7 @@ export async function POST(request: Request) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return (result.data as any)?.images?.[0]?.url ?? null;
       } catch (err) {
-        console.warn(`[AI Generate] ${id} threw:`, err);
+        logger.warn("ai-image/generate", `${id} threw:`, err);
         return null;
       }
     }
@@ -141,7 +141,7 @@ export async function POST(request: Request) {
       model: modelId,
     });
   } catch (error) {
-    console.error("[AI Generate] Error:", error);
+    logger.error("ai-image/generate", "Error:", error);
     return Response.json(
       { error: "Failed to generate image" },
       { status: 500 }

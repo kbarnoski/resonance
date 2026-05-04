@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { buildJourneyFromStory } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
+import { logger } from "@/lib/logger";
 
 /**
  * Journey-creation step 1: generate an editable draft from a story.
@@ -43,7 +44,7 @@ export async function POST(request: Request) {
 
     return Response.json({ journey });
   } catch (error) {
-    console.error("Journey draft error:", error);
+    logger.error("journeys/draft", "error:", error);
     const message = error instanceof Error ? error.message : "Unknown error";
     return Response.json(
       { error: `Failed to generate draft: ${message}` },

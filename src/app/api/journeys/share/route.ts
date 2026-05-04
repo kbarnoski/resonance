@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { randomUUID, randomInt } from "crypto";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -63,7 +64,7 @@ export async function POST(request: Request) {
 
     return Response.json({ token });
   } catch (error) {
-    console.error("Journey share error:", error);
+    logger.error("journeys/share", "error:", error);
     return Response.json({ error: "Failed to share journey" }, { status: 500 });
   }
 }

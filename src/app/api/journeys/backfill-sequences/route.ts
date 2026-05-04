@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 /**
  * Retrofit old custom journeys with the multi-variant aiPromptSequence
@@ -110,7 +111,7 @@ Preserve the narrative thread of each original aiPrompt — you're enriching it,
       .eq("user_id", user.id);
 
     if (writeErr) {
-      console.error("Backfill write failed:", writeErr);
+      logger.error("journeys/backfill-sequences", "write failed:", writeErr);
       return Response.json(
         { error: `Failed to save enriched phases: ${writeErr.message}` },
         { status: 500 },
@@ -119,7 +120,7 @@ Preserve the narrative thread of each original aiPrompt — you're enriching it,
 
     return Response.json({ ok: true, phases: updatedPhases });
   } catch (err) {
-    console.error("Backfill error:", err);
+    logger.error("journeys/backfill-sequences", "error:", err);
     const msg = err instanceof Error ? err.message : "Unknown error";
     return Response.json({ error: `Backfill failed: ${msg}` }, { status: 500 });
   }

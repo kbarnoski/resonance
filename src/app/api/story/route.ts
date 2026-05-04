@@ -3,6 +3,7 @@ import { defaultModel } from "@/lib/ai/providers";
 import { LANGUAGE_NAMES } from "@/lib/audio/languages";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const storySchema = z.object({
   title: z.string().describe("A short, evocative title for the story (3-8 words)"),
@@ -71,7 +72,7 @@ Write a story that transforms the listener.`;
 
     return Response.json(object);
   } catch (error) {
-    console.error("Story API error:", error);
+    logger.error("story", "API error:", error);
     return Response.json(
       { error: "Failed to generate story" },
       { status: 500 }

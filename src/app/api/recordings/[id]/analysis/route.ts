@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const analysisPostSchema = z.object({
   status: z.enum(["pending", "completed", "failed"]).optional(),
@@ -124,7 +125,7 @@ export async function POST(
     .single();
 
   if (error) {
-    console.error("analysis upsert failed:", error);
+    logger.error("recordings/analysis", "upsert failed:", error);
     return NextResponse.json({ error: "Failed to save analysis" }, { status: 500 });
   }
 

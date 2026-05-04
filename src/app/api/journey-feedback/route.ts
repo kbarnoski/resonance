@@ -3,6 +3,7 @@ import { promises as fs } from "fs";
 import path from "path";
 import { createClient } from "@/lib/supabase/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { logger } from "@/lib/logger";
 
 // Legacy .jsonl file kept for GET so historical entries aren't lost.
 // All new writes go to the journey_feedback Supabase table.
@@ -33,13 +34,13 @@ export async function POST(request: Request) {
 
     const { error } = await supabase.from("journey_feedback").insert(rows);
     if (error) {
-      console.error("[Journey Feedback] DB insert failed:", error.message);
+      logger.error("journey-feedback", "DB insert failed:", error.message);
       return NextResponse.json({ error: "Failed to save" }, { status: 500 });
     }
 
     return NextResponse.json({ ok: true, count: rows.length });
   } catch (err) {
-    console.error("[Journey Feedback] Write error:", err);
+    logger.error("journey-feedback", "Write error:", err);
     return NextResponse.json({ error: "Failed to save" }, { status: 500 });
   }
 }

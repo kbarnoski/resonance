@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { buildJourneyFromAnalysis } from "@/lib/journeys/journey-builder";
 import type { AnalysisResult } from "@/lib/audio/types";
+import { logger } from "@/lib/logger";
 
 export async function POST(request: Request) {
   try {
@@ -68,7 +69,7 @@ export async function POST(request: Request) {
     }).select().single();
 
     if (error) {
-      console.error("Failed to save auto-generated journey:", error);
+      logger.error("journeys/auto-generate", "Failed to save:", error);
       return Response.json(
         { error: `Failed to save journey: ${error.message}` },
         { status: 500 },
@@ -80,7 +81,7 @@ export async function POST(request: Request) {
       dbRecord: data,
     });
   } catch (error) {
-    console.error("Auto-generate journey error:", error);
+    logger.error("journeys/auto-generate", "error:", error);
     const message = error instanceof Error ? error.message : "Unknown error";
     return Response.json(
       { error: `Failed to auto-generate journey: ${message}` },

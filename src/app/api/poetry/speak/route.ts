@@ -7,6 +7,7 @@ import {
   optionalEnum,
   optionalString,
 } from "@/lib/api/validate-input";
+import { logger } from "@/lib/logger";
 
 const ALLOWED_VOICES = [
   "alloy", "ash", "ballad", "coral", "echo", "fable",
@@ -118,7 +119,7 @@ export async function POST(request: Request) {
       },
     });
   } catch (error) {
-    console.error("[poetry/speak] TTS error:", error);
+    logger.error("poetry/speak", "TTS error:", error);
     return Response.json({ error: "Failed to generate speech" }, { status: 500 });
   }
 }

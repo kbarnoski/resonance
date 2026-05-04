@@ -7,6 +7,7 @@ import {
   requireHttpUrl,
   requireStringArray,
 } from "@/lib/api/validate-input";
+import { logger } from "@/lib/logger";
 
 /**
  * Fast yes/no visual compliance check for generated journey imagery.
@@ -110,7 +111,7 @@ export async function POST(request: Request) {
   } catch (error) {
     // On ANY error — network, API, parse — default to permissive so we don't
     // freeze the journey. Prompt-level controls are still the primary defense.
-    console.error("[validate] error:", error);
+    logger.error("ai-image/validate", "error:", error);
     return Response.json({ valid: true, reason: "error" });
   }
 }
