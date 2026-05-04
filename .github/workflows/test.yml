@@ -1,0 +1,48 @@
+name: Test
+
+# Runs lint + tests + Next.js build on every push and PR. Designed to
+# fail fast: lint goes first (cheapest, catches the most common churn),
+# then tests (medium), then build (slowest, mostly here to confirm
+# every route still type-checks and Next.js can compile).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-flight runs of the same branch when a new commit lands —
+# saves CI minutes on quick-fire pushes.
+concurrency:
+  group: test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+        env:
+          # Build only needs these to be present (real values aren't
+          # required to compile; runtime would fail without them).
+          NEXT_PUBLIC_SUPABASE_URL: "https://example.supabase.co"
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: "build-time-placeholder"

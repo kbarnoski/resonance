@@ -2,6 +2,7 @@ import { generateObject } from "ai";
 import { defaultModel } from "@/lib/ai/providers";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const summarySchema = z.object({
   overview: z.string().describe("A 2-3 sentence overview of the piece's character, style, and mood"),
@@ -83,13 +84,13 @@ Think about this as a music teacher would: identify natural sections, explain th
       .eq("id", analysisId);
 
     if (error) {
-      console.error("Failed to save summary:", error);
+      logger.error("analysis/summarize", "Failed to save summary:", error);
       return Response.json({ error: "Failed to save summary" }, { status: 500 });
     }
 
     return Response.json({ summary });
   } catch (error) {
-    console.error("Summarize API error:", error);
+    logger.error("analysis/summarize", "API error:", error);
     return Response.json(
       { error: "Failed to generate summary" },
       { status: 500 }

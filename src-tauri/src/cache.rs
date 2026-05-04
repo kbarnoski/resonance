@@ -4,6 +4,33 @@ use std::path::PathBuf;
 use tauri::{AppHandle, Manager};
 use tokio::io::AsyncWriteExt;
 
+/// Validate a recording_id matches a strict UUID-shape pattern. The
+/// audio cache uses recording_id as part of the on-disk file name, so
+/// without this validation a hostile id like `../../etc/passwd`
+/// would write outside the cache directory. Accepts both hyphenated
+/// (8-4-4-4-12) and unhyphenated 32-char hex; both forms appear in
+/// the codebase elsewhere.
+fn is_valid_recording_id(id: &str) -> bool {
+    let len = id.len();
+    if len != 32 && len != 36 {
+        return false;
+    }
+    let mut hex_count = 0usize;
+    for c in id.chars() {
+        if c == '-' {
+            // Only valid in the 8-4-4-4-12 form, at fixed positions.
+            // We don't validate positions strictly — the hex_count
+            // gate below already pins length. Just allow.
+            continue;
+        }
+        if !c.is_ascii_hexdigit() {
+            return false;
+        }
+        hex_count += 1;
+    }
+    hex_count == 32
+}
+
 #[derive(Debug, Serialize, Deserialize, Default)]
 struct CacheManifest {
     entries: HashMap<String, CacheEntry>,
@@ -43,6 +70,9 @@ fn save_manifest(app: &AppHandle, manifest: &CacheManifest) -> Result<(), String
 }
 
 pub fn get_cached_path(app: &AppHandle, recording_id: &str) -> Option<PathBuf> {
+    if !is_valid_recording_id(recording_id) {
+        return None;
+    }
     let manifest = load_manifest(app);
     let entry = manifest.entries.get(recording_id)?;
     let path = cache_dir(app).join(&entry.file_name);
@@ -58,6 +88,9 @@ pub async fn download_and_cache(
     url: &str,
     recording_id: &str,
 ) -> Result<PathBuf, String> {
+    if !is_valid_recording_id(recording_id) {
+        return Err(format!("Invalid recording_id: {}", recording_id));
+    }
     let dir = cache_dir(app);
     tokio::fs::create_dir_all(&dir)
         .await

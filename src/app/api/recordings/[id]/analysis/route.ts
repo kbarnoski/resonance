@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
 
 const analysisPostSchema = z.object({
   status: z.enum(["pending", "completed", "failed"]).optional(),
@@ -33,11 +34,41 @@ export async function GET(
     return NextResponse.json(data);
   }
 
-  // Fallback: try anon client for featured recordings
+  // Tightened anon fallback: ONLY return analyses for recordings that
+  // are actually flagged is_featured (or attached to a shared journey).
+  // Previously we'd fall through on any RLS error from the user client,
+  // which meant a private analysis could surface via the anon client
+  // if RLS policies were ever loosened. Now we positively confirm the
+  // recording is meant to be public before returning anything.
   const anonClient = createAnonClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
+
+  const { data: rec } = await anonClient
+    .from("recordings")
+    .select("id, is_featured")
+    .eq("id", id)
+    .maybeSingle();
+
+  let publiclyVisible = !!rec?.is_featured;
+
+  if (!publiclyVisible) {
+    // Also allow recordings attached to a shared journey.
+    const { data: sharedJourney } = await anonClient
+      .from("journeys")
+      .select("id")
+      .eq("recording_id", id)
+      .not("share_token", "is", null)
+      .limit(1)
+      .maybeSingle();
+    publiclyVisible = !!sharedJourney;
+  }
+
+  if (!publiclyVisible) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
   const { data: anonData, error: anonError } = await anonClient
     .from("analyses")
     .select("*")
@@ -45,7 +76,7 @@ export async function GET(
     .single();
 
   if (anonError || !anonData) {
-    return NextResponse.json({ error: error?.message ?? "Not found" }, { status: 404 });
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
   return NextResponse.json(anonData);
@@ -94,7 +125,7 @@ export async function POST(
     .single();
 
   if (error) {
-    console.error("analysis upsert failed:", error);
+    logger.error("recordings/analysis", "upsert failed:", error);
     return NextResponse.json({ error: "Failed to save analysis" }, { status: 500 });
   }
 

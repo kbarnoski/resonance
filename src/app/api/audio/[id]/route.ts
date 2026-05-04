@@ -5,6 +5,7 @@ import { execFile } from "child_process";
 import { writeFile, readFile, unlink, mkdtemp, access } from "fs/promises";
 import { tmpdir } from "os";
 import { join } from "path";
+import { logger } from "@/lib/logger";
 
 function resolveFfmpegPath(): string {
   if (process.env.FFMPEG_PATH) return process.env.FFMPEG_PATH;
@@ -46,7 +47,7 @@ async function transcodeToAAC(inputBuffer: ArrayBuffer): Promise<Buffer> {
         { timeout: 120000 },
         (error, _stdout, stderr) => {
           if (error) {
-            console.error("[TRANSCODE] ffmpeg error:", error.message, stderr);
+            logger.error("audio/transcode", "ffmpeg error:", error.message, stderr);
             reject(error);
           } else {
             resolve();
@@ -182,7 +183,7 @@ export async function GET(
         })
         .then(({ error: uploadErr }) => {
           if (uploadErr) {
-            console.error("[AUDIO] Failed to persist AAC:", uploadErr.message);
+            logger.error("audio", "Failed to persist AAC:", uploadErr.message);
             return;
           }
           supabase
@@ -190,12 +191,12 @@ export async function GET(
             .update({ aac_file_name: aacFileName })
             .eq("id", id)
             .then(({ error: dbErr }) => {
-              if (dbErr) console.error("[AUDIO] Failed to save aac_file_name:", dbErr.message);
+              if (dbErr) logger.error("audio", "Failed to save aac_file_name:", dbErr.message);
               // Persisted; no log in prod.
             });
         });
     } catch (err) {
-      console.error("[AUDIO] Transcoding failed:", err);
+      logger.error("audio", "Transcoding failed:", err);
       // Return the raw file anyway — Safari can play ALAC
     }
   }
@@ -293,7 +294,7 @@ export async function PATCH(
       .eq("id", id);
 
     if (error) {
-      console.error("waveform update failed:", error);
+      logger.error("audio", "waveform update failed:", error);
       return NextResponse.json({ error: "Failed to save" }, { status: 500 });
     }
     return NextResponse.json({ ok: true });

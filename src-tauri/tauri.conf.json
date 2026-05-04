@@ -22,7 +22,7 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": "default-src 'self' https://getresonance.vercel.app; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://getresonance.vercel.app; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://getresonance.vercel.app; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co https://*.fal.media https://fal.media https://getresonance.vercel.app; media-src 'self' data: blob: https://*.supabase.co https://getresonance.vercel.app; connect-src 'self' https://*.supabase.co https://*.fal.run https://fal.run https://*.fal.ai https://api.openai.com https://api.anthropic.com https://getresonance.vercel.app wss://*.fal.run wss://*.fal.ai; frame-ancestors 'none'"
     }
   },
   "bundle": {
