@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { safeInternalRedirect } from "@/lib/safe-redirect";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -15,7 +16,10 @@ function LoginForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/room";
+  // Sanitize redirectTo so an attacker can't craft a link that
+  // bounces the user off-site post-login (open redirect). Only
+  // same-origin paths are honored; anything else falls back to /room.
+  const redirectTo = safeInternalRedirect(searchParams.get("redirectTo"), "/room");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();

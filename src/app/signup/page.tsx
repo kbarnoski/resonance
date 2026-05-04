@@ -7,6 +7,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { safeInternalRedirect } from "@/lib/safe-redirect";
 
 function SignupForm() {
   const [displayName, setDisplayName] = useState("");
@@ -16,7 +17,9 @@ function SignupForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/room";
+  // Sanitize redirectTo so an attacker can't craft a link that
+  // bounces the user off-site post-signup. Same-origin only.
+  const redirectTo = safeInternalRedirect(searchParams.get("redirectTo"), "/room");
 
   async function handleSignup(e: React.FormEvent) {
     e.preventDefault();

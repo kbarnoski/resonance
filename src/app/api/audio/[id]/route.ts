@@ -29,7 +29,30 @@ function isALAC(bytes: Uint8Array): boolean {
   return false;
 }
 
+/** Hard limit on the input we'll attempt to transcode. Anything above
+ *  this gets rejected before ffmpeg starts — bounds memory + ffmpeg
+ *  process time and prevents a malicious upload from exhausting the
+ *  serverless function. 200 MB covers ~3 hours of 192kbps stereo. */
+const MAX_TRANSCODE_INPUT_BYTES = 200 * 1024 * 1024;
+
+/** Hard ceiling on transcoded output size. ffmpeg produces ~1:1 of
+ *  input size for AAC re-encoding, but a malformed/adversarial file
+ *  could in principle balloon. We poll the output during transcode
+ *  via fstat and kill ffmpeg if it crosses the threshold. */
+const MAX_TRANSCODE_OUTPUT_BYTES = 250 * 1024 * 1024;
+
+/** Tighter than the 120s we used to allow — typical track lengths
+ *  transcode in a few seconds. 60s still leaves headroom for slow
+ *  serverless cold starts. */
+const TRANSCODE_TIMEOUT_MS = 60_000;
+
 async function transcodeToAAC(inputBuffer: ArrayBuffer): Promise<Buffer> {
+  if (inputBuffer.byteLength > MAX_TRANSCODE_INPUT_BYTES) {
+    throw new Error(
+      `Input too large for transcode: ${inputBuffer.byteLength} > ${MAX_TRANSCODE_INPUT_BYTES}`,
+    );
+  }
+
   const dir = await mkdtemp(join(tmpdir(), "audio-"));
   const inputPath = join(dir, "input.m4a");
   const outputPath = join(dir, "output.m4a");
@@ -41,10 +64,24 @@ async function transcodeToAAC(inputBuffer: ArrayBuffer): Promise<Buffer> {
     });
 
     await new Promise<void>((resolve, reject) => {
-      execFile(
+      // Cap stderr buffer at 1 MB — ffmpeg can be chatty with -loglevel
+      // verbose and the default 1 MB is fine for normal output. This
+      // prevents a memory spike if a hostile input triggers a
+      // pathological warning loop.
+      const child = execFile(
         ffmpegPath,
-        ["-i", inputPath, "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", "-y", outputPath],
-        { timeout: 120000 },
+        [
+          "-i", inputPath,
+          "-c:a", "aac",
+          "-b:a", "192k",
+          // Hard limit on output size at the ffmpeg level — `-fs`
+          // tells ffmpeg to stop writing once the output reaches N
+          // bytes. Belt-and-suspenders alongside the input cap above.
+          "-fs", String(MAX_TRANSCODE_OUTPUT_BYTES),
+          "-movflags", "+faststart",
+          "-y", outputPath,
+        ],
+        { timeout: TRANSCODE_TIMEOUT_MS, maxBuffer: 1024 * 1024 },
         (error, _stdout, stderr) => {
           if (error) {
             logger.error("audio/transcode", "ffmpeg error:", error.message, stderr);
@@ -54,9 +91,30 @@ async function transcodeToAAC(inputBuffer: ArrayBuffer): Promise<Buffer> {
           }
         }
       );
+
+      // Defensive: if ffmpeg ignores -fs or the timeout fails to fire,
+      // periodically stat the output file and kill the process if it
+      // has somehow exceeded our cap.
+      const sizeCheck = setInterval(async () => {
+        try {
+          const { stat } = await import("fs/promises");
+          const s = await stat(outputPath).catch(() => null);
+          if (s && s.size > MAX_TRANSCODE_OUTPUT_BYTES) {
+            child.kill("SIGKILL");
+            clearInterval(sizeCheck);
+          }
+        } catch { /* best-effort */ }
+      }, 1_000);
+      child.on("close", () => clearInterval(sizeCheck));
     });
 
-    return await readFile(outputPath);
+    const out = await readFile(outputPath);
+    if (out.length > MAX_TRANSCODE_OUTPUT_BYTES) {
+      throw new Error(
+        `Transcode output exceeded cap: ${out.length} > ${MAX_TRANSCODE_OUTPUT_BYTES}`,
+      );
+    }
+    return out;
   } finally {
     await unlink(inputPath).catch(() => {});
     await unlink(outputPath).catch(() => {});

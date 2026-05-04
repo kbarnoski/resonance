@@ -241,21 +241,66 @@ codebase given there's no user-supplied HTML rendered raw anywhere.
 
 ## Threat model — what this audit DID and DID NOT cover
 
-**Covered:**
+**Covered (Phase 0/1):**
 - API route auth + rate limiting
 - Server-side input validation
 - Tauri sidecar command argument validation
 - Admin-gating consistency
 - Open-proxy / SSRF surface area on the fal proxy
 
-**NOT covered:**
-- Client-side XSS (no audit of `dangerouslySetInnerHTML` use)
-- Supabase RLS policy correctness (relies on what's in the DB)
-- Auth flow itself (Supabase magic-link, session management)
-- Dependency CVE scan (recommend running `npm audit` separately)
-- Content moderation on user-uploaded audio
+**Covered (P2 follow-ups):**
+- Open-redirect on `?redirectTo=` (login + signup) — same-origin guard
+- Client-side XSS surface — no `dangerouslySetInnerHTML`, ReactMarkdown
+  is configured with disallowedElements + scheme-stripping urlTransform
+- ffmpeg defense-in-depth — input-size cap, output-size cap, lower
+  timeout, stderr maxBuffer
+- Dependency CVE scan via `npm audit` — Next.js bumped to 15.5.15 (HTTP
+  smuggling + image-cache DoS + Server Components DoS all closed).
+  Remaining moderate advisories (`ai`, `jsondiffpatch`, `postcss`)
+  not exploitable in this codebase — assessed below.
+- RLS audit tooling — `scripts/audit-rls.mjs` enumerates policies for
+  human review; the policies themselves still need an eye-pass.
 
-A follow-up engagement should pick up these in priority order. The
-RLS policies in particular are the load-bearing security boundary
-for cross-user data isolation; their correctness is asserted, not
-verified, by this audit.
+**NOT covered (deferred):**
+- Supabase RLS policy correctness (script ships; output review pending)
+- Auth flow internals (Supabase magic-link, session rotation, signup
+  email-template configuration)
+- Content moderation on user-uploaded audio
+- Nonce-based CSP for scripts (would let us drop `'unsafe-inline'`)
+
+### P2 assessment summary
+
+**Open-redirect** — `safeInternalRedirect()` (`src/lib/safe-redirect.ts`)
+rejects fully-qualified URLs, protocol-relative URLs (`//evil.com`),
+backslash-prefixed variants, and anything not starting with `/`.
+Applied at login + signup. Tested.
+
+**XSS** — Confirmed clean. `grep dangerouslySetInnerHTML src/` returns
+nothing. The only inline-HTML write is `containerRef.current.innerHTML
+= ""` (clearing for GSAP) — not attacker-controlled. ReactMarkdown
+in chat-message.tsx blocks script/iframe/object/embed/style/link/meta/
+form and strips `javascript:`/`data:`/`vbscript:` URL schemes.
+
+**ffmpeg sandbox** — Now caps input at 200 MB before transcode starts,
+output at 250 MB via ffmpeg's `-fs` flag plus a periodic stat-check
+that SIGKILLs the process if it crosses, timeout dropped from 120s
+to 60s, stderr maxBuffer set to 1 MB. Plus all the prior defenses
+(execFile, static args, tempdir).
+
+**Dependency CVEs** — Next.js patched to 15.5.15 (was 15.5.12),
+closing GHSA-ggv3-7p47-pfv8 (HTTP smuggling), GHSA-3x4c-7xq6-9pq8
+(image cache DoS), and GHSA-q4gf-8mx6-v5v3 (Server Components DoS).
+Three moderate advisories remain (ai, jsondiffpatch via ai, postcss
+via next), all assessed not-exploitable: we don't use jsondiffpatch's
+HtmlFormatter (the XSS vector), and postcss's stringify XSS only
+fires on user-content CSS rendering (we have none — postcss runs at
+build time only). Bumping `ai` to v6 to clear the advisory is a
+breaking change deferred to a separate engagement.
+
+**RLS** — `scripts/audit-rls.mjs` enumerates every public-schema
+table's RLS state and every policy's `qual` clause, with callouts for
+RLS-disabled tables and policies that match every row. Run with
+`SUPABASE_SERVICE_ROLE_KEY` to read `pg_policies`. This produces the
+data; the actual review of policy correctness (which is the
+load-bearing security boundary for cross-user isolation) is the
+work item this script enables.
