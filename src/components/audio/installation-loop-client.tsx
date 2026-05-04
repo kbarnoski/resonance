@@ -298,16 +298,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       //   t=7s    → cycle text fades out (1.5s) AND pre-start journey 0
       //             (audio + shader + AI begin loading behind opaque bg).
       //             fading-cycle stage.
-      //   t=8.5s  → cycle text fully gone. bg STILL OPAQUE — pure
-      //             black hold while the visualizer compiles + does its
-      //             A/B crossfade, none of which is visible. The hold
-      //             gives audio time to start playing too.
-      //   t=14s   → mount journey title (3.8s inner fade-in) AND start
+      //   t=8.5s  → cycle text fully gone. bg STILL OPAQUE — short
+      //             black hold (2s) while the visualizer's shader
+      //             compile + A/B crossfade settles. Long enough that
+      //             the orb-flash window is closed; short enough that
+      //             it doesn't read as a stall.
+      //   t=10.5s → mount journey title (3.8s inner fade-in) AND start
       //             fading bg (3.8s — same clock). Title and shader
-      //             arrive together. fading-bg + journey stages.
-      //   t=17.8s → title fully visible, bg fully gone. Shader sustains.
-      //   t=20s   → title fades out (1.8s) — fading-journey stage.
-      //   t=21.8s → phase change to journey 0.
+      //             arrive together.
+      //   t=14.3s → title fully visible, bg fully gone. Shader sustains.
+      //   t=16.5s → title fades out (1.8s) — fading-journey stage.
+      //   t=18.3s → phase change to journey 0.
 
       // t=INTRO_MS (7s): begin cycle text fade-out AND pre-start
       // journey 0. The shader needs lead time to compile + start its
@@ -375,29 +376,30 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         } catch { /* engine warming */ }
       }, INTRO_MS);
 
-      // t=INTRO_MS+7s: title mount AND bg fade start, same clock. The
-      // bg-black has been holding opaque since fading-cycle ended at
-      // t=INTRO_MS+1.5s (5.5s of pure black hold) — plenty of time for
-      // the visualizer to compile, crossfade, and settle. Now we
-      // simultaneously show the title (3.8s fade-in via the
+      // t=INTRO_MS+3.5s: title mount AND bg fade start, same clock.
+      // The bg-black has been holding opaque since fading-cycle ended
+      // at t=INTRO_MS+1.5s (2 seconds of pure black hold) — short
+      // enough not to read as a stall, long enough that the
+      // visualizer's shader compile + A/B crossfade have settled.
+      // Now we simultaneously show the title (3.8s fade-in via the
       // installationContentFade keyframe) and reveal the shader (3.8s
       // bg-black opacity fade in InstallationIntro). Both peak
-      // together at +10.8s. Title and shader as one composition.
+      // together. Title and shader as one composition.
       mountJourney = setTimeout(() => {
         setIntroStage("journey");
-      }, INTRO_MS + 7000);
+      }, INTRO_MS + 3500);
 
-      // t=INTRO_MS+13s: title has been fully visible ~2s. Begin fade.
+      // t=INTRO_MS+9s: title has been fully visible ~2.2s. Begin fade.
       fadeJourneyStart = setTimeout(() => {
         setIntroStage("fading-journey");
-      }, INTRO_MS + 13_000);
+      }, INTRO_MS + 9000);
 
-      // t=INTRO_MS+14.8s: phase change → overlay fully unmounted,
+      // t=INTRO_MS+10.8s: phase change → overlay fully unmounted,
       // journey is sole visual layer
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
         setPhase({ kind: "journey", index: 0 });
-      }, INTRO_MS + 14_800);
+      }, INTRO_MS + 10_800);
 
       return () => {
         if (fadeCycleStart) clearTimeout(fadeCycleStart);
@@ -761,7 +763,21 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
           handles all visual choreography; we just hand it the current
           stage. The overlay stays mounted through the journey-0 phase
           while the journey-title fade-out is still happening. */}
-      {introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && (introStage === "journey" || introStage === "fading-journey"))) && (
+      {/* Pre-fonts black overlay. Until the loop client confirms all
+          three Cormorant Garamond variants (300 regular, 300 italic,
+          400) are loaded, render a plain black screen and nothing else.
+          The InstallationIntro component is unmounted entirely during
+          this window — its cycle text would otherwise paint in the
+          Georgia fallback (different glyph metrics from Cormorant) and
+          re-render in Cormorant once the font swapped, which the user
+          read as "the title and initial text" jumping size. */}
+      {!fontsReady && (
+        <div
+          className="absolute inset-0 z-50 bg-black pointer-events-none"
+          aria-hidden
+        />
+      )}
+      {fontsReady && introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && (introStage === "journey" || introStage === "fading-journey"))) && (
         <InstallationIntro
           stage={introStage}
           journey={sequence[0]?.journey ?? null}
