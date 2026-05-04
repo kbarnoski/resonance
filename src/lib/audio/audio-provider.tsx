@@ -399,11 +399,29 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   }, [isPlaying]);
 
   useEffect(() => {
+    // In installation mode, ignore the OS media-session pause / next /
+    // previous controls. iOS Safari shows system playback affordances
+    // (lockscreen, control center, sometimes a tap-to-show pause
+    // overlay on the page itself) — when the user touched the screen
+    // mid-journey and the audio "stopped" / "skipped to credits",
+    // those events were what fired. The installation loop owns
+    // playback; system controls shouldn't be able to interrupt it.
+    // Resume stays wired in case something else paused the element
+    // (e.g., autoplay rejection) — the watchdog catches that path too.
     registerMediaSessionHandlers({
       onPlay: () => useAudioStore.getState().resume(),
-      onPause: () => useAudioStore.getState().pause(),
-      onNextTrack: () => useAudioStore.getState().playNext(),
-      onPreviousTrack: () => useAudioStore.getState().playPrev(),
+      onPause: () => {
+        if (useAudioStore.getState().installationMode) return;
+        useAudioStore.getState().pause();
+      },
+      onNextTrack: () => {
+        if (useAudioStore.getState().installationMode) return;
+        useAudioStore.getState().playNext();
+      },
+      onPreviousTrack: () => {
+        if (useAudioStore.getState().installationMode) return;
+        useAudioStore.getState().playPrev();
+      },
     });
   }, []);
 

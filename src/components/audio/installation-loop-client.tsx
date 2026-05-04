@@ -526,13 +526,20 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // progress — every dot lit as we wrap.
       setTitleWindow(true);
       stopJourney();
-      // playOnce mode (the /demo review link): stay on credits forever
-      // instead of looping back to intro. Reviewers get a clean
-      // end-of-experience moment instead of the loop restarting.
-      if (playOnce) return;
+      // Schedule the return to intro:
+      //   - kiosk loop: CREDITS_MS (16s); cycle restarts
+      //   - /demo:      10s; phase goes to intro, started flips back
+      //                 to false so the start screen re-mounts. The
+      //                 reviewer sees the full intro again with the
+      //                 play button — no replay click required.
+      const delay = playOnce ? 10_000 : CREDITS_MS;
       const t = setTimeout(() => {
+        if (playOnce) {
+          setStarted(false);
+          setStartScreenUnmounted(false);
+        }
         setPhase({ kind: "intro" });
-      }, CREDITS_MS);
+      }, delay);
       return () => clearTimeout(t);
     }
 
@@ -895,17 +902,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           trackArtist={sequence[0]?.track?.artist ?? null}
         />
       )}
-      {phase.kind === "credits" && (
-        <InstallationCredits
-          onReplay={
-            // /demo only: hand the credits screen a callback that
-            // restarts the cycle from the intro. /installation
-            // (kiosk loop) restarts automatically; the button
-            // would be redundant + visually distracting.
-            playOnce ? () => setPhase({ kind: "intro" }) : undefined
-          }
-        />
-      )}
+      {phase.kind === "credits" && <InstallationCredits />}
 
       {/* /demo Begin overlay — captures the gesture iOS Safari needs
           to unlock audio, plus serves as a clean "start when ready"
