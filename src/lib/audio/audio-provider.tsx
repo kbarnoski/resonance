@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useCallback } from "react";
 import { useAudioStore } from "./audio-store";
-import { getAudioEngine, ensureResumed, startAmbient, stopAmbient, initNativeAnalyser } from "./audio-engine";
+import { getAudioEngine, ensureResumed, tryPlay, startAmbient, stopAmbient, initNativeAnalyser } from "./audio-engine";
 import { resolveAudioUrl } from "./resolve-audio-url";
 import {
   isDesktopApp,
@@ -197,7 +197,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       }
       if (audioElement.paused && state.isPlaying) {
         ensureResumed().then(() => {
-          audioElement.play().catch(() => {});
+          tryPlay(audioElement);
         });
       }
     }
@@ -219,7 +219,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       // Now play if the store says we should be playing
       if (state.isPlaying) {
         await ensureResumed();
-        audioElement.play().catch(() => {});
+        await tryPlay(audioElement);
       }
     };
 
@@ -297,7 +297,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     if (isPlaying) {
       ensureResumed().then(() => {
-        audioElement.play().catch(() => {});
+        tryPlay(audioElement);
       });
     } else {
       audioElement.pause();

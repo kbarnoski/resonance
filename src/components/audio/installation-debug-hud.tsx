@@ -6,12 +6,14 @@ import {
   getAudioEngine,
   isAudioElementUnlocked,
   getLastPrimingError,
+  getLastPlayError,
 } from "@/lib/audio/audio-engine";
 
 interface DebugSnapshot {
   ctxState: string;
   unlocked: boolean;
   primingError: string | null;
+  playError: string | null;
   paused: boolean;
   src: string;
   audioErr: string | null;
@@ -90,6 +92,7 @@ export function InstallationDebugHud() {
         ctxState,
         unlocked: isAudioElementUnlocked(),
         primingError,
+        playError: getLastPlayError(),
         paused,
         src,
         audioErr,
@@ -152,6 +155,7 @@ export function InstallationDebugHud() {
       {row("audio ctx", snap.ctxState, snap.ctxState === "running")}
       {row("audio unlocked", snap.unlocked, snap.unlocked)}
       {snap.primingError && row("priming err", snap.primingError.slice(0, 50), false)}
+      {snap.playError && row("PLAY REJECT", snap.playError.slice(0, 60), false)}
       {snap.audioErr && row("AUDIO ERROR", snap.audioErr.slice(0, 60), false)}
       {row("readyState", snap.readyState, snap.readyState >= 2)}
       {row("networkState", snap.networkState)}

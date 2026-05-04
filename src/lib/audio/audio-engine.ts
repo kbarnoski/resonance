@@ -93,8 +93,26 @@ export async function ensureResumed(): Promise<void> {
 // even from async callbacks. Must run synchronously from the click.
 let audioElementUnlocked = false;
 let lastPrimingError: string | null = null;
+let lastPlayError: string | null = null;
 export function isAudioElementUnlocked(): boolean { return audioElementUnlocked; }
 export function getLastPrimingError(): string | null { return lastPrimingError; }
+export function getLastPlayError(): string | null { return lastPlayError; }
+export function setLastPlayError(err: string | null): void { lastPlayError = err; }
+/** Wrap audio.play() to capture its rejection reason for diagnostics.
+ *  audio-provider, the watchdog, and anywhere else that calls play()
+ *  on the engine element should funnel through here. */
+export function tryPlay(el: HTMLAudioElement): Promise<void> {
+  const p = el.play();
+  if (!p || typeof p.then !== "function") return Promise.resolve();
+  return p.then(
+    () => { lastPlayError = null; },
+    (err: unknown) => {
+      lastPlayError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+      // eslint-disable-next-line no-console
+      console.warn("[audio] play() rejected:", lastPlayError);
+    }
+  );
+}
 
 export function primeAudioElement(): void {
   if (audioElementUnlocked) return;

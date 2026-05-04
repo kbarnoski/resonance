@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { VisualizerClient } from "./visualizer-client";
 import { useAudioStore, type Track } from "@/lib/audio/audio-store";
-import { getAudioEngine, ensureResumed, primeAudioElement } from "@/lib/audio/audio-engine";
+import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
@@ -274,15 +274,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         const s = useAudioStore.getState();
         if (s.isPlaying && el.paused && el.readyState >= 2 && !el.error) {
           // Audio is ready, store wants playback, but element is paused.
-          // Force a play attempt. Audio is unlocked from the click gate
-          // so this won't get rejected by autoplay policy.
-          el.play().catch((err) => {
-            // eslint-disable-next-line no-console
-            console.warn("[installation] watchdog play() rejected:", err);
-          });
+          // Force a play attempt via tryPlay so the rejection (if any)
+          // surfaces in the HUD via lastPlayError.
+          tryPlay(el);
         }
       } catch { /* engine gone */ }
-    }, 500);
+    }, 250);
 
     // Subscribe to store; advance when audio finishes or safety expires.
     const startMs = Date.now();

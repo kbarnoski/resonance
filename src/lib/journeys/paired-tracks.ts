@@ -20,24 +20,31 @@ export const PAIRED_TRACKS: Record<string, string> = {
   "ghost": "%KB_GHOST_REF%",
 
   // ─── Installation pairings (2026-05-03) ───
-  // Picked to avoid neural-link's 18:39 track and the Welcome Home
-  // album tracks (those play in the WH path). Patterns are unique
-  // enough to not collide on substring match — e.g., "17th St 63
-  // spectre" includes "spectre" so it doesn't match "17th St 63".
-  "the-ascension":    "%Rebound%",              // 2:51 — short, name evokes upward motion
-  "mycelium-dream":   "%Folsom St 8%",         // 6:25 — organic, longest available
+  // Constraints:
+  //   - Avoid neural-link's 18:39 track (too long)
+  //   - Avoid Welcome Home album tracks (play in the WH path):
+  //     Playa, Welcome Home, The Knife, The Knife (Jam), Bath,
+  //     Interplay, Stir Crazy, Rolling, Quarantine, All Together,
+  //     2019, Isolation, Rebound
+  "the-ascension":    "%Naive%",               // 3:36 mp3 — short, distinctive, not WH
+  "mycelium-dream":   "%Folsom St 8%",         // 6:25 alac — organic, longest available
   "abyssal-dive":     "%17th St 62%",          // 4:41
-  "dissolution":      "%champa%",              // 2:43
-  "sacred-resonance": "%2019%",                // 3:41
-  "the-maze":         "%Naive%",               // 3:36
-  "the-ascent":       "%Folsom St 5%",         // 4:41
-  "the-crossing":     "%Rolling%",             // 4:35
-  "the-reading":      "%Grasshopper%",         // 3:18
+  "dissolution":      "%champa%",              // 2:43 mp3
+  "the-ascent":       "%Folsom St 5%",         // 4:41 alac
   "the-tempest":      "%17th St 63 spectre%",  // "spectre" → distinct from 17th St 63
-  "the-bloom":        "%Folsom St 9%",         // 3:35
-  "the-solstice":     "%Stir Crazy%",          // 2:51
-  "the-harvest":      "%All Together%",        // 3:39
-  "the-wound":        "%Quarantine%",          // 2:56
+  "the-bloom":        "%Folsom St 9%",         // 3:35 alac
+
+  // ─── Unpaired (TODO — were WH conflicts) ─────────────────────────
+  // These journeys aren't currently in INSTALLATION_SEQUENCE. Their
+  // previous WH-conflicting pairs are commented for reference. When
+  // adding any back to the sequence, pair them with non-WH tracks.
+  // "sacred-resonance": "%2019%",          // 2019 is in WH
+  // "the-maze":         "%Naive%",         // re-pair: Naive now used by Ascension
+  // "the-crossing":     "%Rolling%",       // Rolling is in WH
+  // "the-reading":      "%Grasshopper%",   // Grasshopper is OK (not in WH)
+  // "the-solstice":     "%Stir Crazy%",    // Stir Crazy is in WH
+  // "the-harvest":      "%All Together%",  // All Together is in WH
+  // "the-wound":        "%Quarantine%",    // Quarantine is in WH
 };
 
 /** Storage file search patterns — fallback when track isn't in recordings table */
