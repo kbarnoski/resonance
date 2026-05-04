@@ -107,43 +107,63 @@ export function InstallationCredits({ onReplay }: { onReplay?: () => void }) {
       </div>
       </div>
 
-      {/* Replay affordance — only rendered in playOnce mode (/demo).
-          Mounts after the credits animation finishes so it doesn't
-          overlap with the dedication. Subtle by design — the
-          experience itself should be the focus, the button is just
-          a quiet "you can see this again" cue. */}
+      {/* Thank-you screen — only rendered in playOnce mode (/demo).
+          After the credits animation finishes, this fades in centered
+          on the page: a thank-you line above, the "Begin again"
+          button below. Both as a single unit so the affordance and
+          the closing message read together. */}
       {onReplay && showReplay && (
-        <button
-          onClick={onReplay}
-          className="absolute bottom-16 left-1/2 -translate-x-1/2"
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none"
           style={{
             animation: "replayFadeIn 1800ms ease-out forwards",
             opacity: 0,
-            background: "transparent",
-            border: "1px solid rgba(255,255,255,0.25)",
-            borderRadius: "999px",
-            padding: "0.85rem 2.25rem",
-            color: "rgba(255,255,255,0.75)",
-            fontFamily: "'Cormorant Garamond', Georgia, serif",
-            fontStyle: "italic",
-            fontSize: "clamp(1.05rem, 1.8vw, 1.25rem)",
-            letterSpacing: "0.04em",
-            cursor: "pointer",
-            transition: "color 250ms ease, border-color 250ms ease, background 250ms ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "rgba(255,255,255,0.95)";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
-            e.currentTarget.style.background = "rgba(255,255,255,0.04)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "rgba(255,255,255,0.75)";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
-            e.currentTarget.style.background = "transparent";
           }}
         >
-          Begin again
-        </button>
+          <p
+            className="text-white/75 max-w-2xl text-center px-8"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(1.4rem, 2.6vw, 2rem)",
+              letterSpacing: "0.01em",
+              lineHeight: 1.5,
+              marginBottom: "2.5rem",
+            }}
+          >
+            Thank you for taking the time to experience Resonance.
+          </p>
+          <button
+            onClick={onReplay}
+            style={{
+              pointerEvents: "auto",
+              background: "transparent",
+              border: "1px solid rgba(255,255,255,0.25)",
+              borderRadius: "999px",
+              padding: "0.85rem 2.25rem",
+              color: "rgba(255,255,255,0.75)",
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontSize: "clamp(1.05rem, 1.8vw, 1.25rem)",
+              letterSpacing: "0.04em",
+              cursor: "pointer",
+              transition: "color 250ms ease, border-color 250ms ease, background 250ms ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.95)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)";
+              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.75)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+              e.currentTarget.style.background = "transparent";
+            }}
+          >
+            Begin again
+          </button>
+        </div>
       )}
 
       <style jsx>{`
