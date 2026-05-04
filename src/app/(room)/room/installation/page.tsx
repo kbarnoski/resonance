@@ -2,8 +2,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry } from "@/components/audio/installation-loop-client";
-import { JOURNEYS } from "@/lib/journeys/journeys";
+import { getJourney } from "@/lib/journeys/journeys";
 import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
+import { INSTALLATION_SEQUENCE } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 
@@ -98,18 +99,25 @@ export default async function InstallationPage({ searchParams }: Props) {
       artist: r.artist,
     });
 
-    const sequence: SequenceEntry[] = JOURNEYS.map((j: Journey) => {
-      // Priority 1: explicit recordingId baked into the journey definition.
-      if (j.recordingId) {
-        const direct = featuredRecordings.find((r) => r.id === j.recordingId);
-        if (direct) return { journey: j, track: toTrack(direct) };
-      }
-      // Priority 2: title-pattern pairing (e.g., "ghost" → KB_GHOST_REF).
-      const paired = pairedRecordingByJourneyId[j.id];
-      if (paired) return { journey: j, track: toTrack(paired) };
-      // Priority 3: leave null; loop client will pick from fallback pool.
-      return { journey: j, track: null };
-    });
+    // Walk INSTALLATION_SEQUENCE (explicit ordering with neural-link
+    // skipped + ghost/snowflake last) instead of JOURNEYS so the
+    // installation experience stays curated independent of the
+    // declaration order in journeys.ts.
+    const sequence: SequenceEntry[] = INSTALLATION_SEQUENCE
+      .map((id) => getJourney(id))
+      .filter((j): j is Journey => !!j)
+      .map((j: Journey) => {
+        // Priority 1: explicit recordingId baked into the journey definition.
+        if (j.recordingId) {
+          const direct = featuredRecordings.find((r) => r.id === j.recordingId);
+          if (direct) return { journey: j, track: toTrack(direct) };
+        }
+        // Priority 2: title-pattern pairing (e.g., "ghost" → KB_GHOST_REF).
+        const paired = pairedRecordingByJourneyId[j.id];
+        if (paired) return { journey: j, track: toTrack(paired) };
+        // Priority 3: leave null; loop client will pick from fallback pool.
+        return { journey: j, track: null };
+      });
 
     const fallbackTracks = featuredRecordings.map(toTrack);
 

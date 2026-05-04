@@ -2374,27 +2374,29 @@ export function VisualizerClient({
       )}
 
       {/* Build identity footer — dim, bottom-left, fades with the controls.
-          Lets you and Johnny verify which build is actually running on a
-          given machine. /api/version returns the same data as JSON. */}
-      <div
-        style={{
-          position: "absolute",
-          left: "12px",
-          bottom: "8px",
-          zIndex: 5,
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "9px",
-          letterSpacing: "0.05em",
-          color: "rgba(255,255,255,0.18)",
-          textTransform: "uppercase",
-          pointerEvents: "none",
-          opacity: controlsVisible ? 1 : 0.4,
-          transition: "opacity 0.4s ease",
-          textShadow: "0 1px 2px rgba(0,0,0,0.6)",
-        }}
-      >
-        v0.1.0 · {process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev"} · tier {getDeviceTier()}
-      </div>
+          Hidden in installation mode (a venue audience shouldn't see git
+          commits). /api/version returns the same data as JSON. */}
+      {!installationMode && (
+        <div
+          style={{
+            position: "absolute",
+            left: "12px",
+            bottom: "8px",
+            zIndex: 5,
+            fontFamily: "var(--font-geist-mono)",
+            fontSize: "9px",
+            letterSpacing: "0.05em",
+            color: "rgba(255,255,255,0.18)",
+            textTransform: "uppercase",
+            pointerEvents: "none",
+            opacity: controlsVisible ? 1 : 0.4,
+            transition: "opacity 0.4s ease",
+            textShadow: "0 1px 2px rgba(0,0,0,0.6)",
+          }}
+        >
+          v0.1.0 · {process.env.NEXT_PUBLIC_BUILD_COMMIT ?? "dev"} · tier {getDeviceTier()}
+        </div>
+      )}
     </div>
   );
 }
