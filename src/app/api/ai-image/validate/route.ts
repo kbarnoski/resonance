@@ -43,19 +43,20 @@ export async function POST(request: Request) {
     return Response.json({ valid: true, reason: "no-api-key" });
   }
 
+  // Auth-optional — anon visitors at /installation also need to
+  // validate the imagery they generate. Per-IP rate limit bounds
+  // anon traffic.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
 
-  // Per-user rate limit. Validation is meant to fire once per generated
-  // frame; 30 burst / 1 per 2 sec covers normal use comfortably and
-  // bounds any runaway loop on the client.
+  // Tighter limits for anon (15 burst / 0.25 per sec ≈ 900/hour)
+  // than authed (30 burst / 0.5 per sec ≈ 1800/hour).
+  const burst = user ? 30 : 15;
+  const refillPerSec = user ? 0.5 : 0.25;
   const rl = await checkRateLimit(
-    rateLimitKey({ userId: user.id, request, scope: "ai-image-validate" }),
-    30,
-    0.5,
+    rateLimitKey({ userId: user?.id, request, scope: "ai-image-validate" }),
+    burst,
+    refillPerSec,
   );
   if (!rl.allowed) return rateLimitedResponse(rl.retryAfterMs);
 

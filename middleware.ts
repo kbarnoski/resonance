@@ -96,6 +96,13 @@ export async function middleware(request: NextRequest) {
     // an allowlist entry, the middleware would redirect those POSTs
     // to /login and we'd never see violations.
     pathname === "/api/csp-report" ||
+    // Public installation experience — anyone can view it without
+    // signing in. /demo plays through once (for review/share);
+    // /installation loops forever (gallery kiosk). Both rewrite to
+    // /room/installation under the hood, so we allowlist all three.
+    pathname === "/demo" ||
+    pathname === "/installation" ||
+    pathname === "/room/installation" ||
     (pathname.startsWith("/room/") &&
       pathname !== "/room/installation" &&
       pathname.split("/").length === 3);

@@ -2,6 +2,7 @@ import { fal } from "@fal-ai/client";
 import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
 import { isAdmin } from "@/lib/auth/require-admin";
+import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
 
 // Default model swapped from flux/schnell → flux/dev. Schnell (4 steps)
 // had very weak prompt adherence: negations were ignored, identity
@@ -43,11 +44,21 @@ export async function POST(request: Request) {
     );
   }
 
+  // Auth-optional. Anon visitors at /installation also drive image
+  // generation through this endpoint when the realtime path falls
+  // back to HTTP (PuLID, flux/dev, etc.). Per-IP rate limit bounds
+  // anon traffic — 15 burst / 1 per 4s ≈ 900 frames/hour/IP,
+  // half that for the steady-state ceiling.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  const burst = user ? 30 : 15;
+  const refillPerSec = user ? 0.5 : 0.25;
+  const rl = await checkRateLimit(
+    rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
+    burst,
+    refillPerSec,
+  );
+  if (!rl.allowed) return rateLimitedResponse(rl.retryAfterMs);
 
   fal.config({ credentials: process.env.FAL_KEY });
 
