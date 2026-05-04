@@ -170,6 +170,27 @@ export default async function InstallationPage({ searchParams }: Props) {
 
     return (
       <div className="h-screen w-screen overflow-hidden bg-black">
+        {/* Preload Cormorant Garamond — used by both the cycle intro
+            ("Resonance") and every journey title. Without this preload
+            the cycle title initially rendered in Georgia (system
+            fallback) and re-rendered in Cormorant once the font lazy-
+            loaded from another component, producing a visible "type
+            style change" right as journey 0 started. Loading at the
+            page level guarantees the font is on its way before any
+            cycle text paints. */}
+        <link
+          rel="preconnect"
+          href="https://fonts.googleapis.com"
+        />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+        />
         <InstallationLoopClient sequence={sequenceWithCues} fallbackTracks={fallbackTracks} debug={isDebug} />
       </div>
     );

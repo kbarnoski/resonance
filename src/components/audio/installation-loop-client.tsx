@@ -273,12 +273,38 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         }
 
         // Early error listener: if Ascension's audio fails during the
-        // cycle intro window, abort and skip to journey 1.
+        // cycle intro window, attempt ONE fresh URL resolve (clearing
+        // the sessionStorage cache that may hold a stale signed URL),
+        // then skip to journey 1 only if recovery also fails.
         try {
           const el = getAudioEngine().audioElement;
+          let earlyRetried = false;
           earlyErrorListener = () => {
+            const errCode = el.error?.code;
+            const errMsg = el.error?.message || "(no msg)";
+            if (!earlyRetried) {
+              earlyRetried = true;
+              // eslint-disable-next-line no-console
+              console.warn(`[installation] early audio error (${errCode}: ${errMsg}) — attempting fresh URL`);
+              void (async () => {
+                try {
+                  const t = trackForIndex(0);
+                  if (!t?.audioUrl) throw new Error("no audio url");
+                  // Clear stale signed URL cache for this recording
+                  try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
+                  const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+                  const fresh = await resolveAudioUrl(t.audioUrl, t.id);
+                  el.src = fresh;
+                  el.load();
+                } catch {
+                  // Recovery failed synchronously — let the second
+                  // error event (if any) take the skip path below.
+                }
+              })();
+              return;
+            }
             // eslint-disable-next-line no-console
-            console.warn("[installation] early audio error during cycle intro — skipping to journey 1");
+            console.warn("[installation] early audio error after retry — skipping to journey 1");
             setSkippedIndices((s) => new Set(s).add(0));
             if (fadeBgStart) clearTimeout(fadeBgStart);
             if (mountJourney) clearTimeout(mountJourney);
@@ -527,6 +553,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         if (!t?.audioUrl) return;
         // eslint-disable-next-line no-console
         console.warn(`[installation] ${entry.journey.name}: stuck at 0 after 12s — force-reload`);
+        // Clear cached signed URL — likely stale if we got this far.
+        try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
         const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
         const fresh = await resolveAudioUrl(t.audioUrl, t.id);
         el.src = fresh;
