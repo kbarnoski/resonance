@@ -110,17 +110,26 @@ class RealtimeImageService {
     try {
       const { fal } = await import("@fal-ai/client");
 
-      // Fetch token from server, then configure credentials
+      // Fetch a short-lived JWT from our server. The endpoint mints
+      // a token scoped to flux/schnell with a 5-min TTL — the master
+      // FAL_KEY never reaches the client. The response indicates
+      // which auth scheme to use ("Bearer" for JWTs, "Key" for the
+      // legacy master-key path) so this code stays compatible if
+      // the endpoint ever falls back.
       const tokenRes = await fetch("/api/ai-image/token");
+      if (!tokenRes.ok) {
+        throw new Error(`token endpoint returned ${tokenRes.status}`);
+      }
       const tokenData = await tokenRes.json();
       const apiKey = tokenData.token;
+      const scheme = tokenData.scheme === "Bearer" ? "Bearer" : "Key";
 
       if (!apiKey) {
         throw new Error("No token returned from /api/ai-image/token");
       }
 
       fal.config({
-        credentials: `Key ${apiKey}`,
+        credentials: `${scheme} ${apiKey}`,
         proxyUrl: "/api/ai-image/token",
       });
 

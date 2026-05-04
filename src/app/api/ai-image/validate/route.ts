@@ -52,7 +52,7 @@ export async function POST(request: Request) {
   // Per-user rate limit. Validation is meant to fire once per generated
   // frame; 30 burst / 1 per 2 sec covers normal use comfortably and
   // bounds any runaway loop on the client.
-  const rl = checkRateLimit(
+  const rl = await checkRateLimit(
     rateLimitKey({ userId: user.id, request, scope: "ai-image-validate" }),
     30,
     0.5,
