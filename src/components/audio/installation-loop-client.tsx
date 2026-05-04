@@ -416,14 +416,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       useAudioStore.getState().activeJourney?.id === entry.journey.id;
 
     if (!alreadyStarted) {
-      // Smooth handoff into the new journey. Just pause the previous
-      // track (audio-provider will swap src naturally on the new
-      // currentTrack). No removeAttribute/load — that was abrupt and
-      // caused visible state churn between journeys.
-      try {
-        getAudioEngine().audioElement.pause();
-      } catch { /* engine warming */ }
-
+      // No explicit pause() — calling pause() flips isPlaying to false
+      // in the store, and the tick loop's audioEnded check used to
+      // race on that. setQueue + startJourney is enough for the
+      // audio-provider to swap src; pausing first only created bugs.
       const track = trackForIndex(phase.index);
       if (track) setQueue([track], 0);
       startJourney(entry.journey.id);
@@ -503,8 +499,23 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     try {
       const el = getAudioEngine().audioElement;
       endedListener = () => {
-        // Audio finished naturally — advance immediately. Works in
-        // foreground OR background tabs.
+        // VERIFY the track actually played to its natural end before
+        // advancing. The "ended" DOM event can fire spuriously when
+        // src is replaced mid-play (e.g., by our early-error retry
+        // path), or when the browser aborts a load. Without this
+        // verification, a spurious ended event during cycle intro
+        // would cascade into a bogus skip-to-next-journey at the
+        // moment the journey-phase tick loop started.
+        const dur = el.duration;
+        const t = el.currentTime;
+        if (!isFinite(dur) || dur <= 0) return; // duration unknown — ignore
+        if (t < dur - 2) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[installation] ${entry.journey.name}: ignoring spurious 'ended' (t=${t.toFixed(1)} / dur=${dur.toFixed(1)})`,
+          );
+          return;
+        }
         advance();
       };
       el.addEventListener("ended", endedListener);
@@ -608,13 +619,15 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     const STALLED_THRESHOLD_MS = 30_000;
     let raf = 0;
     const tick = () => {
-      const { currentTime, duration, isPlaying } = useAudioStore.getState();
-      // Track ended either when currentTime reaches duration OR when
-      // the store flips isPlaying back to false (audio-provider's
-      // onEnded pauses in installation single-track mode now).
-      const audioEnded =
-        (duration > 0 && currentTime >= duration - 0.5) ||
-        (duration > 0 && currentTime > 1 && !isPlaying);
+      const { currentTime, duration } = useAudioStore.getState();
+      // Track-ended check: ONLY based on currentTime reaching duration.
+      // Used to also include `currentTime > 1 && !isPlaying`, but that
+      // clause fired on any momentary isPlaying=false (autoplay-block
+      // re-rejection, audio-provider onEnded pause, brief pause during
+      // src swap) and produced spurious skips. The DOM "ended" event
+      // listener above handles the natural-end signal more reliably,
+      // and the stalled/timedOut paths still catch dead tracks.
+      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;
@@ -648,10 +661,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
     // ~1Hz when backgrounded but still runs. Catches stalled tracks
     // when RAF is frozen by tab visibility throttling.
     const bgSafetyTick = setInterval(() => {
-      const { currentTime, duration, isPlaying } = useAudioStore.getState();
-      const audioEnded =
-        (duration > 0 && currentTime >= duration - 0.5) ||
-        (duration > 0 && currentTime > 1 && !isPlaying);
+      const { currentTime, duration } = useAudioStore.getState();
+      // Same tightening as the RAF tick above — only natural-end.
+      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;

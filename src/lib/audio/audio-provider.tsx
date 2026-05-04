@@ -224,11 +224,25 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     };
 
     const onEnded = () => {
-      // Sync final currentTime — RAF loop won't update once audio is paused,
-      // so the store could miss the last fraction of a second. This is critical
-      // for journey completion detection (currentTime >= duration - 0.5).
-      if (!isNaN(audioElement.duration) && audioElement.duration > 0) {
-        useAudioStore.getState().setCurrentTime(audioElement.duration);
+      // VERIFY this is a real end-of-track before mutating store
+      // state. The "ended" DOM event fires spuriously when src is
+      // replaced mid-playback (which our installation early-error
+      // retry path does on autoplay-blocked or stale-URL scenarios).
+      // Without this check, setting currentTime=duration + flipping
+      // isPlaying=false on a spurious ended event used to cascade
+      // into a bogus skip-to-next-journey in the loop client.
+      const dur = audioElement.duration;
+      const t = audioElement.currentTime;
+      const reallyEnded = isFinite(dur) && dur > 0 && t >= dur - 1;
+
+      if (reallyEnded) {
+        useAudioStore.getState().setCurrentTime(dur);
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[audio-provider] ignoring spurious 'ended' (t=${t.toFixed(1)} / dur=${dur.toFixed(1)})`,
+        );
+        return;
       }
 
       const { installationMode, queue } = useAudioStore.getState();
