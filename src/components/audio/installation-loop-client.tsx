@@ -846,7 +846,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           trackArtist={sequence[0]?.track?.artist ?? null}
         />
       )}
-      {phase.kind === "credits" && <InstallationCredits />}
+      {phase.kind === "credits" && (
+        <InstallationCredits
+          onReplay={
+            // /demo only: hand the credits screen a callback that
+            // restarts the cycle from the intro. /installation
+            // (kiosk loop) restarts automatically; the button
+            // would be redundant + visually distracting.
+            playOnce ? () => setPhase({ kind: "intro" }) : undefined
+          }
+        />
+      )}
 
       {/* Progress stepper — locked to the journey title as a single
           visual unit. Fades in / out with EXACTLY the same timings the
