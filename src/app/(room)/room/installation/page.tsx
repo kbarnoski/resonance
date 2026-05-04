@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createClient as createAnonClient } from "@supabase/supabase-js";
 import { InstallationClient } from "@/components/audio/installation-client";
 import { InstallationLoopClient, type SequenceEntry } from "@/components/audio/installation-loop-client";
 import { getJourney } from "@/lib/journeys/journeys";
@@ -8,9 +8,9 @@ import { INSTALLATION_SEQUENCE } from "@/lib/journeys/installation-sequence";
 import type { Track } from "@/lib/audio/audio-store";
 import type { Journey } from "@/lib/journeys/types";
 
-// Belt + suspenders: middleware should auth-gate this route, but if Vercel
-// edge cache or any prerender path bypasses middleware, this in-page check
-// catches it. Also ensures every request actually executes server code.
+// Force dynamic so every request executes server code (and we read
+// fresh auth state instead of returning a cached anon-mode page to a
+// signed-in user, etc.).
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -22,43 +22,57 @@ export default async function InstallationPage({ searchParams }: Props) {
   const isLoop = loop === "1" || loop === "true";
   const isDebug = debug === "1" || debug === "true";
 
-  // Require auth at the page level. The realtime AI image service calls
-  // /api/ai-image/token which is gated to authed users; without a session
-  // the kiosk would run shader-only with no imagery. Redirect cold visitors
-  // through login first so they have a token by the time the loop starts.
+  // Auth is OPTIONAL on this page. Authenticated users see the full
+  // experience including AI imagery; anonymous visitors see a public
+  // demo (shader + audio + journey titles) so they can review the
+  // installation without signing up. The fal.ai endpoints are still
+  // auth-gated — anon viewers don't trigger AI generation, so we
+  // don't burn upstream credits for unauthenticated traffic.
   const supabaseAuth = await createClient();
   const { data: { user: authUser } } = await supabaseAuth.auth.getUser();
-  if (!authUser) {
-    const target = isLoop ? "/room/installation?loop=1" : "/room/installation";
-    redirect(`/login?redirectTo=${encodeURIComponent(target)}`);
-  }
+  const anonMode = !authUser;
 
   // ─── Loop mode: curated sequence of all built-in journeys ─────────
   // Sequence draft = every featured (built-in) journey in declaration
-  // order. Karel will prune/reorder later. Each journey gets paired with
-  // its hardcoded `recordingId`, then a PAIRED_TRACKS title-pattern
-  // lookup, then a random featured recording, in that order.
+  // order. Each journey gets paired with its hardcoded `recordingId`,
+  // then a PAIRED_TRACKS title-pattern lookup, then a featured-pool
+  // pick, in that order.
   if (isLoop) {
-    const supabase = await createClient();
+    // Authed users: read with their session (RLS + own tracks).
+    // Anon users: read with the anon key (RLS will only return rows
+    // explicitly marked is_featured or attached to a shared journey).
+    const supabase = authUser
+      ? await createClient()
+      : createAnonClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+        );
 
-    // Fallback pool — strictly the current user's recordings. The
-    // installation kiosk should never play someone else's track (even
-    // if RLS would allow cross-user reads of is_featured rows).
+    // Fallback pool. For authed users: their own recordings (featured
+    // first). For anon: only is_featured rows from the entire library
+    // (RLS gates this; no cross-user data leaks).
     let featuredRecordings: { id: string; title: string; artist: string | null; duration: number | null }[] = [];
-    {
+    if (authUser) {
       const { data: userRecs } = await supabase
         .from("recordings")
         .select("id, title, artist, duration, is_featured")
         .eq("user_id", authUser.id)
         .order("created_at", { ascending: false });
       if (userRecs) {
-        // Prefer featured ones at the front (intentional curation),
-        // then non-featured fill the rest.
         type Row = { id: string; title: string; artist: string | null; duration: number | null; is_featured: boolean | null };
         const rows = userRecs as Row[];
         const featured = rows.filter((r) => r.is_featured);
         const rest = rows.filter((r) => !r.is_featured);
         featuredRecordings = [...featured, ...rest].map(({ id, title, artist, duration }) => ({ id, title, artist, duration }));
+      }
+    } else {
+      const { data: pubRecs } = await supabase
+        .from("recordings")
+        .select("id, title, artist, duration")
+        .eq("is_featured", true)
+        .order("created_at", { ascending: false });
+      if (pubRecs) {
+        featuredRecordings = pubRecs as typeof featuredRecordings;
       }
     }
 
@@ -66,27 +80,23 @@ export default async function InstallationPage({ searchParams }: Props) {
     //   "%pattern%"  — SQL ILIKE pattern; first matching title wins
     //   "=Exact"     — exact title match; avoids collisions like
     //                  "17th St 63" vs "17th St 63 spectre"
-    // Restricted to the current user's recordings — installation pairings
-    // never play someone else's track.
-    //
-    // Exact matches are queried separately because PostgREST OR-filter
-    // values with spaces are fiddly to encode reliably (URL encoding
-    // breaks it; quoting requires careful escaping). Two queries is
-    // simpler and more robust than one OR with mixed types.
+    // For authed users we restrict to their own recordings. For anon
+    // we restrict to is_featured rows only — no cross-user leak.
     const pairedPatterns = Object.entries(PAIRED_TRACKS);
     const pairedRecordingByJourneyId: Record<string, typeof featuredRecordings[number]> = {};
 
     const ilikePatterns = pairedPatterns.filter(([, p]) => !p.startsWith("="));
     const exactPatterns = pairedPatterns.filter(([, p]) => p.startsWith("="));
 
-    // ILIKE patterns — single OR query
+    // ILIKE patterns — single OR query, scoped to the right rows for
+    // the auth state (own tracks for authed users, is_featured for anon).
     if (ilikePatterns.length > 0) {
       const orFilter = ilikePatterns.map(([, p]) => `title.ilike.${p}`).join(",");
-      const { data: ilikeRows } = await supabase
-        .from("recordings")
-        .select("id, title, artist, duration")
-        .eq("user_id", authUser.id)
-        .or(orFilter);
+      const base = supabase.from("recordings").select("id, title, artist, duration");
+      const scoped = authUser
+        ? base.eq("user_id", authUser.id)
+        : base.eq("is_featured", true);
+      const { data: ilikeRows } = await scoped.or(orFilter);
       if (ilikeRows) {
         for (const [jid, p] of ilikePatterns) {
           const needle = p.replace(/^%|%$/g, "").toLowerCase();
@@ -101,12 +111,11 @@ export default async function InstallationPage({ searchParams }: Props) {
     // Exact matches — one query each (simple .eq, no OR-encoding issues)
     for (const [jid, p] of exactPatterns) {
       const exactTitle = p.slice(1);
-      const { data: row } = await supabase
-        .from("recordings")
-        .select("id, title, artist, duration")
-        .eq("user_id", authUser.id)
-        .eq("title", exactTitle)
-        .maybeSingle();
+      const base = supabase.from("recordings").select("id, title, artist, duration");
+      const scoped = authUser
+        ? base.eq("user_id", authUser.id)
+        : base.eq("is_featured", true);
+      const { data: row } = await scoped.eq("title", exactTitle).maybeSingle();
       if (row) pairedRecordingByJourneyId[jid] = row as typeof featuredRecordings[number];
     }
 
@@ -191,7 +200,12 @@ export default async function InstallationPage({ searchParams }: Props) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
         />
-        <InstallationLoopClient sequence={sequenceWithCues} fallbackTracks={fallbackTracks} debug={isDebug} />
+        <InstallationLoopClient
+          sequence={sequenceWithCues}
+          fallbackTracks={fallbackTracks}
+          debug={isDebug}
+          anonMode={anonMode}
+        />
       </div>
     );
   }

@@ -96,6 +96,12 @@ export async function middleware(request: NextRequest) {
     // an allowlist entry, the middleware would redirect those POSTs
     // to /login and we'd never see violations.
     pathname === "/api/csp-report" ||
+    // Public installation experience — anyone can view the kiosk
+    // without signing in. The page itself renders an anon-mode
+    // version (shader + audio + journey titles, no AI imagery) when
+    // there's no authed user.
+    pathname === "/installation" ||
+    pathname === "/room/installation" ||
     (pathname.startsWith("/room/") &&
       pathname !== "/room/installation" &&
       pathname.split("/").length === 3);
