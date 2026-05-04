@@ -686,40 +686,57 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       )}
       {phase.kind === "credits" && <InstallationCredits />}
 
-      {/* Progress stepper — present during ANY title moment so it's
-          part of the same visual beat as the journey name. Visible
-          during the cycle intro's journey-title stage (Ascension over
-          live shader), during each per-journey title window, and during
-          ending credits. Mounted across the full intro journey + per-
-          journey-phase span so the opacity transition can fade it in
-          and out smoothly without remount-flicker. Five horizontal
-          pill segments give an unmistakable "N of 5" read; current
-          segment glows white, completed fill violet, upcoming stay as
-          thin outlines. */}
+      {/* Progress stepper — locked to the journey title as a single
+          visual unit. Fades in / out with EXACTLY the same timings the
+          title uses so they read as one composition.
+            • Cycle intro (journey 0):
+                fade-in  3800ms (matches installationContentFade inner
+                                 anim used by the journey title)
+                fade-out 1800ms (matches the outer overlay opacity
+                                 transition during fading-journey)
+            • Per-journey title (journeys 1-4):
+                fade-in  2400ms (matches journeyIntroAnim 0→40%)
+                fade-out 1800ms (matches journeyIntroAnim 70→100%)
+            • Credits: visible throughout. */}
       {sequence.length > 0 && (() => {
-        // Compute "show" — true whenever a journey title is being
-        // shown anywhere (cycle intro's Ascension title, per-journey
-        // title window, or credits).
-        const showInIntro =
-          phase.kind === "intro" &&
-          (introStage === "journey" || introStage === "fading-journey");
-        const showInJourney = phase.kind === "journey" && titleWindow;
-        const showInCredits = phase.kind === "credits";
-        const show = showInIntro || showInJourney || showInCredits;
+        const inIntroJourney = phase.kind === "intro" && introStage === "journey";
+        const inIntroFadingJourney = phase.kind === "intro" && introStage === "fading-journey";
+        const inIntroBgFade = phase.kind === "intro" && introStage === "fading-bg";
+        const inJourneyTitle = phase.kind === "journey" && titleWindow;
+        const inJourneyPostTitle = phase.kind === "journey" && !titleWindow;
+        const inCredits = phase.kind === "credits";
 
-        // Mount whenever the stepper is in any "could-be-visible" range.
-        // Outside this range it returns null (saves DOM during long
-        // playback windows).
-        const mountInIntro =
-          phase.kind === "intro" &&
-          (introStage === "journey" || introStage === "fading-journey" || introStage === "fading-bg");
-        const mountInJourney = phase.kind === "journey";
-        const mountInCredits = phase.kind === "credits";
-        if (!mountInIntro && !mountInJourney && !mountInCredits) return null;
+        // Mount during the broader window so opacity transitions have
+        // both a "from" and "to" frame to animate against without
+        // re-mount flicker. Unmount outside (saves DOM during long
+        // post-title playback).
+        const shouldMount =
+          inIntroJourney ||
+          inIntroFadingJourney ||
+          inIntroBgFade ||
+          phase.kind === "journey" ||
+          inCredits;
+        if (!shouldMount) return null;
 
-        // Index drives which segment glows. During the cycle intro the
-        // journey is implicitly Ascension (index 0). In a journey phase
-        // it's that phase's index. In credits all segments are "done".
+        // show = stepper should be visible (opacity 1)
+        const show = inIntroJourney || inJourneyTitle || inCredits;
+
+        // Pick the transition duration based on which fade we're in.
+        // Each branch matches what the journey title uses at the same
+        // moment, so the two visual elements fade as one unit.
+        let transition: string;
+        if (inIntroJourney) {
+          transition = "opacity 3800ms ease-out";
+        } else if (inIntroFadingJourney) {
+          transition = "opacity 1800ms ease-out";
+        } else if (inJourneyTitle) {
+          transition = "opacity 2400ms ease-in-out";
+        } else if (inJourneyPostTitle) {
+          transition = "opacity 1800ms ease-in-out";
+        } else {
+          transition = "opacity 1200ms ease-out";
+        }
+
         const currentIndex =
           phase.kind === "intro"
             ? 0
@@ -739,7 +756,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
               bottom: "calc(40px + env(safe-area-inset-bottom, 0px))",
               pointerEvents: "none",
               opacity: show ? 1 : 0,
-              transition: "opacity 1200ms ease-out",
+              transition,
             }}
           >
             <div className="flex items-center gap-1.5">
