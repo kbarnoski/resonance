@@ -100,6 +100,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // the user saw "a longer pause of black". Now the timing is
   // deterministic from the moment fonts.ready resolves.
   const [fontsReady, setFontsReady] = useState(false);
+  // /demo always shows a Begin button (review/share UX — user is
+  // intentionally previewing, not displaying a kiosk). /installation
+  // auto-starts (it's the gallery kiosk; no operator standing there).
+  // Differentiated by the playOnce prop: /demo sets it true, the
+  // kiosk path leaves it undefined.
+  const needsGesture = !!playOnce;
+  const [started, setStarted] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -272,6 +279,41 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     return () => { cancelled = true; };
   }, []);
 
+  // ─── Tab visibility — pause on hide, reset on long-hide return ────
+  // iOS Safari (especially incognito) backgrounds tabs aggressively:
+  // requestAnimationFrame pauses, the WebGL context can be lost, and
+  // setTimeout is throttled — but the HTMLAudioElement keeps playing.
+  // Returning to the tab can show a black canvas with audio still
+  // running ("loaded demo on iphone, switched tabs, came back to
+  // black + music"). We pause audio on hide so background music
+  // doesn't keep blasting; on long-hide return (>30s) we reset to
+  // the start screen so the user can begin again cleanly.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    let hiddenAt: number | null = null;
+    const onVisChange = () => {
+      if (document.hidden) {
+        hiddenAt = Date.now();
+        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+      } else {
+        const hiddenMs = hiddenAt ? Date.now() - hiddenAt : 0;
+        hiddenAt = null;
+        if (hiddenMs > 30_000) {
+          // Long-hide: reset cleanly. setStarted(false) re-shows the
+          // start button on touch devices; phase=intro restarts the
+          // cycle from the top on desktop.
+          stopJourney();
+          setStarted(false);
+          setPhase({ kind: "intro" });
+          setIntroStage("cycle");
+        }
+      }
+    };
+    document.addEventListener("visibilitychange", onVisChange);
+    return () => document.removeEventListener("visibilitychange", onVisChange);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
   // away to /library, and let F still toggle fullscreen even though the
@@ -309,6 +351,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // chain starts deterministically — no more variable
     // black-pause-while-the-font-loads.
     if (!fontsReady) return;
+    // /demo path: don't start the cycle until the user has tapped
+    // the Begin button. Without this gate, the cycle visuals start
+    // but audio is paused (autoplay-blocked) and the watchdog
+    // can't recover from a NotAllowedError tryPlay rejection.
+    if (needsGesture && !started) return;
 
     if (phase.kind === "intro") {
       // Reset per-cycle UI state: a fresh audience is arriving. Dots
@@ -808,7 +855,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence, fontsReady, playOnce]);
+  }, [phase, sequence, fontsReady, playOnce, needsGesture, started]);
 
   return (
     <div ref={containerRef} className="h-full w-full relative">
@@ -856,6 +903,117 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
             playOnce ? () => setPhase({ kind: "intro" }) : undefined
           }
         />
+      )}
+
+      {/* /demo Begin overlay — captures the gesture iOS Safari needs
+          to unlock audio, plus serves as a clean "start when ready"
+          UX for desktop reviewers. Hidden on /installation (kiosk
+          mode auto-starts). Hidden until fontsReady so the title
+          text doesn't paint in Georgia → swap mid-display. */}
+      {needsGesture && !started && fontsReady && (
+        <div
+          role="button"
+          tabIndex={0}
+          aria-label="Begin"
+          onClick={() => {
+            tryUnlockAudio();
+            setStarted(true);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              tryUnlockAudio();
+              setStarted(true);
+            }
+          }}
+          className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-black px-8 text-center"
+          style={{
+            cursor: "pointer",
+            animation: "introFadeIn 1500ms ease-out forwards",
+            opacity: 0,
+          }}
+        >
+          <style jsx>{`
+            @keyframes introFadeIn {
+              from { opacity: 0; }
+              to { opacity: 1; }
+            }
+          `}</style>
+          <div
+            className="text-white/90"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontWeight: 300,
+              fontSize: "clamp(3.5rem, 8vw, 6rem)",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.05,
+              marginBottom: "0.5rem",
+            }}
+          >
+            Resonance
+          </div>
+          <div
+            className="text-white/55"
+            style={{
+              fontFamily: "'Cormorant Garamond', Georgia, serif",
+              fontStyle: "italic",
+              fontWeight: 300,
+              fontSize: "clamp(1.1rem, 2.4vw, 1.6rem)",
+              letterSpacing: "0.01em",
+              marginBottom: "3rem",
+            }}
+          >
+            A contemplative listening room
+          </div>
+          {/* Play button — same circular shape + fill the shared
+              journey start screen uses, for visual consistency. */}
+          <button
+            type="button"
+            aria-label="Begin"
+            onClick={(e) => {
+              e.stopPropagation();
+              tryUnlockAudio();
+              setStarted(true);
+            }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              background: "rgba(255, 255, 255, 0.1)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              color: "rgba(255, 255, 255, 0.9)",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.15)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)";
+              e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+            }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </button>
+          <div
+            style={{
+              marginTop: "1.5rem",
+              fontSize: "0.65rem",
+              fontFamily: "var(--font-geist-mono)",
+              color: "rgba(255, 255, 255, 0.3)",
+              letterSpacing: "0.18em",
+              textTransform: "uppercase",
+            }}
+          >
+            Tap anywhere to begin
+          </div>
+        </div>
       )}
 
       {/* Progress stepper — locked to the journey title as a single
