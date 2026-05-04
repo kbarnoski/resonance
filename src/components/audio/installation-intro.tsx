@@ -260,8 +260,16 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           textShadow: TEXT_SHADOW,
         }}
       >
-        by {creator}
-        {trackArtist && trackArtist !== creator ? ` · Music by ${trackArtist}` : ""}
+        {(() => {
+          // Same join logic as the visualizer-client journey intro so
+          // every journey in the installation loop renders identical
+          // credits — Ascension (this component) and journeys 1-4
+          // (visualizer-client) use a shared format.
+          const parts: string[] = [`by ${creator}`];
+          if (trackArtist && trackArtist !== creator) parts.push(`Music by ${trackArtist}`);
+          if (journey.photographyCredit) parts.push(`Photography by ${journey.photographyCredit}`);
+          return parts.join("  ·  ");
+        })()}
       </div>
       {journey.dedication && (
         <div

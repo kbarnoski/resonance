@@ -1821,78 +1821,118 @@ export function VisualizerClient({
             animation: `journeyIntroAnim ${installationMode ? "7s" : "6s"} ease-in-out forwards`,
           }}
         >
-          {/* Intro overlay — simplified 2026-04-20 per user directive:
-              the prior stack of 4-6 lines (Journey Started / name /
-              creator / music / photography / dedication) felt too busy.
-              Now it's 3 blocks with generous vertical spacing:
-                1. Journey name (hero)
-                2. Credits — creator + music + photography joined with
-                   bullet separators on ONE line
-                3. Dedication (italic, optional) */}
-          <div className="flex flex-col items-center" style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw", gap: "2.25rem" }}>
-            <div
-              style={{
-                position: "absolute",
-                inset: "-40%",
-                background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
-                filter: "blur(40px)",
-                pointerEvents: "none",
-              }}
-            />
-            <span
-              style={{
-                position: "relative",
-                fontFamily: "'Cormorant Garamond', Georgia, serif",
-                fontWeight: 300,
-                fontSize: "clamp(2.4rem, 6vw, 4rem)",
-                letterSpacing: "0.04em",
-                color: "#fff",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
-                textAlign: "center",
-                lineHeight: 1.1,
-              }}
-            >
-              {activeJourney.name}
-            </span>
-            {(() => {
-              const musicArtist = currentTrack?.artist || recording?.artist;
-              const creditParts: string[] = [`by ${activeJourney.creatorName || "Karel Barnoski"}`];
-              if (musicArtist) creditParts.push(`Music by ${musicArtist}`);
-              if (activeJourney.photographyCredit) creditParts.push(`Photography by ${activeJourney.photographyCredit}`);
-              return (
+          {/* Journey intro overlay. Sizing + colors + text shadows
+              match the Ascension cycle-intro title (rendered by
+              InstallationIntro/JourneyTextInner) so every journey in
+              the installation loop reads with the same treatment:
+                1. "Journey" eyebrow (mono caps)
+                2. Hero name (Cormorant Garamond 300)
+                3. Subtitle, if the journey defines one (italic)
+                4. Credit — by {creator} · Music by {artist} · Photography by {z}
+                5. Dedication (italic, optional)
+              The 3-layer TEXT_SHADOW + darker radial-gradient backdrop
+              ensures legibility against any shader/AI background. */}
+          {(() => {
+            const TEXT_SHADOW =
+              "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
+            const musicArtist = currentTrack?.artist || recording?.artist;
+            const creator = activeJourney.creatorName || "Karel Barnoski";
+            const creditParts: string[] = [`by ${creator}`];
+            if (musicArtist && musicArtist !== creator) creditParts.push(`Music by ${musicArtist}`);
+            if (activeJourney.photographyCredit) creditParts.push(`Photography by ${activeJourney.photographyCredit}`);
+            return (
+              <div
+                className="flex flex-col items-center text-center"
+                style={{ position: "relative", padding: "4rem 6rem", maxWidth: "90vw" }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    inset: "-50%",
+                    background:
+                      "radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.45) 30%, rgba(0,0,0,0.15) 55%, transparent 75%)",
+                    filter: "blur(48px)",
+                    pointerEvents: "none",
+                  }}
+                />
                 <span
+                  className="text-white/55"
                   style={{
                     position: "relative",
                     fontFamily: "var(--font-geist-mono)",
-                    fontSize: "0.85rem",
-                    color: "rgba(255, 255, 255, 0.75)",
+                    fontSize: "0.78rem",
+                    letterSpacing: "0.22em",
+                    textTransform: "uppercase",
+                    marginBottom: "1.75rem",
+                    textShadow: TEXT_SHADOW,
+                  }}
+                >
+                  Journey
+                </span>
+                <span
+                  className="text-white"
+                  style={{
+                    position: "relative",
+                    fontFamily: "'Cormorant Garamond', Georgia, serif",
+                    fontWeight: 300,
+                    fontSize: "clamp(3rem, 6.5vw, 5rem)",
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.05,
+                    textShadow: TEXT_SHADOW,
+                  }}
+                >
+                  {activeJourney.name}
+                </span>
+                {activeJourney.subtitle && (
+                  <span
+                    className="text-white/75"
+                    style={{
+                      position: "relative",
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontStyle: "italic",
+                      fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)",
+                      letterSpacing: "0.01em",
+                      marginTop: "1rem",
+                      textShadow: TEXT_SHADOW,
+                    }}
+                  >
+                    {activeJourney.subtitle}
+                  </span>
+                )}
+                <span
+                  className="text-white/65"
+                  style={{
+                    position: "relative",
+                    fontFamily: "var(--font-geist-mono)",
+                    fontSize: "1rem",
                     letterSpacing: "0.06em",
-                    textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                    textAlign: "center",
+                    marginTop: "3rem",
+                    textShadow: TEXT_SHADOW,
                   }}
                 >
                   {creditParts.join("  ·  ")}
                 </span>
-              );
-            })()}
-            {activeJourney.dedication && (
-              <span
-                style={{
-                  position: "relative",
-                  fontFamily: "'Cormorant Garamond', Georgia, serif",
-                  fontStyle: "italic",
-                  fontSize: "clamp(0.95rem, 1.6vw, 1.15rem)",
-                  color: "rgba(255, 255, 255, 0.7)",
-                  letterSpacing: "0.04em",
-                  textShadow: "0 1px 8px rgba(0,0,0,0.8)",
-                  textAlign: "center",
-                  maxWidth: "32em",
-                }}
-              >
-                {activeJourney.dedication}
-              </span>
-            )}
-          </div>
+                {activeJourney.dedication && (
+                  <span
+                    className="text-white/75"
+                    style={{
+                      position: "relative",
+                      fontFamily: "'Cormorant Garamond', Georgia, serif",
+                      fontStyle: "italic",
+                      fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
+                      letterSpacing: "0.02em",
+                      lineHeight: 1.5,
+                      marginTop: "2rem",
+                      maxWidth: "40rem",
+                      textShadow: TEXT_SHADOW,
+                    }}
+                  >
+                    {activeJourney.dedication}
+                  </span>
+                )}
+              </div>
+            );
+          })()}
         </div>
       )}
 
