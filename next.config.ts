@@ -81,6 +81,16 @@ const nextConfig: NextConfig = {
       { source: "/visualizer/installation", destination: "/room/installation", permanent: true },
     ];
   },
+  async rewrites() {
+    return [
+      // Clean shareable URL for the installation-loop experience.
+      // /installation is what visitors see + share; internally it
+      // renders /room/installation?loop=1 (the canonical path).
+      // The URL stays /installation in the address bar — Next.js
+      // rewrites the request, doesn't redirect.
+      { source: "/installation", destination: "/room/installation?loop=1" },
+    ];
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
