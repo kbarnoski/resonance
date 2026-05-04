@@ -112,22 +112,25 @@ async function mintFalJwt(masterKey: string): Promise<string | null> {
 }
 
 export async function GET(request: Request) {
+  // Auth-optional: authenticated users + unauthenticated visitors of
+  // /installation both get to mint a fal JWT. Per-IP rate limit
+  // bounds anonymous traffic — rateLimitKey() falls back to the
+  // x-forwarded-for / x-real-ip address when there's no userId.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
   if (!process.env.FAL_KEY) {
     return Response.json({ error: "Missing FAL_KEY" }, { status: 501 });
   }
 
-  // Mint costs us a fal API call per page load; rate limit prevents
-  // a hostile client from grinding against fal's auth endpoint with
-  // our credential (which would still cost us money even on errors).
+  // Tighter limit for anonymous visitors than authed users — one
+  // browser session shouldn't grind on fal's auth endpoint with our
+  // credentials, regardless of who's asking.
+  const burst = user ? 5 : 3;
+  const refillPerSec = user ? 1 / 30 : 1 / 60;
   const rl = await checkRateLimit(
-    rateLimitKey({ userId: user.id, request, scope: "fal-token-get" }),
-    5,
-    1 / 30,
+    rateLimitKey({ userId: user?.id, request, scope: "fal-token-get" }),
+    burst,
+    refillPerSec,
   );
   if (!rl.allowed) return rateLimitedResponse(rl.retryAfterMs);
 
@@ -151,19 +154,21 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
+  // Auth-optional. Per-IP rate limit bounds anon traffic.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
   if (!process.env.FAL_KEY) {
     return Response.json({ error: "Missing FAL_KEY" }, { status: 501 });
   }
 
+  // Tighter ceiling for anon (30 burst / 0.5 per sec ≈ 1800/hour)
+  // than authed (60 burst / 1 per sec ≈ 3600/hour).
+  const burst = user ? 60 : 30;
+  const refillPerSec = user ? 1 : 0.5;
   const rl = await checkRateLimit(
-    rateLimitKey({ userId: user.id, request, scope: "fal-token-post" }),
-    60,
-    1,
+    rateLimitKey({ userId: user?.id, request, scope: "fal-token-post" }),
+    burst,
+    refillPerSec,
   );
   if (!rl.allowed) return rateLimitedResponse(rl.retryAfterMs);
 

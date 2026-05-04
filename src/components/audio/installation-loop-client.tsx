@@ -34,11 +34,13 @@ interface Props {
   /** When true, render the live audio + journey debug overlay. Driven by
    *  ?debug=1 on the page URL. */
   debug?: boolean;
-  /** Public-demo mode for unauthenticated visitors. When true, the
-   *  AI image layer is disabled (the fal.ai endpoints are auth-gated;
-   *  we don't burn upstream credits for anonymous traffic). The
-   *  shader + audio + journey-title experience still runs — that's
-   *  the credible-preview-without-signup the share URL is for. */
+  /** Public-demo mode for unauthenticated visitors. Kept as a prop so
+   *  the loop client can adjust behavior in the future (e.g., display
+   *  a small "sign up for the full experience" affordance) without
+   *  re-plumbing. AI imagery itself is NOT disabled — anon visitors
+   *  get the full audiovisual experience; the existing per-IP rate
+   *  limits on the fal proxy + image-validate endpoints bound the
+   *  cost exposure. */
   anonMode?: boolean;
 }
 
@@ -52,12 +54,13 @@ type Phase =
   | { kind: "journey"; index: number }
   | { kind: "credits" };
 
-export function InstallationLoopClient({ sequence, fallbackTracks, debug, anonMode }: Props) {
+export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Props) {
+  // anonMode is still accepted on the props interface for future use
+  // (e.g., a "sign up" CTA), but doesn't currently change behavior.
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
   const setQueue = useAudioStore((s) => s.setQueue);
   const startJourney = useAudioStore((s) => s.startJourney);
   const stopJourney = useAudioStore((s) => s.stopJourney);
-  const setAiImageEnabled = useAudioStore((s) => s.setAiImageEnabled);
 
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
   // Title-card window: matches the visualizer-client's built-in journey
@@ -126,11 +129,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, anonMo
   // ─── Mount: kiosk + installation flag ─────────────────────────────
   useEffect(() => {
     setInstallationMode(true);
-    // Anon-mode demo: disable AI imagery before anything starts
-    // generating. The fal.ai endpoints are auth-gated; calling them
-    // without a session would 401. Better to render shader + audio
-    // only than to log a stream of failed-fetch errors.
-    if (anonMode) setAiImageEnabled(false);
     if (isDesktopApp()) enterKioskMode().catch(() => {});
 
     // Fire audio unlock on mount — in the desktop app this works
