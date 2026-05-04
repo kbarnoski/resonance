@@ -31,7 +31,7 @@ export const PAIRED_TRACKS: Record<string, string> = {
   "sacred-resonance": "%2019%",                // 3:41
   "the-maze":         "%Naive%",               // 3:36
   "the-ascent":       "%Folsom St 5%",         // 4:41
-  "the-crossing":     "%WYN_MAR4%",            // 4:45
+  "the-crossing":     "%Rolling%",             // 4:35
   "the-reading":      "%Grasshopper%",         // 3:18
   "the-tempest":      "%17th St 63 spectre%",  // "spectre" → distinct from 17th St 63
   "the-bloom":        "%Folsom St 9%",         // 3:35
