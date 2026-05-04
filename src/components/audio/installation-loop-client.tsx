@@ -197,27 +197,64 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
 
   // ─── Font readiness ────────────────────────────────────────────
   // Pre-load every Cormorant Garamond variant the intro/title uses,
-  // then resolve fontsReady=true. Failsafe: if fonts haven't loaded
-  // after 3s (network down, font CDN flake), proceed anyway — the
-  // user sees a brief font swap, but the experience doesn't strand.
+  // then verify each is actually available with document.fonts.check
+  // before flipping fontsReady. Hard-refresh (Cmd+Shift+R) was still
+  // showing a font swap because document.fonts.load() can resolve
+  // before the @font-face rule from the page-level <link> stylesheet
+  // has been registered — load() doesn't queue anything for a font
+  // that isn't declared yet, and document.fonts.ready resolves
+  // immediately when there are no pending loads. The check() poll
+  // closes that race: we wait for the font to actually be available
+  // for rendering, not just for a Promise to resolve.
   useEffect(() => {
-    if (typeof document === "undefined" || !document.fonts?.load) {
+    if (typeof document === "undefined" || !document.fonts?.check) {
       setFontsReady(true);
       return;
     }
+
     let cancelled = false;
-    Promise.all([
-      document.fonts.load("300 1em 'Cormorant Garamond'"),
-      document.fonts.load("italic 300 1em 'Cormorant Garamond'"),
-      document.fonts.load("400 1em 'Cormorant Garamond'"),
-    ])
-      .then(() => document.fonts.ready)
-      .then(() => { if (!cancelled) setFontsReady(true); })
-      .catch(() => { if (!cancelled) setFontsReady(true); });
-    const failsafe = setTimeout(() => {
-      if (!cancelled) setFontsReady(true);
-    }, 3000);
-    return () => { cancelled = true; clearTimeout(failsafe); };
+    const variants = [
+      "300 1em 'Cormorant Garamond'",
+      "italic 300 1em 'Cormorant Garamond'",
+      "400 1em 'Cormorant Garamond'",
+    ];
+
+    // Trigger explicit loads — important on hard refresh where the
+    // browser hasn't started fetching from @font-face yet.
+    variants.forEach((spec) => {
+      try { document.fonts.load(spec).catch(() => {}); } catch { /* ok */ }
+    });
+
+    const allReady = () =>
+      variants.every((spec) => {
+        try { return document.fonts.check(spec); } catch { return true; }
+      });
+
+    const start = Date.now();
+    const FAILSAFE_MS = 5000;
+
+    const poll = () => {
+      if (cancelled) return;
+      if (allReady()) {
+        // One more frame after check() returns true so the browser has
+        // a chance to apply the @font-face rule to layout — without
+        // this rAF beat, hard-refresh occasionally still flashed a
+        // pre-applied paint.
+        requestAnimationFrame(() => { if (!cancelled) setFontsReady(true); });
+        return;
+      }
+      if (Date.now() - start > FAILSAFE_MS) {
+        // Font CDN down or network broken — proceed anyway. The user
+        // sees the fallback font; the experience doesn't strand.
+        setFontsReady(true);
+        return;
+      }
+      requestAnimationFrame(poll);
+    };
+
+    poll();
+
+    return () => { cancelled = true; };
   }, []);
 
   // ─── Key handling — capture phase, defense in depth ───────────────
@@ -307,8 +344,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       //             fading bg (3.8s — same clock). Title and shader
       //             arrive together.
       //   t=14.3s → title fully visible, bg fully gone. Shader sustains.
-      //   t=16.5s → title fades out (1.8s) — fading-journey stage.
-      //   t=18.3s → phase change to journey 0.
+      //   t=17.5s → title fades out (1.8s) — fading-journey stage.
+      //             (3.2s hold; 1s longer than before per user request
+      //             for a longer beat in installation mode.)
+      //   t=19.3s → phase change to journey 0.
 
       // t=INTRO_MS (7s): begin cycle text fade-out AND pre-start
       // journey 0. The shader needs lead time to compile + start its
@@ -389,17 +428,19 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
         setIntroStage("journey");
       }, INTRO_MS + 3500);
 
-      // t=INTRO_MS+9s: title has been fully visible ~2.2s. Begin fade.
+      // t=INTRO_MS+10s: title has been fully visible ~3.2s (extended
+      // by 1s in installation mode for galleries — same change as the
+      // visualizer-client journey intro animation duration). Begin fade.
       fadeJourneyStart = setTimeout(() => {
         setIntroStage("fading-journey");
-      }, INTRO_MS + 9000);
+      }, INTRO_MS + 10_000);
 
-      // t=INTRO_MS+10.8s: phase change → overlay fully unmounted,
+      // t=INTRO_MS+11.8s: phase change → overlay fully unmounted,
       // journey is sole visual layer
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
         setPhase({ kind: "journey", index: 0 });
-      }, INTRO_MS + 10_800);
+      }, INTRO_MS + 11_800);
 
       return () => {
         if (fadeCycleStart) clearTimeout(fadeCycleStart);

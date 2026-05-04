@@ -121,24 +121,24 @@ function CycleTextInner() {
         Resonance
       </div>
       <div
-        className="text-white/55 mt-3"
+        className="text-white/65 mt-4"
         style={{
           fontFamily: "'Cormorant Garamond', Georgia, serif",
           fontStyle: "italic",
           fontWeight: 300,
-          fontSize: "clamp(1.1rem, 2.4vw, 1.7rem)",
+          fontSize: "clamp(1.3rem, 2.8vw, 2rem)",
           letterSpacing: "0.01em",
         }}
       >
         A contemplative listening room
       </div>
       <p
-        className="text-white/40 mt-12 max-w-xl mx-auto"
+        className="text-white/55 mt-12 max-w-2xl mx-auto"
         style={{
           fontFamily: "var(--font-geist-sans)",
           fontWeight: 400,
-          fontSize: "clamp(0.85rem, 1.4vw, 1rem)",
-          lineHeight: 1.7,
+          fontSize: "clamp(1.05rem, 1.8vw, 1.3rem)",
+          lineHeight: 1.65,
         }}
       >
         Composed music drives a slow audiovisual landscape — shaders, light,
@@ -146,15 +146,27 @@ function CycleTextInner() {
         or as briefly as you wish.
       </p>
       <div
-        className="text-white/25 mt-16"
+        className="text-white/55 mt-14"
         style={{
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.72rem",
-          letterSpacing: "0.18em",
+          fontSize: "0.85rem",
+          letterSpacing: "0.22em",
           textTransform: "uppercase",
         }}
       >
-        by Karel Barnoski
+        by
+      </div>
+      <div
+        className="text-white/85 mt-2"
+        style={{
+          fontFamily: "'Cormorant Garamond', Georgia, serif",
+          fontStyle: "italic",
+          fontWeight: 300,
+          fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
+          letterSpacing: "0.02em",
+        }}
+      >
+        Karel Barnoski
       </div>
     </div>
   );
@@ -163,6 +175,12 @@ function CycleTextInner() {
 function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; trackArtist?: string | null }) {
   if (!journey) return null;
   const creator = journey.creatorName || "Karel Barnoski";
+  // Common text-shadow stack for legibility against arbitrary
+  // shader/AI imagery. Combines a tight inner shadow (sharpness on
+  // bright backgrounds) with a wider outer one (separation against
+  // medium-tone backgrounds). Used on every text element below.
+  const TEXT_SHADOW =
+    "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
   return (
     <div
       style={{
@@ -173,31 +191,32 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
         maxWidth: "90vw",
       }}
     >
-      {/* Soft radial-gradient backdrop — matches the in-journey intro
-          overlay (visualizer-client). The shader behind can be bright
-          or busy; without this halo the title and dedication can fight
-          for legibility. blur(40px) keeps the edge soft so the backdrop
-          doesn't read as a "card" — it's just a quiet darkening of the
-          area behind the text. */}
+      {/* Soft radial-gradient backdrop — darker + larger than the
+          in-journey intro overlay since installation-mode credits run
+          longer and over more imagery types. blur(48px) keeps the edge
+          soft so it reads as a halo, not a card. The combination of
+          this backdrop + the per-text-shadow stack covers every
+          lighting condition we've seen in the journey image set
+          (bright cosmic frames, dark caves, busy gradients). */}
       <div
         style={{
           position: "absolute",
-          inset: "-40%",
-          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 35%, transparent 65%)",
-          filter: "blur(40px)",
+          inset: "-50%",
+          background: "radial-gradient(ellipse at center, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.45) 30%, rgba(0,0,0,0.15) 55%, transparent 75%)",
+          filter: "blur(48px)",
           pointerEvents: "none",
         }}
       />
       <div
-        className="text-white/45"
+        className="text-white/55"
         style={{
           position: "relative",
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.72rem",
-          letterSpacing: "0.18em",
+          fontSize: "0.78rem",
+          letterSpacing: "0.22em",
           textTransform: "uppercase",
-          marginBottom: "1.5rem",
-          textShadow: "0 2px 12px rgba(0,0,0,0.85)",
+          marginBottom: "1.75rem",
+          textShadow: TEXT_SHADOW,
         }}
       >
         Journey
@@ -211,34 +230,34 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
           fontSize: "clamp(3rem, 6.5vw, 5rem)",
           letterSpacing: "-0.01em",
           lineHeight: 1.05,
-          textShadow: "0 4px 24px rgba(0,0,0,0.9)",
+          textShadow: TEXT_SHADOW,
         }}
       >
         {journey.name}
       </div>
       {journey.subtitle && (
         <div
-          className="text-white/65 mt-3"
+          className="text-white/75 mt-4"
           style={{
             position: "relative",
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontStyle: "italic",
-            fontSize: "clamp(1rem, 2vw, 1.4rem)",
+            fontSize: "clamp(1.2rem, 2.4vw, 1.7rem)",
             letterSpacing: "0.01em",
-            textShadow: "0 2px 16px rgba(0,0,0,0.85)",
+            textShadow: TEXT_SHADOW,
           }}
         >
           {journey.subtitle}
         </div>
       )}
       <div
-        className="text-white/45 mt-10"
+        className="text-white/65 mt-12"
         style={{
           position: "relative",
           fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.78rem",
-          letterSpacing: "0.05em",
-          textShadow: "0 2px 12px rgba(0,0,0,0.85)",
+          fontSize: "1rem",
+          letterSpacing: "0.06em",
+          textShadow: TEXT_SHADOW,
         }}
       >
         by {creator}
@@ -246,14 +265,15 @@ function JourneyTextInner({ journey, trackArtist }: { journey?: Journey | null; 
       </div>
       {journey.dedication && (
         <div
-          className="text-white/55 mt-8 max-w-2xl mx-auto"
+          className="text-white/75 mt-8 max-w-2xl mx-auto"
           style={{
             position: "relative",
             fontFamily: "'Cormorant Garamond', Georgia, serif",
             fontStyle: "italic",
-            fontSize: "clamp(0.95rem, 1.6vw, 1.15rem)",
+            fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
             letterSpacing: "0.02em",
-            textShadow: "0 2px 14px rgba(0,0,0,0.85)",
+            lineHeight: 1.5,
+            textShadow: TEXT_SHADOW,
           }}
         >
           {journey.dedication}
