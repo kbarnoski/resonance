@@ -4,16 +4,23 @@ import { logger } from "@/lib/logger";
 import { isAdmin } from "@/lib/auth/require-admin";
 import { checkRateLimit, rateLimitedResponse, rateLimitKey } from "@/lib/rate-limit";
 
-// Default model swapped from flux/schnell → flux/dev. Schnell (4 steps)
-// had very weak prompt adherence: negations were ignored, identity
-// drifted every gen, and random background figures kept appearing. Dev
-// (28 steps) is slower but much more instruction-aware and accepts a
-// negative_prompt parameter via fal's wrapper.
+// Three fal models, billed at very different rates:
+//   schnell — 4 inference steps, ~$0.003/frame   (cheap)
+//   dev     — 28 inference steps, ~$0.025/frame  (~10x schnell)
+//   pulid   — face-reference, ~$0.055/frame      (~18x schnell)
+//
+// For anonymous /demo + /installation visitors we use schnell only —
+// at scale the cost of dev or pulid is prohibitive (a single shared
+// demo can burn $60+/day on dev). Authenticated users get the
+// higher-quality models (the creator's own workflow needs them, and
+// authed traffic is bounded).
+const MODEL_FLUX_SCHNELL = "fal-ai/flux/schnell";
 const MODEL_FLUX_DEV = "fal-ai/flux/dev";
 // Character-reference model. When the caller passes referenceImageUrl,
 // we route to PuLID so the angel's face stays consistent across every
 // frame of a journey. Without this, every gen produced a different
-// woman because flux has no identity memory between calls.
+// woman because flux has no identity memory between calls. Authed-only
+// per the cost rationale above.
 const MODEL_FLUX_PULID = "fal-ai/flux-pulid";
 
 // Appended to every generated prompt across every journey.
@@ -33,6 +40,7 @@ const GLOBAL_NEGATIVE =
   "deformed anatomy, extra limbs, extra arms, missing limb, blurry face, " +
   "low quality, oversaturated";
 
+const COST_FLUX_SCHNELL = 0.003;
 const COST_FLUX_DEV = 0.025;
 const COST_FLUX_PULID = 0.055;
 
@@ -44,15 +52,15 @@ export async function POST(request: Request) {
     );
   }
 
-  // Auth-optional. Anon visitors at /installation also drive image
-  // generation through this endpoint when the realtime path falls
-  // back to HTTP (PuLID, flux/dev, etc.). Per-IP rate limit bounds
-  // anon traffic — 15 burst / 1 per 4s ≈ 900 frames/hour/IP,
-  // half that for the steady-state ceiling.
+  // Auth-optional. Anon visitors burn fal credits on every frame —
+  // tighten the per-IP rate limit aggressively to bound the cost
+  // exposure: 8 burst, 1 per 8s ≈ 450 frames/hour/IP. At schnell
+  // (~$0.003/frame) that's ~$1.35/hour/IP worst case. Authed users
+  // (creator's own workflow) get the original generous limits.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const burst = user ? 30 : 15;
-  const refillPerSec = user ? 0.5 : 0.25;
+  const burst = user ? 30 : 8;
+  const refillPerSec = user ? 0.5 : 0.125;
   const rl = await checkRateLimit(
     rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
     burst,
@@ -90,8 +98,21 @@ export async function POST(request: Request) {
       : GLOBAL_NEGATIVE;
     const seed = Math.floor(Math.random() * 4294967295);
 
-    // Choose model — PuLID when we have a face reference, flux/dev otherwise.
-    const usePulid = typeof referenceImageUrl === "string" && referenceImageUrl.length > 0;
+    // Model selection by auth:
+    //   anon  → schnell (no PuLID, no dev) — bounds cost exposure
+    //   authed + reference → PuLID (Ghost identity lock)
+    //   authed, no reference → dev (better prompt adherence)
+    const isAuthed = !!user;
+    const wantsPulid =
+      typeof referenceImageUrl === "string" && referenceImageUrl.length > 0;
+
+    const schnellInput = {
+      prompt: fullPrompt,
+      image_size: { width: imgWidth, height: imgHeight },
+      num_inference_steps: 4,
+      seed,
+      enable_safety_checker: safetyCheckerOn,
+    };
 
     const devInput = {
       prompt: fullPrompt,
@@ -108,9 +129,7 @@ export async function POST(request: Request) {
     //     and collapsed every generation into a reference-style portrait,
     //     ignoring the scene prompt.
     //   true_cfg: 4.0 — strong classifier-free guidance so the scene
-    //     prompt actually drives composition. 1.0 (prior) let the face
-    //     reference override the scene entirely.
-    //   guidance_scale: 4 — balanced prompt adherence.
+    //     prompt actually drives composition.
     const pulidInput = {
       prompt: fullPrompt,
       negative_prompt: fullNegative,
@@ -124,10 +143,20 @@ export async function POST(request: Request) {
       enable_safety_checker: safetyCheckerOn,
     };
 
-    let modelId = usePulid ? MODEL_FLUX_PULID : MODEL_FLUX_DEV;
-    let input: Record<string, unknown> = usePulid ? pulidInput : devInput;
+    let modelId: string;
+    let input: Record<string, unknown>;
+    if (!isAuthed) {
+      modelId = MODEL_FLUX_SCHNELL;
+      input = schnellInput;
+    } else if (wantsPulid) {
+      modelId = MODEL_FLUX_PULID;
+      input = pulidInput;
+    } else {
+      modelId = MODEL_FLUX_DEV;
+      input = devInput;
+    }
     let imageUrl: string | null = null;
-    let usedPulid = usePulid;
+    let usedPulid = isAuthed && wantsPulid;
 
     async function runModel(id: string, payload: Record<string, unknown>): Promise<string | null> {
       try {
@@ -147,7 +176,7 @@ export async function POST(request: Request) {
     // PuLID fallback — if the reference-locked call fails (timeout, bad
     // reference URL, fal throttling), retry on plain flux/dev. Better to
     // lose identity lock for one frame than to show nothing.
-    if (!imageUrl && usePulid) {
+    if (!imageUrl && wantsPulid && isAuthed) {
       logger.debug("ai-generate", "pulid failed — falling back to flux/dev");
       modelId = MODEL_FLUX_DEV;
       input = devInput;
@@ -161,7 +190,12 @@ export async function POST(request: Request) {
 
     return Response.json({
       image: imageUrl,
-      cost: usedPulid ? COST_FLUX_PULID : COST_FLUX_DEV,
+      cost:
+        modelId === MODEL_FLUX_SCHNELL
+          ? COST_FLUX_SCHNELL
+          : usedPulid
+            ? COST_FLUX_PULID
+            : COST_FLUX_DEV,
       model: modelId,
     });
   } catch (error) {

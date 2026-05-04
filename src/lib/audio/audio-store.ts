@@ -203,7 +203,23 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
     });
   },
 
-  pause: () => set({ isPlaying: false }),
+  pause: () => {
+    // Diagnostic: a pause during an active installation journey is
+    // almost always a bug (the loop owns playback; nothing in the
+    // installation UX should be calling pause). Log a stack trace
+    // so the next "Ghost stopped mid-play" report has something to
+    // bisect on.
+    const s = get();
+    if (s.installationMode && s.activeJourney) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[audio-store] pause() called during journey "${s.activeJourney.name}" ` +
+        `(t=${s.currentTime.toFixed(1)}s) — stack:`,
+        new Error().stack,
+      );
+    }
+    set({ isPlaying: false });
+  },
   resume: () => set({ isPlaying: true }),
 
   togglePlayPause: () => {
