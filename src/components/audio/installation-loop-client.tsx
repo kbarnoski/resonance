@@ -42,6 +42,11 @@ interface Props {
    *  limits on the fal proxy + image-validate endpoints bound the
    *  cost exposure. */
   anonMode?: boolean;
+  /** When true, run through the cycle a single time and stop at the
+   *  credits screen instead of looping back to the intro. Used by the
+   *  /demo URL — gives reviewers a clean end-of-experience moment
+   *  without the loop continuing in the background. */
+  playOnce?: boolean;
 }
 
 // ─── Timing ────────────────────────────────────────────────────────────
@@ -54,7 +59,7 @@ type Phase =
   | { kind: "journey"; index: number }
   | { kind: "credits" };
 
-export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Props) {
+export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOnce }: Props) {
   // anonMode is still accepted on the props interface for future use
   // (e.g., a "sign up" CTA), but doesn't currently change behavior.
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
@@ -472,6 +477,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       // progress — every dot lit as we wrap.
       setTitleWindow(true);
       stopJourney();
+      // playOnce mode (the /demo review link): stay on credits forever
+      // instead of looping back to intro. Reviewers get a clean
+      // end-of-experience moment instead of the loop restarting.
+      if (playOnce) return;
       const t = setTimeout(() => {
         setPhase({ kind: "intro" });
       }, CREDITS_MS);
@@ -799,7 +808,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, sequence, fontsReady]);
+  }, [phase, sequence, fontsReady, playOnce]);
 
   return (
     <div ref={containerRef} className="h-full w-full relative">

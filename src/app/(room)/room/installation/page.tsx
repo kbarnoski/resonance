@@ -14,13 +14,18 @@ import type { Journey } from "@/lib/journeys/types";
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ journey?: string; loop?: string; debug?: string }>;
+  searchParams: Promise<{ journey?: string; loop?: string; debug?: string; once?: string }>;
 }
 
 export default async function InstallationPage({ searchParams }: Props) {
-  const { journey, loop, debug } = await searchParams;
+  const { journey, loop, debug, once } = await searchParams;
   const isLoop = loop === "1" || loop === "true";
   const isDebug = debug === "1" || debug === "true";
+  // ?once=1 → play through the cycle a single time then end on the
+  // credits screen instead of looping back to the intro. Set by the
+  // /demo rewrite for shareable review links; absent on /installation
+  // and the canonical /room/installation?loop=1.
+  const isPlayOnce = once === "1" || once === "true";
 
   // Auth is OPTIONAL on this page. Authenticated users see the full
   // experience including AI imagery; anonymous visitors see a public
@@ -205,6 +210,7 @@ export default async function InstallationPage({ searchParams }: Props) {
           fallbackTracks={fallbackTracks}
           debug={isDebug}
           anonMode={anonMode}
+          playOnce={isPlayOnce}
         />
       </div>
     );

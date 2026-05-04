@@ -83,11 +83,14 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      // Clean shareable URL for the installation-loop experience.
-      // /installation is what visitors see + share; internally it
-      // renders /room/installation?loop=1 (the canonical path).
-      // The URL stays /installation in the address bar — Next.js
-      // rewrites the request, doesn't redirect.
+      // Two shareable URLs for the installation experience:
+      //   /demo          — plays through ONCE then ends (the
+      //                    review/share version; what you give to
+      //                    people who want to see what the experience is)
+      //   /installation  — loops forever (the real gallery kiosk;
+      //                    same as the canonical /room/installation?loop=1)
+      // Both are internal rewrites — the address bar stays clean.
+      { source: "/demo", destination: "/room/installation?loop=1&once=1" },
       { source: "/installation", destination: "/room/installation?loop=1" },
     ];
   },

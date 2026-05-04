@@ -1,14 +1,18 @@
-# Public installation URL — `/installation`
+# Public installation URLs — `/demo` and `/installation`
 
-## What this gives you
+## Two URLs, two purposes
 
-A shareable URL — `https://getresonance.vercel.app/installation` — that anyone can open without signing in. They see the **full experience**:
+| URL | Behavior | When to use |
+|---|---|---|
+| `https://getresonance.vercel.app/demo` | Plays through the cycle **once**, ends on the credits screen | Share with people who want to review what the experience is |
+| `https://getresonance.vercel.app/installation` | Plays through and **loops forever** | The actual gallery installation kiosk |
+
+Both URLs work for unauthenticated visitors — no sign-up required. Both show the **full experience**:
 
 - The cycle intro (Resonance title + your credit)
 - All 5 journeys playing in sequence
 - Shaders + audio + journey titles
 - AI-generated imagery (live, same as authed users see)
-- The credits screen + loop back to the start
 
 ## Cost protection (per-IP rate limits)
 
