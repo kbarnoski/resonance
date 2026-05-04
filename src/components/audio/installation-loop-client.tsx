@@ -1166,7 +1166,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                     aria-hidden
                     title={skipped ? "Track failed — skipped" : undefined}
                     style={{
-                      width: current ? "72px" : "44px",
+                      // Uniform width across all 5 segments — current
+                      // segment differentiated by background + glow
+                      // alone, not by size.
+                      width: "56px",
                       height: "4px",
                       borderRadius: "2px",
                       background,
@@ -1174,7 +1177,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                       boxShadow: current
                         ? "0 0 12px rgba(255, 255, 255, 0.55), 0 0 4px rgba(196, 181, 253, 0.4)"
                         : "none",
-                      transition: "width 500ms ease, background 400ms ease, box-shadow 400ms ease",
+                      transition: "background 400ms ease, box-shadow 400ms ease",
                     }}
                   />
                 );
