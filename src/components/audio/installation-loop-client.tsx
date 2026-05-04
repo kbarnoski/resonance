@@ -90,7 +90,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   //   fading-journey  — title fades out over 1.8s; bg already gone.
   //   gone            — everything unmounted; phase change to journey 0
   type IntroStage = "cycle" | "fading-cycle" | "journey" | "fading-journey" | "gone";
-  const [introStage, setIntroStage] = useState<IntroStage>("cycle");
+  // Initial stage. Kiosk path (/installation) starts at "cycle" so
+  // the InstallationIntro fades the cycle text in. Gesture path
+  // (/demo, where playOnce=true) starts at "fading-cycle" so the
+  // cycle text wrapper is opacity 0 from frame 1 — the user has
+  // already read the same content on the Begin overlay; if we
+  // initialized at "cycle" the inner-text animation would run to
+  // opacity 1 underneath the Begin overlay, then visibly transition
+  // to 0 once the user tapped (the "duplicate fades out" bug).
+  const [introStage, setIntroStage] = useState<IntroStage>(
+    () => (playOnce ? "fading-cycle" : "cycle"),
+  );
   // Font readiness gate. We wait until every Cormorant Garamond
   // variant the intro/title text uses (300 regular, 300 italic, 400)
   // is loaded BEFORE starting the timing chain. Without this gate the
@@ -107,6 +117,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // kiosk path leaves it undefined.
   const needsGesture = !!playOnce;
   const [started, setStarted] = useState(false);
+  // Set true 1.5s after `started` flips, so the Begin overlay can
+  // fade-out via opacity transition before being removed from the DOM.
+  const [startScreenUnmounted, setStartScreenUnmounted] = useState(false);
+  useEffect(() => {
+    if (!started) {
+      setStartScreenUnmounted(false);
+      return;
+    }
+    const t = setTimeout(() => setStartScreenUnmounted(true), 1500);
+    return () => clearTimeout(t);
+  }, [started]);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -919,28 +940,40 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           to unlock audio, plus serves as a clean "start when ready"
           UX for desktop reviewers. Hidden on /installation (kiosk
           mode auto-starts). Hidden until fontsReady so the title
-          text doesn't paint in Georgia → swap mid-display. */}
-      {needsGesture && !started && fontsReady && (
+          text doesn't paint in Georgia → swap mid-display.
+          Stays mounted (with opacity transitioning to 0) for 1.5s
+          after the user taps so the hand-off to the journey-0
+          shader feels like a fade, not a hard cut. */}
+      {needsGesture && fontsReady && !startScreenUnmounted && (
         <div
           role="button"
           tabIndex={0}
           aria-label="Begin"
           onClick={() => {
+            if (started) return;
             tryUnlockAudio();
             setStarted(true);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
+              if (started) return;
               tryUnlockAudio();
               setStarted(true);
             }
           }}
           className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-black px-8 text-center"
           style={{
-            cursor: "pointer",
-            animation: "introFadeIn 1500ms ease-out forwards",
-            opacity: 0,
+            cursor: started ? "default" : "pointer",
+            pointerEvents: started ? "none" : "auto",
+            opacity: started ? 0 : 1,
+            // First mount: fade in over 1.5s. After tap: opacity goes
+            // to 0 with a 1500ms ease-out transition so the bg-black
+            // softly cross-fades into the InstallationIntro behind it.
+            animation: started
+              ? "none"
+              : "introFadeIn 1500ms ease-out forwards",
+            transition: started ? "opacity 1500ms ease-out" : undefined,
           }}
         >
           <style jsx>{`
