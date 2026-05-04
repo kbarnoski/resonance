@@ -404,11 +404,12 @@ export function VisualizerClient({
       // doesn't appear while the installation cycle intro overlay is
       // still up — avoids "Awaken" / similar phase labels overlapping
       // with the journey title text in the cycle intro.
-      // Installation mode holds the journey title 1s longer than the
-      // regular journey page — gives audiences in galleries / public
-      // spaces a beat to read the credits before the title fades.
-      const introMs = installationMode ? 7000 : 6000;
-      const phaseReadyMs = installationMode ? 15000 : 8000;
+      // Installation mode holds the journey title 2.5s longer than
+      // the regular journey page — gallery audiences need time to
+      // read the credits + dedication. Bumped twice per user
+      // feedback: first +1s, then +1.5s more.
+      const introMs = installationMode ? 8500 : 6000;
+      const phaseReadyMs = installationMode ? 16500 : 8000;
       journeyIntroTimerRef.current = setTimeout(() => {
         setJourneyIntroVisible(false);
       }, introMs);
@@ -1816,9 +1817,9 @@ export function VisualizerClient({
           style={{
             zIndex: 50,
             pointerEvents: "none",
-            // 7s in installation mode (galleries / public spaces want
-            // a longer beat to read the credits); 6s elsewhere.
-            animation: `journeyIntroAnim ${installationMode ? "7s" : "6s"} ease-in-out forwards`,
+            // 8.5s in installation mode (galleries / public spaces
+            // need time to read the credits + dedication); 6s elsewhere.
+            animation: `journeyIntroAnim ${installationMode ? "8.5s" : "6s"} ease-in-out forwards`,
           }}
         >
           {/* Journey intro overlay. Sizing + colors + text shadows
