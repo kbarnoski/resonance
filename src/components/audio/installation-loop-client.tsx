@@ -257,14 +257,31 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
       } catch { /* engine warming */ }
     }
 
-    // Listen for audio element errors directly so we can advance to the
-    // next JOURNEY (not just the next track in the queue) when a track
-    // fails to load. Critical for kiosk reliability — one bad recording
-    // shouldn't strand the entire loop.
+    // Helper: advance to the next journey, or wrap to credits.
+    const advance = () => {
+      if (phase.index + 1 < sequence.length) {
+        setPhase({ kind: "journey", index: phase.index + 1 });
+      } else {
+        setPhase({ kind: "credits" });
+      }
+    };
+
+    // Listen for audio element errors AND natural end via DOM events.
+    // Critical: requestAnimationFrame is paused when the tab is in the
+    // background, so RAF-based end detection misses transitions while
+    // backgrounded. DOM events fire regardless — `ended` is the only
+    // reliable advancement signal for an unattended kiosk.
     let errorListener: (() => void) | null = null;
+    let endedListener: (() => void) | null = null;
     let earlyAdvanceTimer: ReturnType<typeof setTimeout> | null = null;
     try {
       const el = getAudioEngine().audioElement;
+      endedListener = () => {
+        // Audio finished naturally — advance immediately. Works in
+        // foreground OR background tabs.
+        advance();
+      };
+      el.addEventListener("ended", endedListener);
       errorListener = () => {
         const errCode = el.error?.code;
         const errMsg = el.error?.message || "(no msg)";
@@ -282,13 +299,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
           next.add(phase.index);
           return next;
         });
-        earlyAdvanceTimer = setTimeout(() => {
-          if (phase.index + 1 < sequence.length) {
-            setPhase({ kind: "journey", index: phase.index + 1 });
-          } else {
-            setPhase({ kind: "credits" });
-          }
-        }, 250);
+        earlyAdvanceTimer = setTimeout(advance, 250);
       };
       el.addEventListener("error", errorListener);
     } catch { /* engine warming */ }
@@ -351,21 +362,43 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug }: Prop
             return next;
           });
         }
-        if (phase.index + 1 < sequence.length) {
-          setPhase({ kind: "journey", index: phase.index + 1 });
-        } else {
-          setPhase({ kind: "credits" });
-        }
+        advance();
         return;
       }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
+
+    // Backup setInterval — fires every 2s in foreground, throttled to
+    // ~1Hz when backgrounded but still runs. Catches stalled tracks
+    // when RAF is frozen by tab visibility throttling.
+    const bgSafetyTick = setInterval(() => {
+      const { currentTime, duration, isPlaying } = useAudioStore.getState();
+      const audioEnded =
+        (duration > 0 && currentTime >= duration - 0.5) ||
+        (duration > 0 && currentTime > 1 && !isPlaying);
+      const elapsed = Date.now() - startMs;
+      const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
+      const timedOut = elapsed >= MAX_JOURNEY_MS;
+      if (audioEnded || stalled || timedOut) {
+        if (stalled || timedOut) {
+          setSkippedIndices((s) => new Set(s).add(phase.index));
+        }
+        advance();
+      }
+    }, 2_000);
+
     return () => {
       cancelAnimationFrame(raf);
+      clearInterval(bgSafetyTick);
       clearTimeout(titleHideTimer);
       clearInterval(playWatchdog);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
+      if (endedListener) {
+        try {
+          getAudioEngine().audioElement.removeEventListener("ended", endedListener);
+        } catch { /* engine gone */ }
+      }
       if (errorListener) {
         try {
           getAudioEngine().audioElement.removeEventListener("error", errorListener);
