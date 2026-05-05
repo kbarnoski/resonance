@@ -552,27 +552,25 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // progress — every dot lit as we wrap.
       setTitleWindow(true);
       stopJourney();
-      // Belt-and-suspenders: stopJourney already pauses the audio
-      // element, but the user reported Ghost audio kept playing
-      // after the cycle returned to the intro. Force a hard pause
-      // here, scrub the play position back to 0, and clear the
-      // queue so audio-provider has nothing to resume from. Without
-      // this, iOS Safari sometimes ignores the first pause() right
-      // after a natural end, and the Ghost audio bled into the
-      // following intro screen.
+      // CRITICAL: do NOT scrub el.currentTime back to 0 here. Setting
+      // currentTime=0 un-sets the audio element's `ended` flag, which
+      // makes the watchdog think audio is paused-but-ready-and-not-
+      // ended → tryPlay() fires → Ghost restarts from the beginning
+      // exactly when the intro screen appears. (The previous attempt
+      // at this fix introduced that regression.) Just pause + clear
+      // the queue. The audio element keeps currentTime at duration
+      // so el.ended stays true and the watchdog stays out of the way.
       try {
-        const el = getAudioEngine().audioElement;
-        el.pause();
-        try { el.currentTime = 0; } catch { /* ignore seek errors */ }
+        getAudioEngine().audioElement.pause();
       } catch { /* engine gone */ }
       setQueue([], 0);
-      // Schedule the return to intro:
+      // Credits hold:
       //   - kiosk loop: CREDITS_MS (16s); cycle restarts
-      //   - /demo:      10s; phase goes to intro, started flips back
+      //   - /demo:      14s; phase goes to intro, started flips back
       //                 to false so the start screen re-mounts. The
       //                 reviewer sees the full intro again with the
       //                 play button — no replay click required.
-      const delay = playOnce ? 10_000 : CREDITS_MS;
+      const delay = playOnce ? 14_000 : CREDITS_MS;
       const t = setTimeout(() => {
         // One more pause right before the phase change — defense
         // against any pending audio-provider effect that re-fires

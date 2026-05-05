@@ -3,111 +3,133 @@
 /**
  * Installation loop — credits screen.
  *
- * Same content for both kiosk loop and /demo. Layout: dedication on
- * top, special-thanks block below it, "Resonance · by Karel Barnoski"
- * tagline, then a closing "Thank you for experiencing Resonance"
- * line. The loop client schedules the return-to-intro:
- *   - kiosk loop: CREDITS_MS (16s) then loops
- *   - /demo:      10s then transitions to the start screen so the
- *                 reviewer can replay (or just leaves the tab)
+ * Two layered fades:
+ *   1. Outer black backdrop fades in over 1800ms so the visualizer
+ *      melts to black instead of being hard-cut on phase change.
+ *   2. Inner content holds invisible until ~13% in (matching the bg
+ *      fade) then fades in/out over the rest of the 14s window — eye
+ *      never sees ghostly text on a darkening shader.
+ *
+ * Typography mirrors the journey-title treatment in installation-intro
+ * + visualizer-client: mono eyebrow (0.78rem letter 0.22em white/55),
+ * Cormorant 300 hero, mono 1rem credit line, italic Cormorant
+ * dedication. Same TEXT_SHADOW stack — kept for parity even though
+ * credits sits on solid black.
  */
+const TEXT_SHADOW =
+  "0 1px 2px rgba(0,0,0,0.95), 0 2px 12px rgba(0,0,0,0.9), 0 0 32px rgba(0,0,0,0.7)";
+
 export function InstallationCredits() {
   return (
-    <div
-      className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black px-8 text-center"
-    >
-      {/* Inner content gets the fade animation; the outer black layer
-          is fully opaque from frame 1 so the shader stack underneath
-          never peeks through. */}
-      <div className="flex flex-col items-center" style={{ animation: "creditsContent 12000ms ease-in-out forwards", opacity: 0 }}>
-      {/* Dedication */}
+    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center px-8 text-center">
       <div
-        className="text-white/35"
+        className="absolute inset-0 pointer-events-none"
         style={{
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.72rem",
-          letterSpacing: "0.22em",
-          textTransform: "uppercase",
-          marginBottom: "1.5rem",
+          backgroundColor: "black",
+          animation: "creditsBg 1800ms ease-out forwards",
+          opacity: 0,
         }}
-      >
-        In honor of
-      </div>
-
+      />
       <div
-        className="text-white/90"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(2.5rem, 5vw, 3.75rem)",
-          letterSpacing: "-0.01em",
-          lineHeight: 1.1,
-          marginBottom: "3.5rem",
-        }}
+        className="relative flex flex-col items-center"
+        style={{ animation: "creditsContent 14000ms ease-in-out forwards", opacity: 0 }}
       >
-        my father
-      </div>
+        <div
+          className="text-white/55"
+          style={{
+            fontFamily: "var(--font-geist-mono)",
+            fontSize: "0.78rem",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            marginBottom: "1.75rem",
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          In honor of
+        </div>
 
-      {/* Special thanks — life partner */}
-      <div
-        className="text-white/30"
-        style={{
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.7rem",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-          marginBottom: "1.25rem",
-        }}
-      >
-        Special thanks to my life partner
-      </div>
+        <div
+          className="text-white"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(3rem, 6.5vw, 5rem)",
+            letterSpacing: "-0.01em",
+            lineHeight: 1.05,
+            marginBottom: "4rem",
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          my father
+        </div>
 
-      <p
-        className="text-white/75 max-w-xl"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(1.4rem, 2.4vw, 1.8rem)",
-          lineHeight: 1.5,
-        }}
-      >
-        Evelina
-      </p>
+        <div
+          className="text-white/55"
+          style={{
+            fontFamily: "var(--font-geist-mono)",
+            fontSize: "0.78rem",
+            letterSpacing: "0.22em",
+            textTransform: "uppercase",
+            marginBottom: "1.5rem",
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          Special thanks to my life partner
+        </div>
 
-      <div
-        className="text-white/20 mt-20"
-        style={{
-          fontFamily: "var(--font-geist-mono)",
-          fontSize: "0.7rem",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
-        }}
-      >
-        Resonance · by Karel Barnoski
-      </div>
+        <p
+          className="text-white/75 max-w-xl"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(1.4rem, 2.6vw, 1.9rem)",
+            letterSpacing: "0.02em",
+            lineHeight: 1.5,
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          Evelina
+        </p>
 
-      {/* Closing thank-you. Same italic Cormorant treatment as the
-          dedication so it reads as part of the same closing screen. */}
-      <p
-        className="text-white/65 mt-10 max-w-xl"
-        style={{
-          fontFamily: "'Cormorant Garamond', Georgia, serif",
-          fontStyle: "italic",
-          fontWeight: 300,
-          fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
-          lineHeight: 1.5,
-        }}
-      >
-        Thank you for experiencing Resonance.
-      </p>
+        <div
+          className="text-white/65 mt-20"
+          style={{
+            fontFamily: "var(--font-geist-mono)",
+            fontSize: "1rem",
+            letterSpacing: "0.06em",
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          Resonance  ·  by Karel Barnoski
+        </div>
+
+        <p
+          className="text-white/75 mt-10 max-w-xl"
+          style={{
+            fontFamily: "'Cormorant Garamond', Georgia, serif",
+            fontStyle: "italic",
+            fontWeight: 300,
+            fontSize: "clamp(1.15rem, 2vw, 1.45rem)",
+            letterSpacing: "0.02em",
+            lineHeight: 1.5,
+            textShadow: TEXT_SHADOW,
+          }}
+        >
+          Thank you for experiencing Resonance.
+        </p>
       </div>
 
       <style jsx>{`
+        @keyframes creditsBg {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
         @keyframes creditsContent {
           0%   { opacity: 0; }
-          7%   { opacity: 1; }
+          13%  { opacity: 0; }
+          22%  { opacity: 1; }
           92%  { opacity: 1; }
           100% { opacity: 0; }
         }
