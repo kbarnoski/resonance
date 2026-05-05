@@ -196,7 +196,24 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     const mountWatchdog = setInterval(() => {
       try {
         const el = getAudioEngine().audioElement;
-        if (el.paused && el.readyState >= 2 && !el.error) {
+        // Skip if:
+        // - element is playing (not paused)
+        // - element has ended naturally (calling play() now would
+        //   reject with AbortError "interrupted by end of playback".
+        //   Console screenshot from the user showed 100s of these
+        //   AbortErrors stacking up after Ghost finished. The
+        //   watchdog kept retrying forever.)
+        // - element isn't ready yet (no track loaded)
+        // - element is in error state
+        // - we're at the very end of a track (avoid play() racing
+        //   with the natural end-of-playback signal)
+        if (
+          el.paused &&
+          !el.ended &&
+          el.readyState >= 2 &&
+          !el.error &&
+          (el.duration === 0 || el.currentTime < el.duration - 0.5)
+        ) {
           tryPlay(el);
         }
       } catch { /* engine warming */ }
@@ -754,7 +771,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     const playWatchdog = setInterval(() => {
       try {
         const el = getAudioEngine().audioElement;
-        if (el.paused && el.readyState >= 2 && !el.error) {
+        // Same gates as the mount-level watchdog: skip if ended or
+        // near-end. Calling play() on an ended element rejects with
+        // AbortError "interrupted by end of playback" — the user's
+        // console showed 100s of these stacking up after Ghost ended.
+        if (
+          el.paused &&
+          !el.ended &&
+          el.readyState >= 2 &&
+          !el.error &&
+          (el.duration === 0 || el.currentTime < el.duration - 0.5)
+        ) {
           tryPlay(el);
         }
       } catch { /* engine gone */ }
