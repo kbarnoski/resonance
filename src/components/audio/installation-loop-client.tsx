@@ -367,6 +367,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         );
         try {
           ensureResumed();
+          // Only re-fire play() when we're actually mid-journey AND
+          // the store still expects playback. During credits or intro
+          // the audio is intentionally paused — re-priming there
+          // could re-start Ghost mid-credits or bleed audio into the
+          // intro screen (the exact regression the user just hit).
+          const currentPhase = phaseRef.current;
+          if (currentPhase.kind !== "journey") return;
           const el = getAudioEngine().audioElement;
           const { isPlaying: shouldPlay } = useAudioStore.getState();
           if (shouldPlay && el.paused && !el.ended) tryPlay(el);
@@ -1140,25 +1147,33 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;
-      if (audioEnded || stalled || timedOut) {
-        if (stalled || timedOut) {
-          const t = trackForIndex(phase.index);
-          const reason = stalled
-            ? `stalled at 0 after ${(elapsed/1000).toFixed(0)}s — track loaded but never advanced`
-            : `safety timeout after ${(elapsed/1000).toFixed(0)}s`;
-          // eslint-disable-next-line no-console
-          console.warn(`[installation] ${entry.journey.name}: ${reason}`);
-          logInstallFailure({
-            journey: entry.journey.name,
-            track: t?.title ?? "(no track)",
-            reason,
-          });
-          setSkippedIndices((s) => {
-            const next = new Set(s);
-            next.add(phase.index);
-            return next;
-          });
-        }
+      // Natural completion takes priority — never warn or mark
+      // skipped if the audio actually finished. Without this guard,
+      // a laptop sleep mid-journey can push elapsed past
+      // MAX_JOURNEY_MS even though playback completed cleanly,
+      // producing false "safety timeout" warnings after a real
+      // [Journey] COMPLETED log.
+      if (audioEnded) {
+        advance();
+        return;
+      }
+      if (stalled || timedOut) {
+        const t = trackForIndex(phase.index);
+        const reason = stalled
+          ? `stalled at 0 after ${(elapsed/1000).toFixed(0)}s — track loaded but never advanced`
+          : `safety timeout after ${(elapsed/1000).toFixed(0)}s`;
+        // eslint-disable-next-line no-console
+        console.warn(`[installation] ${entry.journey.name}: ${reason}`);
+        logInstallFailure({
+          journey: entry.journey.name,
+          track: t?.title ?? "(no track)",
+          reason,
+        });
+        setSkippedIndices((s) => {
+          const next = new Set(s);
+          next.add(phase.index);
+          return next;
+        });
         advance();
         return;
       }
