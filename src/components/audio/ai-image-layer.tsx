@@ -524,7 +524,24 @@ export function AiImageLayer({
         negativePrompt,
       })
       .then(async (url) => {
-        if (!url) return;
+        if (!url) {
+          // fal returned null. If the service has been failing for 3+
+          // consecutive calls, switch to the pre-baked fallback library
+          // so the visualizer stays alive during fal outages / network
+          // drops / cost-cap exhaustion. No-op if the operator hasn't
+          // populated /public/installation-fallback for this journey.
+          if (service.isStalling()) {
+            try {
+              const { pickFallbackImage } = await import("@/lib/journeys/fallback-image-library");
+              const fallbackUrl = await pickFallbackImage(requestJourneyId ?? null);
+              if (fallbackUrl && journeyIdRef.current === requestJourneyId) {
+                const img = await loadImage(fallbackUrl);
+                pushImage(img);
+              }
+            } catch { /* fallback unavailable, freeze on last frame */ }
+          }
+          return;
+        }
         // Discard only if the journey itself changed mid-flight (hard
         // discontinuity). Within a journey, let sequenced frames land
         // even if the prompt has advanced — the scene is still relevant.

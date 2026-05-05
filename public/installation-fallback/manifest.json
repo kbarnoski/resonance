@@ -1,0 +1,8 @@
+{
+  "_comment": "Pre-baked fallback image library. When fal.ai is unreachable for 3+ consecutive frames, the kiosk picks a random image from the journey's bucket below so the visualizer stays alive instead of freezing on the last frame. Drop pre-rendered JPGs/PNGs into /public/installation-fallback/<journey-id>/ then list their public paths under the matching journey-id key. Empty bucket = no fallback for that journey (kiosk will freeze on last frame as before).",
+  "ascension": [],
+  "inferno": [],
+  "first-snow": [],
+  "abyssal-dive": [],
+  "ghost": []
+}

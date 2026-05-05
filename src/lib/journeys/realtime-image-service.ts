@@ -79,6 +79,10 @@ class RealtimeImageService {
   private maxRestConcurrent = 2; // allow 2 parallel REST requests
   private imageCache = new ImageCache();
   private abortControllers = new Set<AbortController>();
+  // Consecutive REST failures — used to detect "fal is down" so the
+  // ai-image-layer can switch to its pre-baked fallback library.
+  // Reset to 0 on any successful generation.
+  private consecutiveFailures = 0;
 
   /** Check if AI image generation is available (5s timeout) */
   async checkAvailability(): Promise<boolean> {
@@ -248,18 +252,33 @@ class RealtimeImageService {
       });
       clearTimeout(timeout);
 
-      if (!res.ok) return null;
+      if (!res.ok) {
+        this.consecutiveFailures += 1;
+        return null;
+      }
 
       const data = await res.json();
       this.sessionCost += data.cost ?? this.costPerFrame;
-      return data.image ?? null;
+      const image = data.image ?? null;
+      if (image) this.consecutiveFailures = 0;
+      else this.consecutiveFailures += 1;
+      return image;
     } catch {
+      this.consecutiveFailures += 1;
       return null;
     } finally {
       this.restInFlight = Math.max(0, this.restInFlight - 1);
       this.abortControllers.delete(controller);
     }
   }
+
+  /** Three or more REST failures in a row — fal is likely down (or
+   *  the cost cap was hit, or the network on the kiosk dropped).
+   *  ai-image-layer should switch to the pre-baked fallback library. */
+  isStalling(): boolean {
+    return this.consecutiveFailures >= 3;
+  }
+  getConsecutiveFailures(): number { return this.consecutiveFailures; }
 
   isConnected(): boolean { return this.connected; }
   getSessionCost(): number { return this.sessionCost; }
