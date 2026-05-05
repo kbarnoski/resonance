@@ -475,6 +475,15 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
 
   stopJourney: () => {
     const engine = getJourneyEngine();
+    // Capture the current shader BEFORE stopping. After engine.stop()
+    // clears state, useJourney sets frame=null → journeyShaderMode
+    // becomes undefined → visualizer.tsx falls back to vizMode. If
+    // vizMode is anything other than what the engine was just
+    // showing, that fallback is a visible shader swap (the "shader
+    // flash between Ghost and credits" the user reported). Setting
+    // vizMode = current shader makes the fallback show the same
+    // thing the engine was showing — no swap.
+    const currentShader = engine.getCurrentShaderMode();
     engine.stop();
     // Clean up the AI image service so orphaned connections and
     // in-flight requests don't accumulate across journey switches.
@@ -494,12 +503,12 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
         getAudioEngine().audioElement.pause();
       }
     } catch { /* engine not initialized yet */ }
-    // In installation mode, keep the current vizMode so the
-    // visualizer doesn't visibly swap shaders during the Ghost →
-    // credits handoff (the 3s black fade-in would otherwise reveal
-    // a sudden shader change underneath). The next journey's
-    // startJourney() will set vizMode to its first shader cleanly.
-    const keepVizMode = get().installationMode;
+    // In installation mode, set vizMode = engine's last shader so
+    // the visualizer.tsx fallback path renders the same shader
+    // through the credits handoff. Outside installation, keep the
+    // legacy random-ambient swap (intentional aesthetic when
+    // exiting a single-track journey to /room idle state).
+    const inInstallation = get().installationMode;
     set({
       activeJourney: null,
       activeRealm: null,
@@ -507,7 +516,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       journeyPhase: null,
       journeyProgress: 0,
       isPlaying: false,
-      ...(keepVizMode ? {} : { vizMode: randomAmbientMode() }),
+      vizMode: inInstallation && currentShader ? currentShader : randomAmbientMode(),
     });
   },
 
