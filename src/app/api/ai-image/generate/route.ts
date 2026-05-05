@@ -52,15 +52,28 @@ export async function POST(request: Request) {
     );
   }
 
-  // Auth-optional. Anon visitors burn fal credits on every frame —
-  // tighten the per-IP rate limit aggressively to bound the cost
-  // exposure: 8 burst, 1 per 8s ≈ 450 frames/hour/IP. At schnell
-  // (~$0.003/frame) that's ~$1.35/hour/IP worst case. Authed users
-  // (creator's own workflow) get the original generous limits.
+  // Auth-optional. Three traffic classes with different cost/quality
+  // tradeoffs:
+  //   1. Authed user (creator's workflow) — full quality (dev/pulid),
+  //      generous limits.
+  //   2. Anon on /demo or /installation — venue + reviewer surfaces.
+  //      Full quality (dev/pulid) but a TIGHT rate limit so the cost
+  //      stays bounded against scrapers. Worst case ~$1.25/hour/IP.
+  //   3. Anon elsewhere — schnell only, tight rate limit. ~$1.35/hour/IP.
+  //
+  // Installation detection is referer-based. A spoofed referer can get
+  // dev quality but is still capped by the per-IP rate limit, so the
+  // cost ceiling is the same either way. Tradeoff is worth it: real
+  // venue visitors see the work as intended, not the 4-step schnell
+  // approximation.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  const burst = user ? 30 : 8;
-  const refillPerSec = user ? 0.5 : 0.125;
+  const referer = request.headers.get("referer") || "";
+  const isInstallationReferer = /\/(demo|installation)(\?|$|\/)/.test(referer);
+  const isAuthed = !!user;
+  const allowFullQuality = isAuthed || isInstallationReferer;
+  const burst = isAuthed ? 30 : isInstallationReferer ? 6 : 8;
+  const refillPerSec = isAuthed ? 0.5 : isInstallationReferer ? 0.014 : 0.125;
   const rl = await checkRateLimit(
     rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
     burst,
@@ -98,11 +111,11 @@ export async function POST(request: Request) {
       : GLOBAL_NEGATIVE;
     const seed = Math.floor(Math.random() * 4294967295);
 
-    // Model selection by auth:
-    //   anon  → schnell (no PuLID, no dev) — bounds cost exposure
-    //   authed + reference → PuLID (Ghost identity lock)
-    //   authed, no reference → dev (better prompt adherence)
-    const isAuthed = !!user;
+    // Model selection by traffic class:
+    //   bare anon → schnell (no PuLID, no dev) — bounds cost exposure
+    //   authed OR installation-referer + reference → PuLID (identity lock)
+    //   authed OR installation-referer, no reference → dev (better prompt
+    //     adherence + negative prompt enforcement)
     const wantsPulid =
       typeof referenceImageUrl === "string" && referenceImageUrl.length > 0;
 
@@ -145,7 +158,7 @@ export async function POST(request: Request) {
 
     let modelId: string;
     let input: Record<string, unknown>;
-    if (!isAuthed) {
+    if (!allowFullQuality) {
       modelId = MODEL_FLUX_SCHNELL;
       input = schnellInput;
     } else if (wantsPulid) {
@@ -156,7 +169,7 @@ export async function POST(request: Request) {
       input = devInput;
     }
     let imageUrl: string | null = null;
-    let usedPulid = isAuthed && wantsPulid;
+    let usedPulid = allowFullQuality && wantsPulid;
 
     async function runModel(id: string, payload: Record<string, unknown>): Promise<string | null> {
       try {
@@ -176,7 +189,7 @@ export async function POST(request: Request) {
     // PuLID fallback — if the reference-locked call fails (timeout, bad
     // reference URL, fal throttling), retry on plain flux/dev. Better to
     // lose identity lock for one frame than to show nothing.
-    if (!imageUrl && wantsPulid && isAuthed) {
+    if (!imageUrl && wantsPulid && allowFullQuality) {
       logger.debug("ai-generate", "pulid failed — falling back to flux/dev");
       modelId = MODEL_FLUX_DEV;
       input = devInput;
