@@ -195,6 +195,38 @@ export function ShaderVisualizer({
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
 
+  // Bumped on `webglcontextrestored` so the GL setup useEffect below
+  // re-runs with the new context. Without this, a lost+restored cycle
+  // leaves the canvas frozen because the render loop bails on
+  // gl.isContextLost() and never re-arms.
+  const [contextEpoch, setContextEpoch] = useState(0);
+
+  // Context loss/restore listeners. `webglcontextlost` requires
+  // preventDefault() to mark the context as recoverable — without it,
+  // the browser will NEVER fire restored. Common triggers: GPU
+  // pressure, system sleep/wake, Chrome's idle-tab GPU eviction. On a
+  // kiosk this otherwise leaves Ghost frozen mid-journey.
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      // eslint-disable-next-line no-console
+      console.warn("[shader] WebGL context lost — awaiting restore");
+    };
+    const onRestored = () => {
+      // eslint-disable-next-line no-console
+      console.warn("[shader] WebGL context restored — recreating resources");
+      setContextEpoch((n) => n + 1);
+    };
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
+    return () => {
+      canvas.removeEventListener("webglcontextlost", onLost);
+      canvas.removeEventListener("webglcontextrestored", onRestored);
+    };
+  }, []);
+
   // Keep ref in sync without tearing down GL program
   useEffect(() => {
     smoothMotionRef.current = smoothMotion;
@@ -411,7 +443,7 @@ export function ShaderVisualizer({
       // (key={layerMode}), so zeroing dimensions just wastes GPU cycles on
       // framebuffer reallocation for a canvas that's about to be removed.
     };
-  }, [analyser, dataArray, fragShader]); // smoothMotion + onReady read via refs
+  }, [analyser, dataArray, fragShader, contextEpoch]); // smoothMotion + onReady read via refs
 
   return (
     <canvas
