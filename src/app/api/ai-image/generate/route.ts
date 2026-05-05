@@ -57,23 +57,27 @@ export async function POST(request: Request) {
   //   1. Authed user (creator's workflow) — full quality (dev/pulid),
   //      generous limits.
   //   2. Anon on /demo or /installation — venue + reviewer surfaces.
-  //      Full quality (dev/pulid) but a TIGHT rate limit so the cost
-  //      stays bounded against scrapers. Worst case ~$1.25/hour/IP.
-  //   3. Anon elsewhere — schnell only, tight rate limit. ~$1.35/hour/IP.
+  //      Full quality (dev/pulid). Rate limit MUST be wider than the
+  //      kiosk's actual generation cadence (~514 frames/hr from the
+  //      ai-image-layer's 7s GEN_INTERVAL) plus headroom for phase-
+  //      change bursts and retries. Otherwise the kiosk just 429-spams
+  //      itself.
+  //   3. Anon elsewhere — schnell only, anon-tight limit.
   //
   // Installation detection is referer-based. A spoofed referer can get
-  // dev quality but is still capped by the per-IP rate limit, so the
-  // cost ceiling is the same either way. Tradeoff is worth it: real
-  // venue visitors see the work as intended, not the 4-step schnell
-  // approximation.
+  // dev quality but is still capped by the per-IP rate limit. Tradeoff
+  // is worth it: real venue visitors see the work as intended.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const referer = request.headers.get("referer") || "";
   const isInstallationReferer = /\/(demo|installation)(\?|$|\/)/.test(referer);
   const isAuthed = !!user;
   const allowFullQuality = isAuthed || isInstallationReferer;
-  const burst = isAuthed ? 30 : isInstallationReferer ? 6 : 8;
-  const refillPerSec = isAuthed ? 0.5 : isInstallationReferer ? 0.014 : 0.125;
+  // Installation: 30 burst + 0.2/sec refill ≈ 720/hr sustained. Above
+  // the layer's 7s cadence (~514/hr) with headroom for bursts. At dev
+  // worst case $18/hr/IP, pulid $40/hr/IP — meaningful but bounded.
+  const burst = isAuthed ? 30 : isInstallationReferer ? 30 : 8;
+  const refillPerSec = isAuthed ? 0.5 : isInstallationReferer ? 0.2 : 0.125;
   const rl = await checkRateLimit(
     rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
     burst,

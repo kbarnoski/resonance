@@ -253,7 +253,12 @@ class RealtimeImageService {
       clearTimeout(timeout);
 
       if (!res.ok) {
-        this.consecutiveFailures += 1;
+        // 429 = the SERVER asked us to slow down — not a fal-down
+        // signal. Don't count it toward consecutiveFailures (which
+        // would prematurely trigger fallback library mode). Just
+        // return null and let the layer's natural retry cadence
+        // catch up.
+        if (res.status !== 429) this.consecutiveFailures += 1;
         return null;
       }
 
@@ -263,8 +268,11 @@ class RealtimeImageService {
       if (image) this.consecutiveFailures = 0;
       else this.consecutiveFailures += 1;
       return image;
-    } catch {
-      this.consecutiveFailures += 1;
+    } catch (err) {
+      // AbortError = our own timeout, not a fal failure. Don't count
+      // toward stalling.
+      const name = err instanceof Error ? err.name : "";
+      if (name !== "AbortError") this.consecutiveFailures += 1;
       return null;
     } finally {
       this.restInFlight = Math.max(0, this.restInFlight - 1);

@@ -4,6 +4,18 @@ Operator runbook for deploying Resonance to a venue kiosk. Everything you need t
 
 Last updated: 2026-05-04
 
+## Cost expectations (read this before going live)
+
+The kiosk generates an AI image roughly every 7s during a journey (~514 frames/hr). With full quality enabled on `/installation` paths, that's:
+- **~$13/hr per kiosk for 4 of 5 journeys** (flux/dev at $0.025/frame)
+- **~$28/hr per kiosk during Ghost** (flux/pulid at $0.055/frame)
+- **Mix-weighted ~$15-18/hr per kiosk** running continuously
+
+Per-IP rate limit caps abuse at the same rate (~$18-40/hr/IP worst case for a single IP). Run a kiosk 12hr/day → expect **~$200/day in fal cost per kiosk**. If the bill matters, consider:
+- Pre-baking the fallback library (§3) — when fal is "intentionally down" via the cost-cap, fallback kicks in
+- Cutting the AI cadence in `ai-image-layer.tsx` `GEN_INTERVAL_MIN_BASE` from 6.5s to 12s+ (~halves cost)
+- Disabling AI on certain journeys via the journey's `aiImageEnabled` flag
+
 ---
 
 ## 1. One-time Supabase setup
