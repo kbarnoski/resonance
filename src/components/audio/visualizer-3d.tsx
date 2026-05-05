@@ -1178,17 +1178,49 @@ export function Visualizer3D({
   // eviction), bump the key so R3F remounts the entire Canvas with a
   // fresh context + scene graph. preventDefault on lost is required —
   // without it, the browser will never fire restored.
+  //
+  // Reality check: Chrome doesn't always fire `webglcontextrestored`
+  // even when we preventDefault the lost event — particularly for
+  // canvases that the parent has already started unmounting (R3F
+  // tearing down a Canvas during a shader switch). We add a force-
+  // remount timeout so we recover even when restored is silent. And
+  // we throttle the lost-warn so the console isn't spammed during
+  // routine R3F teardown — a single "lost" within a normal shader-
+  // switch window is benign and self-heals when the new Canvas mounts.
   const [contextEpoch, setContextEpoch] = useState(0);
+  const lostAtRef = useRef<number | null>(null);
+  const forceRemountTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const onCanvasCreated = useCallback((state: { gl: { domElement: HTMLCanvasElement } }) => {
     const canvas = state.gl.domElement;
+    lostAtRef.current = null;
+    if (forceRemountTimerRef.current) clearTimeout(forceRemountTimerRef.current);
     const onLost = (e: Event) => {
       e.preventDefault();
-      // eslint-disable-next-line no-console
-      console.warn("[3d] WebGL context lost — awaiting restore");
+      const now = performance.now();
+      // Only warn if a previous lost on THIS canvas is still pending
+      // (i.e., we never restored). Single transient losses during
+      // shader-swap teardown are silent.
+      const prev = lostAtRef.current;
+      lostAtRef.current = now;
+      if (prev !== null && now - prev > 500) {
+        // eslint-disable-next-line no-console
+        console.warn("[3d] WebGL context lost — awaiting restore");
+      }
+      // Belt-and-suspenders: if restore doesn't fire within 8s,
+      // force-remount the Canvas so we don't sit black indefinitely.
+      if (forceRemountTimerRef.current) clearTimeout(forceRemountTimerRef.current);
+      forceRemountTimerRef.current = setTimeout(() => {
+        // eslint-disable-next-line no-console
+        console.warn("[3d] No restore in 8s — force-remounting Canvas");
+        setContextEpoch((n) => n + 1);
+      }, 8_000);
     };
     const onRestored = () => {
-      // eslint-disable-next-line no-console
-      console.warn("[3d] WebGL context restored — remounting Canvas");
+      lostAtRef.current = null;
+      if (forceRemountTimerRef.current) {
+        clearTimeout(forceRemountTimerRef.current);
+        forceRemountTimerRef.current = null;
+      }
       setContextEpoch((n) => n + 1);
     };
     canvas.addEventListener("webglcontextlost", onLost);
