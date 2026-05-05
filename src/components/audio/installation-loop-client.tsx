@@ -346,93 +346,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // implementation paused on hide + reset on long-hide-return; user
   // explicitly asked for the cycle to "run regardless" of tab focus.)
 
-  // ─── Audio stall detector ───────────────────────────────────────
-  // Independent of sleep/wake — watches whether the <audio> element's
-  // currentTime is actually advancing while playback is supposed to
-  // be active. If it freezes for 5s+ (network glitch fetching the
-  // next chunk of a large WAV, decoder error, server hiccup, expired
-  // signed URL mid-playback), this re-resolves the URL and reloads
-  // the source while seeking back to where playback froze. User-
-  // visible symptom: audio stops, shader/image freezes. Without
-  // this recovery the safety/end watchdog eventually advances phase
-  // ~8 minutes later — too long for a kiosk audience.
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    let lastTime = -1;
-    let frozenSinceMs = 0;
-    let recovering = false;
-    const id = setInterval(() => {
-      // Only relevant during the journey phase. Other phases are
-      // expected to have paused audio.
-      if (phaseRef.current.kind !== "journey") {
-        lastTime = -1;
-        frozenSinceMs = 0;
-        return;
-      }
-      let el: HTMLAudioElement | null = null;
-      try { el = getAudioEngine().audioElement; } catch { return; }
-      if (!el || el.paused || el.ended || recovering) {
-        lastTime = -1;
-        frozenSinceMs = 0;
-        return;
-      }
-      const t = el.currentTime;
-      if (lastTime < 0) {
-        lastTime = t;
-        frozenSinceMs = Date.now();
-        return;
-      }
-      // Allow tiny jitter in currentTime reporting.
-      if (Math.abs(t - lastTime) > 0.05) {
-        lastTime = t;
-        frozenSinceMs = Date.now();
-        return;
-      }
-      // currentTime hasn't advanced — how long?
-      const stalledFor = Date.now() - frozenSinceMs;
-      if (stalledFor > 5_000) {
-        recovering = true;
-        const phase = phaseRef.current;
-        if (phase.kind !== "journey") { recovering = false; return; }
-        // eslint-disable-next-line no-console
-        console.warn(
-          `[installation] Audio stalled at ${t.toFixed(1)}s for ${(stalledFor/1000).toFixed(0)}s — reloading source`,
-        );
-        void (async () => {
-          try {
-            const track = trackForIndex(phase.index);
-            if (!track?.audioUrl || !el) { recovering = false; return; }
-            const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
-            try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
-            const fresh = await resolveAudioUrl(track.audioUrl, track.id);
-            const targetTime = t;
-            el.src = fresh;
-            el.load();
-            const onCanPlay = () => {
-              el!.removeEventListener("canplay", onCanPlay);
-              try { el!.currentTime = targetTime; } catch { /* seek beyond, ignore */ }
-              const { isPlaying: shouldPlay } = useAudioStore.getState();
-              if (shouldPlay && !el!.ended) tryPlay(el!);
-              recovering = false;
-              lastTime = -1;
-              frozenSinceMs = 0;
-            };
-            el.addEventListener("canplay", onCanPlay, { once: true });
-            // Safety: if canplay never fires within 8s, give up and let
-            // the journey-end watchdog advance to next phase.
-            setTimeout(() => {
-              try { el!.removeEventListener("canplay", onCanPlay); } catch { /* ok */ }
-              recovering = false;
-            }, 8_000);
-          } catch {
-            recovering = false;
-          }
-        })();
-      }
-    }, 1_000);
-    return () => clearInterval(id);
-  }, []);
-
   // ─── Sleep/wake recovery ────────────────────────────────────────
   // Laptops sleep. On wake: AudioContext is suspended (browsers do
   // this automatically when the GPU/audio subsystem is paused), the
@@ -1038,11 +951,29 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       useAudioStore.getState().activeJourney?.id === entry.journey.id;
 
     if (!alreadyStarted) {
+      const track = trackForIndex(phase.index);
+      // Proactive cache-bust + audio element reset. The browser may
+      // still hold a partial buffer for this track's URL from the
+      // PRIOR cycle (the "stalls at 3.2s on 2nd Ghost cycle" bug —
+      // the cached buffer only had the first chunk and the browser
+      // wouldn't re-fetch the rest). Clearing the sessionStorage URL
+      // cache forces a fresh signed URL, and clearing el.src
+      // detaches the partial audio buffer from the prior URL before
+      // the new src attaches. Audio-provider's loader does the rest.
+      if (track) {
+        try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
+        try {
+          const el = getAudioEngine().audioElement;
+          if (el.src && !el.src.startsWith("data:")) {
+            el.src = "";
+            el.load();
+          }
+        } catch { /* engine warming */ }
+      }
       // No explicit pause() — calling pause() flips isPlaying to false
       // in the store, and the tick loop's audioEnded check used to
       // race on that. setQueue + startJourney is enough for the
       // audio-provider to swap src; pausing first only created bugs.
-      const track = trackForIndex(phase.index);
       if (track) setQueue([track], 0);
       startJourney(entry.journey.id);
 
@@ -1214,33 +1145,88 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       } catch { /* engine gone */ }
     }, 250);
 
-    // ─── Mid-stall re-load attempt ────────────────────────────────
-    // If after 12s the audio element still hasn't started (readyState
-    // low or currentTime stuck at 0), force a fresh URL resolve + load
-    // before the stalled detector gives up at 30s. Catches expired
-    // signed URLs and CDN cold-starts that occasionally bite the
-    // 2nd/3rd journeys in a long-running kiosk session.
-    const reloadAttempt = setTimeout(async () => {
+    // ─── Mid-stall re-load detector ──────────────────────────────
+    // Polls every 2s. Tracks audioElement.currentTime advancement.
+    // If currentTime hasn't moved for 5s+ while audio is supposed to
+    // be playing, force-reload with a fresh signed URL and seek back
+    // to the frozen position. Catches:
+    //   - Stuck at 0 (track never started — expired URL on journey
+    //     2+, CDN cold-start, autoplay block edge case)
+    //   - Stuck mid-track (browser cached partial WAV from prior
+    //     playback at the same URL, runs out of data, can't fetch
+    //     more — hits hardest on the 2nd Ghost cycle)
+    //
+    // Single mechanism for both — replaces both the old "stuck at 0
+    // after 12s" timer and a separate stall detector that conflicted
+    // with it.
+    let stallLastTime = -1;
+    let stallFrozenSinceMs = 0;
+    let stallRecovering = false;
+    const reloadAttempt = setInterval(async () => {
       try {
+        if (stallRecovering) return;
         const el = getAudioEngine().audioElement;
-        if (el.currentTime > 0.1) return; // already playing — fine
-        const t = trackForIndex(phase.index);
-        if (!t?.audioUrl) return;
-        // Force-reload regardless of el.error: clearing src and
-        // re-resolving lets us recover from a stale signed URL even
-        // if the element is currently in an error state. Without this,
-        // an element that errored during cycle intro would be stuck
-        // and only the stalled detector at 30s could move us off.
+        if (el.paused || el.ended) {
+          stallLastTime = -1;
+          stallFrozenSinceMs = 0;
+          return;
+        }
+        const t = el.currentTime;
+        if (stallLastTime < 0) {
+          stallLastTime = t;
+          stallFrozenSinceMs = Date.now();
+          return;
+        }
+        if (Math.abs(t - stallLastTime) > 0.05) {
+          stallLastTime = t;
+          stallFrozenSinceMs = Date.now();
+          return;
+        }
+        const stalledFor = Date.now() - stallFrozenSinceMs;
+        // Stuck at 0: 12s grace (CDN cold-starts).
+        // Stuck mid-track: 5s — anything longer is clearly broken.
+        const threshold = t < 0.1 ? 12_000 : 5_000;
+        if (stalledFor < threshold) return;
+
+        stallRecovering = true;
+        const tk = trackForIndex(phase.index);
+        if (!tk?.audioUrl) { stallRecovering = false; return; }
         // eslint-disable-next-line no-console
-        console.warn(`[installation] ${entry.journey.name}: stuck at 0 after 12s (error=${el.error?.code ?? "none"}) — force-reload`);
-        try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
+        console.warn(
+          `[installation] ${entry.journey.name}: stalled at ${t.toFixed(1)}s for ${(stalledFor/1000).toFixed(0)}s — force-reload`,
+        );
+        try { sessionStorage.removeItem(`audio-url-${tk.id}`); } catch { /* ok */ }
         const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
-        const fresh = await resolveAudioUrl(t.audioUrl, t.id);
+        const fresh = await resolveAudioUrl(tk.audioUrl, tk.id);
+        const targetTime = t;
+        // Hard reset el.src so the browser drops any cached partial
+        // audio buffer associated with the prior URL — this is the
+        // key fix for the "stalls at 3.2s on 2nd cycle" bug. Setting
+        // src to "" + load() detaches the partial buffer, then we
+        // re-attach the fresh URL.
+        try { el.src = ""; el.load(); } catch { /* ignore */ }
         el.src = fresh;
         el.load();
-        // Audio-provider's canplay will tryPlay; watchdog is also live.
-      } catch { /* best-effort */ }
-    }, 12_000);
+        const onCanPlay = () => {
+          el.removeEventListener("canplay", onCanPlay);
+          if (targetTime > 0.1) {
+            try { el.currentTime = targetTime; } catch { /* seek beyond, ignore */ }
+          }
+          const { isPlaying: shouldPlay } = useAudioStore.getState();
+          if (shouldPlay && !el.ended) tryPlay(el);
+          stallRecovering = false;
+          stallLastTime = -1;
+          stallFrozenSinceMs = 0;
+        };
+        el.addEventListener("canplay", onCanPlay, { once: true });
+        setTimeout(() => {
+          try { el.removeEventListener("canplay", onCanPlay); } catch { /* ok */ }
+          stallRecovering = false;
+        }, 8_000);
+      } catch {
+        stallRecovering = false;
+      }
+    }, 2_000);
 
     // Subscribe to store; advance when audio finishes or safety expires.
     const startMs = Date.now();
@@ -1321,7 +1307,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       clearInterval(preloadCheckId);
       if (titleHideTimer) clearTimeout(titleHideTimer);
       clearInterval(playWatchdog);
-      clearTimeout(reloadAttempt);
+      clearInterval(reloadAttempt);
       if (earlyAdvanceTimer) clearTimeout(earlyAdvanceTimer);
       if (endedListener) {
         try {
