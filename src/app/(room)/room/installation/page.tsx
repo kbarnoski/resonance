@@ -14,18 +14,36 @@ import type { Journey } from "@/lib/journeys/types";
 export const dynamic = "force-dynamic";
 
 interface Props {
-  searchParams: Promise<{ journey?: string; loop?: string; debug?: string; once?: string }>;
+  searchParams: Promise<{
+    journey?: string;
+    loop?: string;
+    debug?: string;
+    once?: string;
+    start?: string;
+  }>;
 }
 
 export default async function InstallationPage({ searchParams }: Props) {
-  const { journey, loop, debug, once } = await searchParams;
+  const { journey, loop, debug, once, start } = await searchParams;
   const isLoop = loop === "1" || loop === "true";
   const isDebug = debug === "1" || debug === "true";
   // ?once=1 → play through the cycle a single time then end on the
-  // credits screen instead of looping back to the intro. Set by the
-  // /demo rewrite for shareable review links; absent on /installation
-  // and the canonical /room/installation?loop=1.
+  // credits screen instead of looping back to the intro.
   const isPlayOnce = once === "1" || once === "true";
+  // ?start=N OR ?start=journey-id → jump straight to that journey
+  // in the cycle. Useful for debugging late-cycle bugs (Ghost stops
+  // mid-play, etc.) without sitting through the prior 4 journeys.
+  // Resolved against INSTALLATION_SEQUENCE — out-of-range values
+  // fall back to 0.
+  const startIndexFromParam = (() => {
+    if (!start) return 0;
+    // numeric form
+    const n = Number(start);
+    if (Number.isInteger(n) && n >= 0 && n < INSTALLATION_SEQUENCE.length) return n;
+    // journey-id form (e.g. ?start=ghost)
+    const idx = INSTALLATION_SEQUENCE.indexOf(start);
+    return idx >= 0 ? idx : 0;
+  })();
 
   // Auth is OPTIONAL on this page. Authenticated users see the full
   // experience including AI imagery; anonymous visitors see a public
@@ -211,6 +229,7 @@ export default async function InstallationPage({ searchParams }: Props) {
           debug={isDebug}
           anonMode={anonMode}
           playOnce={isPlayOnce}
+          startIndex={startIndexFromParam}
         />
       </div>
     );
