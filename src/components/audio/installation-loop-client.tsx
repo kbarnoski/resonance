@@ -1205,7 +1205,24 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         : sequence[startIndex]?.journey.name ?? null;
   return (
     <div ref={containerRef} className="h-full w-full relative">
-      <VisualizerClient />
+      {/* Visualizer wrapper — fades the entire shader/AI/post-process
+          stack to black during credits so the user sees a "movie
+          fades to black" transition instead of a shader peeking
+          through a partially-transparent overlay. The page bg
+          (bg-black on the installation page) shows through at
+          opacity 0. Snap back to opacity 1 instantly on intro
+          mount — the InstallationIntro bg-black covers it during
+          the cycle stage, so the snap is invisible. */}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          opacity: phase.kind === "credits" ? 0 : 1,
+          transition: phase.kind === "credits" ? "opacity 3000ms ease-out" : "none",
+        }}
+      >
+        <VisualizerClient />
+      </div>
 
       <InstallationStatusPanel
         phaseKind={phase.kind}

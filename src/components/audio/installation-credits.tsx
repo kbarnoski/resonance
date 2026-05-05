@@ -3,12 +3,16 @@
 /**
  * Installation loop — credits screen.
  *
- * Two layered fades:
- *   1. Outer black backdrop fades in over 3000ms so the visualizer
- *      melts to black instead of being hard-cut on phase change.
- *   2. Inner content holds invisible until ~21% in (matching the bg
- *      fade) then fades in/out over the rest of the 14s window — eye
- *      never sees ghostly text on a darkening shader.
+ * Backdrop is opaque from frame 1. The actual fade-to-black is done
+ * by the visualizer wrapper in installation-loop-client (it drops
+ * the entire shader/AI/post-process stack to opacity 0 over 3000ms
+ * when phase=credits). This screen just provides the dedication
+ * content over an already-black canvas — no double fade so the dim
+ * has a clean ease-out feel rather than a steep compound ramp.
+ *
+ * Inner content holds invisible until ~21% in (matching the visualizer
+ * fade duration) then fades in/out over the rest of the 14s window —
+ * eye never sees text appear on a still-dimming canvas.
  *
  * Typography mirrors the journey-title treatment in installation-intro
  * + visualizer-client: mono eyebrow (0.78rem letter 0.22em white/55),
@@ -22,14 +26,10 @@ const TEXT_SHADOW =
 export function InstallationCredits() {
   return (
     <div className="absolute inset-0 z-50 flex flex-col items-center justify-center px-8 text-center">
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundColor: "black",
-          animation: "creditsBg 3000ms ease-out forwards",
-          opacity: 0,
-        }}
-      />
+      {/* No bg layer — the visualizer wrapper fades the shader stack
+          to opacity 0 over 3s and the page bg-black shows through.
+          Adding a bg here would either instantly hide the visualizer
+          fade (if opaque) or compound with it (if also fading). */}
       <div
         className="relative flex flex-col items-center"
         style={{ animation: "creditsContent 14000ms ease-in-out forwards", opacity: 0 }}
@@ -122,10 +122,6 @@ export function InstallationCredits() {
       </div>
 
       <style jsx>{`
-        @keyframes creditsBg {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
         @keyframes creditsContent {
           0%   { opacity: 0; }
           21%  { opacity: 0; }
