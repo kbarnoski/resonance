@@ -328,6 +328,36 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // implementation paused on hide + reset on long-hide-return; user
   // explicitly asked for the cycle to "run regardless" of tab focus.)
 
+  // ─── Sleep/wake recovery ────────────────────────────────────────
+  // Laptops sleep. On wake: AudioContext is suspended (browsers do
+  // this automatically when the GPU/audio subsystem is paused), the
+  // <audio> element may be paused even though store state says
+  // isPlaying, and any in-flight fal request likely timed out. Detect
+  // the wake by watching for a real-time gap between ticks (>30s) and
+  // re-prime audio. WebGL context loss recovers via the listeners
+  // added directly to the canvas; nothing to do here for that.
+  useEffect(() => {
+    let lastTick = Date.now();
+    const id = setInterval(() => {
+      const now = Date.now();
+      const gap = now - lastTick;
+      lastTick = now;
+      if (gap > 30_000) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[installation] Sleep/wake detected — gap ${(gap / 1000).toFixed(0)}s, re-priming audio`,
+        );
+        try {
+          ensureResumed();
+          const el = getAudioEngine().audioElement;
+          const { isPlaying: shouldPlay } = useAudioStore.getState();
+          if (shouldPlay && el.paused && !el.ended) tryPlay(el);
+        } catch { /* engine not ready */ }
+      }
+    }, 2_000);
+    return () => clearInterval(id);
+  }, []);
+
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
   // away to /library, and let F still toggle fullscreen even though the
