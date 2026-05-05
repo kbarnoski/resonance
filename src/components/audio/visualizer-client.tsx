@@ -655,6 +655,11 @@ export function VisualizerClient({
   const journeyShareInflightRef = useRef<string | null>(null);
   useEffect(() => {
     if (!activeJourney) return;
+    // Installation mode (kiosk + /demo) has no share button —
+    // skip the share-URL pre-mint. The mint hits an auth-gated
+    // endpoint and 401s for anon /demo visitors, generating
+    // visible noise in the network panel.
+    if (installationMode) return;
     const journeyId = activeJourney.id;
     const recordingId = currentTrack?.id ?? null;
     if (

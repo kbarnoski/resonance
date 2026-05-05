@@ -54,22 +54,25 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Admin cross-origin feedback sync — pulls admin's full thumbs history
-  // from the DB into localStorage on page load so the adaptive engine
-  // trains on the unified record (localhost + prod + every other origin
-  // admin has used). The endpoint is server-gated by ADMIN_EMAIL, so
-  // non-admin users silently no-op. Runs once per session.
+  // Admin cross-origin feedback sync + built-in journey enrichments.
+  // Both hit auth-gated endpoints. They were running for everyone
+  // (silently 401-ing for anon /demo visitors) and producing noisy
+  // network panel errors. Skip both entirely when there's no logged-
+  // in user. Uses the browser supabase client to check the session
+  // without making an unauthed fetch first.
   useEffect(() => {
-    syncAdminFeedbackFromDb().catch(() => {});
-  }, []);
-
-  // Built-in journey enrichments — pull the per-journey aiPromptSequence
-  // cache (populated by the admin bulk-backfill endpoint) so every user
-  // gets Ghost-level multi-variant imagery on built-in journeys. Runs
-  // once per session; startJourney overlays the cached sequences before
-  // handing the journey to the engine.
-  useEffect(() => {
-    loadBuiltInEnrichments().catch(() => {});
+    let cancelled = false;
+    void (async () => {
+      try {
+        const { createClient } = await import("@/lib/supabase/client");
+        const sb = createClient();
+        const { data } = await sb.auth.getUser();
+        if (cancelled || !data.user) return;
+        await syncAdminFeedbackFromDb().catch(() => {});
+        await loadBuiltInEnrichments().catch(() => {});
+      } catch { /* silently no-op */ }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   // ─── Native audio setup (desktop mode) ───
