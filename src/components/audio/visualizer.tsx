@@ -517,8 +517,18 @@ export function VisualizerCore({
 }: VisualizerCoreProps) {
   // Viz settings from store — persist across open/close
   const storeMode = useAudioStore((s) => s.vizMode) as VisualizerMode;
-  // When journey is active, mode comes from journey engine
-  const mode = (journeyShaderMode as VisualizerMode) ?? storeMode;
+  const installationMode = useAudioStore((s) => s.installationMode);
+  // When journey is active, mode comes from journey engine. Otherwise
+  // we fall back to the persisted storeMode. In multi-layer routes
+  // (installation kiosk + custom journey playback) we additionally
+  // refuse to land on a 3D fallback — a stale 3D vizMode in
+  // localStorage could otherwise flash a 3D Canvas during the brief
+  // window between mount and engine.start, hitting the same WebGL
+  // context limit that blocks 3D primaries from the engine picker.
+  const safeStoreMode: VisualizerMode = (installationMode && MODES_3D.has(storeMode))
+    ? ("neon" as VisualizerMode)
+    : storeMode;
+  const mode = (journeyShaderMode as VisualizerMode) ?? safeStoreMode;
 
   // Derive typography theme: realm ID for built-in journeys, theme mood for custom, shader category for viz-only
   const typographyTheme = journeyRealmId
@@ -532,8 +542,6 @@ export function VisualizerCore({
   const setMode = useAudioStore((s) => s.setVizMode);
   const setTextOverlayMode = useAudioStore((s) => s.setTextOverlayMode);
   const setWhisperEnabled = useAudioStore((s) => s.setVizWhisper);
-
-  const installationMode = useAudioStore((s) => s.installationMode);
 
   const inJourneyMode = journeyActive || journeyBrowsing;
 

@@ -801,9 +801,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     }
 
     if (phase.kind === "credits") {
-      // Show dots during ending titling so the audience sees the full
-      // progress — every dot lit as we wrap.
-      setTitleWindow(true);
+      // Dots stay hidden during credits — they've already faded out
+      // alongside Ghost's title and shouldn't pop back in over the
+      // dedication screen. Previously we set titleWindow=true here
+      // ("every dot lit as we wrap"), but the user found the second
+      // appearance distracting.
+      setTitleWindow(false);
       stopJourney();
       // Freeze the journey engine so primary/dual/tertiary shaders
       // stop switching while the credits black layer fades in. Without
@@ -1418,7 +1421,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
             • Per-journey title (journeys 1-4, installation 8.5s):
                 fade-in  3400ms (matches journeyIntroAnim 0→40% of 8.5s)
                 fade-out 2550ms (matches journeyIntroAnim 70→100% of 8.5s)
-            • Credits: visible throughout. */}
+            • Credits: dots stay hidden — they faded out with the last
+              journey's title and shouldn't pop back in over the
+              dedication screen. */}
       {sequence.length > 0 && (() => {
         const inIntroJourney = phase.kind === "intro" && introStage === "journey";
         const inIntroFadingJourney = phase.kind === "intro" && introStage === "fading-journey";
@@ -1437,8 +1442,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           inCredits;
         if (!shouldMount) return null;
 
-        // show = stepper should be visible (opacity 1)
-        const show = inIntroJourney || inJourneyTitle || inCredits;
+        // show = stepper should be visible (opacity 1). inCredits is
+        // intentionally NOT here — dots fade out with the journey
+        // title and stay hidden through the dedication screen.
+        const show = inIntroJourney || inJourneyTitle;
 
         // Pick the transition duration based on which fade we're in.
         // Each branch matches what the journey title uses at the same
