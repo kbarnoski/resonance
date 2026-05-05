@@ -468,6 +468,74 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     };
   }, [sequence, startIndex]);
 
+  // ─── Health-beacon webhook ──────────────────────────────────────
+  // If the kiosk URL has `?webhook_url=https://...`, POST a health
+  // summary to that webhook every 10 minutes. Payload is shaped so a
+  // single POST works with Slack (`text`), Discord (`content`), and
+  // generic JSON consumers (`kioskState`).
+  //
+  // This is the push half of the alerting story (the heartbeat row +
+  // status page is the pull half). Operator can subscribe a Slack
+  // channel and get periodic confirmation the kiosk is healthy
+  // without having to refresh anything.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const webhookUrl = params.get("webhook_url");
+    if (!webhookUrl) return;
+    // Only HTTPS; no exposing private network IPs.
+    if (!/^https:\/\/[^/]+/.test(webhookUrl)) return;
+
+    const post = async () => {
+      let audioState = "no engine";
+      let ctxState = "—";
+      try {
+        const engine = getAudioEngine();
+        const t = isFinite(engine.audioElement.currentTime) ? engine.audioElement.currentTime.toFixed(0) : "0";
+        const d = isFinite(engine.audioElement.duration) ? engine.audioElement.duration.toFixed(0) : "?";
+        audioState = `${engine.audioElement.paused ? "PAUSED" : "playing"} ${t}/${d}s`;
+        ctxState = engine.audioContext.state;
+      } catch { /* engine not yet initialized */ }
+      const phase = phaseRef.current;
+      const phaseLabel =
+        phase.kind === "intro"
+          ? "intro"
+          : phase.kind === "journey"
+            ? `journey ${phase.index + 1}/${sequence.length}`
+            : "credits";
+      const journeyName =
+        phase.kind === "journey"
+          ? sequence[phase.index]?.journey.name ?? null
+          : phase.kind === "credits"
+            ? "credits"
+            : null;
+      const uptimeS = Math.floor((Date.now() - startedAtMsRef.current) / 1_000);
+      const h = Math.floor(uptimeS / 3_600);
+      const m = Math.floor((uptimeS % 3_600) / 60);
+      const summary =
+        `Resonance kiosk · phase=${phaseLabel}` +
+        (journeyName ? ` (${journeyName})` : "") +
+        ` · audio=${audioState} · audioCtx=${ctxState} · uptime=${h}h${m}m`;
+      try {
+        await fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: summary,
+            content: summary,
+            kioskState: { phaseLabel, journeyName, audioState, ctxState, uptimeS },
+          }),
+          keepalive: true,
+        });
+      } catch { /* webhook unavailable, next interval will retry */ }
+    };
+
+    // Fire one beacon on boot so operators know the kiosk came online.
+    post();
+    const id = setInterval(post, 10 * 60 * 1_000);
+    return () => clearInterval(id);
+  }, [sequence]);
+
   // ─── Auto-reload watchdog ───────────────────────────────────────
   // Last-resort recovery for unattended kiosk operation. If no phase
   // change in 2x MAX_JOURNEY_MS (16 minutes), the loop is wedged
