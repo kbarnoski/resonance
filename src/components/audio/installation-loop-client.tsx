@@ -951,23 +951,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       useAudioStore.getState().activeJourney?.id === entry.journey.id;
 
     if (!alreadyStarted) {
-      const track = trackForIndex(phase.index);
-      // Force a fresh signed URL for this track on every journey
-      // start in installation mode. The /api/audio/{id} endpoint
-      // generates a unique signed URL each call (different timestamp
-      // in the signature), so clearing the sessionStorage cache
-      // gives us a URL the browser hasn't seen — no partial-buffer
-      // reuse, no cache poisoning. This is the fix for the "stalls
-      // at 3.2s on 2nd Ghost cycle" bug; previously the same cached
-      // URL on cycle 2 made the browser reuse the partial WAV
-      // buffer from cycle 1 and never re-fetch the rest.
-      if (track) {
-        try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
-      }
       // No explicit pause() — calling pause() flips isPlaying to false
       // in the store, and the tick loop's audioEnded check used to
       // race on that. setQueue + startJourney is enough for the
       // audio-provider to swap src; pausing first only created bugs.
+      const track = trackForIndex(phase.index);
       if (track) setQueue([track], 0);
       startJourney(entry.journey.id);
 

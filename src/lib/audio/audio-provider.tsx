@@ -186,13 +186,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         loadingNewSrc.current = true;
         lastSrcRef.current = newSrc;
 
-        // In installation mode, resolve as blob so the entire WAV
-        // downloads once into memory before playback. Eliminates
-        // range-request failures, partial-buffer cache poisoning,
-        // and mid-playback URL expiration — all flavors of the
-        // "Ghost stalls at ~3s on 2nd cycle" bug.
-        const installationMode = useAudioStore.getState().installationMode;
-        resolveAudioUrl(newSrc, currentTrack.id, { asBlob: installationMode }).then((resolvedUrl) => {
+        resolveAudioUrl(newSrc, currentTrack.id).then((resolvedUrl) => {
           audioElement.src = resolvedUrl;
           audioElement.load();
         });
