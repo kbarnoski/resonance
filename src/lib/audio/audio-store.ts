@@ -494,6 +494,12 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
         getAudioEngine().audioElement.pause();
       }
     } catch { /* engine not initialized yet */ }
+    // In installation mode, keep the current vizMode so the
+    // visualizer doesn't visibly swap shaders during the Ghost →
+    // credits handoff (the 3s black fade-in would otherwise reveal
+    // a sudden shader change underneath). The next journey's
+    // startJourney() will set vizMode to its first shader cleanly.
+    const keepVizMode = get().installationMode;
     set({
       activeJourney: null,
       activeRealm: null,
@@ -501,7 +507,7 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
       journeyPhase: null,
       journeyProgress: 0,
       isPlaying: false,
-      vizMode: randomAmbientMode(),
+      ...(keepVizMode ? {} : { vizMode: randomAmbientMode() }),
     });
   },
 
