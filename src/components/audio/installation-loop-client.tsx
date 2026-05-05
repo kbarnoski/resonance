@@ -358,6 +358,38 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     return () => clearInterval(id);
   }, []);
 
+  // ─── Auto-reload watchdog ───────────────────────────────────────
+  // Last-resort recovery for unattended kiosk operation. If no phase
+  // change in 2x MAX_JOURNEY_MS (16 minutes), the loop is wedged
+  // beyond what local recovery can fix (a JS error broke the phase
+  // machine, audio totally failed to load and didn't trigger advance,
+  // sleep/wake recovery silently failed, etc.) and location.reload()
+  // is the only thing that gets the venue display back to a working
+  // state without a callout.
+  //
+  // 16 minutes is well above any legitimate phase: longest journey is
+  // capped at 8 min by MAX_JOURNEY_MS, intro is 7s, credits is 16s.
+  // On /demo we skip the watchdog when the user hasn't pressed Begin
+  // yet — that's a legitimate idle state, not a wedge.
+  const lastPhaseChangeRef = useRef(Date.now());
+  useEffect(() => {
+    lastPhaseChangeRef.current = Date.now();
+  }, [phase]);
+  useEffect(() => {
+    const id = setInterval(() => {
+      if (playOnce && !started) return;
+      const elapsed = Date.now() - lastPhaseChangeRef.current;
+      if (elapsed > 2 * MAX_JOURNEY_MS) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[installation] Wedged for ${(elapsed / 60_000).toFixed(1)}min — reloading`,
+        );
+        window.location.reload();
+      }
+    }, 30_000);
+    return () => clearInterval(id);
+  }, [playOnce, started]);
+
   // ─── Key handling — capture phase, defense in depth ───────────────
   // Two goals: stop visualizer-client's Escape handler from navigating
   // away to /library, and let F still toggle fullscreen even though the
