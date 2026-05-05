@@ -618,6 +618,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     if (needsGesture && !started) return;
 
     if (phase.kind === "intro") {
+      // Unfreeze the journey engine — credits screen had it frozen so
+      // shaders wouldn't keep mutating during the bg fade-in. Now the
+      // new cycle is starting, normal shader switching resumes.
+      try { getJourneyEngine().setFrozen(false); } catch { /* engine gone */ }
       // Reset per-cycle UI state: a fresh audience is arriving. Dots
       // start unfilled, the failure log starts empty so each cycle's
       // diagnostic state is its own.
@@ -798,6 +802,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // progress — every dot lit as we wrap.
       setTitleWindow(true);
       stopJourney();
+      // Freeze the journey engine so primary/dual/tertiary shaders
+      // stop switching while the credits black layer fades in. Without
+      // this, dramatic shader motion peeks through the partially-
+      // transparent overlay during the first 1-2s of the 3s fade.
+      try { getJourneyEngine().setFrozen(true); } catch { /* engine gone */ }
       // CRITICAL: do NOT scrub el.currentTime back to 0 here. Setting
       // currentTime=0 un-sets the audio element's `ended` flag, which
       // makes the watchdog think audio is paused-but-ready-and-not-

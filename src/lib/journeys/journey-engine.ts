@@ -62,6 +62,11 @@ class JourneyEngine {
   // Browser context limits (~8) made 3D modes cause repeated context
   // loss + force-remount bursts mid-journey.
   private installationMode = false;
+  // When true, primary/dual/tertiary shader switches are skipped —
+  // freezes whatever's on screen so the credits crossfade can hide
+  // the visualizer over a static frame instead of competing with
+  // dramatic ongoing motion.
+  private frozen = false;
   private currentPhaseId: JourneyPhaseId | null = null;
   private phaseChangeCallbacks: Set<PhaseChangeCallback> = new Set();
   private frameCallbacks: Set<(frame: JourneyFrame) => void> = new Set();
@@ -467,7 +472,7 @@ class JourneyEngine {
 
     // ─── Primary shader switching (wall-clock timer) ───
     const shaderLen = currentPhase.shaderModes.length;
-    if (shaderLen > 1 && now - this.shaderStartMs > this.shaderDurationMs) {
+    if (shaderLen > 1 && !this.frozen && now - this.shaderStartMs > this.shaderDurationMs) {
       // Walk the pool twice: first pass prefers shaders this journey hasn't used yet,
       // second pass falls back to any allowed shader if the pool is exhausted.
       let picked = false;
@@ -510,7 +515,7 @@ class JourneyEngine {
         this.dualShaderMode = null;
       }
     } else if (this.dualShaderInitialized && shaderLen >= 2) {
-      if (now - this.dualShaderStartMs > this.dualShaderDurationMs) {
+      if (!this.frozen && now - this.dualShaderStartMs > this.dualShaderDurationMs) {
         this.closeHistoryEntry("dual", now);
         this.dualShaderMode = this.pickDualShader(currentPhase);
         this.seenShaders.add(this.dualShaderMode);
@@ -547,7 +552,7 @@ class JourneyEngine {
       const m = this.tertiaryMoments[i];
       if (clamped >= m.startProgress && clamped <= m.endProgress) {
         inTertiaryMoment = true;
-        if (!this.tertiaryActive) {
+        if (!this.tertiaryActive && !this.frozen) {
           const tertiaryCandidate = this.tertiaryPicks.get(i) ?? null;
           // Skip if user blocked/deleted this shader since journey started
           this.tertiaryShaderMode = tertiaryCandidate && this.isShaderAllowed(tertiaryCandidate)
@@ -832,6 +837,13 @@ class JourneyEngine {
   /** Toggle installation mode — primary picker excludes 3D modes when on. */
   setInstallationMode(enabled: boolean): void {
     this.installationMode = enabled;
+  }
+
+  /** Freeze/unfreeze shader switching. Used by installation-loop-client
+   *  during the credits screen so the visualizer doesn't keep mutating
+   *  underneath the 3s black fade-in. */
+  setFrozen(f: boolean): void {
+    this.frozen = f;
   }
 
   private pickDualShader(phase: JourneyPhase): string {
