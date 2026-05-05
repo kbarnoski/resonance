@@ -117,7 +117,17 @@ export function JourneyCompositor({
   // Read ref value during render — sampled at ~30fps from journey frame updates
   const lightScale = lightScaleRef.current;
 
-  const effectiveShaderOpacity = frame?.shaderOpacity ?? 1.0;
+  // When `frame` goes null (journey ended) we used to default to 1.0,
+  // which made the shader visibly brighten right before credits
+  // mounted — read as a "panic" pop just before the fade-to-black.
+  // Holding the last journey value instead means the shader stays
+  // exactly where it was at journey end, and the visualizer wrapper's
+  // opacity transition handles the fade smoothly from there.
+  const lastShaderOpacityRef = useRef<number>(1.0);
+  if (frame?.shaderOpacity != null) {
+    lastShaderOpacityRef.current = frame.shaderOpacity;
+  }
+  const effectiveShaderOpacity = frame?.shaderOpacity ?? lastShaderOpacityRef.current;
   const isMobile = useMemo(
     () => typeof navigator !== "undefined" && /iPhone|iPad|Android/i.test(navigator.userAgent),
     []

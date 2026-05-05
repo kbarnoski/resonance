@@ -6,6 +6,7 @@ import { useAudioStore, type Track } from "@/lib/audio/audio-store";
 import { getAudioEngine, ensureResumed, primeAudioElement, tryPlay } from "@/lib/audio/audio-engine";
 import { isDesktopApp, enterKioskMode, exitKioskMode, setCursorVisible } from "@/lib/tauri";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
+import { getRealtimeImageService } from "@/lib/journeys/realtime-image-service";
 import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
@@ -802,24 +803,31 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
 
     if (phase.kind === "credits") {
       // Dots stay hidden during credits — they've already faded out
-      // alongside Ghost's title and shouldn't pop back in over the
-      // dedication screen. Previously we set titleWindow=true here
-      // ("every dot lit as we wrap"), but the user found the second
-      // appearance distracting.
+      // alongside Ghost's title.
       setTitleWindow(false);
-      // Disable AI image generation so any in-flight or new gens
-      // don't push a new image onto the layer mid-fade. The
-      // visualizer wrapper opacity transition takes 3s; without
-      // this, an AI image landing during that window would visibly
-      // swap underneath the still-running shader and read as a
-      // "spasm".
-      useAudioStore.getState().setAiImageEnabled(false);
-      stopJourney();
-      // Freeze the journey engine so primary/dual/tertiary shaders
-      // stop switching while the credits black layer fades in. Without
-      // this, dramatic shader motion peeks through the partially-
-      // transparent overlay during the first 1-2s of the 3s fade.
+      // CRITICAL: do NOT call stopJourney() immediately. That sets
+      // activeJourney=null synchronously, which makes the AI image
+      // layer unmount in the same render — its imagery vanishes in
+      // one frame and exposes the shader underneath. That instant
+      // disappearance is the "abrupt panic" the user has been
+      // reporting right at the start of credits.
+      //
+      // Instead: freeze the engine, cancel in-flight gens, pause
+      // audio, set isPlaying=false. Keep activeJourney set so the
+      // AI layer stays mounted with its last imagery while the
+      // visualizer wrapper opacity fades 1→0 over 3s. After the
+      // fade completes, THEN do the full stopJourney to release
+      // the journey state — by that point the wrapper is at 0 so
+      // the AI unmount is invisible.
       try { getJourneyEngine().setFrozen(true); } catch { /* engine gone */ }
+      try { getRealtimeImageService().cancelInFlight(); } catch { /* service not initialized */ }
+      try { getAudioEngine().audioElement.pause(); } catch { /* engine gone */ }
+      // Mark playback as stopped so the audio-provider doesn't
+      // re-fire play() on its sync effect.
+      useAudioStore.setState({ isPlaying: false });
+      const fadeoutHandoff = setTimeout(() => {
+        stopJourney();
+      }, 3_000);
       // CRITICAL: do NOT scrub el.currentTime back to 0 here. Setting
       // currentTime=0 un-sets the audio element's `ended` flag, which
       // makes the watchdog think audio is paused-but-ready-and-not-
@@ -850,7 +858,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         }
         setPhase({ kind: "intro" });
       }, delay);
-      return () => clearTimeout(t);
+      return () => {
+        clearTimeout(t);
+        clearTimeout(fadeoutHandoff);
+      };
     }
 
     // Journey phase — load track, start journey, watch for end
@@ -1300,7 +1311,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               setStarted(true);
             }
           }}
-          className="absolute inset-0 z-[60] flex flex-col items-center justify-center bg-black px-8 text-center"
+          className="absolute inset-0 z-[130] flex flex-col items-center justify-center bg-black px-8 text-center"
           style={{
             cursor: started ? "default" : "pointer",
             pointerEvents: started ? "none" : "auto",

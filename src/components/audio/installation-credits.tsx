@@ -25,7 +25,7 @@ const TEXT_SHADOW =
 
 export function InstallationCredits() {
   return (
-    <div className="absolute inset-0 z-50 flex flex-col items-center justify-center px-8 text-center">
+    <div className="absolute inset-0 z-[120] flex flex-col items-center justify-center px-8 text-center">
       {/* No bg layer — the visualizer wrapper fades the shader stack
           to opacity 0 over 3s and the page bg-black shows through.
           Adding a bg here would either instantly hide the visualizer

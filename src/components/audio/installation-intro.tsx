@@ -58,7 +58,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
     <>
       {bgMounted && (
         <div
-          className="absolute inset-0 z-50 pointer-events-none"
+          className="absolute inset-0 z-[120] pointer-events-none"
           style={{
             backgroundColor: "black",
             opacity: bgOpacity,
@@ -73,7 +73,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
         <div
           className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center px-8 text-center"
           style={{
-            zIndex: 51,
+            zIndex: 121,
             opacity: cycleOpacity,
             transition: "opacity 1500ms ease-out",
           }}
@@ -86,7 +86,7 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
         <div
           className="absolute inset-0 pointer-events-none flex flex-col items-center justify-center px-8 text-center"
           style={{
-            zIndex: 51,
+            zIndex: 121,
             opacity: journeyOpacity,
             transition: "opacity 1800ms ease-out",
           }}
