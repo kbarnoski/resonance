@@ -221,7 +221,7 @@ export default async function InstallationPage({ searchParams }: Props) {
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=block"
         />
         <InstallationLoopClient
           sequence={sequenceWithCues}
