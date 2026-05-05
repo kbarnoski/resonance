@@ -346,6 +346,93 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // implementation paused on hide + reset on long-hide-return; user
   // explicitly asked for the cycle to "run regardless" of tab focus.)
 
+  // ─── Audio stall detector ───────────────────────────────────────
+  // Independent of sleep/wake — watches whether the <audio> element's
+  // currentTime is actually advancing while playback is supposed to
+  // be active. If it freezes for 5s+ (network glitch fetching the
+  // next chunk of a large WAV, decoder error, server hiccup, expired
+  // signed URL mid-playback), this re-resolves the URL and reloads
+  // the source while seeking back to where playback froze. User-
+  // visible symptom: audio stops, shader/image freezes. Without
+  // this recovery the safety/end watchdog eventually advances phase
+  // ~8 minutes later — too long for a kiosk audience.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    let lastTime = -1;
+    let frozenSinceMs = 0;
+    let recovering = false;
+    const id = setInterval(() => {
+      // Only relevant during the journey phase. Other phases are
+      // expected to have paused audio.
+      if (phaseRef.current.kind !== "journey") {
+        lastTime = -1;
+        frozenSinceMs = 0;
+        return;
+      }
+      let el: HTMLAudioElement | null = null;
+      try { el = getAudioEngine().audioElement; } catch { return; }
+      if (!el || el.paused || el.ended || recovering) {
+        lastTime = -1;
+        frozenSinceMs = 0;
+        return;
+      }
+      const t = el.currentTime;
+      if (lastTime < 0) {
+        lastTime = t;
+        frozenSinceMs = Date.now();
+        return;
+      }
+      // Allow tiny jitter in currentTime reporting.
+      if (Math.abs(t - lastTime) > 0.05) {
+        lastTime = t;
+        frozenSinceMs = Date.now();
+        return;
+      }
+      // currentTime hasn't advanced — how long?
+      const stalledFor = Date.now() - frozenSinceMs;
+      if (stalledFor > 5_000) {
+        recovering = true;
+        const phase = phaseRef.current;
+        if (phase.kind !== "journey") { recovering = false; return; }
+        // eslint-disable-next-line no-console
+        console.warn(
+          `[installation] Audio stalled at ${t.toFixed(1)}s for ${(stalledFor/1000).toFixed(0)}s — reloading source`,
+        );
+        void (async () => {
+          try {
+            const track = trackForIndex(phase.index);
+            if (!track?.audioUrl || !el) { recovering = false; return; }
+            const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+            try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
+            const fresh = await resolveAudioUrl(track.audioUrl, track.id);
+            const targetTime = t;
+            el.src = fresh;
+            el.load();
+            const onCanPlay = () => {
+              el!.removeEventListener("canplay", onCanPlay);
+              try { el!.currentTime = targetTime; } catch { /* seek beyond, ignore */ }
+              const { isPlaying: shouldPlay } = useAudioStore.getState();
+              if (shouldPlay && !el!.ended) tryPlay(el!);
+              recovering = false;
+              lastTime = -1;
+              frozenSinceMs = 0;
+            };
+            el.addEventListener("canplay", onCanPlay, { once: true });
+            // Safety: if canplay never fires within 8s, give up and let
+            // the journey-end watchdog advance to next phase.
+            setTimeout(() => {
+              try { el!.removeEventListener("canplay", onCanPlay); } catch { /* ok */ }
+              recovering = false;
+            }, 8_000);
+          } catch {
+            recovering = false;
+          }
+        })();
+      }
+    }, 1_000);
+    return () => clearInterval(id);
+  }, []);
+
   // ─── Sleep/wake recovery ────────────────────────────────────────
   // Laptops sleep. On wake: AudioContext is suspended (browsers do
   // this automatically when the GPU/audio subsystem is paused), the
