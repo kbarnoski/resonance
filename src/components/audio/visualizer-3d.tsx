@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useState, useCallback } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { getDeviceTier } from "@/lib/audio/device-tier";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
@@ -1173,6 +1173,30 @@ export function Visualizer3D({
   mode: Visualizer3DMode;
   onReady?: () => void;
 }) {
+  // Context-loss recovery: when the browser restores the WebGL context
+  // (after GPU pressure, system sleep/wake, or Chrome's idle-tab GPU
+  // eviction), bump the key so R3F remounts the entire Canvas with a
+  // fresh context + scene graph. preventDefault on lost is required —
+  // without it, the browser will never fire restored.
+  const [contextEpoch, setContextEpoch] = useState(0);
+  const onCanvasCreated = useCallback((state: { gl: { domElement: HTMLCanvasElement } }) => {
+    const canvas = state.gl.domElement;
+    const onLost = (e: Event) => {
+      e.preventDefault();
+      // eslint-disable-next-line no-console
+      console.warn("[3d] WebGL context lost — awaiting restore");
+    };
+    const onRestored = () => {
+      // eslint-disable-next-line no-console
+      console.warn("[3d] WebGL context restored — remounting Canvas");
+      setContextEpoch((n) => n + 1);
+    };
+    canvas.addEventListener("webglcontextlost", onLost);
+    canvas.addEventListener("webglcontextrestored", onRestored);
+    // No cleanup — React remount on key change discards the canvas
+    // element (and its listeners) entirely.
+  }, []);
+
   if (!isWebGL2Available()) {
     return <div className="absolute inset-0 bg-black" />;
   }
@@ -1186,12 +1210,14 @@ export function Visualizer3D({
   return (
     <Canvas3DErrorBoundary>
       <Canvas
+        key={contextEpoch}
         className="absolute inset-0 w-full h-full"
         camera={{ position: [0, 0, 5], fov: 60 }}
         gl={createSafeRenderer}
         dpr={[0.5, dprCap]}
         performance={{ min: 0.5 }}
         style={{ background: "#000" }}
+        onCreated={onCanvasCreated}
       >
         <color attach="background" args={["#000000"]} />
         <ReadySignal onReady={onReady} />
