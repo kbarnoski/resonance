@@ -47,6 +47,11 @@ interface Props {
    *  /demo URL — gives reviewers a clean end-of-experience moment
    *  without the loop continuing in the background. */
   playOnce?: boolean;
+  /** Index into `sequence` to start the cycle at. Defaults to 0
+   *  (Ascension). Driven by ?start=N or ?start=journey-id on the
+   *  URL — useful for debugging late-cycle journeys (e.g. Ghost
+   *  audio drops mid-play) without sitting through the prior 4. */
+  startIndex?: number;
 }
 
 // ─── Timing ────────────────────────────────────────────────────────────
@@ -59,7 +64,7 @@ type Phase =
   | { kind: "journey"; index: number }
   | { kind: "credits" };
 
-export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOnce }: Props) {
+export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOnce, startIndex = 0 }: Props) {
   // anonMode is still accepted on the props interface for future use
   // (e.g., a "sign up" CTA), but doesn't currently change behavior.
   const setInstallationMode = useAudioStore((s) => s.setInstallationMode);
@@ -428,9 +433,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           return;
         }
         setIntroStage("fading-cycle");
-        const entry = sequence[0];
+        const entry = sequence[startIndex];
+        if (!entry) {
+          setPhase({ kind: "credits" });
+          return;
+        }
         useAudioStore.getState().setSuppressNextJourneyIntro(true);
-        const track = trackForIndex(0);
+        const track = trackForIndex(startIndex);
         if (track) setQueue([track], 0);
         startJourney(entry.journey.id);
         const cues = entry.cues ?? [];
@@ -466,7 +475,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
             earlyRetries++;
             void (async () => {
               try {
-                const t = trackForIndex(0);
+                const t = trackForIndex(startIndex);
                 if (!t?.audioUrl) return;
                 try { sessionStorage.removeItem(`audio-url-${t.id}`); } catch { /* ok */ }
                 const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
@@ -505,7 +514,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // sole visual layer.
       finalPhaseChange = setTimeout(() => {
         setIntroStage("gone");
-        setPhase({ kind: "journey", index: 0 });
+        setPhase({ kind: "journey", index: startIndex });
       }, phaseChangeDelay);
 
       return () => {
@@ -895,11 +904,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           aria-hidden
         />
       )}
-      {fontsReady && introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === 0 && (introStage === "journey" || introStage === "fading-journey"))) && (
+      {fontsReady && introStage !== "gone" && (phase.kind === "intro" || (phase.kind === "journey" && phase.index === startIndex && (introStage === "journey" || introStage === "fading-journey"))) && (
         <InstallationIntro
           stage={introStage}
-          journey={sequence[0]?.journey ?? null}
-          trackArtist={sequence[0]?.track?.artist ?? null}
+          journey={sequence[startIndex]?.journey ?? null}
+          trackArtist={sequence[startIndex]?.track?.artist ?? null}
         />
       )}
       {phase.kind === "credits" && <InstallationCredits />}
@@ -1123,7 +1132,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
 
         const currentIndex =
           phase.kind === "intro"
-            ? 0
+            ? startIndex
             : phase.kind === "journey"
               ? phase.index
               : sequence.length;
@@ -1148,7 +1157,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                 const done = i < currentIndex;
                 const current = !isInIntro
                   ? phase.kind === "journey" && i === currentIndex
-                  : i === 0;
+                  : i === startIndex;
                 const skipped = skippedIndices.has(i);
                 const background = skipped
                   ? "rgba(248, 113, 113, 0.55)"
