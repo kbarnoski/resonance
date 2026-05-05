@@ -807,6 +807,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // ("every dot lit as we wrap"), but the user found the second
       // appearance distracting.
       setTitleWindow(false);
+      // Disable AI image generation so any in-flight or new gens
+      // don't push a new image onto the layer mid-fade. The
+      // visualizer wrapper opacity transition takes 3s; without
+      // this, an AI image landing during that window would visibly
+      // swap underneath the still-running shader and read as a
+      // "spasm".
+      useAudioStore.getState().setAiImageEnabled(false);
       stopJourney();
       // Freeze the journey engine so primary/dual/tertiary shaders
       // stop switching while the credits black layer fades in. Without
@@ -1206,19 +1213,21 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   return (
     <div ref={containerRef} className="h-full w-full relative">
       {/* Visualizer wrapper — fades the entire shader/AI/post-process
-          stack to black during credits so the user sees a "movie
-          fades to black" transition instead of a shader peeking
-          through a partially-transparent overlay. The page bg
-          (bg-black on the installation page) shows through at
-          opacity 0. Snap back to opacity 1 instantly on intro
-          mount — the InstallationIntro bg-black covers it during
-          the cycle stage, so the snap is invisible. */}
+          stack to black during credits + intro so the user sees a
+          "movie fades to black" transition instead of a shader
+          peeking through a partially-transparent overlay. Transition
+          is set UNCONDITIONALLY (not gated on phase) — CSS only
+          transitions a property if the transition is already attached
+          to it before the value changes. Setting transition AND
+          opacity in the same render previously made the opacity
+          snap instantly (no fade), which read as a "spasm" right at
+          the start of credits. */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           opacity: phase.kind === "credits" ? 0 : 1,
-          transition: phase.kind === "credits" ? "opacity 3000ms ease-out" : "none",
+          transition: "opacity 3000ms ease-out",
         }}
       >
         <VisualizerClient />
