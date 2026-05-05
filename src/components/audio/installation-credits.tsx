@@ -4,9 +4,9 @@
  * Installation loop — credits screen.
  *
  * Two layered fades:
- *   1. Outer black backdrop fades in over 1800ms so the visualizer
+ *   1. Outer black backdrop fades in over 3000ms so the visualizer
  *      melts to black instead of being hard-cut on phase change.
- *   2. Inner content holds invisible until ~13% in (matching the bg
+ *   2. Inner content holds invisible until ~21% in (matching the bg
  *      fade) then fades in/out over the rest of the 14s window — eye
  *      never sees ghostly text on a darkening shader.
  *
@@ -26,7 +26,7 @@ export function InstallationCredits() {
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundColor: "black",
-          animation: "creditsBg 1800ms ease-out forwards",
+          animation: "creditsBg 3000ms ease-out forwards",
           opacity: 0,
         }}
       />
@@ -128,8 +128,8 @@ export function InstallationCredits() {
         }
         @keyframes creditsContent {
           0%   { opacity: 0; }
-          13%  { opacity: 0; }
-          22%  { opacity: 1; }
+          21%  { opacity: 0; }
+          30%  { opacity: 1; }
           92%  { opacity: 1; }
           100% { opacity: 0; }
         }

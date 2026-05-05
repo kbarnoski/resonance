@@ -173,6 +173,11 @@ function scheduleFlush() {
 }
 
 export function appendEntry(entry: Snapshot) {
+  // Skip telemetry collection in installation mode (kiosk + /demo).
+  // Anon visitors hit /api/journey-feedback's auth gate and 401 on
+  // every flush, and there's no admin reading the data anyway.
+  // Gating at the source means no entries → no flush → no POST.
+  if (useAudioStore.getState().installationMode) return;
   _pendingEntries.push(entry);
   scheduleFlush();
 }

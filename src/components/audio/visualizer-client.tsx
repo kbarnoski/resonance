@@ -435,10 +435,14 @@ export function VisualizerClient({
         prepareGhostReference(activeJourney.id);
       }
 
-      // Log journey-start lifecycle event
-      const startEntry = buildSnapshot("journey-start", getSharedFpsRef());
-      startEntry.aiPromptSnippet = `journey-start: ${activeJourney.name}`;
-      appendEntry(startEntry);
+      // Log journey-start lifecycle event — admin telemetry only.
+      // Skipped in installation mode (no admin reading; anon visitors
+      // would 401 on the eventual flush POST).
+      if (!installationMode) {
+        const startEntry = buildSnapshot("journey-start", getSharedFpsRef());
+        startEntry.aiPromptSnippet = `journey-start: ${activeJourney.name}`;
+        appendEntry(startEntry);
+      }
     }
     if (!activeJourney) {
       prevJourneyIdRef.current = null;
@@ -487,21 +491,24 @@ export function VisualizerClient({
       // Record completion in path progress store
       usePathProgressStore.getState().completeJourney(activeJourney.id);
 
-      // Log journey-end lifecycle event
-      const endEntry = buildSnapshot("journey-end", getSharedFpsRef());
-      endEntry.aiPromptSnippet = `journey-end: ${activeJourney.name}`;
-      appendEntry(endEntry);
+      // Telemetry + adaptive analysis are admin-only features. Skip
+      // entirely in installation mode (no admin reading the data,
+      // anon /demo + kiosk visitors would 401 on the flush POST, and
+      // the [Adaptive] console log adds pointless noise to operator
+      // consoles during a kiosk run).
+      if (!installationMode) {
+        const endEntry = buildSnapshot("journey-end", getSharedFpsRef());
+        endEntry.aiPromptSnippet = `journey-end: ${activeJourney.name}`;
+        appendEntry(endEntry);
 
-      // Update shader usage stats from actual display history
-      const engine = getJourneyEngine();
-      const shaderHistory = engine.getShaderHistory();
-      updateShaderUsageFromJourney(shaderHistory);
+        const engine = getJourneyEngine();
+        const shaderHistory = engine.getShaderHistory();
+        updateShaderUsageFromJourney(shaderHistory);
 
-      // Flush any buffered glitch/feedback entries before analysis
-      flushFeedbackEntries();
-      // Analyze feedback and adapt for next journey
-      analyzeAndAdapt();
-      refreshAdaptiveProfile();
+        flushFeedbackEntries();
+        analyzeAndAdapt();
+        refreshAdaptiveProfile();
+      }
     }
   }, [journeyActive, activeJourney, currentTime, duration, journeyCompleted, isPlaying]);
 
