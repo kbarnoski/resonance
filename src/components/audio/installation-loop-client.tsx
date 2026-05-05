@@ -552,6 +552,20 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // progress — every dot lit as we wrap.
       setTitleWindow(true);
       stopJourney();
+      // Belt-and-suspenders: stopJourney already pauses the audio
+      // element, but the user reported Ghost audio kept playing
+      // after the cycle returned to the intro. Force a hard pause
+      // here, scrub the play position back to 0, and clear the
+      // queue so audio-provider has nothing to resume from. Without
+      // this, iOS Safari sometimes ignores the first pause() right
+      // after a natural end, and the Ghost audio bled into the
+      // following intro screen.
+      try {
+        const el = getAudioEngine().audioElement;
+        el.pause();
+        try { el.currentTime = 0; } catch { /* ignore seek errors */ }
+      } catch { /* engine gone */ }
+      setQueue([], 0);
       // Schedule the return to intro:
       //   - kiosk loop: CREDITS_MS (16s); cycle restarts
       //   - /demo:      10s; phase goes to intro, started flips back
@@ -560,6 +574,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       //                 play button — no replay click required.
       const delay = playOnce ? 10_000 : CREDITS_MS;
       const t = setTimeout(() => {
+        // One more pause right before the phase change — defense
+        // against any pending audio-provider effect that re-fires
+        // play() during the credits→intro transition.
+        try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
         if (playOnce) {
           setStarted(false);
           setStartScreenUnmounted(false);
