@@ -20,7 +20,7 @@ interface FallbackManifest {
 }
 
 let _manifestPromise: Promise<FallbackManifest> | null = null;
-let _recentlyServed = new Map<string, Set<number>>();
+const _recentlyServed = new Map<string, Set<number>>();
 
 async function loadManifest(): Promise<FallbackManifest> {
   if (_manifestPromise) return _manifestPromise;
