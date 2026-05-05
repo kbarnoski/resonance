@@ -861,7 +861,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // indicator now makes it fade in/out a second time with no title
     // to anchor it. Skip the titleWindow flash for journey 0.
     let titleHideTimer: ReturnType<typeof setTimeout> | null = null;
-    if (phase.index > 0) {
+    // Skip the title flash for the FIRST journey of the cycle —
+    // InstallationIntro already showed its title during the cycle
+    // intro overlay, and re-showing it now produces a visible duplicate
+    // (dots fade in/out twice, journey title appears twice). For the
+    // normal kiosk path this is journey 0; with ?start=N it's journey N.
+    // Compare against startIndex, not 0, to handle both cases.
+    if (phase.index !== startIndex) {
       setTitleWindow(true);
       // visualizer-client's journey-title overlay runs `journeyIntroAnim
       // 8.5s` in installation mode. Its keyframe holds opacity 1 from
