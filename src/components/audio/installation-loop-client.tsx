@@ -10,6 +10,7 @@ import type { Journey } from "@/lib/journeys/types";
 import { InstallationIntro } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
+import { InstallationStatusPanel } from "./installation-status-panel";
 import {
   INTRO_MS,
   CREDITS_MS,
@@ -983,9 +984,33 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, sequence, fontsReady, playOnce, needsGesture, started]);
 
+  // Operator status panel — toggled with ⌘⇧S. Captured here so the
+  // panel can show the live phase + journey name without needing to
+  // re-derive them from the audio store.
+  const statusPhaseLabel =
+    phase.kind === "intro"
+      ? "intro"
+      : phase.kind === "journey"
+        ? `journey ${phase.index + 1}/${sequence.length}`
+        : "credits";
+  const statusJourneyName =
+    phase.kind === "journey"
+      ? sequence[phase.index]?.journey.name ?? null
+      : phase.kind === "credits"
+        ? "credits"
+        : sequence[startIndex]?.journey.name ?? null;
+  const startedAtRef = useRef(Date.now());
+
   return (
     <div ref={containerRef} className="h-full w-full relative">
       <VisualizerClient />
+
+      <InstallationStatusPanel
+        phaseKind={phase.kind}
+        phaseLabel={statusPhaseLabel}
+        journeyName={statusJourneyName}
+        startedAt={startedAtRef.current}
+      />
 
       {/* Debug HUD intentionally disabled in render. Re-enable by
           flipping back to `{debug && <InstallationDebugHud />}` —
