@@ -74,6 +74,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   const stopJourney = useAudioStore((s) => s.stopJourney);
 
   const [phase, setPhase] = useState<Phase>({ kind: "intro" });
+  // Stable ref mirror so long-lived effects (heartbeat poster) can read
+  // current phase without depending on it (which would re-run the entire
+  // effect on every phase change).
+  const phaseRef = useRef<Phase>(phase);
+  useEffect(() => { phaseRef.current = phase; }, [phase]);
   // Title-card window: matches the visualizer-client's built-in journey
   // intro overlay (~6s when each journey starts). Drives the dot stepper
   // visibility — dots only show during this window + during credits.
@@ -136,6 +141,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   }, [started]);
   const containerRef = useRef<HTMLDivElement>(null);
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Mount timestamp for uptime calculations (status panel + heartbeat).
+  const startedAtMsRef = useRef(Date.now());
 
   // Audio unlock helper. Idempotent — safe to call multiple times.
   // Runs on mount (works automatically in the desktop app where Tauri
@@ -358,6 +365,108 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     }, 2_000);
     return () => clearInterval(id);
   }, []);
+
+  // ─── Heartbeat poster ───────────────────────────────────────────
+  // If the kiosk URL has `?heartbeat_token=...`, POST a snapshot of
+  // current state to /api/installation/heartbeat every 60s. The
+  // /installation/status?token=... page reads the same row so an
+  // operator can verify health from a phone without going on-site.
+  //
+  // Token is the auth — anyone with the URL can read or write that
+  // row. Operators generate one per kiosk (16-byte hex), stamp it
+  // into the kiosk URL, share the matching status URL with whoever
+  // needs visibility.
+  const heartbeatTokenRef = useRef<string | null>(null);
+  const fpsRef = useRef({ frames: 0, sampledAt: performance.now(), fps: 0 });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const tk = params.get("heartbeat_token");
+    if (!tk || !/^[a-f0-9]{16,64}$/i.test(tk)) return;
+    heartbeatTokenRef.current = tk;
+
+    let raf = 0;
+    const onFrame = () => {
+      const r = fpsRef.current;
+      r.frames += 1;
+      const now = performance.now();
+      const elapsed = now - r.sampledAt;
+      if (elapsed >= 2_000) {
+        r.fps = Math.round((r.frames * 1_000) / elapsed);
+        r.frames = 0;
+        r.sampledAt = now;
+      }
+      raf = requestAnimationFrame(onFrame);
+    };
+    raf = requestAnimationFrame(onFrame);
+
+    const post = async () => {
+      const token = heartbeatTokenRef.current;
+      if (!token) return;
+      let audioPaused: boolean | undefined;
+      let audioCurrentTime: number | undefined;
+      let audioDuration: number | undefined;
+      let audioContextState: string | undefined;
+      let lastPlayError: string | null | undefined;
+      let lastPrimingError: string | null | undefined;
+      try {
+        const engine = getAudioEngine();
+        audioPaused = engine.audioElement.paused;
+        audioCurrentTime = engine.audioElement.currentTime;
+        audioDuration = engine.audioElement.duration;
+        audioContextState = engine.audioContext.state;
+        const mod = await import("@/lib/audio/audio-engine");
+        lastPlayError = mod.getLastPlayError();
+        lastPrimingError = mod.getLastPrimingError();
+      } catch { /* engine not yet initialized */ }
+
+      const phase = phaseRef.current;
+      const phaseLabel =
+        phase.kind === "intro"
+          ? "intro"
+          : phase.kind === "journey"
+            ? `journey ${phase.index + 1}/${sequence.length}`
+            : "credits";
+      const journeyName =
+        phase.kind === "journey"
+          ? sequence[phase.index]?.journey.name ?? null
+          : phase.kind === "credits"
+            ? "credits"
+            : sequence[startIndex]?.journey.name ?? null;
+
+      const payload = {
+        uptimeS: Math.floor((Date.now() - startedAtMsRef.current) / 1_000),
+        phaseLabel,
+        journeyName,
+        audioPaused,
+        audioCurrentTime,
+        audioDuration,
+        audioContextState,
+        fps: fpsRef.current.fps,
+        lastPlayError: lastPlayError ?? null,
+        lastPrimingError: lastPrimingError ?? null,
+        userAgent: navigator.userAgent.slice(0, 200),
+        viewport: `${window.innerWidth}×${window.innerHeight}`,
+      };
+
+      try {
+        await fetch("/api/installation/heartbeat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, payload }),
+          keepalive: true,
+        });
+      } catch { /* network blip — next tick will retry */ }
+    };
+
+    // Fire immediately so the dashboard isn't blank for 60s.
+    post();
+    const id = setInterval(post, 60_000);
+    return () => {
+      clearInterval(id);
+      cancelAnimationFrame(raf);
+    };
+  }, [sequence, startIndex]);
 
   // ─── Auto-reload watchdog ───────────────────────────────────────
   // Last-resort recovery for unattended kiosk operation. If no phase
@@ -999,8 +1108,6 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       : phase.kind === "credits"
         ? "credits"
         : sequence[startIndex]?.journey.name ?? null;
-  const startedAtRef = useRef(Date.now());
-
   return (
     <div ref={containerRef} className="h-full w-full relative">
       <VisualizerClient />
@@ -1009,7 +1116,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         phaseKind={phase.kind}
         phaseLabel={statusPhaseLabel}
         journeyName={statusJourneyName}
-        startedAt={startedAtRef.current}
+        startedAt={startedAtMsRef.current}
       />
 
       {/* Debug HUD intentionally disabled in render. Re-enable by
