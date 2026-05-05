@@ -365,19 +365,48 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         console.warn(
           `[installation] Sleep/wake detected — gap ${(gap / 1000).toFixed(0)}s, re-priming audio`,
         );
-        try {
-          ensureResumed();
-          // Only re-fire play() when we're actually mid-journey AND
-          // the store still expects playback. During credits or intro
-          // the audio is intentionally paused — re-priming there
-          // could re-start Ghost mid-credits or bleed audio into the
-          // intro screen (the exact regression the user just hit).
-          const currentPhase = phaseRef.current;
-          if (currentPhase.kind !== "journey") return;
-          const el = getAudioEngine().audioElement;
-          const { isPlaying: shouldPlay } = useAudioStore.getState();
-          if (shouldPlay && el.paused && !el.ended) tryPlay(el);
-        } catch { /* engine not ready */ }
+        const currentPhase = phaseRef.current;
+        // Only re-fire play() when we're actually mid-journey AND
+        // the store still expects playback. During credits or intro
+        // the audio is intentionally paused — re-priming there could
+        // re-start Ghost mid-credits or bleed audio into the intro.
+        if (currentPhase.kind !== "journey") return;
+        try { ensureResumed(); } catch { /* engine not ready */ }
+
+        const el = (() => { try { return getAudioEngine().audioElement; } catch { return null; } })();
+        if (!el) return;
+
+        // Long gaps almost always invalidate the cached Supabase
+        // signed URL (default TTL ~60min, but the audio element's
+        // src is also no longer guaranteed cacheable in the browser).
+        // Re-resolve the URL and reload before playing — without
+        // this, a tab that slept for >60s tries to seek into a
+        // dead source and gets 400 Bad Request from Supabase.
+        if (gap > 60_000) {
+          void (async () => {
+            try {
+              const track = trackForIndex(currentPhase.index);
+              if (!track?.audioUrl) return;
+              const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+              try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
+              const fresh = await resolveAudioUrl(track.audioUrl, track.id);
+              const targetTime = el.currentTime;
+              el.src = fresh;
+              el.load();
+              const onCanPlay = () => {
+                el.removeEventListener("canplay", onCanPlay);
+                try { el.currentTime = targetTime; } catch { /* seek beyond duration, ignore */ }
+                const { isPlaying: shouldPlay } = useAudioStore.getState();
+                if (shouldPlay && !el.ended) tryPlay(el);
+              };
+              el.addEventListener("canplay", onCanPlay, { once: true });
+            } catch { /* best-effort; watchdog will eventually advance */ }
+          })();
+          return;
+        }
+
+        const { isPlaying: shouldPlay } = useAudioStore.getState();
+        if (shouldPlay && el.paused && !el.ended) tryPlay(el);
       }
     }, 2_000);
     return () => clearInterval(id);
