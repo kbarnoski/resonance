@@ -40,34 +40,62 @@ function setCachedUrl(recordingId: string, url: string): void {
 
 export async function resolveAudioUrl(
   audioUrl: string,
-  recordingId?: string
+  recordingId?: string,
+  options?: { asBlob?: boolean }
 ): Promise<string> {
   if (recordingId) {
     const cached = getCachedUrl(recordingId);
-    if (cached) return cached;
+    if (cached && !options?.asBlob) return cached;
   }
 
-  if (!audioUrl.startsWith("/api/")) return audioUrl;
+  let signedUrl: string | null = null;
 
-  try {
-    const res = await fetch(audioUrl);
-    const data = await res.json();
-
-    if (data.url) {
-      if (data.hasAac || (data.codec && data.codec !== "alac")) {
-        if (recordingId) setCachedUrl(recordingId, data.url);
-        return data.url;
+  if (audioUrl.startsWith("/api/")) {
+    try {
+      const res = await fetch(audioUrl);
+      const data = await res.json();
+      if (data.url) {
+        if (data.hasAac || (data.codec && data.codec !== "alac")) {
+          signedUrl = data.url;
+        } else if (data.codec === "alac" && isChromium()) {
+          signedUrl = audioUrl + "?transcode=1";
+        } else {
+          signedUrl = data.url;
+        }
       }
-      if (data.codec === "alac" && isChromium()) {
-        return audioUrl + "?transcode=1";
-      }
-      // Default: use the signed URL directly
-      if (recordingId) setCachedUrl(recordingId, data.url);
-      return data.url;
+    } catch {
+      // fall through
     }
-  } catch {
-    // fall through
+    if (!signedUrl) signedUrl = audioUrl + "?transcode=1";
+  } else {
+    signedUrl = audioUrl;
   }
 
-  return audioUrl + "?transcode=1";
+  // Blob-based loading: fetch the full audio file once, return a
+  // blob: URL. Used in installation mode where reliability of
+  // playthrough matters more than memory footprint — eliminates
+  // every flavor of streaming flake (range request failure, browser
+  // partial-buffer cache poisoning, mid-playback signed-URL
+  // expiration). Pays a 3-5s upfront fetch cost on a 17MB WAV;
+  // happens behind the intro overlay where it's invisible.
+  if (options?.asBlob) {
+    try {
+      const res = await fetch(signedUrl);
+      if (!res.ok) throw new Error(`audio fetch ${res.status}`);
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      // Cache the object URL too so re-loads within the journey
+      // don't re-fetch. Object URLs are scoped to the document,
+      // last until revoked or unload.
+      if (recordingId) setCachedUrl(recordingId, objectUrl);
+      return objectUrl;
+    } catch {
+      // Fall back to streaming the signed URL.
+      if (recordingId) setCachedUrl(recordingId, signedUrl);
+      return signedUrl;
+    }
+  }
+
+  if (recordingId) setCachedUrl(recordingId, signedUrl);
+  return signedUrl;
 }

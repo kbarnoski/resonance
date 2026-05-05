@@ -952,23 +952,17 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
 
     if (!alreadyStarted) {
       const track = trackForIndex(phase.index);
-      // Proactive cache-bust + audio element reset. The browser may
-      // still hold a partial buffer for this track's URL from the
-      // PRIOR cycle (the "stalls at 3.2s on 2nd Ghost cycle" bug —
-      // the cached buffer only had the first chunk and the browser
-      // wouldn't re-fetch the rest). Clearing the sessionStorage URL
-      // cache forces a fresh signed URL, and clearing el.src
-      // detaches the partial audio buffer from the prior URL before
-      // the new src attaches. Audio-provider's loader does the rest.
+      // Force a fresh signed URL for this track on every journey
+      // start in installation mode. The /api/audio/{id} endpoint
+      // generates a unique signed URL each call (different timestamp
+      // in the signature), so clearing the sessionStorage cache
+      // gives us a URL the browser hasn't seen — no partial-buffer
+      // reuse, no cache poisoning. This is the fix for the "stalls
+      // at 3.2s on 2nd Ghost cycle" bug; previously the same cached
+      // URL on cycle 2 made the browser reuse the partial WAV
+      // buffer from cycle 1 and never re-fetch the rest.
       if (track) {
         try { sessionStorage.removeItem(`audio-url-${track.id}`); } catch { /* ok */ }
-        try {
-          const el = getAudioEngine().audioElement;
-          if (el.src && !el.src.startsWith("data:")) {
-            el.src = "";
-            el.load();
-          }
-        } catch { /* engine warming */ }
       }
       // No explicit pause() — calling pause() flips isPlaying to false
       // in the store, and the tick loop's audioEnded check used to
@@ -1199,12 +1193,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
         const fresh = await resolveAudioUrl(tk.audioUrl, tk.id);
         const targetTime = t;
-        // Hard reset el.src so the browser drops any cached partial
-        // audio buffer associated with the prior URL — this is the
-        // key fix for the "stalls at 3.2s on 2nd cycle" bug. Setting
-        // src to "" + load() detaches the partial buffer, then we
-        // re-attach the fresh URL.
-        try { el.src = ""; el.load(); } catch { /* ignore */ }
+        // The fresh URL has a different signature than the cached
+        // one, so the browser won't reuse the prior partial buffer.
+        // No need to reset el.src to "" first (that fires a spurious
+        // "error" event with code SRC_NOT_SUPPORTED that the loop
+        // client's error listener interprets as track load failure).
         el.src = fresh;
         el.load();
         const onCanPlay = () => {
