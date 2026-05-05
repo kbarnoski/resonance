@@ -108,6 +108,11 @@ export function tryPlay(el: HTMLAudioElement): Promise<void> {
     () => { lastPlayError = null; },
     (err: unknown) => {
       lastPlayError = err instanceof Error ? `${err.name}: ${err.message}` : String(err);
+      // AbortError = a pause() landed while this play() was still
+      // resolving. Benign: end-of-track + credits handoff, or any
+      // play/pause sync race. Still recorded in lastPlayError for
+      // diagnostics; just don't pollute the console with it.
+      if (err instanceof Error && err.name === "AbortError") return;
       // eslint-disable-next-line no-console
       console.warn("[audio] play() rejected:", lastPlayError);
     }
