@@ -602,9 +602,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     let titleHideTimer: ReturnType<typeof setTimeout> | null = null;
     if (phase.index > 0) {
       setTitleWindow(true);
-      // Match the visualizer-client journey intro's 6s window in
-      // installation mode — keeps dots in sync with the title overlay.
-      titleHideTimer = setTimeout(() => setTitleWindow(false), 6_000);
+      // visualizer-client's journey-title overlay runs `journeyIntroAnim
+      // 8.5s` in installation mode. Its keyframe holds opacity 1 from
+      // 40% (3.4s) through 70% (5.95s) and fades out 70%→100%
+      // (5.95s→8.5s). Trigger the dot fade-out at exactly the 70%
+      // breakpoint so the dots and title fade out as one unit.
+      titleHideTimer = setTimeout(() => setTitleWindow(false), 5_950);
     }
 
     // No special intro handoff here — the intro phase pre-started
@@ -1132,9 +1135,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
                                  anim used by the journey title)
                 fade-out 1800ms (matches the outer overlay opacity
                                  transition during fading-journey)
-            • Per-journey title (journeys 1-4):
-                fade-in  2400ms (matches journeyIntroAnim 0→40%)
-                fade-out 1800ms (matches journeyIntroAnim 70→100%)
+            • Per-journey title (journeys 1-4, installation 8.5s):
+                fade-in  3400ms (matches journeyIntroAnim 0→40% of 8.5s)
+                fade-out 2550ms (matches journeyIntroAnim 70→100% of 8.5s)
             • Credits: visible throughout. */}
       {sequence.length > 0 && (() => {
         const inIntroJourney = phase.kind === "intro" && introStage === "journey";
@@ -1166,9 +1169,9 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
         } else if (inIntroFadingJourney) {
           transition = "opacity 1800ms ease-out";
         } else if (inJourneyTitle) {
-          transition = "opacity 2400ms ease-in-out";
+          transition = "opacity 3400ms ease-in-out";
         } else if (inJourneyPostTitle) {
-          transition = "opacity 1800ms ease-in-out";
+          transition = "opacity 2550ms ease-in-out";
         } else {
           transition = "opacity 1200ms ease-out";
         }
