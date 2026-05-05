@@ -56,12 +56,14 @@ class JourneyEngine {
   private running = false;
   // When true, primary shader picker excludes 3D modes (orb/galaxy/
   // crystal/cloud/wave/seabed/cage). Dual + tertiary already exclude
-  // 3D unconditionally. Set by installation-loop-client on mount —
-  // R3F Canvas creates a separate WebGL context, and the kiosk runs
-  // up to 5 contexts at once (layer A + B + dual A + B + tertiary).
-  // Browser context limits (~8) made 3D modes cause repeated context
-  // loss + force-remount bursts mid-journey.
-  private installationMode = false;
+  // 3D unconditionally. Set by any route that runs multiple shader
+  // layers simultaneously (installation, /journey/[token]) — R3F
+  // Canvas creates a separate WebGL context, and 5 layers (A + B +
+  // dual A + B + tertiary) plus a 3D primary pushes us over the
+  // browser's ~8 context limit, causing repeated context-loss +
+  // force-remount bursts mid-journey. Single-shader routes
+  // (/room/[token], admin picker) leave this off and 3D works fine.
+  private multiLayerMode = false;
   // When true, primary/dual/tertiary shader switches are skipped —
   // freezes whatever's on screen so the credits crossfade can hide
   // the visualizer over a static frame instead of competing with
@@ -824,19 +826,21 @@ class JourneyEngine {
    * Avoids picking the same shader as the primary.
    */
   /** Check live user preferences — blocked or deleted shaders should be skipped.
-   *  In installation mode, also rejects 3D modes (R3F Canvas adds a
-   *  WebGL context that pushes the kiosk over the browser's context
-   *  limit and triggers context-loss bursts mid-journey). */
+   *  In multi-layer mode, also rejects 3D modes (R3F Canvas adds a
+   *  WebGL context that pushes 5+ simultaneous canvases over the
+   *  browser's context limit and triggers context-loss bursts). */
   private isShaderAllowed(mode: string): boolean {
-    if (this.installationMode && MODES_3D.has(mode)) return false;
+    if (this.multiLayerMode && MODES_3D.has(mode)) return false;
     const blocked = getUserBlockedShaders();
     const deleted = getUserDeletedShaders();
     return !blocked.has(mode) && !deleted.has(mode);
   }
 
-  /** Toggle installation mode — primary picker excludes 3D modes when on. */
-  setInstallationMode(enabled: boolean): void {
-    this.installationMode = enabled;
+  /** Toggle multi-layer mode — primary picker excludes 3D modes when on.
+   *  Routes that mount layer A + B + dual A + B + tertiary should set
+   *  this true on mount and false on unmount. */
+  setMultiLayerMode(enabled: boolean): void {
+    this.multiLayerMode = enabled;
   }
 
   /** Freeze/unfreeze shader switching. Used by installation-loop-client

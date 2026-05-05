@@ -596,6 +596,12 @@ export function SharedJourneyClient({
       ...(seed != null && !isNaN(seed) ? { seed } : {}),
       trackDuration: duration > 0 ? duration : undefined,
     });
+    // This route renders the same multi-layer stack as the kiosk
+    // (layer A + B + dual A + B + tertiary). Block 3D primaries so
+    // the WebGL context count stays under the browser limit. Reset
+    // on unmount so single-shader routes sharing the engine
+    // singleton don't inherit the gate.
+    engine.setMultiLayerMode(true);
 
     // Show "Journey Started" intro overlay
     setJourneyIntroVisible(true);
@@ -604,6 +610,7 @@ export function SharedJourneyClient({
     const phaseTimer = setTimeout(() => setPhaseIndicatorReady(true), 8000);
 
     return () => {
+      engine.setMultiLayerMode(false);
       engine.stop();
       clearTimeout(introTimer);
       clearTimeout(phaseTimer);
