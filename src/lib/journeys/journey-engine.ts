@@ -54,6 +54,14 @@ function getGeometryModes(): Set<string> {
 class JourneyEngine {
   private journey: Journey | null = null;
   private running = false;
+  // When true, primary shader picker excludes 3D modes (orb/galaxy/
+  // crystal/cloud/wave/seabed/cage). Dual + tertiary already exclude
+  // 3D unconditionally. Set by installation-loop-client on mount —
+  // R3F Canvas creates a separate WebGL context, and the kiosk runs
+  // up to 5 contexts at once (layer A + B + dual A + B + tertiary).
+  // Browser context limits (~8) made 3D modes cause repeated context
+  // loss + force-remount bursts mid-journey.
+  private installationMode = false;
   private currentPhaseId: JourneyPhaseId | null = null;
   private phaseChangeCallbacks: Set<PhaseChangeCallback> = new Set();
   private frameCallbacks: Set<(frame: JourneyFrame) => void> = new Set();
@@ -186,10 +194,17 @@ class JourneyEngine {
     // Reset journey-wide shader uniqueness tracker
     this.seenShaders = new Set<string>();
 
-    // Set initial shader from first phase
+    // Set initial shader from first phase. Filter via isShaderAllowed so
+    // installation-mode 3D-block (and user prefs) apply to the very first
+    // shader too — without this, journey 0 could open on a 3D shader and
+    // burn a Canvas remount immediately.
     if (this.journey.phases.length > 0) {
       const firstPhase = this.journey.phases[0];
-      this.currentShaderMode = firstPhase.shaderModes[0] ?? "cosmos";
+      const initial =
+        firstPhase.shaderModes.find((m) => this.isShaderAllowed(m)) ??
+        firstPhase.shaderModes[0] ??
+        "cosmos";
+      this.currentShaderMode = initial;
       this.seenShaders.add(this.currentShaderMode);
     }
 
@@ -803,11 +818,20 @@ class JourneyEngine {
    * Prefers Geometry shaders (~70% of the time) for visual impact.
    * Avoids picking the same shader as the primary.
    */
-  /** Check live user preferences — blocked or deleted shaders should be skipped */
+  /** Check live user preferences — blocked or deleted shaders should be skipped.
+   *  In installation mode, also rejects 3D modes (R3F Canvas adds a
+   *  WebGL context that pushes the kiosk over the browser's context
+   *  limit and triggers context-loss bursts mid-journey). */
   private isShaderAllowed(mode: string): boolean {
+    if (this.installationMode && MODES_3D.has(mode)) return false;
     const blocked = getUserBlockedShaders();
     const deleted = getUserDeletedShaders();
     return !blocked.has(mode) && !deleted.has(mode);
+  }
+
+  /** Toggle installation mode — primary picker excludes 3D modes when on. */
+  setInstallationMode(enabled: boolean): void {
+    this.installationMode = enabled;
   }
 
   private pickDualShader(phase: JourneyPhase): string {

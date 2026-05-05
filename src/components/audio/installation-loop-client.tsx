@@ -175,6 +175,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   // ─── Mount: kiosk + installation flag ─────────────────────────────
   useEffect(() => {
     setInstallationMode(true);
+    // Tell the journey engine to skip 3D shader modes — they create
+    // R3F Canvases with their own WebGL contexts and the kiosk
+    // already runs 4 contexts (layer A + B + dual A + B). Adding 3D
+    // pushed us past the browser's context limit and caused repeated
+    // context loss + force-remount bursts mid-journey.
+    try { getJourneyEngine().setInstallationMode(true); } catch { /* engine warming */ }
     if (isDesktopApp()) enterKioskMode().catch(() => {});
 
     // Fire audio unlock on mount — in the desktop app this works
