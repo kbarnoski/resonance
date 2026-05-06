@@ -6,15 +6,36 @@ Last updated: 2026-05-04
 
 ## Cost expectations (read this before going live)
 
-The kiosk generates an AI image roughly every 7s during a journey (~514 frames/hr). With full quality enabled on `/installation` paths, that's:
-- **~$13/hr per kiosk for 4 of 5 journeys** (flux/dev at $0.025/frame)
-- **~$28/hr per kiosk during Ghost** (flux/pulid at $0.055/frame)
-- **Mix-weighted ~$15-18/hr per kiosk** running continuously
+Two surfaces, two cost tiers:
 
-Per-IP rate limit caps abuse at the same rate (~$18-40/hr/IP worst case for a single IP). Run a kiosk 12hr/day → expect **~$200/day in fal cost per kiosk**. If the bill matters, consider:
+### `/installation` — Tauri venue kiosk (full quality)
+Routes anon traffic through dev/PuLID. ~7s gen cadence (~514 frames/hr):
+- **~$13/hr** for 4 of 5 journeys (flux/dev at $0.025/frame)
+- **~$28/hr** during Ghost (flux/pulid at $0.055/frame)
+- **Mix-weighted ~$15-18/hr** running continuously
+- 12hr/day kiosk → **~$200/day in fal cost**
+
+Per-IP rate limit (720 frames/hr) caps abuse at ~$18-40/hr/IP.
+
+### `/demo` — broad reviewer link (cheap)
+Routes anon traffic to flux/schnell ($0.003/frame). ~$0.50 per full cycle.
+- 10 reviewers × 1 cycle = ~$5
+- 100 reviewers × 1 cycle = ~$50
+- 1000 reviewers × 1 cycle = ~$500
+
+Reviewers see a representative-but-lower-quality version (4 inference steps vs 28, no negative-prompt enforcement, no Ghost identity lock). Acceptable tradeoff for unbounded sharing.
+
+### If the venue bill matters even at full quality
 - Pre-baking the fallback library (§3) — when fal is "intentionally down" via the cost-cap, fallback kicks in
 - Cutting the AI cadence in `ai-image-layer.tsx` `GEN_INTERVAL_MIN_BASE` from 6.5s to 12s+ (~halves cost)
 - Disabling AI on certain journeys via the journey's `aiImageEnabled` flag
+
+### Switching `/demo` back to full quality
+If you want to send the link to a small, qualified audience and pay for full quality, edit `src/app/api/ai-image/generate/route.ts`:
+```diff
+-const isInstallationKiosk = /\/installation(\?|$|\/)/.test(referer);
++const isInstallationKiosk = /\/(demo|installation)(\?|$|\/)/.test(referer);
+```
 
 ---
 

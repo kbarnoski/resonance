@@ -56,28 +56,31 @@ export async function POST(request: Request) {
   // tradeoffs:
   //   1. Authed user (creator's workflow) — full quality (dev/pulid),
   //      generous limits.
-  //   2. Anon on /demo or /installation — venue + reviewer surfaces.
-  //      Full quality (dev/pulid). Rate limit MUST be wider than the
-  //      kiosk's actual generation cadence (~514 frames/hr from the
-  //      ai-image-layer's 7s GEN_INTERVAL) plus headroom for phase-
-  //      change bursts and retries. Otherwise the kiosk just 429-spams
-  //      itself.
-  //   3. Anon elsewhere — schnell only, anon-tight limit.
+  //   2. Anon on /installation — Tauri venue kiosk. Full quality
+  //      (dev/pulid). Rate limit MUST be wider than the kiosk's
+  //      actual generation cadence (~514 frames/hr from the
+  //      ai-image-layer's 7s GEN_INTERVAL).
+  //   3. Anon on /demo and everywhere else — schnell only at the
+  //      anon-tight limit. /demo is the broad reviewer-link surface,
+  //      and full-quality there at ~$5/cycle was prohibitively
+  //      expensive for unbounded sharing. Schnell brings cycle cost
+  //      to ~$0.50. Reviewers see a representative-but-cheaper
+  //      version; venue install gets the real thing.
   //
-  // Installation detection is referer-based. A spoofed referer can get
-  // dev quality but is still capped by the per-IP rate limit. Tradeoff
-  // is worth it: real venue visitors see the work as intended.
+  // Installation detection is referer-based — match `/installation`
+  // exactly, NOT `/demo`. A spoofed referer can get dev quality but
+  // is still capped by the per-IP rate limit.
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   const referer = request.headers.get("referer") || "";
-  const isInstallationReferer = /\/(demo|installation)(\?|$|\/)/.test(referer);
+  const isInstallationKiosk = /\/installation(\?|$|\/)/.test(referer);
   const isAuthed = !!user;
-  const allowFullQuality = isAuthed || isInstallationReferer;
+  const allowFullQuality = isAuthed || isInstallationKiosk;
   // Installation: 30 burst + 0.2/sec refill ≈ 720/hr sustained. Above
   // the layer's 7s cadence (~514/hr) with headroom for bursts. At dev
   // worst case $18/hr/IP, pulid $40/hr/IP — meaningful but bounded.
-  const burst = isAuthed ? 30 : isInstallationReferer ? 30 : 8;
-  const refillPerSec = isAuthed ? 0.5 : isInstallationReferer ? 0.2 : 0.125;
+  const burst = isAuthed ? 30 : isInstallationKiosk ? 30 : 8;
+  const refillPerSec = isAuthed ? 0.5 : isInstallationKiosk ? 0.2 : 0.125;
   const rl = await checkRateLimit(
     rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
     burst,
