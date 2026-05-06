@@ -241,10 +241,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       if (reallyEnded) {
         useAudioStore.getState().setCurrentTime(dur);
       } else {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `[audio-provider] ignoring spurious 'ended' (t=${t.toFixed(1)} / dur=${dur.toFixed(1)})`,
-        );
+        // Spurious ended event — fires when src is being set/reset
+        // (audio element fires `ended` with t=0/dur=0 during initial
+        // mount + every src swap). Already handled correctly here
+        // (we just ignore); silenced to keep the console clean for
+        // actual diagnostics.
         return;
       }
 
