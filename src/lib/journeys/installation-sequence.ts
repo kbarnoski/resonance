@@ -15,7 +15,7 @@
  * Five-act arc (~18:47 audio + 26s intro/credits ≈ 19:13 cycle):
  *   1. Ascension     (17th St 63,     3:20) — sacred invocation
  *   2. Inferno       (KB_REALIZED,    4:02) — fire / intensity
- *   3. Snowflake     (KB_SFLAKE_TK1,  3:05) — cooling / recovery
+ *   3. Snowflake     (KB_SFLAKE_TK5_MOOG, 2:58) — cooling / recovery
  *   4. Abyssal Dive  (17th St 62,     4:41) — descent, bridge to spectral
  *   5. Ghost         (KB_GHOST_REF,   3:39) — spectral closure
  *

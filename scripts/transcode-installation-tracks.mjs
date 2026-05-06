@@ -33,7 +33,7 @@ const GHOST_RECORDING_ID = "549fc519-f7fc-4c38-a771-adaad2edbc81";
 const TRACK_PATTERNS = [
   { id: "the-ascension", pattern: "17th St 63", exact: true },
   { id: "inferno",       pattern: "%KB_REALIZED%" },
-  { id: "first-snow",    pattern: "KB_SFLAKE_TK1_REF_2.0", exact: true },
+  { id: "first-snow",    pattern: "KB_SFLAKE_TK5_MOOG_REF_2.0", exact: true },
   { id: "abyssal-dive",  pattern: "%Folsom St 9%" },
   { id: "ghost",         pattern: "%KB_GHOST_REF%" },
 ];
