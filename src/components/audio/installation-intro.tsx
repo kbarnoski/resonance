@@ -1,6 +1,7 @@
 "use client";
 
 import type { Journey } from "@/lib/journeys/types";
+import { ResonanceMark } from "@/components/branding/resonance-mark";
 
 /* Font readiness is gated upstream in installation-loop-client. By the
  * time this component renders any text, every Cormorant Garamond
@@ -108,19 +109,17 @@ export function InstallationIntro({ stage = "cycle", journey, trackArtist }: Pro
 function CycleTextInner() {
   return (
     <div style={{ animation: "installationContentFade 1400ms ease-out forwards", opacity: 0 }}>
-      {/* Resonance logo — the same interlocking-circles mark used as
-          the Tauri app icon + favicon. Sized to feel grand without
-          competing with the typographic title underneath. */}
-      <img
-        src="/resonance-logo.png"
-        alt=""
-        aria-hidden
+      {/* Resonance brand mark — same stylized branching SVG used in
+          the sidebar nav. Sized to feel grand without competing with
+          the typographic title underneath. */}
+      <ResonanceMark
+        color="rgba(255, 255, 255, 0.9)"
+        strokeWidth={1.2}
         style={{
           display: "block",
-          width: "clamp(96px, 12vw, 160px)",
-          height: "auto",
+          width: "clamp(72px, 8vw, 112px)",
+          height: "clamp(72px, 8vw, 112px)",
           margin: "0 auto 1.5rem",
-          imageRendering: "auto",
         }}
       />
       <div

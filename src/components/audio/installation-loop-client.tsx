@@ -12,6 +12,7 @@ import { InstallationIntro } from "./installation-intro";
 import { InstallationCredits } from "./installation-credits";
 import { InstallationDebugHud, logInstallFailure } from "./installation-debug-hud";
 import { InstallationStatusPanel } from "./installation-status-panel";
+import { ResonanceMark } from "@/components/branding/resonance-mark";
 import {
   INTRO_MS,
   CREDITS_MS,
@@ -1512,15 +1513,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               credit block. The phase machine SKIPS the cycle text
               after the user taps (sets introStage to "fading-cycle"
               directly) so this content doesn't render twice. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/resonance-logo.png"
-            alt=""
-            aria-hidden
+          <ResonanceMark
+            color="rgba(255, 255, 255, 0.9)"
+            strokeWidth={1.2}
             style={{
               display: "block",
-              width: "clamp(96px, 12vw, 160px)",
-              height: "auto",
+              width: "clamp(72px, 8vw, 112px)",
+              height: "clamp(72px, 8vw, 112px)",
               margin: "0 auto 1.5rem",
             }}
           />

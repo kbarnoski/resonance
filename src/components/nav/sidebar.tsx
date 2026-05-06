@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { ResonanceMark } from "@/components/branding/resonance-mark";
 import {
   Library,
   Upload,
@@ -66,30 +67,7 @@ export function Sidebar() {
 
   const logo = (
     <div className="flex items-center gap-2.5">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        className="h-6 w-6 text-white/70"
-        strokeWidth="1.5"
-        stroke="currentColor"
-      >
-        <path
-          d="M12 3C12 3 12 8 12 12C12 16 12 21 12 21"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 7C14.5 7 16.5 5.5 16.5 3.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 12C9 12 6.5 10 6.5 7.5"
-          strokeLinecap="round"
-        />
-        <path
-          d="M12 17C15 17 17.5 15 17.5 12.5"
-          strokeLinecap="round"
-        />
-      </svg>
+      <ResonanceMark className="h-6 w-6 text-white/70" />
       <span className="text-base font-light tracking-tight text-white/90">Resonance</span>
     </div>
   );
