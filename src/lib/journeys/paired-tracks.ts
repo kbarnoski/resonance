@@ -11,7 +11,7 @@
  */
 export const PAIRED_TRACKS: Record<string, string> = {
   // ─── Already paired ────────────────────────────────────────────
-  "first-snow": "%KB_SFLAKE%",
+  "first-snow": "=KB_SFLAKE_TK1_REF_2.0",
   "inferno": "%KB_REALIZED%",
   "cosmic-drift": "%17th St 61%",
   "neural-link": "%17th St 64%",
