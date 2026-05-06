@@ -252,11 +252,14 @@ export function AiImageLayer({
     if (isJourneyStart) {
       // Soft reset on journey change: cancel anything in-flight from the
       // previous journey (so wrong-prompt images don't deliver), clear
-      // cache + callbacks, but DELIBERATELY KEEP existing rendered layers
-      // on the canvas. They'll fade out naturally via the per-image
-      // cross-dissolve as new images for the new journey arrive on top.
-      // This produces a true visual handoff — old imagery lingers and
-      // fades while new imagery comes in — instead of an abrupt clear.
+      // cache + callbacks. THEN mark every still-visible layer as
+      // purge-fading so the old journey's imagery smoothly fades out
+      // over PURGE_FADEOUT_DURATION (1.5s) instead of either dropping
+      // abruptly OR sitting at full opacity for the 5+s before the
+      // new journey's first image lands. Without the purge, layers
+      // only fade when displaced by a new image at capacity — which
+      // means a long visible gap of old imagery that suddenly
+      // disappears as new ones cycle in.
       const service = getRealtimeImageService();
       service.cancelInFlight();
       service.clearImageCache();
@@ -265,11 +268,17 @@ export function AiImageLayer({
       lastGenTimeRef.current = 0;
       genCountRef.current = 0;
       firstImageFiredRef.current = false;
-      // NOTE: layersRef + canvas intentionally NOT cleared. The render
-      // loop's natural fade-out keeps drawing old images at decreasing
-      // opacity until new ones replace them. First load: layersRef is
-      // already empty so this is a no-op; subsequent switches: smooth
-      // crossfade replaces the previous abrupt clear.
+
+      const now = performance.now();
+      const existingLayers = layersRef.current;
+      for (const layer of existingLayers) {
+        if (layer.state !== "fading-out") {
+          layer.fadeStartOpacity = layer.opacity;
+          layer.state = "fading-out";
+          layer.fadeStartTime = now;
+          layer.purge = true;
+        }
+      }
     } else {
       // Same-journey prompt change (either phase transition OR a within-
       // phase sequence advance). Do NOT cancel in-flight requests — the
