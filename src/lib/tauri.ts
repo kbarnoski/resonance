@@ -54,6 +54,17 @@ export async function nativeAudioLoad(url: string, recordingId: string): Promise
   await invoke("cmd_audio_load", { url, recordingId });
 }
 
+/** Pre-warm the local audio cache for a list of tracks. Returns the
+ *  recordingIds that ended up cached (already-cached + newly-cached).
+ *  Failed downloads are logged on the Rust side but don't fail the
+ *  whole batch — uncached tracks fall back to streaming on demand. */
+export async function nativeAudioPrefetch(
+  tracks: { url: string; recordingId: string }[],
+): Promise<string[]> {
+  const { invoke } = await import("@tauri-apps/api/core");
+  return invoke<string[]>("cmd_audio_prefetch", { tracks });
+}
+
 export async function nativeAudioPlay(): Promise<void> {
   const { invoke } = await import("@tauri-apps/api/core");
   await invoke("cmd_audio_play");

@@ -164,6 +164,61 @@ pub async fn cmd_audio_load(
     Ok(())
 }
 
+/// Pre-warm the audio cache: download every track in the supplied
+/// list that isn't already cached, in parallel. Returns once all
+/// downloads have finished (or failed individually). Called by the
+/// installation kiosk at mount so the very first cycle has zero
+/// network audio dependency. Failures are logged but don't fail the
+/// whole batch — on-demand cmd_audio_load will fall back to streaming
+/// for any track that didn't pre-cache.
+#[derive(serde::Deserialize)]
+pub struct PrefetchTrack {
+    pub url: String,
+    #[serde(rename = "recordingId")]
+    pub recording_id: String,
+}
+
+#[tauri::command]
+pub async fn cmd_audio_prefetch(
+    app: tauri::AppHandle,
+    tracks: Vec<PrefetchTrack>,
+) -> Result<Vec<String>, String> {
+    let mut handles = Vec::with_capacity(tracks.len());
+    let mut already_cached = Vec::new();
+    for t in tracks {
+        if cache::get_cached_path(&app, &t.recording_id).is_some() {
+            log::info!("prefetch: {} already cached", t.recording_id);
+            already_cached.push(t.recording_id);
+            continue;
+        }
+        if !is_allowed_audio_host(&t.url) {
+            log::warn!("prefetch: rejected disallowed host for {}", t.recording_id);
+            continue;
+        }
+        let app_handle = app.clone();
+        let url = t.url.clone();
+        let recording_id = t.recording_id.clone();
+        handles.push(tokio::spawn(async move {
+            match cache::download_and_cache(&app_handle, &url, &recording_id).await {
+                Ok(_) => Some(recording_id),
+                Err(e) => {
+                    log::warn!("prefetch failed for {}: {}", recording_id, e);
+                    None
+                }
+            }
+        }));
+    }
+    let mut newly_cached = Vec::new();
+    for h in handles {
+        if let Ok(Some(id)) = h.await {
+            newly_cached.push(id);
+        }
+    }
+    let mut all = already_cached;
+    all.extend(newly_cached);
+    Ok(all)
+}
+
 #[tauri::command]
 pub fn cmd_audio_play(engine: tauri::State<'_, AudioEngine>) -> Result<(), String> {
     engine.send_cmd(AudioCommand::Play)

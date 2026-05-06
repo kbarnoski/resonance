@@ -184,7 +184,37 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // reset on unmount so single-shader routes that share the engine
     // singleton (/room/[token]) don't inherit it.
     try { getJourneyEngine().setMultiLayerMode(true); } catch { /* engine warming */ }
-    if (isDesktopApp()) enterKioskMode().catch(() => {});
+    if (isDesktopApp()) {
+      enterKioskMode().catch(() => {});
+      // Pre-warm the local audio cache so the very first cycle has
+      // zero network audio dependency. Resolves every track URL via
+      // the audio API (in parallel), then asks the Tauri side to
+      // download anything not already cached. Subsequent cycles play
+      // from the persistent local cache. Fire-and-forget — on-demand
+      // load will fall back to streaming for any track that didn't
+      // pre-cache.
+      void (async () => {
+        try {
+          const tracks = sequence
+            .map((entry, i) => entry.track ?? trackForIndex(i))
+            .filter((t): t is Track => t !== null && t !== undefined && !!t.audioUrl);
+          const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
+          const { nativeAudioPrefetch } = await import("@/lib/tauri");
+          const resolved = await Promise.all(
+            tracks.map(async (t) => ({
+              url: await resolveAudioUrl(t.audioUrl, t.id),
+              recordingId: t.id,
+            })),
+          );
+          const cached = await nativeAudioPrefetch(resolved);
+          // eslint-disable-next-line no-console
+          console.log(`[installation] Pre-warmed audio cache: ${cached.length}/${resolved.length} tracks`);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.warn("[installation] Audio prefetch failed:", err);
+        }
+      })();
+    }
 
     // Fire audio unlock on mount — in the desktop app this works
     // immediately (no autoplay restriction); in browser it'll succeed

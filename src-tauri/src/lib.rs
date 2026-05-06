@@ -90,6 +90,7 @@ pub fn run() {
             set_cursor_visible,
             get_displays,
             audio::cmd_audio_load,
+            audio::cmd_audio_prefetch,
             audio::cmd_audio_play,
             audio::cmd_audio_pause,
             audio::cmd_audio_stop,

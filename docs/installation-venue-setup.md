@@ -143,10 +143,14 @@ Paste the URL into the kiosk URL's `webhook_url` param. You'll get a beacon on b
 |---|---|---|
 | WebGL context recovery (2D + 3D) | Re-creates shaders + buffers on a fresh GPU context | `webglcontextrestored` event |
 | Sleep/wake recovery | Re-primes audio after laptop wakes | Detects >30s tick gap |
+| Audio stall watchdog | Force-reloads source if currentTime stops advancing for 5s+ | Polled every 2s |
 | Auto-reload watchdog | `location.reload()` if no phase change in 16min | Phase machine wedge |
 | Pre-baked fallback library | Cycles cached images when fal is down | 3+ consecutive REST failures |
 | Cost cap on anon traffic | Caps fal spend per IP via rate limiter | Always on |
 | Full image quality on `/demo` + `/installation` | Routes anon kiosk visitors to dev/PuLID instead of schnell | Referer-based |
+| **Tauri local audio cache** | First play: download + cache locally (~5MB M4A); subsequent plays from disk; persists across restarts | `cmd_audio_load` checks cache first |
+| **Tauri audio cache pre-warm** | Downloads all 5 installation tracks at app mount so even cycle 1 has zero network audio | `cmd_audio_prefetch` on mount |
+| M4A transcode for cloud `/demo` | Installation tracks served as compressed AAC (~5MB) instead of raw WAV (~80MB) | `recordings.aac_file_name` populated |
 
 ---
 
