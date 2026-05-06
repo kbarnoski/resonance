@@ -1512,6 +1512,18 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               credit block. The phase machine SKIPS the cycle text
               after the user taps (sets introStage to "fading-cycle"
               directly) so this content doesn't render twice. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/resonance-logo.png"
+            alt=""
+            aria-hidden
+            style={{
+              display: "block",
+              width: "clamp(96px, 12vw, 160px)",
+              height: "auto",
+              margin: "0 auto 1.5rem",
+            }}
+          />
           <div
             className="text-white/90"
             style={{
