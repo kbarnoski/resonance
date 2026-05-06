@@ -1024,9 +1024,32 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // crossfade handles shader transitions. The lengthened title
     // overlay (10s in installation mode) draws the eye away from
     // the background handoff.
+    // Per-journey pre-entry pause. Holds the previous journey's
+    // last frame in silence for N ms before swapping phase, giving
+    // climactic transitions room to breathe instead of cutting in.
+    // Currently only Ghost gets this — the audience feels the
+    // shift from "human" tracks (Ascension/Inferno/Snowflake/Abyssal)
+    // into the spectral closing. Generalize to a Journey field
+    // (e.g. journey.preEntryPauseMs) if more journeys need it.
+    const PRE_ENTRY_PAUSE_MS: Record<string, number> = {
+      ghost: 2000,
+    };
+    let advanceTimer: ReturnType<typeof setTimeout> | null = null;
     const advance = () => {
       if (phase.index + 1 < sequence.length) {
-        setPhase({ kind: "journey", index: phase.index + 1 });
+        const nextJourneyId = sequence[phase.index + 1]?.journey.id;
+        const pauseMs = nextJourneyId ? PRE_ENTRY_PAUSE_MS[nextJourneyId] ?? 0 : 0;
+        if (pauseMs > 0) {
+          // Pause audio immediately so the breath actually IS silent —
+          // without this, audio-provider's onEnded handler keeps
+          // currentTrack mounted and the audio element could re-fire.
+          try { getAudioEngine().audioElement.pause(); } catch { /* ok */ }
+          advanceTimer = setTimeout(() => {
+            setPhase({ kind: "journey", index: phase.index + 1 });
+          }, pauseMs);
+        } else {
+          setPhase({ kind: "journey", index: phase.index + 1 });
+        }
       } else {
         setPhase({ kind: "credits" });
       }
@@ -1340,6 +1363,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       cancelAnimationFrame(raf);
       clearInterval(bgSafetyTick);
       clearInterval(preloadCheckId);
+      if (advanceTimer) clearTimeout(advanceTimer);
       if (titleHideTimer) clearTimeout(titleHideTimer);
       clearInterval(playWatchdog);
       clearInterval(reloadAttempt);
