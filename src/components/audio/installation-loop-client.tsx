@@ -144,6 +144,11 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
   const cursorTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Mount timestamp for uptime calculations (status panel + heartbeat).
   const startedAtMsRef = useRef(Date.now());
+  // Hidden audio element used to pre-buffer the next journey's track
+  // ~10s before the current one ends. Populates the browser's media
+  // cache so the main audio element's load() at transition time hits
+  // the cache instead of cold-fetching from Supabase.
+  const preloadAudioRef = useRef<HTMLAudioElement | null>(null);
 
   // Audio unlock helper. Idempotent — safe to call multiple times.
   // Runs on mount (works automatically in the desktop app where Tauri
@@ -274,6 +279,12 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       if (isDesktopApp()) exitKioskMode().catch(() => {});
       document.removeEventListener("click", onAnyClick);
       document.removeEventListener("touchstart", onAnyClick);
+      // Tear down the hidden preload audio element if it was created.
+      if (preloadAudioRef.current) {
+        try { preloadAudioRef.current.pause(); } catch { /* ignore */ }
+        try { preloadAudioRef.current.src = ""; } catch { /* ignore */ }
+        preloadAudioRef.current = null;
+      }
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -1022,33 +1033,46 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     };
 
     // ─── Pre-load next journey's audio ────────────────────────────
-    // ~6 seconds before the current track ends, kick off a fetch of
-    // the next journey's audio URL so the swap at advance() time is
-    // gapless. Just resolves the signed URL + warms the browser
-    // cache via a low-priority HEAD-style fetch.
+    // ~10 seconds before the current track ends, point a HIDDEN
+    // <audio> element at the next journey's URL with preload="auto".
+    // The browser fetches the audio data into the media cache (NOT
+    // just the HTTP cache — different bucket, used by audio element
+    // playback). When the main audio element later requests the
+    // same URL at journey transition, the bytes are already there
+    // and canplay fires within ~50-100ms instead of 1-2s.
+    //
+    // This is the critical difference vs the previous fetch()-based
+    // warmer: a plain fetch() doesn't populate the media cache the
+    // way an audio element's range request does, so the main
+    // element's load() still cold-fetched. A hidden audio element
+    // mimics the eventual request shape exactly.
     let preloadFired = false;
     const preloadCheckId = setInterval(() => {
       if (preloadFired) return;
       const { currentTime, duration } = useAudioStore.getState();
       if (duration <= 0 || currentTime <= 0) return;
       const remaining = duration - currentTime;
-      if (remaining > 6 || remaining < 0) return;
-      // Within the 6s pre-load window — find the next journey's track
+      if (remaining > 10 || remaining < 0) return;
       const nextEntry = sequence[phase.index + 1];
       if (!nextEntry) return;
       const nextTrack = nextEntry.track ?? trackForIndex(phase.index + 1);
       if (!nextTrack?.audioUrl) return;
       preloadFired = true;
-      // Fire-and-forget. resolveAudioUrl caches the signed URL in
-      // sessionStorage; the subsequent fetch warms the CDN edge so
-      // the audio element's load() is near-instant when the swap
-      // happens.
       void (async () => {
         try {
           const { resolveAudioUrl } = await import("@/lib/audio/resolve-audio-url");
           const resolved = await resolveAudioUrl(nextTrack.audioUrl, nextTrack.id);
-          // Low-priority byte fetch to warm the network path
-          fetch(resolved, { priority: "low" as RequestPriority }).catch(() => {});
+          // Reuse the same hidden element across journeys instead of
+          // creating a new one each time — keeps memory bounded.
+          if (!preloadAudioRef.current) {
+            const el = new Audio();
+            el.preload = "auto";
+            el.crossOrigin = "anonymous";
+            el.muted = true; // belt & suspenders; we never call play() but be safe
+            preloadAudioRef.current = el;
+          }
+          preloadAudioRef.current.src = resolved;
+          preloadAudioRef.current.load();
         } catch { /* preload best-effort; advance will resolve again */ }
       })();
     }, 1000);
