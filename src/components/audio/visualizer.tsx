@@ -69,6 +69,9 @@ export interface VisualizerCoreProps {
   showJourneyButton?: boolean;
   showTransport?: boolean;
   controlsVisible?: boolean;
+  /** Admin opt-in for the in-bar HQ images toggle. Hidden for everyone
+   *  else (default cheap schnell). Server gates on isAdmin() too. */
+  isAdmin?: boolean;
   configRef?: React.MutableRefObject<{ mode: VisualizerMode; textOverlayMode: "off" | "poetry" | "story"; whisperEnabled: boolean } | null>;
   children?: React.ReactNode;
   /** Journey mode override — when set, shader mode comes from journey engine */
@@ -487,6 +490,7 @@ export function VisualizerCore({
   onJourneyToggle,
   showJourneyButton,
   showTransport,
+  isAdmin = false,
   controlsVisible = true,
   configRef,
   children,
@@ -550,6 +554,11 @@ export function VisualizerCore({
   // screens render against flat black. No WebGL work, no main-thread contention,
   // no fragment cost on weak hardware.
   const shadersHidden = journeyBrowsing;
+
+  // Admin HQ images toggle — only the bar reads this; the AI image
+  // layer reads via useAudioStore.getState() at gen time.
+  const highQualityImages = useAudioStore((s) => s.highQualityImages);
+  const setHighQualityImages = useAudioStore((s) => s.setHighQualityImages);
 
   // Transport state — only read when transport is shown
   const currentTrack = useAudioStore((s) => showTransport ? s.currentTrack : null);
@@ -1215,26 +1224,8 @@ export function VisualizerCore({
         </>
       )}
 
-      {/* ─── Studio back — top-left, fades with controls (mirrors fullscreen) ─── */}
-      {!installationMode && exitLabel === "back" && !journeyBrowsing && (currentTrack || journeyActive) && (
-        <button
-          onClick={onExit}
-          className="absolute top-6 left-6 flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75 cursor-pointer"
-          style={{
-            zIndex: 10,
-            opacity: controlsVisible ? 1 : 0,
-            pointerEvents: controlsVisible ? "auto" : "none",
-            border: "1px solid rgba(255,255,255,0.1)",
-            fontSize: "0.72rem",
-            fontFamily: "var(--font-geist-mono)",
-            letterSpacing: "0.05em",
-          }}
-          title="Back to Studio"
-        >
-          <ChevronLeft className="h-3.5 w-3.5" />
-          Studio
-        </button>
-      )}
+      {/* Studio back button removed — overlapped journey content and the
+          Resonance brand mark in the sidebar already provides navigation. */}
 
       {/* ─── Fullscreen toggle — top-right corner (desktop only; iOS doesn't support requestFullscreen) ─── */}
       {!installationMode && onFullscreenToggle && !journeyBrowsing && (currentTrack || journeyActive) && (
@@ -1605,8 +1596,33 @@ export function VisualizerCore({
           {/* Spacer — pushes exit to right edge (wider to shift center content left) */}
           <div className="flex-[2]" />
 
-          {/* RIGHT: Share + Studio / Exit */}
+          {/* RIGHT: HQ toggle (admin) + Share + Studio / Exit */}
           <div className="flex items-center gap-1.5">
+            {/* Admin-only AI image quality toggle. Default OFF (cheap
+                schnell, ~$0.003/frame). When ON, uses dev/PuLID
+                (~$0.025-0.055/frame). Server gates this on isAdmin()
+                too — non-admins sending the flag are rejected. Hidden
+                in shared journeys (this is the in-app player only;
+                share links use the SharedJourneyClient which doesn't
+                render this control bar). */}
+            {isAdmin && (currentTrack || journeyActive) && (
+              <button
+                onClick={() => setHighQualityImages(!highQualityImages)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-lg transition-colors duration-75"
+                style={{
+                  border: highQualityImages
+                    ? "1px solid rgba(168, 216, 234, 0.6)"
+                    : "1px solid rgba(255,255,255,0.1)",
+                  background: highQualityImages ? "rgba(168, 216, 234, 0.12)" : "transparent",
+                  color: highQualityImages ? "rgba(168, 216, 234, 0.95)" : "rgba(255,255,255,0.4)",
+                  fontSize: "0.72rem",
+                  fontFamily: "var(--font-geist-mono)",
+                }}
+                title={highQualityImages ? "High-quality images: ON (dev/PuLID, ~$0.025-0.055/frame)" : "High-quality images: OFF (schnell, ~$0.003/frame). Click to enable."}
+              >
+                HQ {highQualityImages ? "✓" : ""}
+              </button>
+            )}
             {(journeyActive ? onShareJourney : onShareRoom) && (
               <button
                 onClick={journeyActive ? onShareJourney : onShareRoom}

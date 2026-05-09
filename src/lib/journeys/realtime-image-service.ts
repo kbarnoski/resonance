@@ -16,6 +16,10 @@ interface RealtimeImageOptions {
   /** Optional character-reference image. When present, the server
    *  routes to flux-pulid for identity-locked generation. */
   referenceImageUrl?: string;
+  /** Admin opt-in flag — request flux/dev or flux-pulid instead of
+   *  the default schnell. Server validates via isAdmin() so the
+   *  flag is non-spoofable for non-admin users. */
+  highQuality?: boolean;
 }
 
 type FrameCallback = (imageUrl: string) => void;
@@ -248,6 +252,7 @@ class RealtimeImageService {
           height: options.height ?? 768,
           negativePrompt: options.negativePrompt,
           referenceImageUrl: options.referenceImageUrl,
+          highQuality: options.highQuality === true,
         }),
       });
       clearTimeout(timeout);

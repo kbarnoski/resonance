@@ -8,6 +8,7 @@ import { GHOST_ANGEL_WHITE, GHOST_ANGEL_BLACK, GHOST_ANGEL_WINGLESS_WHITE, GHOST
 import { getDislikedImagePhrases } from "@/lib/journeys/adaptive-engine";
 import { createSeededRandom } from "@/lib/journeys/seeded-random";
 import { getTierProfile } from "@/lib/audio/device-tier";
+import { useAudioStore } from "@/lib/audio/audio-store";
 
 interface AiImageLayerProps {
   /** AI prompt for image generation */
@@ -531,6 +532,7 @@ export function AiImageLayer({
         width: 1024,
         height: 1024,
         negativePrompt,
+        highQuality: useAudioStore.getState().highQualityImages,
       })
       .then(async (url) => {
         if (!url) {

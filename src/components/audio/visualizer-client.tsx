@@ -1695,6 +1695,7 @@ export function VisualizerClient({
           dataArray={dataArray}
           analysis={activeAnalysis}
           defaultMood="flowing"
+          isAdmin={isAdmin}
           onExit={handleExit}
           exitLabel="back"
           liveText={liveText}

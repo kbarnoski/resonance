@@ -52,20 +52,20 @@ export async function POST(request: Request) {
     );
   }
 
-  // Auth-optional. Three traffic classes with different cost/quality
-  // tradeoffs:
-  //   1. Authed user (creator's workflow) — full quality (dev/pulid),
-  //      generous limits.
-  //   2. Anon on /installation — Tauri venue kiosk. Full quality
-  //      (dev/pulid). Rate limit MUST be wider than the kiosk's
-  //      actual generation cadence (~514 frames/hr from the
-  //      ai-image-layer's 7s GEN_INTERVAL).
-  //   3. Anon on /demo and everywhere else — schnell only at the
-  //      anon-tight limit. /demo is the broad reviewer-link surface,
-  //      and full-quality there at ~$5/cycle was prohibitively
-  //      expensive for unbounded sharing. Schnell brings cycle cost
-  //      to ~$0.50. Reviewers see a representative-but-cheaper
-  //      version; venue install gets the real thing.
+  // Three traffic classes with different cost/quality tradeoffs:
+  //   1. Anon on /installation — Tauri venue kiosk. Full quality
+  //      (dev/pulid) automatically. Rate limit wide enough for the
+  //      kiosk cadence (~514 frames/hr from the ai-image-layer's 7s
+  //      GEN_INTERVAL).
+  //   2. Authed admin who explicitly opted in via the in-app
+  //      "high quality" toggle — full quality. Used for testing /
+  //      preview work. Body must include highQuality:true AND the
+  //      session must pass isAdmin().
+  //   3. Everyone else (authed regular users, anon /demo, bare anon)
+  //      — schnell only. Authed users default to schnell because
+  //      cost adds up fast on dev/pulid; per-cycle cost drops from
+  //      ~$5 (dev) to ~$0.50 (schnell). The admin toggle is the
+  //      escape hatch when high-fidelity preview is needed.
   //
   // Installation detection is referer-based — match `/installation`
   // exactly, NOT `/demo`. A spoofed referer can get dev quality but
@@ -75,12 +75,17 @@ export async function POST(request: Request) {
   const referer = request.headers.get("referer") || "";
   const isInstallationKiosk = /\/installation(\?|$|\/)/.test(referer);
   const isAuthed = !!user;
-  const allowFullQuality = isAuthed || isInstallationKiosk;
-  // Installation: 30 burst + 0.2/sec refill ≈ 720/hr sustained. Above
-  // the layer's 7s cadence (~514/hr) with headroom for bursts. At dev
-  // worst case $18/hr/IP, pulid $40/hr/IP — meaningful but bounded.
-  const burst = isAuthed ? 30 : isInstallationKiosk ? 30 : 8;
-  const refillPerSec = isAuthed ? 0.5 : isInstallationKiosk ? 0.2 : 0.125;
+  // Pre-parse body to read the highQuality opt-in flag. Re-parsed
+  // below for the rest of the request shape — the cost is trivial.
+  let bodyForFlag: { highQuality?: unknown } = {};
+  try { bodyForFlag = await request.clone().json(); } catch { /* ignore */ }
+  const wantsHighQuality = bodyForFlag.highQuality === true;
+  const isAdminUser = wantsHighQuality && (await isAdmin());
+  const allowFullQuality = isInstallationKiosk || isAdminUser;
+  // Installation + admin: generous limits. Everyone else: anon-tight
+  // (since they're getting schnell anyway, ~$1.35/hr/IP worst case).
+  const burst = allowFullQuality ? 30 : 8;
+  const refillPerSec = allowFullQuality ? 0.2 : 0.125;
   const rl = await checkRateLimit(
     rateLimitKey({ userId: user?.id, request, scope: "ai-image-generate" }),
     burst,
@@ -118,11 +123,10 @@ export async function POST(request: Request) {
       : GLOBAL_NEGATIVE;
     const seed = Math.floor(Math.random() * 4294967295);
 
-    // Model selection by traffic class:
-    //   bare anon → schnell (no PuLID, no dev) — bounds cost exposure
-    //   authed OR installation-referer + reference → PuLID (identity lock)
-    //   authed OR installation-referer, no reference → dev (better prompt
-    //     adherence + negative prompt enforcement)
+    // Model selection:
+    //   !allowFullQuality → schnell (cheap, ~$0.003/frame)
+    //   allowFullQuality + reference → PuLID ($0.055/frame, identity lock)
+    //   allowFullQuality, no reference → dev ($0.025/frame, sharper prompt adherence)
     const wantsPulid =
       typeof referenceImageUrl === "string" && referenceImageUrl.length > 0;
 

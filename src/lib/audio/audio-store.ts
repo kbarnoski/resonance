@@ -76,6 +76,11 @@ interface AudioState {
   journeyPhase: JourneyPhaseId | null;
   journeyProgress: number;
   aiImageEnabled: boolean;
+  /** Admin-only: opt into expensive flux/dev + flux/pulid AI imagery
+   *  (vs the default cheap flux/schnell). Persisted to localStorage
+   *  so the toggle survives reloads. Server-side gated by isAdmin()
+   *  too — non-admin users sending this flag get rejected. */
+  highQualityImages: boolean;
   ambientEnabled: boolean;
 
   /** Active custom journey_path context. When a user plays a journey that
@@ -149,6 +154,7 @@ interface AudioState {
   setActivePath: (path: AudioState["activePath"]) => void;
   setJourneyPhase: (phase: JourneyPhaseId) => void;
   setAiImageEnabled: (enabled: boolean) => void;
+  setHighQualityImages: (enabled: boolean) => void;
   setAmbientEnabled: (enabled: boolean) => void;
   setRoomMode: (mode: "journey" | "viz") => void;
   setLanguage: (lang: string) => void;
@@ -183,6 +189,11 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   journeyPhase: null,
   journeyProgress: 0,
   aiImageEnabled: true,
+  highQualityImages: (() => {
+    if (typeof window === "undefined") return false;
+    try { return localStorage.getItem("resonance-high-quality-images") === "true"; }
+    catch { return false; }
+  })(),
   ambientEnabled: true,
   activePath: null,
   cueMarkers: [],
@@ -525,6 +536,10 @@ export const useAudioStore = create<AudioState>()((set, get) => ({
   setJourneyPhase: (phase) => set({ journeyPhase: phase }),
 
   setAiImageEnabled: (enabled) => set({ aiImageEnabled: enabled }),
+  setHighQualityImages: (enabled) => {
+    try { localStorage.setItem("resonance-high-quality-images", String(enabled)); } catch { /* ok */ }
+    set({ highQualityImages: enabled });
+  },
   setAmbientEnabled: (enabled) => set({ ambientEnabled: enabled }),
   setRoomMode: (mode) => set({ roomMode: mode }),
   setLanguage: (lang) => set({ language: lang }),
