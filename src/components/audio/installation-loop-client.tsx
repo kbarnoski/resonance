@@ -1547,7 +1547,7 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               marginBottom: "2.5rem",
             }}
           >
-            A contemplative listening room
+            presenting the Snowflake EP
           </div>
           <p
             className="text-white/55 max-w-2xl mx-auto"

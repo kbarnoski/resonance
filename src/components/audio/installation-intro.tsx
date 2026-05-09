@@ -144,7 +144,7 @@ function CycleTextInner() {
           letterSpacing: "0.01em",
         }}
       >
-        A contemplative listening room
+        presenting the Snowflake EP
       </div>
       <p
         className="text-white/55 mt-12 max-w-2xl mx-auto"
