@@ -1730,7 +1730,7 @@ export function SharedJourneyClient({
                       background: `${pathContext.accent}15`,
                     }}
                   >
-                    Continue Path →
+                    Continue to {next.name} →
                   </a>
                 );
               })()}
@@ -1785,7 +1785,12 @@ export function SharedJourneyClient({
                 </a>
               )}
 
-              {!isAuthenticated ? (
+              {/* Create-journey CTA hidden when inside a path. The path
+                  experience is meant to be a curated listening session;
+                  the only actions that belong here are continue + return
+                  to the path landing. Outside of a path, regular
+                  journey-end keeps the sign-up / create CTA. */}
+              {!pathContext && !isAuthenticated && (
                 // Sign up first, then land on the create-journey page so
                 // the user's intent ("I want to make my own") is preserved
                 // through the auth gate.
@@ -1810,7 +1815,8 @@ export function SharedJourneyClient({
                 >
                   Sign Up to Create
                 </a>
-              ) : (
+              )}
+              {!pathContext && isAuthenticated && (
                 // eslint-disable-next-line @next/next/no-html-link-for-pages
                 <a
                   href="/create"
@@ -1833,30 +1839,37 @@ export function SharedJourneyClient({
                   Create a Journey
                 </a>
               )}
-              <button
-                onClick={handleReplay}
-                className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  fontSize: "0.8rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Replay
-              </button>
-              <button
-                onClick={handleShare}
-                className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
-                style={{
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  fontSize: "0.8rem",
-                  fontFamily: "var(--font-geist-mono)",
-                  letterSpacing: "0.02em",
-                }}
-              >
-                Share
-              </button>
+              {/* Replay + Share hidden when inside a path — the path
+                  experience flows continuously and shares at the path
+                  level, not per-journey. */}
+              {!pathContext && (
+                <>
+                  <button
+                    onClick={handleReplay}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    Replay
+                  </button>
+                  <button
+                    onClick={handleShare}
+                    className="px-5 py-2.5 rounded-lg text-white/80 hover:text-white hover:bg-white/15 transition-colors duration-150"
+                    style={{
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      fontSize: "0.8rem",
+                      fontFamily: "var(--font-geist-mono)",
+                      letterSpacing: "0.02em",
+                    }}
+                  >
+                    Share
+                  </button>
+                </>
+              )}
             </div>
           </div>
         </div>
