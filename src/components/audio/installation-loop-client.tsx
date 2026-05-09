@@ -1114,14 +1114,29 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       endedListener = () => {
         // VERIFY the track actually played to its natural end before
         // advancing. The "ended" DOM event can fire spuriously when
-        // src is replaced mid-play (e.g., by our early-error retry
-        // path), or when the browser aborts a load. Without this
-        // verification, a spurious ended event during cycle intro
-        // would cascade into a bogus skip-to-next-journey at the
-        // moment the journey-phase tick loop started.
+        // src is replaced mid-play, or when the browser aborts a load.
+        // Without this verification, a spurious ended event during
+        // cycle intro would cascade into a bogus skip-to-next-journey.
         const dur = el.duration;
         const t = el.currentTime;
-        if (!isFinite(dur) || dur <= 0) return; // duration unknown — ignore
+        // Cross-check against the track's known DB duration (where
+        // available). If the audio element's reported duration is
+        // suspiciously short vs the actual track, the metadata is
+        // wrong and we should NOT trust an ended event — that's the
+        // failure mode for "Realized skipped to Ghost mid-journey".
+        const trackDuration = entry.track?.duration ?? 0;
+        if (!isFinite(dur) || dur <= 0) {
+          // eslint-disable-next-line no-console
+          console.warn(`[installation] ${entry.journey.name}: ignoring 'ended' — duration unknown (t=${t.toFixed(1)})`);
+          return;
+        }
+        if (trackDuration > 0 && dur < trackDuration * 0.5) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `[installation] ${entry.journey.name}: ignoring 'ended' — element duration ${dur.toFixed(1)}s is far short of track duration ${trackDuration.toFixed(1)}s (metadata bug)`,
+          );
+          return;
+        }
         if (t < dur - 2) {
           // eslint-disable-next-line no-console
           console.warn(
@@ -1129,6 +1144,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
           );
           return;
         }
+        // eslint-disable-next-line no-console
+        console.log(`[installation] ${entry.journey.name}: ended naturally (t=${t.toFixed(1)} / dur=${dur.toFixed(1)})`);
         advance();
       };
       el.addEventListener("ended", endedListener);
@@ -1297,14 +1314,13 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     let raf = 0;
     const tick = () => {
       const { currentTime, duration } = useAudioStore.getState();
-      // Track-ended check: ONLY based on currentTime reaching duration.
-      // Used to also include `currentTime > 1 && !isPlaying`, but that
-      // clause fired on any momentary isPlaying=false (autoplay-block
-      // re-rejection, audio-provider onEnded pause, brief pause during
-      // src swap) and produced spurious skips. The DOM "ended" event
-      // listener above handles the natural-end signal more reliably,
-      // and the stalled/timedOut paths still catch dead tracks.
-      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
+      // Cross-check against the track's known DB duration (where
+      // available). If the store's duration is far short of the
+      // expected track length, the metadata is wrong and audioEnded
+      // would fire mid-journey at a spuriously low currentTime.
+      const expectedDuration = entry.track?.duration ?? 0;
+      const durationLooksReal = expectedDuration === 0 || duration >= expectedDuration * 0.5;
+      const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;
@@ -1315,6 +1331,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
       // producing false "safety timeout" warnings after a real
       // [Journey] COMPLETED log.
       if (audioEnded) {
+        // eslint-disable-next-line no-console
+        console.log(`[installation] ${entry.journey.name}: tick → audioEnded (t=${currentTime.toFixed(1)} / dur=${duration.toFixed(1)} / expected=${expectedDuration.toFixed(1)})`);
         advance();
         return;
       }
@@ -1348,12 +1366,19 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     const bgSafetyTick = setInterval(() => {
       const { currentTime, duration } = useAudioStore.getState();
       // Same tightening as the RAF tick above — only natural-end.
-      const audioEnded = duration > 0 && currentTime >= duration - 0.5;
+      const expectedDuration = entry.track?.duration ?? 0;
+      const durationLooksReal = expectedDuration === 0 || duration >= expectedDuration * 0.5;
+      const audioEnded = durationLooksReal && duration > 0 && currentTime >= duration - 0.5;
       const elapsed = Date.now() - startMs;
       const stalled = elapsed > STALLED_THRESHOLD_MS && currentTime < 0.05;
       const timedOut = elapsed >= MAX_JOURNEY_MS;
       if (audioEnded || stalled || timedOut) {
-        if (stalled || timedOut) {
+        if (audioEnded) {
+          // eslint-disable-next-line no-console
+          console.log(`[installation] ${entry.journey.name}: bg-tick → audioEnded (t=${currentTime.toFixed(1)} / dur=${duration.toFixed(1)} / expected=${expectedDuration.toFixed(1)})`);
+        } else if (stalled || timedOut) {
+          // eslint-disable-next-line no-console
+          console.warn(`[installation] ${entry.journey.name}: bg-tick → ${stalled ? "stalled" : "timed out"} (t=${currentTime.toFixed(1)}, elapsed=${(elapsed/1000).toFixed(0)}s)`);
           setSkippedIndices((s) => new Set(s).add(phase.index));
         }
         advance();
