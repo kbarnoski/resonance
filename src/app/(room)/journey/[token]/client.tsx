@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { ShaderVisualizer, SHADERS, type VisualizerMode } from "@/components/audio/visualizer";
 import type { Visualizer3DMode } from "@/components/audio/visualizer-3d";
 
@@ -1097,9 +1098,9 @@ export function SharedJourneyClient({
               when launched from a shared path so the listener can bail
               without hunting for a top-corner button. */}
           {pathContext && (
-            // eslint-disable-next-line @next/next/no-html-link-for-pages
-            <a
+            <Link
               href={`/path/${pathContext.pathToken}`}
+              prefetch
               onClick={(e) => e.stopPropagation()}
               className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-white/45 hover:text-white/90 transition-colors"
               style={{
@@ -1112,7 +1113,7 @@ export function SharedJourneyClient({
               }}
             >
               ← {pathContext.pathName}
-            </a>
+            </Link>
           )}
         </div>
       </div>
@@ -1426,16 +1427,16 @@ export function SharedJourneyClient({
             {/* Fullscreen moved to absolute top-right (see render below)
                 to match the in-app journey view's standard placement. */}
             {pathContext && (
-              // eslint-disable-next-line @next/next/no-html-link-for-pages
-              <a
+              <Link
                 href={`/path/${pathContext.pathToken}`}
+                prefetch
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
                 style={{ border: "1px solid rgba(255,255,255,0.1)", fontSize: "0.72rem", fontFamily: "var(--font-geist-mono)" }}
                 title={`Close — back to ${pathContext.pathName}`}
               >
                 <X className="h-3.5 w-3.5" />
                 Close
-              </a>
+              </Link>
             )}
           </div>
         </div>
@@ -1468,16 +1469,16 @@ export function SharedJourneyClient({
               {/* Mobile fullscreen also moved to absolute top-right
                   for consistency with the in-app journey view. */}
               {pathContext && (
-                // eslint-disable-next-line @next/next/no-html-link-for-pages
-                <a
+                <Link
                   href={`/path/${pathContext.pathToken}`}
+                  prefetch
                   className="min-h-[44px] flex items-center gap-1 px-2 rounded-lg text-white/35 hover:text-white/65 transition-colors duration-75"
                   style={{ fontSize: "0.62rem", fontFamily: "var(--font-geist-mono)" }}
                   title={`Close — back to ${pathContext.pathName}`}
                 >
                   <X className="h-3.5 w-3.5" />
                   Close
-                </a>
+                </Link>
               )}
             </div>
           </div>
@@ -1718,8 +1719,9 @@ export function SharedJourneyClient({
                 const next = pathContext.steps[pathContext.currentIndex + 1];
                 if (!next.shareToken) return null;
                 return (
-                  <a
+                  <Link
                     href={`/journey/${next.shareToken}?pathToken=${pathContext.pathToken}`}
+                    prefetch
                     className="px-5 py-2.5 rounded-lg text-white/90 hover:text-white transition-colors duration-150"
                     style={{
                       border: `1px solid ${pathContext.accent}`,
@@ -1731,7 +1733,7 @@ export function SharedJourneyClient({
                     }}
                   >
                     Continue to {next.name} →
-                  </a>
+                  </Link>
                 );
               })()}
 
@@ -1748,8 +1750,9 @@ export function SharedJourneyClient({
                 const allDone = pathContext.steps.every((s) => completedIds.includes(s.journeyId) || s.journeyId === journey.id);
                 if (!allDone) return null;
                 return (
-                  <a
+                  <Link
                     href={`/journey/${pathContext.culmination.shareToken}?pathToken=${pathContext.pathToken}`}
+                    prefetch
                     className="px-5 py-2.5 rounded-lg text-white hover:text-white transition-all duration-150"
                     style={{
                       border: `1px solid ${pathContext.accent}`,
@@ -1762,15 +1765,16 @@ export function SharedJourneyClient({
                     }}
                   >
                     Enter {pathContext.culmination.name} ✦
-                  </a>
+                  </Link>
                 );
               })()}
 
-              {/* Return to Welcome Home landing — styled to match the
+              {/* Return to path landing — styled to match the
                   pre-start back pill so both screens feel consistent. */}
               {pathContext && (
-                <a
+                <Link
                   href={`/path/${pathContext.pathToken}`}
+                  prefetch
                   className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-full text-white/80 hover:text-white hover:bg-white/10 transition-colors duration-150"
                   style={{
                     border: "1px solid rgba(255,255,255,0.2)",
@@ -1782,7 +1786,7 @@ export function SharedJourneyClient({
                   }}
                 >
                   ← {pathContext.pathName}
-                </a>
+                </Link>
               )}
 
               {/* Create-journey CTA hidden when inside a path. The path
