@@ -21,10 +21,26 @@ interface ShareSheetProps {
  * deferring it through a state update + useEffect breaks that gesture and
  * causes the share sheet to lag or require a second tap. Always call this
  * before any await / state update / re-render.
+ *
+ * `onUnsupportedRejection` fires if the browser HAS navigator.share but
+ * the call rejects with anything other than AbortError (user cancellation).
+ * iOS Safari can reject for several non-user reasons (PWA mode, certain
+ * mobile browsers, share targets unavailable). The caller should open
+ * the fallback modal in that case so the user isn't left with a dead tap.
  */
-export function triggerNativeShare(url: string, title: string, text?: string): boolean {
+export function triggerNativeShare(
+  url: string,
+  title: string,
+  text?: string,
+  onUnsupportedRejection?: () => void,
+): boolean {
   if (typeof navigator === "undefined" || !navigator.share) return false;
-  navigator.share({ title, text: text ?? title, url }).catch(() => {});
+  navigator.share({ title, text: text ?? title, url }).catch((err: unknown) => {
+    const name = err instanceof Error ? err.name : "";
+    // AbortError = user dismissed the native sheet. Don't fall back.
+    if (name === "AbortError") return;
+    onUnsupportedRejection?.();
+  });
   return true;
 }
 

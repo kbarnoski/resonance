@@ -774,11 +774,13 @@ export function SharedJourneyClient({
 
   const handleShare = () => {
     // Call navigator.share synchronously inside the user gesture so iOS
-    // doesn't drop it. Fall back to the modal only when Web Share is absent.
+    // doesn't drop it. Fall back to the modal when Web Share is absent
+    // OR when the native share rejects for a non-user reason (PWA mode,
+    // certain mobile browsers, share targets unavailable).
     const url = `${window.location.origin}/journey/${shareToken}`;
     const title = `${journey.name} — Resonance`;
     const text = `Check out ${journey.name} on Resonance`;
-    if (triggerNativeShare(url, title, text)) return;
+    if (triggerNativeShare(url, title, text, () => setShareSheet(true))) return;
     setShareSheet(true);
   };
 
