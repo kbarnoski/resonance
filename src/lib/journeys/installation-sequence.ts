@@ -7,7 +7,7 @@
  *
  * Three-act arc (~10:39 audio + 26s intro/credits ≈ 11:05 cycle):
  *   1. Snowflake (KB_SFLAKE_TK5_MOOG, 2:58) — cooling / opening
- *   2. Inferno   (KB_REALIZED,        4:02) — fire / intensity
+ *   2. Realized  (KB_REALIZED,        4:02) — fire / intensity
  *   3. Ghost     (KB_GHOST_REF,       3:39) — spectral closure
  *
  * Tightened from the original five-journey cycle (2026-05-08) per Karel —

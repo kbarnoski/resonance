@@ -1029,8 +1029,8 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
     // last frame in silence for N ms before swapping phase, giving
     // climactic transitions room to breathe instead of cutting in.
     // Currently only Ghost gets this — the audience feels the
-    // shift from "human" tracks (Ascension/Inferno/Snowflake/Abyssal)
-    // into the spectral closing. Generalize to a Journey field
+    // shift from "human" tracks (Snowflake/Realized) into the
+    // spectral closing. Generalize to a Journey field
     // (e.g. journey.preEntryPauseMs) if more journeys need it.
     const PRE_ENTRY_PAUSE_MS: Record<string, number> = {
       ghost: 2000,
@@ -1559,10 +1559,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               marginBottom: "2.5rem",
             }}
           >
-            A five-part journey. Composed music drives a slow audiovisual
-            landscape of generative shaders and original AI-rendered imagery
-            — created live, never the same twice. Recline. Stay as long or
-            as briefly as you wish.
+            Snowflake, Realized, and Ghost — three original piano
+            compositions paired with visuals that unfold alongside the
+            music, created live and never the same twice. About ten
+            minutes. Recline.
           </p>
           <div
             className="text-white/55"

@@ -701,7 +701,7 @@ export const JOURNEYS: Journey[] = [
   },
   {
     id: "inferno",
-    name: "Inferno",
+    name: "Realized",
     subtitle: "alone in the burning",
     description:
       "Darkness cracks open. Heat rises from below, shapeless and absolute. You descend through pressure and isolation until something breaks — then silence, then air.",

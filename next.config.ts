@@ -83,14 +83,17 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      // Two shareable URLs for the installation experience:
+      // Three shareable URLs for the installation experience:
       //   /demo          — plays through ONCE then ends (the
-      //                    review/share version; what you give to
-      //                    people who want to see what the experience is)
+      //                    review/share version)
+      //   /snowflake     — same as /demo, branded as the EP name.
+      //                    Use this when sharing the EP itself
+      //                    (Snowflake, Realized, Ghost) as a link.
       //   /installation  — loops forever (the real gallery kiosk;
       //                    same as the canonical /room/installation?loop=1)
-      // Both are internal rewrites — the address bar stays clean.
+      // All are internal rewrites — the address bar stays clean.
       { source: "/demo", destination: "/room/installation?loop=1&once=1" },
+      { source: "/snowflake", destination: "/room/installation?loop=1&once=1" },
       { source: "/installation", destination: "/room/installation?loop=1" },
     ];
   },

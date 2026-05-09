@@ -155,10 +155,10 @@ function CycleTextInner() {
           lineHeight: 1.65,
         }}
       >
-        A five-part journey. Composed music drives a slow audiovisual
-        landscape of generative shaders and original AI-rendered imagery
-        — created live, never the same twice. Recline. Stay as long or
-        as briefly as you wish.
+        Snowflake, Realized, and Ghost — three original piano
+        compositions paired with visuals that unfold alongside the
+        music, created live and never the same twice. About ten
+        minutes. Recline.
       </p>
       <div
         className="text-white/55 mt-14"
