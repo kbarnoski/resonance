@@ -155,10 +155,9 @@ function CycleTextInner() {
           lineHeight: 1.65,
         }}
       >
-        Snowflake, Realized, and Ghost — three original piano
-        compositions paired with visuals that unfold alongside the
-        music, created live and never the same twice. About ten
-        minutes. Recline.
+        Snowflake, Realized, Ghost — three original piano compositions
+        tracing an arc from stillness, through fire, into light. Visuals
+        unfold alongside the music, never the same twice. Recline.
       </p>
       <div
         className="text-white/55 mt-14"

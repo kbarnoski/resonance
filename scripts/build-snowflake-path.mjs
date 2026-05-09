@@ -31,6 +31,8 @@ const REALIZED_RECORDING_ID = "6f58d401-1cd0-479e-a252-5d34dc636e3d"; // KB_REAL
 const GHOST_RECORDING_ID = "549fc519-f7fc-4c38-a771-adaad2edbc81";    // KB_GHOST_REF_2.0
 const PATH_NAME = "Snowflake";
 const PATH_SUBTITLE = "an EP";
+const PATH_DESCRIPTION =
+  "A three-part journey tracing an arc from stillness, through fire, into the light beyond. Snowflake, Realized, Ghost.";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -92,6 +94,7 @@ async function main() {
       .update({
         journey_ids: journeyIds,
         subtitle: PATH_SUBTITLE,
+        description: PATH_DESCRIPTION,
         updated_at: new Date().toISOString(),
       })
       .eq("id", existing.id);
@@ -110,7 +113,7 @@ async function main() {
       user_id: KAREL_USER_ID,
       name: PATH_NAME,
       subtitle: PATH_SUBTITLE,
-      description: "Three original piano compositions — Snowflake, Realized, Ghost. About ten minutes.",
+      description: PATH_DESCRIPTION,
       journey_ids: journeyIds,
       share_token: shareToken,
       accent_color: "#a8d8ea", // soft snowflake-blue
