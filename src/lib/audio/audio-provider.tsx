@@ -267,6 +267,16 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     const onError = () => {
       loadingNewSrc.current = false;
+      // Cache-bust the cached signed URL for the current track. The
+      // cached URL may be pointing at a stale codec (e.g., the original
+      // ALAC version persisted before the auto-transcode finished),
+      // an expired signature, or a deleted file. Clearing the cache
+      // means the next resolveAudioUrl call re-fetches a fresh URL
+      // from /api/audio/{id}.
+      const trackId = useAudioStore.getState().currentTrack?.id;
+      if (trackId) {
+        try { sessionStorage.removeItem(`audio-url-${trackId}`); } catch { /* ok */ }
+      }
       // In installation mode the loop client owns recovery + skip
       // decisions. Earlier this called playNext() to advance, but in
       // single-track installation queues that wraps to the SAME track

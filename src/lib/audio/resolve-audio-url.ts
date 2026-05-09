@@ -6,7 +6,28 @@
  * For non-API URLs, returns the URL as-is.
  */
 
-const URL_CACHE_TTL_MS = 50 * 60 * 1000; // 50 minutes
+// 5-minute cache, NOT 50-minute. The API endpoint is fast (<200ms) and
+// re-resolving frequently is essentially free. Long TTL bit us when:
+//   1. A recording was uploaded as ALAC, the auto-transcode persisted
+//      an AAC sibling in the background, but the user's browser kept
+//      using the cached ALAC URL for up to 50 minutes — Safari macOS
+//      then played the ALAC bytes inconsistently and audio didn't
+//      come through.
+//   2. A signed URL might have <10 min validity left when the cache
+//      hits a near-expiry boundary, leading to mid-playback 403s.
+// 5 min is plenty to skip refetches during a single page session,
+// short enough to recover from any server-side codec change in
+// reasonable time.
+const URL_CACHE_TTL_MS = 5 * 60 * 1000;
+
+/** Force-clear a cached URL (e.g., after the audio element fires an
+ *  error — the cached URL might be pointing at a stale codec or an
+ *  expired signature). Next resolveAudioUrl call will re-fetch. */
+export function clearCachedUrl(recordingId: string): void {
+  try {
+    sessionStorage.removeItem(`audio-url-${recordingId}`);
+  } catch { /* ok */ }
+}
 
 function isChromium(): boolean {
   if (typeof navigator === "undefined") return false;
