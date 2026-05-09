@@ -1122,17 +1122,23 @@ export function SharedJourneyClient({
 
   return (
     <div className="h-dvh w-screen overflow-hidden bg-black relative">
-      {/* Fullscreen toggle — desktop only; iOS Safari doesn't support requestFullscreen. */}
+      {/* Fullscreen toggle — desktop only; iOS Safari doesn't support
+          requestFullscreen. Fades + ignores pointer events on the same
+          5s idle timer that hides the bottom controls + cursor, so it
+          doesn't sit visible over the journey when the audience is
+          settled in. */}
       <button
         type="button"
         aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
         onClick={toggleFullscreen}
-        className="hidden md:flex absolute top-6 right-6 items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-colors duration-75"
+        className="hidden md:flex absolute top-6 right-6 items-center justify-center p-2.5 rounded-lg text-white/50 hover:text-white/80 hover:bg-white/10 transition-opacity duration-500 ease-out"
         style={{
           zIndex: 60,
           minWidth: "44px",
           minHeight: "44px",
           border: "1px solid rgba(255,255,255,0.1)",
+          opacity: controlsVisible ? 1 : 0,
+          pointerEvents: controlsVisible ? "auto" : "none",
         }}
         title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
       >
