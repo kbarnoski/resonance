@@ -1559,10 +1559,10 @@ export function InstallationLoopClient({ sequence, fallbackTracks, debug, playOn
               marginBottom: "2.5rem",
             }}
           >
-            Snowflake, Realized, Ghost — three improvised piano compositions
-            captured in a single studio session, tracing an arc from stillness,
-            through fire, into light. AI-generated visuals improvise alongside
-            the music, never the same twice. Recline.
+            Snowflake, Realized, Ghost — three original improvised piano
+            recordings, tracing an arc from stillness, through fire, into
+            light. AI-generated visuals improvise alongside the music,
+            never the same twice. Recline.
           </p>
           <div
             className="text-white/55"

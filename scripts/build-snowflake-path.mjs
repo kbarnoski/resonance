@@ -32,7 +32,7 @@ const GHOST_RECORDING_ID = "549fc519-f7fc-4c38-a771-adaad2edbc81";    // KB_GHOS
 const PATH_NAME = "Snowflake";
 const PATH_SUBTITLE = "an EP";
 const PATH_DESCRIPTION =
-  "Three improvised piano compositions captured in a single studio session, tracing an arc from stillness, through fire, into light. AI-generated visuals improvise alongside, never the same twice.";
+  "Three original improvised piano recordings, tracing an arc from stillness, through fire, into light. AI-generated visuals improvise alongside, never the same twice.";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
