@@ -1207,6 +1207,152 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
           {/* ── Journeys View ── */}
           {view === "journeys" && (<>
 
+          {/* ── Your Journeys — at the TOP so creators don't scroll past
+                every featured journey to find their own. Renders above
+                pinned/featured. Hidden when the user has no custom
+                journeys (anon visitors + listeners). Row-based layout
+                works at any width — denser than the card grid we used
+                to render at the bottom of the desktop panel, easier
+                to scan when you have many. */}
+          {customJourneys.length > 0 && (
+            <div className="mb-10">
+              <div className="flex items-center gap-2.5 mb-4">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ backgroundColor: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.15)" }}
+                />
+                <span
+                  className="text-white/30"
+                  style={{
+                    fontSize: "0.65rem",
+                    fontFamily: "var(--font-geist-mono)",
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Your Journeys
+                </span>
+              </div>
+
+              <div className="divide-y divide-white/[0.04]">
+                {customJourneys.map((journey) => {
+                  const isActive = activeJourney?.id === journey.id;
+                  const realm = journey.realmId !== "custom" ? REALMS.find((r) => r.id === journey.realmId) : null;
+                  const accent = journey.theme?.palette?.accent ?? realm?.palette.accent ?? "#8b5cf6";
+                  const customOpen = async () => {
+                    ensureResumed();
+                    setAiImageEnabled(journey.aiEnabled);
+                    await loadCustomJourneyTrack(journey);
+                    startCustomJourney(journey);
+                    onClose();
+                  };
+                  return (
+                    <div
+                      key={journey.id}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Open journey ${journey.name}`}
+                      className="py-3.5 cursor-pointer group transition-colors"
+                      style={{
+                        backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
+                        borderLeft: isActive ? `2px solid ${accent}` : "2px solid transparent",
+                        paddingLeft: "12px",
+                      }}
+                      onClick={customOpen}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          customOpen();
+                        }
+                      }}
+                    >
+                      <div className="flex items-center justify-between mb-1.5">
+                        <div className="flex items-baseline gap-3 min-w-0">
+                          <span
+                            className="text-white/85 shrink-0"
+                            style={{
+                              fontFamily: "var(--font-geist-sans)",
+                              fontWeight: 300,
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {journey.name}
+                          </span>
+                          <span
+                            className="text-white/35 truncate"
+                            style={{
+                              fontSize: "0.75rem",
+                              fontFamily: "var(--font-geist-mono)",
+                            }}
+                          >
+                            {journey.subtitle}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0 ml-3">
+                          {isActive && (
+                            <span
+                              className="text-white/40"
+                              style={{
+                                fontSize: "0.6rem",
+                                fontFamily: "var(--font-geist-mono)",
+                                letterSpacing: "0.08em",
+                                textTransform: "uppercase",
+                              }}
+                            >
+                              Playing
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            aria-label="Edit journey"
+                            onClick={(e) => { e.stopPropagation(); window.location.href = `/edit/${journey.id}`; }}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-white/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Edit"
+                          >
+                            <Pencil className="h-3 w-3" />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Share journey"
+                            onClick={(e) => handleShare(journey.id, journey.name, e)}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Share"
+                            disabled={sharingId === journey.id}
+                          >
+                            <Share2 className="h-3 w-3" />
+                          </button>
+                          <button
+                            type="button"
+                            aria-label="Delete journey"
+                            onClick={(e) => handleDelete(journey.id, e)}
+                            className={`p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            title="Delete"
+                            disabled={deletingId === journey.id}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      {journey.description && (
+                        <p
+                          className="text-white/45 mb-2"
+                          style={{
+                            fontSize: "0.7rem",
+                            fontFamily: "var(--font-geist-mono)",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {journey.description}
+                        </p>
+                      )}
+                      {renderPhaseArc(journey, accent)}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* ── New Releases (desktop) ── */}
           <div className="hidden md:block mb-8">
             <div className="flex items-center gap-4 mb-6">
@@ -1668,145 +1814,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
             );
           })}
 
-          {/* ── Custom Journeys ── */}
-          {customJourneys.length > 0 && (
-            <div className="mb-10">
-              <div className="flex items-center gap-2.5 mb-4">
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: "rgba(255,255,255,0.3)", border: "1px solid rgba(255,255,255,0.15)" }}
-                />
-                <span
-                  className="text-white/30"
-                  style={{
-                    fontSize: "0.65rem",
-                    fontFamily: "var(--font-geist-mono)",
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Your Journeys
-                </span>
-              </div>
-
-              <div className="divide-y divide-white/[0.04]">
-                {customJourneys.map((journey) => {
-                  const isActive = activeJourney?.id === journey.id;
-                  const realm = journey.realmId !== "custom" ? REALMS.find((r) => r.id === journey.realmId) : null;
-                  const accent = journey.theme?.palette?.accent ?? realm?.palette.accent ?? "#8b5cf6";
-                  const customOpen = async () => {
-                    ensureResumed();
-                    setAiImageEnabled(journey.aiEnabled);
-                    await loadCustomJourneyTrack(journey);
-                    startCustomJourney(journey);
-                    onClose();
-                  };
-                  return (
-                    <div
-                      key={journey.id}
-                      role="button"
-                      tabIndex={0}
-                      aria-label={`Open journey ${journey.name}`}
-                      className="py-3.5 cursor-pointer group transition-colors"
-                      style={{
-                        backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
-                        borderLeft: isActive ? `2px solid ${accent}` : "2px solid transparent",
-                        paddingLeft: "12px",
-                      }}
-                      onClick={customOpen}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          customOpen();
-                        }
-                      }}
-                    >
-                      <div className="flex items-center justify-between mb-1.5">
-                        <div className="flex items-baseline gap-3 min-w-0">
-                          <span
-                            className="text-white/85 shrink-0"
-                            style={{
-                              fontFamily: "var(--font-geist-sans)",
-                              fontWeight: 300,
-                              fontSize: "1rem",
-                            }}
-                          >
-                            {journey.name}
-                          </span>
-                          <span
-                            className="text-white/35 truncate"
-                            style={{
-                              fontSize: "0.75rem",
-                              fontFamily: "var(--font-geist-mono)",
-                            }}
-                          >
-                            {journey.subtitle}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2 shrink-0 ml-3">
-                          {isActive && (
-                            <span
-                              className="text-white/40"
-                              style={{
-                                fontSize: "0.6rem",
-                                fontFamily: "var(--font-geist-mono)",
-                                letterSpacing: "0.08em",
-                                textTransform: "uppercase",
-                              }}
-                            >
-                              Playing
-                            </span>
-                          )}
-                          <button
-                            type="button"
-                            aria-label="Edit journey"
-                            onClick={(e) => { e.stopPropagation(); window.location.href = `/edit/${journey.id}`; }}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-white/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                            title="Edit"
-                          >
-                            <Pencil className="h-3 w-3" />
-                          </button>
-                          <button
-                            type="button"
-                            aria-label="Share journey"
-                            onClick={(e) => handleShare(journey.id, journey.name, e)}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                            title="Share"
-                            disabled={sharingId === journey.id}
-                          >
-                            <Share2 className="h-3 w-3" />
-                          </button>
-                          <button
-                            type="button"
-                            aria-label="Delete journey"
-                            onClick={(e) => handleDelete(journey.id, e)}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
-                            title="Delete"
-                            disabled={deletingId === journey.id}
-                          >
-                            <Trash2 className="h-3 w-3" />
-                          </button>
-                        </div>
-                      </div>
-                      {journey.description && (
-                        <p
-                          className="text-white/45 mb-2"
-                          style={{
-                            fontSize: "0.7rem",
-                            fontFamily: "var(--font-geist-mono)",
-                            lineHeight: 1.5,
-                          }}
-                        >
-                          {journey.description}
-                        </p>
-                      )}
-                      {renderPhaseArc(journey, accent)}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          {/* Your Journeys block moved to TOP — no longer rendered here. */}
 
           </div>{/* end md:hidden mobile list */}
 
@@ -1948,158 +1956,8 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
               })}
             </div>
 
-            {/* ── Custom Journeys (Desktop) ── */}
-            {customJourneys.length > 0 && (
-              <>
-                <div className="flex items-center gap-4 my-8">
-                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
-                  <span
-                    className="text-white/30"
-                    style={{
-                      fontSize: "0.65rem",
-                      fontFamily: "var(--font-geist-mono)",
-                      letterSpacing: "0.12em",
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Your Journeys
-                  </span>
-                  <div className="flex-1 h-px" style={{ backgroundColor: "rgba(255,255,255,0.06)" }} />
-                </div>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {customJourneys.map((journey) => {
-                    const isActive = activeJourney?.id === journey.id;
-                    const cRealm = journey.realmId !== "custom" ? REALMS.find((r) => r.id === journey.realmId) : null;
-                    const accent = journey.theme?.palette?.accent ?? cRealm?.palette.accent ?? "#8b5cf6";
-                    const desktopCustomOpen = async () => {
-                      setAiImageEnabled(journey.aiEnabled);
-                      await loadCustomJourneyTrack(journey);
-                      startCustomJourney(journey);
-                      onClose();
-                    };
-                    return (
-                      <div
-                        key={journey.id}
-                        role="button"
-                        tabIndex={0}
-                        aria-label={`Open journey ${journey.name}`}
-                        className={`jcard cursor-pointer group rounded-xl${isActive ? " jcard-active" : ""}`}
-                        style={{
-                          backgroundColor: isActive
-                            ? `${accent}05`
-                            : "rgba(255,255,255,0.01)",
-                          border: `1px solid ${isActive ? `${accent}20` : "rgba(255,255,255,0.06)"}`,
-                          borderLeft: isActive ? `2px solid ${accent}` : undefined,
-                          padding: "20px",
-                        }}
-                        onClick={desktopCustomOpen}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            desktopCustomOpen();
-                          }
-                        }}
-                      >
-                        {/* Top row: accent dot + name ... share + delete */}
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="w-1.5 h-1.5 rounded-full shrink-0"
-                              style={{
-                                backgroundColor: accent,
-                                boxShadow: `0 0 4px ${journey.theme?.palette?.glow ?? cRealm?.palette.glow ?? accent}30`,
-                              }}
-                            />
-                            <span
-                              className="text-white/30"
-                              style={{
-                                fontSize: "0.6rem",
-                                fontFamily: "var(--font-geist-mono)",
-                                letterSpacing: "0.1em",
-                                textTransform: "uppercase",
-                              }}
-                            >
-                              {cRealm?.name?.toUpperCase() ?? "CUSTOM"}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1.5">
-                            <button
-                              type="button"
-                              aria-label="Edit journey"
-                              onClick={(e) => { e.stopPropagation(); window.location.href = `/edit/${journey.id}`; }}
-                              className="p-1.5 rounded-md text-white/20 hover:text-white/60 transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
-                              title="Edit"
-                            >
-                              <Pencil className="h-3 w-3" />
-                            </button>
-                            <button
-                              type="button"
-                              aria-label="Share journey"
-                              onClick={(e) => handleShare(journey.id, journey.name, e)}
-                              className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
-                              title="Share"
-                              disabled={sharingId === journey.id}
-                            >
-                              <Share2 className="h-3 w-3" />
-                            </button>
-                            <button
-                              type="button"
-                              aria-label="Delete journey"
-                              onClick={(e) => handleDelete(journey.id, e)}
-                              className="p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all opacity-0 group-hover:opacity-100"
-                              title="Delete"
-                              disabled={deletingId === journey.id}
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </button>
-                          </div>
-                        </div>
-
-                        {/* Journey name */}
-                        <h3
-                          className="text-white/85 mb-1"
-                          style={{
-                            fontFamily: "var(--font-geist-sans)",
-                            fontWeight: 300,
-                            fontSize: "1.05rem",
-                          }}
-                        >
-                          {journey.name}
-                        </h3>
-
-                        {/* Subtitle */}
-                        <p
-                          className="text-white/30 mb-2"
-                          style={{
-                            fontSize: "0.72rem",
-                            fontFamily: "var(--font-geist-mono)",
-                          }}
-                        >
-                          {journey.subtitle}
-                        </p>
-
-                        {/* Description — 2 line clamp */}
-                        {journey.description && (
-                          <p
-                            className="text-white/35 mb-3 line-clamp-2"
-                            style={{
-                              fontSize: "0.68rem",
-                              fontFamily: "var(--font-geist-mono)",
-                              lineHeight: 1.5,
-                            }}
-                          >
-                            {journey.description}
-                          </p>
-                        )}
-
-                        {/* Phase arc — full card width */}
-                        {renderPhaseArc(journey, accent, "100%")}
-                      </div>
-                    );
-                  })}
-                </div>
-              </>
-            )}
+            {/* Your Journeys (desktop card grid) moved to TOP — see
+                row-based block above the New Releases section. */}
           </div>{/* end desktop grid */}
 
           </>)}
