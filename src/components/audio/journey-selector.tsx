@@ -13,7 +13,7 @@ import { ensureResumed, primeAudioElement } from "@/lib/audio/audio-engine";
 import { createClient } from "@/lib/supabase/client";
 import { ShareSheet } from "@/components/ui/share-sheet";
 import type { Journey } from "@/lib/journeys/types";
-import { PAIRED_TRACKS, PAIRED_STORAGE } from "@/lib/journeys/paired-tracks";
+import { PAIRED_TRACKS, PAIRED_STORAGE, applyPairedTrackSearch } from "@/lib/journeys/paired-tracks";
 import { getJourneyEngine } from "@/lib/journeys/journey-engine";
 import { JOURNEY_PATHS, getPathForJourney, isPathCulminationUnlocked, GRAND_CULMINATION_ID } from "@/lib/journeys/paths";
 import { usePathProgressStore } from "@/lib/journeys/path-progress-store";
@@ -459,12 +459,13 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         const supabase = createClient();
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
-        const { data, error } = await supabase
-          .from("recordings")
-          .select("id, title, audio_url, duration, artist")
-          .eq("user_id", user.id)
-          .ilike("title", pairedSearch)
-          .limit(1);
+        const { data, error } = await applyPairedTrackSearch(
+          supabase
+            .from("recordings")
+            .select("id, title, audio_url, duration, artist")
+            .eq("user_id", user.id),
+          pairedSearch,
+        ).limit(1);
 
         if (!error && data?.[0]) {
           if (!isCurrent()) return;
@@ -1252,7 +1253,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       role="button"
                       tabIndex={0}
                       aria-label={`Open journey ${journey.name}`}
-                      className="py-3.5 cursor-pointer group transition-colors"
+                      className="py-3.5 cursor-pointer group transition-colors hover:bg-white/[0.04] rounded-md"
                       style={{
                         backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
                         borderLeft: isActive ? `2px solid ${accent}` : "2px solid transparent",
@@ -1306,7 +1307,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Edit journey"
                             onClick={(e) => { e.stopPropagation(); window.location.href = `/edit/${journey.id}`; }}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-white/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Edit"
                           >
                             <Pencil className="h-3 w-3" />
@@ -1315,7 +1316,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Share journey"
                             onClick={(e) => handleShare(journey.id, journey.name, e)}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Share"
                             disabled={sharingId === journey.id}
                           >
@@ -1325,7 +1326,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Delete journey"
                             onClick={(e) => handleDelete(journey.id, e)}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-red-400/60 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-red-400/90 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Delete"
                             disabled={deletingId === journey.id}
                           >
@@ -1437,7 +1438,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           type="button"
                           aria-label="Share journey"
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all opacity-0 group-hover:opacity-100"
+                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all opacity-0 group-hover:opacity-100"
                           title="Share"
                           disabled={sharingId === journey.id}
                         >
@@ -1531,7 +1532,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                     role="button"
                     tabIndex={0}
                     aria-label={`Open journey ${journey.name}`}
-                    className="py-4 cursor-pointer group transition-colors"
+                    className="py-4 cursor-pointer group transition-colors hover:bg-white/[0.04] rounded-md"
                     style={{
                       backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
                       borderLeft: isActive ? `2px solid ${accent}` : "2px solid transparent",
@@ -1614,7 +1615,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                         )}
                         <button
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                          className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                           title="Share"
                           disabled={sharingId === journey.id}
                         >
@@ -1700,7 +1701,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                       role="button"
                       tabIndex={0}
                       aria-label={`Open journey ${journey.name}`}
-                      className="py-3.5 cursor-pointer group transition-colors"
+                      className="py-3.5 cursor-pointer group transition-colors hover:bg-white/[0.04] rounded-md"
                       style={{
                         backgroundColor: isActive ? "rgba(255,255,255,0.03)" : "transparent",
                         borderLeft: isActive ? `2px solid ${realm.palette.accent}` : "2px solid transparent",
@@ -1785,7 +1786,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                             type="button"
                             aria-label="Share journey"
                             onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                            className={`p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
+                            className={`p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all ${isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"}`}
                             title="Share"
                             disabled={sharingId === journey.id}
                           >
@@ -1887,7 +1888,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
                           type="button"
                           aria-label="Share journey"
                           onClick={(e) => handleShareBuiltIn(journey.id, journey.name, e)}
-                          className="p-1.5 rounded-md text-white/20 hover:text-white/50 transition-all opacity-0 group-hover:opacity-100"
+                          className="p-1.5 rounded-md text-white/45 hover:text-white/85 transition-all opacity-0 group-hover:opacity-100"
                           title="Share"
                           disabled={sharingId === journey.id}
                         >

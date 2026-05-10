@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { randomUUID, randomInt } from "crypto";
 import { getJourney } from "@/lib/journeys/journeys";
-import { PAIRED_TRACKS } from "@/lib/journeys/paired-tracks";
+import { PAIRED_TRACKS, applyPairedTrackSearch } from "@/lib/journeys/paired-tracks";
 import { logger } from "@/lib/logger";
 
 export async function POST(request: Request) {
@@ -36,11 +36,10 @@ export async function POST(request: Request) {
     let resolvedRecordingId = recordingId ?? null;
     const pairedSearch = PAIRED_TRACKS[journeyId];
     if (pairedSearch) {
-      const { data, error: searchErr } = await supabase
-        .from("recordings")
-        .select("id, title")
-        .ilike("title", pairedSearch)
-        .limit(1);
+      const { data, error: searchErr } = await applyPairedTrackSearch(
+        supabase.from("recordings").select("id, title"),
+        pairedSearch,
+      ).limit(1);
       logger.debug("share-builtin", "paired track search", { pairedSearch, data, searchErr });
       if (data?.[0]) {
         resolvedRecordingId = data[0].id;

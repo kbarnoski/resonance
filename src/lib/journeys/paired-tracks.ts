@@ -9,6 +9,20 @@
  *  page always restricts pairings to the current user's recordings —
  *  no cross-user track selection.
  */
+
+/** Apply a PAIRED_TRACKS spec to a Supabase query builder. Handles
+ *  both forms: "=Exact" → .eq("title", X), "%pattern%" → .ilike(...).
+ *  Without this helper, callers passing the raw value to ilike()
+ *  would never match an exact-form spec because the literal "=" gets
+ *  searched for in titles.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function applyPairedTrackSearch(query: any, spec: string): any {
+  if (spec.startsWith("=")) {
+    return query.eq("title", spec.slice(1));
+  }
+  return query.ilike("title", spec);
+}
 export const PAIRED_TRACKS: Record<string, string> = {
   // ─── Already paired ────────────────────────────────────────────
   "first-snow": "=KB_SFLAKE_TK5_MOOG_REF_2.0",
