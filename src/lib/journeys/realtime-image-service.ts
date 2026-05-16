@@ -16,6 +16,11 @@ interface RealtimeImageOptions {
   /** Optional character-reference image. When present, the server
    *  routes to flux-pulid for identity-locked generation. */
   referenceImageUrl?: string;
+  /** Optional FLUX LoRA URL (.safetensors) for the character of this
+   *  journey. When present, the server routes to fal-ai/flux-lora
+   *  with the LoRA attached — full-body identity lock at $0.02/frame.
+   *  Beats both PuLID (face-only) and plain dev (no identity). */
+  characterLora?: string;
   /** Admin opt-in flag — request flux/dev or flux-pulid instead of
    *  the default schnell. Server validates via isAdmin() so the
    *  flag is non-spoofable for non-admin users. */
@@ -252,6 +257,7 @@ class RealtimeImageService {
           height: options.height ?? 768,
           negativePrompt: options.negativePrompt,
           referenceImageUrl: options.referenceImageUrl,
+          characterLora: options.characterLora,
           highQuality: options.highQuality === true,
         }),
       });

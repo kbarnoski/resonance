@@ -525,6 +525,12 @@ export function AiImageLayer({
     const mergedNegative = [baseNegative, ...dislikedPhrases].filter(Boolean).join(", ");
     const negativePrompt = mergedNegative.length > 0 ? mergedNegative : undefined;
 
+    // Per-journey character LoRA — when populated (Ghost gets one
+     // trained via scripts/train-ghost-lora.mjs), the server routes
+     // to fal-ai/flux-lora so identity holds across every frame
+     // without the per-call cost of PuLID.
+    const characterLora = activeJourney?.characterLoraUrl ?? undefined;
+
     service
       .generateFrameREST({
         prompt: variedPrompt,
@@ -532,6 +538,7 @@ export function AiImageLayer({
         width: 1024,
         height: 1024,
         negativePrompt,
+        characterLora: characterLora ?? undefined,
         highQuality: useAudioStore.getState().highQualityImages,
       })
       .then(async (url) => {

@@ -162,6 +162,11 @@ export interface Journey {
   photographyCredit?: string | null;
   /** Optional dedication line shown on intro/end overlays. */
   dedication?: string | null;
+  /** Optional FLUX LoRA URL (.safetensors) trained on this journey's
+   *  recurring character. When present, the AI image gen path routes
+   *  through fal-ai/flux-lora to lock identity at $0.02/frame instead
+   *  of $0.055 PuLID. Trained via scripts/train-*-lora.mjs. */
+  characterLoraUrl?: string | null;
 }
 
 /** A user-created journey stored in Supabase */

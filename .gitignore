@@ -56,3 +56,7 @@ ios/DerivedData/
 
 # journey feedback log (local testing data)
 journey-feedback.jsonl
+
+# LoRA training artifacts (regenerable; ~20MB of images + zip)
+scripts/_*-lora-training/
+scripts/_*-lora-training.zip

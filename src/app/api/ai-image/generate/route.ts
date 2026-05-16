@@ -22,6 +22,13 @@ const MODEL_FLUX_DEV = "fal-ai/flux/dev";
 // woman because flux has no identity memory between calls. Authed-only
 // per the cost rationale above.
 const MODEL_FLUX_PULID = "fal-ai/flux-pulid";
+// Character-LoRA model. When the caller passes characterLora (a URL to
+// a .safetensors file trained on the journey's character), we route
+// here. flux-lora is the dev pipeline plus a LoRA attachment, so it
+// inherits dev's prompt fidelity and adds full-body identity lock at
+// ~$0.02/frame — cheaper, faster, and more consistent than PuLID's
+// face-only $0.055. Authed-only per the cost rationale above.
+const MODEL_FLUX_LORA = "fal-ai/flux-lora";
 
 // Appended to every generated prompt across every journey.
 const STYLE_SUFFIX =
@@ -43,6 +50,7 @@ const GLOBAL_NEGATIVE =
 const COST_FLUX_SCHNELL = 0.003;
 const COST_FLUX_DEV = 0.025;
 const COST_FLUX_PULID = 0.055;
+const COST_FLUX_LORA = 0.02;
 
 export async function POST(request: Request) {
   if (!process.env.FAL_KEY) {
@@ -96,7 +104,7 @@ export async function POST(request: Request) {
   fal.config({ credentials: process.env.FAL_KEY });
 
   try {
-    const { prompt, negativePrompt, referenceImageUrl, width, height, disableSafetyChecker } =
+    const { prompt, negativePrompt, referenceImageUrl, characterLora, width, height, disableSafetyChecker } =
       await request.json();
 
     if (!prompt || typeof prompt !== "string") {
@@ -125,9 +133,15 @@ export async function POST(request: Request) {
 
     // Model selection:
     //   !allowFullQuality → schnell (cheap, ~$0.003/frame)
-    //   allowFullQuality + reference → PuLID ($0.055/frame, identity lock)
-    //   allowFullQuality, no reference → dev ($0.025/frame, sharper prompt adherence)
+    //   allowFullQuality + LoRA URL → flux-lora ($0.02/frame, full character lock)
+    //   allowFullQuality + reference image → PuLID ($0.055/frame, face-only lock)
+    //   allowFullQuality, neither → dev ($0.025/frame, sharper prompt adherence)
+    // LoRA wins over PuLID when both are sent — LoRA captures more of the
+    // character (body + wardrobe + face) and is cheaper.
+    const wantsLora =
+      typeof characterLora === "string" && characterLora.length > 0;
     const wantsPulid =
+      !wantsLora &&
       typeof referenceImageUrl === "string" && referenceImageUrl.length > 0;
 
     const schnellInput = {
@@ -146,6 +160,24 @@ export async function POST(request: Request) {
       guidance_scale: 3.5,
       seed,
       enable_safety_checker: safetyCheckerOn,
+    };
+
+    // flux-lora input — same shape as flux/dev plus the loras[] array.
+    // scale=1.2 — 1.0 was conservative enough that early frames let
+    // base FLUX leak through (brown hair, partial frontal face) before
+    // the LoRA fully dominated. 1.2 locks identity (white spiral hair,
+    // mist dress, face hidden) from frame 1 without yet feeling
+    // "stamped." If frames start to ignore the scene prompt, drop to
+    // ~1.0; if identity still leaks, push toward 1.4.
+    const loraInput = {
+      prompt: fullPrompt,
+      negative_prompt: fullNegative,
+      image_size: { width: imgWidth, height: imgHeight },
+      num_inference_steps: 28,
+      guidance_scale: 3.5,
+      seed,
+      enable_safety_checker: safetyCheckerOn,
+      loras: [{ path: characterLora, scale: 1.2 }],
     };
 
     // PuLID parameters tuned for SCENE + identity lock:
@@ -172,6 +204,9 @@ export async function POST(request: Request) {
     if (!allowFullQuality) {
       modelId = MODEL_FLUX_SCHNELL;
       input = schnellInput;
+    } else if (wantsLora) {
+      modelId = MODEL_FLUX_LORA;
+      input = loraInput;
     } else if (wantsPulid) {
       modelId = MODEL_FLUX_PULID;
       input = pulidInput;
@@ -181,6 +216,7 @@ export async function POST(request: Request) {
     }
     let imageUrl: string | null = null;
     let usedPulid = allowFullQuality && wantsPulid;
+    let usedLora = allowFullQuality && wantsLora;
 
     async function runModel(id: string, payload: Record<string, unknown>): Promise<string | null> {
       try {
@@ -196,6 +232,17 @@ export async function POST(request: Request) {
 
     logger.debug("ai-generate", `model=${modelId} len=${fullPrompt.length}`, fullPrompt.substring(0, 80));
     imageUrl = await runModel(modelId, input);
+
+    // LoRA fallback — if the LoRA-loaded call fails (bad URL, fal-side
+    // missing model, etc.), retry on plain flux/dev. Loses identity
+    // lock for one frame, beats showing nothing.
+    if (!imageUrl && wantsLora && allowFullQuality) {
+      logger.debug("ai-generate", "flux-lora failed — falling back to flux/dev");
+      modelId = MODEL_FLUX_DEV;
+      input = devInput;
+      usedLora = false;
+      imageUrl = await runModel(modelId, input);
+    }
 
     // PuLID fallback — if the reference-locked call fails (timeout, bad
     // reference URL, fal throttling), retry on plain flux/dev. Better to
@@ -217,9 +264,11 @@ export async function POST(request: Request) {
       cost:
         modelId === MODEL_FLUX_SCHNELL
           ? COST_FLUX_SCHNELL
-          : usedPulid
-            ? COST_FLUX_PULID
-            : COST_FLUX_DEV,
+          : usedLora
+            ? COST_FLUX_LORA
+            : usedPulid
+              ? COST_FLUX_PULID
+              : COST_FLUX_DEV,
       model: modelId,
     });
   } catch (error) {

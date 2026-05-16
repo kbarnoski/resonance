@@ -4,6 +4,7 @@ import { seededShuffle } from "./seeded-random";
 import { applyShaderPreferences } from "./adaptive-engine";
 import { getUserBlockedShaders, getUserDeletedShaders } from "@/lib/shader-preferences";
 import { getDeviceTier } from "@/lib/audio/device-tier";
+import { GHOST_LORA_URL } from "./ghost-lora";
 
 // ─── LRU Shader Recency Tracking ───
 // Soft bias: recently-used shaders sort toward the back so consecutive journeys
@@ -528,8 +529,9 @@ export function defaultPhases(
 const GHOST_ANGEL_BODY =
   "one main ethereal angel woman (no different people, no companions, no crowds, no onlookers — SOLO figure scene) accompanied by 2 or 3 translucent ghostly spirit-echoes of HERSELF overlapping her at slight offsets like a long-exposure photograph, multi-exposure film effect of her own motion-trails, the echoes are ethereal duplicates of the same angel bleeding through the main figure (not different people), " +
   "spiritual serene ethereal pure luminous being — NEVER sexy, NEVER sensual, NEVER revealing, NEVER provocative, NEVER seductive, " +
+  "naturally proportioned healthy body with soft graceful form (NEVER skinny, NEVER skeletal, NEVER waif, NEVER emaciated, NEVER anorexic, NEVER unhealthy-thin, NEVER fashion-model thin — a real, healthy, naturally-formed body), " +
   "pale luminous skin, " +
-  "her face always obscured and hidden behind her long flowing hair or turned away from the camera — never a front-on view, never face-forward, never a full face shot, always mysterious, " +
+  "her BACK is to the camera or she is in profile so her face is HIDDEN — face always obscured behind her long flowing hair, turned fully away, or shown only in distant silhouette (NEVER a front-on view, NEVER face-forward, NEVER a full face shot, NEVER a portrait, NEVER eye contact, always mysterious), " +
   "her hair is VERY LONG and FREE-FLOWING (NEVER braided, NEVER plaited) — thick INTENSE fibonacci spiral da Vinci fractal strands forming endless visible spiral curls and swirls, cascading from her head down past her waist all the way to the ground AND trailing upward and outward in the air like flowing spiraling streamers and ribbons, spirals within spirals within spirals at every scale, the hair itself is a dense field of fibonacci spirals and curling fractal patterns, wrapped with dense swirling particles that spiral along every strand in fibonacci curves, " +
   "the hair flows seamlessly into her dress — hair and dress read as one continuous translucent fibonacci-spiral ribbon from head to beyond her feet, " +
   "wearing a long floor-length flowing translucent MODEST dress of woven mist and light that covers her body, somewhat see-through rippling with fibonacci spiral patterns of swirling particles (translucent is mist-like NOT skin-revealing), " +
@@ -640,8 +642,9 @@ export function getGhostOverlayForPhase(phase: string | null): string {
 export const GHOST_NEGATIVE_PROMPT =
   "blonde hair, gold hair, yellow hair, brown hair, red hair, " +
   "braids, braided hair, plaited hair, cornrows, french braid, " +
-  "face visible, front view of face, face-forward shot, full face view, face close-up, portrait, face-focused composition, " +
+  "face visible, front view of face, face-forward shot, full face view, face close-up, portrait, face-focused composition, looking at camera, looking toward viewer, head turned toward camera, three-quarter front view, frontal pose, " +
   "eyes open, visible eyes, eye contact with camera, " +
+  "skinny body, skeletal, waif, waif-thin, emaciated, anorexic, fashion model thin, runway model body, unhealthy thin, bony, gaunt, hollow cheeks, protruding ribs, protruding collarbone, stick figure, " +
   "sexy pose, sensual pose, revealing clothing, revealing dress, provocative, erotic, seductive, sexualized, cleavage, exposed skin, naked, nude, bare shoulders, tight clothing, lingerie, " +
   "yellow flower, yellow center, colored flower, pink flower, " +
   "bird wings, feathered wings, solid opaque wings, bulky wings, " +
@@ -1529,6 +1532,12 @@ export const JOURNEYS: Journey[] = [
     // directly (the "VARIED camera per frame — might be X, Y, Z..."
     // opener) so fal picks a different angle on every gen.
     recordingId: "549fc519-f7fc-4c38-a771-adaad2edbc81",
+    // Character LoRA — when populated by scripts/train-ghost-lora.mjs, every
+    // Ghost frame goes through fal-ai/flux-lora with this attached so the
+    // angel's identity (white spiral hair, mist dress, wispy wings, eyes
+    // closed, face obscured) holds across every gen. Falls back to plain
+    // flux/dev with the descriptor prompt when null.
+    characterLoraUrl: GHOST_LORA_URL,
     phaseLabels: { threshold: "Apparition", expansion: "Haunting", transcendence: "Possession", illumination: "Recognition", return: "Release", integration: "Grace" },
     phases: defaultPhases("cosmos", {
 
