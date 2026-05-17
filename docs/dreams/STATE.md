@@ -25,10 +25,10 @@ Anthropic cloud.
 - `docs/dreams/IDEAS.md` — seeded queue with 5 + 6 stretch ideas
 - `docs/dreams/STATE.md` — this file
 - `docs/dreams/INDEX.md` — prototype index
-- `src/app/(dream)/page.tsx` — index page route
-- `src/app/(dream)/layout.tsx` — dream-zone layout
-- `src/app/(dream)/_shared/use-mic-analyser.ts` — reusable mic+FFT hook
-- `src/app/(dream)/1-live/page.tsx` — first working AV prototype
+- `src/app/dream/page.tsx` — index page route
+- `src/app/dream/layout.tsx` — dream-zone layout
+- `src/app/dream/_shared/use-mic-analyser.ts` — reusable mic+FFT hook
+- `src/app/dream/1-live/page.tsx` — first working AV prototype
 
 **Queued next** (for Cycle 1, the first autonomous fire):
 1. Verify `dream/sandbox` builds clean on Vercel preview (read the deployment status if accessible)

@@ -28,7 +28,7 @@ concentric color fields — sub-bass deep violet at the outer edge,
 high treble white-hot at the center. Onsets flash. BPM and band
 levels display top-right.
 
-Design notes: see `src/app/(dream)/1-live/README.md`.
+Design notes: see `src/app/dream/1-live/README.md`.
 
 ---
 

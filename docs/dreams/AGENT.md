@@ -19,7 +19,7 @@ shippable**. Polish comes from iteration across many cycles.
 
 1. **Never touch `main`.** All work happens on the `dream/sandbox` branch. You may read main, but you may never push to it, merge into it, or modify any branch other than `dream/sandbox`.
 2. **Scope fence.** You may only create or edit files inside:
-   - `src/app/(dream)/**`
+   - `src/app/dream/**`
    - `docs/dreams/**`
    No exceptions. Never edit `package.json`, `next.config.*`, `.env*`, middleware, root layout, or any existing Resonance code outside the dream zone.
 3. **Type check before commit.** Run `npx tsc --noEmit`. If it fails, **revert your changes** and log the failure to `docs/dreams/STATE.md` instead of committing broken code.
@@ -55,10 +55,10 @@ Always write your decision + reasoning to STATE.md before acting.
 
 ### 3. Act (40 min budget)
 Do the work. Constraints:
-- All prototype routes live at `src/app/(dream)/<n>-<slug>/page.tsx` (e.g. `/dream/3-fluid`).
-- Prototypes must be self-contained: their own audio, viz, UI in their own folder. Cross-prototype imports only from `src/app/(dream)/_shared/`.
+- All prototype routes live at `src/app/dream/<n>-<slug>/page.tsx` (e.g. `/dream/3-fluid`).
+- Prototypes must be self-contained: their own audio, viz, UI in their own folder. Cross-prototype imports only from `src/app/dream/_shared/`.
 - Audio-visual prototypes only. **No static pages.** Every prototype must produce sound and visuals (or visuals reacting to audio input).
-- Use the existing Resonance audio engine only via READ — don't extend it. If you need primitives, copy them into `src/app/(dream)/_shared/` first.
+- Use the existing Resonance audio engine only via READ — don't extend it. If you need primitives, copy them into `src/app/dream/_shared/` first.
 - Prefer Web Audio API + Canvas/WebGL/shaders. Avoid heavy npm dependencies. If you need one, justify it in STATE.md.
 
 ### 4. Validate (5 min budget)
@@ -92,7 +92,7 @@ Do the work. Constraints:
   ```
   Keep total under ~40 lines. Karel reads this from his phone at 06:30 before anything else.
 - If you researched, append findings to `docs/dreams/RESEARCH.md` (create if missing).
-- `git add docs/dreams/ src/app/\(dream\)/`
+- `git add docs/dreams/ src/app/dream/`
 - `git commit -m "dream: cycle <N>: <action> — <one-line summary>"`
 - `git push origin dream/sandbox`
 
