@@ -12,6 +12,49 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ## SEEDED — to build first
 
+### 0. dashboard — turn /dream/ into a live single-bookmark dashboard `[queued, do FIRST]`
+
+**Question**: when Karel opens one URL on his phone at 06:30, what's the
+absolute best single-page experience?
+
+**Spec**:
+- Enhance `src/app/dream/page.tsx` (currently a static prototype list)
+  into a real dashboard that reads three files at request time:
+  - `docs/dreams/MORNING.md` — rendered as the top hero section
+    ("This morning's digest")
+  - `docs/dreams/STATE.md` — parse the latest 3-5 cycle entries and
+    show them as a "Recent activity" stream (cycle number, UTC
+    timestamp, one-line summary)
+  - `docs/dreams/INDEX.md` OR the existing PROTOTYPES constant — list
+    of prototypes with status badges, click-through to play
+- Use Next.js server component + `fs/promises` to read the files at
+  build time (Vercel rebuilds on every push, so each cycle's changes
+  flow in automatically). Wrap with `export const dynamic = 'force-static'`
+  for fast loads.
+- Render MORNING.md and the STATE.md slices via a tiny markdown→jsx
+  converter (no external deps — just handle headings, bullets, links,
+  and code spans). Resist installing `react-markdown` for this; we
+  want the dream zone dependency-free.
+- Layout: dashboard top (hero MORNING + recent activity), prototypes
+  middle, footer with links to (GitHub branch, Claude Code routines
+  page at claude.ai/code/routines, this dream's README).
+- Phone-first responsive. Dark theme already in place via dream layout.
+
+**Why this first**: Karel wants ONE bookmark on his phone home screen
+that surfaces everything. Right now he has to triangulate between
+GitHub, Claude Code app, and the preview URL. This consolidates them.
+It's also a perfect "agent's first autonomous task" — meaningful work
+that proves the loop functions before launching into more speculative
+prototypes.
+
+**Acceptance**:
+- Open `/dream/` on a phone-sized viewport — MORNING.md content visible
+  immediately above the fold, no scrolling required to see "what's new"
+- Recent cycles section shows actual cycle data from STATE.md (not
+  placeholder text)
+- Prototype list still works (clickable, status badges)
+- Local `next build` succeeds, type-check clean
+
 ### 1. live — mic-input audio-reactive viz `[in-progress]`
 
 **Question**: what if Resonance could respond to anything you play, live?

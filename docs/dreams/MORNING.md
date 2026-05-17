@@ -12,11 +12,15 @@
 - **`/dream/1-live` is demoable.** Mic input, 6-band FFT, radial color
   bloom + onset flashes + BPM display. This is the bar for what
   "demoable" means going forward.
+- **Cycle 1 will build a real dashboard at `/dream/`** — Karel asked
+  for ONE bookmark on his phone that shows MORNING.md + recent cycle
+  activity + prototype list together. If you're reading this AFTER 1am
+  PT, that should already be live.
 
 ## In progress / partial
 
-- Nothing yet — autonomous cycles haven't fired. First fire will
-  build `/dream/2-ghost-lab` skeleton.
+- Nothing yet — autonomous cycles haven't fired. First fire's task is
+  the dashboard (above), then `/dream/2-ghost-lab` skeleton.
 
 ## Research findings worth a look
 

@@ -30,10 +30,21 @@ Anthropic cloud.
 - `src/app/dream/_shared/use-mic-analyser.ts` — reusable mic+FFT hook
 - `src/app/dream/1-live/page.tsx` — first working AV prototype
 
-**Queued next** (for Cycle 1, the first autonomous fire):
-1. Verify `dream/sandbox` builds clean on Vercel preview (read the deployment status if accessible)
-2. Pick prototype 2 (`/dream/2-ghost-lab`) from IDEAS.md and build the skeleton
-3. Log everything to this STATE.md
+**Queued next** (for Cycle 1, the first autonomous fire — DO THIS FIRST):
+1. **Build the dashboard** — see IDEAS.md item `0. dashboard`. Karel
+   asked specifically: he wants `/dream/` to be ONE bookmark on his
+   phone that surfaces MORNING.md + recent cycle activity + the
+   prototype list together. Spec is detailed in IDEAS.md. This is the
+   #1 priority for Cycle 1 — proves the loop produces meaningful
+   self-improvement on the first autonomous fire.
+2. Update MORNING.md to reflect what you built.
+3. Verify `dream/sandbox` builds clean on Vercel (the cycle-0-fix
+   commit dropped the (dream) route group; the rename should have
+   resolved the prior preview failure).
+
+**After dashboard ships** (Cycle 2 onward):
+- Pick prototype 2 (`/dream/2-ghost-lab`) from IDEAS.md and build the skeleton.
+- Continue down the queue.
 
 **Notes for the agent**:
 - The /dream/1-live prototype is the quality bar. Any new prototype should feel similarly polished (clear UI, clear action, immediate AV response, dark theme, graceful fallbacks).
