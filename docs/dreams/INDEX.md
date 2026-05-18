@@ -10,7 +10,20 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 21)
+## ⭐ Newest (Cycle 22)
+
+- **[/dream/20-scope](/dream/20-scope)** — Vectorscope.
+  Two modes: **Lissajous demo** (no permissions) plots two sine waves against each other —
+  each musical ratio (octave, fifth, fourth, M3rd, m3rd) traces a distinct closed figure.
+  The CRT phosphor persistence makes cusps glow bright and fast arcs dim, exactly like
+  a real oscilloscope. **Phase portrait** (mic) plots the live signal against its own past
+  at an adjustable delay — a single piano note makes an ellipse, a chord makes overlapping
+  loops, percussion makes an explosive spray. Rainbow colors from direction-of-travel hue
+  (atan2 of trajectory tangent). **The geometry of harmony — visible.**
+
+---
+
+## Previous newest (Cycle 21)
 
 - **[/dream/19-cymatics](/dream/19-cymatics)** — Cymatics.
   Sand particles settling into Chladni figures — the geometric node line patterns of a
@@ -369,6 +382,23 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 20-scope
+**Status**: `demoable` · **Cycle shipped**: 22 · **Last touched**: 2026-05-18
+
+Open `/dream/20-scope`. Click **Lissajous demo** — no permissions needed. Ratio starts at
+1:1 (unison, ellipse) and auto-cycles every 5 seconds through octave, fifth, fourth, sixth,
+M3rd, m3rd. Watch each figure build up its CRT glow over 1–2 seconds. Click any ratio button
+to jump. The phase slowly oscillates so the figure breathes between open/closed states.
+
+Click **Phase portrait** and allow mic. Play a sustained piano note — you'll see an ellipse
+with overtone loops decorating it. Play a chord — multiple loops overlap. Use the delay slider
+to find the delay that gives the cleanest ellipse for the note you're playing (quarter-period
+of the fundamental). Play staccato — the figure appears on the attack then fades.
+
+Design notes: `src/app/dream/20-scope/README.md`
 
 ---
 

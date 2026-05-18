@@ -1,49 +1,36 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 21)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 22)
 
 ## New since yesterday
 
-- **[/dream/19-cymatics](/dream/19-cymatics)** — **open this first.**
-  Sand settling into Chladni figures — the geometric standing wave patterns of a vibrating
-  plate. 2000 amber particles drift and cluster onto the node lines of whichever frequency
-  mode is active. Eight modes, from (1,2) "Ring" up to (5,6) "Snowflake".
-
-  Click **Start demo** (no permissions). Particles scatter from the center and slowly
-  resolve into the (1,2) pattern — a cloverleaf diagonal cross. Every 4.5 seconds the
-  mode advances; particles scatter and reform into the next geometry. Watch the (3,4)
-  Asterisk and (5,6) Snowflake in particular — they're intricate.
-
-  Click **Start mic** → play a sustained piano note. The spectral centroid shifts and
-  (after ~0.75s debounce) the mode changes to match. Higher notes → more complex modes.
-  Single-note piano playing drives the mode selection cleanly.
-
-  Manual mode buttons always override auto-detection.
-
-- **[/dream/18-granular](/dream/18-granular)** — (Cycle 20, still fresh)
-  Granular synthesis cloud — every grain you hear is a glowing dot on screen.
-
-- **[/dream/17-acoustic-trail](/dream/17-acoustic-trail)** — (Cycle 19)
-  Your audio in its own 3D coordinate space.
+- **[/dream/20-scope](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/20-scope)** — Vectorscope
+  Two modes. No permissions needed for the first:
+  - **Lissajous demo**: each musical interval traces its own closed figure — octave = figure-8,
+    fifth = three-lobed knot, fourth = four-crossing shape. CRT phosphor persistence makes
+    the reversal cusps glow bright against dark. Phase slowly drifts so the figure breathes.
+    *Why open this*: it's the oldest demonstration of the geometry of musical ratios. Jules
+    Antoine Lissajous showed these to Napoleon III in 1857. None of the other 19 prototypes
+    show it.
+  - **Phase portrait (mic)**: plot signal[t] vs signal[t+delay]. Single piano note = ellipse.
+    Chord = overlapping loops. Percussion = explosive spray. Delay slider reveals different
+    periodicities. *Why open this*: it's what a Poincaré map of your playing looks like.
 
 ## In progress / partial
 
-- Nothing in-progress. All 19 prototypes are demoable.
+- **Sound for cymatics** — `19-cymatics` demo oscillator is silent (not connected to destination).
+  Connecting it would complete the full physical experience (hear the resonant tone while watching
+  the sand pattern). One-line fix queued next cycle.
 
 ## Research findings worth a look
 
-- **ElevenLabs Music API** — streaming + section-level composition ($0.80/min). Realizes
-  `5-arcs` with actual AI-generated music per arc, streaming as it generates.
-- **ReaLchords** — real-time chord accompaniment from mic melody (web demo, no API yet).
-- **Three.js WebGPU + TSL** — 3D audio-reactive deforming mesh paths now viable.
+- Research last done Cycle 18. Next cycle will be a research sweep (4 build cycles elapsed —
+  past the 3-cycle rule). See RESEARCH.md §16–§21 for Cycle 18 findings.
 
 ## Open questions for Karel
 
-- **`elevenlabs-compose` budget** (~$0.40–$1.10/generation for 30–85s)?
-  The prototype that makes `5-arcs` real with AI-authored music.
-
-- **`ghost-animate`** (Seedance 2.0, ~$0.05–0.15/clip, admin-only)?
-  Ghost LoRA image → 15s cinematic video with native audio in one step.
-
-- **Cymatics polish**: add audible tone at the mode's resonant frequency? Playing the
-  matching note and watching sand form the pattern simultaneously is the full cymatics
-  experience — currently the demo is silent. Would need to connect the oscillator to
-  `actx.destination` (one line change). Worth trying?
+- **`elevenlabs-compose`**: ElevenLabs Music API streaming + section-level arc control —
+  $0.80/min ($0.40 for 30s track, ~$1.13 for 85s). More expensive than MiniMax but streaming
+  + structured arc markup is a different capability. Approve budget?
+- **`ghost-animate`**: Seedance 2.0 image → 15s cinematic video with native audio. Admin-only.
+  Budget ~$0.05–0.15/clip. Need FAL_KEY set in env + approval to use.
+- **`reference-compose`**: MiniMax Music 2.5 reference-audio style match — $0.035/track.
+  Record 4-8 bars of piano → extend into full track in the same style. Need FAL_KEY + approval.

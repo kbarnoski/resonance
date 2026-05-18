@@ -1,5 +1,81 @@
 # Dream Agent — cycle state
 
+## Cycle 22 — /dream/20-scope
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 21 shipped `19-cymatics`. No blockers. No in-progress prototypes.
+Research last done Cycle 18 — it has been 3 build cycles since (19, 20, 21), exactly at the
+3-cycle threshold. However, the IDEAS queue is healthy (>3 entries) and "Build new" outranks
+"Research" when a buildable idea is ready. Inventing new prototype: **vectorscope/phase portrait**.
+
+New prototype: **`20-scope`** — two modes:
+1. **Lissajous demo**: two mathematically-computed sine waves with slowly-drifting frequency ratio
+   trace Lissajous figures on screen. Ratio cycles through musical intervals (octave, fifth,
+   fourth, major third, minor third). No audio permissions needed.
+2. **Phase portrait (mic)**: live mic input → plot signal[t] vs signal[t+delay]. Reveals
+   the structure of the waveform as a 2D attractor. Single pitch = ellipse. Chord = overlapping
+   loops. Silence = dot at origin. Delay slider 5–80ms.
+
+Color: hue = direction of travel in phase space (atan2 of trajectory tangent). Bright at slow
+regions (cusps, reversal points) via slow background fade + additive blending — genuine CRT
+phosphor persistence effect. 36 Path2D buckets reduce draw calls from N to 36 per frame.
+
+Why this prototype: none of the 19 existing prototypes show the *geometry of musical intervals*.
+Lissajous figures are the oldest demonstration of this: a 2:3 frequency ratio draws an
+intrinsically three-lobed knot. Each harmonic interval has a different topological figure.
+The phase portrait mode connects to the `10-strange` theme (attractors in phase space) but
+for real audio instead of a mathematical system.
+
+**Shipped**:
+- `src/app/dream/20-scope/page.tsx` — full interactive prototype (2.84 kB, ~250 lines)
+- `src/app/dream/20-scope/README.md` — Lissajous history, phase portrait math, polish ideas
+
+**What's inside**:
+
+Two modes, one canvas. Both use the same `paintScope()` renderer: segments grouped into 36
+Path2D buckets by direction hue (atan2 of trajectory tangent), then 36 `ctx.stroke(path)` calls.
+This batches N=900–2048 segments into 36 draw calls regardless of N. Color = direction of travel
+in phase space: rightward = red/orange, upward = green/cyan, leftward = cyan/blue, downward =
+indigo/magenta. A circle traces a full rainbow. Additive blending (`globalCompositeOperation =
+"lighter"`) makes dense/slow regions accumulate into bright glowing lines.
+
+**Demo mode (Lissajous)**:
+Seven musical ratios: unison through minor third. For ratio a:b, the parametric trace is:
+  x(t) = sin(t), y(t) = sin(t·b/a + phaseOff)  for t ∈ [0, a·2π]
+This sweeps exactly one full combined period — the figure closes at t = a·2π. Phase offset drifts
+slowly: `phaseOff = π/2 + sin(sec·0.22)·0.65`. Near π/2 the figure is fully closed and crisp;
+as it drifts ±0.65 rad, cusps soften and the figure breathes. Background fade is very slow
+(alpha=0.025/frame) so the CRT phosphor glow builds up: slow cusps accumulate 30+ frames and
+glow white; fast middle segments glow dimly. This is the exact brightness distribution you see
+on a real oscilloscope. No audio permissions needed.
+
+**Mic mode (Phase portrait)**:
+`AnalyserNode.getFloatTimeDomainData()` into 8192-sample buffer (186ms at 44100 Hz). For delay D,
+plots (buf[i], buf[i+D]) for i ∈ [0, min(8192-D, 2048)]. Delay slider: 5–80ms. `smoothingTimeConstant=0`
+for raw time-domain signal (no smoothing). What you see:
+- Pure sine → tight ellipse (phase of delayed copy)
+- Piano note → ellipse ringed with overtone structure (harmonics decorate the fundamental ellipse)
+- Chord → multiple overlapping loops (one per strong partial)
+- Silence → dot at origin
+- Percussion attack → explosive outward spray then contracting back
+
+Background fade faster in mic mode (alpha=0.055/frame, ~11-frame trail) to emphasize current audio.
+
+**Build**: `npm run build` passes cleanly. `/dream/20-scope` appears as static route (2.84 kB).
+Zero new errors, zero new warnings in my code — all build warnings are pre-existing
+production Resonance files.
+
+**Queued next**:
+1. **Research** — now 4 build cycles since Cycle 18. Do a research sweep next cycle.
+2. **Sound for cymatics** — connect demo oscillator to `actx.destination` at low gain so the
+   resonant tone is audible while watching the pattern. One-line change.
+3. **Polish `18-granular`** — freeze button, pitch envelope control.
+4. **`elevenlabs-compose`** — pending Karel budget approval.
+5. **`ghost-animate`** — pending Karel approval.
+
+---
+
 ## Cycle 21 — /dream/19-cymatics
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
