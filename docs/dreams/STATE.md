@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 19 — /dream/17-acoustic-trail
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 18 was a research sweep that explicitly queued `acoustic-trail` as the top
+next build: zero deps, one-cycle, most surprising idea in the queue. No blockers. No in-progress
+prototypes. Research done last cycle. Decision was straightforward.
+
+**Shipped**:
+- `src/app/dream/17-acoustic-trail/page.tsx` — full interactive prototype (~290 lines)
+- `src/app/dream/17-acoustic-trail/README.md` — design rationale, axis math, polish ideas
+
+**What's inside**:
+
+3D scatter plot of audio in acoustic feature space. Three axes derived from a
+`useMicAnalyser` frame each RAF tick:
+
+- **X** = spectral centroid (already in `getFrame().centroid`), normalized 0–7000 Hz → [−0.5, +0.5]
+- **Y** = treble ratio: `(bands[4] + bands[5]) / totalBandEnergy`, centered at 0.27
+- **Z** = bass energy: `(bands[0] + bands[1]) × 0.5`, centered at 0.18
+
+Each frame writes one point to a 4000-element circular buffer. Rendering loops newest-to-oldest
+with `globalCompositeOperation = "lighter"` (additive glow). Alpha decays as `amplitude × (1−age)^1.7`.
+Early break when alpha < 0.012 — at typical audio levels, only ~1000–2000 of the 4000 points are
+actually visible; the rest are clipped before drawing. 360 precomputed HSL color strings in
+`HUE_LUTS` eliminate per-frame string allocation. Manual 3D rotation via pointer drag: rotY/rotX
+in `rotRef`, applied via `rotProject()` (Y rotation then X rotation, orthographic). Grid and axis
+labels drawn at Y = −0.45 (below typical trail region) via `paintGrid()`.
+
+Hue = (1 − centroid_norm) × 250 + 10: indigo (dark/bassy) → orange/red (bright/treble). Color
+at any moment matches the perceptual warmth of the audio.
+
+Demo mode: 6 oscillators (40–10000 Hz) with independent LFOs (0.07–0.32 Hz). Oscillators feed
+a shared AnalyserNode (not speakers). The LFOs make different frequency bands dominant at
+different rates — centroid oscillates slowly and independently from bass energy, producing a
+smooth slow Lissajous-like path through 3D space over ~30 seconds.
+
+**Build**: `npm run build` passes cleanly. `/dream/17-acoustic-trail` appears as static route
+(4.44 kB). Zero errors or new warnings in my code — all build warnings are pre-existing Resonance
+production files.
+
+**What I noticed**: The coordinate space has a natural "resting region" — in silence the point
+clusters near (−0.2, 0, −0.1) (dark, flat treble ratio, low bass). Bass hits pull the point
+toward positive Z; treble content lifts it toward positive Y; brightness shifts it right on X.
+A piano playing a scale in the mid register traces a diagonal arc: centroid rises as pitch rises
+(X shifts right), bass drops slightly (Z nudges left), treble ratio stays roughly constant (Y
+flat). This is genuinely different from every other prototype: the trail isn't a reaction to
+audio, it's a projection of the audio into its own space. Dragging to rotate and seeing the
+3D structure from different angles is the most interesting interaction.
+
+**Queued next**:
+1. **Polish `17-acoustic-trail`** — add a "pitch" 4th axis (autocorrelation, same as
+   `13-piano-canvas`) as glyph size; add floor-shadow projection on XZ plane; label grid ticks.
+2. **Polish `16-particle-life-gpu`** — spatial grid hash for 50k+ particles, matrix morphing
+   (smooth interpolation between matrices rather than instant reshuffle).
+3. **`elevenlabs-compose`** — streaming structured music (needs Karel budget approval).
+4. **`ghost-animate`** — Ghost LoRA → Seedance 2.0 (admin-only, needs FAL_KEY).
+
+---
+
 ## Cycle 18 — Research cycle
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

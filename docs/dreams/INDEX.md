@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 17)
+## ⭐ Newest (Cycle 19)
+
+- **[/dream/17-acoustic-trail](/dream/17-acoustic-trail)** — Acoustic Trail 3D.
+  Your audio mapped to its own coordinate space: spectral centroid → X, treble ratio → Y,
+  bass energy → Z. Each frame leaves a glowing point; the trail accumulates into a 3D scatter
+  cloud that is the acoustic fingerprint of the performance. Additive blending means dense regions
+  (repeated acoustic patterns) glow brighter. Drag to rotate. Color = centroid warmth (indigo =
+  dark/bassy → orange = bright/treble). Demo mode runs 6 LFO-modulated oscillators that trace a
+  slow Lissajous path over 30 seconds. **First prototype where audio becomes its own geometry.**
+
+---
+
+## Previous newest (Cycle 17)
 
 - **[/dream/16-particle-life-gpu](/dream/16-particle-life-gpu)** — Particle Life GPU.
   9,000 particles across 6 species simulated entirely on the GPU via WGSL compute shaders —
@@ -333,6 +345,22 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 17-acoustic-trail
+**Status**: `demoable` · **Cycle shipped**: 19 · **Last touched**: 2026-05-18
+
+Open `/dream/17-acoustic-trail`. Click **Start demo** — six oscillators with independent LFOs
+begin tracing a slow path through the acoustic feature space. The point cloud grows and the
+trail curves as dominant frequencies shift. Drag to rotate the 3D view and see the path from
+different angles.
+
+Click **Start mic** and play anything — piano, voice, or drums. Single pitches trace vertical
+columns; rich chords spread into clouds; bass notes pull the trail toward the Z wall; treble
+content lifts it up the Y axis. The `clear` button resets the trail without stopping audio.
+
+Design notes: `src/app/dream/17-acoustic-trail/README.md`
 
 ---
 
