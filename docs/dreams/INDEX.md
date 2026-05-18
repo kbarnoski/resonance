@@ -10,17 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 23 — research)
+## ⭐ Newest (Cycle 24)
+
+- **[/dream/21-three-mesh-av](/dream/21-three-mesh-av)** — Three.js Mesh AV.
+  First prototype using Three.js + React Three Fiber. An icosahedron whose surface deforms
+  live with audio — **bass expands the equatorial belt**, **treble pushes the polar caps**,
+  organic noise breathes the surface at silence. Custom GLSL vertex shader with view-space
+  Fresnel rim glow. Bloom post-processing from `@react-three/postprocessing` makes displaced
+  vertices glow into soft halos. Drag to orbit, scroll to zoom. Demo mode (no mic) and mic mode.
+  **21 prototypes, and this is the first to use Three.js** — it was sitting installed and unused
+  for 20 cycles.
+
+---
+
+## Previous newest (Cycle 23 — research)
 
 - **Cycle 23 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md (§§22–28).
   3 new prototype ideas added to IDEAS.md: `three-mesh-av` (Three.js R3F + TSL audio-reactive 3D
   mesh, buildable next cycle, zero new deps), `code-score` (browser music DSL + canvas painter),
   `pitch-harmonize` (AudioWorklet phase vocoder harmony + HRTF + dual vectorscope). Ghost-animate
   plan updated: prefer HappyHorse-1.0 (new #1 ranked joint audio-video model) over Seedance 2.0.
-
-  **Most surprising finding**: `three@0.182`, `@react-three/fiber`, `@react-three/drei`, and
-  `@react-three/postprocessing` are all already installed in Resonance — 20 prototypes built
-  and none use Three.js. The next prototype will fix that.
 
 ---
 
@@ -239,6 +248,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 21-three-mesh-av
+**Status**: `demoable` · **Cycle shipped**: 24 · **Last touched**: 2026-05-18
+
+Open `/dream/21-three-mesh-av`. Click **Demo mode** — the icosahedron immediately begins
+breathing with 6 LFO-modulated oscillators. Watch the equatorial belt expand and contract
+as the low-frequency oscillators pulse; the polar caps shift with the high-frequency ones.
+Drag to orbit, scroll to zoom. Bloom halos the brightest displaced vertices.
+
+Click **Start mic** and play piano or sing. Bass notes visually inflate the equatorial ring.
+Treble notes elongate the sphere toward its poles. Silence lets you see the organic breathing
+of the noise term alone.
+
+Design notes: `src/app/dream/21-three-mesh-av/README.md`
+
+---
 
 ### dashboard (/ route)
 **Status**: `demoable` · **Cycle shipped**: 1 · **Last touched**: 2026-05-18

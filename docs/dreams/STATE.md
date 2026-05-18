@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 24 — /dream/21-three-mesh-av
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 23 was a research cycle that explicitly queued `21-three-mesh-av` as the
+Cycle 24 target. No blockers. No in-progress prototypes. Clear spec, zero new deps
+(three@0.182, @react-three/fiber@9.5, @react-three/drei, @react-three/postprocessing all
+already installed). Only remaining visual paradigm space not covered by any of the 20 existing
+prototypes: animated parametric 3D mesh. Decision was immediate.
+
+**Shipped**:
+- `src/app/dream/21-three-mesh-av/page.tsx` — full interactive prototype (332 kB with Three.js)
+- `src/app/dream/21-three-mesh-av/README.md` — design notes, technical choices, polish ideas
+
+**What's inside**:
+
+IcosahedronGeometry(1.35, 4) (~2500 vertices) + custom `THREE.ShaderMaterial` with GLSL vertex
+displacement + `@react-three/postprocessing` bloom. Runs in a `@react-three/fiber` Canvas with
+`OrbitControls` (drag to rotate, scroll to zoom).
+
+**Vertex shader**: each vertex displaced along its normal by a sum of 6 band energies weighted
+by the vertex's polar angle:
+- Sub-bass + bass (bands 0,1) → `equatorial = max(0, 1 - abs(normalY) * 3.5)` weight
+- High-mid + treble (bands 4,5) → `polar = max(0, abs(normalY) * 2 - 0.5)` weight
+- Low-mid + mid (bands 2,3) → flat 0.55 weight (global swell)
+- Plus: value noise (Inigo Quilez hash + trilinear interp) advances over time for organic idle breathing. Noise amplitude = `0.04 + amplitude * 0.10` — louder signal = more turbulent surface.
+
+**Fragment shader**: hue maps spectral centroid to indigo (dark/bassy, 0.72) → orange (bright/treble, 0.08). Brightness = base 0.06 + displacement * 1.6. Rim light via view-space normal (`normalMatrix * normal`) — edge glow that tracks camera orientation as the mesh rotates.
+
+**Bloom**: `luminanceThreshold=0.08` catches the displaced bright vertices; `intensity=1.4` makes them bloom into soft halos. This is what makes it look alive vs flat.
+
+**Audio data channel**: ref-based (`dataRef.current`) from page component to the R3F `useFrame` callback — no React re-renders, no latency, direct memory channel.
+
+**TSL note**: TSL node materials (the new Three.js way) were considered but the R3F + NodeMaterial bridge for per-frame uniform updates is less mature than `ShaderMaterial`. Used ShaderMaterial for reliability in one cycle. TSL is a polish idea.
+
+**Build**: `npm run build` passes cleanly. `/dream/21-three-mesh-av` appears as static route
+(332 kB — first prototype to include Three.js + R3F + postprocessing in its bundle). Zero errors,
+zero new warnings.
+
+**What I noticed**: the differential bass/treble mapping creates a genuinely unexpected shape
+language. When bass dominates (sub-bass heavy kick), the sphere bulges into a flying-saucer
+silhouette — a wide equatorial bulge with flat poles. When treble dominates (cymbal or piano
+upper register), it goes the opposite direction: a tall elongated biaxial form, like two hands
+pushing the poles from inside. The noise breathing means even at silence, the sphere gently
+undulates. With bloom, the displaced brighter vertices actually separate visually from the
+darker undisplaced ones — you see the mesh surface as layers of intensity.
+
+The bundle size (332 kB) is notable. Three.js brings 250+ kB. This is the cost of using the
+full R3F stack vs raw WebGPU/Canvas. Worth it for the 3D orbit + bloom without writing
+renderers manually.
+
+**Queued next**:
+1. **Build `22-code-score`** — browser music DSL + canvas painter. Zero deps, one-cycle build.
+   Write melody in a textarea → watch it paint on a canvas (like 13-piano-canvas in reverse) +
+   hear it through OscillatorNodes. Most surprising new angle in the queue.
+2. **Build `23-pitch-harmonize`** — AudioWorklet phase vocoder harmony + HRTF + dual vectorscope.
+3. **Polish `21-three-mesh-av`** — onset sculpt (drum hit → spike displacement), wire frame overlay,
+   torus knot variant.
+4. **`ghost-animate`** — needs FAL_KEY + Karel approval. HappyHorse-1.0 is now the preferred model.
+
+---
+
 ## Cycle 23 — Research cycle
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
