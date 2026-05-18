@@ -1,37 +1,37 @@
-# Morning digest — last updated 2026-05-18 00:19 UTC (Cycle 1)
+# Morning digest — last updated 2026-05-18 (Cycle 2)
 
 ## New since yesterday
 
-- **`/dream/` is now a real dashboard.** Open the preview URL and you'll
-  see this very file rendered at the top, followed by a "Recent cycles"
-  stream, then the prototype list. One bookmark covers everything.
-  Built as a Next.js server component — Vercel renders fresh markdown
-  each push, no client JS needed.
+- **Ghost LoRA Lab** — `/dream/2-ghost-lab` — open this to test the Ghost LoRA.
+  Two modes: "LoRA vs no-LoRA" (same prompt, A=flux-lora, B=flux-dev) and
+  "A/B Prompts" (different prompts, per-side LoRA toggle). Five pre-set Ghost
+  scenes (stone chamber → root portal → underground pool → tiny planet → cosmic
+  ascension). Vote buttons with localStorage tally. Requires admin login for
+  flux-lora quality — non-admin gets schnell, still works for prompt iteration.
 
-- **`/dream/1-live` still the reference prototype.** Mic input,
-  6-band FFT, radial bloom, BPM display. Demoable. The bar for
-  what "demoable" means going forward.
+- **`/dream/` dashboard** — live since Cycle 1, renders this file + recent cycles
+  + prototype list. One bookmark.
 
 ## In progress / partial
 
-- **`/dream/2-ghost-lab`** — A/B Ghost LoRA comparison tool — queued
-  for Cycle 2. Next cycle builds the skeleton: route, side-by-side
-  image viewer, vote buttons, pre-set scene dropdown.
+- `1-live` (mic viz) — demoable, not polished. No active work this cycle.
+
+## Up next
+
+- `/dream/3-fluid` — audio-driven Navier-Stokes ink-in-water (WebGL GPU shader).
+  Bass = pressure pulses, treble = turbulence, spectral centroid = ink color.
+  Most visually distinctive thing in the queue.
 
 ## Research findings worth a look
 
-- None yet — first research cycle scheduled around Cycle 3–4.
-  Topics Karel mentioned: audio-reactive viz, creative AI,
-  live performance interfaces, generative aesthetics.
+_(Research cycle scheduled ~Cycle 4. Queue is healthy at 8+ ideas.)_
 
 ## Open questions for Karel
 
-- Should the hourly cron pause during your sleep hours, or keep going?
-  (Currently: continuous — fires every hour.)
-- Any Ghost LoRA scenes you want to prioritize for 2-ghost-lab?
-  (Current pre-sets spec: "stone chamber back-view", "forest dawn
-  full-body", "cosmic flying profile".)
-- Anything to kill from the IDEAS queue before Cycle 2 starts?
+- **Ghost LoRA scale**: the API hardcodes scale=1.2. Want to test other values?
+  Would need one small edit to the generate API (`route.ts`). Say the word.
+- **Vote history**: votes are localStorage-only right now (per-browser). Worth
+  posting to Supabase for cross-session analysis? Small API endpoint needed.
 
 ---
 

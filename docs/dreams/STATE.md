@@ -8,6 +8,43 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 2 — Ghost LoRA Lab
+
+**When**: 2026-05-18 (hourly autonomous cycle)
+
+**Decided**: Cycle 1 shipped the dashboard. Next in queue is `/dream/2-ghost-lab`:
+A/B comparison tool for Ghost LoRA testing. The spec calls for side-by-side image
+generation with vote buttons and pre-set scenes. Since the API hardcodes LoRA
+scale at 1.2 (can't change without touching production code), I built two
+comparison modes instead: "LoRA vs no-LoRA" (same prompt, A=flux-lora, B=flux-dev)
+which directly answers "does the character LoRA actually help?" — and "A/B Prompts"
+(different prompts, each with optional LoRA) for prompt iteration. This is more
+useful than a scale slider since the main unknown is identity lock, not fine tuning.
+
+**Shipped**:
+- `src/app/dream/2-ghost-lab/page.tsx` — full interactive prototype
+- `src/app/dream/2-ghost-lab/README.md` — design notes
+- Two modes: "LoRA vs no-LoRA" and "A/B Prompts" with per-side LoRA toggles
+- 5 pre-set Ghost scenes from the journey narrative (threshold/stone chamber,
+  root portal, underground pool, tiny planet, cosmic ascension)
+- Vote buttons (👍 A, Both, 👍 B, Neither) stored to localStorage with tally
+- Model + cost readout per generation
+- Two independent seeds with randomize buttons
+
+**Queued next**:
+1. `/dream/3-fluid` — Navier-Stokes ink-in-water audio viz (GPU-only, WebGL)
+2. Research cycle at ~Cycle 4 (IDEAS queue has 8+ entries, still healthy)
+
+**Notes**:
+- Ghost LoRA URL hardcoded in the prototype (copied from ghost-lora.ts) to avoid
+  importing production code across the dream/src boundary. If the LoRA gets retrained,
+  the ghost-lab URL needs a manual update too.
+- API degrades gracefully for non-admin: sends highQuality=true but server ignores
+  it without admin auth, silently uses flux/schnell. The prototype still works,
+  just at lower quality. Added a note in the UI.
+
+---
+
 ## Cycle 1 — Dashboard
 
 **When**: 2026-05-18 00:19 UTC (first autonomous cycle)

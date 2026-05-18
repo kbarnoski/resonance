@@ -10,10 +10,11 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 1)
+## ⭐ Newest (Cycle 2)
 
-- **[/dream/](#dashboard)** — dashboard now live — renders MORNING.md
-  + recent cycle activity + prototype list. One bookmark for your phone.
+- **[/dream/2-ghost-lab](/dream/2-ghost-lab)** — Ghost LoRA Lab — A/B compare Ghost
+  image generations. Two modes: "LoRA vs no-LoRA" (same prompt, different model)
+  and "A/B Prompts." Vote buttons + tally. Requires admin login for flux-lora quality.
 
 ---
 
@@ -40,10 +41,19 @@ Design notes: see `src/app/dream/1-live/README.md`.
 
 ---
 
-### 2-ghost-lab `[queued → Cycle 2]`
-A/B comparison tool for Ghost LoRA prompts and scales. Next cycle
-starts the skeleton: route, side-by-side image viewer, vote buttons,
-pre-set scene dropdown.
+### 2-ghost-lab
+**Status**: `demoable` · **Cycle shipped**: 2 · **Last touched**: 2026-05-18
+
+Open `/dream/2-ghost-lab`. Two modes:
+- **LoRA vs no-LoRA**: same prompt, A=flux-lora (Ghost character LoRA attached),
+  B=flux-dev (base model). Directly shows whether identity lock is working.
+- **A/B Prompts**: two independent prompts, each with optional LoRA toggle.
+
+Five pre-set scenes (stone chamber → root portal → underground pool → tiny planet →
+cosmic ascension) with alternate camera angles. Vote buttons (👍 A / Both / 👍 B /
+Neither) stored in localStorage with running tally.
+
+Design notes: `src/app/dream/2-ghost-lab/README.md`
 
 ### 3-fluid `[queued]`
 Audio-driven Navier-Stokes ink-in-water. Bass = pressure, treble =
