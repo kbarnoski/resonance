@@ -185,10 +185,60 @@ Full research notes: RESEARCH.md §3.
 
 ---
 
+---
+
+## FROM RESEARCH (Cycle 13, 2026-05-18) — promoted to queue
+
+### piano-canvas — your improvisation as a painting `[queued]`
+Route: `/dream/13-piano-canvas`. Mic input → pitch detection via AnalyserNode autocorrelation.
+Each detected note leaves a brush stroke on the canvas: pitch → hue (C=red rotating through
+spectrum), velocity → stroke weight (0–8px), duration → stroke length. Strokes accumulate across
+the session; the canvas persists as a visual record of what you played. Dark background; the
+painting glows with each new note. "Your improvisation becomes a painting."
+
+Fallback (no mic / no pitched notes): demo mode plays 3-octave ascending piano scale with slow
+random improv, leaving example strokes. Canvas saves as PNG (download button).
+
+No external deps. Full Web Audio API — `OscillatorNode` for pitch detection signal, `AnalyserNode`
+for autocorrelation. Zero-crossings method: reliable for piano/voice (monophonic), degrades
+gracefully for chords (picks the dominant pitch).
+
+Why this now: none of the 12 existing prototypes treat the musical session as a *persistent visual
+artifact*. This is the first "record of a journey" rather than a real-time reaction. Also the most
+intimate — it rewards careful, deliberate playing. Full research notes: RESEARCH.md §10 (Art2Mus
+inspired the image↔music axis; this is the reverse direction: your music → your image).
+
+### reference-compose — style-match a piano phrase into a full track `[queued, needs FAL_KEY]`
+Route: `/dream/14-reference-compose`. Record 4–8 bars of piano via mic → encode as WAV blob →
+send as reference audio to MiniMax Music 2.5 on fal.ai ($0.035/track) alongside a text prompt
+("extend this phrase into a 30-second atmospheric piece"). Get back a full track that sounds like
+an extension of the user's playing. Play through fluid/live-bloom visualizer automatically.
+
+"Your phrase, extended." This is the compose prototype upgraded: instead of typing a mood, you
+play one. The output track is in the same harmonic/rhythmic universe as your input. Needs FAL_KEY
++ Karel budget approval. Full research notes: RESEARCH.md §12.
+
+### ghost-animate — Ghost images → cinematic video with native audio `[queued, needs FAL_KEY]`
+Route: (extend `/dream/2-ghost-lab`). After generating a Ghost LoRA image, pass it through
+Seedance 2.0 on fal.ai (image + atmospheric text → 5–10s cinematic video with native audio).
+The still Ghost image becomes a living, moving scene. Option: also pipe through Foley Control
+for environmental soundscape layer. Admin-only. Budget estimate: $0.05–0.15/clip. Full research
+notes: RESEARCH.md §§13, 15.
+
+### webgpu-fluid — upgrade 3-fluid to WebGPU compute shaders `[queued]`
+Route: `/dream/3-fluid` (replace WebGL2 sim in-place, or new `/dream/15-webgpu-fluid`).
+WebGPU now in all major desktop browsers (confirmed Nov 2025). Upgrade fluid sim from 128×128
+RGBA16F WebGL2 to 512×512 WebGPU compute. Eliminates EXT_color_buffer_float dependency. Same
+audio mapping (bass→pressure, treble→turbulence) but 16× resolution. One-cycle build given the
+existing sim logic. Full research notes: RESEARCH.md §9.
+
+---
+
 ## RESEARCH BIN — agent appends here from research cycles
 
-See RESEARCH.md for full dated entries with sources. Key findings from Cycle 4 (2026-05-18):
+See RESEARCH.md for full dated entries with sources.
 
+Key findings from Cycle 4 (2026-05-18):
 - ACE-Step music generation on fal.ai ($0.0002/s) — text → coherent music in 20s
 - MMAudio V2 ($0.001/s) — video + text → synchronized ambient audio
 - WebGPU at 70% browser coverage — compute shaders without extension flags, 1M+ particles
@@ -196,3 +246,12 @@ See RESEARCH.md for full dated entries with sources. Key findings from Cycle 4 (
 - Strange attractor synthesizer pattern — attractor xyz coords drive FM modulation
 - Gray-Scott RD implementations in WebGL — no audio version found, opportunity exists
 - Network bending for diffusion models — audio-reactive content generation (not just color)
+
+Key findings from Cycle 13 (2026-05-18):
+- WebGPU confirmed in ALL major desktop browsers (Chrome, Firefox, Safari 26, Edge) as of Nov 2025
+- Art2Mus (arxiv Feb 2026) — direct image→music via CLIP + AudioLDM 2, no text intermediate
+- BRAVE (arxiv Mar 2026) — 10ms latency neural audio timbre transfer, approaching browser-ready
+- MiniMax Music 2.5 ($0.035/track) — reference audio style matching, better than ACE-Step for style-match
+- Foley Control (fal.ai) — video → synchronized sound effects; extends ghost-sound options
+- Patchies (patchies.app) — browser-based code+visual patcher, inspiration for modular Resonance surface
+- Seedance 2.0 / Kling 4K — cinematic video with native audio from reference images

@@ -1,5 +1,72 @@
 # Dream Agent — cycle state
 
+## Cycle 13 — Research cycle
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 12 shipped `/dream/12-tessellate`. No blockers. 9 cycles since last research
+(Cycle 4) — far past the 3–4 cycle guideline. The AI audio and WebGPU landscape shifts fast;
+skipping research this long risks building on stale assumptions. Did the full sweep: arxiv (new
+audio papers), fal.ai new models, GitHub trending, Hacker News music/audio, Anthropic news.
+
+**Shipped** (no new code — research cycle):
+- `docs/dreams/RESEARCH.md` — 7 new dated entries appended (Cycle 13)
+- `docs/dreams/IDEAS.md` — 4 new prototype ideas added to queue
+- `docs/dreams/STATE.md`, `MORNING.md` updated
+
+**Key findings**:
+
+1. **WebGPU is now in ALL major desktop browsers** (Chrome, Firefox incl. macOS, Safari 26,
+   Edge) as of November 2025. The Cycle 4 estimate of "70% browser coverage" is now conservative
+   for desktop — coverage is effectively universal. Mobile Android still fragmentary (2026 ETA).
+   Safe to build WebGPU prototypes confidently for Karel's review sessions.
+
+2. **Art2Mus** (arxiv Feb 2026) — direct image→music generation using CLIP + AudioLDM 2.
+   Generates 10s audio from paintings without any text intermediary. "Removing language-based
+   supervision preserves stylistic cues filtered out by linguistic abstraction." Needs cloud API —
+   could work as a fal.ai prototype if model gets listed. Resonance angle: Ghost LoRA images →
+   AI-generated ambient music that *matches their visual mood*, not just a text-prompted soundscape.
+
+3. **MiniMax Music 2.5** ($0.035/track on fal.ai) — added reference audio style matching in
+   Jan 2026. Give it a 4-bar piano phrase as reference → it generates a full track in that style.
+   Superior to ACE-Step for "here's my vibe, extend it" use case. Budget-accessible.
+
+4. **Foley Control** (new on fal.ai) — video → synchronized sound effects via text prompt.
+   Natural extension of the ghost-sound prototype: render Ghost LoRA images as short animation
+   loops → Foley Control adds atmospheric synchronized sound. More nuanced than MMAudio V2 for
+   the "each Ghost scene has its own acoustic character" vision.
+
+5. **BRAVE** (arxiv Mar 2026) — 10ms latency neural audio VAE. Timbre transfer at live-
+   performance grade latency. Not browser-ready (WASM path needs work) but approaching it.
+   Monitor for the next research cycle. Resonance long-game: play piano → instantly hear it
+   in a custom AI-trained voice/timbre.
+
+6. **Patchies** (patchies.app) — browser-based code+visual patcher. P5.js, Three.js, Hydra,
+   Shader Park, Tone.js, Elementary Audio, MIDI, WebRTC. Clean AGPL open-source. Inspiring for
+   a future "Resonance modular patching surface" prototype.
+
+7. **New prototype concept: `13-piano-canvas`** — pitch detection via AnalyserNode
+   autocorrelation + each detected note leaves a brush stroke (pitch→hue, velocity→weight,
+   duration→stroke length). Your improvisation becomes a painting; the canvas accumulates
+   across the session. Zero external deps, one-cycle build. Genuinely new conceptual space —
+   none of the 12 existing prototypes have a "musical session as persistent visual artifact" angle.
+
+**What I noticed**: the fal.ai model landscape grew significantly since Cycle 4. ACE-Step is no
+longer the only text-to-music option — MiniMax Music 2.5 (reference audio style matching) and
+Foley Control (video-to-soundscape) open two different and more interesting workflows for
+Resonance. The video-with-native-audio models (Seedance 2.0, Kling 4K) also open Ghost
+animation paths that didn't exist in Cycle 4.
+
+**Queued next**:
+1. **Build `13-piano-canvas`** — clear spec, zero deps, one cycle. New angle: your playing
+   becomes a painting. Cycle 14.
+2. **`reference-compose`** — MiniMax Music 2.5 style transfer (record phrase → extend it).
+   Needs FAL_KEY approval. Question for Karel in MORNING.md.
+3. **`webgpu-fluid`** — upgrade `3-fluid` to WebGPU compute shaders. Desktop coverage now solid.
+4. **`typography`** — generative kinetic type (queued since Cycle 0, still unbuilt).
+
+---
+
 ## Cycle 12 — /dream/12-tessellate
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

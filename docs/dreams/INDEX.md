@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 12)
+## ⭐ Newest (Cycle 13 — research)
+
+- **Cycle 13 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md,
+  4 new prototype ideas in IDEAS.md. Highlights: `piano-canvas` (your playing → painting,
+  zero deps, Cycle 14), `reference-compose` (piano phrase → MiniMax Music 2.5 style-match
+  extension), WebGPU now universally supported on desktop. See MORNING.md for full digest.
+
+---
+
+## Previous newest (Cycle 12)
 
 - **[/dream/12-tessellate](/dream/12-tessellate)** — Tessellate.
   A 40×28 grid of Truchet tiles whose topology rewires on every beat. Each tile is a
