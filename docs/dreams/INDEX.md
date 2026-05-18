@@ -10,7 +10,20 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 9)
+## ⭐ Newest (Cycle 10)
+
+- **[/dream/10-strange](/dream/10-strange)** — Strange Attractor + FM Synthesis.
+  The Lorenz chaotic system traces a butterfly in 3D and simultaneously drives FM
+  synthesis — you see **and** hear the same chaos evolve. x-position flips carrier
+  pitch between low (left wing, cool blue) and high (right wing, warm orange). z-height
+  shapes harmonic richness (pure sine at bottom, buzzy at top). Wing transitions are
+  irregular, non-repeating melody notes — because they're deterministically chaotic.
+  **Mic mode**: your volume reshapes σ, accelerating wing transitions.
+  **Start demo** for instant visuals + audio (no permissions, no upload).
+
+---
+
+## Previous (Cycle 9)
 
 - **[/dream/9-reaction-diffusion](/dream/9-reaction-diffusion)** — Gray-Scott
   Reaction Diffusion. Two virtual chemicals on a GPU grid create Turing patterns:
@@ -181,6 +194,22 @@ Matrix heatmap in the top-left corner (green=attraction, red=repulsion) shows
 the current rules. FPS counter and species energy bars also displayed.
 
 Design notes: `src/app/dream/8-particle-life/README.md`
+
+---
+
+### 10-strange
+**Status**: `demoable` · **Cycle shipped**: 10 · **Last touched**: 2026-05-18
+
+Open `/dream/10-strange`. Click **Start demo** — the Lorenz attractor begins tracing
+its butterfly immediately, and FM synthesis starts. The carrier pitch flips between
+registers as the trajectory switches wings. Watch the z readout rise and fall; you'll
+hear the timbre shift from clean to buzzy in sync.
+
+Start mic → play something or sing loud. Your RMS amplitude feeds into σ, accelerating
+or decelerating the wing transitions. Loud = chaotic pitch turbulence. Quiet = the
+attractor settles into longer wing visits, more sustained tones.
+
+Design notes: `src/app/dream/10-strange/README.md`
 
 ---
 

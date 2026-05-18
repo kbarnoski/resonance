@@ -143,8 +143,8 @@ prototypes.
 
 ## QUEUED — agent may pick up after seeded set
 
-### strange — strange attractor viz `[queued]`
-Lorenz / Aizawa / Thomas attractors rendered in 3D, parameters modulated by audio. Bass adjusts σ/ρ/β; treble adjusts time-step. WebGL instanced lines. BONUS from research: run the attractor's xyz output as FM modulation signal so you *hear* the chaos evolve. See RESEARCH.md §6.
+### strange — strange attractor viz `[demoable]`
+Lorenz attractor in 3D with real-time FM synthesis driven by xyz coordinates. Shipped as `/dream/10-strange` (Cycle 10). Mic mode modulates σ live. See README for polish ideas: σ/ρ/β sliders, non-chaotic regime exploration, loop into fluid sim.
 
 ### tessellate — Penrose / Truchet tile rhythm `[queued]`
 Aperiodic tiling that re-tiles on beat. Each beat: ~10% of tiles flip. Mid-frequency density controls color saturation. Aesthetic: op-art.

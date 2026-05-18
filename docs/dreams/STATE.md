@@ -1,5 +1,61 @@
 # Dream Agent — cycle state
 
+## Cycle 10 — /dream/10-strange
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 9 shipped `/dream/9-reaction-diffusion`. No blockers. No in-progress
+prototypes. Queue options: (a) WebGPU upgrade of particle-life — impressive but a capability
+upgrade, not a new concept; (b) `10-strange` — Lorenz attractor + FM synthesis. Chose
+strange attractor because: it's a genuinely new concept (mathematical chaos made audible),
+MORNING.md called it out as a "single-cycle build," it required zero external deps, and the
+bidirectional loop (attractor drives FM audio; mic amplitude reshapes σ) is the kind of
+surprise Karel's manual asks for. Also: the aesthetic is completely different from all 9
+previous prototypes — none of them are about mathematical chaos.
+
+**Shipped**:
+- `src/app/dream/10-strange/page.tsx` — full interactive prototype (~280 lines)
+- `src/app/dream/10-strange/README.md` — design notes, FM math, prototype questions
+
+**What's inside**:
+
+Lorenz system (σ=10, ρ=28, β=8/3) advancing 3 steps/frame at dt=0.005. Trail of
+3000 points rendered as a fading 3D isometric projection (35° y-rotation, 15°
+x-rotation). Wing coloring: right wing (x>0) = warm orange-yellow, left wing (x<0)
+= cool blue-cyan. Trail fades oldest → newest with alpha ramp and increasing line width.
+
+**FM synthesis mapping**:
+- x ∈ [-25, 25] → carrier freq [110, 880 Hz] — left wing = low pitch, right = high pitch
+- z ∈ [0, 50] → FM modulation index [0, 8] — bottom = pure sine, top = rich harmonics
+- |y| ∈ [0, 30] → modulator ratio [0.5, 3.5×] — center = simple, edge = complex
+
+FM chain: `modulator → modGain → carrier.frequency AudioParam`. The modGain value
+is `I × f_c` (Hz deviation), keeping FM index β = mIdx regardless of carrier frequency.
+
+**Mic mode**: RMS amplitude feeds back into σ (10 → 18 at loud input). Wing transitions
+accelerate dramatically — the visual chaos matches the acoustic chaos.
+
+**Build**: `npm run build` passes cleanly. `/dream/10-strange` appears as a static route.
+Zero new warnings in my code — all build warnings are pre-existing production Resonance files.
+
+**What surprised me**: the wing transition is a musical event. When x crosses 0, the carrier
+jumps between a lower and higher register. With σ=10 these jumps happen every 1–5 seconds —
+an irregular, non-repeating melody. At σ=18 (loud mic), transitions fire every 0.3–1 second,
+creating a turbulent flurry. The z-driven timbre change is subtle but real: as the attractor
+climbs z (above both lobes), the FM index rises and the tone gets buzzy; descending z cleans
+it to a near-sine. You hear the topology of the butterfly.
+
+**Queued next**:
+1. **WebGPU particle-life-gpu** — 50k+ particles via WGSL compute shader. Visually a galaxy.
+   70%+ browser coverage in 2026. One-cycle build given the existing particle-life base.
+2. **Polish 10-strange** — add σ/ρ/β sliders so Karel can explore non-chaotic regimes
+   (σ < 24.74 = stable fixed points; ρ < 24.74 = spiral-in, no butterfly).
+3. **Strange → fluid loop** — route the FM output through 3-fluid as its audio source.
+   The fluid responds to its own chaos.
+4. **6-compose (FAL_KEY pending)** — waiting on Karel's approval.
+
+---
+
 ## Cycle 9 — /dream/9-reaction-diffusion
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
