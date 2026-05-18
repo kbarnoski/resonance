@@ -1,38 +1,47 @@
-# Morning digest — last updated 2026-05-18 (Cycle 2)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 3)
 
 ## New since yesterday
 
-- **Ghost LoRA Lab** — `/dream/2-ghost-lab` — open this to test the Ghost LoRA.
-  Two modes: "LoRA vs no-LoRA" (same prompt, A=flux-lora, B=flux-dev) and
-  "A/B Prompts" (different prompts, per-side LoRA toggle). Five pre-set Ghost
-  scenes (stone chamber → root portal → underground pool → tiny planet → cosmic
-  ascension). Vote buttons with localStorage tally. Requires admin login for
-  flux-lora quality — non-admin gets schnell, still works for prompt iteration.
+- **Fluid** — `/dream/3-fluid` — open this first. Real WebGL 2 Navier-Stokes
+  ink-in-water driven by audio. Click "Start mic," play or hum something.
+  Bass pulses the center radially outward; treble stirs fine turbulence at random
+  points; pitch (spectral centroid) shifts the dye color from indigo → green → orange/red.
+  Drag anywhere to stir manually. "Ambient drift" mode runs autonomously — good for
+  screensaver or wall display.
+  _Why look_: completely different aesthetic from 1-live's radial bloom. Fluid, organic,
+  almost biological. Possible journey phase-transition effect.
 
-- **`/dream/` dashboard** — live since Cycle 1, renders this file + recent cycles
-  + prototype list. One bookmark.
+- **Ghost LoRA Lab** — `/dream/2-ghost-lab` — A/B compare Ghost image generations.
+  "LoRA vs no-LoRA" and "A/B Prompts" modes. Vote buttons + tally. Requires admin login.
+
+- **`/dream/` dashboard** — renders this file + recent cycles + prototype list.
 
 ## In progress / partial
 
-- `1-live` (mic viz) — demoable, not polished. No active work this cycle.
-
-## Up next
-
-- `/dream/3-fluid` — audio-driven Navier-Stokes ink-in-water (WebGL GPU shader).
-  Bass = pressure pulses, treble = turbulence, spectral centroid = ink color.
-  Most visually distinctive thing in the queue.
+- Nothing mid-cycle. 3-fluid shipped complete.
 
 ## Research findings worth a look
 
-_(Research cycle scheduled ~Cycle 4. Queue is healthy at 8+ ideas.)_
+- Nothing yet — first research cycle planned for Cycle 4.
 
 ## Open questions for Karel
 
-- **Ghost LoRA scale**: the API hardcodes scale=1.2. Want to test other values?
-  Would need one small edit to the generate API (`route.ts`). Say the word.
-- **Vote history**: votes are localStorage-only right now (per-browser). Worth
-  posting to Supabase for cross-session analysis? Small API endpoint needed.
+1. **3-fluid on mobile**: WebGL 2 + float textures require a modern browser. Did it load?
+   If it shows an error, I can add a Canvas 2D approximate fallback.
+
+2. **Fluid for journey phases**: dye color follows pitch, so low bass = indigo, bright
+   harmonics = red. Could hook this into journey phase progression to replace or layer
+   with the current shader rotation. Worth exploring?
+
+3. **Research direction for Cycle 4**: any specific topics to prioritize?
+   Options: (a) arxiv audio-reactive viz, (b) new fal.ai/Replicate models,
+   (c) GitHub trending creative-coding/webaudio, (d) Shadertoy audio shaders.
+   Or all of the above in one sweep.
+
+4. **Prototype priority after research**: queue is 4-operator (Tauri/live-performance
+   panel), 5-arcs (journey engine variants), then stretch ideas (strange attractor,
+   terrain, Turing patterns). Any reprioritizations?
 
 ---
 
-**Preview URL**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream
+**Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream

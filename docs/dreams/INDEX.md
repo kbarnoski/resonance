@@ -10,11 +10,11 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 2)
+## ⭐ Newest (Cycle 3)
 
-- **[/dream/2-ghost-lab](/dream/2-ghost-lab)** — Ghost LoRA Lab — A/B compare Ghost
-  image generations. Two modes: "LoRA vs no-LoRA" (same prompt, different model)
-  and "A/B Prompts." Vote buttons + tally. Requires admin login for flux-lora quality.
+- **[/dream/3-fluid](/dream/3-fluid)** — Fluid — real-time Navier-Stokes ink-in-water
+  driven by audio. Bass pulses the center, treble stirs turbulence, pitch shifts dye color.
+  Drag to stir manually. Ambient drift mode for no-mic use.
 
 ---
 
@@ -55,9 +55,24 @@ Neither) stored in localStorage with running tally.
 
 Design notes: `src/app/dream/2-ghost-lab/README.md`
 
-### 3-fluid `[queued]`
-Audio-driven Navier-Stokes ink-in-water. Bass = pressure, treble =
-turbulence, spectral centroid = color injection. Queued.
+---
+
+### 3-fluid
+**Status**: `demoable` · **Cycle shipped**: 3 · **Last touched**: 2026-05-18
+
+Open `/dream/3-fluid`. Click **Start mic** or **Ambient drift**. Drag to stir.
+
+Real WebGL 2 Navier-Stokes fluid sim (128×128 RGBA16F). Bass injects radial
+pressure pulses from center; treble adds turbulence splats; spectral centroid
+maps to dye color (indigo → green → orange/red); onsets fire burst splats.
+25 Jacobi iterations per frame for incompressibility. Filmic tone-mapped display.
+
+Requires WebGL 2 + EXT_color_buffer_float (Chrome/Firefox/Safari 15+). Falls
+back to an error message with explanation on unsupported browsers.
+
+Design notes: `src/app/dream/3-fluid/README.md`
+
+---
 
 ### 4-operator `[queued]`
 Tauri-mode operator panel mock — performer view + scene library + MIDI

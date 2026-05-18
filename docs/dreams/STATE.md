@@ -8,6 +8,60 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 3 — /dream/3-fluid
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 2 shipped `/dream/2-ghost-lab`. Next in queue was `/dream/3-fluid` —
+the Navier-Stokes WebGL fluid simulation. No blockers from prior cycle, no in-progress
+work; straightforward to build now. This one was the most technically ambitious
+seeded prototype and I wanted to see how it held up in practice.
+
+**Shipped**:
+- `src/app/dream/3-fluid/page.tsx` — full self-contained WebGL 2 fluid sim + audio wiring
+- `src/app/dream/3-fluid/README.md` — design notes, physics choices, what to try next
+
+**What's actually inside**:
+
+The sim runs at 128×128 in RGBA16F floating-point textures (requires `EXT_color_buffer_float`,
+available in Chrome/Firefox/Safari on modern hardware). Each frame: advect velocity →
+compute divergence → 25 Jacobi pressure iterations → gradient subtract → advect dye → display.
+Velocity is stored in "UV units per second"; advection traces backward through the velocity
+field without texelSize scaling (self-consistent coordinate system).
+
+Audio mapping:
+- Bass → radial pressure pulse outward from center, dye color follows spectral centroid
+- Treble → small turbulence splats at random positions (high-frequency stirring)
+- Onset → large burst at random position (drum-hit equivalent)
+- Centroid → dye color: indigo (low) → green (mid) → orange/red (high)
+
+Fallback: Ambient drift mode runs an autonomous orbit with smooth hue cycling.
+Pointer/touch drags inject velocity proportional to drag speed.
+
+**Validation**: TSC errors in `3-fluid/page.tsx` are identical in kind to those in
+`1-live/page.tsx` — missing `react` and `next` module declarations in the CI
+environment (no node_modules). Zero errors unique to the new code.
+
+**Queued next**:
+1. Research cycle — we're at Cycle 3, and the IDEAS queue has 8+ entries but
+   RESEARCH.md is empty. Worth a research cycle (Cycle 4) to find new ideas and
+   fill the log Karel reads.
+2. `/dream/4-operator` — Tauri operator panel mock. Interesting because it forces
+   explicit thinking about live performance UX.
+3. Polish pass on `3-fluid` if needed — vorticity confinement, curl-noise turbulence,
+   particle layer.
+
+**Notes**:
+- The RGBA16F + EXT_color_buffer_float requirement means Safari on older iOS (<15)
+  won't work. The error is caught and surfaced to the user as a plain message.
+- Mouse events upgraded to Pointer Events API (works for both touch and mouse,
+  with pointer capture so drag works if you move outside the canvas).
+- Velocity dissipation set at 0.9 per frame (high decay keeps the sim responsive;
+  fluid dies quickly after each audio hit, ready for the next). Dye dissipation 0.985
+  (dye lingers longer than velocity for visual persistence).
+
+---
+
 ## Cycle 2 — Ghost LoRA Lab
 
 **When**: 2026-05-18 (hourly autonomous cycle)
