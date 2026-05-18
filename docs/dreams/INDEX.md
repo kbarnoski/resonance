@@ -10,14 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest
+## ⭐ Newest (Cycle 1)
 
-- **[/dream/1-live](#1-live)** — `demoable` — mic-input audio-reactive
-  band-color viz (the reference prototype)
+- **[/dream/](#dashboard)** — dashboard now live — renders MORNING.md
+  + recent cycle activity + prototype list. One bookmark for your phone.
 
 ---
 
 ## Prototypes
+
+### dashboard (/ route)
+**Status**: `demoable` · **Cycle shipped**: 1 · **Last touched**: 2026-05-18
+
+`/dream/` is now an async server component that reads `MORNING.md` and
+`STATE.md` at build time. Layout: MORNING.md hero → recent cycle
+stream (label, summary, when) → clickable prototype list → footer.
+Phone-first, no JS required.
 
 ### 1-live
 **Status**: `demoable` · **Cycle shipped**: 0 · **Last touched**: 2026-05-17
@@ -32,9 +40,10 @@ Design notes: see `src/app/dream/1-live/README.md`.
 
 ---
 
-### 2-ghost-lab `[queued]`
-A/B comparison tool for Ghost LoRA prompts and scales. Not yet built
-— first autonomous cycle will start this.
+### 2-ghost-lab `[queued → Cycle 2]`
+A/B comparison tool for Ghost LoRA prompts and scales. Next cycle
+starts the skeleton: route, side-by-side image viewer, vote buttons,
+pre-set scene dropdown.
 
 ### 3-fluid `[queued]`
 Audio-driven Navier-Stokes ink-in-water. Bass = pressure, treble =
@@ -68,8 +77,8 @@ drop, cinematic three-act, ritual, sleep cycle). Queued.
 
 In rough order:
 
-1. **STATE.md** — what happened in each cycle, what's next
-2. **INDEX.md** (this file) — prototype status board
-3. **RESEARCH.md** — findings from research cycles (created cycle ~4)
-4. The actual prototypes — open them on the preview URL and play
-5. **IDEAS.md** — see what's been queued / promoted / killed
+1. **`/dream/`** — the live dashboard (renders MORNING.md + cycles + prototypes)
+2. **STATE.md** — chain of thought for each cycle
+3. **INDEX.md** (this file) — prototype status board
+4. **RESEARCH.md** — findings from research cycles (created cycle ~4)
+5. **IDEAS.md** — full queue

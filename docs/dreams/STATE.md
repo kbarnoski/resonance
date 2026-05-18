@@ -8,6 +8,37 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 1 — Dashboard
+
+**When**: 2026-05-18 00:19 UTC (first autonomous cycle)
+
+**Decided**: STATE.md queued the dashboard as #1 priority for Cycle 1.
+The `/dream/` index was a static prototype list — useful but not a
+real morning-review tool. Built a proper server-side dashboard that
+reads `MORNING.md` and `STATE.md` at build time and renders them.
+Vercel rebuilds on each push, so Karel always sees the freshest data.
+
+**Shipped**:
+- `src/app/dream/page.tsx` rewritten as an `async` Next.js server component (`force-static`)
+- Tiny no-dep markdown renderer: headings, multi-line bullets, ordered lists, blockquotes, inline bold/code/links
+- `STATE.md` cycle parser extracts label/when/decided from each `## Cycle` block and renders a "Recent cycles" stream
+- Phone-first layout: MORNING.md hero → recent cycles → prototype list → footer
+- `tsc --noEmit` passes clean
+
+**Queued next**:
+1. Build `/dream/2-ghost-lab` — A/B Ghost LoRA comparison tool. Next
+   autonomous cycle should start the skeleton: route, UI shell, side-by-side
+   image display, vote buttons. The image generation API call can come later.
+2. Research cycle scheduled around Cycle 3–4 if the queue stays healthy.
+
+**Notes**:
+- The tsc errors that appeared without `node_modules` were all missing-package
+  false alarms (same pattern as Cycle 0 files). Passed clean after `npm install`.
+- `force-static` tells Next.js to render the page at build time from the
+  markdown files in the repo. No server needed at runtime — fast CDN delivery.
+
+---
+
 ## Cycle 0 — Seed (manual, Karel + Claude)
 
 **When**: 2026-05-17 (evening, America/Los_Angeles)
