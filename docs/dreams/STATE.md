@@ -1,5 +1,74 @@
 # Dream Agent — cycle state
 
+## Cycle 11 — /dream/11-terrain
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 10 shipped `/dream/10-strange`. No blockers. No in-progress prototypes.
+Queue options: (a) WebGPU particle-life-gpu — capability upgrade, impressive; (b) tessellate —
+Penrose/Truchet aperiodic tiling; (c) terrain — fly-through spectrogram. Chose terrain because
+it directly answers the "Audiosurf for any audio" spec in IDEAS.md, requires zero external deps,
+and is qualitatively unlike all 10 prior prototypes (temporal + spatial: you watch your own
+audio history as a 3D landscape scrolling toward you). Also: it's the only prototype so far
+where the X axis is frequency AND the Y axis is amplitude AND the Z axis is time — a genuine
+3D spectrogram rather than a 2D overlay.
+
+Note: last research cycle was Cycle 4 (7 cycles ago). IDEAS queue has 8+ entries, so "build
+new" outranks "research" in the priority order. Will schedule a research cycle in 2–3 cycles.
+
+**Shipped**:
+- `src/app/dream/11-terrain/page.tsx` — full interactive prototype (~240 lines)
+- `src/app/dream/11-terrain/README.md` — design notes, rendering approach, open questions
+
+**What's inside**:
+
+64 frequency columns (log-spaced 30 Hz → ~20 kHz) × 80 time-history rows. Each animation
+frame: sample FFT → push new row at front → shift history back → render back-to-front
+(painter's algorithm).
+
+Fake-perspective projection: `scale = 1 - row/ROWS`. Row 0 (newest) has scale=1 and fills
+the bottom of screen; row 79 (oldest) has scale≈0 and appears at the horizon. This avoids
+full perspective matrix math while producing the same visual for a fixed-angle overhead camera.
+
+Rendering per row:
+1. **Fill** (occlusion): filled polygon from the ridge line down to the screen bottom,
+   background color `#050510`. This hides rows behind. 80 fill calls per frame.
+2. **Ridge line**: colored `stroke()` segments, one per column pair. Skipped when
+   amplitude < 0.015 (eliminates most strokes when spectrum is sparse). Up to ~5000 strokes
+   per frame; typically far fewer.
+
+Color mapping: bass (left) = deep blue, mids = teal, treble (right) = orange → white-hot.
+Amplitude × depth-fade (`(1-r/ROWS)^0.42`) modulates brightness. Deep history dims naturally
+to near-black at the horizon.
+
+Demo audio: 6 oscillators (55, 110, 440, 880, 3300, 9000 Hz), each with a slow LFO on gain.
+Not connected to the speaker — the AnalyserNode reads from the Web Audio graph internally.
+Silent demo mode.
+
+**Build**: `npm run build` passes cleanly. `/dream/11-terrain` appears as a static route.
+The `Uint8Array<ArrayBufferLike>` vs `Uint8Array<ArrayBuffer>` TS 5 strictness issue (same
+as in `use-mic-analyser.ts`) required `new Uint8Array(new ArrayBuffer(n))` and an `as any`
+cast on the `getByteFrequencyData` call.
+
+**What I noticed**: the terrain makes the LFO character of the demo oscillators visible.
+Each oscillator's gain envelope traces a sinusoidal ridge that breathes with its LFO frequency.
+You can see 6 distinct ridges at different heights, each oscillating independently. With mic
+input on a piano chord, you see the overtone series as multiple peaks at harmonic intervals.
+The oldest ridges (horizon) appear as faint pastel lines — the persistence of sound decaying
+into memory.
+
+**Queued next**:
+1. **Research cycle** — 7 cycles since last research. Should happen soon. The WebGPU,
+   spatial audio, and AI audio model landscape has likely moved since Cycle 4.
+2. **Polish 11-terrain** — camera motion (cy modulated by current-row peak amp = "flying
+   into the mountain"), longer history (300 frames), WebGL upgrade for higher row count.
+3. **tessellate** — Penrose/Truchet aperiodic tiling with audio-reactive tile flipping.
+   An op-art prototype; none of the 11 existing prototypes look like this.
+4. **9-particle-life-gpu** — WebGPU compute shader upgrade. Waiting until research cycle
+   confirms WebGPU browser coverage is still at 70%+.
+
+---
+
 ## Cycle 10 — /dream/10-strange
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

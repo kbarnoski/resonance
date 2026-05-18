@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 10)
+## ⭐ Newest (Cycle 11)
+
+- **[/dream/11-terrain](/dream/11-terrain)** — Spectrogram Terrain.
+  Your audio history becomes a 3D landscape: frequency on the X axis, time receding to the
+  horizon on Z, amplitude as terrain height. 64 log-spaced frequency columns (30 Hz → 20 kHz),
+  80 frames of time-history. Bass forms blue mountains; treble draws bright orange ridges.
+  The newest frame is at your feet; the oldest fades to the horizon.
+  **Start demo** for instant visuals (silent oscillators with LFO breathing). **Start mic**
+  for live input — piano chords show as overtone-series ridgelines.
+
+---
+
+## Previous (Cycle 10)
 
 - **[/dream/10-strange](/dream/10-strange)** — Strange Attractor + FM Synthesis.
   The Lorenz chaotic system traces a butterfly in 3D and simultaneously drives FM
@@ -194,6 +206,18 @@ Matrix heatmap in the top-left corner (green=attraction, red=repulsion) shows
 the current rules. FPS counter and species energy bars also displayed.
 
 Design notes: `src/app/dream/8-particle-life/README.md`
+
+---
+
+### 11-terrain
+**Status**: `demoable` · **Cycle shipped**: 11 · **Last touched**: 2026-05-18
+
+64 log-spaced frequency columns × 80 time-history rows. Painter's algorithm renders back-to-front:
+each row's ridge occludes rows behind it. Fake-perspective scale makes the nearest row fill the
+bottom of the screen and the oldest row converge at the horizon. Two modes: demo (6 oscillators
+with LFOs, silent) and mic (live FFT). Peak frequency label updates at 8 Hz.
+
+Design notes: `src/app/dream/11-terrain/README.md`
 
 ---
 

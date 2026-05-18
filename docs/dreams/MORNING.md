@@ -1,56 +1,50 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 10)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 11)
 
 ## New since yesterday
 
-- **[/dream/10-strange](/dream/10-strange)** — Strange Attractor + FM Synthesis.
-  Open this one with headphones. Click **Start demo** — no permissions needed.
-
-  The Lorenz chaotic system traces its butterfly in real time. Its xyz coordinates
-  simultaneously drive FM synthesis: **x flips carrier pitch** between registers each
-  wing transition (orange = high, blue = low); **z shapes timbre** (bottom = pure sine,
-  top = buzzy harmonics); **|y| shifts the harmonic ratio**. You hear and see the same
-  mathematical chaos at once.
-
-  Wing transitions sound like random melody notes — because they are. The system is
-  deterministic but unpredictable. With σ=10 they fire every 1–5 seconds; give it your
-  mic and play loud to crank σ up to 18, and the transitions accelerate into turbulence.
-
-  **Best demo**: Start demo, watch both wings for 20s (orange right, blue left). Then
-  Start mic, hum quietly — hear the long sustained notes. Then sing loudly — watch the
-  pitch jump go chaotic.
+- **[/dream/11-terrain](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/11-terrain)** — Spectrogram Terrain.
+  Your audio history as a 3D landscape. Bass = blue mountains, treble = orange ridges.
+  The past recedes toward the horizon; the present is at your feet. Try it with a piano
+  chord in mic mode — you'll see the overtone series as distinct parallel ridgelines.
+  Open this one first: it's the most visually distinctive prototype so far.
 
 ## In progress / partial
 
-- **9-particle-life-gpu** — WebGPU upgrade (50k particles, WGSL compute shader).
-  Next cycle's candidate.
-- **10-strange polish** — σ/ρ/β sliders for exploring stable vs. chaotic regimes.
-  Interesting pedagogically: below σ=24.74 the butterfly collapses to a fixed point.
+- Nothing in-progress. All 11 prototypes are `demoable`.
+
+## Cycle summary (11 total)
+
+| # | Route | What it is |
+|---|-------|-----------|
+| 11 | /dream/11-terrain | 3D spectrogram landscape (newest) |
+| 10 | /dream/10-strange | Lorenz attractor + FM synthesis |
+| 9  | /dream/9-reaction-diffusion | Gray-Scott Turing patterns |
+| 8  | /dream/8-particle-life | Emergent particle flocking |
+| 7  | /dream/7-spatial | HRTF binaural 3D spatial audio |
+| 6  | /dream/5-arcs | Journey arc engine (5 arc types) |
+| 5  | /dream/4-operator | Venue operator panel + MIDI |
+| 4  | Research cycle | See RESEARCH.md |
+| 3  | /dream/3-fluid | Navier-Stokes WebGL fluid |
+| 2  | /dream/2-ghost-lab | Ghost LoRA A/B comparison |
+| 1  | /dream/1-live | Live mic audio-reactive viz |
 
 ## Research findings worth a look
 
-See RESEARCH.md (Cycle 4) — still current:
-- **ACE-Step** on fal.ai — text → 30s music (needs FAL_KEY)
-- **Strange attractor → fluid loop** — pipe the FM output into 3-fluid as audio source.
-  The fluid responds to its own chaos. Zero new code needed.
+- Last research was Cycle 4 (7 cycles ago). Due for a new sweep soon.
+  Cycle 4 findings: ACE-Step music gen, MMAudio V2, WebGPU at 70% coverage,
+  HRTF spatial audio, strange attractor synthesis, Gray-Scott RD. See RESEARCH.md.
 
 ## Open questions for Karel
 
-- **6-compose**: FAL_KEY + budget approval (~$0.006/call)? One-cycle build once approved.
-- **10-strange carrier range**: current range is 3 octaves (110–880 Hz, A2–A5). Want it
-  narrowed to one octave for more musical coherence, or is the dramatic sweep better?
-- **σ/ρ/β sliders**: worth a polish cycle so you can explore non-chaotic regimes live?
+- **Research cycle**: should Cycle 12 be a research sweep, or keep building?
+  Queue has 8+ ideas; nothing is blocked. A research cycle would refresh
+  the AI audio model landscape (ACE-Step, MMAudio V2 updates, new WebGPU APIs).
 
----
+- **Terrain polish**: three directions —
+  1. Camera motion (cy follows peak amplitude = "flying into the mountain")
+  2. Longer history (300 frames ≈ 5 seconds, needs WebGL)
+  3. Leave it and move to tessellate (op-art aperiodic tiling, very different aesthetic)
 
-**All prototypes live**:
-- `/dream/1-live` — mic visualizer (demoable)
-- `/dream/2-ghost-lab` — Ghost LoRA A/B lab (demoable, admin)
-- `/dream/3-fluid` — Navier-Stokes fluid sim (demoable)
-- `/dream/4-operator` — Venue operator panel (demoable)
-- `/dream/5-arcs` — Journey arc engine v2 (demoable)
-- `/dream/7-spatial` — HRTF spatial audio (demoable)
-- `/dream/8-particle-life` — Particle life, emergent flocking (demoable)
-- `/dream/9-reaction-diffusion` — Gray-Scott RD, Turing patterns (demoable)
-- `/dream/10-strange` — Strange attractor + FM synthesis (demoable) ← new
-
-**Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream
+- **6-compose (AI music generation)**: still waiting on FAL_KEY budget approval
+  (~$0.006/generation via ACE-Step on fal.ai). The prototype would let you type a
+  mood and hear a 30s musical sketch through the existing visualizers.
