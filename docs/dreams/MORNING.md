@@ -1,47 +1,46 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 7)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 8)
 
 ## New since yesterday
 
-- **[/dream/7-spatial](/dream/7-spatial)** — Binaural HRTF Spatial Audio. Open
-  this one with headphones.
+- **[/dream/8-particle-life](/dream/8-particle-life)** — Particle Life.
+  Open this one first — click **Start demo** (no permissions needed).
 
-  Six frequency bands (sub-bass → high) are placed at distinct 3-D positions
-  around your head using Web Audio's HRTF panner: bass to the front-left, treble
-  above, mid to the front-right, sub-bass below. You see a sphere showing each
-  band as a colored dot. **Drag any dot** → that frequency band moves in 3-D
-  audio space in real-time.
+  900 particles, 6 species, a random 6×6 attraction/repulsion matrix.
+  The flocking, spiraling, and predator-prey patterns are *not programmed* —
+  they emerge entirely from that matrix. Press **reshuffle** to see a
+  completely different emergent behavior in the same system.
 
-  Three modes: **Demo oscillators** (click, no permissions — six sine tones from
-  six locations), **Mic** (your voice split into 6 spatial channels), **File**
-  (upload any audio, loops).
+  With mic + a track that has clear drum hits: loud onsets reshuffle the
+  matrix mid-song. The swarm visibly reorganizes on each kick. Sub-bass
+  energy agitates the violet species; cymbal shimmer animates the pink ones.
 
-  The illusion is real but frequency-dependent: above ~2kHz (high-mid, high) the
-  elevation effect is clearly audible. Below 200Hz, binaural cues fade. Dragging
-  the high band above your head and sub-bass below is the strongest demo.
+  Matrix heatmap in the top-left shows current attraction rules live.
 
 ## In progress / partial
 
-- **5-arcs audio** — arcs demo with synthetic oscillators. If you have short
-  audio clips per arc style (even AI-generated), I can wire them as looped HTML5
-  `<audio>`. Or Tone.js procedural. Say the word.
-- **7-spatial polish** — a reset-positions button and elevation/azimuth readout
-  per band would help. Can add next cycle.
+- **8-particle-life WebGPU upgrade** — same prototype, 50k+ particles via
+  WGSL compute shader. Queued for next cycle. At 50k, it looks like a
+  galaxy self-organizing. Requires WebGPU (70% browser coverage in 2026).
+- **7-spatial polish** — reset positions button + elevation/azimuth readout
+  per band. Small polish pass.
 
 ## Research findings worth a look
 
 See RESEARCH.md (Cycle 4) — still current:
 - **ACE-Step** music gen on fal.ai — text → 30s music (needs FAL_KEY)
-- **WebGPU at 70%** — unlocks 8-particle-life (millions of particles, no ext flags)
-- **Gray-Scott reaction-diffusion** — no audio version exists, gap to fill
+- **Gray-Scott reaction-diffusion** — no audio version exists anywhere;
+  this is a real gap. Bass→feed rate, treble→kill rate would be dramatic.
+  Could be a single-cycle build.
 
 ## Open questions for Karel
 
-- **6-compose**: FAL_KEY + budget approval for ACE-Step AI music gen (~$0.006/call)?
-  Once you say yes, it's a one-cycle build.
-- **Arc audio**: want looped audio per arc in 5-arcs? Tone.js procedural requires
-  no files. Or point me to audio files.
-- **Next priority**: 8-particle-life (WebGPU flocking, visually alien) vs. polish
-  pass on existing prototypes?
+- **6-compose**: FAL_KEY + budget approval for ACE-Step AI music gen
+  (~$0.006/call)? One-cycle build once you approve.
+- **8-particle-life**: want to be able to drag individual matrix cells
+  (sliders per cell) to sculpt behavior by hand? Or is the reshuffle
+  randomness the right UX?
+- **Arc audio for 5-arcs**: still want looped audio per arc? I can do
+  Tone.js procedural without any audio files.
 
 ---
 
@@ -51,6 +50,7 @@ See RESEARCH.md (Cycle 4) — still current:
 - `/dream/3-fluid` — Navier-Stokes fluid sim (demoable)
 - `/dream/4-operator` — Venue operator panel (demoable)
 - `/dream/5-arcs` — Journey arc engine v2 (demoable)
-- `/dream/7-spatial` — HRTF spatial audio (demoable) ← new this cycle
+- `/dream/7-spatial` — HRTF spatial audio (demoable)
+- `/dream/8-particle-life` — Particle life, emergent flocking (demoable) ← new
 
 **Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream

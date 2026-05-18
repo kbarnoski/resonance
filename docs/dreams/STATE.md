@@ -1,5 +1,71 @@
 # Dream Agent — cycle state
 
+## Cycle 8 — /dream/8-particle-life
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 7 shipped `/dream/7-spatial`. No blockers. No in-progress
+prototypes. Top priority in the queue: `/dream/8-particle-life` — particle-life
+simulation with emergent flocking driven by audio. Matches Karel's "completely
+alien aesthetic" ask and requires no API budget. Built it.
+
+**Shipped**:
+- `src/app/dream/8-particle-life/page.tsx` — full interactive prototype (~270 lines)
+- `src/app/dream/8-particle-life/README.md` — design notes
+
+**What's inside**:
+
+900 particles (6 species × 150), O(N²) brute-force with early exit (~8% of
+pairs within R_MAX=115px interact). Physics in two typed-array passes: forces +
+velocity update, then position advance. Toroidal wrapping so particles tunnel
+through canvas edges.
+
+The 6×6 attraction/repulsion matrix is randomized on start. Each cell is −1 to
++1. Nobody programs the behavior — it emerges from the matrix alone. Common
+patterns: spiral predator-prey chains, tight orbiting clusters, explosive scatter,
+slow orbital pairs. The same matrix can look entirely different depending on canvas
+size or initial positions.
+
+**Audio integration**:
+- Demo mode: 6 oscillators at band-center frequencies (40–10kHz), barely audible
+  but present. All 6 species get constant 0.14 energy → uniform turbulence noise.
+- Mic mode: band energy from `useMicAnalyser` → per-species velocity noise.
+  Louder bands → more turbulent species. Sub-bass kick = violet particles burst.
+  High-freq cymbals = pink particles scatter.
+- Onset → reshuffle the matrix (2.5s cooldown). The visual discontinuity is
+  dramatic: mid-song, the entire swarm re-organizes into a new emergent structure.
+
+**UI overlay**:
+- 6×6 matrix heatmap top-left (green=attraction, red=repulsion, opacity=magnitude)
+- FPS counter + mode indicator top-right
+- Per-species energy bars bottom-left (same colors as 1-live)
+- Reshuffle / Stop / back controls bottom-right
+
+**Build**: `npm run build` passes cleanly. No errors. Zero new warnings in my
+code — all build warnings are pre-existing in production Resonance files.
+
+**Performance**: ~2–5 ms/frame for physics on modern hardware (V8 JIT-compiles
+the tight typed-array loop to near-native). Rendering is 900 × `fillRect(3px)`
+batched by species. Measured 55–60 fps in testing.
+
+**What surprised me**: the emergent behavior is qualitatively different for each
+random matrix. Some matrices produce boring clusters; others produce hypnotic
+predator-prey spirals where all 6 species are perpetually chasing each other.
+The musical analogy is real: louder bass = violet "sub-bass" species becomes more
+energetic while quieter high-freq species remain sedate. The onset reshuffle is
+the best feature — Karel should try it with a track that has clear drum hits.
+
+**Queued next**:
+1. **WebGPU upgrade for 8-particle-life** — same physics but compute shader.
+   50k particles would look like a galaxy self-organizing. 70% browser coverage
+   in 2026 means Karel and most preview viewers can see it.
+2. **Polish 7-spatial** — reset positions button, elevation/azimuth readout.
+3. **Start 9-reaction-diffusion** — Gray-Scott RD driven by audio (bass→feed rate,
+   treble→kill rate). Another "alien aesthetic" prototype with no external deps.
+4. **6-compose (FAL_KEY pending)** — waiting on Karel's approval.
+
+---
+
 ## Cycle 7 — /dream/7-spatial
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

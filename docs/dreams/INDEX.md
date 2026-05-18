@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 7)
+## ⭐ Newest (Cycle 8)
+
+- **[/dream/8-particle-life](/dream/8-particle-life)** — Particle Life. 900
+  particles across 6 species governed by a random 6×6 attraction/repulsion matrix.
+  Emergent flocking, predator-prey spirals, orbiting clusters — nobody programmed
+  them. Audio energy injects velocity noise per species. Percussive onsets reshuffle
+  the matrix mid-song. Matrix heatmap in the corner shows the current rules.
+  **Start demo** for instant (no permissions). **Start mic** for live audio response.
+
+---
+
+## Previous (Cycle 7)
 
 - **[/dream/7-spatial](/dream/7-spatial)** — Binaural HRTF Spatial Audio. Six
   frequency bands placed in 3-D space around you via Web Audio `PannerNode`
@@ -142,17 +153,35 @@ Design notes: `src/app/dream/7-spatial/README.md`
 
 ---
 
+### 8-particle-life
+**Status**: `demoable` · **Cycle shipped**: 8 · **Last touched**: 2026-05-18
+
+Open `/dream/8-particle-life`. Click **Start demo** — 900 particles immediately
+self-organize into emergent patterns driven by a random 6×6 attraction/repulsion
+matrix. No flocking code; no goals; purely emergent. Press **reshuffle** to
+randomize the matrix and watch the entire swarm re-organize.
+
+Start mic → play something with clear percussive hits (drums, piano). Loud
+onsets reshuffle the matrix automatically. The six species respond to their
+corresponding audio bands — sub-bass kicks animate the violet particles, cymbal
+shimmer animates the pink ones.
+
+Matrix heatmap in the top-left corner (green=attraction, red=repulsion) shows
+the current rules. FPS counter and species energy bars also displayed.
+
+Design notes: `src/app/dream/8-particle-life/README.md`
+
+---
+
 ### 6-compose `[queued — from Cycle 4 research]`
 ACE-Step AI music generation: type a mood → 30s musical sketch → plays
 through the fluid/live visualizer. "Compose your journey soundtrack."
 
-### 7-spatial `[queued — from Cycle 4 research]`
-HRTF binaural spatial audio mixer: 6 frequency bands placed in 3D space
-around a listener via PannerNodes. With headphones: music all around you.
+### 8-particle-life `[shipped Cycle 8 — see above]`
 
-### 8-particle-life `[queued — from Cycle 4 research]`
-WebGPU particle life simulation: 6 particle species (= 6 freq bands),
-emergent flocking driven by audio energy. Requires WebGPU (2026: 70%+ browsers).
+### 9-particle-life-gpu `[queued]`
+WebGPU upgrade of 8-particle-life: same physics but WGSL compute shader, 50k+
+particles. Requires WebGPU (2026: 70%+ browsers). Will look like a galaxy.
 
 ### 9-ghost-sound `[queued — from Cycle 4 research]`
 Ghost LoRA images + MMAudio V2 soundscaping: Ghost scenes that breathe.
