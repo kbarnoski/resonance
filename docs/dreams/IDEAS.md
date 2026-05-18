@@ -254,3 +254,59 @@ Key findings from Cycle 13 (2026-05-18):
 - Foley Control (fal.ai) — video → synchronized sound effects; extends ghost-sound options
 - Patchies (patchies.app) — browser-based code+visual patcher, inspiration for modular Resonance surface
 - Seedance 2.0 / Kling 4K — cinematic video with native audio from reference images
+
+---
+
+## FROM RESEARCH (Cycle 18, 2026-05-18) — promoted to queue
+
+### acoustic-trail — 3D spectral coordinate space trail `[queued]`
+Route: `/dream/17-acoustic-trail`. Mic input (or demo oscillators) → extract three audio features
+per frame: **spectral centroid** (brightness), **spectral bandwidth** (richness/noisiness), and
+**pitch** (autocorrelation, same algorithm as `13-piano-canvas`). Map to [X, Y, Z] in a 3D
+coordinate space. Plot a glowing point trail: each frame leaves a small particle at the current
+[centroid, bandwidth, pitch] position. Color = frequency energy gradient (same mapping as `1-live`).
+Mouse drag rotates the space. The trail accumulates over the session — the shape of the cloud IS the
+acoustic fingerprint of the performance.
+
+Rendering: WebGPU point cloud. Points stored in a circular buffer (e.g., 8000 points), drawn via
+instanced point rendering. Fade oldest points toward transparent. Grid lines on the XZ floor plane
+(spectral centroid × pitch axes) for spatial reference. Background dark; glowing particles additive.
+
+What makes this different from every other prototype: it maps audio to its *own* natural coordinate
+system rather than using audio as a trigger for abstract visuals. A single clean pitch traces a
+vertical column; a piano chord with rich harmonics spreads wide on the bandwidth axis; a bass note
+pulls the trail toward the low-pitch low-centroid corner. The trajectory IS the music, not a
+reaction to it.
+
+Zero external deps (WebGPU + Web Audio). Demo mode: same wandering multi-oscillator signal used in
+`11-terrain` and `13-piano-canvas`. One-cycle build. Inspired by SoundPlot (arxiv 2601.12752).
+
+### elevenlabs-compose — structured AI journey music, streaming `[queued, needs API key + budget]`
+Route: `/dream/18-elevenlabs-compose`. User writes a journey arc as plain-language section
+descriptions: e.g. "sparse piano intro (20 seconds). slow cello build, add low drone (30 seconds).
+full orchestral peak with percussion (15 seconds). long fade to silence (20 seconds)." Sends to
+ElevenLabs Music API with section-level control. Music streams back at 44.1kHz; plays in real-time
+through the fluid or live-bloom visualizer as it arrives.
+
+This is the `5-arcs` prototype realized with *real generated music* instead of demo oscillators.
+The user doesn't just see the arc — they hear a unique 85-second musical piece shaped to their
+spec, generated once, played through the existing AV system. First prototype where the music itself
+is AI-authored from a structured arc description.
+
+Needs ElevenLabs API key + Karel budget approval ($0.80/min → ~$0.40/generation for 30s, ~$1.13
+for 85s). More expensive than MiniMax ($0.035/flat) but streaming + section control is a different
+capability — streaming means the visualizer can react to music that is still being generated.
+
+### ghost-animate `[queued, updated — use Seedance 2.0, native audio no extra step]`
+Route: extend `/dream/2-ghost-lab`. Updated plan: Ghost LoRA image + atmospheric prompt →
+Seedance 2.0 API (fal.ai) → 15s cinematic video with native synchronized audio already included
+(no separate MMAudio V2 step needed). Seedance 2.0 API confirmed April 2026. Admin-only.
+Budget ~$0.05–0.15/clip. See RESEARCH.md §19.
+
+Key findings from Cycle 18 (2026-05-18):
+- Three.js WebGPU + TSL production-ready across all browsers (r171+, 2026 baseline)
+- SoundPlot (Jan 2026) — 3D acoustic feature space visualization (centroid/bandwidth/pitch axes)
+- ElevenLabs Music API — streaming + section-level composition ($0.80/min), custom finetunes
+- Seedance 2.0 native audio confirmed — one-step Ghost image → cinematic video with sound
+- ReaLchords — online adaptive chord accompaniment from melody (web demo exists, no public API yet)
+- ACM IMX 2025 — MIR + LLM + image gen pipeline for semantic music visualization

@@ -22,6 +22,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
+## Previous newest (Cycle 18 — research)
+
+- **Cycle 18 was a research sweep** (no new prototype). 6 new entries in RESEARCH.md (§16–§21).
+  2 new prototype ideas added to IDEAS.md: `acoustic-trail` (3D spectral coordinate trail, buildable
+  next cycle, zero deps) and `elevenlabs-compose` (streaming structured music with section control,
+  needs budget approval). Ghost-animate entry updated to use Seedance 2.0 (native audio, one step).
+  Strongest finding: ElevenLabs Music streaming + section control opens a genuinely different music
+  generation path than MiniMax or ACE-Step.
+
+---
+
 ## Previous newest (Cycle 16)
 
 - **[/dream/15-webgpu-fluid](/dream/15-webgpu-fluid)** — WebGPU Fluid.

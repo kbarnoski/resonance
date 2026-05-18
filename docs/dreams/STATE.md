@@ -1,5 +1,75 @@
 # Dream Agent — cycle state
 
+## Cycle 18 — Research cycle
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 17 shipped `16-particle-life-gpu`. No blockers. No in-progress prototypes.
+Research is past-due: last research was Cycle 13 (cycles 14, 15, 16, 17 since then — 4 cycles,
+past the 3–4 cycle rule). STATE.md's Cycle 17 entry explicitly scheduled this. Did the full sweep:
+arxiv (audio/music AI), fal.ai new models, GitHub trending AV/WebGPU, Hacker News, Three.js 2026
+state, Anthropic updates.
+
+**Shipped** (no new code — research cycle):
+- `docs/dreams/RESEARCH.md` — 6 new dated entries appended (Cycle 18, entries §16–§21)
+- `docs/dreams/IDEAS.md` — 2 new prototype ideas added (acoustic-trail, elevenlabs-compose),
+  ghost-animate entry updated to note Seedance 2.0 native audio
+- `docs/dreams/STATE.md`, `MORNING.md`, `INDEX.md` updated
+
+**Key findings**:
+
+1. **Three.js WebGPU + TSL is production-ready everywhere (2026)** — Three.js r171 established
+   WebGPU as default with WebGL fallback. TSL (Three Shading Language) node materials let you drive
+   mesh vertex displacement and fragment color from audio data without writing raw WGSL. Opens a
+   new prototype shape: 3D audio-reactive deforming mesh. Different aesthetic from our raw WGSL
+   prototypes. Zero new deps — Three.js is already in the ecosystem.
+
+2. **SoundPlot (Jan 2026, arxiv 2601.12752)** — Birdsong analysis system that maps audio to 3D
+   acoustic feature space: spectral centroid → X, bandwidth → Y, pitch → Z. Browser-based Three.js.
+   Directly inspired the new `acoustic-trail` idea: plot your piano improvisation as a 3D path
+   through feature space. Zero deps (WebGPU + Web Audio). The trail IS the fingerprint of the
+   performance.
+
+3. **ElevenLabs Music API — streaming + section control (2026)** — ElevenLabs Music (launched
+   April 2026) generates 44.1kHz studio-quality music with section-level composition control
+   (specify "sparse intro, tension build, drop") and streaming output. $0.80/minute. More expensive
+   than MiniMax ($0.035/flat) but streaming + structured arc control is a different capability.
+   Custom finetunes available. Flagged for Karel's budget approval.
+
+4. **Seedance 2.0 native audio confirmed (April 2026)** — fal.ai confirmed: Seedance 2.0 image-to-video
+   includes synchronized audio generation at no extra cost. 15s max duration, director-level camera
+   control, cinematic physics. Upgrades the existing `ghost-animate` queue entry — Ghost LoRA image
+   → living 15s cinematic scene with native sound, no MMAudio V2 post-step needed.
+
+5. **ReaLchords — online adaptive chord accompaniment (arxiv 2506.14723, 2026)** — Generative model
+   for real-time adaptive chord accompaniment from monophonic melody input. Has a browser-accessible
+   web demo. Possible path: mic melody → ReaLchords chord generation → HRTF spatial mix. Genuinely
+   surprising — you play melody, AI harmonizes live. No confirmed public API yet; monitor.
+
+6. **AI-Driven Music Visualization (ACM IMX 2025)** — System combining MIR models + LLM + image
+   gen for time-varying audio-reactive visual generation. Infers genre/mood over time and generates
+   imagery that matches. Not a direct prototype (requires budget + API) but confirms the
+   MIR→visual pipeline is viable. Inspiration for a future "semantic visualizer" prototype.
+
+**What I noticed**: The most actionable single finding is SoundPlot → `acoustic-trail`. It's
+the only prototype idea that is (a) completely new aesthetic territory vs all 17 existing
+prototypes, (b) zero external deps, (c) one-cycle build, (d) no budget needed. It maps audio
+to its own natural coordinate system rather than using audio as a trigger for abstract visuals.
+The ElevenLabs streaming + section control is the strongest "journey arc music" upgrade path —
+the ability to write structured arc markup and get a real musical arc back is exactly what the
+`5-arcs` prototype points toward.
+
+**Queued next**:
+1. **Build `acoustic-trail`** — 3D spectral coordinate space trail. Clear spec, zero deps,
+   one-cycle build, genuinely new aesthetic. Highest-surprise buildable-now item in the queue.
+2. **`elevenlabs-compose`** — Streaming music with section control. Needs Karel budget approval
+   (flagged in MORNING.md open questions).
+3. **Polish `16-particle-life-gpu`** — spatial grid hash for 50k+ particles, matrix morphing.
+4. **`ghost-animate`** — Ghost LoRA → Seedance 2.0 → cinematic video with native audio.
+   Now even more attractive: no MMAudio V2 post-step needed. Admin-only.
+
+---
+
 ## Cycle 17 — /dream/16-particle-life-gpu
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
