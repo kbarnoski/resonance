@@ -1,5 +1,71 @@
 # Dream Agent — cycle state
 
+## Cycle 9 — /dream/9-reaction-diffusion
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 8 shipped `/dream/8-particle-life`. No blockers. No in-progress
+prototypes. Queue options: (a) WebGPU upgrade of particle-life (50k particles, WGSL
+compute shader), (b) reaction-diffusion. Chose RD because: RESEARCH.md flagged it
+as a clear gap ("no audio-driven GS implementation exists anywhere"), it requires
+zero external deps or FAL_KEY, and it's a genuinely different aesthetic from all
+existing prototypes — organic, biological, slow-growing rather than particle-kinetic.
+The WebGPU upgrade is queued next.
+
+**Shipped**:
+- `src/app/dream/9-reaction-diffusion/page.tsx` — full interactive prototype (~280 lines)
+- `src/app/dream/9-reaction-diffusion/README.md` — design notes + equations
+
+**What's inside**:
+
+Gray-Scott reaction-diffusion on a 256×256 RGBA32F WebGL2 ping-pong buffer. Two
+chemicals: U (substrate, Du=0.21) and V (activator, Dv=0.105). The 2:1 diffusion
+ratio creates Turing instability — small perturbations grow into macroscopic patterns.
+
+The 9-point Laplacian stencil (cardinal=0.2, diagonal=0.05) is isotropic enough
+that coral patterns aren't axis-aligned. REPEAT texture wrapping = toroidal boundary.
+600 warmup steps run synchronously on GL init so a visible pattern is present the
+moment the animation loop starts (no waiting 10 seconds).
+
+6 presets at different (f, k) values, each a distinct pattern family:
+- Coral (0.0545, 0.062): branching tree structures
+- Fingerprint (0.037, 0.060): whorls
+- Spots (0.035, 0.065): isolated colonies
+- Stripes (0.060, 0.062): labyrinthine Turing stripes
+- Mitosis (0.028, 0.053): dividing spots
+- Maze (0.030, 0.0565): connected maze walls
+
+**Audio mapping**:
+- Bass → +f (up to +0.012): more activation energy, denser patterns
+- Treble → +k (up to +0.008): faster kill, structures become isolated
+- Onset → inject V blob at random position (1.5s refractory)
+- Canvas click → manual injection at cursor
+- Demo: 6 sine oscillators + slow sinusoidal f/k drift + auto-inject every 6s
+
+Display shader: V concentration → deep indigo → teal → white-hot with vignette.
+8 RD steps per frame → ~480 steps/sec at 60fps.
+
+**Build**: `npm run build` passes cleanly. `/dream/9-reaction-diffusion` appears
+as a static route. Zero new warnings in my code — all build warnings are pre-existing
+production Resonance files.
+
+**What surprised me**: preset switching mid-run is dramatic. Coral→Spots dissolves
+the branching tree into isolated colonies over ~5 seconds; Stripes→Mitosis pinches
+stripes into dividing spots in real time. The audio modulation is subtle — it takes
+a loud bass drop to shift f noticeably. That's intentional: too much shift collapses
+the pattern to a uniform state (the "death" state). The system lives at the edge of
+instability, which is exactly where music lives.
+
+**Queued next**:
+1. **9-particle-life-gpu** — WebGPU compute shader upgrade of particle-life.
+   50k+ particles, WGSL physics. Will look like a galaxy. WebGPU at 70% coverage.
+2. **Strange attractor + FM synthesis** — Lorenz attractor xyz drives FM modulation.
+   Audio-visual loop: you hear and see chaos evolve together.
+3. **Polish 7-spatial** — reset button, per-band elevation/azimuth readout.
+4. **6-compose (FAL_KEY pending)** — waiting on Karel's approval.
+
+---
+
 ## Cycle 8 — /dream/8-particle-life
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

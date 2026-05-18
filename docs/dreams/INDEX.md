@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 8)
+## ⭐ Newest (Cycle 9)
+
+- **[/dream/9-reaction-diffusion](/dream/9-reaction-diffusion)** — Gray-Scott
+  Reaction Diffusion. Two virtual chemicals on a GPU grid create Turing patterns:
+  coral, fingerprints, dividing spots, maze walls — emergent from diffusion rates
+  alone. Bass raises the feed rate; treble raises the kill rate; percussive hits
+  inject new seed colonies. Click the canvas to inject manually. 6 presets.
+  **Start demo** for instant visuals (no permissions).
+
+---
+
+## Previous (Cycle 8)
 
 - **[/dream/8-particle-life](/dream/8-particle-life)** — Particle Life. 900
   particles across 6 species governed by a random 6×6 attraction/repulsion matrix.
@@ -170,6 +181,24 @@ Matrix heatmap in the top-left corner (green=attraction, red=repulsion) shows
 the current rules. FPS counter and species energy bars also displayed.
 
 Design notes: `src/app/dream/8-particle-life/README.md`
+
+---
+
+### 9-reaction-diffusion
+**Status**: `demoable` · **Cycle shipped**: 9 · **Last touched**: 2026-05-18
+
+Open `/dream/9-reaction-diffusion`. Click **Start demo** — a Gray-Scott RD simulation
+initializes and runs 600 warmup steps before the first frame so the pattern is
+already visible. Pick a preset (Coral, Fingerprint, Spots, Stripes, Mitosis, Maze)
+to switch pattern families mid-run. Click anywhere on the canvas to inject a new
+activation blob and watch a colony grow from scratch.
+
+With mic + music: bass raises feed rate (denser, more energetic patterns); treble
+raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
+
+Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
+
+Design notes: `src/app/dream/9-reaction-diffusion/README.md`
 
 ---
 

@@ -1,46 +1,46 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 8)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 9)
 
 ## New since yesterday
 
-- **[/dream/8-particle-life](/dream/8-particle-life)** — Particle Life.
-  Open this one first — click **Start demo** (no permissions needed).
+- **[/dream/9-reaction-diffusion](/dream/9-reaction-diffusion)** — Gray-Scott
+  Reaction Diffusion. Open this one first — click **Start demo** (no permissions).
 
-  900 particles, 6 species, a random 6×6 attraction/repulsion matrix.
-  The flocking, spiraling, and predator-prey patterns are *not programmed* —
-  they emerge entirely from that matrix. Press **reshuffle** to see a
-  completely different emergent behavior in the same system.
+  Two virtual chemicals interact on a 256×256 GPU grid. A substrate is consumed by
+  an activator that diffuses more slowly. From nothing but diffusion rates, Turing
+  instabilities produce: coral branching, fingerprint whorls, dividing spots, maze
+  walls — depending on which preset you pick.
 
-  With mic + a track that has clear drum hits: loud onsets reshuffle the
-  matrix mid-song. The swarm visibly reorganizes on each kick. Sub-bass
-  energy agitates the violet species; cymbal shimmer animates the pink ones.
+  **Audio integration**: bass raises the feed rate (more activation energy → denser
+  patterns). Treble raises the kill rate (structure erodes faster). Percussive onsets
+  inject new seed blobs mid-sim. **Click anywhere on the canvas** to inject manually
+  and watch a colony grow from scratch.
 
-  Matrix heatmap in the top-left shows current attraction rules live.
+  Best demo: start on **Coral**, let it stabilize (~10s), then click several spots
+  on the canvas and watch coral branches grow and merge. Switch to **Mitosis** and
+  watch spots divide like cells.
 
 ## In progress / partial
 
-- **8-particle-life WebGPU upgrade** — same prototype, 50k+ particles via
-  WGSL compute shader. Queued for next cycle. At 50k, it looks like a
-  galaxy self-organizing. Requires WebGPU (70% browser coverage in 2026).
-- **7-spatial polish** — reset positions button + elevation/azimuth readout
-  per band. Small polish pass.
+- **9-particle-life-gpu** — WebGPU upgrade of particle-life (50k+ particles, WGSL
+  compute shader, galaxy-scale). Queued next.
+- **7-spatial polish** — reset button + elevation/azimuth readout per band.
 
 ## Research findings worth a look
 
 See RESEARCH.md (Cycle 4) — still current:
 - **ACE-Step** music gen on fal.ai — text → 30s music (needs FAL_KEY)
-- **Gray-Scott reaction-diffusion** — no audio version exists anywhere;
-  this is a real gap. Bass→feed rate, treble→kill rate would be dramatic.
-  Could be a single-cycle build.
+- **Strange attractor + FM synthesis** — Lorenz attractor driving FM modulation.
+  Beautiful audio-visual loop. Single-cycle build.
 
 ## Open questions for Karel
 
 - **6-compose**: FAL_KEY + budget approval for ACE-Step AI music gen
   (~$0.006/call)? One-cycle build once you approve.
-- **8-particle-life**: want to be able to drag individual matrix cells
-  (sliders per cell) to sculpt behavior by hand? Or is the reshuffle
-  randomness the right UX?
-- **Arc audio for 5-arcs**: still want looped audio per arc? I can do
-  Tone.js procedural without any audio files.
+- **9-reaction-diffusion preset tuning**: the 6 presets are from the GS literature.
+  Do any feel wrong? I can adjust f/k values or add new patterns (e.g. "worms",
+  "labyrinth", "solitons"). Easy to tune.
+- **8-particle-life matrix editor**: want per-cell sliders to sculpt behavior
+  manually, or is random reshuffle the right UX?
 
 ---
 
@@ -51,6 +51,7 @@ See RESEARCH.md (Cycle 4) — still current:
 - `/dream/4-operator` — Venue operator panel (demoable)
 - `/dream/5-arcs` — Journey arc engine v2 (demoable)
 - `/dream/7-spatial` — HRTF spatial audio (demoable)
-- `/dream/8-particle-life` — Particle life, emergent flocking (demoable) ← new
+- `/dream/8-particle-life` — Particle life, emergent flocking (demoable)
+- `/dream/9-reaction-diffusion` — Gray-Scott RD, Turing patterns (demoable) ← new
 
 **Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream
