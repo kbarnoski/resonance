@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 6)
+## ⭐ Newest (Cycle 7)
+
+- **[/dream/7-spatial](/dream/7-spatial)** — Binaural HRTF Spatial Audio. Six
+  frequency bands placed in 3-D space around you via Web Audio `PannerNode`
+  (HRTF model). Default: bass front-left, treble above, sub-bass below. Drag
+  any dot on the sphere to move that band. Three modes: Demo oscillators (instant),
+  Mic, File upload. Wear headphones — the spatial illusion is real above ~2kHz.
+
+---
+
+## Previous (Cycle 6)
 
 - **[/dream/5-arcs](/dream/5-arcs)** — Journey Arc Engine v2. Five arc types
   (Psychedelic / EDM Build-and-Drop / Cinematic / Ritual / Sleep Cycle), each
@@ -118,6 +128,19 @@ three-act narrative) · Ritual (4 phases, ceremony) · Sleep Cycle (5 phases,
 8-hour arc that never flashes).
 
 Design notes: `src/app/dream/5-arcs/README.md`
+
+### 7-spatial
+**Status**: `demoable` · **Cycle shipped**: 7 · **Last touched**: 2026-05-18
+
+Open `/dream/7-spatial`. Click **Demo oscillators** (no mic/file needed) —
+six sine tones play, each from a different 3D position in your headphones.
+Drag colored dots on the sphere to reposition each frequency band. Try moving
+"High" below your ears and "Sub-bass" above — the tones really move.
+Mic and File modes split real audio into 6 spatial channels.
+
+Design notes: `src/app/dream/7-spatial/README.md`
+
+---
 
 ### 6-compose `[queued — from Cycle 4 research]`
 ACE-Step AI music generation: type a mood → 30s musical sketch → plays

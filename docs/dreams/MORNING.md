@@ -1,57 +1,56 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 6)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 7)
 
 ## New since yesterday
 
-- **[/dream/5-arcs](/dream/5-arcs)** — Journey Arc Engine v2. Open this first.
-  Five tabs at the top: Psychedelic (the current arc), EDM Build-and-Drop,
-  Cinematic, Ritual, Sleep Cycle. Click **Demo mode** → the arc plays out
-  in 60 seconds so you can see all phases. Click any phase chip at the bottom
-  to jump there immediately. Start mic → audio drives particle behavior live.
+- **[/dream/7-spatial](/dream/7-spatial)** — Binaural HRTF Spatial Audio. Open
+  this one with headphones.
 
-  Each arc has distinct phases (5–7), each with its own color palette, particle
-  behavior (orbit / rise / scatter / grid / wave / dissolve), and intensity curve.
-  The Sleep arc suppresses onset flashes (never startles). The EDM arc compresses
-  from dark-grid intro → cyan build → white-hot drop → green euphoric plateau.
+  Six frequency bands (sub-bass → high) are placed at distinct 3-D positions
+  around your head using Web Audio's HRTF panner: bass to the front-left, treble
+  above, mid to the front-right, sub-bass below. You see a sphere showing each
+  band as a colored dot. **Drag any dot** → that frequency band moves in 3-D
+  audio space in real-time.
 
-  The right panel (desktop) shows the current phase name + description and the
-  arc's design rationale vs. the psychedelic baseline.
+  Three modes: **Demo oscillators** (click, no permissions — six sine tones from
+  six locations), **Mic** (your voice split into 6 spatial channels), **File**
+  (upload any audio, loops).
 
-  **Why this matters**: building these arcs forces explicit answers to "how long
-  is the build?", "where does the emotional peak sit?", "what does resolution
-  look like in sound?" — questions the current engine never had to answer
-  because there was only one arc.
+  The illusion is real but frequency-dependent: above ~2kHz (high-mid, high) the
+  elevation effect is clearly audible. Below 200Hz, binaural cues fade. Dragging
+  the high band above your head and sub-bass below is the strongest demo.
 
 ## In progress / partial
 
-- **4-operator polish** — scene crossfades (dual offscreen canvas), MIDI CC
-  learn mode, auto-advance on crowd-noise threshold.
-- **6-compose** queued — ACE-Step AI music gen ($0.006/call). Needs FAL_KEY
-  and your go-ahead on budget.
+- **5-arcs audio** — arcs demo with synthetic oscillators. If you have short
+  audio clips per arc style (even AI-generated), I can wire them as looped HTML5
+  `<audio>`. Or Tone.js procedural. Say the word.
+- **7-spatial polish** — a reset-positions button and elevation/azimuth readout
+  per band would help. Can add next cycle.
 
 ## Research findings worth a look
 
-See RESEARCH.md (from Cycle 4) — still current:
-- ACE-Step music gen on fal.ai — text → 30s of music in 20s
-- WebGPU at 70% browser coverage — unlocks 8-particle-life
-- Gray-Scott reaction-diffusion — audio version doesn't exist yet
+See RESEARCH.md (Cycle 4) — still current:
+- **ACE-Step** music gen on fal.ai — text → 30s music (needs FAL_KEY)
+- **WebGPU at 70%** — unlocks 8-particle-life (millions of particles, no ext flags)
+- **Gray-Scott reaction-diffusion** — no audio version exists, gap to fill
 
 ## Open questions for Karel
 
-- **5-arcs playback audio**: the arcs demo with synthetic oscillators. If you
-  have a short audio file per arc (even 30s of EDM, ambient, etc.), I can add
-  looped HTML5 `<audio>` per arc so sound and visual structure actually match.
-  Or I can generate placeholder files with Tone.js. Say the word.
-- **6-compose**: FAL_KEY budget approval for ACE-Step AI music gen?
-- **Arc priority for next cycle**: 7-spatial (HRTF binaural) feels surprising
-  and self-contained. Or polish 5-arcs with actual audio. Your call.
+- **6-compose**: FAL_KEY + budget approval for ACE-Step AI music gen (~$0.006/call)?
+  Once you say yes, it's a one-cycle build.
+- **Arc audio**: want looped audio per arc in 5-arcs? Tone.js procedural requires
+  no files. Or point me to audio files.
+- **Next priority**: 8-particle-life (WebGPU flocking, visually alien) vs. polish
+  pass on existing prototypes?
 
 ---
 
 **All prototypes live**:
 - `/dream/1-live` — mic visualizer (demoable)
 - `/dream/2-ghost-lab` — Ghost LoRA A/B lab (demoable, admin)
-- `/dream/3-fluid` — Navier-Stokes fluid (demoable)
-- `/dream/4-operator` — Operator panel (demoable)
-- `/dream/5-arcs` — Journey arc engine v2 (demoable) ← new this cycle
+- `/dream/3-fluid` — Navier-Stokes fluid sim (demoable)
+- `/dream/4-operator` — Venue operator panel (demoable)
+- `/dream/5-arcs` — Journey arc engine v2 (demoable)
+- `/dream/7-spatial` — HRTF spatial audio (demoable) ← new this cycle
 
 **Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream

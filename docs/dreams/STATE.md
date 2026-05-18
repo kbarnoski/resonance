@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 7 — /dream/7-spatial
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 6 shipped `/dream/5-arcs`. No blockers. No in-progress
+prototypes. STATE.md queued `/dream/7-spatial` as the top-priority next build:
+pure Web Audio API, no FAL_KEY or budget needed, and the HRTF spatial illusion
+is the kind of "huh, I didn't know we could do that" surprise Karel's manual
+asks for. Built it this cycle.
+
+**Shipped**:
+- `src/app/dream/7-spatial/page.tsx` — full interactive prototype (~310 lines)
+- `src/app/dream/7-spatial/README.md` — design notes
+
+**What's inside**:
+
+Six frequency bands placed in 3D space around the listener using `PannerNode`
+with `panningModel: 'HRTF'`. Each band runs through its own chain:
+`source → BiquadFilter(bandpass) → AnalyserNode → PannerNode(HRTF) → destination`.
+`rolloffFactor = 0` keeps all bands at equal volume regardless of position.
+
+Default layout (earphones required to hear):
+- Sub-bass (40 Hz): directly below
+- Bass (125 Hz): front-left
+- Low-mid (350 Hz): directly in front
+- Mid (1 kHz): front-right
+- High-mid (3 kHz): right-above
+- High (10 kHz): directly above
+
+Three input modes: Demo oscillators (sine waves, instant), Mic (real instrument,
+split into 6 spatial channels), File upload (any audio, loops).
+
+Canvas shows an orthographic sphere (24° downward tilt for depth). Six colored
+dots on the sphere represent band positions. Dots pulse with their band's RMS.
+Drag any dot → repositions that band in 3D audio space in real-time.
+Depth-sorted rendering: front dots brighter, back dots dimmer.
+
+3D projection: z-axis is flipped so Web Audio "in front" (z<0) maps to the
+visual near side of the sphere. Inverse projection for drag corrects this flip.
+
+**Build**: `npm run build` passes cleanly. Two warnings on ternary-as-statement
+expressions (lines 264, 277) — same pattern as pre-existing `4-operator/page.tsx`
+warnings. Not errors.
+
+**What surprised me**: the spatial illusion is frequency-dependent. Sub-bass
+(40 Hz) doesn't localize at all (below ~150 Hz, binaural cues disappear).
+High frequencies (3kHz+) localize clearly — moving the high-mid and high bands
+above/below is the most convincing demo. The "bass below, treble above" default
+is perceptually accurate: treble floats, bass grounds.
+
+**Queued next**:
+1. **Polish 7-spatial** — reset positions button, elevation/azimuth readout per
+   band, option to show "front hemisphere" vs "all around" view. Or:
+2. **Start `/dream/8-particle-life`** — WebGPU flocking. Requires checking
+   browser support (70% per RESEARCH.md). High-surprise prototype.
+3. **Polish `/dream/5-arcs`** — add looped HTML5 audio per arc type so the
+   sound actually matches the arc structure (Karel asked about this).
+4. **`/dream/6-compose`** — still needs FAL_KEY + budget approval.
+
+---
+
 Latest cycle is at the top. Each entry: cycle number, UTC timestamp,
 decision + reasoning, what shipped, what's queued next.
 
