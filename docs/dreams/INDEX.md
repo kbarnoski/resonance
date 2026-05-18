@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 20)
+## ⭐ Newest (Cycle 21)
+
+- **[/dream/19-cymatics](/dream/19-cymatics)** — Cymatics.
+  Sand particles settling into Chladni figures — the geometric node line patterns of a
+  vibrating plate. 2000 amber grains drift onto the exact curves where sound is stationary.
+  Eight modes from simple (1,2) Ring to intricate (5,6) Snowflake. Additive blending makes
+  the node lines glow bright against black. Demo auto-cycles every 4.5s; mic mode maps
+  spectral centroid to mode; manual buttons always override. **The hidden geometry of
+  frequency — what Resonance literally means.**
+
+---
+
+## Previous newest (Cycle 20)
 
 - **[/dream/18-granular](/dream/18-granular)** — Granular Cloud.
   Your audio shattered into overlapping grains and reassembled as a glowing cloud. Each dot IS
@@ -357,6 +369,23 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 19-cymatics
+**Status**: `demoable` · **Cycle shipped**: 21 · **Last touched**: 2026-05-18
+
+Open `/dream/19-cymatics`. Click **Start demo** — particles scatter from the canvas center
+and gradually resolve into the (1,2) Ring pattern (two diagonal node lines + an ellipse).
+Watch the modes cycle every 4.5 seconds: Clover, Cross, Asterisk, Lattice, Fine Star,
+Crystal, Snowflake — each pattern distinct, more intricate than the last. The transition
+(scatter → resolve) takes 2–4 seconds per mode.
+
+Click **Start mic** and play a sustained piano note. The spectral centroid maps to the
+nearest mode; hold a bass note for the simpler modes, play high treble for the complex ones.
+Manual mode buttons override at any time.
+
+Design notes: `src/app/dream/19-cymatics/README.md`
 
 ---
 

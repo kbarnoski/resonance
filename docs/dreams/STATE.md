@@ -1,5 +1,83 @@
 # Dream Agent — cycle state
 
+## Cycle 21 — /dream/19-cymatics
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 20 shipped `18-granular`. No blockers. No in-progress prototypes.
+Research last done Cycle 18 — only 2 build cycles since (19, 20), not yet at the 3–4
+cycle threshold. Every API-key-gated idea remains blocked. "Build new" outranks "Polish."
+
+New prototype invented this cycle: **cymatics** — Chladni figure visualizer. Sand particles
+settle into the geometric node lines of a vibrating plate. The pattern IS the frequency.
+This fills a real gap: none of the 18 existing prototypes connect audio to physical
+resonance geometry. The name "Resonance" is literally about this. Zero external deps,
+one-cycle build, immediately demoable without permissions.
+
+**Shipped**:
+- `src/app/dream/19-cymatics/page.tsx` — full interactive prototype (3.47 kB, ~280 lines)
+- `src/app/dream/19-cymatics/README.md` — physics derivation, mode catalogue, polish ideas
+
+**What's inside**:
+
+2000 amber particles simulated with Chladni physics. The plate function for mode (m,n):
+`f(x,y) = cos(m·π·x)·cos(n·π·y) − cos(n·π·x)·cos(m·π·y)`
+
+Node lines (f = 0) are where real sand accumulates on a vibrating plate. Force on each
+particle: `F = −f · normalize(grad_f) · SPRING` — gradient descent of |f|, normalized so
+max force is constant regardless of mode complexity. This prevents high (m,n) modes (which
+have large gradients) from flinging particles too fast. Noise term mimics plate vibration
+amplitude: `noise = 0.06 + amp × 1.4` px/frame. At low amplitude, particles cluster tightly
+on node lines; at high amplitude, they scatter (like real sand on a loud plate).
+
+8 modes: (1,2) Ring → (2,3) Clover → (1,4) Cross → (3,4) Asterisk → (2,5) Lattice →
+(3,5) Fine Star → (4,5) Crystal → (5,6) Snowflake.
+
+Demo: auto-cycles every 4.5 seconds, oscillator follows mode frequency (silent — not
+connected to destination). Each mode change scatters particles from center, then
+convergence takes 2–4 seconds.
+
+Mic: spectral centroid → mode selection with 45-frame (0.75s) debounce. Higher centroid
+= more complex mode. Single-note piano playing picks modes cleanly.
+
+Manual mode buttons always override auto-detection.
+
+Canvas: square, up to 580 CSS px, DPR-scaled. Additive blending — dense node lines glow
+bright amber/white, sparse regions dim. Background is near-black (`#050212`).
+
+**Build**: `npm run build` passes cleanly. `/dream/19-cymatics` appears as static route
+(3.47 kB). Zero errors, zero new warnings in my code.
+
+**What I noticed**: The pattern convergence time varies a lot by mode. (1,2) Ring settles
+in ~2 seconds — it has broad smooth node lines that catch particles easily. (5,6) Snowflake
+takes 4+ seconds to reveal fully — the fine interlaced lines require more precise particle
+settling. The transition moment (particles scattering then slowly resolving back) is almost
+as beautiful as the final pattern. There's a brief few seconds where it looks like pure
+chaos, then the geometry asserts itself.
+
+The additive blending is doing a lot of work: where 15+ particles overlap on the same
+node line pixel they saturate to near-white, creating a glowing bright line with soft amber
+halos. The rest of the canvas stays dark. This makes the geometry much more legible than
+if I'd drawn the particles with normal alpha blending.
+
+The diagonal symmetry of the Chladni function (f(x,x) = 0 always) means the diagonal is
+always a node line for every mode. This creates a subtle common structure across all modes
+that you notice once you've seen a few — the diagonal cross is always there, with mode-
+specific additions. (1,2) is basically JUST the diagonals plus one ellipse. (5,6) adds
+many more crossing lines.
+
+**Queued next**:
+1. **Sound for cymatics** — connect the demo oscillator to `actx.destination` at low
+   gain so the tone is audible. Hearing the resonant frequency while watching the pattern
+   form is the full cymatics experience. One line change.
+2. **Polish `18-granular`** — freeze button (lock analyser snapshot → sustained granular
+   chord from one frozen moment); pitch envelope control (grain ramp up/down during lifetime).
+3. **Polish `17-acoustic-trail`** — pitch as glyph size (4th axis), floor shadow projection.
+4. **`elevenlabs-compose`** — pending Karel budget approval.
+5. **`ghost-animate`** — Seedance 2.0, admin-only, pending Karel approval.
+
+---
+
 ## Cycle 20 — /dream/18-granular
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

@@ -1,46 +1,49 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 20)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 21)
 
 ## New since yesterday
 
-- **[/dream/18-granular](/dream/18-granular)** — **open this first.**
-  Granular synthesis from live audio. Every grain you hear is also a glowing dot on screen:
-  X = where in the recent audio buffer it was sampled from, Y = its pitch shift in cents.
-  The cloud of dots IS the sound — not a visualization of it.
+- **[/dream/19-cymatics](/dream/19-cymatics)** — **open this first.**
+  Sand settling into Chladni figures — the geometric standing wave patterns of a vibrating
+  plate. 2000 amber particles drift and cluster onto the node lines of whichever frequency
+  mode is active. Eight modes, from (1,2) "Ring" up to (5,6) "Snowflake".
 
-  Demo: click **Start demo** — immediate, no permissions. Five LFO oscillators feed the
-  analyser; granular echoes of them play back through your speakers. Try the sliders:
-  density 40 + pitch 800¢ = shimmering alien reverb. Grain 20ms + density 5 = sparse
-  audible echoes you can watch appear one at a time.
+  Click **Start demo** (no permissions). Particles scatter from the center and slowly
+  resolve into the (1,2) pattern — a cloverleaf diagonal cross. Every 4.5 seconds the
+  mode advances; particles scatter and reform into the next geometry. Watch the (3,4)
+  Asterisk and (5,6) Snowflake in particular — they're intricate.
 
-  Mic: play piano → a sustained note creates a vertical stripe (consistent buffer position,
-  random pitch smear). Staccato notes make the cloud pulse and fade between attacks.
+  Click **Start mic** → play a sustained piano note. The spectral centroid shifts and
+  (after ~0.75s debounce) the mode changes to match. Higher notes → more complex modes.
+  Single-note piano playing drives the mode selection cleanly.
 
-- **[/dream/17-acoustic-trail](/dream/17-acoustic-trail)** — (Cycle 19, still fresh)
-  Your audio mapped to its own 3D coordinate space — the trail IS the acoustic fingerprint
-  of the performance.
+  Manual mode buttons always override auto-detection.
+
+- **[/dream/18-granular](/dream/18-granular)** — (Cycle 20, still fresh)
+  Granular synthesis cloud — every grain you hear is a glowing dot on screen.
+
+- **[/dream/17-acoustic-trail](/dream/17-acoustic-trail)** — (Cycle 19)
+  Your audio in its own 3D coordinate space.
 
 ## In progress / partial
 
-- Nothing in-progress. All 18 prototypes are demoable.
+- Nothing in-progress. All 19 prototypes are demoable.
 
-## Research findings worth a look (from Cycle 18)
+## Research findings worth a look
 
-- **ElevenLabs Music API** — streaming music + section-level composition control.
-  Write a structured arc ("sparse intro → tension build → drop → fade") and get a
-  44.1kHz track streaming back in real-time. $0.80/min. Different from MiniMax:
-  streaming means the visualizer reacts to music still being generated.
-
-- **ReaLchords (arxiv 2506.14723)** — real-time chord accompaniment from mic melody.
-  Has a browser demo. No public API yet but worth watching.
+- **ElevenLabs Music API** — streaming + section-level composition ($0.80/min). Realizes
+  `5-arcs` with actual AI-generated music per arc, streaming as it generates.
+- **ReaLchords** — real-time chord accompaniment from mic melody (web demo, no API yet).
+- **Three.js WebGPU + TSL** — 3D audio-reactive deforming mesh paths now viable.
 
 ## Open questions for Karel
 
-- **`elevenlabs-compose` budget** ($0.80/min → ~$0.40–1.10/generation for 30–85s)?
-  This is the prototype that realizes `5-arcs` with real AI-generated music per arc.
+- **`elevenlabs-compose` budget** (~$0.40–$1.10/generation for 30–85s)?
+  The prototype that makes `5-arcs` real with AI-authored music.
 
-- **`ghost-animate`** (Seedance 2.0, ~$0.05–0.15/clip, admin-only): want it this week?
-  Ghost LoRA image → cinematic 15s video with native audio in one step.
+- **`ghost-animate`** (Seedance 2.0, ~$0.05–0.15/clip, admin-only)?
+  Ghost LoRA image → 15s cinematic video with native audio in one step.
 
-- **Granular cloud freeze**: worth a follow-up cycle to add a "freeze" button (locks the
-  analyser snapshot → sustained granular chord from one frozen moment)? Feels like the
-  most performance-ready feature in the granular prototype.
+- **Cymatics polish**: add audible tone at the mode's resonant frequency? Playing the
+  matching note and watching sand form the pattern simultaneously is the full cymatics
+  experience — currently the demo is silent. Would need to connect the oscillator to
+  `actx.destination` (one line change). Worth trying?
