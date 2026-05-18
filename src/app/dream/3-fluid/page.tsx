@@ -216,7 +216,7 @@ function initSim(canvas: HTMLCanvasElement): Sim {
 
 // ── Draw helpers ──────────────────────────────────────────────────────────────
 
-function useQuad(gl: GL, prog: WebGLProgram, quad: WebGLBuffer) {
+function drawQuad(gl: GL, prog: WebGLProgram, quad: WebGLBuffer) {
   gl.useProgram(prog);
   gl.bindBuffer(gl.ARRAY_BUFFER, quad);
   const loc = gl.getAttribLocation(prog, "a");
@@ -248,7 +248,7 @@ function addSplat(
   const { gl, progs, quad, vel, dye, W, H } = sim;
   const ar = W / H; // square sim → 1.0, but keep for future
 
-  useQuad(gl, progs.splat, quad);
+  drawQuad(gl, progs.splat, quad);
   gl.uniform2f(gl.getUniformLocation(progs.splat, "u_pos"), x, y);
   gl.uniform1f(gl.getUniformLocation(progs.splat, "u_ar"), ar);
 
@@ -273,7 +273,7 @@ function stepSim(sim: Sim, dt: number) {
   const { gl, progs, quad, vel, pres, div, dye, W, H } = sim;
 
   // Advect velocity (self-advection)
-  useQuad(gl, progs.advect, quad);
+  drawQuad(gl, progs.advect, quad);
   bindTex(gl, 0, vel.read.tex);
   bindTex(gl, 1, vel.read.tex);
   gl.uniform1i(gl.getUniformLocation(progs.advect, "u_vel"), 0);
@@ -284,13 +284,13 @@ function stepSim(sim: Sim, dt: number) {
   vel.swap();
 
   // Divergence
-  useQuad(gl, progs.div, quad);
+  drawQuad(gl, progs.div, quad);
   bindTex(gl, 0, vel.read.tex);
   gl.uniform1i(gl.getUniformLocation(progs.div, "u_vel"), 0);
   blit(gl, div.fb, W, H);
 
   // Pressure solve — 25 Jacobi iterations
-  useQuad(gl, progs.pres, quad);
+  drawQuad(gl, progs.pres, quad);
   bindTex(gl, 1, div.tex);
   gl.uniform1i(gl.getUniformLocation(progs.pres, "u_div"), 1);
   for (let i = 0; i < 25; i++) {
@@ -301,7 +301,7 @@ function stepSim(sim: Sim, dt: number) {
   }
 
   // Gradient subtract → divergence-free velocity
-  useQuad(gl, progs.grad, quad);
+  drawQuad(gl, progs.grad, quad);
   bindTex(gl, 0, pres.read.tex);
   bindTex(gl, 1, vel.read.tex);
   gl.uniform1i(gl.getUniformLocation(progs.grad, "u_pres"), 0);
@@ -310,7 +310,7 @@ function stepSim(sim: Sim, dt: number) {
   vel.swap();
 
   // Advect dye through corrected velocity
-  useQuad(gl, progs.advect, quad);
+  drawQuad(gl, progs.advect, quad);
   bindTex(gl, 0, vel.read.tex);
   bindTex(gl, 1, dye.read.tex);
   gl.uniform1i(gl.getUniformLocation(progs.advect, "u_vel"), 0);
@@ -323,7 +323,7 @@ function stepSim(sim: Sim, dt: number) {
 
 function renderDisplay(sim: Sim, cw: number, ch: number) {
   const { gl, progs, quad, dye } = sim;
-  useQuad(gl, progs.display, quad);
+  drawQuad(gl, progs.display, quad);
   bindTex(gl, 0, dye.read.tex);
   gl.uniform1i(gl.getUniformLocation(progs.display, "u_dye"), 0);
   blit(gl, null, cw, ch);

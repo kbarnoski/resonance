@@ -22,7 +22,7 @@ shippable**. Polish comes from iteration across many cycles.
    - `src/app/dream/**`
    - `docs/dreams/**`
    No exceptions. Never edit `package.json`, `next.config.*`, `.env*`, middleware, root layout, or any existing Resonance code outside the dream zone.
-3. **Type check before commit.** Run `npx tsc --noEmit`. If it fails, **revert your changes** and log the failure to `docs/dreams/STATE.md` instead of committing broken code.
+3. **Full build check before commit.** Run `npm run build` (which runs Next's TypeScript + ESLint + production compile). `tsc --noEmit` alone is NOT enough — Vercel runs ESLint and fails on hook-rule / unused-var errors that `tsc` ignores. If `npm run build` fails: try one fix attempt, otherwise `git restore .` and log the failure to `docs/dreams/STATE.md` instead of committing broken code. Common gotchas: function names beginning with `use` are treated as React hooks (use `draw*`, `run*`, `apply*` for helpers); never have unused imports.
 4. **One commit per cycle.** Squash all changes into a single commit with prefix `dream:`. Format: `dream: cycle <N>: <action> — <one-line summary>`.
 5. **Push to dream/sandbox only.** `git push origin dream/sandbox`. Never `--force`. Never push to other refs.
 6. **No prod-affecting behavior.** Your prototypes must never call Resonance prod APIs that have side effects (don't write to user data, don't generate paid AI images without an explicit per-prototype budget, don't send emails).
@@ -62,9 +62,16 @@ Do the work. Constraints:
 - Prefer Web Audio API + Canvas/WebGL/shaders. Avoid heavy npm dependencies. If you need one, justify it in STATE.md.
 
 ### 4. Validate (5 min budget)
-- `npx tsc --noEmit` — must pass. If it fails:
-  - Try to fix.
-  - If still failing after one fix attempt, `git restore .` and log the failure to STATE.md. Do not commit broken code.
+- `npm run build` — must pass cleanly. This runs Next.js's full pipeline
+  (TypeScript + ESLint + production compile) — the same one Vercel runs.
+  `tsc --noEmit` alone misses ESLint errors that fail Vercel.
+- If it fails:
+  - Try to fix (most fixes: rename `use*` helpers, drop unused imports, fix
+    React Hook rule violations, add missing `useEffect` deps).
+  - If still failing after one fix attempt, `git restore .` and log the
+    failure to STATE.md. Do not commit broken code. The "I'd rather skip
+    a cycle than break the preview" rule is absolute — Karel gets a
+    failed-deploy email every time we push something that doesn't build.
 - Read your own changes — do they match the spec in IDEAS.md? If not, refine.
 
 ### 5. Log + commit (5 min budget)
