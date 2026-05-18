@@ -196,3 +196,68 @@ ReaLchords is a deep learning model that generates adaptive chord accompaniments
 A system combining three stages: (1) MIR models extract time-varying musical features (genre, mood, tempo, energy) from audio in real-time; (2) an LLM translates those features into visual prompts; (3) an image generation model produces responsive imagery. The key insight is inferring *semantic* qualities (mood, genre) over longer temporal windows rather than just reacting to instant energy levels — giving visual output that reflects the *character* of the music, not just its loudness.
 
 **Could become a prototype**: `semantic-viz` — a multi-stage pipeline prototype: mic input → feature extraction (local, Web Audio) → genre/mood classification (small ONNX model) → LLM prompt generation (Claude API) → fal.ai image generation → displayed as ambient background behind one of the existing visualizers. Most ambitious prototype yet — multi-API, budget-intensive (~$0.01/image + Claude tokens). Worth incubating. The mood-inference stage alone could be a standalone prototype.
+
+---
+
+## 2026-05-18 — Cycle 23 research sweep
+
+### 22. HappyHorse-1.0 — #1 Ranked Joint Audio-Video Model (Alibaba / fal.ai, April 2026)
+**Source**: https://fal.ai/happyhorse-1.0 · https://fal.ai/learn/devs/happyhorse-1-0-what-do-we-know-so-far
+
+Alibaba's 15B-parameter unified Transformer that generates video and audio in a single forward pass — no separate audio post-processing step. Debuted April 26, 2026 on fal.ai and immediately topped the Artificial Analysis Video Arena over Seedance 2.0 and Kling 3.0 for both text-to-video and image-to-video. Outputs 5-8 second 1080p clips with natively generated dialogue, ambient sound, and Foley effects. Multilingual lip-sync in 7 languages. Pricing not officially published yet; comparable models on fal run $0.05-0.50/sec.
+
+**Could become a prototype**: upgrades the queued `ghost-animate` plan. HappyHorse's joint audio-video in one pass means cleaner audio-visual sync than the Seedance 2.0 + MMAudio V2 two-step pipeline originally planned. Ghost LoRA image → HappyHorse image-to-video → cinematic 5-8s scene with native atmospheric sound. Admin-only, needs FAL_KEY + Karel approval.
+
+---
+
+### 23. Google Veo 3.1 — 4K Video with Native Audio (May 2026, fal.ai)
+**Source**: https://fal.ai/models/fal-ai/veo3.1
+
+Google DeepMind's Veo 3.1 is available on fal.ai. Standard pricing: $0.20/sec (no audio) or $0.40/sec (with audio) for 1080p; $0.40/sec or $0.60/sec for 4K. Supports text-to-video, image-to-video, and video extension chaining (up to ~2.5 minutes via 20 × 7-second extension steps). Veo 3.1 improves on Veo 3 for dialogue clarity, audio-visual sync, and reference image adherence. A 5-second Ghost scene with audio costs ~$2.00 on Standard.
+
+**Could become a prototype**: second-best option for `ghost-animate` after HappyHorse-1.0. Video extension is uniquely useful — could extend a Ghost cinematic scene into a 30-60 second journey arc clip by chaining generations. More expensive than HappyHorse per second but Google's quality family is different. Needs FAL_KEY + Karel budget approval.
+
+---
+
+### 24. Latent Granular Resynthesis via Neural Audio Codecs (arxiv 2507.19202)
+**Source**: https://arxiv.org/abs/2507.19202
+
+Training-free cross-timbre synthesis via granular synthesis at the neural codec latent level. Encodes a "source" sound (cello, thunderstorm, didgeridoo) into a latent codebook of vector segments. Then matches each latent grain of a "target" audio signal (your piano) to its nearest codebook entry. Decoding the hybrid sequence produces audio with the temporal structure of your playing but the timbre of the source sound — your piano notes, but voiced as a cello or a thunderstorm. No training required. Hugging Face Spaces demo available. Latency for real-time not assessed; likely needs server-side inference.
+
+**Could become a prototype**: `latent-granular-timbre` — extension of `18-granular`. Load a short reference sound (< 10s) as the "timbre donor." Mic input feeds the granular system as the target. Grains are matched to the reference codebook and decoded. Your piano playing comes back sounding like the reference instrument. The visual: scatter plot like 18-granular but color encodes match distance to nearest codebook entry (close = source color, far = target color). Needs API call (Hugging Face Spaces or self-hosted model) — evaluate feasibility next cycle.
+
+---
+
+### 25. Three.js TSL Audio-Reactive 3D Mesh — Active Community (2026)
+**Source**: https://www.webgpu.com/showcase/audiolab-react-three-fiber-audio-visualizer/ · https://tympanus.net/codrops/2025/06/18/coding-a-3d-audio-visualizer-with-three-js-gsap-web-audio-api/
+
+The WebGPU creative community in 2026 is building audio-reactive 3D deforming meshes using Three.js TSL (Three Shading Language) node materials. TSL compiles transparently to WGSL (WebGPU) or GLSL (WebGL) depending on the browser, and node materials can take `AnalyserNode` FFT data as uniform inputs to drive vertex displacement and fragment color. A bioluminescent sea anemone visualizer (updated Feb 2026, custom GLSL + FFT, Three.js WebGPU) demonstrates the aesthetic: organic 3D geometry that breathes and ripples with music, glowing in the dark. Radically different visual space from particles or fluid.
+
+**Could become a prototype**: `three-mesh-av` — a single audio-reactive 3D mesh (sphere, torus, or organic form built with `IcosahedronGeometry` + displacement). `@react-three/fiber`, `three`, and `@react-three/drei` are already installed in Resonance (three@0.182, r3f@9.5). TSL node materials map frequency band energies to per-vertex displacement amplitude. Additive point-light positioned at centroid frequency. Demo mode uses oscillators; mic mode uses live FFT. Zero new dependencies. Completely new aesthetic vs. all 20 existing prototypes.
+
+---
+
+### 26. ÆTHRA — Music Programming Language as Code (Feb 2026, Hacker News)
+**Source**: https://github.com/TanmayCzax/AETHRA · https://news.ycombinator.com/item?id=46820691
+
+ÆTHRA is a domain-specific language (v0.8, C#) for composing music by writing code: notes, chords, tempo, dynamics, emotional arc, and instrument specification as readable commands. Multiple HN submissions in early 2026 with active discussion. Not browser-native, but the concept — "your musical intent as structured text, evaluated to sound" — translates directly to Web Audio + Canvas. A browser-native version could use a textarea as the score, parse note/chord commands via JavaScript, route them through OscillatorNodes, and paint the resulting melody as a canvas painting.
+
+**Could become a prototype**: `code-score` — a minimal browser music DSL + visualizer. Type `C4 Q E4 Q G4 H pause H A3 H` (note, duration, rest) in a textarea. Evaluate to OscillatorNode + GainNode schedule. Simultaneously paint each note as a brush stroke on the persistent canvas from `13-piano-canvas`. "Write a melody, see it paint itself." No dependencies. Demo mode pre-loads a short Bach prelude fragment. Useful as a Resonance "score as session" concept.
+
+---
+
+### 27. Phase Vocoder Pitch Shifting in Web Audio AudioWorklet (2026)
+**Source**: https://github.com/olvb/phaze (real-time Web Audio worklet, phase vocoder pitch shift)
+
+The `phaze` library is a working AudioWorklet implementation of real-time phase vocoder pitch shifting. Takes mic input, outputs pitch-shifted audio at arbitrary semitone offsets with ~10ms latency. Phase vocoder produces some metallic artifacts on piano but is clean enough for harmonic enrichment (5th, octave). This is a native browser capability that none of the 20 dream prototypes exploit: real-time audio transformation (not just analysis or synthesis).
+
+**Could become a prototype**: `pitch-harmonize` — mic input → AudioWorklet phase vocoder → pitch-shifted copy (+7 semitones = fifth, +12 = octave, -12 = sub-octave) → HRTF pan the copy to a different position than the dry signal. You play piano; the harmony floats in a different 3D position in your headphones. Visual: the original signal as one scope trail (from `20-scope` phase portrait), the pitch-shifted copy as a second overlapping trail in a complementary color. "You become your own accompanist." Zero new deps — `phaze` is an AudioWorklet source (inline-able, no npm).
+
+---
+
+### 28. GAPT Extension of ReaLchords — No Public API Yet (2025/2026)
+**Source**: https://realchords-gapt.github.io/ · https://arxiv.org/abs/2506.14723
+
+A Generative Adversarial Post-Training (GAPT) improvement to the original ReaLchords model for melody-to-chord accompaniment. Adversarial post-training improves harmonic and temporal coherency vs. the baseline. Research-only for now — no public API, no MIDI/mic integration, no browser WebSocket endpoint. The original ReaLchords demo (https://storage.googleapis.com/realchords/index.html) shows pre-recorded examples of melody + chord generation but doesn't support live input. The field is moving fast; a usable real-time API may emerge in the next few months.
+
+**Could become a prototype**: when a public API lands — mic melody → ReaLchords/GAPT chord generation → HRTF spatial mix of generated chords. You play melody, AI harmonizes live, harmony floats in 3D space around you. Still the most exciting future prototype in the queue. Monitor every research cycle.

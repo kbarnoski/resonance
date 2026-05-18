@@ -1,36 +1,49 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 22)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 23)
 
 ## New since yesterday
 
-- **[/dream/20-scope](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/20-scope)** — Vectorscope
-  Two modes. No permissions needed for the first:
-  - **Lissajous demo**: each musical interval traces its own closed figure — octave = figure-8,
-    fifth = three-lobed knot, fourth = four-crossing shape. CRT phosphor persistence makes
-    the reversal cusps glow bright against dark. Phase slowly drifts so the figure breathes.
-    *Why open this*: it's the oldest demonstration of the geometry of musical ratios. Jules
-    Antoine Lissajous showed these to Napoleon III in 1857. None of the other 19 prototypes
-    show it.
-  - **Phase portrait (mic)**: plot signal[t] vs signal[t+delay]. Single piano note = ellipse.
-    Chord = overlapping loops. Percussion = explosive spray. Delay slider reveals different
-    periodicities. *Why open this*: it's what a Poincaré map of your playing looks like.
-
-## In progress / partial
-
-- **Sound for cymatics** — `19-cymatics` demo oscillator is silent (not connected to destination).
-  Connecting it would complete the full physical experience (hear the resonant tone while watching
-  the sand pattern). One-line fix queued next cycle.
+- **Cycle 23 was a research sweep** (no new prototype). 7 findings in RESEARCH.md §§22-28.
+  Three new prototype ideas queued; one existing plan upgraded. Details below.
 
 ## Research findings worth a look
 
-- Research last done Cycle 18. Next cycle will be a research sweep (4 build cycles elapsed —
-  past the 3-cycle rule). See RESEARCH.md §16–§21 for Cycle 18 findings.
+**1. HappyHorse-1.0 upstages Seedance 2.0**
+Alibaba's new model (launched April 26, 2026 on fal.ai) topped the AI video leaderboard over
+Seedance 2.0 and Kling 3.0. It generates video + audio in a single 15B-parameter Transformer
+forward pass — no separate MMAudio V2 step. The `ghost-animate` plan now should use HappyHorse.
+Budget TBD (pricing not yet published, comparable models run $0.05–0.50/sec on fal).
+
+**2. Google Veo 3.1 also on fal.ai**
+$0.40/sec with audio at 1080p. Supports image-to-video AND video extension chaining (up to ~2.5
+minutes via 20 × 7s extension steps). Could make a 30-60 second Ghost cinematic arc, not just 8s.
+
+**3. Three.js is already installed — we haven't used it**
+`three@0.182`, `@react-three/fiber@9.5`, `@react-three/drei`, and `@react-three/postprocessing`
+are all in `package.json`. 20 prototypes and none use 3D mesh geometry. The community in 2026 is
+building bioluminescent audio-reactive 3D forms with TSL node materials (compiles to WGSL or GLSL
+transparently). This is the most obvious gap in the sandbox. Next prototype: `21-three-mesh-av`.
+
+**4. AudioWorklet pitch shifting = real-time harmony**
+The `phaze` project (GitHub) shows a working Web Audio AudioWorklet phase vocoder. Inline-able
+as a Blob URL, zero npm deps. Enables a "become your own accompanist" prototype: mic → harmony
+copy (+7 semitones / +12 / -12) → HRTF panned to a 3D position. First prototype that *transforms*
+audio rather than analyzing or synthesizing from scratch.
+
+**5. Latent Granular Resynthesis (arxiv 2507.19202)**
+Training-free timbre transfer: encode a reference sound (cello, thunderstorm) as a neural codec
+latent codebook → match your playing grain-by-grain to the nearest codebook entry → decode =
+your notes, their timbre. Extends `18-granular` into cross-timbre territory. Needs server-side
+inference (Hugging Face Spaces demo exists). Not next-cycle-buildable but worth tracking.
+
+## In progress / partial
+
+- **Sound for cymatics** — `19-cymatics` demo oscillator still silent. One-line fix.
 
 ## Open questions for Karel
 
-- **`elevenlabs-compose`**: ElevenLabs Music API streaming + section-level arc control —
-  $0.80/min ($0.40 for 30s track, ~$1.13 for 85s). More expensive than MiniMax but streaming
-  + structured arc markup is a different capability. Approve budget?
-- **`ghost-animate`**: Seedance 2.0 image → 15s cinematic video with native audio. Admin-only.
-  Budget ~$0.05–0.15/clip. Need FAL_KEY set in env + approval to use.
-- **`reference-compose`**: MiniMax Music 2.5 reference-audio style match — $0.035/track.
-  Record 4-8 bars of piano → extend into full track in the same style. Need FAL_KEY + approval.
+- **`ghost-animate`**: Now prefer HappyHorse-1.0 (or Veo 3.1) over Seedance 2.0. Both are
+  better quality and HappyHorse is now #1 ranked. Both need FAL_KEY + approval. Which do you
+  want to try first? HappyHorse for raw quality, or Veo 3.1 for the video-extension capability
+  (30-60s cinematic scene vs. 8s clip)?
+- **`elevenlabs-compose`**: $0.80/min streaming structured arc music. Still pending your approval.
+- **`reference-compose`**: MiniMax Music 2.5 style match, $0.035/track. Still pending FAL_KEY + approval.

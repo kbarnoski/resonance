@@ -1,5 +1,75 @@
 # Dream Agent — cycle state
 
+## Cycle 23 — Research cycle
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 22 shipped `20-scope` (vectorscope). No blockers. No in-progress prototypes.
+4 build cycles since Cycle 18 research (cycles 19, 20, 21, 22 — past the 3-cycle rule). Both
+STATE.md and MORNING.md from Cycle 22 explicitly committed to research this cycle. Did the full
+sweep: fal.ai new models, arxiv (audio/visualization/2026), GitHub trending (Three.js/WebGPU/WebAudio),
+Hacker News creative coding, Anthropic updates.
+
+**Shipped** (no new code — research cycle):
+- `docs/dreams/RESEARCH.md` — 7 new dated entries appended (Cycle 23, §§22–28)
+- `docs/dreams/IDEAS.md` — 3 new prototype ideas added (`three-mesh-av`, `code-score`,
+  `pitch-harmonize`); `ghost-animate` updated to prefer HappyHorse-1.0 over Seedance 2.0
+- `docs/dreams/STATE.md`, `MORNING.md`, `INDEX.md` updated
+
+**Key findings**:
+
+1. **HappyHorse-1.0 (Alibaba, April 2026, fal.ai)** — New #1 ranked AI video model. 15B unified
+   Transformer, joint audio-video in a single forward pass. 5-8 second 1080p with natively generated
+   dialogue/ambient/Foley in one step. Beats Seedance 2.0 on benchmarks. This upgrades the `ghost-animate`
+   plan: Ghost LoRA image → HappyHorse → cinematic scene with native sound, no MMAudio V2 step. Needs FAL_KEY.
+
+2. **Google Veo 3.1 (fal.ai, May 2026)** — 4K video with native audio, $0.40/sec with audio at 1080p.
+   Supports video extension chaining up to ~2.5 minutes. Second-best option for ghost-animate (different
+   quality family from HappyHorse — worth comparing on the same Ghost image). Needs FAL_KEY.
+
+3. **Latent Granular Resynthesis (arxiv 2507.19202)** — Training-free cross-timbre synthesis via neural
+   audio codec. Creates latent codebook from reference sound → matches your audio grains to nearest codebook
+   entry → decode = your temporal structure, reference timbre. Hugging Face Spaces demo. Natural extension of
+   `18-granular` into cross-timbre territory. Needs server-side inference (not browser-native yet).
+
+4. **Three.js TSL + WebGPU 3D mesh prototypes (community, 2026)** — Active community building
+   audio-reactive 3D deforming meshes with TSL node materials. TSL compiles to WGSL or GLSL
+   transparently. `three@0.182`, `@react-three/fiber@9.5`, `@react-three/drei`, and
+   `@react-three/postprocessing` are ALL already installed in Resonance. Zero new deps for a
+   prototype. Completely different visual space from all 20 existing prototypes. Most promising
+   buildable-now idea.
+
+5. **ÆTHRA music DSL (Feb 2026, HN)** — C# DSL for music as code. Not browser-native but inspires
+   `code-score`: a textarea score editor → Web Audio scheduler + `13-piano-canvas` brush stroke painter.
+   "Write a melody, watch it paint itself." Zero deps.
+
+6. **Phase vocoder AudioWorklet pitch shifting** — `phaze` library (Web Audio worklet, real-time phase
+   vocoder). Can inline the worklet as a Blob URL in Next.js. Enables `pitch-harmonize`: mic → AudioWorklet
+   → pitch-shifted harmony copy → HRTF pan → dual vectorscope visual. "Become your own accompanist."
+
+7. **GAPT/ReaLchords** — Adversarial post-training improvement for melody-to-chord. Research-only,
+   still no public API for live melody input. Monitor next research cycle.
+
+**What I noticed**: Three big shifts vs. Cycle 18 research:
+- The video generation landscape moved again. HappyHorse-1.0 in a single month displaced the previous
+  best models. The velocity here is fast enough that the `ghost-animate` prototype should be built
+  soon before the API landscape shifts again.
+- Three.js R3F is already installed in Resonance. We have 20 prototypes and none use it. This is the
+  most surprising single finding — we've been building raw WebGPU and Canvas2D while Three.js + R3F
+  with TSL node materials was sitting installed, unused.
+- The AudioWorklet pitch-shifting angle is a genuinely new category: the first prototype that would
+  transform audio in real time (not analyze it). The harmony doubling idea is simple and immediate.
+
+**Queued next**:
+1. **Build `21-three-mesh-av`** — Three.js R3F + TSL audio-reactive deforming mesh. Clear spec,
+   zero deps (all packages already installed), completely new visual space (3D parametric geometry),
+   one-cycle build. Best surprise-to-effort ratio in the queue.
+2. **Build `22-code-score`** — Browser music DSL + canvas painter. Zero deps, one-cycle build.
+3. **Build `23-pitch-harmonize`** — AudioWorklet harmonic doubling + HRTF + dual vectorscope. Zero deps.
+4. **`ghost-animate`** — Needs FAL_KEY + Karel approval. Now prefer HappyHorse-1.0 over Seedance 2.0.
+
+---
+
 ## Cycle 22 — /dream/20-scope
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

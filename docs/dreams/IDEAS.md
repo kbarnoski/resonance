@@ -297,11 +297,12 @@ Needs ElevenLabs API key + Karel budget approval ($0.80/min → ~$0.40/generatio
 for 85s). More expensive than MiniMax ($0.035/flat) but streaming + section control is a different
 capability — streaming means the visualizer can react to music that is still being generated.
 
-### ghost-animate `[queued, updated — use Seedance 2.0, native audio no extra step]`
-Route: extend `/dream/2-ghost-lab`. Updated plan: Ghost LoRA image + atmospheric prompt →
-Seedance 2.0 API (fal.ai) → 15s cinematic video with native synchronized audio already included
-(no separate MMAudio V2 step needed). Seedance 2.0 API confirmed April 2026. Admin-only.
-Budget ~$0.05–0.15/clip. See RESEARCH.md §19.
+### ghost-animate `[queued, updated — use HappyHorse-1.0, beats Seedance 2.0]`
+Route: extend `/dream/2-ghost-lab`. Updated plan (Cycle 23): Ghost LoRA image + atmospheric prompt →
+HappyHorse-1.0 API (fal.ai) → 5-8s 1080p cinematic video with native audio in single forward pass.
+HappyHorse debuted April 26, 2026 and immediately topped Seedance 2.0 on benchmarks. No separate
+MMAudio V2 or audio post-processing step. Backup: Google Veo 3.1 (image-to-video + audio, $0.40/sec,
+can chain to ~2.5 min). Admin-only. Budget ~$0.05-0.30/clip depending on model. See RESEARCH.md §§22, 23.
 
 ### granular — granular synthesis cloud `[demoable — /dream/18-granular, Cycle 20]`
 Route: `/dream/18-granular`. Shipped. Mic or demo oscillators → Web Audio analyser
@@ -317,3 +318,57 @@ Key findings from Cycle 18 (2026-05-18):
 - Seedance 2.0 native audio confirmed — one-step Ghost image → cinematic video with sound
 - ReaLchords — online adaptive chord accompaniment from melody (web demo exists, no public API yet)
 - ACM IMX 2025 — MIR + LLM + image gen pipeline for semantic music visualization
+
+---
+
+## FROM RESEARCH (Cycle 23, 2026-05-18) — promoted to queue
+
+### three-mesh-av — audio-reactive 3D deforming mesh via Three.js R3F `[queued]`
+Route: `/dream/21-three-mesh-av`. An `IcosahedronGeometry` (or torus knot) whose vertices displace
+based on frequency band energies using Three.js TSL node materials. The displacement shader samples
+a 6-band FFT uniform per frame; bass frequencies push outward from the equator, treble from the poles,
+creating an organic breathing form. `@react-three/fiber`, `three@0.182`, and `@react-three/drei` are
+all already installed in Resonance — zero new dependencies. Additive point-light tracks the current
+spectral centroid position on the mesh surface. Demo mode: same LFO oscillators as other prototypes
+(no permissions). Mic mode: live FFT mesh deformation. Post-processing: bloom from
+`@react-three/postprocessing` (already installed). Dark background, glowing mesh.
+
+Why now: none of the 20 existing prototypes use Three.js 3D geometry. This is the only remaining
+visual paradigm space not covered: animated parametric 3D mesh. TSL means no raw WGSL — the shader
+compiles to either WGSL (WebGPU) or GLSL (WebGL) depending on the browser, so full compatibility.
+The bioluminescent/organic aesthetic is qualitatively different from particles, fluid, or canvas.
+See RESEARCH.md §25.
+
+### code-score — minimal browser music DSL with canvas visualization `[queued]`
+Route: `/dream/22-code-score`. A textarea score editor on the left, a live canvas painting on the
+right. Score syntax: `C4 Q` (C4 quarter note), `E4 H` (E4 half note), `rest Q` (quarter rest),
+`[C4 E4 G4] H` (chord). Parser converts note names to frequencies (using standard A4=440Hz tuning),
+durations to seconds (based on a BPM slider), schedules OscillatorNodes with Hann-windowed GainNode
+envelopes. Simultaneously paints strokes on a canvas identical to `13-piano-canvas` (same brush
+stroke logic). "Write a melody — watch it paint itself — hear it play."
+
+Demo loads a short Bach fragment (BWV 772, 8 bars). Zero external deps (Web Audio + textarea).
+Resonance angle: what if your session started with a written score? Or ended with the score as
+an artifact? This is the reverse of `13-piano-canvas` — instead of playing → painting, you write →
+both play and paint. See RESEARCH.md §26.
+
+### pitch-harmonize — real-time harmonic doubling via AudioWorklet phase vocoder `[queued]`
+Route: `/dream/23-pitch-harmonize`. Mic input → AudioWorklet phase vocoder (inline WASM-free
+implementation, based on the `phaze` approach: overlap-add, 4× overlap, Hann window, phase locking)
+→ pitch-shifted copy (+7 semitones = perfect fifth, or +12 = octave, or -12 = sub-octave, selectable)
+→ HRTF PannerNode: dry signal center, shifted copy at a user-adjustable 3D position. You play piano;
+the harmony floats above/beside you in 3D space. Visual: dual vectorscope (from `20-scope`) — dry
+signal as warm orange trail, harmonized copy as cool blue trail, overlapping on the same canvas.
+"Become your own accompanist."
+
+AudioWorklet can be written as an inline string (no separate .js file needed in Next.js — use
+`createObjectURL(new Blob([workerStr]))`). Zero npm deps. See RESEARCH.md §27.
+
+Key findings from Cycle 23 (2026-05-18):
+- HappyHorse-1.0 (Alibaba, April 2026) — #1 ranked joint audio-video model, single-pass 1080p. Upgrades ghost-animate plan.
+- Google Veo 3.1 — 4K video + native audio on fal.ai, $0.40/sec with audio, video extension to ~2.5 min
+- Latent Granular Resynthesis (arxiv 2507.19202) — training-free timbre transfer via neural codec
+- Three.js TSL + R3F bioluminescent 3D mesh — active community, Three.js already in Resonance (0.182)
+- ÆTHRA music DSL (Feb 2026) — browser-native equivalent: `code-score` prototype
+- Phase vocoder AudioWorklet (`phaze`) — real-time pitch shift in browser, zero deps
+- GAPT/ReaLchords — adversarial post-training improvement, still no public API; monitor

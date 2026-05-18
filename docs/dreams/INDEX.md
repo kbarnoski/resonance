@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 22)
+## ⭐ Newest (Cycle 23 — research)
+
+- **Cycle 23 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md (§§22–28).
+  3 new prototype ideas added to IDEAS.md: `three-mesh-av` (Three.js R3F + TSL audio-reactive 3D
+  mesh, buildable next cycle, zero new deps), `code-score` (browser music DSL + canvas painter),
+  `pitch-harmonize` (AudioWorklet phase vocoder harmony + HRTF + dual vectorscope). Ghost-animate
+  plan updated: prefer HappyHorse-1.0 (new #1 ranked joint audio-video model) over Seedance 2.0.
+
+  **Most surprising finding**: `three@0.182`, `@react-three/fiber`, `@react-three/drei`, and
+  `@react-three/postprocessing` are all already installed in Resonance — 20 prototypes built
+  and none use Three.js. The next prototype will fix that.
+
+---
+
+## Previous newest (Cycle 22)
 
 - **[/dream/20-scope](/dream/20-scope)** — Vectorscope.
   Two modes: **Lissajous demo** (no permissions) plots two sine waves against each other —
