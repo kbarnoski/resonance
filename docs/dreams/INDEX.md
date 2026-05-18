@@ -10,17 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 5)
+## ⭐ Newest (Cycle 6)
+
+- **[/dream/5-arcs](/dream/5-arcs)** — Journey Arc Engine v2. Five arc types
+  (Psychedelic / EDM Build-and-Drop / Cinematic / Ritual / Sleep Cycle), each
+  with distinct phases, color palettes, particle behaviors, and intensity curves.
+  Demo mode compresses to 60s. Phase timeline at the bottom lets you jump to any
+  phase. Mic input drives particle intensity live. The right panel explains each
+  arc's design rationale vs. the psychedelic baseline.
+
+---
+
+## Previous newest (Cycles 4–5)
 
 - **[/dream/4-operator](/dream/4-operator)** — Operator Panel — two-pane
   live performance interface. Left: performer canvas (6 AV scenes). Right:
   scene picker, BPM tap, mic crowd-noise meter, MIDI detection. Keys 1–6
   trigger scenes; Space taps BPM. Dip-to-black transitions. MIDI notes
   C3–A3 trigger scenes via hardware.
-
----
-
-## Previous newest (Cycles 3–4)
+- Cycle 4 was a research cycle (no new prototype). See RESEARCH.md for 8 findings.
 
 - **[/dream/3-fluid](/dream/3-fluid)** — Fluid — real-time Navier-Stokes ink-in-water
   driven by audio. Bass pulses the center, treble stirs turbulence, pitch shifts dye color.
@@ -97,9 +105,19 @@ via hardware controller. Transitions use dip-to-black (350ms).
 
 Design notes: `src/app/dream/4-operator/README.md`
 
-### 5-arcs `[queued]`
-Journey engine v2 — picker for non-psychedelic arcs (EDM build-and-
-drop, cinematic three-act, ritual, sleep cycle). Queued.
+### 5-arcs
+**Status**: `demoable` · **Cycle shipped**: 6 · **Last touched**: 2026-05-18
+
+Open `/dream/5-arcs`. Pick an arc tab at the top, click **Demo mode**.
+The arc runs for 60 seconds; phase chips at the bottom light up as you
+progress. Click any chip to jump. Start mic for live audio input.
+
+Five arc types: Psychedelic (the current baseline, 6 phases) · EDM
+Build-and-Drop (5 phases, compressed catharsis) · Cinematic (7 phases,
+three-act narrative) · Ritual (4 phases, ceremony) · Sleep Cycle (5 phases,
+8-hour arc that never flashes).
+
+Design notes: `src/app/dream/5-arcs/README.md`
 
 ### 6-compose `[queued — from Cycle 4 research]`
 ACE-Step AI music generation: type a mood → 30s musical sketch → plays

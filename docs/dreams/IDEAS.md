@@ -125,7 +125,7 @@ prototypes.
 
 **Why**: live performance is the highest-impact future for Resonance. Even a mock helps you (Karel) think through what controls a performer needs.
 
-### 5. arcs — Journey engine v2 (non-psychedelic arcs) `[queued]`
+### 5. arcs — Journey engine v2 (non-psychedelic arcs) `[demoable]`
 
 **Question**: what if journeys could have shapes other than the 6-phase psychedelic arc?
 

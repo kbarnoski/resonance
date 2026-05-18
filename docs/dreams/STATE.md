@@ -8,6 +8,64 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 6 — /dream/5-arcs
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 5 shipped `/dream/4-operator`. No blockers. No in-progress
+prototypes. Next in the seeded queue: `/dream/5-arcs` — journey engine v2 with
+arc picker. This is the prototype that forces an explicit articulation of what
+a Resonance journey *is* structurally. Spec was fully defined, no external APIs
+needed, so built it.
+
+**Shipped**:
+- `src/app/dream/5-arcs/page.tsx` — full interactive prototype (360 lines)
+- `src/app/dream/5-arcs/README.md` — design notes
+
+**What's inside**:
+
+Five journey arc types, each with distinct phase structure, color palette,
+particle behavior, and intensity curve:
+- **Psychedelic** (6 phases, 60 min) — the current Resonance baseline
+- **EDM Build-and-Drop** (5 phases, 10 min) — dark grid → cyan build →
+  white drop → green euphoria
+- **Cinematic** (7 phases, 90 min) — amber warmth → red crisis → cathartic
+  climax → blue resolution
+- **Ritual** (4 phases, 45 min) — earth tones, slow ceremony, fire orange
+- **Sleep Cycle** (5 phases, 8 hr) — lavender → deep indigo → REM scatter → dawn
+
+Each phase has: primary color, accent color, intensity (0–1), particle style
+(orbit / rise / scatter / grid / wave / dissolve), and a description.
+
+Demo mode compresses each arc to 60 seconds of synthetic oscillator audio.
+Mic mode connects the analyser for live input. Phase timeline at the bottom
+shows proportionally-sized chips that light up as the arc advances; clicking
+any chip jumps there during playback.
+
+Canvas 2D renderer: center glow + amplitude rings (bass-driven) + particles
+(style and count vary per phase) + onset flash. `paintFrame()` at module
+level; particles in a `useRef` to avoid stale closure issues.
+
+**Build**: `npm run build` passes. One TypeScript error caught and fixed
+before commit: `phase.id` accessed on `PhaseDef` (which has no `id` field) —
+changed to just check `phase.intensity < 0.25` for the onset suppression logic.
+
+**What this forced**:
+Building the non-psychedelic arcs required answering: what IS the psychedelic
+arc's structure, and how is it different? The EDM arc turns out to need a long
+plateau (weights 1:2:1:2:3), the opposite of the psychedelic arc which front-
+loads the experience. Cinematic needs a brief crisis and climax sandwiched
+between long outer acts. Sleep is the only arc with no flashes.
+
+**Queued next**:
+1. `/dream/7-spatial` — HRTF binaural spatial audio mixer. No API budget
+   needed, pure Web Audio API, immediately surprising. Good next cycle.
+2. `5-arcs` polish — add looped HTML5 audio per arc so sound matches structure.
+3. `/dream/6-compose` — ACE-Step AI music gen. Still needs FAL_KEY + budget
+   approval from Karel.
+
+---
+
 ## Cycle 5 — /dream/4-operator
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
