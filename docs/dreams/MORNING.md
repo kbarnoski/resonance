@@ -1,66 +1,50 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 4)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 5)
 
 ## New since yesterday
 
-- **Cycle 4 was a research cycle** — no new prototype, but RESEARCH.md is now filled
-  with 8 findings. Opened 4 new prototype ideas in the queue. Worth a scan.
+- **[/dream/4-operator](/dream/4-operator)** — Operator Panel. Open this first.
+  Two-pane UI: performer canvas left, operator controls right. Click scene cards
+  (or press 1–6) to switch between 6 live AV scenes. Press Space to tap BPM —
+  all scenes pulse on beat. Start mic → crowd-noise meter (great on a laptop in
+  a room with music). MIDI controller: auto-detects, notes C3–A3 trigger scenes.
 
-- **RESEARCH.md** (new file) — read this. Highlights below.
+  Scenes in order: Void (indigo starfield) → Threshold (cyan mist shafts) →
+  Bloom (concentric rings on beat) → Current (Lissajous curves) → Ascension
+  (orange particles bursting upward) → Terminus (magenta vortex pulling inward).
+  Dip-to-black transitions between scenes (350ms).
 
-## Research findings worth a look
-
-1. **ACE-Step music generation on fal.ai** — $0.0002/second. Text → coherent
-   music (up to 4 min) in 20s. Could become `/dream/6-compose`: type a mood,
-   get a musical sketch, watch it run through the fluid visualizer. "Compose mode."
-
-2. **MMAudio V2** — $0.001/s, adds synchronized ambient audio to video/images.
-   Natural extension of ghost-lab: Ghost LoRA image → MMAudio → image that *sounds*
-   transcendent. (ghost-sound prototype idea, admin-only, ~$0.01/gen.)
-
-3. **WebGPU now at 70% browser coverage** (Firefox 147 + Safari iOS 26, Jan 2026).
-   Compute shaders are mainstream. Opens door to: (a) cleaner fluid sim without
-   the RGBA16F extension dance, (b) millions-of-particles "particle life" prototype
-   that isn't feasible in WebGL.
-
-4. **Binaural HRTF spatial audio** — zero-dep, pure Web Audio API, PannerNode
-   in HRTF mode. Prototype: 6 frequency bands placed in 3D around a listener.
-   With headphones: bass below you, treble above, piano left, cello right. No lib
-   needed. Feels like nothing else in Resonance today.
-
-5. **Strange attractor + FM synthesis** — the xyz trajectory of a Lorenz attractor
-   can *drive FM synth parameters*, so you see AND hear chaos at once. Mic input
-   changes σ/ρ/β, reshaping both the shape and the sound. RESEARCH.md §6.
-
-6. **Gray-Scott reaction diffusion** — solid WebGL impls exist; none with audio.
-   Bass → feed rate, treble → kill rate → dramatic bifurcations on loud hits.
-   `reaction-diffusion` is already in the queue; more confident now it'll look great.
+- **Status badges corrected**: 2-ghost-lab and 3-fluid now show `demoable`.
 
 ## In progress / partial
 
-- Nothing mid-cycle. Queue is healthy; next cycle picks a new prototype.
+- **5-arcs** (queued) — Journey engine v2: arc picker for EDM build-and-drop,
+  cinematic three-act, ritual, sleep-cycle. Cycle 6 candidate.
+- **4-operator polish** — scene crossfades (dual offscreen canvas), MIDI CC
+  learn mode, auto-advance on crowd-noise threshold.
+
+## Research findings worth a look
+
+RESEARCH.md (Cycle 4) highlights still relevant:
+- ACE-Step music gen ($0.006/30s call) — needs FAL_KEY and budget approval
+- WebGPU at 70% — unlocks particle-life prototype (8-particle-life)
+- Gray-Scott RD gap — no audio-reactive version exists; opportunity
 
 ## Open questions for Karel
 
-1. **Next prototype priority**: `/dream/4-operator` (Tauri live-performance panel,
-   the hardest UX design challenge) vs `/dream/6-compose` (ACE-Step music gen,
-   most surprising and immediately demoable)?
-
-2. **WebGPU for fluid**: now that WebGPU is 70%+ browsers, worth porting `3-fluid`
-   to WebGPU compute for mobile Safari support? Or skip and just add a Canvas 2D
-   fallback? (WebGL2 + float textures still exclude older iOS.)
-
-3. **Ghost-sound budget**: MMAudio soundscaping would run on admin account; each
-   10s generation = ~$0.01. Worth enabling for ghost-lab? Or defer until we're
-   happier with the Ghost LoRA identity?
-
-4. **HRTF spatial prototype**: this one works best with headphones. Is that OK for
-   a "demo on your phone" workflow, or should the primary demo be speaker-friendly?
+- **6-compose (ACE-Step)**: needs explicit per-prototype budget (~$0.006/gen).
+  Worth enabling? Just say the word.
+- **4-operator transitions**: dip-to-black is industry-standard for live AV,
+  but crossfade is possible (~1 more cycle). Preference?
+- **Cycle 6 priority**: 5-arcs (journey arc alternatives), 7-spatial (HRTF
+  binaural), or 8-particle-life (WebGPU)? Happy to jump to whichever
+  feels most surprising.
 
 ---
 
-**Prototypes live**:
+**All prototypes live**:
 - `/dream/1-live` — mic visualizer (demoable)
 - `/dream/2-ghost-lab` — Ghost LoRA A/B lab (demoable, admin)
-- `/dream/3-fluid` — Navier-Stokes fluid (demoable) ← open this
+- `/dream/3-fluid` — Navier-Stokes fluid (demoable)
+- `/dream/4-operator` — Operator panel (demoable) ← new this cycle
 
 **Preview**: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream

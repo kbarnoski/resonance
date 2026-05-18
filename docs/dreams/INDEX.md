@@ -10,20 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 4 — research cycle)
+## ⭐ Newest (Cycle 5)
 
-No new prototype this cycle. See RESEARCH.md for 8 findings and 4 new
-prototype ideas added to IDEAS.md: compose (ACE-Step AI music), spatial
-(HRTF 3D audio), particle-life (WebGPU flocking), ghost-sound (MMAudio
-video soundscaping).
+- **[/dream/4-operator](/dream/4-operator)** — Operator Panel — two-pane
+  live performance interface. Left: performer canvas (6 AV scenes). Right:
+  scene picker, BPM tap, mic crowd-noise meter, MIDI detection. Keys 1–6
+  trigger scenes; Space taps BPM. Dip-to-black transitions. MIDI notes
+  C3–A3 trigger scenes via hardware.
 
 ---
 
-## Previous newest (Cycle 3)
+## Previous newest (Cycles 3–4)
 
 - **[/dream/3-fluid](/dream/3-fluid)** — Fluid — real-time Navier-Stokes ink-in-water
   driven by audio. Bass pulses the center, treble stirs turbulence, pitch shifts dye color.
   Drag to stir manually. Ambient drift mode for no-mic use.
+- Cycle 4 was a research cycle (no new prototype). See RESEARCH.md for 8 findings.
 
 ---
 
@@ -83,9 +85,17 @@ Design notes: `src/app/dream/3-fluid/README.md`
 
 ---
 
-### 4-operator `[queued]`
-Tauri-mode operator panel mock — performer view + scene library + MIDI
-mapping for live performance. Queued.
+### 4-operator
+**Status**: `demoable` · **Cycle shipped**: 5 · **Last touched**: 2026-05-18
+
+Two-pane operator panel. Left: Canvas performer view with 6 AV scenes
+(Void / Threshold / Bloom / Current / Ascension / Terminus). Right: scene
+picker, BPM tap tempo, crowd-noise mic meter, MIDI device readout.
+
+Keys 1–6 trigger scenes; Space taps BPM. MIDI notes C3–A3 trigger scenes
+via hardware controller. Transitions use dip-to-black (350ms).
+
+Design notes: `src/app/dream/4-operator/README.md`
 
 ### 5-arcs `[queued]`
 Journey engine v2 — picker for non-psychedelic arcs (EDM build-and-

@@ -264,21 +264,21 @@ const PROTOTYPES: Prototype[] = [
   {
     slug: "2-ghost-lab",
     title: "Ghost LoRA Lab",
-    status: "skeleton",
+    status: "demoable",
     oneLiner:
       "A/B compare Ghost prompts at different LoRA scales. Vote which scenes feel right. Build intuition.",
   },
   {
     slug: "3-fluid",
     title: "Audio-Driven Fluid",
-    status: "skeleton",
+    status: "demoable",
     oneLiner:
       "Navier-Stokes ink-in-water. Bass = pressure pulses, treble = turbulence, spectral centroid = color.",
   },
   {
     slug: "4-operator",
     title: "Operator Panel",
-    status: "skeleton",
+    status: "demoable",
     oneLiner:
       "Performer view + scene library + MIDI map. What running Resonance live from a booth looks like.",
   },

@@ -111,7 +111,7 @@ prototypes.
 
 **Why**: pure GPU, very different aesthetic from existing Resonance shaders, performs well on lower-end devices, captivating to interact with.
 
-### 4. operator — Tauri-mode operator panel mock `[queued]`
+### 4. operator — Tauri-mode operator panel mock `[demoable]`
 
 **Question**: what does running Resonance from a venue's booth look like?
 

@@ -8,6 +8,66 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 5 — /dream/4-operator
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 4 was a research cycle. No blockers, no in-progress
+prototypes. Next in the seeded queue is `/dream/4-operator` — the venue
+operator panel mock. Karel's live-performance priority is explicit in the
+manual, and this is the most concrete "what if Resonance was a real live
+tool" question the prototypes ask. Spec was fully defined, no external API
+budget needed, so built it this cycle.
+
+**Shipped**:
+- `src/app/dream/4-operator/page.tsx` — full interactive prototype, "use client"
+- `src/app/dream/4-operator/README.md` — design notes
+- `src/app/dream/page.tsx` — updated status badges: 2-ghost-lab and 3-fluid
+  both corrected from `skeleton` → `demoable`; 4-operator set to `demoable`
+
+**What's inside**:
+
+Two-pane layout — performer canvas on the left, operator controls on the right.
+
+Six scenes with distinct Canvas 2D rendering styles:
+- **Void**: 160-particle starfield with indigo beat-pulse on downbeat
+- **Threshold**: 4 horizontal cyan mist shafts + 40 floating dust motes
+- **Bloom**: concentric rings emitted on each beat, center radial glow
+- **Current**: 4 overlapping Lissajous curves with phase-shifted by BPM
+- **Ascension**: orange particles rising from bottom, burst of 14 on beat
+- **Terminus**: 220 magenta particles orbiting a vortex, pink core glow
+
+**Dip-to-black transitions** (350ms): canvas fades to black at mid-point,
+active scene switches, then reveals new scene. Avoids crossfade bleed between
+scenes while still feeling intentional.
+
+**BPM tap**: 8-tap rolling average, stable under single misfire. Default 80 BPM
+when no BPM set so scenes still pulse visually. Spacebar triggers tap from keyboard.
+
+**MIDI**: `requestMIDIAccess` via `navigator as any` cast (DOM type conflict with
+lib.dom's `MIDIInput`). Notes C3–A3 (MIDI 48–53) trigger scenes 1–6. CC48 = tap.
+Device name shown live in panel.
+
+**Mic**: reuses `useMicAnalyser` from `_shared/`. Amplitude shown as crowd-noise
+meter in both performer view (bottom-left) and operator panel.
+
+**Keyboard shortcuts**: 1–6 trigger scenes, Space taps BPM.
+
+**Build**: `npm run build` passes. One new warning (line 143: ternary-as-statement
+`s===0 ? moveTo : lineTo`) — same pattern as pre-existing `visualizer.tsx` warnings.
+TypeScript clean.
+
+**Queued next**:
+1. `/dream/5-arcs` — journey engine v2 with arc picker (EDM, cinematic, ritual,
+   sleep cycle). Forces an explicit articulation of what a "Resonance journey"
+   IS structurally. Good candidate for next build cycle.
+2. `/dream/6-compose` — ACE-Step AI music generation. Needs FAL_KEY and Karel's
+   explicit per-prototype budget approval (~$0.006/generation). Flag in MORNING.md.
+3. Polish `/dream/4-operator` — scene crossfade mode (dual offscreen canvas),
+   MIDI CC learn, crowd-noise auto-advance.
+
+---
+
 ## Cycle 4 — Research Cycle
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)
