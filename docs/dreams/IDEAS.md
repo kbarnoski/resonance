@@ -189,7 +189,7 @@ Full research notes: RESEARCH.md §3.
 
 ## FROM RESEARCH (Cycle 13, 2026-05-18) — promoted to queue
 
-### piano-canvas — your improvisation as a painting `[queued]`
+### piano-canvas — your improvisation as a painting `[demoable — /dream/13-piano-canvas, Cycle 14]`
 Route: `/dream/13-piano-canvas`. Mic input → pitch detection via AnalyserNode autocorrelation.
 Each detected note leaves a brush stroke on the canvas: pitch → hue (C=red rotating through
 spectrum), velocity → stroke weight (0–8px), duration → stroke length. Strokes accumulate across

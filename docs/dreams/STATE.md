@@ -1,5 +1,60 @@
 # Dream Agent — cycle state
 
+## Cycle 14 — /dream/13-piano-canvas
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 13 was a research sweep with no prototype. No blockers. Cycle 13 explicitly
+queued `13-piano-canvas` as the Cycle 14 target: clear spec, zero external deps, one-cycle build,
+and it fills a real gap — none of the 12 existing prototypes treat the session as a *persistent
+visual artifact*. All others are real-time reactions; this one accumulates.
+
+**Shipped**:
+- `src/app/dream/13-piano-canvas/page.tsx` — full interactive prototype (~340 lines)
+- `src/app/dream/13-piano-canvas/README.md` — design notes, pitch detection algorithm, polish ideas
+
+**What's inside**:
+
+Autocorrelation pitch detection on a 4096-sample time-domain buffer (normalized self-difference
+function, parabolic-interpolated peak, 0.82 confidence threshold + 0.012 RMS amplitude gate).
+Each detected note onset begins a new stroke at the current canvas cursor; the cursor advances
+left-to-right as the note sustains; pitch delta deflects the cursor up/down, so melodic contour
+traces visible arcs. When silence exceeds 8 frames, the stroke is committed to the persistent
+paint layer via `globalCompositeOperation: 'lighter'` — dense passages bloom bright.
+
+**Hue mapping**: A4=0° (red-ish), rotating ~60° per octave. Bass notes cluster in cool blues/greens;
+treble notes in warm oranges/reds/magentas. Chords tend to pick the dominant partial (usually lowest),
+which is perceptually correct — you hear and see the root.
+
+**Demo mode**: Web Audio `OscillatorNode` (sine) plays a wandering two-hand melody into the
+analyser but not to speakers. Silent demo, visually active. Pitch detection runs on the internal
+signal exactly as it would on a mic — same code path, no special casing.
+
+**Stroke layout**: left-to-right with line-wrapping when the cursor reaches 95% width. Vertical
+position starts random within the middle 80% of the canvas; pitch delta (not absolute pitch)
+steers the cursor up/down, so a sustained note on one pitch stays flat while a rising scale arcs
+upward. Staccato notes leave short bright dashes; long sustained notes leave flowing arcs.
+
+**Build**: `npm run build` passes cleanly. `/dream/13-piano-canvas` appears as static route (3.85 kB).
+Zero new errors; two warnings fixed before commit (unused eslint-disable, unused `dpr` variable).
+
+**What I noticed**: the painting style changes dramatically based on how you play. Staccato playing
+leaves a scattered constellation of short dashes. Legato playing leaves long continuous arcs that
+meander across the canvas. Playing scales traces diagonal lines. Holding chords creates thick
+colored blobs (bright due to `lighter` compositing when the same pitch sustains). In demo mode,
+the two-hand mix (occasional bass notes at ~130–200 Hz interspersed with treble) creates a
+conversation between cool and warm color families that reads immediately as musical structure.
+
+**Queued next**:
+1. **`typography`** — generative kinetic type (long-queued since Cycle 0, never built). Forced
+   articulation of the Resonance visual language in typographic form. Zero external deps.
+2. **`webgpu-fluid`** — upgrade 3-fluid to WebGPU compute at 512×512. Desktop coverage now
+   universal. One-cycle build given existing fluid sim logic.
+3. **`9-particle-life-gpu`** — WGSL compute shader, 50k+ particles. Galaxy-scale.
+4. **Polish `13-piano-canvas`** — spiral/mandala layout, slow global fade, polyphonic tracking.
+
+---
+
 ## Cycle 13 — Research cycle
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

@@ -10,12 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 13 — research)
+## ⭐ Newest (Cycle 14)
+
+- **[/dream/13-piano-canvas](/dream/13-piano-canvas)** — Piano Canvas.
+  Your improvisation becomes a painting. Mic input → autocorrelation pitch detection →
+  each note leaves a glowing brush stroke on a persistent canvas. Pitch → hue (A4=0°,
+  rotating ~60°/octave), loudness → weight (1.5–8 px), duration → length. Rising melodic
+  lines arc upward; descending ones drift down. Strokes accumulate; save as PNG when done.
+  Demo mode plays a silent wandering melody so the canvas paints itself automatically.
+  **The first prototype where the session leaves a permanent visual artifact.**
+
+---
+
+## Previous newest (Cycle 13 — research)
 
 - **Cycle 13 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md,
-  4 new prototype ideas in IDEAS.md. Highlights: `piano-canvas` (your playing → painting,
-  zero deps, Cycle 14), `reference-compose` (piano phrase → MiniMax Music 2.5 style-match
-  extension), WebGPU now universally supported on desktop. See MORNING.md for full digest.
+  4 new prototype ideas in IDEAS.md. Highlights: `piano-canvas` (built Cycle 14),
+  `reference-compose` (MiniMax Music 2.5 style-match, needs FAL_KEY), WebGPU desktop-universal.
 
 ---
 
@@ -276,6 +287,22 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 13-piano-canvas
+**Status**: `demoable` · **Cycle shipped**: 14 · **Last touched**: 2026-05-18
+
+Open `/dream/13-piano-canvas`. Click **Demo mode** — a wandering piano melody plays silently
+and the canvas begins painting itself. Each note leaves a glowing brush stroke; pitch sets the
+hue (bass notes = cool blues/greens, treble = warm oranges/reds), loudness sets the weight,
+duration sets the length. The stroke cursor drifts up for rising melodic lines and down for
+descending ones.
+
+Click **Start mic** and play piano, sing, or hum. Your improvisation accumulates as a painting.
+Click **save PNG** to download.
+
+Design notes: `src/app/dream/13-piano-canvas/README.md`
 
 ---
 

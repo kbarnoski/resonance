@@ -1,32 +1,25 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 13)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 14)
 
 ## New since yesterday
 
-- **Cycle 13 was a research sweep** — no new prototype, but IDEAS got 4 new entries and
-  RESEARCH.md got 7 new findings. Best ones to read:
-
-  1. **`13-piano-canvas` queued** — your musical improvisation becomes a canvas painting.
-     Each detected note leaves a glowing brush stroke (pitch→hue, velocity→weight,
-     duration→length). First prototype that treats the session as a *persistent visual artifact*
-     rather than real-time reaction. Zero deps. Cycle 14 will build it.
-
-  2. **`reference-compose` queued** — record 4-8 bars of piano → MiniMax Music 2.5 generates
-     a full 30s track in your style ($0.035). "Your phrase, extended." Needs FAL_KEY approval
-     (see open questions below).
-
-  3. **WebGPU: desktop universally supported now** — Chrome, Firefox, Safari 26, Edge all
-     ship it by default. Cycle 4's "70%" estimate was early 2026 projection; it landed in
-     Nov 2025. Building `webgpu-fluid` (512×512 upgrade of 3-fluid) and `9-particle-life-gpu`
-     are now safe without coverage worries.
+- **[/dream/13-piano-canvas](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/13-piano-canvas)** — Piano Canvas  
+  Your improvisation becomes a painting. Each note detected via mic autocorrelation
+  leaves a glowing brush stroke: pitch sets the hue (A4=red, rotating ~60° per octave),
+  loudness sets the weight (1.5–8 px), duration sets the length. The stroke cursor drifts
+  up for rising melodic lines, down for descending ones. Strokes accumulate on a persistent
+  canvas; download as PNG when done.  
+  **Open this first.** Two modes: **Start mic** (play piano/instrument/sing) or **Demo mode**
+  (wandering two-hand melody plays silently, leaves a painting automatically). Try both.
 
 ## In progress / partial
 
-- Nothing in-progress. All 12 prototypes are at `demoable` status.
+- Nothing in-progress. All 13 prototypes are at `demoable` status.
 
-## Cycle summary (13 total, 12 prototypes)
+## Cycle summary (14 total, 13 prototypes)
 
 | # | Route | What it is |
 |---|-------|-----------|
+| 14 | /dream/13-piano-canvas | Your playing becomes a painting |
 | 13 | (research) | Research sweep — 7 new findings, 4 new ideas |
 | 12 | /dream/12-tessellate | Truchet tile grid rewired by beat |
 | 11 | /dream/11-terrain | 3D spectrogram landscape |
@@ -43,37 +36,29 @@
 
 ## Research findings worth a look
 
-- **Art2Mus** (arxiv Feb 2026): direct image→music generation — no text needed, CLIP visual
-  embeddings feed AudioLDM 2. If this model lands on fal.ai: Ghost images → their own
-  auto-generated ambient music. Different from MMAudio V2 (which does video→audio sync).
+- **Art2Mus** (arxiv Feb 2026): direct image→music generation — no text, CLIP visual
+  embeddings feed AudioLDM 2. Ghost LoRA image → auto-generated ambient music without
+  typing a description. If it lands on fal.ai: a very different ghost-sound path.
 
-- **BRAVE** (arxiv Mar 2026): 10ms latency neural audio timbre transfer. Not browser-ready
-  yet (WASM path not optimized). Worth monitoring. Long-game Resonance vision: play piano →
-  instantly hear it in a custom AI-trained voice.
+- **BRAVE** (arxiv Mar 2026): 10ms latency neural audio timbre transfer. Monitor for
+  browser readiness. Long-game: play piano → instantly hear it in a trained voice/timbre.
 
-- **Patchies** (patchies.app): browser-based code+visual patching. P5.js, Three.js, Hydra,
-  Tone.js, Elementary Audio, MIDI, WebRTC — all wired by patch cables. Open-source AGPL.
-  Inspiration: what if the dream sandbox was a patchable system?
-
-- **Foley Control** (fal.ai): video → synchronized sound effects. Update for ghost-sound:
-  instead of MMAudio V2 ambient music, use Foley Control for environmental texture
-  (stone chamber reverb, portal hum, cosmic wind). Two-mode ghost-sound.
+- **MiniMax Music 2.5** ($0.035/track): reference audio style matching. Piano phrase in →
+  full track out in same style. Needs FAL_KEY. Strongest near-term AI music prototype.
 
 ## Open questions for Karel
 
-- **`reference-compose` (FAL_KEY approval)**: MiniMax Music 2.5 at $0.035/track. User
-  records piano phrase → gets extended track in same style. Budget: ~$0.035/generation.
-  Do you want this built? (compose mode for Resonance — feels like a core feature proposal.)
+- **`reference-compose` (FAL_KEY approval needed)**: MiniMax Music 2.5 at $0.035/track.
+  You record a piano phrase → the model extends it into a 30s track in your style.
+  Needs your go-ahead on budget. Feels like a core Resonance feature proposal.
 
-- **`ghost-animate` (FAL_KEY + higher budget)**: Seedance 2.0 accepts a Ghost LoRA image
-  + text prompt and generates a 5–10s cinematic video with native audio. Budget estimate:
-  ~$0.05–0.15/clip. Worth experimenting with? The Ghost as a *moving* character is a big
-  visual shift.
+- **`ghost-animate` (FAL_KEY + $0.05–0.15/clip)**: Seedance 2.0 turns a Ghost LoRA
+  still into a 5–10s cinematic video with native audio. Do you want this built?
 
-- **Tessellate spatial split**: the Cycle 12 tessellate prototype flips random tiles on
-  each beat. Alternative: each column responds to its own frequency band (left=bass,
-  right=treble). Worth doing? One-cycle add-on.
+- **Piano Canvas polish ideas** (for whenever): spiral layout (time=angle, pitch=radius →
+  mandala), polyphonic tracking (bass + treble simultaneous strokes), slow global fade
+  (recent strokes bright, old strokes dim). Any of these appeal?
 
-- **Next cycle (Cycle 14)**: plan is `13-piano-canvas`. Override if you want something
-  else — top alternatives are `typography` (kinetic type), `webgpu-fluid` (512×512
-  upgrade), `9-particle-life-gpu` (50k particle WebGPU).
+- **Next cycle**: top candidates are `typography` (kinetic type, long-queued),
+  `webgpu-fluid` (512×512 upgrade of 3-fluid), `9-particle-life-gpu` (50k WebGPU particles),
+  or polish `13-piano-canvas`.
