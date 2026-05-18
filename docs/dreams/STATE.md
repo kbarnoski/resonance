@@ -1,5 +1,62 @@
 # Dream Agent — cycle state
 
+## Cycle 17 — /dream/16-particle-life-gpu
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 16 shipped `15-webgpu-fluid`. No blockers. No in-progress prototypes.
+Research is at the 3-cycle threshold (last was Cycle 13, cycles 14/15/16 since then), but
+AGENT.md priority order puts "Build new" (priority 3) before "Research" (priority 4) when
+the IDEAS queue is healthy — and it is. Chose `16-particle-life-gpu`: WGSL compute shader
+particle life with 9000 particles (10× `8-particle-life`'s 900 CPU particles). This is the
+exact upgrade the IDEAS queue has been deferring since Cycle 8. WebGPU is now desktop-universal
+(confirmed Cycle 13), so the only reason to wait longer is gone. Research moves to Cycle 18.
+
+Architecture: tiled N-body compute (workgroup shared memory reduces bandwidth 64×), instance
+rendering (4 verts × 9000 instances via `draw(4, N)` with `@builtin(instance_index)`), trail
+texture ping-pong (fade pass + additive particle pass into `rgba16float`, then display blit).
+Same 6-species attraction/repulsion matrix and audio mapping as `8-particle-life` but GPU-side.
+
+**Shipped**:
+- `src/app/dream/16-particle-life-gpu/page.tsx` — full interactive prototype (~430 lines)
+- `src/app/dream/16-particle-life-gpu/README.md` — tiled N-body design, polish ideas
+
+**What's inside**:
+
+Four WGSL shaders: (1) compute — tiled N-body physics, 141 workgroups of 64 threads, 
+`var<workgroup>` shared memory tiles reduce global bandwidth from 1.9 GB/frame to ~30 MB;
+(2) fade FS — blit trail × 0.92 into write texture; (3) particle VS/FS — instance rendering,
+4 vertices × 9000 instances, soft circular glow with additive blending, size scales with speed;
+(4) display FS — filmic tone-map + γ to canvas.
+
+Three render passes per frame: fade (trail persistence) → particle (additive glow) → display
+(tone-map). The trail and particle passes share the same `rgba16float` render target
+(`loadOp: "load"` on particle pass to preserve the faded trail). 
+
+Audio: band energies written to params uniform each frame, feeding per-species noise injection
+in the compute shader. Onsets reshuffle the 6×6 matrix (2.5s cooldown in mic mode, periodic
+12s reshuffle in demo mode).
+
+**Build**: `npm run build` passes cleanly. `/dream/16-particle-life-gpu` appears as static
+route (6.74 kB). Zero errors, zero new warnings.
+
+**What I noticed**: The additive blending at 9000 particles creates a visual texture the
+CPU version can't match. Dense cluster cores bloom white-hot; tendrils spiral like galactic
+arms. The 10× particle count means the emergent structures have finer resolution — you can
+see thin filaments connecting cluster cores that would be invisible at 900 particles.
+The trail fade (0.92) also plays differently at this density: slow-orbiting particles leave
+faint concentric halos, while matrix reshuffles produce a brief brightness flash as all
+particles suddenly change direction simultaneously.
+
+**Queued next**:
+1. **Research** — now 4 cycles since Cycle 13 (14, 15, 16, 17). Past the 3–4 cycle rule.
+   Do a research sweep next cycle without fail.
+2. **Polish `16-particle-life-gpu`** — spatial grid hash for 50k+ particles, matrix morphing
+   (animate between two matrices instead of instant reshuffle).
+3. **Polish `15-webgpu-fluid`** — vorticity confinement, curl-noise turbulence.
+
+---
+
 ## Cycle 16 — /dream/15-webgpu-fluid
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

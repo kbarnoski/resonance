@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 16)
+## ⭐ Newest (Cycle 17)
+
+- **[/dream/16-particle-life-gpu](/dream/16-particle-life-gpu)** — Particle Life GPU.
+  9,000 particles across 6 species simulated entirely on the GPU via WGSL compute shaders —
+  10× the count of `/dream/8-particle-life` (CPU, 900). Tiled N-body reduces GPU bandwidth
+  64×. Additive blending creates galaxy-cluster glow; dense cores bloom white-hot, tendrils
+  spiral like galactic arms. Requires WebGPU. Same audio mapping: band energy → species
+  turbulence, onset → matrix reshuffle. Demo mode shows periodic reshuffles automatically.
+  **10× more particles. GPU-native emergent behavior.**
+
+---
+
+## Previous newest (Cycle 16)
 
 - **[/dream/15-webgpu-fluid](/dream/15-webgpu-fluid)** — WebGPU Fluid.
   Navier-Stokes fluid simulation at 512×512 via WebGPU render pipelines — 16× the resolution of
@@ -310,6 +322,21 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 16-particle-life-gpu
+**Status**: `demoable` · **Cycle shipped**: 17 · **Last touched**: 2026-05-18
+
+Open `/dream/16-particle-life-gpu`. Click **Start demo** — 9,000 particles immediately
+self-organize into emergent patterns driven by a random 6×6 matrix, simulated on GPU via
+WGSL compute. Compare with `/dream/8-particle-life` (CPU, 900 particles) to see the
+density difference. Press **reshuffle** for a new emergent pattern. With mic: loud onsets
+reshuffle automatically; band energies drive per-species turbulence.
+
+Requires WebGPU (Chrome 113+, Edge, Firefox 147+, Safari 26+).
+
+Design notes: `src/app/dream/16-particle-life-gpu/README.md`
 
 ---
 

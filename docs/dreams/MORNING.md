@@ -1,37 +1,33 @@
-# Morning digest — last updated 2026-05-18 UTC (Cycle 16)
+# Morning digest — last updated 2026-05-18 UTC (Cycle 17)
 
 ## New since yesterday
 
-- **[/dream/15-webgpu-fluid](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/15-webgpu-fluid)** — WebGPU Fluid (512×512)
-  Same Navier-Stokes ink-in-water as `/dream/3-fluid`, but at 512×512 — 16× the pixel count. Ported
-  to WebGPU render pipelines with `rgba16float` textures: no `EXT_color_buffer_float` dance, no Safari
-  compatibility issues. **Open this alongside 3-fluid and compare** — the vortex structures are visibly
-  sharper and the dye trails finer. Hit "Ambient drift" for instant visuals, then "Start mic" with piano.
-  Requires Chrome / Edge / Firefox / Safari 26+. Falls back to a clear error message on older browsers.
-
-## Previously new (Cycle 15)
-
-- **[/dream/14-typography](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/14-typography)** — Kinetic Typography.
-  Six Resonance phrases as physical letter-objects in frequency space. The FREQUENCIES / OF BEING
-  split across two phrase cycles is worth waiting for.
+- **[/dream/16-particle-life-gpu](/dream/16-particle-life-gpu)** — Particle Life on the GPU.
+  9,000 particles, 6 species, WGSL compute shaders. Same emergent attraction/repulsion
+  physics as `/dream/8-particle-life` (CPU, 900 particles) but 10× the count, running
+  entirely on GPU. Additive blending creates galaxy-cluster glow — dense cores bloom
+  white-hot, sparse tendrils spiral like galactic arms. **Open this one and hit reshuffle
+  a few times.** Each reshuffle produces a different emergent universe from the same rules.
+  Compare side-by-side with `/dream/8-particle-life` to feel the density difference.
+  Requires WebGPU.
 
 ## In progress / partial
 
-- Nothing in-progress. 15 demoable prototypes on the board.
-
-## Queue (next 2 cycles)
-
-- **`9-particle-life-gpu`** — WGSL compute shader, 50k+ particles. Galaxy-scale emergent flocking.
-- **Polish `14-typography`** — second-line wrap, live `/api/poetry` integration.
-- **Research** — 3 cycles since last sweep (Cycle 13). Due next cycle.
+- Nothing in-progress. All 16 prototypes are demoable.
 
 ## Research findings worth a look
 
-- Cycle 13 was the last sweep. Key findings: Art2Mus (image → music), BRAVE (10ms latency timbre
-  transfer), MiniMax Music 2.5 (reference audio style match). All in RESEARCH.md.
+- Cycle 13 research (last cycle) is in RESEARCH.md. Research is now 4 cycles overdue
+  (last was Cycle 13; cycles 14/15/16/17 have all been builds). Next cycle (18) will
+  be a dedicated research sweep — AI audio models, WebGPU, new fal.ai options.
 
 ## Open questions for Karel
 
-- **`reference-compose`** (MiniMax Music 2.5) — record 4 bars of piano → full track in same style ($0.035/track). Needs your FAL_KEY approval.
-- **WebGPU fluid answered**: went with `/dream/15-webgpu-fluid` as a new route so you can compare side-by-side with `3-fluid`.
-- **Typography poetry**: connect `/dream/14-typography` to `/api/poetry` (read-only GET, crosses dream boundary)? Your call.
+- **Research approved?** Cycle 18 is scheduled as a pure research cycle (no new prototype).
+  If you'd rather I keep building, say so and name the next target.
+- **50k-particle upgrade?** The current 16-particle-life-gpu uses O(N²) at 9k particles.
+  A spatial grid hash compute pass would enable 50k+ (galaxy-scale). Worth a full cycle —
+  more useful than a research cycle?
+- **`reference-compose`** (MiniMax Music 2.5 style-match: record piano phrase → extend to
+  full track) still queued. Needs FAL_KEY and per-prototype budget OK (~$0.035/track).
+  Still interested?
