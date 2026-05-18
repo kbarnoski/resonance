@@ -8,6 +8,77 @@ been done. Karel reads it each morning to follow the chain of thought.
 
 ---
 
+## Cycle 4 — Research Cycle
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 3 shipped `/dream/3-fluid`. Prior STATE.md queued
+Cycle 4 as a research cycle: RESEARCH.md was empty, we hadn't researched
+in 4 cycles (rule: research every 3+ cycles), and while IDEAS had 8+
+entries, the log Karel reads had no data. Priority: fill RESEARCH.md with
+real findings. Did the full sweep: arxiv, Shadertoy, GitHub trending,
+fal.ai/Replicate new models, Anthropic news, spatial audio state.
+
+**Shipped** (no code — research cycle):
+- `docs/dreams/RESEARCH.md` created — 8 dated research entries with
+  source links, summaries, prototype speculations
+- `docs/dreams/IDEAS.md` updated — 4 new prototype ideas promoted to
+  queue from research findings (compose, spatial, particle-life,
+  ghost-sound), strange attractor entry enriched with FM-synthesis angle,
+  RESEARCH BIN section replaced with summary + pointer
+- `docs/dreams/STATE.md`, `MORNING.md`, `INDEX.md` updated
+
+**Key findings**:
+
+1. **ACE-Step on fal.ai** ($0.0002/s) — open-source foundation model for
+   music generation. Text → up to 4 minutes of coherent music in 20s.
+   Natural prototype: user describes a mood, gets a 30s sketch that plays
+   through the existing visualizers. "Compose mode" for Resonance.
+
+2. **MMAudio V2 on fal.ai** ($0.001/s) — generates synchronized ambient
+   audio from video + text. Natural extension of ghost-lab: Ghost images
+   that sound transcendent as well as look it.
+
+3. **WebGPU at 70% browser coverage** (Firefox 147, Safari iOS 26, Jan 2026).
+   Compute shaders are now mainstream. Opens door to particle-life with
+   millions of particles and a cleaner fluid sim (no RGBA16F extension
+   dance). This is a big shift from the WebGL2 world prototype 3 assumed.
+
+4. **Binaural HRTF spatial audio** — HRTF PannerNode + AudioWorklet is
+   the 2026 standard for serious web audio. Placing frequency bands in 3D
+   space around a listener is achievable with zero external deps. Prototype
+   idea: spatial mixer where you hear bass below and treble above.
+
+5. **Strange attractor + FM synthesis** — existing "strange" idea enriched:
+   the attractor's xyz trajectory can *drive FM synth parameters* so you
+   hear and see chaos evolve together. Bidirectional: mic input changes
+   σ/ρ/β, reshaping the attractor.
+
+6. **Gray-Scott reaction diffusion** — solid WebGL implementations exist
+   (Ghassaei's vector-field variant is exceptional), none with audio input.
+   Clear gap: map bass → feed rate, treble → kill rate; dramatic pattern
+   bifurcations on loud hits.
+
+7. **Network bending for diffusion** — audio-reactive *content* change
+   (not just color), by injecting audio features into diffusion internals.
+   Longer-term prototype; requires thinking about budget and latency.
+
+**Queued next**:
+1. `/dream/4-operator` — next on the seeded list. Tauri operator panel
+   mock. Spec is clear, no blockers. Could build a skeleton in one cycle.
+2. Alternatively, `/dream/6-compose` (ACE-Step music generation) because
+   it's surprising and immediately demoable — Karel types a mood, hears AI
+   music, sees it visualized. Very Resonance.
+3. Polish `/dream/3-fluid` if Karel flags issues from mobile testing.
+
+**Notes**:
+- No TSC run needed this cycle (no code changes). All edits are markdown docs.
+- Shadertoy Revision 2026 Shader Showdown pages returned 403 — couldn't
+  read shader code directly. The competition pages confirm Shadertoy's
+  audio-reactive community is active but details unavailable without auth.
+
+---
+
 ## Cycle 3 — /dream/3-fluid
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

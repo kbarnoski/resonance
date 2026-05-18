@@ -144,7 +144,7 @@ prototypes.
 ## QUEUED — agent may pick up after seeded set
 
 ### strange — strange attractor viz `[queued]`
-Lorenz / Aizawa / Thomas attractors rendered in 3D, parameters modulated by audio. Bass adjusts σ/ρ/β; treble adjusts time-step. Webgl + instanced points or lines.
+Lorenz / Aizawa / Thomas attractors rendered in 3D, parameters modulated by audio. Bass adjusts σ/ρ/β; treble adjusts time-step. WebGL instanced lines. BONUS from research: run the attractor's xyz output as FM modulation signal so you *hear* the chaos evolve. See RESEARCH.md §6.
 
 ### tessellate — Penrose / Truchet tile rhythm `[queued]`
 Aperiodic tiling that re-tiles on beat. Each beat: ~10% of tiles flip. Mid-frequency density controls color saturation. Aesthetic: op-art.
@@ -163,8 +163,34 @@ WebRTC channel: multiple phones in a venue each contribute one color/shape, serv
 
 ---
 
+## FROM RESEARCH (Cycle 4, 2026-05-18) — promoted to queue
+
+### compose — AI journey soundtrack generator `[queued]`
+Route: `/dream/6-compose`. User types a mood/scene ("forest dawn ceremony, 70 BPM, ceremonial drums, reverbed piano"). ACE-Step on fal.ai generates a 30-second musical sketch ($0.006). Plays back through the fluid/live visualizer automatically. "Create your journey soundtrack." Could become the prototype for Resonance's "compose mode."  
+Full research notes: RESEARCH.md §2.
+
+### spatial — binaural HRTF spatial audio mixer `[queued]`
+Route: `/dream/7-spatial`. Import any audio file or use mic. Split into 6 frequency bands via AnalyserNode. Place each band at a point on a 3D sphere using HRTF PannerNodes. Visualize sphere with glowing colored dots. User drags dots to reposition. With headphones, music surrounds you in 3D space. No deps — all Web Audio API. Live performance: immersive room-filling feel from one laptop.  
+Full research notes: RESEARCH.md §5.
+
+### particle-life — WebGPU flocking driven by audio `[queued]`
+Route: `/dream/8-particle-life`. 6 species mapped to 6 frequency bands. Attraction/repulsion matrix gives emergent flocking/orbit/predator behavior. Audio energy controls particle "temperature" (velocity injection). Onset reshuffles the matrix → new emergent pattern emerges. Requires WebGPU (2026: 70% browser coverage). Completely alien aesthetic.  
+Full research notes: RESEARCH.md §§4, 8.
+
+### ghost-sound — add soundscape to Ghost images `[queued]`
+Route: `/dream/9-ghost-sound`. Extend ghost-lab: after generating a Ghost image, pipe it through MMAudio V2 on fal.ai ($0.001/s) with an auto-generated prompt ("ethereal wind, stone chamber reverb, single piano note sustain"). Returns a 10s video with synchronized ambient soundscape. Ghost images that *breathe*. Admin-only. Budget: ~$0.01/generation.  
+Full research notes: RESEARCH.md §3.
+
+---
+
 ## RESEARCH BIN — agent appends here from research cycles
 
-(Each entry: date, source URL, 2-3 sentence summary, "could become a prototype: ..." speculation.)
+See RESEARCH.md for full dated entries with sources. Key findings from Cycle 4 (2026-05-18):
 
-_None yet — will populate from research cycle ~4._
+- ACE-Step music generation on fal.ai ($0.0002/s) — text → coherent music in 20s
+- MMAudio V2 ($0.001/s) — video + text → synchronized ambient audio
+- WebGPU at 70% browser coverage — compute shaders without extension flags, 1M+ particles
+- HRTF binaural PannerNode spatial audio — no-dep 3D sound placement in browsers
+- Strange attractor synthesizer pattern — attractor xyz coords drive FM modulation
+- Gray-Scott RD implementations in WebGL — no audio version found, opportunity exists
+- Network bending for diffusion models — audio-reactive content generation (not just color)

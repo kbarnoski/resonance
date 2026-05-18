@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 3)
+## ⭐ Newest (Cycle 4 — research cycle)
+
+No new prototype this cycle. See RESEARCH.md for 8 findings and 4 new
+prototype ideas added to IDEAS.md: compose (ACE-Step AI music), spatial
+(HRTF 3D audio), particle-life (WebGPU flocking), ghost-sound (MMAudio
+video soundscaping).
+
+---
+
+## Previous newest (Cycle 3)
 
 - **[/dream/3-fluid](/dream/3-fluid)** — Fluid — real-time Navier-Stokes ink-in-water
   driven by audio. Bass pulses the center, treble stirs turbulence, pitch shifts dye color.
@@ -81,6 +90,22 @@ mapping for live performance. Queued.
 ### 5-arcs `[queued]`
 Journey engine v2 — picker for non-psychedelic arcs (EDM build-and-
 drop, cinematic three-act, ritual, sleep cycle). Queued.
+
+### 6-compose `[queued — from Cycle 4 research]`
+ACE-Step AI music generation: type a mood → 30s musical sketch → plays
+through the fluid/live visualizer. "Compose your journey soundtrack."
+
+### 7-spatial `[queued — from Cycle 4 research]`
+HRTF binaural spatial audio mixer: 6 frequency bands placed in 3D space
+around a listener via PannerNodes. With headphones: music all around you.
+
+### 8-particle-life `[queued — from Cycle 4 research]`
+WebGPU particle life simulation: 6 particle species (= 6 freq bands),
+emergent flocking driven by audio energy. Requires WebGPU (2026: 70%+ browsers).
+
+### 9-ghost-sound `[queued — from Cycle 4 research]`
+Ghost LoRA images + MMAudio V2 soundscaping: Ghost scenes that breathe.
+Admin-only. ~$0.01/generation.
 
 ---
 
