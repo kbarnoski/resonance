@@ -303,6 +303,13 @@ Seedance 2.0 API (fal.ai) → 15s cinematic video with native synchronized audio
 (no separate MMAudio V2 step needed). Seedance 2.0 API confirmed April 2026. Admin-only.
 Budget ~$0.05–0.15/clip. See RESEARCH.md §19.
 
+### granular — granular synthesis cloud `[demoable — /dream/18-granular, Cycle 20]`
+Route: `/dream/18-granular`. Shipped. Mic or demo oscillators → Web Audio analyser
+time-domain buffer → grain extraction + Hann window → AudioBufferSourceNode with detune/pan.
+Scatter plot visual: X = buffer position, Y = pitch shift, color = buffer age. Live sliders for
+density, pitch range, grain size, scatter. See README for polish ideas: freeze mode, pitch envelope,
+density automation from amplitude.
+
 Key findings from Cycle 18 (2026-05-18):
 - Three.js WebGPU + TSL production-ready across all browsers (r171+, 2026 baseline)
 - SoundPlot (Jan 2026) — 3D acoustic feature space visualization (centroid/bandwidth/pitch axes)

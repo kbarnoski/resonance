@@ -1,5 +1,80 @@
 # Dream Agent — cycle state
 
+## Cycle 20 — /dream/18-granular
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 19 shipped `17-acoustic-trail`. No blockers. No in-progress prototypes.
+Research was last cycle (18), so research is not due. Build new outranks polish.
+
+Queue scan: every remaining idea that needs a new prototype requires either FAL_KEY
+(`ghost-animate`, `elevenlabs-compose`, `reference-compose`) or backend work (`audience`).
+The only buildable-now-without-keys option is polish. BUT — I can also invent a new prototype
+that isn't in the queue yet, if it's surprising and fits Resonance's vibe.
+
+The granular synthesizer is exactly that. It fills a gap none of the 17 existing prototypes cover:
+- All others REACT to audio. This one GENERATES audio from audio.
+- The visual and the sound are literally the same thing — each dot IS a grain being played.
+- It's the first prototype that answers "what if Resonance transformed your sound in real time,
+  not just visualized it?" — a different design question.
+- Zero external deps. One-cycle build. Demo mode works immediately.
+- Live performance angle: play piano → granular cloud echoes your playing back, pitched and smeared.
+
+Wrote the idea into IDEAS.md, then built it.
+
+**Shipped**:
+- `src/app/dream/18-granular/page.tsx` — full interactive prototype (~260 lines)
+- `src/app/dream/18-granular/README.md` — design rationale, grain math, polish ideas
+
+**What's inside**:
+
+Granular synthesis from live audio. The analyser captures the last ~186ms of audio in a
+Float32Array (fftSize=8192). Each grain tick (rate = densityHz param, default 18/sec):
+pick a random position in the buffer (center-biased toward recent samples, scatter jitter
+adjustable), extract a slice of `grainMs` samples, apply a Hann window, wrap it in an
+AudioBuffer, play through an AudioBufferSourceNode with random detune (±pitchCents) and
+stereo panning. The grain produces sound and is visualized as a glowing dot.
+
+Visual scatter plot: X = grain buffer position (left = older, right = more recent audio),
+Y = pitch shift in cents (up = higher, center = unchanged). Color hue encodes buffer age:
+blue/indigo for older regions, orange for recent. Additive blending makes dense grain regions
+glow bright. A faint waveform strip at y=80% shows the raw analyser time-domain data.
+
+Params (sliders): density (5–50 grains/sec), pitch range (0–800¢), grain size (20–200ms),
+scatter (0–100% of buffer). Low density + low scatter = single-source echo cloud. High density
++ high pitch range = shimmering reverb smear. High scatter = time-warped panorama.
+
+Demo mode: 5 LFO-modulated sine oscillators (55–2200Hz) feed the analyser silently. The
+grains sample from this oscillator mix, so demo sounds like a granular evolution of pure tones
+— no mic permission needed. Mic mode swaps in live input.
+
+**Build**: `npm run build` passes cleanly. `/dream/18-granular` appears as static route.
+Zero errors, zero new warnings in my code.
+
+**What I noticed**: The visual rhythm at default settings (18 grains/sec, 70ms grain, 240¢)
+creates a cloud about 40% of canvas width (from scatter) and 80% of canvas height (from pitch
+range). Dense spawning makes the cloud glow; sparse spawning shows individual grain positions.
+The grain sound at 18/sec overlaps 1.26 grains average — enough for continuous texture without
+smearing. At 40/sec you get 2.8 overlapping grains — lush reverb-like cloud. At 5/sec with
+200ms grains — audible individual echoes.
+
+The most interesting effect: use mic mode, play a single sustained piano note → the cloud
+clusters in a narrow horizontal band (all grains from the same part of the buffer) at ±240¢
+from center (pitch smear). The cloud looks like a vertical stripe of light. Play a chord → the
+waveform is richer so grains sample more varied amplitudes; the stripe thickens. Play staccato
+notes → between notes the analyser has silence, grains go nearly silent, the cloud fades. The
+visual breathes with the playing.
+
+**Queued next**:
+1. **Polish `17-acoustic-trail`** — add pitch (4th axis) as glyph size, floor shadow, tick labels.
+2. **Polish `18-granular`** — add a "freeze" button that locks the analyser snapshot (all grains
+   from the same frozen moment in time, like a granular freeze effect); add pitch envelope control
+   (chirp grains up or down during their duration).
+3. **`elevenlabs-compose`** — pending Karel budget approval.
+4. **`ghost-animate`** — Seedance 2.0, admin-only, pending Karel approval.
+
+---
+
 ## Cycle 19 — /dream/17-acoustic-trail
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

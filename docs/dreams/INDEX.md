@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 19)
+## ⭐ Newest (Cycle 20)
+
+- **[/dream/18-granular](/dream/18-granular)** — Granular Cloud.
+  Your audio shattered into overlapping grains and reassembled as a glowing cloud. Each dot IS
+  a grain playing: X = where in the recent audio buffer it was sampled from, Y = its pitch shift
+  in cents. Hue encodes buffer age (blue = older audio, orange = most recent). Additive blending
+  makes dense grain regions glow bright. Four sliders: density, pitch range, grain size, scatter.
+  Demo mode (synthetic oscillators, no permissions) and mic mode. **First prototype that transforms
+  rather than visualizes — the dots are the sound.**
+
+---
+
+## Previous newest (Cycle 19)
 
 - **[/dream/17-acoustic-trail](/dream/17-acoustic-trail)** — Acoustic Trail 3D.
   Your audio mapped to its own coordinate space: spectral centroid → X, treble ratio → Y,
@@ -345,6 +357,25 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 18-granular
+**Status**: `demoable` · **Cycle shipped**: 20 · **Last touched**: 2026-05-18
+
+Open `/dream/18-granular`. Click **Start demo** — five LFO-modulated sine oscillators feed the
+analyser silently and grains immediately begin spawning. Each dot that appears is a real grain of
+audio playing through your speakers; X is where in the recent buffer it was sampled, Y is its
+pitch shift. Watch the cloud breathe as the LFO mix slowly shifts.
+
+Click **Start mic** and play piano or sing. A sustained note creates a vertical stripe (all grains
+near the same buffer position, random pitch smear). A chord thickens the stripe. Staccato notes
+make the cloud pulse and fade between attacks. Try: density=40, pitch=800¢ for a lush alien reverb.
+
+Four sliders live-adjustable while running: density (grains/sec), pitch range (¢), grain size (ms),
+scatter (how far from recent audio grains are allowed to sample).
+
+Design notes: `src/app/dream/18-granular/README.md`
 
 ---
 
