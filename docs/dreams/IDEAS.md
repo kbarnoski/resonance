@@ -146,8 +146,10 @@ prototypes.
 ### strange — strange attractor viz `[demoable]`
 Lorenz attractor in 3D with real-time FM synthesis driven by xyz coordinates. Shipped as `/dream/10-strange` (Cycle 10). Mic mode modulates σ live. See README for polish ideas: σ/ρ/β sliders, non-chaotic regime exploration, loop into fluid sim.
 
-### tessellate — Penrose / Truchet tile rhythm `[queued]`
-Aperiodic tiling that re-tiles on beat. Each beat: ~10% of tiles flip. Mid-frequency density controls color saturation. Aesthetic: op-art.
+### tessellate — Penrose / Truchet tile rhythm `[demoable]`
+Shipped as `/dream/12-tessellate` (Cycle 12). 40×28 Truchet grid, mass flip on onset,
+bass drizzle, two-color complement, Path2D batched rendering, ellipse() for non-square tiles.
+See README for polish ideas: spatial frequency split, progressive resolution, inverted mode.
 
 ### terrain — fly-through spectrogram `[queued]`
 Last 60s of FFT history is a 3D terrain. Camera flies forward through it. Bass = mountain height, treble = surface detail. Like Audiosurf for any audio.

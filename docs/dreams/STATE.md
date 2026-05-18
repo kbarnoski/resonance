@@ -1,5 +1,74 @@
 # Dream Agent — cycle state
 
+## Cycle 12 — /dream/12-tessellate
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 11 shipped `/dream/11-terrain`. No blockers. No in-progress prototypes.
+Research is 8 cycles overdue per the 3–4 cycle guideline, but IDEAS has 8+ entries with
+clear specs, so "Build new" (priority 3) outranks "Research" (priority 4). Chose `tessellate`
+because: (a) it's the only gap in the aesthetic space — all 11 prior prototypes use particles,
+fluid, terrain, or attractor physics; none use tile-based geometric patterns; (b) the "rewire"
+moment (mass tile flip on a beat) is more dramatically sudden than anything in the current
+sandbox; (c) zero deps, one cycle to build cleanly.
+
+Note: research is now overdue by 8 cycles. Next cycle should be research unless Karel queues
+something urgent.
+
+**Shipped**:
+- `src/app/dream/12-tessellate/page.tsx` — full interactive prototype (~260 lines)
+- `src/app/dream/12-tessellate/README.md` — design notes, rendering approach, open questions
+
+**What's inside**:
+
+40×28 grid of Truchet tiles. Each tile = one of two quarter-arc orientations. Together,
+adjacent arcs form long connected curves spanning the canvas — topology emerging from local
+two-state choices. ~1120 tiles total.
+
+**Rendering**: two batched `Path2D` calls (one per orientation) replace 1120 individual
+`stroke()` calls. Flash overlay is a separate third pass over only the recently-flipped tiles.
+
+**Why `ellipse()` instead of `arc()`**: on a non-square tile, `arc(r)` with r=min(tw,th)/2
+leaves gaps at tile edges — arcs from adjacent tiles don't touch. `ellipse(rx=tw/2, ry=th/2)`
+always places arc endpoints exactly at edge midpoints regardless of aspect ratio. Adjacent
+arcs always connect. No mathematical approximation.
+
+**Audio mapping**:
+- Bass onset → 12% mass flip, full white flash on each flipped tile (0.4s decay)
+- Bass energy (continuous) → drizzle rate: bassEnergy² × 0.055 probability/tile/frame
+- Demo mode: timer-based beat at ~85 BPM (backup trigger so demo always shows flips)
+- Mid energy → saturation; overall amplitude → lightness
+
+**Color**: two complementary arc colors (hue + 165°) rotating through spectrum at ~40s/cycle.
+50/50 split between orientations → roughly equal color areas. Bass beats redistribute balance,
+causing color "drift" that follows the music's intensity.
+
+**Build**: `npm run build` passes cleanly. `/dream/12-tessellate` appears as static route.
+Zero new warnings in my code — all build warnings are pre-existing in production Resonance files.
+
+**What I noticed**: the "rewire" moment is the best thing about this prototype. When 12% of
+tiles flip at once, the long connected curves that snake across the canvas suddenly reconnect
+into completely different paths. It's not a particle scatter or a fluid turbulence — it's
+a topological rewiring. The previous paths die; new ones form; then the drizzle starts
+slowly warping those new paths until the next beat. The visual rhythm is: staccato rewire →
+slow creep → staccato rewire.
+
+In demo mode, the two-color complement (warm + cool) creates a visual "breathing" as the
+dominant color drifts slightly with each beat. With mic + music, the saturation pump on
+every loud moment makes the colors pop.
+
+**Queued next**:
+1. **Research cycle** — now 9 cycles since Cycle 4. IDEAS queue still healthy (8+ entries)
+   but the manual says 3–4 cycles between research. This is overdue. Schedule for Cycle 13.
+2. **Polish 12-tessellate** — spatial frequency split (left columns = bass, right = treble),
+   progressive resolution (start at 10×7, refine to 40×28 over time), inverted mode.
+3. **typography** — generative kinetic type. An arc-based tile prototype and a type-motion
+   prototype cover the two aesthetic gaps in the sandbox most clearly.
+4. **9-particle-life-gpu** — WebGPU upgrade. Still waiting for a research cycle to confirm
+   WebGPU coverage hasn't shifted.
+
+---
+
 ## Cycle 11 — /dream/11-terrain
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

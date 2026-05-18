@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 11)
+## ⭐ Newest (Cycle 12)
+
+- **[/dream/12-tessellate](/dream/12-tessellate)** — Tessellate.
+  A 40×28 grid of Truchet tiles whose topology rewires on every beat. Each tile is a
+  quarter-arc in one of two orientations; adjacent arcs form long connected curves across
+  the canvas. On a bass hit, 12% of tiles flip simultaneously — the curves disconnect and
+  reconnect into entirely new paths in a flash of white. Between beats, bass energy drives
+  a slower drizzle of individual tile flips. Two complementary arc colors (warm + cool)
+  rotate through the spectrum; mids control saturation. Op-art aesthetic — the first
+  tile-based geometric prototype in the sandbox.
+  **Start demo** for immediate visuals (no permissions). **Start mic** for live audio response.
+  **Reshuffle** button resets the grid topology.
+
+---
+
+## Previous (Cycle 11)
 
 - **[/dream/11-terrain](/dream/11-terrain)** — Spectrogram Terrain.
   Your audio history becomes a 3D landscape: frequency on the X axis, time receding to the
@@ -252,6 +267,23 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 12-tessellate
+**Status**: `demoable` · **Cycle shipped**: 12 · **Last touched**: 2026-05-18
+
+Open `/dream/12-tessellate`. Click **Start demo** — a 40×28 Truchet tile grid
+appears instantly. Watch the curves: they connect across the full canvas, then
+rewire on each beat. Click **reshuffle** to reset the topology with a full-grid
+flash. **Start mic** → play something with clear bass hits; the rewire mass-flip
+fires on each onset.
+
+Two complementary-colored arc families (primary hue + 165° offset) slowly rotate
+through the spectrum over 40 seconds. With mids loud, saturation peaks and the
+colors pop; with quiet audio, the arcs dim to near-black.
+
+Design notes: `src/app/dream/12-tessellate/README.md`
 
 ---
 
