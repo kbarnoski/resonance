@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 15 — /dream/14-typography
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 14 shipped `13-piano-canvas`. No blockers. No in-progress prototypes. Top of queue: `typography` (queued since Cycle 0, never built — the longest-running deferred item). Zero external deps, one-cycle build, and it fills a real aesthetic gap: all 13 existing prototypes are pure abstract AV reactions; none use language. Text + sound is a different design space — the Resonance vocabulary made physical.
+
+**Shipped**:
+- `src/app/dream/14-typography/page.tsx` — full interactive prototype (~170 lines)
+- `src/app/dream/14-typography/README.md` — physics params, phrase rationale, polish ideas
+
+**What's inside**:
+
+Six Resonance-themed phrases cycle every 8 seconds: RESONANCE → SOUND INTO LIGHT → BODY OF MUSIC → EACH NOTE A WAVE → FREQUENCIES → OF BEING. Each phrase is decomposed into individual letters, each assigned to a frequency band by position (`index % 6`). Letters are physical objects with spring-damper dynamics: spring constant 0.066, damping 0.76 (overdamped — no oscillation, assembles in ~1.5s).
+
+Three audio forces: (1) band scatter — letters of an excited band receive random impulses scaled by `(energy - 0.22) × 14`, so sub-bass kicks scatter the violet letters, treble shimmer agitates the magenta ones; (2) onset burst — radial outward impulse of 9px/frame from canvas center; (3) drift noise — slow per-letter sinusoidal noise so no letter is ever still. `shadowBlur` glow is proportional to band energy. Render loop groups letters by band (6 passes) to minimize canvas state changes.
+
+Demo mode uses pure math-based synthetic bands (6 sinusoids at different frequencies, no Web Audio) — immediate without permissions. The beat fires at ~76 BPM with jitter.
+
+**What I noticed**: The phrase split between FREQUENCIES and OF BEING across two cycles is unexpectedly effective. The word "FREQUENCIES" appears alone, fully assembled, and there's a 6-second pause before OF BEING arrives. The reader completes "FREQUENCIES OF BEING" mentally, then the canvas proves it. Didn't plan that — it emerged from the phrase list.
+
+The scatter on bass hits reads differently for different phrases. Short phrases (RESONANCE, EACH NOTE) scatter into legible chaos — you can still read fragments mid-scatter. Long phrases (SOUND INTO LIGHT) become genuinely abstract — the letters interleave and the text dissolves into colored particle cloud. Two different aesthetics from the same code, just phrase length.
+
+**Build**: `npm run build` passes cleanly. `/dream/14-typography` appears as static route (3.55 kB). Zero errors, zero new warnings.
+
+**Queued next**:
+1. **`webgpu-fluid`** — upgrade `3-fluid` to WebGPU compute shaders, 512×512. Desktop coverage is now universal (confirmed Cycle 13). One-cycle build given the existing sim logic. Would be `/dream/15-webgpu-fluid` or an in-place upgrade of 3-fluid.
+2. **`9-particle-life-gpu`** — WGSL compute shader, 50k+ particles, galaxy-scale. New route `/dream/15-particle-life-gpu`.
+3. **Polish `14-typography`** — second line wrap for longer phrases, phrase overlap transitions, `/api/poetry` live integration.
+4. **Research** — last research was Cycle 13 (2 cycles ago). Check in 1–2 cycles.
+
+---
+
 ## Cycle 14 — /dream/13-piano-canvas
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

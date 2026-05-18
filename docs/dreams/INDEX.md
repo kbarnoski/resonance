@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 14)
+## ⭐ Newest (Cycle 15)
+
+- **[/dream/14-typography](/dream/14-typography)** — Kinetic Typography.
+  Six Resonance phrases — RESONANCE, SOUND INTO LIGHT, BODY OF MUSIC, EACH NOTE A WAVE,
+  FREQUENCIES, OF BEING — cycle every 8 seconds. Each letter is a physical object assigned
+  to a frequency band; bass hits scatter bass-colored letters, treble shimmer agitates
+  the high-frequency ones. Spring dynamics assemble the phrase from scatter over ~1.5s.
+  Demo mode runs synthetic LFO bands — immediate, no permissions. Mic input drives letter
+  turbulence live. **First prototype where language itself is the visual material.**
+
+---
+
+## Previous newest (Cycle 14)
 
 - **[/dream/13-piano-canvas](/dream/13-piano-canvas)** — Piano Canvas.
   Your improvisation becomes a painting. Mic input → autocorrelation pitch detection →
@@ -287,6 +299,23 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 14-typography
+**Status**: `demoable` · **Cycle shipped**: 15 · **Last touched**: 2026-05-18
+
+Open `/dream/14-typography`. Click **Start demo** — letters immediately scatter in from
+random positions and spring-assemble into RESONANCE. Watch the phrase cycle every 8 seconds.
+Each letter belongs to one frequency band; the LFO-driven demo bands keep letters in gentle
+perpetual motion even between beats.
+
+Click **Start mic** and play anything with rhythmic content. Bass hits scatter the violet/cyan
+letters; drum attacks burst all letters radially outward. Between hits, the spring pulls them
+back into the phrase. Long phrases (SOUND INTO LIGHT) become abstract particle clouds on loud
+passages; short phrases (FREQUENCIES) read clearly even at high energy.
+
+Design notes: `src/app/dream/14-typography/README.md`
 
 ---
 
