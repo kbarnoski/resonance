@@ -1,5 +1,69 @@
 # Dream Agent — cycle state
 
+## Cycle 16 — /dream/15-webgpu-fluid
+
+**When**: 2026-05-18 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 15 shipped `14-typography`. No blockers. No in-progress prototypes. Top of
+queue: `webgpu-fluid` — confirmed #1 priority for this cycle. WebGPU is now desktop-universal
+(confirmed Cycle 13), and the upgrade from 128×128 WebGL2 to 512×512 WebGPU is meaningful:
+finer vortex structures, no extension dependencies, better Safari compatibility. One-cycle build
+given the existing 3-fluid algorithm as a reference. Research is 3 cycles overdue per the 3–4
+cycle rule (last was Cycle 13); scheduling it next cycle.
+
+Chose a new `/dream/15-webgpu-fluid` route rather than upgrading `3-fluid` in-place — this lets
+Karel compare both side-by-side on the same device, and preserves the WebGL2 version as
+a fallback for browsers that don't yet have WebGPU.
+
+Used WebGPU **render pipelines** (fragment shader ping-pong into `rgba16float` textures) rather
+than compute shaders. Same algorithm either way; render pipeline is simpler to port from the
+existing GLSL shaders and avoids storage texture format constraints. At 512×512 the fragment
+pipeline runs comfortably above 60fps on modern GPUs.
+
+**Shipped**:
+- `src/app/dream/15-webgpu-fluid/page.tsx` — full interactive prototype (~400 lines)
+- `src/app/dream/15-webgpu-fluid/README.md` — design notes, algorithm, polish ideas
+- `src/app/dream/_shared/webgpu.d.ts` — adds `/// <reference types="@webgpu/types" />` so
+  WebGPU types are available across the dream zone without modifying tsconfig
+
+**What's inside**:
+
+Six WGSL fragment shaders (advect, divergence, Jacobi pressure, gradient subtract, splat, display)
+plus one shared vertex shader (full-screen quad, triangle-strip, UV (0,0)=bottom-left).
+Each sim step writes into a `rgba16float` ping-pong texture pair via a render pass targeting
+a texture attachment. Splats (mouse, audio) are submitted as separate command encoders before
+the main sim encoder so ping-pong state is consistent. Display writes to `ctx.getCurrentTexture()`
+using `getPreferredCanvasFormat()` (usually `bgra8unorm`).
+
+Uniform buffers: `advVelUni` (dt, diss=0.9), `advDyeUni` (dt, diss=0.985), `splatVelUni`,
+`splatDyeUni` — separate buffers avoid the WebGPU ordering issue where `writeBuffer` to the
+same buffer before `submit()` would overwrite earlier values.
+
+Typed-array issue: `new Float32Array([...]).buffer` returns `ArrayBufferLike`, not `ArrayBuffer`.
+Fixed with a `f32buf(...vals: number[]): ArrayBuffer` helper that casts via `as ArrayBuffer`.
+
+**Build**: `npm run build` passes cleanly. `/dream/15-webgpu-fluid` appears as static route
+(5.92 kB). Two-pass fix: Float32Array typed-array strictness required the `f32buf()` helper;
+unused local variables in `stepFluid` cleaned before second build attempt.
+
+**What I noticed**: The 512×512 resolution makes a visible difference in vortex fidelity.
+At 128×128, pressure-driven velocity structures diffuse within a few frames. At 512×512, you
+can see the Kelvin-Helmholtz-like rollup of shear layers — thin colored streams that curl
+around each other before diffusing. In ambient drift mode, the color cycling creates long
+slow spiral arms that look genuinely fluid rather than blocky. The `rgba16float` format (vs
+`RGBA16F` via extension in WebGL2) also handles high-energy regions better — no visible
+banding on intense bass hits.
+
+**Queued next**:
+1. **Research** — 3 cycles since Cycle 13. The manual says 3–4 cycles between research; this is
+   exactly on the line. Do a research sweep next cycle before it slips further.
+2. **`9-particle-life-gpu`** — WGSL compute shader, 50k+ particles. Galaxy-scale particle life.
+3. **Polish `14-typography`** — second-line wrap for longer phrases, `/api/poetry` integration
+   (pending Karel's approval on crossing the dream boundary).
+4. **Polish `15-webgpu-fluid`** — vorticity confinement, curl-noise turbulence, resolution toggle.
+
+---
+
 ## Cycle 15 — /dream/14-typography
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

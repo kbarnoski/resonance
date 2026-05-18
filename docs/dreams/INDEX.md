@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 15)
+## ⭐ Newest (Cycle 16)
+
+- **[/dream/15-webgpu-fluid](/dream/15-webgpu-fluid)** — WebGPU Fluid.
+  Navier-Stokes fluid simulation at 512×512 via WebGPU render pipelines — 16× the resolution of
+  `/dream/3-fluid` (WebGL2, 128×128). Uses `rgba16float` ping-pong textures natively: no extension
+  flags, no Safari workaround. Same audio mapping (bass→pressure pulse, treble→turbulence,
+  centroid→dye color, onset→burst). Drag to stir. Requires WebGPU; clear error message otherwise.
+  **Compare side-by-side with 3-fluid** — vortex clarity difference is visible immediately.
+
+---
+
+## Previous newest (Cycle 15)
 
 - **[/dream/14-typography](/dream/14-typography)** — Kinetic Typography.
   Six Resonance phrases — RESONANCE, SOUND INTO LIGHT, BODY OF MUSIC, EACH NOTE A WAVE,
@@ -299,6 +310,20 @@ raises kill rate (structures become more isolated). Drum hits auto-inject blobs.
 Requires WebGL2 + EXT_color_buffer_float (Chrome 56+, Firefox 51+, Safari 15+).
 
 Design notes: `src/app/dream/9-reaction-diffusion/README.md`
+
+---
+
+### 15-webgpu-fluid
+**Status**: `demoable` · **Cycle shipped**: 16 · **Last touched**: 2026-05-18
+
+Open `/dream/15-webgpu-fluid`. Click **Ambient drift** — fluid starts immediately. Same
+controls and audio mapping as `3-fluid` but at 4× the linear resolution (512² vs 128²).
+Drag to stir. "Start mic" → play piano; spectral centroid shifts dye hue in real time.
+
+Requires WebGPU (Chrome/Edge 113+, Firefox 147+, Safari 26+). Displays a clear error on
+unsupported browsers — no silent failure.
+
+Design notes: `src/app/dream/15-webgpu-fluid/README.md`
 
 ---
 

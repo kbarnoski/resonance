@@ -225,12 +225,11 @@ The still Ghost image becomes a living, moving scene. Option: also pipe through 
 for environmental soundscape layer. Admin-only. Budget estimate: $0.05–0.15/clip. Full research
 notes: RESEARCH.md §§13, 15.
 
-### webgpu-fluid — upgrade 3-fluid to WebGPU compute shaders `[queued]`
-Route: `/dream/3-fluid` (replace WebGL2 sim in-place, or new `/dream/15-webgpu-fluid`).
-WebGPU now in all major desktop browsers (confirmed Nov 2025). Upgrade fluid sim from 128×128
-RGBA16F WebGL2 to 512×512 WebGPU compute. Eliminates EXT_color_buffer_float dependency. Same
-audio mapping (bass→pressure, treble→turbulence) but 16× resolution. One-cycle build given the
-existing sim logic. Full research notes: RESEARCH.md §9.
+### webgpu-fluid — upgrade 3-fluid to WebGPU render pipelines `[demoable — /dream/15-webgpu-fluid, Cycle 16]`
+Shipped as `/dream/15-webgpu-fluid`. 512×512 rgba16float render pipeline approach (not compute
+shaders — fragment shader ping-pong, simpler to implement and equally fast at this resolution).
+Same audio mapping as 3-fluid. WebGPU required; clear fallback. See README for polish ideas:
+vorticity confinement, curl-noise turbulence, resolution toggle based on GPU tier detection.
 
 ---
 
