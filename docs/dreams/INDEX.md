@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 42)
+## ⭐ Newest (Cycle 43)
+
+- **[/dream/39-anticipate](/dream/39-anticipate)** — Aria Anticipate.
+  Extends `33-aria-companion` with ReaLJam-style ghost-note anticipation. After you play a phrase
+  and pause, Aria's entire planned response appears as **dashed blue outlines** in the ARIA panel —
+  all notes at once, before a single note sounds. You see the full melodic shape of the response
+  in silence. Then each note solidifies with a bright flash as it sounds, left to right.
+  The canvas uses a split past/future time window: user notes scroll left, Aria's ghost notes
+  sit to the right of the center "now" line and sweep left to meet it as they play.
+  **"Watch Aria decide before she plays."** Inspired by ReaLJam (CHI 2025): showing AI intention
+  before execution was the single highest-rated design feature in human-AI piano experiments.
+  Zero deps; pure Web Audio + Canvas2D.
+
+  Design notes: `src/app/dream/39-anticipate/README.md`
+
+---
+
+## Previous newest (Cycle 42)
 
 - **[/dream/38-mood-xy](/dream/38-mood-xy)** — Mood XY.
   The Russell circumplex model as a musical instrument. A 2D canvas: X = valence (sad ← happy),
@@ -594,6 +611,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 39-anticipate
+**Status**: `demoable` · **Cycle shipped**: 43 · **Last touched**: 2026-05-19
+
+Open `/dream/39-anticipate`. Click **DEMO** — the 10-note C major phrase begins painting the YOU
+(orange) panel one note at a time. After the last note, 2 seconds pass, then: all of Aria's
+planned response notes appear simultaneously as dashed blue rectangles in the ARIA panel (bottom),
+spread across the right half of the canvas. You can see the whole response — which notes will be
+higher or lower, how long each will last — in silence.
+
+Then the first note sounds and its ghost bar flashes bright and fills solid. 470ms later, the
+next note sounds and solidifies. Watch the solidification wave sweep left to right through the
+ARIA panel. Each solidifying bar starts with a 280ms glow burst (blur 28, glow 1.0) then settles
+to normal brightness. The dashed outlines to the right are Aria's "still-ghost" notes: her
+intentions not yet executed.
+
+In mic mode: play 8+ notes on piano, pause 2 seconds. Ghost notes appear before Aria speaks.
+
+Design notes: `src/app/dream/39-anticipate/README.md`
+
+---
 
 ### 38-mood-xy
 **Status**: `demoable` · **Cycle shipped**: 42 · **Last touched**: 2026-05-19

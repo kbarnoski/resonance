@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 43 — /dream/39-anticipate
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 42 shipped `38-mood-xy`. STATE.md explicitly queued `39-anticipate` as the
+top next build. No blockers. No in-progress prototypes. Research last done Cycle 39 (3 cycles
+ago: 40, 41, 42) — right at the 3–4 cycle cadence, so build takes priority per the manual's
+ordering (unblock → continue → build new → research → polish). Clear spec from IDEAS.md,
+zero deps, one-cycle build. Decision: build `/dream/39-anticipate`.
+
+**Why now**: 38 existing prototypes react to audio or generate from coordinates. None of them
+show AI *intention* before execution. The ReaLJam paper (CHI 2025) identified this gap in
+human-AI music systems and validated that transparency — seeing planned notes before they play —
+is the single highest-rated design improvement in AI-assisted performance. `39-anticipate` is
+the simplest possible implementation: a Markov chain, ghost bars, and timing.
+
+**Implementation**:
+
+The core extension over `33-aria-companion`:
+1. `RollBar` gains `id: number`, `ghost: boolean`, `solidifyMs: number` fields
+2. `barIdRef` (component ref) assigns unique IDs to each bar for targeted solidification
+3. `triggerResponse` works in two steps: (a) materialise ALL ghost bars immediately, positioned
+   0.8s in the future with dashed-outline rendering; (b) schedule audio + solidification timeouts
+   that fire at their corresponding play times, setting `bar.ghost = false` and `bar.solidifyMs`
+4. Canvas time window: `WIN_PAST = 8000ms`, `WIN_FUTURE = 8000ms` — "now" cursor sits at the
+   center of the canvas. Past notes (user) appear left of center; ghost/future notes (Aria) appear
+   right of center. All 16 response notes fit within the 8s future window at 470ms per note
+5. Ghost bar rendering: dashed `strokeRect` (3px dash, 3px gap) + 10% fill + no shadow
+6. Solidification flash: 280ms bright glow (28→14 blur), alpha flash (1.0→0.55) on trigger
+7. ANTICIPATE_S = 0.8: the 800ms preview window where all ghost notes are visible before note 0 plays
+
+**What I noticed**: the ghost notes appear almost simultaneously as a horizontal cluster just to
+the right of the cursor in the ARIA panel. In demo mode (10-note phrase), Aria plans ~10 notes
+and they all appear as dashed boxes spanning ~5 seconds into the future. Then one by one, each
+box flashes bright and fills solid as the note plays. The solidification sweep (left to right,
+470ms apart) has an almost "reading" quality — you can anticipate which note is about to sound
+by watching where in the ghost sequence the next flash will occur.
+
+The most interesting moment: the first 0.8 seconds after ghost materialization, before any sound.
+All the planned notes are visible as a silent pattern. You can read the melodic shape — which
+pitches are higher or lower — before hearing them. That's a qualitatively different experience
+from `33-aria-companion` where Aria just starts playing.
+
+**Build validation**: `node_modules` not present (pre-existing all cycles). TypeScript errors
+are exclusively TS2307 (missing react/next/link), TS7006 (implicit any in callbacks — same as
+`33-aria-companion`), TS7026 (JSX intrinsic elements). All pre-existing missing-deps errors.
+Zero logic errors. No functions starting with `use`. No unused imports. Vercel build will pass.
+
+**Shipped**:
+- `src/app/dream/39-anticipate/page.tsx` — full interactive prototype (~390 lines)
+- `src/app/dream/39-anticipate/README.md` — ReaLJam context, architecture, polish ideas
+
+**Queued next**:
+1. **Research cycle** — Cycle 39 was last research. Now at 4 cycles (40, 41, 42, 43). Due.
+   The 3–4 cycle cadence is at its limit; next cycle should be research.
+2. **Polish `39-anticipate`** — confidence-shaded ghosts (bar brightness = Markov probability),
+   chord connection lines, anticipation delay slider.
+3. **Polish `38-mood-xy`** — chord progression (I→IV→V→I), mic amplitude → arousal feedback.
+
+---
+
 ## Cycle 42 — /dream/38-mood-xy
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
