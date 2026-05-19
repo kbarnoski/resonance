@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 31 — research)
+## ⭐ Newest (Cycle 32)
+
+- **[/dream/28-chord-canvas](/dream/28-chord-canvas)** — Chord Canvas.
+  Play a chord on piano (or mic any pitched source) — the chord name appears in huge monospace
+  type: "Dm", "G", "C". Hue is the root note (C=red, D=yellow, G=blue, A=violet). A scrolling
+  timeline strip below shows your chord history as colored blocks; wider = held longer. A 12-bar
+  chromagram shows pitch-class energy in real time. Demo mode plays ii–V–I (Dm7→G7→Cmaj7) with
+  audible triangle oscillators — you hear the chords as the detector names them.
+  **"The first prototype to explicitly name musical structure."**
+  Natural complement to `24-piano-roll` (pitch positions) and `22-code-score` (written notation).
+
+  Design notes: `src/app/dream/28-chord-canvas/README.md`
+
+---
+
+## Previous newest (Cycle 31 — research)
 
 - **Cycle 31 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md (§§37–43).
   5 new prototype ideas added to IDEAS.md. Highlights:
@@ -370,6 +385,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 28-chord-canvas
+**Status**: `demoable` · **Cycle shipped**: 32 · **Last touched**: 2026-05-19
+
+Open `/dream/28-chord-canvas`. Click **DEMO ii–V–I** — triangle oscillators begin playing
+Dm7 (2.5s), then G7 (2.5s), then Cmaj7 (2.5s), looping. Watch the large chord name change:
+"Dm" (teal-blue) → "G" (blue) → "C" (red). The timeline strip below grows a new colored block
+on each change; the chromagram shows the active pitch classes lighting up.
+
+Click **START MIC** and allow permissions. Play a C major chord on piano (C+E+G). "C" appears
+in large red text. Switch to G major (G+B+D) — the name changes to "G" and the color shifts
+to blue. Hold a chord for 1–2 seconds for the most reliable detection. The timeline accumulates
+your chord sequence: the harmonic rhythm of your playing, visible at a glance.
+
+Design notes: `src/app/dream/28-chord-canvas/README.md`
+
+---
 
 ### 26-score-follow
 **Status**: `demoable` · **Cycle shipped**: 30 · **Last touched**: 2026-05-19

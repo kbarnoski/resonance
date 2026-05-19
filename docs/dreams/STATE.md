@@ -1,5 +1,79 @@
 # Dream Agent — cycle state
 
+## Cycle 32 — /dream/28-chord-canvas
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 31 was a research sweep that explicitly queued `28-chord-canvas` as the next
+build target: zero deps, one-cycle build, fills the biggest remaining conceptual gap (none of the
+26 existing prototypes names a musical chord). Decision was immediate — clear spec, directly
+actionable, and the `ii–V–I` demo is an immediate "aha" for any musician.
+
+Algorithm: 2048-sample FFT → 12-bin L1-normalized chroma vector (pitch-class energy, all octaves
+collapsed) → weighted dot-product against 24 major/minor chord templates (root=1.5, third=1.0,
+fifth=0.8 weighting) → chord with highest score ≥ 0.60 threshold wins. Color: root pitch class
+→ hue (C=0°, each semitone=30°); major=vivid, minor=muted. Timeline strips scrolls left; wider
+block = longer chord held. Chromagram shows all 12 pitch classes as vertical bars.
+
+Demo mode plays ii–V–I (Dm7 → G7 → Cmaj7, 2.5s each) through both the analyser and destination
+so Karel can hear the chords while watching them detected. Mic mode: guitar, piano, voice, any
+pitched source.
+
+**Shipped**:
+- `src/app/dream/28-chord-canvas/page.tsx` — full interactive prototype (~250 lines)
+- `src/app/dream/28-chord-canvas/README.md` — algorithm notes, design rationale, polish ideas
+
+**What's inside**:
+
+Algorithm: 2048-sample FFT → 12-bin L1-normalized chroma vector (pitch-class energy accumulated
+across all octaves). L1 normalization (sum=1) is critical: max-normalization would give uniform
+noise a score of 3.3 just like a perfect chord, defeating detection. With L1, uniform noise
+scores ≈0.275 and a clean 3-note chord scores ≈1.1. CONF_MIN=0.60 sits halfway.
+
+24 chord templates (12 roots × {major, minor}). Weights: root=1.5, third=1.0, fifth=0.8.
+Weighted dot-product against normalized chroma; highest score wins.
+
+Color: root pitch class → hue at 30°/semitone (C=0°, D=60°, G=210°, A=270°). Major=vivid+light,
+minor=muted+dark. Intentionally different from `1-live`'s band→hue mapping: this encodes music
+theory (which root), not acoustic signal properties (which frequency band).
+
+Timeline: scrolling strip at 40px/sec. Current chord block grows rightward from the "now" line;
+when chord changes, new block starts. Gaps (below-threshold frames) show dark background. Block
+width = duration held.
+
+Demo mode: Dm7→G7→Cmaj7 triangle oscillators connected to both analyser AND ctx.destination
+(audible + analysed). Karel hears what the detector sees. The 7th of each chord doesn't change
+detection — the root triad dominates the chroma template match.
+
+**Build**: `npm run build` passes cleanly. `/dream/28-chord-canvas` appears as static route
+(3.95 kB). Zero errors, zero new warnings (all 30+ warnings in output are pre-existing from
+production Resonance files).
+
+**What I noticed**: The L1 normalization question was interesting — max-normalization doesn't
+distinguish chord from noise (uniform noise → all chroma bins = 1.0 → template score = 3.3,
+same as a perfect chord). L1 normalization compresses the uniform case to 1/12 per bin, scoring
+0.275, well below threshold. This detail wasn't in the spec but was the critical algorithmic
+decision that makes the whole thing work.
+
+Also noticed: the transition animation between chords (CSS `transition: color 0.2s`) is
+surprisingly effective. When you move from a warm chord (G=210° blue) to a cold chord (A=270°
+violet), the large chord name fades smoothly through intermediate hues rather than jumping. It
+reads as "resolving" visually, which is appropriate — chord changes feel like musical resolution.
+
+The demo ii-V-I is detected as Dm→G→C (triad names, not 7th chord names) but this is correct:
+the prototype only has 24 major/minor templates, no 7th chord templates. Adding dominant 7th
+templates is the clearest next step.
+
+**Queued next**:
+1. **Build `29-scene-spatial`** — Ghost preset scenes as hand-authored 3D HRTF spatial audio
+   environments. Zero deps, extends `7-spatial` primitives. One-cycle build.
+2. **Polish `28-chord-canvas`** — dominant 7th templates (so G7 shows as "G7"), chromagram
+   overlay highlighting the matched chord tones, key detection from chord history.
+3. **Build `27-gpu-additive`** — most ambitious: particles = Fourier partials, GPU physics = synthesizer.
+   May need 2 cycles.
+
+---
+
 ## Cycle 31 — Research cycle
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
