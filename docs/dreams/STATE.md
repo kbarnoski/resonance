@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 27 — Research Cycle
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 26 shipped `23-pitch-harmonize`. No blockers. No in-progress prototypes.
+Per AGENT.md rule 4: research is triggered after 3+ build cycles without a research sweep
+(Cycles 24, 25, 26 were all builds; last research was Cycle 23). Executed research cycle.
+
+**Research sources scanned**:
+- arxiv.org — live music agents, score following, AI accompaniment, piano transcription
+- fal.ai blog + model pages — latest video/audio model releases
+- GitHub topics — audio-visual, webaudio, webgpu, creative-coding
+- Hacker News — CLAVIER-36, generative music threads
+- Web trends — WASM-in-AudioWorklet, WebGPU additive synthesis
+
+**Key findings** (detailed in RESEARCH.md §§29–36):
+
+1. **Score following is browser-feasible** (arxiv 2505.05078, May 2026). Autocorrelation pitch
+   detection (same as 13-piano-canvas) + symbol-level score tracking = a "live cursor" on a
+   displayed score. 174ms latency. Zero deps. Could directly extend 22-code-score.
+
+2. **CLAVIER-36** (HN Sep 2025, clavier36.com) — cellular automaton-inspired generative music
+   programming environment, available in browser. Programs are 2D grids that evolve like ORCA.
+   Inspires `25-cellular`: Conway's Life grid → living cells trigger pitched notes → emergent
+   melodies from simple rules. Totally different aesthetic from all 23 existing prototypes.
+
+3. **Real-Time Human-AI Musical Co-Performance** (arxiv 2604.07612, Apr 2026) — latent diffusion
+   accompaniment from live audio, 5.4x latency reduction via consistency distillation. Browser
+   version would need ACE-Step API. Long-term direction for `6-compose` evolution.
+
+4. **Kling 3.0** (fal.ai, Feb 2026) — multi-shot storyboarding + native audio, up to 15-second
+   clips. Enables composing an entire Ghost journey arc (stone chamber → forest → cosmic ascension)
+   as a single coherent video with audio. Better than single-shot HappyHorse for arc storytelling.
+
+5. **WebGPU additive synthesis** — compute shaders can write audio sample data directly (gist from
+   JolifantoBambla). Prototype idea: `27-gpu-additive` — particle swarm IS the timbre (particles
+   are Fourier partials; physics determines the sound spectrum).
+
+6. **WaveRoll** (arxiv 2511.09562) — browser JS piano roll visualization library from ISMIR 2025.
+   MIDI-based, but the visual concept inspires `24-piano-roll`: live scrolling piano roll from
+   mic pitch detection.
+
+7. **WASM in AudioWorklet** — Rust → WASM → AudioWorklet is the 2026 DSP standard. Could
+   upgrade `23-pitch-harmonize` with a WASM-based FFT vocoder. Needs pre-built .wasm binary
+   (can't compile Rust in dream zone). Flag for Karel if interested.
+
+**New IDEAS.md entries**:
+- `24-piano-roll` — live scrolling piano roll from mic (queued)
+- `25-cellular` — Conway cellular automaton composer (queued)
+- `26-score-follow` — live score cursor that follows your playing (queued)
+- `27-gpu-additive` — GPU particle-additive synthesis (queued)
+
+**Queued next**:
+1. **Build `24-piano-roll`** — clear spec, zero deps, one-cycle build. Natural companion to
+   `13-piano-canvas` (abstract painting) and `22-code-score` (written notation). Pianists will
+   recognize it immediately: every DAW has a piano roll.
+2. **Build `25-cellular`** — Conway cellular composer. Surprise factor is very high; nothing in
+   the 23-prototype sandbox looks or sounds like it.
+3. **`ghost-animate`** — Kling 3.0 for multi-shot arc. Still needs FAL_KEY + Karel approval.
+
+---
+
 ## Cycle 26 — /dream/23-pitch-harmonize
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

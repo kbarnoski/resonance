@@ -261,3 +261,93 @@ The `phaze` library is a working AudioWorklet implementation of real-time phase 
 A Generative Adversarial Post-Training (GAPT) improvement to the original ReaLchords model for melody-to-chord accompaniment. Adversarial post-training improves harmonic and temporal coherency vs. the baseline. Research-only for now — no public API, no MIDI/mic integration, no browser WebSocket endpoint. The original ReaLchords demo (https://storage.googleapis.com/realchords/index.html) shows pre-recorded examples of melody + chord generation but doesn't support live input. The field is moving fast; a usable real-time API may emerge in the next few months.
 
 **Could become a prototype**: when a public API lands — mic melody → ReaLchords/GAPT chord generation → HRTF spatial mix of generated chords. You play melody, AI harmonizes live, harmony floats in 3D space around you. Still the most exciting future prototype in the queue. Monitor every research cycle.
+
+---
+
+## Cycle 27 — 2026-05-19
+
+### 29. A Design Space for Live Music Agents (arxiv 2602.05064, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.05064
+
+Comprehensive taxonomy of 184 live music agent systems across four dimensions: usage contexts (practice, performance, composition, installation), interactions (synchronous/asynchronous, reactive/proactive), technologies (rule-based, ML, hybrid), and ecosystems (standalone, integrated, networked). Released as a "living artifact" — annotated system registry. Addresses fragmentation across HCI, AI, and computer music communities.
+
+**Why it matters for Resonance**: The design space validates Resonance's live performance direction. Among the 184 systems surveyed, very few are browser-native and fully zero-latency — most require server inference or native plug-ins. The dream sandbox is unusual in operating entirely in-browser with no backend. That's a genuine differentiator worth emphasizing.
+
+**Could become a prototype**: The taxonomy itself isn't a prototype, but the gaps it identifies are. Notably: "proactive" music agents (agent initiates musical events rather than responding) + browser + audio-reactive viz is an underexplored corner. `25-cellular` (cellular automaton composer) fills that gap — the grid "acts first," you react to it.
+
+---
+
+### 30. Real-Time Human-AI Musical Co-Performance with Latent Diffusion (arxiv 2604.07612, Apr 2026)
+**Source**: https://arxiv.org/abs/2604.07612
+
+Framework for real-time AI accompaniment: performer plays into MAX/MSP, a latent diffusion model generates instrumental accompaniment from a sliding audio context window, delivered via OSC/UDP. Key result: consistency distillation reduces sampling time 5.4×, enabling near-real-time response. Tradeoff: longer look-ahead window improves quality but increases latency.
+
+**Why it matters**: Proves that real-time AI accompaniment (not just visualization) is achievable at ~1s latency on current hardware. The browser equivalent would need ACE-Step or MiniMax as the inference backend. The MAX/MSP front-end is architecturally analogous to the Web Audio API + fetch pattern already used in `2-ghost-lab`.
+
+**Could become a prototype**: An upgraded `6-compose` — not just "type mood → get music" but "record 4 bars via mic → get AI accompaniment → loop it while you play on top." Needs FAL_KEY (ACE-Step, $0.0002/s). Budget: ~$0.01 per 30-second loop generation. The visual: whichever prototype (fluid/live/acoustic-trail) visualizes the playback in real time. "Your piano, given a living AI accompaniment."
+
+---
+
+### 31. Score Following + Piano Transcription (arxiv 2505.05078 + 2510.10087, 2025–2026)
+**Source**: https://arxiv.org/abs/2505.05078 · https://arxiv.org/abs/2510.10087
+
+Two complementary papers: (1) Real-time piano transcription paired with symbol-level score tracking — 174ms latency from mic to "current score position." Outperforms audio-only methods on both precision and robustness. (2) Matchmaker open-source library (Python) for real-time audio-based score following. Both use "online time warping" to handle the performer's natural tempo variations.
+
+**Why it matters**: Score following is the missing interactive layer in Resonance. The dream sandbox already has pitch detection (13-piano-canvas) and score notation (22-code-score). Connecting them — piano input tracks position in a displayed score — is a one-cycle build using entirely existing primitives.
+
+**Could become a prototype**: `26-score-follow` — display the 22-code-score Bach fragment as a scrolling piano roll. Play along via mic. Autocorrelation pitch detection matches each detected note to the nearest score note; a cursor advances through the score. Colored "actual" bars overlay the notated "target" bars. "The score lights up as you play it." Zero deps. See IDEAS.md.
+
+---
+
+### 32. WaveRoll — Browser Piano Roll Visualization (arxiv 2511.09562, Nov 2025)
+**Source**: https://arxiv.org/abs/2511.09562
+
+JavaScript library for comparative MIDI piano roll visualization in the browser. Displays multiple MIDI tracks on a single time-aligned scrolling grid with synchronized playback. Designed for AMT evaluation (compare transcription model output vs. ground truth). MIDI-only input — not live audio.
+
+**Why it matters**: Confirms that scrolling piano roll rendering in plain JavaScript/Canvas2D is well-trodden and lightweight. The WaveRoll approach (time-aligned grid, color-coded tracks, scrolling) is directly adaptable for `24-piano-roll` using live pitch detection instead of MIDI input.
+
+**Could become a prototype**: `24-piano-roll` — live scrolling piano roll from mic via autocorrelation pitch detection. Each detected note → colored rectangle (pitch = vertical position, duration = width, color = frequency→hue same as 1-live). Scrolls left at constant tempo. Demo mode: plays a silent oscillator sequence. "Your improvisation as notation — in real time." Natural companion to `13-piano-canvas`. See IDEAS.md.
+
+---
+
+### 33. CLAVIER-36 — Cellular Automaton Music Programming (HN Sep 2025)
+**Source**: https://news.ycombinator.com/item?id=45232299 · https://clavier36.com/about
+
+Browser + native generative music environment inspired by ORCA. Programs are 2D grids that evolve over time via local rules (like cellular automata). Each grid cell can trigger notes; sequences emerge from rule interactions. Includes an integrated sampler. Browser version available with limitations (no MIDI output, 1MB sample limit). Started as a from-scratch ORCA implementation, diverged by adding self-contained audio — "a complete instrument, not just a control surface."
+
+**Why it matters**: None of the 23 existing dream prototypes treat music as *emergent from autonomous rules*. All react to mic input or generate via API. CLAVIER-36 points at a completely different generative paradigm: the music writes itself from initial conditions.
+
+**Could become a prototype**: `25-cellular` — Conway's Game of Life grid where living cells trigger pitched notes (column → pitch, low-left = bass to high-right = treble). Each Life generation tick plays the active columns as a chord moment. Gliders trace repeating melodic loops; oscillators create rhythmic patterns; chaos produces cluster chords. User clicks to toggle cells. BPM slider. Demo preset: a glider pattern that produces a 4-note repeating loop. Visualizer: glowing cells with additive blending; note bursts on triggered columns. Zero deps. Pure Web Audio + Canvas2D. See IDEAS.md.
+
+---
+
+### 34. WASM in AudioWorklet — 2026 Standard for Browser DSP
+**Source**: https://blog.weskill.org/2026/03/web-audio-api-immersive-soundscapes-for.html · https://emscripten.org/docs/api_reference/wasm_audio_worklets.html
+
+In 2026, Rust → WebAssembly → AudioWorklet is the established standard for serious browser DSP. The pattern: write DSP code in Rust (or C++), compile to WASM, load into an AudioWorklet via the Emscripten WASM Audio Worklets API. Enables near-native performance: 256 simultaneous voices, physical modeling (Karplus-Strong), FFT-based effects. Latency: AudioWorklet buffers stay at 128 samples (~3ms at 44.1kHz).
+
+**Why it matters for the dream sandbox**: `23-pitch-harmonize` uses a ring-buffer pitch shifter that sounds metallic on transients. A WASM-based FFT phase vocoder would fix this cleanly. However, compiling Rust requires a build toolchain not available in the dream zone (can't run `cargo build --target wasm32-unknown-unknown` from within `src/app/dream/`). A pre-built `.wasm` binary checked into the repo would work — but then Karel or a human with the Rust toolchain must build it. Flag this for discussion.
+
+**Could become a prototype**: WASM path needs Karel input. Short-term: could check in a tiny pre-compiled Karplus-Strong WASM binary (< 20KB) as `src/app/dream/_shared/ks.wasm`. The prototype `28-karplus` would then load it into an AudioWorklet: play piano notes via mic, detected pitch triggers a Karplus-Strong string synthesis at that frequency. Visual: string vibration mode visualization (wave on a line, same frequency as the string). "Your rhythm, synthesized as a plucked string." Needs Karel approval on the WASM approach.
+
+---
+
+### 35. Kling 3.0 — Multi-Shot Storyboarding + Native Audio (fal.ai, Feb 2026)
+**Source**: https://fal.ai/kling-3 · https://fal.ai/models/fal-ai/kling-video/v3/pro/image-to-video
+
+Kling 3.0 supports: text-to-video, image-to-video, start+end frame-to-video, element referencing (character/style consistency across shots), multi-shot storyboarding, and native audio generation. Output: up to 15 seconds, 1080p. Multilingual audio (Chinese, English, Japanese, Korean, Spanish). "Biggest architectural leap yet" in the Kling family.
+
+**Why it matters for ghost-animate**: Single-shot Ghost image → 5-8s cinematic clip is what HappyHorse-1.0 does best. But a *journey arc* — stone chamber → root portal → underground pool → cosmic ascension — requires 4 separate clips that feel cinematically unified. Kling 3.0's element referencing (character consistency across shots) + multi-shot storyboarding enables this: define 4 shots with the Ghost character reference + style reference, get 4 coherent 5-second clips that chain into a ~20-second journey sequence. Budget estimate: ~$1.00–2.00/arc (4 × 5s @ $0.10–0.15/s pro). Needs FAL_KEY + Karel budget approval.
+
+**Update to ghost-animate plan**: For single-clip Ghost animation, HappyHorse-1.0 remains the best option (April 2026 benchmark winner). For a full multi-shot journey arc, Kling 3.0 is the unique option (HappyHorse doesn't support multi-shot). Plan: implement both paths in `2-ghost-lab` extension — single scene → HappyHorse, arc sequence → Kling 3.0.
+
+---
+
+### 36. WebGPU Additive Synthesis via Compute Shaders
+**Source**: https://gist.github.com/JolifantoBambla/0a4e9c2a0a8bc475f081bc6f9d1aa5a8 · https://blog.weskill.org/2026/04/webgpu-future-of-graphics-building-2026.html
+
+WebGPU compute shaders can write float32 audio sample data into a GPU buffer, which can then be mapped to CPU and enqueued into the Web Audio API AudioContext. This means the GPU can synthesize audio: compute shaders accumulate a sum of sinusoids (additive synthesis) — one thread per partial, running thousands in parallel. A 2019 GPU paper "Making Music with Shaders" (HN discussion, now feasible in-browser via WebGPU) showed this approach.
+
+**Why it matters**: Every existing dream prototype separates audio (Web Audio API, CPU) from visuals (GPU). This collapses the boundary. The GPU particle simulation (`16-particle-life-gpu`) already runs physics on GPU. If particles also *are* Fourier partials — particle X-position = harmonic number, Y = amplitude — then the physics directly synthesizes audio. The swarm IS the sound.
+
+**Could become a prototype**: `27-gpu-additive` — extend `16-particle-life-gpu`. Each of the 9,000 particles is assigned a harmonic partial index (1–9000, mapped to 8 octave range). The compute shader runs particle physics (attraction/repulsion between partials as "consonance forces" — partials that are harmonically related attract). Every frame: read particle Y-amplitudes back to CPU via `mapAsync`, enqueue 128 samples of the synthesized waveform into an AudioWorkletProcessor. Audio output IS the swarm state. Visual: same particle rendering as 16-particle-life-gpu. "The swarm is the synthesizer." Requires WebGPU. One of the most technically ambitious ideas in the queue — may need 2 cycles.

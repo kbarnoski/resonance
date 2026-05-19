@@ -10,7 +10,31 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 26)
+## ⭐ Newest (Cycle 27 — research)
+
+- **Cycle 27 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§29–36).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **`24-piano-roll`** (build next) — live scrolling piano roll from mic pitch detection. Every
+    DAW has one; this is the first in the dream sandbox. Companion to `13-piano-canvas` (abstract
+    painting) and `22-code-score` (written notation). Zero deps, one-cycle build.
+  - **`25-cellular`** — Conway's Game of Life as a musical instrument. Living cells trigger pitched
+    notes; gliders make repeating loops, oscillators make rhythmic patterns. Completely different
+    generative paradigm from all 23 existing prototypes. Inspired by CLAVIER-36.
+  - **`26-score-follow`** — live score cursor: play the Bach fragment from `22-code-score` on your
+    piano; the score highlights as you match notes. Autocorrelation pitch detection + symbol tracking.
+  - **`27-gpu-additive`** — particles ARE Fourier partials; GPU physics IS the synthesizer. Most
+    technically ambitious idea in the queue (2+ cycles). Requires WebGPU.
+  - **Kling 3.0 update** — multi-shot storyboarding + native audio enables a *full Ghost journey arc*
+    as a coherent video sequence (4 shots, character consistency, native audio). Better than
+    HappyHorse for multi-shot arcs. Single-clip: HappyHorse still wins.
+  - **WASM AudioWorklet** trend confirmed as 2026 standard for browser DSP. Could upgrade
+    `23-pitch-harmonize` with WASM FFT vocoder, but needs Karel approval on the build-step approach.
+  - **Score following research active** (arxiv 2505.05078, May 2026) — 174ms latency, browser-feasible.
+
+---
+
+## Previous newest (Cycle 26)
 
 - **[/dream/23-pitch-harmonize](/dream/23-pitch-harmonize)** — Pitch Harmonize.
   First prototype that **transforms** audio in real time. Mic → AudioWorklet ring-buffer

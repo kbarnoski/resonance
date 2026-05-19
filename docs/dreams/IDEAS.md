@@ -372,3 +372,85 @@ Key findings from Cycle 23 (2026-05-18):
 - ÆTHRA music DSL (Feb 2026) — browser-native equivalent: `code-score` prototype
 - Phase vocoder AudioWorklet (`phaze`) — real-time pitch shift in browser, zero deps
 - GAPT/ReaLchords — adversarial post-training improvement, still no public API; monitor
+
+---
+
+## FROM RESEARCH (Cycle 27, 2026-05-19) — promoted to queue
+
+### piano-roll — live scrolling piano roll from mic `[queued]`
+Route: `/dream/24-piano-roll`. Mic input → autocorrelation pitch detection (same algorithm as
+`13-piano-canvas`) → note events → Canvas2D scrolling piano roll. Each detected note renders as
+a colored horizontal rectangle: pitch = vertical MIDI position (C2=bottom, C6=top), duration =
+bar width (scrolls left at constant speed), color = frequency→hue same as `1-live` and
+`13-piano-canvas`. Additive blending + `shadowBlur` glow on each note bar.
+
+Scroll speed tied to a BPM slider (default 60 BPM). Grid lines for C notes (octave markers).
+Demo mode: plays the same Bach fragment from `22-code-score` silently via OscillatorNodes and
+detects its own notes for an immediate visual. "What you played, as notation — in real time."
+
+Why this now: the 23 existing prototypes visualize audio as abstract art (fluid, particles,
+terrain) or playful geometry (cymatics, tessellate). This is the first that renders recognizable
+musical notation from live input. A pianist will immediately understand it. Natural triptych with
+`13-piano-canvas` (abstract painting) and `22-code-score` (written score): three representations
+of the same musical event. Zero deps. Research basis: WaveRoll (RESEARCH.md §32), score-following
+trend (§31).
+
+### cellular — Conway cellular automaton composer `[queued]`
+Route: `/dream/25-cellular`. A 64 × 16 Conway Game of Life grid. Each column maps to a musical
+pitch (C2 left → C5 right, log-spaced across 3 octaves). On each Life generation tick, all
+living cells in column X trigger a note at pitch X with a short triangle-wave envelope. Result:
+emergent melodies from simple rules — gliders create repeating 4-note loops, oscillators make
+rhythmic patterns, R-pentomino chaos evolves unpredictably.
+
+Tick rate = BPM slider (40–120 BPM). Canvas: each live cell = a glowing dot (additive blending);
+columns with active notes flash briefly brighter. Note burst particles per column on trigger.
+User interactions: click/drag to toggle cells; preset buttons: Glider, Pulsar, Acorn, R-pentomino.
+"Reset" to random fill (20% density). "What if generative music was also life?"
+
+Why this now: none of the 23 existing prototypes treats music as *autonomous* — all either react
+to mic input or generate via API. A cellular automaton "acts first"; the user shapes initial
+conditions and watches the music write itself. Completely different aesthetic and interaction
+paradigm. Surprise factor: high. Research basis: CLAVIER-36 (RESEARCH.md §33).
+
+### score-follow — live score cursor that follows your playing `[queued]`
+Route: `/dream/26-score-follow`. Displays the `22-code-score` Bach fragment as a static scrolling
+piano roll (same grid as `24-piano-roll`). As the user plays piano via mic, autocorrelation pitch
+detection runs at 30Hz. Each detected note is matched to the nearest upcoming score note (tolerance
+= ±1 semitone). Matched notes illuminate green; a cursor bar advances through the score on each
+match. Missed notes stay dim. Tempo is derived from match cadence (EMA of inter-match intervals).
+
+The canvas shows two layers: score notes (outlined, grey-green), detected notes (filled, hue-colored
+same as `13-piano-canvas`). The cursor moves forward when you match, pauses when you miss, snaps
+back slightly on repeated misses (forgiveness mode). "The score lights up as you play it."
+
+Alternative score: user can paste their own `22-code-score` DSL text and follow it. Demo mode:
+auto-plays the score and self-detects — score cursor advances perfectly through the whole piece.
+Zero deps (no ML — pure autocorrelation + symbol matching). One-cycle build. Research basis: score
+following papers (RESEARCH.md §31).
+
+### gpu-additive — GPU particle swarm IS the synthesizer `[queued, complex]`
+Route: `/dream/27-gpu-additive`. Extends `16-particle-life-gpu`. Each of 9,000 particles is
+assigned a harmonic partial index (1–450 per species × 6 species). Consonance forces: particles
+whose harmonic ratios are simple (2:1, 3:2, 4:3) attract weakly; dissonant ratios repel. The
+6×6 species interaction matrix becomes a "timbre matrix." Each frame: compute shader runs physics,
+then a secondary pass reads particle Y-amplitudes (= partial amplitudes) into a mapped buffer.
+An AudioWorkletProcessor reads the buffer and enqueues synthesized audio samples.
+
+Audio output IS the swarm state. Emergent clusters = consonant harmonics → pure tones. Scattered
+distributions = inharmonic → noisy textures. Reshuffles → timbre discontinuities. Mic input
+injects velocity turbulence per species (same as `16-particle-life-gpu`). "The swarm is the
+synthesizer."
+
+Requires WebGPU. Technically the most ambitious idea in the queue — GPU compute shader must write
+audio-rate data (44,100 samples/sec). The JolifantoBambla technique (RESEARCH.md §36) proves this
+is feasible. May require 2 build cycles. Research basis: WebGPU additive synthesis (§36).
+
+Key findings from Cycle 27 (2026-05-19):
+- Score following is browser-feasible (arxiv 2505.05078) — autocorrelation + symbol matching, 174ms latency
+- CLAVIER-36 (Sep 2025) — browser cellular automaton music env; inspires `cellular` prototype
+- Kling 3.0 (fal.ai Feb 2026) — multi-shot storyboarding + native audio; enables Ghost journey arc sequences
+- Real-Time AI Accompaniment (arxiv 2604.07612) — latent diffusion + consistency distillation at 5.4× speedup
+- WaveRoll (arxiv Nov 2025) — browser piano roll JS library; confirms `piano-roll` is feasible
+- WASM AudioWorklet — Rust→WASM DSP is 2026 standard; needs pre-built binary for dream zone
+- WebGPU additive synthesis — compute shaders can write audio samples; enables `gpu-additive`
+- GAPT/ReaLchords — still no public API; continue monitoring
