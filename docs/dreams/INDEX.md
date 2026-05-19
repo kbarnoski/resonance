@@ -10,7 +10,39 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 43)
+## ⭐ Newest (Cycle 44 — research)
+
+- **Cycle 44 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§61–68).
+  3 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **`shepard-tone`** (build next) — auditory illusion: 8 sine oscillators sweeping upward
+    through octaves, each fading in/out to create the illusion of an endlessly ascending tone
+    that never resolves. Rate slider. Mic: amplitude accelerates the glide. First psychoacoustics
+    prototype in the sandbox. Completely surprising to pianists. Zero deps, one cycle, no API keys.
+
+  - **`neural-pitch`** (shared upgrade, needs Karel OK) — CREPE-tiny ONNX neural pitch detector
+    (~2MB CDN, no package.json change). 10× more accurate than autocorrelation on complex piano,
+    voice, reverb. Would upgrade `13-piano-canvas`, `24-piano-roll`, `26-score-follow`,
+    `33-aria-companion`, `37-ratio-lab`, `39-anticipate` in one shared hook change.
+
+  - **Magenta RealTime** (open-weights Apache 2.0) — embedding arithmetic style blending.
+    `0.7 × jazz + 0.3 × ambient` is a mathematically valid vector blend. Upgrades `30-lyria-jam`
+    spec: 2D style canvas (like `38-mood-xy`) > sliders. Navigate music style as a 2D landscape.
+
+  - **Mirelo AI SFX (new on fal.ai)** — Audio Extension + Audio Inpainting. Extend Ghost
+    soundscapes from 10s clips into 60s looping scenes. Needs FAL_KEY. See RESEARCH.md §63.
+
+  - **Transformers.js v4** — 53% smaller bundles, 200ms model load (was 2s). CREPE-tiny and
+    MusicGen-small both significantly more viable for browser-native ML inference.
+
+  **Open questions for Karel**:
+  - CDN ONNX dep (~2MB) OK for `neural-pitch` upgrade?
+  - Gemini key still pending for `30-lyria-jam`.
+  - Suno API + stems endpoint for `suno-spatial`?
+
+---
+
+## Previous newest (Cycle 43)
 
 - **[/dream/39-anticipate](/dream/39-anticipate)** — Aria Anticipate.
   Extends `33-aria-companion` with ReaLJam-style ghost-note anticipation. After you play a phrase

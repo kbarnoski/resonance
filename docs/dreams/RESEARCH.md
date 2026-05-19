@@ -603,3 +603,91 @@ A multimodal music generation tool that accepts keywords, images, and audio clip
 **Why it matters for Resonance**: The idea of mixing multiple expressive modalities (image + text + sound → music) directly aligns with Resonance's multi-sensory philosophy. A browser version would need fal.ai or similar for the generation step, but the *interface concept* — upload a photo + type a mood word + hum a melody fragment → generate a scene's music — is compelling as a future `compose` prototype variant. More nuanced than just "type a text prompt."
 
 **No new standalone prototype recommended** from this finding — it upgrades the planned `6-compose` spec (add image input alongside text). Note for when `6-compose` is built.
+
+---
+
+## 2026-05-19 — Cycle 44 research sweep
+
+### 61. onnxcrepe — Neural Pitch Detection in the Browser (ONNX CREPE)
+**Source**: https://github.com/yqzhishen/onnxcrepe · https://marl.github.io/crepe/
+
+CREPE (Convolutional REpresentation for Pitch Estimation) is a deep neural network pitch tracker that significantly outperforms autocorrelation on noisy, complex, or lightly polyphonic audio. The onnxcrepe repo exports CREPE as ONNX weights in five sizes: tiny, small, medium, large, full. The tiny variant (~2MB, ONNX format) is realistic for browser loading via ONNX Runtime Web — loadable from CDN as an ES module with no package.json change, on demand when the user starts mic mode. Transformers.js v4 uses the same ONNX Runtime under the hood; CREPE-tiny is within its supported model class. Input: 1024-sample time-domain audio frame at 16kHz (one pitch estimate per ~65ms). Output: 360-bin pitch salience (20–1975 Hz, 20 cent resolution). A simple argmax + parabolic interpolation gives a pitch estimate with ±10 cent accuracy — vs. ±50+ cents for autocorrelation on complex signals.
+
+**Why it matters for Resonance**: Six dream prototypes currently use autocorrelation pitch detection (`13-piano-canvas`, `24-piano-roll`, `26-score-follow`, `33-aria-companion`, `37-ratio-lab`, `39-anticipate`). Autocorrelation works for clean single-note piano but degrades with reverb, background noise, complex piano chords, and voice. CREPE-tiny would make pitch detection reliably accurate across all these conditions. It's also the first neural inference in `_shared/` — a template for bringing other ONNX models into the sandbox.
+
+**Could become a prototype**: `neural-pitch` — add `src/app/dream/_shared/use-neural-pitch.ts` that loads CREPE-tiny from CDN on first mic-start, runs inference at 30Hz, and drops in as a replacement for the autocorrelation path in any prototype. Route: no new page (shared upgrade). Needs Karel OK on CDN ONNX dep (~2MB first-load). First neural inference in the dream zone; dramatic quality improvement for 6+ prototypes.
+
+---
+
+### 62. Magenta RealTime — Open-Weights Continuous Music Generation (Google DeepMind)
+**Source**: https://magenta.withgoogle.com/magenta-realtime · https://arxiv.org/abs/2508.04651
+
+Magenta RealTime (MagentaRT) is Google DeepMind's open-weights counterpart to the proprietary Lyria RealTime. 800M-parameter autoregressive transformer, Apache 2.0, available on GitHub and HuggingFace. Generates 48kHz stereo music continuously with RTF 0.625 (1.25s of computation per 2s of audio — faster than real-time on Colab TPU). Accepts text prompts and audio prompt embeddings for style steering. Supports "embedding arithmetic": style embeddings can be blended by weighted addition (`E_jazz × 0.7 + E_ambient × 0.3`) — a mathematically rigorous mixture that produces a genuine stylistic hybrid, not just a prompt interpolation. Trained on ~190k hours of stock instrumental music.
+
+**Why it matters for Resonance**: Already queued `30-lyria-jam` uses the proprietary Lyria API requiring a Gemini key. Magenta RT is Apache 2.0 and self-hostable — a backend proxy in a Colab notebook (free TPU tier) could expose it to the browser prototype via WebSocket. The embedding arithmetic concept validates the `30-lyria-jam` slider design: mixing prompt weights is mathematically meaningful, not just a soft interpolation. Not browser-native yet (on-device roadmap not shipped), but the Colab-proxy approach gives a path. More interesting long-term: could be fine-tuned on Resonance's specific aesthetic, making it a Ghost-character music model.
+
+**Could become a prototype**: `magenta-live` — browser connects to a Colab notebook backend via WebSocket, sends style prompt embeddings (two sliders with text labels, same design as `30-lyria-jam`), receives 48kHz PCM chunks. Karel pastes the Colab URL. The most realistic self-hosted AI music streaming prototype in the queue. Requires a running Colab session — not fully zero-backend, but zero API cost. Parallel to `30-lyria-jam`, not a replacement.
+
+---
+
+### 63. Mirelo AI SFX 1.6 Suite (fal.ai) — Audio Extension + Inpainting
+**Source**: https://fal.ai/explore/models · https://fal.ai/ (Mirelo AI SFX section)
+
+A new model family on fal.ai (not previously covered) with four capabilities: (1) **Text-to-Audio**: generate ambient soundscapes from text prompts, with loopable output; (2) **Video-to-Video**: take any video up to 60s and generate a synced audio soundtrack with text-prompt shaping (different from MMAudio V2 — the text prompt shapes the *type* of sound while the model matches video timing automatically); (3) **Audio Extension**: take any existing audio clip and extend it seamlessly with a natural tail; (4) **Audio Inpainting**: select any segment of a clip and replace it with AI-generated audio that matches the surrounding context. Extension and inpainting are genuinely new manipulation primitives — not previously available in the dream zone's API toolkit.
+
+**Why it matters for Resonance**: The Ghost soundscape prototype (`9-ghost-sound`) generates a 10s scene-specific audio clip from a Ghost image. Mirelo Audio Extension could extend this to an infinite loop seamlessly — turning a 10s synthesized stone-chamber soundscape into a living ambient loop. Inpainting could let Karel edit Ghost soundscapes: select 3s of birdsong from the Forest Dawn scene and replace with wind, without regenerating the whole clip. These are composition-level tools, not just generation.
+
+**Could become a prototype**: `mirelo-ghost-loop` — extend `9-ghost-sound`: after generating a Ghost audio clip via MMAudio V2, pipe it through Mirelo Audio Extension to produce a 30-60s loopable version. Auto-loop in the browser. Display a waveform with the original clip highlighted and the extended section in a different color. "Ghost scenes that breathe continuously." Admin-only, needs FAL_KEY. Budget: MMAudio V2 ($0.01) + Mirelo Extension (TBD, likely $0.002-0.005/clip).
+
+---
+
+### 64. Udio v4 — Audio Inpainting in Production (2026)
+**Source**: https://ucstrategies.com/news/udio-v4-ai-music-editing-with-inpainting-stem-separation-2026/ · https://x.com/udiomusic/status/1788243716676759668
+
+Udio v4 (2026) shipped AI audio inpainting as a production feature: select any time segment of a generated track (e.g., 3 bars around the chorus), press "regenerate" → the AI fills that section with new material that seamlessly connects to the surrounding bars. The surrounding context provides boundary conditions; the model maintains melodic and harmonic continuity. Also ships stem separation (isolate vocals, drums, bass, melody). No public API for either feature — Udio is consumer-only.
+
+**Why it matters for Resonance**: The inpainting paradigm — "select a section and fix it" — is a qualitatively different creative workflow from the current dream zone approach (generate everything at once). It's the difference between painting and erasing+repainting. In combination with Mirelo's inpainting API (§63), this is now an achievable workflow in the dream zone: generate a Ghost soundscape → play it → select a weak moment → regenerate in context. The UX lesson from Udio: the timeline view with selection handles is the right interaction model. Could inform how `35-loop-station` evolves — not just record/loop, but select a bar → regenerate.
+
+**No immediate prototype** — Udio has no public API, and Mirelo (§63) covers the technical path. But the inpainting UX paradigm should inform future compose+edit prototypes.
+
+---
+
+### 65. Live Music Models — Embedding Arithmetic for Style Navigation (arxiv 2508.04651)
+**Source**: https://arxiv.org/abs/2508.04651
+
+Formal paper from Google DeepMind establishing "Live Music Models" as a generative class: real-time continuous streaming music with human-in-the-loop style control. Introduces Lyria RealTime (proprietary) and Magenta RealTime (open-weights Apache 2.0, §62) together. Key technical contribution beyond the two model releases: **embedding arithmetic** as a first-class creative tool. Style embeddings derived from text or audio prompts are vectors in a shared latent space; blending them by weighted sum (`0.7 × E_jazz + 0.3 × E_ambient`) produces a musically valid hybrid. The paper demonstrates real-time navigation of this space by changing weights over time — the sound continuously morphs as the weights shift.
+
+**Why it matters for Resonance's `30-lyria-jam`**: The existing spec uses two text-prompt sliders. This paper confirms the math: those sliders are literally navigating a vector space via weighted addition. The key design implication: a *2D canvas* (like `38-mood-xy`) is more natural than sliders for navigating a 2D style subspace. Drag a dot → position determines two style weights → music morphs continuously. This upgrades the `30-lyria-jam` spec: instead of sliders, a 2D draggable canvas where each corner is a distinct musical style. A 2D musical style navigator that never stops playing.
+
+---
+
+### 66. Transformers.js v4 — 53% Smaller Bundles, 10× Faster Loading (2026)
+**Source**: https://huggingface.co/docs/transformers.js/index · https://www.pkgpulse.com/guides/transformersjs-vs-onnx-runtime-web-2026
+
+Transformers.js v4 (released at Web AI Summit 2025, production-stable in early 2026) achieves 53% smaller bundle sizes and drops model load times from ~2s to ~200ms. Uses an optimized ONNX Runtime Web backend. Supports streaming token generation for text models and audio chunk generation for audio models. Model zoo has expanded: classification, ASR (Whisper), image segmentation, audio generation, pitch estimation, and more. Loading a model from CDN is now a ~200ms operation (cached immediately); first inference adds another ~100-500ms depending on model size.
+
+**Why it matters for Resonance**: Two dream prototype ideas depend on browser ML inference: `40-browser-musicgen` (MusicGen-small, 390MB) and the proposed `neural-pitch` (CREPE-tiny, ~2MB). The v4 improvements make both significantly more feasible. CREPE-tiny (~2MB) would load in under a second on any connection and cache permanently. MusicGen-small (390MB) benefits from the 200ms startup after first load. The Transformers.js v4 improvement is not a new capability but a performance milestone that pushes browser ML from "experimental" to "viable for production prototypes."
+
+**No new standalone prototype** — this is a platform improvement that enables §61 (`neural-pitch`) and §56 (`browser-musicgen`) to be built with higher confidence.
+
+---
+
+### 67. limut — Browser Live Coding Music + Visuals (WebAudio + WebGL + Shadertoy)
+**Source**: https://github.com/sdclibbery/limut (updated May 11, 2026)
+
+limut is a browser-based live coding environment for simultaneous music and visual synthesis, inspired by FoxDot. No installation — runs in any modern browser. Uses WebAudio API for synthesis + sample playback (including Salamander Grand Piano samples), WebGL for real-time graphics, and supports loading shaders directly from Shadertoy.com. The codebase uses a pattern-based notation where each line of code generates both audio and visuals simultaneously. Updated May 11, 2026 (56 stars). CodeMirror editor for syntax-highlighted live editing with eval-on-save.
+
+**Why it matters for Resonance**: `22-code-score` builds a score DSL that plays and paints. limut goes further: a pattern language that generates audio AND visual patterns at the same time, with live editing. The design insight: the code is the score, the visualization, AND the performance interface simultaneously. No separate "play" button — the code runs continuously and you edit it live. This is a different paradigm from the existing `22-code-score` (write then play) — it's more like Hydra/Tidal for Resonance. The Shadertoy integration means you could load any fragment shader and drive it from the music pattern.
+
+**Could become a prototype**: `code-vis` — Route `/dream/41-code-vis`. A split-screen: left = CodeMirror textarea (pattern DSL, auto-evaluates on change), right = canvas (visual output). DSL: `synth(220, "triangle").env(0.1, 0.5)  // plays a triangle wave at A3 with 0.1s attack`. Each synth line generates both audio and a corresponding visual element (particle, ring, bloom) on the canvas. Colors and sizes match the `1-live` frequency→hue palette. "The code plays; the code draws." Zero deps except CodeMirror (already available via CDN without package.json changes). Inspired by limut but built for Resonance's dark-theme aesthetic. One-cycle build.
+
+---
+
+### 68. Suno v5.5 — Voice Cloning + Custom Models + Generative Stems (March 2026)
+**Source**: https://suno.com/blog/v5-5 · https://medium.com/ai-tomorrow/suno-just-released-v5-5-b32965eb153a
+
+Suno v5.5 (March 26, 2026): three major additions. (1) **Voices**: upload a clean a cappella recording of your voice → AI generates complete songs sung in that specific voice. Works from mic recording, clean audio file, or finished tracks with backing music. (2) **Custom Models**: Pro/Premier subscribers can fine-tune v5.5 on their own music catalog to build a personalized model that generates music in their style (up to 3 custom models). (3) **Generative Stems**: v5 generates up to 12 individual stems (kick, bass, melody, harmony, texture, etc.) as separate audio tracks, not just a mixed-down stereo output. Also: "My Taste" — Suno learns your preference history.
+
+**Why it matters for Resonance**: No public API for Voices or Custom Models. However, the **Generative Stems** feature is the most interesting for a dream prototype: 12 stems from a single generation means you can place each stem in 3D HRTF space (`7-spatial`). A `compose-spatial` prototype: type a text prompt → Suno generates a track → receive 12 stems → assign each stem to a 3D position (kick = below, piano = center-front, strings = above-left, etc.) → hear the AI music as a full 3D spatial experience. Needs Suno API (currently basic API available, stems endpoint TBD). The stems concept also suggests a future where `35-loop-station` receives AI-generated stems as individual tracks instead of recording them live. Watch for API expansion.
+
+**Could become a prototype**: `suno-spatial` — type a prompt → call Suno API (if stems endpoint is available) → receive stems → auto-place stems in HRTF space → 3D spatial canvas (same design as `7-spatial`). Admin-only (needs Suno API key). If stems API not available: generate full mix → split via WebAudio 6-band filter bank → pseudo-spatial placement (approximation). Budget: Suno API ~$0.01-0.05/generation. Needs Karel OK on Suno API integration.

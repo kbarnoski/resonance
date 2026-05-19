@@ -1,5 +1,96 @@
 # Dream Agent — cycle state
 
+## Cycle 44 — Research sweep (§§61–68 in RESEARCH.md, 3 new ideas in IDEAS.md)
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 43 shipped `39-anticipate`. STATE.md from Cycle 43 explicitly flagged research
+as due: "Cycle 39 was last research — now at 4 cycles (40, 41, 42, 43). Due." The 3–4 cycle cadence
+is past its upper limit. Priority 4 (Research) is unambiguously correct. Decision: research cycle.
+
+**Sources searched**: arxiv (audio-reactive viz, real-time music AI, piano transcription, live
+performance), fal.ai blog + explore, HuggingFace Transformers.js, GitHub trending
+(webaudio/creative-coding), Hacker News (music, Show HN, web audio tools), Anthropic API
+release notes, Magenta/Google DeepMind blog, Shadertoy community, Suno v5.5 release notes.
+8 new RESEARCH.md entries (§§61–68). 3 new prototype ideas queued in IDEAS.md.
+
+**What I found**:
+
+- **onnxcrepe — ONNX CREPE neural pitch tracker** (§61): A neural-network pitch detector 10× more
+  accurate than autocorrelation on noisy/complex audio. ONNX variants: tiny (~2MB), small, medium,
+  full. Loadable from CDN via ONNX Runtime Web. Would dramatically improve `13-piano-canvas`,
+  `24-piano-roll`, `26-score-follow`, `33-aria-companion`, `39-anticipate`. New prototype idea:
+  `neural-pitch` — upgrade shared analyser hook. Needs Karel OK on CDN dep.
+
+- **Magenta RealTime (Google DeepMind, open-weights)** (§62): 800M-parameter autoregressive
+  transformer generating 48kHz stereo music continuously at RTF 0.625 (faster than real-time on
+  Colab TPU). Apache 2.0. Text + audio prompt steering. "Embedding arithmetic" style blending
+  (`"jazz piano" + 0.5 × "ambient drone"`). Currently Colab-TPU only; on-device roadmap but not
+  browser-native yet. Different from Lyria RealTime (proprietary) — open-weights, self-hostable.
+  Inspires a future `magenta-live` backend-proxied prototype.
+
+- **Mirelo AI SFX 1.6 Suite (fal.ai, new)** (§63): Brand new model family not previously
+  covered. Key capabilities: text-to-audio soundscapes (loopable), **audio extension** (extend
+  any sound with seamless natural tails), **audio inpainting** (erase/replace moments in audio),
+  video-to-video with synced audio (up to 60s). Audio extension + inpainting are new manipulation
+  primitives not available before in the dream zone. Inspires `mirelo-ghost-loop` prototype.
+
+- **Udio v4 Audio Inpainting (2026)** (§64): Udio's production feature: select a section of a
+  generated track → AI regenerates that section in context (surrounding material provides
+  continuity). No public API. But the paradigm — "select-and-regenerate" — is the UX shape
+  for a future compose+edit prototype. Could be implemented with ACE-Step by splicing audio
+  and calling generate with the surrounding context as a prefix.
+
+- **Live Music Models paper (arxiv 2508.04651)** (§65): Formal paper introducing Lyria RealTime
+  and Magenta RealTime as a new generative model class. Key new detail: "embedding arithmetic"
+  — style embeddings can be blended by vector addition with weights. `"jazz piano" × 0.7 +
+  "ambient drone" × 0.3` is mathematically meaningful and produces a genuine hybrid. This is
+  different from text prompt blending — it's compositional style space navigation. Validates
+  the `30-lyria-jam` prototype design (two weighted prompts → live blend).
+
+- **Transformers.js v4 (2026)** (§66): v4 released at Web AI Summit 2025: 53% smaller bundle
+  sizes, 10× faster load times (2s → 200ms). Makes browser ML inference significantly more
+  feasible. Direct impact: `40-browser-musicgen` (MusicGen-small, 390MB) loads faster; CREPE-tiny
+  (~2MB) loads near-instantly. Confirms browser-ML is a viable dream-zone direction.
+
+- **limut — browser live coding music + visuals (updated May 2026)** (§67): Open-source browser
+  environment for live coding music+visuals simultaneously. WebAudio + WebGL + Shadertoy shader
+  loading. No installation — runs in any browser. Updated May 11, 2026. Inspires a new prototype:
+  `code-vis` — a minimal real-time music DSL where each line of code generates both audio (Web
+  Audio synthesis) and a corresponding visual pattern simultaneously.
+
+- **Suno v5.5 — Voice Cloning + Custom Models (March 2026)** (§68): Suno v5.5 adds voice cloning
+  (upload your voice → songs in your voice) and custom model fine-tuning on your track catalog.
+  No public API for these features. Key insight for Resonance: a Ghost-character Suno custom model
+  trained on music matching the journey aesthetic would generate music that sounds like it belongs
+  in the Ghost world. Watch for API release.
+
+**What surprised me**: The Magenta RealTime "embedding arithmetic" is the most conceptually
+interesting finding. The idea that music styles live in a vector space where you can literally
+do `0.7 × jazz + 0.3 × ambient` and get a mathematically blended genre is different from
+anything in the current sandbox. It's not prompt blending — it's style space navigation.
+The closest analog in the dream zone is `5-arcs` (which blends arc *phase parameters*). A
+Magenta-backed `30-lyria-jam` that lets you place dots on a "style space" canvas and navigate
+continuously would be qualitatively new.
+
+Also: the CREPE-tiny ONNX finding is immediately actionable — ~2MB, CDN-loadable, no package.json
+changes required if loaded as an ES module. Could be loaded on demand only when the user starts
+mic mode. The pitch detection upgrade would be invisible to users but would make `13-piano-canvas`
+reliably track quiet notes, complex piano chords (picks dominant partial), and voice (which
+autocorrelation struggles with). One-cycle build.
+
+**Queued next**:
+1. **Build `shepard-tone`** (invented this cycle — see IDEAS.md) — auditory illusion prototype.
+   Shepard tones are endlessly ascending/descending tones that never resolve. Zero deps, pure
+   Web Audio oscillators. First "auditory illusion" in the sandbox. Completely surprising.
+   One cycle. No API keys. Goes at `/dream/40-shepard-tone`.
+2. **`neural-pitch`** — upgrade shared pitch detection to CREPE-tiny via ONNX CDN. Needs Karel
+   OK on CDN dep. Would improve 6+ existing prototypes.
+3. **`40-browser-musicgen`** — in-browser MusicGen. Needs Karel OK on 390MB model.
+4. **Research again in 3–4 cycles** (Cycle 47–48).
+
+---
+
 ## Cycle 43 — /dream/39-anticipate
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

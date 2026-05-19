@@ -707,3 +707,84 @@ Key findings from Cycle 39 (2026-05-19):
 - DARC (arxiv 2601.02357, Jan 2026) — drum accompaniment from tapping/beatboxing. Inspires future `drum-tap`.
 - ASTRODITHER (Three.js forum) — TSL + dithering + time warp + selective bloom. Technique note for `21-three-mesh-av` polish.
 - Three.js r171+ — WebGPU renderer production-ready, TSL compiles to WGSL+GLSL automatically. No migration needed.
+
+---
+
+## FROM RESEARCH (Cycle 44, 2026-05-19) — promoted to queue
+
+### shepard-tone — auditory illusion: the endless staircase `[queued]`
+Route: `/dream/40-shepard-tone`. A Shepard tone is a superposition of sine waves separated by
+octaves (e.g. A2 + A3 + A4 + A5 + A6), each fading in at the bottom and fading out at the top,
+creating the auditory illusion of a tone that rises (or falls) forever without ever resolving.
+Discovered by Roger Shepard (1964). The most famous auditory illusion after the McGurk effect.
+
+**Spec**: 8 sine oscillators, each one octave apart (A1–A8). Each oscillator's gain follows a
+bell-curve envelope based on its current log-frequency position within the audible range
+(peak at 440Hz, zero at ~55Hz and ~14kHz). A `rate` parameter controls how fast the shared
+pitch glides upward: 0.5 BPM (very slow, meditative) to 30 BPM (dizzying). At any rate, the
+fundamental pitch spirals upward while the perceived "height" is frozen — it always sounds like
+it's rising. Toggle "descending" for the downward illusion (the tritone paradox: descending
+Shepard tones are equally valid but flip the perceived direction).
+
+**Interactions**: a `rate` slider; **Ascending / Descending** toggle; **interval** select
+(chromatic glide / whole-tone / half-tone steps — each creates a distinct temporal rhythm to
+the illusion); **freeze** (stops the glide mid-spiral, snaps the auditory illusion's "position");
+**mic mode**: microphone amplitude modulates rate (play louder → tone ascends faster). Canvas:
+the 8 oscillators as circles arranged in a vertical column, each glowing proportional to its
+gain (bright at center of the stack, dim at top/bottom). A rotating logarithmic spiral
+indicator shows the current pitch position. "An endless musical staircase."
+
+**Why this now**: 39 existing prototypes cover audio-reactive viz, physical modeling, spatial
+audio, emotion synthesis, pattern automata, timbre morphing, dialogue AI. None address auditory
+illusions or psychoacoustics. Shepard tones are the canonical demonstration that what you hear
+is not what is physically happening — deeply relevant to Resonance's "transcendent listening"
+vision. Surprising to pianists who haven't encountered it. Zero external deps, one-cycle build,
+no API keys. Research basis: RESEARCH.md §62 (style-space navigation analogy: the Shepard tone
+"navigates" frequency space the same way embedding arithmetic navigates style space — continuous
+motion with no apparent end).
+
+### neural-pitch — shared CREPE-tiny ONNX pitch detection upgrade `[queued, needs Karel OK on CDN ONNX dep]`
+Route: no new page — this is a `src/app/dream/_shared/use-neural-pitch.ts` upgrade. Load
+CREPE-tiny (~2MB ONNX, loadable from CDN via ONNX Runtime Web) as an optional drop-in
+replacement for the current autocorrelation pitch detection path. CREPE-tiny is loaded once
+on first mic-start, cached permanently. It accepts 1024-sample audio frames at 16kHz and
+returns a 360-bin pitch salience (20–1975 Hz, 20 cent resolution). Peak + parabolic
+interpolation gives a pitch estimate 10× more accurate than autocorrelation on complex piano,
+voice, and noisy signals.
+
+Prototype approach: add `use-neural-pitch.ts` to `_shared/`, integrate it into `13-piano-canvas`
+as the pitch source, compare with autocorrelation in real time (show both estimates side-by-side
+in a small debug overlay). If accuracy is clearly better, offer to upgrade the shared hook across
+all pitch-detecting prototypes. One-cycle build. Needs Karel OK on CDN ONNX Runtime Web dep.
+Research basis: RESEARCH.md §61.
+
+### mirelo-ghost-loop — extend Ghost soundscapes into seamless loops `[queued, needs FAL_KEY]`
+Route: extend `/dream/9-ghost-sound` or standalone `/dream/41-mirelo-ghost-loop`. After
+generating a Ghost scene audio clip (via MMAudio V2 or direct Mirelo Text-to-Audio), pipe it
+through **Mirelo AI SFX Audio Extension** (fal.ai) to extend the 10s clip into a 30-60s
+seamlessly looping ambient soundscape. Display: waveform player with the original clip highlighted
+in one color and the extended section in another. Loop button: set the extended clip to play
+continuously as a live ambient background for the Ghost scene image. Admin-only, needs FAL_KEY.
+Budget: ~$0.01-0.02/clip (MMAudio V2 + Mirelo Extension). Research basis: RESEARCH.md §63.
+
+### code-vis — live coding DSL that draws as it plays `[queued]`
+Route: `/dream/41-code-vis`. Split-screen: left = CodeMirror textarea (CDN ESM, no package.json
+change), right = canvas. A minimal pattern DSL: each line defines a synthesizer voice and its
+visual: `A3 tri 0.8 // warm triangle at A3 = golden ring`. Evaluate on change (debounced 500ms).
+Each active voice renders as a pulsing circle/ring on the canvas, sized by amplitude, colored
+by frequency (same `1-live` hue mapping), updated every animation frame. Multiple voices = a
+constellation of colored rings breathing together. "The code plays; the code draws."
+
+Inspired by limut (§67) but much simpler: no pattern sequencer, just sustained tones as the
+building block. A pianist can write a chord in 5 seconds and hear+see it. BPM slider drives
+pulsing. Save canvas as PNG. Zero new npm deps (CodeMirror loaded from CDN). One-cycle build.
+
+Key findings from Cycle 44 (2026-05-19):
+- onnxcrepe (RESEARCH.md §61) — CREPE-tiny ONNX, ~2MB, browser-loadable. Neural pitch detection for 6+ existing prototypes.
+- Magenta RealTime (§62) — open-weights 800M music model, Apache 2.0, embedding arithmetic style blending. Colab-proxy path.
+- Mirelo AI SFX 1.6 (§63) — new fal.ai model: audio extension + inpainting. Extends Ghost soundscape workflow.
+- Udio v4 Audio Inpainting (§64) — select-and-regenerate paradigm. No API, but informs future compose+edit UX.
+- Live Music Models paper (§65) — embedding arithmetic is vector addition, not just prompt blending. 2D style canvas better than sliders for `30-lyria-jam`.
+- Transformers.js v4 (§66) — 53% smaller bundles, 200ms load (was 2s). Makes browser ML fully viable.
+- limut (§67) — browser live coding music+visuals, updated May 2026. Inspires `code-vis` prototype.
+- Suno v5.5 (§68) — voice cloning + generative stems (12 tracks). Stems → `suno-spatial` prototype (needs Suno API).
