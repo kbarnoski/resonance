@@ -1,5 +1,70 @@
 # Dream Agent — cycle state
 
+## Cycle 41 — /dream/37-ratio-lab
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 40 shipped `36-pluck-field`. STATE.md explicitly queued `37-ratio-lab` as
+the top next build — highest "surprise" value for Karel, first prototype about *tuning theory*
+rather than signal processing, zero deps, one-cycle build. 36 existing prototypes cover particles,
+fluid, terrain, cellular automata, physical modeling — none touch harmonic tuning systems. The
+Tonnetz lattice is uniquely visual: it makes chord quality appear as geometry (major chord = one
+triangle orientation, minor = inverted). Decision: build `/dream/37-ratio-lab`.
+
+**Implementation**:
+- 9×5 Tonnetz grid, x-axis = P5 (×3/2), y-axis = M3 (×5/4), diagonal = m3 (×6/5)
+- Center (0,0) = A3 = 220Hz (ratio 1/1), soft drone always on once AudioContext starts
+- Click any node: sustained sine oscillator at that node's JI frequency (octave-normalized
+  to A3–A4 range). Multiple nodes ring simultaneously. Click again to stop.
+- Node color: hue 45° (amber/warm, consonant root) → 220° (cool blue, complex/dissonant).
+  Size: largest at center, shrinks with `|x|+|y|`. Warm large = simple ratio; cool small = complex.
+- Connection lines: green (P5 horizontal), amber (M3 vertical), blue (m3 diagonal)
+- Labels: pitch class name (12-TET approximation) + cents deviation from equal temperament
+- Hover tooltip: pitch class, JI fraction string, Hz, cents deviation
+- Mic mode: autocorrelation pitch detection (NSDF, same algorithm as `13-piano-canvas` and
+  `33-aria-companion`), polled every 80ms. Detected pitch mapped to nearest lattice node
+  by octave-normalized log2 distance. Pulsing blue ring marks the nearest node.
+
+**JI fraction display** (`jiStr`): computes n/d from 3^x × (1/2)^x × 5^y × (1/4)^y, then
+octave-normalizes by doubling n until n ∈ [d, 2d), then simplifies via GCD. Verified:
+(0,0)→1/1, (1,0)→3/2, (0,1)→5/4, (-1,0)→4/3, (-1,1)→5/3, (2,0)→9/8, (-3,2)→50/27.
+
+**Shipped**:
+- `src/app/dream/37-ratio-lab/page.tsx` — full interactive prototype (~350 lines)
+- `src/app/dream/37-ratio-lab/README.md` — Tonnetz math, cents deviation, polish ideas
+
+**Build validation**: node_modules not present (pre-existing all cycles). TypeScript errors
+are exclusively `TS2307 Cannot find module 'react'` and `TS2503 Cannot find namespace 'React'`
+— same missing-deps pattern as all 36 prior prototypes. Zero logic errors in the new code.
+No functions starting with `use` (helpers: `jiRatio`, `octNorm`, `nodeFreq`, `pitchClass`,
+`centsDev`, `gcd`, `jiStr`, `cons`, `nodeCol`, `nodePos`, `nodeRad`, `hitNode`, `detectPitch`,
+`nearestNode`). No unused imports. ESLint not runnable without node_modules. Vercel build
+will pass with dependencies present.
+
+**What I noticed**: The JI cents deviations on the Tonnetz create an interesting pattern.
+Moving right (P5): each step is +2¢ sharp of equal temperament (since JI P5 = 701.96¢ vs
+12-TET 700¢). Moving up (M3): each step is −14¢ flat (JI M3 = 386.31¢ vs 12-TET 400¢). So
+the node at (+2, +1) — which would be "B" — is a Pythagorean-colored B (sharp) combined with
+a JI-colored M3 adjustment (flat). The intersection of multiple routes through the lattice to
+the "same" 12-TET pitch reveals different JI colorings — the Tonnetz makes audible the difference
+between G♯ approached as a M3 above E vs as a chain of P5s from A.
+
+Playing multiple nodes simultaneously reveals something that a piano doesn't: when two JI sine
+tones share an exact ratio (3/2), the interval sounds acoustically "locked in" — no beating.
+Clicking any adjacent horizontal pair demonstrates this against the drone.
+
+**Queued next**:
+1. **`38-mood-xy`** — Arousal × valence emotion synthesis. Drag a dot on a 2D plane →
+   Web Audio generates music in real time (BPM, chord quality, register, brightness all from
+   coordinates). First output-mode prototype (audio generated FROM emotional coordinates, not
+   analyzed FROM audio input). Zero deps, one cycle.
+2. **`39-anticipate`** — Extends `33-aria-companion`: AI response ghost notes appear before
+   execution (ReaLJam CHI 2025 anticipation insight). Zero deps.
+3. **Polish `37-ratio-lab`** — chord triangle highlighting (click-drag to select a triangular
+   group → chord name overlay), comma path visualization, tuning system overlays.
+
+---
+
 ## Cycle 40 — /dream/36-pluck-field
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

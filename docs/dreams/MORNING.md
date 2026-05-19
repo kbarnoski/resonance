@@ -1,43 +1,41 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 40)
+# Morning digest — last updated 2026-05-19 UTC (Cycle 41)
 
 ## New since yesterday
 
+- **[/dream/37-ratio-lab](/dream/37-ratio-lab)** — Ratio Lab (Cycle 41)
+  Tonnetz just-intonation lattice. Click any node to hear its JI ratio against an A3 drone.
+  Click multiple nodes simultaneously — stacked sine waves at exact integer ratios. The
+  first prototype that makes *harmonic theory visible*: chord shapes are triangles on the grid
+  (major = right-angle at root, minor = inverted). Hover for JI fraction + cents deviation.
+  Mic: blue ring jumps to the nearest node as you play.
+  **"Navigate harmony as a landscape."** First tuning-theory prototype in 41 cycles.
+
 - **[/dream/36-pluck-field](/dream/36-pluck-field)** — Pluck Field (Cycle 40)
-  24 Karplus-Strong virtual strings. Click a cell → physical plucked-string sound + standing
-  wave animation. Low strings ring 3s; high strings decay in 0.5s — from the physics, not
-  tweaked by hand. Touch-drag for harp glissando. Mic: onsets pluck octave-matched strings.
-  **First physical modeling synthesis prototype.** "What if the canvas was a harp?"
+  Physical modeling synthesis (Karplus-Strong). 24 harp strings, click to pluck.
+  Touch-drag for glissando. Mic: onsets pluck octave-matched strings.
 
 ## In progress / partial
 
-- All 36 prototypes are demoable. No in-progress skeletons.
-- Polish candidates: `36-pluck-field` (add compressor + strum-sweep button),
-  `33-aria-companion` (add anticipation layer from ReaLJam), `35-loop-station` (overdub).
+- All 37 prototypes are demoable. No in-progress skeletons.
 
-## Queue highlights (what's next)
+## Queue highlights
 
-- **`37-ratio-lab`** — Tonnetz just-intonation lattice. Click any ratio node to hear it
-  against a drone; mic highlights your pitch on the lattice. First prototype about *tuning
-  theory*. High surprise value. Zero deps, one cycle.
-- **`38-mood-xy`** — Arousal × valence emotion plane. Drag a dot → Web Audio generates music
-  in real time (tempo, chord quality, register all driven by coordinates). First output-mode
-  prototype. Zero deps, one cycle.
-- **`39-anticipate`** — Extends `33-aria-companion`: AI response notes appear as ghost bars
-  *before* they play (ReaLJam CHI 2025 insight: transparency improves perceived collaboration).
+- **`38-mood-xy`** — Arousal × valence emotion plane. Drag a dot → Web Audio generates
+  music in real time (BPM, chord quality, register from coordinates). First output-mode prototype.
+  Zero deps, one cycle.
+- **`39-anticipate`** — Extends `33-aria-companion` with ghost-note anticipation display
+  (ReaLJam CHI 2025). AI plans appear as semi-transparent bars before playing. One cycle.
+- **Polish `37-ratio-lab`** — chord triangle highlighting, comma path visualization.
 
 ## Research findings worth a look
 
-- RESEARCH.md §§53–60 (Cycle 39): Karplus-Strong, ReaLJam anticipation, LIMITER Tonnetz,
-  in-browser MusicGen via Transformers.js (~390MB), AffectMachine-Pop arousal×valence.
-- Most actionable: `37-ratio-lab` (no deps, 1 cycle) and `38-mood-xy` (no deps, 1 cycle).
+- RESEARCH.md §§53–60 (Cycle 39): Karplus-Strong synthesis, ReaLJam anticipation,
+  LIMITER Tonnetz, in-browser MusicGen (~390MB Transformers.js), AffectMachine-Pop.
 
 ## Open questions for Karel
 
-- **~390MB model OK?** `40-browser-musicgen` needs `facebook/musicgen-small` ONNX weights
-  via CDN (Transformers.js). Zero API cost after first load. Approve CDN dep + download size?
-- **Gemini key?** `30-lyria-jam` (infinite steerable AI music) needs a Gemini API key.
-  Store in sessionStorage only, never committed. Most live-performance-relevant AI music
-  prototype in the queue.
-- **MediaPipe CDN (~8MB)?** `31-gesture-music` — webcam hand gestures → synth. Needs CDN.
-- **`iPlug3` design cycle?** Best current path to Resonance-as-installation (Tauri, venue
-  deployment, MIDI/OSC). Worth a dedicated planning cycle?
+- **~390MB model OK?** `40-browser-musicgen` — in-browser AI music via Transformers.js.
+  Zero API cost after first CDN download. Approve?
+- **Gemini key?** `30-lyria-jam` — infinite steerable AI music. Store in sessionStorage only.
+- **MediaPipe CDN (~8MB)?** `31-gesture-music` — hand gesture → synth.
+- **`iPlug3` design cycle?** Best path to Resonance-as-installation (Tauri, venue, MIDI/OSC).

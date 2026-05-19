@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 40)
+## ⭐ Newest (Cycle 41)
+
+- **[/dream/37-ratio-lab](/dream/37-ratio-lab)** — Ratio Lab.
+  A 9×5 Tonnetz lattice: each node is a just-intonation ratio relative to A3 (220 Hz drone).
+  **Right = P5 (×3/2). Up = M3 (×5/4). Diagonal = m3 (×6/5).** Click any node to hear it
+  against the drone — consonant intervals feel "locked in," no beating. Multiple nodes ring
+  simultaneously. Hover for JI ratio + Hz + cents deviation from equal temperament.
+  Color encodes consonance: **amber/warm (simple ratio, large)** → **cool blue (complex, small)**.
+  Mic mode: autocorrelation pitch detection highlights the nearest lattice node with a pulsing
+  blue ring. Hold a chord on piano — multiple nodes glow and their triangle shape on the lattice
+  IS the chord quality (major = one orientation, minor = inverted).
+  **The first prototype about tuning theory.** "Navigate harmony as a landscape."
+  Zero deps; pure Web Audio + Canvas2D.
+
+  Design notes: `src/app/dream/37-ratio-lab/README.md`
+
+---
+
+## Previous newest (Cycle 40)
 
 - **[/dream/36-pluck-field](/dream/36-pluck-field)** — Pluck Field.
   24 Karplus-Strong virtual strings in a 4×6 grid: C pentatonic from C2 to G6. Click any
@@ -556,6 +574,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 37-ratio-lab
+**Status**: `demoable` · **Cycle shipped**: 41 · **Last touched**: 2026-05-19
+
+Open `/dream/37-ratio-lab`. The 9×5 grid renders immediately (no button press).
+Hover any node — tooltip shows pitch class, JI fraction, Hz, cents deviation from 12-TET.
+
+Click the center node (A3, amber, labeled "A") — a sine tone rings at 220 Hz against the drone.
+Hear that they're the same note: no beating, locked in. Click the node one step right (E4, "E",
+3/2) — you'll hear the perfect fifth. Extremely clean interval; JI P5 is 2¢ sharp of 12-TET P5.
+Click the node above the root (C#4, "C♯", 5/4) — the major third. At +14¢ flat of 12-TET M3,
+it's noticeably purer. Stack root + fifth + major third: you hear an A major chord in just
+intonation — three simultaneously locked sine waves.
+
+Click the +5¢ label on any node to hear the difference from its 12-TET position (the drone IS
+the 1/1 root, and the sine tones are exact JI ratios — no piano temperament involved).
+
+For mic mode: click **🎤 Mic**, play a sustained A or E on piano. The nearest node pulses blue.
+Play a scale — watch the ring walk across the lattice one node at a time.
+
+Design notes: `src/app/dream/37-ratio-lab/README.md`
+
+---
 
 ### 36-pluck-field
 **Status**: `demoable` · **Cycle shipped**: 40 · **Last touched**: 2026-05-19
