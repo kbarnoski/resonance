@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 25)
+## ⭐ Newest (Cycle 26)
+
+- **[/dream/23-pitch-harmonize](/dream/23-pitch-harmonize)** — Pitch Harmonize.
+  First prototype that **transforms** audio in real time. Mic → AudioWorklet ring-buffer
+  pitch shifter → HRTF 3D position. Pick an interval (+4th, +5th, +8va, -8va), drag the
+  harmony to any azimuth (−90° left ↔ +90° right). With headphones: you and your
+  pitch-shifted copy float apart in space. Visual: **dual phase-portrait vectorscope** on
+  one canvas — orange trail = dry, blue trail = harmony. At a fifth interval, the two
+  ellipses tilt at different angles (the interval IS a geometric relationship between them).
+  Zero npm deps; AudioWorklet loaded from inline Blob URL.
+  **"Become your own accompanist."**
+
+---
+
+## Previous newest (Cycle 25)
 
 - **[/dream/22-code-score](/dream/22-code-score)** — Code Score.
   Write a melody in the textarea; press play. Each note sounds and simultaneously paints itself
@@ -262,6 +276,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 23-pitch-harmonize
+**Status**: `demoable` · **Cycle shipped**: 26 · **Last touched**: 2026-05-19
+
+Open `/dream/23-pitch-harmonize`. Click **Start mic** and allow permissions. Play a sustained
+piano note or sing. Click **+5th** — your harmony appears a perfect fifth above you, floating
+to the right in your headphones. Switch intervals live; the pitch shift updates without restart.
+
+Drag the **pos** slider to place the harmony anywhere from hard-left to hard-right. Reduce
+**harm** volume to blend dry and harmony. The scope shows two overlapping ellipses: orange =
+your dry signal, blue = the shifted harmony. At a fifth interval they tilt at distinctly
+different angles — the visual form of the interval.
+
+No permissions for demo? The page will show an error and you'll need mic access. This is the
+only prototype that genuinely requires live audio input (no demo oscillator mode — the whole
+point is your own playing transformed).
+
+Design notes: `src/app/dream/23-pitch-harmonize/README.md`
+
+---
 
 ### 22-code-score
 **Status**: `demoable` · **Cycle shipped**: 25 · **Last touched**: 2026-05-19

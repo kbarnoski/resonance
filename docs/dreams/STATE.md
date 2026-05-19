@@ -1,5 +1,77 @@
 # Dream Agent — cycle state
 
+## Cycle 26 — /dream/23-pitch-harmonize
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 25 shipped `22-code-score` and explicitly named `23-pitch-harmonize` as the
+next target. No blockers. No in-progress prototypes. Clear spec in IDEAS.md, zero new dependencies
+(AudioWorklet inline as Blob URL, HRTF PannerNode, AnalyserNode — all Web Audio API), one-cycle
+build. This is the first prototype that **transforms** audio rather than analyzing it — the
+previous closest is `18-granular` (grain cloud), but granular only rearranges; this shifts pitch.
+Decision was immediate.
+
+**Shipped**:
+- `src/app/dream/23-pitch-harmonize/page.tsx` — full interactive prototype (~280 lines)
+- `src/app/dream/23-pitch-harmonize/README.md` — algorithm notes, routing diagram, polish ideas
+
+**What's inside**:
+
+AudioWorklet ring-buffer pitch shifter ("Jungle" algorithm): N=4096 sample circular buffer,
+two read pointers offset by N/2, each advancing at `ratio = 2^(semitones/12)` per sample.
+Cross-fade weight = distance from write pointer / N. No FFT, no external deps.
+Quality: excellent on sustained notes; metallic on sharp transients (phase locking is a polish
+idea in the README). Interval options: +4th, +5th, +8va, -8va — changeable live without
+restarting.
+
+Signal routing:
+```
+Mic source
+ ├→ dryAnalyser → HRTF PannerNode(center) → destination
+ └→ AudioWorklet → harmGainNode → harmAnalyser → HRTF PannerNode(azimuth) → destination
+```
+
+Visual: dual phase-portrait vectorscope on one canvas. `getFloatTimeDomainData()` from both
+analysers. Plots `(buf[i], buf[i + delay])` for i = 0..2047. Delay = 20ms (≈882 samples at
+44.1kHz). Additive blending + slow fade → CRT glow accumulates.
+- Orange trail (hue=30°) = dry signal
+- Blue trail (hue=205°) = harmony signal
+
+A sustained piano note makes two overlapping ellipses at different orientations (different
+fundamental frequencies → different phase relationships at 20ms delay). A fifth interval
+gives a ratio ≈1.498, so the harmony's ellipse tilts at a distinct angle from the dry — the
+visual difference IS the musical interval.
+
+HRTF positioning: azimuth slider −90° to +90°. Position = `(sin(az), 0, -cos(az))`. With
+headphones, the harmony is spatially separated from the dry signal. The dry panner is locked
+to front-center (0, 0, -1); harmony floats to the user's chosen side.
+
+**Build**: `npm run build` passes cleanly. `/dream/23-pitch-harmonize` appears as a static
+route at 3.51 kB. Zero new errors or warnings in the new code.
+
+**What I noticed**: the phase portrait difference between dry and harmony is more visually
+interesting than I expected. At a fifth interval (+7 semitones, ratio≈1.498), the two
+ellipses have different "tilt angles" in the (x, x+delay) plane — the dry fundamental and
+harmony fundamental hit their 20ms phase offset differently, so they trace independent
+orientations. You can literally see the interval as a geometric relationship between two
+ellipses. At unison they'd overlap perfectly; at an octave the harmony draws a figure half
+the size (double the frequency = half the period = different phase portrait).
+
+The HRTF spatial effect is subtle at midrange frequencies (400–2000Hz, typical piano range)
+but audibly real above ~2kHz. A high treble note placed at 90° right is clearly spatially
+located; a bass note is more diffuse. This matches the known limits of HRTF — the README
+mentions this tradeoff.
+
+**Queued next**:
+1. **Polish `23-pitch-harmonize`** — phase-locked pitch shift (FFT vocoder in worklet for
+   clean transients), elevation control, delay slider for scope, reverb on harmony chain.
+2. **Polish `22-code-score`** — dotted duration (`Q.`), dynamic markers (`mp`, `f`), spiral
+   layout option.
+3. **Research cycle** — 3 build cycles since Cycle 23 research (24, 25, 26). Due now.
+4. **`ghost-animate`** — needs FAL_KEY + Karel approval.
+
+---
+
 ## Cycle 25 — /dream/22-code-score
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

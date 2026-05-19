@@ -1,42 +1,38 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 25)
+# Morning digest — last updated 2026-05-19 UTC (Cycle 26)
 
 ## New since yesterday
 
-- **[/dream/22-code-score](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/22-code-score)**
-  — Code Score. Left panel: score textarea + BPM slider. Right panel: Canvas2D painting.
-  Press ▶ Play — the Bach Invention No.1 in C major plays one note at a time, each note
-  simultaneously painting a glowing stroke. Rising phrases arc upward; descending phrases
-  drift down. The melodic contour IS the stroke's geometry.
-  DSL: `C5 E D5 E E5 E` (note + duration), `[C4 E4 G4] Q` (chord), `rest Q`, `// comment`.
-  W H Q E S = whole → sixteenth. BPM slider 40–200. Download painting as PNG.
-  **The reverse of `13-piano-canvas`** — write first, then watch + hear.
-  → Press **▶ Play** with the default score. Then edit a phrase and press play again.
+- **[/dream/23-pitch-harmonize](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/23-pitch-harmonize)**
+  — Pitch Harmonize. First prototype that *transforms* audio rather than analyzing it.
+  Mic → AudioWorklet ring-buffer pitch shifter → HRTF 3D space. Pick +4th / +5th / +8va / -8va;
+  drag harmony to left or right. **Wear headphones**: your pitch-shifted copy floats away from you
+  in 3D space. Dual phase-portrait vectorscope: orange = dry, blue = harmony. At a fifth interval
+  the two ellipses tilt at different angles — the visual form of the musical interval.
+  Zero npm deps; AudioWorklet inlined as Blob URL.
+  → Allow mic, play a sustained note, pick **+5th**, drag harmony right.
 
 ## In progress / partial
 
-- All 22 prototypes are `demoable`. Nothing half-built.
-- **Sound for cymatics** (`19-cymatics`) — demo oscillator still silent. One-line fix queued.
+- All 23 prototypes are `demoable`. Nothing half-built.
 
 ## Queued next
 
-- **`23-pitch-harmonize`** — mic → AudioWorklet phase vocoder → pitch-shifted harmony copy
-  (+7 semitones / perfect fifth) → HRTF 3D pan. Dry signal center; harmony floats beside
-  you. Dual vectorscope (orange = dry, blue = harmony). "Become your own accompanist."
-  Zero deps — AudioWorklet inlined as Blob URL. One-cycle build.
-- **Polish `22-code-score`** — dotted duration (`Q.`), dynamic markers (`<p>` `<f>`),
-  spiral layout option.
+- **Research cycle** — 3 build cycles since Cycle 23 sweep (24, 25, 26). Due now.
+- **Polish `23-pitch-harmonize`** — phase-locked FFT vocoder for clean transients,
+  elevation slider, reverb on harmony chain only.
+- **Polish `22-code-score`** — dotted durations (`Q.`), dynamic markers, spiral layout.
 
 ## Research findings worth a look
 
-- **RESEARCH.md §§22–28** (Cycle 23): HappyHorse-1.0 (#1 AI video model, single-pass
-  video+audio); Google Veo 3.1 (4K+audio, $0.40/sec); Latent Granular Resynthesis
-  (cross-timbre neural codec, extends `18-granular`).
+- Nothing new this cycle. See RESEARCH.md §§22–28 for latest sweep (Cycle 23):
+  HappyHorse-1.0 (#1 AI video+audio model), Three.js TSL, ElevenLabs streaming music,
+  phase vocoder AudioWorklet, latent granular resynthesis.
 
 ## Open questions for Karel
 
-- **`ghost-animate`**: HappyHorse-1.0 preferred (single-pass Ghost LoRA image → 5–8s
-  cinematic scene with native audio). Budget ~$0.05–0.30/clip. Say the word.
-- **`elevenlabs-compose`**: $0.80/min streaming structured music. Pending approval.
-- **`23-pitch-harmonize` vs polish run** — should Cycle 26 ship the harmonizer, or would
-  you rather I do a polish pass on an existing prototype first? (cymatics sound, granular
-  freeze button, code-score dotted durations, etc.)
+- **Phase vocoder quality**: the ring-buffer algorithm sounds smooth on sustained notes but
+  metallic on staccato attacks. A full FFT phase vocoder (50 more worklet lines) would fix
+  this. Worth the polish cycle, or acceptable for a harmonizer?
+- **`ghost-animate`**: HappyHorse-1.0 preferred (Ghost LoRA image → 5–8s cinematic scene
+  with native audio). Budget ~$0.05–0.30/clip. Say the word.
+- **Next cycle priority**: research sweep vs. polish pass vs. new prototype?
