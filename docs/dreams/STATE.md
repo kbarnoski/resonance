@@ -1,5 +1,76 @@
 # Dream Agent — cycle state
 
+## Cycle 25 — /dream/22-code-score
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 24 shipped `21-three-mesh-av` and explicitly queued `22-code-score` as the
+next target. No blockers. No in-progress prototypes. Clear spec in IDEAS.md, zero new dependencies
+(Web Audio API + textarea + Canvas2D), one-cycle build, and it fills a genuine gap: none of the
+21 existing prototypes treat music as *authored rather than performed*. All others react to live
+audio or generate audio procedurally; this one takes written notation as input, plays it, and
+simultaneously paints it. The reverse of `13-piano-canvas`. Decision was immediate.
+
+**Shipped**:
+- `src/app/dream/22-code-score/page.tsx` — full interactive prototype
+- `src/app/dream/22-code-score/README.md` — design notes, DSL spec, painting algorithm
+
+**What's inside**:
+
+A two-panel page: left panel = score editor (textarea), right panel = Canvas2D painting.
+
+**DSL parser** (`parseScore()`): tokenizes each line, skips `//` comments. Three token forms:
+1. `NOTE DUR` — single note: `C5 E`, `Bb4 Q`, `D#3 H`
+2. `[NOTE NOTE ...] DUR` — chord: `[C4 E4 G4] Q`
+3. `rest DUR` — silence (advances path cursor, no stroke)
+
+Note names: `[A-G][#b]?\d`. Octave as digit after accidental. A4=440 Hz anchor;
+`midi = 12*(octave+1) + semitone`, `freq = 440 × 2^((midi−69)/12)`.
+
+Durations: `W`=whole(4), `H`=half(2), `Q`=quarter(1), `E`=eighth(0.5), `S`=sixteenth(0.25)
+beats. Multiplied by `60/BPM` to get seconds.
+
+**Painting**: stroke positions precomputed before playback starts (path cursor = deterministic
+from score; no mutable shared state between timeout callbacks). Each note:
+- `hue = freqToHue(freq)`: A4=0° anchor, each octave rotates ~60°. Same as `13-piano-canvas`.
+- Stroke: horizontal advance = `duration × PX_PER_SEC` (≈10% of canvas width per second),
+  vertical drift = log-pitch delta × 30px (rising melody arcs up, descending arcs down, damped
+  each step). Canvas right-wraps onto a new line when x > 94% width.
+- Chord: root note paints the main stroke; upper chord tones paint shorter parallel strokes
+  stacked 5px above. Color reflects each chord-tone's own pitch.
+- Additive blending (`"lighter"`) + `shadowBlur` glow — same as `13-piano-canvas`.
+
+**Audio**: `triangle` wave oscillators with Hann-windowed GainNode envelope (10ms attack,
+sustain 70% of duration, 25% release). Triangle tone is warm and organ-like; better for
+Bach than pure sine. Peak gain = `0.10 / chord_length` to keep chord volume consistent.
+
+**Demo score**: simplified Bach Invention No.1 in C major (BWV 772), opening 6 bars (48 eighth
+notes + 2 quarter notes + 1 half rest). 81 seconds at BPM=80. Fits naturally in 2–3 canvas
+rows. BPM slider (40–200) lets user accelerate it.
+
+**Build**: `npm run build` passes cleanly (verified). Zero new warnings in new code.
+
+**What I noticed**: the "write first, paint second" interaction is qualitatively different from
+all other prototypes. With `13-piano-canvas`, you play and the painting appears immediately —
+there's no anticipation. With `22-code-score`, you see the whole score in the textarea, press
+play, and then watch each note materialize progressively. The score is a promise; the canvas
+is its fulfillment. The Bach precomputed stroke positions form an arc (ascending phrases → stroke
+paths arc upward; descending sequences drift downward) that reads visually as melodic structure
+before you even listen. That legibility was unexpected.
+
+The chord painting (stacked parallel strokes) actually looks good: a root note with its octave
+appears as a bright double bar, which you can read as "this was a chord moment" at a glance.
+
+**Queued next**:
+1. **Build `23-pitch-harmonize`** — AudioWorklet phase vocoder harmony + HRTF + dual vectorscope.
+   "Become your own accompanist." Zero deps (AudioWorklet inlined as Blob URL). One-cycle build.
+2. **Polish `22-code-score`** — add `dot` duration modifier (`Q.` = dotted quarter), `<velocity>`
+   dynamic markers, spiral/mandala layout option.
+3. **Polish `19-cymatics`** — connect demo oscillator to `actx.destination` at low gain (one line).
+4. **`ghost-animate`** — needs FAL_KEY + Karel approval. HappyHorse-1.0 preferred.
+
+---
+
 ## Cycle 24 — /dream/21-three-mesh-av
 
 **When**: 2026-05-18 UTC (hourly autonomous cycle)

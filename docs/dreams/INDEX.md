@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 24)
+## ⭐ Newest (Cycle 25)
+
+- **[/dream/22-code-score](/dream/22-code-score)** — Code Score.
+  Write a melody in the textarea; press play. Each note sounds and simultaneously paints itself
+  onto the canvas. Score DSL: `C5 E D5 E E5 E F5 E` (note + duration), `rest Q`, `[C4 E4 G4] Q`
+  (chords), `// comments`. Durations: W H Q E S = whole → sixteenth. BPM slider (40–200).
+  **Rising phrases arc upward, descending phrases drift down** — the melodic contour IS the
+  stroke's shape. Chord tones stack as parallel colored bars above the root.
+  Default demo: Bach Invention No.1 in C major (BWV 772). Save painting as PNG.
+  **The reverse of `13-piano-canvas`** — instead of playing → painting, you write → both
+  hear and see.
+
+---
+
+## Previous newest (Cycle 24)
 
 - **[/dream/21-three-mesh-av](/dream/21-three-mesh-av)** — Three.js Mesh AV.
   First prototype using Three.js + React Three Fiber. An icosahedron whose surface deforms
@@ -248,6 +262,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 22-code-score
+**Status**: `demoable` · **Cycle shipped**: 25 · **Last touched**: 2026-05-19
+
+Open `/dream/22-code-score`. Click **▶ Play** with the default Bach Invention No.1 score.
+Watch each eighth note paint itself as it sounds: rising phrases arc upward, descending
+ones drift down. The melodic contour IS the stroke path.
+
+Edit the score textarea and press Play again — changes take effect immediately. Syntax:
+`C5 E` (eighth), `D#4 Q` (quarter), `Bb3 H` (half), `[C4 E4 G4] Q` (chord), `rest Q` (rest).
+BPM slider speeds up / slows down the performance. Click ↓ to save the painting as PNG.
+
+Design notes: `src/app/dream/22-code-score/README.md`
+
+---
 
 ### 21-three-mesh-av
 **Status**: `demoable` · **Cycle shipped**: 24 · **Last touched**: 2026-05-18
