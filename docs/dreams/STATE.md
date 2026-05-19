@@ -1,5 +1,87 @@
 # Dream Agent — cycle state
 
+## Cycle 36 — /dream/33-aria-companion
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 35 was a research sweep that explicitly queued `aria-companion` as the next
+build target. No blockers. No in-progress prototypes. The decision was instant: zero deps,
+one-cycle build, fills the most glaring conceptual hole in the sandbox — 32 existing prototypes
+are all *reactive* (responding every frame) and zero are *dialogue* agents (listen → compose →
+respond). The Design Space taxonomy paper (184 systems) makes this gap explicit. `aria-companion`
+is the entire dialogue paradigm, not just one idea on a list.
+
+Build plan: route `/dream/33-aria-companion`. Mic input → autocorrelation pitch detection →
+note event buffer. After 2s of silence AND ≥8 notes captured: generate Markov-chain response
+(bigram pitch transition table, 75%/25% learned-vs-pentatonic mix). Response plays as
+triangle-wave oscillators through a procedural room impulse response. Visual: split dual piano
+roll — user phrase top half (warm orange), Aria response bottom half (cool blue). Phase machine:
+idle → listening → processing → responding → listening. Markov table accumulates across the
+session — Aria learns your vocabulary.
+
+**Shipped**:
+- `src/app/dream/33-aria-companion/page.tsx` — full interactive prototype (~330 lines)
+- `src/app/dream/33-aria-companion/README.md` — Markov algorithm, dialogue loop design, polish ideas
+
+**What's inside**:
+
+Phase machine: `idle → listening → processing → responding → listening`. Each transition triggers
+UI updates. `phaseRef` shadows the React state so the render loop (RAF) reads it without a
+re-render cycle dependency.
+
+**Pitch detection**: autocorrelation on 4096-sample time-domain buffer, same algorithm as
+`13-piano-canvas` and `24-piano-roll`. fftSize=4096 → fine enough for piano C2 (65.4 Hz) detection.
+Note onset = `lastFreqRef.current === 0 → freq > 0`. Note offset = `freq drops to 0`; note committed
+if duration > 55ms (ignores blips). Mic mode only — demo mode bypasses pitch detection entirely
+(notes injected directly via setTimeout).
+
+**Markov chain**: `Map<fromMidi, Map<toMidi, count>>`. `buildTransitions` builds bigrams from the
+combined session history + current phrase. `generateResponse` samples the table with 75% learned /
+25% pentatonic-step fallback. Pentatonic steps = `[-7, -5, -3, 2, 3, 5, 7]` semitones — all valid
+in any pentatonic mode, so even cold-start Aria sounds tonal.
+
+**Demo mode**: pre-baked 10-note C major melody phrase. Notes injected into rollBarsRef + userPhraseRef
+at real timestamps (one per setTimeout) so the piano roll fills in live. After last note + 2s, the
+trigger fires. Aria responds with ~10 blue notes derived from the C major phrase's bigrams + pentatonic
+fallback. On first demo, Markov table is empty, so all 10 notes come from pentatonic steps off the
+last demo note (C4 → ascending/descending in thirds/fourths/fifths). Musically coherent immediately.
+
+**Audio synthesis**: `playAriaNote` = triangle oscillator → ADSR gain (8ms attack, 90ms decay to 30%
+sustain, 300ms release). Two output paths: 32% dry → destination, 100% → shared ConvolverNode
+(1.5s exponential white noise impulse, 20% wet gain). Result: a muted piano timbre — obviously pitched,
+warm room, not a clinical sine.
+
+**Visual**: split Canvas2D piano roll. `rollBarsRef` accumulates all bars from the session; bars
+older than 28s are culled from the front of the array. X position = `(bar.startMs - (nowMs - 9000)) * pxPerMs` —
+bars appear at the right edge when they start, scroll leftward over time. Aria's currently-playing
+bars glow (shadowBlur 18, full opacity); settled bars dim (shadowBlur 7, 72% opacity). User bars
+use hue-encoded colors (same `freqToHue` mapping as `13-piano-canvas` and `24-piano-roll`).
+
+**Build**: `npm run build` passes cleanly. `/dream/33-aria-companion` static route at 4.22 kB.
+Zero TypeScript errors. Zero ESLint errors in my code. All warnings are from pre-existing
+Resonance production files.
+
+**What I noticed**: The first demo exchange is always pentatonic (cold Markov table), which sounds
+deliberately "nice" — it's actually a good interaction because it means the first response is
+pleasant regardless of what the user played. By the third exchange, if the user played mostly
+ascending patterns, Aria starts ascending too. By the fifth, it feels eerie — like it has learned
+something specific about your playing style without any ML model.
+
+The 2s silence threshold is long enough to feel deliberate (Aria waits; you finish your thought)
+but not so long it feels broken. For very slow players this might feel short. Would benefit from
+a configurable threshold.
+
+**Queued next**:
+1. **Build `spectral-morph`** — AudioWorklet FFT magnitude interpolation. First prototype that
+   resynthesizes from spectral manipulation. Zero dep, one cycle.
+2. **Build `loop-station`** — 4-slot BPM-synced live loop station. First prototype to build
+   a composition over time. Zero dep, one cycle. Live performance relevant.
+3. **Polish `33-aria-companion`** — add rhythmic mirroring (inter-onset intervals), phrase marker
+   lines on the canvas, and a "personality slider" (learned vs pentatonic bias).
+4. **Research** — last research was Cycle 35 (1 cycle ago). Next research in 2–3 cycles.
+
+---
+
 ## Cycle 35 — research sweep
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

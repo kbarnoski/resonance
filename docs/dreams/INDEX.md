@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 35 — research)
+## ⭐ Newest (Cycle 36)
+
+- **[/dream/33-aria-companion](/dream/33-aria-companion)** — Aria Companion.
+  The first **dialogue** prototype in the sandbox — all 32 previous prototypes are reactive;
+  this one listens, waits, and responds. Play a melody on piano or sing; after 2 seconds of
+  silence, Aria generates a response phrase using a Markov chain learned from your own note
+  transitions. The longer you play, the more Aria mirrors your interval tendencies.
+  Visual: split dual piano roll — YOU (warm orange, top) + ARIA (cool blue, bottom).
+  **"The piano responds when you rest."** Zero deps; no ML. ~20 lines of Markov JS.
+
+  Design notes: `src/app/dream/33-aria-companion/README.md`
+
+---
+
+## Previous newest (Cycle 35 — research)
 
 - **Cycle 35 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§44–52).
   3 new prototype ideas added to IDEAS.md. Highlights:
@@ -457,6 +471,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 33-aria-companion
+**Status**: `demoable` · **Cycle shipped**: 36 · **Last touched**: 2026-05-19
+
+Open `/dream/33-aria-companion`. Click **DEMO** — a 10-note C major phrase begins painting
+itself into the YOU (orange) panel of the piano roll, one note at a time. After the last note,
+a 2-second pause, then "Aria is thinking..." appears briefly. The ARIA (blue) panel fills with
+Aria's response — a 10-note phrase derived from pentatonic intervals off the demo's last note
+(cold Markov table on first run). Each subsequent demo cycle teaches the Markov table and the
+responses converge toward your melodic tendencies.
+
+Click **START MIC** and allow permissions. Play 8+ piano notes (any melody), then stop for 2
+seconds. Aria responds. Play again — watch the Markov table accumulate. After 3 exchanges of
+ascending scales, Aria starts ascending too. After 5 exchanges of chromatic runs, Aria starts
+playing chromatic. The bottom panel accumulates all exchanges as a visual record of the dialogue.
+
+Design notes: `src/app/dream/33-aria-companion/README.md`
+
+---
 
 ### 32-mood-vis
 **Status**: `demoable` · **Cycle shipped**: 34 · **Last touched**: 2026-05-19
