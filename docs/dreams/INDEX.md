@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 33)
+## ⭐ Newest (Cycle 34)
+
+- **[/dream/32-mood-vis](/dream/32-mood-vis)** — Mood Viz.
+  Audio features (energy, spectral brightness, band coefficient of variation) drive a rule-based
+  classifier that picks one of six visual modes automatically — and transitions between them as
+  the music changes character. Six moods → six aesthetics: Lissajous (minimal/silence), ink rings
+  (calm+bright), orbital drift (calm+dark), radial bloom (energetic+bright), pulse field
+  (energetic+dark), spectral mandala (complex). 7% trail persistence gives natural ~1s crossfades.
+  Demo cycles through all six moods at 5s each without a mic. HUD shows current mood + amplitude,
+  centroid, spread in real time. **"The visualizer that listens — and decides."**
+
+  Design notes: `src/app/dream/32-mood-vis/README.md`
+
+---
+
+## Previous newest (Cycle 33)
 
 - **[/dream/29-scene-spatial](/dream/29-scene-spatial)** — Scene Spatial.
   Six Ghost narrative scenes (Stone Chamber → Cosmic Ascension), each with a hand-authored 3D
@@ -400,6 +415,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 32-mood-vis
+**Status**: `demoable` · **Cycle shipped**: 34 · **Last touched**: 2026-05-19
+
+Open `/dream/32-mood-vis`. Click **Demo** — the canvas begins in "minimal" mode (dim Lissajous
+figure, silence simulated). After 5 seconds it transitions to "calm · bright" (ink rings expanding
+from center, cool cyan). Watch the mode name update in the top-left as it cycles through all six.
+The sidebar mood list highlights the active mode.
+
+Click **Start mic** and play a bass note on piano — classifier should read calm_dark (low centroid,
+moderate amplitude) and switch to the violet orbital drift. Switch to bright, high chords —
+energetic_bright triggers the radial bloom with warm spokes radiating outward. Hit something
+percussive (drum on a table, slap) — the complex classifier fires and the spectral mandala appears.
+The HUD shows AMP, CENT (Hz), and SPREAD (CV of band energies) so you can see what's driving each
+classification.
+
+Design notes: `src/app/dream/32-mood-vis/README.md`
+
+---
 
 ### 29-scene-spatial
 **Status**: `demoable` · **Cycle shipped**: 33 · **Last touched**: 2026-05-19

@@ -1,5 +1,93 @@
 # Dream Agent — cycle state
 
+## Cycle 34 — /dream/32-mood-vis
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 33 shipped `29-scene-spatial` and explicitly queued `32-mood-vis` as the next
+build. No blockers. No in-progress prototypes. Clear spec in IDEAS.md: rule-based audio classifier →
+6 visual modes. Zero external deps, one-cycle build. The decision was immediate — it's the only
+queued zero-dep prototype that doesn't need an API key, and it fills a real conceptual gap: none of
+the 31 existing prototypes treat audio character (mood/energy) as the primary design axis.
+
+`27-gpu-additive` is in the queue but marked as potentially 2 cycles and very technically ambitious.
+`30-lyria-jam` and `31-gesture-music` need API key / CDN approval. `32-mood-vis` is the obvious
+next build: zero friction, clear spec, high surprise factor.
+
+**Shipped**:
+- `src/app/dream/32-mood-vis/page.tsx` — full interactive prototype (~300 lines)
+- `src/app/dream/32-mood-vis/README.md` — classifier design, mode rationale, polish ideas
+
+**What's inside**:
+
+Three audio features drive classification:
+1. **Energy** (`amplitude` from `useMicAnalyser`) — total signal level
+2. **Brightness** (`centroid`) — spectral center of gravity in Hz. Piano above C4 ≈ >1500 Hz;
+   bass note or low drum ≈ 200–400 Hz
+3. **Spread** (coefficient of variation of 6-band energies) — how evenly distributed the
+   spectrum is. Single clean note = energy in 1-2 bands = low CV. Chord+noise = spread across
+   bands = high CV. This approximates ZCR / spectral flatness without needing time-domain data.
+
+Decision tree: `amplitude < 0.08` → minimal; `CV > 1.1 AND amp > 0.15` → complex; then:
+`amp > 0.35 AND centroid > 1500` → energetic_bright; `amp > 0.35` → energetic_dark;
+`centroid > 1500` → calm_bright; else → calm_dark.
+
+Six visual modes (all parametric, no persistent particle state required):
+- **minimal**: Lissajous 2:3 ratio, 200 points, slowly rotating. Dim blue-white.
+- **calm_bright**: 4 concentric rings expanding from center, one new ring every 12.5s each,
+  fading alpha as they grow. Cool cyan. Central soft glow scales with amplitude.
+- **calm_dark**: 110 particles on parametric orbits (angle = base + slowly varying sinusoidal
+  per-particle speed). No stored state — position is `f(t, i)`. Deep violet.
+- **energetic_bright**: 72 radial spokes (12 per band, 6 bands), each colored BAND_RGB, length
+  proportional to band energy, slowly rotating. Warm central glow.
+- **energetic_dark**: 4 pulsing concentric rings (bass-driven, red/crimson), 5 vertical bar pairs
+  pulsing with mid-range energy. Heavy and rhythmic.
+- **complex**: 6 arms rotating at slightly different angular velocities, one per band. Length =
+  band energy, width = thick with gradient. Forward petal + shorter mirror petal. Additive blending
+  makes overlapping arms glow. Spectral mandala.
+
+Crossfade mechanism: none needed. The canvas uses 7% opacity persistence each frame
+(`rgba(0,0,0,0.07)` fill). Old mode visuals fade out in ~14 frames (~0.23s at 60fps). New mode
+visuals grow in simultaneously. Net effect: ~0.5–1s natural visual transition.
+
+Demo mode: synthetic `MicFrame` data cycling through all 6 moods, 5 seconds each. Last 800ms of
+each phase blends toward next mood's features for smooth synthetic transitions. Demo starts
+automatically on click — no mic permission needed.
+
+**Build**: `npm run build` passes cleanly. `/dream/32-mood-vis` appears as static route (4.62 kB).
+Zero TypeScript errors. Zero ESLint errors in my code. (All other warnings in build output are
+pre-existing Resonance production files — confirmed unchanged.)
+
+Note: `node_modules` were absent from the git checkout (excluded by .gitignore as expected).
+Ran `npm install --legacy-peer-deps` before build. This is normal for the cloud environment.
+
+**What I noticed**: The classifier thresholds were chosen from first principles. The most important
+decision was using coefficient of variation (CV = std_dev/mean of band energies) rather than
+raw variance. CV is scale-invariant — a quiet complex signal and a loud complex signal both read
+as "complex," whereas raw variance would be dominated by amplitude. The `CV > 1.1` threshold was
+set to trigger when one or two bands dominate greatly over others (e.g., heavy bass hit with quiet
+mids/highs = CV ~1.3). A piano chord with even mid-register energy typically shows CV ~0.4-0.6.
+
+The "complex" classifier fires most readily on percussive signals (sharp attack, energy across all
+bands from the transient) and on dissonant clusters. This is appropriate: "complexity" in audio
+correlates exactly with spectral irregularity.
+
+The orbital drift mode (`calm_dark`) is purely parametric from `t` and `i` — no particle array
+needed. Position = `angle(t, i)` + `radius(t, i)` computed fresh each frame. The orbit radii
+vary with `sin(i * 2.7 + t * 0.08)` — the irrational coefficients ensure no two particles ever
+align, giving a naturally organic cloud without any explicit randomization.
+
+**Queued next**:
+1. **Build `27-gpu-additive`** — particles = Fourier partials, GPU physics = synthesizer.
+   Most technically ambitious item in the queue; may need 2 cycles. WebGPU required.
+2. **Polish `32-mood-vis`** — add hysteresis (300ms dwell before mood switch to prevent flicker),
+   manual mood override (click mood name in sidebar to lock), optional 7th "rhythmic" mode on
+   detected BPM.
+3. **`30-lyria-jam`** — pending Karel's Gemini API key.
+4. **Research** — last research was Cycle 31 (3 cycles ago: 32, 33, 34). Research is due next cycle.
+
+---
+
 ## Cycle 33 — /dream/29-scene-spatial
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
