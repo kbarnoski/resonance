@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 41)
+## ⭐ Newest (Cycle 42)
+
+- **[/dream/38-mood-xy](/dream/38-mood-xy)** — Mood XY.
+  The Russell circumplex model as a musical instrument. A 2D canvas: X = valence (sad ← happy),
+  Y = arousal (calm ↕ energetic). Drag the dot anywhere. The synthesizer follows in real time:
+  **arousal** controls BPM (40–140), voice count (1–4), register (C3–C5), attack (0.8s→0.04s),
+  and whether chords arpeggiate or sound simultaneously. **Valence** controls chord quality
+  (major / minor / dim), filter brightness (400–5000 Hz), and note sustain length (+40% longer
+  when sad). Background color shifts with quadrant: amber (excited+happy) → purple (excited+sad)
+  → teal (calm+happy) → navy (calm+sad). Pastel trail shows your path.
+  **Four immediately distinct sounds**: drag to top-right (bright major arpeggios, 120 BPM) ·
+  top-left (dark diminished runs, 110 BPM) · bottom-right (sustained major pads, 55 BPM) ·
+  bottom-left (sparse minor chords, 40 BPM).
+  **The first prototype where audio is generated FROM emotional coordinates, not analyzed from
+  audio input.** "Navigate your musical mood." Zero deps; pure Web Audio + Canvas2D.
+
+  Design notes: `src/app/dream/38-mood-xy/README.md`
+
+---
+
+## Previous newest (Cycle 41)
 
 - **[/dream/37-ratio-lab](/dream/37-ratio-lab)** — Ratio Lab.
   A 9×5 Tonnetz lattice: each node is a just-intonation ratio relative to A3 (220 Hz drone).
@@ -574,6 +594,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 38-mood-xy
+**Status**: `demoable` · **Cycle shipped**: 42 · **Last touched**: 2026-05-19
+
+Open `/dream/38-mood-xy`. Click **▶ Play**. Immediately drag the dot to the top-right corner
+(excited+happy) — you'll hear fast bright major arpeggios at ~120 BPM. Drag to top-left
+(excited+sad) — the arpeggios darken to diminished runs, the timbre dulls. Drag to bottom-right
+(calm+happy) — the rhythm slows to 55 BPM and the chords become simultaneous major pads. Drag
+to bottom-left (calm+sad) — 40 BPM, sparse minor chords, almost sub-bass register, minimal.
+
+Watch the background color shift: amber → purple → teal → navy as you traverse the four
+quadrants. The white trail shows where you've been. The top-center label names your current
+quadrant ("energetic · happy", "calm · sad", etc.) and shows current BPM and chord quality.
+
+Try dragging slowly in a large circle — you can hear all four quadrant characters blend into
+each other continuously. The center point (both axes at 0) is the quietest, slowest, most
+neutral state: one voice, 70 BPM, minor chord, mid-register, medium sustain.
+
+Design notes: `src/app/dream/38-mood-xy/README.md`
+
+---
 
 ### 37-ratio-lab
 **Status**: `demoable` · **Cycle shipped**: 41 · **Last touched**: 2026-05-19

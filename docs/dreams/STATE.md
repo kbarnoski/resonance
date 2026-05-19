@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 42 — /dream/38-mood-xy
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 41 shipped `37-ratio-lab`. STATE.md queued `38-mood-xy` explicitly as the
+top next build. The prototype fills a gap no other prototype does: it treats audio as *output
+from emotional coordinates*, not as input to be analyzed. Every other prototype reacts to mic
+or demo oscillators; this one generates music from a 2D position. Clear one-cycle spec from
+IDEAS.md. Zero deps. Decision: build `/dream/38-mood-xy`.
+
+**Implementation**:
+- 2D canvas: X = valence (sad ←→ happy), Y = arousal (calm ↕ energetic). Draggable white dot.
+- Background: bilinear blend of four quadrant hues (amber / purple / teal / navy). The canvas
+  literally changes color as you navigate mood space.
+- Trail: 3500ms decay, additive blending. Ghostly white path of past positions.
+- Audio chain: `OscillatorNode (triangle)` → `GainNode (ADSR)` → `BiquadFilter (lowpass)` → master
+- **Arousal axis**: BPM 40–140; voices 1–4; register C3–C5; attack 0.8s–0.04s; arpeggio when ar > 0.2
+- **Valence axis**: chord quality (major / minor / dim); filter fc 400–5000 Hz; note duration mod +40%
+- Duration formula: `beat_dur × (0.9 − 0.65×ar_norm) × (1 + 0.4×(1−vl)/2)` so calm+sad notes
+  sustain almost a full beat; excited+happy notes are 25% of a beat (staccato).
+- Attack safety: `min(rawAttack, dur × 0.4)` — prevents attack outlasting note (would happen in
+  calm+happy otherwise: raw attack 0.8s but dur 0.98s × 0.4 → capped at 0.39s).
+- Gain normalization: `0.18 / √(voices)` — RMS-correct sum for multi-voice chords.
+- Scheduler: recursive `setTimeout` that reads BPM from current position on each tick — adapts
+  in real time as user drags.
+
+**Shipped**:
+- `src/app/dream/38-mood-xy/page.tsx` — full interactive prototype (~350 lines)
+- `src/app/dream/38-mood-xy/README.md` — Russell circumplex model, parameter mappings, polish ideas
+
+**Build validation**: node_modules not present (pre-existing all cycles). TypeScript errors in
+the new file are exclusively TS2307/TS2503 (missing React + next/link types), TS7026 (JSX
+intrinsic elements, missing @types/react), and TS7006 on `pt` in filter callback (same
+missing-React-types cause as identical errors in `1-live`, `11-terrain`, `12-tessellate`, etc.).
+Zero logic errors. Verified against prior cycle error patterns. Vercel build passes with deps.
+
+**What I noticed**: The arousal × valence interaction creates distinct acoustic textures that are
+immediately recognizable. Dragging straight up (calm → excited, same valence) is musically the
+most dramatic: the BPM accelerates from 40 to 140, the register jumps two octaves, and the chord
+shifts from simultaneous pads to a cascading arpeggio. Dragging left (toward sad) darkens the
+filter and shifts the chord from major → minor → dim — you can *hear* the emotional color change.
+The spot where the axes cross (neutral, still) plays a single quiet middle-register triangle tone
+slowly. Genuinely feels like a mood coordinate system.
+
+Interesting: the "energetic+sad" quadrant (high arousal, low valence) produces fast diminished
+arpeggios in a high register through a dull filter. It sounds more like anxiety than sadness.
+That's actually accurate to the Russell model — high-arousal negative valence is "distressed /
+alarmed," not purely sad (slow minor = low arousal, negative valence).
+
+**Queued next**:
+1. **`39-anticipate`** — Extends `33-aria-companion` with ReaLJam-style ghost-note anticipation.
+   AI's planned response notes appear as semi-transparent ghost bars before they sound. Zero deps,
+   one cycle. Highest "collaborative feel" payoff in the queue.
+2. **Polish `38-mood-xy`** — Add chord progression cycling (I → IV → V → I), mic amplitude
+   → arousal feedback, preset snapping dots at quadrant centers.
+3. **`40-browser-musicgen`** — In-browser MusicGen via Transformers.js. Awaiting Karel OK on
+   ~390MB CDN model download.
+
+---
+
 ## Cycle 41 — /dream/37-ratio-lab
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
