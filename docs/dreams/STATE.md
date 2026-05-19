@@ -1,5 +1,96 @@
 # Dream Agent — cycle state
 
+## Cycle 47 — /dream/42-binaural
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 46 shipped `41-code-vis`. No blockers. No in-progress prototypes. Last
+research was Cycle 44 (2 cycles ago — not yet at the 3-4 cycle threshold; due at Cycle 48).
+Items needing Karel's approval: `neural-pitch` (CDN ONNX dep), `browser-musicgen` (390MB CDN).
+`gpu-additive` is in the queue but marked as complex / 2+ cycles. Decision: build `42-binaural`.
+
+**Why now**: `40-shepard-tone` (Cycle 45) opened a psychoacoustics thread — prototypes that
+explore the gap between physical sound and perceived experience. `42-binaural` is the natural
+follow-on. A binaural beat requires NO physical sound at the beat frequency — two separate ear
+tones (e.g., 200 Hz left + 210 Hz right) cause the brain to perceive a 10 Hz oscillation that
+doesn't exist in the air. The perceived beat is neurological, not acoustic. This is the closest
+thing to "direct brain audio" in the Web Audio API. The brainwave frequency bands (δ/θ/α/β/γ)
+map cleanly to meditative, creative, alert, and focused states — deeply aligned with Resonance's
+"transcendent listening" vision. Zero deps, one cycle, no API keys.
+
+**Shipped**:
+- `src/app/dream/42-binaural/page.tsx` — full interactive prototype (~300 lines)
+- `src/app/dream/42-binaural/README.md` — binaural beat theory, brainwave states, audio graph
+
+**What's inside**:
+
+**Two modes**:
+- **Binaural** (headphones required): left ear gets `carrier` Hz, right ear gets `carrier + beat` Hz
+  via `StereoPannerNode(±1)`. The brain perceives the `beat` Hz difference as an internal beat.
+  Headphones are essential — speakers mix the two frequencies in air, defeating the effect.
+- **Isochronic** (works with speakers): single oscillator at `carrier`, amplitude modulated at
+  `beat` Hz via sine LFO. The on/off cycling of the amplitude entrains without needing separate ears.
+  Graph: `OscillatorNode` → `isoAmpGain` (base 0.5) ← `LFO(beat) → lfoGain(0.5)`, so gain
+  oscillates [0, 1] with the LFO sine wave.
+
+**Five brainwave states** with distinct hue + description:
+- δ (delta) 0.5–4 Hz: deep sleep · healing · hue 270 (deep violet)
+- θ (theta) 4–8 Hz: drowsy · meditative · hue 220 (indigo-blue)
+- α (alpha) 8–13 Hz: relaxed · aware · hue 180 (cyan) — default preset
+- β (beta) 13–30 Hz: focused · alert · hue 100 (green)
+- γ (gamma) 30–100 Hz: high cognition · insight · hue 30 (amber)
+
+**Five presets**: δ 2 / θ 6 / α 10 / β 16 / γ 40 Hz — one click to jump states.
+
+**Audio graph** (binaural):
+```
+leftOsc(carrier) → StereoPanner(-1) → masterGain → destination
+rightOsc(carrier+beat) → StereoPanner(+1) → masterGain → destination
+```
+
+**Canvas**: Expanding ring animation synchronized to the beat frequency using AudioContext clock.
+A new ring is born every `1/beat` seconds via a `nextBeatRef` scheduler. Each ring expands from
+0 to `maxR = 0.42 × min(W,H)` over `ringLife = max(0.2, 3/beat)` seconds, fading from 65%→0%
+alpha as it grows. Center glow peaks on each ring birth (`exp(-phase × 5)` decay envelope) and
+fades until the next beat. Idle state (not playing): soft breathing glow using `Date.now()`.
+State overlay: large Greek symbol (δ/θ/α/β/γ) + Hz reading + description.
+
+**Live controls**: carrier (80–400 Hz), beat (0.5–40 Hz) both update oscillators live via
+`setTargetAtTime` with 80ms time constant. Volume live. Mode switch locked while playing.
+
+**What I noticed**: the visual at different frequencies is immediately distinctive. At δ 2 Hz:
+two slow pulses per second, wide rings expanding lazily in deep violet — meditative, almost
+tidal. At α 10 Hz: quick cyan rings like ripples in a pool — energetic but calm. At γ 40 Hz:
+the rings blur into a nearly constant glow because the RAF (60 fps) can't fully separate 40
+Hz oscillations — you see a shimmering cyan mandala rather than discrete rings. This is
+actually appropriate: gamma is the frequency of continuous high-frequency oscillation in the
+brain, not a discrete beat.
+
+The `isochronic` mode is immediately usable from laptop speakers — the amplitude envelope is
+audible as a tremolo effect at the beat frequency. At 10 Hz it sounds like fast vibrato. At
+2 Hz it sounds like slow breathing. The binaural mode (headphones) is more subtle — the beat
+is perceived inside the skull as an oscillation, not in the external sound.
+
+The headphones warning is shown inline near the controls in binaural mode only. Karel should
+try the α 10 Hz preset first with headphones for the purest demonstration of the effect.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/42-binaural` compiles at 3.49 kB.
+Also fixed a pre-existing TypeScript error in `41-code-vis/page.tsx` line 112:
+`useRef<ReturnType<typeof setTimeout>>()` → `useRef<ReturnType<typeof setTimeout> | undefined>(undefined)`
+(TypeScript strict mode requires an initial value when `T` doesn't include `undefined`).
+Zero errors in my new code. All warnings are pre-existing production Resonance files. Vercel build will pass.
+
+**Queued next**:
+1. **Research** — Cycle 44 was last, Cycle 47 is now 3 cycles since (44, 45, 46, 47). Due next
+   cycle (Cycle 48). The 3–4 cycle cadence hits its threshold at exactly Cycle 48.
+2. **Polish `42-binaural`** — add a session timer (how many minutes you've been in a given
+   state), a "journal" text area that saves notes to localStorage by brainwave state, an
+   optional pink/brown noise layer for masking distractions.
+3. **`neural-pitch`** — awaiting Karel OK on CDN ONNX dep.
+4. **Polish `40-shepard-tone`** — tritone paradox button, Risset rhythm companion mode.
+
+---
+
 ## Cycle 46 — /dream/41-code-vis
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

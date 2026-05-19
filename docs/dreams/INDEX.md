@@ -10,7 +10,30 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 46)
+## ⭐ Newest (Cycle 47)
+
+- **[/dream/42-binaural](/dream/42-binaural)** — Binaural Beat Synthesizer.
+  Two pure sine waves — one per ear — with a precise frequency difference the brain perceives
+  as a beat at that difference frequency. The beat has no physical existence in the air; it's
+  neurological. This is called the *frequency following response*, and it's the closest thing
+  to "direct brain audio" in the Web Audio API.
+  **Five brainwave states**: δ (0.5–4 Hz, deep violet) · θ (4–8 Hz, indigo, meditative) ·
+  α (8–13 Hz, cyan, relaxed — default) · β (13–30 Hz, green, focused) · γ (30+ Hz, amber,
+  high cognition). The canvas color shifts with the state; the ring expansion speed matches
+  the beat frequency. At δ 2 Hz: two slow tidal pulses per second. At γ 40 Hz: rings blur into
+  constant shimmering amber glow (appropriate — gamma is continuous, not discrete beats).
+  **Two modes**: *binaural* (headphones required — two separate ear tones) vs *isochronic*
+  (speakers OK — amplitude modulated carrier, audible as tremolo). Five presets. Live carrier
+  and beat frequency sliders update the oscillators without restarting.
+  **The second psychoacoustics prototype** (after `40-shepard-tone`): both explore the gap
+  between what is physically present in the sound and what the brain perceives.
+  **"A tone that doesn't exist — until you listen to it."** Zero deps; pure Web Audio API.
+
+  Design notes: `src/app/dream/42-binaural/README.md`
+
+---
+
+## Previous newest (Cycle 46)
 
 - **[/dream/41-code-vis](/dream/41-code-vis)** — Code Vis.
   A split-screen live coding environment: textarea DSL on the left, glowing canvas on the right.
@@ -678,6 +701,35 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 42-binaural
+**Status**: `demoable` · **Cycle shipped**: 47 · **Last touched**: 2026-05-19
+
+Open `/dream/42-binaural`. Click **▶ Start** with the default **α 10 Hz** preset and put on
+headphones. You'll hear a single continuous tone — but inside your skull, a 10 Hz oscillation
+begins. There's nothing at 10 Hz in the audio file; your superior olivary complex is computing
+the difference between the 200 Hz (left ear) and 210 Hz (right ear) pure tones and producing a
+synchronized neural beat.
+
+The canvas shows cyan expanding rings at 10 Hz — one ring born per beat, growing to the canvas
+edge and fading. The center glows on each ring birth. Try the **δ 2** preset: two slow deep-violet
+pulses per second, like breathing. Let it run for 30 seconds; the rhythmic quality is visceral.
+
+Try **γ 40**: the amber rings blur into a near-constant glow — you can't see 40 distinct rings at
+60 fps. The carrier tones at 200 Hz and 240 Hz create a more complex audio texture; the binaural
+beat is subconscious at this rate.
+
+Switch to **isochronic** mode (stop first to switch): now the beat is audible as a tremolo
+effect — the carrier amplitude pulses at the beat rate. At θ 6 Hz it sounds like a slow shiver.
+Isochronic works on speakers; binaural requires headphones.
+
+Drag the **beat** slider slowly from 2 Hz up to 40 Hz and watch the canvas colors transition:
+deep violet (δ) → indigo (θ) → cyan (α) → green (β) → amber (γ). The ring speed accelerates
+continuously. This is the full spectrum of human brainwave activity, mapped to a slider.
+
+Design notes: `src/app/dream/42-binaural/README.md`
+
+---
 
 ### 41-code-vis
 **Status**: `demoable` · **Cycle shipped**: 46 · **Last touched**: 2026-05-19

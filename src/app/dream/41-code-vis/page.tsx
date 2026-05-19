@@ -109,7 +109,7 @@ export default function CodeVisPage() {
   const voicesRef   = useRef<Voice[]>([]);
   const bpmRef      = useRef<number>(80);
   const startTRef   = useRef<number>(0);
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const [code, setCode]       = useState(DEFAULT_CODE);
   const [bpm, setBpm]         = useState(80);
