@@ -1,61 +1,43 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 39)
+# Morning digest — last updated 2026-05-19 UTC (Cycle 40)
 
 ## New since yesterday
 
-- **Cycle 39 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§53–60).
-  5 new prototype ideas added to IDEAS.md. Next cycle (40): build `36-pluck-field`.
-
-- **Most interesting find**: Karplus-Strong plucked-string synthesis is 3 Web Audio nodes per
-  string (`DelayNode` feedback loop + `BiquadFilter(lowpass)` + `GainNode`) — and 35 prototypes
-  exist in the sandbox without a single physical-modeling prototype. `36-pluck-field` fixes that.
-  Click a canvas cell to pluck a virtual string; it rings and decays like a real string.
-
-- **Surprise find**: MusicGen (`facebook/musicgen-small`) runs entirely in-browser via
-  Transformers.js + ONNX. Zero API cost, zero FAL_KEY. 5s to first audio chunk with streaming.
-  ~390MB model download (browser-cached after first load). Could make the long-queued `6-compose`
-  prototype possible with no API dependencies. Needs Karel OK on model size.
+- **[/dream/36-pluck-field](/dream/36-pluck-field)** — Pluck Field (Cycle 40)
+  24 Karplus-Strong virtual strings. Click a cell → physical plucked-string sound + standing
+  wave animation. Low strings ring 3s; high strings decay in 0.5s — from the physics, not
+  tweaked by hand. Touch-drag for harp glissando. Mic: onsets pluck octave-matched strings.
+  **First physical modeling synthesis prototype.** "What if the canvas was a harp?"
 
 ## In progress / partial
 
-- **Build queue (top 3):**
-  1. `36-pluck-field` — Karplus-Strong harp (zero deps, one cycle, no research gap to fill first)
-  2. `37-ratio-lab` — Tonnetz just intonation lattice (first tuning-theory prototype)
-  3. `38-mood-xy` — Russell circumplex emotion synthesis (drag a dot, hear the mood as music)
+- All 36 prototypes are demoable. No in-progress skeletons.
+- Polish candidates: `36-pluck-field` (add compressor + strum-sweep button),
+  `33-aria-companion` (add anticipation layer from ReaLJam), `35-loop-station` (overdub).
 
-- **Existing prototypes still due for polish:**
-  - `35-loop-station`: true overdub mixing (sum AudioBuffers), waveform-while-recording
-  - `34-spectral-morph`: phase propagation across hops, instrument spectral templates
+## Queue highlights (what's next)
+
+- **`37-ratio-lab`** — Tonnetz just-intonation lattice. Click any ratio node to hear it
+  against a drone; mic highlights your pitch on the lattice. First prototype about *tuning
+  theory*. High surprise value. Zero deps, one cycle.
+- **`38-mood-xy`** — Arousal × valence emotion plane. Drag a dot → Web Audio generates music
+  in real time (tempo, chord quality, register all driven by coordinates). First output-mode
+  prototype. Zero deps, one cycle.
+- **`39-anticipate`** — Extends `33-aria-companion`: AI response notes appear as ghost bars
+  *before* they play (ReaLJam CHI 2025 insight: transparency improves perceived collaboration).
 
 ## Research findings worth a look
 
-- **ReaLJam (arxiv 2502.21267, CHI 2025)** — AI jamming with "anticipation": AI shows its
-  planned next notes as ghost bars *before* playing them. Reduces latency surprise; creates
-  genuine dialogue. Inspires `39-anticipate`: same Markov chain as `33-aria-companion` but with
-  ghost-note preview rendering. "Watch Aria decide before she plays."
-
-- **LIMITER (arxiv 2507.08675, Jul 2025)** — gamified just intonation interface using color +
-  geometric transformations. Inspires `37-ratio-lab`: Tonnetz lattice where clicking a node
-  plays the just-intonation interval against a drone; mic pitch detection highlights where you are.
-  First Resonance prototype about *tuning systems*, not just frequency.
-
-- **ASTRODITHER** (Three.js forum) — TSL audio-reactive experiment combining fluid sim,
-  selective bloom, **dithering**, and **time warp**. Dithering gives a film-grain or halftone
-  visual that none of the 35 existing prototypes use. Worth adding as a post-processing pass to
-  `21-three-mesh-av` or a new prototype.
-
-- **AffectMachine-Pop (arxiv 2506.08200, Jun 2026)** — real-time emotion-parameterized music
-  generation using arousal × valence axes. Inspires `38-mood-xy`: drag a dot on a 2D emotion
-  plane; rule-based Web Audio synthesis changes tempo, chord quality, and density in real time.
-  No ML, no API, pure synthesis.
+- RESEARCH.md §§53–60 (Cycle 39): Karplus-Strong, ReaLJam anticipation, LIMITER Tonnetz,
+  in-browser MusicGen via Transformers.js (~390MB), AffectMachine-Pop arousal×valence.
+- Most actionable: `37-ratio-lab` (no deps, 1 cycle) and `38-mood-xy` (no deps, 1 cycle).
 
 ## Open questions for Karel
 
-- **`30-lyria-jam`** still needs your Gemini API key (infinite steering AI music, most
-  live-performance-relevant AI prototype in queue).
-- **`31-gesture-music`** still needs OK on ~8MB MediaPipe CDN load.
-- **`40-browser-musicgen`** needs OK on ~390MB Transformers.js model download (cached after
-  first load, zero API cost per generation after that).
-- **`iPlug3`** — worth a dedicated cycle for Resonance-as-installation (MCP server support
-  confirmed, mirrors web audio APIs)?
-
-## Sandbox: 35 prototypes + dashboard (cycle 38 — Cycle 39 was research)
+- **~390MB model OK?** `40-browser-musicgen` needs `facebook/musicgen-small` ONNX weights
+  via CDN (Transformers.js). Zero API cost after first load. Approve CDN dep + download size?
+- **Gemini key?** `30-lyria-jam` (infinite steerable AI music) needs a Gemini API key.
+  Store in sessionStorage only, never committed. Most live-performance-relevant AI music
+  prototype in the queue.
+- **MediaPipe CDN (~8MB)?** `31-gesture-music` — webcam hand gestures → synth. Needs CDN.
+- **`iPlug3` design cycle?** Best current path to Resonance-as-installation (Tauri, venue
+  deployment, MIDI/OSC). Worth a dedicated planning cycle?

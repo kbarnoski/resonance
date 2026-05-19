@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 39 — research)
+## ⭐ Newest (Cycle 40)
+
+- **[/dream/36-pluck-field](/dream/36-pluck-field)** — Pluck Field.
+  24 Karplus-Strong virtual strings in a 4×6 grid: C pentatonic from C2 to G6. Click any
+  cell to pluck — the string vibrates as an animated standing wave and rings with synthesized
+  plucked-string audio (no oscillators, no samples: feedback delay loop IS the string). The
+  first prototype built on **physical modeling synthesis**. Low strings ring for ~3 seconds;
+  high strings decay in ~0.5s — all from the physics. Hold multiple cells to hear chords bloom.
+  **Touch/drag = glissando** (sweep your finger across cells like a harp).
+  Mic mode: percussion onsets pluck random strings in the octave range matching your centroid.
+  Color: violet (C2) → orange (G6), same palette as `1-live`.
+  **"What if the canvas was a harp?"** Zero deps; pure Web Audio API.
+
+  Design notes: `src/app/dream/36-pluck-field/README.md`
+
+---
+
+## Previous newest (Cycle 39 — research)
 
 - **Cycle 39 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§53–60).
   5 new prototype ideas added to IDEAS.md. Highlights:
@@ -539,6 +556,31 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 36-pluck-field
+**Status**: `demoable` · **Cycle shipped**: 40 · **Last touched**: 2026-05-19
+
+Open `/dream/36-pluck-field`. Click any of the 24 cells — you'll hear a plucked string sound
+immediately (no button press needed: AudioContext initializes on first click). The bottom row
+(C2–C3) has deep, long-sustaining bass strings; the top row (G5–G6) has bright, quickly-decaying
+treble strings. Click a chord shape: C4, E4, G4 (three neighboring cells in the middle rows)
+for a C major pentatonic chord.
+
+Try a full glissando: click the bottom-left cell (C2) and drag right across the bottom row, then
+up to the next row. Low bass strings bloom violet; treble strings glow orange. With multiple
+strings ringing simultaneously, the canvas fills with overlapping standing waves.
+
+For mic mode: click **🎤 mic**, allow permissions, clap or play piano with rhythmic attacks.
+Each onset plucks a string in the octave range matching your playing's brightness. Bass drum =
+plucks low strings (violet); cymbal = plucks high strings (orange).
+
+Note: if many bass strings ring simultaneously, the output can get loud — the master gain is
+set to 0.5 but multiple overlapping C2 strings will sum. Turn down speakers/headphones first
+when testing chord storms.
+
+Design notes: `src/app/dream/36-pluck-field/README.md`
+
+---
 
 ### 35-loop-station
 **Status**: `demoable` · **Cycle shipped**: 38 · **Last touched**: 2026-05-19

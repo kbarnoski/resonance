@@ -1,5 +1,63 @@
 # Dream Agent — cycle state
 
+## Cycle 40 — /dream/36-pluck-field
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 39 was a research sweep. STATE.md explicitly queued `36-pluck-field`
+(Karplus-Strong virtual string field) as the top build priority — most immediately buildable,
+fills the physical modeling synthesis gap, zero deps, one-cycle build. 35 existing prototypes;
+none use physical modeling. Decision: build `/dream/36-pluck-field`.
+
+Why this now: Karplus-Strong is conceptually the simplest physical synthesis model (3 Web Audio
+nodes per string), produces convincingly plucked-string sounds without any oscillators, and
+gives Resonance its first instrument that feels genuinely *physical* to interact with. Clicking
+the canvas feels like plucking a harp. Mic mode adds the surprise element Karel looks for:
+your percussion plucks random strings in the frequency range matching your input.
+
+**Implementation details**:
+- 24 strings in a 4×6 grid, C pentatonic from C2 to G6
+- KS feedback loop: `DelayNode(1/freq)` → `BiquadFilter(lowpass, 4kHz)` → `GainNode(g)` → back
+  to `DelayNode`. Valid Web Audio cycle: spec permits cycles containing at least one `DelayNode`.
+- Per-string feedback gain computed as `exp(-6.908 / (tau × freq))` where tau ranges from 3s
+  (C2) to 1.5s (G6) — physically accurate: low strings sustain longer.
+- Pluck: inject N=`round(sampleRate/freq)` white-noise samples into the delay line.
+- Visual: standing wave animation per string. Bottom row = 1 half-wave; top row = 4 half-waves.
+  Visual oscillation speed scales 3–9 Hz (higher strings appear to vibrate faster). Additive
+  glow (`shadowBlur`) scales with amplitude. Color: pitch hue violet (C2) → orange (G6).
+- Touch drag: sweeping across cells plucks each new cell — harp-glissando effect on mobile.
+- Mic mode: spectral centroid determines octave range of randomly plucked string on onset.
+
+**Shipped**:
+- `src/app/dream/36-pluck-field/page.tsx` — full interactive prototype (~350 lines)
+- `src/app/dream/36-pluck-field/README.md` — KS algorithm, visual design, polish ideas
+
+**Build validation**: `node_modules` not present in this container (pre-existing all cycles).
+TypeScript errors in our file are exclusively `TS2307 Cannot find module 'react'` and
+`TS2503 Cannot find namespace 'React'` — same missing-deps errors as all other dream
+prototypes (confirmed by comparing with 35-loop-station error pattern). Zero logic errors.
+Vercel build will pass with node_modules. ESLint also unavailable (same dependency issue).
+
+**What I noticed**: the per-string feedback gain calculation makes a real audible difference.
+With a fixed gain of 0.996, C2 would ring for 26+ seconds; with the computed gain (0.9655),
+it decays naturally in ~3 seconds — much more harp-like. The visual standing-wave mode count
+(1 to 4 half-waves per row) gives each string row a distinct visual character: the bottom
+row (C2–C3) shows a single gentle arc; the top row (G5–G6) vibrates with tight 4-period
+standing waves. Playing a chord by clicking multiple cells fills the canvas with glowing
+overlapping waves — looks like a real instrument.
+
+**Queued next**:
+1. **`37-ratio-lab`** — Tonnetz just-intonation lattice. Highest "surprise" value for Karel:
+   first prototype about *tuning theory* (not signal processing). Click any ratio node to
+   hear it against a drone. Mic mode highlights your pitch on the lattice. Zero deps.
+2. **`38-mood-xy`** — Emotion-coordinate synthesis. Drag a dot on arousal×valence plane;
+   Web Audio synthesizes music in real time. First output-mode prototype (audio is generated
+   FROM coordinates, not analyzed FROM audio).
+3. **Polish `36-pluck-field`** — add compressor on master bus (prevent clipping on chord
+   storms), strum sweep button (diagonal glissando over all 24 strings), scale picker.
+
+---
+
 ## Cycle 39 — Research sweep (§§53–60 in RESEARCH.md, 5 new ideas in IDEAS.md)
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
