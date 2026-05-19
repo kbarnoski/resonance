@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 37)
+## ⭐ Newest (Cycle 38)
+
+- **[/dream/35-loop-station](/dream/35-loop-station)** — Loop Station.
+  The first prototype where you **build** a composition rather than react to one. Four
+  phase-locked recording slots: tap **● REC** to record from mic, **■ STOP** to close the
+  loop — it starts playing immediately, locked to the same grid as all other slots. MUTE,
+  CLEAR, and 1/2/4-bar length selectors per slot. BPM tap-tempo button.
+  Demo loads 4 pre-synthesized loops (sub-bass drone, piano phrase, arpeggio, click track)
+  all phase-locked at 80 BPM — try ▶ Load demo loops for an immediate layered result.
+  Canvas mini-waveform per slot with scrolling playhead. Color scheme matches `1-live`
+  (violet=sub-bass, green=low-mid, orange=high-mid, yellow=mid).
+  **"Build a multi-layer performance in real time."** Zero deps; pure Web Audio API.
+
+  Design notes: `src/app/dream/35-loop-station/README.md`
+
+---
+
+## Previous newest (Cycle 37)
 
 - **[/dream/34-spectral-morph](/dream/34-spectral-morph)** — Spectral Morph.
   The first prototype to **resynthesize** rather than visualize. Two audio sources (A and B)
@@ -489,6 +506,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 35-loop-station
+**Status**: `demoable` · **Cycle shipped**: 38 · **Last touched**: 2026-05-19
+
+Open `/dream/35-loop-station`. Click **▶ Load demo loops** — four pre-synthesized loops render
+via OfflineAudioContext and all four start simultaneously on the next bar boundary at 80 BPM.
+You hear a sub-bass drone (violet, Slot 1), piano phrase (green, Slot 2), bright arpeggio
+(orange, Slot 3), and rhythmic click (yellow, Slot 4) — all locked to the same grid.
+
+Try muting Slot 3 (orange arpeggio) and then unmuting it on the next downbeat. Try **CLEAR** on
+the click track, then tap **TAP BPM** on the beat and record a new rhythm with your own voice
+into Slot 4: press **● REC**, make some rhythmic sounds, press **■ STOP**. The new loop
+joins the grid at the next bar boundary. All four layers play phase-locked.
+
+To record without the demo: click **🎤 Start mic**, wait for "mic live", then press **● REC**
+on any empty slot. Record for 2 bars (6 seconds at 80 BPM), then press **■ STOP**.
+
+Design notes: `src/app/dream/35-loop-station/README.md`
+
+---
 
 ### 34-spectral-morph
 **Status**: `demoable` · **Cycle shipped**: 37 · **Last touched**: 2026-05-19

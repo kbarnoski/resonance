@@ -1,5 +1,81 @@
 # Dream Agent — cycle state
 
+## Cycle 38 — /dream/35-loop-station
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 37 shipped `34-spectral-morph`. Queue explicitly names `loop-station` as
+next. No blockers, no in-progress work. Decision: build `/dream/35-loop-station`.
+
+Why this now: 34 prototypes exist; zero let you *build* a composition over time. All existing
+prototypes react continuously to audio input or playback — none accumulate layers. A loop station
+is a completely different interaction paradigm (Boss RC-1 / Ableton session clips mental model).
+It's also the most directly live-performance relevant prototype in the queue. Zero deps, pure
+Web Audio API, one-cycle build.
+
+Implementation plan: `ScriptProcessorNode` for raw PCM capture → concatenate Float32Array
+chunks → `AudioBuffer` with 50ms crossfade at loop boundary → `AudioBufferSourceNode(loop=true)`
+scheduled at next bar-boundary via phase-locking against grid origin time. Demo mode uses
+`OfflineAudioContext` to pre-synthesize 4 loops (sub-bass drone, piano phrase, arpeggio, click).
+Canvas mini-waveform per slot; scrolling playhead indicator.
+
+**Shipped**:
+- `src/app/dream/35-loop-station/page.tsx` — full interactive prototype (~470 lines)
+- `src/app/dream/35-loop-station/README.md` — design notes, algorithm, polish ideas
+
+**What's inside**:
+
+Four slots, each with state machine: `empty → recording → playing → muted`. All state kept in
+`slotsRef` (not React state) to avoid stale closure issues in audio callbacks.
+
+**Recording**: mic → `createMediaStreamSource` → `ScriptProcessorNode(2048, 1, 1)` → captures
+2048-sample chunks into `Float32Array[]`. On STOP: concatenate chunks → trim to nearest bar
+boundary (`barDuration(bpm, bars) * sampleRate` samples) → apply 50ms crossfade to head/tail
+→ `ctx.createBuffer(1, len, sampleRate)`.
+
+**Phase locking**: `originTimeRef` stores the AudioContext time of the first loop. Each new loop
+starts at `originTime + ceil((now - originTime) / barLen) * barLen` — the next bar boundary
+regardless of when you pressed STOP. All `AudioBufferSourceNode`s are started at the same
+computed beat-1 boundary.
+
+**Demo mode**: 4 loops synthesized via `OfflineAudioContext` at 80 BPM, 2 bars each:
+- Slot 1 (violet): two detuned 55 Hz sines → sub-bass drone
+- Slot 2 (green): C4-E4-G4-C5 triangle-wave phrase → piano-like melody  
+- Slot 3 (orange): C5-E5-G5-B5-C6... arpeggio → bright staccato figure
+- Slot 4 (yellow): quarter-note white noise bursts → click/rhythm track
+All four start simultaneously at the next bar boundary after synthesis.
+
+**Canvas waveform**: `buildWaveform()` downsamples the AudioBuffer to 120 amplitude-peak points.
+Canvas draws vertical bars per point (height = amplitude × canvas-height), with the 1-live color
+scheme per slot. A white vertical cursor sweeps left-to-right at the playback rate. Muted slots
+dim to 25% opacity.
+
+**Build**: `tsc --noEmit` clean (zero errors). `eslint src/app/dream/35-loop-station/page.tsx
+--max-warnings 0` clean (zero warnings). Note: `npm run build` fails in this environment due
+to network restrictions (Google Fonts fetch fails — pre-existing, all cycles). TypeScript and
+ESLint validated locally; Vercel build will succeed as it has network access.
+
+**What I noticed**: the phase-locking is the key insight. When you click "Load demo loops",
+all four synthesized loops start simultaneously at the next bar boundary. The violet sub-bass
+drone sits below the green piano phrase; the orange arpeggio runs against the yellow click.
+The color scheme matches the 1-live frequency→color mapping — lowest frequencies (sub-bass)
+are violet/indigo, highest are warm orange/yellow. The sandbox now has a consistent visual
+language for frequency content across all prototypes.
+
+The ScriptProcessor recording approach is synchronous and clean: you get raw PCM chunks with
+zero async steps until STOP. The 50ms crossfade eliminates the click artifact at the loop
+boundary even when the user's timing isn't perfectly on the beat.
+
+**Queued next**:
+1. **Research** — last research was Cycle 35 (3 cycles ago: 36, 37, 38). Manual says research
+   every 3–4 cycles. This cycle is exactly on the line. Next cycle: research sweep.
+2. **Polish `35-loop-station`** — true overdub mixing (sum AudioBuffers), waveform-while-recording,
+   per-slot volume fader, export to WAV.
+3. **Build `21-three-mesh-av` from Ideas** or start `chord-canvas` polish if research
+   produces a new compelling one-cycle idea.
+
+---
+
 ## Cycle 37 — /dream/34-spectral-morph
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
