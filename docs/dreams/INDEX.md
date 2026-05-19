@@ -10,7 +10,49 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 34)
+## ⭐ Newest (Cycle 35 — research)
+
+- **Cycle 35 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§44–52).
+  3 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **`aria-companion`** (build next) — turn-taking piano dialogue agent. User plays a phrase;
+    after 2s of silence the system generates a Markov-chain response and plays it back as a piano
+    sound. "The piano responds when you rest." First **dialogue** prototype in the sandbox (all
+    32 previous are *reactive*, not compositional). Inspired by Aria-Duet, NeurIPS 2025.
+    Zero deps, one cycle.
+
+  - **`spectral-morph`** — AudioWorklet FFT magnitude interpolation. Morph slider blends the
+    spectral character of two audio sources → resynthesized output. Unique: first prototype to
+    resynthesize from frequency-domain manipulation rather than just analyze it. Zero deps,
+    one cycle.
+
+  - **`loop-station`** — 4-slot BPM-synced live loop station. First prototype that lets you
+    BUILD a multi-layer composition over time rather than playing/watching. Loop boundary
+    crossfade eliminates clicks. Demo pre-loads 4 loops. Performance-relevant. Zero deps,
+    one cycle.
+
+  - **Design Space for Live Music Agents** (arxiv 2602.05064, Feb 2026): taxonomy of 184 live
+    music systems. Key insight: "dialogue agents" (listen → compose → respond) are the
+    least-explored category, and the sandbox has zero. `aria-companion` fills this gap.
+
+  - **Web Audio API — Configurable Render Quantum** (Q4 2026 spec): buffer size below 128 samples
+    → sub-3ms audio latency. Will improve all real-time pitch-detection prototypes once shipped.
+
+  - **iPlug3** (Jan 2026): WebGPU + SDL3 + MCP audio plugin framework — scripts mirror web APIs.
+    **Best current path to "Resonance as an installation"** (Tauri mode, venue deployment).
+
+  - **Kling 2.6**: Ghost image + motion prompt → 5s cinematic clip + native audio, $0.14/sec.
+    New option for ghost-animate (alongside HappyHorse, Veo 3.1 Fast). Speech synthesis: the
+    Ghost can say a line from the journey narrative in the clip. Admin-only, needs FAL_KEY.
+
+  **Open questions for Karel**:
+  - Gemini API key still needed for `30-lyria-jam` (infinite steering AI music).
+  - CDN dep (~8MB) still pending for `31-gesture-music` (hand gesture → synth).
+  - `iPlug3` — is the "Resonance as an installation" path worth a dedicated design cycle?
+
+---
+
+## Previous newest (Cycle 34)
 
 - **[/dream/32-mood-vis](/dream/32-mood-vis)** — Mood Viz.
   Audio features (energy, spectral brightness, band coefficient of variation) drive a rule-based

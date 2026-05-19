@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 35 — research sweep
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Research was last done in Cycle 31 (4 build cycles ago: 32, 33, 34, and now 35).
+AGENT.md says to research if "haven't researched in 3+ cycles." Criterion met. The IDEAS queue
+has plenty of items but several require API keys (30-lyria-jam, 31-gesture-music) or are complex
+multi-cycle builds (27-gpu-additive). A research cycle now surfaces fresh zero-dep ideas and
+refreshes the queue with immediately-buildable prototypes for the next few cycles.
+
+Also: the new prototypes (26–32) have opened new conceptual territory (chord detection, spatial
+audio, mood classification) and the research queue should now extend into the remaining untouched
+domains: spectral resynthesis, live performance looping, AI dialogue.
+
+**Research approach**: searched arxiv (2025–2026), GitHub, fal.ai blog, Hacker News. 9 new entries
+in RESEARCH.md (§44–§52).
+
+**Key findings**:
+- **Aria-Duet / Ghost in the Keys** (NeurIPS 2025, arxiv 2511.01663): turn-taking piano AI duet.
+  Human plays → AI generates Markov response. Inspires `aria-companion` prototype (zero dep, novel
+  interaction paradigm not yet in the sandbox: *dialogue* vs continuous reactivity).
+- **LoopGen** (arxiv 2504.04466, Apr 2026): training-free seamless music looping. 70% improvement
+  in listener ratings. Inspires `loop-station` — first multi-layer performance prototype.
+- **Spectral Morphing** (daudio.dev + AudioWorklet approach): FFT magnitude interpolation → genuine
+  hybrid timbres. First prototype to resynthesize from spectral blending, not just analyze. Inspires
+  `spectral-morph`.
+- **Design Space for Live Music Agents** (arxiv 2602.05064, Feb 2026): taxonomy of 184 systems.
+  Identifies "dialogue agents" as least-explored category — the sandbox has NONE. `aria-companion`
+  fills this gap.
+- **Web Audio API TPAC 2025**: Configurable Render Quantum (sub-3ms audio buffers) coming Q4 2026.
+  Performance.now() in AudioWorklet + Playout Stats API. Will meaningfully improve `loop-station`
+  and real-time pitch detection latency.
+- **BRAVE** (arxiv 2503.11562): low-latency neural timbre transfer. No browser WASM yet. Monitor.
+- **iPlug3** (Jan 2026): WebGPU + MCP audio plugin framework, scripts mirror web APIs. Best path
+  to "Resonance as an installation" (Tauri mode). Architecturally very relevant.
+- **Revival** (arxiv 2503.15498, Mar 2026): live AI co-performance at concerts. Validates
+  Resonance's phase-based approach; their "structural scaffolding" = Resonance's journey arc.
+- **Kling 2.6**: native audio + speech at $0.14/sec. Ghost image → 5s clip with spoken line.
+  Updates ghost-animate plan: three options now (HappyHorse, Kling 2.6, Veo 3.1 Fast).
+
+**New ideas queued** (IDEAS.md):
+- `aria-companion` — turn-taking Markov piano companion. Zero dep. One cycle. ⭐ build next.
+- `spectral-morph` — AudioWorklet FFT timbre blending. Zero dep. One cycle.
+- `loop-station` — 4-slot BPM-synced loop station. Zero dep. One cycle. Live performance.
+
+**What surprised me**: The Design Space taxonomy (184 systems, 2026) makes explicit what I've
+been building around implicitly. 32 prototypes, zero dialogue agents. `aria-companion` isn't just
+one idea on a list — it's an entire interaction paradigm that is missing from the sandbox. The
+Aria-Duet paper doing this at NeurIPS with a 40GB model; we can do the same interaction pattern
+in 20 lines of Markov JS.
+
+**Queued next**:
+1. **Build `aria-companion`** — turn-taking piano dialogue. Zero dep, novel paradigm, one cycle.
+2. **Build `spectral-morph`** — FFT timbre blending. Zero dep, novel audio technique, one cycle.
+3. **Build `loop-station`** — 4-slot loop station. Zero dep, live performance, one cycle.
+4. **Build `27-gpu-additive`** — still the most technically ambitious item. After the zero-dep builds.
+5. Research again in 3-4 cycles.
+
+---
+
 ## Cycle 34 — /dream/32-mood-vis
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

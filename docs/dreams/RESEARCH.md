@@ -426,3 +426,92 @@ System combining MIR (tempo, genre, mood, key, instruments) + LLM (to translate 
 **Why it matters for Resonance**: The current 26 prototypes are all signal-reactive (audio signal → visual signal). None are semantically reactive — they don't know if the music is jazz or classical, sad or joyful. A semantic layer would let Resonance's visualization style *understand the music*, not just react to its waveform. Longer-term direction; requires MIR classification inference in the browser (feasible with small pre-trained models via ONNX.js — 5MB classifier).
 
 **Could become a prototype**: `31-mood-vis` — mic input → extract tempo + spectral centroid + zero-crossing rate + key confidence → classify into 6 mood/energy buckets (calm/energetic, bright/dark, complex/simple). Map each bucket to a visual mode (calm+bright = fluid/cymatics, energetic+dark = particles/tessellate, complex = reaction-diffusion). The visualizer *switches mode* as the music changes character. "A visualizer that listens." No ML needed for first version — rule-based classifier from audio features, one-cycle build.
+
+---
+
+## 2026-05-19 — Cycle 35 research sweep
+
+### 44. Design Space for Live Music Agents (arxiv 2602.05064, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.05064
+
+Survey paper analyzing 184 live music agent systems across academic literature and performance video. Proposes a 4-dimensional taxonomy: **usage contexts** (solo practice, duo collaboration, ensemble, installation), **interactions** (accompaniment, continuation, dialogue, layering), **technologies** (rule-based, statistical, neural, hybrid), and **ecosystems** (software-only, hardware-integrated, network-distributed). Identifies that "reaction latency" is the most common challenge cited (85% of papers), followed by "stylistic coherence" and "performer agency."
+
+**Why it matters for Resonance**: The Resonance dream prototypes are building live music agents. This taxonomy positions the current 32 prototypes: `1-live` is a *visualization agent* (no generation); `4-operator` is a *control surface agent*; `23-pitch-harmonize` is a *transformation agent* (duo category). The gap the taxonomy highlights: no **dialogue** agents in the dream zone — systems that listen, then respond with their own musical contribution. The `aria-companion` idea (§45) fills this gap.
+
+---
+
+### 45. Aria-Duet — Real-Time Piano AI Duet at NeurIPS 2025 (arxiv 2511.01663)
+**Source**: https://arxiv.org/abs/2511.01663 · https://neurips.cc/virtual/2025/loc/san-diego/123745
+
+Interactive system for real-time piano AI duet on a Yamaha Disklavier. The interaction model is **turn-taking**: human plays a phrase → signals "over" → Aria (800M-parameter autoregressive transformer trained on 100k+ hours of solo piano, from a large-scale curated MIDI dataset) generates and plays back a musical continuation on the same acoustic piano via MIDI actuation. The model composes "one note at a time" in real-time, maintaining stylistic coherence and harmonic continuity with the human's phrase. Presented at NeurIPS 2025 as a demonstration paper.
+
+**Why it matters**: All 32 dream prototypes respond to audio *immediately* and continuously. None wait, listen, then compose a response. The turn-taking paradigm is musically natural for pianists (jazz trading-4s, call-and-response improvisation) and creates a genuinely collaborative rather than just reactive relationship. The Disklavier is just a physical feedback mechanism — the turn-taking logic could work with Web Audio API synthesis for the AI's response.
+
+**Could become a prototype**: `aria-companion` — mic → pitch detection → 4-bar buffer; after 2s of silence, if 8+ notes captured, generate a Markov-chain response (1st-order bigram pitch matrix built from the user's own notes + a small pentatonic bias for coherence) and play it back via piano-timbred OscillatorNode + short reverb. Visual: split dual piano roll — user's phrase on top (warm), AI response on bottom (cool). "The piano responds when you rest." Zero deps, no server, no ML inference — Markov chain is 20 lines of JS. Captures the *dialogue* paradigm without requiring a 40GB model. Research basis: arxiv 2511.01663, the "Ghost in the Keys" demo.
+
+---
+
+### 46. LoopGen — Training-Free Loopable Music Generation (arxiv 2504.04466, Apr 2026)
+**Source**: https://arxiv.org/abs/2504.04466
+
+Paper addressing a fundamental limitation of generative music models: they produce audio that does not loop cleanly (the start and end timestamps are acoustically inconsistent). LoopGen modifies MAGNeT (a non-autoregressive music transformer) to generate tokens in a circular pattern, explicitly conditioning the end of the sequence on the beginning. Result: 55% improvement in loop transition consistency score, 70% improvement in mean listener rating over baseline. The circular token generation adds ~15% inference time overhead.
+
+**Why it matters for Resonance**: Resonance's journey engine currently loops ambient audio layers from pre-recorded samples. A generative ambient layer that loops seamlessly — synthesized on-the-fly to match the current phase's mood — would let the engine run indefinitely without ever repeating. This is the "infinite ambient" problem LoopGen solves at the generation level. More immediately: a loop-based prototype (`loop-station`) can use the *browser-side crossfade approach* (fade last 0.5s into first 0.5s) to approximate loop coherence without ML — good enough for a demo.
+
+**Could become a prototype**: `loop-station` — 4 record slots, BPM-synced, each max 4 bars. Tap record → play → tap again to close and loop. Crossfade applied at loop boundary (smooth 200ms overlap-add). All slots phase-locked. Mini-waveform canvas per slot. Overdub mode. Demo loads 4 pre-built demo loops. "A loop station in your browser." Zero deps, pure Web Audio API (AudioBufferSourceNode with loop + playbackOffset). Performance-relevant: same paradigm as Boss RC-1 or Ableton session clips. This is the first prototype that lets you BUILD a multi-layer composition in the sandbox rather than just react to one.
+
+---
+
+### 47. Spectral Morphing — FFT Timbre Blending in the Browser
+**Source**: https://daudio.dev/explore/SpectralMorphing · webglfundamentals.org/webgl/lessons/webgl-qna-how-to-get-audio-data-into-a-shader.html
+
+Spectral morphing interpolates two audio signals at the frequency-domain level: FFT both signals simultaneously → linearly blend magnitude spectra (1−t)×|A| + t×|B| → preserve phases from source A → IFFT back to time domain. The output has the timbre fingerprint of A at t=0 and B at t=1, with a genuine acoustical hybrid at intermediate values (not just amplitude crossfade, which would just blend two waveforms). The browser AudioWorklet can implement this natively — two input channels → FFT (Float32Array, size 2048) → interpolate → IFFT → output — entirely at the audio thread with no main-thread involvement. Standard Web Audio API + `Float32Array.prototype.forEach`, zero dependencies.
+
+**Why it matters**: All 32 dream prototypes treat audio as a source to analyze or transform (pitch shift, granular decompose, HRTF place). None resynthesize from blended spectral representations. Spectral morphing would be the first prototype that *creates hybrid timbres that cannot exist in nature* — the sound that is halfway between a saw wave and a sine wave is not just a mix of two sounds; it's a third thing. The AudioWorklet FFT approach has been feasible since 2020 but no dream prototype has used it.
+
+**Could become a prototype**: `spectral-morph` — demo mode: two oscillators (sawtooth + sine wave at same pitch). AudioWorklet samples both, blends spectra based on morph slider. Visual: three stacked horizontal spectrum bars (source A bottom, blend center, source B top), each bar showing spectral magnitude distribution, colored with the `1-live` frequency→hue palette. Mic mode: mic as source A, synthesized tone as source B — morph between mic input and a target timbre. "The sound halfway between your piano and a flute." Zero deps. One-cycle build. Entirely new audio manipulation paradigm in the sandbox.
+
+---
+
+### 48. BRAVE — Low-Latency Neural Audio Synthesizer (arxiv 2503.11562, Mar 2026)
+**Source**: https://arxiv.org/abs/2503.11562 · https://fcaspe.github.io/brave
+
+BRAVE (Bravely Realtime Audio Variational autoEncoder) is an improvement of the RAVE model (previously in research log) focused specifically on latency for interactive musical use. Key architectural change: removes causal convolution look-ahead so the model can run with lower buffer sizes. Achieves "better pitch and loudness replication while showing timbre modification capabilities similar to RAVE" — takes mic input (piano, voice) and resynthesizes it through a learned latent space, effectively doing neural timbre transfer. Audio plugin implementation demonstrated; no browser/WASM version yet, but the RAVE lineage of models has WASM ports in the community.
+
+**Why it matters**: The `23-pitch-harmonize` prototype does rule-based pitch shifting (AudioWorklet ring buffer). BRAVE would do neural timbre transfer — changing the *character* of an instrument (piano → string, voice → choir) in real time, not just the pitch. This is a qualitatively different transformation. No browser implementation exists yet — would require WASM compilation of the BRAVE inference engine — but it's worth tracking as a future `brave-timbre` prototype idea when a WASM port appears.
+
+---
+
+### 49. Web Audio API — Configurable Render Quantum (TPAC 2025 → Q4 2026 spec)
+**Source**: https://www.w3.org/2025/11/TPAC/demo-audio-wg-update.html
+
+The next Web Audio API revision (targeted for Q4 2026 spec completion) includes three relevant features: (1) **Configurable Render Quantum** — developers can set the audio processing buffer size below the current fixed 128-sample minimum, targeting sub-3ms latency for real-time interactive applications. Currently all Web Audio runs at 128 samples (~2.7ms at 48kHz) or larger; lower values would allow ~0.7ms at 128→32 samples. (2) **Performance.now() in AudioWorklet** — high-precision timer within the audio thread for drift correction and A/V sync. (3) **Playout Statistics API** — exposes glitch count and latency metrics on the AudioContext so prototypes can detect and respond to audio underruns.
+
+**Why it matters**: Current dream prototypes target <50ms visual latency (achieved). Audio-to-screen latency for pitch detection in `13-piano-canvas` and `24-piano-roll` is ~20-30ms (within acceptable range). The Configurable Render Quantum would push audio-processing latency for `aria-companion` and `spectral-morph` below 3ms — potentially allowing real-time harmonic processing that feels like physical acoustics, not DSP. The Playout Stats API would let `loop-station` detect and auto-compensate for loop glitches. These changes land Q4 2026, so they'll be available but not yet standard for our current builds.
+
+---
+
+### 50. iPlug3 — WebGPU Audio Plugin Framework for the Agentic Era (Jan 2026)
+**Source**: https://github.com/iPlug3
+
+Ground-up reimagining of audio plug-in/app development started January 1, 2026. Tech stack: WebGPU Native (via Dawn), Skia Graphite (GPU-accelerated 2D), SDL3 (cross-platform windowing/events). Key claims: 120 FPS visualizations via GPU pipeline; scripts written in JS with APIs that mirror their web counterparts and can run in the browser with minimal changes; iPlug3 plug-ins can function as MCP servers (first framework to support MCP natively). The project "is designed for a world where agentic AI workflows dramatically accelerate iteration on DSP, UX, design." Early stage (started Jan 2026) but conceptually aligned with Resonance's Tauri/installation mode vision.
+
+**Why it matters for Resonance**: The `4-operator` prototype sketches what a venue installation UI might look like. iPlug3 provides a concrete path: the same audio/visual code from the dream sandbox (which uses Web Audio + Canvas, mirroring browser APIs) could theoretically be ported to a native iPlug3 app running at 120 FPS on a venue laptop with a dedicated GPU. The MCP server feature could let the operator panel be controlled by a Claude agent in real time. Worth monitoring — this could be the technical foundation for "Resonance as an installation."
+
+---
+
+### 51. Revival — Live Audiovisual AI Musical Co-Performance (arxiv 2503.15498, Mar 2026)
+**Source**: https://arxiv.org/abs/2503.15498
+
+Live audiovisual performance system featuring real-time collaboration between a human percussionist, an electronic music artist, and AI musical agents. AI agents perform two roles: (1) *harmonic resonance* — listens to drummer's input, generates harmonic layers in real-time; (2) *structural scaffolding* — modulates the overall arc of the performance (build, climax, release) based on crowd energy. Audio-reactive visuals generated live and projected. Demonstrated at concert venues. Published March 2026, appears in ACM CHI 2026 proceedings.
+
+**Why it matters for Resonance**: Revival is the closest academic analogue to what Resonance wants to be — an AI co-performer in a live setting, with aesthetic intent, not just technical reactivity. Their "structural scaffolding" role is directly analogous to Resonance's 6-phase journey arc. The paper's finding that AI agents work best as *co-performers with explicit roles* (rather than unconstrained free improvisation) validates Resonance's design decision to have a defined phase structure.
+
+---
+
+### 52. Kling 2.6 — Native Audio + Speech at $0.14/sec (Dec 2025)
+**Source**: https://blog.fal.ai/kling-2-6-is-now-available-on-fal/ · https://fal.ai/models/fal-ai/kling-video/v2.6/pro/image-to-video
+
+Kling 2.6 Pro (released Dec 3, 2025, available day-0 on fal) generates 5s or 10s videos with native audio synthesis directly integrated into the video pipeline. $0.14/sec with audio on (5s clip = $0.70). Supports both text-to-video and image-to-video. Native speech: embed dialogue directly in prompts ("the Ghost stands still and whispers, 'I remember.'"), with lip-sync. Audio: environmental sound effects + ambient scored to visual content. Image-to-video mode takes a Ghost LoRA image + motion prompt → cinematic clip with native audio in one API call.
+
+**Why it matters**: Ghost-animate (queued in IDEAS.md) has been planned for HappyHorse-1.0 (Cycle 23, single-clip winner) and Kling 3.0 (Cycle 27, multi-shot narrative). Kling 2.6 is a cost-effective middle option: $0.70 for a 5s Ghost clip with audio — cheaper than HappyHorse ($0.05-0.30 estimate) and Veo 3.1 Fast ($0.75). The speech capability is new: a Ghost image that *speaks* a line from the journey narrative is a different and potentially more powerful artifact than a Ghost that just moves. Worth a separate test in `2-ghost-lab` alongside the existing presets. Admin-only, needs FAL_KEY.

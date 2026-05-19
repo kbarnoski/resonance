@@ -1,72 +1,66 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 34)
+# Morning digest — last updated 2026-05-19 UTC (Cycle 35)
 
 ## New since yesterday
 
-- **[/dream/32-mood-vis](/dream/32-mood-vis)** — Mood Viz · Cycle 34
-  A visualizer that listens. Audio features (energy, spectral brightness, band spread) drive a
-  rule-based classifier that picks one of **six visual modes** automatically — and switches between
-  them as the music changes character. Demo cycles through all six modes at 5-second intervals so
-  you can see each one without a mic. **"The viz adapts to what you're playing."**
+- **Cycle 35 — research sweep** (no new prototype built)
+  9 new entries in RESEARCH.md (§§44–52). 3 new prototype ideas queued. Top finds:
 
-  Mode → aesthetic mapping:
-  - **minimal** (silence) → Lissajous curve (2:3 ratio, slow rotation)
-  - **calm · bright** (soft + high centroid) → Ink rings (expanding cyan circles from center)
-  - **calm · dark** (soft + low centroid) → Orbital drift (110 violet particles in elliptical orbits)
-  - **energetic · bright** (loud + high centroid) → Radial bloom (72 frequency spokes, warm spectrum)
-  - **energetic · dark** (loud + low centroid) → Pulse field (bass rings + vertical bars, deep red)
-  - **complex** (spectrally irregular) → Spectral mandala (6 rotating arms, one per band, additive)
+  - **`aria-companion`** — queued as next build. User plays a piano phrase; after 2s of silence,
+    the system generates a Markov-chain response (built from the user's own note vocabulary) and
+    plays it back as a piano sound. "The piano responds when you rest." This is the first
+    **dialogue** prototype in the sandbox — all 32 current prototypes are *reactive* (every frame),
+    none are *compositional* (listen → think → respond). Inspired by Aria-Duet from NeurIPS 2025.
+    Zero deps, one-cycle build.
 
-  The transition between modes is natural — 7% canvas fade per frame means old visuals evaporate
-  in ~1s while new ones grow in. No crossfade code needed; the physics do it.
+  - **`spectral-morph`** — queued. AudioWorklet FFT magnitude interpolation blends two audio
+    timbres into a genuine acoustic hybrid. Morph slider at 0.5 produces a sound that can't exist
+    in nature. "The sound halfway between your piano and a flute." First prototype to resynthesize
+    from spectral manipulation. Zero deps, one cycle.
 
-  Best demo path: click Demo → watch minimal → ink rings → orbital drift → radial bloom → pulse
-  field → spectral mandala, each 5 seconds. Then try mic: play a bass note (calm_dark), switch to
-  high chords (calm_bright or energetic_bright), bang something percussive (complex or energetic_dark).
-  The HUD shows current mood + features (amplitude, centroid, spread) so you can see what's driving
-  each switch.
-
-- **[/dream/29-scene-spatial](/dream/29-scene-spatial)** — Scene Spatial · Cycle 33
-  Six Ghost narrative scenes as 3D HRTF spatial audio environments — no audio files, all
-  synthesized. **Wear headphones — Forest Dawn is the clearest demo** (canopy birds above, stream
-  left, piano right — three distinct azimuths immediately obvious).
+  - **`loop-station`** — queued. Four BPM-synced loop slots. Tap to record, tap to close + loop.
+    Phase-locked playback. Overdub. "A Boss RC-1 in your browser." First prototype where you
+    BUILD a multi-layer composition rather than just react to one. Zero deps, one cycle.
 
 ## In progress / partial
 
-- Nothing in progress. Next candidates (pick from IDEAS.md queue):
-  - `27-gpu-additive` — particles = Fourier partials, GPU physics = synthesizer (2 cycles, WebGPU)
-  - `30-lyria-jam` — infinite AI music via Lyria RealTime (needs Gemini API key)
-  - `31-gesture-music` — webcam hand gestures → synthesis (needs MediaPipe CDN approval)
+- Nothing in progress. Priority order for next builds:
+  1. `aria-companion` (dialogue agent — novel paradigm, zero dep)
+  2. `spectral-morph` (FFT resynthesis — novel audio technique, zero dep)
+  3. `loop-station` (live performance looper, zero dep)
+  4. `27-gpu-additive` (GPU physics = synthesizer, complex, WebGPU, 2 cycles)
 
-## Recent prototype set
+## Research findings worth a look (RESEARCH.md §§44–52)
 
-| Cycle | Prototype | One-line |
-|-------|-----------|----------|
-| 34 | **32-mood-vis** (NEW) | Audio character → visual mode: 6 moods × 6 aesthetics |
-| 33 | 29-scene-spatial | Ghost scenes as 3D HRTF spatial audio — wear headphones |
-| 32 | 28-chord-canvas | Play a chord → chord name + color in real time |
-| 31 | (research) | Lyria RealTime, iOS WebGPU, Chord Colourizer, SonoWorld |
-| 30 | 26-score-follow | Bach score lights up as you match notes on piano |
-| 29 | 25-cellular | Conway's Life where cell columns = musical pitches |
+- **Design Space for Live Music Agents** (arxiv 2602.05064, Feb 2026): survey of 184 live music
+  systems. Main finding for Resonance: of all interaction types, "dialogue agents" (listen then
+  respond) are the least-explored. The entire sandbox is reactive; `aria-companion` is the first
+  to respond compositionally. Worth reading if you want to understand where Resonance sits in the
+  broader landscape.
 
-## Research findings worth a look
+- **iPlug3** (Jan 2026): new audio plugin framework using WebGPU + SDL3 + MCP natively. Scripts
+  mirror browser web APIs (so dream sandbox code is transferable). 120 FPS visualizations. iPlug3
+  plug-ins are MCP servers — a Claude agent could control a venue installation from a chat window.
+  **If you're thinking about Resonance as a live installation**, iPlug3 is the clearest current
+  path. Worth a design-focused conversation.
 
-From Cycle 31:
-- **Lyria RealTime API** (Google DeepMind) — WebSocket streaming infinite music, live text
-  prompt blending ("jazz piano" → "ambient drone"). Browser-callable with Gemini API key.
-  Most live-performance-relevant AI music find yet. Prototype `30-lyria-jam` is queued.
-  **Open question: do you have a Gemini API key to test this?**
-- **iOS 26 / Safari 26** — WebGPU now universal on iPhone/iPad. All WebGPU prototypes
-  (15-webgpu-fluid, 16-particle-life-gpu, future 27-gpu-additive) now run on Karel's phone.
-- **gesture-music** (31) — webcam hand gestures → synthesis via MediaPipe WASM (~8MB CDN).
-  **Open question: OK to load MediaPipe from jsDelivr CDN?**
+- **Kling 2.6**: Ghost image → 5s cinematic video + native audio + optional spoken line, $0.70/clip.
+  "A king walks slowly and says 'I remember.'" — same syntax works for Ghost. Three ghost-animate
+  options now: HappyHorse (cinematic quality), Kling 2.6 (audio + speech), Veo 3.1 Fast (cheapest
+  at $0.75 with audio). All need FAL_KEY.
+
+- **Web Audio API — Configurable Render Quantum** (Q4 2026): buffer sizes below 128 samples →
+  sub-3ms audio latency. Will improve all pitch-detection prototypes (currently ~20ms detection
+  lag). Lands in Q4 2026. Nothing to build yet — but `aria-companion` and `loop-station` will
+  benefit when it ships.
 
 ## Open questions for Karel
 
-1. Do you have a Gemini API key? Enables `30-lyria-jam` — infinite streaming AI music you can
-   steer live ("jazz piano" at 1.5× + "ambient drone" at 0.5×, slider between them mid-set).
-2. OK to load MediaPipe from CDN (~8MB)? Enables `31-gesture-music` — hand position →
-   synth pitch, palm spread → reverb, curl → harmonics. No mic needed.
-3. Which scene in `29-scene-spatial` do you want deepened? Forest Dawn (most spatial clarity),
-   Cosmic Ascension (most meditative), Stone Chamber (most tactile).
-4. `32-mood-vis` classifier thresholds — do the 6 moods feel right from your piano? If
-   certain chords or passages are misfiling, I can tune amplitude/centroid thresholds.
+1. **Gemini API key?** — Enables `30-lyria-jam` (infinite streaming AI music, steer live with
+   text sliders: "jazz piano 1.5× + ambient drone 0.5×").
+2. **MediaPipe CDN dep (~8MB)?** — Enables `31-gesture-music` (hand position → pitch, spread →
+   reverb, curl → harmonics). One-time download.
+3. **Aria-companion Markov strategy**: the prototype learns your pitch vocabulary while you play.
+   Should it also accept a target style preset (pentatonic, chromatic, blues scale) to bias the
+   response? Would that feel too curated or usefully constraining for live performance?
+4. **iPlug3 / installation mode** — worth a dedicated conversation cycle? It's the clearest path
+   to a venue-deployable Resonance with GPU + MIDI + projection at 120 FPS.
