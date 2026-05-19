@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 28 — /dream/24-piano-roll
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 27 was a research cycle that explicitly queued `24-piano-roll` as the Cycle 28 target. No blockers. No in-progress prototypes. Clear spec, zero new deps (Web Audio + Canvas2D), one-cycle build. Fills the last gap in the piano-representation triptych: `13-piano-canvas` (abstract painting), `22-code-score` (written notation), and now `24-piano-roll` (scrolling notation). Every pianist has used a piano roll in a DAW — this is the first dream prototype that renders recognizable musical notation from live input.
+
+**Shipped**:
+- `src/app/dream/24-piano-roll/page.tsx` — full interactive prototype
+- `src/app/dream/24-piano-roll/README.md` — design notes
+
+**What's inside**:
+
+- Canvas2D scrolling piano roll: vertical axis = MIDI pitch (C2–C7), horizontal = time scrolling left at `bpmRef × 80px/beat / 60`. Each detected note is a rounded rectangle: hue from `freqToHue()` (same as `1-live`/`13-piano-canvas`), glow from additive blending + `shadowBlur`, leading-edge pulse on active notes.
+- Same McLeod autocorrelation pitch detector as `13-piano-canvas` (fftSize=4096, confidence 0.82). RMS gate 0.012 for silence.
+- Demo mode: plays Bach Invention No.1 (BWV 772) opening 35 notes at chosen BPM via triangle OscillatorNodes into analyser (not speakers). Demo uses the known frequency directly (no autocorrelation on synthesized signal) for sharper bars.
+- Piano key sidebar (44px): black/white keys rendered per MIDI semitone. Active key highlights in the note's hue.
+- BPM slider (40–160) adjustable from idle screen and while running. Changes scroll speed live.
+- Beat grid lines (vertical) and C-note octave lines (horizontal) for orientation.
+- Memory management: bars >200px off-screen left are discarded.
+
+**Build**: `npm run build` passes cleanly. `/dream/24-piano-roll` renders as 4.04 kB static route. Zero new errors or warnings in new code (all warnings in output are pre-existing from production codebase).
+
+**Queued next**:
+1. **Build `25-cellular`** — Conway Game of Life as a musical instrument. Surprise factor highest in the queue.
+2. **Build `26-score-follow`** — live score cursor; follows your playing through the Bach fragment.
+3. **Polish `23-pitch-harmonize`** — FFT vocoder for cleaner transients.
+
+---
+
 ## Cycle 27 — Research Cycle
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

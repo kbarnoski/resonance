@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 27 — research)
+## ⭐ Newest (Cycle 28)
+
+- **[/dream/24-piano-roll](/dream/24-piano-roll)** — Piano Roll.
+  Play piano or sing — each note appears as a glowing colored bar scrolling left, placed at its
+  MIDI pitch on a vertical axis (C2 bottom, C7 top). The exact representation every DAW uses,
+  rendered live from mic input. Hue matches `1-live` and `13-piano-canvas` (low pitch = cool,
+  high = warm). Piano key sidebar highlights the active key. BPM slider sets scroll speed.
+  Demo mode plays Bach Invention No.1 silently and paints its own notes — the roll fills itself
+  from the score in real time. **"What you played, as notation."**
+  Completes the piano-representation triptych: `13-piano-canvas` (abstract painting),
+  `22-code-score` (written score), `24-piano-roll` (scrolling notation).
+
+---
+
+## Previous newest (Cycle 27 — research)
 
 - **Cycle 27 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§29–36).
   4 new prototype ideas added to IDEAS.md. Highlights:
@@ -300,6 +314,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 24-piano-roll
+**Status**: `demoable` · **Cycle shipped**: 28 · **Last touched**: 2026-05-19
+
+Open `/dream/24-piano-roll`. Click **Demo mode** — Bach Invention No.1 begins rendering its
+own notes immediately. Watch the colored bars scroll left from the cursor line; C-note octave
+markers help you read the pitch positions. Try the BPM slider — the bars stretch or compress
+proportionally.
+
+Click **Start mic** and play any single-note melody on piano or hum. Each note appears as a
+glowing bar at its exact MIDI pitch. The piano key sidebar on the left highlights your current
+note. Play a scale and watch the bars step up or down the grid in real time.
+
+Design notes: `src/app/dream/24-piano-roll/README.md`
+
+---
 
 ### 23-pitch-harmonize
 **Status**: `demoable` · **Cycle shipped**: 26 · **Last touched**: 2026-05-19
