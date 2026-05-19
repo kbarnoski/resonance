@@ -128,6 +128,12 @@ export default async function DreamPage() {
           </p>
 
           <div className="mt-8 flex flex-wrap gap-2 text-sm">
+            <Link
+              href="/dream/history"
+              className="rounded-full border border-violet-400/30 bg-violet-500/15 px-4 py-2 text-violet-100 transition-colors hover:bg-violet-500/25"
+            >
+              ↻ Cycle history
+            </Link>
             <a
               href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/MORNING.md"
               target="_blank"
