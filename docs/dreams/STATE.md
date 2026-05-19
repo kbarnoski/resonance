@@ -1,5 +1,70 @@
 # Dream Agent — cycle state
 
+## Cycle 37 — /dream/34-spectral-morph
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 36 shipped `33-aria-companion`. STATE.md explicitly queued `spectral-morph`
+as the next build. No blockers, no in-progress work. The decision was clear: first prototype in
+the sandbox to *resynthesize from spectral manipulation* rather than just analyze or react.
+32 previous prototypes use FFT for visualization; this one uses it to produce new sound.
+
+Build plan: AudioWorklet with inline 1024-point Cooley-Tukey FFT. Ring buffers for both inputs.
+Every 256 samples: window → FFT both channels → interpolate magnitudes → IFFT with source A
+phase → overlap-add to output. Blob URL loaded via `audioWorklet.addModule()`. Three stacked
+spectrum strips on canvas (A/Blend/B). Demo: sawtooth → sine at C3.
+
+**Shipped**:
+- `src/app/dream/34-spectral-morph/page.tsx` — full interactive prototype (~310 lines)
+- `src/app/dream/34-spectral-morph/README.md` — FFT/OLA design, phase vocoder context, polish ideas
+
+**What's inside**:
+
+**AudioWorklet**: `SpectralMorphProc` with N=1024, hop=256 (4× overlap). Precomputed Hann window,
+bit-reversal LUT, and twiddle factor LUT (cos/sin for forward/inverse FFT). Ring buffers `ringA`
+and `ringB` (size N). OLA output ring of size 2N to avoid write-ahead collision. Every `hop`
+samples, `morph()` runs: extracts N-sample windows from both ring buffers, FFTs both, blends
+magnitudes `(1-t)|A| + t|B|`, keeps source A phase (`atan2`), reconstructs and IFFTs, OLA-adds
+the windowed output (scale 2*hop/N = 0.5 for proper Hann OLA reconstruction).
+
+**Audio graph**:
+- Demo: `OscillatorNode(sawtooth, C3)` → `GainNode` → `AnalyserA` + `worklet.input[0]`
+- Always: `OscillatorNode(sine/triangle/noise)` → `GainNode` → `AnalyserB` + `worklet.input[1]`
+- `worklet` → `AnalyserOut` → `destination`
+- Mic mode: `MediaStreamSource` → `GainNode(2.0)` → `AnalyserA` + `worklet.input[0]`
+
+**Visual**: Three stacked Canvas2D spectrum strips (top=B, middle=Blend, bottom=A). Each strip
+shows 200 frequency bins with hue gradient violet→orange (low→high frequency). Morph T shown as
+vertical dashed cursor across all three panels. Label strip at bottom of each panel.
+
+**Controls**: morph slider (live, posts to worklet.port); Source B selector (sine/triangle/noise,
+set before launch); Demo button; Mic button; Stop.
+
+**Build**: `npm run build` passes cleanly. `/dream/34-spectral-morph` static route 4.48 kB.
+Zero TypeScript errors (fixed two closure-narrowing issues: `canvas` and `gfx` null checks inside
+the RAF `tick` closure). Zero ESLint errors from my code.
+
+**What I noticed**: The demo is immediately legible — at t=0 the sawtooth buzzes with many
+harmonics visible in all three panels; at t=1 the sine has a single spike. Dragging the slider
+shows the BLEND panel live, with harmonics gradually shrinking as you move toward B. The effect
+is perceptually real: you can hear the timbre change at t=0.5 is NOT just a quieter sawtooth —
+the harmonic decay rate changes noticeably.
+
+The `noise` source B is the most striking: at t=0.5, the output has the sawtooth's fundamental
+pitch but with all harmonics smeared into broadband energy — a pitched noise, like a bowed edge.
+Karel should try: slide all the way to t=1 with noise B and back — it's a clean saw-to-noise
+cross-dissolve that a crossfade could never do cleanly.
+
+**Queued next**:
+1. **Build `loop-station`** — 4-slot BPM-synced live loop station. First prototype to BUILD
+   a composition over time. Zero dep, live performance relevant, one cycle.
+2. **Polish `34-spectral-morph`** — phase propagation across hops (proper phase vocoder),
+   power-domain blending option, instrument spectrum templates for B.
+3. **Research** — last research was Cycle 35 (2 cycles ago). Research in 1–2 more cycles.
+4. **Build `21-three-mesh-av` polish** or `aria-companion` rhythmic mirroring if time allows.
+
+---
+
 ## Cycle 36 — /dream/33-aria-companion
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

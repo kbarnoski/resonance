@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 36)
+## ⭐ Newest (Cycle 37)
+
+- **[/dream/34-spectral-morph](/dream/34-spectral-morph)** — Spectral Morph.
+  The first prototype to **resynthesize** rather than visualize. Two audio sources (A and B)
+  are FFT'd every 256 samples by an inline AudioWorklet (1024-point Cooley-Tukey, hand-rolled).
+  The morph slider blends their magnitude spectra in the frequency domain, then IFFTs back to
+  audio with Source A's phase. At t=0.5 you hear a genuinely new timbre — not a crossfade.
+  Demo: sawtooth (many harmonics) → sine (one harmonic). Best: try Source B = **noise** —
+  the saw-to-noise cross-dissolve is something a crossfade can never produce.
+  Visual: three stacked spectrum strips (B top, Blend middle, A bottom); vertical cursor shows
+  morph position live.
+  **"Morph between your piano and a sawtooth — through the spectrum, not a mixer."**
+  Zero deps; pure Web Audio + inline FFT worklet.
+
+  Design notes: `src/app/dream/34-spectral-morph/README.md`
+
+---
+
+## Previous newest (Cycle 36)
 
 - **[/dream/33-aria-companion](/dream/33-aria-companion)** — Aria Companion.
   The first **dialogue** prototype in the sandbox — all 32 previous prototypes are reactive;
@@ -471,6 +489,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 34-spectral-morph
+**Status**: `demoable` · **Cycle shipped**: 37 · **Last touched**: 2026-05-19
+
+Open `/dream/34-spectral-morph`. Click **▶ Demo (sawtooth → sine)** — both sources start immediately.
+Watch the three spectrum strips: Source A (bottom) blazes with harmonics (sawtooth), Source B (top)
+has a single tall spike at C3 (sine). The Blend (middle) starts identical to A.
+
+Drag the **MORPH** slider toward B. The harmonics in the Blend strip compress: n=2, 3, 4... fade.
+At t=0.5 the blend has half-amplitude harmonics — a timbre between saw and sine. At t=1 only the
+fundamental remains. Drag back fast: the harmonics snap back immediately.
+
+For the best demo: select **noise** as Source B before starting. Slide to t=0.5 — you hear a
+pitched buzz with noisy harmonics, like a bowed metal edge. Slide to t=1.0 — pure broadband noise.
+Slide back to 0 — a clean sawtooth. This cross-dissolve is acoustically real; a crossfade cannot do it.
+
+**Mic mode**: click **🎤 Start mic**, play piano. Source A is your mic input; Source B is the
+selected synth. Drag the slider to gradually dissolve your piano into a sine wave of the same pitch
+and phase. The Blend spectrum strip shows your playing's harmonic structure as you play it.
+
+Design notes: `src/app/dream/34-spectral-morph/README.md`
+
+---
 
 ### 33-aria-companion
 **Status**: `demoable` · **Cycle shipped**: 36 · **Last touched**: 2026-05-19
