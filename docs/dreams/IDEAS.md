@@ -788,3 +788,79 @@ Key findings from Cycle 44 (2026-05-19):
 - Transformers.js v4 (§66) — 53% smaller bundles, 200ms load (was 2s). Makes browser ML fully viable.
 - limut (§67) — browser live coding music+visuals, updated May 2026. Inspires `code-vis` prototype.
 - Suno v5.5 (§68) — voice cloning + generative stems (12 tracks). Stems → `suno-spatial` prototype (needs Suno API).
+
+---
+
+## FROM RESEARCH (Cycle 48, 2026-05-19) — promoted to queue
+
+### lyria-ghost — Ghost scene image → Lyria 3 Clip → 30s ambient Ghost soundtrack `[queued, needs GEMINI_API_KEY]`
+Route: `/dream/43-lyria-ghost`. UI shows the five Ghost preset scenes (Stone Chamber, Root Portal,
+Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension) as a button row — same names as
+`29-scene-spatial`. Click a scene: a scene-specific text prompt is pre-filled in an editable
+textarea ("ambient score for a stone chamber, slow tempo, single reverbed piano chord, long decay,
+no percussion"). Optionally drag-and-drop a custom Ghost image (or use a built-in placeholder
+thumbnail per scene). Click "Generate" → call `lyria-3-clip-preview` via Gemini API → receive 30s
+MP3 → decode via AudioContext → play through live-bloom radial visualizer (same as `1-live`).
+Waveform player shows duration; "Generate variation" calls again with the same inputs + a new seed.
+
+"Your Ghost scene, given a voice." Admin-only. Budget: free tier in Google AI Studio, then minimal
+per-call billing. Needs GEMINI_API_KEY (same key as `30-lyria-jam`). Zero new npm deps — Gemini
+API called via standard `fetch`. One-cycle build. RESEARCH.md §69.
+
+### stable-extend — record a piano phrase, AI continues it `[queued, needs FAL_KEY]`
+Route: `/dream/43-stable-extend`. Split screen: left = record controls (same mic-capture as
+`35-loop-station`: tap ● REC to start, ■ STOP to close, waveform preview shows captured audio).
+Right = generation panel: optional text prompt to guide style ("extend this into a cello duet",
+"continue in a jazz register"), then "Extend →" button. Sends the captured audio to
+`fal-ai/stable-audio-25/inpaint` (continuation mode) with the current audio as the prefix clip and a
+target duration of 30s. Progress bar during generation (~5–10s). Returned audio is decoded and played
+through the live-bloom radial visualizer. Waveform panel shows original clip (amber) + AI extension
+(blue) side by side as a horizontal strip.
+
+"What if your phrase kept going?" This is the first dream prototype that extends YOUR playing with AI
+— `6-compose` generates from a text prompt; `14-reference-compose` style-matches; `stable-extend`
+simply continues from where you stopped. Budget: $0.20/generation (FAL_KEY already in use). No new
+approvals needed. Admin-optional. One-cycle build. RESEARCH.md §70.
+
+### binaural-lyria — binaural brainwave entrainment + matched AI ambient music `[queued, needs GEMINI_API_KEY]`
+Route: upgrade of `/dream/42-binaural` (or standalone `/dream/44-binaural-lyria`). Step 1: user
+selects a target brainwave state (δ/θ/α/β/γ) — same five presets as `42-binaural`. Step 2: binaural
+beats play at the target beat frequency (exact same synthesis as `42-binaural`). Step 3: "Generate
+ambient track" button calls `lyria-3-clip-preview` with a state-matched prompt: δ→"deep ambient,
+long slow drones, vast reverb, no melody, no rhythm, 0.5–2 BPM pulse, subharmonic bass"; θ→"meditative
+flute and bowl, gentle 6 BPM breath"; α→"calm piano solo, gentle 10 BPM, warm room reverb";
+β→"focused acoustic guitar, steady 16 BPM arpeggio"; γ→"bright gamelan, 40 BPM metallic shimmer".
+The 30s ambient track plays alongside the binaural beats at a user-controlled blend level (0–100%
+ambient). A session timer counts the current state duration. After 30s, the ambient track regenerates
+automatically (next generation pre-fetched and queued via AudioContext for gapless looping).
+
+"A meditation session where the music knows what your brain is trying to do." Combines the science of
+brainwave entrainment (`42-binaural`, RESEARCH.md §74/75) with AI-generated ambient sound sculpted for
+that brainwave state. Needs GEMINI_API_KEY. $0 on free tier (Lyria 3 Clip). One-cycle build.
+
+### piano-to-ghost — your playing generates Ghost imagery + music simultaneously `[queued, needs GEMINI_API_KEY + FAL_KEY]`
+Route: `/dream/45-piano-to-ghost`. Mic → autocorrelation pitch detection (same as `13-piano-canvas`)
++ 12-bin chroma chord detection (same as `28-chord-canvas`) → arousal/valence coordinates (same
+mapping as `38-mood-xy`). After 2 seconds of silence AND ≥6 notes detected: (1) call `lyria-3-clip-preview`
+with a Ghost-themed prompt shaped by the current arousal/valence quadrant ("cosmic ascending major
+chords, energetic and bright, 80 BPM" / "stone chamber minor meditation, calm and dark, 50 BPM" /
+etc.); simultaneously (2) call the Ghost LoRA on fal.ai with a scene prompt derived from the same
+quadrant (energetic+bright→"cosmic ascension, Ghost figure in flight, golden light" / calm+dark→"stone
+chamber, Ghost figure seated, single candle"). The canvas shows two panels: top = live piano roll
+(from `24-piano-roll`), bottom = the Ghost image fading in over 3s. When the Lyria track arrives, it
+plays through the live-bloom visualizer. Both update on the next phrase (2s silence → generate again).
+
+"Your playing generates your world." First prototype that connects ALL the dream zone's systems: pitch
+detection, chord analysis, emotion mapping, AI music generation, Ghost image generation. Admin-only.
+Budget: ~$0.01–0.05/phrase (Lyria Clip + Ghost LoRA). Needs GEMINI_API_KEY + FAL_KEY. Complex (2
+concurrent API calls). Two-cycle build likely. RESEARCH.md §73.
+
+Key findings from Cycle 48 (2026-05-19):
+- Lyria 3 (RESEARCH.md §69) — Gemini API music generation with image input. `lyria-3-clip-preview` = 30s MP3. Up to 10 images influence mood. Same key as lyria-jam. Inspires `lyria-ghost`.
+- Stable Audio 2.5 (§70) — fal.ai audio continuation at $0.20/audio. Extend YOUR recording with AI. Inspires `stable-extend`.
+- Suno Studio v5 Generative Stems (§71) — 12-stem export from AI music. API stems endpoint not yet public. Monitor for `suno-stems-spatial`.
+- ONNX Runtime Web 1.26.0 (§72) — WebGPU EP now default. Faster than estimated; upgrades `neural-pitch` viability.
+- Real-time MIDI-to-image (§73) — MIDI emotional analysis → generative images, validated with musicians. Inspires `piano-to-ghost`.
+- Music as "controlled hallucination" (§74) — Frontiers 2026 framework: brain simulates a "virtual body" inside the music. Validates Resonance's "transcendent listening" thesis scientifically.
+- MindMelody (§75) — EEG-driven closed-loop music therapy. Inspires `binaural-lyria`: binaural beats + Lyria ambient music matched to the target state.
+- Three.js WebGPU/TSL maturity (§76) — full cross-browser production readiness. Reduces risk of `gpu-additive`. ASTRODITHER techniques worth applying to `21-three-mesh-av` polish.

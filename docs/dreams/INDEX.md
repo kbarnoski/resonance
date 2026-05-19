@@ -10,7 +10,43 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 47)
+## ⭐ Newest (Cycle 48 — research)
+
+- **Cycle 48 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§69–76).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **Lyria 3** (Google DeepMind, Feb 2026) — Gemini API music generation with **image input**.
+    Send a Ghost scene image → receive a 30s ambient MP3 shaped by that visual's mood. Same
+    Gemini API key as `30-lyria-jam`. Prototype: `lyria-ghost`. Admin-only. Free tier.
+
+  - **Stable Audio 2.5** (Stability AI, 2026) — fal.ai audio continuation at **$0.20/audio**.
+    Record a piano phrase → AI extends it seamlessly into a 30s track. Open source. FAL_KEY
+    already in use. Prototype: `stable-extend`. One-cycle build, no new approvals needed.
+
+  - **`binaural-lyria`** — Upgrade of `42-binaural`: binaural beats at the target brainwave
+    frequency + Lyria 3 generates ambient music tuned to that same state (delta=vast drones,
+    alpha=calm piano, gamma=bright gamelan). Meditation + AI music closed loop. Needs Gemini key.
+
+  - **`piano-to-ghost`** — Play piano → mic chord detection + emotion coordinates → Lyria 3
+    generates Ghost-themed music + Ghost LoRA generates a matching image simultaneously. All of
+    the dream zone's systems unified. Needs GEMINI_API_KEY + FAL_KEY. Complex.
+
+  - **Music as "controlled hallucination"** (Frontiers, 2026) — The brain simulates a "virtual
+    body" inside music via active interoceptive inference. Validates Resonance's "transcendent
+    listening" thesis scientifically. The binaural beat prototype (`42-binaural`) is already one
+    of the most direct implementations of this effect.
+
+  - **ONNX Runtime Web 1.26.0** — WebGPU EP default. `neural-pitch` CREPE-tiny would now run
+    at ~1ms/frame inference. Raises urgency of asking Karel about CDN ONNX dep.
+
+  - **Open questions for Karel**:
+    - GEMINI_API_KEY → enables `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`, `piano-to-ghost`
+    - CDN ONNX dep (~2MB) OK? → enables `neural-pitch` upgrade at near-zero latency (v1.26 WebGPU)
+    - FAL_KEY already in use → `stable-extend` buildable immediately next cycle
+
+---
+
+## Previous newest (Cycle 47)
 
 - **[/dream/42-binaural](/dream/42-binaural)** — Binaural Beat Synthesizer.
   Two pure sine waves — one per ear — with a precise frequency difference the brain perceives

@@ -691,3 +691,93 @@ Suno v5.5 (March 26, 2026): three major additions. (1) **Voices**: upload a clea
 **Why it matters for Resonance**: No public API for Voices or Custom Models. However, the **Generative Stems** feature is the most interesting for a dream prototype: 12 stems from a single generation means you can place each stem in 3D HRTF space (`7-spatial`). A `compose-spatial` prototype: type a text prompt → Suno generates a track → receive 12 stems → assign each stem to a 3D position (kick = below, piano = center-front, strings = above-left, etc.) → hear the AI music as a full 3D spatial experience. Needs Suno API (currently basic API available, stems endpoint TBD). The stems concept also suggests a future where `35-loop-station` receives AI-generated stems as individual tracks instead of recording them live. Watch for API expansion.
 
 **Could become a prototype**: `suno-spatial` — type a prompt → call Suno API (if stems endpoint is available) → receive stems → auto-place stems in HRTF space → 3D spatial canvas (same design as `7-spatial`). Admin-only (needs Suno API key). If stems API not available: generate full mix → split via WebAudio 6-band filter bank → pseudo-spatial placement (approximation). Budget: Suno API ~$0.01-0.05/generation. Needs Karel OK on Suno API integration.
+
+---
+
+## 2026-05-19 — Cycle 48 research sweep
+
+### 69. Lyria 3 — Google DeepMind Multimodal Music Generation via Gemini API (February 2026)
+**Source**: https://ai.google.dev/gemini-api/docs/music-generation · https://blog.google/innovation-and-ai/technology/developers-tools/lyria-3-developers/
+
+Google DeepMind launched Lyria 3 on February 18, 2026, via the Gemini API. Two endpoints: `lyria-3-clip-preview` (generates a 30-second MP3 clip) and `lyria-3-pro-preview` (full-length songs, a couple of minutes, WAV or MP3). Both use the standard `generateContent` method. Controls include: lyrics with section tags (`[Verse]`, `[Chorus]`), up to 10 images that influence mood/style/atmosphere, specific instrument requests, vocal gender/timbre/range control, and genre/key/mood/BPM/duration all specifiable in the prompt. Timestamps can target specific moments in the song. Available via the same `$GEMINI_API_KEY` as Lyria RealTime.
+
+**Why it matters for Resonance**: This is the missing link between Ghost imagery and Ghost audio. Send a Ghost LoRA image (stone chamber, forest dawn, cosmic ascension) alongside a text prompt ("ambient score for this scene, slow tempo, piano and reverb, no vocals") and Lyria 3 Clip returns a 30-second ambient track shaped by the visual. Karel's existing Gemini key request (for `30-lyria-jam`) unlocks this too. Budget: free tier in AI Studio, then per-request billing.
+
+**Could become a prototype**: `lyria-ghost` — UI shows the 5 Ghost scene presets (same names as `29-scene-spatial`). Click a scene, optionally upload a custom Ghost image. "Generate" calls Lyria 3 Clip with the image + a scene-specific text prompt. Returned audio plays through the live-bloom radial visualizer (`1-live`-style). Waveform player shows duration. Second track "Generate variation" calls again with the same image + a random seed. Admin-only. One-cycle build. Needs GEMINI_API_KEY.
+
+---
+
+### 70. Stable Audio 2.5 — Audio Continuation + Inpainting on fal.ai (2026)
+**Source**: https://blog.fal.ai/stable-audio-2-5-now-available-on-fal/ · https://fal.ai/models/fal-ai/stable-audio-25/inpaint · https://stability.ai/stable-audio
+
+Stability AI's Stable Audio 2.5 is available on fal.ai at **$0.20/audio** and open-source (GitHub: Stability-AI/stable-audio-tools). Two new capabilities over Stable Audio 2.0: (1) **Audio continuation** — upload an audio clip, specify a start point, AI extends it seamlessly into a longer piece; (2) **Audio inpainting** — select a segment within an existing track, AI regenerates only that section in context of the surrounding audio. Supports text-to-audio, audio-to-audio, inpainting workflows.
+
+**Why it matters for Resonance**: This is the first browser-accessible "continue YOUR playing" API. A pianist records a phrase → sends it to Stable Audio 2.5 continuation → receives a 30-second extension of that idea. The extension is contextually aware of what was played (key, tempo, style) and continues in the same direction. Different from ACE-Step (text-to-music) and MiniMax (style-match): this one extends audio that exists. Also, the inpainting mode could be used to "fix" a loop that has an awkward splice point — same use case as Udio v4 inpainting.
+
+**Could become a prototype**: `stable-extend` — mic records 4–8 bars (same mechanism as `35-loop-station` capture). "Extend" button sends the recording to `fal-ai/stable-audio-25/inpaint` (continuation mode). Progress bar during generation (~5–10s for 30s output). Returned audio plays through live-bloom visualizer automatically. Waveform shows original (highlighted) + extension side by side. Optional text prompt to guide style ("extend this into a cello-and-piano duet"). Admin-optional. Needs FAL_KEY (already in use). $0.20/generation. One-cycle build.
+
+---
+
+### 71. Suno Studio v5 Generative Stems — 12-Track AI Separation (March 2026)
+**Source**: https://undetectr.com/blog/suno-studio-guide · https://neuronad.com/suno-vs-udio/
+
+Suno Studio (released with v5) is a built-in DAW that generates up to 12 stems from any AI-generated track: vocal, backing vocals, drums (kick, snare, hi-hat separate), bass, piano, strings, guitar, pads, and more. Also includes Warp Markers (tempo adjustment), Remove FX (strip reverb/effects), Alternates (generate multiple versions of individual sections), EQ and level controls. Stems can be exported for use in external DAWs. Suno public API currently doesn't expose stems endpoint — stems are only accessible via the web UI. Watch for API expansion.
+
+**Why it matters for Resonance**: When the Suno API exposes stems, it enables a uniquely spatial listening experience: generate a Ghost-themed track → receive 12 stems → place each in 3D HRTF space (piano center-front, strings above-left, bass below, kick behind). The resulting spatialized mix would surround the listener inside the Ghost world's music. The `35-loop-station` could also load individual AI stems as its 4 base tracks rather than recording them manually — no mic needed for a high-quality demo.
+
+**Could become a prototype** (when API ready): `suno-stems-spatial` — type a Ghost scene prompt → call Suno API for a track + stems → auto-place each stem at a hand-authored 3D HRTF position → 3D canvas view (same design as `29-scene-spatial`). Needs Suno API key + stems endpoint. Monitor for API release. Fallback: generate a mix → WebAudio 6-band filter bank → pseudo-spatialize by frequency band (approximates stem separation using the `7-spatial` pattern, buildable today with existing FAL_KEY).
+
+---
+
+### 72. ONNX Runtime Web 1.26.0 — WebGPU Execution Provider Default (May 2026)
+**Source**: https://www.npmjs.com/package/onnxruntime-web · https://onnxruntime.ai/docs/tutorials/web/ep-webgpu.html
+
+ONNX Runtime Web 1.26.0 was published in May 2026 (approximately 11 days before this cycle). The WebGPU execution provider is now the recommended default over WebGL for GPU-accelerated inference. WebGL support is in maintenance mode. The WebAssembly EP runs at near-native CPU speed. With WebGPU EP on a discrete GPU (or integrated GPU with good WebGPU support), ONNX model inference runs ~5–10× faster than WASM EP. The update cadence is approximately quarterly; v1.26 is the latest stable release.
+
+**Why it matters for Resonance**: The `neural-pitch` upgrade proposal (CREPE-tiny ONNX, ~2MB from CDN) was estimated to load in ~200ms and run inference in ~5ms per frame. With the 1.26 WebGPU EP: load is still ~200ms but inference drops to ~1ms per frame — essentially zero latency for pitch detection. This makes CREPE-tiny viable as the default pitch detector even in high-refresh-rate scenarios (120fps canvas + 60Hz pitch detection). Also, `40-browser-musicgen` (MusicGen-small, 390MB) would benefit from WebGPU EP for the forward pass, reducing generation time from ~15-30s to potentially ~8-15s.
+
+**No new standalone prototype** — this is a platform improvement. Directly upgrades the viability of §61 (`neural-pitch`) and §56 (`browser-musicgen`). Flags the CDN dep question as even more worth asking Karel about.
+
+---
+
+### 73. Real-Time MIDI-to-Image via Emotional Analysis (ICCC 2024, arxiv 2407.05584)
+**Source**: https://arxiv.org/abs/2407.05584
+
+Published at the International Conference on Computational Creativity 2024. System pipeline: MIDI keyboard → harmonic analysis (chord quality, key, register) + emotional inference (arousal/valence from `38-mood-xy`-style coordinates) → generative AI image in real-time. User study with musicians confirmed they found the generated imagery novel and creatively inspiring during improvisation. The generated images respond to the emotional character of what's being played, not just individual notes.
+
+**Why it matters for Resonance**: This paper validates the "playing → visual world" direction with a user study. Resonance already has mic→pitch (`13-piano-canvas`), mic→chord (`28-chord-canvas`), and emotion coordinates→music (`38-mood-xy`). The missing piece is: playing → Ghost image that matches the mood of what you're playing. The dream zone has all the building blocks. A `piano-to-ghost` prototype would close the loop: play piano → detect chords + valence/arousal → Lyria 3 Clip generates Ghost-themed ambient music in that mood → Ghost LoRA on fal.ai generates an image for that mood simultaneously. Both audio and image updated after each phrase.
+
+**Could become a prototype**: `piano-to-ghost` — mic → autocorrelation pitch + chord detection → current arousal/valence coordinates (same logic as `38-mood-xy`) → after phrase ends (2s silence): (a) call Lyria 3 Clip with mood description + a Ghost scene name, (b) call fal.ai Ghost LoRA with a mood-matched prompt. Dual output: ambient music plays through live-bloom, Ghost image fills the canvas background. "Your playing generates your world." Needs GEMINI_API_KEY + FAL_KEY. Complex (2 concurrent API calls). Admin-only. ~$0.01-0.05/generation.
+
+---
+
+### 74. Music as "Controlled Hallucination" — Active Interoceptive Inference (Frontiers, 2026)
+**Source**: https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1759699/full
+
+A 2026 Frontiers in Psychology paper presents a novel theoretical framework: musical emotion is an instance of "active interoceptive inference." The brain integrates musical structures (rhythm, harmony, timbre) with physiological signals and contextual cues to infer the somatic state of a "virtual body" implied by the music — a controlled hallucination of being the kind of person who would be in the emotional state the music suggests. This extends the "predictive processing" account of music to the interoceptive domain: we don't just predict the next note; we predict how our whole body should feel.
+
+**Why it matters for Resonance**: This framework directly validates Resonance's "transcendent listening" vision at a neuroscientific level. The brain is not just hearing music — it's simulating a body inside the music. Binaural beats (`42-binaural`) are one of the most direct mechanisms for this: forcing brainwave entrainment literally reshapes the brain's prediction of its own state. The framework also explains why the Ghost journey arc feels meaningful: it's not triggering emotions, it's inducing a particular "virtual body" simulation. Could inform how Resonance describes its value to users: "We help your brain imagine a different version of itself."
+
+**No new standalone prototype** — this is theoretical context. Informs the design rationale for `binaural-lyria` (§75) and validates the overall Resonance vision. Worth noting to Karel as a philosophical anchor.
+
+---
+
+### 75. MindMelody — Closed-Loop EEG-Driven Music Therapy (arxiv 2605.01235, May 2026)
+**Source**: https://arxiv.org/abs/2605.01235
+
+Published May 2026. A system for personalized music therapy that continuously monitors EEG brainwave state, formulates a therapeutic plan using a RAG-equipped LLM (retrieval from music therapy literature), and generates music via a Hierarchical EEG Controller. The feedback loop updates in real time: as the user's EEG shifts, the music adapts. Validated against established music therapy protocols and shows higher perceived helpfulness vs. fixed music playlists.
+
+**Why it matters for Resonance**: This paper is the high-end version of what `42-binaural` does with the lowest possible technology (just Web Audio oscillators). The key concept is the **closed loop**: the system adjusts music based on brain state, and the music adjusts brain state. In the dream zone, we can approximate this loop without EEG hardware: binaural beats entrain the brain toward a target state; Lyria 3 generates ambient music calibrated to that same state; the user manually signals whether the entrainment is working (via the existing state selector). A soft closed loop without sensors.
+
+**Could become a prototype**: `binaural-lyria` — upgrade of `42-binaural`. Step 1: user selects a target state (δ/θ/α/β/γ). Step 2: binaural beats play at the target frequency (same as current `42-binaural`). Step 3: "Generate ambient track" calls Lyria 3 Clip with a state-matched prompt (`"delta: deep ambient, 1-2 BPM, low drones, no rhythm, vast reverb"` / `"alpha: gentle piano meditation, 10 BPM, quiet, warm"` / etc.). The 30s track plays alongside the binaural beats, blended at a user-controlled mix level. A session timer shows how long you've been in the target state. After 30s the ambient track regenerates (seamless loop via Web Audio scheduling). Needs GEMINI_API_KEY. $0 with free tier. One-cycle build.
+
+---
+
+### 76. Three.js r174+ WebGPU/TSL — Production Maturity Across All Browsers (2026)
+**Source**: https://www.oflight.co.jp/en/columns/threejs-webgpu-tsl-r3f-2026 · https://discourse.threejs.org/t/astrodither-audio-reactive-tsl-experiment/87533
+
+Three.js r174 (2026) marks full production readiness of the WebGPU renderer and Three Shading Language (TSL). TSL is a node-based shader abstraction: one shader written in TSL compiles to both WGSL (WebGPU) and GLSL (WebGL) automatically, eliminating the need to maintain separate shader versions. With Safari WebGPU shipping in iOS/iPadOS 26, cross-browser WebGPU coverage is now universal. Compute shaders enable GPU-side physics, fluids, and particle systems with lower CPU overhead than WebGL. The community is actively building audio-reactive TSL experiments (ASTRODITHER: fluid sim + bloom + dithering + time warp, all in TSL).
+
+**Why it matters for Resonance**: `27-gpu-additive` was always the most ambitious prototype in the queue (particles = Fourier partials, GPU physics = synthesizer). The platform risk was that WebGL2 ≠ WebGPU in feature set, and WGSL knowledge was required for compute shaders. TSL eliminates the WGSL requirement — you write TSL and it works everywhere. Three.js already installed in Resonance (0.182). The `21-three-mesh-av` prototype proves the R3F + Three.js pipeline works. The remaining question for `gpu-additive` is only complexity, not platform. Two cycles, probably. TSL also unlocks a polish pass on `21-three-mesh-av`: ASTRODITHER-style selective bloom + dithering would make the mesh significantly more beautiful.
+
+**Could become a prototype**: `gpu-additive` — now more feasible with TSL universality. 9,000 particles, each assigned a harmonic partial index. Consonant ratios attract; dissonant repel. Particle Y-amplitudes → audio samples via AudioWorklet bridge. The swarm IS the synthesizer. Two-cycle build. Additionally, polish `21-three-mesh-av` with TSL dithering + selective bloom (one cycle, zero new APIs).

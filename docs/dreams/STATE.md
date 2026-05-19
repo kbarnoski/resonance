@@ -1,5 +1,93 @@
 # Dream Agent — cycle state
 
+## Cycle 48 — Research sweep (§§69–76 in RESEARCH.md, 4 new ideas in IDEAS.md)
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 47 shipped `42-binaural`. STATE.md from Cycle 47 explicitly flagged research as
+due at Cycle 48: "Cycle 44 was last, now 3 cycles ago (45, 46, 47). Due next cycle (Cycle 48)."
+The 3–4 cycle cadence has hit its lower bound. No blockers. No in-progress prototypes. Decision: research cycle.
+
+**Sources searched**: Google DeepMind blog (Lyria 3 launch), Gemini API docs (music generation),
+Stability AI blog + fal.ai (Stable Audio 2.5), Suno/Udio comparison articles, ONNX Runtime Web npm +
+docs (v1.26), arxiv (2407.05584, 2605.01235), Frontiers in Psychology 2026, Three.js forum + blog
+(WebGPU/TSL 2026 state), HN generative music threads, fal.ai explore (audio models), Replicate music
+collection. 8 new RESEARCH.md entries (§§69–76). 4 new prototype ideas queued in IDEAS.md.
+
+**What I found**:
+
+- **Lyria 3 (§69, Feb 2026)** — Google DeepMind launched Lyria 3 via Gemini API. Two endpoints:
+  `lyria-3-clip-preview` (30s MP3) and `lyria-3-pro-preview` (full songs, WAV/MP3). Multimodal:
+  accepts up to 10 images alongside text. Images influence the mood, style, atmosphere of the generated
+  audio — a Ghost scene photo feeds directly into the music generation. Same Gemini API key as
+  lyria-jam. Inspires `lyria-ghost`: Ghost image → Lyria 3 Clip → 30s Ghost soundtrack → live-bloom.
+
+- **Stable Audio 2.5 (§70, 2026)** — Open-source model from Stability AI on fal.ai at $0.20/audio.
+  Audio continuation: upload an audio clip → AI extends it seamlessly into a longer piece. Audio
+  inpainting: mark a section → AI regenerates just that region in context. First browser-accessible
+  "continue YOUR playing" API in the dream zone. Inspires `stable-extend`: mic recording → Stable Audio
+  2.5 continuation → 30s extended track → visualizer. Needs FAL_KEY (already in use).
+
+- **Suno Studio v5 Generative Stems (§71, Mar 2026)** — Suno's built-in DAW now exports up to 12
+  stems (vocal, drums, bass, piano, etc.) from any AI-generated track. Voice cloning available (Pro).
+  Suno API still not public. When it releases, `suno-stems-spatial` is the target: generate a track →
+  12 stems → spatialize each via HRTF (piano front-left, drums above, bass below).
+
+- **ONNX Runtime Web 1.26.0 (§72, May 2026)** — WebGPU execution provider now default over WebGL.
+  Near-native speed on WASM. CREPE-tiny ONNX would load in ~200ms with WebGPU EP (vs the old ~2s
+  estimate). Directly upgrades the `neural-pitch` proposal — if Karel approves the CDN dep, it's
+  faster than previously thought.
+
+- **Real-time MIDI-to-image (§73, ICCC 2024)** — System takes MIDI keyboard input, extracts
+  emotional/harmonic state, generates matching images via generative AI in real-time. User study
+  confirms musicians find it novel and creatively inspiring. Inspires `piano-to-ghost`: mic chord
+  detection → arousal/valence → Lyria 3 music + Ghost LoRA image for the current mood. Complex but
+  uniquely connects all the dream zone's systems.
+
+- **Music as "controlled hallucination" (§74, Frontiers 2026)** — New theoretical framework: brain
+  treats musical emotion as active interoceptive inference of a "virtual body" state. Directly
+  validates Resonance's "transcendent listening" thesis. The binaural beat prototype (`42-binaural`)
+  induces exactly this. Inspires `binaural-lyria`: binaural beat state → Lyria 3 generates ambient
+  music matching the target brainwave state → therapeutic closed loop.
+
+- **MindMelody (§75, arxiv 2605.01235, May 2026)** — Closed-loop EEG-driven system: RAG-equipped LLM
+  formulates a music therapy plan, hierarchical EEG controller synthesizes music based on current
+  brainwave state, continuous feedback loop updates parameters. Not browser-native but directly
+  inspires the `binaural-lyria` concept: binaural beats as the EEG substitute (entrainment rather than
+  sensing), Lyria 3 as the music generator.
+
+- **Three.js WebGPU/TSL maturity (§76, 2026)** — Full production readiness across all major browsers
+  including iOS/Safari. TSL compiles to WGSL+GLSL automatically. Compute shaders for GPU physics,
+  fluids, particles. Community is actively building audio-reactive TSL experiments. `27-gpu-additive`
+  is now less risky: WebGPU is universal, TSL eliminates WGSL-only concerns. Still 2 cycles, but
+  the platform foundation is solid.
+
+**What surprised me**: The Lyria 3 image-to-music feature is the most immediately actionable finding.
+The fact that you can send a Ghost LoRA image into the Gemini API and receive a 30-second ambient
+score that matches the visual's mood is exactly what the dream zone has been building toward — the
+separation between Ghost imagery and Ghost audio has been a persistent gap. Lyria 3 closes it with
+one API call. Karel's Gemini key (already being requested for lyria-jam) unlocks both `lyria-ghost`
+(one-shot image→music) AND `lyria-jam` (infinite streaming music steering) AND `binaural-lyria`
+(therapeutic session augmentation). One key, three prototypes.
+
+The "music as controlled hallucination" framing is philosophically resonant (pun intended). It
+positions Resonance not as a tool that reacts to music, but as a tool that manages what the brain
+predicts the music will feel like. The binaural prototype is already doing this directly.
+
+**Queued next** (Cycle 49):
+1. **`stable-extend`** — most immediately buildable (FAL_KEY already in use). Record piano phrase →
+   Stable Audio 2.5 continuation → 30s extended track → live-bloom visualizer. First prototype
+   that extends YOUR playing with AI. $0.20/generation. No new API key approvals needed.
+2. **`lyria-ghost`** — needs GEMINI_API_KEY (flagged in MORNING.md). Ghost image → Lyria 3 Clip
+   → 30s ambient Ghost soundtrack. Admin-only. Uniquely connects Ghost imagery with generated music.
+3. **`binaural-lyria`** — also needs GEMINI_API_KEY. Binaural state → Lyria generates ambient music
+   in matching mood. Natural evolution of `42-binaural` into a therapeutic session tool.
+4. **Polish `42-binaural`** — session timer, journal textarea (localStorage per state), optional
+   pink/brown noise layer. No API needed. One cycle. Good fallback if Karel doesn't have Gemini key.
+5. **`gpu-additive`** — now more feasible with TSL maturity and universal WebGPU. Still complex.
+
+---
+
 ## Cycle 47 — /dream/42-binaural
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
