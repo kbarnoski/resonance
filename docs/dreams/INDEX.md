@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 32)
+## ⭐ Newest (Cycle 33)
+
+- **[/dream/29-scene-spatial](/dream/29-scene-spatial)** — Scene Spatial.
+  Six Ghost narrative scenes (Stone Chamber → Cosmic Ascension), each with a hand-authored 3D
+  soundscape built from oscillators, filtered noise, and FM chirps — no audio files. Sources
+  placed on a sphere via Web Audio HRTF PannerNode. Drag any colored dot to reposition a sound
+  source in real time; the HRTF updates instantly. Canvas shows top-down sphere view (F/B/L/R
+  compass; ▲/▼ for elevation). Reverb from a per-scene procedurally generated impulse response.
+  **"Each Ghost scene has a sound as distinctive as its visuals — wear headphones."**
+  Best demo: Forest Dawn (canopy birds above, stream left, piano right — three distinct azimuths).
+
+  Design notes: `src/app/dream/29-scene-spatial/README.md`
+
+---
+
+## Previous newest (Cycle 32)
 
 - **[/dream/28-chord-canvas](/dream/28-chord-canvas)** — Chord Canvas.
   Play a chord on piano (or mic any pitched source) — the chord name appears in huge monospace
@@ -385,6 +400,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 29-scene-spatial
+**Status**: `demoable` · **Cycle shipped**: 33 · **Last touched**: 2026-05-19
+
+Open `/dream/29-scene-spatial`. Click any scene button — **Forest Dawn** is the clearest demo.
+Press **START SCENE**. With headphones: canopy birds arrive from above (▲), the stream from your
+left-front, and a piano note from your right-front. All three azimuths are distinct. Try dragging
+the "Canopy" dot from above to your left — the birds instantly move from overhead to lateral.
+
+Try **Stone Chamber**: hear the piano note decay with a long 3.5s stone-room reverb tail.
+Percussion hits arrive from directly above (stone on ceiling). The low resonance drone is
+positioned behind and below — you feel the weight of the room.
+
+Try **Cosmic Ascension**: the 55/110/220Hz harmonic pads (pure octaves) swell in over 2 seconds
+from near-silence. The 6s reverb tail makes the space feel vast. Drag Root upward — the
+fundamental bass moves from front-center toward overhead.
+
+No mic needed. No audio files. All synthesis — oscillators, looped filtered noise, FM chirps.
+
+Design notes: `src/app/dream/29-scene-spatial/README.md`
+
+---
 
 ### 28-chord-canvas
 **Status**: `demoable` · **Cycle shipped**: 32 · **Last touched**: 2026-05-19

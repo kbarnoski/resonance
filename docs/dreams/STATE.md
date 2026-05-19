@@ -1,5 +1,85 @@
 # Dream Agent — cycle state
 
+## Cycle 33 — /dream/29-scene-spatial
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 32 shipped `28-chord-canvas` and explicitly queued `29-scene-spatial` as the
+Cycle 33 target. No blockers. No in-progress prototypes. Clear spec in IDEAS.md: six Ghost preset
+scenes (Stone Chamber → Cosmic Ascension), each with hand-authored 3D HRTF audio built from
+synthesized oscillators, filtered noise, and FM chirps — no audio files. Zero new dependencies.
+One-cycle build.
+
+Decision was immediate. `29-scene-spatial` extends `7-spatial`'s HRTF primitives into a much richer
+experience: instead of six undifferentiated frequency bands, each scene has a *narrative* — the stone
+chamber has a piano, stone percussion, and low resonance; the cosmic ascension has slowly-building
+harmonic pads rising toward silence. The prototype answers "what would it feel like to *be inside*
+each Ghost scene?" The spatial audio grounds the imagery in something physical.
+
+**Shipped**:
+- `src/app/dream/29-scene-spatial/page.tsx` — full interactive prototype (~380 lines)
+- `src/app/dream/29-scene-spatial/README.md` — design notes, scene audio maps, polish ideas
+
+**What's inside**:
+
+Six scenes, each with 3–4 sound sources at hand-authored 3D positions:
+- **Stone Chamber**: piano-loop at front-left, stone percussion above, low resonance drone behind/below.
+  Long reverb (3.5s). The piano occasionally voices a perfect fifth (+7 semitones) for modal texture.
+- **Root Portal**: 41Hz sine drone directly below (sub-bass "earth pull"), forest noise ahead,
+  FM bird chirp at front-right-above. 2s reverb. The drone is felt more than heard.
+- **Underground Pool**: bandpass water trickle right, 38Hz cave resonance below, slow-attack pad echo
+  at left-behind. Long reverb (5s) — the cave tail.
+- **Tiny Planet**: two wind sources left and right creating a dome effect; two FM bird chirps above
+  at different frequencies (2800Hz and 3200Hz). Short reverb (1.2s) — open sky.
+- **Forest Dawn**: FM canopy birdsong above, bandpass stream trickle at left-front, piano-loop at
+  right-front. 2s reverb. The three sources are at clearly distinct azimuths — most obvious spatial
+  demo in the set.
+- **Cosmic Ascension**: three pad oscillators (55Hz root, 110Hz octave, 220Hz two-octave) at
+  progressively higher elevations. All harmonic. 6s reverb tail. Slow attack (2s) makes them swell
+  in from silence.
+
+Audio chain: each source → dryGain → PannerNode (HRTF) → destination. Also each source → wetGain
+→ shared ConvolverNode (synthetic impulse response = exponentially-decayed white noise per scene)
+→ destination. Dry/wet split ~70/30 for most sources, 50/50 for reverb-heavy ones.
+
+Impulse response generated procedurally: `Math.random() * 2 - 1` × `(1 - i/len)^decay`. Decay
+exponent varies: 3 for stone, 2 for pool, 1.5 for cosmic. No audio files — entire prototype is
+self-contained synthesis.
+
+Canvas: top-down sphere view (listener head at center, nose pointing forward/canvas-top). Sound
+source dots: X = left/right, Z = front/back (z<0 = front = top of canvas). Elevation shown by
+dot size and glow (higher = larger + brighter). Drag any dot to reposition the source; HRTF
+PannerNode updates in real time. Works on mobile (touch drag handlers). Preview mode when stopped
+(scene layout visible, no audio).
+
+**Build**: `npm run build` passed cleanly. `/dream/29-scene-spatial` renders as static route.
+Zero errors, zero new warnings.
+
+**What I noticed**: The forest-dawn scene has the clearest HRTF illusion because the three sources
+are at genuinely distinct azimuths (canopy above, stream left-front, piano right-front). When you
+drag the canopy source from above to the right, the birdsong immediately shifts from "high and
+centered" to "lateral" — the HRTF position change is visceral. Recommend Karel try this one first
+with headphones.
+
+The cosmic ascension pad is the most musical: 55/110/220Hz are 1:2:4 ratios (pure octaves),
+so even with the 6s reverb smearing, the result is a clean harmonic series rising from below.
+The 2s slow attack means the first 2 seconds sound like near-silence, then the pads swell in.
+This matches the intended "final frontier" feeling.
+
+Bird chirps use FM: carrier at 2800–3200Hz, modulator at 9Hz, depth = 8% of carrier. The modulator
+makes the chirp sound warped/vibrating rather than clean — more realistic than a pure sine chirp.
+Gate envelope: 220ms burst, optional double-chirp at 50% probability.
+
+**Queued next**:
+1. **Build `32-mood-vis`** — semantic visualizer that switches visual modes based on audio character
+   (calm/energetic/complex). Zero deps, rule-based MIR classifier, one-cycle build.
+2. **Polish `29-scene-spatial`** — add an azimuth elevation control (second canvas showing side view),
+   add 7th/9th chord extensions to the piano-loop (richer harmony), try Lorenz drift on positions.
+3. **Build `27-gpu-additive`** — most ambitious: particles = Fourier partials, GPU physics = synthesizer.
+   Probably needs 2 cycles.
+
+---
+
 ## Cycle 32 — /dream/28-chord-canvas
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
