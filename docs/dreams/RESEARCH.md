@@ -515,3 +515,91 @@ Live audiovisual performance system featuring real-time collaboration between a 
 Kling 2.6 Pro (released Dec 3, 2025, available day-0 on fal) generates 5s or 10s videos with native audio synthesis directly integrated into the video pipeline. $0.14/sec with audio on (5s clip = $0.70). Supports both text-to-video and image-to-video. Native speech: embed dialogue directly in prompts ("the Ghost stands still and whispers, 'I remember.'"), with lip-sync. Audio: environmental sound effects + ambient scored to visual content. Image-to-video mode takes a Ghost LoRA image + motion prompt → cinematic clip with native audio in one API call.
 
 **Why it matters**: Ghost-animate (queued in IDEAS.md) has been planned for HappyHorse-1.0 (Cycle 23, single-clip winner) and Kling 3.0 (Cycle 27, multi-shot narrative). Kling 2.6 is a cost-effective middle option: $0.70 for a 5s Ghost clip with audio — cheaper than HappyHorse ($0.05-0.30 estimate) and Veo 3.1 Fast ($0.75). The speech capability is new: a Ghost image that *speaks* a line from the journey narrative is a different and potentially more powerful artifact than a Ghost that just moves. Worth a separate test in `2-ghost-lab` alongside the existing presets. Admin-only, needs FAL_KEY.
+
+---
+
+## 2026-05-19 — Cycle 39 research sweep
+
+### 53. ReaLJam — Anticipation in Real-Time Human-AI Music Jamming (arxiv 2502.21267, CHI 2025)
+**Source**: https://arxiv.org/abs/2502.21267
+
+Real-time human-AI musical jamming system built around a Transformer agent trained with reinforcement learning. The key interaction innovation is **anticipation**: the AI continuously predicts how the performance will unfold and *visually conveys its plan to the user before executing it*. Ghost notes appear in the interface for the AI's predicted next move; as each note fires, the ghost solidifies. This makes the AI's intention legible, converting the interaction from "AI reacts" to "human-AI dialogue." Published at CHI 2025. The paper finds anticipation dramatically improves perceived collaboration quality compared to systems that just play without preview.
+
+**Could become a prototype**: `39-anticipate` — extend `33-aria-companion` with ghost-note preview. When the Markov chain has a response planned, render it as semi-transparent bars in the lower piano roll 0.5s before each note fires. No latency increase — the ghost just shows what's coming. "Watch Aria decide before she plays." Zero deps, one-cycle upgrade of aria-companion.
+
+---
+
+### 54. Karplus-Strong Synthesis — Physical Modeling in Web Audio (3 nodes per string)
+**Source**: https://ccrma.stanford.edu/~jos/pasp/Karplus_Strong_Algorithm.html · en.wikipedia.org/wiki/Karplus–Strong_string_synthesis
+
+Karplus-Strong (1983) simulates a plucked string with a feedback delay loop: inject a short noise burst into a ring buffer, pass each sample through a one-pole lowpass filter (averaging two adjacent samples), and loop back with a gain < 1. In Web Audio API: one `DelayNode` (delay = 1/frequency), one `BiquadFilterNode(lowpass)` in the feedback path, one `GainNode(0.996)` for decay. Three nodes per string. Multiple strings ring simultaneously with no interaction. Zero deps, zero ml, no external calls.
+
+**Why it matters for Resonance**: 35 prototypes exist in the dream sandbox; none use physical modeling synthesis. All synthesis so far is oscillators (sine, triangle, sawtooth) or granular decomposition. Karplus-Strong produces the distinctly organic sound of a plucked string (guitar, koto, harp, dulcimer) — qualitatively different from anything in the sandbox. It is also tactile: the act of "plucking" (injecting a noise burst) is intuitive, and multiple simultaneous strings ring and decay naturally.
+
+**Could become a prototype**: `36-pluck-field` — a canvas of 24 virtual strings tuned to C pentatonic across 4 octaves, each implemented as 3 Web Audio nodes. Click any cell to pluck; mic onset events pluck random strings. Visual: damped sine wave animation per string cell, fading as the string decays. "What if the canvas was a harp?" Zero deps. One-cycle build. First physical modeling prototype.
+
+---
+
+### 55. LIMITER — Gamified Just Intonation Interface (arxiv 2507.08675, Jul 2025)
+**Source**: https://arxiv.org/abs/2507.08675
+
+LIMITER presents a digital musical instrument designed to make just intonation (JI) and microtonal music accessible. It uses color coding, geometric transformations, and game-like mechanics to help performers navigate the Tonnetz harmonic lattice without music-theory background. The paper introduces visualization strategies that make harmonic distance and consonance viscerally legible (nearby nodes = consonant; distant nodes = dissonant). Published Jul 2025, focuses on interaction design for alternative tuning systems.
+
+**Why it matters for Resonance**: None of the 35 dream prototypes address tuning systems at all — they all assume 12-TET equal temperament. Just intonation makes perfect fifths and major thirds *purer* (less beating), which is directly relevant to piano playing and the "transcendent" aesthetic Resonance aims for. The Tonnetz lattice is also a beautiful, unfamiliar visualization that pianists rarely encounter. A JI explorer would be high "surprise" for Karel.
+
+**Could become a prototype**: `37-ratio-lab` — an interactive 9×5 Tonnetz lattice on canvas. X axis = perfect fifths (×3/2), Y axis = major thirds (×5/4). Click any node to hear the just-intonation interval against a sustained drone. Color = consonance (warm = near 1/1, cool = far). Mic mode: pitch detection highlights the closest lattice node to detected pitch. "Navigate harmony as a landscape — where do you fall?" Zero deps. One-cycle build.
+
+---
+
+### 56. MusicGen in the Browser via Transformers.js — Zero-Cost AI Music Generation
+**Source**: https://huggingface.co/posts/Xenova/489076696143187 · https://github.com/huggingface/transformers.js/
+
+Meta's MusicGen (text→music autoregressive Transformer) runs entirely in the browser via Transformers.js + ONNX Runtime. The `facebook/musicgen-small` model (~390MB ONNX weights) downloads once, caches in browser, and generates up to 30s of audio with zero server/API calls. Streaming: first audio chunk available at ~5s using the `TextStreamer` API. Quality: coherent musical output with melody, harmony, rhythm — not just noise. The Xenova HuggingFace Space demo shows this works in Chrome at 2026-standard ONNX Runtime speeds.
+
+**Why it matters**: The long-queued `6-compose` prototype has been blocked on FAL_KEY for ACE-Step. MusicGen browser needs no API key, no rate limits, and costs nothing per generation after the one-time model download. The 390MB download is significant (comparable to a HD video), but browsers cache it indefinitely. This makes a genuinely AI-generated music prototype possible with zero API dependency.
+
+**Could become a prototype**: `40-browser-musicgen` — text prompt → MusicGen in-browser → plays through live-bloom radial visualizer. Needs Karel OK on (1) ~390MB CDN download and (2) adding `@xenova/transformers` to package.json (or loading from CDN as ESM). Could also be built as a CDN-only prototype using `import()` from jsDelivr to avoid package.json changes.
+
+---
+
+### 57. ASTRODITHER — Three.js TSL Audio-Reactive with Dithering and Time Warp
+**Source**: https://discourse.threejs.org/t/astrodither-audio-reactive-tsl-experiment/87533
+
+Community Three.js forum post showcasing an audio-reactive WebGPU experiment built with TSL (Three Shading Language). Techniques used: custom fluid simulation, selective bloom (only bright fragments get bloom), **ordered dithering** post-processing (halftone-like grain), and **time warp** (non-linear time acceleration of visual evolution tied to audio energy). The creator describes it as emerging from experimentation with TSL — a discovery rather than a plan.
+
+**Why it matters for Resonance**: Dithering as a visual effect is absent from all 35 dream prototypes. Selective bloom (bloom only on the most displaced/brightest geometry) is more nuanced than the full-scene bloom in `21-three-mesh-av`. Time warp (speeding up a visual process with audio energy) is a technique that makes the visualizer feel *alive in time* rather than just bright or dark. All three techniques are available in Three.js r171+ via TSL and could be added to `21-three-mesh-av` in a polish cycle, or inform a new dedicated prototype.
+
+**No new prototype recommended** from this finding — but worth incorporating into the next `21-three-mesh-av` polish cycle.
+
+---
+
+### 58. AffectMachine-Pop — Real-Time Emotion-Parameterized Music Synthesis (arxiv 2506.08200, Jun 2026)
+**Source**: https://arxiv.org/abs/2506.08200
+
+An expert system for generating retro-pop music controlled by **arousal** and **valence** — the two axes of Russell's circumplex model of affect (the dominant model of emotion in music psychology). Arousal (calm↔excited) and valence (sad↔happy) together span most of the emotional space of music. The system accepts real-time emotion parameter updates and adjusts its generative behavior continuously. Validated in a listening study showing high emotional alignment between target and perceived emotion. Published June 2026.
+
+**Why it matters for Resonance**: The arousal × valence plane maps directly and intuitively to music parameters any pianist understands — tempo, loudness, chord quality, harmonic density, register. A browser implementation using rule-based Web Audio synthesis (no ML required for the synthesis itself) could make a genuinely new interaction: drag a dot on a 2D emotional plane and hear the music change in real time. This is distinct from all 35 existing prototypes, which use audio *as input*; this one uses it *as output from an emotional coordinate*.
+
+**Could become a prototype**: `38-mood-xy` — a 2D canvas with valence (X) × arousal (Y). Drag a dot; Web Audio synthesizes: arousal → BPM (40–140), voice count (1–6), register; valence → chord quality (major/minor/diminished), brightness, duration. Background color tracks quadrant. Trail shows emotional journey. "Navigate your musical mood." Zero deps. One-cycle build.
+
+---
+
+### 59. DARC — Drum Accompaniment from Rhythm Input (arxiv 2601.02357, Jan 2026)
+**Source**: https://arxiv.org/abs/2601.02357
+
+DARC adds fine-grained rhythm control to drum generation: the model conditions on both musical context (other audio stems) and explicit rhythm prompts such as **beatboxing or tapping tracks**. Uses parameter-efficient fine-tuning of the STAGE model. The key innovation: a user can hum, tap, or beatbox a rhythm and the system generates a matching drum track that respects both the rhythmic pattern and the musical context. No browser demo; no public API at time of research.
+
+**Why it matters**: The `35-loop-station` prototype lets users record loops via mic. A natural extension: instead of recording and looping raw audio, the user taps a rhythmic pattern (detected via onset/transient analysis), and the system synthesizes a drum track from Web Audio scheduled notes matching that rhythm. This would be the first prototype where the *rhythmic pattern* (not just audio energy) drives synthesis. No ML needed — browser-side: detect onsets → build a rhythm vector → schedule drum-pattern Web Audio nodes.
+
+**Could become a prototype**: `drum-tap` — Route `/dream/36-drum-tap` (alternate to pluck-field). Mic: onset detection builds a rhythm buffer over 2 bars. After 2 bars of silence: quantize onsets to 16th-note grid, generate kick/snare/hihat pattern from grid density using Web Audio percussion synthesis (bandpass-filtered noise for snare, sine decay for kick). Visual: 2-bar grid canvas showing detected vs. quantized onsets. "Tap a rhythm; hear it as drums." Zero deps. One-cycle build.
+
+---
+
+### 60. Mozualization — Multimodal Emotion-to-Music Interface (arxiv 2504.13891, Apr 2026)
+**Source**: https://arxiv.org/abs/2504.13891 (CHI 2025 submission)
+
+A multimodal music generation tool that accepts keywords, images, and audio clips (music segments or environmental sounds) as combined creative inputs. Users express an emotion or scene through any combination of these media, and the AI generates a cohesive musical output. User study with nine music enthusiasts; published CHI 2025. The interface prioritizes real-world usability and low barriers.
+
+**Why it matters for Resonance**: The idea of mixing multiple expressive modalities (image + text + sound → music) directly aligns with Resonance's multi-sensory philosophy. A browser version would need fal.ai or similar for the generation step, but the *interface concept* — upload a photo + type a mood word + hum a melody fragment → generate a scene's music — is compelling as a future `compose` prototype variant. More nuanced than just "type a text prompt."
+
+**No new standalone prototype recommended** from this finding — it upgrades the planned `6-compose` spec (add image input alongside text). Note for when `6-compose` is built.

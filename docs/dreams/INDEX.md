@@ -10,7 +10,40 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 38)
+## ⭐ Newest (Cycle 39 — research)
+
+- **Cycle 39 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§53–60).
+  5 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **`36-pluck-field`** (build next) — Karplus-Strong virtual string field. Click canvas cells
+    to pluck 24 tuned virtual strings (C pentatonic, 4 octaves). Each string = 3 Web Audio nodes
+    (`DelayNode` feedback loop). Physical modeling synthesis — none of the 35 existing prototypes
+    use it. "What if the canvas was a harp?" Zero deps, one cycle.
+
+  - **`37-ratio-lab`** (build next) — Tonnetz just intonation lattice explorer. Click any ratio
+    node to hear the just-intonation interval against a drone. Mic mode shows where your pitch
+    falls on the lattice. First tuning-theory prototype in the sandbox. High surprise value.
+    Inspired by LIMITER (arxiv 2507.08675).
+
+  - **`38-mood-xy`** — Russell circumplex emotion synthesis. Drag a dot on a 2D valence×arousal
+    plane; Web Audio synthesizes music in real time (tempo, chord quality, register, brightness
+    all driven by coordinates). First prototype where audio is *output* from emotional coordinates,
+    not *input*. Inspired by AffectMachine-Pop (arxiv 2506.08200).
+
+  - **`39-anticipate`** — ReaLJam-inspired ghost-note anticipation display. Extends
+    `33-aria-companion`: AI's planned response notes appear as ghost bars before they play.
+    "Watch Aria decide before she plays." Inspired by ReaLJam (arxiv 2502.21267, CHI 2025).
+
+  - **`40-browser-musicgen`** — In-browser MusicGen via Transformers.js (~390MB ONNX model,
+    cached after first load, zero API cost). Potential path for the long-queued `6-compose`.
+    Needs Karel OK on model download size.
+
+  - **Open question for Karel**: OK on ~390MB Transformers.js model download for in-browser
+    AI music generation? Also: Gemini key for `lyria-jam`? MediaPipe CDN for `gesture-music`?
+
+---
+
+## Previous newest (Cycle 38)
 
 - **[/dream/35-loop-station](/dream/35-loop-station)** — Loop Station.
   The first prototype where you **build** a composition rather than react to one. Four

@@ -1,5 +1,57 @@
 # Dream Agent — cycle state
 
+## Cycle 39 — Research sweep (§§53–60 in RESEARCH.md, 5 new ideas in IDEAS.md)
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 38 shipped `35-loop-station`. STATE.md explicitly noted research was due:
+"last research was Cycle 35 (3 cycles ago: 36, 37, 38) — next cycle: research sweep." Now 4 cycles
+since research (36/37/38/39 = on the upper end of the 3–4 cycle cadence). Decision: research cycle.
+
+**Sources searched**: arxiv (audio-reactive viz, AI music, piano live performance, drum generation,
+tuning systems), fal.ai explore, HuggingFace, Three.js community forum (ASTRODITHER), GitHub trending,
+Hacker News. 8 new RESEARCH.md entries (§§53–60). 5 new prototype ideas queued in IDEAS.md.
+
+**What I found**:
+
+- **Karplus-Strong synthesis** — 3 Web Audio nodes (`DelayNode` → `BiquadFilter(lowpass)` →
+  `GainNode(0.996)` feedback) simulate a plucked string. 35 prototypes; none do physical modeling
+  synthesis. `36-pluck-field` fills this gap immediately. Single most buildable finding this cycle.
+
+- **ReaLJam (arxiv 2502.21267, CHI 2025)** — "anticipation" in AI music jamming: the AI shows
+  its planned notes as ghost bars before executing them. Directly extends `33-aria-companion` to
+  `39-anticipate`. The insight is the transparency: making AI intention visible changes the
+  interaction from reactive to collaborative.
+
+- **LIMITER (arxiv 2507.08675, Jul 2025)** — gamified just intonation Tonnetz lattice explorer.
+  Inspires `37-ratio-lab`: first Resonance prototype about tuning systems. High "surprise" value
+  for Karel — none of the existing 35 prototypes touch tuning theory.
+
+- **MusicGen browser via Transformers.js** — `facebook/musicgen-small` runs locally in browser via
+  ONNX, zero API cost after ~390MB download. Potential implementation path for the long-queued
+  `6-compose` prototype. Needs Karel OK on model size.
+
+- **AffectMachine-Pop (arxiv 2506.08200, Jun 2026)** — arousal × valence coordinates → music.
+  Inspires `38-mood-xy`: drag a dot on a 2D emotion plane, synthesize music in real time with rule-
+  based Web Audio. No ML needed. Genuinely different interaction paradigm.
+
+- **ASTRODITHER (Three.js forum)** — TSL audio-reactive experiment with dithering + time warp.
+  Technique note: dithering + selective bloom absent from all 35 prototypes. Recommended for a
+  future `21-three-mesh-av` polish cycle.
+
+**Build validation**: Research cycle. No prototype built, no tsc/build check needed. Only docs
+updated: `RESEARCH.md`, `IDEAS.md`, `STATE.md`, `MORNING.md`.
+
+**Queued next**:
+1. **`36-pluck-field`** — Karplus-Strong virtual string field. Most immediately buildable: pure
+   Web Audio, 3 nodes per string, zero deps, tactile and musical, fills the physical-modeling gap.
+2. **`37-ratio-lab`** — Tonnetz JI lattice. Highest "surprise" value: Karel hasn't seen tuning
+   systems explored in the sandbox at all.
+3. **`38-mood-xy`** — Emotion-coordinate synthesis. Unique interaction paradigm (output mode,
+   not input mode, unlike all 35 existing prototypes).
+
+---
+
 ## Cycle 38 — /dream/35-loop-station
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

@@ -615,3 +615,95 @@ Key findings from Cycle 35 (2026-05-19):
 - iPlug3 (Jan 2026) — WebGPU + SDL3 + MCP audio plugin framework. Scripts mirror web APIs. Potential foundation for "Resonance as an installation" (Tauri mode).
 - Revival (arxiv 2503.15498, Mar 2026) — live concert with AI musical agents in two roles: harmonic resonance + structural scaffolding. Validates Resonance's phase-based design.
 - Kling 2.6 — native audio + speech at $0.14/sec. Ghost image + motion prompt → 5s cinematic clip with audio + optional spoken Ghost line. Updates ghost-animate plan.
+
+---
+
+## FROM RESEARCH (Cycle 39, 2026-05-19) — promoted to queue
+
+### pluck-field — Karplus-Strong virtual string field `[queued]`
+Route: `/dream/36-pluck-field`. A canvas containing 24 virtual strings arranged in a 4×6 grid,
+tuned to C pentatonic across 4 octaves (C2–B5). Each string is 3 Web Audio nodes: a `DelayNode`
+(delay time = 1/frequency, e.g. C4 = 1/261.63 ≈ 3.82ms delay), a `BiquadFilterNode(lowpass,
+fc=4000Hz)` in the feedback path, and a `GainNode(0.996)` for energy decay. To pluck: inject a
+5ms white-noise burst into the delay line; the feedback loop sustains the string's natural
+resonance as it decays over ~2s. Multiple strings ring simultaneously without interaction.
+
+Visual: each string is an animated horizontal line across its grid cell. On pluck, the line
+animates as a damped cosine wave — amplitude decreasing exponentially with the string's decay
+time constant. Color = pitch hue (same C pentatonic mapping as `1-live`: low C = violet, high
+B5 = warm orange). Dense rings of simultaneous strings glow like a harp. Dark background.
+Click any cell to pluck. Mic: onset events pluck a random string. "What if the canvas was a
+harp?" No academic paper needed — Karplus-Strong (1983) is the standard; Web Audio DelayNode
+is exactly the right primitive. Zero external deps. First physical modeling synthesis prototype
+in the sandbox. One-cycle build. Full research notes: RESEARCH.md §54.
+
+### ratio-lab — Tonnetz just intonation harmonic lattice `[queued]`
+Route: `/dream/37-ratio-lab`. A 9×5 canvas showing the Tonnetz lattice: X axis = perfect fifth
+intervals (×3/2 ratio), Y axis = major third intervals (×5/4 ratio). Each node is a frequency
+ratio from a base pitch of A3 = 220Hz. Click any node to hear it as a sustained sine tone against
+a continuous 1/1 drone. Neighboring nodes (1–2 steps) are consonant intervals (perfect fifth,
+major third, minor third); distant nodes are dissonant (tritone, complex ratios). Node color
+encodes consonance: warm (consonant, nearby) → cool (dissonant, far). Large nodes = simple
+ratios; small nodes = complex ones.
+
+Mic mode: autocorrelation pitch detection (same algorithm as `13-piano-canvas`) highlights the
+closest lattice node to the currently detected pitch, with a glowing ring. Hold a chord: multiple
+glowing nodes form a subgraph — the shape IS the chord quality (a major chord = right-triangle
+on the lattice; a minor chord = left-triangle; an augmented chord = equilateral). "Navigate
+harmony as a landscape." First Resonance prototype about tuning systems rather than signal
+processing. Zero deps. One-cycle build. Research basis: LIMITER (RESEARCH.md §55).
+
+### mood-xy — Russell circumplex emotion synthesis `[queued]`
+Route: `/dream/38-mood-xy`. A 2D canvas: valence (sad ← → happy) on X axis; arousal (calm ↑
+excited) on Y axis. Drag a dot to any position. Web Audio synthesizes music in real time driven
+by the coordinates: arousal → BPM (40–140), simultaneous voice count (1–6), register (bass vs.
+treble), note attack time (slow pads vs. sharp staccato); valence → chord quality (major at +1,
+minor at 0, diminished at −1), spectral brightness (filter fc), note duration (longer = sadder).
+
+Four quadrant aesthetics: energetic+happy (bright major arpeggios at 120 BPM), energetic+sad
+(dark chromatic runs at 110 BPM), calm+happy (sustained major pads at 55 BPM), calm+sad (sparse
+minor chords at 40 BPM). Canvas background color shifts smoothly with the mood (warm quadrants =
+amber background, sad quadrants = deep blue). The dot leaves a pastel trail showing where you've
+been. A small text label reads the current quadrant (e.g. "calm · sad"). "Navigate your musical
+mood." No ML, no API, zero external deps. First emotion-coordinate prototype in the sandbox.
+One-cycle build. Research basis: AffectMachine-Pop, RESEARCH.md §58.
+
+### anticipate — ReaLJam-inspired AI anticipation display `[queued]`
+Route: `/dream/39-anticipate`. Extends `33-aria-companion`: same mic → autocorrelation pitch
+detection → Markov chain response. Adds a ghost-note anticipation layer: when the Markov chain
+computes a response (during the 2s silence window), the *planned* response notes are immediately
+rendered as semi-transparent ghost bars in the ARIA (blue) piano roll panel, before each note
+actually fires. As each note sounds, its ghost bar solidifies from 25% opacity to full color
+with a brief flash. If the Markov chain re-samples a note (probability weighting), the ghost
+updates instantly.
+
+The user sees Aria's intention 0.5s before execution — the same "anticipation" design insight
+from ReaLJam (CHI 2025, arxiv 2502.21267), which found this transparency dramatically improved
+perceived collaboration quality. Visual effect: a wave of solidification sweeps through the ARIA
+panel as the response plays. The top (YOU) panel is unchanged. "Watch Aria decide before she
+plays." Zero deps. One-cycle build. Research basis: RESEARCH.md §53.
+
+### browser-musicgen — In-browser MusicGen via Transformers.js `[queued, needs Karel OK on ~390MB model]`
+Route: `/dream/40-browser-musicgen`. Loads `@xenova/transformers` and `facebook/musicgen-small`
+ONNX weights (~390MB, browser-cached after first download) via CDN import — no package.json
+change needed if imported as an ES module from jsDelivr. User types a text prompt ("forest piano
+dawn, gentle 70 BPM, ceremonial drums") and presses Generate. Streaming: first audio chunk plays
+at ~5s. Total generation: ~15–30s for 30s of music. Audio plays through the live-bloom radial
+visualizer (same 6-band color mapping as `1-live`). A progress bar + "Model loading..." state
+handles the one-time download gracefully. No API key. No per-generation cost.
+
+This is the first dream prototype with in-browser ML inference. Different capability from
+fal.ai-based compose: offline-capable after first load, no rate limits, zero API cost. Max 30s
+output. Needs Karel OK on (1) ~390MB CDN dependency, (2) whether CDN ES module import (jsDelivr)
+is acceptable vs. npm dep. Could become the `6-compose` prototype implementation with no API
+dependencies. Research basis: RESEARCH.md §56.
+
+Key findings from Cycle 39 (2026-05-19):
+- Karplus-Strong synthesis: 3 Web Audio nodes = plucked string. 35 prototypes, none physical modeling. Gap filled by `pluck-field`.
+- ReaLJam (CHI 2025, arxiv 2502.21267) — anticipation in AI jamming: ghost-note preview before execution. Inspires `anticipate`.
+- LIMITER (arxiv 2507.08675, Jul 2025) — gamified just intonation; Tonnetz lattice visualization. Inspires `ratio-lab`.
+- MusicGen browser via Transformers.js — ~390MB ONNX, zero API cost, 5s to first chunk. Inspires `browser-musicgen`.
+- AffectMachine-Pop (arxiv 2506.08200, Jun 2026) — arousal×valence → real-time music. Inspires `mood-xy`.
+- DARC (arxiv 2601.02357, Jan 2026) — drum accompaniment from tapping/beatboxing. Inspires future `drum-tap`.
+- ASTRODITHER (Three.js forum) — TSL + dithering + time warp + selective bloom. Technique note for `21-three-mesh-av` polish.
+- Three.js r171+ — WebGPU renderer production-ready, TSL compiles to WGSL+GLSL automatically. No migration needed.
