@@ -1,51 +1,46 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 28)
+# Morning digest — last updated 2026-05-19 UTC (Cycle 29)
 
 ## New since yesterday
 
-- **[/dream/24-piano-roll](/dream/24-piano-roll)** — Piano Roll. Open it.
-  Click **Demo mode** and watch Bach Invention No.1 paint itself as a scrolling
-  colored notation. Each note = a glowing bar at its MIDI pitch. Hue matches
-  the `1-live` frequency color map (bass = cool blue-violet, treble = warm orange-red).
-  Piano key sidebar highlights the active key. BPM slider (40–160) stretches or compresses
-  bars live. **Start mic** → play piano or hum to render your own notes.
-  "What you played, as notation — in real time."
+- **[/dream/25-cellular](/dream/25-cellular)** — Conway's Life as a musical instrument.
+  64-column × 16-row Life grid where each column is a pitch (C2 left, C5 right). Living cells
+  trigger triangle-wave notes. **Try first**: click **Glider** → **Start** — the 5-cell glider
+  walks the pitch axis and you hear a 4-note melodic loop that shifts up and down as it moves.
+  Then click **Pulsar** — strict 3-tick rhythmic chord machine. Click/drag the canvas to paint
+  or erase cells. No mic, no API, no permissions required.
 
-  This completes the triptych:
-  - `13-piano-canvas` — your playing → abstract glowing painting (affective)
-  - `22-code-score` — written score → canvas painting + audio (compositional)
-  - `24-piano-roll` — your playing → scrolling notation (analytical / readable)
+  This is the first prototype where music is *autonomous*. All 24 previous prototypes react to
+  your input or generate on demand. This one acts first. You set initial conditions; Life
+  decides what to play. The shape of a pattern IS its melody.
 
 ## In progress / partial
 
-- All 24 prototypes `demoable`. Nothing half-built.
+- All 25 prototypes are `demoable`. Nothing half-built.
 
 ## Queued next (in priority order)
 
-1. **`25-cellular`** — Conway's Game of Life as a musical instrument. Living cells
-   trigger pitched notes; gliders make repeating melodic loops; R-pentomino creates
-   emergent complex melodies. You set initial conditions; the music writes itself.
-   Highest surprise factor in the queue. Zero deps, one-cycle build.
+1. **`26-score-follow`** — live score cursor: play the Bach fragment on your piano; the
+   score illuminates as you match notes. Autocorrelation pitch detection + symbol tracking.
+   "The score lights up as you play it." Zero deps, one-cycle build.
 
-2. **`26-score-follow`** — Live score cursor that follows your playing. Displays
-   the Bach fragment; pitch detection matches your notes and advances the cursor
-   forward. "The score lights up as you play it." Directly useful for practice.
+2. **`27-gpu-additive`** — particles ARE Fourier partials; GPU physics IS the synthesizer.
+   Most ambitious item (2+ cycles, WebGPU required). Worth discussing approach first.
 
-3. **`27-gpu-additive`** — Particles ARE Fourier partials; GPU physics IS the
-   synthesizer. Most ambitious in the queue (2+ cycles, requires WebGPU). Worth
-   discussing approach before starting.
+3. **Research** — due in ~2–3 more build cycles (Cycle 32ish).
 
 ## Open questions for Karel
 
-- **Piano roll → MIDI export?** The note events are already accumulated in memory.
-  Adding a `.mid` download would be the first prototype that outputs a music file.
-  One extra function, one cycle. Say the word.
+- **`elevenlabs-compose` budget** — streaming structured music with section control,
+  $0.40–1.13/generation. The `5-arcs` arc shapes + real AI-generated music for each one.
+  Greenlight?
 
-- **`cellular` or `score-follow` first?** Cellular is the bigger surprise;
-  score-follow is more immediately practical for a pianist. Which matters more now?
+- **`ghost-animate`** — Kling 3.0 (multi-shot, native audio) or HappyHorse-1.0
+  (single-shot, higher quality), both on fal.ai. Needs FAL_KEY + budget approval.
+  Admin-only, ~$0.05–0.30/clip. Ready to wire in immediately.
 
-- **WASM AudioWorklet**: still no resolution from last cycle. Checking in a
-  pre-built `.wasm` binary (e.g. Karplus-Strong physical model) would enable
-  guitar/plucked string synthesis in the sandbox. Dep-free? Or acceptable?
+- **Cellular MIDI out?** The note events are in memory each tick. A Web MIDI API
+  `.send()` call would route them to your DAW. One function, one cycle.
 
-- **`ghost-animate` (Kling 3.0 multi-shot arc)**: still awaiting FAL_KEY budget
-  green-light (~$1–2/run). Ready to wire into `2-ghost-lab` the moment you say go.
+## Preview URL
+
+https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/25-cellular

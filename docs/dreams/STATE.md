@@ -1,5 +1,32 @@
 # Dream Agent — cycle state
 
+## Cycle 29 — /dream/25-cellular
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 28 shipped `24-piano-roll` and explicitly queued `25-cellular` as the Cycle 29 target. No blockers. No in-progress prototypes. Clear spec in IDEAS.md, zero new dependencies (Web Audio + Canvas2D + vanilla JS). Surprise factor is highest in the queue: none of the 24 existing prototypes treat music as *autonomous* — all react to mic input or generate via API. A cellular automaton "acts first." The user sets the initial conditions (or picks a preset) and watches the music write itself. Gliders create repeating 4-note loops; period-3 oscillators (Pulsar) make rhythmic patterns; methuselahs (Acorn, R-pentomino) evolve unpredictably across hundreds of generations.
+
+Decision was immediate.
+
+**Shipped**:
+- `src/app/dream/25-cellular/page.tsx` — full interactive prototype
+- `src/app/dream/25-cellular/README.md` — design notes
+
+**What's inside**:
+
+64-column × 16-row toroidal Conway's Life grid. Each column maps to a frequency — C2 (MIDI 36) at the left edge, C5 (MIDI 72) at the right — so the grid has pitch baked into its spatial layout. On each tick, any column with at least one living cell fires a triangle-wave oscillator note at that column's frequency with a 200ms exponential decay envelope. Volume scales by `min(1, 6 / activeCols)` to keep polyphony sane when many columns are active simultaneously.
+
+Tick rate follows the BPM slider (40–120 BPM). Rendering: 60fps rAF loop; each live cell drawn as a radial gradient glow (additive blending). Columns that just fired get a brief brightness flash (decays at ×0.78/frame). Click or drag the canvas to toggle cells. Four presets: Glider (translating 5-cell object — creates a repeating ~4-note motif that walks across the pitch axis), Pulsar (period-3 oscillator — strict 3-tick rhythmic loop), Acorn (7-cell methuselah — chaotic growth for 5200 generations), R-pentomino (5-cell methuselah — smaller chaos). Random fill (20% density). Clear.
+
+**Build**: `npm run build` passes cleanly. `/dream/25-cellular` appears as a static route at 2.99 kB. One fix required after first attempt: TypeScript 5.9 made `Uint8Array` generic (`Uint8Array<ArrayBuffer>`), so function signatures for `stepLife`, `randomGrid`, `applyPreset`, and `applyGrid` needed explicit generic parameters. Second build: clean pass. Zero new errors or warnings in new code (all warnings in output are pre-existing from production codebase).
+
+**Queued next**:
+1. **Build `26-score-follow`** — live score cursor that follows your playing through the Bach fragment. Zero deps, one-cycle build.
+2. **Build `27-gpu-additive`** — GPU particle-additive synthesis. Most ambitious item; may need 2 cycles.
+3. **Polish `25-cellular`** — pitch labels on column edges, toroidal vs. fixed-boundary toggle, MIDI export.
+
+---
+
 ## Cycle 28 — /dream/24-piano-roll
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

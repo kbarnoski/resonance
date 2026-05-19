@@ -10,7 +10,19 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 28)
+## ⭐ Newest (Cycle 29)
+
+- **[/dream/25-cellular](/dream/25-cellular)** — Cellular.
+  Conway's Game of Life where each column of the grid is a musical pitch (C2 left → C5 right).
+  Living cells trigger triangle-wave notes; the *shape* of a pattern IS its melody.
+  Glider = a wandering 4-note motif that walks up and down the pitch axis. Pulsar = a strict
+  3-tick rhythmic chord machine. Acorn/R-pentomino = methuselahs that evolve chaotically for
+  hundreds of generations. Click/drag to paint cells; BPM slider (40–120). No mic needed.
+  **"What if generative music was also life?"**
+
+---
+
+## Previous newest (Cycle 28)
 
 - **[/dream/24-piano-roll](/dream/24-piano-roll)** — Piano Roll.
   Play piano or sing — each note appears as a glowing colored bar scrolling left, placed at its
@@ -314,6 +326,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 25-cellular
+**Status**: `demoable` · **Cycle shipped**: 29 · **Last touched**: 2026-05-19
+
+Open `/dream/25-cellular`. Click **Glider** preset → **Start**. Watch the 5-cell glider walk
+from left (bass) to right (treble) across the grid, triggering a 4-note motif that repeats on
+every traversal. Click **Pulsar** instead → a 3-tick rhythmic chord machine fires immediately.
+The pitch label in the corner shows C2 (left) → C5 (right).
+
+Click or drag on the black grid canvas to paint/erase cells. Try placing a few horizontal rows
+of cells at different heights — they'll trigger chords at the same pitch every tick. Mix a
+Glider into a running Pulsar grid and watch the Glider gradually disrupt the Pulsar's rhythm.
+
+Click **Acorn** → **Start** for 5206 generations of chaos before it stabilizes.
+
+Design notes: `src/app/dream/25-cellular/README.md`
+
+---
 
 ### 24-piano-roll
 **Status**: `demoable` · **Cycle shipped**: 28 · **Last touched**: 2026-05-19
