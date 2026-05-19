@@ -1,5 +1,81 @@
 # Dream Agent — cycle state
 
+## Cycle 46 — /dream/41-code-vis
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 45 shipped `40-shepard-tone`. No blockers. No in-progress prototypes. Last
+research was Cycle 44 (2 cycles ago — not yet at the 3-4 cycle threshold). Items needing Karel's
+approval: `neural-pitch` (CDN ONNX dep), `browser-musicgen` (390MB CDN). `code-vis` at
+`/dream/41-code-vis` is fully spec'd in IDEAS.md, zero new npm deps (no CDN either — purely Web
+Audio + Canvas2D), one-cycle build, no approval needed. Decision: build `41-code-vis`.
+
+**Why now**: 40 existing prototypes let you REACT to audio, EXPLORE generated audio, or WATCH
+audio drive visuals. None of them let you WRITE the music as text and have it immediately play +
+draw. `code-vis` fills this gap with the simplest possible text→audio+visual pipeline: each line
+of code is one oscillator; the canvas shows a glowing ring per voice. A pianist can write a C
+major chord in 10 seconds and hear+see it. The minimal DSL (NOTE WAVE AMP) is deliberately
+easier than `22-code-score` (which schedules a sequence over time) — code-vis holds all voices
+simultaneously as a sustained texture.
+
+**Shipped**:
+- `src/app/dream/41-code-vis/page.tsx` — full interactive prototype (~330 lines)
+- `src/app/dream/41-code-vis/README.md` — DSL spec, Web Audio architecture, polish ideas
+
+**What's inside**:
+
+**DSL**: each non-comment, non-blank line: `NOTE WAVE AMP`
+- NOTE: standard pitch name + octave (`C4`, `D#3`, `Bb5`, `F#2`, etc.)
+- WAVE: `sin` | `tri` | `saw` | `sq` (defaults to `sin`)
+- AMP: 0.0–1.0 (defaults to 0.6)
+- Comments with `//`
+
+**Parser**: `parseVoices(code)` splits by newline, strips comments, regex-matches
+`([A-Ga-g][#bB]?)(\d+)` for the note, validates wave against a Set, clamps amp to [0,1].
+Returns `Voice[]` with freq, hue, note, wave, amp.
+
+**Web Audio**: one `AudioContext` per session (created on first Start click — user gesture).
+Per voice: `OscillatorNode` → `GainNode` → master `GainNode` → destination. Master gain
+normalises for N voices (`0.55 / sqrt(N)`). Code change → debounced 400ms → old voices fade
+out linearly (150ms) + stop, new voices fade in linearly (150ms). Crossfade = no click artifact.
+
+**Canvas**: circular constellation layout — N voices form an N-gon (1 = center, 3 = triangle,
+6 = hexagon). Each ring:
+- Color = `freqHue(freq)` → hue 260 (violet, bass) → 0 (red, treble). Same mapping as `1-live`.
+- Radius = `maxR × (0.5 + amp × 0.5)` × pulse modifier.
+- Pulse = sin²(beatFrac × π) — heartbeat shape at BPM rate. Sharp peak, smooth decay.
+- Trail: 22% alpha clear per frame — gentle bloom.
+- Label: note name drawn below each ring, brightens on beat.
+
+Default score: C4 tri 0.8 / E4 sin 0.6 / G4 tri 0.5 — a C major triad forming a triangle.
+Click Start → three differently-colored glowing rings pulse in sync at 80 BPM.
+
+**BPM slider** (40–200): changes pulse rate live without restarting audio.
+**↓ PNG**: saves the current canvas frame. Peak-pulse frame makes a nice poster.
+
+**Build validation**: `npx tsc --noEmit` → errors only: TS2307 (missing react/next types),
+TS7026 (JSX intrinsic), TS7031/TS7006 (implicit any cascading from missing react types).
+All identical to pre-existing errors in all prior dream prototypes. No logic errors.
+
+**What I noticed**: the circular layout works surprisingly well for chords. A major chord
+(C + E + G) forms a triangle; four-voice chords form a square; the colors encode the pitch
+ordering around the circle. The sin² pulse feels more like a heartbeat than a sine wave pulse —
+the sharp peak and longer decay evoke a bass drum. At 120 BPM the constellation feels energetic.
+At 40 BPM it breathes like slow respiration.
+
+The `tri` waveform for root/fifth with `sin` for the middle voice (C4 tri / E4 sin / G4 tri)
+sounds like a detuned acoustic piano — the triangle waves add warmth without muddiness. Pure
+sines (all sin) are transparent and stacked, like organ pipes.
+
+**Queued next**:
+1. **Research** — Cycle 44 was last (now 2 cycles ago). Due at Cycle 48 or 49 (3-4 cycle rule).
+2. **`neural-pitch`** — needs Karel OK on CDN ONNX dep. Would improve 6+ pitch prototypes.
+3. **`browser-musicgen`** — needs Karel OK on 390MB Transformers.js model.
+4. **Polish `40-shepard-tone`** — tritone paradox variant, Risset rhythm companion.
+5. **Polish `41-code-vis`** — chord quick-insert buttons, per-voice phase offset (rotating pulse).
+
+---
+
 ## Cycle 45 — /dream/40-shepard-tone
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

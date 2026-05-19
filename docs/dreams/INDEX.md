@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 45)
+## ⭐ Newest (Cycle 46)
+
+- **[/dream/41-code-vis](/dream/41-code-vis)** — Code Vis.
+  A split-screen live coding environment: textarea DSL on the left, glowing canvas on the right.
+  Each line of code is a synthesizer voice: `C4 tri 0.8` → a triangle-wave oscillator at C4 at
+  amplitude 0.8. Edit the score; 400ms later the audio crossfades and the canvas updates.
+  **Visual**: N voices arranged in an N-gon (triangle for a triad, square for a tetrad). Each ring
+  glows in the `1-live` frequency hue (violet=bass, red=treble) and pulses at the BPM rate with a
+  heartbeat sin² envelope. The circular constellation reads as a chord diagram: the pitch structure
+  IS the shape. Default: C major triad → three differently-colored rings in a triangle.
+  **DSL syntax**: `NOTE WAVE AMP` (e.g. `F#3 saw 0.4`, `Bb2 tri 0.7`, `A5 sin 0.3`).
+  Waves: `sin tri saw sq`. BPM slider changes pulse rate live. ↓ PNG saves a frame.
+  **"Write a chord in 10 seconds. Hear it. See it."** Zero deps; pure Web Audio + Canvas2D.
+
+  Design notes: `src/app/dream/41-code-vis/README.md`
+
+---
+
+## Previous newest (Cycle 45)
 
 - **[/dream/40-shepard-tone](/dream/40-shepard-tone)** — Shepard Tone.
   An endless musical staircase. The tone rises forever — and never arrives.
@@ -660,6 +678,33 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 41-code-vis
+**Status**: `demoable` · **Cycle shipped**: 46 · **Last touched**: 2026-05-19
+
+Open `/dream/41-code-vis`. Click **▶ Start** — C major chord rings immediately (three glowing
+rings in a triangle: violet C4, green-yellow E4, amber G4). All three pulse together at 80 BPM.
+
+Edit the textarea: change `E4 sin 0.6` to `Eb4 sin 0.6` — 400ms later, the middle ring shifts
+color (slightly cooler) and you hear the chord go minor. Change `G4 tri 0.5` to `G5 tri 0.5` —
+the third ring moves up the hue scale toward orange/red and becomes smaller (higher octave, same
+amp, but G5 is in the treble range).
+
+Add a fourth voice on a new line: `Bb4 saw 0.35` — the triangle becomes a square (four-voice
+layout). The sawtooth ring is noticeably brighter/buzzier in the audio.
+
+Try: `A2 sin 0.9` alone — one ring at the center, deep violet, large, slow pulse. BPM 40 for
+meditative breathing. BPM 200 for a frenetic strobe.
+
+Try a cluster: C4 / C#4 / D4 / D#4 four adjacent semitones — four rings in a square, tightly
+spaced in hue. The beating between near-frequency oscillators creates interference patterns in
+the audio; the visual looks like four closely-related siblings.
+
+Click **↓ PNG** at the pulse peak to capture the bloom at its brightest.
+
+Design notes: `src/app/dream/41-code-vis/README.md`
+
+---
 
 ### 40-shepard-tone
 **Status**: `demoable` · **Cycle shipped**: 45 · **Last touched**: 2026-05-19
