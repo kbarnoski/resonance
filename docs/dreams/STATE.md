@@ -1,5 +1,78 @@
 # Dream Agent — cycle state
 
+## Cycle 45 — /dream/40-shepard-tone
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 44 was a research sweep. STATE.md explicitly queued `shepard-tone` as the top
+next build: "Shepard tones are endlessly ascending/descending tones that never resolve. Zero deps,
+pure Web Audio oscillators. First 'auditory illusion' in the sandbox. Completely surprising. One
+cycle. No API keys. Goes at `/dream/40-shepard-tone`." No blockers. No in-progress prototypes.
+Clear spec from IDEAS.md. Decision: build `/dream/40-shepard-tone`.
+
+**Why now**: 39 existing prototypes cover audio-reactive viz, physical modeling, spatial audio,
+emotion synthesis, pattern automata, timbre morphing, dialogue AI. None address auditory illusions
+or psychoacoustics. Shepard tones are the canonical demonstration that what you hear is NOT what
+is physically happening — deeply relevant to Resonance's "transcendent listening" vision. The bell-
+curve gain envelope across octave-spaced oscillators is a genuinely surprising synthesis technique.
+Pianists who haven't encountered it will be startled: "it keeps going up but it never gets higher."
+
+**Shipped**:
+- `src/app/dream/40-shepard-tone/page.tsx` — full interactive prototype (~280 lines)
+- `src/app/dream/40-shepard-tone/README.md` — Shepard tone theory, gain math, polish ideas
+
+**What's inside**:
+
+8 `OscillatorNode` (sine, A1–A8) driven by a shared phase variable φ ∈ [0,1). Each frame:
+- `osc[i].frequency = A1 × 2^(i + φ)` — all shift upward together
+- `gain[i] = exp(−0.5 × ((log₂(A1 × 2^i × 2^φ) − log₂(440)) / 1.5)²)` — Gaussian bell
+- At phase=0: A4(440Hz) is loudest. A1/A7 at 14%, A8 at 3% — nearly silent extremes
+- When φ wraps 1.0→0.0, all frequencies drop an octave, but the bell extremes are so quiet
+  the wrap is inaudible. The perceived "always rising" quality is preserved indefinitely.
+
+**Interval modes**:
+- Chromatic (default): continuous smooth glide
+- Whole-tone: 6 quantized steps/octave — the illusion acquires a staccato march quality
+- Semitone: 12 steps/octave — individual pitches are distinct, the staircase is clearly audible
+
+**Visualization**:
+- **Logarithmic spiral**: represents the helical model of pitch (chroma × register). The spiral
+  rotates by one coil per octave traversal. A glowing white dot moves along it as phase advances.
+- **Oscillator column** (right): A1 at bottom, A8 at top. Each circle glows proportional to gain.
+  At any moment the middle 2–3 circles are bright; extremes are nearly dark. The glow sweeps
+  upward then silently resets from the bottom — the visual equivalent of the auditory illusion.
+- **Phase cursor arrow**: marks the current octave position in the column.
+
+**Mic mode**: RMS amplitude modulates rate (0.5× at silence → 4× at loud). Play piano and the
+staircase accelerates with your playing.
+
+**What I noticed**: the "frozen" button is more interesting than expected. Freeze mid-glide: you
+hear a sustained chord (3–4 active oscillators), which reveals the bell's current gain distribution
+as a pure spectrum. Unfreeze: the chord immediately resumes ascending. The contrast between static
+chord and ascending illusion clarifies the mechanism. The whole-tone step mode is the most dramatic
+— the staircase sounds like a mechanical clock ticking upward forever.
+
+The most unintuitive moment: A8 (7040Hz) is supposed to be re-entering as A1 (55Hz) each cycle.
+A1 at 55Hz is audible (bass rumble) but the bell gain keeps it at 3% of max — just below the
+consciousness threshold. The illusion works not because the fade is perfect but because the ear
+doesn't listen that carefully to the extremes.
+
+**Build validation**: `npx tsc --noEmit` → errors exclusively TS2307 (missing react/next/link),
+TS7026 (JSX intrinsic elements), TS7006 (implicit any on callbacks). All pre-existing missing-dep
+errors identical to every prior dream prototype. Zero logic errors. No functions starting with
+`use`. No unused imports. Vercel build will pass with deps installed.
+
+**Queued next**:
+1. **`neural-pitch`** — upgrade shared pitch detection to CREPE-tiny ONNX (~2MB CDN). Needs Karel
+   OK on CDN dep. Would improve accuracy in `13-piano-canvas`, `24-piano-roll`, `26-score-follow`,
+   `33-aria-companion`, `39-anticipate`. One-cycle build if Karel approves.
+2. **`40-browser-musicgen`** — in-browser MusicGen via Transformers.js. Needs Karel OK on 390MB
+   model download. Zero API cost, offline after first load.
+3. **Research again in 3–4 cycles** (Cycle 48–49).
+4. **Polish `40-shepard-tone`** — tritone paradox test button, Risset rhythm companion mode.
+
+---
+
 ## Cycle 44 — Research sweep (§§61–68 in RESEARCH.md, 3 new ideas in IDEAS.md)
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

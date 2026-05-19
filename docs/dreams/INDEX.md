@@ -10,15 +10,32 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 44 — research)
+## ⭐ Newest (Cycle 45)
+
+- **[/dream/40-shepard-tone](/dream/40-shepard-tone)** — Shepard Tone.
+  An endless musical staircase. The tone rises forever — and never arrives.
+  8 sine oscillators (A1–A8), each gaining a bell-curve amplitude that peaks at A4 (440Hz) and
+  fades to near-silence at the extremes. As all oscillators glide upward together, the loud middle
+  tones always seem to be rising — but when A8 fades and the wrapped A1 re-enters, the transition
+  is inaudible because both extremes are below the consciousness threshold.
+  **Controls**: Rate slider (0.5–30 BPM = octaves/min); Ascending/Descending toggle; Glide/Whole-tone/
+  Semitone interval modes (each gives a different temporal rhythm to the illusion); Freeze (suspends
+  the glide, revealing the chord); Mic mode (louder playing → faster ascent).
+  **Visual**: a rotating logarithmic spiral (the helical pitch model — chromatic height × register);
+  a glowing dot tracks the current phase position. Oscillator column (right): each of the 8 circles
+  glows proportional to its current gain — bright at center (A3–A5), dim at extremes (A1, A8).
+  The glow sweeps upward then silently resets from the bottom. The visual IS the illusion.
+  **"The first prototype about the gap between physical sound and perceived sound."**
+  First psychoacoustics prototype in the sandbox. Zero deps; pure Web Audio oscillators.
+
+  Design notes: `src/app/dream/40-shepard-tone/README.md`
+
+---
+
+## Previous newest (Cycle 44 — research)
 
 - **Cycle 44 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§61–68).
   3 new prototype ideas added to IDEAS.md. Highlights:
-
-  - **`shepard-tone`** (build next) — auditory illusion: 8 sine oscillators sweeping upward
-    through octaves, each fading in/out to create the illusion of an endlessly ascending tone
-    that never resolves. Rate slider. Mic: amplitude accelerates the glide. First psychoacoustics
-    prototype in the sandbox. Completely surprising to pianists. Zero deps, one cycle, no API keys.
 
   - **`neural-pitch`** (shared upgrade, needs Karel OK) — CREPE-tiny ONNX neural pitch detector
     (~2MB CDN, no package.json change). 10× more accurate than autocorrelation on complex piano,
@@ -643,6 +660,36 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 40-shepard-tone
+**Status**: `demoable` · **Cycle shipped**: 45 · **Last touched**: 2026-05-19
+
+Open `/dream/40-shepard-tone`. Click **▶ Start** — you'll immediately hear a tone that seems to
+be rising. Let it run for 30 seconds. Notice: it never gets any higher. It just… keeps going up.
+
+Try the Freeze button mid-glide: the tone suspends into a chord of 3–4 sine waves. You can hear
+the bell-curve distribution — the middle notes (A3–A5) are loudest, extremes (A1, A8) barely
+audible. Unfreeze: the ascent resumes from wherever it paused.
+
+Switch to **Whole-tone** interval: the illusion takes on a staccato quality — a mechanical clock
+ticking upward step by step, each step clearly a whole tone higher, yet the register never
+changes. Switch to **Semitone**: the individual pitches are distinct, you can hear each rung of
+the staircase. Switch back to **Glide**: the smoothest, most seamless version of the illusion.
+
+Try **Descending**: an endlessly falling tone that never lands. The sensation is qualitatively
+different from ascending — more like a drain, or falling without hitting the ground.
+
+For mic mode: click 🎤, then play piano. Loud chords accelerate the ascent. A single quiet note
+lets the staircase breathe slowly. The ascent rate reflects the energy of what you're playing —
+like the music is driving its own hallucination.
+
+Watch the oscillator column (right side): the glow sweeps upward circle by circle. When A8 (top)
+fades dark, a moment later A1 (bottom) begins to glow — you can *see* the wrap in the visual,
+even though you can't hear it in the audio.
+
+Design notes: `src/app/dream/40-shepard-tone/README.md`
+
+---
 
 ### 39-anticipate
 **Status**: `demoable` · **Cycle shipped**: 43 · **Last touched**: 2026-05-19
