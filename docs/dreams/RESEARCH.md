@@ -351,3 +351,78 @@ WebGPU compute shaders can write float32 audio sample data into a GPU buffer, wh
 **Why it matters**: Every existing dream prototype separates audio (Web Audio API, CPU) from visuals (GPU). This collapses the boundary. The GPU particle simulation (`16-particle-life-gpu`) already runs physics on GPU. If particles also *are* Fourier partials — particle X-position = harmonic number, Y = amplitude — then the physics directly synthesizes audio. The swarm IS the sound.
 
 **Could become a prototype**: `27-gpu-additive` — extend `16-particle-life-gpu`. Each of the 9,000 particles is assigned a harmonic partial index (1–9000, mapped to 8 octave range). The compute shader runs particle physics (attraction/repulsion between partials as "consonance forces" — partials that are harmonically related attract). Every frame: read particle Y-amplitudes back to CPU via `mapAsync`, enqueue 128 samples of the synthesized waveform into an AudioWorkletProcessor. Audio output IS the swarm state. Visual: same particle rendering as 16-particle-life-gpu. "The swarm is the synthesizer." Requires WebGPU. One of the most technically ambitious ideas in the queue — may need 2 cycles.
+
+---
+
+## 2026-05-19 — Cycle 31 research sweep
+
+### 37. Lyria RealTime API — Infinite Streaming AI Music via WebSocket
+**Source**: https://ai.google.dev/gemini-api/docs/realtime-music-generation · https://magenta.withgoogle.com/lyria-realtime
+
+Google DeepMind's Lyria RealTime API generates continuous 48kHz stereo music that never stops, delivered over a persistent WebSocket connection. Audio arrives in 2-second chunks; each chunk is conditioned on the last 10s of coarse audio context plus a style embedding controlled by the client. Controls: `set_weighted_prompts()` with text strings + numeric weights (blend multiple styles live), `set_music_generation_config()` for BPM (60–200), density, brightness, scale, key. A `reset_context()` call resets rhythmic state when changing BPM or scale. Requires a Gemini API key (available from aistudio.google.com). The open-weights cousin — **Magenta RealTime** — runs locally via Python/Colab on TPUs; same architecture (800M autoregressive transformer, MusicCoCa embeddings for text prompts), but not browser-callable without a local server. Standard Lyria RealTime via Gemini API IS browser-callable over WebSocket from JavaScript.
+
+**Why it matters**: Every previous music-gen prototype (ACE-Step, MiniMax) generates a fixed clip. Lyria RealTime generates *forever* and responds to prompt changes within 2 seconds. The interaction model is completely different: instead of "generate then listen," it's "live-steer an infinite stream." Karel could type "add cello" mid-performance and the music absorbs it. BPM sync means it can lock to a real-time metronome. This is the most live-performance-relevant AI music capability discovered in any research cycle.
+
+**Could become a prototype**: `28-lyria-jam` — two text prompt slots with weight sliders (0–2), BPM/density/brightness controls updated live. Mic input → RMS amplitude → auto-drives brightness for reactive feel. Generated PCM piped to `AnalyserNode` → feeds live-bloom visualizer (`1-live` style six-band radial). "The music never stops. You just steer it." Client-side only: Karel pastes Gemini API key into a settings field (stored in `sessionStorage`, never committed). Admin-only gate. Needs `GEMINI_API_KEY` discussion with Karel. Budget: Google AI Studio free tier has quota; Gemini 2.0 paid tier charges per minute of generated audio.
+
+---
+
+### 38. iOS 26 / Safari 26 — WebGPU Now Universal on All Platforms
+**Source**: https://webkit.org/blog/16993/news-from-wwdc25-web-technology-coming-this-fall-in-safari-26-beta/ · https://brandlens.io/blog/the-untold-revolution-beneath-ios-26-webgpu-is-coming-everywhere-and-it-changes-everything/
+
+Safari 26 (shipping with iOS 26, iPadOS 26, macOS 26, visionOS 26) adds full WebGPU support built on Apple Metal. Previously Safari on iOS/iPadOS was the last major holdout — macOS Safari 17+ had WebGPU but mobile Safari did not. As of iOS 26, WebGPU is supported in Chrome, Edge, Firefox, and all Safari variants (desktop + mobile). Three.js, Babylon.js, PlayCanvas, and ONNX Runtime all confirmed working in Safari 26 beta. WebGPU is now at effectively 100% coverage for any browser released in the last 6 months.
+
+**Why it matters for the dream sandbox**: Karel reviews prototypes on his phone each morning. Previously, `15-webgpu-fluid`, `16-particle-life-gpu`, and the planned `27-gpu-additive` would have shown "WebGPU not supported" on his iPhone. With iOS 26, they all work. The "requires WebGPU" caveat in INDEX.md is now minor (only affects users on very old mobile browsers). The sandbox can confidently build WebGPU-first prototypes without mobile concerns.
+
+---
+
+### 39. SonoWorld — Image → Navigable 3D Spatial Audio Scene (arxiv 2603.28757, Mar 2026)
+**Source**: https://arxiv.org/abs/2603.28757
+
+Given a single RGB image, SonoWorld generates a navigable 3D audio-visual scene: (1) vision-language model identifies sounding objects in the image and their 3D positions; (2) spatially-appropriate audio is synthesized for each object (birds from canopy, water from left foreground, wind ambient); (3) encoded as First-Order Ambisonics (FOA, 4-channel spherical harmonics); (4) converted to binaural HRTF for headphones; (5) rendered in a public browser demo using Three.js + WebAudio API on a laptop CPU at 5.3ms latency (256-sample buffer at 48kHz). The entire browser demo requires no server — Three.js renders the visual, WebAudio HRTF renders the spatial audio.
+
+**Why it matters**: The acoustic identity of a Ghost scene — "stone chamber: dry, narrow reverb, single piano note reverb tail" vs "cosmic ascension: vast reverberant space, harmonic drone" — is as definitive as the visual identity. SonoWorld proves a browser-native spatial audio experience from a single image is achievable without ML inference (the ML runs server-side in their pipeline; the browser demo only handles rendering). For Resonance, each Ghost preset scene has a known acoustic character that could be hand-authored rather than inferred.
+
+**Could become a prototype**: `29-scene-spatial` — pick one of 6 Ghost preset scenes (stone chamber, root portal, underground pool, tiny planet, forest dawn, cosmic ascension). Each scene has hand-authored spatial audio: 3–5 WebAudio HRTF `PannerNode` sources placed at scene-appropriate positions (e.g. stone chamber = reverb-heavy piano from front-left, stone percussion from above; cosmic = pad drone from all directions, wind from front). Navigate by dragging the "listener" position on a canvas overhead view. Headphones required. Zero external deps — extends `7-spatial`'s HRTF approach with scene-specific source authoring. "Each Ghost scene has a sound as distinctive as its visuals." One-cycle build.
+
+---
+
+### 40. Veo 3.1 Fast — Halved Ghost-Animate Cost
+**Source**: https://fal.ai/learn/tools/ai-video-generators · https://fal.ai/models
+
+Veo 3.1 (Google DeepMind) adds a Fast tier: $0.10/sec without audio, $0.15/sec with audio, at 1080p — exactly half the cost of standard tier ($0.20/$0.40). A 5-second Ghost clip with native cinematic audio = ~$0.75 at Fast tier vs $2.00 standard. Seedance 2.0 (ByteDance, launched April 9, 2026) also on fal.ai: "cinematic output with native audio, real-world physics, director-level camera control." Kling 3.0 Pro updated (also at ~$0.15–0.20/sec).
+
+**Why it matters**: Ghost-animate was previously flagged as expensive. At $0.75/clip for Veo 3.1 Fast, Karel could run 10 Ghost animation experiments for $7.50. Still needs FAL_KEY. HappyHorse-1.0 (Cycle 23 finding) remains the single-clip benchmark winner; Veo 3.1 Fast and Kling 3.0 Pro are now cost-competitive alternatives with different aesthetic characters. For a multi-shot journey arc (4 shots, character consistent), Kling 3.0 with element referencing is still the unique option.
+
+---
+
+### 41. Gesture2Music — Webcam Hand Gestures → Synthesized Notes (arxiv 2511.00793, Nov 2025)
+**Source**: https://arxiv.org/abs/2511.00793
+
+Custom dataset of 21 gesture-note classes spanning 7 tones × 3 pitch levels. Body + hand landmark detection (MediaPipe-style) → multilayer attention-gated RNN → note control events (pitch, octave, onset, sustain, amplitude). 30ms end-to-end latency. The system generates continuous music entirely from gesture — no audio input. Not browser-native (paper's implementation requires Python), but MediaPipe HandLandmarker runs entirely in browser as WASM (~8MB download) and produces the same hand landmarks at similar latency.
+
+**Why it matters**: All 26 existing dream prototypes use audio as input or generate audio internally. None use the camera. Gesture2Music opens a completely new input modality: visual performance gesture as music control. A pianist conducting their own sound, a dancer playing frequencies with their body. Qualitatively different from mic input for live performance — more theatrical, more physical.
+
+**Could become a prototype**: `30-gesture-music` — webcam → MediaPipe HandLandmarker (loaded from CDN as WASM, one-time 8MB download) → map 5 hand parameters to sound. Right hand Y-position → pitch (continuous glide); both-hands spread (palm-to-palm distance) → reverb decay; finger-curl count → harmonic richness (more curled = more harmonics); left hand Y → bass drone frequency; wrist velocity (fast movement) → percussive onset burst. Visual: hand skeleton overlay on webcam feed (canvas2D) + synthesized audio waveform strip below. "Conduct the music with your hands." Needs Karel approval on MediaPipe CDN dep (~8MB WASM). No API key required.
+
+---
+
+### 42. Chord Colourizer — Real-time Harmonic Analysis Visualization (arxiv 2510.10173, Oct 2025)
+**Source**: https://arxiv.org/abs/2510.10173
+
+Near real-time chord detection system using Constant-Q Transform chroma features. Extracts 12-bin chroma vector per audio frame, applies threshold-based filtering + tonal enhancement to identify root, third, and fifth. Maps detected chord to a color representation based on the circle of fifths. Designed as a GUI overlay for live music.
+
+**Why it matters**: None of the 26 dream prototypes explicitly surfaces music theory — they all visualize audio signal properties (frequency, amplitude, timbre). Chord detection is the next layer up: not "what frequencies are present?" but "what musical structure do those frequencies form?" A pianist sees their chord progression annotated in real time. Bridges raw audio visualization and musical understanding.
+
+**Could become a prototype**: `28-chord-canvas` — mic input → 2048-sample FFT → 12-bin chroma vector (sum FFT bins by semitone class) → template matching against 24 major/minor chord templates (correlation) → detect root + major/minor quality. Display: chord name in large monospace type (e.g. "F♯m") at top center; paint a colored rectangle onto a Canvas2D timeline strip — hue from root (same as `1-live` frequency→hue wheel), saturation from quality (major=vivid, minor=desaturated, dominant7=warm, diminished=cool-grey). Strip scrolls left; each chord block is as wide as its duration. "What chord are you playing — and what chord did you just play?" Zero external deps (pure FFT chroma). One-cycle build.
+
+---
+
+### 43. ACM IMX 2025 — AI-Driven Semantic Music Visualization
+**Source**: https://dl.acm.org/doi/10.1145/3706370.3727869
+
+System combining MIR (tempo, genre, mood, key, instruments) + LLM (to translate features into visual scene descriptions) + Image Generation (Stable Diffusion) to produce audio-reactive visuals that are semantically matched to the music, not just signal-matched. "Instead of mapping FFT → color, map genre:jazz → smoky nightclub visual style, mood:melancholy → desaturated blue palette." Audio features drive both which visual style is selected AND how fast/intense it changes.
+
+**Why it matters for Resonance**: The current 26 prototypes are all signal-reactive (audio signal → visual signal). None are semantically reactive — they don't know if the music is jazz or classical, sad or joyful. A semantic layer would let Resonance's visualization style *understand the music*, not just react to its waveform. Longer-term direction; requires MIR classification inference in the browser (feasible with small pre-trained models via ONNX.js — 5MB classifier).
+
+**Could become a prototype**: `31-mood-vis` — mic input → extract tempo + spectral centroid + zero-crossing rate + key confidence → classify into 6 mood/energy buckets (calm/energetic, bright/dark, complex/simple). Map each bucket to a visual mode (calm+bright = fluid/cymatics, energetic+dark = particles/tessellate, complex = reaction-diffusion). The visualizer *switches mode* as the music changes character. "A visualizer that listens." No ML needed for first version — rule-based classifier from audio features, one-cycle build.

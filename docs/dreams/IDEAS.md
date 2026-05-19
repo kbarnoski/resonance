@@ -454,3 +454,96 @@ Key findings from Cycle 27 (2026-05-19):
 - WASM AudioWorklet — Rust→WASM DSP is 2026 standard; needs pre-built binary for dream zone
 - WebGPU additive synthesis — compute shaders can write audio samples; enables `gpu-additive`
 - GAPT/ReaLchords — still no public API; continue monitoring
+
+---
+
+## FROM RESEARCH (Cycle 31, 2026-05-19) — promoted to queue
+
+### chord-canvas — real-time chord name + color timeline `[queued]`
+Route: `/dream/28-chord-canvas`. Mic input → 2048-sample FFT → 12-bin chroma vector (sum FFT
+magnitude by semitone class across all octaves) → template-match against 24 major/minor chord
+templates (dot-product correlation) → detect root + quality. Display: chord name in large
+monospace type at top center (e.g. "F♯m", "C", "Bdim"). Canvas2D timeline strip scrolls left;
+each chord block is a colored rectangle: hue from root note (same `freqToHue`-style wheel as
+`1-live`, but mapped to 12 pitch classes instead of frequency), saturation from quality
+(major=vivid, minor=desaturated, dominant 7th=warm orange, diminished=cool grey). Duration =
+how long the chord was held (wider block = longer hold).
+
+Secondary display: 12-bar chromagram at the bottom showing current energy per pitch class as a
+vertical bar chart. "Your pitch class is C, E, G — C major." Zero external deps (pure FFT chroma,
+no ML). One-cycle build. Demo mode: plays a ii-V-I progression (Dm7 → G7 → Cmaj7) via triangle
+oscillators. "What chord are you playing?" — the first prototype to explicitly surface music theory.
+
+Why this now: 26 existing prototypes visualize audio signal properties. None name the musical
+structure. This is the simplest bridge from signal to theory. Pianists will recognize their chords
+immediately. Natural complement to `24-piano-roll` (pitch positions) and `22-code-score` (written
+notation). Research basis: Chord Colourizer (RESEARCH.md §42).
+
+### scene-spatial — Ghost preset scenes as spatial audio environments `[queued]`
+Route: `/dream/29-scene-spatial`. Six Ghost preset scenes from the journey narrative, each with
+hand-authored 3D HRTF audio: stone chamber (near-field piano reverb from front-left, stone
+percussion hits from above, long tail), root portal (low root-tone drone from below + forest
+ambience ahead), underground pool (water trickle from right, vast low-frequency resonance),
+tiny planet (wind dome from all azimuths, bird calls from variable positions), forest dawn
+(birdsong from tree canopy = high positions, stream from left-front, first piano tone from
+front-right), cosmic ascension (ultra-high reverb pad from all around, harmonic series drone
+rising in frequency as scene progresses).
+
+UI: scene selector row at top (same names as `2-ghost-lab`). Main area: a First-Person "listener
+head" circle in the center of a canvas, with 3–6 labeled sound sources as colored dots placed
+in their spatial positions; user can drag them to reposition. Audio uses WebAudio HRTF PannerNode
+(same as `7-spatial`). All sounds are synthesized via OscillatorNode + ConvolverNode + custom
+impulse responses (no audio files needed). Wear headphones — scenes should feel like being there.
+One-cycle build. Zero deps. "Each Ghost scene has a sound as distinctive as its visuals."
+Research basis: SonoWorld (RESEARCH.md §39).
+
+### lyria-jam — infinite AI music steering via Lyria RealTime API `[queued, needs GEMINI_API_KEY]`
+Route: `/dream/30-lyria-jam`. Connect to Google's Lyria RealTime API via WebSocket (Gemini API).
+UI: two text prompt slots with weight sliders (0–2) for live blending ("jazz piano" at 1.5 +
+"ambient drone" at 0.5 → morph live by adjusting sliders). BPM slider (60–200), density slider,
+brightness slider, key picker. All controls send `set_weighted_prompts()` or
+`set_music_generation_config()` through the WebSocket in real time; music changes within ~2 seconds.
+Mic input: amplitude → auto-drives brightness (louder playing → brighter, denser music).
+
+Generated 48kHz PCM audio piped directly to `AnalyserNode` → live-bloom radial visualizer (same
+6-band color mapping as `1-live`). Karel pastes his Gemini API key into a settings field;
+stored only in `sessionStorage`, never committed. Admin-only gate. "The music never stops.
+You just steer it." Budget: Google AI Studio free tier has daily quota; paid Gemini API charges
+per minute of generated audio (track against Karel's existing Gemini billing). This is the most
+live-performance-relevant AI music prototype in the queue — continuous, real-time, steerable.
+Research basis: Lyria RealTime (RESEARCH.md §37).
+
+### gesture-music — webcam hand gestures → real-time audio synthesis `[queued, needs MediaPipe CDN dep]`
+Route: `/dream/31-gesture-music`. Webcam → MediaPipe HandLandmarker (loaded from jsDelivr CDN
+as WASM, ~8MB one-time download) → hand skeleton landmarks → 5 synthesizer parameters: right
+hand Y-position → pitch (continuous glide, C2–C7 range); palm-spread (thumb-to-pinky distance)
+→ reverb decay (0.5–4s); left hand Y → bass drone frequency; curl-count (metacarpal-fingertip
+angle sum) → harmonic richness (1–8 harmonics); wrist velocity (frame-delta) → percussive onset
+trigger. Triangle-wave + convolver synthesis, all Web Audio.
+
+Visual: canvas2D overlay on webcam feed shows hand skeleton as glowing dots + lines (additive
+blending). A secondary audio-reactive strip below the feed shows a spectrum bar (1-live style).
+"Conduct the music with your hands." No mic needed. Inspiration: Gesture2Music (30ms latency,
+arxiv 2511.00793, RESEARCH.md §41). One-cycle build; needs Karel approval on CDN load (~8MB).
+
+### mood-vis — semantic audio-reactive visualizer that switches modes `[queued]`
+Route: `/dream/32-mood-vis`. Mic input → extract 4 real-time audio features: tempo estimate
+(onset intervals), spectral centroid, zero-crossing rate, tonal clarity (HPS pitch confidence).
+Rule-based classifier maps features to 6 mood/energy buckets: calm+bright, calm+dark,
+energetic+bright, energetic+dark, complex, minimal. Each bucket maps to a visual mode drawn on
+a single canvas: calm+bright = fluid-style ink diffusion; calm+dark = slow particle drift;
+energetic+bright = cymatics-style radial bloom; energetic+dark = reaction-diffusion-style
+growing patterns; complex = tessellate-style tile rewire; minimal = simple Lissajous circle.
+A smooth 2-second crossfade transitions between modes. Current bucket and features shown as a
+small overlay. "A visualizer that listens." No ML, no external deps. One-cycle build.
+Research basis: ACM IMX 2025 semantic visualization (RESEARCH.md §43).
+
+Key findings from Cycle 31 (2026-05-19):
+- Lyria RealTime API (Google DeepMind) — WebSocket streaming infinite music, text prompt blending, BPM/density/brightness controls, browser-callable with Gemini API key. Most live-performance-relevant AI music capability found yet.
+- Magenta RealTime — open-weights version of above; Python/Colab only, not browser-callable without local server.
+- iOS 26 / Safari 26 — WebGPU now universal: full support on iOS, iPadOS, macOS, visionOS. Karel's phone can now run all WebGPU prototypes.
+- Veo 3.1 Fast — $0.15/sec with audio (half of standard tier). Ghost-animate at ~$0.75/clip.
+- SonoWorld (arxiv 2603.28757, Mar 2026) — image → navigable 3D spatial audio scene, Three.js + WebAudio HRTF, browser-native demo at 5.3ms latency. Inspires `scene-spatial`.
+- Gesture2Music (arxiv 2511.00793) — 30ms webcam gesture → music control. Inspires `gesture-music` via MediaPipe.
+- Chord Colourizer (arxiv 2510.10173) — CQT chroma → chord name + color. Inspires `chord-canvas`, first music-theory prototype.
+- ACM IMX 2025 semantic visualization — MIR + rule-based classifier → visualizer mode switching. Inspires `mood-vis`.

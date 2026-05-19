@@ -10,7 +10,36 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 30)
+## ⭐ Newest (Cycle 31 — research)
+
+- **Cycle 31 was a research sweep** (no new prototype). 7 new entries in RESEARCH.md (§§37–43).
+  5 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **Lyria RealTime API** — WebSocket infinite streaming AI music with live text prompt blending
+    (Google DeepMind). Browser-callable with a Gemini API key. `30-lyria-jam` prototype queued.
+    Most live-performance-relevant AI music capability found yet: it never stops, you just steer it.
+    **Open question for Karel: do you have a Gemini API key to test this with?**
+
+  - **iOS 26 / Safari 26** — WebGPU now fully supported on iPhone/iPad. Karel's phone can now run
+    `15-webgpu-fluid`, `16-particle-life-gpu`, and upcoming `27-gpu-additive`. No more mobile WebGPU
+    disclaimer needed.
+
+  - **`28-chord-canvas`** (build next) — chroma-based chord detection + color timeline. "F♯m, C, G"
+    in real time. Zero deps, one-cycle build. First prototype to name musical structure.
+
+  - **`29-scene-spatial`** (build next) — Ghost preset scenes as hand-authored 3D spatial audio
+    environments. Stone chamber = dry reverb + stone percussion. Cosmic = vast reverberant pad.
+    Zero deps, extends `7-spatial`'s HRTF. One-cycle build.
+
+  - **`31-gesture-music`** — webcam hand gestures → synth (needs MediaPipe CDN dep, ~8MB).
+    **Open question for Karel: OK to load MediaPipe from CDN?**
+
+  - **`32-mood-vis`** — semantic "visualizer that listens" — adapts visual mode based on music
+    character (calm/energetic/complex) via rule-based audio feature classifier. Zero deps.
+
+---
+
+## Previous newest (Cycle 30)
 
 - **[/dream/26-score-follow](/dream/26-score-follow)** — Score Follow.
   Bach Invention No.1 displayed as a static piano roll. Play along on piano or sing —

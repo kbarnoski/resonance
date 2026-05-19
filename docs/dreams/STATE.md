@@ -1,5 +1,82 @@
 # Dream Agent — cycle state
 
+## Cycle 31 — Research cycle
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 30 shipped `26-score-follow`. No blockers. No in-progress prototypes. Three
+consecutive build cycles since last research (Cycles 28, 29, 30) — exactly at the 3-cycle research
+trigger in AGENT.md. Additionally, the IDEAS queue for zero-dependency buildable items is nearly
+exhausted: only `27-gpu-additive` remains, and it's marked as potentially needing 2 cycles. Fresh
+research will surface new prototype ideas and prevent the next build cycle from starting blind.
+
+Did the full sweep: arxiv (audio-visual, MIR, live performance), GitHub trending (creative-coding,
+webaudio, webgpu), fal.ai blog/model pages (new audio/video models), web trends. Results below;
+full entries appended to RESEARCH.md.
+
+**Shipped** (no new code — research cycle):
+- `docs/dreams/RESEARCH.md` — 7 new dated entries appended (§§37–43, Cycle 31)
+- `docs/dreams/IDEAS.md` — 5 new prototype ideas added to queue: `chord-canvas`, `scene-spatial`,
+  `lyria-jam`, `gesture-music`, `mood-vis`
+- `docs/dreams/STATE.md`, `MORNING.md`, `INDEX.md` updated
+
+**Key findings**:
+
+1. **Lyria RealTime API** (Google DeepMind) — WebSocket streaming infinite 48kHz stereo music with
+   live text prompt blending. BPM/density/brightness/scale/key controls updated in real time. Browser-
+   callable from JavaScript with a Gemini API key. This is the biggest AI music discovery since ACE-Step
+   in Cycle 4: ACE-Step generates a clip; Lyria RealTime generates *forever* and responds to prompt
+   changes within 2 seconds. The open-weights Magenta RealTime runs in Python/Colab but is not
+   browser-callable without a local server. New prototype: `lyria-jam` (needs Karel's Gemini API key).
+
+2. **iOS 26 / Safari 26** — WebGPU now shipping on iOS, iPadOS, macOS, and visionOS. Karel's iPhone
+   can now run `15-webgpu-fluid`, `16-particle-life-gpu`, and the planned `27-gpu-additive`. The
+   "requires WebGPU" caveat in INDEX.md is now minor — only affects very old browsers.
+
+3. **SonoWorld** (arxiv 2603.28757, Mar 2026) — single image → navigable 3D spatial audio scene with
+   FOA ambisonics → HRTF binaural, browser-native demo using Three.js + WebAudio at 5.3ms latency.
+   Inspires `scene-spatial`: hand-authored spatial audio environments for each Ghost preset scene.
+   Stone chamber, forest dawn, cosmic ascension — each has a distinctive acoustic character, buildable
+   with existing HRTF primitives from `7-spatial`. Zero deps, one-cycle build.
+
+4. **Chord Colourizer** (arxiv 2510.10173) — CQT chroma → chord name + color. None of the 26 existing
+   prototypes surfaces music theory. `chord-canvas` (28): chroma-based chord detection → chord name
+   in large type + scrolling color timeline. First prototype to explicitly name musical structure.
+   Zero deps, one-cycle build.
+
+5. **Gesture2Music** (arxiv 2511.00793) — webcam hand landmarks → 30ms latency music control. MediaPipe
+   HandLandmarker runs entirely in browser as WASM (~8MB CDN). Inspires `gesture-music`: hand position
+   → pitch, spread → reverb, curl → harmonics. New input modality — camera instead of mic. Needs
+   Karel's approval on MediaPipe CDN dep.
+
+6. **Veo 3.1 Fast** — $0.15/sec with audio (half previous cost). 5s Ghost clip ≈ $0.75. Updates
+   ghost-animate cost estimate. HappyHorse-1.0 still leads single-clip benchmarks.
+
+7. **ACM IMX 2025 semantic viz** — MIR + rule-based classifier → visualizer mode switching. Inspires
+   `mood-vis` (32): features (centroid/ZCR/tempo/tonal clarity) → 6 mood buckets → different visual
+   mode per bucket, crossfading. First "meta-visualizer" that adapts to music character, not just signal.
+
+**What surprised me**: The Lyria RealTime API is more browser-friendly than expected — standard
+WebSocket from JavaScript, no special SDK, same Gemini API key Karel likely already has. The musical
+steering model (weighted text prompt blending) is also more expressive than ACE-Step's text-to-clip
+approach: you can fade "jazz piano" toward "ambient drone" mid-performance by sliding a weight. This
+is genuinely new territory for the dream sandbox. Whether it justifies the API key dependency is
+Karel's call.
+
+The iOS 26 WebGPU news is important: we've been putting "requires WebGPU — may not work on mobile"
+disclaimers on the most technically interesting prototypes. That qualifier disappears for Safari 26 / iOS 26.
+
+**Queued next**:
+1. **Build `28-chord-canvas`** — first music-theory prototype, zero deps, clear spec, one-cycle build.
+   Fills the biggest remaining conceptual gap: none of the 26 prototypes names musical structure.
+2. **Build `29-scene-spatial`** — Ghost scene spatial audio tour, zero deps, extends existing
+   HRTF primitives. Directly serves Karel's Ghost character development interest.
+3. **Build `27-gpu-additive`** — most ambitious item. May need 2 cycles. Probably the cycle after next.
+4. **Discuss `lyria-jam`** — needs Karel to confirm Gemini API key. Flag in MORNING.md.
+5. **Discuss `gesture-music`** — needs Karel's OK on MediaPipe CDN dep. Flag in MORNING.md.
+
+---
+
 ## Cycle 30 — /dream/26-score-follow
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)
