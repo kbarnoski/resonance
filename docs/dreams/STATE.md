@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 30 — /dream/26-score-follow
+
+**When**: 2026-05-19 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 29 shipped `25-cellular` and explicitly queued `26-score-follow` as the Cycle 30
+target. No blockers. No in-progress prototypes. Clear spec in IDEAS.md: display the Bach BWV 772
+fragment as a static piano roll; run autocorrelation pitch detection; advance a cursor through the
+score only when the user plays the correct pitch (±1.5 semitones). Cursor pauses on silence/wrong
+note; snaps back one note after ~1.5s of sustained wrong input. Demo mode auto-plays the score and
+self-matches.
+
+This is the first prototype where the user's performance is *evaluated against a specific target*
+rather than visualized in the abstract. The other piano-representation prototypes (`13-piano-canvas`,
+`22-code-score`, `24-piano-roll`) all treat the user's playing as input to generate output. This one
+plays a "game": play what the score says, advance the cursor. Score following is a real research
+problem (see RESEARCH.md §§29–31) and this is the simplest possible browser-native version.
+
+Decision was immediate. Zero new dependencies (Web Audio + Canvas2D). One-cycle build.
+
+**Shipped**:
+- `src/app/dream/26-score-follow/page.tsx` — full interactive prototype (~380 lines)
+- `src/app/dream/26-score-follow/README.md` — algorithm notes, visual design, polish ideas
+
+**What's inside**:
+
+Score: Bach BWV 772 opening 35 notes (same fragment as `24-piano-roll`), pre-computed as
+`ScoreNote[]` with fixed `startX` positions (PX_PER_BEAT = 80). Score scrolls left as the
+user advances; cursor is fixed at 28% from the left edge of the piano grid.
+
+Pitch detection: same McLeod autocorrelation as `13-piano-canvas` and `24-piano-roll`
+(fftSize=4096, confidence threshold=0.82, ±1.5 semitone match window). Runs every other
+frame to halve CPU cost; interpolates from last MIDI on skipped frames.
+
+Matching logic:
+1. After a match, require silence (RMS < threshold) before accepting the next note.
+   This prevents a held note from chain-matching through consecutive score notes.
+2. Wrong note for >90 frames (~1.5s at 60fps): back up one note (forgiveness mode).
+3. Demo mode: plays each note via OscillatorNode → analyser (silent); uses known
+   frequency directly (skips autocorrelation) for perfect frame-1 matching.
+
+Visual: pulsing white outline on the target note with its pitch name label (e.g. "C5").
+Matched notes: green additive glow. Detected pitch: yellow triangle pointing right from
+the cursor at the correct MIDI row height. "Score complete" overlay when all 35 matched.
+Piano key sidebar (same `drawPianoKeys` function as `24-piano-roll`).
+
+**Build**: `npm run build` passes cleanly. `/dream/26-score-follow` renders as 4.54 kB
+static route. Zero new errors or warnings.
+
+**Queued next**:
+1. **Build `27-gpu-additive`** — GPU particle-additive synthesis. Most ambitious item in
+   the queue; particles ARE Fourier partials, GPU physics IS the synthesizer. May need
+   2 cycles. Or defer to a research cycle first.
+2. **Research cycle** — last research was Cycle 27 (3 cycles ago); per AGENT.md rule,
+   research after 3+ build cycles. Cycle 31 could be research.
+3. **Polish `26-score-follow`** — DTW-based alignment, look-ahead highlighting (next 3
+   notes in warmer grey), multiple scores via `22-code-score` DSL import.
+
+---
+
 ## Cycle 29 — /dream/25-cellular
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 29)
+## ⭐ Newest (Cycle 30)
+
+- **[/dream/26-score-follow](/dream/26-score-follow)** — Score Follow.
+  Bach Invention No.1 displayed as a static piano roll. Play along on piano or sing —
+  the score lights green as you match each note (±1.5 semitone tolerance). The cursor
+  advances only when you play the right pitch; it pauses on silence, backs up one note
+  after 1.5s of wrong-note playing (forgiveness mode). Yellow triangle at the cursor
+  shows your detected pitch in real time. Demo mode plays the score and self-matches —
+  cursor advances perfectly through all 35 notes.
+  **"The first prototype where your playing is evaluated, not just visualized."**
+  Natural partner to `24-piano-roll` (see what you played) and `22-code-score` (write
+  the score). This one asks you to *reproduce* it.
+
+---
+
+## Previous newest (Cycle 29)
 
 - **[/dream/25-cellular](/dream/25-cellular)** — Cellular.
   Conway's Game of Life where each column of the grid is a musical pitch (C2 left → C5 right).
@@ -326,6 +341,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 26-score-follow
+**Status**: `demoable` · **Cycle shipped**: 30 · **Last touched**: 2026-05-19
+
+Open `/dream/26-score-follow`. Click **Demo mode** — the Bach Invention No.1 cursor begins
+advancing immediately, each note lighting green as the demo self-matches at 72 BPM. Watch
+the yellow triangle (your/demo pitch indicator) hit each score note exactly as the score
+scrolls left. Try adjusting the BPM slider to slow down or speed up the demo.
+
+Click **Start mic** and allow permissions. Play C4, D4, E4 ... following the score left to
+right. Each correctly played note lights green and the score advances. Play the wrong note
+for about 1.5 seconds — the cursor backs up one step (the "forgiveness" feature). The
+target note pulses its pitch name (e.g. "C5") at the cursor position.
+
+The piano key sidebar highlights your current pitch. The top-left shows "X / 35 notes"
+match progress. When all 35 notes are matched: "✓ Score complete" overlay.
+
+Design notes: `src/app/dream/26-score-follow/README.md`
+
+---
 
 ### 25-cellular
 **Status**: `demoable` · **Cycle shipped**: 29 · **Last touched**: 2026-05-19
