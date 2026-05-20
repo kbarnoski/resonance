@@ -19,6 +19,7 @@ interface Ring {
 }
 
 type AudioMode = "binaural" | "isochronic";
+type NoiseType = "off" | "pink" | "brown";
 
 // ── constants ──────────────────────────────────────────────────────────────────
 
@@ -38,10 +39,76 @@ const PRESETS: Array<{ label: string; beat: number; carrier: number }> = [
   { label: "γ 40", beat: 40, carrier: 200 },
 ];
 
-// ── pure helpers ───────────────────────────────────────────────────────────────
+const JOURNAL_HINTS: Record<string, string> = {
+  delta: "Deep sleep / healing state. Note how your body feels...",
+  theta: "Meditative / drowsy state. What images or thoughts arise?",
+  alpha: "Relaxed awareness. What do you notice in this moment?",
+  beta:  "Focused and alert. What are you working on or thinking through?",
+  gamma: "High cognition / insight. What connections are you making?",
+};
+
+// ── module-level helpers ───────────────────────────────────────────────────────
 
 function findState(hz: number): BrainState {
   return BRAIN_STATES.find(s => hz >= s.min && hz < s.max) ?? BRAIN_STATES[0];
+}
+
+function journalKey(stateLabel: string): string {
+  return `binaural-journal-${stateLabel}`;
+}
+
+function formatTime(s: number): string {
+  const m   = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, "0")}`;
+}
+
+// Pink noise: white → lowpass ~1200 Hz (1/f approximation)
+// Brown noise: white → lowpass ~300 Hz (1/f² approximation)
+function buildNoiseChain(
+  actx:    AudioContext,
+  master:  GainNode,
+  type:    "pink" | "brown",
+  level:   number,
+  srcRef:  { current: AudioBufferSourceNode | null },
+  gainRef: { current: GainNode | null },
+): void {
+  const rate   = actx.sampleRate;
+  const bufLen = Math.round(rate * 2);
+  const buf    = actx.createBuffer(1, bufLen, rate);
+  const data   = buf.getChannelData(0);
+  for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+
+  const src  = actx.createBufferSource();
+  src.buffer = buf;
+  src.loop   = true;
+
+  const filt = actx.createBiquadFilter();
+  filt.type  = "lowpass";
+  if (type === "pink") { filt.frequency.value = 1200; filt.Q.value = 0.7; }
+  else                 { filt.frequency.value =  300; filt.Q.value = 0.5; }
+
+  const gain      = actx.createGain();
+  gain.gain.value = level * 0.5;
+
+  src.connect(filt);
+  filt.connect(gain);
+  gain.connect(master);
+  src.start();
+
+  srcRef.current  = src;
+  gainRef.current = gain;
+}
+
+function clearNoiseChain(
+  srcRef:  { current: AudioBufferSourceNode | null },
+  gainRef: { current: GainNode | null },
+): void {
+  try { srcRef.current?.stop(); } catch { /* already stopped */ }
+  srcRef.current?.disconnect();
+  gainRef.current?.disconnect();
+  srcRef.current  = null;
+  gainRef.current = null;
 }
 
 // ── component ──────────────────────────────────────────────────────────────────
@@ -58,6 +125,10 @@ export default function BinauralPage() {
   const isoOscRef   = useRef<OscillatorNode | null>(null);
   const isoLfoRef   = useRef<OscillatorNode | null>(null);
 
+  // Noise refs
+  const noiseSourceRef = useRef<AudioBufferSourceNode | null>(null);
+  const noiseGainRef   = useRef<GainNode | null>(null);
+
   // Animation refs
   const ringsRef    = useRef<Ring[]>([]);
   const nextBeatRef = useRef<number>(0);
@@ -65,14 +136,30 @@ export default function BinauralPage() {
   const carrierRef  = useRef(200);
   const beatRef     = useRef(10);
 
-  // UI state
-  const [playing, setPlaying] = useState(false);
-  const [carrier, setCarrier] = useState(200);
-  const [beat,    setBeat]    = useState(10);
-  const [mode,    setMode]    = useState<AudioMode>("binaural");
-  const [volume,  setVolume]  = useState(0.4);
+  // Timer refs
+  const playStartTimeRef  = useRef<number>(0);
+  const sessionTimesRef   = useRef<Record<string, number>>({});
+  const prevStateLabelRef = useRef<string>("");
 
-  // ── sync refs + live-update oscillators when carrier/beat change ──────────
+  // Live refs for effects (avoids stale closures)
+  const noiseLevelRef = useRef(0.3);
+
+  // UI state
+  const [playing,        setPlaying]        = useState(false);
+  const [carrier,        setCarrier]        = useState(200);
+  const [beat,           setBeat]           = useState(10);
+  const [mode,           setMode]           = useState<AudioMode>("binaural");
+  const [volume,         setVolume]         = useState(0.4);
+  const [noiseType,      setNoiseType]      = useState<NoiseType>("off");
+  const [noiseLevel,     setNoiseLevel]     = useState(0.3);
+  const [sessionDisplay, setSessionDisplay] = useState<string | null>(null);
+  const [journalText,    setJournalText]    = useState("");
+  const [journalOpen,    setJournalOpen]    = useState(false);
+
+  // derived
+  const stNow = findState(beat);
+
+  // ── sync refs + live-update oscillators ──────────────────────────────────
 
   useEffect(() => {
     carrierRef.current = carrier;
@@ -111,7 +198,66 @@ export default function BinauralPage() {
     return () => obs.disconnect();
   }, []);
 
-  // ── animation loop ───────────────────────────────────────────────────────
+  // ── state label change: accumulate timer + load journal ──────────────────
+
+  useEffect(() => {
+    if (playingRef.current) {
+      const prev = prevStateLabelRef.current;
+      if (prev && prev !== stNow.label) {
+        const elapsed = (Date.now() - playStartTimeRef.current) / 1000;
+        sessionTimesRef.current[prev] = (sessionTimesRef.current[prev] ?? 0) + elapsed;
+        playStartTimeRef.current = Date.now();
+      }
+    }
+    prevStateLabelRef.current = stNow.label;
+    const saved = typeof window !== "undefined"
+      ? localStorage.getItem(journalKey(stNow.label))
+      : null;
+    setJournalText(saved ?? "");
+  }, [stNow.label]);
+
+  // ── session timer: update every second while playing ─────────────────────
+
+  useEffect(() => {
+    if (!playing) {
+      setSessionDisplay(null);
+      return;
+    }
+    const refresh = () => {
+      const elapsed = (Date.now() - playStartTimeRef.current) / 1000;
+      const acc     = sessionTimesRef.current[stNow.label] ?? 0;
+      setSessionDisplay(formatTime(acc + elapsed));
+    };
+    refresh();
+    const id = setInterval(refresh, 1000);
+    return () => clearInterval(id);
+  }, [playing, stNow.label]);
+
+  // ── noise level live update ───────────────────────────────────────────────
+
+  useEffect(() => {
+    noiseLevelRef.current = noiseLevel;
+    const now = actxRef.current?.currentTime;
+    if (now !== undefined && noiseGainRef.current) {
+      noiseGainRef.current.gain.setTargetAtTime(noiseLevel * 0.5, now, 0.1);
+    }
+  }, [noiseLevel]);
+
+  // ── noise type change while playing ──────────────────────────────────────
+
+  useEffect(() => {
+    if (!playingRef.current || !actxRef.current || !masterRef.current) return;
+    clearNoiseChain(noiseSourceRef, noiseGainRef);
+    if (noiseType !== "off") {
+      buildNoiseChain(
+        actxRef.current, masterRef.current,
+        noiseType, noiseLevelRef.current,
+        noiseSourceRef, noiseGainRef,
+      );
+    }
+  }, [noiseType]);
+
+  // ── animation loop ────────────────────────────────────────────────────────
 
   useEffect(() => {
     let rafId = 0;
@@ -133,7 +279,6 @@ export default function BinauralPage() {
       const { hue }   = st;
       const isPlaying = playingRef.current;
 
-      // Birth new rings on schedule
       if (isPlaying) {
         while (t >= nextBeatRef.current) {
           ringsRef.current.push({ birthT: nextBeatRef.current });
@@ -141,16 +286,13 @@ export default function BinauralPage() {
         }
       }
 
-      // Each ring lives long enough to always show ~3 concurrent rings
       const ringLife = Math.max(0.2, 3 / bt);
       ringsRef.current = ringsRef.current.filter(r => t - r.birthT < ringLife);
 
-      // Phase within current beat (0 = ring just born, 1 = just before next ring)
       const latestRing = ringsRef.current[ringsRef.current.length - 1];
       const phase = (latestRing && isPlaying) ? Math.min(1, (t - latestRing.birthT) * bt) : 1;
-      const pulse = Math.exp(-phase * 5);   // sharp decay from birth
+      const pulse = Math.exp(-phase * 5);
 
-      // Background fade (trail)
       g.fillStyle = "rgba(4, 4, 16, 0.18)";
       g.fillRect(0, 0, W, H);
 
@@ -158,7 +300,6 @@ export default function BinauralPage() {
       const cy   = H / 2 - H * 0.03;
       const maxR = Math.min(W, H) * 0.43;
 
-      // Expanding rings
       for (const ring of ringsRef.current) {
         const age  = t - ring.birthT;
         const prog = age / ringLife;
@@ -174,7 +315,6 @@ export default function BinauralPage() {
         g.restore();
       }
 
-      // Center glow (peaks on beat birth, decays)
       if (isPlaying) {
         const glowR = maxR * 0.05 + pulse * maxR * 0.22;
         g.save();
@@ -188,7 +328,6 @@ export default function BinauralPage() {
         g.fill();
         g.restore();
       } else {
-        // Idle: slow breathing glow
         const idleA = 0.07 + 0.03 * Math.sin(Date.now() / 2200);
         g.save();
         const grad = g.createRadialGradient(cx, cy, 0, cx, cy, maxR * 0.28);
@@ -201,7 +340,6 @@ export default function BinauralPage() {
         g.restore();
       }
 
-      // State overlay: Greek symbol + Hz + description
       const bigSz = Math.round(Math.min(W, H) * 0.1);
       const midSz = Math.round(Math.min(W, H) * 0.03);
       const smlSz = Math.round(Math.min(W, H) * 0.022);
@@ -229,11 +367,14 @@ export default function BinauralPage() {
 
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, []); // refs only — no state deps
+  }, []);
 
   // ── audio start ────────────────────────────────────────────────────────────
 
-  function startAudio(m: AudioMode, car: number, bt: number, vol: number) {
+  function startAudio(
+    m: AudioMode, car: number, bt: number, vol: number,
+    nType: NoiseType, nLevel: number,
+  ) {
     const actx   = new AudioContext();
     actxRef.current = actx;
 
@@ -273,7 +414,6 @@ export default function BinauralPage() {
       rightOsc.start(now);
       rightOscRef.current = rightOsc;
     } else {
-      // Isochronic: carrier + sine LFO amplitude modulation → gain [0, 1]
       const osc = actx.createOscillator();
       osc.type  = "sine";
       osc.frequency.setValueAtTime(car, now);
@@ -300,6 +440,10 @@ export default function BinauralPage() {
       isoLfoRef.current = lfo;
     }
 
+    if (nType !== "off") {
+      buildNoiseChain(actx, master, nType, nLevel, noiseSourceRef, noiseGainRef);
+    }
+
     actx.resume();
   }
 
@@ -313,16 +457,20 @@ export default function BinauralPage() {
 
     masterRef.current?.gain.setTargetAtTime(0, now, fade / 3);
 
-    const toStop: Array<OscillatorNode | null> = [
-      leftOscRef.current, rightOscRef.current, isoOscRef.current, isoLfoRef.current,
+    const toStop: Array<AudioScheduledSourceNode | null> = [
+      leftOscRef.current, rightOscRef.current,
+      isoOscRef.current,  isoLfoRef.current,
+      noiseSourceRef.current,
     ];
-    toStop.forEach(o => { try { o?.stop(now + fade); } catch { /* already stopped */ } });
+    toStop.forEach(n => { try { n?.stop(now + fade); } catch { /* already stopped */ } });
 
-    leftOscRef.current  = null;
-    rightOscRef.current = null;
-    isoOscRef.current   = null;
-    isoLfoRef.current   = null;
-    masterRef.current   = null;
+    leftOscRef.current     = null;
+    rightOscRef.current    = null;
+    isoOscRef.current      = null;
+    isoLfoRef.current      = null;
+    noiseSourceRef.current = null;
+    noiseGainRef.current   = null;
+    masterRef.current      = null;
 
     ringsRef.current    = [];
     nextBeatRef.current = 0;
@@ -337,11 +485,18 @@ export default function BinauralPage() {
 
   function togglePlay() {
     if (playing) {
+      const elapsed = (Date.now() - playStartTimeRef.current) / 1000;
+      if (prevStateLabelRef.current) {
+        sessionTimesRef.current[prevStateLabelRef.current] =
+          (sessionTimesRef.current[prevStateLabelRef.current] ?? 0) + elapsed;
+      }
       playingRef.current = false;
       stopAudio();
       setPlaying(false);
     } else {
-      startAudio(mode, carrier, beat, volume);
+      playStartTimeRef.current  = Date.now();
+      prevStateLabelRef.current = stNow.label;
+      startAudio(mode, carrier, beat, volume, noiseType, noiseLevel);
       playingRef.current = true;
       setPlaying(true);
     }
@@ -352,11 +507,15 @@ export default function BinauralPage() {
     setCarrier(car);
   }
 
+  function handleJournalChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    const text = e.target.value;
+    setJournalText(text);
+    localStorage.setItem(journalKey(stNow.label), text);
+  }
+
   // ── derived ───────────────────────────────────────────────────────────────
 
-  const stNow = findState(beat);
-
-  // ── styles helpers ────────────────────────────────────────────────────────
+  // ── style helpers ─────────────────────────────────────────────────────────
 
   const btnBase: React.CSSProperties = {
     padding: "0.25rem 0.55rem",
@@ -371,7 +530,7 @@ export default function BinauralPage() {
 
   const activeBtn: React.CSSProperties = {
     ...btnBase,
-    border: `1px solid rgba(255,255,255,0.35)`,
+    border: "1px solid rgba(255,255,255,0.35)",
     background: "rgba(255,255,255,0.07)",
     color: "#fff",
   };
@@ -438,7 +597,7 @@ export default function BinauralPage() {
           gap: "0.45rem",
         }}
       >
-        {/* Row 1: mode + presets + play */}
+        {/* Row 1: mode + presets + play + timer */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", flexWrap: "wrap" }}>
           <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.3)" }}>mode</span>
 
@@ -492,9 +651,24 @@ export default function BinauralPage() {
           >
             {playing ? "■ Stop" : "▶ Start"}
           </button>
+
+          {/* Session timer */}
+          {sessionDisplay && (
+            <span
+              style={{
+                fontSize: "0.68rem",
+                color: `hsla(${stNow.hue}, 70%, 65%, 0.85)`,
+                fontVariantNumeric: "tabular-nums",
+                marginLeft: "0.2rem",
+                minWidth: "60px",
+              }}
+            >
+              {stNow.sym} {sessionDisplay}
+            </span>
+          )}
         </div>
 
-        {/* Row 2: sliders */}
+        {/* Row 2: sliders + noise */}
         <div style={{ display: "flex", alignItems: "center", gap: "1rem", flexWrap: "wrap" }}>
           <label
             style={{
@@ -565,6 +739,55 @@ export default function BinauralPage() {
             />
           </label>
 
+          {/* Noise controls */}
+          <span
+            style={{
+              fontSize: "0.65rem",
+              color: "rgba(255,255,255,0.3)",
+              marginLeft: "0.25rem",
+            }}
+          >
+            noise
+          </span>
+          {(["off", "pink", "brown"] as NoiseType[]).map(nt => (
+            <button
+              key={nt}
+              onClick={() => setNoiseType(nt)}
+              style={{
+                ...btnBase,
+                border: `1px solid rgba(255,255,255,${noiseType === nt ? 0.35 : 0.1})`,
+                background: noiseType === nt ? "rgba(255,255,255,0.07)" : "transparent",
+                color: noiseType === nt ? "#e0e0f0" : "rgba(255,255,255,0.3)",
+                padding: "0.25rem 0.45rem",
+              }}
+            >
+              {nt}
+            </button>
+          ))}
+
+          {noiseType !== "off" && (
+            <label
+              style={{
+                fontSize: "0.7rem",
+                color: "rgba(255,255,255,0.38)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.4rem",
+              }}
+            >
+              level
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.05"
+                value={noiseLevel}
+                onChange={e => setNoiseLevel(parseFloat(e.target.value))}
+                style={{ width: "60px", accentColor: "rgba(255,255,255,0.5)" }}
+              />
+            </label>
+          )}
+
           {mode === "binaural" && (
             <span
               style={{
@@ -577,6 +800,70 @@ export default function BinauralPage() {
             </span>
           )}
         </div>
+      </div>
+
+      {/* ── journal panel ── */}
+      <div
+        style={{
+          flexShrink: 0,
+          borderTop: "1px solid rgba(255,255,255,0.05)",
+          background: "rgba(0,0,0,0.25)",
+        }}
+      >
+        {/* Journal toggle row */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0.3rem 1rem",
+            cursor: "pointer",
+          }}
+          onClick={() => setJournalOpen(o => !o)}
+        >
+          <span style={{ fontSize: "0.65rem", color: "rgba(255,255,255,0.28)" }}>
+            📓 session notes — {stNow.label}
+            {journalText ? " ●" : ""}
+          </span>
+          <span style={{ fontSize: "0.6rem", color: "rgba(255,255,255,0.18)" }}>
+            {journalOpen ? "↑ collapse" : "↓ expand"}
+          </span>
+        </div>
+
+        {/* Journal textarea */}
+        {journalOpen && (
+          <div style={{ padding: "0 1rem 0.55rem" }}>
+            <textarea
+              value={journalText}
+              onChange={handleJournalChange}
+              placeholder={JOURNAL_HINTS[stNow.label] ?? "Your thoughts in this state..."}
+              style={{
+                width: "100%",
+                height: "80px",
+                background: "rgba(255,255,255,0.04)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "3px",
+                color: "#c8c8e0",
+                fontFamily: "'Courier New', Courier, monospace",
+                fontSize: "0.72rem",
+                padding: "0.4rem 0.6rem",
+                resize: "vertical",
+                outline: "none",
+                boxSizing: "border-box",
+              }}
+            />
+            <div
+              style={{
+                fontSize: "0.58rem",
+                color: "rgba(255,255,255,0.15)",
+                marginTop: "0.2rem",
+                textAlign: "right",
+              }}
+            >
+              saved per state · persists across sessions
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ── design notes ── */}

@@ -785,7 +785,7 @@ Design notes: `src/app/dream/43-stable-extend/README.md`
 ---
 
 ### 42-binaural
-**Status**: `demoable` · **Cycle shipped**: 47 · **Last touched**: 2026-05-19
+**Status**: `polished` · **Cycle shipped**: 47 · **Last touched**: 2026-05-20
 
 Open `/dream/42-binaural`. Click **▶ Start** with the default **α 10 Hz** preset and put on
 headphones. You'll hear a single continuous tone — but inside your skull, a 10 Hz oscillation
@@ -797,6 +797,23 @@ The canvas shows cyan expanding rings at 10 Hz — one ring born per beat, growi
 edge and fading. The center glows on each ring birth. Try the **δ 2** preset: two slow deep-violet
 pulses per second, like breathing. Let it run for 30 seconds; the rhythmic quality is visceral.
 
+**Noise layer (new)**: Add brown noise while in δ or θ state — the low-frequency rumble
+reinforces the carrier and masks distracting ambient sounds. Buttons: `off | pink | brown`.
+Level slider controls the noise blend. Pink noise is airier (good for α/β). Brown noise is
+deeper and more sleep-conducive (good for δ/θ). Both types remain transparent to the binaural beat.
+
+**Session timer (new)**: After starting, a `α 0:00` counter appears and ticks up in real time.
+Switch to θ — the counter resets to `θ 0:00` while the α time is banked. Switch back to α —
+resumes from where you left off. Shows cumulative time in each state per session.
+
+**Journal (new)**: Click `📓 session notes — alpha ↓` to expand a textarea. Each brainwave
+state has its own persistent notes stored in `localStorage` (survives page reloads). The
+placeholder prompts guide you toward the appropriate introspective mode:
+- δ: "Note how your body feels..."
+- α: "What do you notice in this moment?"
+- γ: "What connections are you making?"
+A `●` dot in the toggle label shows when saved text exists for the current state.
+
 Try **γ 40**: the amber rings blur into a near-constant glow — you can't see 40 distinct rings at
 60 fps. The carrier tones at 200 Hz and 240 Hz create a more complex audio texture; the binaural
 beat is subconscious at this rate.
@@ -804,10 +821,6 @@ beat is subconscious at this rate.
 Switch to **isochronic** mode (stop first to switch): now the beat is audible as a tremolo
 effect — the carrier amplitude pulses at the beat rate. At θ 6 Hz it sounds like a slow shiver.
 Isochronic works on speakers; binaural requires headphones.
-
-Drag the **beat** slider slowly from 2 Hz up to 40 Hz and watch the canvas colors transition:
-deep violet (δ) → indigo (θ) → cyan (α) → green (β) → amber (γ). The ring speed accelerates
-continuously. This is the full spectrum of human brainwave activity, mapped to a slider.
 
 Design notes: `src/app/dream/42-binaural/README.md`
 

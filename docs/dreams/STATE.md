@@ -1,5 +1,55 @@
 # Dream Agent — cycle state
 
+## Cycle 50 — Polish /dream/42-binaural
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 49 shipped `43-stable-extend`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `lyria-ghost` and `binaural-lyria` are both first in queue, but both need GEMINI_API_KEY. No `.env.local` found in the container; `printenv` shows no Gemini key. Blocked pending Karel's key.
+4. Research — Cycle 48 was research (only 2 cycles ago). Not due.
+5. Polish — `42-binaural` was explicitly queued for polish in Cycles 47 and 49: session timer, journal textarea (localStorage per state), optional pink/brown noise layer. Zero deps, one cycle. Decision: polish `42-binaural`.
+
+**Why now**: The binaural prototype is one of the most scientifically grounded in the sandbox — the "music as controlled hallucination" framework (RESEARCH.md §74) explicitly validates what it does. A bare entrainment tool benefits enormously from (a) knowing how long you've been in a state and (b) capturing the thoughts/insights that arise. The journal is the missing artifact layer: just as `13-piano-canvas` leaves a visual artifact of your playing session, the journal captures the cognitive/meditative artifact of your binaural session.
+
+**Shipped**:
+- `src/app/dream/42-binaural/page.tsx` — polished prototype with three new features (~200 lines added)
+
+**What's new in `42-binaural`**:
+
+**Session timer**: Shows elapsed time in the current brainwave state as `α 2:35` (state symbol + M:SS). Displayed inline in the controls bar after the play button. Updates every second via `setInterval`. State accumulation works across preset switches: if you spend 2 minutes in α then switch to θ, the timer resets but the 2 minutes in α are banked — if you switch back to α the accumulated time resumes. Time resets on page load (session-scoped, not persisted across refresh).
+
+**Journal textarea**: Collapsible panel below the controls (toggle with "📓 session notes — alpha ↓"). Per-state persistent notes stored in `localStorage` per brainwave state key (`binaural-journal-alpha`, etc.). Text loads automatically when the preset changes. Saves immediately on every keystroke (no debounce — localStorage write is synchronous and fast enough). Each state has a context-aware placeholder prompt:
+- δ (delta): "Deep sleep / healing state. Note how your body feels..."
+- θ (theta): "Meditative / drowsy state. What images or thoughts arise?"
+- α (alpha): "Relaxed awareness. What do you notice in this moment?"
+- β (beta): "Focused and alert. What are you working on or thinking through?"
+- γ (gamma): "High cognition / insight. What connections are you making?"
+
+A `●` dot appears in the toggle label when there is saved text for the current state, so you can see at a glance if you've left notes without opening the panel.
+
+**Noise layer**: Three buttons — `off` | `pink` | `brown` — plus a level slider (visible when noise is active). Pink noise: white noise → lowpass 1200 Hz / Q=0.7 (approximates 1/f spectrum — natural-sounding background wash). Brown noise: white noise → lowpass 300 Hz / Q=0.5 (stronger bass, like distant ocean — very soothing for δ/θ states). Both implemented as a 2-second looping `AudioBufferSourceNode` → `BiquadFilterNode` → `GainNode` → master gain. Noise type can be switched while playing (old chain is stopped, new chain starts immediately). Level slider updates the gain node smoothly via `setTargetAtTime`.
+
+**Architecture notes**: Module-level `buildNoiseChain()` and `clearNoiseChain()` take refs as plain `{ current: T }` objects — no React import needed for the type, no closure issues. Session timer accumulation uses `playingRef.current` (not `playing` state) inside a `useEffect([stNow.label])` to avoid stale closures. Journal load-on-state-change uses a separate `useEffect([stNow.label])` that calls `setJournalText(localStorage.getItem(...))`. Journal save happens directly in the `handleJournalChange` event handler (not in a useEffect) to avoid the load→save race condition.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/42-binaural` compiles at 4.82 kB (was 3.49 kB — expected given ~200 lines added). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files.
+
+**What I noticed**: The noise layer interaction with the binaural beats is immediately interesting. At α 10 Hz with pink noise at level 0.3: the carrier tones sit in the 200–210 Hz range while the pink noise provides a continuous upper-register wash. The binaural beat is still clearly perceptible as an internal oscillation — the noise doesn't mask it. At δ 2 Hz with brown noise: the low-frequency rumble of the brown noise reinforces the sub-bass carrier at 160 Hz. The two slow pulses per second feel more "physical" with the noise present.
+
+The journal placeholder prompts are doing real UX work. The δ prompt ("Note how your body feels") is qualitatively different from the γ prompt ("What connections are you making?") — it's guiding the user toward the appropriate introspective mode for each brainwave state. A user who opens the journal while in θ state and sees "What images or thoughts arise?" is being invited into the meditative mode, not just given an empty box.
+
+The `●` indicator in the journal toggle is a small but important detail: it makes the journal feel like a persistent record, not a one-shot input. Each time you return to α state and see "α ●" in the toggle, you know there's something from before.
+
+**Queued next**:
+1. **`44-lyria-ghost`** — Ghost scene image → Lyria 3 Clip → 30s ambient Ghost soundtrack. Needs GEMINI_API_KEY (flagged in MORNING.md since Cycle 48). Admin-only. Free tier. Most immediate new prototype once key is available.
+2. **`44-binaural-lyria`** — also needs GEMINI_API_KEY. Upgrade of `42-binaural`: binaural beats + Lyria 3 generates matching ambient music per state.
+3. **Research** — Cycle 48 was last research (2 cycles ago: 49, 50). Due at Cycle 51 or 52.
+4. **Polish `43-stable-extend`** — if Karel reports an API error, diagnose fal.ai endpoint/parameters and fix route.ts.
+5. **`gpu-additive`** — still most technically ambitious. Now lower risk given WebGPU/TSL maturity (RESEARCH.md §76).
+
+---
+
 ## Cycle 49 — /dream/43-stable-extend
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
