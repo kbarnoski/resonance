@@ -10,7 +10,30 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 54)
+## ⭐ Newest (Cycle 55)
+
+- **[/dream/47-mood-journey](/dream/47-mood-journey)** — Mood Journey.
+  Click your **NOW** mood on the Russell circumplex (valence × arousal), then click your **GOAL**
+  mood, pick a duration (Quick 2m / Short 5m / Normal 10m / Deep 20m), and press **▶ Begin journey**.
+  The dot glides from Now to Goal automatically — no interaction needed. The music walks with it.
+
+  **Two simultaneous audio layers both track the gliding position**:
+  - Mood synthesis (from `38-mood-xy`): BPM, chord quality, register, attack, arpeggio, filter brightness
+  - Isochronic tones (from `42-binaural`): β 16Hz / α 10Hz / θ 6Hz / δ 2Hz matching arousal level
+
+  Canvas shows a quadrant color wash (amber=energetic+happy, purple=energetic+sad, teal=calm+happy,
+  navy=calm+sad), a blue trail of the positions visited, a dashed green path to the goal, and a
+  glowing dot at the current position. Noise layer (pink/brown) available mid-journey.
+
+  **"Surrender control to the arc."** The first prototype that auto-generates a complete emotional
+  trajectory rather than responding to manual input. Based on the proactive music therapy research
+  cluster (RESEARCH.md §84). Zero deps, no API keys.
+
+  Design notes: `src/app/dream/47-mood-journey/README.md`
+
+---
+
+## Previous newest (Cycle 54)
 
 - **[/dream/46-osc-composer](/dream/46-osc-composer)** — Oscilloscope Composer.
   Design a Lissajous figure using three sliders (L freq, R freq, phase), then download the
@@ -834,6 +857,37 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 47-mood-journey
+**Status**: `demoable` · **Cycle shipped**: 55 · **Last touched**: 2026-05-20
+
+Open `/dream/47-mood-journey`. Read the instruction: "Click the canvas to place your NOW mood."
+Click somewhere in the **top-left** (energetic + sad = distressed state). The yellow NOW dot
+appears with the label "NOW." The instruction updates: "Click to place your GOAL mood."
+Click the **bottom-right** (calm + happy = content/serene state). The green GOAL dot appears
+with a dashed ring. Select **Short 5m** (or **Quick 2m** for an immediate demo). Click **▶ Begin journey**.
+
+The music starts immediately in the distressed state: fast (110–130 BPM), diminished chords,
+dull filter, high register, staccato arpeggios. The isochronic carrier begins pulsing at β 16Hz
+(fast tremolo). Watch the glowing dot start moving toward the GOAL position — slowly, continuously.
+
+After ~30 seconds (Quick mode) you'll hear the chord quality shift toward minor as valence moves
+right. After ~60 seconds the BPM drops noticeably. The isochronic frequency transitions from β
+to α (16Hz → 10Hz) at around the arousal midpoint — you hear the tremolo slow into a distinct
+10-beat-per-second wobble. By the end of the journey the music is slow, sustained, warm major
+chords with a low isochronic purr at 6Hz (θ boundary).
+
+The blue trail accumulates as the dot moves — the path you've taken is visible as the journey
+progresses. The green dashed path shows what remains.
+
+Add noise mid-journey: click **brown** and drag the level slider to ~0.3 for low-arousal states.
+The brown rumble reinforces the descending arc without masking the carrier.
+
+For a real session: use **Normal 10m** or **Deep 20m** with headphones in a quiet room.
+
+Design notes: `src/app/dream/47-mood-journey/README.md`
+
+---
 
 ### 46-osc-composer
 **Status**: `demoable` · **Cycle shipped**: 54 · **Last touched**: 2026-05-20

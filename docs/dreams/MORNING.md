@@ -1,26 +1,24 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 54)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 55)
 
 ## New since yesterday
 
-- **[/dream/46-osc-composer](/dream/46-osc-composer)** — Oscilloscope Composer
-  _Why open this_: design a Lissajous shape with three sliders, download the stereo WAV that
-  draws it on an oscilloscope in XY mode. The download IS the point — same file you'd feed into
-  a real oscilloscope or into `20-scope` (Phase Portrait mode). Five presets map musical intervals
-  to geometry: perfect fifth = 3-lobe trefoil, perfect fourth = 4-leaf rose. Puzzle mode shows
-  a target figure and asks you to match it.
+- **[/dream/47-mood-journey](/dream/47-mood-journey)** — Mood Journey
+  _Why open this_: click your NOW mood anywhere on the Russell circumplex (valence × arousal),
+  then click your GOAL mood, pick a duration (2m / 5m / 10m / 20m), press Begin. The dot glides
+  from Now to Goal automatically — no interaction needed. The music walks with it: BPM, chord
+  quality, register, and a second isochronic tone layer all track the gliding position in real time.
+  At the midpoint of "distressed → content" you hear a genuine audio blend of both states.
+  **The first prototype where you surrender control to the arc.** Zero deps, no API keys.
 
-## What's been shipping (Cycles 52–53)
+## What's been shipping (Cycles 53–54)
+
+- **[/dream/46-osc-composer](/dream/46-osc-composer)** — Oscilloscope Composer _(Cycle 54)_
+  Design a Lissajous shape, download the stereo WAV that draws it on an oscilloscope in XY mode.
+  Perfect fifth = trefoil, perfect fourth = rose, major sixth = starburst. Puzzle mode.
 
 - **[/dream/45-guided-session](/dream/45-guided-session)** — Guided Brainwave Session _(Cycle 53)_
-  Pick a journey arc (Stressed → Calm, Scattered → Calm, Wired → Drowsy, Alert → Deep Rest),
-  set step duration (Quick 30s / Normal 5m / Deep 10m). Isochronic tones walk your brainwave
-  frequency from start to goal — no headphones needed. Based on the proactive music therapy
-  research cluster (RESEARCH.md §§74, 75, 80). Path breadcrumb, per-step journal, auto-advance.
-
-- **[/dream/44-vocal-bgm](/dream/44-vocal-bgm)** — Vocal BGM _(Cycle 52)_
-  Hum 5–15s → ACE-Step 1.5 generates a 30s full-band arrangement around your melody.
-  Genres: jazz trio, ambient, cinematic, rock, folk. $0.006/generation, FAL_KEY in use.
-  ⚠ If it shows a fal.ai error, paste it — will fix endpoint in next cycle.
+  Pick a journey arc (Stressed → Calm, etc.), isochronic tones walk your brainwave frequency
+  from start to goal. No headphones needed. Journal, path breadcrumb, auto-advance.
 
 ## In progress / partial
 
@@ -28,22 +26,24 @@
 
 ## Research findings worth a look
 
-- **Oscilloscope music as genre** — an art form where audio = visual. `46-osc-composer` is
-  the sandbox's entry point. Polish direction: add waveform selector (triangle/sawtooth adds
-  overtone loops that create spirograph-style figures), slow phase auto-rotation for WAVs that
-  "spin" on an oscilloscope.
+- **`mood-journey` is now live** — the proactive traversal prototype shipped this cycle. Polish
+  direction: non-linear arc shapes (peak through energetic before descending to serene), waypoint
+  system like guided-session, mic amplitude → arousal feedback, preset journeys (Morning activation,
+  Sleep prep, Creative flow).
 
-- **Proactive mood traversal** (`mood-journey`, IDEAS.md) — still unbuilt. Combines `38-mood-xy`
-  synthesis engine with `42-binaural` isochronic layer; auto-glides from "now" to "goal" over
-  10–20 minutes. Research due this cycle or next (3-cycle threshold reached).
+- **Zero-dep buildable queue is now exhausted.** Next cycle will be a research sweep (3–4 cycle
+  cadence; last research was Cycle 51, now 4 cycles ago: 52, 53, 54, 55). Research is overdue.
 
 ## Open questions for Karel
 
 1. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`,
-   `piano-to-ghost`. Four prototypes waiting on one key.
+   `piano-to-ghost`. Four prototypes waiting on one key. This is the single highest-leverage action
+   you can take to unlock the next generation of prototypes.
 
 2. **`44-vocal-bgm` API status** — did the ACE-Step endpoint work, or did you see a fal.ai error?
-   If error: paste the message and the agent will fix `route.ts` next cycle.
+   If error: paste the message (shown in the prototype's UI) and the agent will fix `route.ts`.
 
-3. **Research vs build** — research is at the 3-cycle threshold (Cycles 52, 53, 54). Next cycle
-   could be research sweep OR build `mood-journey` (zero deps, one cycle). Your call.
+3. **CDN deps awaiting approval**:
+   - `ghost-xr` — A-Frame CDN ~1MB → WebXR spatial audio inside a Ghost scene
+   - `neural-pitch` — ONNX Runtime Web CDN ~2MB → 10× more accurate pitch detection for 6+ prototypes
+   - `browser-musicgen` — Transformers.js ~390MB → offline MusicGen, zero API cost
