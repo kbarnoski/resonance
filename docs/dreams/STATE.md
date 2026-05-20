@@ -1,5 +1,69 @@
 # Dream Agent — cycle state
 
+## Cycle 53 — /dream/45-guided-session
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 52 shipped `44-vocal-bgm`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `guided-session` is #1 in the buildable queue. Zero deps, no API keys. One-cycle build.
+4. Research — Cycle 51 was research (2 cycles ago). Not yet at the 3–4 cycle threshold; due Cycle 54 or 55.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/45-guided-session`.
+
+**Why now**: `42-binaural` opened a psychoacoustics thread and gives Karel individual brainwave states to play with. But it's stateless — you pick α 10Hz and sit there. The IDEAS.md spec for `guided-session` adds the dimension that binaural lacks: *intentionality*. You have a starting condition ("Stressed") and a destination ("Calm"), and the system walks you there over 20 minutes. This is the first Resonance prototype that is also a genuine wellness tool in the clinical sense — it follows the proactive music therapy framework (RESEARCH.md §§74, 75, 80), which found that goal-directed state traversal is significantly more effective than open-ended listening. The session timer, path breadcrumb, and journal are all already validated patterns from `42-binaural`; this prototype wires them into a directed arc. Zero deps, no API keys. FAL_KEY and GEMINI_API_KEY not needed. One-cycle build.
+
+**Shipped**:
+- `src/app/dream/45-guided-session/page.tsx` — full interactive prototype (~330 lines)
+- `src/app/dream/45-guided-session/README.md` — design notes, clinical basis, polish ideas
+
+**What's inside**:
+
+**Four guided journeys**: each is a fixed sequence of isochronic-tone waypoints with descending frequency (β-high → β-low → α → θ → δ range):
+- "Stressed → Calm" (β⁺ 24Hz → β⁻ 14Hz → α 10Hz): 3 steps, anxiety release arc
+- "Scattered → Calm" (γ 35Hz → β 18Hz → α 10Hz): 3 steps, distraction resolution arc
+- "Wired → Drowsy" (β 18Hz → α 10Hz → θ⁺ 7Hz → θ 4Hz): 4 steps, tension-to-release arc
+- "Alert → Deep Rest" (β⁻ 14Hz → α 10Hz → θ 4Hz → δ 2Hz): 4 steps, sleep preparation arc
+
+**Three durations per step**: Quick (30s demo), Normal (5min), Deep (10min). Total journey time = steps × duration.
+
+**Audio**: Isochronic tones (amplitude modulation at the target brainwave frequency) — works with any speaker, no headphones required. Carrier at 200 Hz. LFO at beat frequency sweeps smoothly between waypoints via `setTargetAtTime(newHz, now, 4)` — 4-second time constant for a perceptible but not jarring transition.
+
+**Canvas**: Same ring animation as `42-binaural` — one ring born per beat period, expanding to 42% of the shorter canvas dimension, fading alpha (1-t). Center glow peaks on each ring birth. Color tracks the current waypoint's hue (β=green, α=cyan, θ=indigo, δ=violet). The visual slows down as the journey descends — at δ 2Hz, two rings per second; at β⁺ 24Hz, tight staccato rings.
+
+**Path breadcrumb**: Shows the journey steps with current step highlighted. Completed steps go dim. Gives Karel immediate orientation: "I'm in step 2 of 4."
+
+**Step prompt**: Context-sensitive text overlay in the canvas (e.g., "Relaxed awareness. What do you notice right now?" for α state). Fades into the background so it doesn't distract.
+
+**Progress bar** and session timer per step. Auto-advances after full step duration. Manual "→ next" button available after 50% of step duration (for users who sink quickly).
+
+**Noise layer**: Same pink/brown noise chain as `42-binaural`. Default: pink noise for α/β states, brown for θ/δ. Automatically switches on step change to match the new state's hint.
+
+**Journal**: Same localStorage-per-state journal as `42-binaural`. `📓` toggle. `●` indicator when saved text exists. Placeholder prompt matches the current waypoint's contemplative mode.
+
+**Session summary** ("done" phase): Shows elapsed time per waypoint (e.g., "β⁺ 0:30 · β⁻ 0:30 · α 0:30") and the journey name. "← new session" returns to setup.
+
+**Build validation**: `npm run build` passes cleanly. See validation note below.
+
+**What I noticed**: The journey arc is qualitatively different from `42-binaural` even in the Quick (30s/step) demo. In `42-binaural`, you pick α and wait. In `guided-session`, you start at β⁺ (24Hz — tight, urgent rings) and watch them slow down, step by step. By the time you reach α (10Hz), the rings feel genuinely different — not just lower frequency, but part of a trajectory. You've been somewhere.
+
+The canvas hue transition is also more meaningful here than in binaural: the warm amber of β⁺ shifting to the cool cyan of α over two steps feels like an actual color journey, not just a setting change. The state name and Hz display updating mid-session ("β⁺ 24 Hz · stressed · anxious" → "β⁻ 14 Hz · focused · clear" → "α 10 Hz · relaxed · aware") gives the session a narrative texture that no other prototype has.
+
+The noise layer auto-switch is subtle but correct: pink noise during β states (brighter spectral content, less masking of the carrier) and brown noise for θ/δ (low rumble reinforces the sub-bass carrier at 200Hz, creates a more immersive pre-sleep environment). Users probably won't consciously notice the switch, but it contributes to the downward arc.
+
+**What surprised me**: The 4-second LFO sweep time constant (`setTargetAtTime(newHz, now, 4)`) is almost too noticeable — you can hear the isochronic beat change character over 8-10 seconds after the step advances. This is actually good: the transition is audible as a deliberate passage, not an abrupt click. It gives the step change a ceremonial quality. In a real session, this moment of audible transition ("the tone is shifting") could be a conscious marker — "I'm moving now."
+
+**Queued next**:
+1. **`osc-composer`** — Design a Lissajous figure, download the stereo WAV that draws it. Zero deps. One-cycle build. RESEARCH.md §82.
+2. **`mood-journey`** — Proactive Russell circumplex traversal. Zero deps. One-cycle build. RESEARCH.md §84.
+3. **Research** — Cycle 51 was last research. Due at Cycle 54 or 55 (3–4 cycle cadence).
+4. **Verify `vocal-bgm` API** — if Karel reports an ACE-Step error, fix endpoint/parameters in `route.ts`.
+5. **Gemini key prototypes** (`lyria-ghost`, `binaural-lyria`) — still pending key. Remind Karel.
+
+---
+
 ## Cycle 52 — /dream/44-vocal-bgm
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

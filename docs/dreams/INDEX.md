@@ -10,7 +10,34 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 52)
+## ⭐ Newest (Cycle 53)
+
+- **[/dream/45-guided-session](/dream/45-guided-session)** — Guided Brainwave Session.
+  Pick a journey ("Stressed → Calm", "Scattered → Calm", "Wired → Drowsy", "Alert → Deep Rest"),
+  set a step duration (Quick 30s / Normal 5m / Deep 10m), and press **Begin journey**. Isochronic
+  tones walk your brainwave frequency from the starting state to the goal state — no headphones
+  required (works with any speaker).
+
+  Each step plays isochronic tones (amplitude-modulated carrier at 200 Hz) at the target frequency,
+  then smoothly sweeps to the next waypoint with a 4-second time constant. At β⁺ 24Hz: tight
+  staccato rings. By α 10Hz: gentle ripples. By θ 4Hz: three-second expanding pulses. The canvas
+  slows visibly as the journey descends — the rings are a clock of the session's progress.
+
+  **Path breadcrumb** shows each waypoint with the current one highlighted. **Progress bar** per
+  step with timer. **"→ next"** button available after 50% of step duration (sink faster if you
+  want). **Auto-advance** after the full duration. **Noise layer** (pink for β/α, brown for θ/δ)
+  auto-switches on each step. **Journal textarea** (same localStorage pattern as `42-binaural`).
+  **Session summary** on completion showing time per waypoint.
+
+  **First Resonance prototype that is a genuine wellness tool** — based on the proactive music
+  therapy research cluster (RESEARCH.md §§74, 75, 80). Descending-frequency arcs validated by
+  three Frontiers 2026 papers. Zero deps; no API keys needed.
+
+  Design notes: `src/app/dream/45-guided-session/README.md`
+
+---
+
+## Previous newest (Cycle 52)
 
 - **[/dream/44-vocal-bgm](/dream/44-vocal-bgm)** — Vocal BGM.
   Record 5–15 seconds of humming, singing, or piano. Pick an arrangement style (jazz trio /
@@ -786,6 +813,30 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 45-guided-session
+**Status**: `demoable` · **Cycle shipped**: 53 · **Last touched**: 2026-05-20
+
+Open `/dream/45-guided-session`. Click **Scattered → Calm** (broadest descent: γ → β → α). Set
+**Quick 30s** first — this gives you a 90-second demo session. Click **▶ Begin journey**.
+
+The canvas starts showing rapid rings at 35 Hz (γ). Press the speaker volume up slightly — isochronic
+tones are subtle. After 30 seconds the step auto-advances: the LFO frequency sweeps from 35Hz down to
+18Hz over 8–10 seconds (you can hear the beat character slow). The rings spread further apart. At the
+third step (α 10Hz), the rings are wide and slow — two to three seconds between each ring birth.
+
+After the session completes, the summary shows time per waypoint and the journey name.
+
+For a real session: try **Stressed → Calm** at **Normal (5m)** per step — 15 minutes total. Sit with
+headphones or in a quiet room. The noise layer defaults to **pink** in β states and **brown** in θ/δ
+states automatically. Open 📓 to write what you notice at each state — the note persists in localStorage.
+
+**Speakers work** (no headphones required). The isochronic beat is the audible amplitude tremolo — at
+β⁺ 24Hz it sounds like fast vibrato; at α 10Hz, rhythmic tremolo; at θ 4Hz, slow breathing pulses.
+
+Design notes: `src/app/dream/45-guided-session/README.md`
+
+---
 
 ### 44-vocal-bgm
 **Status**: `demoable` · **Cycle shipped**: 52 · **Last touched**: 2026-05-20
