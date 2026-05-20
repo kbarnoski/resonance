@@ -1,60 +1,50 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 61)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 62)
 
 ## New since yesterday
 
-- **Cycle 61 — Research sweep** (no new prototype)
-  8 new entries in RESEARCH.md (§§93–100). 4 new prototype ideas queued in IDEAS.md.
-  Build pipeline for next 2–3 cycles is clear.
+- **[/dream/51-diatonic-harmony](/dream/51-diatonic-harmony)** — Diatonic Harmony `demoable` (Cycle 62)
+  Play a melody → the key is detected from what you play → each note gains its diatonic third
+  and fifth as sine voices, panned ±28° for spatial separation. Three-color scrolling piano roll:
+  **orange** = melody, **light blue** = third, **deep blue** = fifth.
+  **Demo plays Bach BWV 772 with harmonies** — watch how scale degree 7 (B) gets a *diminished fifth*
+  (the leading-tone dissonance), while all other degrees get a perfect fifth. That's the first
+  prototype to show music theory in action via color + position. Zero deps, zero API.
 
 - **[/dream/](/dream/)** — Dashboard `demoable` (Cycle 60)
-  Full MORNING.md renders at the top of the preview URL. No more GitHub visit needed.
-  3-cycle activity stream + full prototype grid. Phone-first layout.
+  Full MORNING.md renders at the preview URL. No more GitHub needed for the morning digest.
 
 ## In progress / partial
 
-- Nothing in-progress. All recent prototypes are `demoable`.
-- **Next build**: `diatonic-harmony` — zero deps, one cycle. Play a melody;
-  chord-correct diatonic harmonies float alongside (key detected automatically).
+- Nothing in-progress. All prototypes demoable.
+- **Next build candidates** (in priority order):
+  1. `concept-steer` — 6-axis hexagonal radar chart synthesizer (Brightness/Density/Regularity/
+     Complexity/Energy/Mode). Same vocabulary as music AI internal representations. Zero deps.
+  2. `ghost-sfx` — ElevenLabs SFX for Ghost scene spatial audio. FAL_KEY in use, endpoint
+     needs confirming.
+  3. `claude-shader` — needs `ANTHROPIC_API_KEY` in Vercel env (see Open questions).
 
 ## Research findings worth a look
 
-- **`claude-shader` (§93, arxiv 2512.08951)** — AI Co-Artist paper proves LLMs can generate
-  compilable GLSL shaders from text descriptions. Prototype: describe a visualization in words →
-  Claude API generates a GLSL fragment shader → runs on fullscreen quad with Web Audio FFT uniforms
-  (`uBass`, `uMid`, `uTreble`, `uOnset`). Self-referential: Claude generates the shader that
-  reacts to your music. **Needs `ANTHROPIC_API_KEY` in Vercel env — is it available?**
+- **`concept-steer` (§94, arxiv 2505.18186)** — Sparse autoencoders on transformer music
+  models found 6 interpretable axes: **Brightness, Density, Regularity, Complexity, Energy, Mode**.
+  Prototype: hexagonal radar chart as a synthesizer. These are the same words a musician uses.
+  Build next cycle — zero deps.
 
-- **`concept-steer` (§94, arxiv 2505.18186, May 2026)** — Sparse autoencoders reveal music AI
-  models organize internally around: **Brightness**, **Density**, **Regularity**, **Complexity**,
-  **Energy**, **Mode**. Prototype: 6-axis hexagonal radar chart where each axis is one of these
-  named concepts, driving a real-time synthesizer. Music-theory vocabulary as the primary UI.
-  Zero deps, one cycle.
+- **`claude-shader` (§93, arxiv 2512.08951)** — Proven that LLMs can generate compilable,
+  audio-reactive GLSL shaders from text descriptions. Claude generates a shader; it runs on a
+  fullscreen quad with Web Audio FFT uniforms (`uBass`, `uMid`, `uTreble`, `uOnset`).
+  Self-referential: Claude writes the code that reacts to your music. **Needs ANTHROPIC_API_KEY.**
 
-- **`diatonic-harmony` (§96, arxiv 2506.18143)** — AI Harmonizer paper shows 4-part diatonic
-  harmony from solo melody is achievable. Browser version: mic → key detection (chroma template
-  match, same as `28-chord-canvas`) → diatonic third + fifth voices as sine OscillatorNodes.
-  3-track piano roll visualization. First prototype that generates real harmonic content from
-  live input (different from `23-pitch-harmonize` which just shifts a copy). Zero deps, one cycle.
-  **Building next cycle.**
-
-- **ElevenLabs SFX on fal.ai (§95)** — Text → short high-fidelity sound effects. FAL_KEY in
-  use. Prototype: `ghost-sfx` — 6 Ghost preset scenes, each with 3–4 generated ambient clips
-  through HRTF PannerNodes. More immersive than `29-scene-spatial`'s oscillator synthesis.
-
-- **Token-Based Audio Inpainting (§97, arxiv 2507.08333, Feb 2026)** — Discrete diffusion
-  for semantically coherent audio continuation. Could upgrade `43-stable-extend`. No fal.ai
-  endpoint confirmed yet — monitoring.
-
-- **iPlug3 2026 (§100)** — WebGPU + SDL3 + MCP agent workflows for native audio plugins
-  with WASM browser output. Cleanest path to "Resonance as an installation."
+- **Diatonic harmony research basis (§96, arxiv 2506.18143)** — The AI Harmonizer paper
+  (Anticipatory Music Transformer) does 4-part harmony. Cycle 62 built the browser version
+  without ML — pure key detection + interval lookup. The diminished fifth on scale degree 7
+  is audible in the demo.
 
 ## Open questions for Karel
 
-1. **`ANTHROPIC_API_KEY` in Vercel env?** → enables `claude-shader` (LLM-generated GLSL
-   shaders reacting to your music live). Most surprising prototype in the queue.
-2. **`GEMINI_API_KEY`** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`,
-   `piano-to-ghost`, `stem-spatial`.
-3. **`arc-compose` API** — if `/dream/48-arc-compose` shows an error, paste the raw message
-   and the agent fixes the endpoint next cycle.
-4. **Tap Rhythm feedback** — amplitude thresholds tunable; let the agent know if kick/snare/hat
-   classification feels off on your setup.
+1. **`ANTHROPIC_API_KEY` in Vercel env?** → enables `claude-shader`. One-cycle build, admin-only.
+2. **`GEMINI_API_KEY`** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`.
+3. **`arc-compose` (`/dream/48-arc-compose`)** — if API error shows in red, paste it and it
+   gets fixed next cycle (MiniMax endpoint naming needs confirmation).
+4. **Tap Rhythm feedback** — amplitude thresholds are tunable; say if kick/snare/hat
+   feels off on your setup.

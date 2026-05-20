@@ -1,5 +1,50 @@
 # Dream Agent — cycle state
 
+## Cycle 62 — /dream/51-diatonic-harmony
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 61 was a research sweep. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `diatonic-harmony` (IDEAS.md, Cycle 61 research §96) is the explicit #1 queue item in the prior STATE.md. Zero deps, zero API, one-cycle build. Highest-priority unbuilt item.
+4. Research — Cycle 61 was research. Not due again yet.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/51-diatonic-harmony`.
+
+**Why now**: 50 existing prototypes process audio and make visuals. None generate *harmonically correct* accompanying voices. `23-pitch-harmonize` (Cycle 26) pitch-shifts the mic signal by a fixed interval — always a perfect fifth, regardless of scale context. `51-diatonic-harmony` detects the key from accumulated chroma and generates scale-correct interval voices that change quality by scale degree: C in C major gets a major third (E), but B gets a minor third (D) and a *diminished* fifth (F). This is the simplest form of what every classical arranger does automatically. The gap between "fixed transposition" and "diatonic voice" is small in code (a KK correlation + interval lookup) but large in musical meaning. The demo on Bach BWV 772 makes this audible and visible: watch the three colored bars in the piano roll, hear the harmony's color shift as the melody moves through the scale.
+
+**Shipped**:
+- `src/app/dream/51-diatonic-harmony/page.tsx` — full prototype (~390 lines)
+- `src/app/dream/51-diatonic-harmony/README.md` — design notes, algorithm details, polish ideas
+
+**What's inside**:
+
+**Key detection (Krumhansl-Kessler)**: Each new note onset updates a 12-bin chroma accumulator. After ≥3 notes, the vector is L1-normalized and correlated against KK major and minor profiles for all 12 roots. The highest-scoring root + mode is the detected key. In demo mode, C major is pre-seeded (BWV 772 is in C major — no need to detect it).
+
+**Diatonic voice computation** (`computeDiatonicVoices`): Given a note MIDI and a key, reduces to pitch class, finds nearest scale degree (handles notes slightly off-key from pitch detection jitter), steps up 2 and 4 scale degrees, converts back to semitone intervals with octave-boundary wrapping. The wrapping is the key insight: B in C major to D is scale[1]−scale[6] = 2−11 = −9 → +12 → 3 semitones (minor third). B to F is scale[3]−scale[6] = 5−11 = −6 → +12 → 6 semitones (diminished fifth). Pure arithmetic; no lookup table.
+
+**Harmony audio**: Inline `startHarmony`/`stopHarmony` inside the render `useEffect` (avoids dependency array issues). Two `OscillatorNode` → `GainNode` (150ms attack ramp to 0.32) → `StereoPannerNode` (±0.28 pan) → destination. On silence: 400ms linear fade via `linearRampToValueAtTime`. New note onset: `stopHarmony()` then `startHarmony()` immediately — smooth pivot, no click.
+
+**Three-voice piano roll**: Same `24-piano-roll` Canvas2D approach. All three voices (melody, third, fifth) share one piano roll. Additive blending (`globalCompositeOperation = "lighter"`) means overlapping notes at the same pitch glow brighter — if the third or fifth of one note coincides with the melody of another, the overlap lights up. Color coding: warm orange (melody), light blue (3rd), deep blue (5th). Piano key sidebar highlights active melody pitch.
+
+**Demo mode**: Bach BWV 772 (same 35-note fragment as `22-code-score` and `24-piano-roll`). Melody plays audibly as a soft triangle wave (gain 0.10) to both the analyser and the destination. Harmony voices (sine, gain 0.32) are spawned by the render loop when it detects each new demo note via `demoFreqRef` change. Demo key pre-seeded to C major — no warm-up period.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/51-diatonic-harmony` compiles at 5.04 kB (static route). Zero TypeScript errors. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files.
+
+**What I noticed**: The diminished fifth on scale degree 7 is the most interesting feature to demonstrate. In the Bach fragment, the B natural appears several times (measure 1: G-A-B-C going up; measure 2: D-B-C-D; etc.). Each time B appears, the fifth voice drops to F — visually the fifth bar jumps down relative to the normal perfect-fifth position, and audibly you hear a tighter, more tense interval. When the melody resolves to C, the fifth jumps back to G (perfect fifth). This B→F→C→G motion is the V7→I resolution compressed into the harmony voices. Watching the piano roll while listening makes this vivid.
+
+The key detection works faster than expected. By the third note of the Bach fragment (E4), the KK correlation has enough chroma mass to detect C major correctly. From that point on, all harmony voices are scale-correct for the duration.
+
+**Queued next**:
+1. **`concept-steer`** (`/dream/52-concept-steer`) — 6-axis hexagonal radar chart synthesizer (Brightness/Density/Regularity/Complexity/Energy/Mode) derived from sparse autoencoder research (RESEARCH.md §94). Zero deps, one cycle. Compelling for Karel: music AI vocabulary as the primary synthesizer UI.
+2. **`ghost-sfx`** — ElevenLabs SFX on fal.ai for Ghost scene spatial audio. FAL_KEY in use. Needs endpoint ID confirmed.
+3. **`claude-shader`** — waiting on Karel: is `ANTHROPIC_API_KEY` accessible in Vercel env?
+4. **`diatonic-harmony` polish** — chord name overlay from last 3 notes; 4-part texture by adding diatonic 6th voice.
+
+---
+
 ## Cycle 61 — research sweep
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 61 — research)
+## ⭐ Newest (Cycle 62)
+
+- **[/dream/51-diatonic-harmony](/dream/51-diatonic-harmony)** — Diatonic Harmony. `demoable`
+  Play a melody; the key is detected from what you play (Krumhansl-Kessler chroma correlation),
+  and each detected note gains its diatonic third and fifth as sine oscillators — panned ±28°
+  for spatial separation. Three-color scrolling piano roll: **orange** (melody) · **light blue**
+  (3rd) · **deep blue** (5th). Scale degree 7 gets a diminished fifth instead of perfect fifth —
+  visibly different bar position, audibly more tense. Demo: Bach BWV 772 with full auto-harmonies.
+  Different from `23-pitch-harmonize`: that shifts a fixed interval; this detects the key and
+  generates *scale-correct* voices. Zero deps, zero API.
+  Design notes: `src/app/dream/51-diatonic-harmony/README.md`
+
+---
+
+## Previous newest (Cycle 61 — research)
 
 - **Cycle 61 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§93–100).
   4 new prototype ideas added to IDEAS.md. Highlights:
