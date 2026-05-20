@@ -964,3 +964,113 @@ Key findings from Cycle 56 (2026-05-20):
 - Streaming accompaniment (§90, arxiv 2510.22105) — latency/coherence tradeoff formalized. Explains Lyria RealTime 2s update delay. Reference for all future real-time AI music prototypes.
 - SonoCraftAR (§91, arxiv 2508.17597) — multi-agent LLM generates sound-reactive AR interfaces from text. Inspires `claude-canvas` meta-prototype (needs Karel OK on ANTHROPIC_API_KEY in dream zone).
 - Bioluminescent AV + Galaxy WebGPU (§92) — organic branching forms dancing to audio, Three.js TSL. Inspires `anemone-av` — zero new deps, One-cycle build.
+
+---
+
+## FROM RESEARCH (Cycle 61, 2026-05-20) — promoted to queue
+
+### diatonic-harmony — play a melody, hear chord-correct harmony voices `[queued, zero deps]`
+Route: `/dream/51-diatonic-harmony`. Mic → autocorrelation pitch detection (same algorithm as
+`13-piano-canvas`). Key detection: accumulate a 12-bin chroma vector over the last 8 detected
+notes → dot-product template match against 24 major/minor key templates (same technique as
+`28-chord-canvas`) → pick highest-scoring key + mode. For each detected note, generate 2
+additional harmony voices: the **diatonic third above** (major or minor third depending on scale
+degree) and the **diatonic fifth above** (perfect fifth or diminished fifth at scale degree 7),
+both within the detected key's scale. Harmony voices = sine `OscillatorNode`s with 150ms
+attack + 400ms release envelope, gain 0.4, panned ±20° for spatial separation. Main melody
+stays center (mic passthrough OFF — just the pitch-detection visualization; no raw mic audio).
+
+Visual: three-track piano roll (same Canvas2D as `24-piano-roll`): your detected note in
+**warm orange** (middle track), third-voice in **light blue** (above), fifth-voice in **deep blue**
+(below). Bars scroll left at BPM rate. Key label top-right updates live ("Detected: C major").
+Chord name (from `28-chord-canvas` template matching over the last 3 notes) updates when stable.
+Demo mode: plays the Bach fragment from `22-code-score` and auto-generates its diatonic harmonies
+at full fidelity. "You play a melody — its diatonic harmonies float alongside."
+
+Different from `23-pitch-harmonize`: that prototype pitch-shifts the raw mic signal by a fixed
+interval (always a fifth, always mechanical). This prototype detects the key and generates
+*scale-correct* voices — different intervals on different scale degrees, as a real arranger would.
+Zero deps. One-cycle build. Research basis: AI Harmonizer (RESEARCH.md §96).
+
+### concept-steer — 6-axis music concept synthesizer `[queued, zero deps]`
+Route: `/dream/52-concept-steer`. Inspired by sparse autoencoder research on interpretable music
+model representations (RESEARCH.md §94): music AI models internally represent music along axes
+labeled **Brightness**, **Density**, **Regularity**, **Complexity**, **Energy**, **Mode**. This
+prototype makes those same axes the primary synthesis controls.
+
+Canvas: a hexagonal radar chart (regular hexagon, one vertex per axis). Each vertex is
+draggable; the radar polygon fills as the current "concept position." Axis labels around the
+perimeter. Six synthesis mappings:
+- **Brightness** → low-pass filter fc 400–6000 Hz
+- **Density** → simultaneous voice count 1–5, BPM 40–140
+- **Regularity** → note quantization: free (random 80–160% duration) → strict grid (exact durations)
+- **Complexity** → chord voicings: unison → dyad → triad → 7th → polychord (add 9th, 11th)
+- **Energy** → note attack 0.8s→0.04s + velocity scaling 0.3→1.0
+- **Mode** → chord quality interpolation: major → minor → diminished
+
+Synthesis engine: same oscillator stack as `38-mood-xy` (GainNode envelopes, BiquadFilterNode
+low-pass, multiple OscillatorNodes per chord voice). A small chord-name label (from
+`28-chord-canvas` template matching) updates live in the corner. Preset positions: "Classical
+Fugue" (bright, regular, complex, major), "Dark Ambient" (dim, sparse, free, minor, low energy),
+"Jazz Improv" (bright, dense, irregular, complex, major), "Drone" (dim, sparse, regular, unison).
+
+"Navigate music as a space of named concepts — not moods, not knobs." First prototype where the
+UI labels are the same vocabulary a musician or music theorist would use, derived from what
+music AI models learn internally. Zero deps. One-cycle build. RESEARCH.md §94.
+
+### claude-shader — LLM-generated audio-reactive GLSL shader `[queued, needs ANTHROPIC_API_KEY]`
+Route: `/dream/51-claude-shader`. Admin-only. A textarea where you describe an audio-reactive
+visualization in plain English: "a rotating vortex of particles that expands on every beat,
+purple when bass-heavy, orange when treble-heavy." Click "Generate" → server route calls
+`claude-haiku-4-5` with a constrained system prompt:
+
+```
+You generate GLSL fragment shaders for audio-reactive visuals. The shader receives these uniforms:
+  uniform float uBass;    // 0.0–1.0 bass energy (20–250 Hz)
+  uniform float uMid;     // 0.0–1.0 mid energy (250–4000 Hz)
+  uniform float uTreble;  // 0.0–1.0 treble energy (4000–20000 Hz)
+  uniform float uOnset;   // 0.0–1.0 onset strength (decays 100ms after beat)
+  uniform float uTime;    // elapsed seconds
+  uniform vec2  uRes;     // canvas resolution in pixels
+Output: only the GLSL function body for `vec4 mainImage(vec2 fragCoord)`.
+```
+
+Generated shader body is compiled via WebGL on a fullscreen quad. Web Audio AnalyserNode
+feeds the uniforms each frame. The user can edit the raw GLSL inline (CodeMirror from CDN,
+~200KB, no package.json change). "Regenerate variation" calls again with the same prompt +
+"Try a different approach." Error overlay shows GLSL compile errors.
+
+Self-referential: Claude generates an audio-reactive GLSL shader that runs in the browser
+session where Claude is the agent. Zero new npm deps. Needs ANTHROPIC_API_KEY in Vercel env —
+ask Karel. Budget: ~$0.001/generation at Haiku pricing. Route: `/dream/51-claude-shader`.
+RESEARCH.md §93.
+
+### ghost-sfx — ElevenLabs sound effects for Ghost scenes `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/52-ghost-sfx`. Six Ghost preset scenes, each with 3–4 pre-authored sound effect
+text prompts. Click "Generate [Stone Chamber]" → server route calls fal.ai ElevenLabs Sound
+Effects model for each prompt → 3–5s clips returned as audio data → stored in `sessionStorage`
+→ decoded via `AudioContext.decodeAudioData` → played through `PannerNode` (HRTF model) at
+scene-specific 3D positions.
+
+Scene sound prompts (examples):
+- Stone Chamber: "footstep echo in large stone cave, reverb 3s decay", "single piano chord in stone chamber, long reverb", "water drip in distant cave"
+- Forest Dawn: "birdsong canopy from above, morning light", "stream flowing past from left", "single piano note in a forest clearing"
+- Cosmic Ascension: "vast resonant drone from all directions", "high harmonic shimmer rising", "deep subharmonic pulse from below"
+
+Canvas: same top-down sphere view as `29-scene-spatial` (F/B/L/R compass, colored dots for
+each source). Drag dots to reposition. Wear headphones — the HRTF spatialization of naturalistic
+generated sounds is more immersive than synthesized oscillators.
+
+"The scenes that were always visual — now they have a voice." The ElevenLabs SFX model gives
+Ghost scenes the same quality level as their imagery. Admin-only. FAL_KEY in use. Budget:
+~$0.05–0.15/scene. One-cycle build once fal.ai endpoint is confirmed. RESEARCH.md §95.
+
+Key findings from Cycle 61 (2026-05-20):
+- AI Co-Artist (RESEARCH.md §93, arxiv 2512.08951) — LLM generates and evolves GLSL shaders from text descriptions; proves `claude-shader` is buildable. Needs ANTHROPIC_API_KEY.
+- Interpretable Concepts in Music Models (§94, arxiv 2505.18186, May 2026) — sparse autoencoders extract Brightness/Density/Regularity/Complexity/Energy/Mode from transformer music models. Inspires `concept-steer` — zero deps, one cycle.
+- ElevenLabs Sound Effects on fal.ai (§95) — text → short high-fidelity ambient sounds. FAL_KEY in use. Inspires `ghost-sfx` — naturalistic Ghost scene audio.
+- AI Harmonizer (§96, arxiv 2506.18143, Jun 2025) — AMT-based 4-part diatonic harmony; offline only. Inspires `diatonic-harmony` — key detection + rule-based voice generation, zero deps.
+- Token-Based Audio Inpainting (§97, arxiv 2507.08333, Feb 2026) — discrete diffusion for coherent audio continuation/inpainting. Future upgrade path for `43-stable-extend`. No fal.ai endpoint yet.
+- Three.js/WebGPU 2026 (§98) — 100× gains confirmed, 1M particles at 60fps, ML inference via WebGPU compute. Reinforces `gpu-additive` and Three.js polish cycles.
+- Streaming Piano Transcription (§99, arxiv 2503.01362) — causal streaming model for full note events (onset+pitch+offset+pedal). Future WASM upgrade for pitch detection across all prototypes.
+- iPlug3 2026 (§100) — Jan 2026 clean-slate audio plugin framework with WebGPU + MCP agent integration. Best path to Resonance native install mode.

@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 61 — research sweep
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 60 completed the dashboard enhancement. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — 50+ prototypes in the sandbox; no single obvious urgent next build.
+4. Research — Cycle 56 was last research (4 cycles ago: 57, 58, 59, 60). Past the upper bound of the 3–4 cycle cadence. AGENT.md: "Once every 3-4 cycles (or when IDEAS is thin), spend a full cycle on research." Research is overdue.
+5. Polish — skipped; research takes priority.
+
+Decision: full research sweep — arxiv, fal.ai, GitHub, browser platform news, Anthropic updates.
+
+**Searched**: arxiv (audio-reactive viz, music generation, piano transcription, style transfer, live performance AI, diatonic harmony, streaming transcription), fal.ai blog (new audio models), GitHub trending (WebGPU/WebAudio creative coding, iPlug3), Anthropic (Claude capabilities), Shadertoy/Revision 2026 demoscene.
+
+**What I built**: 8 new entries in RESEARCH.md (§§93–100). 4 new prototype ideas added to IDEAS.md.
+
+**Key findings**:
+- **AI Co-Artist (arxiv 2512.08951)** — LLM generates and evolves GLSL shaders from user text descriptions. Inspires `claude-shader`: describe a visualization → Claude API generates GLSL fragment shader → runs on fullscreen quad with Web Audio FFT uniforms. Admin-only, needs ANTHROPIC_API_KEY.
+- **Interpretable Concepts in Music Models (arxiv 2505.18186, May 2026)** — Sparse autoencoders extract steerable musical concepts (brightness, density, regularity, etc.) from transformer music models. Concepts can steer model outputs during generation. Inspires `concept-steer`: 6-axis hexagonal radar chart synthesizer labeled with music-theory concept names — entirely browser-native.
+- **ElevenLabs Sound Effects on fal.ai** — text → high-fidelity short sound effects. FAL_KEY in use. Inspires `ghost-sfx`: generate naturalistic Ghost scene sounds (stone footstep reverb, forest birdsong, cosmic drone) instead of handcrafted oscillator synthesis in `29-scene-spatial`.
+- **AI Harmonizer (arxiv 2506.18143, Jun 2025)** — Anticipatory Music Transformer generates 4-part diatonic harmony from solo melody input. Offline only (no browser deployment yet). Inspires `diatonic-harmony`: browser-native key detection + rule-based diatonic voice generation. Your melody, surrounded by chord-correct harmonies.
+- **Token-Based Audio Inpainting via Discrete Diffusion (arxiv 2507.08333, Jul 2025/Feb 2026)** — First discrete diffusion approach for audio continuation over tokenized representations. Semantically coherent for gaps up to 750ms and long segments. Could upgrade `43-stable-extend` if there's a fal.ai endpoint.
+- **Three.js/WebGPU 2026** — 100× gains confirmed for heavy compute (point clouds). 1M particles at 60fps demonstrated. TSL compiles to WGSL+GLSL automatically. WebGPU universal across all desktop browsers. Reinforces `gpu-additive` viability.
+- **Streaming Piano Transcription (arxiv 2503.01362, ISMIR 2024)** — Causal CNN+Transformer for streaming note events (onset + offset + pitch + sustain pedal). A path to full note detection rather than just pitch, no GPU needed.
+- **iPlug3 2026 update** — Started Jan 2026; now explicitly describes "agentic AI workflow integration" + WebGPU native. Most mature path to Resonance as an installation.
+
+**What I noticed**: The most surprising finding is AI Co-Artist (§93) — using an LLM to generate and evolve GLSL shaders is exactly the dream zone's meta-prototype that SonoCraftAR (§91) hinted at, now proven in a published paper. If `ANTHROPIC_API_KEY` is accessible from the dream zone's server routes (same environment as the Vercel build — Karel can confirm), `claude-shader` is a self-referential prototype: Claude generates an audio-reactive GLSL shader that runs in the browser it was generated in. One cycle to build once the key question is answered.
+
+The `concept-steer` finding is subtler but arguably more interesting for Karel: the sparse autoencoder research found that music AI models organize their internal representations around concepts like "brightness" and "density" — concepts Karel and any musician would recognize immediately. Building a synthesizer where those same labels are the primary controls (instead of mood or BPM) creates a bridge between how AI thinks about music and how musicians think about music.
+
+**Queued next**:
+1. **Build `diatonic-harmony`** — zero deps, fills gap in "real-time harmonic content" (no prototype yet adds correct chord voices to live input). One-cycle build.
+2. **Build `concept-steer`** — zero deps, compelling for Karel. 6-axis radar chart synthesizer. One-cycle build.
+3. **`claude-shader`** — ask Karel: is ANTHROPIC_API_KEY accessible in Vercel env vars? If yes, build next research gap.
+4. **`ghost-sfx`** — FAL_KEY in use. Need to confirm ElevenLabs sound effects endpoint ID on fal.ai.
+
+---
+
 ## Cycle 60 — dashboard enhancement
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

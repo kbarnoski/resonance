@@ -961,3 +961,93 @@ The Three.js WebGPU community (r174+, May 2026) is producing audio-reactive expe
 **Why it matters**: The sandbox has covered particles (`8-particle-life`, `16-particle-life-gpu`), fluids (`3-fluid`, `15-webgpu-fluid`), 3D mesh (`21-three-mesh-av`), and terrain (`11-terrain`). The **organic living form** aesthetic — something that breathes, sways, tentacles flickering — is not represented. `21-three-mesh-av` is the most visually polished prototype but it reads as a technical demo (a deforming platonic solid). An anemone form would read as alive. All dependencies (`three@0.182`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`) are **already installed in Resonance** — zero new package.json changes needed. TSL vertex displacement handles both WGSL (WebGPU) and GLSL (WebGL) automatically.
 
 **Could become a prototype**: `anemone-av` — a Three.js R3F scene with a procedurally generated branching 3D form. Main trunk: 1 tube geometry, 8 branches, each branch 3–6 sub-branches. Sub-bass (20–100 Hz) drives a low-frequency sway rotation of the main trunk. High-mid energy (2–4 kHz) drives tip-flicker (rapid vertex oscillation on the outermost branches). A TSL displacement material handles both; bloom post-processing creates the bioluminescent glow. Demo mode: LFO oscillators animate the form without mic permissions. Dark background, deep violet → cyan → white glow gradient tracking frequency. Route: `/dream/48-anemone-av`. Zero new deps. One-cycle build.
+
+---
+
+## 2026-05-20 — Cycle 61 research sweep
+
+### 93. AI Co-Artist — LLM-Powered GLSL Shader Evolution (arxiv 2512.08951, December 2025)
+**Source**: https://arxiv.org/abs/2512.08951
+
+Interactive system that uses GPT-4 to generate and evolve GLSL fragment shaders from natural language descriptions, with no coding required from the user. The LLM interprets typed descriptions ("a swirling vortex that expands on beats") and produces compilable GLSL; a "Picbreeder-style" evolutionary loop lets users select among variants and the LLM generates further mutations of the chosen path. Key insight: the same LLM that understands the user's creative intent also understands GLSL well enough to generate functional, compilable shaders from that intent — bridging natural language and code. The paper confirms this as broadly generalizable to any domain where LLMs can write code.
+
+**Why it matters**: This is the published realization of the SonoCraftAR (§91) meta-idea, but for GLSL shaders instead of Unity C#. The dream sandbox's Web Audio + Canvas2D/WebGL stack is exactly the right substrate: every fullscreen canvas prototype sends FFT bands as uniforms to a fragment shader or draw loop. A `claude-shader` prototype would send a user's description to the Claude API → receive a GLSL fragment shader → compile it with WebGL → feed `uBass`, `uMid`, `uTreble`, `uOnset`, `uTime` uniforms from the live AnalyserNode. Result: any audio-reactive visualization the user can describe in words. Self-referential: Claude generates the shader that reacts to the music Karel is playing.
+
+**Could become**: `claude-shader` — admin-only. Textarea: describe a visualization. Server route calls claude-haiku-4-5 with a constrained system prompt that defines the 5 available uniforms and requires a valid GLSL fragment shader body as output. WebGL canvas renders the result in real time. User can edit the raw GLSL inline (CodeMirror CDN for syntax highlighting). "Regenerate" → new variant from same description. Zero new npm deps (WebGL is native). Needs ANTHROPIC_API_KEY in Vercel env. Ask Karel. Route: `/dream/51-claude-shader`.
+
+---
+
+### 94. Discovering and Steering Interpretable Concepts in Large Generative Music Models (arxiv 2505.18186, March 2026)
+**Source**: https://arxiv.org/abs/2505.18186
+
+Sparse autoencoders (SAEs) trained on the residual stream of transformer music models extract **interpretable features** — both traditional music-theory constructs (chord progressions, rhythmic regularity, tonal brightness) and novel "uncodified" patterns the model has learned that have no established name. The key result: these extracted concepts can be used to **steer model generations** in real time, adjusting the generated music along the discovered concept dimensions without retraining. This is the music analog of latent-space concept arithmetic in image generation.
+
+**Why it matters**: The concepts are labeled with recognizable musical vocabulary (brightness, density, regularity, complexity) because they emerged from the model's statistical learning of music. A browser synthesizer where these same conceptual axes are the primary controls would be the most musically literate synthesis interface in the sandbox — the user navigates music as named concepts, not as BPM numbers or abstract parameters. No ML inference needed for the synthesizer itself: just map the concept labels to synthesis parameters that match their semantic meaning.
+
+**Could become**: `concept-steer` — 6-axis hexagonal radar chart on a canvas: **Brightness** (filter fc 400–6000 Hz), **Density** (voice count 1–5, BPM 40–140), **Regularity** (note quantization: free→grid), **Complexity** (chord voicings: unison→triad→7th→polychord), **Energy** (attack 0.8s→0.04s, velocity), **Mode** (chord quality: major→minor). Drag any vertex to adjust. The synthesis engine is the `38-mood-xy` oscillator stack extended to 6 dimensions. Canvas shows the hexagonal radar as the primary visual; a small chord-name label (from `28-chord-canvas` template matching) updates live. Zero deps. Route: `/dream/52-concept-steer`.
+
+---
+
+### 95. ElevenLabs Sound Effects Generation on fal.ai (May 2026)
+**Source**: https://blog.fal.ai/elevenlabs-audio-suite-next-generation-voice-and-audio-ai-now-on-fal/ · https://fal.ai/elevenlabs
+
+ElevenLabs' Sound Effects model — now available via fal.ai API — generates **high-fidelity sound effects from text descriptions**: "reverberant stone footstep in a large cave", "forest birdsong canopy from above", "distant thunder rolling across open sky". Duration is configurable (1–5s). The model targets video production and gaming but is general-purpose — any short ambient sound can be described and generated. FAL_KEY already in use.
+
+**Why it matters**: `29-scene-spatial` hand-synthesizes all six Ghost scene sounds via OscillatorNodes — they are deterministic, correct, but recognizably synthetic. ElevenLabs SFX would generate naturalistic, recorded-quality sounds for each source. The spatial positioning code (HRTF PannerNodes) is identical: only the audio source changes. Each Ghost scene has 3–5 spatial sound sources, so generating them all would cost ~$0.03–0.10 per scene. Sounds can be cached after first generation.
+
+**Could become**: `ghost-sfx` — six Ghost preset scenes, each with 3–4 pre-authored sound effect text prompts. Click "Generate sounds for [Stone Chamber]" → server route calls fal.ai ElevenLabs SFX for each prompt → clips stored in `sessionStorage` → decoded via `AudioContext.decodeAudioData` → played through HRTF PannerNodes at scene-specific positions (same sphere canvas as `29-scene-spatial`). Wear headphones — naturalistic sounds + HRTF spatialization is more immersive than synthesized sources. FAL_KEY in use. Budget: ~$0.05–0.15 total per session. Endpoint: confirm fal.ai ElevenLabs SFX endpoint before building. Route: `/dream/52-ghost-sfx`.
+
+---
+
+### 96. AI Harmonizer — Anticipatory Music Transformer 4-part Harmony (arxiv 2506.18143, June 2025)
+**Source**: https://arxiv.org/abs/2506.18143
+
+System that takes solo vocal or instrumental melody as input and generates four-part diatonic harmony (soprano, alto, tenor, bass) automatically, without the user specifying a key or using a keyboard. Uses the Anticipatory Music Transformer (AMT) — a pre-trained symbolic music model fine-tuned for accompaniment. The system integrates pitch detection, key inference, and voice-leading rules into a unified pipeline. Currently **offline only** (not browser-deployable as of 2025), but the GitHub release makes it available for local experimentation.
+
+**Why it matters**: The concept is directly relevant to `23-pitch-harmonize` (which pitch-shifts the mic signal by a fixed interval). A diatonic harmony generator does something qualitatively different: it determines the *key* from your recent playing and then generates *chord-correct* additional voices — a major third AND fifth above in C major, or a minor third AND fifth in C minor. The AMT is too large for browser inference, but the harmonic logic can be implemented rule-based: key detection via chroma template matching (same as `28-chord-canvas`) + diatonic scale degree lookup + voice generation via OscillatorNode. The result sounds like a backing choir, not just a shifted copy of yourself.
+
+**Could become**: `diatonic-harmony` — mic → autocorrelation pitch detection → chroma accumulation over last 8 notes → key/mode detection → for each detected note, generate 2 harmony voices (diatonic third above + diatonic fifth above within detected key). Voices: sine oscillators, 150ms attack/decay envelope, panned slightly left/right for separation. Visual: 3-track piano roll (your notes orange, third-voice light blue, fifth-voice deep blue) scrolling left. Key label and chord name update live. Demo mode: C major pentatonic phrase with automatic harmony. Zero deps. Route: `/dream/51-diatonic-harmony`. One-cycle build.
+
+---
+
+### 97. Token-Based Audio Inpainting via Discrete Diffusion (arxiv 2507.08333, July 2025 / Feb 2026)
+**Source**: https://arxiv.org/abs/2507.08333
+
+First application of **discrete diffusion over tokenized audio** representations for the tasks of audio inpainting (filling gaps) and music continuation (extending from a context prefix). Uses a pre-trained audio tokenizer (EnCodec-style) to convert waveforms to discrete token sequences, then applies masked diffusion to resample missing tokens conditioned on surrounding context. Handles gaps up to 750ms and arbitrary continuation lengths. Consistently outperforms strong baselines (including continuous-domain diffusion and waveform-level models) across gap lengths of 150ms+, especially for semantic coherence — the output sounds like it belongs to the same musical piece.
+
+**Why it matters**: `43-stable-extend` uses fal.ai's Stable Audio 2.5 for continuation at $0.20/generation. This approach (if available via API) would give more semantically coherent continuations — the generated audio would "sound like the same piece" more reliably than a diffusion-based model that re-generates from scratch. Also: the inpainting capability (filling a hole in existing audio) is a new paradigm not covered by any prototype — could enable "regenerate this measure" in a loop station context. No fal.ai endpoint confirmed yet; monitor for a public API.
+
+**Research note**: Architecture understanding + future prototype opportunity. If fal.ai or a similar platform offers this model, it upgrades `43-stable-extend` and enables an "inpaint" prototype variant (`loop-inpaint` — select a region of a loop and regenerate it in context).
+
+---
+
+### 98. Three.js WebGPU 2026 — Production-Ready Performance Benchmarks
+**Source**: https://www.utsubo.com/blog/threejs-2026-what-changed · https://www.programming-helper.com/tech/webgpu-2026-browser-gpu-api-wgsl-ai-inference
+
+Three.js r171+ (Dec 2025) introduced zero-config WebGPU imports: `import { WebGPURenderer } from 'three/webgpu'`. One documented case study achieved **100× performance improvement** when migrating a point-cloud platform from WebGL to WebGPU — smooth interaction with million-point datasets. A "Waves of Connection" public installation demo shows 1M+ particle simulation responsive to real-time input at 60fps. WebGPU also enables **compute shaders for ML inference** in the browser, opening paths for on-device audio ML without WASM. The library sees 2.7M weekly NPM downloads — ecosystem is mature and stable for production use.
+
+**Why it matters**: `16-particle-life-gpu` demonstrated 9,000 particles via WebGPU compute shaders. The 100× gain would allow **900,000 particles** on the same hardware. `27-gpu-additive` (particle-IS-the-synthesizer, 9,000 particles) becomes substantially more ambitious: at 100× WebGPU performance, the particle count could be 100,000+ while maintaining 60fps and the audio-write feedback loop. Also confirms `21-three-mesh-av` is worth a polish cycle: WebGPU path would allow much higher vertex count for the mesh deformation.
+
+**Research note**: Reinforces `gpu-additive` (§36 in IDEAS.md) and `three-mesh-av` polish as high-value next builds once simpler zero-dep prototypes are caught up.
+
+---
+
+### 99. Streaming Piano Transcription — Causal CNN+Transformer (arxiv 2503.01362, ISMIR 2024)
+**Source**: https://arxiv.org/abs/2503.01362
+
+Streaming audio-to-MIDI piano transcription system with three innovations: (1) **separate onset and offset decoders** — different time-frequency features are optimal for detecting note starts vs. note ends, so using one decoder per task outperforms a single decoder; (2) **sustain pedal validation** — pedal detection prevents false offset events while the pedal is held; (3) **causal convolutional encoder + Transformer decoder** — fully streaming, no look-ahead into future audio, making real-time processing feasible. Performance on MAESTRO dataset matches or exceeds offline methods. ISMIR 2024 acceptance = peer-reviewed validation.
+
+**Why it matters**: The sandbox pitch detection (in `13-piano-canvas`, `24-piano-roll`, `26-score-follow`, `33-aria-companion`, `39-anticipate`) uses autocorrelation — which detects pitch but not **note duration** (onset-to-offset). This paper's streaming decoder detects the **complete note event**: onset time, pitch, velocity, and offset time. With this upgrade, piano roll notes in `24-piano-roll` would have correct durations (currently they just paint fixed-length bars). Also: sustain pedal detection would make `26-score-follow` dramatically more accurate for legato piano playing. Architecture is small enough (~10M params) to potentially run in WASM. No public browser deployment confirmed yet — monitor.
+
+**Could become**: a `_shared/use-streaming-transcription.ts` hook: a WASM-compiled version of the causal CNN encoder + decoder that runs in an AudioWorklet at ~5ms latency. Would upgrade `24-piano-roll` (variable-duration note bars), `26-score-follow` (sustain pedal support), and `33-aria-companion` (full note events rather than pitch estimates). Needs Karel OK on ~15–30MB WASM dependency.
+
+---
+
+### 100. iPlug3 2026 — Agentic Audio Plugin Framework with WebGPU + MCP
+**Source**: https://github.com/iPlug3 · https://github.com/topics/webaudio
+
+iPlug3 launched January 1, 2026 as a "clean-slate reimagining" of audio plugin/app development designed for "a world where agentic AI workflows dramatically accelerate iteration on DSP, UX, and design." Graphics: SDL3 + WebGPU native + Skia Graphite → 120fps visualizations across Mac/Windows/Linux/browser (WASM). Audio: mirrors Web Audio API primitives, so code written for iPlug3 compiles to both native (VST3/AU/AAX) and browser (WASM). MCP integration: an agent (like this one) can drive the plugin development loop — write DSP code, compile, test, iterate — as an autonomous agent action. Cross-platform WASM output means a plugin built with iPlug3 runs in the browser as a `AudioWorkletProcessor` without modification.
+
+**Why it matters**: This is the first audio plugin framework explicitly designed for the agent-era. For Resonance: the "installation mode" or "Tauri mode" imagined in IDEAS.md `4-operator` and throughout the priority list would be a native application. iPlug3 compiled to native (Mac/Windows) would give Karel a standalone Resonance performer app that runs outside the browser — no Vercel, no internet needed. The MCP integration means the dream agent could theoretically generate and test DSP code directly. The browser WASM output means Resonance's Web Audio prototypes could be compiled to native plugins for use in DAWs (Ableton, Logic) without rewriting.
+
+**Research note**: This is a roadmap item, not a one-cycle prototype. The most concrete near-term use: build one prototype in iPlug3 (a WASM audio effect) and show it running both in the dream sandbox and as a standalone native app. Raise with Karel as a "Resonance native" direction question.

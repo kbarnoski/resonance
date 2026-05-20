@@ -10,16 +10,47 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 60)
+## ⭐ Newest (Cycle 61 — research)
+
+- **Cycle 61 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§93–100).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **AI Co-Artist (§93, arxiv 2512.08951)** — LLM generates audio-reactive GLSL shaders from
+    text descriptions ("a vortex that expands on beats, purple on bass, orange on treble"). Confirms
+    `claude-shader` is buildable. Needs `ANTHROPIC_API_KEY` in Vercel env — ask Karel.
+
+  - **Interpretable Concepts in Music Models (§94, arxiv 2505.18186, May 2026)** — Sparse
+    autoencoders find that transformer music models organize internally around: **Brightness**,
+    **Density**, **Regularity**, **Complexity**, **Energy**, **Mode**. Inspires `concept-steer` —
+    6-axis hexagonal radar chart synthesizer. Zero deps, one cycle. Build next or next-next.
+
+  - **ElevenLabs Sound Effects on fal.ai (§95)** — Text → high-fidelity ambient sounds.
+    FAL_KEY in use. Inspires `ghost-sfx`: generated naturalistic sounds for Ghost scenes +
+    HRTF positioning. More immersive than `29-scene-spatial`.
+
+  - **AI Harmonizer (§96, arxiv 2506.18143)** — 4-part diatonic harmony from solo melody.
+    Not browser-deployable yet. Inspires `diatonic-harmony` (zero deps): mic → key detection →
+    diatonic third + fifth voice generation. "Your melody; chord-correct harmonies alongside."
+    **Build next cycle.**
+
+  - **Token-Based Audio Inpainting (§97, arxiv 2507.08333)** — Discrete diffusion for
+    coherent audio continuation. Potential upgrade for `43-stable-extend`. No API yet.
+
+  - **iPlug3 2026 (§100)** — WebGPU + SDL3 + MCP agents; WASM browser output. Best path
+    to "Resonance as a native installation."
+
+  **Open questions for Karel**:
+  - `ANTHROPIC_API_KEY` in Vercel env? → enables `claude-shader`
+  - `GEMINI_API_KEY` still pending → `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`
+
+---
+
+## Previous newest (Cycle 60)
 
 - **[/dream/](/dream/)** — Dashboard. `demoable`
   The `/dream/` index page is now a full morning-review dashboard. The complete MORNING.md
-  renders at the top — all four sections (New since yesterday, In progress, Research findings,
-  Open questions) with proper markdown formatting: bold, inline code, links, bullets with
-  continuation text. Below the digest: a 3-cycle recent activity stream showing the last
-  three cycle numbers, routes, dates, and first-line decisions. Below that: the prototype grid
-  (unchanged). Phone-first layout (`max-w-3xl`), dark theme. Zero deps, zero API. Build: 176 B.
-
+  renders at the top — all four sections with proper markdown formatting. 3-cycle activity stream.
+  Phone-first layout (`max-w-3xl`), dark theme. Zero deps, zero API. Build: 176 B.
   This was IDEAS.md §0 (`[queued, do FIRST]`), deferred 59 cycles.
 
 ---
