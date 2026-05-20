@@ -1,5 +1,45 @@
 # Dream Agent — cycle state
 
+## Cycle 69 — /dream/56-ghost-voice
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 68 built `55-webgpu-audio-fx`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `ghost-voice` is the #1 queued item from STATE.md Cycle 68. FAL_KEY in use. Clear spec. One-cycle build.
+4. Research — Cycle 68 queue noted "next research cycle at Cycle 70–71." Not due yet.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/56-ghost-voice`.
+
+**Why now**: Every prior prototype in the spatial audio cluster (`7-spatial`, `29-scene-spatial`, `53-ghost-sfx`) positions sound around the listener. Ghost Voice is the first where something speaks *to* the listener — directly ahead, eye level, the most intimate position in HRTF space. The Ghost scenes have always been primarily visual and musical. A literal voice completes them: the character has something to say. Inworld TTS on fal.ai supports voice description steering (not just a neutral voice — you can describe the timbre, pace, and environment coloring). FAL_KEY already in use.
+
+**Built**:
+- `src/app/dream/56-ghost-voice/page.tsx` — full prototype (3.48 kB built)
+- `src/app/dream/56-ghost-voice/api/route.ts` — server route calling `fal-ai/inworld/tts`
+- `src/app/dream/56-ghost-voice/README.md` — design notes, scene lines table, polish ideas
+
+**What's inside**:
+Six Ghost scenes (Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension), each with a single elliptical line — interior monologue rather than narration of events. Select a scene, click Narrate → server route calls Inworld TTS with the line + a scene-specific voice description ("calm, androgynous, stone chamber reverb, ancient and measured" / "vast, ethereal, slow, deep cosmic reverb" etc.). Returned audio decoded into an `AudioBuffer` and played through:
+- `AnalyserNode` (for amplitude feedback to the canvas animation)
+- `PannerNode` (HRTF, `positionX/Y/Z = 0, 0, -1` — directly ahead at ear level)
+- `AudioContext.destination`
+
+Canvas animation: slow-expanding rings emanate from a central glowing orb. During narration, ring spawn rate and orb glow scale with speech amplitude (read via `getByteTimeDomainData` each rAF frame). Subtitle reveals character-by-character at a rate proportional to the audio duration (40–90ms/char, completing at ~85% of audio length).
+
+API endpoint `fal-ai/inworld/tts` is a naming-convention best-guess. Raw error shown in UI with Karel-paste instructions if wrong.
+
+**What I noticed**: The position `(0, 0, -1)` in Web Audio is "directly ahead" when the listener faces `(0, 0, -1)` (the default). Compared to the ghost-sfx sources at various azimuths, the front-center position in HRTF is remarkably intimate — like a whisper from directly in front. The right voice description matters a lot; "stone chamber reverb" as part of the voice description is interesting because TTS models may or may not honor that as an acoustic characteristic vs. a speaking style. If Inworld TTS ignores environment-adjacent descriptors, future polish could add a ConvolverNode with per-scene impulse responses.
+
+**Queued next** (priority order):
+1. **`ghost-voice` endpoint fix** — if Karel reports an API error from `fal-ai/inworld/tts`, fix the endpoint/params. Common alternative names: `fal-ai/inworld/tts-v1-5`, `fal-ai/inworld/text-to-speech`.
+2. **Research** — Cycle 68 queue flagged research at Cycle 70–71. Next cycle or the one after should be a research sweep.
+3. **Ghost SFX + Ghost Voice integration** — play `53-ghost-sfx` ambient sounds beneath the narration simultaneously. Both use HRTF PannerNodes; they'd coexist naturally in the same AudioContext.
+4. **`ghost-voice` polish** — if endpoint works: per-scene ConvolverNode reverb coloring; multiple TTS takes for Karel to pick the best; cache generated audio in sessionStorage.
+
+---
+
 ## Cycle 68 — /dream/55-webgpu-audio-fx
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

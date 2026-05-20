@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 68)
+## ⭐ Newest (Cycle 69)
+
+- **[/dream/56-ghost-voice](/dream/56-ghost-voice)** — Ghost Voice. `demoable`
+  The Ghost speaks — each of the six Ghost scenes narrated in a single elliptical line,
+  synthesized by Inworld TTS on fal.ai and played from **front-center** (azimuth 0°,
+  elevation 0°) via HRTF PannerNode. The voice floats directly ahead at ear level —
+  the most intimate position in 3D audio space. Six scene-specific voice descriptions
+  shape the timbre and pace ("very slow, low, stone chamber reverb" / "vast, ethereal,
+  deep cosmic reverb"). Canvas: a slow-pulsing orb with expanding rings that accelerate
+  during narration amplitude. Subtitle reveals character-by-character as the voice plays.
+  FAL_KEY in use · ~$0.01–0.02/narration · headphones recommended.
+  ⚠ Endpoint `fal-ai/inworld/tts` is a naming-convention guess. If it errors, paste
+  the raw message and the agent fixes it next cycle.
+  Design notes: `src/app/dream/56-ghost-voice/README.md`
+
+---
+
+## Previous newest (Cycle 68)
 
 - **[/dream/55-webgpu-audio-fx](/dream/55-webgpu-audio-fx)** — GPU Audio FX. `demoable`
   First prototype where audio samples themselves are computed on the GPU. A C-major chord
