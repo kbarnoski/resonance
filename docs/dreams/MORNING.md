@@ -1,52 +1,46 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 66)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 67)
 
 ## New since yesterday
 
-- **Cycle 66 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§101–108).
-  3 new prototype ideas added to IDEAS.md. Highlights below.
+- **[/dream/54-maestro-stems](/dream/54-maestro-stems)** — Maestro Stems `demoable` (Cycle 67)
+  Pick a style (Cinematic, Jazz Trio, Ambient, Folk, Electronic). Click **Generate Track + Stems**.
+  Beatoven Maestro returns a ~2.5-minute instrumental **plus four separate stems**. Each stem
+  plays from its own 3D position: drums overhead, bass below, melody front-right, harmony
+  front-left. Per-stem mix sliders and mute. Wear headphones.
+  The key difference from `7-spatial` (frequency-band splitting): this splits by **musical role**.
+  The drum comes from above because it's the drum — not because of its frequency range.
+  ⚠ Endpoint `beatoven/music-generation` is a best-guess. Paste any error text for a fix.
+  $0.10/track · FAL_KEY in use.
 
 - **[/dream/6-compose](/dream/6-compose)** — Compose `demoable` (Cycle 65)
   Describe a mood → ACE-Step generates 30s of music. Five Ghost scene presets.
-  ⚠ Endpoint `fal-ai/ace-step` is a best-guess. Paste any error text for a fix.
-  $0.006/track · FAL_KEY in use.
+  ⚠ Endpoint `fal-ai/ace-step` still unconfirmed. Paste error text if it fails.
 
 - **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX `demoable` (Cycle 64)
   Six Ghost scenes × three AI-generated naturalistic sounds in 3D via HRTF.
-  Best: Forest Dawn with headphones. ⚠ ElevenLabs endpoint unconfirmed.
+  ⚠ ElevenLabs endpoint still unconfirmed.
 
 ## In progress / partial
 
-- Nothing in-progress.
+- Nothing in-progress. Next build cycle: `webgpu-audio-fx` (Three.js TSL GPU audio + visual,
+  zero new deps) or `ghost-voice` (Inworld TTS narration for Ghost scenes, FAL_KEY in use).
 
-## Research findings worth a look
+## Research findings worth a look (Cycle 66)
 
-- **Beatoven Maestro on fal.ai** (§101) — NEW. `beatoven/music-generation`, $0.10/req, 2.5-min
-  instrumentals + **individual stems** (drums/bass/melody/other). FAL_KEY in use. Next prototype:
-  `maestro-stems` — generate a full track, decode the stems, HRTF-place each one in 3D. The band
-  plays around you. More natural spatial separation than `7-spatial` (role-based, not frequency-based).
-
-- **Three.js WebGPU Compute Audio** (§102) — Three.js r171+ ships a `webgpu_compute_audio` example:
-  TSL compute shader does GPU pitch-shift + 6-layer delay on an audio buffer; `AnalyserNode` output
-  feeds a visual texture. Zero new deps. Inspires `webgpu-audio-fx` — GPU audio DSP + GPU visuals in
-  one pipeline. Direct path to `27-gpu-additive` without raw WGSL.
-
-- **Inworld TTS-1.5 Max on fal.ai** (§105) — Expressive TTS with voice cloning, FAL_KEY in use.
-  Inspires `ghost-voice`: Ghost narrative lines spoken by a custom voice, placed HRTF front-center
-  in the scene, with subtitle overlay. Would complete `53-ghost-sfx` with a narrated Ghost character.
-
-- **Art2Mus** (§103, arxiv 2602.17599) — Direct artwork→music without text intermediary.
-  Ghost scene image directly conditions a music LDM. No API yet, but validates `lyria-ghost` direction.
-
-- **Conducting Gesture** (§106, arxiv 2604.27957) — Skeleton tracking → real-time orchestra
-  tempo/dynamics control at a museum. Inspires `conductor` (needs MediaPipe CDN dep same as
-  `31-gesture-music`). Live performance relevance: conduct BPM and gain from across the room.
+- **Beatoven Maestro** (§101) — 2.5-min instrumentals + stems. Built this cycle as `54-maestro-stems`.
+- **Three.js WebGPU Compute Audio** (§102) — TSL compute shader does GPU pitch-shift + 6-layer
+  delay. Zero new deps (`three@0.182` installed). Inspires `webgpu-audio-fx` — GPU audio DSP and
+  GPU rendering in the same pipeline. Direct path to `27-gpu-additive`.
+- **Inworld TTS-1.5 Max** (§105) — FAL_KEY in use, sub-150ms expressive TTS. Inspires `ghost-voice`:
+  Ghost scene narration HRTF front-center + subtitle. Would complete `53-ghost-sfx`.
+- **Conducting Gesture** (§106, arxiv 2604.27957) — skeleton tracking → orchestra tempo/dynamics.
+  Inspires `conductor` (needs MediaPipe CDN dep, same as `31-gesture-music`).
 
 ## Open questions for Karel
 
-- **`6-compose` working?** Did Forest Dawn generate a 30s track, or red error text?
-  (ACE-Step endpoint is a best-guess from naming conventions — paste error text if so.)
-- **`53-ghost-sfx` working?** Same question for the ElevenLabs SFX endpoint.
+- **`54-maestro-stems` working?** Do stems decode? Or red error text? (Beatoven endpoint unconfirmed.)
+- **`6-compose` working?** ACE-Step endpoint still unconfirmed — any red error?
+- **`53-ghost-sfx` working?** ElevenLabs SFX endpoint unconfirmed.
 - **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader` (~$0.001/gen, very high impact).
 - **`GEMINI_API_KEY`?** → Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`, `piano-to-ghost`.
-- **MediaPipe CDN (~8MB) OK?** → Enables `gesture-music` + new `conductor` prototype.
-- **Beatoven Maestro stems interesting?** → Agent builds `maestro-stems` next cycle if yes.
+- **MediaPipe CDN (~8MB) OK?** → Enables `gesture-music` + `conductor`.

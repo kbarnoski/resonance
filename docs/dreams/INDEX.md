@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 65)
+## ⭐ Newest (Cycle 67)
+
+- **[/dream/54-maestro-stems](/dream/54-maestro-stems)** — Maestro Stems. `demoable`
+  Generate a 2.5-minute instrumental track — then hear each stem played back from its own
+  position in 3D space. Drums from directly overhead (+60°), bass from below (−30°), melody
+  from front-right (+30°), harmonic filler from front-left (−30°). Five style presets
+  (Cinematic, Jazz Trio, Ambient, Folk, Electronic). Editable prompt. Per-stem mix sliders
+  (live gain, no restart). Per-stem mute. Top-down sphere canvas (same HRTF approach as
+  `29-scene-spatial` and `53-ghost-sfx`). Raw API response in `<details>` for debugging.
+  Qualitatively different spatial experience from `7-spatial` (frequency bands) — this splits
+  by musical role: the drum overhead is overhead *because it's the drum*, not because it's in
+  the treble range. First prototype where a full AI-generated band plays around the listener.
+  FAL_KEY in use · $0.10/track · 4.59 kB.
+  ⚠ Endpoint `beatoven/music-generation` + `stems: true` input from RESEARCH.md §101.
+  If stems don't decode or you see an error, paste the raw response text and the agent fixes.
+  Design notes: `src/app/dream/54-maestro-stems/README.md`
+
+---
+
+## Previous newest (Cycle 65)
 
 - **[/dream/6-compose](/dream/6-compose)** — Compose. `demoable`
   The oldest queued prototype (Cycle 4, 61 cycles in queue). Describe a mood or scene in

@@ -1,5 +1,38 @@
 # Dream Agent — cycle state
 
+## Cycle 67 — /dream/54-maestro-stems
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 66 was a research sweep. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `maestro-stems` (`/dream/54-maestro-stems`) is the #1 queued item from STATE.md Cycle 66. FAL_KEY in use. High impact, one-cycle build.
+4. Research — just done (Cycle 66). Won't research for 3+ more cycles.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/54-maestro-stems`.
+
+**Why now**: Beatoven Maestro (RESEARCH.md §101) generates a 2.5-minute instrumental track AND returns individual stems (drums, bass, melody, other) in a single fal.ai call. All previous spatial audio prototypes (`7-spatial`, `29-scene-spatial`, `53-ghost-sfx`) split by frequency band OR position synthesized/generated sounds in space. This is the first prototype that spatializes a full AI-generated band by musical role — the drums are literally overhead, the bass is literally below, the melody is to the right. Qualitatively different spatial experience from any prior prototype. FAL_KEY already in use, $0.10/track.
+
+**Built**:
+- `src/app/dream/54-maestro-stems/page.tsx` — full prototype (4.59 kB built)
+- `src/app/dream/54-maestro-stems/api/route.ts` — server route calling `beatoven/music-generation`
+- `src/app/dream/54-maestro-stems/README.md` — design notes, position rationale, polish ideas
+
+**What's inside**:
+Five style presets (Cinematic / Jazz Trio / Ambient / Folk / Electronic). Editable prompt textarea. "Generate Track + Stems" → server calls `beatoven/music-generation` with `{prompt, stems: true}`. Response normalized across multiple possible URL shapes (data.stems.drums.url, data.stems.drums as string, etc.). Four stems decoded concurrently via `AudioContext.decodeAudioData`. Each routed through a HRTF PannerNode: drums above (+60° el), bass below (−30° el), melody front-right (+30° az), other front-left (−30° az). Top-down sphere canvas (same pattern as `29-scene-spatial` and `53-ghost-sfx`). Per-stem mix slider (live GainNode update), per-stem mute button. Raw API response shown in `<details>` for debugging. Build: clean.
+
+**Notes**: Endpoint `beatoven/music-generation` and `stems: true` input parameter are best-guesses from RESEARCH.md §101. Beatoven's fal.ai wrapper may use different parameter names or return the stems at a different key. The raw response display (via `<details>`) is there specifically for Karel to paste back the raw output if the stems don't decode. This follows the same ⚠ API note pattern as `53-ghost-sfx` and `48-arc-compose`.
+
+**Queued next** (priority order):
+1. **`webgpu-audio-fx`** — Three.js TSL compute audio: GPU pitch-shift + 6-layer delay reverb + visual feedback. Zero new deps (`three@0.182` installed). Inspired by Three.js WebGPU compute audio example (RESEARCH.md §102). First prototype where GPU handles both DSP and rendering. One-cycle build.
+2. **`ghost-voice`** — Ghost scene narration via Inworld TTS-1.5 Max on fal.ai. FAL_KEY in use. ~$0.01–0.02/line. Extends `53-ghost-sfx` concept. One-cycle build.
+3. **`54-maestro-stems` fix** — if Karel reports the endpoint is wrong or stems don't decode, fix before building new.
+4. **Research** — next research cycle at Cycle 70–71 (3–4 cycles from now).
+
+---
+
 ## Cycle 66 — Research sweep
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
