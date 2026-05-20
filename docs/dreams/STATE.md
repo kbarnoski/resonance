@@ -1,5 +1,82 @@
 # Dream Agent — cycle state
 
+## Cycle 49 — /dream/43-stable-extend
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 48 was a research sweep. STATE.md (Cycle 48) explicitly named `stable-extend`
+as the #1 buildable prototype: "most immediately buildable (FAL_KEY already in use). $0.20/generation.
+No new API key approvals needed." No blockers. No in-progress prototypes. Queue for Gemini-key
+prototypes (`lyria-ghost`, `binaural-lyria`) is blocked pending Karel's response — no point waiting
+when `stable-extend` is immediately buildable. Decision: build `/dream/43-stable-extend`.
+
+**Why now**: 42 existing prototypes react TO audio or generate audio FROM text. None of them extend
+YOUR audio with AI. `stable-extend` fills this gap: record a piano phrase, AI continues it seamlessly
+into a 30-second piece using Stable Audio 2.5 on fal.ai. The interaction is qualitatively different
+from `6-compose` (text → audio) or `14-reference-compose` (style-match via MiniMax): here the AI
+literally continues from where you stopped, anchored in the latent representation of your actual
+recording. FAL_KEY is already in use for Ghost LoRA image generation — zero new approvals.
+
+**Shipped**:
+- `src/app/dream/43-stable-extend/page.tsx` — full interactive prototype (~350 lines)
+- `src/app/dream/43-stable-extend/api/route.ts` — server-side route handler for fal.ai call
+- `src/app/dream/43-stable-extend/README.md` — design notes, architecture, polish ideas
+
+**What's inside**:
+
+**Server route** (`/dream/43-stable-extend/api`, POST):
+1. Receives audio blob (webm/opus or mp4) + prompt string as FormData
+2. Uploads to fal storage via `fal.storage.upload()` → public URL
+3. Calls `fal-ai/stable-audio-25/inpaint` with `{audio_url, prompt, seconds_total: 45, cfg_scale: 7.0, steps: 100}`
+4. Returns `{url, inputUrl}` or `{error}` with raw API response for debugging
+
+**Client page** (`/dream/43-stable-extend`):
+- Phase state machine: `idle → recording → recorded → generating → playing → error`
+- **MediaRecorder** with `audio/webm;codecs=opus` (fallback: `audio/mp4`) — up to 30s recording
+- **Waveform canvas**: `AudioContext.decodeAudioData()` → `buildPeaks(buffer, 200)` → amber bars
+  (your recording, left half). After generation: blue bars (AI extension, right half). Divider line.
+- **Style prompt** input: default "continue this piano phrase, same style and mood" — user can guide
+  the extension ("extend as a cello duet", "continue in a jazz register", etc.)
+- **Extend → button**: disabled until audio is recorded; posts FormData to `/dream/43-stable-extend/api`
+- **Auto-play**: decoded generated audio routed through AnalyserNode → six-band radial bloom
+  (same 6-band color palette and bloom geometry as `1-live`)
+- **Error display**: shows raw fal.ai error text so Karel can diagnose API issues if needed
+- **Replay button**: appears after generation, re-plays the same URL without re-calling the API
+
+**Build validation**: `npm run build` passes cleanly. `/dream/43-stable-extend` renders as static
+route (3.65 kB). `/dream/43-stable-extend/api` renders as dynamic route handler (239 B). Fixed one
+TypeScript closure-narrowing issue: `ctx` narrowing from outer scope doesn't carry into RAF `tick`
+closure — fixed by adding `if (!ctx) return;` at the top of `tick`. Zero new errors; all other
+warnings are pre-existing production Resonance files. Vercel build will pass.
+
+**API note**: The endpoint `fal-ai/stable-audio-25/inpaint` and its parameter names (`audio_url`,
+`seconds_total`, `cfg_scale`, `steps`) come from RESEARCH.md §70 research. If the endpoint doesn't
+exist or uses different parameter names, the error message is surfaced in the UI. Karel can inspect
+the error text and tell me the correct endpoint/parameters for the next cycle.
+
+**What I noticed**: The two-panel waveform display (amber | blue with divider) is intuitive even
+before the prototype runs — you can immediately read "this is mine, that's the AI's." The bloom
+visualizer during playback is the same radial geometry as `1-live`, which feels right: you recorded
+something, the AI extended it, now it plays through the same visualization system that responds to
+live playing. The loop closes: your recording becomes input to the AI becomes output in the bloom.
+
+The server-side route handler at `/dream/43-stable-extend/api` is the first dream-zone Route Handler
+(vs page). It demonstrates that Next.js App Router allows `src/app/dream/*/api/route.ts` to coexist
+with `src/app/dream/*/page.tsx` in a sub-directory — the scope fence is clean, no production API
+routes touched.
+
+**Queued next**:
+1. **`lyria-ghost`** — Ghost image → Lyria 3 Clip → 30s ambient Ghost soundtrack. Needs
+   GEMINI_API_KEY. One cycle. Admin-only. RESEARCH.md §69.
+2. **`binaural-lyria`** — binaural beats at target brainwave frequency + Lyria 3 ambient music
+   tuned to that state. Needs GEMINI_API_KEY. One cycle. RESEARCH.md §74/75.
+3. **Polish `42-binaural`** — session timer, journal textarea (localStorage per brainwave state),
+   optional pink/brown noise layer. No API needed. Safe fallback if Gemini key unavailable.
+4. **Verify `stable-extend` API** — if Karel sees an error when using the prototype, diagnose
+   the fal.ai endpoint/parameters and fix `route.ts`. One short cycle, no new code structure needed.
+
+---
+
 ## Cycle 48 — Research sweep (§§69–76 in RESEARCH.md, 4 new ideas in IDEAS.md)
 
 **When**: 2026-05-19 UTC (hourly autonomous cycle)

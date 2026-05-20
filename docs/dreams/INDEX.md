@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 48 — research)
+## ⭐ Newest (Cycle 49)
+
+- **[/dream/43-stable-extend](/dream/43-stable-extend)** — Stable Extend.
+  Record a piano phrase (up to 30s), click **Extend →**, wait ~10–30s. Stable Audio 2.5 on fal.ai
+  receives your actual audio and generates a seamless 30-second continuation in the same style and
+  mood. The extended track auto-plays through the six-band radial bloom visualizer (same palette as
+  `1-live`). Waveform strip shows your recording in **amber** (left) and the AI extension in **blue**
+  (right), split by a divider line so you can see both clips at a glance.
+  Style prompt guides the extension: "continue as a cello duet", "jazz register", "ambient fade".
+  The server route at `/dream/43-stable-extend/api` handles the fal.ai call server-side — FAL_KEY
+  is never exposed to the browser. **$0.20/generation. FAL_KEY already in use.**
+  **First prototype where AI extends YOUR recording** (not a text-prompt generation, not style-match
+  — a direct continuation of the actual audio in latent space).
+
+  ⚠ **API note**: endpoint `fal-ai/stable-audio-25/inpaint` sourced from RESEARCH.md §70. If the
+  prototype shows an API error, the raw error message is displayed — tell me the correct endpoint
+  and parameters if fal.ai uses different names.
+
+  Design notes: `src/app/dream/43-stable-extend/README.md`
+
+---
+
+## Previous newest (Cycle 48 — research)
 
 - **Cycle 48 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§69–76).
   4 new prototype ideas added to IDEAS.md. Highlights:
@@ -737,6 +759,30 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 43-stable-extend
+**Status**: `demoable` · **Cycle shipped**: 49 · **Last touched**: 2026-05-20
+
+Open `/dream/43-stable-extend`. Press **● REC** and allow mic permissions. Play 5–15 seconds of
+piano (or hum, sing, play any instrument). Press **■ STOP**. The amber waveform fills the left
+half of the strip — that's your recording.
+
+Type a style hint in the text field if desired ("continue as a string quartet", "jazz piano duet",
+"ambient fade into silence"), then click **Extend →**. The button goes grey and shows "Extending…"
+while the API call runs (~10–30s). When it returns, the blue waveform fills the right half and
+playback starts automatically through the radial bloom visualizer. Press **▶ replay** to hear it
+again without re-generating.
+
+The bloom uses the same six-band color palette as `/dream/1-live` — the AI-generated music drives
+the same visualization you'd see from live mic input. The loop closes: your phrase → AI continuation
+→ your usual visualization.
+
+⚠ If you see an API error in red, the raw fal.ai error text is shown. Tell the agent (next morning)
+what it says and we'll fix the endpoint or parameters in `route.ts`.
+
+Design notes: `src/app/dream/43-stable-extend/README.md`
+
+---
 
 ### 42-binaural
 **Status**: `demoable` · **Cycle shipped**: 47 · **Last touched**: 2026-05-19

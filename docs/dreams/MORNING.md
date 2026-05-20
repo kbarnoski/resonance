@@ -1,52 +1,42 @@
-# Morning digest — last updated 2026-05-19 UTC (Cycle 48)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 49)
 
 ## New since yesterday
 
-- **Cycle 48 was a research sweep** (no new prototype). Cleared the 3-cycle research threshold.
-  8 new RESEARCH.md entries (§§69–76). 4 new prototype ideas queued. See highlights below.
-
-## Research findings worth a look
-
-- **Lyria 3 (Google DeepMind, Feb 2026)** — image-to-music via Gemini API. Send a Ghost scene
-  photo → get a 30s ambient MP3 shaped by that image's mood. Same API key as `lyria-jam`.
-  **Prototype ready to build**: `lyria-ghost`. One cycle, admin-only, free tier.
-  Endpoints: `lyria-3-clip-preview` (30s) · `lyria-3-pro-preview` (full song, WAV).
-
-- **Stable Audio 2.5 (Stability AI, 2026)** — audio continuation on fal.ai at **$0.20/audio**.
-  Record a piano phrase → AI extends it into a 30s track. Open source, FAL_KEY already works.
-  **Prototype ready to build**: `stable-extend`. One cycle, no new approvals needed.
-  Build this next if Gemini key isn't available yet.
-
-- **Music as "controlled hallucination"** (Frontiers Psychology, 2026) — new theoretical
-  framework: the brain simulates a "virtual body" inside music via active interoceptive inference.
-  Scientifically validates Resonance's "transcendent listening" thesis. The `42-binaural` prototype
-  is one of the most direct implementations of this effect. Worth reading (linked in §74).
-
-- **MindMelody** (arxiv 2605.01235, May 2026) — closed-loop EEG-driven music therapy. Inspires
-  `binaural-lyria`: binaural beats at the target brainwave frequency + Lyria 3 ambient music tuned
-  to match (delta=vast drones, alpha=calm piano, gamma=bright gamelan). Needs Gemini key.
-
-- **Suno Generative Stems** — 12 stems from any AI track (vocal, drums, bass, piano...). API
-  stems endpoint not yet public. When it ships: `suno-stems-spatial` places each stem in 3D HRTF.
-
-- **ONNX Runtime Web 1.26** — WebGPU EP now default. `neural-pitch` CREPE-tiny at ~1ms/frame.
-  More reason to ask: CDN ONNX dep (~2MB) OK?
+- **[/dream/43-stable-extend](/dream/43-stable-extend)** — Stable Extend (NEW, Cycle 49)
+  Record a piano phrase · AI continues it as a 30-second seamless extension · bloom visualizer.
+  **Why open this first**: press REC, play 10 seconds of piano, press STOP, press Extend →.
+  You'll hear the AI pick up where you left off. First prototype where AI extends YOUR recording,
+  not a text-prompt generation. Waveform shows amber (yours) | blue (AI) side by side.
+  Cost: $0.20/generation. FAL_KEY already in use — no new setup needed.
+  ⚠ The fal.ai endpoint (`fal-ai/stable-audio-25/inpaint`) was sourced from RESEARCH.md §70.
+  If it shows an error, the raw error text is visible — reply to this note with what it says.
 
 ## In progress / partial
 
-- Nothing in progress. Cycle 49 picks up from this queue:
-  1. **`stable-extend`** — no new approvals (FAL_KEY exists). Best immediate next build.
-  2. **`lyria-ghost`** — waiting on GEMINI_API_KEY.
-  3. **`binaural-lyria`** — also waiting on GEMINI_API_KEY.
-  4. **Polish `42-binaural`** — session timer + journal + pink noise (no APIs needed, good fallback).
+- Nothing in-progress. Cycle 50 picks from:
+  1. Fix `stable-extend` API if the endpoint/params are wrong (short cycle)
+  2. `lyria-ghost` — Ghost image → Lyria 3 30s ambient score (needs GEMINI_API_KEY)
+  3. `binaural-lyria` — binaural beats + Lyria ambient music per brainwave state (needs Gemini)
+  4. Polish `42-binaural` — session timer, per-state journal, optional noise layer (no API, safe fallback)
+
+## Research findings worth a look
+
+_(Cycle 48 research — still current)_
+
+- **Lyria 3** — Gemini API music-from-image. Ghost scene photo → 30s ambient MP3. Same key as
+  lyria-jam. Prototype `lyria-ghost` ready. Endpoint: `lyria-3-clip-preview`. One cycle, free tier.
+- **Stable Audio 2.5** — just built. Audio continuation at $0.20. See stable-extend above.
+- **Music as "controlled hallucination"** (Frontiers 2026) — validates Resonance's thesis.
+  The `42-binaural` prototype is a direct implementation of the brain's interoceptive prediction
+  loop. Worth reading §74 in RESEARCH.md if you haven't.
 
 ## Open questions for Karel
 
-- **GEMINI_API_KEY?** → unlocks `lyria-ghost` (Ghost image → 30s music), `30-lyria-jam`
-  (infinite steering AI music), `binaural-lyria` (meditation + Lyria ambient), `piano-to-ghost`
-  (play piano → Ghost world generated). One key, four prototypes.
-- **CDN ONNX dep (~2MB)?** → enables `neural-pitch` — neural pitch detection at 1ms/frame via
-  ONNX Runtime Web 1.26 WebGPU EP. Upgrades accuracy in 6+ existing prototypes.
-- **Suno API stems endpoint?** — currently UI-only. Flag when it becomes API-accessible.
+- **GEMINI_API_KEY?** → unlocks `lyria-ghost`, `30-lyria-jam`, `binaural-lyria`, `piano-to-ghost`.
+  All four are fully spec'd and ready to build. One key, four prototypes.
+- **`stable-extend` API error?** — if the fal.ai endpoint name or parameters are wrong, let me know
+  the error text and I'll fix `route.ts` next cycle. Endpoint used: `fal-ai/stable-audio-25/inpaint`.
+- **CDN ONNX dep (~2MB)?** → enables `neural-pitch` — neural pitch detection at ~1ms/frame via
+  ONNX Runtime Web 1.26 WebGPU. Upgrades accuracy in 6+ existing prototypes.
 
 Preview URL: https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app
