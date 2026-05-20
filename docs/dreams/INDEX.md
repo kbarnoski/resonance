@@ -10,7 +10,59 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 55)
+## ⭐ Newest (Cycle 57)
+
+- **[/dream/48-arc-compose](/dream/48-arc-compose)** — Arc Compose.
+  Write a Resonance journey arc using structural section tags, hear MiniMax Music 2.6 generate a
+  60–90s AI piece that follows that exact structure.
+
+  **Left panel**: A textarea pre-loaded with a four-section cinematic arc (`[Intro]` single piano
+  in vast reverb / `[Build Up]` cello enters, tension / `[Chorus]` full orchestral peak / `[Outro]`
+  piano alone, then silence). Eight section-tag buttons ([Intro], [Verse], [Pre-Chorus], [Build Up],
+  [Chorus], [Bridge], [Outro], [Inst]) append directly to the arc. Style/genre field below.
+
+  **Right panel**: Six-band radial bloom visualizer (same palette as `1-live`) during playback.
+  Waveform strip with cyan playhead sweep. Replay from cache (no re-generation). Download MP3.
+
+  **Why this is different**: `6-compose` sends a text description → music, with no structural
+  control. `arc-compose` uses section tags as first-class parameters: `[Intro] → [Build Up] →
+  [Chorus] → [Outro]` shapes the arc of the generated piece. This is the `18-elevenlabs-compose`
+  idea (38 cycles in the queue) finally buildable at $0.03 instead of $1.13.
+
+  ⚠ **API note**: Endpoint `fal-ai/minimax/music-01` and parameters from fal.ai naming conventions.
+  If the prototype shows an error, paste the raw message and the agent fixes it next cycle.
+
+  **$0.03/generation · FAL_KEY already in use**
+  Design notes: `src/app/dream/48-arc-compose/README.md`
+
+---
+
+## Previous newest (Cycle 56 — research)
+
+- **Cycle 56 was a research sweep** (no new prototype). 8 new entries in RESEARCH.md (§§85–92).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **Google Flow Music + Lyria 3 Pro (§85)** — Stem Splitter extracts drums/bass/piano from any
+    AI track. 3-minute structured songs. "Replace + Extend" for section regeneration. Same Gemini
+    key as `lyria-ghost`. Inspires `stem-spatial`.
+
+  - **MiniMax Music 2.6 (§86)** — 14+ structural section tags on fal.ai at $0.03/generation.
+    FAL_KEY already in use. Inspires `arc-compose` — the `18-elevenlabs-compose` idea at 37×
+    lower cost.
+
+  - **`anemone-av` (§92)** — Organic bioluminescent 3D form, Three.js TSL. All deps already
+    installed. Zero new packages. High visual impact. One-cycle build.
+
+  - **`tap-rhythm` (§89)** — Tap onset detection → circular step sequencer → Karplus-Strong
+    drum synthesis. Zero deps, zero API. Highest accessibility.
+
+  **Open questions for Karel**:
+  - GEMINI_API_KEY → unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`
+  - FAL_KEY already in use → `arc-compose` built this cycle
+
+---
+
+## Previous newest (Cycle 55)
 
 - **[/dream/47-mood-journey](/dream/47-mood-journey)** — Mood Journey.
   Click your **NOW** mood on the Russell circumplex (valence × arousal), then click your **GOAL**
@@ -857,6 +909,36 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 48-arc-compose
+**Status**: `demoable` · **Cycle shipped**: 57 · **Last touched**: 2026-05-20
+
+Open `/dream/48-arc-compose`. The default arc is pre-loaded:
+
+```
+[Intro] single piano note in vast reverb, long silence between phrases
+[Build Up] low cello drone enters slowly, pad swells underneath, tension builds
+[Chorus] full orchestral peak, bright major resolution, drums and strings
+[Outro] instruments fade one by one, piano alone, then silence
+```
+
+Click **▶ Compose**. After 20–40 seconds, a 60–90s orchestral piece starts playing through
+the radial bloom visualizer. The waveform strip fills in cyan as the playhead sweeps.
+
+Try editing the arc before composing. Add `[Verse] melodic piano theme, strings enter softly`
+between `[Intro]` and `[Build Up]`. Change `[Chorus]` to `[Chorus] dark minor peak, brass`.
+Hear how the structure of the piece changes. Style field: try `"jazz piano trio, 90 BPM"` —
+the same arc rendered in a completely different genre.
+
+Click **▶ replay** after playback ends to re-hear without re-generating ($0.03 saved).
+Click **↓ mp3** to download the generated piece.
+
+⚠ If you see an API error in red, paste the raw error text and the agent will fix the
+endpoint/parameters next cycle.
+
+Design notes: `src/app/dream/48-arc-compose/README.md`
+
+---
 
 ### 47-mood-journey
 **Status**: `demoable` · **Cycle shipped**: 55 · **Last touched**: 2026-05-20

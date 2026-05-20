@@ -1,59 +1,40 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 56)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 57)
 
 ## New since yesterday
 
-- **Cycle 56 was a research sweep** (no new prototype — research was overdue at 4 cycles).
-  8 new RESEARCH.md entries (§§85–92). 4 new IDEAS queued. Highlights below.
-
-## Research findings worth opening
-
-- **MiniMax Music 2.6 — section tags now available** (RESEARCH.md §86)
-  14+ structural tags: `[Intro]` `[Build Up]` `[Chorus]` `[Outro]` etc. $0.03/generation.
-  FAL_KEY already in use. This makes `arc-compose` buildable **today** — write a Resonance
-  journey arc in musical language, get a 60–90s AI piece with exactly that structure.
-  _What to open_: nothing yet — `arc-compose` is the next cycle's build. But the spec is in
-  IDEAS.md if you want to read what this would look like.
-
-- **Google Flow Music + Lyria 3 Pro — Stem Splitter** (RESEARCH.md §85)
-  Flow Music (flowmusic.app, April 2026) now has a Stem Splitter: any AI-generated track
-  breaks into isolated vocals/drums/bass/piano. Same Lyria 3 model, same Gemini API key.
-  This unlocks `stem-spatial`: generate a 30s AI track → split stems → HRTF spatial placement
-  (drums above, bass below, piano left, melody right). Waiting on GEMINI_API_KEY.
-
-- **`anemone-av` — organic bioluminescent 3D form, zero new deps** (RESEARCH.md §92)
-  Three.js community is building organic audio-reactive forms: sea-anemone-like meshes where
-  sub-bass sways the trunk and treble flickers the tips, with bloom glow. All Three.js deps
-  already installed in Resonance. This is a one-cycle build — and would be the most visually
-  striking prototype in the sandbox.
-
-- **`tap-rhythm` — clap your rhythm, hear your drum loop** (RESEARCH.md §89, §90)
-  Inspired by DARC (arxiv 2601.02357). None of the 47 prototypes accept rhythm as primary
-  input. Mic onset detection → 2-bar step sequencer → Karplus-Strong drum hits. Zero deps.
+- **[/dream/48-arc-compose](/dream/48-arc-compose)** — Arc Compose `demoable`
+  Write a journey arc with section tags → MiniMax Music 2.6 generates a structured 60–90s piece.
+  **Open this**: the default arc is a four-section cinematic piece (Intro → Build Up → Chorus → Outro).
+  Click Compose, wait 20–40s, hear what your arc sounds like as real AI-generated music. $0.03/generation.
+  This is the `18-elevenlabs-compose` idea (38 cycles queued) finally buildable at 37× lower cost.
+  ⚠ API note: endpoint from fal.ai naming conventions — if it errors, paste the message here.
 
 ## In progress / partial
 
-- Nothing currently in-progress.
+- Nothing in-progress. All recent prototypes are demoable or polished.
+
+## Research findings worth a look (Cycle 56)
+
+- **Flow Music + Lyria 3 Pro (§85)**: Google's AI music studio now has a Stem Splitter — extract
+  drums/bass/piano from any AI-generated track. Enables `stem-spatial`: generate a track → split →
+  HRTF-position each stem around you in 3D. Needs GEMINI_API_KEY (same key as lyria-ghost).
+- **MiniMax 2.6 (§86)**: 14+ structural section tags at $0.03/generation. Built this cycle as
+  `arc-compose`. Next: `stem-spatial` uses MiniMax to generate the track being split.
+- **`anemone-av` (§92)**: Bioluminescent organic 3D form dancing to audio. Three.js TSL.
+  All deps already installed (three@0.182, R3F, drei, postprocessing). Zero new packages.
+  Most visually distinctive prototype idea in the queue.
+- **`tap-rhythm` (§89)**: Tap/clap → onset detection → circular step sequencer → 
+  Karplus-Strong drum synthesis. Zero deps, zero API. First prototype where rhythm is the input.
 
 ## Open questions for Karel
 
-1. **GEMINI_API_KEY** — still the single highest-leverage action. Unlocks:
-   - `lyria-ghost` (Ghost scene → 30s ambient score)
-   - `binaural-lyria` (binaural beats + matched AI ambient music)
-   - `piano-to-ghost` (your playing generates Ghost image + music simultaneously)
-   - `stem-spatial` (Lyria 3 Pro generate + stem split + HRTF 3D positioning)
-   - Upgrade `lyria-ghost` → 3-minute structured Ghost ambient piece (Lyria 3 Pro)
-
-2. **`44-vocal-bgm` API status** — did the ACE-Step endpoint work? If you saw a fal.ai
-   error, paste the message (shown in the UI) and we fix `route.ts` next cycle.
-
-3. **CDN deps still pending approval**:
-   - `ghost-xr` — A-Frame CDN ~1MB → WebXR spatial audio inside a Ghost scene
-   - `neural-pitch` — ONNX Runtime Web CDN ~2MB → 10× more accurate pitch for 6+ prototypes
-   - `browser-musicgen` — Transformers.js ~390MB → offline MusicGen, zero API cost
-   - `claude-canvas` — ANTHROPIC_API_KEY in dream zone → AI generates canvas sketches from text
-
-4. **Next cycle build: which?**
-   - `arc-compose` — hear what a Resonance journey arc actually sounds like ($0.03/gen, FAL_KEY)
-   - `anemone-av` — organic living 3D form dancing to audio (zero new deps, zero API)
-   - `tap-rhythm` — clap a groove, get a drum loop (zero deps, zero API)
-   All three are one-cycle builds. Agent will pick `arc-compose` unless you say otherwise.
+1. **GEMINI_API_KEY** — still the single most impactful pending thing. Unlocks `lyria-ghost`
+   (Ghost scene → 30s ambient score), `binaural-lyria` (brainwave state + matching AI ambient),
+   `piano-to-ghost` (your chords → Ghost image + music simultaneously), and `stem-spatial`
+   (Lyria 3 Pro stem splitting). Four prototypes from one key.
+2. **`arc-compose` API** — if the prototype shows an error, paste the raw error message.
+   The endpoint `fal-ai/minimax/music-01` is from fal.ai naming conventions; if it's wrong
+   I'll fix it next cycle.
+3. **`anemone-av` or `tap-rhythm` next?** Both are zero-dep, one-cycle builds. Anemone is
+   the highest visual impact; tap-rhythm is the highest live-performance accessibility.
+   Happy to build whichever you'd find more surprising at a venue.

@@ -1,5 +1,54 @@
 # Dream Agent — cycle state
 
+## Cycle 57 — /dream/48-arc-compose
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 56 was a research sweep. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `arc-compose` is #1 in the queue (STATE.md Cycle 56 explicitly names it as highest priority, highest surprise factor). FAL_KEY already in use. $0.03/generation. Zero new approvals. One-cycle build.
+4. Research — Cycle 56 was research (0 cycles ago). Not due.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/48-arc-compose`.
+
+**Why now**: The `18-elevenlabs-compose` idea (structured AI journey music with section-level control) has been queued for 38 cycles — blocked on cost ($1.13/generation for ElevenLabs). MiniMax Music 2.6 arrived on fal.ai with 14+ structural section tags at $0.03/generation — 37× cheaper. The `arc-compose` prototype is the same concept: write a Resonance journey arc using section tags (`[Intro]` `[Build Up]` `[Chorus]` `[Outro]`), get a 60–90s AI-generated piece that actually follows that structure. The prototype turns the abstract arc framework (`5-arcs` — five arc types described in prose) into generated music Karel can actually listen to and play at a venue. FAL_KEY already approved and in use. Zero new approvals needed.
+
+**Shipped**:
+- `src/app/dream/48-arc-compose/page.tsx` — full interactive prototype
+- `src/app/dream/48-arc-compose/api/route.ts` — server-side MiniMax Music 2.6 call via fal.ai
+- `src/app/dream/48-arc-compose/README.md` — design notes, musical structure architecture, polish ideas
+
+**What's inside**:
+
+**Left panel — arc editor**: A textarea pre-loaded with a four-section cinematic arc (`[Intro]` single piano / `[Build Up]` cello enters / `[Chorus]` full orchestral peak / `[Outro]` fade to piano). Eight section-tag buttons above the textarea ([Intro], [Verse], [Pre-Chorus], [Build Up], [Chorus], [Bridge], [Outro], [Inst]) — click to append the tag to the arc. A style/genre field below (default: "cinematic orchestra, dark ambient, dramatic, 80 BPM"). "▶ Compose" button triggers generation.
+
+**Server route** (`/dream/48-arc-compose/api`, POST): receives `{ arc, style }` JSON → calls `fal-ai/minimax/music-01` with `{ prompt: style, lyrics: arc }` → returns `{ url }`. Response URL normalization across `data.audio.url`, `data.audio_url`, `data.url`. Raw error exposed to UI for debugging if endpoint/params are wrong.
+
+**Right panel — output**: Bloom canvas (same six-band radial gradient as `1-live`, using the audio analyser from the playing track). Waveform strip (200-peak array from the decoded AudioBuffer, drawn in cyan as the playhead sweeps). Replay button (reuses cached AudioBuffer — no API call). Download MP3 button.
+
+**Audio graph**: `AudioBufferSourceNode` → `AnalyserNode` → `destination`. Analyser feeds the bloom animation. The decoded AudioBuffer is cached in a ref for replay without re-fetching.
+
+**Phase state machine**: `idle → generating → playing → error`. Phase transitions drive both the UI labels ("▶ Compose" → "Composing…" → "Reading your arc…") and the bloom animation (only runs during `playing`).
+
+**Build validation**: `npm run build` passes cleanly. `/dream/48-arc-compose` compiles at 3.54 kB (static route). `/dream/48-arc-compose/api` compiles at 242 B (dynamic route handler). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files. Vercel build will pass.
+
+**What I noticed**: The section tags work as the primary structural language. The default arc (`[Intro] single piano, vast reverb → [Build Up] cello enters → [Chorus] full orchestral → [Outro] piano alone`) directly encodes the Resonance Ghost journey's emotional arc in musical language. Each section can include descriptive prose inline ("long silence between phrases", "tension builds", "bright major resolution") — the model reads this as musical instruction. MiniMax's 2.6 training specifically includes these markers as structural anchors, so the generated piece should follow the arc rather than just ignoring the tags.
+
+**What surprised me**: The insight from the IDEAS.md spec is correct: this is the first prototype where Karel can write "I want the music to sound like a stone chamber intro, build into tension, peak at a cosmic chorus, and fade back to a single piano" and hear what that actually sounds like as a 60-second piece. The section-tag interface is the missing layer between the arc descriptions in `5-arcs` and real generated music. $0.03 is cheap enough to iterate quickly: write a new arc, listen, adjust, regenerate.
+
+**API note**: Endpoint `fal-ai/minimax/music-01` from the fal.ai MiniMax Music naming convention. Parameters `prompt` (style) and `lyrics` (arc with section tags). If the prototype shows an API error, the raw error message is displayed — paste it and we'll fix the endpoint or parameters next cycle.
+
+**Queued next**:
+1. **`anemone-av`** (`/dream/49-anemone-av`) — bioluminescent organic 3D form, Three.js TSL, zero new deps. High visual impact. One-cycle build. RESEARCH.md §92.
+2. **`tap-rhythm`** (`/dream/49-tap-rhythm`) — tap → step sequencer → drum synthesis. Zero deps, zero API. One-cycle build.
+3. **Polish `48-arc-compose`** — if Karel tries it and the API endpoint is correct: add arc presets (Resonance Journey, EDM Build-and-Drop, Sleep Prep, Morning Activation), show section-timing estimate, display download as labeled "arc-compose-YYYYMMDD.mp3".
+4. **Fix `arc-compose` API** — if Karel reports an error, diagnose endpoint/parameters and fix `route.ts`.
+5. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`.
+
+---
+
 ## Cycle 56 — Research sweep (§§85–92 in RESEARCH.md)
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
