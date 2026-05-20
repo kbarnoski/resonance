@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 59 — /dream/50-tap-rhythm
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 58 shipped `49-anemone-av`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `tap-rhythm` is #1 in the queue (STATE.md Cycle 58 explicitly names it as highest priority). Zero deps, zero API. One-cycle build.
+4. Research — Cycle 56 was last research (3 cycles ago: 57, 58, 59). At the lower bound of the 3–4 cycle cadence. Build-new takes priority at #3 per the manual's ordering.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/50-tap-rhythm`.
+
+**Why now**: 50 prototypes in the sandbox and none accept rhythm as the primary input. Every prototype requires you to play an instrument or type text. `tap-rhythm` is the first where a non-musician can walk up, clap 8 times, and immediately hear a drum loop of their own rhythm. The DARC paper (RESEARCH.md §89) validated this exact paradigm: mic onset detection → step sequencer → drum synthesis. Zero new dependencies, zero API calls. Highest live-performance accessibility of any prototype in the queue. The circular clock face is the natural visual for a step sequencer that loops — the rotating hand makes the loop position legible at a distance on a projector.
+
+**Shipped**:
+- `src/app/dream/50-tap-rhythm/page.tsx` — full interactive prototype (~310 lines)
+- `src/app/dream/50-tap-rhythm/README.md` — design notes, drum synthesis architecture, polish ideas
+
+**What's inside**:
+
+**Phase state machine**: `idle → tapping → sequencing`. Idle shows two buttons: "Tap your rhythm" (mic) and "Demo" (pre-built 4-on-the-floor, no permissions needed).
+
+**Tapping**: mic onset detection (same amplitude-threshold approach as `1-live`). Each onset is recorded with timestamp + amplitude. Visual: expanding pulse rings radiate outward from center, color-coded by classified drum type (violet=kick, cyan=snare, amber=hat). Counter shows "X of 8+" taps. After 8+ taps and 2s of silence, automatically commits. Manual "Build loop" button appears at 8+.
+
+**Drum classification** (amplitude-based, matches how one naturally taps):
+- `amp < 0.33` → kick (55Hz sine burst, frequency glide 100→42 Hz over 120ms)
+- `0.33–0.66` → snare (bandpass white noise, 1800 Hz, 120ms decay)
+- `amp > 0.66` → hi-hat (highpass white noise, 8000 Hz, 35ms sharp decay)
+
+**BPM estimation**: median inter-onset interval of filtered IOIs (120ms–2500ms). Robust to outliers and brief pauses. Clamps to 40–240 BPM.
+
+**Grid quantization**: each tap's timestamp is mapped to the nearest 16th-note slot in a 2-bar (32-step) loop. At 120 BPM, each 16th note = 125ms — the user needs to be within ±62ms of the correct position to hit the right step.
+
+**Circular step sequencer**: 32 dots arranged clockwise as a clock face. Beat boundaries (steps 0, 8, 16, 24 = quarter notes) slightly larger with a dark ring. Active dots glow in their drum color with bloom. The clock hand rotates at the detected BPM using `(ac.currentTime - loopStart) / (stepDur * 32) * 32` for smooth fractional position. When the hand passes an active step, it flashes brighter.
+
+**Scheduling**: `setInterval(20ms)` look-ahead scheduler, 60ms ahead via `AudioContext.currentTime`. The `bpmRef` is read fresh each tick — BPM slider changes take effect immediately without resetting the interval.
+
+**Step toggling**: click any dot on the clock face to toggle it on/off. Hit detection: convert click angle from center → step index. Inactive steps become "kick" type; can be toggled off again.
+
+**Demo mode**: loads a 4-on-the-floor preset (kick on every quarter note, snare on 2&4, hi-hat on 8ths at 120 BPM). No mic permissions required. Communicates what the prototype does before the user commits to recording.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/50-tap-rhythm` compiles at 5.13 kB (static route). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files. Vercel build will pass.
+
+**Architecture note**: `drawClock` is defined at module scope (takes a `CanvasRenderingContext2D` + data args) to avoid being misidentified as a React hook. Noise buffers (`playSnare`, `playHiHat`) are allocated fresh per trigger — acceptable at prototype tempo rates. A single RAF loop handles both onset detection (when tapping) and canvas rendering (always), reading `phaseRef.current` to switch behavior.
+
+**What I noticed**: The quantization is surprisingly forgiving. Even with ±50ms timing jitter in an 8-tap sequence, the median IOI estimate produces a solid BPM, and the nearest-16th-note snap puts the taps in coherent positions. The user has to be off by more than half a 16th note (±62ms at 120 BPM) to land on the wrong step. Most people naturally tap within ±30ms of the beat.
+
+The amplitude threshold for kick/snare/hat works well on desk taps but may need calibration for different input surfaces. A laptop keyboard tap is reliably "kick" range; a hard hand clap is "hi-hat" range. The three-bucket classification (rather than a continuous mapping) is robust because the user's physical tapping forces naturally cluster into light/medium/hard.
+
+The demo mode is load-bearing. Most people opening a new prototype don't immediately want to commit to mic permissions. Hearing the 4-on-the-floor loop immediately communicates: "tap something and it sounds like this, but it's your rhythm." The circular clock display makes the loop structure visible — 4 beats, 8 subdivisions, 32 positions.
+
+**Queued next**:
+1. **Research** — Cycle 56 was last research (3 cycles ago: 57, 58, 59). Due at Cycle 60 per the 3–4 cycle cadence. The cadence is now at its lower bound.
+2. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`.
+3. **Polish `50-tap-rhythm`** — if Karel tries it: tune amplitude thresholds per his setup, add velocity-sensitive hits, or swap to explicit drum-type selector before tapping.
+4. **Polish `49-anemone-av`** — inner tentacle ring, vertex displacement for smoother bending, if Karel wants deeper biology.
+5. **Fix `arc-compose` API** — if Karel reports an error, diagnose fal.ai endpoint/parameters and fix `route.ts`.
+
+---
+
 ## Cycle 58 — /dream/49-anemone-av
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

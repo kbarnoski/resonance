@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 58)
+## ⭐ Newest (Cycle 59)
+
+- **[/dream/50-tap-rhythm](/dream/50-tap-rhythm)** — Tap Rhythm. `demoable`
+  The first prototype any non-musician can immediately use. Tap or clap a rhythm into the
+  mic → onset detection measures your tempo → 32-step circular drum loop plays back in your
+  detected BPM. Amplitude classifies drum type: gentle tap = kick (violet), medium = snare
+  (cyan), hard/clap = hi-hat (amber). Clock-face display with rotating hand. Click any step
+  to toggle. BPM slider. Demo mode (no permissions): 4-on-the-floor preset loads instantly.
+  Drum synthesis: Web Audio only — kick = sine frequency glide, snare = bandpass noise,
+  hat = highpass noise. **Live-performance fit**: tap a groove at a venue, loop starts in 2s.
+  Zero deps, zero API. Build: 5.13 kB.
+
+  Design notes: `src/app/dream/50-tap-rhythm/README.md`
+
+---
+
+## Previous newest (Cycle 58)
 
 - **[/dream/49-anemone-av](/dream/49-anemone-av)** — Anemone AV.
   A bioluminescent sea anemone dancing to audio. 14 tentacles in a forward-kinematics
@@ -928,6 +944,35 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 50-tap-rhythm
+**Status**: `demoable` · **Cycle shipped**: 59 · **Last touched**: 2026-05-20
+
+Open `/dream/50-tap-rhythm`. Click **▶ Demo** — the 4-on-the-floor pattern starts immediately
+at 120 BPM: kick on every beat (violet), snare on 2 and 4 (cyan), hi-hats on 8th notes (amber).
+The clock hand rotates, lighting up each active dot as it passes.
+
+Click any dot on the clock face to toggle it on/off. Add a second kick on the "&" of beat 3
+(step 18 counting from 0) by clicking that position. Remove a hi-hat. The pattern changes
+immediately on the next pass of the hand.
+
+Adjust the BPM slider — at 80 BPM the loop feels slow and heavy; at 144 it drives.
+
+For **tap mode**: click **🎤 Tap your rhythm**, allow mic permissions. Tap a rhythm on your
+desk or clap — aim for 8+ taps. Vary your pressure:
+- **Gentle desk tap** = kick (violet pulse ring)
+- **Firm desk tap** = snare (cyan pulse ring)
+- **Hard slap or clap** = hi-hat (amber pulse ring)
+
+After you stop for 2 seconds (with 8+ taps), the loop builds automatically. If you want to
+commit earlier, click **▶ Build loop**. Your tapped rhythm becomes the circular clock.
+
+Click **↩ Re-tap** to record a new rhythm without stopping playback. The new loop replaces
+the old one as soon as you pause.
+
+Design notes: `src/app/dream/50-tap-rhythm/README.md`
+
+---
 
 ### 49-anemone-av
 **Status**: `demoable` · **Cycle shipped**: 58 · **Last touched**: 2026-05-20
