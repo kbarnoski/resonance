@@ -1,26 +1,25 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 59)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 60)
 
 ## New since yesterday
 
-- **[/dream/50-tap-rhythm](/dream/50-tap-rhythm)** — Tap Rhythm `demoable`
+- **[/dream/](/dream/)** — Dashboard enhanced `demoable` (Cycle 60)
+  The `/dream/` index page is now a real morning-review dashboard.
+  **Open this**: visit the Vercel preview URL directly — the full morning digest
+  renders at the top (all four sections: New since yesterday, In progress, Research
+  findings, Open questions), followed by a 3-cycle activity stream showing the last
+  three cycles with their dates and decisions, then the full prototype grid.
+  No more visiting GitHub to read MORNING.md — it's all at `/dream/` now.
+  Phone-first layout (`max-w-3xl`), proper markdown rendering (bold, code, links,
+  continuation bullets). Build: 176 B (static). Zero deps, zero API.
+
+- **[/dream/50-tap-rhythm](/dream/50-tap-rhythm)** — Tap Rhythm `demoable` (Cycle 59)
   The first prototype any non-musician can walk up to and immediately use.
-  Tap or clap a rhythm → your taps become a 32-step circular drum loop that plays
-  back instantly in the detected tempo.
-  **Open this**: click **▶ Demo** for an instant 4-on-the-floor groove — no permissions.
-  Then click **🎤 Tap your rhythm**, allow mic, and clap 8+ times. After 2s of silence
-  the loop builds. Vary your tap pressure: gentle desk tap = kick (violet), medium =
-  snare (cyan), hard clap = hi-hat (amber). Click any dot on the clock to toggle it.
-  BPM slider ±20% from your detected tempo.
-  Zero deps, zero API, 5.13 kB. Build validated clean.
+  Tap or clap a rhythm → 32-step circular drum loop in your detected tempo.
+  Click **▶ Demo** for instant 4-on-the-floor — no permissions needed.
 
 - **[/dream/49-anemone-av](/dream/49-anemone-av)** — Anemone AV `demoable` (Cycle 58)
-  Bioluminescent sea anemone — 14 FK-chained tentacles dancing to audio. Sub-bass
-  sways the trunk, treble pulses violet tip beads, percussive hits flash the whole form.
-  Zero new deps. Click Demo mode — no mic needed.
-
-- **[/dream/48-arc-compose](/dream/48-arc-compose)** — Arc Compose `demoable` (Cycle 57)
-  Write a journey arc with section tags → MiniMax 2.6 generates a 60–90s structured piece.
-  $0.03/generation. ⚠ Paste raw error text if the API call fails.
+  Bioluminescent sea anemone — 14 FK-chained tentacles dancing to audio.
+  Sub-bass sways trunk, treble pulses violet tip beads. Zero new deps.
 
 ## In progress / partial
 
@@ -28,21 +27,19 @@
 
 ## Research findings worth a look
 
-- **`tap-rhythm` shipped** (Cycle 59) — live performance accessible. Non-pianists can
-  contribute a groove. Connects to DARC paper (RESEARCH.md §89): NMF onset detection →
-  drum accompaniment. This is the Web Audio prototype equivalent.
-- **Research due** — last research was Cycle 56. Now 3 cycles ago (57, 58, 59). Due at
-  Cycle 60 per the 3–4 cycle cadence.
-- **Flow Music + Lyria 3 Pro (§85)** — Stem Splitter extracts drums/bass/piano from AI
-  tracks. Inspires `stem-spatial` (generate → split → HRTF). Needs GEMINI_API_KEY.
+- **Research due** — last research was Cycle 56. Now 4 cycles ago (57–60).
+  Past the 3–4 cycle upper bound. Next cycle **must** be a research sweep.
+- **Flow Music + Lyria 3 Pro (§85)** — Stem Splitter: extract drums/bass/piano from
+  any AI track. Inspires `stem-spatial`. Needs GEMINI_API_KEY.
+- **DARC §89** — tap/beatbox → drum accompaniment. `50-tap-rhythm` is the
+  browser-native equivalent, now shipped.
 
 ## Open questions for Karel
 
-1. **GEMINI_API_KEY** — still the biggest unlock. Four prototypes waiting: `lyria-ghost`,
-   `binaural-lyria`, `piano-to-ghost`, `stem-spatial`. One key, four demos.
-2. **`arc-compose` API** — if `/dream/48-arc-compose` shows an error, paste the raw
-   message and I'll fix the endpoint next cycle.
-3. **Tap Rhythm feedback** — the amplitude thresholds for kick/snare/hat (0.33 / 0.66)
-   are calibrated for desk taps. If you find the classification off on your setup, I can
-   tune them. Also: want a "type selector" (choose kick/snare/hat explicitly before tapping)
-   instead of amplitude-based auto-classification?
+1. **GEMINI_API_KEY** — still the biggest unlock. Four prototypes waiting:
+   `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`.
+2. **`arc-compose` API** — if `/dream/48-arc-compose` shows an error, paste the
+   raw message and the agent will fix the endpoint next cycle.
+3. **Tap Rhythm feedback** — amplitude thresholds (0.33/0.66) calibrated for desk
+   taps. If classification feels off on your setup, it can be tuned or replaced
+   with an explicit kick/snare/hat selector before tapping.

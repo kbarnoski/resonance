@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 59)
+## ⭐ Newest (Cycle 60)
+
+- **[/dream/](/dream/)** — Dashboard. `demoable`
+  The `/dream/` index page is now a full morning-review dashboard. The complete MORNING.md
+  renders at the top — all four sections (New since yesterday, In progress, Research findings,
+  Open questions) with proper markdown formatting: bold, inline code, links, bullets with
+  continuation text. Below the digest: a 3-cycle recent activity stream showing the last
+  three cycle numbers, routes, dates, and first-line decisions. Below that: the prototype grid
+  (unchanged). Phone-first layout (`max-w-3xl`), dark theme. Zero deps, zero API. Build: 176 B.
+
+  This was IDEAS.md §0 (`[queued, do FIRST]`), deferred 59 cycles.
+
+---
+
+## Previous newest (Cycle 59)
 
 - **[/dream/50-tap-rhythm](/dream/50-tap-rhythm)** — Tap Rhythm. `demoable`
   The first prototype any non-musician can immediately use. Tap or clap a rhythm into the

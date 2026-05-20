@@ -1,5 +1,47 @@
 # Dream Agent — cycle state
 
+## Cycle 60 — dashboard enhancement
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 59 shipped `50-tap-rhythm`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `dashboard` (IDEAS.md §0, `[queued, do FIRST]`) has been in the queue for 59 cycles. Zero deps, no API keys, clear spec. The AGENT.md rule says build-new (step 3) takes priority over research (step 4). The dashboard is the only genuinely zero-dep unbuilt item in the queue. Research is at the 3-cycle lower bound (cycles 57, 58, 59 = 3 since Cycle 56 research) and will be due next cycle.
+4. Research — 3 cycles since Cycle 56 research. At the lower bound. Build-new takes priority at #3.
+5. Polish — skipped; build takes priority.
+
+Decision: enhance `src/app/dream/page.tsx` into the full dashboard spec from IDEAS.md §0.
+
+**Why now**: IDEAS.md §0 is labeled "do FIRST" and has been deferred 59 cycles. Karel reads MORNING.md first thing at 06:30, but currently must visit GitHub to read it — the dashboard should surface it in-browser. The current `page.tsx` only shows the "New since yesterday" section; the full MORNING.md (all sections: in-progress, research findings, open questions) is not rendered anywhere on the preview URL. The recent activity stream from STATE.md is only accessible via `/dream/history` — it's not visible at the top-level dashboard. This cycle closes those two gaps: full MORNING.md rendered properly at `/dream/`, and the last 3 cycles as a compact activity timeline.
+
+**Shipped**:
+- `src/app/dream/page.tsx` — enhanced dashboard with full MORNING.md rendering, recent 3-cycle activity stream, improved phone-first layout
+
+**What's inside**:
+
+**Full MORNING.md rendering**: The entire morning digest (all sections: New since yesterday, In progress, Research findings, Open questions) is rendered with proper markdown formatting — headings, bullets with link/bold/code inline formatting, numbered lists, continuation indented lines. Previously only the "New since yesterday" section was shown as plain text. All four MORNING.md sections now render with proper visual hierarchy.
+
+**Recent activity stream**: Parses the last 3 cycles from STATE.md and renders them as compact cards below the morning digest. Each card shows: cycle number, route/action (from heading), UTC date, and first line of the decision. The newest cycle gets a violet tint. A "→ All N cycles" link leads to `/dream/history`.
+
+**Markdown renderer** (`renderInline` + `renderMdSection`): A line-by-line markdown parser supporting `##` section headings → small-caps dividers, `-`/`*` bullet lists with indented continuation lines, ordered lists, code blocks (fenced), `**bold**`, `` `code` ``, `[link](url)`, and paragraph text. Duplicated from `history/page.tsx` (no cross-file import needed). Named `renderInline`/`renderMdSection` to avoid `use*` hook naming.
+
+**Phone-first layout**: `max-w-3xl` throughout (was `max-w-5xl`), tighter vertical spacing, compact cycle number badges (`c59` instead of `cycle 59`), 2-line prototype descriptions.
+
+**Prototype grid preserved**: The full grid is kept. Description truncation changed from 240 chars / 3-line to 180 chars / 2-line to fit better on mobile.
+
+**Build validation**: `npm run build` passes cleanly. Zero TypeScript errors. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files.
+
+**What I noticed**: The MORNING.md has bullets with multi-line continuation (indented 2 spaces). The markdown renderer handles these by appending continuation lines to the previous bullet item. This produces the correct output: a single list item with the full paragraph text, not separate items. The `→` Unicode arrow in continuation text renders as-is — no special handling needed.
+
+**Queued next**:
+1. **Research** — Cycle 56 was last research (4 cycles ago: 57, 58, 59, 60). Past the upper bound of the 3–4 cycle cadence. Research is now overdue. Next cycle must be a research sweep.
+2. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`.
+3. **Polish `50-tap-rhythm`** — if Karel tries it and amplitude thresholds are off for his setup, tune them.
+4. **Fix `arc-compose` API** — if Karel reports an error, diagnose fal.ai endpoint/parameters and fix `route.ts`.
+
+---
+
 ## Cycle 59 — /dream/50-tap-rhythm
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
