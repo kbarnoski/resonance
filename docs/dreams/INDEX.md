@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 70 — unblock + research)
+## ⭐ Newest (Cycle 71 — build)
+
+- **[/dream/57-sound-to-image](/dream/57-sound-to-image)** — Sound-to-Image. `demoable`
+  10 seconds of audio → acoustic fingerprint → Flux Schnell scene image of what your music looks like.
+  Click **▶ Demo** for an immediate result (C major chord → sea cave or stone chamber). Click **🎤 Start mic**
+  and play anything for 10 seconds. The prototype extracts: RMS energy, spectral centroid, zero-crossing rate,
+  12-bin chroma (chord quality + root note), and autocorrelation pitch. Averages across ~100 frames → natural-language
+  description ("soft, smooth tonal, warm bass-dominant music — C major, hopeful, central pitch 294 Hz") → one of 6
+  scene archetypes → `fal-ai/flux/schnell`. Image fades in over 1.8 seconds.
+  First prototype to generate a *semantic scene* from audio — not abstract art, not notation, but a physical place.
+  FAL_KEY in use · ~$0.02/image · 4.49 kB.
+  ⚠ Endpoint `fal-ai/flux/schnell` from standard naming — paste any error text for a fix next cycle.
+  Design notes: `src/app/dream/57-sound-to-image/README.md`
+
+---
+
+## Previous newest (Cycle 70 — unblock + research)
 
 - **Research sweep + `56-ghost-voice` endpoint fix** (Cycle 70)
   Fixed `56-ghost-voice`: switched TTS backend from the broken `fal-ai/inworld/tts` to **Gemini TTS**

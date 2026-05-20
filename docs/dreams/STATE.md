@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 71 — /dream/57-sound-to-image
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked. `56-ghost-voice` was fixed in Cycle 70.
+2. **Continue** — no in-progress prototypes.
+3. **Build new** — `57-sound-to-image` is the #1 queued item from STATE.md Cycle 70 and MORNING.md. Spec is clear, FAL_KEY in use, one-cycle build, zero new deps. Build it now.
+4. **Research** — just done (Cycle 70). Not due for 3 more cycles.
+5. **Polish** — skipped; build takes priority.
+
+Decision: build `/dream/57-sound-to-image`.
+
+**Why now**: All 56 prior prototypes visualize audio in real time as abstract forms (fluid, particles, waveforms, blooms). None generate a *semantic scene image* from an acoustic snapshot. This fills that gap: 10 seconds of mic input → extract acoustic fingerprint (energy, spectral centroid, ZCR, chroma, pitch) → translate to a natural-language scene description → Flux Schnell image on fal.ai. The output isn't "your audio as a visualization" — it's "what environment/scene does this music evoke?" Sound2Vision research (RESEARCH.md §112) validates the direction. FAL_KEY already in use.
+
+**Built**:
+- `src/app/dream/57-sound-to-image/api/route.ts` — server route calling `fal-ai/flux/schnell`
+- `src/app/dream/57-sound-to-image/page.tsx` — full prototype with capture, analysis, image generation
+- `src/app/dream/57-sound-to-image/README.md` — design notes
+
+**What's inside**:
+10-second capture window (mic or demo C major oscillators). Each frame: RMS energy, spectral centroid, zero-crossing rate (tonal vs noisy), 12-bin chroma vector (chord quality), autocorrelation pitch detection. After 10s: averages all frames → builds a text description ("soft, smooth tonal, warm bass-dominant music — C major, hopeful, central pitch 294 Hz") → maps to one of 6 acoustic scene quadrants (stone chamber / forest dawn / sea cave / sunlit courtyard / stormy coast / cosmic nebula) → sends to `fal-ai/flux/schnell` → image fades in over 1.8s. Waveform visible during capture. Feature readout panel shows the extracted description. Zero new npm deps.
+
+**What I noticed**: The scene quadrant mapping is the most opinionated design decision. Low energy + low centroid → "stone chamber" is a very Resonance-flavored interpretation. High energy + high centroid → "cosmic nebula" maps to the journey's transcendent phase. The mapping could be exposed as adjustable (different scene libraries per narrative world), but for now the Ghost scene vocabulary felt right as the reference.
+
+**Queued next** (priority order for Cycle 72):
+1. **`58-music-to-ghost`** — next item from Cycle 70 queue. Live audio → chroma/emotion analysis → Ghost LoRA image. Admin-only. FAL_KEY in use. One cycle.
+2. **`57-gemini-voice-lab`** — A/B Gemini TTS style director. Compare two style_instruction strings for same Ghost line. Zero new deps. One cycle.
+3. **Research** — due at Cycle 74 (3 cycles from now).
+
+---
+
 ## Cycle 70 — Unblock + Research
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
