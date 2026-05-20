@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 57)
+## ⭐ Newest (Cycle 58)
+
+- **[/dream/49-anemone-av](/dream/49-anemone-av)** — Anemone AV.
+  A bioluminescent sea anemone dancing to audio. 14 tentacles in a forward-kinematics
+  chain of 4 segments each — sub-bass sways the trunk, low-mids ripple branches,
+  treble pulses the glowing violet tip beads. Percussive hits cause a full-body flash
+  (all tips scale 1.4× for ~200ms). Drag to orbit. Strong bloom makes the form glow
+  against pure black. Zero new deps — all Three.js packages were already installed.
+  Demo mode: 6 incommensurable LFOs animate the form without mic permissions.
+
+  **Why this is different from `21-three-mesh-av`**: the icosahedron is mathematical
+  geometry that deforms. The anemone is a *living form* — flexible tentacles with FK
+  amplification (tips move 2.8× the root), staggered phases so they ripple around the
+  ring, bioluminescent color grading from cyan at the base to violet at the tips.
+
+  Design notes: `src/app/dream/49-anemone-av/README.md`
+
+---
+
+## Previous newest (Cycle 57)
 
 - **[/dream/48-arc-compose](/dream/48-arc-compose)** — Arc Compose.
   Write a Resonance journey arc using structural section tags, hear MiniMax Music 2.6 generate a
@@ -909,6 +928,35 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 49-anemone-av
+**Status**: `demoable` · **Cycle shipped**: 58 · **Last touched**: 2026-05-20
+
+Open `/dream/49-anemone-av`. Click **Demo mode** — the anemone appears immediately, swaying in a
+slow organic pattern driven by 6 incommensurable LFOs. The form never repeats exactly because the
+LFO rates (0.07–0.28 Hz) are chosen to be irrational multiples of each other.
+
+Watch the 14 tentacles. They all sway in the same general direction as the sub-bass LFO builds
+(slow 0.07 Hz sine), but each one is offset in phase. The result is a ripple wave around the ring —
+like a sea anemone in a gentle current.
+
+Watch the tip beads. They pulse independently of the trunk sway — a 10.5 Hz shimmer from the
+high-mid LFO. The tips look like bioluminescent buds that respond to a higher-frequency stimulus
+than the trunk.
+
+For **mic mode**: click **Start mic** and allow permissions. Play a deep bass note on piano — you
+should see the trunk sway amplitude increase significantly (sub-bass band drives the primary sway).
+Play a high bright chord — the tip beads shimmer harder (high-mid band). Hit a percussive note
+loudly — onset detection fires a brief flash where all tips scale up 1.4× simultaneously, then decay
+over ~15 frames. The flash is fast enough to feel like a startle response.
+
+Drag to orbit: the form looks different from above (looking down on the tentacle ring from above)
+and from below (looking up into the illuminated underside of the body disc). From below, the cyan
+glow of the body disc creates a halo over the tentacle roots.
+
+Design notes: `src/app/dream/49-anemone-av/README.md`
+
+---
 
 ### 48-arc-compose
 **Status**: `demoable` · **Cycle shipped**: 57 · **Last touched**: 2026-05-20

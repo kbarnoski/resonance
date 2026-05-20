@@ -1,5 +1,62 @@
 # Dream Agent — cycle state
 
+## Cycle 58 — /dream/49-anemone-av
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 57 shipped `48-arc-compose`. Priority check:
+1. Unblock — nothing blocked. No Karel report of API errors from `arc-compose` or `vocal-bgm`.
+2. Continue — no in-progress prototypes.
+3. Build new — `anemone-av` is #1 in the queue from Cycle 57 ("highest visual impact, zero new deps, one-cycle build"). All Three.js deps installed (`three@0.182`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`). Clear spec in IDEAS.md §92. One-cycle build.
+4. Research — Cycle 56 was research (2 cycles ago: 57, 58). Not yet at the 3–4 cycle cadence threshold.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/49-anemone-av`.
+
+**Why now**: 28 of 48 prototypes use Canvas2D. Only one (`21-three-mesh-av`) uses Three.js 3D geometry. The anemone is qualitatively different from the icosahedron: an organic *living form* — tentacles flickering, trunk swaying — reads as biologically alive rather than mathematical. Sub-bass swaying a 14-tentacle form at concert-room dynamics would be genuinely striking on a projector. Zero new dependencies — all Three.js packages were installed for `21-three-mesh-av` 37 cycles ago and have been sitting unused. The FK-chain tentacle approach (nested group rotations cascade from root to tip) is the minimal correct implementation: 14 tentacles × 4 segments = 56 `THREE.Group` rotation mutations per frame, all via direct property writes in `useFrame` (no React re-renders).
+
+**Shipped**:
+- `src/app/dream/49-anemone-av/page.tsx` — full interactive prototype (~290 lines)
+- `src/app/dream/49-anemone-av/README.md` — design notes, FK chain architecture, audio mapping, polish ideas
+
+**What's inside**:
+
+**Form**: 14 tentacles arranged in a ring around a flattened body disc. Each tentacle is 4 FK-chained segments — a `THREE.Group` hierarchy where each segment's `rotation.x/z` cascades to children. Tip bead (sphere) at the end of each tentacle. Deterministic pseudo-random variation: each tentacle has a different `angle`, `swayDir`, `segLen`, and `radiusFactor` (based on `sin(i*127.1)`) so the ring is never perfectly uniform.
+
+**Color**: cyan at segment 0 (HSL 0.50) grading to violet at segment 3 (HSL 0.30). Tip beads are bright violet at `emissiveIntensity 5.0`. Body disc is emissive cyan at 2.4×. All materials use `MeshStandardMaterial` with emissive — not a custom shader, so WebGL 1/2 fallback is automatic.
+
+**Audio mapping**:
+- Sub-bass (20–60 Hz): base sway frequency (`swayFreq += sb * 0.38`) and primary sway amplitude (`swayAmp += sb * 0.20`)
+- Bass (60–250 Hz): sway amplitude multiplier (`swayAmp += ba * 0.08`)
+- Low-mid (250–500 Hz): secondary ripple frequency on branch angle (`lm * 0.05 * sin(...)`)
+- High-mid (2–4 kHz): tip bead flicker (`hm * 0.30 * sin(t * 10.5 + ...)`)
+- High (4–20 kHz): tip bead scale shimmer (`hi * 0.14`)
+- Onset: all tip beads scale to 1.42× for ~200ms (`flash` decays at rate 0.89/frame)
+
+**FK amplification**: the base sway amplitude is multiplied by `(1 + si * 0.60)` for segment index `si`. At segment 3 (tip), the multiplier is 2.8×. A sub-bass sway that moves the root 6° deflects the tip 17°. This matches how real flexible structures amplify motion toward the free end.
+
+**Demo mode**: 6 sine oscillators at 40, 110, 350, 1100, 3000, 9200 Hz, each amplitude-modulated by a slow LFO (7–28 Hz per oscillator, incommensurable rates). The form dances organically even without mic permissions.
+
+**Bloom**: `@react-three/postprocessing` Bloom at `intensity=2.4`, `luminanceThreshold=0.04`. Low threshold means the dim tentacle bodies glow faintly; the bright tip beads bloom hard into violet halos. The body disc glows as a cyan core.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/49-anemone-av` compiles at 3.74 kB (static route), 438 kB first load (shared Three.js bundle — same as `21-three-mesh-av`). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files. Vercel build will pass.
+
+**Architecture note**: the entire Three.js scene is constructed imperatively in a single `useMemo([])` — one allocation at mount, never rebuilt. `sceneRef` holds the FK groups and tentacle configs for direct mutation in `useFrame`. `useEffect` cleanup disposes all `BufferGeometry` and `Material` GPU resources on unmount. The `<primitive object={rootGroup} />` pattern (same as would be used for any imperatively-built Three.js scene in R3F) lets R3F manage scene attachment/detachment.
+
+**What I noticed**: The FK chain's emergent motion is more interesting than I expected. When sub-bass hits, the root segments sway about 8°, but the tips sway ~22°. The tips also have independent high-frequency flicker from the `highMid` band. So you get two simultaneous rhythms: a slow trunk pendulum (sub-bass timescale, ~0.3–0.7 Hz) and fast tip sparkle (high-mid timescale, at 10.5 Hz in the shader). These two motions at different frequencies give the form the quality of something that is both *breathing* (slow sway) and *alive* (fast tip response).
+
+The 14 tentacles with pseudo-random phase offsets mean they never all point in the same direction at the same time. At any given frame, roughly half are swaying left and half right, creating a ripple-wave effect around the ring — like a sea anemone in a current.
+
+**What surprised me**: The `emissiveIntensity 5.0` on the tip beads at `luminanceThreshold=0.04` creates a bloom radius that roughly matches the distance to the nearest tentacle. The tips appear to illuminate each other. This is an illusion (bloom is screen-space, not physically accurate) but the effect is convincing: the whole form seems to glow from within. Sub-bass onsets cause the tip flash to bring this effect to maximum briefly, then decay — the form literally pulses with the beat.
+
+**Queued next**:
+1. **`tap-rhythm`** (`/dream/50-tap-rhythm`) — tap/clap → onset detection → circular step sequencer → Karplus-Strong drum synthesis. Zero deps, zero API. Highest live-performance accessibility. Second in queue from Cycle 57.
+2. **Research** — Cycle 56 was last research. Currently 2 cycles since research (57: build, 58: build). Due at Cycle 59 or 60 per the 3–4 cycle cadence.
+3. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `stem-spatial`.
+4. **Polish `49-anemone-av`** — if Karel wants deeper biology: add a secondary ring of shorter inner tentacles, GLSL displacement on cylinder vertices for smoother bending, particle spawn from tips on onset.
+
+---
+
 ## Cycle 57 — /dream/48-arc-compose
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
