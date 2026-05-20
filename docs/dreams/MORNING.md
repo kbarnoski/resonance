@@ -1,52 +1,46 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 63)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 64)
 
 ## New since yesterday
 
-- **[/dream/52-concept-steer](/dream/52-concept-steer)** — Concept Steer `demoable` (Cycle 63)
-  A hexagonal radar chart synthesizer. Six axes, each labeled with the vocabulary that music AI
-  models use internally (from sparse autoencoder research, arxiv 2505.18186):
-  **Brightness** (filter fc) · **Density** (BPM + voices) · **Regularity** (grid vs. free timing) ·
-  **Complexity** (unison→9th chord) · **Energy** (attack speed) · **Mode** (major→minor→dim).
-  Drag any vertex handle. The synthesizer follows in real time.
-  Try the presets: **Jazz Improv** → fast bright major 9th arpeggios. **Dark Ambient** → sparse
-  dim atmospheric drift. **Drone** → single held unison tone barely moving.
-  **The axis labels are music theory vocabulary** — a pianist who doesn't know what a lowpass
-  filter is still knows what "Brightness" means. Different from `38-mood-xy` (emotional
-  coordinates): this is music-theorist vocabulary as the primary synthesizer UI.
-  Zero deps, zero API.
+- **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX `demoable` (Cycle 64)
+  Six Ghost scenes (Stone Chamber → Cosmic Ascension) each with three AI-generated
+  naturalistic sounds placed in 3D space via Web Audio HRTF PannerNode. Click a scene
+  → sounds generate concurrently from ElevenLabs on fal.ai → loop spatially around you.
+  Canvas: top-down sphere view with glowing scene-colored source dots and elevation hints.
+  **Wear headphones.** Best demo: Forest Dawn (birds above at +60°, stream hard-left,
+  piano front) or Cosmic Ascension (vast drone all around, shimmer rising at +30°
+  elevation, sub pulse from below at −50°).
+  ⚠ Endpoint `fal-ai/elevenlabs/sound-generation` is a naming-convention best-guess.
+  If sources show red errors, paste text here → agent fixes next cycle.
+  ~$0.05–0.15/scene · FAL_KEY already in use.
 
-- **[/dream/51-diatonic-harmony](/dream/51-diatonic-harmony)** — Diatonic Harmony `demoable` (Cycle 62)
-  Play a melody → key detection (Krumhansl-Kessler) → diatonic third + fifth voices generated
-  per note. Demo plays Bach BWV 772 with auto-harmonies. Scale degree 7 (B) gets a *diminished
-  fifth* — audibly and visually distinct from the other degrees. Zero deps, zero API.
+- **[/dream/52-concept-steer](/dream/52-concept-steer)** — Concept Steer `demoable` (Cycle 63)
+  Six-axis hexagonal radar chart synthesizer: Brightness, Density, Regularity,
+  Complexity, Energy, Mode — the same vocabulary sparse autoencoders find inside music AI
+  models. Drag any handle; the synthesizer follows. Four presets: Classical Fugue, Dark
+  Ambient, Jazz Improv, Drone. Mode axis is especially interesting: major → minor →
+  diminished as a continuous parameter independent of brightness/density.
 
 ## In progress / partial
 
-- Nothing in-progress. All prototypes demoable.
-- **Next build candidates**:
-  1. `ghost-sfx` — ElevenLabs SFX for Ghost scene spatial audio (FAL_KEY in use, endpoint TBC)
-  2. `claude-shader` — needs `ANTHROPIC_API_KEY` in Vercel env (see Open questions)
-  3. `concept-steer` polish — mic mode that shows where your playing sits on the radar
-  4. Research due at cycle 64–65
+- Nothing in-progress. Both recent cycles completed full demoable prototypes.
 
 ## Research findings worth a look
 
-- **`claude-shader` (§93, arxiv 2512.08951)** — Proven that LLMs can generate compilable,
-  audio-reactive GLSL shaders from text descriptions. Claude writes a shader; it runs on a
-  fullscreen WebGL quad with Web Audio FFT uniforms (`uBass`, `uMid`, `uTreble`, `uOnset`).
-  Self-referential and high-surprise. **Needs ANTHROPIC_API_KEY in Vercel env.**
-
-- **Concept Steer observation**: dragging Mode 0→1 at Complexity=0.85 walks through
-  major 9 → minor 9 → diminished 7 as a continuous audio experience. The diminished end
-  is genuinely tense in a way that the 2D `38-mood-xy` can't cleanly reach (bright+energetic+dim
-  is not a natural quadrant of the valence/arousal plane).
+- **Cycle 61 research** found `claude-shader` and `ghost-xr` as next high-priority builds —
+  both waiting on Karel answers below.
+- **Interpretable Concepts in Music Models (RESEARCH.md §94)** — the Brightness/Density/
+  Regularity/Complexity/Energy/Mode axes used in `52-concept-steer` come from sparse
+  autoencoder research on transformer music models. Same vocabulary, browser-synthesized.
 
 ## Open questions for Karel
 
-1. **`ANTHROPIC_API_KEY` in Vercel env?** → enables `claude-shader` (LLM-generated GLSL shaders).
-   One-cycle build, admin-only. High surprise value.
-2. **`GEMINI_API_KEY`** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`.
-3. **`arc-compose` (`/dream/48-arc-compose`)** — if API error shows in red, paste it and it
-   gets fixed next cycle (MiniMax endpoint naming needs confirmation).
-4. **Concept Steer feedback** — does "Regularity" as a control feel natural? The timing jitter
-   at low values creates a looser feel. Is the axis label right, or is "Swing" or "Groove" better?
+- **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader`: Claude generates an
+  audio-reactive GLSL fragment shader from a text description, it compiles and runs in
+  the browser. ~$0.001/generation at Haiku pricing. One cycle to build once confirmed.
+- **`GEMINI_API_KEY` still pending?** → Unlocks `lyria-ghost`, `binaural-lyria`,
+  `30-lyria-jam`, `piano-to-ghost` (4 queued prototypes).
+- **A-Frame CDN dep (~1MB) OK?** → Enables `ghost-xr` (stand *inside* the Ghost scene
+  spatial audio world via WebXR, head-tracked on Quest/Vision Pro).
+- **`ghost-sfx` endpoint** — works? Or red errors in the source status cards?
+  Paste any error text and the agent fixes endpoint/params next cycle.

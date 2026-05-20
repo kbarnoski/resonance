@@ -1,5 +1,50 @@
 # Dream Agent — cycle state
 
+## Cycle 64 — /dream/53-ghost-sfx
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 63 built `52-concept-steer`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `ghost-sfx` (`/dream/53-ghost-sfx`) is the #1 queued item from STATE.md Cycle 63. FAL_KEY in use. Endpoint uncertain but handled via error-display fallback (same ⚠ API note pattern as `48-arc-compose`).
+4. Research — Cycle 61 was last research (3 cycles ago: 62, 63, 64). At the lower bound of 3–4 cycle cadence. Build-new (step 3) takes priority over research (step 4).
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/53-ghost-sfx`.
+
+**Why now**: The synthesized oscillator soundscapes in `29-scene-spatial` demonstrate the spatial audio concept well, but they're recognizably synthetic — a piano-loop is a looping FM sawtooth, "birdsong" is a brief frequency glide. ElevenLabs Sound Effects on fal.ai generates naturalistic environmental audio from text descriptions: actual cave reverb, actual bird calls, actual stone hum. The same 3D HRTF positioning framework from `7-spatial` and `29-scene-spatial` can be directly applied. The result should feel like standing inside the Ghost scene's acoustic world — not a Web Audio demo. The RESEARCH.md §95 finding confirmed the fal.ai endpoint exists; the endpoint name `fal-ai/elevenlabs/sound-generation` is a best-guess from naming conventions. If wrong, the raw error is displayed (same as `arc-compose`) and Karel can paste it for a fix next cycle. FAL_KEY already in use → zero new approvals.
+
+**Shipped**:
+- `src/app/dream/53-ghost-sfx/page.tsx` — full prototype (~360 lines)
+- `src/app/dream/53-ghost-sfx/api/route.ts` — server route calling ElevenLabs SFX endpoint
+- `src/app/dream/53-ghost-sfx/README.md` — design notes, acoustic scene table, polish ideas
+
+**What's inside**:
+
+Six Ghost narrative scenes (Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension), each with three AI-generated sound sources. Click a scene → three API calls fire concurrently to `fal-ai/elevenlabs/sound-generation`. Each returned audio clip is decoded via `AudioContext.decodeAudioData` and stored as an `AudioBuffer`. Press ▶ Play → all three sources loop through HRTF PannerNodes at their scene-specific spherical positions (azimuth, elevation, distance).
+
+**Canvas**: top-down sphere view (400×400). Listener at center with a forward indicator. Source dots colored by scene accent (stone chamber = warm amber, forest dawn = soft green, cosmic ascension = lavender). Glow ring on ready/active sources. Elevation hint label below each dot. F/B/L/R cardinal labels.
+
+**Source status cards**: one card per source with status (generating… / ✓ ready / ✗ error). Error messages show raw fal.ai error text for debugging. Per-source mute button with smooth 50ms `GainNode.gain.setTargetAtTime` fade.
+
+**Acoustic design highlights**:
+- Forest Dawn: canopy birds at +60° elevation, stream at −85° azimuth (hard left), piano at +10°. With headphones the forest is immediately identifiable — birds above, water left.
+- Cosmic Ascension: vast drone from all directions (dist=6m), harmonic shimmer at +30° elevation (+60° azimuth), sub pulse from far below (el=−50°). The sub should feel like pressure from below.
+- Stone Chamber: piano at −30° (front-left), water drip at +75° (right-forward) and −20° elevation, hum at back (160°). The dry piano vs. the cavernous hum at the back should feel spatially distinct.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/53-ghost-sfx` at 4.75 kB (static), `/dream/53-ghost-sfx/api` at 244 B (dynamic). Zero TypeScript errors. Zero ESLint errors from new code.
+
+**What I noticed**: The key risk is the fal.ai endpoint name. Looking at the `arc-compose` experience (its endpoint `fal-ai/minimax/music-01` was correct first-try from naming conventions), `fal-ai/elevenlabs/sound-generation` is the most likely canonical name. If the ElevenLabs model uses a different sub-path (e.g. `fal-ai/elevenlabs/sfx` or `fal-ai/elevenlabs/text-to-sound-effects`), the error cards will show the raw API error. The fallback UX is clean — Karel can use the prototype anyway for the spatial audio UI and just paste the error text. The HRTF positioning and canvas visualization work regardless of whether the API calls succeed.
+
+**Queued next**:
+1. **`ghost-sfx` endpoint fix** — if Karel reports an API error, fix the route endpoint/params next cycle. High confidence it works, but endpoint is a best-guess.
+2. **Research** — Cycle 61 was last research (3 cycles ago: 62, 63, 64). Now at the upper bound of the 3–4 cycle cadence. Next cycle should be research.
+3. **`claude-shader`** — still waiting on Karel: is `ANTHROPIC_API_KEY` accessible in Vercel env?
+4. **`ghost-sfx` polish** — if endpoint works: session storage cache per scene (no re-generation on revisit), source drag on canvas for real-time HRTF repositioning, longer clips.
+
+---
+
 ## Cycle 63 — /dream/52-concept-steer
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

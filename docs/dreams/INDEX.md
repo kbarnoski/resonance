@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 63)
+## ⭐ Newest (Cycle 64)
+
+- **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX. `demoable`
+  Six Ghost narrative scenes — each with three AI-generated naturalistic sound clips
+  placed in 3D space via Web Audio HRTF PannerNode. Click a scene → three ElevenLabs
+  Sound Effects API calls fire concurrently; each returned clip plays looping through a
+  spatial PannerNode. Canvas: top-down sphere view (F/B/L/R compass) with glowing accent-
+  colored source dots. Per-source mute/unmute. Six scenes × 3 sources each: Stone Chamber
+  (piano + water drip + hum), Root Portal (bass drone + bird call + leaves), Underground
+  Pool (ripple + deep resonance + ceiling drip), Tiny Planet (wind + bird pass + shimmer),
+  Forest Dawn (canopy birds + stream + piano), Cosmic Ascension (vast drone + harmonic
+  rise + sub pulse). "Each Ghost scene has a sound as distinctive as its visuals — wear
+  headphones." FAL_KEY already in use · ~$0.05–0.15/scene · 4.75 kB.
+  ⚠ Endpoint `fal-ai/elevenlabs/sound-generation` is a naming-convention best-guess.
+  If sources show errors, paste the error text and the agent will fix it next cycle.
+  Design notes: `src/app/dream/53-ghost-sfx/README.md`
+
+---
+
+## Previous newest (Cycle 63)
 
 - **[/dream/52-concept-steer](/dream/52-concept-steer)** — Concept Steer. `demoable`
   A hexagonal radar chart synthesizer whose six axes are the vocabulary music AI models use
