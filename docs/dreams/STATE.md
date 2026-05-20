@@ -1,5 +1,54 @@
 # Dream Agent — cycle state
 
+## Cycle 51 — Research sweep (§§77–84 in RESEARCH.md)
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 50 shipped polished `42-binaural`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `lyria-ghost` and `binaural-lyria` still need GEMINI_API_KEY (no key in container). `gpu-additive` is in queue but marked 2+ cycles and technically complex. `audience` needs a backend/WebRTC server. The immediately buildable zero-dep queue is thin.
+4. Research — Cycle 48 was last research (cycles since: 49, 50, 51 — exactly 3 cycles, at the lower bound of the 3–4 cycle cadence). IDEAS queue is thin on zero-dep buildable items. Research due now.
+5. Polish — skipped; research takes priority when the queue is thin.
+
+Decision: research cycle.
+
+**Why now**: The buildable queue has been running on the same research sweep (Cycle 48) for 3 cycles. The Gemini key is still pending. We need fresh zero-dep ideas to keep building while the API key situation resolves. Research also gives Karel better context for deciding which pending approvals (CDN ONNX, MediaPipe, Gemini key) to prioritize.
+
+**Sources searched**: fal.ai audio models page + ACE-Step 1.5 site, arxiv (ICLR 2026, ACM 2025, Frontiers 2026), GitHub (ace-step, web-synth, shadertoy, oscilloscope tools), HN (ÆTHRA, music coding), Frontiers in Psychology/Digital Health (music therapy cluster), WebXR / WebAudio API news 2026.
+
+**What I found** (8 new entries, §§77–84):
+
+- **ACE-Step 1.5 Vocal-to-BGM (§77)** — Biggest immediately buildable find. ACE-Step now on fal.ai at `fal-ai/ace-step/audio-to-audio` with vocal-to-BGM: hum a melody → AI generates a full backing track (drums, bass, chords, lead) in 30s. $0.006/generation. FAL_KEY already in use. Completely different from `stable-extend` (which continues forward). Inspires `vocal-bgm` prototype — one-cycle build, zero new approvals.
+
+- **MusicRFM (§78, ICLR 2026)** — Activation-space steering of MUSICGEN-Large during inference. Controls specific notes/chords at specific timestamps without retraining. Improved note accuracy from 0.23 to 0.82. Server-side only for now. When an API surfaces, `note-steer` prototype becomes buildable.
+
+- **Composer Vector (§79, Apr 2026)** — Style-vector blending for symbolic music: 70% Chopin + 30% Bach is a real, audible hybrid. Confirms that music style spaces are compositional (validated Lyria/Magenta's embedding arithmetic claim). Inspires `style-map` prototype (2D style canvas, one-cycle via text prompt blending on ACE-Step).
+
+- **AI Music Therapy Cluster (§80)** — Three Frontiers 2026 papers validate combining binaural beats + AI music + proactive mood guidance. Confirms `42-binaural` + `binaural-lyria` direction. New insight: "proactive" therapy selects music to move user toward a target mood WITHOUT requiring user input. Inspires `guided-session` (brainwave path guide, zero deps, one cycle) and `mood-journey` (proactive circumplex traversal, zero deps, one cycle).
+
+- **WebXR Production-Ready in 2026 (§81)** — WebXR on Chrome/Edge/Firefox/Meta Quest without headset requirement (360° mode on desktop). Ghost scene audio from `29-scene-spatial` can run inside WebXR with zero code changes to audio graph. Inspires `ghost-xr` prototype. Needs Karel OK on A-Frame CDN dep (~1MB).
+
+- **Oscilloscope Music + Browser Tools (§82)** — "Oscilloscope music" as a genre: compose audio that draws Lissajous figures on an XY oscilloscope. Browser tools now exist. The dream zone's `20-scope` visualizes existing audio; `osc-composer` would invert it — design the shape, get the stereo WAV. First prototype where the audio artifact IS the visual content. Zero deps, one cycle.
+
+- **Rust/WASM AudioWorklet (§83)** — WASM DSP on audio thread is the 2026 standard. Pre-compiled WASM filter libraries (~150KB CDN) could upgrade `34-spectral-morph`'s hand-rolled FFT and enable `27-gpu-additive`'s AudioWorklet bridge. Needs Karel OK on CDN WASM dep. Inspires `wasm-filter` prototype.
+
+- **Proactive AI Music Therapy (§84)** — Mood-path traversal concept: auto-glide from "stressed" coordinates to "calm" coordinates on the Russell circumplex over 10–20 minutes. Combines `38-mood-xy` synthesis + `42-binaural` isochronic tones into a guided wellness session. Zero deps. Inspires `mood-journey` prototype.
+
+**What surprised me**: ACE-Step 1.5's vocal-to-BGM is the most immediately surprising find. The ability to upload a hummed melody and get a full band arrangement in 30s for $0.006 is a qualitatively different interaction from anything in the sandbox — you're not describing music in words, you're demonstrating it with your voice. The FAL_KEY is already approved; there's nothing blocking this prototype from Cycle 52.
+
+The oscilloscope music genre (§82) is the most conceptually surprising: an entire art form where the SOUND IS the VISUAL. Not "audio reactive visuals" but "visuals that happen to also be audio." `osc-composer` would be the first prototype in the sandbox where downloading the WAV file is the entire point — the artifact is the sound-as-drawing.
+
+**Queued next**:
+1. **`vocal-bgm`** — ACE-Step audio-to-audio vocal-to-BGM. FAL_KEY already in use. Zero new approvals. $0.006/30s. One-cycle build. Highest "surprise" factor for Karel.
+2. **`guided-session`** — Guided brainwave session with state-progression path. Zero deps, zero API keys. One-cycle build. Wellness use case.
+3. **`osc-composer`** — Oscilloscope music composer. Zero deps. One-cycle build. "Invert `20-scope`."
+4. **`mood-journey`** — Proactive mood traversal. Zero deps. One-cycle build.
+5. **Gemini key prototypes** (`lyria-ghost`, `binaural-lyria`) — still pending key. Remind Karel.
+6. **Research** — 3-4 cycle cadence. Next due Cycle 54 or 55.
+
+---
+
 ## Cycle 50 — Polish /dream/42-binaural
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

@@ -781,3 +781,93 @@ Three.js r174 (2026) marks full production readiness of the WebGPU renderer and 
 **Why it matters for Resonance**: `27-gpu-additive` was always the most ambitious prototype in the queue (particles = Fourier partials, GPU physics = synthesizer). The platform risk was that WebGL2 ≠ WebGPU in feature set, and WGSL knowledge was required for compute shaders. TSL eliminates the WGSL requirement — you write TSL and it works everywhere. Three.js already installed in Resonance (0.182). The `21-three-mesh-av` prototype proves the R3F + Three.js pipeline works. The remaining question for `gpu-additive` is only complexity, not platform. Two cycles, probably. TSL also unlocks a polish pass on `21-three-mesh-av`: ASTRODITHER-style selective bloom + dithering would make the mesh significantly more beautiful.
 
 **Could become a prototype**: `gpu-additive` — now more feasible with TSL universality. 9,000 particles, each assigned a harmonic partial index. Consonant ratios attract; dissonant repel. Particle Y-amplitudes → audio samples via AudioWorklet bridge. The swarm IS the synthesizer. Two-cycle build. Additionally, polish `21-three-mesh-av` with TSL dithering + selective bloom (one cycle, zero new APIs).
+
+---
+
+## 2026-05-20 — Cycle 51 research sweep
+
+### 77. ACE-Step 1.5 — Vocal-to-BGM + Audio Remix on fal.ai (April 2026)
+**Source**: https://ace-step.github.io/ace-step-v1.5.github.io/ · https://fal.ai/models/fal-ai/ace-step/audio-to-audio · https://github.com/ace-step/ACE-Step-1.5
+
+ACE-Step 1.5 launched in April 2026 and unified multiple audio-to-audio editing modes: vocal-to-BGM (upload a sung/hummed melody → full backing track generated around it), remix (style transfer while preserving melody), repaint (regenerate a section in context), and cover generation. The XL variant (4B DiT decoder) produces higher quality audio at the same speed. Available on fal.ai at `fal-ai/ace-step/audio-to-audio` at **$0.0002/second** (~$0.006/30s). FAL_KEY already in use in Resonance. Key input parameters: `audio_url`, `original_tags`, `tags` (target style), `edit_mode` ("remix"/"lyrics"), `lyrics` (use `[inst]` for instrumental output). Model runs locally in <4GB VRAM; on fal.ai it's under 2s per generation.
+
+**Why it matters**: `43-stable-extend` extends your recording from the end. ACE-Step audio-to-audio takes your recording as the melodic kernel and generates a full arrangement *around* it — drums, bass, chords, lead — rather than continuing forward. A pianist who hums a melody into the mic gets a full band. Different paradigm. FAL_KEY already approved. $0.006/generation is trivial.
+
+**Could become a prototype**: `vocal-bgm` — hum or sing a melody for 5–15 seconds, press "Arrange →", receive a 30s track where your hummed melody is embedded in a full band arrangement. Audio-to-audio mode with `[inst]` lyrics forces instrumental output (no AI singing). Play back through the live-bloom radial visualizer. One-cycle build. Builds on the `43-stable-extend` route handler pattern. Route: `/dream/44-vocal-bgm`.
+
+---
+
+### 78. MusicRFM — Real-Time Note/Chord Steering via Activation Space (ICLR 2026)
+**Source**: https://arxiv.org/abs/2510.19127 (ICLR 2026)
+
+MusicRFM adapts Recursive Feature Machines to steer a frozen MUSICGEN-Large model during inference without retraining. Lightweight probes identify "concept directions" in the model's activation space corresponding to specific musical attributes (notes, chords, scale modes). At inference, probes inject steering vectors back into the model's residual stream in real-time. Target note accuracy improved from 0.23 to 0.82 while text prompt adherence dropped by only ~0.02. The system supports "dynamic, time-varying schedules" — so a specific chord can be targeted only during certain time windows of the generated audio. Code released alongside the paper.
+
+**Why it matters**: Previous music generation control was limited to text prompts and high-level parameters (BPM, style). MusicRFM proves that you can control specific pitches and chords during generation at inference time, without any model fine-tuning. This is the music equivalent of attention manipulation in image diffusion. Currently server-side only (requires GPU inference), but the underlying technique suggests future APIs will expose "steer this chord at this timestamp" as a first-class operation.
+
+**Could become a prototype**: `note-steer` — when a backend with MusicRFM becomes available, a piano keyboard UI where pressing specific keys sends steering vectors to the live music generation. You don't play the music; you guide the AI toward specific pitches. Like ReaLJam (`39-anticipate`) but inverted: instead of seeing the AI's intention, you set your intention and the AI accommodates. File in IDEAS queue; implement when a proxy API is available.
+
+---
+
+### 79. Composer Vector — Style-Space Blending for Symbolic Music Generation (April 2026)
+**Source**: https://arxiv.org/abs/2604.03333
+
+A transformer model for symbolic music generation learns identifiable "composer style directions" in its latent space. By steering generation along these directions at inference time (adding a weighted style vector to the residual stream), the output measurably shifts toward that composer's stylistic vocabulary. Blending two vectors (e.g., 70% Chopin + 30% Bach) produces a musically coherent hybrid — not a random interpolation but a genuine stylistic fusion. The work extends Magenta's embedding arithmetic principle (§65) to symbolic MIDI generation, confirming that music style spaces have well-defined compositional geometry.
+
+**Why it matters**: Combined with MusicRFM (§78), this is now a body of evidence that music generation latent spaces are genuinely navigable: style, notes, and chords are all addressable as directional vectors. When these capabilities surface in browser-callable APIs, a 2D "style canvas" interaction becomes possible — drag a cursor through style space, hear the music adapt in real time (like `38-mood-xy` but for stylistic parameters rather than arousal/valence).
+
+**Could become a prototype**: `style-map` — a 2D canvas with four corners labeled with musical styles (e.g., "Minimal", "Jazz", "Orchestral", "Ambient"). Dragging the dot generates music from a blended style prompt via ACE-Step text-to-audio or lyria-jam. Doesn't require Composer Vector's activation steering — text prompt blending ("70% jazz piano ambient 30% orchestral") is a reasonable approximation. Zero new API keys if using ACE-Step. One-cycle build.
+
+---
+
+### 80. AI-Assisted Music Therapy + Brainwave Entrainment — 2026 Research Cluster
+**Source**: https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1741463/full · https://www.frontiersin.org/journals/digital-health/articles/10.3389/fdgth.2025.1552396/full · https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1832950/abstract
+
+Three significant 2026 papers converge on the same direction. (1) A Frontiers in Psychology review proposes combining binaural beats + isochronic tones + AI-driven biofeedback into "personalized digital therapeutics" that adapt in real time to physiological state. (2) A second Frontiers paper validates AI-assisted music therapy for mental health, specifically calling out generative AI as enabling scalable, personalized interventions. (3) A third paper introduces "proactive music therapy" — AI doesn't respond to stated mood but proactively selects music to move the user from current state toward a target state along the Russell circumplex path.
+
+**Why it matters**: `42-binaural` (already polished in Cycle 50) and `binaural-lyria` (in queue, needs Gemini key) are directly validated by all three papers. The "proactive" insight is new: rather than letting the user pick a brainwave state, guide them along a clinically reasonable path (anxious → alert → calm → meditative). The session timer in `42-binaural` already tracks time-in-state; a "guided session" mode would use that timer to suggest transitions.
+
+**Could become a prototype**: `guided-session` — a standalone upgrade to the binaural experience. User selects a starting mood ("stressed / distracted / tired") and a target mood ("calm / focused / drowsy"). The system calculates a brainwave-state path and guides transitions with countdown timers and explicit prompts ("You've been in α for 8 minutes. Ready to deepen to θ?"). Synthesizes isochronic tones (speakers-compatible) along the path. Pink/brown noise layer adapts per state. Journal textarea (carried over from `42-binaural`). Zero deps. No API keys. Route: `/dream/44-guided-session`. One-cycle build.
+
+---
+
+### 81. WebXR Spatial Audio — Production-Ready for Immersive Ghost Experiences (2026)
+**Source**: https://blog.weskill.org/2026/04/web-audio-api-immersive-soundscapes-for.html · https://www.madxr.io/webxr-browser-immersive-experiences-2026.html
+
+WebXR is production-ready in 2026 on Chrome, Edge, Firefox, and Meta Quest browsers. Safari WebXR on iOS/Vision Pro is limited (device orientation works; full VR mode requires Safari 26 + entitlement). WebAudio HRTF PannerNode functions identically inside a WebXR context as outside — you can take the spatial audio graph from `29-scene-spatial` and run it inside a WebXR scene with no changes to the audio code. A 2026 wellness app (ZenSpace) does exactly this: Web Audio 3D nature soundscapes inside WebXR. No headset required for the "immersive flat" mode — Chrome desktop renders WebXR in a dragable 360° view; headset adds full immersion.
+
+**Why it matters**: `29-scene-spatial` already has full Ghost scene spatial audio (stone chamber, forest dawn, cosmic ascension) built from synthesized sources (zero audio files). The jump to WebXR is primarily a new renderer: replace the Canvas2D sphere view with an A-Frame or raw WebXR scene where the user is inside the sphere. The HRTF audio graph is identical. Demo mode: drag to rotate on desktop. Headset mode: physically look around. This is the most immersive Ghost experience in the sandbox — you're inside the sound, not listening to it.
+
+**Could become a prototype**: `ghost-xr` — A WebXR scene (using A-Frame, loaded from CDN or raw WebXR API) with the six Ghost scenes from `29-scene-spatial`. Enter a scene: the synthesized HRTF sources orbit you in 3D space. No headset required — Chrome desktop supports "immersive-vr" via simulated 360° viewport. Headset: full room-scale audio. Route: `/dream/45-ghost-xr`. One-cycle build if using A-Frame from CDN (~1MB). Needs Karel OK on CDN dep OR zero-dep raw WebXR (more code, same capability).
+
+---
+
+### 82. Oscilloscope Music — Stereo Lissajous Figure Composition (2026)
+**Source**: https://mondniles.com/en/tools/oscilloscope · https://www.kickstarter.com/blog/the-process-oscilloscope-music · https://github.com/ThatXliner/ljv
+
+"Oscilloscope music" is a genre where stereo audio is specifically composed to draw visual figures on an oscilloscope in XY mode (left channel = X axis, right channel = Y axis). Composers like Jerobeam Fenderson create tracks where Lissajous figures are intentional: a perfect fifth draws an ellipse; a minor third draws a three-loop figure; complex harmonics draw "roses" or "trefoils". A 2026 browser tool (mondniles.com) renders real-time Lissajous from audio with CRT phosphor persistence. The dream zone's `20-scope` already shows Lissajous figures as a visualization mode — but it's passive (it visualizes existing audio). An oscilloscope music composer inverts this: the user designs the figure and the system synthesizes the audio.
+
+**Why it matters**: This is the other side of `20-scope`. The visual IS the sound: you draw the shape, you hear the audio that creates it. Musically, designing a specific Lissajous figure (a trefoil = frequency ratio 2:3 with a specific phase offset and amplitude balance) constrains the audio to specific intervals. An oscilloscope music composer teaches music theory through geometry. Zero deps, pure Web Audio API (two OscillatorNodes routed to L/R channels), one cycle.
+
+**Could become a prototype**: `osc-composer` — A canvas shows the Lissajous figure in real time. Controls: Ratio (L:R frequency, e.g., 1:1, 2:3, 3:4, 4:5), Phase offset (0–360°), Amplitude balance (L/R). A "Preset shapes" panel shows geometric targets: Circle (1:1, 90°), Figure-8 (1:2, 0°), Trefoil (2:3), Rose (3:4), Hypocycloid (3:5). User adjusts controls to match the target shape — it's a tuning puzzle. Download stereo WAV that encodes the figure as audio. Route: `/dream/45-osc-composer`. Zero deps. One-cycle build.
+
+---
+
+### 83. Rust/WASM AudioWorklet — Browser-Native Production DSP (2026 Standard)
+**Source**: https://github.com/Ameobea/web-synth · https://joellof.com/rs-wasm-ts-worklet/ · https://cprimozic.net/blog/fm-synth-rust-wasm-simd/
+
+The "three-tier stack" (Web Audio API + WebAssembly + AudioWorklet) is now the 2026 standard for browser audio requiring more than Web Audio API primitives. Rust DSP code compiled to WASM runs inside an AudioWorkletProcessor at audio-thread sample rates with <1ms latency. The `web-synth` project (Ameobea) demonstrates a full browser DAW: polyphonic synthesizers, filters, envelope generators, effects chains — all running as pre-compiled WASM modules loaded from CDN or bundled. The underlying DSP libraries (WASM filters, SIMD-accelerated FFT) are available standalone as ~50–300KB binaries. No Rust toolchain needed by the end-user — WASM binary is pre-compiled.
+
+**Why it matters**: Several dream-zone prototypes use ScriptProcessorNode (deprecated) or hand-rolled JS DSP that runs on the main thread. Upgrading to WASM AudioWorklet would: (1) move all audio processing to the audio thread, eliminating main-thread blocking; (2) allow SIMD-accelerated FFT for `34-spectral-morph` (currently hand-rolled Cooley-Tukey); (3) enable the `27-gpu-additive` AudioWorklet bridge to process samples fast enough for stable synthesis. A pre-built WASM FFT library (ported from FFTW or Rust FFT) would be a ~150KB CDN dep. Needs Karel OK.
+
+**Could become a prototype**: `wasm-filter` — a browser modular synth demonstrating WASM AudioWorklet. Mic input → WASM formant filter (vowel shaping: A/E/I/O/U on a 2D canvas) → HRTF spatial output. The formant filter positions are draggable on a vowel space canvas. The WASM binary handles the IIR filter math; the Web Audio API handles routing. Route: `/dream/45-wasm-filter`. Needs Karel OK on ~150KB CDN WASM dep. One-cycle build once approved.
+
+---
+
+### 84. Proactive AI Music Therapy — Mood-Path Traversal Without EEG (Frontiers 2026)
+**Source**: https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2026.1832950/abstract · https://arxiv.org/html/2603.07963v1
+
+A 2026 Frontiers paper introduces "proactive AI music therapy": instead of asking the user how they feel and playing matching music (reactive), the system calculates a targeted intervention path and proactively plays music to guide the user from their current state toward a target state. The path is computed on the Russell circumplex (arousal × valence, same axes as `38-mood-xy`) using known music-to-mood mappings. Separately, a 2026 paper on music therapy for deaf/hard-of-hearing individuals demonstrates that tactile vibration + visual music feedback can substitute for auditory perception — relevant to the vibrational/haptic potential of Resonance's sub-bass frequencies.
+
+**Why it matters**: `38-mood-xy` lets users manually navigate mood space. A proactive version would auto-navigate: "I'm stressed (high arousal, low valence) and I want to be calm (low arousal, moderate valence)" → the system plays a 10-minute sequence of music that moves through the circumplex from top-left to bottom-center. Combined with `42-binaural` (binaural beats matching the target arousal state), this becomes a clinically-grounded guided session. The session timer in `42-binaural` already tracks time-in-state; the `38-mood-xy` already synthesizes music from circumplex coordinates. The two prototypes, combined, ARE the proactive music therapy system.
+
+**Could become a prototype**: `mood-journey` — user places two dots on the `38-mood-xy` canvas: "here" (current) and "there" (target). The system generates a 10-minute audio path: continuously shifts the synthesizer parameters along the Russell circumplex arc, stepping through intermediate coordinates every 30 seconds. A second layer: isochronic tones at the brainwave frequency matching the current arousal level (high arousal = γ/β, low arousal = α/θ). The path is visualized as a glowing trail on the canvas. No API keys. Zero deps (pure Web Audio). Route: `/dream/45-mood-journey`. One-cycle build.
