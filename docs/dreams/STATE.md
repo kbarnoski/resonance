@@ -1,5 +1,56 @@
 # Dream Agent — cycle state
 
+## Cycle 63 — /dream/52-concept-steer
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 62 built `51-diatonic-harmony`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `concept-steer` (`/dream/52-concept-steer`) is the #1 queued item from STATE.md Cycle 62. Zero deps, zero API, one-cycle build.
+4. Research — Cycle 61 was last research (2 cycles ago). Not due yet (cadence is 3–4 cycles).
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/52-concept-steer`.
+
+**Why now**: 51 existing prototypes use audio feature coordinates derived from signal processing (centroid, bandwidth, band energy) or emotion coordinates (valence/arousal from `38-mood-xy`). None use the vocabulary that music AI models use internally. The sparse autoencoder research (RESEARCH.md §94) found that transformer music models organize around exactly six named concepts — Brightness, Density, Regularity, Complexity, Energy, Mode — that a musician would recognize immediately. Building a synthesizer whose primary controls carry those labels creates a bridge between how AI thinks about music and how musicians talk about it. It's also a different interaction paradigm from `38-mood-xy`: instead of a 2D plane with emotional coordinates, this is a 6-dimensional radar chart with music-theory vocabulary.
+
+**Shipped**:
+- `src/app/dream/52-concept-steer/page.tsx` — full prototype (~270 lines)
+- `src/app/dream/52-concept-steer/README.md` — design notes, axis mappings, polish ideas
+
+**What's inside**:
+
+**Hexagonal radar chart**: Six vertices at 60° intervals, each draggable radially 0–1. The rendered polygon shape IS the current concept position. Vertex handles glow in per-axis accent colors (golden=Brightness, sky blue=Density, mint=Regularity, lavender=Complexity, coral=Energy, steel blue=Mode). Concentric hexagonal grid rings at 25/50/75/100% for spatial reference.
+
+**Synthesis engine** (same triangle-wave + BiquadFilterNode stack as `38-mood-xy`):
+- Brightness → lowpass fc 400–6000 Hz (exponential ramp per chord)
+- Density → BPM 40–140 + voice count 1–5
+- Regularity → chord note duration (long pads at 1, short notes at 0) + timing jitter (random onset offset + frequency jitter when Regularity < 0.4)
+- Complexity → chord voicing depth (unison → fifth → triad → 7th → 9th chord)
+- Energy → attack time 0.8s–0.04s + peak gain 0.08–0.28
+- Mode → chord quality interpolation (major → minor → diminished, continuous parameter)
+
+**Chord computation** (`buildChord`): interpolates between major/minor/dim semitone templates. At mode=0.25, you get a chord halfway between major and minor third. At complexity=1.0, all 5 notes of a 9th chord play.
+
+**Arpeggio mode**: when Density > 0.45, chord voices are staggered in time (arpeggio gap = beat fraction / voice count). At Density < 0.45, all voices sound simultaneously as a chord block.
+
+**Presets**: Classical Fugue (ordered polyphony), Dark Ambient (sparse minor atmospheric), Jazz Improv (fast dense major 9th arpeggios), Drone (single sustained unison tone).
+
+**Build validation**: `npm run build` passes cleanly. `/dream/52-concept-steer` compiles at 3.58 kB (static route). Zero TypeScript errors. Zero ESLint errors from new code.
+
+**What I noticed**: The Mode axis is the most musically interesting to drag. At Complexity=0.85 (7th–9th voicings), dragging Mode from 0 to 1 walks through major 9 → minor 9 → diminished 7 as a continuous audio parameter. The diminished end sounds genuinely tense/unresolved in a way that's hard to achieve with the valence axis in `38-mood-xy` (which uses the same chord templates but maps them to a 2D plane). Having Mode as a dedicated axis means you can have high Brightness + high Energy + Mode=1.0 (a bright energetic diminished sound), which isn't a natural quadrant in the `38-mood-xy` space.
+
+The Regularity axis at low values creates a recognizable "jazz feel" — the slight timing jitter and frequency deviation prevent the strict machine-grid quality of synthesized music. At Regularity=1.0 + Density=0.8, the BPM is fast and the chord onsets are perfectly metronomic. At Regularity=0.2, the same density sounds more like a pianist who's pushing/pulling the beat slightly.
+
+**Queued next**:
+1. **`ghost-sfx`** (`/dream/52-ghost-sfx`) — ElevenLabs SFX on fal.ai for Ghost scene spatial audio. FAL_KEY in use. Need to confirm fal.ai endpoint ID.
+2. **`claude-shader`** — waiting on Karel: is `ANTHROPIC_API_KEY` accessible in Vercel env?
+3. **`concept-steer` polish** — mic mode that extracts audio features and shows where your playing sits on the radar in real time; trajectory recording + replay.
+4. **Research** — Cycle 61 was last research. Due again at cycle 64–65.
+
+---
+
 ## Cycle 62 — /dream/51-diatonic-harmony
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 62)
+## ⭐ Newest (Cycle 63)
+
+- **[/dream/52-concept-steer](/dream/52-concept-steer)** — Concept Steer. `demoable`
+  A hexagonal radar chart synthesizer whose six axes are the vocabulary music AI models use
+  internally: **Brightness** (filter fc 400–6000 Hz), **Density** (BPM 40–140 + voice count
+  1–5), **Regularity** (strict grid vs. free timing + jitter), **Complexity** (unison → 9th
+  chord voicings), **Energy** (attack 0.8s→0.04s + gain), **Mode** (major→minor→diminished,
+  continuous interpolation). Drag any handle; the synthesizer follows in real time. Four
+  presets: Classical Fugue, Dark Ambient, Jazz Improv, Drone. Background glow shifts with
+  Brightness + Mode. HUD shows current BPM + chord quality. Zero deps, zero API.
+  Design notes: `src/app/dream/52-concept-steer/README.md`
+
+---
+
+## Previous newest (Cycle 62)
 
 - **[/dream/51-diatonic-harmony](/dream/51-diatonic-harmony)** — Diatonic Harmony. `demoable`
   Play a melody; the key is detected from what you play (Krumhansl-Kessler chroma correlation),
