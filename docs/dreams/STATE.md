@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 66 — Research sweep
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 65 built `/dream/6-compose`. Priority check:
+1. Unblock — nothing blocked (ghost-sfx and 6-compose endpoints are best-guesses; Karel hasn't reported errors yet).
+2. Continue — no in-progress prototypes.
+3. Build new — skipped in favor of step 4.
+4. Research — Cycle 61 was last research (62, 63, 64, 65 = 4 consecutive build cycles). STATE.md Cycle 65 explicitly: "Next cycle MUST be research." The 3–4 cycle cadence is exceeded. AGENT.md §Research cycles overrides step 3.
+5. Polish — skipped.
+
+Decision: full research sweep — arxiv, fal.ai, GitHub trending, Anthropic updates, web platform news.
+
+**Searched**: arxiv (audio-reactive viz, music generation, live performance AI, spatial audio, timbre transfer, voice conversion, musical structure analysis), fal.ai blog (new models May 2026), GitHub (Three.js WebGPU audio examples), Anthropic updates (Claude API May 2026), HN (music/audio May 2026).
+
+**Built**: 8 new entries in RESEARCH.md (§§101–108). 3 new prototype ideas added to IDEAS.md.
+
+**Key findings**:
+- **Beatoven Maestro on fal.ai** (§101) — `beatoven/music-generation`, $0.10/request, 2.5-min instrumentals + **individual stems** (drums/bass/melody/other). FAL_KEY in use. Inspires `maestro-stems`: generate a 2-min piece, decode its stems, route each through a separate HRTF PannerNode — the band plays around you in 3D. This is the long-desired `stem-spatial` idea now buildable without Lyria.
+- **Three.js WebGPU Compute Audio** (§102) — Three.js r171+ ships a `webgpu_compute_audio` example: TSL compute shader applies pitch-shift + 6-layer feedback delay on a GPU audio buffer, while `AnalyserNode` output feeds a visual texture. GPU DSP and GPU rendering on the same device, zero new deps. Inspires `webgpu-audio-fx`.
+- **Art2Mus** (§103, arxiv 2602.17599, Feb 2026) — First direct artwork→music generation without text intermediary. Visual embedding directly conditions a music LDM. No API yet, but validates `lyria-ghost` (Ghost image → music) direction.
+- **TADA! Activation Steering** (§104, arxiv 2602.11910, Feb 2026) — Named concept steering in audio diffusion at inference time (instruments, genre, vocals). No API yet; future upgrade for `6-compose`.
+- **Inworld TTS-1.5 Max** (§105) — Expressive TTS with voice cloning, FAL_KEY in use, <150ms latency. Inspires `ghost-voice`: Ghost narrative lines spoken in a custom voice, HRTF front-center, with subtitle overlay.
+- **Conducting Gesture Recognition** (§106, arxiv 2604.27957, Apr 2026) — Skeleton tracking + LSTM → real-time orchestra tempo/dynamics control. Inspires `conductor` prototype (MediaPipe CDN dep, same as `31-gesture-music`).
+- **Web Audio API v2 Configurable Render Quantum** (§107) — Sub-3ms audio latency arriving Q4 2026. All pitch-detection prototypes improve automatically.
+- **TVTSyn voice timbre transfer** (§108, arxiv 2602.09389, Feb 2026) — 80ms GPU timbre transfer. Python/CUDA only; monitor for WASM port.
+
+**Queued next** (priority order):
+1. **`maestro-stems`** (`/dream/54-maestro-stems`) — Generate 2.5-min Beatoven track → stems → HRTF 3D band positioning. FAL_KEY in use, $0.10. High impact, one-cycle build. Most surprising new finding this cycle.
+2. **`webgpu-audio-fx`** — Three.js TSL compute audio + pitch-shift + reverb + visual feedback. Zero new deps. One-cycle. First prototype where GPU handles both audio DSP and rendering.
+3. **`ghost-voice`** — Ghost scene narration via Inworld TTS. FAL_KEY in use, ~$0.01/line. Quick add-on to `53-ghost-sfx`.
+4. **`6-compose` or `53-ghost-sfx` endpoint fix** — if Karel reports API errors next morning, fix first.
+5. **Research done** — next research cycle at Cycle 69–70.
+
+**Notes**: Beatoven Maestro's stem output is the most practically exciting find: it eliminates the need for a separate stem-splitter model (which requires a 2-cycle build and its own FAL_KEY call). $0.10 for 2.5 min + stems is better value than $0.03 for 30s ACE-Step if you want a full-length piece. Could also back-fill `6-compose` as a "long-form mode" toggle. The Three.js compute audio example is a direct path to prototyping GPU audio synthesis without needing to write raw WGSL compute shaders — TSL compiles down automatically.
+
+---
+
 ## Cycle 65 — /dream/6-compose
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

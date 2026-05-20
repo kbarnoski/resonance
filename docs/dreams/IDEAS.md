@@ -1074,3 +1074,40 @@ Key findings from Cycle 61 (2026-05-20):
 - Three.js/WebGPU 2026 (§98) — 100× gains confirmed, 1M particles at 60fps, ML inference via WebGPU compute. Reinforces `gpu-additive` and Three.js polish cycles.
 - Streaming Piano Transcription (§99, arxiv 2503.01362) — causal streaming model for full note events (onset+pitch+offset+pedal). Future WASM upgrade for pitch detection across all prototypes.
 - iPlug3 2026 (§100) — Jan 2026 clean-slate audio plugin framework with WebGPU + MCP agent integration. Best path to Resonance native install mode.
+
+---
+
+## FROM RESEARCH (Cycle 66, 2026-05-20) — promoted to queue
+
+### maestro-stems — Beatoven 2.5-min track → stems → HRTF 3D band positioning `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/54-maestro-stems`. A style prompt field ("cinematic cello quartet, 70 BPM, minor key") + "Generate Track" button. Server route calls `beatoven/music-generation` → returns a full 2-minute instrumental track **AND individual stems** (drums, bass, melody, other). All stems decoded via `AudioContext.decodeAudioData`. Each stem is routed through a separate `PannerNode` (HRTF model): drums from above (+60° elevation), bass from below (−30°), melody from front-right (+25° azimuth), other from front-left (−25°). Canvas: same top-down sphere as `29-scene-spatial` — 4 colored stem-source dots, draggable. Mix slider per stem (same as `7-spatial`). Wear headphones.
+
+"The band plays around you." This is the `stem-spatial` idea from the queue, now buildable without Lyria Flow Music's stem splitter. Maestro outputs stems directly. The key difference from `7-spatial` (which splits by frequency band): this separates by **musical role** — the drums come from above, not "the high frequencies." Much more spatially meaningful. FAL_KEY in use. $0.10/track. One-cycle build. RESEARCH.md §101.
+
+### webgpu-audio-fx — Three.js TSL compute audio: GPU pitch-shift + reverb + visual feedback `[queued, zero new deps]`
+Route: `/dream/54-webgpu-audio-fx`. Extends the Three.js WebGPU compute audio example (RESEARCH.md §102) into an interactive prototype. An audio file upload (or mic via `getUserMedia`) feeds an `AudioBuffer` to a GPU storage buffer. A TSL compute shader (Three.js Shader Language, compiles to WGSL automatically) applies: (1) **pitch shift** — reads the waveform at speed-adjusted fractional indices (0.5× to 2.0×, continuous slider), (2) **6-layer feedback delay** — each delay slightly different length with decreasing gain coefficient (reverb depth slider 0–100%). The processed audio is enqueued to a `ScriptProcessorNode` for playback. Simultaneously, an `AnalyserNode` on the output feeds a Three.js texture uniform that drives a 3D frequency visualization (a radial bar chart or mesh-deformation same as `21-three-mesh-av`, now driven by the GPU-processed audio).
+
+"GPU computes the music. GPU renders the music." First sandbox prototype where the audio processing DSP and the visual rendering both run on the same GPU device — no AudioWorklet, no CPU DSP. WebGPU required; clear fallback. Zero new npm deps (three@0.182 + R3F already installed). One-cycle build. RESEARCH.md §102.
+
+### ghost-voice — Ghost scene narration via Inworld TTS + HRTF front-center `[queued, needs FAL_KEY — already in use]`
+Route: extend `/dream/53-ghost-sfx` OR standalone `/dream/55-ghost-voice`. A scene selector (same 6 Ghost scenes). Each scene has a pre-written one-line narrative fragment from the Ghost journey text:
+- Stone Chamber: *"The resonance here is ancient. Let yourself be absorbed by it."*
+- Root Portal: *"Something stirs beneath the roots. A low note. Then silence."*
+- Underground Pool: *"The water remembers every sound that has passed through this place."*
+- Tiny Planet: *"A single breath. The horizon wraps around you."*
+- Forest Dawn: *"The first light is also the first sound. They arrive together."*
+- Cosmic Ascension: *"You are not rising. The world is receding."*
+
+"Narrate" button → server route calls Inworld TTS-1.5 Max (or Chatterbox Turbo) on fal.ai with the line + a voice description ("calm, androgynous, slow pace, slight reverb, like speaking from inside a resonant chamber"). Returned audio decoded and played through HRTF PannerNode at azimuth 0°, elevation 0° (directly ahead at ear level). A subtitle bar fades in below the canvas. The spoken word completes the Ghost scene: ambient sound + 3D sources + narration.
+
+"The Ghost speaks." Admin-only. FAL_KEY in use. ~$0.01–0.02/line. Zero new deps. One-cycle build as extension of `53-ghost-sfx` or standalone. RESEARCH.md §105.
+
+Key findings from Cycle 66 (2026-05-20):
+- Beatoven Maestro on fal.ai (§101) — `beatoven/music-generation`, $0.10/request, 2.5-min instrumentals + stems. FAL_KEY in use. Inspires `maestro-stems-spatial`.
+- Three.js WebGPU Compute Audio (§102) — TSL compute shaders for GPU pitch-shift + delay DSP. Visual AnalyserNode feedback. Zero new deps (three@0.182 installed). Inspires `webgpu-audio-fx`.
+- Art2Mus (§103, arxiv 2602.17599, Feb 2026) — direct artwork→music without text intermediary; validates `lyria-ghost` direction. No public API yet; monitor.
+- TADA! Activation Steering (§104, arxiv 2602.11910, Feb 2026) — named concept control (instrument/genre/vocal) in audio diffusion at inference time. No API yet; monitor.
+- Inworld TTS-1.5 Max (§105) — sub-150ms TTS, expressive, FAL_KEY in use. Inspires `ghost-voice` — Ghost scenes narrated in the Ghost character's voice.
+- Conducting gesture recognition (§106, arxiv 2604.27957, Apr 2026) — skeleton tracking → live music tempo/dynamics control. Inspires `conductor` prototype (needs MediaPipe CDN dep, same as `31-gesture-music`).
+- Web Audio API v2 Configurable Render Quantum (§107) — sub-3ms audio processing in Q4 2026. Will improve all pitch-detection prototypes automatically when Chrome ships.
+- TVTSyn real-time voice timbre conversion (§108, arxiv 2602.09389, Feb 2026) — sub-80ms GPU timbre transfer. Not browser-ready; monitor for WASM port. Inspires future `timbre-morph`.

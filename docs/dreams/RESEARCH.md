@@ -1051,3 +1051,93 @@ iPlug3 launched January 1, 2026 as a "clean-slate reimagining" of audio plugin/a
 **Why it matters**: This is the first audio plugin framework explicitly designed for the agent-era. For Resonance: the "installation mode" or "Tauri mode" imagined in IDEAS.md `4-operator` and throughout the priority list would be a native application. iPlug3 compiled to native (Mac/Windows) would give Karel a standalone Resonance performer app that runs outside the browser — no Vercel, no internet needed. The MCP integration means the dream agent could theoretically generate and test DSP code directly. The browser WASM output means Resonance's Web Audio prototypes could be compiled to native plugins for use in DAWs (Ableton, Logic) without rewriting.
 
 **Research note**: This is a roadmap item, not a one-cycle prototype. The most concrete near-term use: build one prototype in iPlug3 (a WASM audio effect) and show it running both in the dream sandbox and as a standalone native app. Raise with Karel as a "Resonance native" direction question.
+
+---
+
+## 2026-05-20 — Cycle 66 research sweep
+
+### 101. Beatoven.ai Maestro on fal.ai — 2.5-min Instrumental Tracks + Stems (May 2026)
+**Source**: https://blog.fal.ai/beatoven-ais-maestro-model-is-now-live-on-fal/ · https://fal.ai/models/beatoven/music-generation
+
+Beatoven.ai's Maestro model is now live on fal.ai with two APIs: **Music Generation** (endpoint `beatoven/music-generation`, $0.10/request) and **Sound Effects Generation** (layered soundscapes up to 35s, for film/game/AV). Music API: generates professional 44.1kHz instrumental tracks up to **2 minutes 30 seconds** in a single generation, across Jazz, Latin, Ambient, Cinematic, House, Techno, and other genres. Unique differentiator: **outputs individual stems** (drums, bass, melody, harmony) alongside the full mix. Trained on 3M+ licensed tracks — every generation is royalty-clean. FAL_KEY already in use.
+
+**Why it matters**: ACE-Step (`fal-ai/ace-step`, used by `6-compose`) generates 30-second sketches. Maestro generates **5× longer** tracks (2.5 min) for the same $0.10 per request — appropriate for a full Resonance journey phase (a journey phase lasts 2–4 minutes in the current 6-phase arc). The stem output is the most exciting capability: stems → each stem decoded into an AudioBuffer → routed through HRTF PannerNodes at distinct 3D positions. You commissioned the band, and now they're playing around you in 3D space. The sound-effects API is a potential backup for `53-ghost-sfx` if the ElevenLabs SFX endpoint is wrong.
+
+**Could become**: `maestro-stems-spatial` — generate a 2-minute cinematic piece via Maestro, receive 4 stems (drums, bass, melody, other), decode each into an AudioBuffer, route through a `7-spatial`-style HRTF PannerNode sphere. Canvas: same top-down sphere as `29-scene-spatial` with 4 colored stem-source dots. Drag to reposition. "The band plays around you." This is the `stem-spatial` prototype idea from the queue now implementable with Maestro as the generation backend — no separate Lyria Flow Music or stem-splitter model needed. FAL_KEY in use. $0.10/track. One-cycle build. Route: `/dream/54-maestro-stems`.
+
+---
+
+### 102. Three.js WebGPU Compute Audio + TSL Visual Feedback (May 2026)
+**Source**: https://threejs.org/examples/webgpu_compute_audio.html · https://github.com/mrdoob/three.js/blob/dev/examples/webgpu_compute_audio.html
+
+Three.js r171+ ships a `webgpu_compute_audio` example that uses **TSL (Three.js Shader Language) compute shaders** to perform audio DSP directly on the GPU — no AudioWorklet, no WASM. The technique: load an AudioBuffer (MP3), write it to a GPU storage buffer; a TSL compute shader applies **pitch shifting via time-stretching** (reads original waveform at pitch-adjusted fractional indices) plus **6 cascading layered delays with decreasing amplitude** (reverb-style effect). The processed audio is written back to a playback buffer. Simultaneously, an `AnalyserNode` feeds a frequency texture that modulates the canvas background color in real time — GPU audio + GPU visual in one render pipeline. No separate AudioWorklet needed.
+
+**Why it matters**: This is the proof-of-concept for `27-gpu-additive` (GPU particles = Fourier synthesis) but at a more approachable scope. The Three.js example demonstrates the full audio-to-GPU-to-visuals loop using only TSL — the same tooling already used in `21-three-mesh-av` and `49-anemone-av`. The "pitch-shift + layered delay + analyser feedback" combination produces rich, evolving textures from dry input — a guitar note through this pipeline sounds like a stadium reverb effect. More immediately buildable than `27-gpu-additive` and produces a demo Karel can immediately understand: any audio file → GPU-processed → visualized.
+
+**Could become**: `webgpu-audio-fx` — a Three.js R3F scene with a WebGPU compute audio processor. Load an audio file (or use mic via `getUserMedia` → `MediaStreamAudioSourceNode` → `AudioWorklet` → GPU buffer) → TSL compute shader applies pitch-shift slider (0.5× to 2×) + reverb depth slider (0 → 100% delay mix) → visualize the frequency spectrum via a 3D bar chart or mesh deformation (same as `21-three-mesh-av` but driven by the GPU-processed output instead of mic FFT). "Hear what GPU audio sounds like." WebGPU required; clear fallback. Zero new npm deps (three@0.182 already installed). One-cycle build. Route: `/dream/54-webgpu-audio-fx`.
+
+---
+
+### 103. Art2Mus: Direct Artwork-to-Music via Visual Embeddings (arxiv 2602.17599, February 2026)
+**Source**: https://arxiv.org/abs/2602.17599
+
+Art2Mus introduces ArtSound, a dataset of 105,884 artwork-music pairs, and a framework that maps digitized visual artworks **directly** into the conditioning space of a latent diffusion music model — no image-to-text translation step, no language-based semantic supervision. A visual encoder (CLIP-style) projects the artwork embedding directly into the music LDM's conditioning stream. The model generates music whose sonic character matches the visual mood, color palette, and style of the artwork. Trained and evaluated on fine art paintings (Impressionist, Baroque, Abstract) but generalizes to photographic imagery. The paper reports that generated music is judged as "fitting" the artwork significantly better than text-prompted baselines.
+
+**Why it matters**: Three existing prototypes in the sandbox approach the "Ghost image → music" direction: `lyria-ghost` (Gemini API, text prompt + optional image), `6-compose` (text-only), `48-arc-compose` (section tags). Art2Mus demonstrates that direct visual→music without text intermediary is achievable and produces better aesthetic alignment — the music "fits" the image in ways text cannot fully specify. No public API exists yet (February 2026 preprint). But the concept validates Resonance's direction: Ghost scene imagery as a first-class music conditioning input. When a public API or inference service appears (monitor fal.ai/replicate for Art2Mus or equivalent), this would upgrade `lyria-ghost` to skip the text-prompt step entirely — send the Ghost scene image, receive ambient music.
+
+**Research note**: Monitor arxiv and fal.ai/replicate for Art2Mus implementation or equivalent model deployment. When available: upgrade `lyria-ghost` spec to direct visual conditioning. No new prototype needed now; `lyria-ghost` (blocked on GEMINI_API_KEY) already covers the use case.
+
+---
+
+### 104. TADA! — Activation Steering for Audio Diffusion Models (arxiv 2602.11910, February 2026)
+**Source**: https://arxiv.org/abs/2602.11910
+
+TADA uses **activation patching** to locate a "semantic bottleneck" layer in audio diffusion model transformers — specific attention layers that independently control instrument presence, vocal characteristics, and genre. By patching the activations of these layers (steering them toward a target concept representation), the model can be guided at inference time to emphasize or suppress instruments, add/remove vocals, or shift genre without retraining or additional prompting. The benchmark shows this establishes a new state-of-the-art in "audio concept modulation" compared to prompt-editing baselines.
+
+**Why it matters**: `52-concept-steer` (Cycle 63) built a synthesizer whose axes are the vocabulary music AI models use internally (Brightness/Density/Regularity/Complexity/Energy/Mode). TADA demonstrates those same conceptual axes exist as steerably-accessible activations in diffusion-based music generators — not just as emergent statistical features. When an API becomes available (no public deployment confirmed as of February 2026), a `tada-steer` prototype would combine AI-generated music with real-time concept steering: generate a 30-second track via ACE-Step, then apply TADA activation patches to add a solo piano voice, reduce percussion, or shift from major to minor — all without re-generating. "Edit the music, not the prompt."
+
+**Research note**: No public API. Monitor fal.ai and HuggingFace for a TADA inference endpoint. If Karel has access to a GPU server, could run locally. Theoretical prototype: `tada-steer`.
+
+---
+
+### 105. Inworld TTS-1.5 Max on fal.ai — Expressive TTS with Voice Cloning (March 2026)
+**Source**: https://blog.fal.ai/ · https://fal.ai/elevenlabs
+
+Inworld TTS-1.5 Max is a low-latency speech synthesis model now available on fal.ai, providing "sub-150ms time-to-first-sound" with expressive paralinguistic prompting and instant voice cloning. Features: multi-emotional control (happy, sad, fearful, whispery, etc.), consistent multi-turn voice identity, and custom voice cloning from short 10–30s audio samples. Also on fal.ai: **Chatterbox Turbo** (sub-150ms TTS, expressive voice cloning). Both models use FAL_KEY (already in use). Pricing not publicly listed in search results but typical TTS APIs on fal are $0.01–0.03 per generation.
+
+**Why it matters**: No prototype in the sandbox gives the Ghost character a speaking voice. `29-scene-spatial` and `53-ghost-sfx` place synthesized/AI-generated ambient sounds in 3D space, but none of them include a human-like voice narrating the Ghost journey. A Ghost voice prototype would use pre-written one-line narrative fragments from the existing Ghost journey narrative text (Karel has this), generate a spoken line in a custom voice (sampled from 30s of human voice audio), and HRTF-position it at front-center in the scene's spatial audio field. The result: an AI actor speaks inside the Ghost scenes. Admin-only. Budget: ~$0.01–0.02/line.
+
+**Could become**: `ghost-voice` — an extension of `29-scene-spatial` or `53-ghost-sfx`. A "Narration" toggle in the Ghost scene selector: ON → play the scene's spatial ambient sounds (from `53-ghost-sfx`) AND generate a 10-word narrative line via Inworld TTS at front-center HRTF position. Pre-written lines: e.g. "Stone Chamber: *The resonance here is ancient. Listen.*" / "Forest Dawn: *First light. A single note rises.*" Display a subtitle overlay for the spoken line. No new approvals needed (FAL_KEY in use). One-cycle add-on to `53-ghost-sfx` OR standalone prototype. Route: `/dream/55-ghost-voice`.
+
+---
+
+### 106. Virtual Orchestra Conducting via Gesture Recognition (arxiv 2604.27957, April 2026)
+**Source**: https://arxiv.org/abs/2604.27957
+
+Museum installation built for a dome theater: skeleton tracking captures visitor conducting gestures (arms, hands, baton trajectory); a hierarchical LSTM gesture classifier identifies beat patterns and dynamic cues from multiple conductor exemplars; real-time playback speed control drives a pre-recorded symphony performance. Visitors experience the subjective sensation of "conducting" an orchestra — moving arms faster accelerates the music; a grand gesture triggers a fortissimo moment. Evaluated through timing accuracy tests and field studies with actual museum visitors showing high engagement and perceived realism.
+
+**Why it matters**: Three prototypes (`31-gesture-music`, `4-operator`) address gesture-based music control but neither specifically targets conducting — the most culturally legible performance gesture vocabulary. The paper confirms browser-feasible skeleton tracking (via MediaPipe or similar) can extract conducting features (tempo, dynamics) at latencies below the perceptual threshold for music interaction. The gesture vocabulary is universal: even non-musicians immediately understand that "large sweeping arms" = loud/fast. For Resonance live performance: a conducting-gesture mode where arm velocity controls BPM and arm height controls gain would be immediately usable on a stage without any UI.
+
+**Could become**: `conductor` — webcam → MediaPipe Pose (loaded from CDN ~8MB, same CDN dep as `31-gesture-music`) → wrist velocity extraction → BPM control for any of the sandbox's looping prototypes (`5-arcs`, `25-cellular`, `35-loop-station`). Left wrist height → gain (dynamics). Right wrist sweep speed → BPM. Visual: webcam feed overlay with pose skeleton, plus a BPM/gain HUD. "Conduct the session from across the room." Requires MediaPipe CDN dep + Karel OK (same as `31-gesture-music` which is already in the queue). Route: `/dream/55-conductor`.
+
+---
+
+### 107. Web Audio API v2: Configurable Render Quantum in Q4 2026 Spec
+**Source**: https://github.com/WebAudio/web-audio-api-v2 · https://www.w3.org/2025/11/TPAC/demo-audio-wg-update.html
+
+The W3C Audio Working Group completed the Configurable Render Quantum spec for Web Audio API v2 in Q4 2026. Key changes: (1) **Configurable render quantum size** — default is 128 samples; v2 allows configuring down to 16 samples, reducing audio processing latency from ~3ms to ~0.4ms. (2) **`performance.now()` in AudioWorklet** — high-resolution timestamp available inside the audio processing thread, enabling precise per-sample timing (critical for accurate pitch detection and note onset timestamps). (3) **Output Buffer Bypass** — already shipped in Chrome; removes one 128-sample buffer of latency from the `AudioContext` → output pipeline. (4) **AudioContext interrupted state** — entered Chromium Origin Trial; allows apps to detect and recover from audio context suspension (phone calls, background tabs). Status: Q4 2026 target; Output Buffer Bypass already in production; rest in spec finalization or Origin Trials.
+
+**Why it matters**: Every prototype in the sandbox that does real-time pitch detection is limited by the 128-sample render quantum (~3ms). With configurable quantum size (16 samples), `13-piano-canvas`, `24-piano-roll`, `26-score-follow`, `33-aria-companion`, `39-anticipate` all get 8× lower latency — piano note onset detection becomes nearly instantaneous. `performance.now()` in AudioWorklet is critical for `39-anticipate` (Aria's ghost note timing uses `AudioContext.currentTime` which is less precise than `performance.now()`). These changes require no code changes to existing prototypes — they just improve when the browser ships the API. Monitor browser release notes.
+
+**Research note**: No prototype needed. Existing prototypes will automatically benefit when Chrome/Firefox ship the reduced render quantum. Add a note in `23-pitch-harmonize` and `33-aria-companion` READMEs when the feature ships.
+
+---
+
+### 108. TVTSyn: Real-Time Time-Varying Timbre Voice Conversion (arxiv 2602.09389, February 2026)
+**Source**: https://arxiv.org/abs/2602.09389
+
+TVTSyn achieves sub-80ms GPU latency real-time voice conversion by treating speaker identity as a **time-varying** rather than static vector — aligning it with speech content at the frame level. This prevents "over-smoothed timbre" (where the converted voice sounds uniform/robotic because the speaker identity is frozen throughout). The result: natural-sounding real-time voice conversion where the target voice's micro-variations in timbre (breathiness on consonants, warmth on vowels) are preserved in the converted output. Python/CUDA, no public browser deployment.
+
+**Why it matters**: Three prototypes in the sandbox do audio transformation: `23-pitch-harmonize` (pitch shift), `34-spectral-morph` (spectral magnitude interpolation), `35-loop-station` (recording + looping). None perform **timbre transfer** — changing the tonal character of an instrument or voice while preserving pitch and rhythm. TVTSyn is 3 months from publication and not browser-ready, but the 80ms latency target confirms real-time timbre transfer will be browser-viable within 12–18 months (as BRAVE was predicted at Cycle 35 to arrive, and it has improved). The "piano to cello" timbre prototype concept (`brave-timbre` from §30 in the queue) is getting closer to implementable.
+
+**Research note**: Monitor for WASM or ONNX port of TVTSyn or equivalent. When browser-ready: `timbre-morph` prototype — mic input piano → morph to cello/violin/organ in real time via timbre transfer. The `34-spectral-morph` prototype already demonstrates the visual paradigm (spectrum strip + morph slider); this would replace the FFT magnitude interpolation with a neural timbre encoder/decoder.
