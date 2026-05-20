@@ -1,5 +1,52 @@
 # Dream Agent — cycle state
 
+## Cycle 56 — Research sweep (§§85–92 in RESEARCH.md)
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 55 shipped `47-mood-journey`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — zero-dep queue is thin. Remaining buildable items: `terrain` (queued), `2-ghost-lab` (FAL_KEY), `mirelo-ghost-loop` (FAL_KEY), `ghost-animate` (FAL_KEY), `style-map` (FAL_KEY). All FAL_KEY items are available, but research takes precedence now.
+4. Research — Cycle 51 was last research (4 cycles ago: 52, 53, 54, 55). Past the upper bound of the 3–4 cycle cadence. Research is overdue. STATE.md from Cycle 55 explicitly named this the #1 priority.
+5. Polish — skipped; research takes priority.
+
+Decision: research cycle — scan arxiv, fal.ai, GitHub trending, Hacker News, and Anthropic/Claude news for new audio-visual, music AI, live performance, and creative coding findings.
+
+**Sources searched**: fal.ai (audio models page, MiniMax 2.6, explore/audio-models), Google DeepMind (Lyria 3 Pro, Flow Music launch), arxiv (live performance AI, accompaniment generation, streaming latency, SonoCraftAR, DARC, AILive Mixer, real-time co-performance), GitHub (Three.js WebGPU community, Audio Shader Studio), Hacker News (Flow Music, generative music threads), Replicate (audio model collection), browser DAW + WebAudio 2026 state.
+
+**What I found** (8 new entries, §§85–92 in RESEARCH.md):
+
+- **Google Flow Music + Lyria 3 Pro (§85)** — Biggest immediate impact. Flow Music launched April 18 as Google's AI music studio (Lyria 3, same Gemini key as `lyria-ghost`). New capability: **Stem Splitter** extracts individual stems from any AI-generated track (vocals, drums, bass, piano). Also: "Replace + Extend" for section-level regeneration; Lyria 3 Pro generates 3-minute structured songs. Directly unlocks `stem-spatial` (generate → split → HRTF position) once GEMINI_API_KEY is available.
+
+- **MiniMax Music 2.6 (§86)** — On fal.ai now. 14+ structural section tags: `[Intro]` `[Build Up]` `[Chorus]` `[Outro]` etc. $0.03/generation. FAL_KEY already in use. This makes `18-elevenlabs-compose` (the section-based arc composer) immediately buildable at 37× lower cost than ElevenLabs. Inspires `arc-compose` — write a Resonance journey arc, get a 60–90s AI musical piece with exactly that structure.
+
+- **AILive Mixer (§87, arxiv 2603.15995, March 2026)** — First end-to-end DL system for zero-latency live performance mixing. Transformer + GRU handles acoustic bleed between co-located instruments. Validates the AI-mixing concept behind `4-operator`. Inspires a polish of `35-loop-station` with RMS-based auto-gain toggle.
+
+- **Real-Time Human-AI Co-Performance (§88, arxiv 2604.07612, April 2026)** — Latent diffusion + MAX/MSP, 5.4× speedup via consistency distillation. Introduces "sliding-window look-ahead protocol" — accompaniment planned N seconds ahead, coherence improves with longer look-ahead. Directly formalizes what `39-anticipate`'s ghost-note display visualizes. Inspires a look-ahead slider polish on `39-anticipate`.
+
+- **DARC (§89, arxiv 2601.02357, Jan 2026)** — Tap/beatbox → drum accompaniment via NMF onset detection. Tap2Drum mode directly validates `tap-rhythm` prototype: mic onset detection → 2-bar step sequencer with Karplus-Strong drum synthesis. None of the 47 prototypes accept pure rhythm as input.
+
+- **Streaming accompaniment latency/coherence (§90, arxiv 2510.22105, Oct 2025)** — Formalizes the tradeoff between future visibility and output chunk duration. Explains why Lyria RealTime has ~2s update latency (architectural choice, not limitation). Reference for future real-time AI music prototypes.
+
+- **SonoCraftAR (§91, arxiv 2508.17597, Aug 2025)** — Multi-agent LLM generates Unity C# sound-reactive AR interfaces from text descriptions. Inspires `claude-canvas` meta-prototype: describe a visualization → Claude API generates a Web Audio + Canvas2D sketch. Needs Karel OK on ANTHROPIC_API_KEY in dream zone server routes.
+
+- **Bioluminescent AV + Galaxy WebGPU (§92, Three.js community, May 2026)** — Community Three.js r174+ experiments include organic anemone-like forms dancing to audio (TSL vertex displacement, bloom). All required deps already installed in Resonance (`three@0.182`, `@react-three/fiber`, `drei`, `postprocessing`). Inspires `anemone-av` — zero new deps, high visual impact, one-cycle build.
+
+**What surprised me**: The MiniMax 2.6 section tags are a game-changer for the arc composer concept. The IDEAS.md has had `18-elevenlabs-compose` queued for 38 cycles — blocked on the $1.13/generation cost. MiniMax 2.6 delivers equivalent section control at $0.03. `arc-compose` is now the most immediately buildable and impactful prototype in the queue: write the Resonance journey arc structure in musical language, hear what it actually sounds like. The fact that you can type `[Intro] single piano, vast reverb [Build Up] cello enters, tension [Chorus] full orchestral peak [Outro] piano alone` and get a real structured piece for $0.03 is genuinely surprising.
+
+The `anemone-av` find is the most visually promising. Every Three.js dep is already installed in Resonance — zero new package changes. A living, breathing, tentacled form reacting to sub-bass swaying and treble flickering is qualitatively different from everything in the sandbox.
+
+**Queued next (in priority order)**:
+1. **`arc-compose`** (`/dream/48-arc-compose`) — MiniMax Music 2.6 section tags, FAL_KEY already in use, $0.03/generation. The `18-elevenlabs-compose` idea finally buildable. One-cycle build. Highest "surprise" factor.
+2. **`anemone-av`** (`/dream/48-anemone-av`) — Bioluminescent organic 3D form, Three.js TSL, zero new deps. High visual impact. One-cycle build.
+3. **`tap-rhythm`** (`/dream/48-tap-rhythm`) — Tap → step sequencer → drum synthesis. Zero deps, zero API. Highest accessibility. One-cycle build.
+4. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, AND `stem-spatial` (after Lyria 3 Pro stem splitting). Reminder to Karel.
+5. **Polish `35-loop-station`** — RMS-based auto-gain toggle inspired by AILive Mixer (§87). One polish cycle, zero new deps.
+6. **Polish `39-anticipate`** — look-ahead slider (0.5s / 1s / 2s), demonstrates coherence/latency tradeoff from §88.
+
+---
+
 ## Cycle 55 — /dream/47-mood-journey
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

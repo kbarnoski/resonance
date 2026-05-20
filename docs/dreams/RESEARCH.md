@@ -871,3 +871,93 @@ A 2026 Frontiers paper introduces "proactive AI music therapy": instead of askin
 **Why it matters**: `38-mood-xy` lets users manually navigate mood space. A proactive version would auto-navigate: "I'm stressed (high arousal, low valence) and I want to be calm (low arousal, moderate valence)" → the system plays a 10-minute sequence of music that moves through the circumplex from top-left to bottom-center. Combined with `42-binaural` (binaural beats matching the target arousal state), this becomes a clinically-grounded guided session. The session timer in `42-binaural` already tracks time-in-state; the `38-mood-xy` already synthesizes music from circumplex coordinates. The two prototypes, combined, ARE the proactive music therapy system.
 
 **Could become a prototype**: `mood-journey` — user places two dots on the `38-mood-xy` canvas: "here" (current) and "there" (target). The system generates a 10-minute audio path: continuously shifts the synthesizer parameters along the Russell circumplex arc, stepping through intermediate coordinates every 30 seconds. A second layer: isochronic tones at the brainwave frequency matching the current arousal level (high arousal = γ/β, low arousal = α/θ). The path is visualized as a glowing trail on the canvas. No API keys. Zero deps (pure Web Audio). Route: `/dream/45-mood-journey`. One-cycle build.
+
+---
+
+## 2026-05-20 — Cycle 56 research sweep
+
+### 85. Google Flow Music + Lyria 3 Pro — AI Music Studio with Stem Splitting (April 2026)
+**Source**: https://aitoolly.com/ai-news/article/2026-04-25-google-launches-flow-music-an-all-in-one-ai-platform-for-song-composition-and-video-production · https://blog.google/innovation-and-ai/technology/ai/lyria-3-pro/ · https://deepmind.google/models/lyria/
+
+Google launched Flow Music on April 18, 2026 (rebranded from ProducerAI), a standalone AI music studio powered by Lyria 3 Pro. Key new capabilities: (1) **Lyria 3 Pro** generates songs up to 3 minutes with intros/verses/choruses/bridges from text prompts or images; (2) **Stem Splitter** — any generated track can be split into isolated stems (vocals, drums, bass, piano/melodic layers) for further editing; (3) **Replace + Extend** — target any section of a track with natural language ("make this chorus more dramatic"), and the model regenerates only that section in context; (4) **Spaces** — shareable modular patch presets for consistent aesthetic across sessions; (5) **Vibe-code** — LLM-driven custom audio plugin and DAW creation. Same Lyria 3 model underlies both Flow Music and the Gemini API (same key already requested for `30-lyria-jam`).
+
+**Why it matters**: The stem splitting is the biggest new capability. `suno-stems-spatial` has been blocked because Suno's stems API isn't public. If Lyria 3 (Gemini API) can generate a track AND a stem extraction model is available on fal.ai, the `stem-spatial` prototype becomes achievable: generate a 30s instrumental → split into stems → route each stem to a different HRTF 3D position. Separately, Lyria 3 Pro's 3-minute structured songs (with verse/chorus control) now make a properly-arc'd piece possible via the Gemini API — not just a 30s clip but a full 3-minute journey with deliberate sections.
+
+**Could become prototypes**: (1) `arc-compose` — write a Resonance journey arc as prompted sections (available now via MiniMax 2.6, which has equivalent structural tag control; see §86); (2) `stem-spatial` — generate AI track → stem split → HRTF spatial positioning (2 cycles, FAL_KEY + stem model); (3) Polish `lyria-ghost` — once GEMINI_API_KEY is available, upgrade from 30s clip to 3-minute structured Ghost ambient piece.
+
+---
+
+### 86. MiniMax Music 2.6 — Structural Section Tags + Dual Prompt ($0.03, FAL_KEY)
+**Source**: https://fal.ai/models/fal-ai/minimax-music/v2.6/api · https://www.minimax.io/news/minimax-music-25 · https://www.toolworthy.ai/tool/minimax-music-2-5
+
+MiniMax Music v2.6 is now on fal.ai with 14+ song section tags: `[Intro]`, `[Verse]`, `[Pre Chorus]`, `[Chorus]`, `[Post Chorus]`, `[Hook]`, `[Bridge]`, `[Interlude]`, `[Transition]`, `[Build Up]`, `[Drop]`, `[Break]`, `[Inst]`, `[Solo]`, `[Outro]`. The **dual-prompt system** separates style direction (10–300 chars, controls mood/genre) from lyrics (10–3000 chars, controls text/sections). `[Inst]` tag suppresses vocals, generating pure instrumental. Each generation costs **$0.03**. FAL_KEY already in use. API endpoint: `fal-ai/minimax-music/v2.6`.
+
+**Why it matters**: The `18-elevenlabs-compose` prototype was designed for structured section-based composition but at $1.13/generation — cost-prohibitive for experimentation. MiniMax 2.6 delivers the same section-level control at $0.03, 37× cheaper. More importantly, Resonance's journey arc has a direct analog in musical sections: an "intro" is sparse and ambient, a "build up" adds layers, a "chorus" is the psychedelic peak, an "outro" is the dissolution. Writing this arc as `[Intro] single piano note fading in, 15s [Build Up] cello enters low, pad swells, 20s [Chorus] full orchestral peak, drums, bright reverb, 20s [Outro] instruments fall away one by one, 10s` → a 65-second piece with exactly that structure. This is the prototype that turns the abstract arc concept (`5-arcs`) into actual generated music.
+
+**Could become a prototype**: `arc-compose` — a textarea editor with section-tag helper buttons ([Intro], [Build Up], [Chorus], [Outro], [Bridge]). User writes a journey arc in musical language. Style prompt: "cinematic orchestra, dark ambient, major key resolution". Press "Compose Arc →". Server route calls `fal-ai/minimax-music/v2.6` with the composed sections as lyrics + style string. Returns 30–90s structured piece. Plays through the bloom visualizer. Download the generated MP3. FAL_KEY already in use. $0.03/generation. Route: `/dream/48-arc-compose`. One-cycle build.
+
+---
+
+### 87. AILive Mixer — Zero-Latency Deep Learning Live Music Mixer (arxiv 2603.15995, March 2026)
+**Source**: https://arxiv.org/abs/2603.15995
+
+First end-to-end deep learning system designed specifically for live music performance mixing. Inputs: multiple concurrent instrument channels (with acoustic bleed from co-located instruments). Output: a balanced mono mix at **zero added latency**. Architecture: transformer encoder block learns inter-channel context (e.g., which channels are currently dominant), followed by a GRU block for temporal context (momentum of levels), predicting per-channel gain coefficients. The GRU allows the system to track the dynamics of a performance in real time without buffering delays. Handles the specific live-performance problem that studio mixing tools can't: channels are inherently contaminated by neighboring instruments, so gain must account for bleed — not just signal strength.
+
+**Why it matters**: Directly validates the AI mixing layer of the `4-operator` prototype. The `35-loop-station` already runs 4 simultaneous loop tracks — adding an "🤖 AI balance" toggle that normalizes each slot's RMS energy (a browser-feasible approximation of the DL model's gain prediction) would demonstrate the concept interactively. Full DL model is server-side, but energy-based RMS normalization in Web Audio is immediate and gives the correct qualitative behavior. Real venue use case: no sound engineer needed for a solo Resonance performance — the system auto-balances mic input vs backing layers.
+
+**Could become**: a polish cycle on `35-loop-station` — "🤖 Auto-mix" toggle that uses a `GainNode` per slot driven by RMS metering (compute average energy over a 500ms window, normalize each slot so the sum stays constant, smooth via `setTargetAtTime` with 1s time constant). One polish cycle. Zero new deps.
+
+---
+
+### 88. Real-Time Human-AI Co-Performance via Latent Diffusion (arxiv 2604.07612, April 2026)
+**Source**: https://arxiv.org/abs/2604.07612 · https://arxiv.org/html/2604.07612
+
+Accompaniment generation as a **sliding-window look-ahead protocol**: the model predicts the next few seconds of accompaniment based on recent context audio, then continuously updates as the musician continues. Front-end: MAX/MSP (real-time audio environment). Back-end: Python inference server running a latent diffusion model. Communication: OSC/UDP messages. Consistency distillation reduces sampling time by **5.4×**, achieving real-time operation. Key design tension: longer look-ahead (more context for the model → better coherence) vs. shorter latency (responds faster to what the musician just played). The paper frames this tradeoff as the central architectural choice for any live AI accompaniment system.
+
+**Why it matters**: The look-ahead concept is exactly what `39-anticipate`'s ghost-note display visualizes — Aria's planned notes appear before they play. `33-aria-companion` and `39-anticipate` are lightweight browser implementations of this pattern (Markov chain for the "model"). The difference between these prototypes and the full system is model fidelity: Markov chain is 20 lines of JS, consistent-diffusion is a 400M-parameter neural network. The tradeoff that this paper formalizes (longer look-ahead = better music, more latency) is already visible in `39-anticipate`: Aria's ghost notes are planned ~0.5s ahead. Extending the look-ahead to 2s would make the response more coherent but feel less reactive.
+
+**Could become**: a polish cycle on `39-anticipate` — add a "Look-ahead" slider (0.5s / 1s / 2s) that changes how far ahead the ghost notes appear. At 2s look-ahead, Aria's full response is visible while you're still playing the last notes of your phrase. The visual representation becomes a clear demonstration of the coherence/latency tradeoff documented in the paper.
+
+---
+
+### 89. DARC — Tap-to-Drum Rhythm Accompaniment (arxiv 2601.02357, January 2026)
+**Source**: https://arxiv.org/pdf/2601.02357 · https://www.researchgate.net/publication/399477230_DARC_Drum_accompaniment_generation_with_fine-grained_rhythm_control
+
+DARC (Drum Accompaniment with Rhythm Control) takes rhythmic audio input — tapping, beatboxing, or any percussive sound — and generates drum accompaniment that matches the input's rhythm. NMF-based onset detection extracts rhythm from audio (onset times + timbre classes — distinguishing "kick-like" low-frequency taps from "snare-like" mid-frequency slaps). **Tap2Drum** mode: capture ~8 beats of tapping → generate a full drum pattern at that tempo, extrapolating the rhythm to a standard drum kit. Real-time generation is listed as future work, but the onset detection and pattern-matching components are browser-feasible today without any ML inference.
+
+**Why it matters**: None of the 47 sandbox prototypes accept **rhythm as the primary input** (pitched melody as input: `33-aria-companion`, `39-anticipate`; recorded audio as input: `43-stable-extend`, `44-vocal-bgm`; tab/click as input: `36-pluck-field`). Rhythm-as-input is the most accessible entry point for non-pianists — anyone can clap, tap, or beatbox. Web Audio onset detection is already proven in the sandbox (`1-live`'s onset flash, `12-tessellate`'s mass tile flip, `36-pluck-field`'s mic mode). A browser implementation is: mic → onset detection → onset timestamps → beat-quantization to a 2-bar grid → Karplus-Strong drum synthesis at each grid position.
+
+**Could become a prototype**: `tap-rhythm` — user taps any surface or claps into mic; onset detection captures the pattern over 2 bars; the pattern becomes a looping step sequencer. Each onset position triggers a drum hit synthesized via Web Audio (kick: low-frequency sine burst + distortion; snare: filtered noise burst; hi-hat: high-pass white noise with fast decay). Visual: circular step sequencer clock — dots light up on each hit position as the loop revolves. After the initial 2-bar capture, individual steps can be toggled (click the clock face). BPM slider. "Clear and re-tap" resets. Zero deps, zero API. Route: `/dream/48-tap-rhythm`. One-cycle build. High live-performance fitness.
+
+---
+
+### 90. Streaming Music Accompaniment — Latency/Coherence Architecture (arxiv 2510.22105, October 2025)
+**Source**: https://arxiv.org/html/2510.22105v1 · https://arxiv.org/pdf/2510.22105
+
+Formal model for streaming accompaniment generation, characterizing the fundamental tradeoff between two design parameters: **future visibility** (the time gap between when audio is played back and the latest input the model has seen — larger = more coherent but requires faster inference) and **output chunk duration** (larger chunks = better throughput, worse adaptability). The analysis shows that increasing future visibility improves accompaniment coherence but requires proportionally faster generation. A model generating at 1× real-time with 2s future visibility produces accompaniment that "looks ahead" 2 seconds — the system always knows what you just played before deciding what to play next.
+
+**Why it matters**: This paper explains exactly why `30-lyria-jam` (Lyria RealTime) has a ~2s update latency when you change a slider, and why real-time AI music needs a fast backend. It also explains the fundamental constraint on in-browser AI music: browser inference can't match the latency target for high-quality accompaniment (would need ~2s real-time generation speed for a 2s look-ahead). This is the theoretical reason `33-aria-companion` uses a Markov chain (instant) rather than a diffusion model (seconds). It also suggests a design pattern for `48-arc-compose` or `30-lyria-jam`: display an explicit "pre-generating next section..." indicator 2s before the section plays, making the latency a designed feature rather than a bug.
+
+**Research note**: Primarily architectural understanding. Reference when proposing latency-sensitive prototypes. No new prototype directly needed.
+
+---
+
+### 91. SonoCraftAR — Multi-Agent LLM Sound-Reactive Interface Generation (arxiv 2508.17597, August 2025)
+**Source**: https://arxiv.org/abs/2508.17597 · https://makeabilitylab.cs.washington.edu/project/sonocraftar/
+
+Multi-agent LLM pipeline that generates sound-reactive AR interfaces from typed natural language descriptions. Architecture: (1) **Prompt Enhancement agent** expands the user's description into structured implementation guidelines; (2) **Code Generation agent** produces Unity C# scripts using the Shapes vector graphics library; (3) **Code Checker agent** verifies compilation; (4) **Roslyn runtime compiler** compiles and runs the script in AR. Maps dominant audio frequency to visual properties (size, color, position). Designed for deaf/hard-of-hearing users to author sound visualizations without coding. Key demo: "make a bar that gets taller with low frequencies" → animated AR bar responding to bass.
+
+**Why it matters**: The meta-idea is the most interesting: describe a visualization in natural language → get running code that implements it. The pipeline is Unity/C#/AR-specific, but the pattern is applicable to the dream zone's Web Audio + Canvas2D stack. A "describe your visualization, get a running prototype" tool would itself be a dream prototype — one that uses the Claude API to generate small self-contained audio-reactive canvas scripts. Every `page.tsx` in the sandbox follows the same structural pattern (AnalyserNode → FFT bands → Canvas2D draw loop); a code-generating agent constrained to this pattern would be well-scoped.
+
+**Could become**: `claude-canvas` — textarea where the user describes an audio-reactive visualization ("a particle cloud that explodes on every beat, larger particles for lower pitches, color changes with harmony"). Claude API (claude-haiku-4-5 for speed + cost) generates a self-contained JavaScript sketch that runs in an isolated sandbox (iframe with postMessage for audio data). Admin-only, needs ANTHROPIC_API_KEY accessible from server route. This is a meta-prototype: the dream sandbox can generate its own prototypes from descriptions. Route: `/dream/48-claude-canvas`. Needs Karel OK on Claude API in dream zone environment.
+
+---
+
+### 92. Three.js/WebGPU Organic Audio-Reactive Forms + Bioluminescent AV (May 2026)
+**Source**: https://threejsroadmap.com/blog/galaxy-simulation-webgpu-compute-shaders · https://github.com/sandner-art/Audio-Shader-Studio · https://www.webgpu.com/showcase/
+
+The Three.js WebGPU community (r174+, May 2026) is producing audio-reactive experiments significantly beyond the geometric forms in the sandbox. Two standout patterns: (1) **Bioluminescent organic forms** — a sea-anemone-style 3D mesh with procedurally generated `TubeGeometry` branches; sub-bass sways the trunk; treble flickers the branch tips; bloom post-processing makes the whole structure glow softly against black. `21-three-mesh-av` uses an icosahedron (rigid geometric form); an organic branching form would feel alive rather than mathematical. (2) **GPU galaxy simulations** — 100,000 star particles with WebGPU compute shaders, N-body gravity, additive blending → spiral galaxy arms, core dense glow, audio-reactive temperature (RMS energy → particle velocity). Audio Shader Studio (github.com/sandner-art/Audio-Shader-Studio) is a dedicated WebGL browser platform for audio-reactive fragment shader experiments.
+
+**Why it matters**: The sandbox has covered particles (`8-particle-life`, `16-particle-life-gpu`), fluids (`3-fluid`, `15-webgpu-fluid`), 3D mesh (`21-three-mesh-av`), and terrain (`11-terrain`). The **organic living form** aesthetic — something that breathes, sways, tentacles flickering — is not represented. `21-three-mesh-av` is the most visually polished prototype but it reads as a technical demo (a deforming platonic solid). An anemone form would read as alive. All dependencies (`three@0.182`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`) are **already installed in Resonance** — zero new package.json changes needed. TSL vertex displacement handles both WGSL (WebGPU) and GLSL (WebGL) automatically.
+
+**Could become a prototype**: `anemone-av` — a Three.js R3F scene with a procedurally generated branching 3D form. Main trunk: 1 tube geometry, 8 branches, each branch 3–6 sub-branches. Sub-bass (20–100 Hz) drives a low-frequency sway rotation of the main trunk. High-mid energy (2–4 kHz) drives tip-flicker (rapid vertex oscillation on the outermost branches). A TSL displacement material handles both; bloom post-processing creates the bioluminescent glow. Demo mode: LFO oscillators animate the form without mic permissions. Dark background, deep violet → cyan → white glow gradient tracking frequency. Route: `/dream/48-anemone-av`. Zero new deps. One-cycle build.

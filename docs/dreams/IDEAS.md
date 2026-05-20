@@ -903,3 +903,64 @@ Key findings from Cycle 51 (2026-05-20):
 - Oscilloscope music browser tools (§82) — Lissajous figure composition as audio. Inverts `20-scope`. Inspires `osc-composer`.
 - Rust/WASM AudioWorklet (§83) — browser-native production DSP. ~150KB CDN dep. Inspires `wasm-filter`, upgrades `34-spectral-morph`.
 - Proactive AI music therapy (§84) — mood-path traversal via Russell circumplex. Combines `38-mood-xy` + `42-binaural`. Inspires `mood-journey`.
+
+---
+
+## FROM RESEARCH (Cycle 56, 2026-05-20) — promoted to queue
+
+### arc-compose — MiniMax Music 2.6 journey arc composer with structural section tags `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/48-arc-compose`. Left panel: a textarea with section-tag helper buttons ([Intro], [Verse], [Build Up], [Chorus], [Bridge], [Outro], [Inst]). Style prompt field: "cinematic orchestra, dark ambient" or "jazz piano trio, warm". Right panel: the generated waveform + bloom visualizer. User writes an arc like:
+
+```
+[Intro] single piano note in vast reverb, silence between phrases, 15 seconds
+[Build Up] low cello drone enters, pad swells, tension builds, 20 seconds
+[Chorus] full orchestral peak, bright major resolution, drums present, 20 seconds
+[Outro] instruments fade one by one, piano alone, then silence, 10 seconds
+```
+
+Server route calls `fal-ai/minimax-music/v2.6` with the arc text as lyrics and the style string. The model generates a 60–90s structured piece that follows the arc. MP3 plays through the six-band bloom visualizer; waveform strip shows the full duration. Download button saves the MP3.
+
+Why this now: `18-elevenlabs-compose` was designed for exactly this interaction but cost $1.13/generation — prohibitively expensive for experimentation. MiniMax 2.6 delivers equivalent section control at **$0.03**, 37× cheaper. This is the prototype that turns the abstract arc concept (`5-arcs` — five arc types described in prose) into a generated 60-second piece you can actually listen to and show at a venue. First prototype where Karel can hear what a Cinematic Three-Act or EDM Build-and-Drop arc *sounds like* with real AI-generated music. FAL_KEY already in use. Zero new approvals. One-cycle build. RESEARCH.md §86.
+
+### tap-rhythm — tap your rhythm, get a step sequencer `[queued, zero deps]`
+Route: `/dream/48-tap-rhythm`. Mic → onset detection (same amplitude threshold approach as `1-live` and `36-pluck-field`). User taps on any surface or claps for ~8 beats. The agent detects each onset, measures inter-onset intervals to estimate BPM, and quantizes each tap to the nearest 16th-note position in a 2-bar grid. After 8+ taps, the grid is displayed as a **circular step sequencer** (clock face with 32 positions). Each filled position loops, triggering a drum sound synthesized via Web Audio:
+- Low-energy taps → kick: 55Hz sine burst, 80ms attack-decay, slight distortion
+- Mid-energy taps → snare: filtered noise burst, 50ms duration, 2kHz peak
+- High-energy taps (louder) → hi-hat: 6–12kHz white noise, 20ms sharp decay
+
+The clock hand rotates at the detected BPM. User can toggle individual steps on/off (click the clock face). Tap new rhythm → re-captures and replaces. BPM slider (±20% from detected). "Clear" resets. Mic amplitude indicator while tapping.
+
+Why this: None of the 47 prototypes accept rhythm as the primary input. A non-pianist can walk up and clap a rhythm — the prototype turns it into a live drum loop. First step toward the DARC tap-to-drum concept (RESEARCH.md §89). High live-performance fitness: at a venue, tap a groove, and the rhythm starts playing. Zero deps, zero API. One-cycle build.
+
+### anemone-av — organic bioluminescent 3D form dancing to audio `[queued, zero new deps]`
+Route: `/dream/48-anemone-av`. A Three.js R3F scene (all deps already installed: `three@0.182`, `@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`) with a procedurally generated branching 3D anemone form:
+- Main trunk: 1 `TubeGeometry` path (sinusoidal spine curve)
+- 8 branches: each sprouting from the trunk at a different height/angle
+- Sub-branches: 3–5 per branch, tapering, with randomized directions
+
+**TSL vertex displacement** (compiled to WGSL/GLSL automatically by Three.js TSL):
+- Sub-bass (20–100 Hz): slow pendulum sway of the main trunk axis (~0.3 Hz, ±15°)
+- Low-mid (100–500 Hz): branch base rotation (±8°, 0.8 Hz)
+- High-mid (2–4 kHz): tip-flicker — outer branch vertices oscillate rapidly (4 Hz, ±3°)
+- Onsets: a brief global pulse — all geometry expands by 10% for 80ms then contracts
+
+**Bloom post-processing** (`UnrealBloomPass` via `@react-three/postprocessing`): glowing core (white), branch body (deep cyan), tips (violet). Alpha fades with distance from center — the form glows against pure black.
+
+Demo mode: LFO oscillators (sub-bass at 0.1 Hz, high-mid at 3 Hz) animate the form without mic permissions. Mic mode: live FFT drives all parameters. Dark background, no axes, just the form. One sentence description overlay fades after 3s.
+
+Why this: `21-three-mesh-av` is the only 3D prototype and it uses rigid platonic geometry (icosahedron). An organic living form — tentacles flickering, trunk swaying — reads as alive rather than mathematical. Sub-bass swaying the trunk at concert-room dynamics would be genuinely striking on a projector. Zero new deps (all Three.js packages are installed). One-cycle build. RESEARCH.md §92.
+
+### stem-spatial — AI track → stem split → HRTF band positioning `[queued, needs FAL_KEY + stem API — two cycles]`
+Route: `/dream/48-stem-spatial`. Step 1: generate a 30s instrumental track via MiniMax Music 2.6 (`[Inst]` tag, no vocals) with a brief style prompt. Step 2: send the generated MP3 to a stem separation model (fal.ai has Demucs-based stem splitters — check current availability). Step 3: the separated stems (drums, bass, piano/melody, other) are each decoded into an `AudioBuffer` and routed to a separate `PannerNode` with distinct HRTF position: drums from above, bass from below, piano from front-left, melody from front-right. Drag any source dot to reposition in 3D space (same canvas sphere as `29-scene-spatial`). Wear headphones.
+
+Why this: `7-spatial` spatializes mic input across frequency bands. `29-scene-spatial` spatializes synthesized sounds. `stem-spatial` is the first prototype that spatializes an AI-generated full track — the band you summoned is placed in 3D space around you. Combines `48-arc-compose` (generation) with `7-spatial` (HRTF positioning). Budget: ~$0.03 (MiniMax) + ~$0.01–0.05 (stem split). FAL_KEY already in use. Two-cycle build (generation + spatial routing). RESEARCH.md §85.
+
+Key findings from Cycle 56 (2026-05-20):
+- Google Flow Music + Lyria 3 Pro (RESEARCH.md §85) — stem splitter, 3-min structured songs, "Replace+Extend" section regeneration. Inspires `stem-spatial`. Same Gemini key as `lyria-ghost`.
+- MiniMax Music 2.6 (§86) — 14+ structural section tags, $0.03/generation, FAL_KEY in use. Inspires `arc-compose` — the `18-elevenlabs-compose` prototype, finally affordable.
+- AILive Mixer (§87, arxiv 2603.15995) — zero-latency DL auto-mixer for live performance. Inspires polish of `35-loop-station` with RMS-based auto-gain.
+- Real-Time Human-AI Co-Performance (§88, arxiv 2604.07612) — look-ahead latent diffusion + MAX/MSP, 5.4× speedup. Inspires look-ahead slider polish of `39-anticipate`.
+- DARC (§89, arxiv 2601.02357) — tap/beatbox → drum accompaniment. Inspires `tap-rhythm` — zero deps, highest accessibility.
+- Streaming accompaniment (§90, arxiv 2510.22105) — latency/coherence tradeoff formalized. Explains Lyria RealTime 2s update delay. Reference for all future real-time AI music prototypes.
+- SonoCraftAR (§91, arxiv 2508.17597) — multi-agent LLM generates sound-reactive AR interfaces from text. Inspires `claude-canvas` meta-prototype (needs Karel OK on ANTHROPIC_API_KEY in dream zone).
+- Bioluminescent AV + Galaxy WebGPU (§92) — organic branching forms dancing to audio, Three.js TSL. Inspires `anemone-av` — zero new deps, One-cycle build.

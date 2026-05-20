@@ -1,49 +1,59 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 55)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 56)
 
 ## New since yesterday
 
-- **[/dream/47-mood-journey](/dream/47-mood-journey)** — Mood Journey
-  _Why open this_: click your NOW mood anywhere on the Russell circumplex (valence × arousal),
-  then click your GOAL mood, pick a duration (2m / 5m / 10m / 20m), press Begin. The dot glides
-  from Now to Goal automatically — no interaction needed. The music walks with it: BPM, chord
-  quality, register, and a second isochronic tone layer all track the gliding position in real time.
-  At the midpoint of "distressed → content" you hear a genuine audio blend of both states.
-  **The first prototype where you surrender control to the arc.** Zero deps, no API keys.
+- **Cycle 56 was a research sweep** (no new prototype — research was overdue at 4 cycles).
+  8 new RESEARCH.md entries (§§85–92). 4 new IDEAS queued. Highlights below.
 
-## What's been shipping (Cycles 53–54)
+## Research findings worth opening
 
-- **[/dream/46-osc-composer](/dream/46-osc-composer)** — Oscilloscope Composer _(Cycle 54)_
-  Design a Lissajous shape, download the stereo WAV that draws it on an oscilloscope in XY mode.
-  Perfect fifth = trefoil, perfect fourth = rose, major sixth = starburst. Puzzle mode.
+- **MiniMax Music 2.6 — section tags now available** (RESEARCH.md §86)
+  14+ structural tags: `[Intro]` `[Build Up]` `[Chorus]` `[Outro]` etc. $0.03/generation.
+  FAL_KEY already in use. This makes `arc-compose` buildable **today** — write a Resonance
+  journey arc in musical language, get a 60–90s AI piece with exactly that structure.
+  _What to open_: nothing yet — `arc-compose` is the next cycle's build. But the spec is in
+  IDEAS.md if you want to read what this would look like.
 
-- **[/dream/45-guided-session](/dream/45-guided-session)** — Guided Brainwave Session _(Cycle 53)_
-  Pick a journey arc (Stressed → Calm, etc.), isochronic tones walk your brainwave frequency
-  from start to goal. No headphones needed. Journal, path breadcrumb, auto-advance.
+- **Google Flow Music + Lyria 3 Pro — Stem Splitter** (RESEARCH.md §85)
+  Flow Music (flowmusic.app, April 2026) now has a Stem Splitter: any AI-generated track
+  breaks into isolated vocals/drums/bass/piano. Same Lyria 3 model, same Gemini API key.
+  This unlocks `stem-spatial`: generate a 30s AI track → split stems → HRTF spatial placement
+  (drums above, bass below, piano left, melody right). Waiting on GEMINI_API_KEY.
+
+- **`anemone-av` — organic bioluminescent 3D form, zero new deps** (RESEARCH.md §92)
+  Three.js community is building organic audio-reactive forms: sea-anemone-like meshes where
+  sub-bass sways the trunk and treble flickers the tips, with bloom glow. All Three.js deps
+  already installed in Resonance. This is a one-cycle build — and would be the most visually
+  striking prototype in the sandbox.
+
+- **`tap-rhythm` — clap your rhythm, hear your drum loop** (RESEARCH.md §89, §90)
+  Inspired by DARC (arxiv 2601.02357). None of the 47 prototypes accept rhythm as primary
+  input. Mic onset detection → 2-bar step sequencer → Karplus-Strong drum hits. Zero deps.
 
 ## In progress / partial
 
 - Nothing currently in-progress.
 
-## Research findings worth a look
-
-- **`mood-journey` is now live** — the proactive traversal prototype shipped this cycle. Polish
-  direction: non-linear arc shapes (peak through energetic before descending to serene), waypoint
-  system like guided-session, mic amplitude → arousal feedback, preset journeys (Morning activation,
-  Sleep prep, Creative flow).
-
-- **Zero-dep buildable queue is now exhausted.** Next cycle will be a research sweep (3–4 cycle
-  cadence; last research was Cycle 51, now 4 cycles ago: 52, 53, 54, 55). Research is overdue.
-
 ## Open questions for Karel
 
-1. **GEMINI_API_KEY** — still pending. Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`,
-   `piano-to-ghost`. Four prototypes waiting on one key. This is the single highest-leverage action
-   you can take to unlock the next generation of prototypes.
+1. **GEMINI_API_KEY** — still the single highest-leverage action. Unlocks:
+   - `lyria-ghost` (Ghost scene → 30s ambient score)
+   - `binaural-lyria` (binaural beats + matched AI ambient music)
+   - `piano-to-ghost` (your playing generates Ghost image + music simultaneously)
+   - `stem-spatial` (Lyria 3 Pro generate + stem split + HRTF 3D positioning)
+   - Upgrade `lyria-ghost` → 3-minute structured Ghost ambient piece (Lyria 3 Pro)
 
-2. **`44-vocal-bgm` API status** — did the ACE-Step endpoint work, or did you see a fal.ai error?
-   If error: paste the message (shown in the prototype's UI) and the agent will fix `route.ts`.
+2. **`44-vocal-bgm` API status** — did the ACE-Step endpoint work? If you saw a fal.ai
+   error, paste the message (shown in the UI) and we fix `route.ts` next cycle.
 
-3. **CDN deps awaiting approval**:
+3. **CDN deps still pending approval**:
    - `ghost-xr` — A-Frame CDN ~1MB → WebXR spatial audio inside a Ghost scene
-   - `neural-pitch` — ONNX Runtime Web CDN ~2MB → 10× more accurate pitch detection for 6+ prototypes
+   - `neural-pitch` — ONNX Runtime Web CDN ~2MB → 10× more accurate pitch for 6+ prototypes
    - `browser-musicgen` — Transformers.js ~390MB → offline MusicGen, zero API cost
+   - `claude-canvas` — ANTHROPIC_API_KEY in dream zone → AI generates canvas sketches from text
+
+4. **Next cycle build: which?**
+   - `arc-compose` — hear what a Resonance journey arc actually sounds like ($0.03/gen, FAL_KEY)
+   - `anemone-av` — organic living 3D form dancing to audio (zero new deps, zero API)
+   - `tap-rhythm` — clap a groove, get a drum loop (zero deps, zero API)
+   All three are one-cycle builds. Agent will pick `arc-compose` unless you say otherwise.
