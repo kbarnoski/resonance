@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 64)
+## ⭐ Newest (Cycle 65)
+
+- **[/dream/6-compose](/dream/6-compose)** — Compose. `demoable`
+  The oldest queued prototype (Cycle 4, 61 cycles in queue). Describe a mood or scene in
+  plain language → ACE-Step generates 30 seconds of music. Five Ghost scene presets as
+  quick-start buttons: Forest Dawn (ceremonial drums, reverbed piano), Stone Chamber
+  (single chord, long stone reverb), Underground Pool (water drip rhythm, drone), Cosmic
+  Ascension (orchestral strings, 80 BPM), Tiny Planet (music box, sparse piano). The style
+  tags textarea is always visible — you can see and edit exactly what's sent to the model.
+  Waveform strip with playhead sweep. Six-band bloom visualizer during playback.
+  Replay + MP3 download. Different from `48-arc-compose`: that uses structural section tags
+  ([Intro]/[Build Up]/[Chorus]) for 60–90s structured pieces; this is "describe the vibe,
+  get a 30s sketch." FAL_KEY already in use · $0.006/track · 3.85 kB.
+  ⚠ Endpoint `fal-ai/ace-step` (base text-to-music endpoint) is a best-guess from naming
+  conventions. If it shows an error, paste the text and the agent fixes next cycle.
+  Design notes: `src/app/dream/6-compose/README.md`
+
+---
+
+## Previous newest (Cycle 64)
 
 - **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX. `demoable`
   Six Ghost narrative scenes — each with three AI-generated naturalistic sound clips

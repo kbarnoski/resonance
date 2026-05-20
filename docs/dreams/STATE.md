@@ -1,5 +1,38 @@
 # Dream Agent — cycle state
 
+## Cycle 65 — /dream/6-compose
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 64 built `53-ghost-sfx`. Priority check:
+1. Unblock — nothing confirmed blocked (ghost-sfx endpoint is a best-guess; Karel hasn't reported an error yet).
+2. Continue — no in-progress prototypes.
+3. Build new — `6-compose` is the oldest queued item in IDEAS.md (Cycle 4 research, 61 cycles unbuilt). FAL_KEY already in use. Server-route pattern established by vocal-bgm and arc-compose. One-cycle build. Clear spec.
+4. Research — Cycle 61 was last research (3 build cycles ago: 62, 63, 64). At the upper bound of the 3–4 cycle cadence, but "Build new" (priority 3) takes precedence over "Research" (priority 4) when a ready queued spec exists.
+5. Polish — skipped.
+
+Decision: build `/dream/6-compose`.
+
+**Why now**: `6-compose` has been in the queue since Cycle 4 (61 cycles). It was the first IDEAS.md entry added for the AI music generation cluster. The gap was that `arc-compose` (Cycle 57) already covers structured section-tag generation via MiniMax Music. This prototype fills a different niche: `arc-compose` = write an arc as section tags → get a structured 60–90s piece. `6-compose` = describe a mood or scene in plain language → get a 30s musical sketch. It's the "vibe first, think later" flow. The ACE-Step text-to-music endpoint (`fal-ai/ace-step`) is the base endpoint without the `/audio-to-audio` suffix used by vocal-bgm. FAL_KEY is in use, same fal.subscribe pattern as arc-compose.
+
+**Shipped**:
+- `src/app/dream/6-compose/page.tsx` — full prototype
+- `src/app/dream/6-compose/api/route.ts` — server route calling ACE-Step text-to-music
+- `src/app/dream/6-compose/README.md` — design notes
+
+**What's inside**:
+Five Ghost scene preset buttons (Forest Dawn, Stone Chamber, Underground Pool, Cosmic Ascension, Tiny Planet), each pre-loaded with a scene-specific mood+instrument+BPM tags string. Editable textarea shows the raw tags sent to ACE-Step — the user can read and modify the model's literal input. Generate → server route calls `fal-ai/ace-step` with `tags`, `lyrics: "[inst]"` (instrumental), `duration: 30`. Returns a 30-second audio clip. On return: decoded into an AudioBuffer, peaks computed for the waveform strip, then auto-played through a 6-band bloom visualizer (same palette as 1-live). Replay + MP3 download. Error display shows raw fal.ai error text (same pattern as arc-compose and vocal-bgm).
+
+**What I noticed**: The `fal-ai/ace-step` endpoint is distinct from `fal-ai/ace-step/audio-to-audio` (used by vocal-bgm). The text-to-music mode takes `tags` (style description) and `lyrics` (optionally `"[inst]"` for instrumental). Input structure mirrors the ACE-Step documentation pattern. If the endpoint name is wrong, the raw error is displayed. $0.006/30s same as audio-to-audio mode.
+
+**Queued next**:
+1. **Research** — Cycle 61 was last research (62, 63, 64, 65 = 4 build cycles). The 3–4 cycle cadence is now exceeded. Next cycle MUST be research.
+2. **`ghost-sfx` endpoint fix** — if Karel reports API errors from the ghost-sfx prototype, fix endpoint/params before research.
+3. **`6-compose` endpoint fix** — same as ghost-sfx: if Karel pastes an ACE-Step error, fix the endpoint path next cycle.
+4. **`claude-shader`** — still waiting on Karel: is `ANTHROPIC_API_KEY` accessible in Vercel env?
+
+---
+
 ## Cycle 64 — /dream/53-ghost-sfx
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

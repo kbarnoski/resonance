@@ -1,46 +1,42 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 64)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 65)
 
 ## New since yesterday
 
-- **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX `demoable` (Cycle 64)
-  Six Ghost scenes (Stone Chamber → Cosmic Ascension) each with three AI-generated
-  naturalistic sounds placed in 3D space via Web Audio HRTF PannerNode. Click a scene
-  → sounds generate concurrently from ElevenLabs on fal.ai → loop spatially around you.
-  Canvas: top-down sphere view with glowing scene-colored source dots and elevation hints.
-  **Wear headphones.** Best demo: Forest Dawn (birds above at +60°, stream hard-left,
-  piano front) or Cosmic Ascension (vast drone all around, shimmer rising at +30°
-  elevation, sub pulse from below at −50°).
-  ⚠ Endpoint `fal-ai/elevenlabs/sound-generation` is a naming-convention best-guess.
-  If sources show red errors, paste text here → agent fixes next cycle.
-  ~$0.05–0.15/scene · FAL_KEY already in use.
+- **[/dream/6-compose](/dream/6-compose)** — Compose `demoable` (Cycle 65)
+  The oldest queued prototype (61 cycles in the queue since Cycle 4). Describe a mood or
+  scene in plain language → ACE-Step generates 30 seconds of music. Five Ghost scene
+  presets: Forest Dawn (ceremonial drums, reverbed piano, 70 BPM), Stone Chamber (single
+  piano chord, long stone reverb, 50 BPM), Underground Pool (water drip rhythm, 40 BPM),
+  Cosmic Ascension (orchestral strings, 80 BPM), Tiny Planet (music box bells, 55 BPM).
+  The tags textarea is always visible — you can see exactly what's sent to the model.
+  Best first try: click **Forest Dawn** → click **▶ Compose** → wait ~30s.
+  ⚠ Endpoint `fal-ai/ace-step` is a best-guess. Paste any error text for a fix next cycle.
+  $0.006/track · FAL_KEY in use.
 
-- **[/dream/52-concept-steer](/dream/52-concept-steer)** — Concept Steer `demoable` (Cycle 63)
-  Six-axis hexagonal radar chart synthesizer: Brightness, Density, Regularity,
-  Complexity, Energy, Mode — the same vocabulary sparse autoencoders find inside music AI
-  models. Drag any handle; the synthesizer follows. Four presets: Classical Fugue, Dark
-  Ambient, Jazz Improv, Drone. Mode axis is especially interesting: major → minor →
-  diminished as a continuous parameter independent of brightness/density.
+- **[/dream/53-ghost-sfx](/dream/53-ghost-sfx)** — Ghost SFX `demoable` (Cycle 64)
+  Six Ghost scenes × three AI-generated naturalistic sounds each, placed in 3D via HRTF.
+  Best demo: Forest Dawn with headphones (birds above at +60°, stream hard-left, piano front).
+  ⚠ ElevenLabs endpoint still unconfirmed — paste any error text for a fix.
 
 ## In progress / partial
 
-- Nothing in-progress. Both recent cycles completed full demoable prototypes.
+- Nothing in-progress.
 
 ## Research findings worth a look
 
-- **Cycle 61 research** found `claude-shader` and `ghost-xr` as next high-priority builds —
-  both waiting on Karel answers below.
-- **Interpretable Concepts in Music Models (RESEARCH.md §94)** — the Brightness/Density/
-  Regularity/Complexity/Energy/Mode axes used in `52-concept-steer` come from sparse
-  autoencoder research on transformer music models. Same vocabulary, browser-synthesized.
+- Cycle 61 research identified `claude-shader` (needs `ANTHROPIC_API_KEY`) and `ghost-xr`
+  (needs A-Frame CDN dep ~1MB) as the highest-priority items waiting on Karel's answers.
+- Next cycle (#66) **must** be research — 4 build cycles without research (62, 63, 64, 65),
+  past the 3–4 cycle cadence.
 
 ## Open questions for Karel
 
-- **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader`: Claude generates an
-  audio-reactive GLSL fragment shader from a text description, it compiles and runs in
-  the browser. ~$0.001/generation at Haiku pricing. One cycle to build once confirmed.
-- **`GEMINI_API_KEY` still pending?** → Unlocks `lyria-ghost`, `binaural-lyria`,
-  `30-lyria-jam`, `piano-to-ghost` (4 queued prototypes).
-- **A-Frame CDN dep (~1MB) OK?** → Enables `ghost-xr` (stand *inside* the Ghost scene
-  spatial audio world via WebXR, head-tracked on Quest/Vision Pro).
-- **`ghost-sfx` endpoint** — works? Or red errors in the source status cards?
-  Paste any error text and the agent fixes endpoint/params next cycle.
+- **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader` (Claude generates
+  audio-reactive GLSL shaders from text descriptions, runs live in browser). ~$0.001/gen.
+- **`GEMINI_API_KEY`?** → Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`,
+  `piano-to-ghost` (4 queued prototypes, very different capabilities).
+- **A-Frame CDN dep (~1MB) OK?** → Enables `ghost-xr` (stand *inside* Ghost scene spatial
+  audio world via WebXR, head-tracked on Quest/Vision Pro).
+- **`6-compose` working?** Did Forest Dawn generate a 30s track? Or red error text?
+  (ACE-Step endpoint is a best-guess from naming conventions — paste error text if so.)
+- **`53-ghost-sfx` working?** Same question for the ElevenLabs SFX endpoint.
