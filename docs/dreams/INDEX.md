@@ -10,7 +10,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 53)
+## ⭐ Newest (Cycle 54)
+
+- **[/dream/46-osc-composer](/dream/46-osc-composer)** — Oscilloscope Composer.
+  Design a Lissajous figure using three sliders (L freq, R freq, phase), then download the
+  **stereo WAV that draws it** on an oscilloscope in XY mode. Five preset shapes map to musical
+  intervals: Circle (1:1 unison), Figure-8 (1:2 octave), Trefoil (2:3 perfect fifth), Rose
+  (3:4 perfect fourth), Starburst (3:5 major sixth). Puzzle mode shows a target figure alongside
+  yours — tune to match and collect the "✓ Matched!" badge.
+
+  **The only prototype where the download IS the point** — the WAV's L channel is the X axis
+  and R channel is the Y axis. Load it in `20-scope` (Phase Portrait mode) and the figure
+  reappears. Load it on a real oscilloscope and it draws on screen.
+
+  **Musical intervals as geometry**: a perfect fifth is a 2:3 frequency ratio — which draws
+  a three-lobe trefoil. A perfect fourth draws a four-lobe rose. The visual shape IS the
+  harmonic relationship. Zero deps, no API keys.
+
+  Design notes: `src/app/dream/46-osc-composer/README.md`
+
+---
+
+## Previous newest (Cycle 53)
 
 - **[/dream/45-guided-session](/dream/45-guided-session)** — Guided Brainwave Session.
   Pick a journey ("Stressed → Calm", "Scattered → Calm", "Wired → Drowsy", "Alert → Deep Rest"),
@@ -813,6 +834,33 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 46-osc-composer
+**Status**: `demoable` · **Cycle shipped**: 54 · **Last touched**: 2026-05-20
+
+Open `/dream/46-osc-composer`. Click **▶ Start** — the canvas initializes black. Click the
+**Circle** preset: a perfect circle appears in cyan on the black canvas. Click **Figure-8**:
+the circle stretches into the ∞ symbol. Click **Trefoil**: three interlocked loops.
+
+Now try the sliders. With the **Trefoil** shape active (2:3, 0°), drag the Phase slider slowly
+from 0° toward 90°. The three lobes rotate and redistribute — the shape stays a trefoil but
+its orientation changes continuously. At 180° you're back to the same shape but mirrored.
+
+Try **L freq = 3, R freq = 5** without a preset — you get the raw 3:5 Starburst. Now drag
+Phase — the star rotates. At 36° it aligns to the canonical Starburst shape.
+
+Click **↓ Download WAV**: a "Rendering…" state appears for ~40ms while 220,500 samples are
+computed in JavaScript (two Math.sin loops). A 5-second stereo WAV downloads. To verify:
+open `20-scope` in another tab, load the WAV into it (Phase Portrait mode) — you'll see the
+exact figure from the canvas.
+
+Click **🎯 Puzzle mode**: select "Trefoil" as the target. The canvas splits — grey target on
+left, yours on right. Set L=2, R=3 first to get the right shape, then sweep Phase until
+"✓ Matched!" appears. The tolerance is 12° — just enough to require real tuning.
+
+Design notes: `src/app/dream/46-osc-composer/README.md`
+
+---
 
 ### 45-guided-session
 **Status**: `demoable` · **Cycle shipped**: 53 · **Last touched**: 2026-05-20

@@ -1,5 +1,61 @@
 # Dream Agent — cycle state
 
+## Cycle 54 — /dream/46-osc-composer
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 53 shipped `45-guided-session`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `osc-composer` is #1 in the buildable queue. Zero deps, no API keys. One-cycle build.
+4. Research — Cycle 51 was last research (3 cycles ago: 52, 53, 54). At the lower bound of the 3–4 cycle threshold — but build takes priority per procedure order.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/46-osc-composer`.
+
+**Why now**: `20-scope` (Cycle 22) visualizes incoming audio as Lissajous figures. `osc-composer` inverts the whole interaction: you design the shape first, and the stereo WAV that draws it on an oscilloscope is the artifact. It's the first prototype in the sandbox where the download IS the point — not a saved canvas painting, not a generated audio clip, but a file whose sonic content and visual content are the same thing. The musical intervals as geometry angle (1:1 unison = circle, 2:3 P5th = trefoil, 3:4 P4th = rose) gives it conceptual depth. Zero deps, no API keys, pure Web Audio + Canvas2D. One-cycle build.
+
+**Shipped**:
+- `src/app/dream/46-osc-composer/page.tsx` — full interactive prototype (~310 lines)
+- `src/app/dream/46-osc-composer/README.md` — oscilloscope music context, WAV encoding, musical intervals as geometry
+
+**What's inside**:
+
+**Core synthesis**: Two `OscillatorNode`s (sine waves) routed through a `ChannelMergerNode` — L channel at `BASE_HZ × rL`, R channel at `BASE_HZ × rR` with a phase offset. The phase offset is applied by starting the R oscillator slightly in the past: `oR.start(ac.currentTime - phaseRad / (2π × freqR))`. This gives the R channel a leading phase at time 0, producing the correct Lissajous orientation.
+
+**Lissajous canvas**: Drawn analytically (no audio sampling needed). `paintFigure()` — defined at module level, stable — plots 3000 points: `x = cx + r × sin(rL × t)`, `y = cy - r × sin(rR × t + φ)` for t ∈ [0, 2π). CRT phosphor persistence via `rgba(0,0,0,0.13)` overlay each frame. The canvas clears entirely on Start and the persistence effect builds up.
+
+**Five preset shapes** with their musical interval relationships:
+- Circle (1:1, 90°, unison)
+- Figure-8 (1:2, 0°, octave)
+- Trefoil (2:3, 0°, perfect fifth)
+- Rose (3:4, 0°, perfect fourth)
+- Starburst (3:5, 36°, major sixth)
+
+**Live sliders**: L freq (1–5×), R freq (1–5×), Phase (0–359°). Oscillator frequencies update via `setTargetAtTime` with 50ms time constant — smooth glide without audio click. Phase changes only affect the canvas (visual is always correct); audio phase is set once at startup.
+
+**↓ Download WAV**: Generates a 5-second stereo WAV in pure JS — 220,500 samples per channel computed via `Math.sin` loop, interleaved as 16-bit PCM, encoded with a hand-written WAV header. The Blob constructor receives the raw `ArrayBuffer` directly. No OfflineAudioContext needed. Runs synchronously in ~10ms; `setTimeout(fn, 40)` allows React to render "Rendering…" before the loop starts.
+
+**Puzzle mode**: Shows a target Lissajous (grey, left half) and the user's current figure (cyan, right half) side by side with a dashed divider. Four targets (Circle → Rose in difficulty order). "✓ Matched!" badge appears when `rL === target.rL && rR === target.rR && |phase - target.ph| < 12°`. The 12° tolerance avoids frustration while still requiring genuine tuning.
+
+**Build validation**: `npm run build` passes cleanly. `/dream/46-osc-composer` compiles at 3.42 kB (static route). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files. Vercel build will pass.
+
+**What I noticed**: The phase slider is more interesting than I expected. At 1:1 ratio (unison), sweeping phase 0°→90° transforms a diagonal line into a circle — you're watching the oscillator phase relationship become visible as geometry. At 2:3 (perfect fifth), the trefoil rotates and changes orientation as you sweep phase — the three lobes redistribute. Phase at 0° gives a figure symmetric about the Y axis; at 90° it tilts. Most musicians have never seen their intervals as geometry before.
+
+The "Starburst" preset (3:5, 36°) is the most counterintuitive — you'd never land on 36° by random exploration. The puzzle mode makes this discoverable: when you see the star target and have the correct ratio but wrong phase, you sweep until the match fires. The 36° moment is the "aha" — the star crystallizes.
+
+The WAV download is the genuine surprise. Loading the output file into the Vectorscope prototype (`20-scope`) at Phase Portrait mode shows the Lissajous figure exactly as drawn on the canvas. The loop closes: compose here → hear the audio → see it in the scope.
+
+**What surprised me**: The 3-lobe trefoil (2:3 ratio) sounds like a perfect fifth interval. A perfect fifth is the interval between C and G, or the second-most fundamental harmonic relationship in music. Seeing it traced as three interlocked loops is actually informative: the figure shows that the R oscillator completes 3 cycles for every 2 of the L oscillator. The visual encodes the interval ratio directly. This is the same information as a frequency ratio (2:3) and a musical name (P5th), just expressed geometrically.
+
+**Queued next**:
+1. **Research** — Cycle 51 was last research (3 cycles ago: 52, 53, 54). At the 3-cycle lower bound — research is now due per the 3–4 cycle cadence.
+2. **`mood-journey`** — Proactive Russell circumplex traversal. Zero deps. One-cycle build. RESEARCH.md §84. (The other zero-dep idea from Cycle 53's queue.)
+3. **Gemini key prototypes** (`lyria-ghost`, `binaural-lyria`) — still pending key. Remind Karel.
+4. **Verify `vocal-bgm` API** — if Karel reports an ACE-Step error, fix endpoint/parameters.
+
+---
+
 ## Cycle 53 — /dream/45-guided-session
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)
