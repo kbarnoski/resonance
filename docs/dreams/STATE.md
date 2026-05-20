@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 68 — /dream/55-webgpu-audio-fx
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 67 built `54-maestro-stems`. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `webgpu-audio-fx` is #1 queued in STATE.md Cycle 67. Zero new deps, WebGPU already used in `15-webgpu-fluid` and `16-particle-life-gpu`. One-cycle build.
+4. Research — Cycle 66 was last research (67 = 1 build cycle). Not yet at 3-4 cycle threshold.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/55-webgpu-audio-fx`.
+
+**Why now**: All 54 prior prototypes process audio on the CPU (Web Audio API nodes, AudioWorklet, AnalyserNode). This is the first prototype where the audio signal itself is computed on the GPU. Two WGSL compute shader passes run on raw Float32 sample data: pitch-shift via speed-adjusted linear interpolation, then 6-tap FIR delay reverb. Qualitatively new capability for the sandbox — GPU DSP, not just GPU visualization. Zero new deps (`navigator.gpu` already used in `15-webgpu-fluid`).
+
+**Built**:
+- `src/app/dream/55-webgpu-audio-fx/page.tsx` — full prototype (3.85 kB built)
+- `src/app/dream/55-webgpu-audio-fx/README.md` — design notes
+
+**What's inside**:
+Synthesizes a C-major chord (C4 + E4 + G4 + C5) in JS. Sends the Float32Array to GPU via `writeBuffer`. **Pass 1** (pitch-shift): WGSL compute shader reads `input[i × speed]` with linear interpolation → `midBuf`. **Pass 2** (reverb): 6-tap FIR comb filter — adds delayed copies of Pass 1 output at 1009, 1777, 2477, 3089, 4013, 5021 samples with gains 0.40→0.07 → `outBuf`. Two separate `GPUCommandEncoder` submissions with `await device.queue.onSubmittedWorkDone()` between them (storage barrier). Reads back via `mapAsync`, decodes to `AudioBuffer`, plays looped through `AnalyserNode` → spectrum visualization (same 1-live palette). Waveform comparison strips show original vs GPU-processed. GPU timing displayed (typically 30–80ms for ~120k samples — transfer-overhead dominated, not shader-execution).
+
+TypeScript fix noted: `writeBuffer` requires `.buffer as ArrayBuffer` for Float32Array; `copyToChannel` avoided in favor of `getChannelData(0).set()` to sidestep `Float32Array<ArrayBufferLike>` vs `Float32Array<ArrayBuffer>` variance.
+
+**What I noticed**: The pitch-shift effect at speed=2.0 (one octave up) is immediately striking — the C-major chord shifts to a C-major chord an octave higher, but only lasts half the buffer before silence. The reverb at mix=0.6+ gives a clear stone-chamber echo. At mix=0.35 (default) it adds room warmth without sounding like discrete echoes.
+
+**Queued next** (priority order):
+1. **`ghost-voice`** — Ghost scene narration via Inworld TTS on fal.ai. FAL_KEY in use. ~$0.01/line. One-cycle build. Next priority from Cycle 67 queue.
+2. **`webgpu-audio-fx` polish** — if Karel wants it: PSOLA pitch-shift (preserves tempo), mic capture, or IIR reverb. Two-cycle effort.
+3. **`54-maestro-stems` fix** — if Karel reports endpoint errors, fix before building new.
+4. **Research** — next research cycle at Cycle 70–71 (2–3 cycles from now).
+
+---
+
 ## Cycle 67 — /dream/54-maestro-stems
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

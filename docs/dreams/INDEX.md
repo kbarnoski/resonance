@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 67)
+## ⭐ Newest (Cycle 68)
+
+- **[/dream/55-webgpu-audio-fx](/dream/55-webgpu-audio-fx)** — GPU Audio FX. `demoable`
+  First prototype where audio samples themselves are computed on the GPU. A C-major chord
+  (C4+E4+G4+C5) is synthesized in JS, uploaded to a WebGPU storage buffer, then processed
+  through two sequential WGSL compute shader passes: **Pass 1** — pitch-shift via
+  speed-adjusted linear interpolation (0.5× = octave down, 2.0× = octave up); **Pass 2** —
+  6-tap FIR feedforward reverb (delay taps at 21–105 ms, gain 0.40→0.07 per tap). Result
+  reads back to CPU and plays looped. GPU timing displayed (typically 30–80ms — PCIe transfer
+  dominated). Waveform comparison strips (original blue vs GPU-processed orange). All 54 prior
+  prototypes use Web Audio API; this is the first where the signal DSP runs on the GPU.
+  WebGPU required · Zero new deps · 3.85 kB.
+  Design notes: `src/app/dream/55-webgpu-audio-fx/README.md`
+
+---
+
+## Previous newest (Cycle 67)
 
 - **[/dream/54-maestro-stems](/dream/54-maestro-stems)** — Maestro Stems. `demoable`
   Generate a 2.5-minute instrumental track — then hear each stem played back from its own
