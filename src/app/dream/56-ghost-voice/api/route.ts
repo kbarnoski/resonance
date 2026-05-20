@@ -16,23 +16,23 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: "No text provided" }, { status: 400 });
     }
 
-    // Inworld TTS on fal.ai — text + voice description → speech audio.
-    // Endpoint: fal-ai/inworld/tts (naming-convention guess; raw error shown in UI
-    // for Karel to report back if the endpoint path is wrong).
+    // Gemini TTS on fal.ai — supports natural-language style_instructions,
+    // which maps perfectly to the Ghost scene voice descriptions.
+    // Endpoint confirmed: fal-ai/gemini-tts. Input: prompt, style_instructions, voice.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await (fal.subscribe as any)("fal-ai/inworld/tts", {
+    const result = await (fal.subscribe as any)("fal-ai/gemini-tts", {
       input: {
-        text,
-        voice_description: voice || "calm, androgynous, slow, resonant",
+        prompt: text,
+        voice: "Charon",
+        style_instructions: voice || "calm, androgynous, slow, resonant",
       },
     });
 
-    // Normalize response across possible output shapes from fal.ai wrappers.
+    // Response: data.audio.url (confirmed from fal.ai Gemini TTS API docs).
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = (result as any)?.data;
     const outUrl: string | undefined =
       data?.audio?.url ??
-      data?.audio_file?.url ??
       data?.audio_url ??
       data?.url;
 

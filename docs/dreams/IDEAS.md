@@ -1111,3 +1111,74 @@ Key findings from Cycle 66 (2026-05-20):
 - Conducting gesture recognition (§106, arxiv 2604.27957, Apr 2026) — skeleton tracking → live music tempo/dynamics control. Inspires `conductor` prototype (needs MediaPipe CDN dep, same as `31-gesture-music`).
 - Web Audio API v2 Configurable Render Quantum (§107) — sub-3ms audio processing in Q4 2026. Will improve all pitch-detection prototypes automatically when Chrome ships.
 - TVTSyn real-time voice timbre conversion (§108, arxiv 2602.09389, Feb 2026) — sub-80ms GPU timbre transfer. Not browser-ready; monitor for WASM port. Inspires future `timbre-morph`.
+
+---
+
+## FROM RESEARCH (Cycle 70, 2026-05-20) — promoted to queue
+
+### sound-to-image — mic audio → acoustic analysis → Flux generated image `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/57-sound-to-image`. Mic input (or demo oscillators) runs for 10 seconds. During
+capture: extract spectral centroid (brightness), dominant pitch (autocorrelation), energy level,
+zero-crossing rate (noisiness), and basic chord quality if pitched (same chroma algorithm as
+`28-chord-canvas`). Combine into a natural-language description: "dark, resonant, low-frequency
+bass music with slow tempo and cave-like reverb quality" or "bright, energetic treble-dominant
+music with a fast pace and C major character." Send to fal.ai `fal-ai/flux/schnell` with the
+description augmented by "photorealistic scene, dramatic lighting, no text." The generated image
+fades in over 2 seconds on the right panel alongside the audio waveform and feature readout.
+
+"What does your music look like?" This is the conceptual inverse of `1-live` (audio → abstract
+color fields) and `13-piano-canvas` (audio → brush strokes): it generates a *semantic image* of
+the acoustic scene — what place, what environment, what story does this sound evoke? Inspired by
+Sound2Vision (RESEARCH.md §112). FAL_KEY in use. ~$0.01–0.04/image (Flux Schnell). One-cycle
+build. Zero new npm deps.
+
+### music-to-ghost — live audio analysis → Ghost scene image generation `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/58-music-to-ghost`. Mic input → `28-chord-canvas`-style chroma analysis (12-bin
+chroma vector, template-matched to major/minor chord quality) + `38-mood-xy`-style emotion
+mapping (arousal from tempo/energy, valence from chord quality). After 8 seconds of audio:
+classify into one of four quadrants (energetic+bright, energetic+dark, calm+bright, calm+dark).
+Map the quadrant to a pre-written Ghost LoRA prompt: energetic+bright → "Ghost figure in cosmic
+ascension, arms outstretched, golden light, flight"; calm+dark → "Ghost figure in stone chamber,
+seated meditation, single candle, ancient stone walls"; energetic+dark → "Ghost figure in
+underground pool, standing, turbulent water, deep blue light"; calm+bright → "Ghost figure in
+forest dawn, walking, morning mist, warm green light." Call the Ghost LoRA image generation API
+(`/api/ai-image/generate` with admin auth) with the matching prompt.
+
+Canvas: two panels — top: live scrolling piano roll (from `24-piano-roll` logic), bottom: Ghost
+image fades in. Status text shows current detected chord and emotion quadrant. "A 5-second listen
+tells the story." Admin-only. FAL_KEY in use. ~$0.02–0.05/image. One-cycle build. Inspired by
+multi-agent music-to-image research (RESEARCH.md §114). Simpler than `45-piano-to-ghost` (no
+GEMINI_API_KEY needed — image only, no Lyria music generation).
+
+### gemini-voice-lab — A/B Gemini TTS style director for Ghost Voice `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/57-gemini-voice-lab` (or extend `/dream/56-ghost-voice`). Two-panel UI. Left: scene
+selector (same 6 Ghost scenes) + two style_instructions textareas (A and B). Right: two waveform
+strips + play buttons. Click "Generate A" → calls `fal-ai/gemini-tts` with the scene line +
+style_instructions A. Click "Generate B" → same line + style_instructions B. Both cached in
+sessionStorage. Click A/B to listen and compare. Vote buttons: "A wins", "B wins", "Both fine",
+"Try again." Votes stored to localStorage. Pre-loaded examples: A = "calm, slow, stone reverb" vs
+B = "whispered, breathy, intimate, very close." Canvas shows two waveform strips; duration and
+pitch contour (rough) side by side.
+
+"Fine-tune the Ghost's voice through comparison." Useful for Karel to find the right voice
+character. Complements `2-ghost-lab` (which does A/B image comparison). Zero new deps. FAL_KEY in
+use. ~$0.01/generation pair. One-cycle build. Research basis: RESEARCH.md §110 (Gemini TTS style
+prompting confirmed working — used to fix `56-ghost-voice` this cycle).
+
+Key findings from Cycle 70 (2026-05-20):
+- Inworld TTS correct endpoint (§109) — `fal-ai/inworld-tts`, 70+ named voices, no style description
+  field. Used Gemini TTS instead for `56-ghost-voice` fix (style_instructions matches Ghost voice descs).
+- Gemini TTS on fal.ai (§110) — `fal-ai/gemini-tts`, natural-language style_instructions, 30+ voices,
+  FAL_KEY in use. Fixed `56-ghost-voice` endpoint this cycle. Inspires `gemini-voice-lab`.
+- Live Music Models paper (§111, arxiv 2508.04651) — Magenta RealTime open-weights confirmed
+  production-quality. Lyria RealTime API confirmed for `30-lyria-jam`. Both require GEMINI_API_KEY.
+- Sound2Vision (§112, arxiv 2412.06209) — audio → semantic image via cross-modal alignment.
+  No public API; browser-approachable via acoustic analysis → text → fal.ai Flux. Inspires `sound-to-image`.
+- LARA-Gen (§113, arxiv 2510.05875) — continuous valence×arousal emotion control for music generation.
+  No API yet. Validates `38-mood-xy` + `47-mood-journey` design. Monitor for endpoint.
+- Multi-Agent Music-to-Image (§114, arxiv 2512.23320) — joint music semantics + affect → image.
+  No API yet. Inspires `58-music-to-ghost` (FAL_KEY-only, Ghost LoRA images from audio emotion).
+- Segment-Factorized Full-Song (§115, arxiv 2510.05881) — real-time streaming symbolic piano gen.
+  Future upgrade path for `33-aria-companion`. No API yet; monitor.
+- SynthVC streaming voice conversion (§116, arxiv 2510.09245) — 77ms end-to-end latency,
+  zero-shot. Future `voice-morph` prototype. No browser/WASM port yet; monitor.

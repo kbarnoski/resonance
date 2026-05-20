@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 70 — Unblock + Research
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — `56-ghost-voice` has a flagged potential issue: endpoint `fal-ai/inworld/tts` was a naming-convention guess (STATE.md Cycle 69). Research this cycle confirmed the correct Inworld endpoint is `fal-ai/inworld-tts`. However, the Inworld API uses *named voice presets*, not free-form style descriptions — which is a fundamental mismatch with the Ghost scene voice descriptions. Gemini TTS (`fal-ai/gemini-tts`) is a better fit: it has a `style_instructions` field that accepts exactly the kind of natural-language voice direction the SCENES use ("calm, androgynous, stone chamber reverb, ancient and measured"). Fixed `56-ghost-voice` to use Gemini TTS. Build clean, 3.39 kB.
+2. **Research** — Cycle 66 was the last research sweep (3 build cycles have elapsed: 67, 68, 69). AGENT.md threshold is 3–4 cycles. STATE.md Cycle 69 explicitly queued "next cycle or the one after should be research." Research done this cycle.
+
+Combined action: Unblock + Research (one commit, all changes in `src/app/dream/` + `docs/dreams/`).
+
+**Fixed**:
+- `src/app/dream/56-ghost-voice/api/route.ts` — endpoint changed from `fal-ai/inworld/tts` to `fal-ai/gemini-tts`. Input changed from `{text, voice_description}` to `{prompt, voice: "Charon", style_instructions}`. Output parsing updated to match confirmed response shape (`data.audio.url`). Ghost scene voice descriptions now work as intended — Gemini TTS honors pace, tone, and affect from natural language.
+- `src/app/dream/56-ghost-voice/page.tsx` — removed "naming-convention guess" error overlay; updated footer to say "Gemini TTS."
+
+**Research findings** (8 entries added to RESEARCH.md, §§109–116):
+- **§109 Inworld TTS endpoint** — correct path is `fal-ai/inworld-tts`, but named-voice-only (no style_instructions).
+- **§110 Gemini TTS on fal.ai** — `fal-ai/gemini-tts`, `style_instructions` for natural-language voice direction. Used to fix `56-ghost-voice`.
+- **§111 Live Music Models** — Magenta RealTime confirmed production-quality open-weights. Lyria RealTime API confirmed.
+- **§112 Sound2Vision** — audio → semantic image. Inspires `57-sound-to-image` (FAL_KEY-only).
+- **§113 LARA-Gen** — continuous valence×arousal emotion control for music gen. Validates mood prototypes.
+- **§114 Multi-Agent Music-to-Image** — joint music semantics + affect → image. Inspires `58-music-to-ghost`.
+- **§115 Segment-Factorized Full-Song** — real-time streaming symbolic piano. Future `33-aria-companion` upgrade.
+- **§116 SynthVC** — 77ms streaming voice conversion. Future `voice-morph` prototype.
+
+**New prototypes queued** (added to IDEAS.md):
+1. `57-sound-to-image` — 10s mic listen → acoustic analysis → text description → Flux image on fal.ai. "What does your music look like?" FAL_KEY in use. One cycle.
+2. `58-music-to-ghost` — Live audio → chroma/emotion analysis → Ghost LoRA image matching the detected mood quadrant. Admin-only. FAL_KEY in use. One cycle.
+3. `57-gemini-voice-lab` — A/B Gemini TTS style director for Ghost scenes. Compare two style_instruction sets for same line. Useful for Karel to tune the Ghost character voice.
+
+**Queued next** (priority order for Cycle 71):
+1. **Build `57-sound-to-image`** — highest novelty in the new queue; first prototype that generates a semantic image FROM audio (not a real-time visualizer, not an abstract painting — an interpreted scene). FAL_KEY in use, one-cycle build.
+2. **Build `58-music-to-ghost`** — if Karel approves, live emotional audio → Ghost LoRA image. Admin-only. One cycle.
+3. **`56-ghost-voice` voice quality** — if Karel finds Charon voice too neutral, try "Zephyr" or "Puck" in the route and update. One-line change.
+
+**What I noticed during research**: Gemini TTS's natural-language style prompting is a surprisingly good match for the Ghost Voice aesthetic. "Speak slowly, as if inside a vast stone chamber with long reverb" won't literally add room reverb (TTS synthesizes dry voice), but the tempo, breathiness, and emotional coloring will reflect the instruction. If Karel wants acoustic reverb on the voice, a ConvolverNode with a per-scene impulse response (same technique as `29-scene-spatial`) would be the right polish step — a 2–4 line addition to `page.tsx`.
+
+---
+
 ## Cycle 69 — /dream/56-ghost-voice
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

@@ -1,36 +1,43 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 69)
+# Morning digest — last updated 2026-05-20 UTC (Cycle 70)
 
 ## New since yesterday
 
-- **[/dream/56-ghost-voice](/dream/56-ghost-voice)** — Ghost Voice `demoable` (Cycle 69)
-  The Ghost speaks. Each of the six scenes has a single elliptical line synthesized by Inworld
-  TTS on fal.ai: *"The resonance here is ancient. Let yourself be absorbed by it."* The voice
-  plays from **front-center** (az 0°, el 0°) via HRTF — the most intimate position in 3D audio
-  space. Subtitle reveals character-by-character as the narration plays. Orb animation pulses
-  with speech amplitude. Six scene-specific voice descriptions shape timbre and pace.
-  ⚠ Endpoint `fal-ai/inworld/tts` is a naming-convention guess — if red error shows, paste it.
-  ~$0.01–0.02/narration · FAL_KEY in use · headphones recommended.
+- **`56-ghost-voice` endpoint fixed** (Cycle 70) — was broken (`fal-ai/inworld/tts`), now uses
+  **Gemini TTS** (`fal-ai/gemini-tts`). Key reason for the switch: Gemini TTS has a
+  `style_instructions` field that accepts natural-language voice direction — exactly what the
+  scene descriptions need ("calm, androgynous, stone chamber reverb, ancient and measured").
+  Inworld TTS only takes named voice presets. Voice: Charon. Should work now — give it a try.
 
-- **[/dream/55-webgpu-audio-fx](/dream/55-webgpu-audio-fx)** — GPU Audio FX `demoable` (Cycle 68)
-  A C-major chord processed through **two WGSL compute shader passes** on the GPU: pitch-shift
-  (0.5×→2.0× resampling) + 6-tap FIR reverb (21–105 ms delay taps). Waveform comparison strips
-  original (blue) vs GPU-processed (orange). GPU timing badge shows the PCIe round-trip.
-  WebGPU required · Zero new deps.
+- **Research sweep** (Cycle 70) — 8 findings in RESEARCH.md §§109–116. Three new prototype
+  ideas queued. Highlights below.
 
 ## In progress / partial
 
-- Nothing in-progress. Research due at Cycle 70–71 (next 1–2 fires).
+- Nothing in-progress. `57-sound-to-image` is the #1 queued build for Cycle 71.
 
-## Research findings worth a look (Cycle 66)
+## Research findings worth a look (Cycle 70)
 
-- **Inworld TTS-1.5 Max** (§105) — expressive TTS, FAL_KEY in use, sub-150ms. Built this cycle.
-- **Three.js WebGPU Compute Audio** (§102) — TSL compute shader GPU DSP. Built as Cycle 68.
+- **Gemini TTS style_instructions** (§110) — natural-language voice direction on fal.ai. FAL_KEY
+  in use. Now powering Ghost Voice. Useful for any future narration/spoken prototype.
+
+- **Sound2Vision** (§112, arxiv 2412.06209) — audio → semantic generated image. The idea:
+  10s of mic input → describe the acoustic scene in text → Flux image on fal.ai. "What does
+  your music look like?" First prototype that generates an *interpreted visual scene* from audio
+  (not a real-time abstract visualizer). Queued as `57-sound-to-image`. One cycle, FAL_KEY in use.
+
+- **Music-to-Ghost** (§114 via arxiv 2512.23320) — detect chord quality + energy from mic →
+  map to emotion quadrant → generate matching Ghost LoRA image. Admin-only, FAL_KEY in use.
+  "A 5-second listen tells the story." Queued as `58-music-to-ghost`. One cycle.
+
+- **Live Music Models** (§111, arxiv 2508.04651, Google DeepMind) — confirms Magenta RealTime
+  (open-weights) and Lyria RealTime (API) are production-quality real-time steering models.
+  `30-lyria-jam` needs your GEMINI_API_KEY when ready.
 
 ## Open questions for Karel
 
-- **`56-ghost-voice` working?** Click any scene → Narrate. If red error text appears, paste it.
-- **`55-webgpu-audio-fx` GPU timing** — what ms does the badge show on your machine?
-- **`54-maestro-stems` endpoint?** Beatoven unconfirmed — any error shown?
-- **`6-compose` / `53-ghost-sfx` endpoints?** Both are best-guesses; errors display if wrong.
+- **`56-ghost-voice` voice quality** — Charon is "calm, professional male." If it's too neutral,
+  try "Zephyr" (bright female) or "Aoede" (warm melodic). One-line change in `route.ts`.
+- **`54-maestro-stems` / `6-compose` / `53-ghost-sfx`** — three prototypes with best-guess endpoints.
+  Any errors still showing?
 - **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader` (LLM-generated GLSL shaders).
 - **`GEMINI_API_KEY`?** → Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`.

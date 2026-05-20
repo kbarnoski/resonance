@@ -1141,3 +1141,78 @@ TVTSyn achieves sub-80ms GPU latency real-time voice conversion by treating spea
 **Why it matters**: Three prototypes in the sandbox do audio transformation: `23-pitch-harmonize` (pitch shift), `34-spectral-morph` (spectral magnitude interpolation), `35-loop-station` (recording + looping). None perform **timbre transfer** — changing the tonal character of an instrument or voice while preserving pitch and rhythm. TVTSyn is 3 months from publication and not browser-ready, but the 80ms latency target confirms real-time timbre transfer will be browser-viable within 12–18 months (as BRAVE was predicted at Cycle 35 to arrive, and it has improved). The "piano to cello" timbre prototype concept (`brave-timbre` from §30 in the queue) is getting closer to implementable.
 
 **Research note**: Monitor for WASM or ONNX port of TVTSyn or equivalent. When browser-ready: `timbre-morph` prototype — mic input piano → morph to cello/violin/organ in real time via timbre transfer. The `34-spectral-morph` prototype already demonstrates the visual paradigm (spectrum strip + morph slider); this would replace the FFT magnitude interpolation with a neural timbre encoder/decoder.
+
+---
+
+## 2026-05-20 — Cycle 70 research sweep
+
+### 109. Inworld TTS Correct fal.ai Endpoint — `fal-ai/inworld-tts`
+**Source**: https://fal.ai/models/fal-ai/inworld-tts/api
+
+The `56-ghost-voice` prototype was using `fal-ai/inworld/tts` (guessed). The confirmed endpoint is `fal-ai/inworld-tts` (hyphenated, no slash). Input: `{text, voice, sample_rate_hertz}`. 70+ named voice presets (default "Craig (en)"). Output: `data.audio.url`. However, Inworld TTS uses named voice presets, not free-form style descriptions — which is a mismatch with the Ghost scene voice descriptions (e.g., "calm, androgynous, stone chamber reverb"). Gemini TTS is a better fit (§110).
+
+**Could become a prototype**: no new prototype — the fix switches `56-ghost-voice` to Gemini TTS backend.
+
+---
+
+### 110. Gemini TTS on fal.ai — Natural-Language Style Prompting for Voice
+**Source**: https://fal.ai/models/fal-ai/gemini-tts/api
+
+`fal-ai/gemini-tts` (and `fal-ai/gemini-3.1-flash-tts`) supports a `style_instructions` parameter: natural-language voice direction ("Speak slowly as if from inside a vast stone chamber"). Input: `{prompt: text, voice: "Charon", style_instructions: "..."}`. 30+ voice presets (Kore, Charon, Zephyr, Puck, Aoede etc.). Output: `data.audio.url`, MP3 default. This is exactly the right model for Ghost Voice — the scene-specific descriptions ("calm, androgynous, very slow, stone chamber reverb, ancient and measured") work as `style_instructions`. FAL_KEY in use. Used this cycle to fix `56-ghost-voice`.
+
+**Could become a prototype**: `57-gemini-voice-lab` — A/B tone director: write two style_instructions for the same Ghost scene line, compare how differently Gemini TTS renders the same text. Useful for Karel to tune the Ghost character voice.
+
+---
+
+### 111. Live Music Models: Magenta RealTime + Lyria RealTime (arxiv 2508.04651, Google DeepMind)
+**Source**: https://arxiv.org/abs/2508.04651
+
+Google DeepMind paper formalizing a new class of generative model: continuous streaming music with synchronized live user control. Releases two models: **Magenta RealTime** (open-weights Apache 2.0, outperforms other open-weights music models with fewer parameters) and **Lyria RealTime** (API, more controls). Key distinction from prior art: users steer *during* generation via text or audio prompts — the music shifts continuously without stopping. First-of-its-kind live generation capability. Magenta RealTime is open-weights but requires a Python inference server; Lyria RealTime is browser-callable via Gemini API key. Already in IDEAS.md as `30-lyria-jam`. This paper confirms the production-quality bar is now met.
+
+**Could become a prototype**: upgrade `30-lyria-jam` to explicitly use Lyria RealTime's embedding arithmetic (2D style canvas instead of sliders, per Live Music Models §62 insight). Also: Magenta RealTime as a local inference backend if Karel sets up a Python proxy server.
+
+---
+
+### 112. Sound2Vision: Generating Images from Audio via Cross-Modal Latent Alignment (arxiv 2412.06209, December 2024)
+**Source**: https://arxiv.org/abs/2412.06209
+
+Maps in-the-wild audio clips to generated images of the corresponding visual scene via cross-modal latent alignment. Enriches audio features with visual information, translates to visual latent space, feeds into a pre-trained image generator. "Simple manipulations to the input waveform or latent space" control the generation output. No public API yet, but the concept is browser-buildable via acoustic analysis → text description → Flux image generation on fal.ai.
+
+**Could become a prototype**: `57-sound-to-image`. Mic input (or demo oscillators) → 10s acoustic analysis → auto-generate a text description ("dark, resonant, low-frequency bass music with slow tempo, cave-like quality") → send to fal.ai Flux image gen → display generated image. "What does your music look like?" First prototype where audio produces a semantic *image* (not an abstract painting, not a real-time visualizer — a literal interpreted visual scene). FAL_KEY in use, $0.01–0.05/image. One-cycle build.
+
+---
+
+### 113. LARA-Gen: Continuous Emotion Control for Music Generation (arxiv 2510.05875, October 2025)
+**Source**: https://arxiv.org/abs/2510.05875
+
+Enables fine-grained continuous emotion control of music generation by aligning latent representations to a valence-arousal space. Disentangles emotional content from musical content (you can change the valence without changing the melody). No public API yet. Confirms the valence×arousal approach in `38-mood-xy` is academically validated and increasingly supported by generation models.
+
+**Could become a prototype**: when a LARA-Gen-compatible API appears, upgrade `47-mood-journey` so the arc-traversal generates *actual AI music* (not just synthesized tones) that tracks the emotional trajectory. Monitor fal.ai for LARA-Gen endpoint.
+
+---
+
+### 114. Multi-Agent Semantic-Emotional Music-to-Image (arxiv 2512.23320, December 2024)
+**Source**: https://arxiv.org/abs/2512.23320
+
+Multi-agent framework that jointly encodes musical semantics AND affective dimensions → generates a matching image. Key insight: uses separate agents for musical semantics (tempo, instruments, key) and emotional content (valence, arousal) before combining for image generation. Confirmed feasibility of: detect chords+tempo → estimate emotion → generate matching Ghost image.
+
+**Could become a prototype**: `58-music-to-ghost`. Analyze incoming audio (`28-chord-canvas` chroma + `38-mood-xy` emotion mapping) → after 10s, generate a Ghost LoRA image with a scene-matched prompt ("Ghost in cosmic ascension, energetic, bright, major key, 90 BPM, golden light"). Display image + waveform side by side. Different from `45-piano-to-ghost` (which is complex, two concurrent API calls, GEMINI_API_KEY needed). This version uses FAL_KEY only (Ghost LoRA image gen). One-cycle build.
+
+---
+
+### 115. Segment-Factorized Full-Song Generation on Symbolic Piano Music (arxiv 2510.05881, October 2025)
+**Source**: https://arxiv.org/abs/2510.05881
+
+SFS model achieves real-time streaming generation of full symbolic piano music with strong structural consistency and 10× faster inference than prior work. Enables human-AI co-creation via a web-based composition interface. Not browser-native (Python inference), but the streaming paradigm applies: generate the next phrase while the user plays the current one, interleave without gaps. Inspires upgrading `33-aria-companion` from a Markov chain to a streaming generative model (when an API becomes available).
+
+**Could become a prototype**: when a browser-accessible SFS endpoint appears, upgrade `33-aria-companion` to generate structurally consistent piano responses rather than Markov-chain transitions. Monitor.
+
+---
+
+### 116. SynthVC: Low-Latency Streaming Zero-Shot Voice Conversion (arxiv 2510.09245, October 2025)
+**Source**: https://arxiv.org/abs/2510.09245
+
+77.1ms end-to-end latency streaming voice conversion using neural audio codec architecture. Zero-shot: converts voice timbre to any target without fine-tuning. In-context learning from a short reference clip. Not browser-native yet but the latency target (77ms) is approaching real-time performance suitable for live performance use.
+
+**Could become a prototype**: `voice-morph` — record a 5s "target voice" sample, then speak/sing into the mic and hear your voice converted to the target timbre in near-real-time. If a browser WASM port or fal.ai endpoint appears, this becomes the first prototype that changes *who you sound like*. Monitor for WASM/fal.ai port.
+

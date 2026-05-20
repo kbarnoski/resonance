@@ -420,11 +420,6 @@ export default function GhostVoicePage() {
             <div className="text-[10px] text-red-400 max-w-md text-center
               bg-red-950/30 rounded px-3 py-2 leading-relaxed">
               API error — {errorMsg.slice(0, 250)}
-              <br />
-              <span className="text-red-400/55">
-                ⚠ endpoint `fal-ai/inworld/tts` is a naming-convention guess —
-                paste this to Karel for a next-cycle fix.
-              </span>
             </div>
           )}
 
@@ -437,7 +432,7 @@ export default function GhostVoicePage() {
 
         {/* Footer */}
         <div className="mt-8 flex justify-between text-[10px] text-white/20">
-          <span>FAL_KEY · ~$0.01–0.02 / narration · HRTF front-center</span>
+          <span>Gemini TTS via FAL_KEY · ~$0.01 / narration · HRTF front-center</span>
           <span>design notes: src/app/dream/56-ghost-voice/README.md</span>
         </div>
 
