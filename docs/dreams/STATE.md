@@ -1,5 +1,63 @@
 # Dream Agent — cycle state
 
+## Cycle 52 — /dream/44-vocal-bgm
+
+**When**: 2026-05-20 UTC (hourly autonomous cycle)
+
+**Decided**: Cycle 51 was a research sweep. Priority check:
+1. Unblock — nothing blocked.
+2. Continue — no in-progress prototypes.
+3. Build new — `vocal-bgm` is #1 in the queue from Cycle 51 research. FAL_KEY already in use. $0.006/30s. Zero new approvals. One-cycle build. Highest "surprise" factor for Karel.
+4. Research — Cycle 51 was research (0 cycles ago). Not due.
+5. Polish — skipped; build takes priority.
+
+Decision: build `/dream/44-vocal-bgm`.
+
+**Why now**: 43 existing prototypes let you react to audio, visualize audio, or generate audio from text. `43-stable-extend` takes your audio and continues it forward in time. None of them take your melody and wrap a full band *around* it. That's what ACE-Step's audio-to-audio vocal-to-BGM mode does: the melodic contour of your hummed phrase becomes the lead motif, and the model generates drums, bass, chords, and harmony in the selected genre beneath it. This is a qualitatively different AI-music interaction: not "describe music in words" (compose), not "play piano to extend" (stable-extend) — but "demonstrate the melody, get the arrangement." $0.006/generation, FAL_KEY already approved and in use.
+
+**Shipped**:
+- `src/app/dream/44-vocal-bgm/page.tsx` — full interactive prototype (~290 lines)
+- `src/app/dream/44-vocal-bgm/api/route.ts` — server-side ACE-Step call
+- `src/app/dream/44-vocal-bgm/README.md` — design notes and architecture
+
+**What's inside**:
+
+**Genre selector**: Five arrangement style presets — jazz piano trio, ambient electronic, cinematic strings, indie rock, folk acoustic. Each maps to a detailed `tags` string that guides ACE-Step's arrangement. Buttons are togglable; the full tag string is shown below the selector so the user can see exactly what's being sent to the model.
+
+**Server route** (`/dream/44-vocal-bgm/api`, POST):
+1. Receives audio blob + genre tags string as FormData
+2. Uploads to fal.storage → public URL
+3. Calls `fal-ai/ace-step/audio-to-audio` with `{audio_url, lyrics: "[inst]", tags: genre, duration: 30}`
+4. The `[inst]` lyrics tag tells ACE-Step to treat the input as the melodic lead and generate only instrumental accompaniment
+5. Returns `{url, inputUrl}` or `{error}` with raw API response for debugging
+
+**Client page** (`/dream/44-vocal-bgm`):
+- Phase state machine: `idle → recording → recorded → generating → playing → error`
+- **MediaRecorder** (webm/opus or mp4 fallback) — up to 15s recording (melodies are shorter than full pieces; 5–15s is the ideal ACE-Step input range)
+- **Waveform strip**: amber bars (your melody, left half) | blue bars (full arrangement, right half), separated by a faint white divider. Same `buildPeaks()` / `drawPeakBars()` approach as `43-stable-extend`
+- **Radial bloom**: same 6-band `startBloom()` visualizer as `1-live` drives playback
+- **Error display**: shows raw fal.ai error text for diagnosis
+
+**Build validation**: `npm run build` passes cleanly. `/dream/44-vocal-bgm` compiles at 4.21 kB (static route). `/dream/44-vocal-bgm/api` compiles at 240 B (dynamic route handler). Zero TypeScript errors in new code. Zero ESLint errors from new code. All warnings are pre-existing Resonance production files. Vercel build will pass.
+
+**API note**: The endpoint `fal-ai/ace-step/audio-to-audio` and parameters (`audio_url`, `lyrics`, `tags`, `duration`) are from RESEARCH.md §77. The response URL extraction tries three possible shapes (`data.audio.url`, `data.audio_url`, `data.url`) to handle API response variation. If the prototype shows an API error, the raw error is displayed — tell me the correct endpoint/parameters for the next cycle.
+
+**What I noticed**: The genre selector is doing more UI work than I initially expected. The full `tags` string preview below the buttons ("jazz piano trio, warm, acoustic, 70 BPM, upright bass, brush drums") makes it immediately clear to the user why different genres sound different — it's not just a label, it's a music instruction. Karel can edit the genre tags in his head before recording: "I want something warmer, what if I pick cinematic and hum something slow?" The tag preview makes the model's decision-making legible without exposing any API internals.
+
+The `[inst]` lyrics instruction is the key to the whole interaction. Without it, ACE-Step would try to add AI vocals on top of the user's humming — which would be musically incoherent (two melodic lines in the same register competing). With `[inst]`, the user's melody is treated as the lead voice and the model fills the supporting register. This is the same insight that makes Stable Audio 2.5's inpaint mode work: controlling what the model is NOT allowed to do is as important as controlling what it does.
+
+**What surprised me**: The 15-second recording cap (vs 30s in `stable-extend`) is a deliberate design choice. ACE-Step's vocal-to-BGM works best on short melodic phrases (a few bars of a tune), not extended improvisations. A 30-second hum is hard to arrange because the model has to commit to an accompaniment early and the melody may change character mid-way. A 5–15 second phrase has clear beginning/middle/end structure that the arranger can respond to as a unit. The cap encourages the user to think in phrases rather than in sessions.
+
+**Queued next**:
+1. **`guided-session`** — Guided brainwave session (β → α → θ path). Zero deps, no API keys. Uses session timer + noise layer already built in `42-binaural`. One-cycle build. Clinically grounded.
+2. **`osc-composer`** — Oscilloscope music composer. Design a Lissajous shape, download the WAV that draws it. Zero deps. One-cycle build.
+3. **`mood-journey`** — Proactive mood traversal via Russell circumplex. Zero deps. One-cycle build.
+4. **Gemini key prototypes** (`lyria-ghost`, `binaural-lyria`) — still pending key. Remind Karel.
+5. **Verify `vocal-bgm` API** — if Karel sees an error, diagnose ACE-Step endpoint/parameters and fix `route.ts`. One short cycle.
+6. **Research** — Cycle 51 was last research (1 cycle ago). Next due Cycle 54 or 55 per 3–4 cycle cadence.
+
+---
+
 ## Cycle 51 — Research sweep (§§77–84 in RESEARCH.md)
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

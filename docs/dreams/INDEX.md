@@ -10,7 +10,34 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 49)
+## ⭐ Newest (Cycle 52)
+
+- **[/dream/44-vocal-bgm](/dream/44-vocal-bgm)** — Vocal BGM.
+  Record 5–15 seconds of humming, singing, or piano. Pick an arrangement style (jazz trio /
+  ambient / cinematic / rock / folk). Click **Arrange →**. ACE-Step 1.5 on fal.ai receives
+  your recording and generates a 30-second full-band arrangement where your melodic contour
+  is the lead motif — the AI adds drums, bass, chords, and harmony beneath your melody.
+
+  **Different from `43-stable-extend`**: stable-extend continues your recording *forward*
+  in time. vocal-bgm wraps a full band *around* your phrase — your melody stays as the
+  primary voice. Think of it as "here's the tune, now play it for me as a jazz trio."
+
+  Genre selector shows the full tag string sent to ACE-Step (e.g. "jazz piano trio, warm,
+  acoustic, 70 BPM, upright bass, brush drums") so the model's inputs are legible.
+  `[inst]` lyrics tag prevents the model from adding AI vocals on top of your humming.
+  Waveform strip: **amber** (your melody) | **blue** (full arrangement).
+  Bloom visualizer during playback (same six-band palette as `1-live`).
+
+  ⚠ **API note**: endpoint `fal-ai/ace-step/audio-to-audio` from RESEARCH.md §77. If the
+  prototype shows an error, the raw message is displayed — paste it and we'll fix in the
+  next cycle.
+
+  **$0.006/arrangement. FAL_KEY already in use.**
+  Design notes: `src/app/dream/44-vocal-bgm/README.md`
+
+---
+
+## Previous newest (Cycle 49)
 
 - **[/dream/43-stable-extend](/dream/43-stable-extend)** — Stable Extend.
   Record a piano phrase (up to 30s), click **Extend →**, wait ~10–30s. Stable Audio 2.5 on fal.ai
@@ -759,6 +786,35 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 ---
 
 ## Prototypes
+
+### 44-vocal-bgm
+**Status**: `demoable` · **Cycle shipped**: 52 · **Last touched**: 2026-05-20
+
+Open `/dream/44-vocal-bgm`. Pick a genre (try **jazz trio** first). Click **● REC** and allow
+mic permissions. Hum a melody — 5–10 seconds is ideal. One complete phrase with a clear shape
+(ascending, descending, arc, call-and-response). Press **■ STOP**.
+
+The amber waveform fills the left half of the strip — that's your melody. Click **Arrange →**.
+The button shows "Arranging…" while ACE-Step works (~20–40s). When it returns, the blue waveform
+fills the right half and playback starts automatically through the radial bloom.
+
+The jazz trio arrangement will add upright bass and brush drums beneath your melody. Your hummed
+line is the lead voice — the AI plays supporting role. Try the same melody with different genres:
+cinematic strings gives it an orchestral sweep; ambient removes the drums and adds synth pads;
+rock adds electric guitar and a full drum kit.
+
+**Key insight**: this is different from `43-stable-extend`, which continues your phrase from the
+end. vocal-bgm treats your whole phrase as the *theme* and arranges around it. The difference is
+audible: in stable-extend the AI finishes your sentence; in vocal-bgm the AI plays backup for your
+entire sentence at once.
+
+Press **▶ replay** to re-listen without re-generating. Each generation costs $0.006.
+
+⚠ If you see an API error in red, paste the text and we'll fix the endpoint in the next cycle.
+
+Design notes: `src/app/dream/44-vocal-bgm/README.md`
+
+---
 
 ### 43-stable-extend
 **Status**: `demoable` · **Cycle shipped**: 49 · **Last touched**: 2026-05-20
