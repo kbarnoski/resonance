@@ -1,5 +1,56 @@
 # Dream Agent — cycle state
 
+## Cycle 85 — /dream/68-wgsl-synth
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — `wgsl-synth` is the #1 queued item from Cycle 84's "queued next" list.
+4. **Research** — not due yet (Cycle 82 was last research; only 2 build cycles since then; threshold is 3–4).
+
+Decision: build `/dream/68-wgsl-synth` — WGSL shader editor with pre-wired audio uniforms. The
+lowest-level audio-reactive tool in the sandbox: write raw WGSL, the audio arrives as uniforms,
+the shader runs on the GPU. Zero new npm deps. One-cycle build.
+
+**What I built**:
+- `src/app/dream/68-wgsl-synth/page.tsx` — split-screen editor + WebGPU canvas
+- `src/app/dream/68-wgsl-synth/README.md` — design notes + polish ideas
+
+**How it works**:
+- Left pane: a styled textarea pre-loaded with a complete WGSL fragment shader template
+- Right pane: fullscreen WebGPU canvas running the shader at 60fps
+- Six audio uniforms (uBass, uMid, uTreble, uOnset, uTime, uBPM, uResX, uResY) written to a 32-byte
+  uniform buffer each frame from the AnalyserNode (mic mode) or LFO oscillators (demo mode)
+- Edit the WGSL → debounced 400ms → `createShaderModule` → `getCompilationInfo` → if errors, show
+  them with line numbers; if clean, `createRenderPipelineAsync` → swap the running pipeline
+- The last valid pipeline keeps running while you fix errors — you never see a black canvas
+
+**Default shader**: pulsing radial rings (driven by uBass) + orthogonal grid shimmer (driven by
+uMid/uTreble) + onset flash (uOnset), with an HSV color cycle drifting slowly with time and
+frequency content. Vignette darkens edges.
+
+**Key thing I noticed**: the pipeline-swap-while-running approach makes this genuinely usable as
+a live performance tool. The shader recompiles silently in the background; when it's ready, it
+replaces the old one without a single frame of black. This is the pattern professional livecoding
+environments (Hydra, Tidal Cycles) use — the audio never stops, the output never blacks out.
+
+**Relationship to other prototypes**:
+- `claude-shader` (needs ANTHROPIC_API_KEY): Claude writes the WGSL; you edit it here. These two
+  are the lowest and highest of an AI-assistance spectrum for shader authoring.
+- `9-reaction-diffusion`, `15-webgpu-fluid`: fixed WGSL pipelines, no user editing. This opens
+  the box.
+
+**Build**: `npm run build` passed cleanly. Two fix passes needed (Float32Array generic types and
+useRef initial value — TypeScript 5.9 strictness).
+
+**Queued next**:
+1. **Research** — due at Cycle 86 or 87 (3+ build cycles since Cycle 82).
+2. **`wgsl-synth` polish** — syntax highlighting (CodeMirror 5 CDN), preset shader library, localStorage save.
+
+---
+
 ## Cycle 84 — /dream/67-structure-viz
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

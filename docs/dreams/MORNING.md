@@ -1,46 +1,27 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 84)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 85)
 
 ## New since yesterday
 
-- **[/dream/67-structure-viz](/dream/67-structure-viz)** (Cycle 84, `demoable`) — self-similarity matrix.
-  Press **▶ Demo** — a 48-second ABA pattern plays (C3 chord → A4 chord → C3 returns). Watch the
-  N×N heatmap grow every 1.5s. By bar 22 (≈33s), you see three bright white blocks along the diagonal
-  and two bright off-diagonal corners — the A and A′ sections lighting up as similar. The timeline
-  strip below shows `A | B | A′`. Mic mode: play any music with repeating material; verse-chorus-verse
-  creates a striped checkerboard. The diagonal is always white (each bar = itself).
-  **Why this is different**: 66 prior prototypes visualize signal (amplitude, pitch, timbre, color).
-  This one visualizes *form* — not what the music sounds like at any moment, but how sections relate
-  across the whole session. A pianist who plays an ABA form sees the structure, not just the sound.
-  Zero deps · zero API · 3.81 kB.
+- **[/dream/68-wgsl-synth](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/68-wgsl-synth)** (Cycle 85, `demoable`) — WGSL Synth.
+  Write a raw WebGPU shader that responds to your piano. Split-screen: left = editable WGSL textarea; right = fullscreen GPU canvas. Six audio uniforms pre-wired: `uBass`, `uMid`, `uTreble`, `uOnset`, `uTime`, `uBPM`. Edit any line → recompiles 400ms later → swaps the pipeline with no black frame. Errors show line numbers. Default shader: rings that expand with bass + grid shimmer with mid/treble + white onset flash. Try deleting the vignette line to see the full-bleed effect.
+  **Why open this**: it's the only prototype where you can write the visual logic yourself. If you've ever wanted to see what your shader idea sounds like in real time — this is it.
 
-- **[/dream/66-chatterbox-ghost](/dream/66-chatterbox-ghost)** (Cycle 83, `demoable`) — voice-cloned Ghost.
-  Record 5s of your voice → hear all six Ghost scenes in that voice with physical action tags.
-  Completes the four-way TTS comparison: Gemini / Orpheus / ElevenLabs V3 / Chatterbox.
-  ⚠ API parameters are best-guess; paste any error text.
+- **[/dream/67-structure-viz](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/67-structure-viz)** (Cycle 84, `demoable`) — Structure Viz.
+  Your music as a self-similarity map. Play ABA — watch three bright diagonal blocks appear. First prototype that shows form (does the chorus come back?) not just signal content.
 
 ## In progress / partial
 
-- Nothing in-progress.
-- **Next build** (Cycle 85): `wgsl-synth` — WGSL shader editor with pre-wired audio uniforms.
-  CodeMirror from CDN (no package.json change). Write WGSL that responds to your piano in real time.
-  Different from `claude-shader` (AI-generates the WGSL): this is a manual editor.
+- Research sweep due at Cycle 86 (threshold: 3–4 build cycles since Cycle 82 research).
 
 ## Research findings worth a look
 
-- **Self-similarity matrix (§143)** — built this cycle. Standard MIR technique (Foote 2000), zero ML,
-  browser-native. The off-diagonal bright squares are the interesting part: they encode non-adjacent
-  structural relationships that no other visualization shows.
-- **ImprovNet (§138, arxiv 2502.04522)** — full 32-bar structured improvisation from a seed phrase.
-  No API yet. When one appears, `improv-expand` is the most compelling "AI completes your composition"
-  prototype in the queue.
-- **Pianist Transformer (§139, arxiv 2512.02652)** — human-level expressive MIDI rendering, Apache 2.0.
-  HuggingFace Spaces demo exists. A proxy route to Spaces would make `expressive-render` buildable.
-- **ShaderVine (§130)** — browser WGSL editor with MCP interface. Inspires `wgsl-synth` (build next cycle).
+- **ShaderVine** (§130) — browser WebGPU shader editor with MCP interface. The MCP angle: an agent could edit the shader via MCP while you watch the canvas. Directly inspired `wgsl-synth`.
+- **ImprovNet** (§138) — seed → 32-bar structured improvisation with style control. No API yet; monitor HuggingFace Spaces.
+- **Pianist Transformer** (§139) — human-level expressive piano rendering, Apache 2.0, HuggingFace demo. Could proxy via Spaces for `expressive-render`.
 
 ## Open questions for Karel
 
-- **`GEMINI_API_KEY`?** → `lyria-jam`, `lyria-ghost`, `binaural-lyria` all waiting (free tier).
-- **`ANTHROPIC_API_KEY` in Vercel env?** → `claude-shader` (LLM generates audio-reactive GLSL shaders).
-- **Chatterbox voice reference**: bundle a ~5s Ghost voice reference as a public asset so
-  `66-chatterbox-ghost` works without mic permissions?
-- **`lyrics-journey` budget OK?** ~$2.40/generation (Ghost journey as a full sung AI piece).
+- **ANTHROPIC_API_KEY** in Vercel env → `claude-shader` (Claude writes WGSL for you — the natural pair to today's `wgsl-synth`)
+- **GEMINI_API_KEY** → `lyria-jam`, `lyria-ghost`, `binaural-lyria`, `piano-to-ghost` (4 prototypes waiting)
+- **`lyrics-journey` budget** — ~$2.40/generation for full Ghost journey as a sung piece
+- **Voice clip for `chatterbox-ghost`** — bundle a 5s Ghost character voice so the demo works without mic permissions?

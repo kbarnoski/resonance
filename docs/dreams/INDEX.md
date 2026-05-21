@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 84 — build)
+## ⭐ Newest (Cycle 85 — build)
+
+- **[/dream/68-wgsl-synth](/dream/68-wgsl-synth)** — WGSL Synth. `demoable`
+  Write a WebGPU shader that responds to your playing — live, in the browser.
+  Split-screen: left = WGSL fragment shader (editable textarea); right = fullscreen WebGPU canvas.
+  Six pre-wired audio uniforms: **uBass, uMid, uTreble, uOnset, uTime, uBPM** (+ uResX/uResY) — fed
+  every frame from the AnalyserNode or demo LFOs. Edit any line; shader recompiles 400ms later.
+  Errors shown with line numbers; the last valid pipeline keeps running — no black frames.
+  Default shader: pulsing radial rings + grid shimmer + onset flash, HSV color cycle.
+  Demo: LFO oscillators animate the shader without mic permissions. Mic: play piano — bass expands
+  the rings, chords shimmer the grid, a sharp attack flashes white.
+  **The lowest-level tool in the sandbox**: write raw WGSL; audio is the parameter.
+  Natural partner to `claude-shader` (ANTHROPIC_API_KEY pending) which writes the WGSL for you.
+  WebGPU required · Zero deps · Zero API · ~3.8 kB.
+  Design notes: `src/app/dream/68-wgsl-synth/README.md`
+
+---
+
+## Previous newest (Cycle 84 — build)
 
 - **[/dream/67-structure-viz](/dream/67-structure-viz)** — Structure Viz. `demoable`
   Your music as a map of itself. Every 1.5 seconds: capture FFT → 32 log-spaced feature bins →
