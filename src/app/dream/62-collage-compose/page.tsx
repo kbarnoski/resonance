@@ -339,7 +339,8 @@ export default function CollageCompose() {
       const json = await res.json();
 
       if (!res.ok || json.error) {
-        setErrorMsg(json.error ?? "Unknown error");
+        const detail = json.detail ? ` · ${json.detail}` : "";
+        setErrorMsg((json.error ?? "Unknown error") + detail);
         setPhase("error");
         return;
       }

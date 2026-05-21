@@ -71,6 +71,28 @@ export async function POST(req: NextRequest) {
 
     return Response.json({ url: outUrl, audioToAudio: hasAudio });
   } catch (err) {
-    return Response.json({ error: String(err) }, { status: 500 });
+    // FAL ValidationError has a `body` field with the actual API response.
+    // Surface it so the UI shows *what* validation rule failed rather than
+    // just "Unprocessable Entity" with no details. Also log full error to
+    // server logs for the agent to see.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const e = err as any;
+    const status = typeof e?.status === "number" ? e.status : 500;
+    const bodyDetail = e?.body?.detail ?? e?.body ?? null;
+    const message = e?.message ?? String(err);
+    console.error("[62-collage-compose] FAL error:", { status, message, body: e?.body });
+    return Response.json(
+      {
+        error: message,
+        status,
+        detail:
+          typeof bodyDetail === "string"
+            ? bodyDetail
+            : bodyDetail
+              ? JSON.stringify(bodyDetail)
+              : null,
+      },
+      { status: 500 }
+    );
   }
 }
