@@ -23,8 +23,15 @@ export async function GET() {
 
   if (error) {
     // If the table doesn't exist yet (migration not applied), return an
-    // empty map rather than 500 — the UI can degrade gracefully.
-    if (error.code === "42P01") {
+    // empty map rather than 500 — the UI degrades gracefully. Supabase's
+    // PostgREST may return code 42P01 (raw Postgres), PGRST205 (schema
+    // cache miss), or just a message containing "Could not find the
+    // table". Match all three.
+    const missing =
+      error.code === "42P01" ||
+      error.code === "PGRST205" ||
+      /could not find the table/i.test(error.message ?? "");
+    if (missing) {
       return Response.json({}, { status: 200 });
     }
     return Response.json({ error: error.message }, { status: 500 });

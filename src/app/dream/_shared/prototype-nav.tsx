@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { VoteButtons, VoteIndicator } from "./vote-buttons";
 
 /** Floating prev/next strip pinned to the bottom of the viewport on
  *  prototype detail pages (/dream/N-foo). Hidden on the dashboard
@@ -61,6 +62,11 @@ export function PrototypeNav({ slugs }: { slugs: string[] }) {
         ) : (
           <span className={`${btnBase} ${btnDisabled}`}>next →</span>
         )}
+
+        <span className="ml-1 flex items-center gap-1 border-l border-white/10 pl-2">
+          <VoteIndicator slug={slug} />
+          <VoteButtons slug={slug} compact />
+        </span>
       </div>
     </nav>
   );
