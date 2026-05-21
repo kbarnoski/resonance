@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 91 — build)
+## ⭐ Newest (Cycle 92 — kids build)
+
+- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `demoable`
+  First kids prototype. Eight pentatonic circles — C D E G A C D E across two octaves. Tap any
+  circle to play, hold to sustain, drag across circles for a glissando, multiple fingers for chords.
+  No wrong notes (C-major pentatonic, all consonant). Each circle has a bold saturated color. Soft
+  C-major ambient pad from first touch — silence never feels broken. No text, no score, no fail states.
+  Circles sized `20vmin`: ≥78px on a 390px phone, ≥153px on a 768px iPad — well above KIDS.md's
+  64px minimum. Pointer events handle both mouse and multi-touch with glissando baked in.
+  **For**: kids 4+ · handed to a toddler immediately.
+  Zero deps · Zero API · 1.58 kB.
+  Design notes: `src/app/dream/82-kids-color-piano/README.md`
+
+---
+
+## Previous newest (Cycle 91 — build)
 
 - **[/dream/74-touchdesigner-feedback](/dream/74-touchdesigner-feedback)** — TD Feedback. `demoable`
   TouchDesigner's TOP feedback loop, ported to WebGPU. Two ping-pong render textures loop on

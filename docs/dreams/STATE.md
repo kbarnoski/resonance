@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 92 — /dream/82-kids-color-piano
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 92 % 4 = 0 → this cycle is kids-focused.
+4. **Build new** — KIDS.md has a seeded queue; none have been built yet. Decision: `82-kids-color-piano`.
+
+Reasoning: First kids prototype ever. `kids-color-piano` is the most fundamental of the seeded ideas — 
+8 pentatonic circles, touch to play — and directly embodies the KIDS.md design principles: no reading, 
+immediate response, no wrong notes. Achievable in one cycle with zero deps. Votes API returned `{}` —
+no love signal to bias (kid-cycle rotation takes priority regardless).
+
+**What I built**:
+- `src/app/dream/82-kids-color-piano/page.tsx` — 8 pentatonic circles, pointer-event glissando, Web Audio synthesis
+- `src/app/dream/82-kids-color-piano/README.md` — design rationale + KIDS.md compliance table
+
+**How it works**:
+- Pointer events on the container (not individual circles) — `pointermove` + `document.elementFromPoint` enables single-finger glissando across circles
+- Each pointer ID mapped to exactly one note; dragging switches notes cleanly
+- Audio: triangle wave + sine 2nd harmonic (gain 0.18) for a warm piano-like tone, 12ms attack / 850ms release
+- Background pad: C3/E3/G3 sine oscillators with slow LFO (0.08–0.13 Hz), 0.04 master gain — keeps silence warm
+- Circles sized at `20vmin` (≥78px phone, ≥153px iPad) — well above 64px KIDS.md minimum
+- No text labels on circles; subtle "tap · hold · slide" hint at 0.18 opacity for parents
+
+**Build**: `npm run build` passed cleanly. Page is 1.58 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: The pointer-event approach (`pointerdown` on container + `elementFromPoint` for hit detection) works cleanly for both mouse and touch. No `setPointerCapture` needed — glissando is natural. The `vmin` sizing means the circles scale perfectly from a small phone to a large iPad without media queries.
+
+**Queued next**:
+1. **Non-kids build** — `78-node-synth` (visual Web Audio routing graph, top pick from Cycle 90 research, zero deps) OR `72-paths-visualizer` (Karel's real piano music, Welcome Home album via `/api/audio/[id]`). The latter aligns more directly with Karel's direction but needs research into the audio route format first.
+2. **Next kids cycle** (Cycle 96) — `kids-tilt-rain` (tilt iPad, catch falling colored drops) or `kids-hum-to-paint` (hum pitch → brush strokes).
+3. **Research** next due at ~Cycle 95 (3 build cycles from now).
+
+---
+
 ## Cycle 91 — /dream/74-touchdesigner-feedback
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
