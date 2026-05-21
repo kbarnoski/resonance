@@ -1399,7 +1399,7 @@ UI: record or paste a URL to a 5–10s voice reference clip → "Generate Ghost 
 
 FAL_KEY in use. $0.025/1000 chars — cheaper than all prior options. Zero new npm deps. One cycle. RESEARCH.md §137.
 
-### structure-viz — self-similarity matrix: your music as a map of itself `[queued, zero deps]`
+### structure-viz — self-similarity matrix: your music as a map of itself `[demoable — /dream/67-structure-viz, Cycle 84]`
 Route: `/dream/66-structure-viz`. Mic input (or demo oscillators) → accumulate bar-length FFT magnitude vectors (1 vector per ~1.5s of audio, up to 64 bars = ~96s). Compute an N×N **self-similarity matrix** (SSM): entry (i,j) = cosine similarity between bar i and bar j's FFT vector. Display the SSM as a Canvas2D colormap: dark = dissimilar, bright = similar. Apply a simple block-diagonal segmentation pass (find the rows/columns where average similarity drops, marking section boundaries) → draw colored vertical lines on a horizontal timeline strip below the SSM. Section blocks are labeled A / B / A' / C based on similarity clustering.
 
 Live mode: SSM grows in real time as you play. Each new bar appends a new row+column, and the colormap updates. Repeating material (a chorus coming back) lights up as bright off-diagonal squares. A simple 1-minute demo melody with ABA structure creates a visible 3×3 block pattern. Canvas resizes as the SSM grows (max 64×64 → 320×320 pixels).

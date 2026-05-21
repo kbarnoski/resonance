@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 83 — build)
+## ⭐ Newest (Cycle 84 — build)
+
+- **[/dream/67-structure-viz](/dream/67-structure-viz)** — Structure Viz. `demoable`
+  Your music as a map of itself. Every 1.5 seconds: capture FFT → 32 log-spaced feature bins →
+  normalized vector. Compute the N×N **self-similarity matrix** (cosine similarity). Display as a
+  heatmap: dark purple = dissimilar, bright white = same material. The diagonal is always white.
+  Checkerboard kernel novelty function detects section boundaries; greedy similarity clustering
+  assigns labels A / B / A′ / C — matching letter means recurring material.
+  **Demo (▶ ABA)**: three oscillator phases (C3 chord → A4 chord → C3 returns). By bar 22 (≈33s)
+  you see the classic "three bright blocks along the diagonal" with two bright off-diagonal corners
+  confirming that A = A′. The timeline strip below shows `A | B | A′`.
+  **Mic mode**: play any music — verse-chorus-verse, theme-variation-return, anything with
+  recurring sections will produce off-diagonal bright squares.
+  **First prototype that shows structure rather than content** — not what frequencies are present,
+  but how sections relate. 66 prior prototypes visualize audio signal; this one visualizes form.
+  Zero deps · zero API · 3.81 kB.
+  Design notes: `src/app/dream/67-structure-viz/README.md`
+
+---
+
+## Previous newest (Cycle 83 — build)
 
 - **[/dream/66-chatterbox-ghost](/dream/66-chatterbox-ghost)** — Chatterbox Ghost. `demoable`
   Record 5–10 seconds of any voice → Chatterbox Turbo renders all six Ghost narrative scenes in

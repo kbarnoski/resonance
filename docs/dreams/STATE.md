@@ -1,5 +1,46 @@
 # Dream Agent — cycle state
 
+## Cycle 84 — /dream/67-structure-viz
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — `structure-viz` is the #1 queued item from Cycle 83's "queued next" list.
+4. **Research** — not due (Cycle 82 was research; next research threshold ~Cycle 86-87).
+
+Decision: build `/dream/67-structure-viz` — self-similarity matrix section detection. First prototype
+that shows musical *structure* (does the chorus come back?) rather than signal content. Zero deps,
+zero API, one-cycle build. Renumbered to 67 since 66 was taken by `chatterbox-ghost`.
+
+**What I built**:
+- `src/app/dream/67-structure-viz/page.tsx` — main UI + all DSP logic
+- `src/app/dream/67-structure-viz/README.md` — design notes
+
+**How it works**:
+- Every 1.5s: capture 1024-bin FFT → extract 32 log-spaced feature bins → normalize to unit vector
+- Maintain a circular buffer of up to 64 feature vectors (bars)
+- Recompute the N×N self-similarity matrix (cosine similarity) on each new bar
+- Display as Canvas2D heatmap: dark purple = dissimilar, bright white = very similar; diagonal always white
+- Checkerboard kernel novelty function detects section boundaries
+- Greedy similarity clustering assigns labels A / B / A′ / C based on section prototypes
+- Timeline strip below the SSM shows colored blocks with labels
+- Demo mode: ABA pattern (C3 chord → A4 chord → C3 returns) so the structure is immediately visible
+- Mic mode: play your own material; repeating sections create bright off-diagonal blocks
+
+**Key thing I noticed**: at 64 bars (96s of audio), the SSM is 320×320px at 5px/cell — exactly right
+for reading structure at a glance. The ABA demo shows the classic "three bright square blocks" pattern
+within 48s. The off-diagonal bright blocks (A↔A′ correlation) are the interesting part — they encode
+the relationship between non-adjacent sections, which nothing else in the sandbox does.
+
+**Queued next**:
+1. **`wgsl-synth`** — WGSL shader editor with pre-wired audio uniforms. CodeMirror from CDN.
+   Zero new npm deps. High creative ceiling.
+2. **Research cycle** — due at Cycle 86 or 87 (Cycle 82 was last research; every 3-4 cycles).
+
+---
+
 ## Cycle 83 — /dream/66-chatterbox-ghost
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
