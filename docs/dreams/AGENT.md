@@ -47,6 +47,9 @@ Each hourly fire does exactly this sequence:
 - Read `docs/dreams/STATE.md` — what did the last cycle do? what's queued?
 - Read `docs/dreams/IDEAS.md` — full living queue
 - Read `docs/dreams/INDEX.md` — what prototypes exist on the sandbox
+- **Fetch Karel's vote signal** (no auth needed, public endpoint):
+  `curl -s https://getresonance.vercel.app/api/dream/votes`
+  Returns `{slug: vote}` where vote is `1` (loved), `-1` (downvoted), or `0` (neutral). Soft-bias the cycle's decision: lean toward extending themes Karel loved; treat downvoted slugs as a signal to do something **different** (NOT to delete them — the immutability rule still holds). Note in STATE.md which loved/downvoted slugs influenced this cycle's choice.
 
 ### 2. Decide (5 min budget)
 Pick ONE action for this cycle, in priority order:
@@ -170,14 +173,36 @@ If a cycle was a partial failure (built half a thing, hit a wall, reverted), say
 
 ## What Karel cares about most
 
-In rough priority:
+In rough priority (updated 2026-05-21 — read carefully, this changed):
 
 1. **Real audio-visual prototypes**, not pixel mockups. Sound + viz, interactive.
 2. **Surprise** — things he hasn't considered. Drop in a research finding, a strange-attractor visualization, a non-Western musical structure, anything that makes him say "huh, I didn't know we could do that."
 3. **Live performance fitness** — many prototypes should be playable on a stage with mic input, low latency, GPU-only paths.
 4. **Journey engine alternatives** — the current engine has a psychedelic 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
-5. **Ghost-character iteration** — better LoRA training prompts, better per-phase imagery, A/B tools.
-6. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
+5. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
+
+### Current direction (set 2026-05-21)
+
+These are explicit directives from Karel. Apply them as soft filters on which idea to pick next:
+
+- **Pull WAY back on AI voice generation.** Several voice-synthesis prototypes already exist (`56-ghost-voice`, `59-gemini-voice-lab`, `61-orpheus-voice`, `64-eleven-dialogue`, `66-chatterbox-ghost`, `65-dialogue-score`). Karel has seen enough — do not add more voice-generation prototypes for now. Polish on existing voice prototypes is fine if a vote signal asks for it.
+- **AI image generation INSIDE audio-visual experiments is welcome.** Not as standalone image gen — embedded in an AV piece where the image responds to or shapes the audio. This is the path that interests him most right now.
+- **Spread themes across Karel's published journeys, not just Ghost.** Read `src/lib/journeys/journeys.ts` for the JOURNEYS array — every entry is a published theme (Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Snowflake, etc.). New prototypes should pull inspiration from across that list, not solely from Ghost. Ghost prototypes are fine in moderation; do not let them dominate.
+- **Incorporate Karel's actual music from the Paths.** The `journey_paths` table groups his Welcome Home album's 13 tracks into a path; the recordings live in Supabase storage and the audio URLs can be read at runtime via the `/api/audio/[id]` route. Build prototypes that USE his real piano tracks as the audio source — visualize them, transform them, build around them. Don't just synthesize new audio; let his existing music be the input.
+- **Deep, ongoing research into the interactive audio-visual domain.** During research cycles (see "Research cycles" above), go DEEPER than surface scans. Specifically look at:
+  - **TouchDesigner** — TOPs (textures), SOPs (geometry), CHOPs (audio-reactive channels), GLSL TOPs, point clouds, optical flow, feedback loops, body-tracking visuals. What can be ported to WebGPU?
+  - **Houdini** — VEX particle systems, volumetric simulations, COPs compositing, pyro/fluid sims, crowd simulation, USD scenes. Anything browser-feasible via WebGPU compute?
+  - **Notable AV artists** — Robert Henke, Ryoji Ikeda, Memo Akten, Casey Reas, Daniel Rozin, Refik Anadol, Marpi, Manolo Gamboa Naon. Pull techniques from their public talks/code.
+  - **WebGPU compute shaders, three.js postprocessing, MediaPipe (body/face/hand tracking), TensorFlow.js (lightweight realtime ML)** — these are the browser equivalents of TD/Houdini paradigms.
+  Each research cycle should add 3-5 concrete prototype seeds inspired by these, with explicit notes on which TD/Houdini pattern they're inspired by.
+
+### Vote-aware bias (also set 2026-05-21)
+
+Karel can now love or downvote prototypes via the public votes API. **Never delete or modify a downvoted prototype** — the immutability rule is absolute. Use the signal only to bias future work:
+
+- A **loved** prototype = "do more in this direction." Look at what makes it work (technique, palette, interaction model) and let those qualities seed new ideas in IDEAS.md.
+- A **downvoted** prototype = "this direction isn't what I want." Avoid building anything structurally similar. Do something different instead.
+- Cite which votes influenced this cycle's pick in STATE.md ("Cycle N — pulled by Karel's love of `42-binaural`; built a binaural-style spatial extension").
 
 ---
 
