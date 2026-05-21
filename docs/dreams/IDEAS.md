@@ -1378,3 +1378,52 @@ Key findings from Cycle 78 (2026-05-21):
 - Eleven V3 Text-to-Dialogue (§134) — multi-speaker dramatic scene in a single API call. Inspires `eleven-dialogue`: Ghost + Visitor 3-line scene per narrative location.
 - WebGPU audio 2026 status (§135) — SharedArrayBuffer streaming path enables real-time GPU synthesis. COOP header needed; worth asking Karel if Vercel supports it. Upgrade path for `27-gpu-additive`.
 - CHI 2026 creative AI taxonomy (§136) — four interaction modes: reactive / compositional / dialogic / generative. Sandbox covers first two well; dialogic (only `33-aria-companion`, `39-anticipate`) and generative (only `47-mood-journey`) are underrepresented. Priority: build `dialogue-score` (dialogic) and confirm Gemini key for `lyria-jam` (generative).
+
+---
+
+## FROM RESEARCH (Cycle 82, 2026-05-21) — promoted to queue
+
+### chatterbox-ghost — voice-cloned Ghost narration via Chatterbox Turbo `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/66-chatterbox-ghost`. Six Ghost scenes. Each scene has a pre-written narration line (same as `56-ghost-voice`). A **voice clone** input: either a short URL to a pre-recorded 5–10s audio sample (bundled as a public asset), or a live browser mic recording. Chatterbox Turbo renders the Ghost narration in the cloned voice at `fal-ai/chatterbox/text-to-speech`, with paralinguistic tags embedded mid-sentence:
+
+- Stone Chamber: `The resonance here is ancient. [sigh] Let yourself be absorbed by it.`
+- Root Portal: `[slowly] Something stirs beneath the roots. [gasp] A low note. Then silence.`
+- Underground Pool: `The water remembers every sound [sigh] that has passed through this place.`
+- Tiny Planet: `A single breath. [laugh softly] The horizon wraps around you.`
+- Forest Dawn: `The first light is also the first sound. [softly] They arrive together.`
+- Cosmic Ascension: `[flatly] You are not rising. [long pause] The world is receding.`
+
+UI: record or paste a URL to a 5–10s voice reference clip → "Generate Ghost voices" button fires six concurrent API calls → six waveform strips appear. ▶ plays each. "Exaggeration" slider (0.0–1.0) controls emotional intensity across all generated voices.
+
+**Why this is different from all prior Ghost voice prototypes**: `56-ghost-voice` (Gemini — global style direction), `61-orpheus-voice` (Orpheus — per-word XML tags), `64-eleven-dialogue` (ElevenLabs V3 — per-phrase acting direction) all use pre-existing model voices. Chatterbox Turbo clones any voice from 5 seconds of audio. First prototype where Karel can hear the Ghost speak in a **specific human voice** — record himself reading one line, and hear all six scenes in his voice. Or record an actor, or a synthesized ghost-like reference voice. The paralinguistic tags add physical vocal actions (`[sigh]`, `[gasp]`) that complement the emotional tag paradigms from Orpheus and ElevenLabs V3. Four TTS paradigms now compared: Gemini (global) / Orpheus (per-word XML) / ElevenLabs V3 (per-phrase acting) / Chatterbox (voice-clone + physical action tags).
+
+FAL_KEY in use. $0.025/1000 chars — cheaper than all prior options. Zero new npm deps. One cycle. RESEARCH.md §137.
+
+### structure-viz — self-similarity matrix: your music as a map of itself `[queued, zero deps]`
+Route: `/dream/66-structure-viz`. Mic input (or demo oscillators) → accumulate bar-length FFT magnitude vectors (1 vector per ~1.5s of audio, up to 64 bars = ~96s). Compute an N×N **self-similarity matrix** (SSM): entry (i,j) = cosine similarity between bar i and bar j's FFT vector. Display the SSM as a Canvas2D colormap: dark = dissimilar, bright = similar. Apply a simple block-diagonal segmentation pass (find the rows/columns where average similarity drops, marking section boundaries) → draw colored vertical lines on a horizontal timeline strip below the SSM. Section blocks are labeled A / B / A' / C based on similarity clustering.
+
+Live mode: SSM grows in real time as you play. Each new bar appends a new row+column, and the colormap updates. Repeating material (a chorus coming back) lights up as bright off-diagonal squares. A simple 1-minute demo melody with ABA structure creates a visible 3×3 block pattern. Canvas resizes as the SSM grows (max 64×64 → 320×320 pixels).
+
+"Your music as a map of itself." This is the **first prototype that shows structure rather than content** — not what frequencies are present, but how the sections relate. A pianist who plays an ABA form sees the A-sections appear as matching diagonal blocks; the B section appears darker on the off-diagonal. The SSM is a standard MIR technique (no ML needed — FFT vectors are sufficient for detecting repetition structure). Zero external deps. One-cycle build. Research basis: RESEARCH.md §143.
+
+### improv-expand — ImprovNet-style seed-to-improvisation `[queued, needs API endpoint]`
+Route: `/dream/67-improv-expand`. User plays an 8-bar phrase (or uses demo MIDI) → select genre (jazz, classical, blues, bossa nova) and style degree slider (0.0 = close to original, 1.0 = free improvisation) → ImprovNet API generates a 32-bar structured improvisation that develops and transforms the seed material. Display: piano roll shows seed (amber, left panel) and AI improvisation (blue, right panel). Play both sequentially. Download generated MIDI.
+
+"Your phrase, fully developed." Different from `33-aria-companion` (immediate Markov response) and `65-dialogue-score` (contour mirroring): ImprovNet generates a complete, structured piece that develops the seed across 32 bars rather than responding phrase-by-phrase. This is the first prototype where the AI generates a **complete compositional unit** from the user's seed. Needs an ImprovNet API endpoint — no fal.ai deployment found yet. Monitor HuggingFace for Spaces deployment. Also monitor for local server path. Zero new npm deps (server route calls API). RESEARCH.md §138.
+
+### wgsl-synth — minimal WGSL shader editor with pre-wired audio uniforms `[queued, zero deps]`
+Route: `/dream/68-wgsl-synth`. Inspired by ShaderVine (RESEARCH.md §130): a split-screen WebGPU WGSL shader editor. Left: CodeMirror textarea (loaded from CDN, ~200KB, no package.json change) with a pre-wired WGSL fragment shader template. Right: fullscreen WebGPU canvas running the shader. Six audio uniforms pre-wired and updated every frame from the Web Audio AnalyserNode: `uBass`, `uMid`, `uTreble`, `uOnset`, `uTime`, `uBPM`. Pre-loaded example shader: a pulsing radial grid where `uBass` expands the rings and `uOnset` flashes white. Edit any WGSL line → shader recompiles live (debounced 400ms). GLSL compile error messages shown inline.
+
+Demo mode: LFO oscillators animate the shader without mic permissions. Mic mode: live audio drives the uniforms. "Write a WGSL shader that responds to your piano." Different from `55-webgpu-audio-fx` (which runs GPU DSP on audio *data*): this runs GPU *visualization* shaders with audio *uniforms*. The user's code is the visualization; the audio is the parameter. Different from `claude-shader` (which calls Claude to generate the WGSL): this is a manual editor for users who want to write their own. These two prototypes are the lowest and highest of an "AI assistance" spectrum. Zero new npm deps (CodeMirror from CDN). One-cycle build. RESEARCH.md §130 (ShaderVine) + §135 (WebGPU audio).
+
+Key findings from Cycle 82 (2026-05-21):
+- Chatterbox Turbo on fal.ai (§137) — open-source TTS with 5s voice cloning + paralinguistic tags `[sigh]`, `[gasp]`. $0.025/1000 chars, FAL_KEY in use. Most affordable TTS in the sandbox. First model that can clone Karel's own voice. Inspires `chatterbox-ghost`.
+- ImprovNet (§138, arxiv 2502.04522, Feb 2026) — seed → structured 32-bar improvisation with controllable style transfer. Cross-genre (Bach→jazz). No API yet; monitor. Inspires `improv-expand`.
+- Pianist Transformer (§139, arxiv 2512.02652, Dec 2025) — 135M params, human-level expressive piano rendering, Apache 2.0, HuggingFace demo. No API; proxy via HuggingFace Spaces. Inspires `expressive-render`.
+- D3PIA (§140, arxiv 2602.03523, Feb 2026) — discrete diffusion piano accompaniment from melody + chord symbols. No API yet. Inspires `lead-sheet` prototype.
+- PianoFlow (§141, arxiv 2604.12856, Apr 2026) — real-time bimanual piano hand motion from audio, 9× faster inference. Inspires `piano-hands` 3D visualization prototype.
+- NCLMCTT (§142, ICLR 2026) — zero-shot instrument timbre cloning from 1–5s reference. No fal.ai endpoint. Inspires `timbre-clone`.
+- Self-similarity matrix structure analysis (§143, arxiv 2603.27218, Mar 2026) — unsupervised section detection via SSM + CBM. Zero deps, browser-native. Inspires `structure-viz`.
+- Anchored Cyclic Generation (§144, arxiv 2604.05343, Apr 2026) — prevents semantic drift in long-form music generation via hierarchical anchoring. Validates `48-arc-compose` design; no new prototype.
+- Etude piano cover generation (§145, arxiv 2509.16522, Sep 2025) — polyphonic music → pianistic piano cover. Three-stage pipeline. No API yet. Inspires `piano-cover`.
+- StreamMark audio watermarking (§146, arxiv 2604.11917, Apr 2026) — AI audio provenance tracking. Research awareness; no prototype recommended.

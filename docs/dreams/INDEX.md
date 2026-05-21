@@ -10,7 +10,38 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 81 — build)
+## ⭐ Newest (Cycle 82 — research)
+
+- **Cycle 82 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§137–146).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **Chatterbox Turbo (§137)** — 5-second voice cloning + paralinguistic tags `[sigh]`, `[gasp]`.
+    FAL_KEY in use. $0.025/1000 chars — cheapest TTS in the sandbox. First model that can clone
+    a specific voice. Build next cycle: `chatterbox-ghost` — hear the Ghost narrations in Karel's
+    own voice (or any 5s reference clip).
+
+  - **ImprovNet (§138, arxiv 2502.04522)** — play a seed phrase → AI generates a full 32-bar
+    structured improvisation with controllable style transfer (jazz/classical/blues degree slider).
+    First "complete the composition" AI in the queue. No API yet; monitor.
+
+  - **Pianist Transformer (§139, arxiv 2512.02652)** — 135M-param model, human-level expressive
+    piano rendering from flat MIDI. Apache 2.0. HuggingFace demo. Proxy-callable. → `expressive-render`.
+
+  - **Self-similarity matrix (§143)** — zero-dep browser section detection. FFT → N×N cosine
+    similarity colormap → section boundary lines. First prototype that shows musical STRUCTURE
+    (does the chorus come back?) not signal content. → `structure-viz`. Buildable zero deps.
+
+  - **D3PIA (§140), PianoFlow (§141), NCLMCTT (§142)** — three new research-direction prototypes
+    queued pending API availability.
+
+  **Open questions for Karel**:
+  - NEW: Bundle a 5s Ghost voice reference for `chatterbox-ghost`? Could be Karel's own voice.
+  - GEMINI_API_KEY → `lyria-jam`, `lyria-ghost`, `binaural-lyria`
+  - ANTHROPIC_API_KEY → `claude-shader`
+
+---
+
+## Previous newest (Cycle 81 — build)
 
 - **[/dream/65-dialogue-score](/dream/65-dialogue-score)** — Dialogue Score. `demoable`
   Contour-mirroring AI piano dialogue. Play a phrase (8+ notes + 2s silence); the system detects

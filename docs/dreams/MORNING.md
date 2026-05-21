@@ -1,53 +1,38 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 81)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 82)
 
 ## New since yesterday
 
-- **[/dream/65-dialogue-score](/dream/65-dialogue-score)** (Cycle 81) — `demoable` · Zero deps · Zero API
+- **Cycle 82 was a research sweep** (no new prototype — research was due after 3 build cycles since Cycle 78).
 
-  **"The AI mirrors your musical thought."**
+  **10 new RESEARCH.md entries (§137–§146). 4 new prototype ideas added to IDEAS.md.**
 
-  The third Aria dialogue prototype — and the first where her response has *musical logic*, not just
-  statistical probability.
+  The standout find:
 
-  **What's new**: contour mirroring. After you play 8+ notes and pause 2s, the system measures
-  whether your phrase was ascending ↗, descending ↘, arch-shaped ∧, or valley-shaped ∨. Aria's
-  response is constrained to follow the same shape. Markov chain still biases the note choices from
-  your playing history — contour constraint only adds a direction filter at each step.
+  **Chatterbox Turbo (§137) — Ghost narration with voice cloning.**
+  Resemble AI's open-source TTS on fal.ai at `fal-ai/chatterbox/text-to-speech`. $0.025/1000 chars (cheapest TTS in the sandbox). Key capability none of the other four TTS models have: **5-second voice cloning** — pass a short audio URL and the output is rendered in that person's voice. With paralinguistic tags `[sigh]`, `[gasp]` mid-sentence.
+  Prototype queued: `chatterbox-ghost` — record 5s of any voice → hear the six Ghost scene narrations in that voice. First prototype where Karel can hear the Ghost speak in **his own voice** (or any chosen voice). FAL_KEY in use; directly buildable next cycle.
 
-  **What to open on your phone**: `/dream/65-dialogue-score` → **DEMO**. C major scale rises
-  C4→C5. Ghost notes (dashed blue) appear in the ARIA panel before a single note sounds. Watch the
-  header: `your phrase ↗ ascending → aria mirrors → aria responds ↗ ascending`. Then Aria plays
-  ascending. The mirroring is accurate.
-
-  **Try with mic**: play a descending scale or a phrase that rises then falls. Arch ∧ is the most
-  interesting — Aria rises first then descends.
-
-  **Lineage**: `33-aria-companion` (pure Markov) → `39-anticipate` (Markov + ghost preview) →
-  `65-dialogue-score` (Markov + ghost preview + contour mirroring). Each generation adds one insight.
-  Inspired by "Dialogue in Resonance" (arxiv 2505.16259, 2026).
-
-- **[/dream/64-eleven-dialogue](/dream/64-eleven-dialogue)** (Cycle 80) — `demoable` · ElevenLabs V3 · ~$0.02/scene
-
-  The Ghost as drama. Stone Chamber: *"[slowly] The resonance here [pauses] is ancient."* Two
-  characters, three lines, inline acting tags. `[pauses]` mid-sentence is an acting beat, not a comma.
+- **[/dream/65-dialogue-score](/dream/65-dialogue-score)** (Cycle 81, `demoable`) — contour-mirroring AI piano dialogue.
+  Play ascending scale → Aria responds ascending. Ghost notes appear before she plays. Third generation of the Aria dialogue series. Zero deps.
 
 ## In progress / partial
 
-- Nothing in-progress. **Next build**: research cycle (due at Cycle 82 — 4 build cycles since Cycle 78).
-  Then: `ghost-v3-voice` (standalone ElevenLabs V3 Ghost page, no comparison, just the clearest
-  six scene narrations we can write) OR polish `65-dialogue-score` (invert mode, arch drawn on canvas).
+- Nothing in-progress. **Next build** (Cycle 83): `chatterbox-ghost` — voice-cloned Ghost narration.
+  After that: `structure-viz` (self-similarity matrix showing musical structure — zero deps, novel), then `wgsl-synth` (WGSL shader editor with pre-wired audio uniforms).
 
 ## Research findings worth a look
 
-- **CHI 2026 creative AI taxonomy** (RESEARCH.md §136) — reactive / compositional / dialogic / generative.
-  `65-dialogue-score` fills "dialogic." Generative (Lyria, ACE-Step without prompts) is still the gap.
-- **Dialogue in Resonance** (§129, arxiv 2505.16259) — human pianist + computer: score-derived constraints
-  rather than pure improvisation. This is the paper behind the contour mirroring idea. Worth a read.
-- **musicolors** (§131) — multiple visual dimensions simultaneously. Validated by `63-synesthetic-sketch`.
+- **Chatterbox Turbo (§137)** — voice cloning from 5s reference. The Ghost speaks in the voice you chose. $0.025/1000 chars. Different from all 4 prior TTS prototypes.
+- **ImprovNet (§138, arxiv 2502.04522)** — play a seed phrase → AI generates full 32-bar structured improvisation in any genre (jazz/classical/blues). No API yet, but when one arrives this is the strongest "AI completes your composition" prototype in the queue.
+- **Pianist Transformer (§139, arxiv 2512.02652)** — 135M-param transformer, human-level expressive piano rendering from flat MIDI. Apache 2.0. HuggingFace demo. No inference API yet → needs proxy server route.
+- **Self-similarity matrix (§143)** — zero-dep browser section detection: FFT → N×N cosine similarity matrix → colormap → section boundaries. Novel: first sandbox prototype that shows STRUCTURE (does A come back as A'?) not content. Buildable in one cycle, zero deps.
+- **D3PIA (§140, arxiv 2602.03523)** — AI piano accompaniment from melody + chord symbols. "Play the melody, AI fills the accompaniment." No API yet.
+- **PianoFlow (§141, arxiv 2604.12856)** — 3D animated bimanual piano hands from audio. Could produce the most visually surprising prototype yet — seeing ghost hands play your recording.
 
 ## Open questions for Karel
 
-- **`GEMINI_API_KEY`?** → `lyria-jam` (infinite steerable AI music, live-performance-relevant), `lyria-ghost`, `binaural-lyria`.
+- **`GEMINI_API_KEY`?** → `lyria-jam` (infinite steerable AI music), `lyria-ghost`, `binaural-lyria`.
 - **Vercel COOP headers?** (`Cross-Origin-Opener-Policy: same-origin` + COEP) → SharedArrayBuffer → GPU audio.
 - **`ANTHROPIC_API_KEY` in Vercel env?** → `claude-shader` (LLM-generated audio-reactive GLSL).
 - **`lyrics-journey` budget OK?** ~$2.40/generation (ElevenLabs Music, sung Ghost journey arc).
+- **NEW: OK to bundle a short (~5s) Ghost voice reference clip for `chatterbox-ghost`?** Could be Karel's own voice, a purposely-recorded Ghost character, or any public-domain recording. Chatterbox Turbo clones the voice from that sample. Zero additional cost beyond the $0.025/1000-char generation price.

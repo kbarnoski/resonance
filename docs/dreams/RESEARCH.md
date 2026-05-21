@@ -1402,3 +1402,106 @@ Two papers from CHI 2026 / CHI-adjacent venues relevant to the dream zone: (1) A
 
 **Could become a prototype**: `lyria-jam` remains the top-priority generative-mode prototype when Karel provides a Gemini API key. The CHI taxonomy confirms: of the four creative AI interaction modes, generative is the most underrepresented in the sandbox. `lyria-jam` would be the first prototype Karel could perform with live — infinite music, infinite steering, no "generate and wait." Also reinforces: build `dialogue-score` soon to deepen the dialogic category beyond the two existing entries.
 
+---
+
+## Cycle 82 Research (2026-05-21)
+
+---
+
+### 137. Chatterbox Turbo — Open-Source TTS with Voice Cloning + Paralinguistic Tags (Resemble AI, 2026)
+**Source**: https://blog.fal.ai/chatterbox-turbo-is-now-available-on-fal/ · https://fal.ai/models/fal-ai/chatterbox/text-to-speech
+
+Resemble AI's Chatterbox Turbo is a 350M-parameter open-source TTS model on fal.ai at endpoint `fal-ai/chatterbox/text-to-speech`. Price: $0.025/1000 characters — half of Orpheus ($0.05) and one-fourth of ElevenLabs V3 ($0.10). Key differentiators from the three prior TTS models in the sandbox (Gemini §110, Orpheus §117, ElevenLabs V3 §127):
+
+1. **Voice cloning from 5 seconds** — pass any audio URL as a `audio_url` input and the output is rendered in that voice. No training, no fine-tuning. Immediate.
+2. **Paralinguistic tags** — `[laugh]`, `[sigh]`, `[gasp]`, `[cough]`, `[throat clear]`, etc. inserted mid-sentence. Different paradigm from Orpheus XML (per-word) and ElevenLabs V3 (per-phrase acting direction): Chatterbox tags represent physical/vocal actions rather than emotional states.
+3. **Sub-150ms first-sound latency** — real-time capable.
+4. **`exaggeration` control** — float 0–1 scales emotional intensity from neutral to dramatic across the whole generation.
+
+This is the first TTS in the sandbox where the voice itself can be cloned. The prior four prototypes all use pre-existing model voices; Chatterbox could render the Ghost in a real person's voice — including Karel's own voice, any actor's voice from a 5s sample, or a purpose-recorded "Ghost character" voice.
+
+**Could become a prototype**: `chatterbox-ghost` — record a 5s "Ghost character" voice sample (or use any short reference clip hosted at a public URL). Six Ghost scene narrations rendered in that cloned voice with paralinguistic Chatterbox tags: `The resonance here is ancient. [sigh] Let yourself be absorbed by it.` / `[slowly] You are not rising. [gasp] The world is receding.` Add as column E to `61-orpheus-voice` (making it a 5-way TTS comparison) OR as a standalone prototype with a voice-clone UI: record/upload reference audio → type narration → generate. The voice-clone capability is qualitatively new — this is the first prototype that lets Karel hear the Ghost speak in a voice he chose. FAL_KEY in use. $0.025/1000 chars. Zero new deps. One cycle.
+
+---
+
+### 138. ImprovNet — Controllable Musical Improvisations via Iterative Corruption Refinement (arxiv 2502.04522, Feb 2026)
+**Source**: https://arxiv.org/abs/2502.04522
+
+ImprovNet is a transformer-based model for generating stylistically coherent musical improvisations from a seed composition. Architecture: self-supervised iterative corruption-refinement — the model is trained by progressively corrupting symbolic music and learning to reconstruct expressive variations. At inference: supply a seed phrase (even just 4-8 bars of melody), choose a style degree (0.0 = close to original, 1.0 = freely improvised), and optionally specify a target genre (jazz, classical, blues, bossa nova). The model generates a complete 16-32 bar structured improvisation that develops and transforms the seed material.
+
+Cross-genre style transfer is a first-class capability: an 8-bar Bach invention seed can be transformed into a jazz improvisation that preserves the melodic skeleton while adding syncopation, chord extensions, and idiomatic embellishments. Objective + subjective evaluations confirm musical coherence at all style-transfer degrees. The model handles completion (infill a missing phrase), harmonization (add chords), and style transfer from a single architecture.
+
+**Could become a prototype**: `improv-expand` — user plays an 8-bar phrase (or uses demo MIDI) → select genre and style degree slider → ImprovNet generates a 32-bar improvisation that develops the seed. Play through bloom visualizer; piano roll shows original seed (amber) and improvised continuation (blue). "Your phrase, developed." Zero new deps; needs a model API or HuggingFace Spaces endpoint. No fal.ai endpoint found yet — monitor. Also: once the API appears, this becomes the strongest dialogic prototype in the sandbox: the AI doesn't just respond (Aria, `33-aria-companion`) but develops the user's idea into a complete form.
+
+---
+
+### 139. Pianist Transformer — Human-Level Expressive Piano Performance Rendering (arxiv 2512.02652, Dec 2025)
+**Source**: https://arxiv.org/abs/2512.02652 · https://huggingface.co/spaces/yhj137/pianist-transformer-rendering
+
+A 135M-parameter Transformer (Apache 2.0) that converts a flat (unexpressive) MIDI score into a human-level expressive piano performance. Self-supervised pre-training on 10B tokens from unlabeled MIDI recordings eliminates the need for labeled expression annotations. Architecture: asymmetric encoder-decoder (10-layer encoder, 2-layer decoder) for longer context at lower cost. Result: outputs statistically indistinguishable from human pianists in blind listening tests. HuggingFace demo at https://huggingface.co/spaces/yhj137/pianist-transformer-rendering — inference runs via Spaces (no API key needed, free). Model hosted at `yhj137/pianist-transformer-rendering` in safetensors format; no direct HuggingFace Inference API deployment, but the demo Space is publicly callable.
+
+**Could become a prototype**: `expressive-render` — user writes or plays a simple 8-bar melody (using `22-code-score` DSL, or via `26-score-follow` demo score), sends the flat MIDI to the Pianist Transformer HuggingFace Space, gets back an expressive human-like performance. Play through the `24-piano-roll` visualization so you can see the added dynamics and timing variations as the "performed" version deviates from the flat score. "Your melody, played as a human would." Needs a server route to proxy the HuggingFace Spaces demo (since no direct API). One cycle. No API key. Apache 2.0.
+
+---
+
+### 140. D3PIA — Piano Accompaniment Generation from Lead Sheet via Discrete Diffusion (arxiv 2602.03523, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.03523
+
+KAIST paper. Generates a complete piano accompaniment from a lead sheet (melody + chord symbols) using a discrete denoising diffusion model. Core innovation: Neighborhood Attention (NA) modules capture local correlations between melody and accompaniment in piano-roll space, while the discrete diffusion process respects the symbolic nature of music better than continuous diffusion. Outperforms continuous diffusion and Transformer baselines on the POP909 benchmark for chord fidelity and musical coherence. Input: melody piano roll (pitch × time) + chord symbols (12-dim per bar). Output: accompaniment piano roll. Apache 2.0, MIDI-level output.
+
+**Could become a prototype**: `lead-sheet` — user types a melody using `22-code-score` DSL (or uses the demo Bach fragment), specifies chord names via a row of chord pickers (Dm7, G7, Cmaj7...), sends the combined lead sheet to a D3PIA API endpoint → AI generates piano accompaniment. Play both melody (top track, orange) and AI accompaniment (bottom track, blue) through the piano roll visualization simultaneously. "You sing, the piano plays with you." Very relevant to Resonance: every pianist knows the lead-sheet format. No fal.ai endpoint found; monitor for deployment. Research direction for now.
+
+---
+
+### 141. PianoFlow — Music-Aware Streaming Bimanual Piano Hand Motion Generation (arxiv 2604.12856, Apr 2026)
+**Source**: https://arxiv.org/abs/2604.12856
+
+Generates realistic animated 3D piano hand motions synchronized to audio. Architecture: autoregressive flow-matching continuation scheme for real-time streaming of arbitrarily long sequences. Uses MIDI during training (for hand position labels) but requires only audio at inference. Role-gated interaction module coordinates left/right hand dynamics to avoid collision and maintain musical phrasing. 9× faster inference than prior state-of-the-art. Result: high-fidelity bimanual piano hand animations synchronized to any piano audio.
+
+**Could become a prototype**: `piano-hands` — upload a piano audio file (or use mic capture) → stream through PianoFlow API → render 3D animated hand skeleton over a simplified keyboard model in Three.js R3F (all deps already installed). The keyboard could be the `36-pluck-field` grid or a standard 88-key piano layout. Seeing animated hands play music you know (Bach Invention, your own improvisation) is a high-surprise visual. No fal.ai endpoint found; model code on GitHub. Would need a backend. One future cycle when API available. Meanwhile, a simplified version: just render static hand pose silhouettes keyed to detected pitch, without the full PianoFlow model.
+
+---
+
+### 142. NCLMCTT — Neural Codec Language Model for Controllable Timbre Transfer (ICLR 2026, Amazon Science)
+**Source**: https://proceedings.mlr.press/v303/liu26b.html · https://www.amazon.science/publications/neural-codec-language-model-for-controllable-timbre-transfer-in-music-synthesis
+
+Zero-shot instrument timbre cloning: play a melody → hear it rendered in a different instrument's timbre from a 1–5s reference audio clip. Architecture: 385M-parameter transformer (coarse structure) + specialized upsampler (fine timbral detail). Zero-shot: no per-instrument training. Reference clip conditioning: 1–5s of any instrument is sufficient for convincing timbre transfer. Benchmark: first comprehensive controllable timbre transfer evaluation dataset (62,500 samples, 50 synthesizer presets). Results: 27.1% reduction in SI-SDR, 50.9% Mel Distance improvement vs. TokenSynth baseline. Melodic content preserved (Chroma Similarity: 0.85).
+
+**Could become a prototype**: `timbre-clone` — record 3–5s of any instrument (violin, cello, marimba, theremin, or use a bundled demo clip), then play a melody into the mic → the melody is transcribed and rendered through the cloned instrument timbre. Play the re-timbred audio through the bloom visualizer. "Your melody — in any voice." Needs fal.ai or HuggingFace endpoint. No deployment found yet; monitor Amazon Science publications. Different from `34-spectral-morph` (which blends FFT spectra) — NCLMCTT does semantically coherent timbre replacement, not spectral mixing.
+
+---
+
+### 143. Self-Similarity Matrix Music Structure Analysis (arxiv 2603.27218, Mar 2026)
+**Source**: https://arxiv.org/abs/2603.27218
+
+Unsupervised music structure analysis using pre-trained deep audio embeddings + three segmentation algorithms. Key finding: Correlation Block-Matching (CBM) on bar-level deep embeddings consistently outperforms Foote's checkerboard kernels and spectral clustering. No labeled data required — embeddings from generic pre-trained models (like MusicBrainz or CLAP) are sufficient. The self-similarity matrix (SSM) — where entry (i,j) = cosine similarity between bar i and bar j embedding — reveals repetition structure visually: a chorus repeating three times creates bright 3×3 diagonal blocks.
+
+**Could become a prototype**: `structure-viz` — mic → 30-60s of audio → compute bar-level FFT envelope vectors → build an SSM from cosine similarities → display as a colormap grid (dark = dissimilar, bright = similar) that auto-updates as you play. Use Correlation Block-Matching to detect section boundaries and draw them as colored dividers on a horizontal timeline strip at the bottom. No ML required — the SSM from FFT vectors (no deep embeddings) is a valid zero-dep approximation that reveals gross structure. When you play a repeating motif, the bright off-diagonal blocks appear in real time. "Your music as a map of itself." Zero deps; browser-native. One cycle. First prototype that shows STRUCTURE rather than just content.
+
+---
+
+### 144. Anchored Cyclic Generation for Long-Sequence Symbolic Music (arxiv 2604.05343, Apr 2026)
+**Source**: https://arxiv.org/abs/2604.05343
+
+Hi-ACG: hierarchical anchor-based cyclic generation that prevents semantic drift in autoregressive music models during long-sequence generation. Core insight: use anchor features from already-generated segments to constrain subsequent generation — the anchor "remembers" the established musical material and keeps the continuation coherent. Result: 34.7% reduction in cosine distance between predicted and target feature vectors vs. baseline autoregressive generation. Applied to music completion, style transfer, and full-piece generation tasks.
+
+**Relevance to sandbox**: This paper validates the approach in `48-arc-compose` (where section tags act as structural anchors) and `33-aria-companion` + `65-dialogue-score` (where the Markov chain history acts as a statistical anchor). The key insight — hierarchical global-to-local anchoring — could be applied to future prototype builds. No prototype directly; research direction that reinforces existing design choices.
+
+---
+
+### 145. Expressive Piano Cover Generation — Etude System (arxiv 2509.16522, Sep 2025)
+**Source**: https://arxiv.org/abs/2509.16522
+
+Three-stage system for converting polyphonic music into pianistically idiomatic piano cover arrangements: (1) Extract melodic and harmonic content from the source (via AMT), (2) Structuralize the content into a pianistic reduction preserving voice leading, (3) Decode into an expressive MIDI performance with realistic dynamics and articulation. Target: covers that a human pianist could actually perform — not just correct notes but natural fingerings and phrasing. Results: subjectively preferred over prior piano cover generation systems.
+
+**Could become a prototype**: `piano-cover` — upload any audio file (pop song, string quartet recording, hummed melody) → Etude generates a playable piano cover arrangement. Display as piano roll. Download as MIDI. "Any music, reduced to piano." Needs an API. No fal.ai endpoint found; research-stage. Future prototype when API appears. Note: the three-stage decompose-structuralize-decode pipeline mirrors Resonance's existing journey arc structure, suggesting a natural fit.
+
+---
+
+### 146. StreamMark — Semi-Fragile Audio Watermarking for Deepfake Detection (arxiv 2604.11917, Apr 2026)
+**Source**: https://arxiv.org/abs/2604.11917
+
+A deep-learning-based audio watermarking system designed to be robust against benign processing (compression, resampling, normalization) while fragile against deepfake manipulation. SNR 24.16 dB, PESQ 4.20 — effectively imperceptible. Architecture: encoder embeds a bit-string watermark into the audio; decoder detects presence and authenticity. A watermarked Ghost narration played through Resonance would retain its verification signature even after platform re-encoding, but the signature breaks if the audio is deepfaked or voice-cloned.
+
+**Relevance to sandbox**: Interesting for the Ghost voice prototypes (`56-ghost-voice`, `61-orpheus-voice`, `64-eleven-dialogue`, future `chatterbox-ghost`) — the AI-generated Ghost narrations could be watermarked to mark them as AI-generated. Not a standalone prototype (too specialized), but a signal that audio provenance is a growing concern in AI-generated creative work. Karel should know: as Ghost TTS prototypes multiply, there's a research community building tools to track which outputs are AI-generated. Not a blocking concern, but worth awareness. No prototype recommended.
+

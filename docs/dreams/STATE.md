@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 82 — research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — skipped; research takes priority.
+4. **Research** — due. Last research was Cycle 78. Cycles 79, 80, 81 were all builds = exactly 3 build cycles. AGENT.md threshold: research every 3–4 cycles. MORNING.md notes it as due at Cycle 82. Decision: research sweep.
+
+Decision: research cycle. Swept arxiv (new papers), fal.ai models, GitHub trending, HN music/coding posts, Anthropic news. Appended 10 findings to RESEARCH.md (§137–§146). Added 4 new prototype ideas to IDEAS.md.
+
+**What I found**:
+- **Chatterbox Turbo** on fal.ai (§137) — first TTS with VOICE CLONING from 5s audio + paralinguistic tags `[sigh]`, `[gasp]`. $0.025/1000 chars. FAL_KEY already in use. Most surprising find: Karel could hear the Ghost narrations in his own voice. Directly buildable → `chatterbox-ghost` (queued).
+- **ImprovNet** (arxiv 2502.04522) — play a seed phrase, get a structured 32-bar improvisation in a chosen genre (jazz, classical, blues). First AI that generates a complete compositional unit from a seed rather than just responding phrase-by-phrase. No fal.ai endpoint yet → queued as `improv-expand`.
+- **Pianist Transformer** (arxiv 2512.02652) — 135M-param model, human-level expressive piano rendering, Apache 2.0. HuggingFace demo. No inference API; needs proxy. → `expressive-render` (queued).
+- **D3PIA** (arxiv 2602.03523) — piano accompaniment from lead sheet via discrete diffusion. Chord fidelity better than continuous baselines. → `lead-sheet` (queued, needs API).
+- **PianoFlow** (arxiv 2604.12856) — bimanual 3D piano hand motion from audio, 9× faster inference. → `piano-hands` (queued, needs API).
+- **Self-similarity matrix** (arxiv 2603.27218) — zero-dep browser-native section detection: FFT → SSM → block segmentation. → `structure-viz` (queued, buildable zero deps).
+- **ShaderVine** (§130 already noted) → reinforces `wgsl-synth` queued idea. Added full spec to IDEAS.md.
+- **NCLMCTT** (ICLR 2026) — zero-shot timbre cloning. → `timbre-clone` (queued, no API yet).
+- **Anchored Cyclic Generation** (arxiv 2604.05343) — validates `48-arc-compose` design, no new prototype.
+- **StreamMark** (arxiv 2604.11917) — AI audio watermarking for deepfake detection. Research awareness; no prototype.
+
+**Most buildable next cycle** (in priority order):
+1. `chatterbox-ghost` — voice-cloned Ghost narration. FAL_KEY in use, endpoint confirmed, zero new deps. High surprise factor (Karel's own voice saying Ghost lines). One cycle.
+2. `structure-viz` — self-similarity matrix section visualization. Zero deps, zero API. Genuinely novel — first sandbox prototype that shows musical STRUCTURE rather than content.
+3. `wgsl-synth` — WGSL shader editor with pre-wired audio uniforms. CodeMirror from CDN (no npm dep). Different from `claude-shader` (manual editing vs. AI-generated).
+
+**Open questions for Karel** (carried forward + new):
+- GEMINI_API_KEY → `lyria-jam`, `lyria-ghost`, `binaural-lyria`
+- Vercel COOP headers → SharedArrayBuffer → GPU audio synthesis (`27-gpu-additive` upgrade)
+- ANTHROPIC_API_KEY → `claude-shader`
+- `lyrics-journey` budget OK? ~$2.40/generation
+- NEW: OK to record a short reference voice clip to enable Chatterbox voice cloning in `chatterbox-ghost`? Could be Karel's own voice or a dedicated Ghost character voice.
+
+---
+
 ## Cycle 81 — /dream/65-dialogue-score
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
