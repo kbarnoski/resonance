@@ -26,6 +26,13 @@ export default async function DreamLayout({
   children: ReactNode;
 }) {
   const slugs = await loadOrderedSlugs();
+  // Vercel sets VERCEL_ENV to "production" on main, "preview" on branch
+  // deploys, "development" locally. Only label the dream lab as a
+  // sandbox on previews / dev — production has the canonical /dream
+  // URL and shouldn't claim to be a sandbox.
+  const env = process.env.VERCEL_ENV ?? "development";
+  const subtitle =
+    env === "production" ? "live" : "sandbox — preview branch";
 
   return (
     <DreamVotesProvider>
@@ -37,9 +44,7 @@ export default async function DreamLayout({
           >
             RESONANCE / DREAM
           </Link>
-          <span className="text-[10px] text-white/30">
-            sandbox — not production
-          </span>
+          <span className="text-[10px] text-white/30">{subtitle}</span>
         </header>
         <main className="pt-12">{children}</main>
         <PrototypeNav slugs={slugs} />
