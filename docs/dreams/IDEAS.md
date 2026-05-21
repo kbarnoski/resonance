@@ -1496,3 +1496,31 @@ Key findings from Cycle 86 (2026-05-21):
 - ICME 2026 text-to-music winners (§153, May 2026) — generation quality jump over ACE-Step. Monitor fal.ai for new endpoints; upgrade `6-compose` when available.
 - Inworld TTS viseme timing (§155) — new detail: Inworld TTS returns mouth shape timestamps (viseme alignment). FAL_KEY in use. Inspires `ghost-lip`: animated Ghost face with synced mouth movement.
 - Pitch algorithm comparison (§156) — YIN reduces octave errors ~15% vs. autocorrelation; HPS ~30 lines JS. Direct informant for `neural-pitch` upgrade decision. Inspires `pitch-algo-compare`.
+
+---
+
+## 2026-05-21 — NEW DIRECTION FROM KAREL (read AGENT.md "Current direction")
+
+Karel sent new directives. Read them in `AGENT.md` under "Current direction". Tl;dr: **no more AI voice gen**; **image-gen INSIDE AV experiments yes**; **spread across journeys, not just Ghost**; **use his real piano music from the Paths as input**; **research TouchDesigner / Houdini patterns deeply**. The agent should fold these into idea selection on the next cycle.
+
+### Seeded ideas matching the new direction
+
+`queued` — fresh slugs ready to build. Pick from these (or do a research cycle first) on the next fire.
+
+- **`72-paths-visualizer`** — Read the user's `journey_paths` table (or hit `/api/recordings/...`) to pull the actual audio URLs of his Welcome Home album, then play each track in sequence while a strange-attractor + bloom visualization responds in realtime. The user's OWN music as the audio source, not synthesized. Read `src/lib/journeys/journeys.ts` and `src/app/api/audio/[id]/route.ts` to figure out how to fetch the audio.
+- **`73-journey-arc-spread`** — Like `5-arcs` (already shipped) but a single page that lets the visitor cycle through 5 of Karel's *different* journey themes (NOT just Ghost): Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake. Each theme drives a distinct shader-arc. Use the journey definitions from `src/lib/journeys/journeys.ts` directly so this stays in sync with what he's published.
+- **`74-touchdesigner-feedback`** — Port a classic TouchDesigner TOP feedback loop (a TOP gets composited with a delayed copy of itself + slight transform = endless evolving recursion) to a WebGPU texture-feedback prototype. Audio drives the transform parameters (rotation, zoom, hue shift). Reference TD's tutorials by Bileam Tschepe / Elekktronaut.
+- **`75-houdini-particle-flock`** — VEX-style particle-flocking sim (Boids 3D + curl-noise force fields), but rendered with `fal-ai/flux/schnell` background images chosen from the user's published journey palettes so each flock session looks themed (Snowflake → cold-blue iceberg, Earth Grounding → warm-loam soil, etc.). 8-12k particles via WebGPU compute. The image gen is INSIDE the AV experiment, not the experiment itself.
+- **`76-cymatics-on-piano-path`** — Take a Welcome Home album track, run real-time FFT, and use band energies to drive Chladni-plate / cymatic sand patterns (extend `19-cymatics` but with HIS music as the source). Visual stays low-key / contemplative — Karel's piano isn't club music.
+- **`77-projection-mapping-sandbox`** — Sandbox for the installation-mode story. WebGPU + tap-to-define-quad warp so a projector aligned to a real-world surface (a stage backdrop, a wall) can map a journey-shader onto it. Calibration UX + keystone correction + edge blending. No FAL needed; pure GPU.
+
+### Research priorities for the next research cycle
+
+Karel asked for DEEP research into the interactive audio-visual domain. The next research cycle (cycle ~30 or whenever the queue thins) should add 3-5 NEW prototype seeds inspired by these specific sources, with explicit notes on which TD/Houdini pattern each is porting:
+
+- TouchDesigner tutorials by **Bileam Tschepe (Elekktronaut)**, **Matthew Ragan**, **Markus Heckmann** (Derivative's own tutorial channel)
+- Houdini techniques in **Junichiro Horikawa's** "Procedural Library" series + **Entagma**'s VEX particle tutorials
+- AV artist code/talks: **Memo Akten** (learning-to-see), **Robert Henke** (Lumiere), **Ryoji Ikeda** (data.matrix), **Daniel Rozin** (mechanical mirrors), **Refik Anadol** (latent walks), **Marpi**, **Manolo Gamboa Naon**
+- Browser equivalents: **WebGPU compute** for particles/fluid, **MediaPipe** for body/face/hand tracking, **TensorFlow.js** for lightweight realtime ML, **three.js postprocessing pipeline**
+
+Each research cycle should pick ONE of those threads and go deep — not a survey, a deep dive. Then propose 3-5 concrete prototype slugs in this file with enough spec for a future build cycle.
