@@ -1,5 +1,51 @@
 # Dream Agent — cycle state
 
+## Cycle 81 — /dream/65-dialogue-score
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — Cycle 80 queue: `dialogue-score` is #1. Spec clear in IDEAS.md (RESEARCH.md §129). Zero deps, zero API, one-cycle build.
+4. **Research** — not due (Cycle 78 was research; 3 build cycles since then hits threshold at Cycle 82 or 83, not yet).
+
+Decision: build `/dream/65-dialogue-score` — contour-constrained AI piano dialogue. The spec calls for `/dream/64-dialogue-score` but 64 is taken by eleven-dialogue; using 65.
+
+**What I built**:
+- `src/app/dream/65-dialogue-score/page.tsx` — full interactive prototype (5.29 kB)
+- `src/app/dream/65-dialogue-score/README.md` — design notes
+
+**Core addition over `39-anticipate`**: contour detection + constrained generation.
+
+`detectContour()` averages inter-note pitch deltas:
+- avg delta > +0.9 semitone/step → ascending
+- avg delta < −0.9 → descending
+- first-half rising AND second-half falling → arch (∧)
+- first-half falling AND second-half rising → valley (∨)
+- otherwise → neutral
+
+`generateContourResponse()` runs the existing Markov chain with a per-step direction filter: for each position in the response, `contourDir()` returns "up"/"down"/"any". The Markov transition candidates are filtered to those that fit the direction; if none fit, a directional pentatonic step fires as fallback. The header displays `your phrase ↗ ascending → aria mirrors → aria responds ↗ ascending` after each exchange.
+
+Demo phrase: C4 D4 E4 F4 G4 A4 B4 C5 — stepwise ascending C major scale. Aria reliably responds with an ascending motif, and the contour labels confirm the detection and mirroring.
+
+**Build**: `npm run build` passed cleanly. 5.29 kB, 111 kB First Load JS. Zero errors, zero new warnings beyond the pre-existing animRef.current pattern in prior prototypes.
+
+**Key thing I noticed**: The arch case is the most interesting interaction. An ascending-then-descending phrase (C D E G E D) gives Aria an arch constraint: she rises first, then descends. The result is a miniature melodic curve that responds to the user's phrase shape rather than just its notes. The Markov chain still provides the note values, so the response "sounds like the user" even while following a constrained shape.
+
+**Queued next**:
+1. **Research** — due at Cycle 82 or 83 (3-4 build cycles from last research at Cycle 78). This is Cycle 81, so research is overdue by one cycle; do it next.
+2. **`ghost-v3-voice`** — standalone Ghost V3 voice page (after research confirms no newer model to use instead). Or extend `61-orpheus-voice` to column D.
+3. **Polish** — `65-dialogue-score` could add: invert-contour mode (Aria responds with opposite shape), contour curve drawn on canvas, shorter min phrase length (currently needs ≥8 notes for mirroring to work reliably).
+
+**Open questions for Karel** (carried forward):
+- GEMINI_API_KEY → enables `lyria-jam`, `lyria-ghost`, `binaural-lyria`
+- Vercel COOP headers? → SharedArrayBuffer → GPU audio synthesis
+- ANTHROPIC_API_KEY → `claude-shader`
+- `lyrics-journey` budget OK? ~$2.40/generation
+
+---
+
 ## Cycle 80 — /dream/64-eleven-dialogue
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

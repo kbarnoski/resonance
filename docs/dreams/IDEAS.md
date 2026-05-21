@@ -1330,8 +1330,8 @@ narrating to the user. Creates a dramatically different listening experience: yo
 Different from `56-ghost-voice` (monologue) and `61-orpheus-voice` (A/B style comparison). FAL_KEY in use,
 ~$0.02/scene ($0.10/1000 chars × ~200 chars/scene). Zero new deps. One cycle. Research basis: RESEARCH.md §§127, 134.
 
-### dialogue-score — score-constrained AI piano dialogue `[queued, zero deps]`
-Route: `/dream/64-dialogue-score`. Extends `33-aria-companion`. After the user plays a phrase (2s silence
+### dialogue-score — score-constrained AI piano dialogue `[demoable — /dream/65-dialogue-score, Cycle 81]`
+Route: `/dream/65-dialogue-score` (64 was taken by eleven-dialogue). Extends `33-aria-companion`. After the user plays a phrase (2s silence
 → trigger), instead of a pure Markov chain response, the AI's reply is **contour-constrained**: detect
 whether the user's phrase was overall ascending, descending, or arch-shaped (peak in middle) by averaging
 inter-note pitch deltas. The AI response then follows the same shape — ascending user phrase → AI responds

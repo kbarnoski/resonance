@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 80 — build)
+## ⭐ Newest (Cycle 81 — build)
+
+- **[/dream/65-dialogue-score](/dream/65-dialogue-score)** — Dialogue Score. `demoable`
+  Contour-mirroring AI piano dialogue. Play a phrase (8+ notes + 2s silence); the system detects
+  its melodic shape — ascending ↗, descending ↘, arch ∧, valley ∨, or neutral — then generates
+  Aria's response with the **same contour**. Markov chain biases note choices from your playing
+  history; contour constraint enforces pitch direction at each step. Both work together.
+  Ghost notes (dashed blue) appear before Aria plays — full anticipation preview from `39-anticipate`.
+  Header shows: `your phrase ↗ ascending → aria mirrors → aria responds ↗ ascending`.
+  Demo: C major scale ascending → Aria responds ascending. First prototype where Aria's response
+  has musical logic, not just statistical probability. "The AI mirrors your musical thought."
+  Inspired by "Dialogue in Resonance" (arxiv 2505.16259, 2026). Zero deps · Zero API · 5.29 kB.
+  Design notes: `src/app/dream/65-dialogue-score/README.md`
+
+---
+
+## Previous newest (Cycle 80 — build)
 
 - **[/dream/64-eleven-dialogue](/dream/64-eleven-dialogue)** — Eleven Dialogue. `demoable`
   The Ghost is no longer alone. Six Ghost scenes as two-character dramatic exchanges — Ghost + Visitor —

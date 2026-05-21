@@ -1,50 +1,53 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 80)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 81)
 
 ## New since yesterday
 
-- **[/dream/64-eleven-dialogue](/dream/64-eleven-dialogue)** (Cycle 80) — `demoable` · ElevenLabs V3 · FAL_KEY · ~$0.02/scene
+- **[/dream/65-dialogue-score](/dream/65-dialogue-score)** (Cycle 81) — `demoable` · Zero deps · Zero API
 
-  **"The Ghost is no longer alone."**
+  **"The AI mirrors your musical thought."**
 
-  Six Ghost scenes each become a three-line dramatic exchange between Ghost and Visitor.
-  ElevenLabs V3's inline audio tag system puts acting beats mid-sentence:
+  The third Aria dialogue prototype — and the first where her response has *musical logic*, not just
+  statistical probability.
 
-  - `[slowly, reverently] The resonance here [pauses] is ancient.` — Ghost (Stone Chamber)
-  - `[nervous, awed] I didn't know it would feel [pauses] this alive.` — Visitor
-  - `[whispers] Everything that ever sounded here — still does. [pauses] If you know how to listen.` — Ghost
+  **What's new**: contour mirroring. After you play 8+ notes and pause 2s, the system measures
+  whether your phrase was ascending ↗, descending ↘, arch-shaped ∧, or valley-shaped ∨. Aria's
+  response is constrained to follow the same shape. Markov chain still biases the note choices from
+  your playing history — contour constraint only adds a direction filter at each step.
 
-  Ghost = Adam voice (deep, measured). Visitor = Alice voice (lighter, questioning). Three separate
-  API calls played sequentially with 550ms silence between turns.
+  **What to open on your phone**: `/dream/65-dialogue-score` → **DEMO**. C major scale rises
+  C4→C5. Ghost notes (dashed blue) appear in the ARIA panel before a single note sounds. Watch the
+  header: `your phrase ↗ ascending → aria mirrors → aria responds ↗ ascending`. Then Aria plays
+  ascending. The mirroring is accurate.
 
-  **What to open on your phone**: `/dream/64-eleven-dialogue` → Stone Chamber → **▶ Perform scene**. Wait ~10s for generation. Listen to the pauses inside the sentences — `[pauses]` is an acting beat, not punctuation.
+  **Try with mic**: play a descending scale or a phrase that rises then falls. Arch ∧ is the most
+  interesting — Aria rises first then descends.
 
-  **Different from all prior Ghost voice prototypes**: `56-ghost-voice` = monologue. `61-orpheus-voice` = A/B comparison. This is drama — two distinct voices, a scene, a relationship.
+  **Lineage**: `33-aria-companion` (pure Markov) → `39-anticipate` (Markov + ghost preview) →
+  `65-dialogue-score` (Markov + ghost preview + contour mirroring). Each generation adds one insight.
+  Inspired by "Dialogue in Resonance" (arxiv 2505.16259, 2026).
 
-  ⚠ Endpoint is a naming-convention best-guess; paste any error text for a fix next cycle.
+- **[/dream/64-eleven-dialogue](/dream/64-eleven-dialogue)** (Cycle 80) — `demoable` · ElevenLabs V3 · ~$0.02/scene
 
-- **[/dream/63-synesthetic-sketch](/dream/63-synesthetic-sketch)** (Cycle 79) — `demoable` · Zero deps · Zero API
-
-  Six audio features → six simultaneous visual dimensions. Shape type (circle/hexagon/star) from bandwidth.
-  Scatter radius from rhythm regularity — steady playing = tight center cluster, improvisation = scattered field.
-  Canvas accumulates additively. Download as PNG.
+  The Ghost as drama. Stone Chamber: *"[slowly] The resonance here [pauses] is ancient."* Two
+  characters, three lines, inline acting tags. `[pauses]` mid-sentence is an acting beat, not a comma.
 
 ## In progress / partial
 
-- Nothing in-progress. Next build: `dialogue-score` — contour-constrained AI piano dialogue, extends
-  `33-aria-companion`. Zero deps. The AI responds ascending when you play ascending, descending when
-  you play descending. First prototype where the AI's response has musical logic (not just Markov statistics).
+- Nothing in-progress. **Next build**: research cycle (due at Cycle 82 — 4 build cycles since Cycle 78).
+  Then: `ghost-v3-voice` (standalone ElevenLabs V3 Ghost page, no comparison, just the clearest
+  six scene narrations we can write) OR polish `65-dialogue-score` (invert mode, arch drawn on canvas).
 
 ## Research findings worth a look
 
-- **Eleven V3 inline tags** (RESEARCH.md §§127, 134) — `[pauses]` mid-sentence IS the acting. Different
-  paradigm from global style direction (Gemini) or per-word XML (Orpheus). Now implemented in `64`.
-- **CHI 2026 creative AI taxonomy** (§136) — reactive / compositional / dialogic / generative. Sandbox
-  covers first two well. `dialogue-score` fills dialogic; GEMINI_KEY unlocks generative.
-- **musicolors** (§131) — multiple visual dimensions simultaneously = better than color alone. Validated.
+- **CHI 2026 creative AI taxonomy** (RESEARCH.md §136) — reactive / compositional / dialogic / generative.
+  `65-dialogue-score` fills "dialogic." Generative (Lyria, ACE-Step without prompts) is still the gap.
+- **Dialogue in Resonance** (§129, arxiv 2505.16259) — human pianist + computer: score-derived constraints
+  rather than pure improvisation. This is the paper behind the contour mirroring idea. Worth a read.
+- **musicolors** (§131) — multiple visual dimensions simultaneously. Validated by `63-synesthetic-sketch`.
 
 ## Open questions for Karel
 
-- **`GEMINI_API_KEY`?** → `lyria-jam` (infinite steerable AI music, live-performance-relevant), `lyria-ghost`, `binaural-lyria`. "Generative" is the most underrepresented CHI taxonomy category.
-- **Vercel COOP headers?** (`Cross-Origin-Opener-Policy: same-origin` + COEP) → SharedArrayBuffer → GPU audio for `27-gpu-additive`.
+- **`GEMINI_API_KEY`?** → `lyria-jam` (infinite steerable AI music, live-performance-relevant), `lyria-ghost`, `binaural-lyria`.
+- **Vercel COOP headers?** (`Cross-Origin-Opener-Policy: same-origin` + COEP) → SharedArrayBuffer → GPU audio.
 - **`ANTHROPIC_API_KEY` in Vercel env?** → `claude-shader` (LLM-generated audio-reactive GLSL).
-- **`lyrics-journey` budget OK?** ~$2.40/generation (ElevenLabs Music, sung Ghost journey, 6 sections).
+- **`lyrics-journey` budget OK?** ~$2.40/generation (ElevenLabs Music, sung Ghost journey arc).
