@@ -1524,3 +1524,66 @@ Karel asked for DEEP research into the interactive audio-visual domain. The next
 - Browser equivalents: **WebGPU compute** for particles/fluid, **MediaPipe** for body/face/hand tracking, **TensorFlow.js** for lightweight realtime ML, **three.js postprocessing pipeline**
 
 Each research cycle should pick ONE of those threads and go deep — not a survey, a deep dive. Then propose 3-5 concrete prototype slugs in this file with enough spec for a future build cycle.
+
+---
+
+## FROM RESEARCH (Cycle 90, 2026-05-21) — promoted to queue
+
+Note: Karel's new direction (above) deprioritizes AI voice gen. `78-xai-ghost` below is deferred unless Karel re-enables voice prototypes. The other four are AV/synthesis-focused and align with the new direction.
+
+### node-synth — visual Web Audio routing graph synthesizer `[queued, zero deps, zero API]`
+Route: `/dream/78-node-synth`. The Web Audio API is architecturally a directed routing graph — every AudioNode is a vertex, every `.connect()` call is an edge. This prototype makes that graph literal and interactive. A Canvas2D canvas shows colored node blocks: **OscillatorNode** (blue), **GainNode** (green), **BiquadFilterNode** (cyan), **ConvolverNode** (purple, with IR from `room-acoustic` library), **DelayNode** (amber), **PannerNode** (teal), **DestinationNode** (white). Toolbar at top: click a node type to add it to the canvas. Drag to position. Click a node's output port (right side dot) and drag to another node's input port (left side dot) to connect. Shift-click an edge to disconnect. Each node shows a minimal inline parameter panel (OscillatorNode: frequency + waveform type; GainNode: gain slider; BiquadFilter: frequency + Q + type; Delay: time slider). Click **▶ Run** → compile the visual graph into a real Web Audio graph and play it. Click **■ Stop** → tear down all nodes cleanly.
+
+Pre-loaded "Hello Synth" patch on load: Oscillator (440Hz, sine) → Filter (lowpass, 1000Hz) → Gain (0.5) → Destination. The user can disconnect and reconnect nodes immediately. Add a second oscillator at 441Hz → hear the 1Hz beating. Connect an oscillator to a filter's frequency input → get FM-style timbre. The Web Audio routing graph IS modular synthesis — we're just drawing it.
+
+Why this now: 71 prototypes, none visualize the audio routing graph. The Web Audio API was designed to be patched — this is the most native possible interface for it. Live performance relevance: a venue operator patches a custom signal chain visually in 30 seconds. Educational: shows how every Web Audio prototype in the sandbox is structured internally. High surprise factor: Karel will likely not have seen the Web Audio graph rendered as a live patchbay. Inspired by Strudel Flow (RESEARCH.md §159) and the node-based synthesis paradigm. Zero deps, zero API. One-cycle build.
+
+### fm-explorer — 2-operator FM synthesis with audio-reactive parameters `[queued, zero deps, zero API]`
+Route: `/dream/79-fm-explorer`. Frequency Modulation synthesis: one OscillatorNode (the **modulator**) connects to the `frequency` AudioParam of a second OscillatorNode (the **carrier**). C:M ratio and modulation index together determine the timbre across the classic DX7 palette. Controls:
+- **C:M Ratio** slider: 0.50–7.00 with labeled preset stops (1:1 electric piano, 1:3.5 tubular bell, 3:2 reed, 1:2 bass, 7:1 metallic)
+- **Modulation Index** (0–20 with nonlinear feel) — at low index: near-pure carrier; at high index: rich harmonic spectra → noisy chaos
+- **Carrier Frequency** (MIDI note slider C2–C6, or any MIDI note)
+- **ADSR envelope** controls on the carrier gain
+- **Preset banks**: DX Piano, Vibraphone Bell, FM Bass, Reed, Metallic Chrome, Glass Harmonica
+
+Secondary canvas: real-time **sideband spectrum** — a bar chart showing the predicted magnitude at each harmonic (Bessel function coefficients Jn(index) × carrier ± n × modulator). The chart updates live as you move sliders: you see the DX7 math as animated bars. "You can see why the electric piano sounds the way it does: J0(2.5) × C, J1(2.5) × (C±M), J2(2.5) × (C±2M)..."
+
+Audio-reactive (demo mode OR mic): bass energy → modulation index (louder playing → grittier timbre), onset → retrigger ADSR (each new note reshapes the spectral envelope), treble energy → C:M ratio bias toward inharmonic ratios (bright playing → metallic shimmer).
+
+Why this now: 71 prototypes, none implement FM synthesis — the technique that defined 1980s digital sound design (Yamaha DX7, Roland D-50). The Web Audio API implements FM in 3 nodes. A subtle index change transforms a soft piano tone into a harsh metallic clang — the entire timbral range lives in 2 continuous parameters, perfect for live performance. First prototype where **synthesis algorithm parameters** (not just audio features) are the primary UI. Zero deps, zero API. One-cycle build. Research basis: DDX7 (RESEARCH.md §161).
+
+### room-acoustic — draw a room, hear its reverb `[queued, zero deps, zero API]`
+Route: `/dream/80-room-acoustic`. A 2D top-down canvas showing a rectangular room (default 10m × 8m). Drag four corner handles to resize; the walls show color-coded absorption coefficients (from material preset buttons: Concrete 0.04, Wood Panel 0.15, Carpet 0.35, Glass 0.05, Stone 0.03). An **image-source method** simulation (up to 3rd-order reflections, ~40 lines of JS for a rectangular room) computes early reflection delay times and attenuation from the room geometry and materials. The reflection sequence is loaded into a Web Audio `ConvolverNode` as a synthetic impulse response (IR samples at 44.1kHz). A demo piano chord (from `36-pluck-field`) plays through the ConvolverNode. A BPM-timed loop lets you hear the same chord repeating in the designed space.
+
+Room shape presets: **Closet** (2m × 2m, carpet), **Bedroom** (4m × 3m, mixed), **Recording Studio** (8m × 6m, treated), **Concert Hall** (30m × 20m, wood), **Cathedral** (40m × 80m, stone), **Cave** (irregular — simulated as a random-reflection low-absorption space). RT60 readout updates in real time. Canvas shows animated reflection rays during impulse response computation.
+
+"Build a room. Hear what it sounds like." First prototype about **acoustic space simulation** — 71 previous prototypes visualize audio signal or synthesis parameters; this one simulates the physics of sound in a space. Directly relevant to Ghost scene design: the Stone Chamber should have RT60 ~2.5s (stone walls, 0.03 absorption); Forest Dawn should have ~0.4s (outdoor open clearing). Karel can now tune those acoustic environments with a slider rather than guessing. Zero deps, zero API. The image-source method is the standard algorithm from Concert Hall Acoustics (Barron, 2010). One-cycle build. Research basis: AcoustiVision Pro (RESEARCH.md §162).
+
+### xai-ghost — fifth Ghost TTS paradigm: inline actions + semantic wrapping `[DEFERRED — Karel's new direction pulls back on voice gen]`
+Route: extend `/dream/61-orpheus-voice` (add column E) OR standalone `/dream/78-xai-ghost`. xAI TTS (`xai/tts/v1` on fal.ai) adds the fifth TTS paradigm to the Ghost voice study. Unique dual-tag system:
+- **Inline action tags** at any position in the text: `[laugh]`, `[pause]`, `[sigh]`, `[clears_throat]`
+- **Semantic wrapping tags** applied to spans: `<whisper>text</whisper>`, `<slow>text</slow>`
+
+No other TTS system in the sandbox supports both paradigms simultaneously. Pre-loaded Ghost lines:
+- Stone Chamber: `[pause] The resonance here [pause] is ancient. <whisper>Let yourself be absorbed by it.</whisper>`
+- Root Portal: `[sigh] Something stirs beneath the roots. [pause] A low note. <slow>Then silence.</slow>`
+- Underground Pool: `The water <slow>remembers</slow> every sound [pause] that has passed through this place.`
+- Tiny Planet: `A single breath. [pause] <whisper>The horizon wraps around you.</whisper>`
+- Forest Dawn: `The first light is also [pause] the first sound. <slow>They arrive together.</slow>`
+- Cosmic Ascension: `[sigh] You are not rising. [pause] <slow>The world is receding.</slow>`
+
+5 voices: eve (energetic), ara (warm), rex (confident), sal (smooth), leo (authoritative). Vote buttons carry forward from `61-orpheus-voice` (A/B/C/D/E). The full 5-way comparison — Gemini global / Orpheus per-word / ElevenLabs V3 per-phrase / Chatterbox voice-clone / xAI inline+wrapping — is the most complete TTS paradigm study in any browser prototype. FAL_KEY in use. Zero new deps. One-cycle build. Research basis: RESEARCH.md §158.
+
+### cassette-speed — CassetteAI vs ACE-Step side-by-side speed comparison `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/81-cassette-speed`. Two panels side by side. Left: CassetteAI (`cassetteai/music-generator`). Right: ACE-Step (`fal-ai/ace-step`). Same prompt field at top — type once, both generate simultaneously. Both show a generation timer in milliseconds counting up from "▶ Generate" click to first audio byte received. CassetteAI should show first audio in ~2s; ACE-Step in ~20–40s. Both play through the same six-band bloom visualizer (one after the other, or simultaneously with a mix slider). Download buttons for both. "Which one is faster? Which sounds better? Pick one." The point is to empirically demonstrate the CassetteAI speed advantage and let Karel evaluate whether the quality tradeoff is acceptable for `6-compose` → backend swap. FAL_KEY in use. $0.004 + $0.006/generation. Zero new deps. One-cycle build. Research basis: RESEARCH.md §157.
+
+Key findings from Cycle 90 (2026-05-21):
+- CassetteAI (§157) — `cassetteai/music-generator`, $0.02/min, 30s sample in 2s, 3min in 10s. 10× faster than ACE-Step. FAL_KEY in use. Inspires `cassette-speed` comparison; candidate for `6-compose` backend upgrade.
+- xAI TTS (§158) — `xai/tts/v1`, inline `[laugh]`/`[pause]`/`[sigh]` + semantic `<whisper>`, `<slow>` wrapping. 5th TTS paradigm for Ghost study. FAL_KEY in use. Inspires `xai-ghost` (deferred per new direction).
+- Strudel Flow (§159) — visual node-based Strudel editor (2026). Web Audio API IS a routing graph. Inspires `node-synth` — make the Web Audio routing graph literal and interactive.
+- AI vs Human music perception (§160) — listeners prefer AI music but rate human music as more emotionally effective. No measurable difference in actual emotional response. Framing and perceived authorship matter.
+- FM synthesis gap (§161) — 71 prototypes, none implement FM synthesis. Web Audio: 2–3 nodes. Classic DX7 timbres (electric piano, bells, metallic). Inspires `fm-explorer`.
+- AcoustiVision Pro / room IR (§162) — open-source web RIR analysis platform. Inspires `room-acoustic` — image-source method, Web Audio ConvolverNode. Ghost scene acoustic space design tool.
+- Sound-to-video (§163) — music → latent features → LLM → video gen pipeline. Inspires extension of `57-sound-to-image` using fal.ai video endpoints. FAL_KEY + budget needed.
+- LLM+Strudel pattern code (§164) — English description → LLM → play in browser. Inspires `llm-pattern`. Needs ANTHROPIC_API_KEY (same as `claude-shader`).
+- Selective auditory attention (§165) — EEG + consumer headset can decode which musical element you're attending to. Inspires `listen-guide` — guided listening prototype directing attention to musical elements, highlighting corresponding FFT bands. Zero deps.

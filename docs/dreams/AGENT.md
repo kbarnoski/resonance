@@ -56,9 +56,10 @@ Pick ONE action for this cycle, in priority order:
 
 1. **Unblock**: if STATE.md notes a blocker from a prior cycle (e.g. "tsc fails on /dream/3-fluid because X"), fix it.
 2. **Continue**: if a prototype is in-progress (less than ~70% complete), continue it. Pick the highest-priority in-progress one.
-3. **Build new**: if a queued idea is ready (clear spec exists), start its prototype skeleton.
-4. **Research**: if the IDEAS queue is thin (<3 entries) OR you haven't researched in 3+ cycles, do a research cycle (see "Research cycles" below).
-5. **Polish**: if there's nothing else, pick the oldest demoable prototype and polish it (better UX, better defaults, fix a rough edge, document it).
+3. **Kid-cycle rotation**: if `cycle_number % 4 === 0` AND no blocker / in-progress work, this cycle is **kids-focused**. Read `docs/dreams/KIDS.md` for design principles + seeded ideas. Build a prototype matching the kids design rules (iPad / mobile, 4-year-old usable, no reading, tap-targets ≥64px, immediate response, safe sounds). Use the slug convention `kids-<name>` (e.g. `72-kids-color-piano`). If KIDS.md's queue is thin, do a kids-focused **research** sweep instead and seed new ideas there.
+4. **Build new**: if a queued idea is ready (clear spec exists), start its prototype skeleton.
+5. **Research**: if the IDEAS queue is thin (<3 entries) OR you haven't researched in 3+ cycles, do a research cycle (see "Research cycles" below).
+6. **Polish**: if there's nothing else, pick the oldest demoable prototype and polish it (better UX, better defaults, fix a rough edge, document it).
 
 Always write your decision + reasoning to STATE.md before acting.
 
@@ -119,20 +120,31 @@ Exit. The next fire wakes up in ~1 hour.
 
 ## Research cycles
 
-Once every 3-4 cycles (or when IDEAS is thin), spend a full cycle on research instead of building:
+Once every 3-4 cycles (or when IDEAS is thin), spend a full cycle on research instead of building.
 
-- Use WebSearch + WebFetch to scan:
-  - **arxiv.org** — search "audio reactive visualization", "music information retrieval", "creative AI", "live performance interfaces"
-  - **shadertoy.com** — browse recent featured shaders (especially audio-reactive ones)
-  - **github trending** — `creative-coding`, `audio-visual`, `webaudio`, `webgl` topics
-  - **fal.ai blog + replicate.com explore** — new image/video/audio models
-  - **Anthropic news** — new Claude capabilities or tooling
-  - **Hacker News / lobste.rs** — recent posts tagged music, audio, viz, generative
-- For each finding, judge: does this fit Resonance's vibe (immersive, personal, audio-first, transcendent)?
-- Append to `docs/dreams/RESEARCH.md` as dated entries with link + 2-3 sentence summary + "could become a prototype: X" speculation.
-- Add the strongest ideas to `IDEAS.md`.
+**The freshness mandate** (set 2026-05-21): research must be **cutting edge**. Karel doesn't want recycled knowledge from your training data — he wants what shipped in the **last 90 days**. Filter every search:
 
-The research log is itself a deliverable — Karel reads it.
+- Include the current year (`2026`) in queries. Add `"last 30 days"` or month names where the source supports it.
+- Prefer **arxiv listings from the current quarter**, **HN front page from the last week**, **fal.ai / replicate / huggingface releases tagged "new"**.
+- **Verify dates** in WebFetch results. If the most-cited content is older than 6 months and the topic is a fast-moving area (LLMs, image gen, video gen, WebGPU), keep digging — there's almost certainly something newer.
+- Reject "evergreen" tutorial content unless it's about a stable foundational technique (e.g., FFT, Web Audio basics).
+
+Sources to scan each research cycle:
+
+- **arxiv.org** — search recent papers (2025–2026) on audio-reactive visualization, music information retrieval, real-time generative audio, embodied interaction, body tracking + sound
+- **shadertoy.com** — recent featured shaders (audio-reactive ones especially)
+- **github trending (this month)** — `creative-coding`, `audio-visual`, `webaudio`, `webgpu`, `mediapipe` topics
+- **fal.ai blog + replicate.com explore + huggingface "new" tab** — latest image/video/audio models, dated
+- **Hacker News / lobste.rs** — last week's posts tagged music, audio, viz, generative, webgpu
+- **TouchDesigner + Houdini communities** — Bileam Tschepe (Elekktronaut), Matthew Ragan, Markus Heckmann, Junichiro Horikawa, Entagma — what techniques are they showcasing this month?
+- **AV artist feeds** — Refik Anadol (recent: *Latent City* BRUSK 2026), Memo Akten, Ryoji Ikeda, Marpi, Manolo Gamboa Naon, Daniel Rozin
+- **Museum / installation news** — Exploratorium (`docs/dreams/EXPLORATORIUM.md` for context), recent Ars Electronica, SIGGRAPH Art Gallery, MUTEK festival
+
+For each finding, judge: does this fit Resonance's vibe (immersive, personal, audio-first, transcendent)? Note the **date** of the source — old findings get tagged `[older, foundational]` so future research cycles don't re-discover them.
+
+Append to `docs/dreams/RESEARCH.md` as dated entries with link + 2-3 sentence summary + "could become a prototype: X" speculation. Add the strongest ideas to `IDEAS.md`.
+
+The research log is itself a deliverable — Karel reads it and explicitly values **freshness**. A research cycle that re-discovers something from 2022 is a wasted cycle.
 
 ---
 
@@ -147,6 +159,30 @@ Each prototype should answer ONE question: "what if Resonance could do X?"
 - Has a "Read the design notes" link in the corner that opens its README.md (which the agent also writes)
 - Degrades gracefully (no mic? show a fallback. webgl unavailable? show a notice.)
 - Looks like Resonance: dark theme, monospace accents, restrained typography
+- **Follows typography rules below.**
+
+### Typography rules (set 2026-05-21 — applies to ALL new prototypes)
+
+Karel asked for bigger, more readable text and more contrast against dark backgrounds. Apply these rules to every prototype you build and to existing ones you polish:
+
+- **Body text**: minimum `text-base` (16px). Don't go below this for anything a visitor reads (descriptions, instructions, captions).
+- **Headings / prototype titles**: minimum `text-xl` (20px). Prefer `text-2xl` or larger for the page hero. Use `font-serif` for emphasis on names/titles where the existing dashboard style allows it.
+- **Status labels, badges, footers**: `text-xs` (12px) is acceptable for truly secondary info, but **never** for anything the visitor is supposed to act on.
+- **Contrast on dark backgrounds**: minimum effective opacity for readable text is **70%**. The convention going forward is:
+  - **Primary text** (headings, button labels, instructions): `text-white` or `text-white/95`
+  - **Secondary text** (descriptions, captions): `text-white/75` or `text-white/80`
+  - **Tertiary / hint text** (timestamps, meta): `text-white/55` minimum
+  - **Avoid** `text-white/30`, `text-white/40`, `text-white/50` for any text the visitor reads — that's barely visible and people miss it. Reserve those low-opacity values for non-text elements (separators, dim borders).
+- **Buttons**: tap-target ≥44×44px on mobile (`min-h-[44px] min-w-[44px]`). Padding `px-4 py-2.5` or larger.
+- **Color tokens**: when using accent colors on dark, pull from these:
+  - violet: `text-violet-300` / bg `bg-violet-500/20` (Resonance brand accent)
+  - rose (love / favorite): `text-rose-300` / `text-rose-400/95`
+  - emerald (positive / success / local): `text-emerald-300/95`
+  - amber (warning / needs-key): `text-amber-300/95`
+  Don't dim these below `/90` for primary use.
+- **Mic / sensor error messages**: `text-rose-300` (not `text-rose-400/40`). Karel needs to actually see when something failed.
+
+If you're polishing an existing prototype, the polish task is mostly **bumping these values**. A polish-cycle on `1-live` for example might just be: change `text-white/40` → `text-white/75` throughout, bump `text-xs` → `text-sm` for the band labels, increase button size. Tiny diff, huge readability gain.
 
 **Bad prototype** (don't do):
 - Half-built UI with broken buttons

@@ -1597,3 +1597,90 @@ The three mainstream zero-dep browser pitch detection approaches have different 
 
 **Prototype specification**: `pitch-algo-compare` (Route: `/dream/69-pitch-algo-compare`) — run all three on live mic input simultaneously. Canvas shows three horizontal pitch cursors on a piano roll grid: **orange** = autocorrelation (current), **blue** = YIN, **green** = HPS. When all three agree within ±1 semitone, display the consensus pitch in bold gold. When they diverge, show the spread. A "confidence" bar per algorithm (YIN outputs an aperiodicity metric; HPS outputs peak salience; autocorrelation outputs peak correlation). Play each detected pitch as a faint piano tone so you can hear the difference when algorithms disagree. First prototype to make pitch detection internals *visible*. Zero new deps. One-cycle build. Directly informs whether the `neural-pitch` (§61) upgrade is worth the CDN dependency.
 
+---
+
+## 2026-05-21 — Cycle 90 research sweep
+
+### 157. CassetteAI Music Generator on fal.ai (2026)
+**Source**: https://fal.ai/models/cassetteai/music-generator · https://blog.fal.ai/cassetteai-music-creation-models-available-on-fal/
+
+New fast music generation model on fal.ai. Endpoint: `cassetteai/music-generator`. Generates 30-second sample in under 2 seconds and a full 3-minute track in under 10 seconds at 44.1 kHz stereo — dramatically faster than ACE-Step (~20–40s for 30s). Supports any genre; key and tempo can be specified directly in the prompt string (e.g., "jazz piano trio, Key: D Minor, Tempo: 90 BPM"). Pricing: $0.02/output minute (3-min track ≈ $0.06 — same order as MiniMax $0.03, cheaper than ACE-Step for longer tracks). Companion model: `cassetteai/sound-effects-generator` for short SFX up to 30s, generated in ~1s. Instrumental only — no vocal support. Commercial use permitted.
+
+**Relevance to sandbox**: `6-compose` and `48-arc-compose` currently use ACE-Step. CassetteAI is 10× faster and at similar cost. The most valuable upgrade: in `6-compose`, the user types a mood prompt and waits 20–40 seconds — with CassetteAI that wait drops to 2 seconds. Second use: the SFX model could replace the ElevenLabs SFX calls in `53-ghost-sfx` at lower cost and lower latency. No new approvals needed (FAL_KEY already in use). Worth testing as a backend swap in `6-compose` before committing. **Prototype idea**: **`cassette-speed-test`** — side-by-side generation comparison: same prompt sent to CassetteAI vs. ACE-Step simultaneously, both play back through the bloom visualizer. Proves the speed difference to Karel in real time. Alternatively, just upgrade `6-compose`'s server route to use CassetteAI as the primary backend with ACE-Step as fallback.
+
+---
+
+### 158. xAI TTS — Inline Action Tags + Semantic Wrapping Tags (fal.ai 2026)
+**Source**: https://fal.ai/models/xai/tts/v1/api
+
+xAI (Grok) text-to-speech is now available on fal.ai at endpoint `xai/tts/v1`. Five expressive voices: **eve** (energetic, upbeat), **ara** (warm, friendly), **rex** (confident, clear), **sal** (smooth, balanced), **leo** (authoritative, strong). What makes xAI TTS unique in the current sandbox ecosystem: it supports **two distinct tag styles simultaneously** — (1) inline action tags at any position: `[laugh]`, `[pause]`, `[sigh]`, `[clears_throat]`; and (2) semantic wrapping tags applied to a span of text: `<whisper>text</whisper>`, `<slow>text</slow>`. This is a genuinely different paradigm from all four TTS models already in the sandbox: Gemini (global style_instructions), Orpheus (per-word `<emotion>XML</emotion>`), ElevenLabs V3 (per-phrase inline `[tag]` beats), Chatterbox (voice clone + physical action tags). xAI uniquely combines the inline-position approach AND the span-wrapping approach in one call. Output: MP3 at 24 kHz / 128 kbps. FAL_KEY in use. Max input: 15,000 characters.
+
+**Could become a prototype**: Add xAI TTS as column E in `/dream/61-orpheus-voice`, completing a full 5-way Ghost TTS paradigm comparison. Pre-loaded example:
+- Stone Chamber: `[pause] The resonance here [pause] is ancient. <whisper>Let yourself be absorbed by it.</whisper>`
+- Cosmic Ascension: `[sigh] You are not rising. [pause] <slow>The world is receding.</slow>`
+
+The combination of `[pause]` before a phrase AND `<slow>` around words is a natural fit for the Ghost character's measured, contemplative delivery. Standalone as `/dream/72-xai-ghost` or added to the existing comparison prototype. Zero new deps. FAL_KEY in use. One-cycle build.
+
+---
+
+### 159. Strudel Flow — Visual Node-Based Live Coding (2026)
+**Source**: https://xyflow.com/labs/strudel-flow · https://strudel.cc/
+
+Strudel is TidalCycles ported to JavaScript (existing knowledge). New in 2026: **Strudel Flow**, an experimental visual node-based interface for Strudel that transforms its text-based patterns into a drag-and-connect node graph. Instrument nodes connect to effect nodes, which connect to output nodes. No code required — you build the sound graph visually. Runs entirely in the browser.
+
+**Key insight for the sandbox**: The Web Audio API is, architecturally, *already* a directed routing graph — every AudioNode is a graph vertex; every `node.connect(otherNode)` call is a directed edge. The Web Audio API was designed to be patched. What if we made that graph literal and interactive? **`node-synth`**: a Canvas2D canvas with colored node blocks (OscillatorNode = blue, GainNode = green, BiquadFilterNode = cyan, ConvolverNode = purple, DelayNode = amber, PannerNode = teal, DestinationNode = white). Drag to position. Click two nodes to draw a connection. Right-click edge to disconnect. Each node has a minimal inline parameter panel (frequency slider for oscillator, gain for gain, frequency+type for filter). Click **▶ Run** to compile the Web Audio graph from the visual spec and play it. Click **■ Stop** to tear it down. Pre-loaded "Hello Synth" patch: Oscillator → Filter → Gain → Destination. The modular synthesis paradigm, rendered as the Web Audio routing graph it actually is. Zero external deps, zero API. High live-performance relevance: patch a custom signal chain in 30 seconds. One-cycle build.
+
+---
+
+### 160. AI vs Human Music: Preference ≠ Emotional Effectiveness (arxiv 2506.02856, Jun 2026)
+**Source**: https://arxiv.org/abs/2506.02856
+
+A carefully designed study: 140 participants listened to AI-generated and human-composed music in calm and upbeat conditions, with correct labeling, swapped labeling, and no labeling. Key findings: (1) participants *preferred* AI-generated music, but *rated* human-composed music as more effective at eliciting the target emotion; (2) quantitative emotion measurement showed **no significant difference** between AI and human music in actual emotional response; (3) perceived authorship ("human vs AI") significantly modulated subjective judgments, with listeners associating human music with "imperfection, flow, soul."
+
+**Relevance to the sandbox**: The disconnect between preference and perceived efficacy reveals that how AI music is *labeled and framed* matters as much as the music itself. For Resonance: presenting AI-generated music as "the Ghost's voice" or "the journey's score" — assigning authorship to a character rather than "AI" — may bypass the "soul" deficit. The `57-sound-to-image` and `58-music-to-ghost` prototypes already do this implicitly (the music belongs to the Ghost, not to ACE-Step). Future prototypes should frame AI music as character-authored or journey-authored. Not a prototype idea, but the most psychologically important research finding this cycle.
+
+---
+
+### 161. FM Synthesis — 2–4 Operator Frequency Modulation via Web Audio (DDX7, arxiv 2208.06169)
+**Source**: https://arxiv.org/abs/2208.06169 · Yamaha DX7 operator spec · Web Audio API spec
+
+FM synthesis (Frequency Modulation synthesis, Chowning 1973) works by connecting an OscillatorNode (the **modulator**) to the `frequency` AudioParam of a second OscillatorNode (the **carrier**). Modulator output amplitude scales the frequency deviation of the carrier; modulator-to-carrier frequency ratio and modulation index together determine the resulting timbre. Simple ratios (1:1, 1:2, 3:2) produce harmonic spectra resembling real instruments; irrational ratios produce metallic or noisy spectra. Classic DX7 algorithm 5 (2 operators): C:M ratio 1:1, index 2.5 → electric piano; C:M ratio 1:3.5, index 4 → tubular bell; C:M ratio 1:1, index 1.5 → bass clarinet. Web Audio API makes this trivial: `oscillator.connect(modGain); modGain.connect(carrier.frequency)`. The DDX7 paper (2022) proved neural networks can learn DX7 FM parameters directly from audio.
+
+**Relevance to sandbox**: 71 prototypes, none implement FM synthesis — the most historically significant synthesis technique in the digital era. The Yamaha DX7 defined the sonic vocabulary of the 1980s (every electric piano, bell, and synth bass in pop music). FM synthesis is also ideal for live performance: a subtle change to the modulation index transforms a piano timbre into a metallic bell, and then into noisy chaos — the entire sonic range lives in 2 continuous parameters. **`fm-explorer`**: 2-operator FM synth with live sliders (C:M ratio, index, ADSR) + real-time spectrum display showing the sideband structure. Audio-reactive: bass energy → index (grittier bass → more harmonic complexity), onset → ADSR retrigger. Preset patch banks: DX Piano, DX Bell, Bass, Reed, Metallic. Zero deps. One-cycle build.
+
+---
+
+### 162. AcoustiVision Pro — Web-Based Room Impulse Response Analysis Platform (arxiv 2602.12299, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.12299
+
+Open-source web-based platform for comprehensive room impulse response (RIR) analysis. Key capability: **real-time auralization via FFT-based convolution** — upload a dry audio clip and a room IR, hear how the dry audio sounds in that acoustic space. Computes 12 acoustic parameters (RT60, EDT, clarity, definition, IACC, etc.). 3D visualization of early reflections. Checks compliance with ANSI S12.60 and ISO 3382 standards. The accompanying RIRMega dataset (HuggingFace) contains thousands of simulated room impulse responses with full metadata. CC-BY 4.0 license.
+
+**Relevance to sandbox**: While AcoustiVision Pro analyzes existing IRs, it inspires a generative direction — **`room-acoustic`**: a 2D canvas where the user draws or selects a room shape (shoe-box concert hall, bathroom, cathedral, forest clearing) and the browser synthesizes an approximate impulse response using the **image-source method** (early reflections from a rectangular room, ~60 lines of JS) loaded into a Web Audio `ConvolverNode`. Hear how a piano chord sounds in Carnegie Hall vs. a tiled bathroom vs. a cave. Wall material presets set absorption coefficients. RT60 display. Demo audio: the same plucked string from `36-pluck-field`. Ghost scene connection: each Ghost scene (stone chamber, underground pool, forest dawn) has an implied acoustic space — this prototype lets Karel design and tune those spaces. Zero external deps. One-cycle build. "Build a room. Hear what it sounds like."
+
+---
+
+### 163. Sound to Video — Automated Music Video Generation Pipeline (arxiv 2509.00029, Aug 2025)
+**Source**: https://arxiv.org/abs/2509.00029
+
+Workshop paper (AISTORY at ACM MM 2025) presenting a pipeline for generating music videos from audio: (1) extract latent audio features (emotional cues, instrument patterns); (2) convert to text descriptions via language model; (3) generate video clips with generative model. User evaluation confirmed "storytelling potential, visual coherency, and emotional alignment with music." Not browser-deployable directly (Python pipeline). CC-BY-NC-SA license.
+
+**Relevance to sandbox**: Conceptual extension of `57-sound-to-image` (already built, Cycle 71). Where `57-sound-to-image` generates a single still image, the natural next step is a short video — `sound-to-video`. After the 10-second audio capture + analysis, instead of calling Flux Schnell, call a video generation model on fal.ai (e.g., Kling 3.0 `fal-ai/kling-video/v2/standard` or `fal-ai/hunyuan-video`). The image from `57-sound-to-image` becomes the first frame; the emotional analysis becomes the motion prompt. Budget: ~$0.14–0.40/clip depending on model. FAL_KEY in use. This would be a straightforward 1-cycle extension of an existing prototype. Not a standalone new prototype — flag as a `57-sound-to-image` extension item.
+
+---
+
+### 164. Strudel Flow + LLM-Generated Pattern Code (Hacker News, 2026)
+**Source**: https://news.ycombinator.com/item?id=45243084
+
+A Hacker News project (Nov 2025) demonstrates using LLMs to generate Strudel/TidalCycles pattern code that plays in real time in the browser. The user types a natural-language description ("slow jazz waltz with a broken piano chord pattern and a lazy bass line") → the LLM suggests Strudel-syntax pattern code → the code plays back immediately in the browser. The project confirms that: (a) Strudel's mini-notation is learnable from a small system prompt; (b) LLMs produce valid Strudel patterns from English descriptions reliably; (c) the feedback loop (describe → hear → describe again) is tight enough for live performance.
+
+**Relevance to sandbox**: Directly inspires **`llm-pattern`** (needs ANTHROPIC_API_KEY — same dependency as `claude-shader`). Unlike `41-code-vis` (fixed DSL, user writes note-by-note), `llm-pattern` accepts a natural language description and returns a synthesized audio pattern. The LLM acts as a translator between musical intent and Web Audio node scheduling. Could be combined with `claude-shader` (same API key): describe a pattern AND a visualization at once — the full dream session design from a single natural language prompt. Not buildable until ANTHROPIC_API_KEY is confirmed in Vercel env.
+
+---
+
+### 165. Selective Auditory Attention Decoding via Consumer EEG (arxiv 2512.05528, Dec 2025)
+**Source**: https://arxiv.org/abs/2512.05528
+
+Research showing that selective auditory attention to musical elements (melody, rhythm, harmony) can be decoded from EEG signals captured with a 4-channel consumer EEG headset, even during real studio-produced music. Performance was above chance for novel songs and across unseen subjects. Applications identified: music education (training selective listening), wellness interventions promoting mindful music listening.
+
+**Relevance to sandbox**: Not immediately browser-deployable (EEG hardware required). But the concept — attention to specific musical elements — translates to a **"guided listening"** prototype without EEG: **`listen-guide`**. Present a music excerpt and direct the listener's attention to a specific element each 15-second segment: "Now listen only to the bass." / "Notice the chord changes." / "What does the rhythm feel like?" The canvas highlights the corresponding FFT frequency region (bass bands glow for "listen to bass," etc.) and a visualization specific to that element fills the screen. A structured listening exercise that trains musical attention. Zero deps, zero API. Different from all 71 existing prototypes (they respond to audio input — this one directs the listener's perception of existing audio). One-cycle build. Not queued yet — but the research direction (active listening vs. passive reaction) is worth noting.
+

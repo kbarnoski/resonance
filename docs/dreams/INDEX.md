@@ -10,7 +10,86 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 89 — build)
+## ⭐ Newest (Cycle 94 — build)
+
+- **[/dream/79-fm-explorer](/dream/79-fm-explorer)** — FM Explorer. `demoable`
+  2-operator FM synthesis: a modulator oscillator drives the carrier's frequency AudioParam.
+  Two sliders control the entire DX7 timbre space — C:M ratio (which harmonic series) and β
+  modulation index (how rich/noisy). The right panel shows the **live sideband spectrum** as
+  Bessel function coefficients J_n(β): you see exactly why DX Piano at β=2.5 has almost no
+  carrier energy (J₀(2.5) ≈ 0.05) and all the sound lives in J₁ and J₂.
+  Six presets: DX Piano · Bell · Reed · FM Bass · Metallic · Glass Harmonica.
+  ADSR envelope. Space bar / pointer hold = play note.
+  Demo mode: slow LFO breathes β so the spectrum animates without mic. Mic mode: bass → β,
+  onset → retrigger envelope — loud playing gets grittier, attacks reshape the timbre.
+  **"78 prototypes, none had FM synthesis until now."**
+  Zero deps · Zero API · 5.29 kB.
+  Design notes: `src/app/dream/79-fm-explorer/README.md`
+
+---
+
+## Previous newest (Cycle 93 — build)
+
+- **[/dream/78-node-synth](/dream/78-node-synth)** — Node Synth. `demoable`
+  The Web Audio API as a visual patch bay. Oscillators, gain stages, filters (lowpass/highpass/bandpass/
+  notch/peaking), and delay effects appear as draggable node cards. Draw bezier wire connections between
+  output and input ports — audio flows in real time. The starter patch (Oscillator → Gain → Speakers)
+  plays immediately; add a Filter between them and sweep its frequency to hear the lowpass open up.
+  Delay node has an internal feedback loop so echo trails build with each wire reconnect.
+  Try: Oscillator → Filter → Gain → Speakers + Oscillator → Delay → Gain (wet blend with echo).
+  **"The synthesizer you see is the synthesizer you hear."**
+  Zero deps · Zero API · 4.67 kB.
+  Design notes: `src/app/dream/78-node-synth/README.md`
+
+---
+
+## Previous newest (Cycle 92 — kids build)
+
+- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `demoable`
+  First kids prototype. Eight pentatonic circles — C D E G A C D E across two octaves. Tap any
+  circle to play, hold to sustain, drag across circles for a glissando, multiple fingers for chords.
+  No wrong notes (C-major pentatonic, all consonant). Each circle has a bold saturated color. Soft
+  C-major ambient pad from first touch — silence never feels broken. No text, no score, no fail states.
+  Circles sized `20vmin`: ≥78px on a 390px phone, ≥153px on a 768px iPad — well above KIDS.md's
+  64px minimum. Pointer events handle both mouse and multi-touch with glissando baked in.
+  **For**: kids 4+ · handed to a toddler immediately.
+  Zero deps · Zero API · 1.58 kB.
+  Design notes: `src/app/dream/82-kids-color-piano/README.md`
+
+---
+
+## Previous newest (Cycle 91 — build)
+
+- **[/dream/74-touchdesigner-feedback](/dream/74-touchdesigner-feedback)** — TD Feedback. `demoable`
+  TouchDesigner's TOP feedback loop, ported to WebGPU. Two ping-pong render textures loop on
+  themselves each frame — the output of frame N becomes the input of frame N+1, transformed
+  by a slight rotation + zoom + hue shift + brightness decay. Audio (bass/mid/treble/onset) injects
+  a colored bloom layer each frame; the feedback amplifies and spirals it into complex self-similar
+  patterns within 3–4 seconds. Four sliders: ROTATION (±15‰ rad/frame), ZOOM (0.992–1.012×),
+  HUE DRIFT, DECAY. ↺ RESET clears to black. Demo mode works without mic permissions.
+  WebGPU required · Zero deps · Zero API · 5.2 kB.
+  Design notes: `src/app/dream/74-touchdesigner-feedback/README.md`
+
+---
+
+## Previous newest (Cycle 90 — research)
+
+- **Cycle 90 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§157–165).
+  5 new prototype ideas added to IDEAS.md. Top picks for next builds:
+  - **`node-synth`** (Cycle 91, zero deps) — visual Web Audio routing graph. Drag-and-connect oscillators, filters, delays, reverbs. Modular synthesis as the Web Audio graph it actually is.
+  - **`fm-explorer`** (Cycle 92, zero deps) — 2-operator FM synthesis. Classic DX7 timbres (electric piano, bell, metallic). Real-time sideband spectrum. 71 prototypes, none have done FM synthesis.
+  - **`room-acoustic`** (Cycle 93, zero deps) — draw a 2D room, hear its reverb via image-source IRs + ConvolverNode.
+
+  **Key findings**:
+  - CassetteAI `cassetteai/music-generator` — 30s sample in ~2s ($0.02/min), 10× faster than ACE-Step. FAL_KEY in use.
+  - xAI TTS `xai/tts/v1` — 5th Ghost TTS paradigm: inline `[pause]`/`[sigh]` + semantic `<whisper>`, `<slow>` wrapping tags. FAL_KEY in use.
+  - AI vs Human music perception paradox (arxiv 2506.02856) — listeners prefer AI music but rate human music as more effective. Actual emotional response: no difference. Framing matters.
+
+  **Open questions**: `ANTHROPIC_API_KEY`? `GEMINI_API_KEY`? `browser-stems` model size OK?
+
+---
+
+## Previous newest (Cycle 89 — build)
 
 - **[/dream/71-shader-evolve](/dream/71-shader-evolve)** — Shader Evolve. `demoable`
   Natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2

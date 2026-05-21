@@ -2,6 +2,12 @@ import { fal } from "@fal-ai/client";
 import { NextRequest } from "next/server";
 import { guard } from "../../_shared/api-guard";
 
+// ACE-Step audio-to-audio commonly takes 60–120s on fal.ai. Vercel's
+// default serverless function timeout is 60s on Pro, which clips the
+// request mid-generation. Bump to 300s (5 min) — fal.subscribe will
+// resolve well before then.
+export const maxDuration = 300;
+
 export async function POST(req: NextRequest) {
   const blocked = await guard(req);
   if (blocked) return blocked;

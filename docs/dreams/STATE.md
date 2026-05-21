@@ -1,5 +1,220 @@
 # Dream Agent — cycle state
 
+## Cycle 94 — /dream/79-fm-explorer
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 94 % 4 = 2 → NOT a kids cycle.
+4. **Build new** — `79-fm-explorer` per Cycle 93 notes ("IF Karel shares recording IDs → `paths-visualizer`; otherwise `fm-explorer`"). No recording IDs shared yet, so building `fm-explorer`.
+
+Reasoning: 78 prototypes, none implement FM synthesis — the technique behind the Yamaha DX7 and essentially all 1980s digital sound design. The Web Audio API is literally designed for FM (OscillatorNode → AudioParam connection). Two sliders (C:M ratio + modulation index β) span the full DX7 timbre palette. High surprise factor: Karel will see the Bessel function sideband spectrum animate in real time as he moves the β slider — the actual math behind *why* the electric piano sounds the way it does. Votes API returned `{}` — no love signal to bias.
+
+**What I built**:
+- `src/app/dream/79-fm-explorer/page.tsx` — 2-operator FM synthesizer with live sideband spectrum
+- `src/app/dream/79-fm-explorer/README.md` — FM math, C:M ratio families, polish ideas
+
+**How it works**:
+- Carrier `OscillatorNode` + Modulator `OscillatorNode`. Modulator → `GainNode` (gain = β × fc) → carrier's `.frequency` AudioParam. This is the Web Audio API's native FM support.
+- Sideband spectrum: Bessel functions J_n(β) computed via Miller backward recurrence (numerically stable for all β including β = 20). 2N+1 bars from n = −N to +N. Heights are |J_n(β)| — the actual predicted amplitude at each sideband, not a measured FFT.
+- 6 presets: DX Piano (β=2.5, 1:1), Bell (β=1.5, 1:3.5), Reed (β=3.5, 2:3), FM Bass (β=8, 1:2), Metallic (β=5, 7:1), Glass Harmonica (β=1.0, 1:4).
+- Demo mode: slow LFO breathes β between 50%–130% of the dial value — spectrum visibly shifts.
+- Mic mode: bass energy (60–250 Hz) adds up to +14 to β. Onset → retrigger ADSR envelope.
+- ADSR envelope on the carrier output. Space bar / pointer hold = note trigger.
+
+**Build**: `npm run build` passed cleanly. Page is 5.29 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: J₀(2.5) ≈ 0.048 — the carrier is nearly absent in the DX Piano preset. Almost all energy has shifted into the sidebands. This is exactly the DX7 electric piano character: you're hearing J₁ and J₂, not the fundamental. The Bessel visualization makes this instantly visible.
+
+**Queued next**:
+1. **Cycle 95 (research)** — due. Cycle 91 was last build sequence start; cycles 91, 92, 93, 94 are four consecutive builds. Research due on Cycle 95 per the 3-build rotation from Cycle 93's notes.
+2. **Cycle 96 (kids)** — 96 % 4 = 0 → kids cycle. `kids-tilt-rain` (DeviceOrientation + falling drops) or `kids-hum-to-paint`.
+3. **Cycle 97 (build)** — `80-room-acoustic` (image-source method reverb simulator, zero deps) OR `paths-visualizer` IF Karel shares Welcome Home album recording IDs.
+
+**Open question for Karel**: Which recording IDs from your Welcome Home album are accessible via `/api/audio/[id]` without auth? That unlocks `paths-visualizer` — your real piano music as a visualizer source.
+
+---
+
+## Cycle 93 — /dream/78-node-synth
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 93 % 4 = 1 → NOT a kids cycle.
+4. **Build new** — `78-node-synth` (visual Web Audio routing graph). Top pick from STATE.md cycle 92.
+
+Reasoning: Karel's direction emphasizes "Live performance fitness" and "surprise." A visual modular
+synth patch bay is qualitatively different from all 82 existing prototypes — none have made the Web
+Audio graph itself the UI. It's also zero deps, one-cycle build, and immediately interactive (you hear
+the patch change as you draw wires). Votes API returned `{}` — no love signal to bias.
+
+The cycle 92 note said `72-paths-visualizer` was also a candidate, but that requires knowing Karel's
+recording IDs from Supabase (the audio route needs authenticated IDs or `is_featured=true` records).
+Without knowing which IDs are accessible, a demo would be non-functional. Logging this gap here: to
+build `paths-visualizer`, Karel should share which recording IDs from the Welcome Home album are
+accessible via `/api/audio/[id]` without auth (i.e., `is_featured=true` or share_token set).
+
+**What I built**:
+- `src/app/dream/78-node-synth/page.tsx` — visual modular synth: draggable node cards + bezier wire canvas + live Web Audio graph
+- `src/app/dream/78-node-synth/README.md` — architecture + polish ideas
+
+**How it works**:
+- `useReducer` manages the graph as pure data (nodes + wires lists). No imperative patching state.
+- Audio engine rebuilds connections whenever graph state changes: disconnect-all → reconnect from wire list.
+- Bezier wire canvas overlays the board; redraws every render frame (fast Canvas2D).
+- Pending wire (mid-draw) shows as a dashed animated line tracking the mouse.
+- Delay node has an internal feedback loop (DelayNode → GainNode → DelayNode) preserved across reconnects.
+- Starter patch: Oscillator → Gain → Destination. Press ▶ to hear it immediately.
+
+**Build**: `npm run build` passed cleanly. Page is 4.67 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: The `disconnect-all + reconnect` approach is simpler than trying to diff the wire graph — Web Audio nodes tolerate rapid connect/disconnect without glitching, and `setTargetAtTime` keeps parameter changes smooth. The delay feedback loop needs special handling (preserve its internal cycle through reconnect cycles) but everything else is clean.
+
+**Queued next**:
+1. **Cycle 94 (build)** — `83-paths-visualizer`: Karel's real Welcome Home album tracks — IF Karel shares accessible recording IDs. Otherwise: `fm-explorer` (2-operator FM synthesis, zero deps, DX7-style timbres). FM fills a real gap: none of 83 prototypes have done FM synthesis. High surprise.
+2. **Cycle 96 (kids)** — `kids-tilt-rain` (DeviceOrientation + falling colored drops) or `kids-hum-to-paint`.
+3. **Research next due at Cycle 95** (3 build cycles from Cycle 92; 93 + 94 + 95).
+
+**Open question for Karel**: Which recording IDs from your Welcome Home album are accessible without auth (`is_featured=true` or `share_token` set)? That unlocks `paths-visualizer` — Karel's real piano music as a visualizer source.
+
+---
+
+## Cycle 92 — /dream/82-kids-color-piano
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 92 % 4 = 0 → this cycle is kids-focused.
+4. **Build new** — KIDS.md has a seeded queue; none have been built yet. Decision: `82-kids-color-piano`.
+
+Reasoning: First kids prototype ever. `kids-color-piano` is the most fundamental of the seeded ideas — 
+8 pentatonic circles, touch to play — and directly embodies the KIDS.md design principles: no reading, 
+immediate response, no wrong notes. Achievable in one cycle with zero deps. Votes API returned `{}` —
+no love signal to bias (kid-cycle rotation takes priority regardless).
+
+**What I built**:
+- `src/app/dream/82-kids-color-piano/page.tsx` — 8 pentatonic circles, pointer-event glissando, Web Audio synthesis
+- `src/app/dream/82-kids-color-piano/README.md` — design rationale + KIDS.md compliance table
+
+**How it works**:
+- Pointer events on the container (not individual circles) — `pointermove` + `document.elementFromPoint` enables single-finger glissando across circles
+- Each pointer ID mapped to exactly one note; dragging switches notes cleanly
+- Audio: triangle wave + sine 2nd harmonic (gain 0.18) for a warm piano-like tone, 12ms attack / 850ms release
+- Background pad: C3/E3/G3 sine oscillators with slow LFO (0.08–0.13 Hz), 0.04 master gain — keeps silence warm
+- Circles sized at `20vmin` (≥78px phone, ≥153px iPad) — well above 64px KIDS.md minimum
+- No text labels on circles; subtle "tap · hold · slide" hint at 0.18 opacity for parents
+
+**Build**: `npm run build` passed cleanly. Page is 1.58 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: The pointer-event approach (`pointerdown` on container + `elementFromPoint` for hit detection) works cleanly for both mouse and touch. No `setPointerCapture` needed — glissando is natural. The `vmin` sizing means the circles scale perfectly from a small phone to a large iPad without media queries.
+
+**Queued next**:
+1. **Non-kids build** — `78-node-synth` (visual Web Audio routing graph, top pick from Cycle 90 research, zero deps) OR `72-paths-visualizer` (Karel's real piano music, Welcome Home album via `/api/audio/[id]`). The latter aligns more directly with Karel's direction but needs research into the audio route format first.
+2. **Next kids cycle** (Cycle 96) — `kids-tilt-rain` (tilt iPad, catch falling colored drops) or `kids-hum-to-paint` (hum pitch → brush strokes).
+3. **Research** next due at ~Cycle 95 (3 build cycles from now).
+
+---
+
+## Cycle 91 — /dream/74-touchdesigner-feedback
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — queue has multiple queued ideas. Decision: `74-touchdesigner-feedback`.
+
+Reasoning: Karel's new direction (set 2026-05-21) explicitly calls for deep TouchDesigner / Houdini
+pattern research + browser ports. `74-touchdesigner-feedback` directly implements the canonical TD
+TOP feedback loop in WebGPU. Cycle 90 notes said "Karel's `72-paths-visualizer` or `74-touchdesigner-feedback`
+aligns best with new direction." `74-touchdesigner-feedback` wins over `72-paths-visualizer` this cycle
+because it's self-contained (no external data deps) and the TD pattern port is qualitatively different
+from anything in the sandbox. Votes API returned `{}` — no love signal yet, no bias to apply.
+
+**What I built**:
+- `src/app/dream/74-touchdesigner-feedback/page.tsx` — WebGPU ping-pong texture feedback prototype
+- `src/app/dream/74-touchdesigner-feedback/README.md` — architecture + parameter guide
+
+**How it works**:
+- Two `rgba8unorm` GPU textures (ping + pong), RENDER_ATTACHMENT | TEXTURE_BINDING
+- Frame 1: feedback pass reads from ping → renders to pong (zoom + rotate UV, hue shift, decay, + audio bloom)
+- Frame 2: present pass blits pong → canvas swapchain; then swap ping ↔ pong
+- Uniform buffer (48 bytes): rotSpeed, zoomFactor, hueDrift, decay, bass, mid, treble, onset, time, resX, resY
+- Audio bloom: bass = violet center (hue 0.72), mid = cyan ring (hue 0.50), treble = orange halo (hue 0.08), onset = warm flash
+- Audio modulates base sliders additively: `rot += bass×0.009`, `zoom += mid×0.004`, `hue += treble×0.003`
+- Demo mode: LFO-driven bands (no mic needed); Mic mode: live AnalyserNode
+- ↺ RESET: destroys both textures and recreates them (clear to black), re-seeds from audio
+
+**Build**: `npm run build` passed cleanly. Fixed: Float32Array generic type annotation (`<ArrayBuffer>`),
+`react/no-unescaped-entities` (apostrophe in JSX text).
+
+**What surprised me**: The spiral pull-toward-center effect at zoom=1.004 + rotation=0.004 is
+visually identical to a high-quality TD feedback patch at the same parameters. The audio bloom
+layer seeds the initial color content and the feedback loop evolves it — within 4 seconds from
+a black canvas, the texture has built complex, self-similar colored structures. Low decay (92%)
+makes it very responsive to audio transients; high decay (99%) creates long translucent trails.
+
+**Queued next**:
+1. **Build** `72-paths-visualizer` — Karel's real piano music from Welcome Home album as audio source,
+   strange-attractor + bloom viz. Needs to read `src/lib/journeys/journeys.ts` and `/api/audio/[id]`
+   to understand the path structure and audio URL format at runtime.
+2. **Build** `78-node-synth` — visual Web Audio routing graph (top pick from Cycle 90 research).
+3. **Research** next due at ~Cycle 94 (3 build cycles from now).
+
+---
+
+## Cycle 90 — research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — checked queue; no urgent unstarted prototype.
+4. **Research** — due. Cycle 86 was last research; Cycles 87, 88, 89 were all builds (3 consecutive build cycles). Threshold reached.
+
+Decision: research cycle. Searched arxiv (2025–2026), fal.ai model catalog, GitHub creative coding, Hacker News, and emerging Web Audio/WebGPU techniques. Found 9 new RESEARCH.md entries (§§157–165). Promoted 5 new prototype ideas to IDEAS.md.
+
+**What I found**:
+- **CassetteAI on fal.ai (§157)** — `cassetteai/music-generator`, $0.02/min, 30s sample generated in ~2s (10× faster than ACE-Step). Strong candidate to replace ACE-Step as `6-compose` backend. Companion SFX model.
+- **xAI TTS on fal.ai (§158)** — `xai/tts/v1`, 5 expressive voices, unique dual-tag system: inline `[laugh]`/`[pause]`/`[sigh]` + semantic wrapping `<whisper>text</whisper>`/`<slow>text</slow>`. Fifth TTS paradigm for Ghost voice comparison (Gemini global / Orpheus per-word / ElevenLabs V3 per-phrase / Chatterbox voice-clone / xAI inline+wrapping).
+- **Strudel Flow (§159)** — 2026 visual node-based interface for Strudel. Insight: the Web Audio API is architecturally a directed routing graph; making that graph visible and interactive = natural modular synthesis UX. Inspires `node-synth`.
+- **AI vs Human Music Perception (§160, arxiv 2506.02856)** — paradox: listeners prefer AI music but rate human music as more emotionally effective. Quantitative emotional response: no significant difference. Implication: frame AI music as character-authored (the Ghost's voice, the journey's score), not "AI-generated."
+- **FM synthesis gap (§161)** — 71 prototypes, none implement FM synthesis. Web Audio `OscillatorNode` connected to another's `frequency` AudioParam IS FM synthesis. 3 nodes = the classic DX7 electric piano/bell/metallic palette. High live performance relevance. Inspires `fm-explorer`.
+- **AcoustiVision Pro / Room IR (§162, arxiv 2602.12299)** — open-source web platform for room IR analysis + real-time auralization. Inspires `room-acoustic`: image-source method room simulation (60 lines of JS) → `ConvolverNode` → hear how a piano chord sounds in Carnegie Hall vs. a cave. Direct utility for Ghost scene acoustic design.
+- **Sound-to-Video (§163, arxiv 2509.00029)** — music → video generation pipeline. Inspires extending `57-sound-to-image` to use fal.ai video models. Not a standalone prototype — flagged as `57-sound-to-image` extension.
+- **LLM+Strudel pattern generation (§164)** — English → LLM → Web Audio pattern code, plays immediately in browser. Inspires `llm-pattern` once ANTHROPIC_API_KEY is available.
+- **Selective auditory attention decoding (§165, arxiv 2512.05528)** — EEG decodes which musical element you're attending to. Inspires zero-dep `listen-guide`: directed attention exercises with FFT region highlighting.
+
+**New IDEAS promoted** (numbers shifted to 78-81 after Karel's new direction added slugs 72-77):
+- `78-node-synth` — visual Web Audio routing graph synthesizer. Zero deps, zero API. **Top pick for Cycle 91.**
+- `79-fm-explorer` — 2-operator FM synthesis + live sideband spectrum. Zero deps, zero API. **Second pick, Cycle 92.**
+- `80-room-acoustic` — draw a 2D room, hear its reverb via image-source IRs. Zero deps, zero API. **Third pick, Cycle 93.**
+- `xai-ghost` — xAI TTS with dual-tag system; fifth Ghost TTS paradigm. **DEFERRED** per Karel's new direction (pull back on voice gen; 6 voice prototypes already exist).
+- `81-cassette-speed` — CassetteAI vs ACE-Step side-by-side speed comparison. FAL_KEY in use. One cycle.
+
+**Karel's new direction** (from commits `d93afe9` + `f8f072d`, pushed during this cycle):
+- Stop building voice-gen prototypes (6 already exist: 56, 59, 61, 64, 65, 66). Polish existing if vote signal asks.
+- AI image gen INSIDE AV experiments = welcome. Standalone image gen = not interesting.
+- Spread themes across Karel's published journeys (not just Ghost). Use `src/lib/journeys/journeys.ts`.
+- Use Karel's real piano music from the Paths as audio source. Use `/api/audio/[id]` at runtime.
+- Research cycles: go DEEP on TouchDesigner / Houdini patterns + browser equivalents (WebGPU, MediaPipe, TF.js, three.js postprocessing). One focused thread per research cycle.
+- Added vote-aware bias: fetch `https://getresonance.vercel.app/api/dream/votes` at orient step; loved slugs → extend that direction; downvoted slugs → try something different.
+- Seeded 6 new ideas: `72-paths-visualizer`, `73-journey-arc-spread`, `74-touchdesigner-feedback`, `75-houdini-particle-flock`, `76-cymatics-on-piano-path`, `77-projection-mapping-sandbox`.
+
+**What's queued next**:
+1. **Check votes API** first (new AGENT.md rule for every cycle).
+2. **Build** — top candidates from Karel's seeded list (72-77) and/or Cycle 90 research list (78-81). Karel's `72-paths-visualizer` or `74-touchdesigner-feedback` aligns best with new direction.
+3. **Research** next due at ~Cycle 94 (3+ build cycles from now).
+
+---
+
 ## Cycle 89 — /dream/71-shader-evolve
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
