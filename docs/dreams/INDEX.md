@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 90 — research)
+## ⭐ Newest (Cycle 91 — build)
+
+- **[/dream/74-touchdesigner-feedback](/dream/74-touchdesigner-feedback)** — TD Feedback. `demoable`
+  TouchDesigner's TOP feedback loop, ported to WebGPU. Two ping-pong render textures loop on
+  themselves each frame — the output of frame N becomes the input of frame N+1, transformed
+  by a slight rotation + zoom + hue shift + brightness decay. Audio (bass/mid/treble/onset) injects
+  a colored bloom layer each frame; the feedback amplifies and spirals it into complex self-similar
+  patterns within 3–4 seconds. Four sliders: ROTATION (±15‰ rad/frame), ZOOM (0.992–1.012×),
+  HUE DRIFT, DECAY. ↺ RESET clears to black. Demo mode works without mic permissions.
+  WebGPU required · Zero deps · Zero API · 5.2 kB.
+  Design notes: `src/app/dream/74-touchdesigner-feedback/README.md`
+
+---
+
+## Previous newest (Cycle 90 — research)
 
 - **Cycle 90 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§157–165).
   5 new prototype ideas added to IDEAS.md. Top picks for next builds:

@@ -1,5 +1,53 @@
 # Dream Agent — cycle state
 
+## Cycle 91 — /dream/74-touchdesigner-feedback
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — queue has multiple queued ideas. Decision: `74-touchdesigner-feedback`.
+
+Reasoning: Karel's new direction (set 2026-05-21) explicitly calls for deep TouchDesigner / Houdini
+pattern research + browser ports. `74-touchdesigner-feedback` directly implements the canonical TD
+TOP feedback loop in WebGPU. Cycle 90 notes said "Karel's `72-paths-visualizer` or `74-touchdesigner-feedback`
+aligns best with new direction." `74-touchdesigner-feedback` wins over `72-paths-visualizer` this cycle
+because it's self-contained (no external data deps) and the TD pattern port is qualitatively different
+from anything in the sandbox. Votes API returned `{}` — no love signal yet, no bias to apply.
+
+**What I built**:
+- `src/app/dream/74-touchdesigner-feedback/page.tsx` — WebGPU ping-pong texture feedback prototype
+- `src/app/dream/74-touchdesigner-feedback/README.md` — architecture + parameter guide
+
+**How it works**:
+- Two `rgba8unorm` GPU textures (ping + pong), RENDER_ATTACHMENT | TEXTURE_BINDING
+- Frame 1: feedback pass reads from ping → renders to pong (zoom + rotate UV, hue shift, decay, + audio bloom)
+- Frame 2: present pass blits pong → canvas swapchain; then swap ping ↔ pong
+- Uniform buffer (48 bytes): rotSpeed, zoomFactor, hueDrift, decay, bass, mid, treble, onset, time, resX, resY
+- Audio bloom: bass = violet center (hue 0.72), mid = cyan ring (hue 0.50), treble = orange halo (hue 0.08), onset = warm flash
+- Audio modulates base sliders additively: `rot += bass×0.009`, `zoom += mid×0.004`, `hue += treble×0.003`
+- Demo mode: LFO-driven bands (no mic needed); Mic mode: live AnalyserNode
+- ↺ RESET: destroys both textures and recreates them (clear to black), re-seeds from audio
+
+**Build**: `npm run build` passed cleanly. Fixed: Float32Array generic type annotation (`<ArrayBuffer>`),
+`react/no-unescaped-entities` (apostrophe in JSX text).
+
+**What surprised me**: The spiral pull-toward-center effect at zoom=1.004 + rotation=0.004 is
+visually identical to a high-quality TD feedback patch at the same parameters. The audio bloom
+layer seeds the initial color content and the feedback loop evolves it — within 4 seconds from
+a black canvas, the texture has built complex, self-similar colored structures. Low decay (92%)
+makes it very responsive to audio transients; high decay (99%) creates long translucent trails.
+
+**Queued next**:
+1. **Build** `72-paths-visualizer` — Karel's real piano music from Welcome Home album as audio source,
+   strange-attractor + bloom viz. Needs to read `src/lib/journeys/journeys.ts` and `/api/audio/[id]`
+   to understand the path structure and audio URL format at runtime.
+2. **Build** `78-node-synth` — visual Web Audio routing graph (top pick from Cycle 90 research).
+3. **Research** next due at ~Cycle 94 (3 build cycles from now).
+
+---
+
 ## Cycle 90 — research sweep
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
