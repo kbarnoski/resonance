@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 88 — build)
+## ⭐ Newest (Cycle 89 — build)
+
+- **[/dream/71-shader-evolve](/dream/71-shader-evolve)** — Shader Evolve. `demoable`
+  Natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2
+  WebGPU grid. Click any cell to promote it to a full-res 60fps focus view. Click **↻ EVOLVE** to breed
+  four new mutations from the selected variant. **★ SAVE** stores the current selection to a persistent
+  gallery (up to 6 slots, localStorage) — click a tile to restart evolution from a saved ancestor.
+  **✎ EDIT** opens the raw WGSL for manual refinement. Each mutation randomly multiplies 3–5 of 16
+  named shader parameters by a factor in [0.4, 2.5] — always valid WGSL, often dramatically different.
+  `ringFreq` mutated to 45+ creates moiré-like interference; `sat` near 0 produces monochrome shaders
+  with their own aesthetic. The selection UI is purely visual: look at four things, pick the one that
+  "feels right," breed. Audio uniforms: `uBass`, `uMid`, `uTreble`, `uOnset`, `uTime`, `uBPM` — demo
+  mode works without mic permissions. WebGPU required. Zero deps · Zero API · 5.82 kB.
+  Design notes: `src/app/dream/71-shader-evolve/README.md`
+
+---
+
+## Previous newest (Cycle 88 — build)
 
 - **[/dream/70-pitch-algo-compare](/dream/70-pitch-algo-compare)** — Pitch Compare. `demoable`
   Three pitch detection algorithms running simultaneously on every audio frame — see where they

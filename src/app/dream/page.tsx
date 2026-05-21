@@ -1,6 +1,7 @@
 import { readFile, readdir } from "fs/promises";
 import path from "path";
 import Link from "next/link";
+import { VoteIndicator, VoteButtons } from "./_shared/vote-buttons";
 import type { ReactNode } from "react";
 
 export const dynamic = "force-static";
@@ -506,6 +507,10 @@ export default async function DreamPage() {
                     }
                   >
                     {CATEGORY_LABELS[p.category]}
+                  </span>
+                  <span className="ml-auto flex items-center gap-2">
+                    <VoteIndicator slug={p.slug} />
+                    <VoteButtons slug={p.slug} compact stopPropagation />
                   </span>
                 </div>
                 <h3 className="mb-1.5 font-serif text-lg transition-colors group-hover:text-violet-200">

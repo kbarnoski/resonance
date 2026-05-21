@@ -1,25 +1,25 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 88)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 89)
 
 ## New since yesterday
 
-- **[/dream/70-pitch-algo-compare](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/70-pitch-algo-compare)** — Three pitch detection algorithms simultaneously on a piano roll C2–C7. Orange = ACF, Blue = YIN, Green = HPS (harmonic product). Gold dashed cursor when ≥2 agree. Click **▶ Demo** — watch the gold cursor track the sawtooth oscillator, then watch it disappear at C2 as ACF jumps an octave while YIN/HPS hold. Then **🎤 Start mic** and play single notes vs. chords to see the divergence live.
+- **[/dream/71-shader-evolve](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/71-shader-evolve)** — Shader Evolve (Cycle 89). Natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2 WebGPU grid. Click any cell → full-res 60fps focus view. Click **↻ EVOLVE** → four new mutations bred from the selected variant. **★ SAVE** → persistent gallery (up to 6 slots, localStorage); click a tile to restart evolution from a saved ancestor. **✎ EDIT** → raw WGSL for manual tweaks. Each mutation multiplies 3–5 of 16 shader params by [0.4–2.5]× — always valid WGSL, often dramatically different visuals. Try: let it evolve 3–4 generations before saving, then breed from two saved ancestors in alternation. WebGPU required · Demo mode works without mic.
 
-- **[/dream/69-oracle-music](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/69-oracle-music)** (Cycle 87) — I-Ching hexagram oracle. Click "Cast the Coins" → animated coin tosses → hexagram → synthesized music shaped by its archetypal qualities. Hexagram 51 (Thunder) plays at 140 BPM with 5 chromatic voices; Hexagram 52 (Keeping Still) plays one pentatonic note at 35 BPM at C2. High surprise factor.
+- **[/dream/70-pitch-algo-compare](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/70-pitch-algo-compare)** (Cycle 88) — Three pitch detectors simultaneously: ACF (orange), YIN (blue), HPS (green). Gold cursor when ≥2 agree. Click **▶ Demo** and watch ACF jump an octave on C2 while YIN/HPS hold — makes octave-error behavior immediately visible.
 
 ## In progress / partial
 
-- Nothing blocked. `shader-evolve` (Cycle 89) is queued next: genetic mutation of `68-wgsl-synth` shaders — display 4 mutated variants simultaneously, select favorites, breed. Zero deps.
+- Nothing blocked.
 
 ## Research findings worth a look
 
 - Cycle 86 research in RESEARCH.md §§147–156. Key picks:
-  - **ShaderVine** (§147) — MIT WebGPU shader editor with genetic evolution + MCP. Natural partner to `68-wgsl-synth`; inspires `shader-evolve` (next build).
-  - **Demucs-web** (§§149, 154) — htdemucs in-browser via ONNX + WebGPU; 3–5 min for a 4-min song, fully private. Needs your OK on ~200MB model.
-  - **Inworld TTS viseme timing** (§155) — Inworld TTS returns mouth-shape timestamps for lip sync. Inspires `ghost-lip`: animated Ghost face moving when it narrates.
+  - **ShaderVine** (§147) — MIT WebGPU shader editor with genetic evolution + MCP. Natural partner to `68-wgsl-synth`; `shader-evolve` is the direct implementation.
+  - **Demucs-web** (§§149, 154) — htdemucs in-browser via ONNX + WebGPU; fully private. Needs your OK on ~200MB model.
+  - **Inworld TTS viseme timing** (§155) — mouth-shape timestamps for lip sync → `ghost-lip`.
 
 ## Open questions for Karel
 
-- `browser-stems` (~200MB ONNX CDN dep): OK to build? Cached after first load, audio never leaves device.
-- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` (LLM writes audio-reactive WGSL shaders for you)
+- `browser-stems` (~200MB ONNX CDN dep): OK to build? Audio stays on device, cached after first load.
+- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` (LLM writes audio-reactive WGSL shaders)
 - `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (all queued, waiting)
-- Research sweep due at Cycle 90 (~2 hours from now)
+- Research sweep due at Cycle 90 (next cycle)

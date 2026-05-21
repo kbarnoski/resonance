@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 89 — /dream/71-shader-evolve
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — Cycle 88 queued `shader-evolve` as the explicit next build. IDEAS.md has the full spec. Zero deps, zero API. Proceeding.
+4. **Research** — not due (Cycle 86 was research; next threshold at Cycle 90).
+
+Decision: build `/dream/71-shader-evolve` — natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2 WebGPU grid. Click any cell to promote it to a full-res focus view. Click **↻ EVOLVE** to breed four new mutations from the selected variant. **★ SAVE** adds the current selection to a persistent gallery (up to 6 slots, localStorage). Click a gallery tile to restart evolution from a saved ancestor.
+
+**What I built**:
+- `src/app/dream/71-shader-evolve/page.tsx` — full AV prototype, 5.82 kB
+- `src/app/dream/71-shader-evolve/README.md` — mutation model, GPU architecture, interaction loop
+
+**How it works**:
+- 16-parameter `ShaderParams` object (`ringFreq`, `ringSpeed`, `bassRing`, `gridFreq`, `midGrid`, `treGrid`, `gridBright`, `baseBright`, `bassRange`, `gridMix`, `onset`, `hueMid`, `hueTre`, `hueDrift`, `sat`, `vig`)
+- `buildFrag(p)` generates WGSL from params via template literal — mutations always produce valid WGSL since only numeric literals change
+- `spawnParams(parent)` mutates 3–5 randomly chosen params by a factor in [0.4, 2.5], min 0.02
+- One shared `GPUDevice` across 5 canvas contexts (4 grid + 1 focus). Each has its own `GPURenderPipeline`; all share a `GPUUniformBuffer` + `GPUBindGroup`. Sequential `writeBuffer` + `submit` per canvas ensures correct audio data per draw call
+- Grid canvases throttle to ~15fps; focus canvas runs at 60fps
+- Audio: 3-band energy (bass/mid/treble) via `AnalyserNode`, onset detection, EMA smoothing. Uniform struct: `uBass`, `uMid`, `uTreble`, `uOnset`, `uTime`, `uBPM`, `uResX`, `uResY`
+- Demo mode: LFO-driven audio bands without mic. Mic mode: live AnalyserNode
+- Edit mode: raw WGSL textarea for manual refinement of any variant
+
+**What surprised me**: with only 16 parameters and [0.4, 2.5] multipliers, the four cells look dramatically different — not subtly so. `ringFreq` mutated to 45+ creates moiré-like interference patterns. The selection UI feels more natural than text prompts: you look at four things at once and pick the one that "feels right."
+
+**Build**: `npm run build` passed cleanly, 5.82 kB.
+
+**What's queued next**:
+1. **Research** (Cycle 90): due now (Cycle 86 was last research; 3 build cycles have elapsed).
+
+---
+
 ## Cycle 88 — /dream/70-pitch-algo-compare
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
