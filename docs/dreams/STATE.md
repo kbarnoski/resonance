@@ -1,5 +1,42 @@
 # Dream Agent — cycle state
 
+## Cycle 94 — /dream/79-fm-explorer
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 94 % 4 = 2 → NOT a kids cycle.
+4. **Build new** — `79-fm-explorer` per Cycle 93 notes ("IF Karel shares recording IDs → `paths-visualizer`; otherwise `fm-explorer`"). No recording IDs shared yet, so building `fm-explorer`.
+
+Reasoning: 78 prototypes, none implement FM synthesis — the technique behind the Yamaha DX7 and essentially all 1980s digital sound design. The Web Audio API is literally designed for FM (OscillatorNode → AudioParam connection). Two sliders (C:M ratio + modulation index β) span the full DX7 timbre palette. High surprise factor: Karel will see the Bessel function sideband spectrum animate in real time as he moves the β slider — the actual math behind *why* the electric piano sounds the way it does. Votes API returned `{}` — no love signal to bias.
+
+**What I built**:
+- `src/app/dream/79-fm-explorer/page.tsx` — 2-operator FM synthesizer with live sideband spectrum
+- `src/app/dream/79-fm-explorer/README.md` — FM math, C:M ratio families, polish ideas
+
+**How it works**:
+- Carrier `OscillatorNode` + Modulator `OscillatorNode`. Modulator → `GainNode` (gain = β × fc) → carrier's `.frequency` AudioParam. This is the Web Audio API's native FM support.
+- Sideband spectrum: Bessel functions J_n(β) computed via Miller backward recurrence (numerically stable for all β including β = 20). 2N+1 bars from n = −N to +N. Heights are |J_n(β)| — the actual predicted amplitude at each sideband, not a measured FFT.
+- 6 presets: DX Piano (β=2.5, 1:1), Bell (β=1.5, 1:3.5), Reed (β=3.5, 2:3), FM Bass (β=8, 1:2), Metallic (β=5, 7:1), Glass Harmonica (β=1.0, 1:4).
+- Demo mode: slow LFO breathes β between 50%–130% of the dial value — spectrum visibly shifts.
+- Mic mode: bass energy (60–250 Hz) adds up to +14 to β. Onset → retrigger ADSR envelope.
+- ADSR envelope on the carrier output. Space bar / pointer hold = note trigger.
+
+**Build**: `npm run build` passed cleanly. Page is 5.29 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: J₀(2.5) ≈ 0.048 — the carrier is nearly absent in the DX Piano preset. Almost all energy has shifted into the sidebands. This is exactly the DX7 electric piano character: you're hearing J₁ and J₂, not the fundamental. The Bessel visualization makes this instantly visible.
+
+**Queued next**:
+1. **Cycle 95 (research)** — due. Cycle 91 was last build sequence start; cycles 91, 92, 93, 94 are four consecutive builds. Research due on Cycle 95 per the 3-build rotation from Cycle 93's notes.
+2. **Cycle 96 (kids)** — 96 % 4 = 0 → kids cycle. `kids-tilt-rain` (DeviceOrientation + falling drops) or `kids-hum-to-paint`.
+3. **Cycle 97 (build)** — `80-room-acoustic` (image-source method reverb simulator, zero deps) OR `paths-visualizer` IF Karel shares Welcome Home album recording IDs.
+
+**Open question for Karel**: Which recording IDs from your Welcome Home album are accessible via `/api/audio/[id]` without auth? That unlocks `paths-visualizer` — your real piano music as a visualizer source.
+
+---
+
 ## Cycle 93 — /dream/78-node-synth
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

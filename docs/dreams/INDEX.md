@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 93 — build)
+## ⭐ Newest (Cycle 94 — build)
+
+- **[/dream/79-fm-explorer](/dream/79-fm-explorer)** — FM Explorer. `demoable`
+  2-operator FM synthesis: a modulator oscillator drives the carrier's frequency AudioParam.
+  Two sliders control the entire DX7 timbre space — C:M ratio (which harmonic series) and β
+  modulation index (how rich/noisy). The right panel shows the **live sideband spectrum** as
+  Bessel function coefficients J_n(β): you see exactly why DX Piano at β=2.5 has almost no
+  carrier energy (J₀(2.5) ≈ 0.05) and all the sound lives in J₁ and J₂.
+  Six presets: DX Piano · Bell · Reed · FM Bass · Metallic · Glass Harmonica.
+  ADSR envelope. Space bar / pointer hold = play note.
+  Demo mode: slow LFO breathes β so the spectrum animates without mic. Mic mode: bass → β,
+  onset → retrigger envelope — loud playing gets grittier, attacks reshape the timbre.
+  **"78 prototypes, none had FM synthesis until now."**
+  Zero deps · Zero API · 5.29 kB.
+  Design notes: `src/app/dream/79-fm-explorer/README.md`
+
+---
+
+## Previous newest (Cycle 93 — build)
 
 - **[/dream/78-node-synth](/dream/78-node-synth)** — Node Synth. `demoable`
   The Web Audio API as a visual patch bay. Oscillators, gain stages, filters (lowpass/highpass/bandpass/
