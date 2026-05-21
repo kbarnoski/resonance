@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 76 — build)
+## ⭐ Newest (Cycle 77 — build)
+
+- **[/dream/62-collage-compose](/dream/62-collage-compose)** — Collage Compose. `demoable`
+  Three inputs → one composition. Pick a **Ghost scene** (Stone Chamber, Root Portal, Underground Pool,
+  Tiny Planet, Forest Dawn, Cosmic Ascension), pick a **mood word** (meditative / dreaming / ascending /
+  melancholic / ethereal / grounded / tense / vast), and optionally **hum a melody** into the mic
+  (up to 15s). The live "ACE-STEP PROMPT" panel shows exactly how the three inputs combine into tags.
+  Click **Compose →** → ACE-Step generates a 30s track.
+  - **With hum**: `audio-to-audio` — the model literally hears your melody and builds around it.
+  - **Without hum**: `text-to-audio` — scene + mood alone still constrain more than a single description.
+  Waveform strip: amber (your hum) | blue (generated). Bloom visualizer during playback.
+  Footer shows which endpoint was used — it switches live when you record.
+  Inspired by Mozualization (CHI 2025): multimodal music gen from image + audio + keyword.
+  FAL_KEY · $0.006/track · 4.65 kB.
+  Design notes: `src/app/dream/62-collage-compose/README.md`
+
+---
+
+## Previous newest (Cycle 76 — build)
 
 - **[/dream/61-orpheus-voice](/dream/61-orpheus-voice)** — Orpheus Voice Lab. `demoable`
   Three-way Ghost TTS comparison: **A** = Gemini TTS global style direction (baseline from

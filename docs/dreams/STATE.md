@@ -1,5 +1,51 @@
 # Dream Agent — cycle state
 
+## Cycle 77 — /dream/62-collage-compose
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — STATE.md Cycle 76 queues `collage-compose` as #1. Spec clear in IDEAS.md §121
+   (Mozualization CHI 2025). FAL_KEY in use, $0.006/track. One cycle.
+4. **Research** — due at Cycle 78 (1 build cycle away — next cycle should be research).
+5. **Polish** — skipped; build takes priority.
+
+Decision: build `/dream/62-collage-compose` — three-input multimodal composition (scene + mood + hum → ACE-Step).
+
+**What I built**:
+- `src/app/dream/62-collage-compose/page.tsx` — full interactive prototype (4.65 kB)
+- `src/app/dream/62-collage-compose/api/route.ts` — API route, two paths: audio-to-audio (hum present) / text-to-audio (no hum)
+- `src/app/dream/62-collage-compose/README.md` — design notes + what to try
+
+**How it works**:
+- Three input panels: Ghost scene (6 presets), mood word (8 options), optional hum recording (up to 15s).
+- Scene selection sets environment tags (e.g. "stone chamber, single piano chord, long stone reverb, sparse, ancient").
+- Mood word appended directly (e.g. "melancholic").
+- If a hum is recorded: decoded → analyzed for spectral brightness + amplitude → contour descriptor (e.g. "soft bass-warm melodic reference") appended to tags.
+- Final tags string shown live in "ACE-STEP PROMPT" panel — exact prompt transparency (same as vocal-bgm's genre-tag display).
+- With hum: sends audio + tags to `fal-ai/ace-step/audio-to-audio`. ACE-Step hears your actual melody.
+- Without hum: sends tags only to `fal-ai/ace-step` (text-to-audio). Still richer than `6-compose` because scene + mood together constrain the space.
+- Waveform strip: amber = your hum (left half), blue = generated track (right half), separator line.
+- Bloom visualizer during playback (same 6-band palette as `1-live`).
+- Footer shows which endpoint was used (updates reactively based on hum capture state).
+
+**Build**: `npm run build` passed cleanly. 4.65 kB, 111 kB First Load JS. One pre-existing warning (animRef.current in cleanup — same pattern as 44-vocal-bgm and 6-compose).
+
+**Key thing I noticed**: The prompt preview is the clearest new UX element. You can see exactly how the three inputs combine before composing. Switching from "Forest Dawn + dreaming" to "Stone Chamber + tense" produces a visibly different prompt — the user understands what they're asking for before they ask. The hum path is the multimodal heart of the prototype: the model hears your actual melody, not just a text description of it. What makes this different from `6-compose` (text only) and `44-vocal-bgm` (audio only) is that scene + mood + hum together constrain three separate dimensions simultaneously.
+
+**Queued next**:
+1. **Research** — due this cycle (Cycle 78). Last research was Cycle 74. Cycle 75, 76, 77 were all builds — 3 build cycles elapsed. Research threshold met.
+2. **`lyrics-journey`** — if Karel confirms FAL_KEY budget is OK for $2.40/generation (ElevenLabs Music composition_plan with per-section lyrics for the Ghost journey as a sung piece). High surprise value.
+3. **Polish** — `62-collage-compose` could get: download button for generated track, editable scene tags textarea (like `48-arc-compose`), better pitch contour analysis via autocorrelation.
+
+**Notes**:
+- ACE-Step endpoint `fal-ai/ace-step/audio-to-audio` from naming conventions (same as `44-vocal-bgm`). If the API returns an error, paste the raw error text — the route logs it.
+- Spectral brightness analysis: `sqrt(diff_variance) / (rms + ε)`. This approximates the ratio of high-frequency energy to total energy without a full FFT. Good enough for "bass-warm" vs "bright-treble" distinction.
+
+---
+
 ## Cycle 76 — /dream/61-orpheus-voice
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
