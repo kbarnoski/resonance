@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 85 — build)
+## ⭐ Newest (Cycle 86 — research)
+
+- **Cycle 86 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§147–156).
+  5 new prototype ideas added to IDEAS.md. Top picks for next builds:
+  - **`oracle-music`** (Cycle 87, zero deps) — 64 I-Ching hexagrams → musical parameters. Coin-cast animation, synthesized music shaped by hexagram's archetypal qualities. High surprise.
+  - **`pitch-algo-compare`** (Cycle 88, zero deps) — autocorrelation vs. YIN vs. HPS running simultaneously on mic input. Shows where algorithms agree/diverge.
+  - **`shader-evolve`** (Cycle 89, zero deps) — genetic mutation of `68-wgsl-synth` shaders; select favorites, breed.
+  - **`ghost-lip`** (Cycle 89/90, FAL_KEY) — Inworld TTS viseme timestamps → animated Ghost face with synced mouth movement.
+  - **`browser-stems`** (needs Karel OK on ~200MB ONNX model) — in-browser Demucs stem separation → HRTF 3D playback.
+
+  **Open questions**:
+  - `browser-stems` model size OK? (~200MB CDN, cached after first load)
+  - ANTHROPIC_API_KEY → `claude-shader`; GEMINI_API_KEY → `lyria-jam`, `lyria-ghost`, `binaural-lyria`, `piano-to-ghost`
+
+---
+
+## Previous newest (Cycle 85 — build)
 
 - **[/dream/68-wgsl-synth](/dream/68-wgsl-synth)** — WGSL Synth. `demoable`
   Write a WebGPU shader that responds to your playing — live, in the browser.

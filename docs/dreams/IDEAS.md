@@ -1427,3 +1427,72 @@ Key findings from Cycle 82 (2026-05-21):
 - Anchored Cyclic Generation (§144, arxiv 2604.05343, Apr 2026) — prevents semantic drift in long-form music generation via hierarchical anchoring. Validates `48-arc-compose` design; no new prototype.
 - Etude piano cover generation (§145, arxiv 2509.16522, Sep 2025) — polyphonic music → pianistic piano cover. Three-stage pipeline. No API yet. Inspires `piano-cover`.
 - StreamMark audio watermarking (§146, arxiv 2604.11917, Apr 2026) — AI audio provenance tracking. Research awareness; no prototype recommended.
+
+---
+
+## FROM RESEARCH (Cycle 86, 2026-05-21) — promoted to queue
+
+### oracle-music — Musical I-Ching oracle `[queued, zero deps, zero API]`
+Route: `/dream/69-oracle-music`. Three coin tosses × 6 lines → one of 64 hexagrams. Each of the 64 hexagrams maps to a set of musical parameters drawn from classical I-Ching commentary (element, season, archetypal quality → musical equivalent):
+- Hexagram 1 (Creative/Heaven/Metal): pentatonic C major, bright register (C4–C6), 80 BPM, strong sustained chords, high saturation
+- Hexagram 2 (Receptive/Earth/Yin): slow minor arpeggios, deep register (C2–C3), 35 BPM, sparse, open fifths
+- Hexagram 29 (Abysmal/Water): descending chromatic lines, 50 BPM, thick resonant bass, unresolved tension
+- Hexagram 30 (Clinging/Fire): ascending bright diminished scales, 120 BPM, thin upper register
+- Hexagram 51 (Thunder/Arousing): sharp onset pulses, 140 BPM, percussive attack, sudden loud/soft contrasts
+- ... (all 64 mapped in a lookup table, ~60 lines of data)
+
+**Visual sequence**: three animated coin tosses (each coin face shows yin/yin or yang/yang/yin — 3 coins × sum = line type), building a hexagram line-by-line from the bottom. Hexagram symbol drawn in animated strokes. English title ("The Creative") fades in. Traditional commentary line (one sentence, pre-written from Wilhelm translation public domain). Then music begins — synthesized with the same oscillator + filter engine as `38-mood-xy` and `52-concept-steer`. A subtle "changing lines" visual effect where any line marked as "moving" glows and shifts.
+
+"The oracle answers in sound." First prototype connecting music to a divination tradition. High surprise factor — something no audio software has done before. Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §151 (Music of Changing Lines, arxiv 2605.20386). Optional future layer: if GEMINI_API_KEY available, add a Lyria call to generate a 30s piece from the hexagram's musical description, playing alongside the synthesized music.
+
+### pitch-algo-compare — three pitch detection algorithms running simultaneously `[queued, zero deps]`
+Route: `/dream/69-pitch-algo-compare`. Mic input → simultaneously run three pitch detection algorithms on every 2048-sample FFT buffer:
+1. **Autocorrelation** (our current approach across 8+ prototypes) — normalized peak correlation, octave-fold at 55–880 Hz range
+2. **YIN** — autocorrelation variant with aperiodicity threshold check (~40 lines of JS); reduces octave errors by ~15%
+3. **HPS (Harmonic Product Spectrum)** — multiplies harmonically downsampled FFT spectra (4 harmonics), better for piano/violin; poorly defined for pure sine tones
+
+Canvas: a vertical piano roll grid (C2–C7, same as `24-piano-roll`). Three horizontal cursors per frame: orange (autocorrelation), blue (YIN), green (HPS). When all three agree within ±1 semitone, a bold gold cursor overlays them ("consensus"). When they disagree, the spread is visible. Each algorithm also shows a "confidence bar" (autocorrelation peak correlation coefficient; YIN aperiodicity; HPS peak-to-floor ratio). A faint piano tone plays for the consensus pitch (0.15s triangle-wave envelope).
+
+Demo mode: same demo oscillators as other prototypes — three clean sine tones at known frequencies where all algorithms should agree. Mic mode: play piano. On C4: all three agree. On C2: algorithms diverge (sub-bass confusion). On a chord: HPS tracks the fundamental best; autocorrelation jumps to harmonics.
+
+"Which algorithm is right? Sometimes all of them. Sometimes none." Educational: makes pitch detection internals visible. Utility: directly informs the `neural-pitch` upgrade decision (§61, §148). Zero new deps (YIN and HPS are pure JS, ~30 lines each). One-cycle build.
+
+### shader-evolve — genetic evolution of audio-reactive WGSL shaders `[queued, zero deps]`
+Route: `/dream/70-shader-evolve`. Inspired by ShaderVine's genetic evolution system (RESEARCH.md §147). Start from the `68-wgsl-synth` default shader (pulsing radial rings + grid shimmer + onset flash). Display **four mutated variants** in a 2×2 WebGPU canvas grid. Each variant randomly perturbs 2–4 numeric constants in the shader (ring frequency, color rotation speed, HSV saturation coefficient, onset flash decay time, grid line spacing) while keeping the structure valid WGSL. All four run simultaneously at ~15fps each (smaller canvas, lower frame rate to stay within GPU budget).
+
+Click any canvas to "select" it (it grows to fill the right panel at full 60fps). Click "Evolve from selection" → breed the selected shader with 3 fresh mutations. Click "Add to gallery" → save this shader to localStorage. Click "Edit" → opens the shader in a `68-wgsl-synth`-style textarea for manual refinement. Gallery row at the bottom shows the last 6 saved shaders as animated thumbnails.
+
+"Natural selection of shaders." The first prototype where the creative process is *selection* rather than *composition* — you don't write the shader; you judge it. The audio uniforms keep running throughout, so the evolving shaders respond to demo LFOs (or mic input). No external deps — same WebGPU pipeline as `68-wgsl-synth`. Zero new npm deps. One-cycle build.
+
+### ghost-lip — Inworld TTS viseme timing → animated Ghost face `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/70-ghost-lip`. Extends `56-ghost-voice` (Ghost narration via Gemini TTS). Switches the TTS backend to **Inworld TTS-1.5 Max** (`fal-ai/inworld-tts`) which, unlike Gemini TTS, returns **viseme-level timestamp data** alongside the audio — a sequence of (time_ms, viseme_id) events specifying exactly which mouth shape is active at each moment during speech.
+
+Canvas: a stylized Ghost face — abstract, minimal, not realistic. A dark oval (head), two narrow white ellipses (eyes, blinking every 4–7s), and a central path that morphs between 6 mouth shapes keyed to viseme groups:
+- Closed (silence, M/B/P)
+- Small open (E/eh)
+- Wide open (A/ah)
+- Rounded (O/oo)
+- Teeth together (S/Z/T)
+- Wide with teeth (EE)
+
+As the narration plays, viseme timestamps drive the mouth morph via `requestAnimationFrame`. The mouth opens for loud vowels, closes for consonants, stays shut in pauses. The eyes blink independently on a slow random interval. Color: ghost-white face on deep black; warm amber glow on the eye/mouth shapes matching the `1-live` mid-frequency hue.
+
+Six scenes selectable. Same narration lines as `56-ghost-voice`. "The Ghost has a face." First prototype giving the Ghost character a visual speaking presence — not an image (static) or an orb (abstract), but a face that moves when it speaks. FAL_KEY in use. ~$0.005/narration. Zero new npm deps. One-cycle build. Research basis: RESEARCH.md §155.
+
+### browser-stems — upload any audio, split to 4 stems in-browser, hear them in 3D `[queued, needs Karel OK on CDN ONNX dep ~200MB cached]`
+Route: `/dream/71-browser-stems`. Drag-and-drop any audio file → in-browser Demucs v4 (htdemucs via ONNX Runtime Web + WebGPU acceleration) separates it into 4 stems: **drums, bass, other, vocals/melody**. Processing time: ~3–5 min for a 4-min song on a WebGPU laptop; ~15–20 min CPU fallback (shown in the UI upfront). All processing is local — audio never leaves the device. Progress bar with estimated time remaining.
+
+After separation: each stem routes to a dedicated `PannerNode` with HRTF model: drums from above (+60° elevation), bass from below (−30°), other from front-left (−25° azimuth), vocals from front-right (+25°). Canvas: same top-down sphere as `29-scene-spatial` and `53-ghost-sfx` — four colored dots, draggable. Per-stem gain slider. Wear headphones.
+
+"Your music. Any music. Yours." This is `54-maestro-stems` but for audio you already have — a recording you made, a Resonance session, your favorite piece. Zero API cost. Zero data upload. Completely private. The HRTF positioning of real, separated stems (not frequency-band splits like `7-spatial`) means the drums are overhead *because they're the drums*, not because they're in the treble range. Demucs CDN dep: ~200MB ONNX model + ONNX Runtime Web JS (~2MB) — cached after first load, no subsequent network use. Two-cycle build. Needs Karel OK on CDN dep size. Research basis: RESEARCH.md §§149, 154.
+
+Key findings from Cycle 86 (2026-05-21):
+- ShaderVine (§147, April 2026) — MIT WebGPU shader editor with genetic evolution + MCP server. 16 compute sims. Natural partner to `68-wgsl-synth`. Inspires `shader-evolve`: select from mutations, breed favorites.
+- Voice Composer (§148, HN Jan 2026) — 4-algorithm simultaneous pitch detection (CREPE/YIN/FFT/AMDF). Key insight: YIN and HPS are ~30 lines of pure JS and can run alongside our existing autocorrelation. Inspires `pitch-algo-compare`.
+- Demucs-web (§§149, 154, April 2026) — htdemucs running in-browser via ONNX + WebGPU; 3–5 min for 4-min song, fully private. Inspires `browser-stems`. Needs Karel OK on ~200MB model.
+- Art2Mus (§150, arxiv 2602.17599, Feb 2026) — direct artwork→music via visual latent diffusion. No API yet. Future `art-to-music`. Zero-dep HSL approximation possible now.
+- I-Ching musical oracle (§151, arxiv 2605.20386, May 2026) — coin casting → hexagram → LLM → Lyria music. Zero-dep version: 64 hexagrams → musical parameters. High surprise. Inspires `oracle-music`.
+- AuDirector (§152, arxiv 2605.11866, May 2026) — multi-agent long-form audio narrative with character profiles + self-correction. Architecture model for future Ghost narrative arc. No standalone prototype.
+- ICME 2026 text-to-music winners (§153, May 2026) — generation quality jump over ACE-Step. Monitor fal.ai for new endpoints; upgrade `6-compose` when available.
+- Inworld TTS viseme timing (§155) — new detail: Inworld TTS returns mouth shape timestamps (viseme alignment). FAL_KEY in use. Inspires `ghost-lip`: animated Ghost face with synced mouth movement.
+- Pitch algorithm comparison (§156) — YIN reduces octave errors ~15% vs. autocorrelation; HPS ~30 lines JS. Direct informant for `neural-pitch` upgrade decision. Inspires `pitch-algo-compare`.

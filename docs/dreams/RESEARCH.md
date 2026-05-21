@@ -1505,3 +1505,95 @@ A deep-learning-based audio watermarking system designed to be robust against be
 
 **Relevance to sandbox**: Interesting for the Ghost voice prototypes (`56-ghost-voice`, `61-orpheus-voice`, `64-eleven-dialogue`, future `chatterbox-ghost`) — the AI-generated Ghost narrations could be watermarked to mark them as AI-generated. Not a standalone prototype (too specialized), but a signal that audio provenance is a growing concern in AI-generated creative work. Karel should know: as Ghost TTS prototypes multiply, there's a research community building tools to track which outputs are AI-generated. Not a blocking concern, but worth awareness. No prototype recommended.
 
+---
+
+## 2026-05-21 — Cycle 86 research sweep
+
+### 147. ShaderVine — WebGPU WGSL Shader Editor with Genetic Evolution + MCP Server (April 2026)
+**Source**: https://meditations.metavert.io/p/shadervine-a-webgpu-shader-editor
+
+Browser-native WGSL shader editor (Monaco-powered) with live preview, 16 built-in GPU compute simulations (Conway's Life, fluid dynamics, reaction-diffusion, particle swarms, erosion, physarum networks, falling sand, DLA, domain warping, turbulence, and more). Key differentiator: a **genetic evolution system** — generates mutated shader variants and lets users select aesthetic favorites to "breed" together, addressing the text-bottleneck for visual authoring. Runs in-browser, MIT licensed, no installation. Includes a full **Model Context Protocol server** that exposes every creative operation as a callable tool so AI agents (including Claude Code) can search galleries, create/modify shaders, and trigger evolution programmatically.
+
+**Could become a prototype**: `shader-evolve` — a stripped-down "genetic shader gallery" built into the dream zone: start from the `68-wgsl-synth` default shader, spawn 4 random mutations (by randomly perturbing the audio-uniform math operations), display all four as 2×2 WebGPU canvases, let Karel click "keep" on favorites → breed them. Zero new deps, same WebGPU pipeline as `68-wgsl-synth`. The genetic loop adds a new creative paradigm the sandbox hasn't seen: *natural selection of shaders*. ShaderVine is also a partner tool to `claude-shader` (needs ANTHROPIC_API_KEY) — together they cover the full spectrum from hand-written WGSL to AI-generated to genetically-evolved.
+
+---
+
+### 148. Voice Composer — Multi-Algorithm Real-Time Pitch Detection in Browser (Hacker News, Jan 2026)
+**Source**: https://news.ycombinator.com/item?id=46581431
+
+Browser-based tool running **four pitch detection algorithms simultaneously** on microphone input: CREPE (deep learning via TensorFlow.js — most accurate but CPU-heavy), YIN (autocorrelation variant — fast, reliable for monophonic), FFT with Harmonic Product Spectrum (HPS — handles harmonic-rich tones), and AMDF (Average Magnitude Difference Function — lightweight fallback). All four display estimates simultaneously; user switches algorithms based on their specific input characteristics. Outputs: visual piano roll, downloadable MIDI files, and Strudel/TidalCycles code for live-coding environments. Entirely client-side.
+
+**Could become a prototype**: `pitch-algo-compare` — run all four algorithms (skip CREPE, which needs TF.js CDN dep — use only the three zero-dep ones: YIN, HPS, autocorrelation) simultaneously on mic input. Display all three estimates as colored horizontal cursors on a piano roll canvas — see where they agree (three overlapping lines) and where they diverge (noisy or polyphonic input). A consensus vote: if two of three agree within ±2 semitones, highlight the consensus pitch in gold. Education + utility: pianists see in real time which algorithm is more confused by chords, which handles the bottom octave better. Zero new npm deps (YIN and HPS are ~30 lines each of pure JS). Informs future `neural-pitch` upgrade decision. One-cycle build.
+
+---
+
+### 149. Demucs-web: Browser-native AI Stem Separation via ONNX + WebGPU (April 2026)
+**Source**: https://github.com/timcsy/demucs-web · https://github.com/nikhilunni/demucs-rs
+
+Demucs v4 (htdemucs) running entirely in the browser via ONNX Runtime Web + WebGPU acceleration, no server. Also: demucs-rs, a Rust port compiled to WASM. Processes a 4-minute song locally in 3–5 minutes (WebGPU-accelerated; slower on CPU fallback). Web Workers prevent UI blocking during inference. Outputs 4 stems: drums, bass, other, vocals. Privacy: audio bytes never leave the device. Model weights cached after first load. The ONNX Runtime Web 1.26 WebGPU EP (confirmed §72) makes this practical.
+
+**Could become a prototype**: `browser-stems` — upload any audio file → WebGPU-accelerated Demucs separates it into 4 stems in-browser (3–5 min, progress bar) → each stem plays through a dedicated HRTF PannerNode: drums from above (+60°), bass from below (−30°), other from front-left (−25°), vocals/melody from front-right (+25°). Canvas: same top-down sphere as `29-scene-spatial` and `53-ghost-sfx`. This is `54-maestro-stems` but with YOUR audio — a recording you made, your favorite piece of music, a Resonance session. Zero API cost, zero data upload, fully private. Needs Karel OK on: ~200MB ONNX model (cached after first load), CDN ONNX Runtime Web dep. Two-cycle build (model integration + HRTF routing).
+
+---
+
+### 150. Art2Mus — Direct Artwork-to-Music Generation via Visual Conditioning (arxiv 2602.17599, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.17599
+
+Generates music directly from artworks by projecting visual embeddings into the conditioning space of a latent diffusion music model — no text intermediate step. Trained on ArtSound, a dataset of 105,884 artwork-music pairs with dual-modality captions (visual and sonic description). Key innovation: bypasses the image→text→music pipeline, which loses visual subtlety. The result: music semantically aligned to the artwork's style, color temperature, and cultural context. Validated on paintings (Monet, Rothko, Basquiat) — each produces distinctly different soundscapes.
+
+**Could become a prototype**: `art-to-music` — the natural companion to `58-music-to-ghost` (audio → Ghost image). Here the direction reverses: drop a Ghost scene image → receive ambient music shaped by its visual mood. A Cosmic Ascension image should produce expansive, high-frequency music; a Stone Chamber image should produce slow, dark resonance. No public API yet; monitor fal.ai and Replicate. When available: one-cycle build. Meanwhile, a zero-dep approximation is possible: extract dominant HSL from the image (color temperature + brightness) → map to valence/arousal → feed into the `38-mood-xy` synthesis engine. Instant, zero API, zero dep — just image processing.
+
+---
+
+### 151. Music of Changing Lines — I-Ching + LLM + Lyria Musical Oracle (arxiv 2605.20386, May 2026)
+**Source**: https://arxiv.org/abs/2605.20386
+
+Interactive system combining traditional I-Ching divination (coin casting → hexagram) with LLM interpretation (Gemini analyzes the hexagram contextually for the user's inquiry) and Lyria music generation (interpretation text → 30s ambient piece). The designers position AI as "an interpretive intermediary rather than a compositional authority" — meaning-making stays with the human, the AI expands what the hexagram might mean. The paper finds that users reported the AI's musical response felt "surprisingly fitting" to their inquiry, even though no personal data was processed.
+
+**Could become a prototype**: `oracle-music` — a zero-dep, zero-API version of this concept. Map all 64 I-Ching hexagrams to musical parameters (each hexagram has an associated element, season, and archetypal quality in classical commentary): hexagram 1 (Creative/Heaven) → pentatonic C major, bright register, 80 BPM, full sustained chords; hexagram 2 (Receptive/Earth) → slow minor arpeggio, low register, 35 BPM, sparse; hexagram 29 (Abysmal/Water) → descending chromatic lines, deep bass, 50 BPM; hexagram 30 (Clinging/Fire) → rising diminished scales, 120 BPM, bright treble. Visual: coin animation (three coins thrown three times → six-line hexagram), hexagram symbol drawn with line-by-line animation, English name + title, then music begins. "Consult the oracle — it answers in sound." First prototype connecting music to a divination system. Zero deps. High surprise factor. One-cycle build. NEEDS_GEMINI is optional (could add Lyria call as a premium layer, but zero-dep version is self-contained).
+
+---
+
+### 152. AuDirector — Multi-Agent Long-Form Audio Narrative System (arxiv 2605.11866, May 2026)
+**Source**: https://arxiv.org/abs/2605.11866
+
+Multi-agent AI framework for generating coherent long-form audio narratives. Three modules: (1) **Identity-Aware Pre-production** — transforms narrative text into character profiles (voice character, speech rate, emotional range) + utterance-level emotional instructions per line; (2) **Collaborative Synthesis and Correction** — self-auditing loop that detects and regenerates problematic audio sections (wrong voice, broken prosody); (3) **Human-Guided Interactive Refinement** — accepts natural language feedback to modify scripts and regenerate. Key insight: character consistency across long narratives requires both top-down character profiles and bottom-up per-utterance emotional direction.
+
+**Relevance to sandbox**: Not a standalone prototype — but an architectural model for future Ghost narrative evolution. The `66-chatterbox-ghost` prototype already has paralinguistic tags (bottom-up direction); what it lacks is the character profile layer (top-down consistency) and the self-auditing loop (regenerate bad takes). If a future `ghost-narrative-arc` prototype generates the full 6-scene Ghost journey as one continuous audio experience across multiple TTS calls, AuDirector's three-module structure is the right architecture to follow. Monitor for API deployment; the self-correction loop (module 2) is the unique contribution worth watching.
+
+---
+
+### 153. Musical Attention Transformer + ICME 2026 Text-to-Music Winners (arxiv 2605.21081 and 2605.21433, May 2026)
+**Source**: https://arxiv.org/abs/2605.21081 · https://arxiv.org/abs/2605.21433
+
+Two papers from May 2026 representing the state of the art in text-to-music generation as of this cycle. Musical Attention Transformer adds music-domain metadata (tempo, key signature) to standard attention, reducing repetitive note patterns by 18%. The ICME 2026 Challenge winner uses a Diffusion Transformer with auxiliary conditioning branches for better style adherence and melodic coherence. Both models outperform ACE-Step on long-term structure and stylistic variety. Neither has a fal.ai endpoint yet.
+
+**Relevance to sandbox**: `6-compose` (built Cycle 65) uses ACE-Step, which was state-of-the-art in early 2026. These new models suggest a generation quality jump is coming to fal.ai in the next 1–3 months. When the ICME winner arrives on fal.ai (likely as a named model endpoint), upgrading `6-compose` to the new backend would be a one-cycle polish. Monitor fal.ai explore/audio-models for new arrivals. Also: the text-to-music quality improvements would directly benefit `62-collage-compose` (which depends on ACE-Step for audio-to-audio quality).
+
+---
+
+### 154. Browser-Native AI Stem Separation: Performance Report (April 2026 blog post)
+**Source**: https://earezki.com/ai-news/2026-04-24-i-ran-a-neural-network-in-a-browser-tab-to-split-a-song-into-stems/ (403, but secondary sources confirm)
+
+April 2026 developer report: htdemucs running in a browser tab via ONNX Runtime Web + Web Workers, processing a 4-minute song in approximately 3–5 minutes on a modern laptop with WebGPU acceleration (longer on CPU fallback). Drums, bass, other, vocals correctly separated. Audio never leaves the device. Progress bar prevents the user experience from feeling frozen. Model weights are ~150–200MB, cached after first download. The combination of ONNX Runtime Web 1.26 (WebGPU EP default, §72) and Web Workers makes this practical as a real prototype.
+
+**Key production detail**: Use `navigator.gpu.requestAdapter()` to detect WebGPU; fall back to CPU WASM path with a warning that processing will take 15–20 min. Display a progress estimate. Most laptops with discrete GPU: ~3 min for a 3-minute song. Confirms `browser-stems` (§149) is buildable with a clear UX: upload → progress bar ("Separating stems… ~2 min remaining") → 4 stem player. The in-browser privacy angle is a strong differentiator from fal.ai-based approaches.
+
+---
+
+### 155. Inworld TTS-1.5 Max — Viseme Timing for Character Animation (Jan 2026, fal.ai)
+**Source**: https://blog.fal.ai/inworld-tts-1-5-max-now-available-on-fal/ · https://fal.ai/models/fal-ai/inworld-tts
+
+Extension of §105: new detail identified this cycle. Inworld TTS-1.5 Max outputs **timestamp alignments at character, word, phoneme, and viseme levels** — synchronization data for animating digital avatars and lips. A "viseme" is the mouth shape corresponding to a phoneme (e.g., the "oo" viseme for the "u" sound). With viseme timestamps, a Ghost character's mouth could be animated in sync with the narration without any additional model. P90 time-to-first-audio: 250ms (Max), 130ms (Mini). Streaming WebSocket delivery.
+
+**Could become a prototype**: `ghost-lip` — extend `66-chatterbox-ghost` (or `56-ghost-voice`) with a simple animated Ghost face canvas. An SVG or Canvas2D outline of a stylized face: just eyes (slow blink every 4–7s) and a mouth path (closed curve at rest). When Inworld TTS generates narration, the viseme timing data drives the mouth open/close shape — a set of 6–8 simple mouth positions keyed to viseme IDs. The result: the Ghost's voice comes from a face that moves its lips. Not a realistic avatar — a stark, ghost-like abstraction of a speaking presence. FAL_KEY in use, ~$0.005/min generation. Zero new deps (Canvas2D mouth path animation). One-cycle build.
+
+---
+
+### 156. Pitch Algorithm Comparison: YIN vs. HPS vs. Autocorrelation (2026 browser implementations)
+**Source**: https://pitchdetector.com/real-time-browser-pitch-detection-explained/ · Voice Composer (§148)
+
+The three mainstream zero-dep browser pitch detection approaches have different performance profiles: **Autocorrelation** (our current approach in `13-piano-canvas`, `24-piano-roll`, etc.) — good for clean monophonic signals, degrades on noisy/polyphonic input; **YIN** — autocorrelation variant with aperiodicity check, ~15% fewer octave errors than basic autocorrelation, same computational cost; **HPS (Harmonic Product Spectrum)** — multiplies harmonically downsampled spectra, better for harmonic-rich instruments (piano, violin) but poorly defined for pure tones. Key insight from the 2026 browser implementations: YIN and HPS are each ~25–40 lines of pure JS and run in <1ms on a 2048-sample FFT buffer. We could easily add both as alternatives in `_shared/` and let each prototype pick which one it uses.
+
+**Prototype specification**: `pitch-algo-compare` (Route: `/dream/69-pitch-algo-compare`) — run all three on live mic input simultaneously. Canvas shows three horizontal pitch cursors on a piano roll grid: **orange** = autocorrelation (current), **blue** = YIN, **green** = HPS. When all three agree within ±1 semitone, display the consensus pitch in bold gold. When they diverge, show the spread. A "confidence" bar per algorithm (YIN outputs an aperiodicity metric; HPS outputs peak salience; autocorrelation outputs peak correlation). Play each detected pitch as a faint piano tone so you can hear the difference when algorithms disagree. First prototype to make pitch detection internals *visible*. Zero new deps. One-cycle build. Directly informs whether the `neural-pitch` (§61) upgrade is worth the CDN dependency.
+

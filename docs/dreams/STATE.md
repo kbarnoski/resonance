@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 86 — research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — checked; no blocker, but:
+4. **Research** — due. Cycle 82 was last research cycle; Cycles 83, 84, 85 were all builds (3 consecutive build cycles). Research threshold reached.
+
+Decision: research cycle. IDEAS queue is well-stocked (~30+ entries) but research is due on the 3-cycle cadence. Surfaced 10 new findings. Strongest prototype ideas promoted to IDEAS queue.
+
+**What I found**:
+- **ShaderVine** (MIT, April 2026) — browser WebGPU shader editor with *genetic evolution* + full MCP server. Spiritual partner to `68-wgsl-synth`. Inspires `shader-evolve` prototype: display 4 mutated shader variants simultaneously, select favorites, breed. See RESEARCH.md §147.
+- **Voice Composer** (HN, Jan 2026) — four pitch-detection algorithms (CREPE/YIN/FFT-HPS/AMDF) running simultaneously in browser. YIN and HPS are each ~30 lines of pure JS and outperform our current autocorrelation on noisy/polyphonic input. Inspires `pitch-algo-compare` (zero deps, one cycle). See RESEARCH.md §§148, 156.
+- **Demucs-web / Demucs-rs** (April 2026) — htdemucs running fully in-browser via ONNX Runtime Web + WebGPU; 3–5 min for a 4-min song, audio never leaves device. Inspires `browser-stems`: upload any audio → split to 4 stems locally → play in 3D HRTF space. Needs Karel OK on ~200MB model. See RESEARCH.md §§149, 154.
+- **Art2Mus** (arxiv 2602.17599, Feb 2026) — direct artwork→music via visual latent conditioning. Natural complement to `58-music-to-ghost` (music → Ghost image). No public API yet; zero-dep HSL approximation possible. See RESEARCH.md §150.
+- **I-Ching + Lyria musical oracle** (arxiv 2605.20386, May 2026) — coin casting → hexagram → LLM → Lyria music. Inspires `oracle-music`: zero-dep version maps 64 hexagrams to musical parameters. High surprise; philosophically resonant with Resonance's "transcendent" identity. See RESEARCH.md §151.
+- **AuDirector** (arxiv 2605.11866, May 2026) — multi-agent long-form audio narrative with character profiles + self-auditing correction. Architecture model for future Ghost narrative arc evolution. See RESEARCH.md §152.
+- **ICME 2026 text-to-music quality jump** (arxiv 2605.21433) — generation quality jump over ACE-Step confirmed. Monitor fal.ai for new endpoints; upgrade `6-compose` when they land. See RESEARCH.md §153.
+- **Inworld TTS-1.5 Max viseme timing** (Jan 2026) — new detail: Inworld TTS returns character/word/phoneme/viseme timestamps for avatar lip sync. Inspires `ghost-lip`: animated Ghost face with mouth synced to narration. FAL_KEY already in use. See RESEARCH.md §155.
+
+**New IDEAS promoted**:
+- `oracle-music` — 64 hexagrams → musical parameters, animated coin casting, zero deps. **Top pick for next build.**
+- `pitch-algo-compare` — autocorrelation vs. YIN vs. HPS simultaneously on mic input. Zero deps. **Second pick.**
+- `shader-evolve` — genetic mutation + selection of audio-reactive WGSL shaders. Zero deps.
+- `ghost-lip` — Inworld TTS viseme timestamps → animated Ghost face. FAL_KEY in use.
+- `browser-stems` — in-browser Demucs stem separation → HRTF 3D playback. Needs Karel OK on model size.
+
+**What's queued next**:
+1. **Build** `oracle-music` (Cycle 87): 64 hexagrams × musical parameters, coin-cast animation, Web Audio synthesis. Zero deps, zero API. High surprise factor. One cycle.
+2. **Build** `pitch-algo-compare` (Cycle 88): three pitch algorithms simultaneously on mic input, consensus display, confidence meters. Zero deps. One cycle.
+3. **Research** next due at ~Cycle 90 (after 3 more builds).
+
+---
+
 ## Cycle 85 — /dream/68-wgsl-synth
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
