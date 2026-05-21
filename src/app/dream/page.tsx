@@ -392,122 +392,66 @@ export default async function DreamPage() {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* ── Hero ──────────────────────────────────────────────────── */}
-      <section className="border-b border-white/10 px-6 py-12">
-        <div className="mx-auto max-w-3xl">
-          <div className="mb-2 text-xs uppercase tracking-[0.3em] text-violet-300/70">
-            Resonance · Dream Lab
-            {cycleNum ? ` · cycle ${cycleNum}` : ""}
+      {/* ── Hero (compact — keeps prototypes above the fold) ─────── */}
+      <section className="border-b border-white/10 px-6 py-5">
+        <div className="mx-auto flex max-w-3xl flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+          <div>
+            <div className="text-[10px] uppercase tracking-[0.3em] text-violet-300/70">
+              Resonance · Dream Lab
+              {cycleNum ? ` · cycle ${cycleNum}` : ""}
+            </div>
+            <h1 className="mt-1 font-serif text-2xl tracking-tight sm:text-3xl">
+              What the dream agent built
+            </h1>
+            <p className="mt-0.5 text-xs text-white/45">
+              {prototypes.length} prototypes · autonomous hourly cycles
+              {lastUpdated ? ` · ${lastUpdated}` : ""}
+            </p>
           </div>
-          <h1 className="mb-3 font-serif text-3xl tracking-tight sm:text-5xl">
-            What the dream agent built
-          </h1>
-          <p className="mb-6 text-sm text-white/50">
-            {prototypes.length} prototypes · autonomous hourly cycles
-            {lastUpdated ? ` · ${lastUpdated}` : ""}
-          </p>
-          <div className="flex flex-wrap gap-2 text-sm">
+          <div className="flex flex-wrap gap-1.5 text-xs">
             <Link
               href="/dream/history"
-              className="rounded-full border border-violet-400/30 bg-violet-500/15 px-4 py-1.5 text-violet-100 transition-colors hover:bg-violet-500/25"
+              className="rounded-full border border-violet-400/30 bg-violet-500/15 px-3 py-1 text-violet-100 transition-colors hover:bg-violet-500/25"
             >
               ↻{" "}
               {recentCycles.length > 0
                 ? `${recentCycles[0].number} cycles`
-                : "Cycle history"}
+                : "History"}
             </Link>
             <a
               href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/IDEAS.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 transition-colors hover:bg-white/10"
             >
-              Idea queue
+              Ideas
             </a>
             <a
               href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/RESEARCH.md"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-white/10 bg-white/5 px-4 py-1.5 transition-colors hover:bg-white/10"
+              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 transition-colors hover:bg-white/10"
             >
-              Research log
+              Research
             </a>
             <a
               href="https://claude.ai/code/routines/trig_018Bk8HoEkQnFqxgxK8rdD9h"
               target="_blank"
               rel="noopener noreferrer"
-              className="rounded-full border border-violet-400/30 bg-violet-500/20 px-4 py-1.5 text-violet-100 transition-colors hover:bg-violet-500/30"
+              className="rounded-full border border-violet-400/30 bg-violet-500/20 px-3 py-1 text-violet-100 transition-colors hover:bg-violet-500/30"
             >
-              Agent logs →
+              Logs →
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── Morning digest ────────────────────────────────────────── */}
-      {morningMd && (
-        <section className="border-b border-white/10 bg-violet-500/[0.04] px-6 py-8">
-          <div className="mx-auto max-w-3xl">
-            <div className="mb-3 text-xs uppercase tracking-[0.3em] text-violet-300/70">
-              ⭐ Morning digest
-            </div>
-            {renderMdSection(morningContentLines, "morning")}
-          </div>
-        </section>
-      )}
-
-      {/* ── Recent activity ───────────────────────────────────────── */}
-      {recentCycles.length > 0 && (
-        <section className="border-b border-white/10 px-6 py-8">
-          <div className="mx-auto max-w-3xl">
-            <div className="mb-4 flex items-center justify-between">
-              <div className="text-xs uppercase tracking-[0.3em] text-white/50">
-                Recent cycles
-              </div>
-              <Link
-                href="/dream/history"
-                className="text-xs text-violet-300 transition-colors hover:text-violet-100"
-              >
-                All {recentCycles[0].number} cycles →
-              </Link>
-            </div>
-            <div className="space-y-3">
-              {recentCycles.map((c, i) => (
-                <div
-                  key={c.number}
-                  className={`rounded-xl border p-4 ${
-                    i === 0
-                      ? "border-violet-400/20 bg-violet-500/[0.06]"
-                      : "border-white/10 bg-white/[0.03]"
-                  }`}
-                >
-                  <div className="mb-1 flex flex-wrap items-baseline gap-3">
-                    <span className="font-mono text-xs text-white/40">
-                      cycle {c.number}
-                    </span>
-                    <span className="text-sm text-white/85">{c.title}</span>
-                  </div>
-                  {c.date && (
-                    <div className="mb-1.5 text-xs text-white/35">{c.date}</div>
-                  )}
-                  {c.decision && (
-                    <p className="text-xs leading-relaxed text-white/50 line-clamp-2">
-                      {c.decision.slice(0, 200)}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ── Prototype grid ────────────────────────────────────────── */}
-      <section className="px-6 py-10">
+      {/* ── Prototype grid (FIRST — keep above the fold) ─────────── */}
+      <section className="px-6 pt-6 pb-10">
         <div className="mx-auto max-w-3xl">
           <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
             <div className="text-xs uppercase tracking-[0.3em] text-white/50">
-              All prototypes — {prototypes.length} total · newest first
+              {prototypes.length} prototypes · newest first
             </div>
             <div className="flex flex-wrap gap-3 text-[11px] text-white/45">
               <span>
@@ -566,6 +510,83 @@ export default async function DreamPage() {
           </div>
         </div>
       </section>
+
+      {/* ── Recent cycles + Morning digest (collapsed by default) ──── */}
+      {(recentCycles.length > 0 || morningMd) && (
+        <section className="border-t border-white/10 px-6 py-8">
+          <div className="mx-auto max-w-3xl space-y-3">
+            {recentCycles.length > 0 && (
+              <details className="group rounded-xl border border-white/10 bg-white/[0.03] open:bg-white/[0.05]">
+                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-white/[0.05]">
+                  <div className="text-xs uppercase tracking-[0.3em] text-white/55">
+                    Recent cycles ({recentCycles[0].number} total)
+                  </div>
+                  <span className="text-xs text-white/40 transition-transform group-open:rotate-180">
+                    ▾
+                  </span>
+                </summary>
+                <div className="border-t border-white/10 p-4">
+                  <div className="mb-3 flex justify-end">
+                    <Link
+                      href="/dream/history"
+                      className="text-xs text-violet-300 transition-colors hover:text-violet-100"
+                    >
+                      Full history →
+                    </Link>
+                  </div>
+                  <div className="space-y-3">
+                    {recentCycles.map((c, i) => (
+                      <div
+                        key={c.number}
+                        className={`rounded-xl border p-4 ${
+                          i === 0
+                            ? "border-violet-400/20 bg-violet-500/[0.06]"
+                            : "border-white/10 bg-white/[0.03]"
+                        }`}
+                      >
+                        <div className="mb-1 flex flex-wrap items-baseline gap-3">
+                          <span className="font-mono text-xs text-white/40">
+                            cycle {c.number}
+                          </span>
+                          <span className="text-sm text-white/85">
+                            {c.title}
+                          </span>
+                        </div>
+                        {c.date && (
+                          <div className="mb-1.5 text-xs text-white/35">
+                            {c.date}
+                          </div>
+                        )}
+                        {c.decision && (
+                          <p className="text-xs leading-relaxed text-white/50 line-clamp-2">
+                            {c.decision.slice(0, 200)}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </details>
+            )}
+
+            {morningMd && (
+              <details className="group rounded-xl border border-white/10 bg-violet-500/[0.04] open:bg-violet-500/[0.06]">
+                <summary className="flex cursor-pointer list-none items-center justify-between p-4 transition-colors hover:bg-violet-500/[0.08]">
+                  <div className="text-xs uppercase tracking-[0.3em] text-violet-300/80">
+                    ⭐ Morning digest
+                  </div>
+                  <span className="text-xs text-white/40 transition-transform group-open:rotate-180">
+                    ▾
+                  </span>
+                </summary>
+                <div className="border-t border-white/10 p-4">
+                  {renderMdSection(morningContentLines, "morning")}
+                </div>
+              </details>
+            )}
+          </div>
+        </section>
+      )}
 
       <footer className="border-t border-white/10 px-6 py-6 text-center text-xs text-white/35">
         Sandboxed to{" "}
