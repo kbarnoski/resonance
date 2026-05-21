@@ -1,5 +1,48 @@
 # Dream Agent — cycle state
 
+## Cycle 75 — /dream/60-music-palette
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — Cycle 74 was research; MORNING.md explicitly queued `music-palette` as the next build. It's zero deps, zero API, one cycle. IDEAS.md §120 is the spec (Music2Palette research finding).
+
+Decision: build `music-palette` (`/dream/60-music-palette`).
+
+**What I built**:
+- `src/app/dream/60-music-palette/page.tsx` — full interactive prototype (4.15 kB)
+- `src/app/dream/60-music-palette/README.md` — design notes + polish ideas
+
+**How it works**:
+- 6-band FFT (same `useMicAnalyser` hook as `1-live`) → two emotion coordinates per frame:
+  - **arousal** = (sub-bass + bass) / 2 → palette lightness (28–72%)
+  - **valence** = treble-to-total ratio → hue anchor (250°=sad/blue → 50°=happy/warm)
+  - **richness** = std dev of 6 bands → saturation (32–80%)
+- 5-swatch palette = [-60°, -30°, 0°, +30°, +60°] offsets from anchor hue in HSL space
+- Slow EMA (α=0.011, ~1.5s time constant at 60fps) so palette breathes rather than flickers
+- Palette swatches rendered as CSS divs (transition 0.9s ease) — smoother than canvas rects
+- Bloom ring canvas (1-live style) in lower panel shows the raw audio energy
+- Download SVG: client-side, instant, no backend — each download captures a color snapshot
+- Demo mode: 6 incommensurable LFOs (0.071–0.233 Hz) drive the bands without mic
+
+**Key design choice**: Treble-to-total ratio as valence proxy (not chroma). Full chroma analysis would need more signal processing, but treble brightness tracks major/minor character well in practice — bright treble = major/happy, heavy bass with sparse treble = darker. The EMA makes this robust to transients.
+
+**Build**: `npm run build` passed cleanly. 4.15 kB gzip, 110 kB First Load JS.
+
+**Queued next**:
+1. **`orpheus-voice`** — extend `/dream/59-gemini-voice-lab` with Orpheus TTS as a third variant (phrase-level emotion tags vs Gemini global style). Zero new deps, FAL_KEY in use. One cycle.
+2. **`collage-compose`** — image + hum + word → ACE-Step music. More complex (MediaRecorder + image color extraction + pitch detection). FAL_KEY in use. One cycle.
+3. **Research** due again in ~2–3 build cycles (Cycle 78/79).
+
+**Notes**:
+- The swatch label color (light vs dark text) is auto-determined by lightness: `l > 55 → dark text, l ≤ 55 → light text`. This ensures readable labels across the full luminance range.
+- SVG export includes arousal/valence coordinates in the footer, making each download traceable back to its audio character.
+- The 0.9s CSS transition on swatches creates the "breathing" effect — the palette shifts feel organic, like a mood changing.
+
+---
+
 ## Cycle 74 — Research cycle
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

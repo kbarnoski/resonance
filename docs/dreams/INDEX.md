@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 74 — research)
+## ⭐ Newest (Cycle 75 — build)
+
+- **[/dream/60-music-palette](/dream/60-music-palette)** — Music Palette. `demoable`
+  Your audio becomes a 5-color palette. Bass energy → lightness (28–72%); treble-to-total
+  ratio → hue anchor (250°=sad/blue → 50°=happy/warm yellow); spectral spread → saturation.
+  Five swatches at ±30° and ±60° hue offsets breathe via a slow EMA (~1.5s time constant).
+  Below the swatches: the `1-live` bloom ring showing the raw audio energy. Download the
+  current palette as a labeled SVG — each download is a color snapshot of that musical moment.
+  Demo: 6 incommensurable LFOs (never exactly repeating) drift the palette from warm to cool.
+  "Your music as a color story." Zero deps · zero API · 4.15 kB.
+  Design notes: `src/app/dream/60-music-palette/README.md`
+
+---
+
+## Previous newest (Cycle 74 — research)
 
 - **Cycle 74 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§117–126).
   4 new prototype ideas added to IDEAS.md. Highlights:
