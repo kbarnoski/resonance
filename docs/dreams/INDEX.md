@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 82 — research)
+## ⭐ Newest (Cycle 83 — build)
+
+- **[/dream/66-chatterbox-ghost](/dream/66-chatterbox-ghost)** — Chatterbox Ghost. `demoable`
+  Record 5–10 seconds of any voice → Chatterbox Turbo renders all six Ghost narrative scenes in
+  that cloned voice, with physical action tags embedded in the text: `[sigh]`, `[gasp]`, `[slowly]`,
+  `[flatly]`, `[long pause]`. Six scene cards with editable lines, waveform per scene, exaggeration
+  slider (0.0–1.0). Six concurrent API calls fire on "Generate Ghost voices." Without a reference
+  clip, Chatterbox uses its default voice.
+  First prototype where the Ghost can speak in **Karel's own voice** — or any voice from a 5-second clip.
+  Four TTS paradigms now compared: Gemini (global style) / Orpheus (per-word XML) / ElevenLabs V3
+  (per-phrase acting) / Chatterbox (voice-clone + physical action tags).
+  ⚠ API parameter names are best guesses — paste error text if the endpoint rejects them.
+  Chatterbox Turbo · FAL_KEY · $0.025/1000 chars · ~$0.009/full 6-scene generation.
+  Design notes: `src/app/dream/66-chatterbox-ghost/README.md`
+
+---
+
+## Previous newest (Cycle 82 — research)
 
 - **Cycle 82 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§137–146).
   4 new prototype ideas added to IDEAS.md. Highlights:

@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 83 — /dream/66-chatterbox-ghost
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — `chatterbox-ghost` is the #1 queued item from Cycle 82's research findings.
+4. **Research** — not due (Cycle 82 was research; next research threshold at Cycle 86 or 87).
+
+Decision: build `/dream/66-chatterbox-ghost` — voice-cloned Ghost narration via Chatterbox Turbo.
+FAL_KEY already in use, zero new npm deps, one-cycle build. High surprise factor: Karel can hear
+Ghost narrations in his own voice (or any 5-second voice reference) for the first time.
+
+**What I built**:
+- `src/app/dream/66-chatterbox-ghost/page.tsx` — main UI
+- `src/app/dream/66-chatterbox-ghost/api/route.ts` — Chatterbox Turbo generation route
+- `src/app/dream/66-chatterbox-ghost/api/upload/route.ts` — voice reference upload to fal storage
+- `src/app/dream/66-chatterbox-ghost/README.md` — design notes
+
+**How it works**:
+- Record 5–10s of any voice via browser mic → uploads to fal storage once → URL reused for all 6 scenes
+- Six Ghost scene lines pre-loaded with paralinguistic action tags: `[sigh]`, `[gasp]`, `[slowly]`, `[flatly]`, `[long pause]`
+- "Generate Ghost voices" fires 6 concurrent POST requests to the server route
+- Each result: waveform draws on ▶ play (decode + draw + play in one step)
+- Exaggeration slider (0.0–1.0) controls intensity across all scenes
+- Lines are editable — experiment with different tags or completely different text
+
+**API parameter names are best guesses**:
+- Endpoint: `fal-ai/chatterbox/text-to-speech`
+- Text field: `text`
+- Voice reference: `audio_prompt_url`
+- Intensity: `exaggeration_factor`
+
+Error messages surface in the scene card. If wrong, Karel should paste the raw error text.
+
+**Build**: `npm run build` passed cleanly. Zero new TypeScript errors in the dream zone.
+Size: ~4.5 kB page component.
+
+**Key thing I noticed**: The four TTS paradigms now form a complete study:
+Gemini (global style) / Orpheus (per-word XML) / ElevenLabs V3 (per-phrase acting) / Chatterbox (voice-clone + physical action tags).
+Chatterbox is the only one that can put a specific human voice in Karel's face. The `[sigh]` and `[gasp]`
+tags are different in kind from the emotion tags in the others — they're body actions, not states.
+
+**Queued next**:
+1. **`structure-viz`** — self-similarity matrix section detection. Zero deps, zero API. First prototype
+   that shows musical structure (does the chorus come back?) rather than signal content. One-cycle build.
+2. **`wgsl-synth`** — WGSL shader editor + pre-wired audio uniforms. CodeMirror from CDN.
+3. **Research** — due at Cycle 86 or 87 (3–4 build cycles from here).
+
+**Open questions for Karel** (carried forward + new):
+- GEMINI_API_KEY → `lyria-jam`, `lyria-ghost`, `binaural-lyria`
+- ANTHROPIC_API_KEY → `claude-shader`
+- Vercel COOP headers → SharedArrayBuffer → GPU audio synthesis (`27-gpu-additive`)
+- `lyrics-journey` budget OK? ~$2.40/generation
+- NEW: Chatterbox voice clone — want to record a short reference clip to bundle as a public asset?
+  Could be Karel's own voice or a dedicated Ghost character voice. Right now the user must record
+  their own reference each session; a bundled clip would make the demo work without mic permissions.
+
+---
+
 ## Cycle 82 — research sweep
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
