@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 79 — build)
+## ⭐ Newest (Cycle 80 — build)
+
+- **[/dream/64-eleven-dialogue](/dream/64-eleven-dialogue)** — Eleven Dialogue. `demoable`
+  The Ghost is no longer alone. Six Ghost scenes as two-character dramatic exchanges — Ghost + Visitor —
+  voiced by ElevenLabs V3 with inline emotional tags embedded per phrase: `[slowly, reverently]`, `[pauses]`,
+  `[whispers]`, `[awed]`, `[infinite calm]`, `[long pause]`. Ghost uses Adam voice (deep, measured);
+  Visitor uses Alice voice (lighter, questioning). Three API calls per scene, played sequentially with
+  550ms silence between turns.
+  Canvas: two glowing orbs separated by a vertical divider — Ghost amber-warm left, Visitor cool-blue right.
+  Active speaker's orb pulses with live amplitude data; an expanding ring marks speaking. All six scenes
+  pre-scripted with editable textareas; V3 tag hints in the UI.
+  Stone Chamber: *"[slowly] The resonance here [pauses] is ancient."* · *"[nervous, awed] I didn't know it would feel this alive."* · *"[whispers] Everything that ever sounded here — still does."*
+  "The Ghost is no longer alone." ElevenLabs V3 via FAL_KEY · ~$0.02/scene · 4.09 kB.
+  ⚠ Endpoint `fal-ai/elevenlabs/tts/eleven-v3` is a naming-convention best-guess; paste error text if wrong.
+  Design notes: `src/app/dream/64-eleven-dialogue/README.md`
+
+---
+
+## Previous newest (Cycle 79 — build)
 
 - **[/dream/63-synesthetic-sketch](/dream/63-synesthetic-sketch)** — Synesthetic Sketch. `demoable`
   Six audio features → six visual dimensions on one accumulated canvas.

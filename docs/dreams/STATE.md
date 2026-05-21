@@ -1,5 +1,50 @@
 # Dream Agent — cycle state
 
+## Cycle 80 — /dream/64-eleven-dialogue
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — Cycle 79 queue: `eleven-dialogue` is #1. Spec clear in IDEAS.md (RESEARCH.md §§127, 134). FAL_KEY already in use, ~$0.02/scene, zero new deps.
+4. **Research** — not due (Cycle 78 was research, then Cycle 79 built; research threshold at Cycle 83).
+
+Decision: build `/dream/64-eleven-dialogue` — Ghost scenes as two-character dramatic exchanges voiced by ElevenLabs V3 with inline emotional tags. Three separate API calls (one per line), sequential playback. Different from every prior voice prototype: `56-ghost-voice` is monologue; `61-orpheus-voice` is A/B comparison; `64-eleven-dialogue` is drama — two distinct voices in a scripted scene.
+
+**What I built**:
+- `src/app/dream/64-eleven-dialogue/page.tsx` — full interactive prototype (4.09 kB)
+- `src/app/dream/64-eleven-dialogue/api/route.ts` — server route calling `fal-ai/elevenlabs/tts/eleven-v3`
+- `src/app/dream/64-eleven-dialogue/README.md` — design notes + what to try
+
+Six Ghost scenes, each a three-line dramatic exchange (Ghost then Visitor then Ghost).
+ElevenLabs V3 inline audio tags embedded in each line: `[slowly, reverently]`, `[pauses]`,
+`[whispers]`, `[awed]`, `[infinite calm]`, etc. Three separate API calls per performance
+(one per speaker turn), audio decoded and played sequentially with 550ms pause between lines.
+Ghost uses voice "Adam" (warm, measured); Visitor uses voice "Alice" (lighter, questioning).
+Canvas: two glowing orbs separated by a vertical divider — Ghost amber-warm left, Visitor
+cool-blue right. Active speaker's orb pulses with live amplitude; expanding ring shows speaking.
+Script textareas in a collapsible section with V3 tag guidance. Build: clean, 4.09 kB.
+
+Key design observation: the `[pauses]` tag inside "You are not rising. [pauses] The world is
+receding." is fundamentally different from adding `...` to the text. V3 treats the pause as
+an acting beat, not punctuation. The within-sentence arc is the prototype's core claim.
+
+⚠ Endpoint note: `fal-ai/elevenlabs/tts/eleven-v3` is from RESEARCH.md §127 (naming-convention
+best-guess). If it fails, the raw error is shown in the UI for Karel to report back.
+
+**Queued next**:
+1. **Build `dialogue-score`** — contour-constrained AI piano dialogue, extends `33-aria-companion`. Zero deps.
+2. **Research** — due at Cycle 83 (3 build cycles from here).
+
+**Open questions for Karel** (carried forward):
+- GEMINI_API_KEY → enables `lyria-jam`, `lyria-ghost`, `binaural-lyria`
+- Vercel COOP headers? → SharedArrayBuffer → GPU audio synthesis
+- ANTHROPIC_API_KEY → `claude-shader`
+- `lyrics-journey` budget OK? ~$2.40/generation
+
+---
+
 ## Cycle 79 — /dream/63-synesthetic-sketch
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
