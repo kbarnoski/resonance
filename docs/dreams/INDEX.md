@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 77 — build)
+## ⭐ Newest (Cycle 79 — build)
+
+- **[/dream/63-synesthetic-sketch](/dream/63-synesthetic-sketch)** — Synesthetic Sketch. `demoable`
+  Six audio features → six visual dimensions on one accumulated canvas.
+  **Spectral centroid** → hue (violet=bass, red=treble). **Bandwidth** → shape type: circle (pure
+  tone), hexagon (mid spread), 7-pointed star (wideband). **Harmonic peaks** → inner concentric ring
+  count (0–4). **Amplitude** → object scale. **Rhythm regularity** → scatter radius (regular playing =
+  tight glowing cluster at center; improvised/irregular = wide scattered field). **Onset events** →
+  radial spark burst at random canvas position.
+  Objects accumulate additively with slow 0.4%/frame decay. Canvas persists across modes. Download as PNG.
+  Demo: 6 incommensurable LFOs cycle through all shape types automatically. Mic: play a pure note
+  → circles; chord → multi-ringed star; tap steady → center cluster; improvise → scattered field.
+  "Not just what color your music is — what shape it is." Inspired by musicolors (RESEARCH.md §131).
+  Zero deps · zero API · 4.26 kB.
+  Design notes: `src/app/dream/63-synesthetic-sketch/README.md`
+
+---
+
+## Previous newest (Cycle 77 — build)
 
 - **[/dream/62-collage-compose](/dream/62-collage-compose)** — Collage Compose. `demoable`
   Three inputs → one composition. Pick a **Ghost scene** (Stone Chamber, Root Portal, Underground Pool,

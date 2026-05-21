@@ -1,5 +1,55 @@
 # Dream Agent — cycle state
 
+## Cycle 79 — /dream/63-synesthetic-sketch
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — STATE.md Cycle 78 queues `synesthetic-sketch` as #1. Spec clear in IDEAS.md (from Cycle 78 research). Zero deps, zero API, one cycle.
+4. **Research** — not due (last was Cycle 78, only 1 build since).
+
+Decision: build `/dream/63-synesthetic-sketch` — the first dream sandbox prototype to use morphological shape (not just color) as its primary visual language.
+
+**What I built**:
+- `src/app/dream/63-synesthetic-sketch/page.tsx` — full interactive prototype (4.26 kB)
+- `src/app/dream/63-synesthetic-sketch/README.md` — design notes + what to try
+
+**Six audio features → six visual dimensions**:
+- Spectral centroid → hue (60 Hz = violet, 8 kHz = red — same mapping as `1-live`)
+- Spectral bandwidth (std-dev of band energies) → shape: circle (< 28%) / hexagon (28–62%) / 7-star (> 62%)
+- Harmonic peak count (bands above 0.13 threshold) → inner concentric ring count (0–4)
+- Amplitude → object scale radius (10–54 px range)
+- Rhythm regularity (IOI coefficient of variation over 8 onsets) → scatter radius (0 = tight center cluster, 1 = 44% of screen radius)
+- Onset events → radial spark burst at random canvas position
+
+**How the canvas works**:
+- Objects accumulate via additive (`lighter`) compositing — overlapping shapes bloom brighter
+- 0.4%/frame black overlay decay prevents permanent burn-in (objects last ~250 frames / ~4s before fading)
+- New shape placed every 20 frames when amplitude > 0.05 (~3/sec at 60fps)
+- Canvas is NOT cleared on mode transitions (demo → mic keeps accumulated objects)
+- Download as PNG button
+
+**Demo mode**: 6 incommensurable LFOs (0.07–0.28 Hz) drive all 6 dimensions. Cycles through circle → hex → star as bandwidth LFO evolves. Fake onsets every 1.5–3.5s.
+
+**Build**: `npm run build` passed cleanly. 4.26 kB, 110 kB First Load JS. Zero warnings.
+
+**Key thing I noticed**: The scatter dimension is the most surprising one. When I ran the demo, the shapes cluster near center (LFO rhythm is regular). The contrast between "regular playing → tight glowing cluster" and "improvised playing → scattered field" is an immediately readable visual signature. A session where you keep strict time looks completely different from a session where you wander. No other prototype in the sandbox encodes rhythm structure this way.
+
+**Queued next**:
+1. **Build `eleven-dialogue`** — Ghost + Visitor dramatic scenes via Eleven V3 Text-to-Dialogue. FAL_KEY in use, $0.02/scene. Very different from all prior Ghost voice prototypes. High surprise.
+2. **Build `dialogue-score`** — contour-constrained AI piano dialogue extending `33-aria-companion`. Zero deps. Fills the "dialogic" interaction gap from CHI 2026 taxonomy.
+3. **Research** — due at Cycle 83 (4 build cycles away).
+
+**Open questions for Karel** (carried forward):
+- GEMINI_API_KEY → enables `lyria-jam`, `lyria-ghost`, `binaural-lyria` (generative category — most underrepresented)
+- Vercel COOP headers? → SharedArrayBuffer → GPU audio synthesis (`27-gpu-additive` prerequisite)
+- ANTHROPIC_API_KEY → `claude-shader`
+- `lyrics-journey` budget OK? ~$2.40/generation for sung Ghost journey arc
+
+---
+
 ## Cycle 78 — Research sweep
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
