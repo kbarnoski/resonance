@@ -1,5 +1,52 @@
 # Dream Agent — cycle state
 
+## Cycle 78 — Research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — queue is rich; would normally build next.
+4. **Research** — last research was Cycle 74. Cycles 75, 76, 77 were all builds — 3 build cycles elapsed. Research threshold met. Doing research this cycle.
+
+Decision: research sweep. Targeting: arxiv (audio-visual creative coding, music generation, live performance AI), fal.ai new models, GitHub trending creative-coding/webaudio.
+
+**What I found** (10 new entries, RESEARCH.md §§127–136):
+
+- **ElevenLabs Eleven V3** (§127, Feb 2026) — inline audio tag system for per-phrase emotional beats in TTS: `[whispers]`, `[pauses]`, `[resigned tone]`, `[flatly]`. Different control paradigm from Orpheus (per-word XML) and Gemini (global style). Text-to-Dialogue mode renders a multi-speaker exchange in a single API call — Ghost + Visitor as a dramatic scene. FAL_KEY in use, $0.10/1000 chars (~$0.005/Ghost line). Inspires two new prototypes: `ghost-v3-voice` and `eleven-dialogue`.
+
+- **ACE-Step 1.5 hybrid architecture** (§128) — sub-second first-token inference on consumer hardware, audio-to-audio as first-class mode. Validates `62-collage-compose` and `44-vocal-bgm`. A streaming progress bar showing first-token arrival time would make the speed visible.
+
+- **Dialogue in Resonance** (§129, arxiv 2505.16259, May 2026) — interactive music piece: human pianist + computer-controlled piano in a score-constrained dialogue. The AI's responses follow score-derived constraints rather than pure improvisation. Inspires `dialogue-score`: extend `33-aria-companion` with contour-constrained AI response (ascending user phrase → AI responds ascending), plus ghost-note preview from `39-anticipate`.
+
+- **ShaderVine** (§130, April 2026) — MIT browser WebGPU shader editor with MCP interface, 16 built-in GPU compute simulations, genetic shader evolution. No audio reactivity built-in. Inspires `wgsl-synth`: a minimal WGSL editor in the dream zone with 6 pre-wired audio uniforms. Also provides a mental model for `claude-shader` (needs ANTHROPIC_API_KEY).
+
+- **musicolors** (§131, arxiv 2503.14220) — web-based synesthetic music visualization library. Key finding: effective music visualization should use MULTIPLE visual dimensions simultaneously (not just color). Inspires `synesthetic-sketch`: six audio features (centroid, bandwidth, rhythm regularity, harmonic count, amplitude, onset) → six visual dimensions (hue, shape type, scatter, ring count, scale, spark). Canvas accumulates objects like `13-piano-canvas` strokes.
+
+- **SAMUeL** (§132) — vocal-conditioned music gen, 220× smaller than SOTA, 52× faster. No API yet; future `44-vocal-bgm` upgrade.
+
+- **BINAQUAL** (§133) — binaural localization quality metric. Validates HRTF work; research note only.
+
+- **Eleven V3 Text-to-Dialogue** (§134) — confirmed multi-speaker mode in same API call. Enables `eleven-dialogue` prototype.
+
+- **WebGPU audio SharedArrayBuffer path** (§135) — real-time GPU-synthesized audio now achievable with COOP headers. Upgrade path for `55-webgpu-audio-fx` and `27-gpu-additive`. Need to confirm Vercel COOP header support with Karel.
+
+- **CHI 2026 creative AI taxonomy** (§136) — four modes: reactive / compositional / dialogic / generative. Sandbox strong on first two, thin on dialogic and generative. Priority build: `dialogue-score` (dialogic) + Gemini key for `lyria-jam` (generative).
+
+**Queued next**:
+1. **Build `synesthetic-sketch`** (`/dream/63-synesthetic-sketch`) — zero deps, zero API, high surprise value. Six visual dimensions from six audio features. Most novel zero-cost idea from this research cycle.
+2. **Build `eleven-dialogue`** (`/dream/63-eleven-dialogue`) — Ghost + Visitor dramatic scenes via Eleven V3 Text-to-Dialogue. FAL_KEY in use, one cycle. Very different from all prior Ghost voice prototypes.
+3. **Build `dialogue-score`** (`/dream/64-dialogue-score`) — contour-constrained AI piano dialogue; deepens the dialogic category. Zero deps.
+4. **Research** — next research due at Cycle 82 (4 build cycles away from here).
+
+**Open questions for Karel** (carried forward):
+- GEMINI_API_KEY → enables `lyria-jam`, `lyria-ghost`, `binaural-lyria`. These fill the "generative" AI interaction mode which is the most underrepresented category in the sandbox.
+- Vercel COOP headers enabled? → enables SharedArrayBuffer → real-time GPU audio synthesis path for `55-webgpu-audio-fx` upgrade and `27-gpu-additive`.
+- ANTHROPIC_API_KEY in Vercel env? → enables `claude-shader` (LLM-generated audio-reactive GLSL).
+
+---
+
 ## Cycle 77 — /dream/62-collage-compose
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

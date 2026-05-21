@@ -1310,3 +1310,95 @@ MuVi: generates music conditioned on video input, focusing on semantic alignment
 
 **Could become a prototype**: future direction — given a Ghost journey video clip (HappyHorse output), MuVi could generate a matching music track shaped by the visual narrative arc. The Ghost rising → ascending musical phrase; Ghost still in stone → sparse, sustained tones. Closer to production than Sonic4D since fal.ai may host MuVi-like video-to-music models. Monitor for fal.ai endpoint. Currently no API; research direction only.
 
+---
+
+## Cycle 78 Research (2026-05-21)
+
+### 127. ElevenLabs Eleven V3 — Inline Audio Tag Emotional Direction (February 2026)
+**Source**: https://elevenlabs.io/blog/eleven-v3 · https://fal.ai/models/fal-ai/elevenlabs/tts/eleven-v3
+
+ElevenLabs Eleven V3 introduces a bracketed inline audio tag system for per-phrase emotional control directly in the text: `[sigh]`, `[excited]`, `[nervous]`, `[whispers]`, `[laughs]`, `[pauses]`, `[stammers]`, `[resigned tone]`, `[flatly]`, `[playfully]`, etc. Unlike Gemini TTS's global `style_instructions` (whole-passage direction) or Orpheus TTS's XML `<tag>word</tag>` syntax (per-word), Eleven V3 tags work as emotional beats inserted mid-sentence — `[sigh] The resonance here [pauses] is ancient.` The model interprets the structural pauses and emotional beats as part of the text flow, producing nuanced within-sentence arcs. 70+ languages. $0.10/1000 chars (Ghost scene line ~50 chars → ~$0.005/line). fal.ai endpoint: `fal-ai/elevenlabs/tts/eleven-v3`. Also includes Text-to-Dialogue mode: a single call generates a multi-speaker conversation with matching prosody and emotional ranges.
+
+**Could become a prototype**: `ghost-v3-voice` — extend `61-orpheus-voice`'s 3-way comparison to 4-way by adding Eleven V3 as column D, OR standalone 4-scene Ghost narration where inline tags are fully editable. The three-way control comparison is now: Gemini (global style) vs Orpheus (per-word XML) vs Eleven V3 (per-phrase inline tags). Each is a qualitatively different interaction paradigm. FAL_KEY in use, cheapest per character of the three. Also enables `eleven-dialogue`: Ghost scene as a 2-character dramatic exchange using Text-to-Dialogue. One cycle for either.
+
+---
+
+### 128. ACE-Step 1.5 Hybrid Reasoning-Diffusion Architecture (January 2026, arxiv 2602.00744)
+**Source**: https://arxiv.org/abs/2602.00744
+
+ACE-Step 1.5 introduces a Hybrid Reasoning-Diffusion Architecture that decouples structural planning from acoustic rendering. The reasoning module first generates a high-level musical plan (key, tempo, section structure) before passing it to the diffusion acoustic model — improving long-range coherence while enabling sub-second first-token inference on consumer hardware. Audio-to-audio mode (reference melody conditioning) is now a first-class supported mode, not a workaround. The architecture cleanly supports the `44-vocal-bgm` and `62-collage-compose` patterns already built in the sandbox.
+
+**Could become a prototype**: validates the audio-to-audio approach of `44-vocal-bgm` and `62-collage-compose`. The sub-second first-token means a live "sing a phrase → hear an arrangement start" latency of <1s is achievable. Future polish: add a streaming progress bar to `44-vocal-bgm` that shows first-token arrival time to make the speed visible.
+
+---
+
+### 129. Dialogue in Resonance — Piano + Real-Time Score Transcription Dialogue (arxiv 2505.16259, May 2026)
+**Source**: https://arxiv.org/abs/2505.16259
+
+An interactive music composition for human pianist and computer-controlled piano. A real-time automatic transcription system captures the human's performance and a generative system responds — creating a musical dialogue that balances "composed structure with dynamic interaction." The piece uses a prepared score framework where the computer's responses are constrained to a musical vocabulary derived from the score, not purely improvised. This is the "score-constrained dialogue" paradigm: the AI doesn't just respond to your phrase freely but completes or continues a pre-existing musical structure. Performed and rehearsed with human pianists; the paper discusses the rehearsal/composition process as co-creation with the system.
+
+**Could become a prototype**: `dialogue-score` — extend `33-aria-companion` with score-constrained responses. Instead of a pure Markov chain generating any notes, the AI response follows a melodic contour derived from the user's phrase direction (ascending → AI responds ascending, descending → AI continues or inverts). Show both phrase and AI response in the split piano roll from `33-aria-companion`. "The AI completes your musical thought — in the same key, in the same direction." More musically compelling than Markov because contour-matching gives the response a sense of musical logic rather than statistical imitation. Zero deps. One cycle.
+
+---
+
+### 130. ShaderVine — WebGPU Shader Editor Built for the Agentic Era (April 2026)
+**Source**: https://meditations.metavert.io/p/shadervine-a-webgpu-shader-editor
+
+Browser-based WebGPU shader editor with a Monaco-powered WGSL code editor and live preview. MIT-licensed. Includes 16 built-in GPU compute simulations (Conway's Game of Life, fluid dynamics, reaction-diffusion, others). An MCP server interface lets AI agents — Claude, GPT-4, etc. — directly read, write, and evolve shaders. Genetic evolution mode automatically mutates shader code and presents variations. Exports to Unity, Unreal, Blender, Three.js, HLSL. No audio-reactive hooks built in, but the architecture (agent writes WGSL → WebGPU renders → preview updates) is exactly the pattern needed for `claude-shader`.
+
+**Could become a prototype**: `wgsl-synth` — a minimal ShaderVine-inspired editor in the dream zone, but with 6 pre-wired audio uniforms (uBass, uMid, uTreble, uOnset, uTime, uBPM). CodeMirror from CDN as the editor. The shader runs on a fullscreen canvas; audio input updates uniforms each frame. Pre-loaded example: an FM synthesizer shader where uBass drives carrier frequency and uOnset triggers amplitude envelopes — both drawn as a waveform canvas. Different from `claude-shader` (which calls Claude to generate the shader): this is a manual WGSL editor for users who want to write their own audio-reactive GPU code. Zero deps beyond CodeMirror CDN. Also: could pair with `55-webgpu-audio-fx` as a more advanced version where the audio DSP itself runs in the shader. Two cycles.
+
+---
+
+### 131. musicolors — Web-based Synesthetic Music Visualization Library (arxiv 2503.14220, March 2026)
+**Source**: https://arxiv.org/abs/2503.14220
+
+A real-time web-based music visualization library designed for synesthetic creative experiences. User study with composers, developers, and listeners identified three primary modes: (1) sketching musical ideas (the canvas captures a session's visual fingerprint), (2) integrating with external systems (DAW + canvas side-by-side), (3) synesthetic listening (color-sound associations as a new listening mode). The paper argues that effective music visualization should respond to multiple musical dimensions simultaneously — not just amplitude or pitch, but rhythm regularity, harmonic complexity, and spectral spread all at once.
+
+**Could become a prototype**: `synesthetic-sketch` — multi-dimensional synesthetic canvas. NOT just color (already done in `1-live`, `60-music-palette`). Six independent audio features each control a separate VISUAL dimension on a single accumulated canvas: spectral centroid → hue; spectral bandwidth → shape complexity (circle=pure tone, star=spread, fractal=noise); rhythm regularity (IOR variance) → layout (random cloud=irregular, grid=regular); harmonic peak count → object count per frame; amplitude → scale; onset → spark burst at a random canvas position. Objects accumulate like `13-piano-canvas` strokes — the session leaves a record. "Not just what color your music is — what shape it is." The contrast with `13-piano-canvas`: that maps note events (pitch, velocity, duration) to brush strokes. This maps continuous audio features to morphological shape. Zero deps. One cycle.
+
+---
+
+### 132. SAMUeL — Efficient Vocal-Conditioned Music Generation (arxiv 2507.19991, 2026)
+**Source**: https://arxiv.org/abs/2507.19991
+
+Vocal-Conditioned Music Generation via Soft Alignment Attention and Latent Diffusion. Operates in the compressed latent space of a pre-trained VAE. Key result: 220× parameter reduction compared to SOTA systems while achieving 52× faster inference. Architecture uses soft alignment attention to match vocal input (hummed melody, sung phrase) with generated instrumental accompaniment. The speed advantage comes from the latent VAE compression — the diffusion operates in a 220× smaller space. No browser deployment yet; paper is research-stage.
+
+**Could become a prototype**: future direction — when a fal.ai endpoint appears. SAMUeL's approach (vocal → accompaniment via latent diffusion) is the right architecture for `44-vocal-bgm`'s use case. If speed is genuinely 52× faster than current SOTA, hum → arrangement latency drops from ~5-10s to ~0.1-0.2s. Monitor for fal.ai deployment. Currently ACE-Step 1.5 is the practical choice; SAMUeL would be the upgrade.
+
+---
+
+### 133. BINAQUAL — Binaural Audio Localization Quality Metric (arxiv 2505.11915, 2026)
+**Source**: https://arxiv.org/abs/2505.11915
+
+Full-reference objective localization similarity metric for binaural audio. Quantifies how accurately HRTF-rendered audio preserves the intended spatial position relative to a reference rendering. This fills a long-standing gap: there was no reliable objective metric for spatial audio quality (only subjective listening tests). BINAQUAL enables automated evaluation of HRTF rendering pipelines.
+
+**Relevance to sandbox**: validates the approach in `7-spatial`, `29-scene-spatial`, `53-ghost-sfx`, `54-maestro-stems` — all use Web Audio HRTF PannerNode, which is a simplified HRTF model. BINAQUAL would show how far simplified PannerNode diverges from measured HRTF for each elevation/azimuth position. Not a prototype idea, but a quality benchmark. If Karel wants to evaluate the spatial audio accuracy in any of these prototypes, BINAQUAL is the right tool. Research note for future polish.
+
+---
+
+### 134. Eleven V3 Text-to-Dialogue — Multi-Speaker Dramatic Scene Generation (February 2026)
+**Source**: https://elevenlabs.io/blog/eleven-v3
+
+ElevenLabs V3's Text-to-Dialogue mode weaves multiple character voices into a single seamless output — matching prosody, emotional range, and audio tag delivery across speakers. A single API call generates a 3–6 line dramatic exchange between two characters. Pricing: same $0.10/1000 chars as single-speaker mode.
+
+**Could become a prototype**: `eleven-dialogue` — Ghost scene as a 2-character dramatic exchange. Six Ghost scenes, each with a scripted 3-line dialogue between the Ghost character and a visitor/listener character. Stone Chamber: Ghost `[slowly, reverently] The resonance here [pauses] is ancient.` · Visitor: `[nervous, awed] I didn't know it would feel this alive.` · Ghost: `[whispers] Everything that ever sounded here — still does. [pauses] If you know how to listen.` Each scene pre-written but with editable textarea for each character's lines. Generate → play. Canvas shows the two voice waveforms in different colors (Ghost warm orange, Visitor cool blue) with animated subtitle per line. "The Ghost is no longer alone." Different from `56-ghost-voice` (monologue) and `61-orpheus-voice` (A/B style comparison). This is drama. FAL_KEY in use, ~$0.02/scene. Zero new deps. One cycle.
+
+---
+
+### 135. WebGPU Audio: 2026 Status Report
+**Source**: https://www.webgpusound.com/ · https://gist.github.com/JolifantoBambla/0a4e9c2a0a8bc475f081bc6f9d1aa1a8
+
+WebGPU audio synthesis (generating audio samples in compute shaders) is now documented and demonstrated at webgpusound.com. The JolifantoBambla gist technique (already referenced in §36) has spawned a small community. The 2026 status: Chrome 129+, Firefox Nightly, Safari 26 all support the storage buffer → AudioWorklet read-back path needed for GPU-synthesized audio playback. Main remaining friction: the PCIe round-trip for reading GPU buffer back to CPU for the AudioWorklet is ~30–80ms — acceptable for offline effects, too slow for real-time feedback synthesis. Two patterns emerging: (1) GPU DSP on pre-recorded buffers (done in `55-webgpu-audio-fx`), (2) GPU-generated audio streamed to AudioWorklet via SharedArrayBuffer (requires COOP headers, which Vercel supports). Pattern (2) enables true real-time GPU synthesis.
+
+**Could become a prototype**: upgrade `55-webgpu-audio-fx` to use SharedArrayBuffer streaming path for sub-10ms GPU audio → web audio latency. Enables real-time GPU FM synthesis where the shader IS the oscillator, reading audio uniforms at 44,100 Hz. This is the `27-gpu-additive` architecture in a simpler form. Would require confirming Vercel COOP header support (Cross-Origin-Opener-Policy + Cross-Origin-Embedder-Policy). Worth asking Karel.
+
+---
+
+### 136. ACM CHI 2026 — AI Creative Tools Interaction Patterns
+**Source**: https://arxiv.org/abs/2504.14055 · https://link.springer.com/chapter/10.1007/978-981-95-8256-3_7
+
+Two papers from CHI 2026 / CHI-adjacent venues relevant to the dream zone: (1) A web-based DAW for AI-generated music workflow — standardized API integrating symbolic music generation systems with a browser-based real-time audio renderer and "direct manipulation of musical elements." Visual interface with track timeline. (2) "Design of Creative AI Tools" (arxiv 2504.14055) — a taxonomy of human-AI creative interaction patterns; identifies four: reactive (AI responds to every action), compositional (AI generates from specification), dialogic (turn-taking), and generative (AI drives, human steers). The sandbox has strong reactive and compositional coverage; dialogic is only `33-aria-companion` and `39-anticipate`; generative (AI drives, human steers) is only `47-mood-journey`. The taxonomy suggests `lyria-jam` (Lyria RealTime — AI drives continuously, user steers prompts) would fill the most underrepresented slot.
+
+**Could become a prototype**: `lyria-jam` remains the top-priority generative-mode prototype when Karel provides a Gemini API key. The CHI taxonomy confirms: of the four creative AI interaction modes, generative is the most underrepresented in the sandbox. `lyria-jam` would be the first prototype Karel could perform with live — infinite music, infinite steering, no "generate and wait." Also reinforces: build `dialogue-score` soon to deepen the dialogic category beyond the two existing entries.
+

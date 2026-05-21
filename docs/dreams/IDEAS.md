@@ -1277,3 +1277,104 @@ Key findings from Cycle 74 (2026-05-21):
 - AI Music Psychotherapy for D/HH (§124, arxiv 2603.07963) — co-writing process is itself therapeutic. Inspires `co-write` direction.
 - Sonauto V2 (§125, fal.ai) — full songs with vocals, BPM control, $0.075/song. Good backend for `collage-compose`.
 - MuVi + SyncDIT (§126, arxiv 2410.12957) — video↔music semantic + rhythmic alignment. Future direction for Ghost animate + music pairing.
+
+---
+
+## FROM RESEARCH (Cycle 78, 2026-05-21) — promoted to queue
+
+### synesthetic-sketch — multi-dimensional synesthetic canvas `[queued, zero deps]`
+Route: `/dream/63-synesthetic-sketch`. Six independent audio features each control a separate visual
+dimension on a single accumulated Canvas2D. NOT just color (already done in `1-live`, `60-music-palette`).
+Each audio frame deposits a "musical object" on the canvas:
+- spectral centroid → hue (same mapping as `1-live`)
+- spectral bandwidth → shape complexity: circle=pure tone, hexagon=mid-spread, star=wide spread
+- rhythm regularity (IOR variance over last 8 onsets) → object size jitter (regular=tight cluster, irregular=scattered)
+- harmonic peak count (FFT peak-picking above noise floor) → number of inner rings
+- amplitude → scale of the object
+- onset → bright spark burst at a random position + alpha flash
+
+Objects accumulate across the session (like `13-piano-canvas` brush strokes but as shapes, not paths).
+Canvas does NOT scroll — it fills. Each new object is composited additively at 60% alpha over prior objects,
+building up a luminous layered field. A slow decay pass (0.2% per frame) prevents permanent burn-in.
+Download as PNG.
+
+Demo mode: same 6 incommensurable LFO oscillators as `11-terrain` and `17-acoustic-trail` — slow breathing
+that cycles through all shape types.
+
+"Not just what color your music is — what shape it is." The 62 existing prototypes map audio to color, fluid,
+particles, geometry. None map audio to morphological object *shape* in a multi-dimensional way. A pure sine
+tone leaves a single circle. A chord with rich harmonics leaves a multi-ringed star. A rhythmically precise
+performance builds a tight grid of shapes; an improvisational performance scatters them wildly. The canvas
+IS the acoustic record of a session, readable by shape as much as by color.
+
+Zero external deps. One-cycle build. Research basis: musicolors (RESEARCH.md §131).
+
+### eleven-dialogue — Ghost scene as AI-generated two-character drama `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/63-eleven-dialogue`. Six Ghost scenes, each with a pre-scripted 3-line dramatic exchange
+between two characters: **Ghost** (calm, ancient, knowing) and **Visitor** (awed, nervous, curious).
+ElevenLabs Eleven V3 Text-to-Dialogue (`fal-ai/elevenlabs/tts/eleven-v3`) renders both voices in a single
+API call, matching prosody and emotional range across the exchange.
+
+Pre-loaded Stone Chamber exchange:
+- Ghost `[slowly, reverently] The resonance here [pauses] is ancient.`
+- Visitor `[nervous, awed] I didn't expect it to feel this alive.`
+- Ghost `[whispers] Everything that ever sounded here — still does. [pauses] If you know how to listen.`
+
+Both characters' lines shown in editable textareas (Ghost = left, Visitor = right). Generate → single API call
+→ audio plays back. Canvas: two side-by-side waveform strips (Ghost = warm amber, Visitor = cool blue) with
+animated character-by-character subtitle per line. Scene transitions via the top row. Six scenes × 3-line
+dialogue = 30 lines total, each with Eleven V3 inline tags pre-loaded.
+
+"The Ghost is no longer alone." This is the first prototype where the Ghost speaks *to* someone rather than
+narrating to the user. Creates a dramatically different listening experience: you become the Visitor's presence.
+Different from `56-ghost-voice` (monologue) and `61-orpheus-voice` (A/B style comparison). FAL_KEY in use,
+~$0.02/scene ($0.10/1000 chars × ~200 chars/scene). Zero new deps. One cycle. Research basis: RESEARCH.md §§127, 134.
+
+### dialogue-score — score-constrained AI piano dialogue `[queued, zero deps]`
+Route: `/dream/64-dialogue-score`. Extends `33-aria-companion`. After the user plays a phrase (2s silence
+→ trigger), instead of a pure Markov chain response, the AI's reply is **contour-constrained**: detect
+whether the user's phrase was overall ascending, descending, or arch-shaped (peak in middle) by averaging
+inter-note pitch deltas. The AI response then follows the same shape — ascending user phrase → AI responds
+with ascending motif, descending → AI continues descent, arch → AI mirrors the arch. Markov transition
+probabilities still bias the note selection (preserving the "learns your style" property), but the pitch
+range for each step is additionally constrained to enforce the target contour direction.
+
+Visual: same split dual piano roll as `33-aria-companion` (YOU top / ARIA bottom). A small contour
+indicator shows the detected shape of the user's phrase and the planned shape of the AI response (using
+the `39-anticipate` ghost-note preview — ARIA's contour is visible before it plays). "The AI mirrors your
+musical thought." Inspired by "Dialogue in Resonance" (arxiv 2505.16259) where the computer's responses
+follow score-derived constraints rather than pure improvisation — the composition and the dialogue coexist.
+Zero deps. One cycle. Research basis: RESEARCH.md §129.
+
+### ghost-v3-voice — Ghost narration via ElevenLabs Eleven V3 audio tags `[queued, needs FAL_KEY — already in use]`
+Route: extend `/dream/61-orpheus-voice` (add column D) OR standalone `/dream/64-ghost-v3-voice`. Six Ghost
+scenes, each narrated using ElevenLabs Eleven V3's inline audio tag system. Pre-loaded tags chosen to match
+the Ghost emotional arc:
+- Stone Chamber: `[slowly, reverently] The resonance here [pauses] is ancient. Let yourself [whispers] be absorbed by it.`
+- Root Portal: `[low, measured] Something stirs [pauses] beneath the roots. [nervous pause] A low note. Then silence.`
+- Underground Pool: `[dreamily] The water remembers [pauses] every sound [whispers] that has passed through this place.`
+- Tiny Planet: `A single breath. [pauses] The horizon [softly] wraps around you.`
+- Forest Dawn: `The first light [pauses, warmly] is also the first sound. They arrive [gently] together.`
+- Cosmic Ascension: `[flatly, vast] You are not rising. [long pause] The world [resigned tone] is receding.`
+
+Eleven V3's inline tags work as mid-sentence emotional beats — not per-word direction (Orpheus) or global
+style (Gemini) but per-phrase beats. A `[pauses]` mid-sentence creates a real silence; `[whispers]` on the
+next phrase drops to intimate register; `[resigned tone]` changes vocal quality. All tags editable. Waveform
+strip per scene. ▶ play.
+
+If added to `61-orpheus-voice` as column D: four-way comparison A=Gemini global / B=Gemini alt /
+C=Orpheus XML / D=Eleven V3 inline tags — the most complete Ghost TTS study in the sandbox.
+FAL_KEY in use, ~$0.005/scene line (cheaper than Orpheus). Zero new deps. One cycle.
+Research basis: RESEARCH.md §127.
+
+Key findings from Cycle 78 (2026-05-21):
+- ElevenLabs Eleven V3 (§127, Feb 2026) — inline audio tag system `[whispers]`, `[pauses]`, `[resigned tone]` for per-phrase emotional beats. Different from Orpheus XML (per-word) and Gemini (global). $0.10/1000 chars, FAL_KEY in use. Text-to-Dialogue mode for multi-speaker scenes. Inspires `ghost-v3-voice` and `eleven-dialogue`.
+- ACE-Step 1.5 hybrid architecture (§128, Jan 2026) — decoupled reasoning + diffusion, sub-second first token. Validates `44-vocal-bgm` and `62-collage-compose` patterns. Polish opportunity: streaming progress bar showing first-token arrival.
+- Dialogue in Resonance (§129, arxiv 2505.16259) — piano + real-time transcription + score-constrained dialogue between human and computer piano. Inspires `dialogue-score`: extend `33-aria-companion` with contour-constrained AI response.
+- ShaderVine (§130, April 2026) — MIT browser WebGPU shader editor with MCP interface for AI agents. Inspires `wgsl-synth`: minimal WGSL editor with pre-wired audio uniforms. Also relevant to `claude-shader` (needs ANTHROPIC_API_KEY).
+- musicolors (§131, arxiv 2503.14220) — web-based synesthetic music visualization; multi-dimensional (not just color). Inspires `synesthetic-sketch`: each audio feature → different visual shape property (hue + shape complexity + ring count + scatter).
+- SAMUeL (§132, arxiv 2507.19991) — vocal-conditioned music gen, 220× smaller than SOTA, 52× faster. Future upgrade for `44-vocal-bgm` when fal.ai endpoint appears.
+- BINAQUAL (§133, arxiv 2505.11915) — binaural localization quality metric. Validates HRTF work in `7-spatial`, `29-scene-spatial`, `53-ghost-sfx`. Research-only, not a prototype.
+- Eleven V3 Text-to-Dialogue (§134) — multi-speaker dramatic scene in a single API call. Inspires `eleven-dialogue`: Ghost + Visitor 3-line scene per narrative location.
+- WebGPU audio 2026 status (§135) — SharedArrayBuffer streaming path enables real-time GPU synthesis. COOP header needed; worth asking Karel if Vercel supports it. Upgrade path for `27-gpu-additive`.
+- CHI 2026 creative AI taxonomy (§136) — four interaction modes: reactive / compositional / dialogic / generative. Sandbox covers first two well; dialogic (only `33-aria-companion`, `39-anticipate`) and generative (only `47-mood-journey`) are underrepresented. Priority: build `dialogue-score` (dialogic) and confirm Gemini key for `lyria-jam` (generative).
