@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 86 — research)
+## ⭐ Newest (Cycle 87 — build)
+
+- **[/dream/69-oracle-music](/dream/69-oracle-music)** — Oracle Music. `demoable`
+  Three coins cast six times → one of 64 hexagrams → music shaped by archetypal qualities.
+  Animated coin sequence builds the hexagram line-by-line from the bottom. The synthesis maps
+  I-Ching tradition to audio: Hexagram 1 (The Creative) plays bright major arpeggios at 80 BPM
+  through a wide-open filter at C5; Hexagram 2 (The Receptive) plays a single pentatonic tone at
+  35 BPM through a 400 Hz filter at C2 — pure stillness. Moving lines (sums of 6 or 9) glow amber,
+  signaling the hexagram is in transition. Click **Cast again** for a new draw.
+  64 hexagrams × musical parameters (BPM, scale, register, density, brightness).
+  First prototype connecting music to a divination tradition. High surprise factor.
+  **"The oracle answers in sound."** Zero deps · Zero API · 5.64 kB.
+  Design notes: `src/app/dream/69-oracle-music/README.md`
+
+---
+
+## Previous newest (Cycle 86 — research)
 
 - **Cycle 86 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§147–156).
   5 new prototype ideas added to IDEAS.md. Top picks for next builds:

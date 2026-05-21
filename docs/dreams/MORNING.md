@@ -1,35 +1,42 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 86)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 87)
 
 ## New since yesterday
 
-- **Cycle 86 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§147–156).
-  5 new prototype ideas added to IDEAS.md. Highlights below.
+- **[/dream/69-oracle-music](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/69-oracle-music)** (Cycle 87, `demoable`) — Oracle Music.
+  Three coins cast six times → one of 64 hexagrams → music shaped by its archetypal qualities.
+  Watch the animated coin sequence build the hexagram line-by-line. The synthesis maps traditional I-Ching
+  qualities to audio: Hexagram 1 (The Creative) plays bright major arpeggios at 80 BPM; Hexagram 2
+  (The Receptive) plays a single pentatonic tone at 35 BPM through a 400 Hz filter at C2.
+  Moving lines (6 or 9) glow amber — the hexagram is in transition. No mic needed, no API, no deps.
 
 - **[/dream/68-wgsl-synth](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/68-wgsl-synth)** (Cycle 85, `demoable`) — WGSL Synth.
-  Write a raw WebGPU shader that responds to your piano. Six pre-wired audio uniforms (`uBass`, `uMid`, `uTreble`, `uOnset`, `uTime`, `uBPM`). Edit any WGSL line → recompiles 400ms later, no black frame. Default: rings that expand with bass + grid shimmer + white onset flash. Try the mic — bass notes grow the rings visibly.
+  Write raw WGSL that responds to your piano — edit any line, recompiles in 400ms, no black frame.
+  Default shader: rings expanding with bass, grid shimmer with mids, white flash on onset.
 
 - **[/dream/67-structure-viz](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/67-structure-viz)** (Cycle 84, `demoable`) — Structure Viz.
-  Your music as a self-similarity map. ▶ ABA demo shows three bright diagonal blocks in ~48s. First prototype that reveals musical *form* (does the section come back?) rather than signal content.
+  Self-similarity matrix: your music as a map of itself. ▶ ABA demo shows the classic three-block
+  diagonal pattern in ~48s. First prototype showing musical form rather than signal content.
 
 ## In progress / partial
 
-- Nothing in-progress. Next build: `oracle-music` (Cycle 87).
+- Nothing in-progress. Next builds: `pitch-algo-compare` (Cycle 88, zero deps), then `shader-evolve` (Cycle 89).
 
 ## Research findings worth a look
 
-- **I-Ching Musical Oracle** (§151, arxiv 2605.20386, May 2026): a research team combined I-Ching coin casting with Gemini LLM interpretation and Lyria music generation. "AI as interpretive intermediary." I want to build a zero-dep version: 64 hexagrams pre-mapped to musical parameters (mode, BPM, register, chord density). Animated coin toss → hexagram symbol → synthesized music shaped by its archetypal quality. High surprise; deeply aligned with Resonance's "transcendent" identity. `oracle-music` is the next build.
+- **Demucs in the browser** (§§149, 154): htdemucs via ONNX Runtime Web + WebGPU — 4-min song
+  splits into 4 stems in ~3–5 min, fully locally (audio never leaves device). `browser-stems` prototype:
+  upload any audio → drums/bass/other/melody in 3D HRTF space. Needs your OK on ~200MB CDN model.
 
-- **Demucs in the browser** (§§149, 154, April 2026): htdemucs running in-browser via ONNX Runtime Web + WebGPU — a 4-minute song splits into 4 stems in ~3–5 minutes, fully locally (audio never uploaded). This enables `browser-stems`: upload any audio → drums/bass/other/melody in 3D HRTF space. The same spatial experience as `54-maestro-stems` but with YOUR music — a recording you made, your favorite album track. Needs your OK on a ~200MB model cached from CDN on first use.
+- **ShaderVine genetic evolution** (§147): breed audio-reactive WGSL shaders by natural selection.
+  `shader-evolve`: 4 mutated variants of `68-wgsl-synth` running simultaneously, select + evolve.
 
-- **ShaderVine genetic evolution** (§147): a shader editor that breeds shaders via natural selection — display 4 mutated variants, you pick favorites, they breed. The `shader-evolve` prototype would bring this to the dream zone: 4 mutated versions of the `68-wgsl-synth` default shader running simultaneously, select + breed. Creative paradigm the sandbox hasn't seen.
-
-- **Inworld TTS viseme timestamps** (§155): Inworld TTS-1.5 Max (FAL_KEY in use) returns mouth-shape timing data alongside audio — phoneme-level viseme IDs at exact timestamps. `ghost-lip` prototype: animated Ghost face (abstract oval + eyes + morphing mouth path) synced to narration. The Ghost would have a face that moves when it speaks. ~$0.005/narration, one-cycle build.
-
-- **Pitch algorithm comparison** (§§148, 156): YIN and HPS (Harmonic Product Spectrum) are each ~30 lines of pure JS and each outperform our current autocorrelation on specific inputs (YIN: 15% fewer octave errors; HPS: better on harmonic-rich piano). `pitch-algo-compare` runs all three simultaneously, shows where they agree and disagree in real time. Educational + informs whether `neural-pitch` CDN dep is worth the cost.
+- **Inworld TTS viseme timestamps** (§155): Inworld TTS returns mouth-shape timing per phoneme.
+  `ghost-lip`: animated Ghost face (abstract oval, eyes, morphing mouth) synced to narration.
+  ~$0.005/narration, FAL_KEY already in use, one-cycle build.
 
 ## Open questions for Karel
 
-- **`browser-stems` model size OK?** — ~200MB ONNX model, CDN-cached after first download, no network use afterward. Enables private in-browser stem separation of any audio.
-- **ANTHROPIC_API_KEY** in Vercel env → `claude-shader` (Claude writes WGSL for you — the natural pair to `wgsl-synth`)
+- **`browser-stems` model size OK?** — ~200MB ONNX, CDN-cached, enables private in-browser stem separation.
+- **ANTHROPIC_API_KEY** in Vercel → `claude-shader` (Claude writes WGSL for you, pairs with `wgsl-synth`)
 - **GEMINI_API_KEY** → `lyria-jam`, `lyria-ghost`, `binaural-lyria`, `piano-to-ghost` (4 prototypes waiting)
-- **`lyrics-journey` budget OK?** — ~$2.40/generation for full Ghost journey as a sung piece (ElevenLabs Music)
+- **`lyrics-journey` budget?** — ~$2.40/generation for Ghost journey as a sung piece (ElevenLabs Music)

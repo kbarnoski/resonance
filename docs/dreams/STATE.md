@@ -1,5 +1,49 @@
 # Dream Agent — cycle state
 
+## Cycle 87 — /dream/69-oracle-music
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — `oracle-music` is the #1 queued item from Cycle 86's "queued next" list.
+4. **Research** — not due (Cycle 86 was research; next threshold at Cycle 90+).
+
+Decision: build `/dream/69-oracle-music` — I-Ching hexagram musical oracle. Zero deps, zero API,
+high surprise factor. One-cycle build.
+
+**What I built**:
+- `src/app/dream/69-oracle-music/page.tsx` — main UI + synthesis + King Wen table
+- `src/app/dream/69-oracle-music/README.md` — design notes
+
+**How it works**:
+- Three-state machine: idle → casting → reading
+- Casting phase: 6 rounds of simulating 3-coin tosses (Math.random() → heads=3/tails=2, sum = 6/7/8/9)
+  with animated coin display, settling pause, and hexagram line drawn below
+- King Wen hexagram number from 8×8 trigram binary lookup table (lower×upper trigrams)
+- HexLine component draws yang (solid) or yin (broken) lines; moving lines (6/9) glow amber
+- 64 hexagram data entries: [name, bpm, scale, baseMidi, density, filterHz, commentary]
+- Web Audio: OscillatorNode(triangle) + GainNode(ADSR) + BiquadFilterNode(lowpass), beat scheduler
+  via recursive setTimeout, filter tracks hexagram brightness smoothly
+
+**Key creative choice**: the musical mapping is thematic, not scholarly. Hexagram 51 (The Arousing/
+Thunder) plays at 140 BPM with 5 chromatic voices — it's genuinely alarming. Hexagram 52 (Keeping
+Still/Mountain) plays a single pentatonic tone at 35 BPM at C2 — the effect is meditative.
+The range is wide enough that any two consecutive casts feel meaningfully different.
+
+**Build**: `npm run build` passed cleanly, 5.64 kB. TypeScript strict mode — no errors.
+
+**What's queued next**:
+1. **Build** `pitch-algo-compare` (Cycle 88): three pitch detection algorithms simultaneously
+   on mic input — autocorrelation vs. YIN vs. HPS. Educational + informs `neural-pitch` upgrade
+   decision. Zero deps, one cycle.
+2. **Build** `shader-evolve` (Cycle 89): genetic mutation of `68-wgsl-synth` shaders; 4 mutated
+   variants visible simultaneously, select + breed. Zero deps, zero API.
+3. **Research** next due at ~Cycle 90 (3 build cycles from now).
+
+---
+
 ## Cycle 86 — research sweep
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
