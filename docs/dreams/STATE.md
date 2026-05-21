@@ -1,5 +1,51 @@
 # Dream Agent — cycle state
 
+## Cycle 90 — research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — checked queue; no urgent unstarted prototype.
+4. **Research** — due. Cycle 86 was last research; Cycles 87, 88, 89 were all builds (3 consecutive build cycles). Threshold reached.
+
+Decision: research cycle. Searched arxiv (2025–2026), fal.ai model catalog, GitHub creative coding, Hacker News, and emerging Web Audio/WebGPU techniques. Found 9 new RESEARCH.md entries (§§157–165). Promoted 5 new prototype ideas to IDEAS.md.
+
+**What I found**:
+- **CassetteAI on fal.ai (§157)** — `cassetteai/music-generator`, $0.02/min, 30s sample generated in ~2s (10× faster than ACE-Step). Strong candidate to replace ACE-Step as `6-compose` backend. Companion SFX model.
+- **xAI TTS on fal.ai (§158)** — `xai/tts/v1`, 5 expressive voices, unique dual-tag system: inline `[laugh]`/`[pause]`/`[sigh]` + semantic wrapping `<whisper>text</whisper>`/`<slow>text</slow>`. Fifth TTS paradigm for Ghost voice comparison (Gemini global / Orpheus per-word / ElevenLabs V3 per-phrase / Chatterbox voice-clone / xAI inline+wrapping).
+- **Strudel Flow (§159)** — 2026 visual node-based interface for Strudel. Insight: the Web Audio API is architecturally a directed routing graph; making that graph visible and interactive = natural modular synthesis UX. Inspires `node-synth`.
+- **AI vs Human Music Perception (§160, arxiv 2506.02856)** — paradox: listeners prefer AI music but rate human music as more emotionally effective. Quantitative emotional response: no significant difference. Implication: frame AI music as character-authored (the Ghost's voice, the journey's score), not "AI-generated."
+- **FM synthesis gap (§161)** — 71 prototypes, none implement FM synthesis. Web Audio `OscillatorNode` connected to another's `frequency` AudioParam IS FM synthesis. 3 nodes = the classic DX7 electric piano/bell/metallic palette. High live performance relevance. Inspires `fm-explorer`.
+- **AcoustiVision Pro / Room IR (§162, arxiv 2602.12299)** — open-source web platform for room IR analysis + real-time auralization. Inspires `room-acoustic`: image-source method room simulation (60 lines of JS) → `ConvolverNode` → hear how a piano chord sounds in Carnegie Hall vs. a cave. Direct utility for Ghost scene acoustic design.
+- **Sound-to-Video (§163, arxiv 2509.00029)** — music → video generation pipeline. Inspires extending `57-sound-to-image` to use fal.ai video models. Not a standalone prototype — flagged as `57-sound-to-image` extension.
+- **LLM+Strudel pattern generation (§164)** — English → LLM → Web Audio pattern code, plays immediately in browser. Inspires `llm-pattern` once ANTHROPIC_API_KEY is available.
+- **Selective auditory attention decoding (§165, arxiv 2512.05528)** — EEG decodes which musical element you're attending to. Inspires zero-dep `listen-guide`: directed attention exercises with FFT region highlighting.
+
+**New IDEAS promoted** (numbers shifted to 78-81 after Karel's new direction added slugs 72-77):
+- `78-node-synth` — visual Web Audio routing graph synthesizer. Zero deps, zero API. **Top pick for Cycle 91.**
+- `79-fm-explorer` — 2-operator FM synthesis + live sideband spectrum. Zero deps, zero API. **Second pick, Cycle 92.**
+- `80-room-acoustic` — draw a 2D room, hear its reverb via image-source IRs. Zero deps, zero API. **Third pick, Cycle 93.**
+- `xai-ghost` — xAI TTS with dual-tag system; fifth Ghost TTS paradigm. **DEFERRED** per Karel's new direction (pull back on voice gen; 6 voice prototypes already exist).
+- `81-cassette-speed` — CassetteAI vs ACE-Step side-by-side speed comparison. FAL_KEY in use. One cycle.
+
+**Karel's new direction** (from commits `d93afe9` + `f8f072d`, pushed during this cycle):
+- Stop building voice-gen prototypes (6 already exist: 56, 59, 61, 64, 65, 66). Polish existing if vote signal asks.
+- AI image gen INSIDE AV experiments = welcome. Standalone image gen = not interesting.
+- Spread themes across Karel's published journeys (not just Ghost). Use `src/lib/journeys/journeys.ts`.
+- Use Karel's real piano music from the Paths as audio source. Use `/api/audio/[id]` at runtime.
+- Research cycles: go DEEP on TouchDesigner / Houdini patterns + browser equivalents (WebGPU, MediaPipe, TF.js, three.js postprocessing). One focused thread per research cycle.
+- Added vote-aware bias: fetch `https://getresonance.vercel.app/api/dream/votes` at orient step; loved slugs → extend that direction; downvoted slugs → try something different.
+- Seeded 6 new ideas: `72-paths-visualizer`, `73-journey-arc-spread`, `74-touchdesigner-feedback`, `75-houdini-particle-flock`, `76-cymatics-on-piano-path`, `77-projection-mapping-sandbox`.
+
+**What's queued next**:
+1. **Check votes API** first (new AGENT.md rule for every cycle).
+2. **Build** — top candidates from Karel's seeded list (72-77) and/or Cycle 90 research list (78-81). Karel's `72-paths-visualizer` or `74-touchdesigner-feedback` aligns best with new direction.
+3. **Research** next due at ~Cycle 94 (3+ build cycles from now).
+
+---
+
 ## Cycle 89 — /dream/71-shader-evolve
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

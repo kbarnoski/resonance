@@ -1,25 +1,39 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 89)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 90)
 
 ## New since yesterday
 
-- **[/dream/71-shader-evolve](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/71-shader-evolve)** — Shader Evolve (Cycle 89). Natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2 WebGPU grid. Click any cell → full-res 60fps focus view. Click **↻ EVOLVE** → four new mutations bred from the selected variant. **★ SAVE** → persistent gallery (up to 6 slots, localStorage); click a tile to restart evolution from a saved ancestor. **✎ EDIT** → raw WGSL for manual tweaks. Each mutation multiplies 3–5 of 16 shader params by [0.4–2.5]× — always valid WGSL, often dramatically different visuals. Try: let it evolve 3–4 generations before saving, then breed from two saved ancestors in alternation. WebGPU required · Demo mode works without mic.
+- **Cycle 90 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§157–165).
+  Top picks for next builds (numbers shifted to 78-81 after your new direction added 72-77):
+  - **`78-node-synth`** (zero deps) — visual Web Audio routing graph. Drag-and-connect oscillators, filters, gains, delays. Web Audio IS a node graph — this makes it visible. Patch a signal chain in 30s.
+  - **`79-fm-explorer`** (zero deps) — 2-operator FM synthesis (Yamaha DX7 palette: electric piano, bell, metallic). Real-time sideband spectrum. 71 prototypes, none have done FM synthesis.
+  - **`80-room-acoustic`** (zero deps) — draw a 2D room, hear its reverb. Image-source method + `ConvolverNode`. Design acoustic spaces for your Ghost scenes.
 
-- **[/dream/70-pitch-algo-compare](https://resonance-git-dream-sandbox-kbarnoski-5224s-projects.vercel.app/dream/70-pitch-algo-compare)** (Cycle 88) — Three pitch detectors simultaneously: ACF (orange), YIN (blue), HPS (green). Gold cursor when ≥2 agree. Click **▶ Demo** and watch ACF jump an octave on C2 while YIN/HPS hold — makes octave-error behavior immediately visible.
+- **Karel's new direction landed** — agent has read it and updated its queue. Key changes absorbed:
+  - No more standalone voice-gen prototypes (6 exist; enough). `xai-ghost` deferred.
+  - Image gen INSIDE AV experiments = yes. Use your real piano music as audio source.
+  - Spread themes across your published journeys (not just Ghost). Agent will read `journeys.ts`.
+  - Research cycles: deep-dive into TouchDesigner / Houdini patterns + WebGPU browser equivalents.
+  - Vote-aware bias: agent fetches the public votes API on every cycle orient step.
+  - Your seeded ideas `72-paths-visualizer` through `77-projection-mapping-sandbox` are now in the queue.
+
+- **[/dream/71-shader-evolve](/dream/71-shader-evolve)** (Cycle 89) — Shader Evolve. Natural selection of audio-reactive WGSL shaders. 2×2 WebGPU grid; click to select, **↻ EVOLVE** to breed, **★ SAVE** to gallery.
+
+- **[/dream/70-pitch-algo-compare](/dream/70-pitch-algo-compare)** (Cycle 88) — Three pitch detectors simultaneously: ACF (orange), YIN (blue), HPS (green). Gold cursor when ≥2 agree.
 
 ## In progress / partial
 
-- Nothing blocked.
+- Nothing blocked or in progress.
 
 ## Research findings worth a look
 
-- Cycle 86 research in RESEARCH.md §§147–156. Key picks:
-  - **ShaderVine** (§147) — MIT WebGPU shader editor with genetic evolution + MCP. Natural partner to `68-wgsl-synth`; `shader-evolve` is the direct implementation.
-  - **Demucs-web** (§§149, 154) — htdemucs in-browser via ONNX + WebGPU; fully private. Needs your OK on ~200MB model.
-  - **Inworld TTS viseme timing** (§155) — mouth-shape timestamps for lip sync → `ghost-lip`.
+- **CassetteAI (§157)** — `cassetteai/music-generator`, $0.02/min, 30s in ~2s (10× faster than ACE-Step). Candidate backend for `6-compose` speed upgrade.
+- **AI vs Human music paradox (§160)** — listeners prefer AI music but rate human music as more emotionally effective. Actual emotional response: no significant difference. Frame AI music as character-authored ("the journey's score"), not "AI-generated."
+- **FM synthesis gap (§161)** — 3 Web Audio nodes = the Yamaha DX7. 71 prototypes, none have done FM synthesis.
+- **TouchDesigner / Houdini deep-research target** — next research cycle should pick ONE thread (Bileam Tschepe TOP feedback, Junichiro Horikawa VEX particles, Memo Akten learning-to-see, etc.) and go deep with 3-5 browser-equivalent prototype seeds.
 
 ## Open questions for Karel
 
 - `browser-stems` (~200MB ONNX CDN dep): OK to build? Audio stays on device, cached after first load.
-- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` (LLM writes audio-reactive WGSL shaders)
-- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (all queued, waiting)
-- Research sweep due at Cycle 90 (next cycle)
+- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` and `llm-pattern` (describe music in English, Claude generates the pattern)
+- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (queued and waiting)
+- CassetteAI speed upgrade for `6-compose`: worth testing? (Drop generation wait from ~30s to ~2s)

@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 89 — build)
+## ⭐ Newest (Cycle 90 — research)
+
+- **Cycle 90 was a research sweep** (no new prototype). 9 new entries in RESEARCH.md (§§157–165).
+  5 new prototype ideas added to IDEAS.md. Top picks for next builds:
+  - **`node-synth`** (Cycle 91, zero deps) — visual Web Audio routing graph. Drag-and-connect oscillators, filters, delays, reverbs. Modular synthesis as the Web Audio graph it actually is.
+  - **`fm-explorer`** (Cycle 92, zero deps) — 2-operator FM synthesis. Classic DX7 timbres (electric piano, bell, metallic). Real-time sideband spectrum. 71 prototypes, none have done FM synthesis.
+  - **`room-acoustic`** (Cycle 93, zero deps) — draw a 2D room, hear its reverb via image-source IRs + ConvolverNode.
+
+  **Key findings**:
+  - CassetteAI `cassetteai/music-generator` — 30s sample in ~2s ($0.02/min), 10× faster than ACE-Step. FAL_KEY in use.
+  - xAI TTS `xai/tts/v1` — 5th Ghost TTS paradigm: inline `[pause]`/`[sigh]` + semantic `<whisper>`, `<slow>` wrapping tags. FAL_KEY in use.
+  - AI vs Human music perception paradox (arxiv 2506.02856) — listeners prefer AI music but rate human music as more effective. Actual emotional response: no difference. Framing matters.
+
+  **Open questions**: `ANTHROPIC_API_KEY`? `GEMINI_API_KEY`? `browser-stems` model size OK?
+
+---
+
+## Previous newest (Cycle 89 — build)
 
 - **[/dream/71-shader-evolve](/dream/71-shader-evolve)** — Shader Evolve. `demoable`
   Natural selection of audio-reactive WGSL shaders. Four mutated variants run simultaneously in a 2×2
