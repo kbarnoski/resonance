@@ -30,10 +30,17 @@ export async function POST(req: NextRequest) {
         new File([audio as Blob], "hum.webm", { type: audioType })
       );
 
+      // ACE-Step audio-to-audio requires TWO tag fields:
+      //   original_tags — what the input audio sounds like (the hum)
+      //   tags          — what you want the output to become (scene + mood)
+      // Without original_tags it 422s with "Field required".
+      const originalTags =
+        "humming, vocal melody, solo voice, unaccompanied, expressive";
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       result = await (fal.subscribe as any)("fal-ai/ace-step/audio-to-audio", {
         input: {
           audio_url: inputUrl,
+          original_tags: originalTags,
           tags,
           lyrics: "[inst]",
           duration: 30,
