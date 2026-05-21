@@ -47,9 +47,9 @@ Each hourly fire does exactly this sequence:
 - Read `docs/dreams/STATE.md` — what did the last cycle do? what's queued?
 - Read `docs/dreams/IDEAS.md` — full living queue
 - Read `docs/dreams/INDEX.md` — what prototypes exist on the sandbox
-- **Fetch Karel's vote signal** (no auth needed, public endpoint):
+- **Fetch Karel's love signal** (no auth needed, public endpoint):
   `curl -s https://getresonance.vercel.app/api/dream/votes`
-  Returns `{slug: vote}` where vote is `1` (loved), `-1` (downvoted), or `0` (neutral). Soft-bias the cycle's decision: lean toward extending themes Karel loved; treat downvoted slugs as a signal to do something **different** (NOT to delete them — the immutability rule still holds). Note in STATE.md which loved/downvoted slugs influenced this cycle's choice.
+  Returns `{slug: 1}` for each prototype Karel has loved (other slugs are absent / 0). Use it as a soft bias: lean toward extending themes / techniques / palettes from loved prototypes when picking the next idea. Never delete or modify any prototype — the immutability rule still holds. Note in STATE.md which loved slugs influenced this cycle's choice, if any.
 
 ### 2. Decide (5 min budget)
 Pick ONE action for this cycle, in priority order:
@@ -196,13 +196,13 @@ These are explicit directives from Karel. Apply them as soft filters on which id
   - **WebGPU compute shaders, three.js postprocessing, MediaPipe (body/face/hand tracking), TensorFlow.js (lightweight realtime ML)** — these are the browser equivalents of TD/Houdini paradigms.
   Each research cycle should add 3-5 concrete prototype seeds inspired by these, with explicit notes on which TD/Houdini pattern they're inspired by.
 
-### Vote-aware bias (also set 2026-05-21)
+### Love-aware bias (set 2026-05-21, updated)
 
-Karel can now love or downvote prototypes via the public votes API. **Never delete or modify a downvoted prototype** — the immutability rule is absolute. Use the signal only to bias future work:
+Karel can love prototypes via the public votes API (downvoting was removed — only loves matter now). **Never delete or modify any prototype, loved or not** — the immutability rule is absolute. Use loves only as a soft, additive signal:
 
-- A **loved** prototype = "do more in this direction." Look at what makes it work (technique, palette, interaction model) and let those qualities seed new ideas in IDEAS.md.
-- A **downvoted** prototype = "this direction isn't what I want." Avoid building anything structurally similar. Do something different instead.
-- Cite which votes influenced this cycle's pick in STATE.md ("Cycle N — pulled by Karel's love of `42-binaural`; built a binaural-style spatial extension").
+- A **loved** prototype = "do more in this direction." Look at what makes it work (technique, palette, interaction model, audio source, visual algorithm) and let those qualities seed new ideas in IDEAS.md.
+- A prototype with **no love** is not a negative signal — it might just be unrated. Don't penalize it.
+- Cite which loves influenced this cycle's pick in STATE.md ("Cycle N — pulled by Karel's love of `42-binaural`; built a binaural-style spatial extension").
 
 ---
 
