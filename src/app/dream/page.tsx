@@ -13,6 +13,8 @@ type Prototype = {
   name: string;
   status: string;
   description: string;
+  /** Validation category — auto-derived from code: pure-local vs depends on FAL_KEY. */
+  category: "local" | "fal-required";
 };
 
 type RecentCycle = {
@@ -29,6 +31,16 @@ const STATUS_STYLES: Record<string, string> = {
   wip: "bg-amber-500/15 text-amber-300",
   demoable: "bg-violet-500/15 text-violet-200",
   polished: "bg-emerald-500/15 text-emerald-300",
+};
+
+const CATEGORY_STYLES: Record<Prototype["category"], string> = {
+  local: "bg-emerald-500/10 text-emerald-300/90 border border-emerald-500/20",
+  "fal-required": "bg-amber-500/10 text-amber-300/90 border border-amber-500/20",
+};
+
+const CATEGORY_LABELS: Record<Prototype["category"], string> = {
+  local: "✓ local",
+  "fal-required": "🔑 FAL_KEY",
 };
 
 function cleanProse(s: string): string {
@@ -286,7 +298,34 @@ async function loadPrototypes(): Promise<Prototype[]> {
       }
       const description = cleanProse(para.join(" ")).slice(0, 180);
 
-      return { slug, cycle, name, status, description };
+      // Validation category — derived by inspecting the prototype's own API
+      // route (if it imports @fal-ai/client) or fetches the shared FAL-backed
+      // /api/ai-image/* endpoints from page.tsx.
+      let category: Prototype["category"] = "local";
+      try {
+        const apiSource = await readFile(
+          path.join(dreamDir, slug, "api", "route.ts"),
+          "utf-8"
+        );
+        if (apiSource.includes("@fal-ai/client")) category = "fal-required";
+      } catch {
+        // no api/route.ts for this prototype
+      }
+      if (category === "local") {
+        try {
+          const pageSource = await readFile(
+            path.join(dreamDir, slug, "page.tsx"),
+            "utf-8"
+          );
+          if (/fetch\(['"`]\/api\/ai-image/.test(pageSource)) {
+            category = "fal-required";
+          }
+        } catch {
+          // no page.tsx — leave as local
+        }
+      }
+
+      return { slug, cycle, name, status, description, category };
     })
   );
 
@@ -466,8 +505,20 @@ export default async function DreamPage() {
       {/* ── Prototype grid ────────────────────────────────────────── */}
       <section className="px-6 py-10">
         <div className="mx-auto max-w-3xl">
-          <div className="mb-4 text-xs uppercase tracking-[0.3em] text-white/50">
-            All prototypes — {prototypes.length} total · newest first
+          <div className="mb-4 flex flex-wrap items-baseline justify-between gap-3">
+            <div className="text-xs uppercase tracking-[0.3em] text-white/50">
+              All prototypes — {prototypes.length} total · newest first
+            </div>
+            <div className="flex flex-wrap gap-3 text-[11px] text-white/45">
+              <span>
+                <span className="text-emerald-300/90">✓ local</span>{" "}
+                {prototypes.filter((p) => p.category === "local").length}
+              </span>
+              <span>
+                <span className="text-amber-300/90">🔑 FAL_KEY</span>{" "}
+                {prototypes.filter((p) => p.category === "fal-required").length}
+              </span>
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {prototypes.map((p) => (
@@ -476,7 +527,7 @@ export default async function DreamPage() {
                 href={`/dream/${p.slug}`}
                 className="group block rounded-2xl border border-white/10 bg-white/[0.04] p-5 transition-all hover:border-violet-400/30 hover:bg-white/[0.08]"
               >
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-2 flex flex-wrap items-center gap-2">
                   <span className="font-mono text-xs text-white/40">
                     c{p.cycle}
                   </span>
@@ -486,6 +537,16 @@ export default async function DreamPage() {
                     }`}
                   >
                     {p.status}
+                  </span>
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-[10px] tracking-wide ${CATEGORY_STYLES[p.category]}`}
+                    title={
+                      p.category === "fal-required"
+                        ? "This prototype calls a FAL.ai API and requires the FAL_KEY env var. Configured on Vercel for Production + Preview + Development."
+                        : "Pure local — no external APIs, no keys needed. Runs entirely in the browser."
+                    }
+                  >
+                    {CATEGORY_LABELS[p.category]}
                   </span>
                 </div>
                 <h3 className="mb-1.5 font-serif text-lg transition-colors group-hover:text-violet-200">
