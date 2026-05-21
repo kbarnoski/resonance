@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 92 — kids build)
+## ⭐ Newest (Cycle 93 — build)
+
+- **[/dream/78-node-synth](/dream/78-node-synth)** — Node Synth. `demoable`
+  The Web Audio API as a visual patch bay. Oscillators, gain stages, filters (lowpass/highpass/bandpass/
+  notch/peaking), and delay effects appear as draggable node cards. Draw bezier wire connections between
+  output and input ports — audio flows in real time. The starter patch (Oscillator → Gain → Speakers)
+  plays immediately; add a Filter between them and sweep its frequency to hear the lowpass open up.
+  Delay node has an internal feedback loop so echo trails build with each wire reconnect.
+  Try: Oscillator → Filter → Gain → Speakers + Oscillator → Delay → Gain (wet blend with echo).
+  **"The synthesizer you see is the synthesizer you hear."**
+  Zero deps · Zero API · 4.67 kB.
+  Design notes: `src/app/dream/78-node-synth/README.md`
+
+---
+
+## Previous newest (Cycle 92 — kids build)
 
 - **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `demoable`
   First kids prototype. Eight pentatonic circles — C D E G A C D E across two octaves. Tap any

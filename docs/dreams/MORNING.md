@@ -1,45 +1,48 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 92)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 93)
 
 ## New since yesterday
 
+- **[/dream/78-node-synth](/dream/78-node-synth)** (Cycle 93) — **Node Synth.**
+  The Web Audio API as a visual patch bay. Oscillators, gain stages, filters (5 types), and delay
+  appear as draggable node cards. Draw bezier wire connections between output/input ports — audio
+  flows in real time. Starter patch: Oscillator → Gain → Speakers plays immediately on ▶ Start.
+  - **Try it**: add a Filter between Oscillator and Gain → sweep its frequency slider from 80 Hz
+    to 18 kHz. Add a second Oscillator (different frequency) → wire both into the same Gain →
+    hear the interval. Add Delay → wire it as a parallel wet path → set feedback to 0.6 for echo.
+  - 83 prototypes; this is the first to make the audio graph itself the UI.
+  Zero deps · Zero API · 4.67 kB.
+
 - **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** (Cycle 92) — **Color Piano (kids).**
-  First kids prototype. Eight pentatonic circles fill the screen — tap any to play a note, hold to
-  sustain, drag across circles for a glissando, two fingers for a chord. C-major pentatonic (no wrong
-  notes). Each circle has its own saturated color (red → orange → yellow → teal → blue → purple →
-  deep orange → cyan). A soft C-major pad plays continuously from first touch so the screen never
-  feels silent. No text. No score. No fail state. Zero deps · Zero API.
-  - **Try it**: open on your phone, touch two circles at once. Drag slowly from the red circle
-    through yellow to cyan — you'll hear a slow glissando. Hand it to a 4-year-old.
+  Eight pentatonic circles — tap, hold, or drag for a glissando. No wrong notes. No text. No fail state.
+  - **Try it**: hand your phone to a 4-year-old. Or drag two fingers at once across circles.
 
 - **[/dream/74-touchdesigner-feedback](/dream/74-touchdesigner-feedback)** (Cycle 91) — **TD Feedback.**
-  TouchDesigner's TOP feedback loop, ported to WebGPU. Two ping-pong render textures feed into
-  themselves each frame (rotate + zoom + hue shift + decay + audio bloom). Infinite self-similar
-  pattern evolution from a black screen. Four sliders. WebGPU required. Zero deps · Zero API.
-  - **Best interaction**: pull ROTATION to −10‰ while zoomed in → collapsing black hole effect.
-
-- **[/dream/71-shader-evolve](/dream/71-shader-evolve)** (Cycle 89) — 2×2 WebGPU grid of mutated
-  audio-reactive WGSL shaders. Select → ↻ EVOLVE → breed. ★ SAVE to gallery. ✎ EDIT raw WGSL.
+  WebGPU ping-pong texture feedback (TD TOP port). Best: ROTATION −10‰ → collapsing black hole.
 
 ## In progress / partial
 
 - Nothing blocked or in progress.
-- **Kids queue next**: `kids-tilt-rain` (tilt iPad = rain basket game, notes from caught drops),
-  `kids-hum-to-paint` (hum pitch → colored brush stroke on canvas). Both queued in KIDS.md.
+- **Next build (Cycle 94)**: `83-fm-explorer` (2-operator FM synthesis — DX7 timbres, zero deps) OR
+  `paths-visualizer` if Karel confirms accessible recording IDs (see open questions below).
+- **Next kids (Cycle 96)**: `kids-tilt-rain` or `kids-hum-to-paint`.
+- **Next research (Cycle 95)**: due in 2 cycles.
 
 ## Research findings worth a look
 
-- **FM synthesis gap** — 72+ prototypes, none have done FM synthesis. 3 Web Audio nodes = the
-  entire Yamaha DX7 palette (electric piano, bell, metallic). `79-fm-explorer` queued.
-- **CassetteAI (§157)** — 30s music in ~2s, 10× faster than ACE-Step. `81-cassette-speed` queued.
-- **TouchDesigner pattern next**: Junichiro Horikawa-style VEX particle flock (`75-houdini-particle-flock`)
-  or Bileam Tschepe multi-buffer N-frame delay feedback.
+- **FM synthesis gap** — 83 prototypes, none have done FM synthesis. 3 Web Audio nodes (carrier +
+  modulator oscillators + modulation index gain) = the entire Yamaha DX7 palette (electric piano,
+  bell, metallic clangs, bass plucks). High surprise, zero cost.
+- **CassetteAI (§157)** — 30s music in ~2s, 10× faster than ACE-Step. FAL_KEY in use. `cassette-speed` queued.
+- **TouchDesigner** patterns still rich: Horikawa-style VEX particle flock (`75-houdini-particle-flock`),
+  Bileam Tschepe multi-buffer N-frame delay (feedback with configurable history depth).
 
 ## Open questions for Karel
 
-- **[KIDS]** Try `/dream/82-kids-color-piano` on your phone or iPad — does it feel right for a
-  4-year-old? Key question: is the circle size large enough? Should it be landscape-only?
-- **Votes**: love signal returned `{}`. Which prototypes are your favorites so far?
-- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` and `llm-pattern`
-- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (queued and waiting)
-- `72-paths-visualizer` uses your actual Welcome Home album tracks via `/api/audio/[id]`. Auth needed?
-- `browser-stems` (~200MB ONNX CDN dep): OK to build? Audio stays on device, cached after first load.
+- **[IMPORTANT — paths-visualizer]** To build a prototype that plays your Welcome Home album tracks,
+  I need to know which recording IDs are accessible without authentication — either `is_featured=true`
+  or with a `share_token`. If you can share 3–5 IDs (or mark them featured), the next cycle can build
+  a beautiful visualizer of your actual piano music.
+- **Votes**: love signal returned `{}` — no loves recorded yet. Tap ❤ on any prototype to bias the queue!
+- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` (LLM-generated audio-reactive GLSL)
+- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (all queued and waiting)
+- `browser-stems` (~200MB ONNX CDN dep OK? Cached after first load, stays on device.)

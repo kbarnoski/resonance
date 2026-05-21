@@ -1,5 +1,51 @@
 # Dream Agent — cycle state
 
+## Cycle 93 — /dream/78-node-synth
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — cycle 93 % 4 = 1 → NOT a kids cycle.
+4. **Build new** — `78-node-synth` (visual Web Audio routing graph). Top pick from STATE.md cycle 92.
+
+Reasoning: Karel's direction emphasizes "Live performance fitness" and "surprise." A visual modular
+synth patch bay is qualitatively different from all 82 existing prototypes — none have made the Web
+Audio graph itself the UI. It's also zero deps, one-cycle build, and immediately interactive (you hear
+the patch change as you draw wires). Votes API returned `{}` — no love signal to bias.
+
+The cycle 92 note said `72-paths-visualizer` was also a candidate, but that requires knowing Karel's
+recording IDs from Supabase (the audio route needs authenticated IDs or `is_featured=true` records).
+Without knowing which IDs are accessible, a demo would be non-functional. Logging this gap here: to
+build `paths-visualizer`, Karel should share which recording IDs from the Welcome Home album are
+accessible via `/api/audio/[id]` without auth (i.e., `is_featured=true` or share_token set).
+
+**What I built**:
+- `src/app/dream/78-node-synth/page.tsx` — visual modular synth: draggable node cards + bezier wire canvas + live Web Audio graph
+- `src/app/dream/78-node-synth/README.md` — architecture + polish ideas
+
+**How it works**:
+- `useReducer` manages the graph as pure data (nodes + wires lists). No imperative patching state.
+- Audio engine rebuilds connections whenever graph state changes: disconnect-all → reconnect from wire list.
+- Bezier wire canvas overlays the board; redraws every render frame (fast Canvas2D).
+- Pending wire (mid-draw) shows as a dashed animated line tracking the mouse.
+- Delay node has an internal feedback loop (DelayNode → GainNode → DelayNode) preserved across reconnects.
+- Starter patch: Oscillator → Gain → Destination. Press ▶ to hear it immediately.
+
+**Build**: `npm run build` passed cleanly. Page is 4.67 kB, zero ESLint errors, zero TypeScript errors.
+
+**What surprised me**: The `disconnect-all + reconnect` approach is simpler than trying to diff the wire graph — Web Audio nodes tolerate rapid connect/disconnect without glitching, and `setTargetAtTime` keeps parameter changes smooth. The delay feedback loop needs special handling (preserve its internal cycle through reconnect cycles) but everything else is clean.
+
+**Queued next**:
+1. **Cycle 94 (build)** — `83-paths-visualizer`: Karel's real Welcome Home album tracks — IF Karel shares accessible recording IDs. Otherwise: `fm-explorer` (2-operator FM synthesis, zero deps, DX7-style timbres). FM fills a real gap: none of 83 prototypes have done FM synthesis. High surprise.
+2. **Cycle 96 (kids)** — `kids-tilt-rain` (DeviceOrientation + falling colored drops) or `kids-hum-to-paint`.
+3. **Research next due at Cycle 95** (3 build cycles from Cycle 92; 93 + 94 + 95).
+
+**Open question for Karel**: Which recording IDs from your Welcome Home album are accessible without auth (`is_featured=true` or `share_token` set)? That unlocks `paths-visualizer` — Karel's real piano music as a visualizer source.
+
+---
+
 ## Cycle 92 — /dream/82-kids-color-piano
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
