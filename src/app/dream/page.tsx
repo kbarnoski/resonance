@@ -491,13 +491,15 @@ export default async function DreamPage() {
                   <span className="font-mono text-xs text-white/40">
                     c{p.cycle}
                   </span>
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-xs ${
-                      STATUS_STYLES[p.status] ?? STATUS_STYLES.demoable
-                    }`}
-                  >
-                    {p.status}
-                  </span>
+                  {p.status !== "demoable" && (
+                    <span
+                      className={`rounded-full px-2 py-0.5 text-xs ${
+                        STATUS_STYLES[p.status] ?? STATUS_STYLES.demoable
+                      }`}
+                    >
+                      {p.status}
+                    </span>
+                  )}
                   <span
                     className={`rounded-full px-2 py-0.5 text-[10px] tracking-wide ${CATEGORY_STYLES[p.category]}`}
                     title={
