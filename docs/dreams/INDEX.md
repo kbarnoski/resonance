@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 94 — build)
+## ⭐ Newest (Cycle 95 — research sweep)
+
+- **Cycle 95 was a deep research sweep** (no new prototype). 5 new entries in RESEARCH.md (§§166–170). 5 new prototype seeds added to IDEAS.md. Top picks for next builds:
+  - **`84-wave-fluid`** (Cycle 97+ — two-cycle) — MLS-MPM WebGPU ocean surface, 100k particles, audio-reactive. Inspired by Houdini GPU fluid solver + `matsuoka-601/webgpu-ocean`. Most visually ambitious prototype in the queue.
+  - **`87-piano-transcript`** (Cycle 97+ — one-cycle) — YIN pitch detection → live piano-roll score. Uses Karel's actual playing as input. Zero API, zero deps. Directly aligned with Karel's "use his real music" direction.
+  - **`88-marpi-void`** (Cycle 97+ — one-cycle) — audio-reactive organic entity, Marpi "New Nature" technique. Zero API, zero deps. Immediate fun.
+
+  **Key model upgrade**: FLUX.2 Flash (`fal-ai/flux-2/flash`, $0.005/MP) should replace `fal-ai/flux/schnell` in all new AV+image prototypes — better quality, same cost. LTX-2.3 (`fal-ai/ltx-2.3/text-to-video`, $0.04/s) enables `86-sound-to-video` extension of `57-sound-to-image`.
+
+---
+
+## Previous newest (Cycle 94 — build)
 
 - **[/dream/79-fm-explorer](/dream/79-fm-explorer)** — FM Explorer. `demoable`
   2-operator FM synthesis: a modulator oscillator drives the carrier's frequency AudioParam.

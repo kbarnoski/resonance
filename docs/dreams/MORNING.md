@@ -1,39 +1,47 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 94)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 95)
 
 ## New since yesterday
 
-- **[/dream/79-fm-explorer](/dream/79-fm-explorer)** (Cycle 94) — **FM Explorer.**
-  2-operator FM synthesis: one slider for C:M ratio, one for modulation index β. The Bessel sideband
-  spectrum redraws in real time — mathematical, not FFT. Covers the entire DX7 palette.
-  - **Try it first**: click **DX Piano** preset, then hold Space — classic Yamaha electric piano.
-    Drag β to 8 — same note, now harsh FM bass. Watch the spectrum: at β=2.5 the carrier bar nearly
-    disappears (J₀(2.5) ≈ 0.05), energy shifts to the 1st and 2nd sidebands.
-  - **Mic mode**: speak or play piano near mic — bass energy (60–250 Hz) pushes β up to +14,
-    making the timbre react live to your playing.
-  - 6 presets: DX Piano, Bell, Reed, FM Bass, Metallic, Glass Harmonica.
-  - Zero deps · Zero API · 5.29 kB.
+- **Cycle 95 — research sweep** (no new prototype to open, but queue is now much richer)
+  Five new seeds in IDEAS.md, five dated entries in RESEARCH.md. Highlights:
 
-- **[/dream/78-node-synth](/dream/78-node-synth)** (Cycle 93) — **Node Synth.**
-  Web Audio API as a visual patch bay. Draggable node cards, bezier wires, real-time audio.
-  Zero deps · 4.67 kB.
+  - **`87-piano-transcript`** (one cycle, zero API) — YIN pitch + onset detection → your playing
+    crystallizes into a live piano-roll score in real time. "Watch your improvisation become
+    notation." Directly uses YOUR playing as input, per your direction. Building Cycle 97.
+
+  - **`84-wave-fluid`** (two cycles, WebGPU) — MLS-MPM physics fluid. 100k particles. Bass energy
+    = wave height. Onset = localized splash. Screen-space fluid rendering. Inspired by Houdini's
+    GPU fluid solver and `matsuoka-601/webgpu-ocean`. Probably the most visually spectacular
+    thing in the queue if it works.
+
+  - **`86-sound-to-video`** (one cycle, FAL_KEY) — record 10s of piano → FLUX.2 image → LTX-2.3
+    video clip ($0.25–0.35/generation). THIS is "AI image inside AV" exactly as you described.
+
+  - **`88-marpi-void`** (one cycle, zero API) — audio-reactive organic organism in a dark void.
+    Reproduces on onsets. Inspired by Marpi Studio "New Nature" at ARTECHOUSE 2026.
 
 ## In progress / partial
 
-- `72-paths-visualizer` — waiting on Karel's Welcome Home album recording IDs.
-- **Next kids (Cycle 96)**: `kids-tilt-rain` or `kids-hum-to-paint`.
-- **Next research (Cycle 95)**: room acoustics (image-source reverb IRs) or Houdini particle flock.
+- `72-paths-visualizer` — still waiting on your Welcome Home album recording IDs.
+- **Cycle 96 (next fire)**: kids cycle — `kids-tilt-rain` (tilt device → colored drops fall).
+- **Cycle 97**: `87-piano-transcript` (top priority per your "use real music" direction).
 
 ## Research findings worth a look
 
-- **FM synthesis** — now filled (Cycle 94). 3 Web Audio nodes = Yamaha DX7 palette.
-- **CassetteAI (§157)** — 30s music in ~2s, 10× faster than ACE-Step. FAL_KEY in use. `cassette-speed` queued.
-- **TouchDesigner** patterns still rich: Horikawa-style VEX particle flock, Bileam multi-buffer N-frame delay.
+- **LTX-2.3** (Jan 2026, fal.ai, Apache 2.0) — $0.04/s fast video generation. Cheapest video
+  option. Enables `86-sound-to-video` — 10s piano → 6s video for ~$0.25.
+- **FLUX.2 Flash** (`fal-ai/flux-2/flash`, $0.005/MP) — better than Schnell ($0.003/MP) for +67%
+  cost. Should be default for all new AV+image prototypes going forward.
+- **Seedance 2.0** (April 2026) — accepts audio as direct input alongside image + text. Might mean
+  `86-sound-to-video` can skip FLUX entirely: audio → Seedance → video in one call.
+- **Marpi "New Nature"** at ARTECHOUSE 2026 — living in NYC? It's running May–Nov.
+- **Refik Anadol Latent City** at BRUSK, Bruges — May–Nov 2026.
 
 ## Open questions for Karel
 
-- **[IMPORTANT — paths-visualizer]** Need Welcome Home album recording IDs accessible without auth
-  (either `is_featured=true` or a `share_token`). 3–5 IDs → beautiful piano music visualizer next cycle.
-- **Votes**: love signal returned `{}` — no loves recorded yet. Tap ❤ on any prototype to bias the queue!
-- `ANTHROPIC_API_KEY` in Vercel env → enables `claude-shader` (LLM-generated audio-reactive GLSL)
-- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria` (all queued and waiting)
-- `browser-stems` (~200MB ONNX CDN dep OK? Cached after first load, stays on device.)
+- **[IMPORTANT]** Welcome Home album recording IDs accessible without auth → `72-paths-visualizer`.
+  3–5 IDs → your real piano music as a visualizer source.
+- **Votes**: still `{}`. Any prototype you love → tap ❤ → biases future picks.
+- `ANTHROPIC_API_KEY` in Vercel env → `claude-shader`, `llm-pattern` (both queued and waiting).
+- `GEMINI_API_KEY` → `lyria-jam`, `lyria-ghost`, `binaural-lyria`.
+- `browser-stems` (~200MB ONNX CDN dep OK? Cached after first load.)

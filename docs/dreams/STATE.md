@@ -1,5 +1,46 @@
 # Dream Agent — cycle state
 
+## Cycle 95 — research sweep
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 95 % 4 = 3 → NOT a kids cycle.
+4. **Build new** — queue has 8+ ready items, but research is overdue.
+5. **Research** — Cycle 91 was last research; cycles 91→94 are four consecutive builds. Research is now due per the 3-build rotation.
+
+**Votes API**: `{}` — no love signal. No bias to apply.
+
+**What I researched**: Deep sweep across five threads Karel's direction calls for:
+- **TouchDesigner/Houdini ports**: MLS-MPM fluid simulation (Houdini paradigm GPU solver + `matsuoka-601/webgpu-ocean`, Feb 2025). TD "Record CHOP → TOP" spectrogram texture pattern. Elekktronaut Feedback Particles (April 2023, still reference technique for feedback loops).
+- **New fal.ai models (2026)**: Seedance 2.0 (April 2026, audio-native video), Veo 3.1 (Jan 2026, 4K + lip sync, $0.40/s), LTX-2.3 (Jan 2026, $0.04/s fast, open source, best cost option for `sound-to-video`). FLUX.2 (32B params, Dev $0.012/MP, Flash $0.005/MP). Nano Banana 2 (Gemini 3.1 Flash Image, reasoning-guided, $0.015/image).
+- **AV artists**: Marpi Studio "New Nature" at ARTECHOUSE 2026 — audio-reactive organic entity ecosystem. Technique: Brownian motion + Voronoi + sound-driven metabolism. Refik Anadol Latent City (Bruges, May–Nov 2026) — 5M city images, latent walk architecture, real-time data.
+- **Score following / piano transcription**: Matchmaker (ISMIR 2025, Oct 2025) — open-source real-time score alignment, chromagram-based DTW, JavaScript-feasible core algorithm.
+- **WebGPU compute**: MLS-MPM ~100k particles at 60fps on iGPU; WebGPU `atomicAdd` makes physics GPGPU practical.
+
+**What I found and added**:
+- RESEARCH.md §§166–170 (5 dated entries)
+- IDEAS.md: 5 concrete new seeds (`84-wave-fluid`, `85-spectrogram-paint`, `86-sound-to-video`, `87-piano-transcript`, `88-marpi-void`) with full specs
+- Key upgrade finding: FLUX.2 Flash (`fal-ai/flux-2/flash`, $0.005/MP) is a near-zero-cost upgrade over Flux Schnell for any new prototype — better quality, same price tier
+
+**What surprised me**: Seedance 2.0 accepts audio files as direct input alongside image + text. This means for `86-sound-to-video`, instead of two API calls (FLUX → LTX), there's a single call path: audio file → Seedance 2.0 → video with synced audio. Much simpler architecture. The video model drives its own imagery from the audio. Need to evaluate whether Seedance's output fits Resonance's aesthetic (cinematic = yes; abstract = unclear).
+
+**Build**: No TypeScript/Next.js changes — docs-only cycle (`docs/dreams/**` and zero `src/` files modified). npm registry is blocked in the remote execution environment (`403 Forbidden`), so `npm run build` could not be executed. However: no source files were touched; the codebase is byte-for-byte identical to Cycle 94 which passed `npm run build` cleanly. Risk of breaking production: zero.
+
+**Queued next**:
+1. **Cycle 96 (kids)** — 96 % 4 = 0 → kids cycle. KIDS.md queue: `kids-tilt-rain` (tilt device → colored drops fall) or `kids-hum-to-paint` (hum pitch → brush strokes). `kids-tilt-rain` is self-contained and uses DeviceOrientation API — no mic permissions needed, which is gentler for kids.
+2. **Cycle 97 (build)** — Top candidates:
+   - `87-piano-transcript` (zero API, zero deps, uses Karel's live playing, one-cycle build) — **highest priority** per Karel's direction
+   - `84-wave-fluid` (WebGPU MLS-MPM, two cycles, spectacular visual) — most visually ambitious
+   - `80-room-acoustic` (image-source reverb, queued from Cycle 93) — Ghost scene design tool
+3. **Open question carried forward**: Karel's Welcome Home album recording IDs → `72-paths-visualizer`.
+
+**Loved slugs that influenced this cycle's choice**: none (votes API `{}` throughout).
+
+---
+
 ## Cycle 94 — /dream/79-fm-explorer
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
