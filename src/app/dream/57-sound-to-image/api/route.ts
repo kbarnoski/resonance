@@ -1,7 +1,11 @@
 import { fal } from "@fal-ai/client";
 import { NextRequest } from "next/server";
+import { guard } from "../../_shared/api-guard";
 
 export async function POST(req: NextRequest) {
+  const blocked = await guard(req);
+  if (blocked) return blocked;
+
   if (!process.env.FAL_KEY) {
     return Response.json({ error: "FAL_KEY not configured" }, { status: 501 });
   }

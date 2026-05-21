@@ -27,6 +27,12 @@ shippable**. Polish comes from iteration across many cycles.
 5. **Push to dream/sandbox only.** `git push origin dream/sandbox`. Never `--force`. Never push to other refs.
 6. **No prod-affecting behavior.** Your prototypes must never call Resonance prod APIs that have side effects (don't write to user data, don't generate paid AI images without an explicit per-prototype budget, don't send emails).
 7. **No secrets in commits.** Don't echo `FAL_KEY`, Supabase keys, etc. into files.
+8. **Every API route must use the guard.** If you create `src/app/dream/<slug>/api/route.ts` (or any other api route under `src/app/dream/`), the first line inside `POST` must be:
+   ```ts
+   const blocked = await guard(req);
+   if (blocked) return blocked;
+   ```
+   Import: `import { guard } from "../../_shared/api-guard";` (depth `../../../_shared/api-guard` if the route is nested one level deeper). The guard enforces origin checks + per-IP rate limits + daily quotas — without it, the public preview URL exposes Karel's FAL_KEY budget to anyone on the internet. Never bypass.
 
 If you ever feel uncertain whether an action violates these rules, **do not perform it**. Log the question to STATE.md and let Karel resolve it in the morning.
 

@@ -43,16 +43,29 @@ Before today, `FAL_KEY` was only configured for the **Production** scope on Verc
 
 Today (2026-05-21) `FAL_KEY` was added to **Preview** and **Development** scopes via the Vercel CLI. After the next deploy of `dream/sandbox`, the FAL-required prototypes should function on the public preview URL.
 
-## Trade-off Karel should know about
+## Security model (2026-05-21)
 
-The preview URL is currently **public** (Vercel SSO disabled, per Karel's request 2026-05-19). With `FAL_KEY` now exposed on Preview, anyone with the preview URL can invoke the FAL-backed API routes through Karel's account. Mitigations to consider later:
+The preview URL is **public, no login required** (Karel's explicit ask). To keep that open while preventing FAL_KEY abuse, all 15 dream-zone FAL routes plus the `66-chatterbox-ghost/api/upload` route are wrapped with `src/app/dream/_shared/api-guard.ts`. The guard runs four layered checks before the route's handler:
 
-1. Add basic origin / referer checks to each `<slug>/api/route.ts`.
-2. Add rate-limiting (Vercel KV-backed or per-IP).
-3. Rotate FAL_KEY periodically and keep an eye on the FAL dashboard for unexpected spend.
-4. Re-enable SSO and use a bypass token if the URL is intended to be sharable but not crawlable.
+1. **Method check** — POST only.
+2. **Origin check** — request's `Origin` or `Referer` header must match a known Resonance domain (`getresonance.vercel.app`, any `resonance-*-kbarnoski-5224s-projects.vercel.app` preview, or localhost). Stops casual `curl` abuse and cross-site invocation. Spoofable by a motivated attacker but blocks ~80% of bot traffic.
+3. **Per-IP sliding-window rate limit** — 8 requests / 60s. Returns `429 Retry-After`.
+4. **Per-IP daily quota** — 40 requests per IP per UTC day. Returns `429`.
 
-None of these block functionality — they're hardening for if the URL starts being shared widely.
+State is held in process memory, so it's per-lambda-instance and resets on cold starts. For true global rate limiting we'd move to Vercel KV / Upstash. For an experimental public sandbox the in-memory tier raises the bar enough that casual abuse is unprofitable; the FAL account-level budget cap (set in the fal.ai dashboard) is the hard cost backstop.
+
+The shared `/api/ai-image/generate` route used by `2-ghost-lab` is already protected by Resonance's existing rate limiter (`@/lib/rate-limit`) plus a tiered model selection — anonymous traffic gets the cheap `fal-ai/flux/schnell` model (~$0.003/frame) with burst=8 and refill=0.125/s.
+
+### Hardening recommended next (in order)
+
+1. **Set a FAL account budget cap** in fal.ai dashboard. Hard backstop on cost.
+2. **Move guard state to Vercel KV** for cross-instance persistence (small monthly cost).
+3. **Add Cloudflare Turnstile** invisible challenge for the most expensive routes (voice synthesis, music).
+4. **Audit each route for prompt-length caps and parameter bounds** — most have implicit caps but a malicious POST could request `duration_seconds: 600` and burn budget. Add per-route input validation.
+
+### Agent rule
+
+`AGENT.md` rule #8 now requires every new dream-zone API route to call `guard(req)` as its first line. Future cycles that add API-backed prototypes will automatically inherit this protection.
 
 ## How this stays current
 
