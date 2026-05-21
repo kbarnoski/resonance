@@ -17,14 +17,14 @@ shippable**. Polish comes from iteration across many cycles.
 
 ## ABSOLUTE RULES — DO NOT VIOLATE
 
-1. **Never touch `main`.** All work happens on the `dream/sandbox` branch. You may read main, but you may never push to it, merge into it, or modify any branch other than `dream/sandbox`.
+1. **Work directly on `main`.** As of 2026-05-21 the dream agent commits straight to main (was previously sandbox-then-merge — Karel retired the staging layer to remove publication lag). Every cycle: `git checkout main && git pull --ff-only origin main && [build] && git push origin main`. Vercel auto-deploys main to `getresonance.vercel.app` — your work goes live within ~30 seconds of push. The build-check rule (#3 below) is now the only safety gate, so it is absolute.
 2. **Scope fence.** You may only create or edit files inside:
    - `src/app/dream/**`
    - `docs/dreams/**`
    No exceptions. Never edit `package.json`, `next.config.*`, `.env*`, middleware, root layout, or any existing Resonance code outside the dream zone.
-3. **Full build check before commit.** Run `npm run build` (which runs Next's TypeScript + ESLint + production compile). `tsc --noEmit` alone is NOT enough — Vercel runs ESLint and fails on hook-rule / unused-var errors that `tsc` ignores. If `npm run build` fails: try one fix attempt, otherwise `git restore .` and log the failure to `docs/dreams/STATE.md` instead of committing broken code. Common gotchas: function names beginning with `use` are treated as React hooks (use `draw*`, `run*`, `apply*` for helpers); never have unused imports.
+3. **Full build check before commit — absolute.** Run `npm run build` (Next's full TypeScript + ESLint + production compile). `tsc --noEmit` alone is NOT enough — Vercel runs ESLint and fails on hook-rule / unused-var errors that `tsc` ignores. If `npm run build` fails: try ONE fix attempt; if it still fails, `git restore .` and log the failure to `docs/dreams/STATE.md` instead of committing broken code. Since you now push straight to main, broken code = broken production. The "I'd rather skip a cycle than break the preview" rule is now "I'd rather skip a cycle than break Karel's app." Common gotchas: function names beginning with `use` are treated as React hooks (use `draw*`, `run*`, `apply*` for helpers); never have unused imports.
 4. **One commit per cycle.** Squash all changes into a single commit with prefix `dream:`. Format: `dream: cycle <N>: <action> — <one-line summary>`.
-5. **Push to dream/sandbox only.** `git push origin dream/sandbox`. Never `--force`. Never push to other refs.
+5. **Push to main only.** `git push origin main`. Never `--force`. Never push to other refs. The `dream/sandbox` branch is retired — do not push to it.
 6. **No prod-affecting behavior.** Your prototypes must never call Resonance prod APIs that have side effects (don't write to user data, don't generate paid AI images without an explicit per-prototype budget, don't send emails).
 7. **No secrets in commits.** Don't echo `FAL_KEY`, Supabase keys, etc. into files.
 8. **Every API route must use the guard.** If you create `src/app/dream/<slug>/api/route.ts` (or any other api route under `src/app/dream/`), the first line inside `POST` must be:
@@ -43,7 +43,7 @@ If you ever feel uncertain whether an action violates these rules, **do not perf
 Each hourly fire does exactly this sequence:
 
 ### 1. Orient (5 min budget)
-- `git fetch && git checkout dream/sandbox && git pull`
+- `git fetch && git checkout main && git pull --ff-only origin main`
 - Read `docs/dreams/STATE.md` — what did the last cycle do? what's queued?
 - Read `docs/dreams/IDEAS.md` — full living queue
 - Read `docs/dreams/INDEX.md` — what prototypes exist on the sandbox
@@ -111,7 +111,7 @@ Do the work. Constraints:
 - If you researched, append findings to `docs/dreams/RESEARCH.md` (create if missing).
 - `git add docs/dreams/ src/app/dream/`
 - `git commit -m "dream: cycle <N>: <action> — <one-line summary>"`
-- `git push origin dream/sandbox`
+- `git push origin main`
 
 ### 6. Done
 Exit. The next fire wakes up in ~1 hour.
@@ -197,7 +197,7 @@ If a prototype isn't working by the time of validation, mark it `status: skeleto
 ## Tone of communication
 
 When Karel reviews each morning, he sees:
-- The dream/sandbox preview URL (the index page lists all prototypes)
+- The dream lab on production: https://getresonance.vercel.app/dream
 - The commit log
 - STATE.md, IDEAS.md, INDEX.md, RESEARCH.md
 
