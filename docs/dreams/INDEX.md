@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 75 — build)
+## ⭐ Newest (Cycle 76 — build)
+
+- **[/dream/61-orpheus-voice](/dream/61-orpheus-voice)** — Orpheus Voice Lab. `demoable`
+  Three-way Ghost TTS comparison: **A** = Gemini TTS global style direction (baseline from
+  `56-ghost-voice`); **B** = Gemini TTS experimental style; **C** = Orpheus TTS with phrase-level
+  XML emotion tags (`<reverent>`, `<whispers>`, `<sad>`, `<fearful>`, etc.).
+  Six Ghost scenes. Each column: editable textarea → Generate → waveform → ▶ play. Vote:
+  A / B / C wins, All good, Try again. Tallies stored per scene in localStorage.
+  Pre-loaded C tags chosen to match the Ghost emotional arc: `<reverent>resonance</reverent>`,
+  `<fearful>stirs</fearful>`, `<sad>remembers</sad>`, `<happy>together</happy>`. Edit and
+  experiment — the textarea is fully live.
+  Key question: does phrase-level tag control (Orpheus) produce more interesting Ghost narration
+  than global style direction (Gemini)? The vote reveals it.
+  Gemini TTS · Orpheus TTS · FAL_KEY · ~$0.01–0.02/row · 4.7 kB.
+  Design notes: `src/app/dream/61-orpheus-voice/README.md`
+
+---
+
+## Previous newest (Cycle 75 — build)
 
 - **[/dream/60-music-palette](/dream/60-music-palette)** — Music Palette. `demoable`
   Your audio becomes a 5-color palette. Bass energy → lightness (28–72%); treble-to-total

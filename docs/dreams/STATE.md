@@ -1,5 +1,61 @@
 # Dream Agent — cycle state
 
+## Cycle 76 — /dream/61-orpheus-voice
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — STATE.md Cycle 75 queues `orpheus-voice` as #1. Zero new deps, FAL_KEY
+   in use, spec clear in IDEAS.md. Build it.
+4. **Research** — not due until Cycle 78/79.
+5. **Polish** — skipped; build takes priority.
+
+Decision: build `/dream/61-orpheus-voice` — three-way Ghost TTS comparison (Gemini A · Gemini B · Orpheus C).
+
+**What I built**:
+- `src/app/dream/61-orpheus-voice/page.tsx` — three-column A/B/C comparison UI (4.7 kB)
+- `src/app/dream/61-orpheus-voice/api/route.ts` — single API route handling both Gemini TTS
+  and Orpheus TTS based on `engine` param
+- `src/app/dream/61-orpheus-voice/README.md` — design notes with per-scene tag rationale
+
+**How it works**:
+- Extends `59-gemini-voice-lab`'s concept (A/B Gemini comparison) to A/B/C (adding Orpheus).
+- Column A: Gemini TTS, global `style_instructions` — baseline from 56-ghost-voice
+- Column B: Gemini TTS, experimental style direction (opposite of A)
+- Column C: Orpheus TTS (`fal-ai/orpheus-tts`), phrase-level XML emotion tags
+- Each variant has a fully-editable textarea. Generate → waveform appears → ▶ play.
+- Vote: A wins / B wins / C wins / All good / Try again → tally stored per scene in localStorage.
+- Pre-loaded Orpheus text for each scene uses 1–2 tags chosen to match the Ghost emotional arc:
+  `<reverent>resonance</reverent>`, `<fearful>stirs</fearful>`, `<sad>remembers</sad>`, etc.
+- Server route: `engine: "gemini"` calls `fal-ai/gemini-tts` with text + style_instructions;
+  `engine: "orpheus"` calls `fal-ai/orpheus-tts` with tagged text (`prompt` field, voice `leah`).
+
+**Build**: `npm run build` passed cleanly. 4.7 kB, 111 kB First Load JS.
+
+**Key thing I noticed**: The phrase-level tag control opens a compositional dimension that global
+style_instructions can't reach. Gemini's B variant for Cosmic Ascension ("utterly flat, zero affect,
+infinite distance") is a sentence-level choice — the whole line gets that quality. Orpheus's C variant
+can put `<excited>` on "rising" (ironic — "You are not *rising*") and `<sad>` on "receding" — a
+within-sentence arc. Whether that subtlety survives TTS synthesis is exactly what the vote reveals.
+
+**Queued next**:
+1. **`collage-compose`** (`/dream/62-collage-compose`) — Ghost scene image + hum recording +
+   mood word → multimodal ACE-Step music generation. MediaRecorder (no new npm deps), image
+   color extraction (avg HSL of sampled pixels), pitch detection (same autocorrelation as
+   `13-piano-canvas`). FAL_KEY in use, $0.006/track. One cycle.
+2. **Research** due at Cycle 78 (2 build cycles away).
+
+**Notes**:
+- `fal-ai/orpheus-tts` endpoint uses `prompt` as the text field (same as Gemini) and voice `leah`.
+  If Karel sees an "invalid endpoint" error, paste the raw error text — the endpoint might be
+  `orpheus-tts` or similar. The route logs the raw response on failure.
+- Orpheus voices available: leah, dan, mia, zac, jess, leo, julia, will. `leah` is calm,
+  androgynous-adjacent — best match for the Ghost character so far.
+
+---
+
 ## Cycle 75 — /dream/60-music-palette
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
