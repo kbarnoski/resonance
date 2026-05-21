@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 71 — build)
+## ⭐ Newest (Cycle 72 — build)
+
+- **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** — Music to Ghost. `demoable`
+  Play for 8 seconds — the Ghost appears in the narrative scene that matches your music's emotion.
+  8s capture → 12-bin chroma (chord quality) + RMS energy → 4-quadrant emotion classification →
+  Ghost LoRA image. Click **▶ Demo** for an immediate result (C major chord → usually calm-bright
+  → Forest Dawn). Click **🎤 Start mic** and play: major chord loud → Cosmic Ascension; minor soft →
+  Stone Chamber; major soft → Forest Dawn; minor loud → Underground Pool.
+  Pitch trail canvas during capture shows detected notes as glowing colored dots (violet=bass, red=treble).
+  Different from `57-sound-to-image`: maps to Ghost LoRA scenes (the actual narrative geography of the
+  journey) rather than generic environments. Ghost LoRA · fal-ai/flux-lora · ~$0.02/image · 4.5 kB.
+  ⚠ Endpoint `fal-ai/flux-lora` confirmed in prod — paste any error text for a fix next cycle.
+  Design notes: `src/app/dream/58-music-to-ghost/README.md`
+
+---
+
+## Previous newest (Cycle 71 — build)
 
 - **[/dream/57-sound-to-image](/dream/57-sound-to-image)** — Sound-to-Image. `demoable`
   10 seconds of audio → acoustic fingerprint → Flux Schnell scene image of what your music looks like.

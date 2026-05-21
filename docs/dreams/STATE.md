@@ -1,5 +1,36 @@
 # Dream Agent — cycle state
 
+## Cycle 72 — /dream/58-music-to-ghost
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — no in-progress prototypes.
+3. **Build new** — `58-music-to-ghost` is the #1 queued item from STATE.md Cycle 71. FAL_KEY in use, Ghost LoRA URL in prod codebase (`2-ghost-lab/page.tsx`), spec is clear. Build it now.
+4. **Research** — due at Cycle 74 (next cycle is 73, one away).
+5. **Polish** — skipped; build takes priority.
+
+Decision: build `/dream/58-music-to-ghost`.
+
+**Why now**: `57-sound-to-image` (Cycle 71) maps audio to generic environmental scenes via Flux Schnell. This prototype maps the same audio signal to Ghost-LoRA-specific scenes — the figure is the Ghost character, and the four scene destinations (Stone Chamber, Underground Pool, Forest Dawn, Cosmic Ascension) are the actual narrative waypoints of the Resonance journey. Major chord + energy → Ghost in a specific place in her journey. This is the first prototype that connects audio emotion analysis directly to the Ghost character's narrative geography.
+
+**Built**:
+- `src/app/dream/58-music-to-ghost/api/route.ts` — server route calling `fal-ai/flux-lora` with Ghost LoRA
+- `src/app/dream/58-music-to-ghost/page.tsx` — 8s capture, pitch trail canvas, quadrant classification, image generation
+- `src/app/dream/58-music-to-ghost/README.md` — design notes
+
+**What's inside**:
+8-second capture (mic or demo C major oscillators). Each 100ms frame: RMS energy, 12-bin chroma (60–4000 Hz), autocorrelation pitch detection. After 8s: accumulated chroma → dominant root + major/minor quality; average energy → arousal. Map to 4 quadrants. Ghost LoRA prompt selected for the quadrant. `fal-ai/flux-lora` with LoRA scale 1.2, 28 steps, portrait_4_3. Image fades in over 1.8s. Pitch trail canvas during capture: dots at detected MIDI note position, colored violet (bass) → red/orange (treble), sized by energy. Build: 4.5 kB.
+
+**What I noticed**: The Ghost LoRA URL was in `2-ghost-lab/page.tsx` with a note "Copied from src/lib/journeys/ghost-lora.ts — avoids importing production code." I followed the same pattern — copied the URL into the dream API route directly. The quadrant energy threshold (0.35) is the most uncertain parameter; demo mode (5 triangle oscillators at gain 0.3) lands at moderate energy, likely just below the threshold → calm-bright → Forest Dawn. A pianist playing forte will exceed it → energetic. The "tiny planet" scene is absent from the 4-quadrant map (would need a 5th bucket for very-low-energy + very-tonal). Noted in README.
+
+**Queued next** (priority order for Cycle 73):
+1. **`gemini-voice-lab`** — A/B Gemini TTS style director for Ghost scene lines. Two style_instruction strings, one Ghost line, compare results. Karel can use it to find the Ghost's voice character. Zero new deps, FAL_KEY in use, one cycle.
+2. **Research** — due at Cycle 74. IDEAS queue is rich (30+ items), so research can wait one more cycle.
+
+---
+
 ## Cycle 71 — /dream/57-sound-to-image
 
 **When**: 2026-05-20 UTC (hourly autonomous cycle)

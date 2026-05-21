@@ -1,41 +1,44 @@
-# Morning digest — last updated 2026-05-20 UTC (Cycle 71)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 72)
 
 ## New since yesterday
 
-- **[/dream/57-sound-to-image](/dream/57-sound-to-image)** (Cycle 71) — First prototype that generates
-  a *semantic scene image* from audio, not an abstract visualization. Click **▶ Demo** immediately:
-  a C major chord plays for 10 seconds, the prototype extracts its acoustic fingerprint, and Flux Schnell
-  generates a photorealistic scene matching the sound's character. With your own piano via **🎤 Start mic**:
-  play anything for 10 seconds — the scene it generates tells you what environment that music evokes.
-  FAL_KEY in use · ~$0.02/image.
+- **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** (Cycle 72) — Play for 8 seconds.
+  The Ghost appears in the scene that matches your music's emotional character.
+  Major chord + loud → Cosmic Ascension (golden particle streams, infinite space).
+  Minor chord + soft → Stone Chamber (single candle, moonlit arched window).
+  Four quadrants: energetic-bright, energetic-dark, calm-bright, calm-dark.
+  Click **▶ Demo** for an immediate result (C major chord → calm-bright → Forest Dawn, usually).
+  Ghost LoRA · fal-ai/flux-lora · ~$0.02/image · 4.5 kB.
+  ⚠ Endpoint `fal-ai/flux-lora` from prod codebase — paste any error text for a fix next cycle.
 
-- **`56-ghost-voice` endpoint fixed** (Cycle 70) — now using Gemini TTS (`fal-ai/gemini-tts`).
-  Charon voice + scene-specific style_instructions. Should work — try it.
+- **[/dream/57-sound-to-image](/dream/57-sound-to-image)** (Cycle 71) — First prototype that generates
+  a *semantic scene image* from audio fingerprint. 10s listen → Flux Schnell → photorealistic scene.
+  Different from 58: maps to generic environments (sea cave, nebula, forest) not Ghost LoRA scenes.
+  FAL_KEY in use · ~$0.02/image.
 
 ## In progress / partial
 
-- Nothing in-progress. `58-music-to-ghost` is the #1 queued build for Cycle 72 (Ghost LoRA image from
-  live emotional audio analysis — no GEMINI_API_KEY needed, FAL_KEY only).
+- Nothing in-progress. Next queued item: **`gemini-voice-lab`** — A/B comparison UI for Gemini TTS
+  style_instructions on Ghost scene lines. Useful for Karel to find the Ghost's voice character.
+  Zero new deps, FAL_KEY in use. One cycle.
 
 ## Research findings worth a look
 
-- **Sound2Vision** (§112) — the direction `57-sound-to-image` is based on. Acoustic scene description
-  as the bridge between audio signal and generated image.
+- **Ghost LoRA scene mapping** — the 4-quadrant classification (energetic/calm × major/minor) maps
+  cleanly to 4 of the 5 Ghost narrative scenes. The missing fifth scene (Tiny Planet) would need a
+  very-low-energy + very-high-tonal-clarity bucket. Could add a 5th quadrant if the 4-way feels too coarse.
 
-- **Gemini TTS style_instructions** (§110) — natural-language voice shaping on fal.ai. "Calm, stone
-  chamber reverb, measured pace" actually changes the TTS output. Powers Ghost Voice.
-
-- **Multi-Agent Music-to-Image** (§114) — joint music emotion + semantics → image. `58-music-to-ghost`
-  uses the same insight: real-time chord + energy analysis → Ghost LoRA quadrant → scene image.
+- **`57-sound-to-image` vs `58-music-to-ghost`** — two prototypes, two semantic layers. One says
+  "this music sounds like a sea cave." The other says "this music puts the Ghost in the Stone Chamber."
+  Interesting to run the same 8 seconds through both and see what they agree or disagree on.
 
 ## Open questions for Karel
 
-- **`57-sound-to-image` scene quality** — do the six scene archetypes (stone chamber / forest dawn /
-  sea cave / sunlit courtyard / stormy coast / cosmic nebula) feel right for the audio characters?
-  If not, scene descriptions are one-liners in `page.tsx` and can be replaced.
+- **`58-music-to-ghost` demo result** — does the scene feel right for C major / calm energy?
+  Should be Forest Dawn. If it lands in Stone Chamber, the energy threshold (0.35) may need tuning.
 
-- **`56-ghost-voice` voice** — Charon feels too neutral? Try: "Zephyr" (bright female),
-  "Aoede" (warm melodic), "Puck" (younger, energetic). One-line change in `route.ts`.
+- **`56-ghost-voice` voice** — Charon too neutral? Try: "Zephyr" (bright female),
+  "Aoede" (warm melodic), "Puck" (younger). One-line change in `route.ts`.
 
 - **`54-maestro-stems` / `6-compose` / `53-ghost-sfx`** — any API errors still showing?
 
