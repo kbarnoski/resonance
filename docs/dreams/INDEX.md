@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 87 — build)
+## ⭐ Newest (Cycle 88 — build)
+
+- **[/dream/70-pitch-algo-compare](/dream/70-pitch-algo-compare)** — Pitch Compare. `demoable`
+  Three pitch detection algorithms running simultaneously on every audio frame — see where they
+  agree and where they diverge. **Orange** = Autocorrelation (ACF peak). **Blue** = YIN (cumulative
+  mean normalized difference, ~15% fewer octave errors). **Green** = HPS (harmonic product spectrum,
+  4 harmonics — great for piano and strings). A **gold dashed cursor** appears when ≥2 algorithms
+  agree within 1.5 semitones; a faint piano tone plays on each new consensus note.
+  Demo uses sawtooth oscillators cycling through 8 pitches — sawtooth has all harmonics so HPS works
+  well and the comparison is immediately meaningful. Mic mode: play single notes to see consensus,
+  play low bass or chords to watch algorithms diverge. Piano roll C2–C7, confidence bars per algorithm.
+  **"Which algorithm is right? Sometimes all of them. Sometimes none."**
+  First prototype making pitch detection internals visible and learnable. Zero deps · Zero API · 4.67 kB.
+  Design notes: `src/app/dream/70-pitch-algo-compare/README.md`
+
+---
+
+## Previous newest (Cycle 87 — build)
 
 - **[/dream/69-oracle-music](/dream/69-oracle-music)** — Oracle Music. `demoable`
   Three coins cast six times → one of 64 hexagrams → music shaped by archetypal qualities.

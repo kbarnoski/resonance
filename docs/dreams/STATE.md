@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 88 — /dream/70-pitch-algo-compare
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Build new** — Cycle 87 queued `pitch-algo-compare` as the explicit next build. IDEAS.md has the full spec. Zero deps, one cycle. Proceeding.
+4. **Research** — not due (Cycle 86 was research; threshold is Cycle 90+).
+
+Decision: build `/dream/70-pitch-algo-compare` — three pitch detection algorithms (ACF, YIN, HPS) running simultaneously on a shared audio frame, visualized on a C2–C7 piano roll with colored cursors per algorithm and a gold consensus cursor when they agree within 1.5 semitones.
+
+**What I built**:
+- `src/app/dream/70-pitch-algo-compare/page.tsx` — full AV prototype, 4.67 kB
+- `src/app/dream/70-pitch-algo-compare/README.md` — algorithm design notes
+
+**How it works**:
+- One `getFloatTimeDomainData` call per RAF tick feeds all three algorithms
+- **Autocorrelation (orange)**: first ACF peak in [MIN_HZ, MAX_HZ] lag range, normalized by r(0)
+- **YIN (blue)**: cumulative mean normalized difference function, threshold 0.15, parabolic interpolation for sub-sample accuracy
+- **HPS (green)**: 4-harmonic product spectrum from a hand-rolled Cooley-Tukey FFT on the same time-domain buffer
+- EMA (α=0.76) smooths MIDI positions for each algorithm's cursor
+- Gold dashed cursor appears when ≥2 algorithms agree within 1.5 semitones; a faint piano tone fires on consensus note change
+- Demo mode: sawtooth oscillators cycle through 8 MIDI pitches (sawtooth chosen because it has all harmonics — HPS performs well, making the comparison meaningful)
+- Mic mode: same pipeline on live audio; play single notes to see algorithms agree; play chords or low bass notes to see them diverge
+
+**What surprised me**: the YIN/ACF delta on sub-bass frequencies is quite visible even on clean sawtooth oscillators. The consensus cursor disappearing on the C2 note (while YIN and HPS agree but ACF jumps an octave) makes the octave-error behavior immediately legible without reading any documentation.
+
+**Build**: `npm run build` passed cleanly, 4.67 kB.
+
+**What's queued next**:
+1. **Build** `shader-evolve` (Cycle 89): genetic mutation of `68-wgsl-synth` shaders; 4 mutated variants visible simultaneously, select + breed. Zero deps. Queued since Cycle 86.
+2. **Research** next due at Cycle 90 (1 build cycle from now).
+
+---
+
 ## Cycle 87 — /dream/69-oracle-music
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
