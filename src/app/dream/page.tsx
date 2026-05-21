@@ -266,13 +266,28 @@ async function loadPrototypes(): Promise<Prototype[]> {
         readme = "";
       }
 
-      const headingMatch = readme.match(/^#\s+\S+\s+[—-]\s+(.+)$/m);
+      // Agent's READMEs use 3 different H1 patterns inconsistently:
+      //   "# /dream/1-live — Real Name"       → drop slug, keep "Real Name"
+      //   "# Real Name — design notes"        → drop "design notes", keep "Real Name"
+      //   "# Real Name"                       → use as-is
+      // Pick the part that's neither a slug nor a generic descriptor.
       const slugTitle = slug
         .split("-")
         .slice(1)
         .map((w) => w[0].toUpperCase() + w.slice(1))
         .join(" ");
-      const name = headingMatch ? headingMatch[1].trim() : slugTitle;
+
+      let name = slugTitle;
+      const h1 = readme.match(/^#\s+(.+)$/m)?.[1]?.trim() ?? "";
+      if (h1) {
+        const parts = h1.split(/\s+[—-]\s+/).map((s) => s.trim());
+        const isSluglike = (s: string): boolean =>
+          /^(\/?dream\/?|\d+)([\s/_-]|$)/i.test(s);
+        const isGeneric = (s: string): boolean =>
+          /^design\s*notes?$/i.test(s);
+        const good = parts.find((p) => !isSluglike(p) && !isGeneric(p));
+        name = good ?? parts.find((p) => !isSluglike(p)) ?? slugTitle;
+      }
 
       const statusMatch = readme.match(/\*\*Status\*\*:\s*(\w+)/i);
       const status = statusMatch ? statusMatch[1].toLowerCase() : "demoable";
