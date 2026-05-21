@@ -1,46 +1,41 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 72)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 73)
 
 ## New since yesterday
 
-- **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** (Cycle 72) — Play for 8 seconds.
-  The Ghost appears in the scene that matches your music's emotional character.
-  Major chord + loud → Cosmic Ascension (golden particle streams, infinite space).
-  Minor chord + soft → Stone Chamber (single candle, moonlit arched window).
-  Four quadrants: energetic-bright, energetic-dark, calm-bright, calm-dark.
-  Click **▶ Demo** for an immediate result (C major chord → calm-bright → Forest Dawn, usually).
-  Ghost LoRA · fal-ai/flux-lora · ~$0.02/image · 4.5 kB.
-  ⚠ Endpoint `fal-ai/flux-lora` from prod codebase — paste any error text for a fix next cycle.
+- **[/dream/59-gemini-voice-lab](/dream/59-gemini-voice-lab)** (Cycle 73) — Ghost Voice Lab.
+  A/B style test for Gemini TTS. Pick a scene, tweak the style_instructions textareas, hit
+  **Generate A** and **Generate B**, listen, vote. Votes accumulate in localStorage per scene.
+  Pre-loaded contrast pairs: Stone Chamber (calm/solemn ↔ whispered/intimate), Cosmic Ascension
+  (transcendent/vast ↔ zero-affect/infinite distance), Tiny Planet (airy/vast ↔ small/wondering).
+  Textareas are fully editable — try anything. "Find the Ghost's voice."
+  Gemini TTS · FAL_KEY · ~$0.01/pair · 4.27 kB.
 
-- **[/dream/57-sound-to-image](/dream/57-sound-to-image)** (Cycle 71) — First prototype that generates
-  a *semantic scene image* from audio fingerprint. 10s listen → Flux Schnell → photorealistic scene.
-  Different from 58: maps to generic environments (sea cave, nebula, forest) not Ghost LoRA scenes.
-  FAL_KEY in use · ~$0.02/image.
+- **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** (Cycle 72) — Play for 8 seconds,
+  Ghost LoRA image appears in the scene that matches your chord/energy. Demo mode loads instantly.
 
 ## In progress / partial
 
-- Nothing in-progress. Next queued item: **`gemini-voice-lab`** — A/B comparison UI for Gemini TTS
-  style_instructions on Ghost scene lines. Useful for Karel to find the Ghost's voice character.
-  Zero new deps, FAL_KEY in use. One cycle.
+- Nothing in-progress. Research cycle due next (Cycle 74) — IDEAS queue is rich (30+ items).
 
 ## Research findings worth a look
 
-- **Ghost LoRA scene mapping** — the 4-quadrant classification (energetic/calm × major/minor) maps
-  cleanly to 4 of the 5 Ghost narrative scenes. The missing fifth scene (Tiny Planet) would need a
-  very-low-energy + very-high-tonal-clarity bucket. Could add a 5th quadrant if the 4-way feels too coarse.
+- **Voice character exploration** — the B variants in `59-gemini-voice-lab` are deliberately
+  provocative: "zero affect, infinite distance" for Cosmic Ascension might be more powerful than
+  an expressive reading. The deadpan "You are not rising. The world is receding." is an interesting
+  experiment. The textareas are fully editable — you can test any direction in < 30 seconds.
 
-- **`57-sound-to-image` vs `58-music-to-ghost`** — two prototypes, two semantic layers. One says
-  "this music sounds like a sea cave." The other says "this music puts the Ghost in the Stone Chamber."
-  Interesting to run the same 8 seconds through both and see what they agree or disagree on.
+- **Room acoustics vs. speaking style** — Gemini TTS style_instructions control speaking-style
+  (pace, affect, register), not acoustic space. If you want true room reverb on the Ghost voice,
+  it would need a ConvolverNode post-processing step (same impulse-response technique as
+  `29-scene-spatial`). Easy to add if the voice character feels right but "dry."
 
 ## Open questions for Karel
 
+- **`59-gemini-voice-lab`** — Which style direction wins for Stone Chamber and Cosmic Ascension?
+  After voting, paste the winning style_instructions string and I'll hard-code it into `56-ghost-voice`.
+
 - **`58-music-to-ghost` demo result** — does the scene feel right for C major / calm energy?
-  Should be Forest Dawn. If it lands in Stone Chamber, the energy threshold (0.35) may need tuning.
-
-- **`56-ghost-voice` voice** — Charon too neutral? Try: "Zephyr" (bright female),
-  "Aoede" (warm melodic), "Puck" (younger). One-line change in `route.ts`.
-
-- **`54-maestro-stems` / `6-compose` / `53-ghost-sfx`** — any API errors still showing?
+  Should be Forest Dawn. If it lands in Stone Chamber, the energy threshold (0.35) needs tuning.
 
 - **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader` (LLM-generated GLSL shaders).
 

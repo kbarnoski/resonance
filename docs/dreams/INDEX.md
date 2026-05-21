@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 72 — build)
+## ⭐ Newest (Cycle 73 — build)
+
+- **[/dream/59-gemini-voice-lab](/dream/59-gemini-voice-lab)** — Ghost Voice Lab. `demoable`
+  A/B style test for Gemini TTS `style_instructions`. Six Ghost scenes, each with two editable
+  style textareas (A = baseline from `56-ghost-voice`, B = a contrasting experimental direction).
+  Click **Generate A** and **Generate B** → each variant synthesizes independently → waveform
+  strips appear → **▶ play** to listen. Vote: **A wins / Both fine / B wins / Try again**.
+  Votes stored per scene in localStorage and accumulate across sessions — builds a preference signal.
+  Pre-loaded contrasts: Stone Chamber (A = calm/solemn ↔ B = whispered/intimate);
+  Cosmic Ascension (A = transcendent/vast ↔ B = zero-affect/infinite distance);
+  Tiny Planet (A = airy/vast ↔ B = small/wondering). Textareas fully editable — try anything.
+  "Find the Ghost's voice." Gemini TTS · FAL_KEY · ~$0.01/pair · 4.27 kB.
+  Design notes: `src/app/dream/59-gemini-voice-lab/README.md`
+
+---
+
+## Previous newest (Cycle 72 — build)
 
 - **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** — Music to Ghost. `demoable`
   Play for 8 seconds — the Ghost appears in the narrative scene that matches your music's emotion.

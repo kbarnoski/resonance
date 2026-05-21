@@ -1,5 +1,38 @@
 # Dream Agent — cycle state
 
+## Cycle 73 — /dream/59-gemini-voice-lab
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — no in-progress prototypes.
+3. **Build new** — `gemini-voice-lab` is the #1 queued item from STATE.md Cycle 72. FAL_KEY in use, zero new deps, spec is clear. Build it now.
+4. **Research** — due at Cycle 74 (next cycle). One cycle away.
+5. **Polish** — skipped; build takes priority.
+
+Decision: build `/dream/59-gemini-voice-lab`.
+
+**Why now**: `56-ghost-voice` uses Gemini TTS with hard-coded style_instructions per scene. Whether those instructions produce the right voice character is unknown — there's no mechanism to iterate. This prototype is a direct iteration tool: two editable style_instructions textareas per scene, Generate buttons, side-by-side waveform display, and a vote system (localStorage tally per scene). Karel tries the two defaults, edits, regenerates, and accumulates a preference signal across sessions. Complements `2-ghost-lab` (A/B image comparison) with an A/B voice comparison.
+
+Route chosen as `/dream/59-gemini-voice-lab` because `/dream/57-gemini-voice-lab` (from IDEAS.md) conflicts with the already-shipped `57-sound-to-image`.
+
+**Built**:
+- `src/app/dream/59-gemini-voice-lab/api/route.ts` — server route; accepts `{ text, styleInstructions, voice? }`, calls `fal-ai/gemini-tts` (Charon default), returns URL
+- `src/app/dream/59-gemini-voice-lab/page.tsx` — full A/B UI (4.27 kB built)
+- `src/app/dream/59-gemini-voice-lab/README.md` — design notes
+
+**What's inside**:
+Scene selector (6 Ghost scenes). Each scene pre-loads two contrasting style pairs: A = the "official" direction from 56-ghost-voice (calm/measured), B = an experimental opposite (whispered/breathy for Stone Chamber; zero-affect/infinite-distance for Cosmic Ascension; small-and-wondering for Tiny Planet). Both textareas are fully editable — Karel can write anything. Generate A/B calls the API independently; each variant decodes the returned audio into an AudioBuffer, draws a waveform on a per-variant canvas, and enables a ▶ play button. Vote buttons (A wins / Both fine / B wins / Try again) store per-scene tallies in localStorage. Build: clean, 4.27 kB.
+
+**What I noticed**: Gemini TTS style_instructions function as speaking-style direction, not acoustic room modeling — "stone chamber reverb" affects how someone sounds when they imagine they're in that space, not actual convolution reverb. The most reliable axes I've seen work: pace ("very slow"), affect ("reverent", "wondering", "flat"), and register ("low pitch", "airy", "breathy"). If Karel wants actual room acoustics, a ConvolverNode with per-scene impulse responses (same technique as `29-scene-spatial`) should be added as a post-processing step on the client side. The B variant for Cosmic Ascension ("utterly flat, zero affect, infinite distance") is the most interesting experiment — a deadpan delivery of "You are not rising. The world is receding." could be more powerful than an expressive one.
+
+**Queued next** (priority order for Cycle 74):
+1. **Research** — due this cycle per the 3–4 cycle rule (last research was Cycle 70, 3 build cycles elapsed: 71, 72, 73). Full research sweep next cycle.
+2. **`56-ghost-voice` polish** — if Karel uses `59-gemini-voice-lab` and identifies a winning style, update `56-ghost-voice` route.ts with the winning style_instructions. One-line change.
+
+---
+
 ## Cycle 72 — /dream/58-music-to-ghost
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)
