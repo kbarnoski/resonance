@@ -1,5 +1,54 @@
 # Dream Agent — cycle state
 
+## Cycle 74 — Research cycle
+
+**When**: 2026-05-21 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — no in-progress prototypes.
+3. **Build new** — IDEAS queue is rich (35+ items); no urgent build.
+4. **Research** — due this cycle. Last research was Cycle 70 (3 build cycles elapsed: 71, 72, 73). AGENT.md threshold is 3+ cycles. Research triggered.
+5. **Polish** — skipped; research takes priority.
+
+Decision: full research sweep (Cycle 74).
+
+**What I researched**:
+- arxiv.org — recent papers: voice conversion (StyleStream 2602.20113), spatial audio (Sonic4D 2506.15759), music therapy (2603.07963), music-color palettes (Music2Palette 2507.04758), multimodal music gen (Mozualization 2504.13891)
+- fal.ai — confirmed new models: Orpheus TTS (phrase-level emotion tags), ElevenLabs Music (full composition_plan API schema confirmed with lyrics support), Sonauto V2 (BPM control, full songs with vocals)
+- Three.js r184 — WebGPU Baseline confirmed all-browsers; memory fix for long-session demos
+- GitHub trending — ACE-Step 1.5 production-stable, Sonauto V2 open API
+- Hacker News / research feeds — AI music psychotherapy for D/HH, MuVi video↔music sync
+
+**Research findings summary** (8 entries added to RESEARCH.md, §§117–126):
+- **§117 Orpheus TTS** — phrase-level `<emotion>` tags, $0.001/Ghost line, FAL_KEY in use
+- **§118 ElevenLabs Music composition_plan** — confirmed `fal-ai/elevenlabs/music` supports lyrics per section
+- **§119 StyleStream** — 1s latency zero-shot voice style conversion (ICLR 2026)
+- **§120 Music2Palette** — emotion-aligned 5-color palette from audio (ACM MM 2025)
+- **§121 Mozualization** — multimodal music gen: image + audio clip + keyword (CHI 2025)
+- **§122 Sonic4D** — spatial audio generation from video (future direction, no API)
+- **§123 Three.js r184** — memory fix + WebGPU Baseline in all browsers
+- **§124 AI Music Psychotherapy** — co-writing process itself therapeutic; validates Resonance direction
+- **§125 Sonauto V2** — full songs with vocals, BPM control, $0.075/song
+- **§126 MuVi + SyncDIT** — video↔music semantic/rhythmic alignment (future direction)
+
+**New prototypes queued** (added to IDEAS.md):
+1. **`music-palette`** (`/dream/60-music-palette`) — live audio → arousal/valence → 5-color HSL palette, SVG download. Zero deps, zero API. One cycle.
+2. **`lyrics-journey`** (`/dream/60-lyrics-journey`) — Ghost journey as ElevenLabs Music composition_plan with lyrics from the narrative. First prototype where the Ghost sings. $2.40/generation, FAL_KEY in use. One cycle.
+3. **`orpheus-voice`** (`/dream/61-orpheus-voice`) — extend `59-gemini-voice-lab` with Orpheus TTS as a 3rd track using phrase-level emotion brackets. $0.001/line, FAL_KEY in use. One cycle.
+4. **`collage-compose`** (`/dream/62-collage-compose`) — Ghost scene image + hum + mood word → multimodal ACE-Step music generation. $0.006/track. One cycle.
+
+**Queued next** (priority order for Cycle 75):
+1. **`music-palette`** — highest novelty per build cost: zero deps, zero API, one cycle. Makes the emotion→color axis visible and downloadable. Natural complement to `38-mood-xy` and `13-piano-canvas`. No dependencies on external APIs or Karel approvals.
+2. **`lyrics-journey`** — if Karel confirms FAL_KEY budget is OK for $2.40/generation. Highest surprise value: first prototype where the Ghost sings.
+3. **`orpheus-voice`** — incremental improvement to existing `59-gemini-voice-lab`. Small scope, useful for Karel's Ghost voice iteration.
+
+**What I noticed during research**: Two recurring themes this sweep:
+- **Phrase-level granularity** is the frontier for TTS control. Global style prompting (Gemini TTS) gets you 80% there; per-word emotional tags (Orpheus) get you closer to what a voice director does. Worth comparing directly.
+- **Music2Palette confirms the Resonance vibe** — the research literature on emotion-aligned color palettes maps almost exactly to the `1-live` band→color mapping that Karel seeded in Cycle 0. The research is catching up to the intuition that was already there.
+
+---
+
 ## Cycle 73 — /dream/59-gemini-voice-lab
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

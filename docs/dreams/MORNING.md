@@ -1,42 +1,50 @@
-# Morning digest — last updated 2026-05-21 UTC (Cycle 73)
+# Morning digest — last updated 2026-05-21 UTC (Cycle 74)
 
 ## New since yesterday
 
-- **[/dream/59-gemini-voice-lab](/dream/59-gemini-voice-lab)** (Cycle 73) — Ghost Voice Lab.
-  A/B style test for Gemini TTS. Pick a scene, tweak the style_instructions textareas, hit
-  **Generate A** and **Generate B**, listen, vote. Votes accumulate in localStorage per scene.
-  Pre-loaded contrast pairs: Stone Chamber (calm/solemn ↔ whispered/intimate), Cosmic Ascension
-  (transcendent/vast ↔ zero-affect/infinite distance), Tiny Planet (airy/vast ↔ small/wondering).
-  Textareas are fully editable — try anything. "Find the Ghost's voice."
-  Gemini TTS · FAL_KEY · ~$0.01/pair · 4.27 kB.
+- **Cycle 74 — research sweep** (no new prototype built).
+  10 new RESEARCH.md entries (§§117–126), 4 new IDEAS queued.
+  Most actionable: **`music-palette`** is ready to build next cycle — zero deps, zero API.
 
-- **[/dream/58-music-to-ghost](/dream/58-music-to-ghost)** (Cycle 72) — Play for 8 seconds,
-  Ghost LoRA image appears in the scene that matches your chord/energy. Demo mode loads instantly.
+- **[/dream/59-gemini-voice-lab](/dream/59-gemini-voice-lab)** (Cycle 73) — Ghost Voice Lab.
+  A/B Gemini TTS style director. Pick a scene, tweak style_instructions, compare two variants,
+  vote. Votes accumulate in localStorage. Try the B variants — especially Cosmic Ascension
+  ("zero affect, infinite distance").
 
 ## In progress / partial
 
-- Nothing in-progress. Research cycle due next (Cycle 74) — IDEAS queue is rich (30+ items).
+- Nothing in-progress. Cycle 75 is a build cycle.
+- **`music-palette`** queued first: live audio → arousal/valence → 5-color HSL palette + SVG download.
+  Zero deps, zero API. Surprise value: makes the emotion→color connection explicit and beautiful.
 
 ## Research findings worth a look
 
-- **Voice character exploration** — the B variants in `59-gemini-voice-lab` are deliberately
-  provocative: "zero affect, infinite distance" for Cosmic Ascension might be more powerful than
-  an expressive reading. The deadpan "You are not rising. The world is receding." is an interesting
-  experiment. The textareas are fully editable — you can test any direction in < 30 seconds.
+- **Orpheus TTS phrase-level tags** (§117) — `<reverent>`, `<whispers>`, `<fearful>` per word.
+  "The <reverent>resonance</reverent> here is ancient. Let yourself be <whispers>absorbed</whispers>."
+  $0.001/line, FAL_KEY in use. Completely different control vocabulary from Gemini's global style.
+  `orpheus-voice` prototype would add it as a 3rd track to `59-gemini-voice-lab`.
 
-- **Room acoustics vs. speaking style** — Gemini TTS style_instructions control speaking-style
-  (pace, affect, register), not acoustic space. If you want true room reverb on the Ghost voice,
-  it would need a ConvolverNode post-processing step (same impulse-response technique as
-  `29-scene-spatial`). Easy to add if the voice character feels right but "dry."
+- **Ghost sings its own journey** (§118, ElevenLabs Music) — `fal-ai/elevenlabs/music` confirmed
+  to accept per-section lyrics. `lyrics-journey` prototype: 6-scene Ghost journey as a
+  2.5–3-minute AI song with the Ghost narrative as literal sung lyrics. ~$2.40/generation.
+  Most unexpected thing in this sweep: the Ghost could actually sing.
+
+- **Music2Palette** (§120, ACM MM 2025) — researchers independently arrived at the same
+  insight as the Cycle 0 `1-live` band→color mapping: audio emotion → color is a real
+  cross-modal alignment. The `music-palette` prototype makes this connection downloadable.
+
+- **Three.js r184 + WebGPU Baseline** (§123) — WebGPU is now universal (all browsers, Jan 2026).
+  r184 eliminates GC jank in long sessions. `49-anemone-av` and `21-three-mesh-av` can both
+  switch to WebGPURenderer in one line. Free polish.
 
 ## Open questions for Karel
 
-- **`59-gemini-voice-lab`** — Which style direction wins for Stone Chamber and Cosmic Ascension?
-  After voting, paste the winning style_instructions string and I'll hard-code it into `56-ghost-voice`.
+- **`lyrics-journey` budget?** ~$2.40/generation for a 3-min Ghost journey song. Worth it for a demo?
 
-- **`58-music-to-ghost` demo result** — does the scene feel right for C major / calm energy?
-  Should be Forest Dawn. If it lands in Stone Chamber, the energy threshold (0.35) needs tuning.
+- **`59-gemini-voice-lab` vote results** — which style direction won for Stone Chamber and
+  Cosmic Ascension? Paste the winning style_instructions and the agent will hard-code it into
+  `56-ghost-voice` next cycle.
 
-- **`ANTHROPIC_API_KEY` in Vercel env?** → Enables `claude-shader` (LLM-generated GLSL shaders).
+- **`ANTHROPIC_API_KEY` in Vercel env?** → enables `claude-shader` (LLM-generated GLSL shaders).
 
-- **`GEMINI_API_KEY`?** → Unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`.
+- **`GEMINI_API_KEY`?** → unlocks `lyria-ghost`, `binaural-lyria`, `30-lyria-jam`.

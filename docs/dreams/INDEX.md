@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 73 — build)
+## ⭐ Newest (Cycle 74 — research)
+
+- **Cycle 74 was a research sweep** (no new prototype). 10 new entries in RESEARCH.md (§§117–126).
+  4 new prototype ideas added to IDEAS.md. Highlights:
+
+  - **Orpheus TTS (§117)** — phrase-level `<emotion>` XML tags in text: `<reverent>`, `<whispers>`, `<fearful>`, etc. Different from Gemini TTS's global style_instructions — you control *individual words*. $0.001/Ghost scene line. FAL_KEY in use. Inspires `orpheus-voice`: 3-way A/B/C Ghost voice comparison (build next-next cycle).
+
+  - **ElevenLabs Music composition_plan confirmed (§118)** — `fal-ai/elevenlabs/music` accepts `sections[].lines` for per-section lyrics. Ghost journey as a **sung** AI piece: each of the 6 scenes as a music section with the Ghost character's own lines. $2.40/3-min generation. Inspires `lyrics-journey` (build when budget confirmed).
+
+  - **`music-palette` (§120, zero deps/API)** — Music2Palette (ACM MM 2025) proved that audio → emotion → 5-color palette is a real cross-modal alignment. Browser-native zero-dep approximation via existing arousal/valence audio pipeline. **Build next cycle.** Most novel per build cost.
+
+  - **`collage-compose` (§121)** — Mozualization (CHI 2025): multimodal music gen from image + audio clip + keyword. In browser: extract image color temperature + hum pitch contour → rich ACE-Step prompt. More precise than text-only. FAL_KEY in use, $0.006/track.
+
+  - **Three.js r184 (§123)** — WebGPU now Baseline in all browsers (Chrome, Edge, Firefox, Safari 26). r184 memory fix eliminates GC jank in long sessions. All Three.js prototypes are stable; `49-anemone-av` could switch to WebGPURenderer for free.
+
+  **Open questions for Karel**:
+  - `lyrics-journey` budget OK? ~$2.40/generation for a full Ghost journey as a sung piece.
+  - `ANTHROPIC_API_KEY` in Vercel env? → `claude-shader` still waiting.
+  - `GEMINI_API_KEY`? → `lyria-ghost`, `binaural-lyria`, `30-lyria-jam` still waiting.
+
+---
+
+## Previous newest (Cycle 73 — build)
 
 - **[/dream/59-gemini-voice-lab](/dream/59-gemini-voice-lab)** — Ghost Voice Lab. `demoable`
   A/B style test for Gemini TTS `style_instructions`. Six Ghost scenes, each with two editable

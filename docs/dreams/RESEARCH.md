@@ -1216,3 +1216,97 @@ SFS model achieves real-time streaming generation of full symbolic piano music w
 
 **Could become a prototype**: `voice-morph` — record a 5s "target voice" sample, then speak/sing into the mic and hear your voice converted to the target timbre in near-real-time. If a browser WASM port or fal.ai endpoint appears, this becomes the first prototype that changes *who you sound like*. Monitor for WASM/fal.ai port.
 
+---
+
+## Cycle 74 research findings (2026-05-21 UTC)
+
+---
+
+### 117. Orpheus TTS on fal.ai (Canopy AI, March 2026)
+**Source**: https://fal.ai/models/fal-ai/orpheus-tts
+
+Llama-based Speech-LLM on fal.ai at `fal-ai/orpheus-tts`. $0.05 per 1000 characters (~$0.001/Ghost scene line). Key differentiator from Gemini TTS: **phrase-level emotional tags** embedded in text: `<sad>`, `<reverent>`, `<fearful>`, `<excited>`, `<happy>`, `<whispers>`, `<disgusted>`, `<surprised>`. Example: `"The <reverent>resonance</reverent> here is ancient. Let yourself be <whispers>absorbed</whispers> by it."` Gemini TTS takes a global style_instructions string; Orpheus takes inline brackets. Human-quality synthesis, ~200ms generation latency, 8 distinct voice emotion modes per phrase. FAL_KEY already in use.
+
+**Could become a prototype**: `orpheus-voice` — extend `59-gemini-voice-lab` to add Orpheus as a 3rd track: C = Orpheus with emotional brackets. Side-by-side A (Gemini global style) vs B (Gemini experimental) vs C (Orpheus phrase-level). The bracket syntax is a fundamentally different control vocabulary: you direct individual words, not the overall voice character. Could find that "stone <whispers>chamber</whispers>" hits harder than "calm and reverent." Zero new deps, FAL_KEY in use, $0.001/line. One cycle.
+
+---
+
+### 118. ElevenLabs Music on fal.ai — Confirmed Composition Plan API
+**Source**: https://fal.ai/models/fal-ai/elevenlabs/music/api
+
+Confirmed fal.ai endpoint: `fal-ai/elevenlabs/music`. Input accepts `composition_plan` with `sections` array: each section has `section_name`, `duration_ms`, `positive_local_styles`, `negative_local_styles`, and `lines` (lyrics as an array of strings). Global styles via `positive_global_styles` / `negative_global_styles`. `respect_sections_durations: true` for strict timing. Duration range 3s–10min. Output: `audio.url` MP3. Price: $0.80/min. Key capability over MiniMax 2.6: **lyrics per section** — write actual words for each section and ElevenLabs will sing them. `force_instrumental: true` for purely musical tracks.
+
+**Could become a prototype**: `lyrics-journey` — build a Ghost journey composition_plan with lyrics from the narrative. Each of the 6 Ghost scenes becomes a section with its own style + spoken/sung lines from the Ghost character. "The resonance here is ancient, let yourself be absorbed" (Stone Chamber), "You are not rising, the world is receding" (Cosmic Ascension). Full ~3-minute Ghost journey as a sung piece. Admin-only; ~$2.40/generation for a 3-min piece. First prototype where the Ghost sings. FAL_KEY in use.
+
+---
+
+### 119. StyleStream: Real-Time Zero-Shot Voice Style Conversion (arxiv 2602.20113, ICLR 2026)
+**Source**: https://arxiv.org/abs/2602.20113
+
+First streamable zero-shot voice style conversion model. Architecture: Destylizer removes style from source audio while preserving linguistic content; Stylizer (diffusion transformer) reintroduces a target style conditioned on a 2-3s reference clip. End-to-end latency: **1 second**. Fully non-autoregressive. Trained on 50k hours English; can induce accents, emotions, speaking styles. Published at ICLR 2026. No browser/WASM port yet; GitHub available (Berkeley-Speech-Group/StyleStream).
+
+**Could become a prototype**: `voice-style` — record a 2-3s Ghost character reference clip (e.g., a calm breathy reading of one scene line), then run live mic input through StyleStream to convert incoming speech/piano-playing narration to the Ghost's voice in real time. 1s latency is usable. Needs a local Python server or a fal.ai endpoint. If Karel runs a local server, this becomes the first prototype that changes *who you sound like* in real time. Monitor for fal.ai deployment.
+
+---
+
+### 120. Music2Palette: Emotion-aligned Color Palette Generation (arxiv 2507.04758, ACM MM 2025)
+**Source**: https://arxiv.org/abs/2507.04758
+
+Generates a 5-color emotion-aligned palette from music audio using cross-modal representation learning. Music encoder + color decoder trained on MuCED: 2,634 expert-validated music-palette pairs aligned through Russell circumplex (valence-arousal) emotion vectors. Multi-objective optimization jointly enhances emotion alignment, color diversity, and palette coherence. Applications: music-driven image recoloring, video generation, data visualization. No public API.
+
+**Could become a prototype**: `music-palette` — browser-native approximation using the existing arousal/valence audio analysis pipeline (`1-live` FFT → `38-mood-xy` emotion coordinates) to generate a 5-color HSL palette in real time: valence → hue (happy=45°-80° warm yellows; neutral=150° green-teal; sad=240°-270° blues), arousal → lightness (energetic=L70%, calm=L30%), saturation → harmonic clarity. 5 palette swatches update every second (EMA smoothing). Download as SVG. First prototype that connects audio analysis to a designed visual language. Zero deps, zero API. One cycle.
+
+---
+
+### 121. Mozualization: Crafting Music with Multimodal AI (arxiv 2504.13891, CHI 2025)
+**Source**: https://arxiv.org/abs/2504.13891
+
+Creative tool that generates music by integrating multimodal inputs: text keywords + images (color palette/mood) + audio clips (samples, ambient sounds). Three-stage pipeline: multimodal sonification → mixing → visualization. 9-participant user study showed users could blend visual-emotional cues with audio to guide music generation in ways they couldn't with text alone. No public API or open-source implementation.
+
+**Could become a prototype**: `collage-compose` — upload a Ghost scene image + record 3-5s hum/piano + type a mood word. Extract: dominant color temperature from image (average HSL), pitch contour description from hum autocorrelation, combine all into a richly descriptive text prompt → send to ACE-Step or Sonauto V2. "Your world makes your music." The multimodal prompt is richer than a text description alone — a blue-dominant image pulls the color language toward "cold, vast, reverberant"; a hum establishes the key center and tempo feel. FAL_KEY in use, $0.006–$0.075/track. One cycle.
+
+---
+
+### 122. Sonic4D: Spatial Audio for Immersive 4D Scene Exploration (arxiv 2506.15759, February 2026)
+**Source**: https://arxiv.org/abs/2506.15759
+
+Framework for generating viewpoint-dependent spatial audio from monocular video in three stages: 4D scene + monaural audio extraction from pre-trained models → pixel-level visual source localization → physics-based spatial audio synthesis rendering. Training-free. Creates spatially consistent audio that adapts as the viewer moves through the synthesized scene. Research-stage; requires inference server. Not browser-deployable as-is.
+
+**Could become a prototype**: future direction — given a Ghost scene video clip (from `ghost-animate` / HappyHorse), generate spatially consistent audio that matches the visual source positions. The Ghost figure's movement → audio follows. Would combine with HRTF playback for headphone immersion. Needs fal.ai Sonic4D endpoint or similar. Monitor.
+
+---
+
+### 123. Three.js r184 (March 2026) — WebGPU Baseline + Memory Optimization
+**Source**: https://github.com/mrdoob/three.js/releases
+
+Three.js r184 eliminates per-frame object allocations — previously, complex scenes generated hundreds of thousands of garbage-collected objects per second, causing jank. Now production-stable. Combined with the January 2026 WebGPU Baseline status (Chrome, Edge, Firefox, Safari 26 on all platforms), WebGPURenderer is drop-in: replace `WebGLRenderer` with `WebGPURenderer` in a single line and gain ~100× particle capacity. TSL (Three Shader Language) compiles to both WGSL + GLSL automatically.
+
+**Could become a prototype**: all existing Three.js prototypes (`21-three-mesh-av`, `49-anemone-av`) can switch to WebGPURenderer for better performance — specifically `49-anemone-av` could push to 10,000 tip particles at 60fps vs. the current geometry-based approach. r184's memory fix makes long-session demos (the dream sandbox) dramatically more stable. Polish candidate: upgrade `49-anemone-av` to WebGPU + higher tentacle count.
+
+---
+
+### 124. AI-Driven Proactive Music Psychotherapy for Deaf / Hard-of-Hearing (arxiv 2603.07963, March 2026)
+**Source**: https://arxiv.org/abs/2603.07963
+
+Designs a music psychotherapy tool co-designed with therapists: conversational AI agent + music generative AI as therapeutic media. 23 Deaf/Hard-of-Hearing participants found AI-assisted song co-writing enabled "emotional release, reinterpretation, and deeper self-understanding." Key design pattern: collaborative lyric + melody authoring is itself the therapeutic act — the process matters as much as the output. Validates music generation as a therapeutic tool, not just an entertainment one.
+
+**Could become a prototype**: `co-write` — a lyric+melody co-writing prototype: the user types a line of text and hums or plays a melody snippet; the system generates a musical phrase in response (ACE-Step audio-to-audio) that continues the user's emotional thread. Split screen: user's words on one side, generated continuation on the other. "The music finishes your thought." More interactive than `6-compose` (text-only) or `44-vocal-bgm` (melody-only). FAL_KEY in use. One cycle.
+
+---
+
+### 125. Sonauto V2 on fal.ai — Full Songs with BPM Control
+**Source**: https://fal.ai/models/sonauto/v2/text-to-music/api
+
+`sonauto/v2/text-to-music`: generates complete 1.5-min songs (vocals + instrumentals) from prompt + optional tags. $0.075/generation, FAL_KEY auth. V2.2 adds manual BPM configuration. Key differentiator from ACE-Step and MiniMax: **full songs with singer vocals by default** — the AI adds a vocalist unless `force_instrumental` is used. Seed-based reproducibility and tag explorer for iteration. Extension endpoint at `sonauto/v2/extend` listed but not documented; may enable continuation.
+
+**Could become a prototype**: for the `collage-compose` idea, Sonauto V2 is a good backend choice since it automatically adds a vocalist — the multimodal prompt (image color + hum key + mood word) becomes a full song with singing. Alternatively: a simple "Ghost Ballad" prototype — each Ghost scene has a 4-line poem as lyrics → Sonauto V2 generates a sung version. No new deps, FAL_KEY in use, $0.075/song.
+
+---
+
+### 126. MuVi + SyncDIT: Video-to-Music and Audio-Visual Synchronization (arxiv 2410.12957, 2026)
+**Source**: https://arxiv.org/abs/2410.12957
+
+MuVi: generates music conditioned on video input, focusing on semantic alignment and rhythmic synchronization — the generated music's melody, rhythm, and dynamics harmonize with visual narratives (scene changes, motion, color). SyncDIT: generates video conditioned on audio, achieving state-of-the-art audio-visual alignment. Together: a closed loop where music and video inform each other. Not browser-native; requires inference servers.
+
+**Could become a prototype**: future direction — given a Ghost journey video clip (HappyHorse output), MuVi could generate a matching music track shaped by the visual narrative arc. The Ghost rising → ascending musical phrase; Ghost still in stone → sparse, sustained tones. Closer to production than Sonic4D since fal.ai may host MuVi-like video-to-music models. Monitor for fal.ai endpoint. Currently no API; research direction only.
+

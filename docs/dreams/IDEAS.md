@@ -1182,3 +1182,98 @@ Key findings from Cycle 70 (2026-05-20):
   Future upgrade path for `33-aria-companion`. No API yet; monitor.
 - SynthVC streaming voice conversion (§116, arxiv 2510.09245) — 77ms end-to-end latency,
   zero-shot. Future `voice-morph` prototype. No browser/WASM port yet; monitor.
+
+---
+
+## FROM RESEARCH (Cycle 74, 2026-05-21) — promoted to queue
+
+### music-palette — live emotion→color palette from audio `[queued, zero deps, zero API]`
+Route: `/dream/60-music-palette`. Mic input (or demo LFOs) → 6-band FFT (`1-live` pipeline) →
+arousal/valence estimation (same mapping as `38-mood-xy`): bass energy → arousal, chord quality
+from chroma → valence. Compute a 5-color HSL palette from the current coordinates: valence maps
+hue anchor (happy=45–80° warm yellows/oranges, neutral=150° green-teal, sad=240–270° blues/purples);
+arousal maps lightness (energetic=L70%, calm=L30%); frequency richness maps saturation. Five swatches
+are complementary offsets from the anchor hue (±30°, ±60°, ±90° in HSL space). Palette updates
+every second via exponential moving average — it breathes slowly with the music.
+
+Canvas: upper half = five large colored rectangles labeled with their hex codes + HSL values.
+Lower half = the `1-live`-style six-band bloom ring showing the current audio energy. A "Download
+SVG" button exports the current 5-color palette as an SVG file (labelled with the detected arousal/valence
+values). Demo mode: same wandering LFO oscillators as other no-mic prototypes — watch the palette
+drift from warm to cool as the LFOs cycle.
+
+"Your music as a color story." Zero deps, zero API. First prototype that makes the emotion→color
+connection visible and downloadable. Natural complement to `38-mood-xy` (emotion as music) and
+`13-piano-canvas` (music as painting). One-cycle build. Research basis: Music2Palette (RESEARCH.md §120).
+
+### lyrics-journey — Ghost journey as a sung AI composition `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/60-lyrics-journey`. Admin-only. ElevenLabs Music (`fal-ai/elevenlabs/music`) with
+a full Ghost journey `composition_plan`. Six sections, one per Ghost narrative scene:
+
+- **Stone Chamber** (30s, minor, sparse piano): "The resonance here is ancient. / Let yourself be absorbed by it."
+- **Root Portal** (25s, ominous, bass drone): "Something stirs beneath the roots. / A low note. Then silence."
+- **Underground Pool** (30s, ethereal, water textures): "The water remembers every sound. / That has passed through this place."
+- **Tiny Planet** (20s, airy, high strings): "A single breath. / The horizon wraps around you."
+- **Forest Dawn** (30s, hopeful, strings rising): "The first light is also the first sound. / They arrive together."
+- **Cosmic Ascension** (35s, transcendent, full orchestral): "You are not rising. / The world is receding."
+
+User can edit any section's lyrics or style before generating. Generate button → composition_plan sent
+to ElevenLabs Music → 2.5–3 minute sung piece plays through the live-bloom visualizer. Waveform strip
+shows the full duration; section markers show where each Ghost scene begins.
+
+This is the first prototype where the Ghost character **sings**. Different from `48-arc-compose`
+(structural arc, instrumental) and `6-compose` (text prompt, no lyrics): this one uses the actual
+Ghost narrative as lyrics and the journey arc as the musical structure. The output is a literal Ghost
+journey album track. Budget: ~$2.40/generation for a 3-min piece. FAL_KEY in use. One cycle.
+Research basis: RESEARCH.md §118 (ElevenLabs Music composition_plan confirmed API).
+
+### orpheus-voice — phrase-level emotion tags for Ghost TTS `[queued, needs FAL_KEY — already in use]`
+Route: Extend `/dream/59-gemini-voice-lab` OR standalone `/dream/61-orpheus-voice`. Adds Orpheus TTS
+(`fal-ai/orpheus-tts`, $0.05/1000 chars) as a third comparison track alongside the two Gemini variants.
+Orpheus uses **phrase-level XML-style emotional tags** embedded in the text — a fundamentally different
+control paradigm from Gemini's global `style_instructions`:
+
+- Gemini: `style_instructions = "calm, androgynous, very slow, stone reverb"` → global voice character
+- Orpheus: `"The <reverent>resonance</reverent> here is ancient. Let yourself be <whispers>absorbed</whispers> by it."` → per-word direction
+
+Eight available tags: `<sad>`, `<reverent>`, `<fearful>`, `<excited>`, `<happy>`, `<whispers>`,
+`<disgusted>`, `<surprised>`. UI: a "C — Orpheus Tags" textarea for each scene, pre-loaded with an
+example using bracket syntax. Generate C button calls `fal-ai/orpheus-tts`. Three waveform strips A/B/C
+with play buttons. Vote: A wins / B wins / C wins / etc.
+
+The emotional bracket syntax opens a new dimension: you can make a single line change register, pause,
+whisper. A <whispers> word in the middle of a sentence breaks differently from a whispered sentence.
+FAL_KEY in use. Zero new deps. One cycle. Research basis: RESEARCH.md §117.
+
+### collage-compose — image + hum + word → music `[queued, needs FAL_KEY — already in use]`
+Route: `/dream/62-collage-compose`. Three input slots: (1) a Ghost scene **image** — either from a
+preset thumbnail (Stone Chamber, Forest Dawn, Cosmic Ascension placeholder images) or drag-and-drop
+your own; (2) a short **hum** recording (3–8s via mic, same `MediaRecorder` pattern as `43-stable-extend`);
+(3) a **mood word** (textarea, e.g. "ancient", "ascending", "lost", "dawn"). Click **Compose →**.
+
+Processing before the API call:
+- Extract dominant color temperature from the image (compute average HSL of sampled pixels): warm colors
+  → "warm, golden, glowing" descriptor; cool → "cold, vast, reverberant."
+- Run autocorrelation pitch detection on the hum → identify the dominant pitch and tempo feel (BPM estimate
+  from zero-crossing periodicity) → "melody centered on E3, slow 52 BPM" or "quick rising phrase, 90 BPM."
+- Combine all three into a rich style prompt: "[warm, golden, ancient dawn light] + [slow melodic phrase centered on E3, 52 BPM] + [ascending, hopeful]" → sent to ACE-Step (`fal-ai/ace-step`) with `[inst]` lyrics tag.
+
+The generated 30s track plays through the bloom visualizer. Waveform strip. Download MP3.
+
+"What if your world designed your music?" The multimodal combination produces prompts no one would
+type manually. A Ghost scene image combined with a hum establishes tonal center, mood, and visual
+context simultaneously — the output should feel more precisely tuned than any text-only prompt. Zero
+new npm deps. FAL_KEY in use, $0.006/track (ACE-Step). One cycle.
+Research basis: RESEARCH.md §121 (Mozualization) and §125 (Sonauto V2).
+
+Key findings from Cycle 74 (2026-05-21):
+- Orpheus TTS on fal.ai (§117) — phrase-level `<emotion>` tags in text, $0.001/Ghost line, FAL_KEY in use. Inspires `orpheus-voice`: 3-way A/B/C Ghost voice comparison (Gemini global vs Gemini alt vs Orpheus phrase-level).
+- ElevenLabs Music composition_plan confirmed (§118) — lyrics per section confirmed in API schema. Inspires `lyrics-journey`: full Ghost journey as a sung composition, 6 sections with Ghost narrative as lyrics. $2.40/generation.
+- StyleStream (§119, arxiv 2602.20113, ICLR 2026) — 1s latency real-time zero-shot voice style conversion. GitHub available. No fal.ai endpoint yet; monitor for `voice-style` prototype.
+- Music2Palette (§120, arxiv 2507.04758, ACM MM 2025) — emotion-aligned color palette from music. Inspires `music-palette`: browser-native zero-dep live palette from audio arousal/valence.
+- Mozualization (§121, arxiv 2504.13891, CHI 2025) — multimodal music gen from images + audio clips + keywords. Inspires `collage-compose`.
+- Sonic4D (§122, arxiv 2506.15759) — spatial audio from video, physics-based. Future direction; no API yet.
+- Three.js r184 (§123) — memory fix + WebGPU Baseline in all browsers. All Three.js prototypes stable; zero-cost WebGPU renderer upgrade available.
+- AI Music Psychotherapy for D/HH (§124, arxiv 2603.07963) — co-writing process is itself therapeutic. Inspires `co-write` direction.
+- Sonauto V2 (§125, fal.ai) — full songs with vocals, BPM control, $0.075/song. Good backend for `collage-compose`.
+- MuVi + SyncDIT (§126, arxiv 2410.12957) — video↔music semantic + rhythmic alignment. Future direction for Ghost animate + music pairing.
