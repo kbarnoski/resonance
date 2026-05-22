@@ -1,65 +1,43 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 117)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 118)
 
-## What happened this cycle
+## New since yesterday
 
-**Cycle 117 was a research cycle.** Last research was Cycle 95 (22 cycles ago, far past the 3-cycle threshold). All 5 seeds from that sweep are now built. This cycle surveyed: new fal.ai video models (Veo 3, Seedance 2.0), ElevenMusic, and three major AV artist works (Immersive Garden's Awwwards SOTD, Memo Akten's Whitney commission, Refik Anadol's DATALAND museum). 5 new prototype seeds queued for upcoming build cycles.
+- **[/dream/100-kids-paint-song](/dream/100-kids-paint-song)** — "Paint a Song" (kids)
+  Draw a line with your finger on the dark canvas. Lift to hear your drawing play as a melody.
+  Left = low notes (violet), right = high notes (pink) — 10 pentatonic notes across the screen.
+  Each sparkle dot flashes when its note fires; paths fade gently after playback.
+  **Why open it**: hand your phone to a 4-year-old, watch them discover that squiggles make music.
+  Zero permissions · no mic · no API. This is the first kids prototype where the drawn shape IS the score.
 
-## 5 new seeds (Cycle 117)
+## Kids zone — full status (13 prototypes)
 
-| Route | Name | Deps | Cycles |
-|-------|------|------|--------|
-| `/dream/100-camera-song` | Camera orbiting = music: 6 journey orbs, HRTF gain falloff | R3F + drei (installed) | 1 |
-| `/dream/101-ocean-presence` | Mouse presence disturbs WebGPU fluid → audio from velocity | WebGPU (no API) | 2 |
-| `/dream/102-veo3-ghost` | Ghost LoRA → Veo 3 Fast cinematic video + native audio | FAL_KEY + budget OK | 1 |
-| `/dream/103-listen-guide` | Guided listening of Karel's Paths recordings, attention lens | existing audio endpoint | 1 |
-| `/dream/104-beat-cut` | Boids flock + onset detector → hard-cut camera snap (camSequencer) | R3F + drei (installed) | 1 |
+| Cycle | Prototype | Notes |
+|-------|-----------|-------|
+| 118 | `100-kids-paint-song` | **NEW** draw → lift → melody plays |
+| 116 | `99-kids-panning-safari` | 5 animals, spatial L/R panning 🎧 |
+| 114 | `98-kids-drum-circle` | 6 percussion pads; first rhythm prototype |
+| 112 | `97-kids-star-catch` | Tap falling stars → collect melody → replay |
+| 110 | `95-kids-breath-bubbles` | Blow → floating bubbles + pentatonic pops |
+| 108 | `94-kids-ghost-echo` | Tap → Ghost appears + fades; "spirit pond" |
+| 106 | `93-kids-share-screen` | Two-finger co-play; always in harmony |
+| 104 | `92-kids-ghost-lullaby` | Ghost floats; tap/drag → pentatonic notes |
+| 102 | `91-kids-character-band` | 5 animals, Toca Band-style harmonizing phrases |
+| 100 | `90-kids-puddle-jumper` | Tap pond → splash + ripples; zero permissions |
+| 98 | `88-kids-hum-to-paint` | Hum/sing → glowing brush + scan-line replay |
+| 96 | `83-kids-tilt-rain` | **Karel loved ❤** Tilt → catch colored drops |
+| 92 | `82-kids-color-piano` | **Karel loved ❤** 8 pentatonic circles, glissando |
 
-**Highest priority builds**: `camera-song` (novel paradigm, zero deps) and `listen-guide` (uses Karel's real recordings, directly implements §165).
+## Research findings worth a look (Cycle 117)
 
-## Research highlights
-
-- **Camera IS music** (§174) — Immersive Garden's "Artisans d'Idées" (Awwwards SOTD 2026) uses audio coupled to camera state instead of a clock. Your navigation through a 3D space IS the music. `camera-song` brings this to the Journey theme constellation.
-
-- **Presence-driven fluid → sound** (§175) — Memo Akten's "The Thinking Ocean" (Whitney artport, Feb 2026) — WebGPU fluid driven by human presence, with audio synthesized from the fluid velocity field. Not audio-reactive; presence-reactive. `ocean-presence` inverts the typical audio→visual pattern entirely.
-
-- **Veo 3 native audio on fal.ai** (§171) — $0.40/s Fast with synchronized audio (dialogue, ambience, foley) generated in the same pass as video. Closes the long-queued `ghost-animate` gap. `veo3-ghost` needs Karel's budget OK (~$2–3.20/clip).
-
-- **Seedance 2.0** (§172) — ByteDance `bytedance/seedance-2.0/image-to-video`, ~$0.55–0.70 for 5s with native audio. 3× cheaper than Veo 3 Fast. Could run as a side-by-side quality comparison inside `veo3-ghost`.
-
-- **ElevenMusic** (§173) — ElevenLabs AI music API, April 2026. Text → full song with vocals, 7/day free. Fourth music backend, potentially buildable now if ELEVENLABS_API_KEY is in Vercel env.
-
-- **DATALAND** (§176) — Refik Anadol's Museum of AI Arts opens June 20, 2026 in LA. "Large Nature Model" trained on Smithsonian ecological data. Multi-species ecosystems with World Models → inspires `ecosystem-sim` (species interactions = sound).
-
-- **Beat-cut camera** (§177) — Elekktronaut TD Tutorial #65 (May 12, 2026): camSequencer hard-cuts camera presets on audio onset. Hard cut (not lerp) = cinematic montage quality. `beat-cut` ports this to R3F/drei.
-
-## Kids zone — full status
-
-| Cycle | Prototype | Status | Notes |
-|-------|-----------|--------|-------|
-| 92 | `82-kids-color-piano` | demoable | **Karel loved ❤** |
-| 96 | `83-kids-tilt-rain` | demoable | **Karel loved ❤** |
-| 98 | `88-kids-hum-to-paint` | demoable | hum → colored brush strokes |
-| 100 | `90-kids-puddle-jumper` | demoable | tap pond → ripples; zero permissions |
-| 102 | `91-kids-character-band` | demoable | 5 animals, Toca Band-style |
-| 104 | `92-kids-ghost-lullaby` | demoable | Ghost floats, tap/drag → notes |
-| 106 | `93-kids-share-screen` | demoable | Two-finger co-play; pentatonic harmony |
-| 108 | `94-kids-ghost-echo` | demoable | Spirit pond — tap → Ghost appears + fades |
-| 110 | `95-kids-breath-bubbles` | demoable | Blow → bubbles float + pop |
-| 112 | `97-kids-star-catch` | demoable | Tap falling stars → collect notes → replay |
-| 114 | `98-kids-drum-circle` | demoable | 6 percussion pads; first rhythm prototype |
-| 116 | `99-kids-panning-safari` | demoable | 5 animals + spatial panning; 🎧 headphones |
-
-Cycle 118 is a kids cycle (118 % 2 = 0). No kids entries in the new seeds; needs a fresh kids prototype or a pick from earlier IDEAS.md.
-
-## In progress / partial
-
-Nothing blocked. `76-cymatics-on-piano-path` still waiting on Welcome Home track IDs.
+- **§174** — Immersive Garden's "Artisans d'Idées" (Awwwards SOTD 2026): camera navigation IS music. `camera-song` prototype queued.
+- **§175** — Memo Akten's "The Thinking Ocean" (Whitney artport, Feb 2026): mouse presence disturbs WebGPU fluid → audio from velocity. `ocean-presence` queued.
+- **§171/172** — Veo 3 ($0.40/s) + Seedance 2.0 ($0.11–0.14/s): Ghost LoRA → cinematic video with native audio. `veo3-ghost` needs budget OK.
+- **§173** — ElevenMusic (April 2026, 7/day free): full songs with vocals. Buildable if ELEVENLABS_API_KEY in Vercel env.
 
 ## Open questions for Karel
 
-1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer` want to play your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **Veo 3 budget OK?** — `veo3-ghost` costs ~$2–3.20/clip (Veo 3 Fast) or $0.55–0.70 (Seedance Fast). Worth building once you say go. Closes the "Ghost needs motion" gap.
-3. **New loves?** Votes API still shows only `82` and `83`. Worth a listen: `99-kids-panning-safari` (new — best with headphones), `98-kids-drum-circle`, `81-cassette-speed`.
-4. **CassetteAI vs ACE-Step** — after running `81-cassette-speed`, is the quality gap acceptable for quick-sketch use? That decides whether `6-compose` should switch backends.
-5. **Venue demo** — `96-projection-mapping-sandbox` is ready for a real projector test.
-6. **ElevenMusic** — is ELEVENLABS_API_KEY in Vercel env? If yes, music-with-vocals prototype is immediately buildable (free tier: 7/day).
+1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer` want to play your actual recordings.
+2. **Veo 3 budget OK?** — `veo3-ghost` = ~$2–3.20/clip (Veo 3) or ~$0.55–0.70 (Seedance). Closes the "Ghost needs motion" gap.
+3. **ElevenMusic key?** — ELEVENLABS_API_KEY in Vercel env? If yes, songs-with-vocals prototype is free tier (7/day).
+4. **New loves?** Votes API still shows only `82` and `83`. Fresh worth-a-listen: `100-kids-paint-song`, `99-kids-panning-safari` (best with headphones), `81-cassette-speed` (empirical CassetteAI vs ACE-Step race).
+5. **CassetteAI vs ACE-Step** — after running `81-cassette-speed`, is the quality gap OK for quick-sketch use in `6-compose`?

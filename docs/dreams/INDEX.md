@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 116 — kids build)
+## ⭐ Newest (Cycle 118 — kids build)
+
+- **[/dream/100-kids-paint-song](/dream/100-kids-paint-song)** — Paint a Song (kids). `demoable`
+  Draw a line with your finger — lift up to hear your melody play. The screen is a dark starry canvas. As you drag, a glowing sparkle trail appears behind your finger: dots colored by pitch (violet at left / low notes → pink at right / high notes). When you lift, the path plays back as a melody — each sparkle flashes bright when its note fires. Left side = C3 (low, violet); right side = A4 (high, pink); 10 pentatonic notes mapped across the full screen width. Notes are triangle-wave piano tones (60ms attack, ~550ms decay). Multiple paths persist and fade gently over 6 seconds — draw a new one while the last is still visible. A subtle pitch-gradient strip at the bottom (violet→pink) shows the note mapping without text. No reading required, no fail state. A child who draws left→right hears an ascending scale; right→left hears a descent; a squiggle hears a wandering tune.
+  **"Draw a squiggle — lift your finger — your squiggle plays itself as a melody."** First kids prototype where the drawn shape IS the musical score.
+  Zero permissions · Zero API · Zero deps · ~3.5 kB.
+
+---
+
+## Previous (Cycle 116 — kids build)
 
 - **[/dream/99-kids-panning-safari](/dream/99-kids-panning-safari)** — Panning Safari (kids). `demoable`
   Five animals — duck 🦆, frog 🐸, elephant 🐘, cat 🐱, parrot 🦜 — drift left and right across a night savanna at their own speeds. Each animal is panned to its current X position via `StereoPannerNode`: far left = left ear, far right = right ear, center = center. Tap any animal to trigger its synthesized call at the animal's current pan position. Animals also call automatically every 3–7 seconds as they wander. Distinct synthesized voices: duck = bandpass noise quack; frog = AM sine ribbit (140 Hz carrier modulated at 18 Hz); elephant = low sawtooth rumble through 280 Hz lowpass; cat = sine glide 580→340 Hz; parrot = chirp 1400→1900→850 Hz. Dashed drop-line from each animal to a pan ruler strip at the bottom; colored dot on ruler shows exact pan position. Background: night sky, ground strip, 38 static stars. Soft ambient pad from first tap. Hit radius 62 px for 4yo accuracy.

@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 118 — /dream/100-kids-paint-song
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 118 % 2 = 0 → **kids cycle**.
+
+Reasoning: All 12 previous kids prototypes cover: pitch/melody (color-piano, tilt-rain, hum-to-paint, puddle-jumper, ghost-lullaby, ghost-echo, star-catch), rhythm (drum-circle), collaborative (share-screen, character-band), breath/mic (breath-bubbles), spatial audio (panning-safari). The clear missing dimension is **drawing as musical input** — none of the 12 use touch-drawing to create a melody. The child draws a line (left=low notes, right=high notes) then lifts their finger; the path plays back as a melody with each sparkle dot lighting up as its note fires. Completely different interaction model: the drawing IS the composition. Inspired by KIDS.md principle "sensorimotor / embodied" — the drawn shape is a physical gesture that the child can see become music.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — both loved prototypes are immediate-tap-to-sound. `100-kids-paint-song` extends the same "immediate visible→audible feedback" pattern to a new input (drawing a path).
+
+**Loved slugs that influenced this choice**: `82` (tap circle → note, spatial color) and `83` (tilt → catch colored drops → notes). Both use visual color coding + pentatonic pitch. `paint-song` uses the same color-per-note approach (violet=low, orange=high) along the X axis.
+
+**What I built**:
+- `src/app/dream/100-kids-paint-song/page.tsx` — Draw path → melody playback.
+  - C major pentatonic 2 octaves (C3–A4): 10 notes mapped left-to-right across screen width.
+  - Each note has a distinct color: violet (C3) → indigo → sky → cyan → emerald → green → yellow → amber → orange → pink (A4).
+  - On `pointerdown`: new path starts. On `pointermove`: dots sampled every 14px up to max 32.
+  - On `pointerup`: if ≥2 dots, sequentially plays notes at 190ms spacing; each dot flashes bright when its note fires. After last note + 700ms: path transitions to `fading` state (dissolves over 6 seconds).
+  - Note synthesis: triangle wave + sine 2nd harmonic at 0.2 gain, 60ms attack, ~550ms decay.
+  - Ambient C/E/G pad at low gain keeps silence warm.
+  - Subtle pitch-gradient strip at screen bottom: violet→pink, left→right, shows pitch mapping visually without text.
+  - Static stars (52) as dark background texture.
+  - `canvas.setPointerCapture(e.pointerId)` ensures tracking at screen edges.
+  - `cancelled` ref prevents note scheduling after unmount.
+  - `if (!canvas) return` / `if (!canvas || !ctx) return` guards in closures (TypeScript narrowing workaround).
+
+**Build**: `npm run build` — clean. Two TypeScript fix passes needed (closure narrowing guards). `/dream/100-kids-paint-song` at ~3.5 kB.
+
+**What surprised me**: The pitch-gradient strip at the bottom is enough guidance — a child who draws a line from left to right discovers the ascending scale naturally, without reading "left=low, right=high." The fading sparkle trail (6s dissolve) feels magical: the drawing hangs in the air while the notes finish, then drifts away like smoke. Multiple overlapping paths in `lighter` composite mode create additive color mixing at the intersections — crossing a violet path with an orange path makes white-ish at the cross point, exactly like mixing colored light.
+
+**Queued next**:
+1. **Cycle 119 (build)** — 119 % 2 = 1 → build cycle. `camera-song` (journey orbs + HRTF gain from camera azimuth, zero deps, R3F already installed) or `listen-guide` (guided listening of Karel's Paths recordings). Both one-cycle builds.
+2. **Open question**: Welcome Home album track IDs still needed for `76-cymatics-on-piano-path`.
+
+---
+
 ## Cycle 117 — research
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
