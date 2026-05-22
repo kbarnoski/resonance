@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 105 — build)
+## ⭐ Newest (Cycle 106 — kids build)
+
+- **[/dream/93-kids-share-screen](/dream/93-kids-share-screen)** — Share the Screen (kids). `demoable`
+  Full-screen canvas instrument for two simultaneous players. Each touch contact gets a glowing colored orb — first finger = violet, second = rose. Y-position maps to a pentatonic pitch (C3–C5); slide up = higher note, slide down = lower. The pentatonic constraint guarantees any two simultaneous notes sound beautiful together — no wrong combinations possible. Smooth pitch glide (fretless feel). When both voices are active, an animated dashed gradient line connects them visually. Sparkle particle trail on movement. Idle hint: two pulsing colored dots show where to put fingers. Pointer capture keeps tracking even at screen edges.
+  **"Two fingers, two voices — parent and child each hold a note and slide together. Always in harmony."**
+  Zero deps · Zero API · Zero permissions · 2.66 kB.
+  Design notes: `src/app/dream/93-kids-share-screen/README.md`
+
+---
+
+## Previous newest (Cycle 105 — build)
 
 - **[/dream/73-journey-arc-spread](/dream/73-journey-arc-spread)** — Journey Arc Spread. `demoable`
   Five of Karel's published journeys — Cosmic Drift, Mycelium Dream, Sacred Resonance, Abyssal Dive, Snowflake — each with a distinct 6-phase arc and visual vocabulary. Tab between journeys; each renders differently: star field background for Cosmic, particle network lines for Mycelium, rotating hexagonal mandala rings for Sacred, sine-wave bands for Ocean, drifting 6-arm snowflakes for Winter. Demo or mic input. Phase timeline at bottom, click to jump. Switch journeys while running.

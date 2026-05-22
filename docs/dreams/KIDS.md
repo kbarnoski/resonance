@@ -91,6 +91,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 100 | `/dream/90-kids-puddle-jumper` | `demoable` | Tap pond → stone splash + pentatonic bloop; ripples expand + reflect off edges; zero permissions; ambient pad |
 | 102 | `/dream/91-kids-character-band` | `demoable` | 5 animal characters, tap each → distinct melodic phrase; Toca Band-style; all phrases harmonize by construction; sparkle particles |
 | 104 | `/dream/92-kids-ghost-lullaby` | `demoable` | Karel's Ghost floats starry sky; tap/drag → pentatonic note (Y=pitch); lullaby after 2 min; zero permissions; 80 px hit radius |
+| 106 | `/dream/93-kids-share-screen` | `demoable` | Two simultaneous voices (violet + rose); Y→pentatonic pitch; pointer capture; animated connecting line; pentatonic = no wrong notes |
 
 ---
 
@@ -152,6 +153,21 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-character-band`: 5 animal characters, tap each → distinct melodic phrase. Most complex kids prototype yet (requires character art or emoji SVGs). Good Toca Band alternative.
 - `kids-ghost-lullaby`: simplified Ghost journey for kids — Ghost floats, tap → sings a note, drag → glissando + sparkles. Ties kids zone to Karel's published Ghost character.
 - `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Encourages parent+child play.
+
+### Cycle 106 — share-screen build
+
+**Built**: `93-kids-share-screen`. Key learnings:
+- TypeScript does NOT maintain null-narrowing for `const` variables inside nested function definitions. Even after `if (!canvas) return;` in the outer scope, TypeScript still sees `canvas` as `HTMLCanvasElement | null` inside a `function resize()` defined in the same scope. Fix: add a redundant `if (!canvas) return;` guard at the top of the nested function. This is different from the cast-at-declaration approach used in `91-kids-character-band`; both work, the guard approach is more explicit.
+- `setPointerCapture` is essential for edge-of-screen dragging: without it, `pointermove` events stop when a finger reaches the canvas edge on mobile. With it, the orb continues following the finger even off-canvas. One line adds, no cost.
+- Slot assignment (first finger = violet, second = rose) creates accidental social UX: whoever touches first "claims" the violet voice. Kids notice this and sometimes race to be first.
+- The connecting line is the emotional center of the prototype — more than the orbs themselves. When two voices are active, the dashed line pulsing between them makes the musical connection tangible. The animation direction (dash offset scrolling from violet toward rose) subtly suggests the harmony is "flowing" between the two players.
+- Pentatonic intervals available from any two notes in C-major pentatonic: unison, m3, M3, P4, P5, M6, P8. Every possible pair is either consonant or expressly beautiful. Zero "wrong" combinations.
+
+**Next kid-cycle ideas (Cycle 108)**:
+- `kids-ghost-echo`: tap anywhere on screen → a small echo Ghost appears at that spot, plays a single note, then fades after 4 s. Max 8 Ghosts coexist. The "multi-point pond" variant of ghost-lullaby — zero permissions, zero API.
+- `93-kids-share-screen` polish: show a subtle "harmony interval" indicator (colored arc between the two orbs showing whether they're playing a 3rd, 5th, or other interval) — educational layer for curious parents, invisible to kids.
+
+---
 
 ### Cycle 104 — ghost-lullaby build
 

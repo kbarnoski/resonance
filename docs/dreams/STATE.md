@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 106 — /dream/93-kids-share-screen
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 106 % 2 = 0 → **kids cycle**. Building `93-kids-share-screen` per explicit Cycle 105 queue.
+
+Reasoning: `kids-share-screen` (two-finger harmony for parent + child) was the top kids candidate queued in both Cycle 104 and Cycle 105 notes. Karel loved both `82-kids-color-piano` and `83-kids-tilt-rain` — both are "one sense → one beautiful output" loops. `kids-share-screen` is the social extension of that loop: two loops playing simultaneously, always harmonious. This is also the first Kids prototype explicitly designed for co-play rather than solo play, which KIDS.md research identifies as higher developmental value (group synchrony, turn-taking, joint attention).
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same two loves as all prior cycles.
+
+**Loved slugs that influenced this cycle's choice**: Both loves are kids prototypes confirming the every-other-cycle cadence. `82-kids-color-piano` is the most direct ancestor — same Y-to-pitch mapping, same pentatonic constraint, same full-screen canvas model.
+
+**What I built**:
+- `src/app/dream/93-kids-share-screen/page.tsx` — Full-screen canvas. Each pointer contact (up to 2 simultaneous) gets a glowing colored orb: slot 0 = violet (hue 270°), slot 1 = rose (hue 340°). Y-position → pitch via 11-note C-major pentatonic (C3–C5), same mapping as `92-kids-ghost-lullaby`. Smooth pitch glide via `setTargetAtTime(τ=40ms)` — feels fretless, not stepped. Triangle wave + sine 2nd harmonic for warmth. Fade in 50ms / fade out 80ms. Pointer capture (`setPointerCapture`) ensures moves continue if finger slides to screen edge. When two orbs are active, an animated dashed gradient line connects them (flows from violet toward rose). Sparkle particle trail on movement. Idle hint: two softly pulsing colored circles at H*0.54 that vanish on first touch. Soft C3/E3/G3 ambient pad from first contact. Stars background (60 static twinklers). All-canvas, zero external deps, zero API.
+- `src/app/dream/93-kids-share-screen/README.md` — harmony guarantee explanation, Y-pitch mapping, slot-color assignment, pointer capture rationale, kids rules compliance matrix.
+
+**Build**: `npm run build` passed cleanly — `✓ Compiled successfully in 57s`. Page: 2.66 kB / 109 kB. One fix needed: TypeScript doesn't maintain null-narrowing for `canvas` inside nested function definitions (even for `const` variables captured from outer scope). Fixed by adding `if (!canvas) return;` guard at the top of the `resize()` function. No other errors.
+
+**What surprised me**: The slot assignment mechanism (first finger = violet, second = rose) creates unexpected social choreography. When two people play, whoever touches first becomes "violet" — there's a subtle first-touch claim to the purple voice that feels meaningful. Kids notice this. The animated dashed line connecting the two voices is the most emotionally resonant visual element: it makes the invisible harmonic connection between two notes visually explicit, like a string being plucked between two people.
+
+The harmony guarantee works better than expected because pentatonic intervals are not just "not dissonant" — they're actively pleasing. Any two simultaneous pentatonic notes from this scale produce: unison, minor 3rd, major 3rd, perfect 4th, perfect 5th, major 6th, or octave. All are consonant or expressly beautiful. There is no way to play something "wrong."
+
+**Queued next**:
+1. **Cycle 107 (build)** — 107 % 2 = 1 → NOT a kids cycle. Top candidates: `84-wave-fluid` (WebGPU MLS-MPM fluid sim, most visually spectacular unbuilt prototype) OR `76-cymatics-on-piano-path` (Karel's Welcome Home album → real-time Chladni patterns; uses his real music as input, aligns with directive). `84-wave-fluid` is a two-cycle build. `76-cymatics-on-piano-path` is one cycle and more directly aligned with "incorporate Karel's actual music" directive. Lean toward `76-cymatics-on-piano-path` unless the Welcome Home track IDs are still unknown.
+2. **Cycle 108 (kids)** — 108 % 2 = 0 → kids cycle. Candidates: `kids-ghost-echo` (tap anywhere → small echo Ghost appears, plays a note, fades after 4s; max 8 Ghosts coexist — the "pond" variant of ghost-lullaby) OR polish pass on `82-kids-color-piano` (typography + tap target refinements per AGENT.md rules).
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer` / `76-cymatics-on-piano-path`.
+
+---
+
 ## Cycle 105 — /dream/73-journey-arc-spread
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
