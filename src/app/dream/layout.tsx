@@ -4,6 +4,7 @@ import path from "path";
 import Link from "next/link";
 import { PrototypeNav } from "./_shared/prototype-nav";
 import { DreamVotesProvider } from "./_shared/votes-provider";
+import { AudioCleanup } from "./_shared/audio-cleanup";
 
 /** Read prototype slugs from disk at build time, ordered newest-first
  *  to match the dashboard. Drives the prev/next nav. */
@@ -36,6 +37,7 @@ export default async function DreamLayout({
 
   return (
     <DreamVotesProvider>
+      <AudioCleanup />
       <div className="min-h-screen bg-black text-white font-mono">
         <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/70 backdrop-blur-sm">
           <Link
