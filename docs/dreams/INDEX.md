@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 112 — kids build)
+## ⭐ Newest (Cycle 113 — build)
+
+- **[/dream/80-room-acoustic](/dream/80-room-acoustic)** — Room Acoustic. `demoable`
+  Simulate a physical room and hear how it changes your piano. Draw a rectangular room (1.5–60m wide, up to 80m deep), pick wall/floor materials (Stone α=0.03 → Carpet α=0.40), and press **▶ play chord** — a C-major chord sounds in that space via a Web Audio `ConvolverNode` loaded with the computed impulse response. The image-source method computes up to 3rd-order reflections; RT60 (Sabine estimate) updates live and color-codes from studio-dry to cathedral-vast. Drag the amber ♪ source and violet 👂 listener dots to reposition; IR rebuilds automatically. 9 presets: Closet · Bedroom · Studio · Hall · Concert Hall · Cathedral · Cave · Stone Chamber · Forest Clearing.
+  **"Move a wall. Hear the room change."** The Stone Chamber preset sounds ringy and metallic (RT60 ≈ 2.5s, stone everywhere); the Cathedral is vast and blurred (RT60 ≈ 3.8s); the Closet is almost silent-dry (RT60 ≈ 0.08s, carpet). First prototype about acoustic space physics — not signal analysis, not synthesis, but the physics of a room.
+  Zero API · Zero deps · 4.98 kB.
+
+---
+
+## Previous (Cycle 112 — kids build)
 
 - **[/dream/97-kids-star-catch](/dream/97-kids-star-catch)** — Star Catch (kids). `demoable`
   Colorful 5-pointed stars fall slowly from a twinkling night sky — each star is a note in C-major pentatonic. Tap any star before it drifts off the bottom: it bursts into sparkles and plays its note. After 3 catches a **▶ replay** button appears; tap it to hear your collected melody played back in sequence (up to 16 notes). Stars fall at deliberate pace (12–20 seconds per screen) with generous 52–64 px effective hit radius for 4yo motor accuracy. Ambient C/E/G pad from first tap. No permissions, no mic, no API, no reading required.

@@ -1,5 +1,35 @@
 # Dream Agent — cycle state
 
+## Cycle 113 — /dream/80-room-acoustic
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked (76-cymatics-on-piano-path still pending track IDs).
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 113 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Build new** — `80-room-acoustic` from IDEAS.md queue (Research Cycle 90, spec from RESEARCH.md §162).
+
+Reasoning: The full prototype directory listing shows 80 and 81 are the only numbered slots in the queue with zero external dependencies and no API key requirements. `81-cassette-speed` is a utility comparison tool (CassetteAI vs ACE-Step). `80-room-acoustic` fills a genuine gap that NO existing prototype covers: **acoustic space simulation**. All 97 previous prototypes visualize audio signal properties, synthesis parameters, or AI outputs — none simulate the physics of sound in a physical space. The image-source method for a rectangular room is analytical, deterministic, and runs in ~30ms in JS. The result plays through a Web Audio `ConvolverNode`, so the chord literally sounds different in a Stone Chamber vs. a Closet vs. a Cathedral. Directly relevant to Ghost scene design (Stone Chamber RT60 ≈ 2.5s, Forest Dawn RT60 ≈ 0.4s) and live performance venue setup. High surprise factor — Karel can drag walls and hear the room change in real time.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes; no additional signal for adult builds. Picking by the IDEAS.md queue order and novelty gap.
+
+**Loved slugs that influenced this choice**: `82` and `83` are both kids prototypes — not directly relevant to this build cycle. The room-acoustic choice is driven by the "deepest gap in the prototype space" criterion rather than the love signal.
+
+**What I built**:
+- `src/app/dream/80-room-acoustic/page.tsx` — Full acoustic room simulation. Image-source method: enumerate mirror sources up to 3rd-order reflections in a rectangular room; compute delay + attenuation per reflection; assemble into a Float32Array impulse response (IR); load into Web Audio `ConvolverNode`. A piano chord (C3/E3/G3/C4, triangle oscillators) plays through the convolver. Canvas2D top-down room view shows the room boundary with color-coded wall material, source (amber ♪) and listener (violet 👂) dots draggable in real time, and animated dashed reflection rays at up to 12 early reflections. RT60 readout (Sabine formula) color-coded by acoustic category: emerald = studio, blue = room, violet = hall, amber = cathedral/cave. 9 room presets (Closet, Bedroom, Studio, Hall, Concert Hall, Cathedral, Cave, Stone Chamber, Forest Clearing). Wall + floor/ceiling material pickers (Stone α=0.03, Concrete α=0.05, Wood α=0.15, Glass α=0.04, Carpet α=0.40). Width + depth sliders (1.5–60m × 1.5–80m). IR rebuilds on: preset select, material change, slider mouseUp, and handle drag-end. 4.98 kB.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors. One cast fix required: `Float32Array<ArrayBufferLike>` → `Float32Array<ArrayBuffer>` for `copyToChannel` call (same pattern as all prior mic prototypes).
+
+**What surprised me**: The Stone Chamber preset (10m × 8m, all stone α=0.03) vs. the Concert Hall preset (30m × 22m, wood+concrete) vs. Cathedral (28m × 60m, all stone) produce noticeably different reverb characters at the same chord. The Cathedral generates the longest IR (RT60 ≈ 3.8s) with widely spaced reflections from the extreme depth; the Stone Chamber has tight, dense early reflections (small room, hard walls) giving a metallic ringy quality. The Closet (1.5m × 2.0m, all carpet) is essentially anechoic — RT60 ≈ 0.08s. Dragging the source or listener position changes the direct-to-reverb ratio live: placing both at the center of the Concert Hall maximizes early reflection spread.
+
+**Queued next**:
+1. **Cycle 114 (kids)** — 114 % 2 = 0 → kids cycle. Polish pass on `82-kids-color-piano`: bump secondary hint text from `rgba(255,255,255,0.18)` → `rgba(255,255,255,0.55)` per AGENT.md typography rules. One-line diff but notable readability gain.
+2. **Cycle 115 (build)** — `81-cassette-speed` (CassetteAI vs ACE-Step comparison) OR a new prototype from IDEAS.md. `27-gpu-additive` remains too complex for a single cycle. `76-cymatics-on-piano-path` still blocked on track IDs.
+3. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 112 — /dream/97-kids-star-catch
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
