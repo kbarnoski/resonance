@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 109 — /dream/75-houdini-particle-flock
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 109 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `75-houdini-particle-flock` from IDEAS.md queue.
+
+Reasoning: `76-cymatics-on-piano-path` still requires Welcome Home album track IDs (unresolved). `84-wave-fluid` upgrade (MLS-MPM particles) is noted as optional follow-on — Karel hasn't asked for it explicitly. `75-houdini-particle-flock` perfectly satisfies Karel's standing directives: AI image gen IS inside an AV experiment (not standalone), spreads across journey themes beyond Ghost, WebGPU compute, live-performance fitness. The Houdini/VEX paradigm (tiled N-body compute, Boids flocking + curl-noise force fields) delivers the GPU-first aesthetic Karel responded to in `16-particle-life-gpu`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**What I built**:
+- `src/app/dream/75-houdini-particle-flock/page.tsx` — WebGPU Boids simulation with 6,000 particles (6 species × 1,000). Six journey themes (Cosmic Homecoming, Earth Grounding, Ocean Breath, Snowflake, Inner Fire, Deep Cosmos), each with a matching set of 6 species colors and a Flux prompt for the backdrop image. WGSL compute: tiled N-body (workgroup=64), per-species alignment + cohesion, cross-species separation, curl-noise force field. Ping-pong trail textures (2× RGBA16float). CSS `mix-blend-mode: screen` composites the glowing particle canvas over the Flux backdrop. Demo mode (6 oscillators + LFOs → analyser) and mic mode. Generate Backdrop button produces a themed 16:9 Flux image. Audio reactive: bass→cohesion, treble→curl intensity, mid→alignment, onset→random-direction impulse burst. 7.59 kB.
+- `src/app/dream/75-houdini-particle-flock/api/route.ts` — Flux Schnell API route with `guard(req)` first, landscape_16_9, 4 inference steps. Returns `{url}`.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The curl-noise + Boids combination produces emergent behavior that looks nothing like either system alone. The curl field creates large-scale spiraling vortices; the Boids social forces cause each species to compress into tight sub-flocks that then follow the vortex. With a Flux backdrop composited underneath (via screen blend), the particle glow reads as bioluminescent organisms swimming through an actual environment. Audio onsets cause the flock to "scatter" in random directions before re-cohering — visually this looks like a predator alarm response.
+
+**Queued next**:
+1. **Cycle 110 (kids)** — 110 % 2 = 0 → kids cycle. Top candidates: `95-kids-breath-bubbles` (blow into mic → bubbles float up and pop) OR polish pass on `82-kids-color-piano` (typography/tap-target refinements).
+2. **Cycle 111 (build)** — `76-cymatics-on-piano-path` if track IDs arrive; else `84-wave-fluid` MLS-MPM upgrade.
+3. **Open question**: Welcome Home album track IDs for `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 108 — /dream/94-kids-ghost-echo
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

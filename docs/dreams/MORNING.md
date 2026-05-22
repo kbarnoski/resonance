@@ -1,14 +1,22 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 108)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 109)
 
 ## New since yesterday
 
-- **[/dream/94-kids-ghost-echo](https://getresonance.vercel.app/dream/94-kids-ghost-echo)** — Ghost Echo Pond (kids)
-  Tap anywhere on the starry sky to summon an echo Ghost. Each Ghost appears at your tap,
-  plays a pentatonic note (lower on screen = deeper pitch), sparkles burst outward, then
-  the Ghost drifts gently and fades after 4 seconds. Up to 8 Ghosts coexist.
-  **Why open this**: tap quickly from top to bottom — each Ghost plays its note and stays
-  visible while you build more. You get a whole chorus of drifting spirits. No permissions,
-  no reading required. Good for small hands.
+- **[/dream/75-houdini-particle-flock](https://getresonance.vercel.app/dream/75-houdini-particle-flock)** — Houdini Particle Flock
+  6,000 WebGPU particles (6 species) flock together using Boids physics + curl-noise force fields,
+  over a themed backdrop image generated live by Flux Schnell.
+
+  **How to experience it**:
+  1. Pick a journey theme (Cosmic Homecoming, Earth Grounding, Ocean Breath, Snowflake, Inner Fire,
+     Deep Cosmos) — the particle colors change instantly.
+  2. Hit **Generate Backdrop** — a Flux image matching the theme appears behind the flock (~3s).
+  3. Hit **Start Mic** — the flock reacts: bass tightens flocks together, treble swirls the curl field,
+     onsets scatter them in a sudden burst (like a predator alarm), then they re-cohere.
+  4. Hit **Demo** if you want to see it without a mic.
+
+  **Why open this**: The screen-blend composite of glowing GPU particles over a Flux backdrop produces
+  something that looks genuinely bioluminescent — the particles feel like organisms swimming through
+  an environment, not sprites over a background image. Onset bursts are the highlight.
 
 ## Kids zone — full status
 
@@ -25,22 +33,19 @@
 
 ## Previous notable
 
-- **Cycle 107**: [/dream/84-wave-fluid](https://getresonance.vercel.app/dream/84-wave-fluid) — WebGPU ocean surface. Bass raises swells, treble chops water, onsets send ripples. Click for manual splashes. WebGPU required (Chrome/Edge 113+, Safari 26+).
-- **Cycle 105**: [/dream/73-journey-arc-spread](https://getresonance.vercel.app/dream/73-journey-arc-spread) — 5 published journeys × distinct visual arcs. Tab while running.
+- **Cycle 108**: [/dream/94-kids-ghost-echo](https://getresonance.vercel.app/dream/94-kids-ghost-echo) — Ghost Echo Pond. Tap anywhere → Ghost appears, sings a pentatonic note, drifts and fades after 4s.
+- **Cycle 107**: [/dream/84-wave-fluid](https://getresonance.vercel.app/dream/84-wave-fluid) — WebGPU ocean. Bass raises swells, treble chops water, onsets ripple.
+- **Cycle 105**: [/dream/73-journey-arc-spread](https://getresonance.vercel.app/dream/73-journey-arc-spread) — 5 published journeys × distinct visual arcs.
 
 ## In progress / partial
 
 Nothing blocked. Full queue in IDEAS.md.
 
-## Research findings worth a look
-
-No new research this cycle (kids build cycle). Prior findings in RESEARCH.md.
-
 ## Open questions for Karel
 
 1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer`
    want to use your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **Wave Fluid** — Does the height-field ocean satisfy your vision, or do you want a
-   true particle-based MLS-MPM upgrade (Cycle 109 candidate)?
+2. **Houdini Particle Flock** — Does the screen-blend composite feel right? Any journey theme
+   that should have different species behavior or color palette?
 3. **New loves?** Votes API still shows only `82` and `83`. Anything new worth deepening?
-   `84-wave-fluid`, `73-journey-arc-spread`, `94-kids-ghost-echo` are the freshest to try.
+   `75-houdini-particle-flock`, `84-wave-fluid`, `94-kids-ghost-echo` are the freshest to try.

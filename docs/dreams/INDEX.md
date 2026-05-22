@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 108 — kids build)
+## ⭐ Newest (Cycle 109 — build)
+
+- **[/dream/75-houdini-particle-flock](/dream/75-houdini-particle-flock)** — Houdini Particle Flock. `demoable`
+  6,000 WebGPU particles split into 6 species, flocking via Boids (separation, alignment, cohesion) + curl-noise force fields. Six journey themes — Cosmic Homecoming, Earth Grounding, Ocean Breath, Snowflake, Inner Fire, Deep Cosmos — each with matching species colors and a Flux Schnell backdrop image composited underneath via CSS screen blend. Generate Backdrop produces a themed 16:9 image in ~3s. Demo mode (6 oscillators + LFOs) or live mic. Bass → cohesion tightens flocks; treble → curl intensity swirls them; onsets → scatter impulse.
+  **"Boids meet Houdini VEX: 6 species swarm through AI-generated journey landscapes."**
+  WebGPU required · Flux API ($0.003/image) · mic optional · 7.59 kB.
+  Design notes: `src/app/dream/75-houdini-particle-flock/README.md`
+
+---
+
+## Previous newest (Cycle 108 — kids build)
 
 - **[/dream/94-kids-ghost-echo](/dream/94-kids-ghost-echo)** — Ghost Echo Pond (kids). `demoable`
   Tap anywhere on a starry night sky to summon an echo Ghost. Each Ghost appears at your tap, plays a pentatonic note (Y = pitch), bursts into sparkles, drifts gently on its own slow orbit, then fades after 4 seconds. Up to 8 Ghosts coexist — tap rapidly from top to bottom and you build a full 10-note arpeggio. The chorus of drifting Ghosts forms an organic flock with softly different rhythms. First tap starts a quiet ambient chord pad.
