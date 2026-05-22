@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 103 — build)
+## ⭐ Newest (Cycle 104 — kids build)
+
+- **[/dream/92-kids-ghost-lullaby](/dream/92-kids-ghost-lullaby)** — Ghost Lullaby (kids). `demoable`
+  Karel's Ghost character floats gently across a starry night sky. Tap her to hear a pentatonic note (pitch varies by Y position). Drag her to hear a glissando — she follows your finger trailing violet sparkles. After 2 minutes she fades softly and a lullaby melody plays (original 8-note C-major pentatonic motif, 3 repeats ≈ 20 s). "Sweet dreams 🌙" overlay appears. Zero permissions · Zero API · Zero deps · Generous 80 px hit radius for 4yo motor accuracy.
+  **"The same Ghost that flies through Karel's live performances now sings bedtime songs for kids."**
+  Design notes: `src/app/dream/92-kids-ghost-lullaby/README.md`
+
+---
+
+## Previous newest (Cycle 103 — build)
 
 - **[/dream/86-sound-to-video](/dream/86-sound-to-video)** — Sound → Image → Video. `demoable`
   10 seconds of audio (mic or demo) → acoustic fingerprint (energy, spectral centroid, ZCR, 12-bin chroma, pitch) → FLUX.2 Dev cinematic 16:9 scene image → LTX-Video 5-second animated clip. Two-phase progressive reveal: the image appears first (~15–25s), then the video animates the scene while you're already looking at it (~20–45s later). Six scene archetypes keyed to energy × spectral centroid: stone chamber, forest dawn, sea cave, sunlit courtyard, wild headland, cosmic nebula. Motion prompt adapts to energy level: quiet playing = meditative drift; loud playing = elemental sweep. **"The audio was the brush; the video is the canvas."** FAL_KEY in use. ~$0.25/generation. This is the "AI image inside AV" prototype Karel asked for.

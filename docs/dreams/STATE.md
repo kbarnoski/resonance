@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 104 — /dream/92-kids-ghost-lullaby
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 104 % 2 = 0 → **kids cycle**. Building `92-kids-ghost-lullaby` per Cycle 103 queue.
+
+Reasoning: `kids-ghost-lullaby` was the top remaining seeded idea in KIDS.md that hasn't been built. `kids-ghost-lullaby` is unique in the kids set because it ties directly into Karel's published Ghost character/journey — a child who uses this prototype is meeting the same Ghost that Karel performs with live. That character continuity is the strongest differentiator from generic kids music apps. Also: zero permissions (unlike `88-kids-hum-to-paint`'s mic or `83-kids-tilt-rain`'s DeviceOrientation) — the friendliest possible onboarding. `kids-share-screen` (two-finger harmony) was the other candidate; deferred to Cycle 106.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same two loves as all prior cycles. Both loved prototypes are kids prototypes, continuing to validate the every-other-cycle kids cadence. No non-kids AV loves to guide direction on off-cycles.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` and `83-kids-tilt-rain` — both confirm "one sense → one beautiful output" loops resonate with Karel. Ghost Lullaby is the same loop, plus character identity and narrative arc (lullaby phase after 2 min).
+
+**What I built**:
+- `src/app/dream/92-kids-ghost-lullaby/page.tsx` — Ghost character floats in a Lissajous path across a starry dark sky. Tap → pentatonic note (pitch = Y position, so dragging up = glissando up). Drag → ghost follows finger (smooth lerp, 22% per frame), violet sparkle trail emits while dragging. First touch: AudioContext created, C3/E3/G3 ambient pad starts at gain 0.015. After 2 minutes: `schedLullaby()` fires (8-note C-major pentatonic motif, 72 BPM, 3 repeats ≈ 20s), ghost fades to 14% alpha, "Sweet dreams 🌙" overlay appears. Hit radius = 2.5 × G_R = 80 px for 4yo motor accuracy. Idle hint pulse (expanding ring, 0–6s before first touch). Ghost shape: Canvas2D path — dome arc (counterclockwise, counterintuitive but correct for top half), three wavy bottom bumps via quadratic curves, two ellipse eyes with shine highlights, radial glow via shadowBlur.
+- `src/app/dream/92-kids-ghost-lullaby/README.md` — design decisions, ghost path table, lullaby melody table, kids rules compliance matrix.
+
+**Build**: `npm run build` passed cleanly — `✓ Compiled successfully in 60s`. Page: 2.59 kB / 109 kB. Zero TypeScript errors, zero ESLint errors in the new file. No fixes needed on first attempt.
+
+**What surprised me**: The Lissajous path gives the ghost an uncanny personality — it looks like she's thinking, pausing, then moving again. The two frequencies (0.55 and 0.38 rad/s) are incommensurable enough that the path never fully repeats within a ~2-minute session. Kids who watch her float before tapping will already be emotionally engaged. The ghost "waits" for them.
+
+The Y-to-pitch mapping feels very musical when dragging: moving the ghost from the bottom of the screen to the top plays a full 10-note glissando (C3→A4), and even random swirling produces pleasant melodic fragments because all 10 notes are pentatonic.
+
+**Queued next**:
+1. **Cycle 105 (build)** — 105 % 2 = 1 → NOT a kids cycle. Top candidates: `84-wave-fluid` (WebGPU MLS-MPM fluid sim, spectacular physics, two-cycle build) OR `73-journey-arc-spread` (5 published journey themes × distinct visual arcs). `84-wave-fluid` for pure visual spectacle; `journey-arc-spread` for direct journey engine exploration. Lean toward `journey-arc-spread` — Karel's direction includes "journey engine alternatives" as explicit priority #4.
+2. **Cycle 106 (kids)** — `kids-share-screen` (two-finger harmony for parent+child). Simple, one-cycle, strong multi-touch theme.
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`. Still need to know which audio IDs correspond to Karel's 13 tracks.
+
+---
+
 ## Cycle 103 — /dream/86-sound-to-video
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

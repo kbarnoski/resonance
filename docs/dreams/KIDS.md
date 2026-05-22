@@ -90,6 +90,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 98 | `/dream/88-kids-hum-to-paint` | `demoable` | Hum/sing → glowing blob brush: pitch = color + Y, loudness = radius; 30s session; scan-line melody replay |
 | 100 | `/dream/90-kids-puddle-jumper` | `demoable` | Tap pond → stone splash + pentatonic bloop; ripples expand + reflect off edges; zero permissions; ambient pad |
 | 102 | `/dream/91-kids-character-band` | `demoable` | 5 animal characters, tap each → distinct melodic phrase; Toca Band-style; all phrases harmonize by construction; sparkle particles |
+| 104 | `/dream/92-kids-ghost-lullaby` | `demoable` | Karel's Ghost floats starry sky; tap/drag → pentatonic note (Y=pitch); lullaby after 2 min; zero permissions; 80 px hit radius |
 
 ---
 
@@ -151,6 +152,21 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-character-band`: 5 animal characters, tap each → distinct melodic phrase. Most complex kids prototype yet (requires character art or emoji SVGs). Good Toca Band alternative.
 - `kids-ghost-lullaby`: simplified Ghost journey for kids — Ghost floats, tap → sings a note, drag → glissando + sparkles. Ties kids zone to Karel's published Ghost character.
 - `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Encourages parent+child play.
+
+### Cycle 104 — ghost-lullaby build
+
+**Built**: `92-kids-ghost-lullaby`. Key learnings:
+- Lissajous autonomous movement (two incommensurable frequencies 0.55 and 0.38 rad/s) gives the ghost uncanny "personality" — she pauses, meanders, then drifts again. Kids watch before touching.
+- Y-to-pitch mapping across 10 pentatonic notes (C3–A4) makes dragging the ghost a natural musical gesture. Even random swirling produces pleasant melodic fragments. This is the right interaction model for a character-based music toy.
+- Canvas2D path for ghost body: dome arc with `anticlockwise: true` is the correct way to draw the top half; three quadratic-curve bumps at the bottom give the classic ghost silhouette without any image assets.
+- 80 px hit radius (2.5 × G_R) is essential for 4yo accuracy. Even adults find the smaller radius frustrating. Err very large on touch target.
+- Lullaby trigger at 120s works as a natural session endpoint; 3 repeats of the 8-note motif ≈ 20s total, then silence — not abrupt.
+- Ghost–character continuity: bringing a named character from Karel's published journeys into the Kids zone gives the prototype a narrative identity that "tap a blob" or "tap a circle" lacks.
+
+**Next kid-cycle ideas (Cycle 106)**:
+- `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Parent+child play, easy one-cycle build.
+- `kids-ghost-echo`: tap anywhere on screen → a small echo Ghost appears at that spot, plays a single note, then fades after 4 s. Multiple echo Ghosts can coexist (max 8). The "pond" variant of ghost-lullaby.
+- `92-kids-ghost-lullaby` polish: tapping anywhere outside the ghost spawns a small star that plays a soft note; the ghost reacts by momentarily looking toward the tap.
 
 ### Cycle 102 — character-band build
 
