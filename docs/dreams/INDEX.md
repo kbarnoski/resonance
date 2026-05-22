@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 101 — build)
+## ⭐ Newest (Cycle 102 — kids build)
+
+- **[/dream/91-kids-character-band](/dream/91-kids-character-band)** — Character Band (kids). `demoable`
+  Five animal characters — Frog, Owl, Cat, Fish, Bear — each with their own short melodic phrase in C-major pentatonic. Tap any character to hear them play. Tap two at once and they harmonize naturally (all phrases share a common tonal center). Each character scales up, glows in its color, and emits 18 sparkle particles on tap. Soft ambient pad runs from first tap. Multi-touch native — no wrong combinations. Start screen → single big "Let's Jam!" button → instant play.
+  **"Tap Frog + Bear simultaneously: Frog's quick arpeggio layers over Bear's slow deep phrase like a real piano duo."**
+  Zero deps · Zero API · Zero permissions · Toca Band-inspired.
+  Design notes: `src/app/dream/91-kids-character-band/README.md`
+
+---
+
+## Previous newest (Cycle 101 — build)
 
 - **[/dream/85-spectrogram-paint](/dream/85-spectrogram-paint)** — Spectrogram Paint. `demoable`
   Your sound crystallizes into a living painting. FFT data scrolls as a waterfall (time left→right, pitch bottom→top, log scale 20 Hz–8 kHz) with a Ryoji Ikeda-style hot colormap: silence = black, dim = violet/cyan, peak = white. The spectrogram feeds a **Canvas2D ping-pong feedback loop** — each frame the display decays at 98.4%, zooms 1.002×, and drifts slightly, then the fresh spectrogram is injected additively. Notes leave trails that bloom outward and slowly evaporate. Demo mode animates 11 C-major scale frequencies with LFO envelopes. Mic mode maps your real playing directly to the display.

@@ -89,6 +89,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay — **Karel loved ❤** |
 | 98 | `/dream/88-kids-hum-to-paint` | `demoable` | Hum/sing → glowing blob brush: pitch = color + Y, loudness = radius; 30s session; scan-line melody replay |
 | 100 | `/dream/90-kids-puddle-jumper` | `demoable` | Tap pond → stone splash + pentatonic bloop; ripples expand + reflect off edges; zero permissions; ambient pad |
+| 102 | `/dream/91-kids-character-band` | `demoable` | 5 animal characters, tap each → distinct melodic phrase; Toca Band-style; all phrases harmonize by construction; sparkle particles |
 
 ---
 
@@ -150,6 +151,23 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-character-band`: 5 animal characters, tap each → distinct melodic phrase. Most complex kids prototype yet (requires character art or emoji SVGs). Good Toca Band alternative.
 - `kids-ghost-lullaby`: simplified Ghost journey for kids — Ghost floats, tap → sings a note, drag → glissando + sparkles. Ties kids zone to Karel's published Ghost character.
 - `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Encourages parent+child play.
+
+### Cycle 102 — character-band build
+
+**Built**: `91-kids-character-band`. Key learnings:
+- Pentatonic constraint is a free harmony engine: all five characters' phrases share a C-major pentatonic tonal center, so any combination of simultaneous taps sounds musical. No explicit harmonization logic required — the scale does the work.
+- Incommensurable phrase durations create polyrhythm for free: Frog's 0.15s/note rate and Bear's 0.85s/note rate are coprime enough that their phrases drift in and out of phase naturally. Feels like a real ensemble.
+- `pointer-events: none` on the sparkle canvas is the cleanest multi-touch pattern: the canvas sits in front for visual effects but never intercepts touch events, which fall through to the character buttons.
+- `onPointerDown` with `e.preventDefault()` is the right handler for kids apps — it fires immediately (no 300ms mobile delay), enables multi-touch, and prevents scroll interference.
+- TypeScript control-flow narrowing doesn't persist across nested function definitions: `ctx` declared as `CanvasRenderingContext2D | null` and narrowed in the outer scope still shows as possibly-null inside the inner `drawFrame` function. Fix: cast at declaration site as `CanvasRenderingContext2D` (safe when element is from a real canvas ref).
+- Five-character flex row (`flex-1` + `max-w-[140px]` + `min-w-[68px]`) adapts cleanly from 320px phones to iPad — no media queries needed.
+
+**Next kid-cycle ideas**:
+- `kids-ghost-lullaby`: simplified Ghost journey for kids — Ghost floats, tap → sings a note, drag → glissando + sparkles. Ties kids zone to Karel's published Ghost character.
+- `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Encourages parent+child play.
+- `kids-character-band` polish: longer evolving phrases after repeated taps (call-and-response); character wobble animation while phrase plays.
+
+---
 
 ### Cycle 0 (this doc) — sources
 

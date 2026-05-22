@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 102 — /dream/91-kids-character-band
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 102 % 2 = 0 → **kids cycle**. Building `91-kids-character-band` per explicit queue from Cycle 101 STATE.md.
+
+Reasoning: `kids-character-band` was the top kids candidate queued in both Cycle 100 and Cycle 101 notes. Karel loved both `82-kids-color-piano` and `83-kids-tilt-rain` — both are "one-sense → one beautiful output" loops. Character Band is the multi-character variant of that loop: five distinct voices, each mappable to a color/character identity, harmonizing when tapped together. This is the most complex kids prototype yet and the closest to the Toca Band model Karel asked for.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same loves as prior cycles.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` (tap → immediate sound+visual; same interaction model) and `83-kids-tilt-rain` (characters mapped to colors and pitches). Character Band extends both patterns.
+
+**What I built**:
+- `src/app/dream/91-kids-character-band/page.tsx` — five animal characters (Frog/Owl/Cat/Fish/Bear), each with a distinct 4-note melodic phrase drawn from C-major pentatonic. Tap any character: phrase plays immediately, character scales up + glows, 18 sparkle particles radiate outward. Multi-touch native — two fingers play two characters simultaneously, phrases harmonize by construction. Soft C3/E3/G3 ambient pad runs from first tap. Visual: scale+glow on tap, sparkle Canvas2D overlay with pointer-events:none. Layout: five-character flex row, min 68px per character (scales up to 140px on iPad). Start screen with a single large "Let's Jam!" button.
+- `src/app/dream/91-kids-character-band/README.md` — musical phrase table, design rules applied, polish ideas.
+
+**Build**: `npm run build` passed cleanly. One fix: TypeScript control-flow narrowing loses track of `ctx` inside nested `drawFrame` function — fixed by asserting `canvas.getContext("2d") as CanvasRenderingContext2D` (safe since the element is a real canvas ref).
+
+**What surprised me**: The five phrases harmonize organically at any combination. Frog (C4 E4 G4 C5) + Bear (C3 G3 E3 C3) especially — the Bear's slow, low phrase underneath the Frog's quick arpeggio creates a natural piano accompaniment feel. The phrase durations are incommensurable enough (0.15s vs 0.85s per note) that tapping them together creates a polyrhythmic texture rather than unison. It sounds like a real ensemble even though each phrase is just 4 notes.
+
+**Queued next**:
+1. **Cycle 103 (build)** — `84-wave-fluid` (WebGPU MLS-MPM fluid sim, two-cycle build, most visually spectacular in the queue) OR `86-sound-to-video` (sound → FLUX.2 image → animated, AI-image-inside-AV, Karel's explicit direction). Lean toward `84-wave-fluid` for pure visual surprise; `86-sound-to-video` as the AI-inside-AV play that Karel asked for.
+2. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+---
+
 ## Cycle 101 — /dream/85-spectrogram-paint
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

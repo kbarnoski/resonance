@@ -1,46 +1,40 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 101)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 102)
 
 ## New since yesterday
 
-- **[/dream/85-spectrogram-paint](https://getresonance.vercel.app/dream/85-spectrogram-paint)** — Spectrogram Paint
-  Your sound crystallizes into a living painting in real time. The FFT waterfall scrolls
-  left (time) × bottom-to-top (pitch, log scale 20–8 kHz). Each frame the display decays
-  at 98.4%, zooms 1.002×, and drifts slightly — fresh spectrogram injected additively.
-  Notes leave trails that **bloom outward** and slowly evaporate like breath on glass.
-  Color: black → violet/cyan → white (Ryoji Ikeda *data.matrix* aesthetic).
-  **In mic mode: play a chord → three white lines crystallize, expand, then fade.**
-  Demo mode shows a C-major improvisation with 11 harmonic frequencies. Zero deps · Zero API · 2.76 kB.
+- **[/dream/91-kids-character-band](https://getresonance.vercel.app/dream/91-kids-character-band)** — Character Band (kids)
+  Five animal characters (Frog, Owl, Cat, Fish, Bear), each with their own 4-note melodic
+  phrase in C-major pentatonic. Tap any to play. Tap two simultaneously → they harmonize.
+  Every combination sounds musical by construction — all phrases share a tonal center.
+  **Try Frog + Bear together: quick arpeggio over slow deep bass, feels like a piano duo.**
+  18-sparkle particle burst on each tap, character glows + scales while phrase plays.
+  Zero permissions · Zero deps · Toca Band-inspired but calmer.
 
 ## Surprise finding
 
-Chords "bloom" faster than single notes in the feedback buffer — because the frequency
-columns from each note ADD together (lighter composite). Harmonic richness becomes
-morphology: a C-major chord has a characteristic cluster shape, visually distinct from
-a power chord or an augmented chord. The painting tells you what was played.
+The phrase durations are incommensurable (Frog note = 0.15s, Bear note = 0.85s), so
+tapping them together creates a natural polyrhythm rather than unison. The band sounds
+like a real ensemble even though each character only has 4 notes. Phrase layering is
+emergent — nothing was explicitly programmed to harmonize, the pentatonic constraint does it.
 
-## Love signal
+## Kids zone status
 
-Karel still loves `82-kids-color-piano` and `83-kids-tilt-rain` (votes API unchanged).
-Four kids prototypes now live (82, 83, 88, 90). No new AV loves since last check.
+| Cycle | Prototype | Status | Notes |
+|-------|-----------|--------|-------|
+| 92 | `82-kids-color-piano` | demoable | **Karel loved ❤** |
+| 96 | `83-kids-tilt-rain` | demoable | **Karel loved ❤** |
+| 98 | `88-kids-hum-to-paint` | demoable | mic → voice paints canvas |
+| 100 | `90-kids-puddle-jumper` | demoable | tap pond → ripples; zero permissions |
+| 102 | `91-kids-character-band` | demoable | 5 animals, Toca Band-style |
 
-## In progress / partial
+## Previous (Cycle 101)
 
-- `72-paths-visualizer` — waiting on Welcome Home album recording IDs.
-- `84-wave-fluid` (WebGPU MLS-MPM ocean, 2 cycles) — queued Cycle 103+.
-- `85-spectrogram-paint` — first pass done. Cycle 102 upgrade path: port to WebGPU texture
-  writes + WGSL feedback shader for more complex tonemapping (see README).
-
-## Up next
-
-- **Cycle 102 (kids)**: `kids-character-band` — 5 animal characters, tap each → distinct
-  melodic phrase. Toca Band-style but Resonance-toned (calmer, piano-rooted).
-- **Cycle 103 (build)**: `84-wave-fluid` (MLS-MPM WebGPU ocean) OR `86-sound-to-video`
-  (play piano → FLUX.2 image → LTX-2.3 video, Karel's "AI image inside AV" direction).
+- **[/dream/85-spectrogram-paint](https://getresonance.vercel.app/dream/85-spectrogram-paint)** — Spectrogram Paint
+  FFT waterfall + Canvas2D ping-pong feedback loop. Ryoji Ikeda hot monochrome colormap.
+  Chords bloom distinctively: lighter composite causes harmonic richness to become morphology.
 
 ## Open questions for Karel
 
-- **Welcome Home recording IDs** → needed to build `72-paths-visualizer`.
-- **Spectrogram paint feel**: does the decay speed (2 s trail) feel right, or too fast/slow?
-  The `decay` constant (0.984) in the page is easy to tune.
-- **WebGPU upgrade**: worth spending a cycle on the WGSL port of 85, or is Canvas2D quality sufficient?
-- **Any new loves?** Would shape which direction to deepen next.
+1. **Welcome Home album IDs** — `72-paths-visualizer` is queued to visualize your actual piano recordings but needs the Supabase audio URL pattern for `journey_paths` tracks.
+2. **Cycle 103 direction** — `84-wave-fluid` (WebGPU MLS-MPM fluid, spectacular visuals, 2 cycles) vs `86-sound-to-video` (mic → FLUX.2 image → animated, the "AI image inside AV" direction you asked for). Which is higher priority?
+3. **Any new loves?** Votes API still shows only `82` and `83`. Love signal shapes what to deepen.
