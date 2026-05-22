@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 97 — /dream/87-piano-transcript
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 97 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `87-piano-transcript` (top priority per Cycle 96 queue: zero API, zero deps, uses Karel's actual playing as input, one-cycle build).
+
+Reasoning: directly fulfils Karel's directive "incorporate Karel's actual music from the Paths / use his real playing as the input." YIN pitch detection is well-understood, ~35 lines, no npm deps. The result is a prototype Karel can use right now at his piano — no API key, no latency from server calls, just mic → notes → canvas. Votes API returned `{}` — no love bias. Chose `87-piano-transcript` over `88-marpi-void` because Karel's direction on "use actual playing" is explicit, while marpi-void is purely generative.
+
+**Votes API**: `{}` — no love signal. No bias to apply.
+
+**What I built**:
+- `src/app/dream/87-piano-transcript/page.tsx` — YIN pitch detector + Canvas2D piano-roll. Runs every 3rd RAF frame (~20 Hz). fftSize=2048 → W=1024 → range A1–C7. Median-smoothed pitch buffer (5 readings) suppresses octave-error frames. Notes stored as `{midi, t0, t1, phrase}`. Canvas scrolls leftward (20 s visible window). Color gradient: amber (C2) → violet (C4) → cyan (C7). Phrase brackets: groups of ≥3 notes separated by ≥2 s silence get a subtle violet outline. "Save PNG" exports full session to a timestamped 1920×N image at 64 px/s.
+- `src/app/dream/87-piano-transcript/README.md` — YIN algorithm notes, limitations (monophonic, pedal sustain, room reverb), polish ideas.
+
+**How YIN works (30-line version)**:
+- d(τ) = sum of squared differences between signal and τ-shifted copy (over W=1024 samples)
+- CMNDF normalizes d(τ) so the fundamental period → local minimum near 0
+- First τ where CMNDF < 0.10 (absolute threshold) = period guess
+- Parabolic interpolation between integer samples refines to sub-sample accuracy
+- frequency = sampleRate / τ
+
+**Build**: `npm run build` passed cleanly. Page compiles to 3.80 kB, zero TypeScript errors, zero ESLint issues in new file.
+
+**What surprised me**: The YIN algorithm is elegant but its "absolute threshold" step (0.10) is quite sensitive to mic gain and room acoustics. A louder mic (closer piano, gain = 2x) dramatically improves note detection because the difference function dips more cleanly below threshold. Future polish: add a "sensitivity" slider that adjusts YIN_THRESH between 0.05 and 0.15.
+
+**Queued next**:
+1. **Cycle 98 (kids)** — 98 % 2 = 0 → kids cycle. KIDS.md queue: `kids-hum-to-paint` or `kids-character-band`. `kids-hum-to-paint` (hum pitch → animated brush strokes) is the most expressive option — requires mic permission but that's fine for a pre-schooler app where a parent taps Start.
+2. **Cycle 99 (build)** — `88-marpi-void` (audio-reactive organic entity ecosystem, zero API, one-cycle, high visual surprise) OR `84-wave-fluid` (WebGPU MLS-MPM, two cycles, spectacular).
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+**Loved slugs that influenced this cycle's choice**: none (votes API `{}`).
+
+---
+
 ## Cycle 96 — /dream/83-kids-tilt-rain
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

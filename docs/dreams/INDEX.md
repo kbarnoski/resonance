@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 96 — kids build)
+## ⭐ Newest (Cycle 97 — build)
+
+- **[/dream/87-piano-transcript](/dream/87-piano-transcript)** — Piano Transcript. `demoable`
+  Play piano into the mic — the prototype writes while you play. YIN pitch detection (~35 lines,
+  zero deps) converts each note to a filled rectangle on a scrolling Canvas2D piano roll. X axis = time
+  (20 s visible window, scrolls leftward), Y axis = MIDI pitch (C2–C7). Color gradient: warm amber at the
+  low end, Resonance violet in the middle registers, cool cyan at the top.
+  Phrases (≥2 s of silence between groups) get a subtle violet bracket around them.
+  "Save PNG" exports the full session to a timestamped 1920×N image at 64 px/second.
+  YIN runs every 3rd RAF frame (~20 Hz); pitch median-smoothed over 5 readings to suppress octave errors.
+  **"This prototype writes while you play — a permanent record of your session."**
+  Zero deps · Zero API · 3.80 kB.
+  Design notes: `src/app/dream/87-piano-transcript/README.md`
+
+---
+
+## Previous newest (Cycle 96 — kids build)
 
 - **[/dream/83-kids-tilt-rain](/dream/83-kids-tilt-rain)** — Rain Catcher (kids). `demoable`
   Hold the iPad like a tray and tilt left/right to slide a glowing bowl across the screen. Colored
