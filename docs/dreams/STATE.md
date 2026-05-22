@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 117 — research
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked (`76-cymatics-on-piano-path` still awaiting Welcome Home track IDs — not a code blocker).
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 117 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Ideas queue check** — last research was Cycle 95 (22 cycles ago, far past the 3+ cycle threshold). Remaining unbuilt IDEAS.md entries are largely blocked (GEMINI_API_KEY: `llm-pattern`, `30-lyria-jam`; CDN dep: `31-gesture-music`; track IDs: `72`, `76`; budget approval: `veo3-ghost`). Queue thin for immediately buildable non-blocked items. **Research cycle triggered.**
+
+Reasoning: 22 cycles since last research (Cycle 95). Research threshold is ≥3 cycles. The IDEAS.md queue had 5 seeds from Cycle 95 research and all 5 are now built (wave-fluid, sound-to-video, piano-transcript, marpi-void, spectrogram-paint). Without fresh research, the next several cycles would be forced into blocked items or rework. A research cycle now replenishes the queue with 5 new immediately buildable seeds spanning audio-camera coupling, WebGPU presence-driven fluid, guided listening, and cinematic beat-cut camera.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged from Cycle 116. Both loves are kids prototypes.
+
+**What I researched**:
+- §171: Veo 3 on fal.ai — $0.40/s Fast with native audio, endpoint `fal-ai/veo3`, 1080p. Best quality option for ghost animation. Closes the long-queued `ghost-animate` gap.
+- §172: Seedance 2.0 — ByteDance `bytedance/seedance-2.0/image-to-video`, $0.11–0.14/s native audio+video. Budget-friendly alternative to Veo 3.
+- §173: ElevenMusic — ElevenLabs AI music API, April 1, 2026. 7 songs/day free. Text → full song with vocals. Fourth music generation backend candidate.
+- §174: Artisans d'Idées (Immersive Garden, Awwwards SOTD 2026) — "audio coupled to camera state instead of a clock." Navigation IS music. Paradigm shift inspires `camera-song`.
+- §175: Memo Akten "The Thinking Ocean" (Whitney Museum artport, February 3, 2026) — WebGPU fluid driven by embodied presence → audio synthesis from velocity field. "The ocean embodies agency." Inspires `ocean-presence`.
+- §176: DATALAND (Refik Anadol, opening June 20, 2026, Los Angeles) — World's first Museum of AI Arts. "Large Nature Model" trained on ecological data. Multi-species ecosystem inspires `ecosystem-sim`.
+- §177: Elekktronaut TouchDesigner Tutorial #65 (May 12, 2026) — particlesGPU + camSequencer hard-cut beats. Cinematic rhythm-synced camera snap, not smooth orbit. Inspires `beat-cut`.
+
+**5 new IDEAS.md seeds queued**:
+1. `camera-song` — 6 journey-theme orbs in R3F, camera azimuth selects in-focus orb, HRTF PannerNode gain falloff, orbiting mouse = shifting music. §174.
+2. `ocean-presence` — WebGPU fluid driven by mouse presence (not audio input); fluid velocity → audio synthesis. "The fluid thinks in sound." §175. Two-cycle build.
+3. `veo3-ghost` — Ghost LoRA image → Veo 3 Fast cinematic video with native audio, ~$2–3.20/clip. Admin-only gate. Needs Karel budget approval. §171.
+4. `listen-guide` — Guided listening of Karel's Paths recordings; 6 frequency-attention segments, attention lens highlights each band; "Focus on the bass register." §165 + §175.
+5. `beat-cut` — Particle flock + 6 preset camera angles + onset detector snaps camera on beat (hard cut, not lerp). TD camSequencer concept ported to R3F/drei. §177.
+
+**Build**: Research cycle — no prototype built. `npm run build` confirmed clean (docs-only changes).
+
+**Queued next**:
+1. **Cycle 118 (kids)** — 118 % 2 = 0 → kids cycle. No kids items in the new seeds; check IDEAS.md for kids-labeled entries or spawn a fresh kids prototype continuing the spatial/rhythmic arc.
+2. **Cycle 119 (build)** — First of the 5 new seeds. `camera-song` or `listen-guide` are highest priority (zero deps, zero API, one-cycle builds; `listen-guide` directly uses Karel's real recordings).
+
+---
+
 ## Cycle 116 — /dream/99-kids-panning-safari
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

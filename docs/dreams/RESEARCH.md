@@ -1731,3 +1731,79 @@ Open-source Python library for real-time music alignment ("score following") —
 
 **Could become a prototype**: **`87-piano-transcript`** — real-time piano → flowing score transcription. Use YIN pitch detection (§156) + onset detection to capture note events from mic, build a running note list. Render as a living score: a Canvas2D "paper roll" that grows rightward as notes arrive. Each note drawn as a filled rectangle (height = pitch, width = duration). Color gradient: low notes = warm amber, high notes = cool violet (Resonance color tokens). When a phrase resolves (2-beat rest), the phrase is "finalized" with a subtle glow. The score accumulates over the session — by the end of a 5-minute improvisation you see the whole piece rendered as a piano-roll score. "Watch your improvisation become notation in real time." Zero API, zero deps, pure Web Audio + Canvas2D. One-cycle build. Aligns with Karel's direction to "use his real music as input" — this prototype captures whatever he plays live.
 
+
+---
+
+## 2026-05-22 — Cycle 117 research sweep
+
+### 171. Veo 3 on fal.ai — Native Audio Video Generation (April–May 2026)
+**Source**: https://fal.ai/models/fal-ai/veo3
+
+Google's Veo 3 is now available on fal.ai. Standard endpoint (`fal-ai/veo3`): $0.50/s without audio, $0.75/s with native audio. Fast endpoint: $0.25/s without audio, $0.40/s with native audio. Native synchronized audio (dialogue, ambience, foley, music) generated in the same pass as the video — not post-processed or added separately. Text-to-video with 1080p output. Most expensive but highest quality available video generation option as of 2026.
+
+**Relevance to sandbox**: The long-queued `ghost-animate` idea (cinematic Ghost short film) now has a clear implementation path. Ghost LoRA image → Veo 3 Fast ($0.40/s × 5–8s = $2–3.20/clip) generates a cinematic animated sequence with atmospheric audio synchronized. Budget per clip is ~$2–3.20. Admin-only gate via `guard(req)`. This closes the "Ghost needs motion" gap identified in the original brief. Inspires **`veo3-ghost`** prototype.
+
+---
+
+### 172. Seedance 2.0 on fal.ai — Budget Audio+Video (April 9, 2026)
+**Source**: https://fal.ai/models/bytedance/seedance-2.0/image-to-video
+
+ByteDance's Seedance 2.0 unified audio-video model. Endpoint: `bytedance/seedance-2.0/image-to-video`. Native audio + video in a single generation pass. Pricing: Fast variant $0.11–0.14/s including audio. Supports multi-shot editing and up to 9 reference images as keyframes. Director-level camera control. The most budget-friendly native audio+video option — approximately 3× cheaper than Veo 3 Fast.
+
+**Relevance to sandbox**: For `veo3-ghost`, Seedance 2.0 is a strong budget alternative to Veo 3 (same native audio capability at ~1/3 the cost per second). A comparison mode (Seedance vs. Veo 3 Fast, same Ghost prompt) would be high-signal for Karel — analogous to the `81-cassette-speed` CassetteAI/ACE-Step comparison. Could extend `veo3-ghost` to a 2-panel comparison (Seedance Fast / Veo 3 Fast) if budget is approved.
+
+---
+
+### 173. ElevenMusic — AI Music Generation App and API (April 1, 2026)
+**Source**: ElevenLabs product launch, April 2026
+
+ElevenLabs launched ElevenMusic, an AI music generation application and API. Free tier: 7 songs per day via iOS app + API access. Text prompt → full song with vocals, instrumentation, and production. Pro tier: $9.99/mo for 500 tracks/mo. The API follows ElevenLabs' standard authentication pattern (ELEVENLABS_API_KEY, same as voice TTS). Quality focus: ElevenLabs positions ElevenMusic as production-quality music, not sketch-quality.
+
+**Relevance to sandbox**: A fourth music generation backend for the sandbox alongside ACE-Step, CassetteAI, and existing voice TTS. Unlike ACE-Step (instrumental only) and CassetteAI (fast sketches), ElevenMusic generates full songs with vocals. Directly enables a `compose` upgrade for voiced music. The free tier (7/day) makes prototyping budget-friendly. Requires ELEVENLABS_API_KEY — if already in the Vercel environment (ElevenLabs TTS is integrated in Ghost prototypes, so the key may already be present), this is immediately buildable.
+
+---
+
+### 174. Artisans d'Idées — Immersive Garden (Awwwards SOTD 2026)
+**Source**: https://artisansdidees.com · Awwwards Site of the Day 2026
+
+Immersive Garden's "Artisans d'Idées" website was awarded Awwwards Site of the Day 2026. Key technique: "rendered almost entirely in shadow, with **audio coupled to camera state instead of a clock**." Every navigation gesture — scroll, orbit, dolly — carries acoustic weight. Sound design by Mooders. The innovation is the paradigm inversion: camera position IS the musical interface. You don't listen to music while navigating; your navigation IS the music. Low camera angle → bass foundation. High camera angle → treble air. Fast orbiting → rapid melodic phrases. Hovering stationary → sustained tones. The three.js scene renders ~12 scene "nodes" (workshop areas), each with its own acoustic identity activated as the camera approaches.
+
+**Relevance to sandbox**: Most novel paradigm found in this research sweep. Directly inspires **`camera-song`**: a React Three Fiber scene with 6 glowing orbs representing Karel's 6 journey themes (Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake, Ghost) arranged in 3D space. Camera azimuth + elevation selects the in-focus orb (front-center, maximum gain). Off-axis orbs receive inverse-angle gain falloff via Web Audio `PannerNode` (HRTF mode). As the user orbits with mouse, the music shifts continuously. "You're not playing music. You're walking through it." Zero new deps (R3F + drei + postprocessing already in the repo). One-cycle build.
+
+---
+
+### 175. Memo Akten — "The Thinking Ocean" (Whitney Museum artport, February 3, 2026)
+**Source**: https://artport.whitney.org/commissions/the-thinking-ocean/
+
+Memo Akten's "The Thinking Ocean," commissioned by the Whitney Museum artport (February 3, 2026). WebGPU + Three.js fluid simulation. "The motion of an abstract human form in the distance generates currents in the habitat — the ocean embodies agency and presence." The human figure's movement through the virtual ocean creates disturbance fields in the fluid. Audio component by Paige Emery — synthesized from the fluid velocity field, not played independently. Part of Akten's Cosmosapience series. The piece simulates a natural body of water shifting between fluid dynamics and computational code. WebGPU Consultant credited.
+
+**Relevance to sandbox**: Presence-driven (not audio-driven) fluid generating audio from velocity — the inverse of the typical audio-reactive pattern. Inspires **`ocean-presence`**: a WebGPU fluid simulation driven by mouse/touch position (cursor = presence disturbance). Fluid flows around/toward the cursor. Fluid velocity field extracts synthesis parameters: high-velocity vortex regions → sine tones proportional to velocity magnitude; dense pressure zones → FM modulation depth; quiet still regions → ambient pad drone. Adapt MLS-MPM approach from `84-wave-fluid` (Cycle 107). Audio emerges from the physics, not from playback. Two-cycle build (WebGPU required).
+
+---
+
+### 176. DATALAND — Refik Anadol Museum of AI Arts (Opening June 20, 2026, Los Angeles)
+**Source**: https://dataland.com · Opening announcement 2026
+
+DATALAND opens June 20, 2026 in Los Angeles — the world's first Museum of AI Arts, founded by Refik Anadol. "Large Nature Model" trained on ecological data from the Smithsonian Institution and Cornell Lab of Ornithology. Featured exhibition: "Machine Dreams: Rainforest" across 5 galleries. The Infinity Room uses "World Models" — generative AI that comprehends real-world physics and spatial dynamics — to create the first immersive environment built using World Models. Each gallery generates emergent imagery from species interaction data: predator-prey relationships, migration patterns, climate cycles.
+
+**Relevance to sandbox**: Multi-species ecosystem with emergent behavior generating both visuals and sound. Inspires **`ecosystem-sim`**: a 2D canvas ecosystem with 3–5 species (modeled as particle swarms, each with distinct behavior rules). Each species is sonified: population density → amplitude of a sustained pad tone, predator-prey interactions → percussive onset events, migration → pitch glide. User introduces disturbance (click = food source or predator event) and watches the ecosystem respond ecologically and acoustically. "The species interact; the sound emerges." Connects to Karel's "Earth Grounding" journey theme. Zero API. Two-cycle build.
+
+---
+
+### 177. Elekktronaut TouchDesigner Tutorial #65 — particlesGPU + camSequencer + CHOPs (May 12, 2026)
+**Source**: https://www.youtube.com/@Elekktronaut / Tutorial #65
+
+New Elekktronaut tutorial (May 12, 2026): extending the foundational audio-reactive particle cloud with **camSequencer** — a camera animation sequencing tool for TouchDesigner. Defines 6 preset camera positions as keyframes, uses a CHOP-driven trigger (onset beat detection from audio) to snap the camera hard to the next preset on each beat. The hard cut (zero interpolation) is intentional — it creates a cinematic "montage" effect vs. the smooth orbital follow common in music videos. Combined with particlesGPU, the result looks like professional VJ footage: particles flocking, hard-cut camera angles synced to drums. @FunctionStore's camSequencer tool credited. Tutorial available to Patreon supporters.
+
+**Relevance to sandbox**: Direct inspiration for **`beat-cut`**: R3F particle flock (6,000 particles, Boids rules from `75-houdini-particle-flock` rebuilt standalone) + 6 preset camera positions as azimuth/elevation pairs (one per journey theme). An onset detector fires → `useFrame` immediately snaps drei `OrbitControls` to the next preset (no lerp — hard cut). Inter-onset tempo sets a cooldown so rapid beats snap fast; slow music changes angles slowly. Demo mode: 6 LFO oscillators at varied rates. Mic mode: live piano/drumming drives the cuts. Zero new deps (R3F + drei already installed). One-cycle build.
+
+---
+
+Key findings from Cycle 117 (2026-05-22):
+- Veo 3 on fal.ai (§171) — $0.40/s Fast with native audio, `fal-ai/veo3`. Closes the ghost-animate gap. Inspires `veo3-ghost`.
+- Seedance 2.0 (§172) — $0.11–0.14/s native audio+video, budget Veo 3 alternative. Ghost comparison candidate.
+- ElevenMusic (§173) — ElevenLabs music API, April 2026, 7/day free, vocals included. Fourth music backend candidate.
+- Artisans d'Idées (§174) — camera state IS the music interface (Awwwards SOTD 2026). Navigation = composition. Inspires `camera-song` (6 journey orbs, HRTF gain falloff by angle).
+- Memo Akten "The Thinking Ocean" (§175) — presence-driven WebGPU fluid → audio from velocity field. Inspires `ocean-presence`.
+- DATALAND (§176) — Refik Anadol Museum of AI Arts, June 2026, multi-species ecosystem + World Models. Inspires `ecosystem-sim`.
+- Elekktronaut TD Tutorial #65 (§177) — camSequencer hard-cut beats. Inspires `beat-cut` (particles + onset-snapped camera presets, hard cut not orbit).
