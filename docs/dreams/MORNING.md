@@ -1,28 +1,26 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 111)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 112)
 
 ## New since yesterday
 
+- **[/dream/97-kids-star-catch](https://getresonance.vercel.app/dream/97-kids-star-catch)** — Star Catch (kids)
+  Colorful pentatonic stars fall slowly from a twinkling night sky. Tap one → it bursts into sparkles
+  and plays its note. After 3 catches, "▶ replay" appears — tap it to hear the melody you've built.
+  Up to 16 notes, then replay as many times as you like.
+
+  **Why open this**: ninth kids prototype, fills a gap none of the others cover — a gentle "catch and collect"
+  mechanic that slowly builds a melody the child authored. The stars fall slowly enough for 4yo motor
+  accuracy (12–20s per screen), generous hit radius (52–64px effective). No permissions, no mic, works
+  on any device immediately. Different interaction model from all 8 prior kids prototypes: this one is
+  about accumulation over time, not immediate reaction.
+
+  **Hand to a kid**: first tap starts music. Stars fall. They'll figure it out in 5 seconds.
+
+## Previous (Cycle 111 — build)
+
 - **[/dream/96-projection-mapping-sandbox](https://getresonance.vercel.app/dream/96-projection-mapping-sandbox)** — Projection Mapping Sandbox
-  WebGPU feedback shader warped onto any 4-corner shape you draw on screen.
-  This is the venue installation tool you asked for — drag the TL/TR/BR/BL corner handles
-  onto a wall corner, arch, or angled screen surface and the journey visual fills it live.
-
-  **How to experience it**: Open on desktop Chrome → hit "Calibrate" → drag the four colored
-  dots to the corners of whatever surface you want to project onto (or just pull them into an
-  interesting quadrilateral). Hit "Demo" for audio reactivity. The black area outside the quad
-  goes dark — exactly what a real projector would show.
-
-  **Why open this**: You've been asking about installation/venue mode for months. This is the
-  GPU primitive that makes it possible: define the projection surface by dragging four points,
-  the shader maps itself to fill it using bilinear inverse mapping. Edge blend adds soft
-  fade-out at the quad margins (standard projection technique for multi-projector overlap).
-  Rotate/zoom/decay sliders let you tune the feedback feel. Three color themes: Cosmic, Earth, Ocean.
-
-## Previous (Cycle 110 — kids)
-
-- **[/dream/95-kids-breath-bubbles](https://getresonance.vercel.app/dream/95-kids-breath-bubbles)** — Breath Bubbles (kids)
-  Blow into the mic → colorful soap bubbles float upward and pop with pentatonic dings.
-  Tap to drop manual bubbles. Demo mode auto-breathes. Zero permissions needed for demo.
+  WebGPU feedback shader warped onto any 4-corner quad you define on screen.
+  Calibrate → drag TL/TR/BR/BL handles onto a wall, arch, or angled screen → journey visual fills it.
+  This is the venue installation primitive you asked for. Edge blend handles multi-projector overlap.
 
 ## Kids zone — full status
 
@@ -37,6 +35,7 @@
 | 106 | `93-kids-share-screen` | demoable | Two-finger co-play; pentatonic harmony |
 | 108 | `94-kids-ghost-echo` | demoable | Spirit pond — tap → Ghost appears + fades |
 | 110 | `95-kids-breath-bubbles` | demoable | Blow → bubbles float + pop |
+| 112 | `97-kids-star-catch` | demoable | Tap falling stars → collect notes → replay melody |
 
 ## In progress / partial
 
@@ -46,8 +45,7 @@ Nothing blocked. Full queue in IDEAS.md.
 
 1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer`
    want to use your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **New loves?** Votes API still shows only `82` and `83`. Anything worth deepening?
-   `96-projection-mapping-sandbox`, `75-houdini-particle-flock`, `84-wave-fluid`,
-   `94-kids-ghost-echo`, `95-kids-breath-bubbles` are all fresh to try.
+2. **New loves?** Votes API shows only `82` and `83`. Anything worth deepening?
+   Recent builds to try: `96-projection-mapping-sandbox`, `75-houdini-particle-flock`,
+   `97-kids-star-catch`, `95-kids-breath-bubbles`, `94-kids-ghost-echo`.
 3. **Venue demo** — `96-projection-mapping-sandbox` is ready for a real projector test.
-   If you have a surface in mind, the corner calibration should get you there in ~30 seconds.

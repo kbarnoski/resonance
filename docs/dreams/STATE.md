@@ -1,5 +1,36 @@
 # Dream Agent — cycle state
 
+## Cycle 112 — /dream/97-kids-star-catch
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 112 % 2 = 0 → **kids cycle**.
+
+Reasoning: All 9 seeded KIDS.md prototypes are now built. Two options queued by Cycle 111: (a) polish pass on `82-kids-color-piano` (bump text-white/18 hint → text-white/55), or (b) new kids prototype. Chose a new prototype because the diff for a typography-only polish is one line, which is a poor use of a full cycle. The missing interaction model in the kids set is "accumulation over time" — all 9 existing prototypes produce immediate reaction (tap → instant sound). None build a persistent artifact across a session. `97-kids-star-catch` fills this gap: stars fall slowly, each tap adds a note to a growing melody, replay plays it back. KIDS.md design principles met: zero permissions, zero reading, 52–64px effective hit radius, no fail state (stars that aren't caught just dissolve at the bottom), immediate audio response on tap. Same C-major pentatonic + 5-color palette as `82-kids-color-piano` for cross-prototype familiarity.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes, reinforcing every-other-cycle cadence.
+
+**Loved slugs that influenced this choice**: Both loves (`82`, `83`) are kids prototypes. `82-kids-color-piano` (tap → immediate pentatonic note, 5 colors) is the direct ancestor — `97-kids-star-catch` reuses the same NOTES array and sound synthesis, extending it with a falling-object catch mechanic and melody accumulation.
+
+**What I built**:
+- `src/app/dream/97-kids-star-catch/page.tsx` — Full-screen fixed canvas. RAF loop spawns 5-pointed colored stars (38–50px radius) that fall at 0.5–0.85 px per 60fps frame (12–20 s/screen). Five note types (C4 red, E4 yellow, G4 teal, A4 blue, C5 purple) — matching `82-kids-color-piano` palette. Hit detection: `Math.hypot(cssX - star.x, cssY - star.y) < star.radius + 14` → effective 52–64px hit radius for 4yo accuracy. Caught star: fades over ~18 frames + 18 sparkle particles (gravity-arced radial burst with glow). Soft ambient C3/E3/G3 pad from first tap (AudioContext created on first `pointerdown`). Caught melody: `caughtRef` records up to 16 `noteIdx` values; `setCaughtCount` triggers re-render showing colored dots strip. `▶ replay` button appears at 3+ catches; sequential `setTimeout` loop calls `ringNote(actx, freq)` at 300ms intervals. 80 background twinkling stars (hash via `Math.sin` per star + time offset). `drawStarPath` draws 5-pointed star (outer:inner = 1:0.42, starting top-center). 2.54 kB.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The pacing of star falls creates a natural tension-and-release rhythm even without any explicit timing design. Stars at different X positions and speeds create a constellation of 4–6 stars scattered across the sky at any moment, which looks richer than expected for so little code. The sparkle burst uses gravity (`sp.vy += 0.07 * dt`) which gives the particles a parabolic arc — they rise then fall like the star shattered into a fountain. Without the gravity term they'd fly radially outward and look flat.
+
+The "caught melody dots" at the bottom encode the musical structure visually — a run of same-color dots means a repeated note, alternating colors suggest melodic variety. Karel could read a child's session at a glance.
+
+**Queued next**:
+1. **Cycle 113 (build)** — 113 % 2 = 1 → NOT a kids cycle. Options: `76-cymatics-on-piano-path` if Welcome Home track IDs arrive; else new non-kids prototype from IDEAS.md queue (e.g. a WebGPU compute or Journey theme prototype).
+2. **Cycle 114 (kids)** — Polish pass on `82-kids-color-piano`: bump hint text `rgba(255,255,255,0.18)` → `rgba(255,255,255,0.55)` per AGENT.md typography rules (text-white/55 minimum for tertiary text). One-line diff, readability gain.
+3. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 111 — /dream/96-projection-mapping-sandbox
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 111 — build)
+## ⭐ Newest (Cycle 112 — kids build)
+
+- **[/dream/97-kids-star-catch](/dream/97-kids-star-catch)** — Star Catch (kids). `demoable`
+  Colorful 5-pointed stars fall slowly from a twinkling night sky — each star is a note in C-major pentatonic. Tap any star before it drifts off the bottom: it bursts into sparkles and plays its note. After 3 catches a **▶ replay** button appears; tap it to hear your collected melody played back in sequence (up to 16 notes). Stars fall at deliberate pace (12–20 seconds per screen) with generous 52–64 px effective hit radius for 4yo motor accuracy. Ambient C/E/G pad from first tap. No permissions, no mic, no API, no reading required.
+  **"Each star you catch adds a note — catch enough and you've written a song."**
+  Zero permissions · Zero API · Zero deps · 2.54 kB.
+  Design notes: `src/app/dream/97-kids-star-catch/README.md`
+
+---
+
+## Previous (Cycle 111 — build)
 
 - **[/dream/96-projection-mapping-sandbox](/dream/96-projection-mapping-sandbox)** — Projection Mapping Sandbox. `demoable`
   WebGPU two-pass renderer for live venue projection mapping. Tap **Calibrate** and drag the four colored corner handles (TL/TR/BR/BL) to match any real-world surface shape — a wall, a screen, an arch. The journey feedback shader is warped onto the quad using bilinear inverse mapping (8-step Newton iteration) computed entirely on the GPU. Edge blend slider adds a soft vignette at the quad margins (professional keystone-correction look). Three visual themes: Cosmic, Earth, Ocean. Audio-reactive: bass drives bloom, treble adds edge shimmer, onsets inject color pulses. Demo mode or live mic.
