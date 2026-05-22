@@ -85,8 +85,9 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading |
-| 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay |
+| 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading — **Karel loved ❤** |
+| 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay — **Karel loved ❤** |
+| 98 | `/dream/88-kids-hum-to-paint` | `demoable` | Hum/sing → glowing blob brush: pitch = color + Y, loudness = radius; 30s session; scan-line melody replay |
 
 ---
 
@@ -116,9 +117,22 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - Golden-ratio spiral for star positions (no per-frame array allocation): `sx = (i * 0.618) % 1 * W`. Runs at 60fps with no garbage.
 
 **Next kid-cycle ideas**:
-- `kids-hum-to-paint`: mic pitch → brush strokes. Core algorithm proven in `13-piano-canvas`. Kids version: bigger strokes, brighter colors, Replay-as-music at end.
+- `kids-puddle-jumper`: tap to splash → ripples + sound bounce off edges. Calming infinite play. All-touch, no mic — good counterpoint to the voice-heavy `88-kids-hum-to-paint`.
 - `kids-character-band`: 5 animal characters, tap each → melodic phrase. Toca Band-style but calmer.
-- `kids-puddle-jumper`: tap to splash → ripples + sound bounce off edges. Calming infinite play.
+
+### Cycle 98 — hum-to-paint build
+
+**Built**: `88-kids-hum-to-paint`. Key learnings:
+- The autocorrelation pitch detector (`13-piano-canvas` lineage) works well for sustained hums; confidence threshold of 0.82 is right — it's conservative enough to ignore room noise and breath but fires quickly on a clear hum. Same `Float32Array(new ArrayBuffer(n * 4))` + cast-to-`Float32Array<ArrayBuffer>` pattern required as all mic prototypes.
+- `ctx.shadowBlur` is the right tool for the glow effect — one property, handles the entire "laser beam painted on a dark canvas" aesthetic without shader complexity.
+- Log-scale pitch → hue (0–270°) creates a very natural rainbow: hum low = warm, hum high = cool. No color theory decision-making needed; physics does it.
+- Scan-line replay via a `<div>` rather than canvas redraw keeps the painting intact and is simpler than per-frame canvas operations. `left: X%` CSS with `setInterval` at 32ms gives smooth enough motion at this scale.
+- The "painting IS the score" insight is worth exploring further: the x axis IS time, and the scan line IS the read head. A future version could let the child drag the scan line to "scrub" the melody.
+- Karel loved both previous kids prototypes — the every-other-cycle cadence is justified. Continuing.
+
+**Next kid-cycle ideas**:
+- `kids-puddle-jumper`: tap canvas → stone splash → expanding ripple rings → note; ripples bounce off edges; building soundscape. All-touch, no mic. Most calming prototype in the queue.
+- `kids-character-band`: 5 animal characters, tap each → melodic phrase. Toca Band-style but calmer.
 
 ### Cycle 0 (this doc) — sources
 

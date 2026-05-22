@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 97 — build)
+## ⭐ Newest (Cycle 98 — kids build)
+
+- **[/dream/88-kids-hum-to-paint](/dream/88-kids-hum-to-paint)** — Hum to Paint (kids). `demoable`
+  Hum or sing into the mic — your voice paints a glowing blob on the canvas in real time.
+  Pitch maps to vertical position (high voice = top, low voice = bottom) and to color (low=red/orange, mid=green, high=blue/violet).
+  Loudness maps to brush size. After 30 seconds (or tap "Replay" once 5+ notes are recorded), a white scan line sweeps
+  the painting left-to-right while the melody plays back as warm triangle-wave piano tones.
+  Background C/E/G pad keeps the world alive between hums. No reading required, no fail state.
+  **"The most embodied kids prototype yet — your breath IS the instrument."**
+  Zero deps · Zero API · 2.96 kB.
+  Design notes: `src/app/dream/88-kids-hum-to-paint/README.md`
+
+---
+
+## Previous newest (Cycle 97 — build)
 
 - **[/dream/87-piano-transcript](/dream/87-piano-transcript)** — Piano Transcript. `demoable`
   Play piano into the mic — the prototype writes while you play. YIN pitch detection (~35 lines,

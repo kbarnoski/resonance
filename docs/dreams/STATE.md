@@ -1,5 +1,47 @@
 # Dream Agent — cycle state
 
+## Cycle 98 — /dream/88-kids-hum-to-paint
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 98 % 2 = 0 → **kids cycle**. Building `88-kids-hum-to-paint` per KIDS.md queue and Cycle 97 notes.
+
+Reasoning: `kids-hum-to-paint` is the most embodied option in the KIDS.md queue — voice/breath as the instrument is the most accessible sensorimotor input for a 4yo. Karel loved both `82-kids-color-piano` and `83-kids-tilt-rain` (votes API returned `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}`). Both loved prototypes have a "one sense → one beautiful output" loop. `hum-to-paint` is the vocal/visual version of that loop.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — Karel loves both kids prototypes so far. Strong signal to continue kids theme. Both loved prototypes influenced this cycle's choice: they confirm the "single-sense → immediate colorful feedback" loop resonates with Karel.
+
+**What I built**:
+- `src/app/dream/88-kids-hum-to-paint/page.tsx` — full-screen dark canvas, mic autocorrelation pitch → glowing brush blob, Y position = pitch height, color = pitch hue (red→orange→green→blue→violet across voice range 80–700 Hz), loudness = blob radius. Brush advances 1px/frame (~60px/s) so a 30s session fills ~1800px. Background C/E/G pad. 30s countdown. After 5+ notes, "Replay ♫" button appears. On replay: Web Audio schedules all sampled notes in order; white scan-line div sweeps the canvas left-to-right as they play.
+- `src/app/dream/88-kids-hum-to-paint/README.md` — design decisions, color mapping table, algorithm description, polish ideas.
+
+**How it works**:
+- Mic: `getUserMedia({audio:true})` on Start tap. iOS/Android requires user gesture — Start button serves as the permission gate (same pattern as `83-kids-tilt-rain`).
+- Autocorrelation pitch (same algorithm as `13-piano-canvas`): 2048-sample window, normalized ACF, first trough + peak detection, parabolic interpolation. RMS gate 0.012. Threshold 0.82 — conservative to avoid false detections.
+- Color: `pitchT` maps log-frequency to 0–1, then hue = `t * 270°`. Full rainbow: red (low) → violet (high).
+- Blob: `ctx.shadowBlur = r * 2.0` creates the glow. Alpha varies 0.48–0.90 with volume. Y position smoothed with α=0.20 EMA so brush glides rather than jitters.
+- Melody sampling: every 28 RAF frames (~2.1 Hz) when pitch is detected → `{freq, x}` stored. Max ~72 notes in 30s.
+- Replay: `scheduleTone` calls pre-schedule all notes via Web Audio API. Scan-line is a `<div>` with `setInterval` updating `left: X%` every 32ms. Total replay duration = `max(3s, noteCount × 0.38s)`.
+
+**Build**: `npm run build` passed cleanly. Page compiles to 2.96 kB, zero TypeScript errors, zero ESLint issues in new file. One fix needed: `Float32Array` constructor type (same as all prior mic prototypes — `new Float32Array(new ArrayBuffer(n * 4))` + cast on `getFloatTimeDomainData`).
+
+**What surprised me**: The scan-line replay feels genuinely magical with the right melody. Because the dots' x positions encode time, the scan line passing over a colorful cluster IS the playback — the painting is literally a score. Karel might want to keep the scan line visible (dimmed) even after replay as a persistent "reading head" overlay.
+
+**Queued next**:
+1. **Cycle 99 (build)** — 99 % 2 = 1 → NOT a kids cycle. Top candidates:
+   - `88-marpi-void` (now `89-marpi-void` — audio-reactive organic entity, Marpi technique, zero API, one-cycle, high visual surprise). Update slug to 89.
+   - `84-wave-fluid` (WebGPU MLS-MPM, two cycles, spectacular visual).
+   - `86-sound-to-video` (uses LTX-2.3 at $0.04/s, requires API call).
+   **Recommend**: `89-marpi-void` — zero API, one cycle, surprise factor is highest in the queue.
+2. **Cycle 100 (kids)** — 100 % 2 = 0 → kids cycle. Queue: `kids-character-band` (5 animal characters, tap = melodic phrase) or `kids-puddle-jumper` (tap → splash ripple + sound). `kids-puddle-jumper` is fully touch-based, no mic, 60fps canvas physics — good counterpoint to the voice-heavy `88-kids-hum-to-paint`.
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` and `83-kids-tilt-rain` (both loved) → continued kids theme; chose `hum-to-paint` as the voice/breath variant.
+
+---
+
 ## Cycle 97 — /dream/87-piano-transcript
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
