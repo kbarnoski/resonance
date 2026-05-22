@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 104 — kids build)
+## ⭐ Newest (Cycle 105 — build)
+
+- **[/dream/73-journey-arc-spread](/dream/73-journey-arc-spread)** — Journey Arc Spread. `demoable`
+  Five of Karel's published journeys — Cosmic Drift, Mycelium Dream, Sacred Resonance, Abyssal Dive, Snowflake — each with a distinct 6-phase arc and visual vocabulary. Tab between journeys; each renders differently: star field background for Cosmic, particle network lines for Mycelium, rotating hexagonal mandala rings for Sacred, sine-wave bands for Ocean, drifting 6-arm snowflakes for Winter. Demo or mic input. Phase timeline at bottom, click to jump. Switch journeys while running.
+  **"The same arc engine feels like a completely different world in each of the five journeys."**
+  Phase names match Karel's published journey phase labels (Starfield/Nebula/Supernova, Spore/Branching/Canopy, etc.). Zero API · Zero deps · 7.49 kB.
+  Design notes: `src/app/dream/73-journey-arc-spread/README.md`
+
+---
+
+## Previous newest (Cycle 104 — kids build)
 
 - **[/dream/92-kids-ghost-lullaby](/dream/92-kids-ghost-lullaby)** — Ghost Lullaby (kids). `demoable`
   Karel's Ghost character floats gently across a starry night sky. Tap her to hear a pentatonic note (pitch varies by Y position). Drag her to hear a glissando — she follows your finger trailing violet sparkles. After 2 minutes she fades softly and a lullaby melody plays (original 8-note C-major pentatonic motif, 3 repeats ≈ 20 s). "Sweet dreams 🌙" overlay appears. Zero permissions · Zero API · Zero deps · Generous 80 px hit radius for 4yo motor accuracy.
