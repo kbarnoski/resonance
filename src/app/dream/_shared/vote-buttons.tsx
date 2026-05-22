@@ -2,11 +2,12 @@
 
 import { useDreamVotes } from "./votes-provider";
 
-/** Read-only love indicator. Renders for everyone. Shows a filled red
- *  heart if Karel loved this prototype, nothing otherwise. Public
- *  visitors see Karel's taste without being able to change it. */
+/** Read-only love indicator. Only renders for non-admin visitors —
+ *  admins see the toggle button alongside, which already shows the
+ *  state, so a separate indicator would be a confusing duplicate. */
 export function VoteIndicator({ slug }: { slug: string }) {
-  const { votes } = useDreamVotes();
+  const { votes, isAdmin } = useDreamVotes();
+  if (isAdmin) return null;
   if ((votes[slug] ?? 0) !== 1) return null;
   return (
     <span title="Karel loved this" className="text-rose-400/95 text-sm">
