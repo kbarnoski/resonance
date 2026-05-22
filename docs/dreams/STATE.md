@@ -1,5 +1,35 @@
 # Dream Agent — cycle state
 
+## Cycle 100 — /dream/90-kids-puddle-jumper
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 100 % 2 = 0 → **kids cycle**. Building `90-kids-puddle-jumper` per KIDS.md queue and Cycle 99 notes.
+
+Reasoning: `kids-puddle-jumper` was explicitly queued as the top kids pick in Cycle 99 STATE.md. It is the most accessible kids prototype in the queue: zero permissions required (no mic, no DeviceOrientation), immediate response on any tap, calming infinite-play aesthetic — a strong contrast to the voice-heavy `88-kids-hum-to-paint`. Karel loved both previous kids prototypes (`82`, `83`); those share the "one sense → one beautiful output" loop; puddle-jumper delivers the tactile/touch variant of that loop.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same loves as prior cycles. Both loved prototypes are kids prototypes; continues to validate the kids cadence. No new loves to bias AV prototype choice.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` and `83-kids-tilt-rain` — both confirm the "immediate sensorimotor feedback" loop resonates with Karel. `kids-puddle-jumper` is the same loop in the touch/physics domain.
+
+**What I built**:
+- `src/app/dream/90-kids-puddle-jumper/page.tsx` — full-screen dark pond canvas. Tap anywhere: pentatonic "bloop" sounds (X position maps left=C3 to right=A4 across 10 notes), bright splash dot appears, three concentric ripple rings expand with additive blending (`"lighter"` composite). Each ripple tracks four wall-hit flags; when the ring first crosses a wall it spawns a ghost ring at the mirror center (e.g. left wall: mirror at `-cx`, alpha×0.42, speed×0.62, depth+1). Reflections are capped at depth 2 to prevent exponential spawning. Total ripple cap: 100. Background C-major pad (C3 E3 G3, gain ~0.02, 10-min duration) runs from first tap. Multi-touch supported natively (each finger's pointerdown fires independently). Zero permissions, zero API, zero npm deps.
+- `src/app/dream/90-kids-puddle-jumper/README.md` — reflection math, sound design, visual parameters table, polish ideas.
+
+**Build**: `npm run build` passed cleanly. Page compiles to 2.35 kB, zero TypeScript errors, zero ESLint issues.
+
+**What surprised me**: The `"lighter"` blend on the pond ripples creates the same emergent white-intersection effect as `89-marpi-void` — where two expanding rings from nearby taps cross, they bloom white for a moment. It's more pronounced here because the rings are thinner lines (less fill area), so the crossing is a precise bright point rather than a diffuse glow. Looks like bioluminescent contact.
+
+**Queued next**:
+1. **Cycle 101 (build)** — 101 % 2 = 1 → NOT a kids cycle. Top candidate: `85-spectrogram-paint` (WebGPU spectrogram texture → feedback shader, TD "Record CHOP → TOP" port, Ryoji Ikeda line-density aesthetic in the browser). High visual surprise; zero API; one-cycle scope. OR `84-wave-fluid` (WebGPU MLS-MPM fluid, two cycles, spectacular visual). Recommend `85-spectrogram-paint` — one cycle, distinct from everything in the lab.
+2. **Cycle 102 (kids)** — 102 % 2 = 0 → kids cycle. `kids-character-band` (5 animal characters, each tap plays distinct melodic phrase, Toca Band-style). Alternative: `kids-ghost-lullaby` (simplified Ghost journey for kids).
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+---
+
 ## Cycle 99 — /dream/89-marpi-void
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

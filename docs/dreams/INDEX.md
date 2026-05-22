@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 99 — build)
+## ⭐ Newest (Cycle 100 — kids build)
+
+- **[/dream/90-kids-puddle-jumper](/dream/90-kids-puddle-jumper)** — Puddle Jumper (kids). `demoable`
+  Tap the pond to drop stones. Each tap plays a pentatonic "bloop" (left=low, right=high) and spawns three staggered ripple rings that expand outward with additive glow. When a ring hits a screen edge it reflects — a dimmer ghost-ring emanates from the mirror point, creating the sense of sound bouncing across the pond. Multiple taps layer into a visual and sonic texture. Ambient C-major pad hums softly in the background. **Zero permissions — no mic, no motion sensor, no consent dialogs.** Touch anywhere, multi-touch supported natively.
+  **"The reflected rings mean the pond never goes silent — earlier splashes keep drifting across the screen."**
+  Zero deps · Zero API · 2.35 kB.
+  Design notes: `src/app/dream/90-kids-puddle-jumper/README.md`
+
+---
+
+## Previous newest (Cycle 99 — build)
 
 - **[/dream/89-marpi-void](/dream/89-marpi-void)** — Void Organism. `demoable`
   A living entity breathes in the void. One founding organism; percussive onsets spawn offspring — after minutes of music a drifting colony fills the space. Arms extend on bass, jitter on treble (smooth noise, no deps). Each organism has a color type (bass=violet, mid=cyan, treble=rose) that determines its survival band; starve it of sound for 15s and it dissolves. Demo mode: LFO breathes the organism autonomously. `globalCompositeOperation = "lighter"` creates emergent white filaments where organisms overlap.

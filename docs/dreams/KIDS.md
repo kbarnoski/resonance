@@ -88,6 +88,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading — **Karel loved ❤** |
 | 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay — **Karel loved ❤** |
 | 98 | `/dream/88-kids-hum-to-paint` | `demoable` | Hum/sing → glowing blob brush: pitch = color + Y, loudness = radius; 30s session; scan-line melody replay |
+| 100 | `/dream/90-kids-puddle-jumper` | `demoable` | Tap pond → stone splash + pentatonic bloop; ripples expand + reflect off edges; zero permissions; ambient pad |
 
 ---
 
@@ -133,6 +134,22 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 **Next kid-cycle ideas**:
 - `kids-puddle-jumper`: tap canvas → stone splash → expanding ripple rings → note; ripples bounce off edges; building soundscape. All-touch, no mic. Most calming prototype in the queue.
 - `kids-character-band`: 5 animal characters, tap each → melodic phrase. Toca Band-style but calmer.
+
+### Cycle 100 — puddle-jumper build
+
+**Built**: `90-kids-puddle-jumper`. Key learnings:
+- Zero-permissions kids prototype is a genuine gap in the existing library: `82` and `83` both require DeviceOrientation or nothing, `88` requires microphone. `90` requires absolutely nothing — first tap works on any device, any browser, any context (airplane mode, shared iPad, no consent dialog). Good to have one prototype at each permission level.
+- The `"lighter"` composite mode works beautifully for thin rings: two crossing ring-lines produce a precise bright point rather than a diffuse glow. Distinct aesthetic from `89-marpi-void`'s fill-based lighter mode.
+- Wall reflection via mirror-center arc: since Canvas2D clips naturally at the canvas boundary, a circle centered outside the canvas only draws its visible arc. This is a free "clipping to bounds" operation — no explicit clipping code needed. The reflected arc starts exactly where the incoming ring intersected the wall.
+- Depth cap of 2 for reflections is the right balance: depth 1 reflections are clearly visible, depth 2 are dim ghosts, and beyond that they'd be imperceptible while still generating work. Removing depth cap entirely would spawn ~4^n ripples per frame for a boundary-hugging ring.
+- Multi-touch support is free with pointer events: each finger generates its own `pointerdown` event. No `touches` array management required. The pentatonic X-mapping means two fingers at different X positions naturally play different notes, enabling spontaneous "chord" play.
+- Pentatonic X-mapping is intuitive: 10 notes (C3–A4) mapped left-to-right makes dragging across the screen a natural glissando. A 4yo won't know what C-major pentatonic is, but will discover that dragging left-to-right sounds like "going up."
+- Ambient pad at gain 0.022 is imperceptible as a separate sound — it only becomes noticeable if all tap sounds are absent. This is the right level: it just makes the silence after tapping feel warm instead of dead.
+
+**Next kid-cycle ideas**:
+- `kids-character-band`: 5 animal characters, tap each → distinct melodic phrase. Most complex kids prototype yet (requires character art or emoji SVGs). Good Toca Band alternative.
+- `kids-ghost-lullaby`: simplified Ghost journey for kids — Ghost floats, tap → sings a note, drag → glissando + sparkles. Ties kids zone to Karel's published Ghost character.
+- `kids-share-screen`: two-finger harmony — each finger gets its own color + voice, voices harmonize at a diatonic interval. Encourages parent+child play.
 
 ### Cycle 0 (this doc) — sources
 
