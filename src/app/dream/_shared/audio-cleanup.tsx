@@ -33,6 +33,38 @@ declare global {
   }
 }
 
+function resumeAll() {
+  if (typeof window === "undefined") return;
+  const state = window.__resonanceAudioCleanup;
+  if (!state) return;
+  for (const ctx of state.contexts) {
+    if (ctx.state === "suspended") {
+      // Fire-and-forget; iOS rejects if not in a gesture but we're
+      // attached to a gesture listener so this is safe.
+      ctx.resume().catch(() => {
+        /* ignore */
+      });
+    }
+  }
+}
+
+function attachGestureListeners() {
+  if (typeof window === "undefined") return;
+  // Use capture so we run before any handler that calls
+  // stopPropagation. Use { once: false } so we resume after every
+  // gesture — prototype navigation creates new contexts.
+  const events: (keyof DocumentEventMap)[] = [
+    "touchstart",
+    "pointerdown",
+    "click",
+    "keydown",
+  ];
+  const handler = () => resumeAll();
+  for (const ev of events) {
+    document.addEventListener(ev, handler, { capture: true, passive: true });
+  }
+}
+
 function ensurePatched() {
   if (typeof window === "undefined") return;
   if (window.__resonanceAudioCleanup?.patched) return;
@@ -52,6 +84,16 @@ function ensurePatched() {
         this.addEventListener("statechange", () => {
           if (this.state === "closed") state.contexts.delete(this);
         });
+        // iOS / Android Chrome create new contexts in "suspended"
+        // state. Try to resume right away — if we're already inside
+        // a user gesture (because the constructor was called from a
+        // click handler), this succeeds immediately. If not, the
+        // gesture listener below will resume on the next tap.
+        if (this.state === "suspended") {
+          this.resume().catch(() => {
+            /* ignore — will resume on next gesture */
+          });
+        }
       }
     };
     window.AudioContext = Patched as typeof AudioContext;
@@ -65,21 +107,23 @@ function ensurePatched() {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       constructor(...args: any[]) {
         super(...args);
-        state.contexts.add(this as unknown as AudioContext);
-        (this as unknown as AudioContext).addEventListener(
-          "statechange",
-          () => {
-            if ((this as unknown as AudioContext).state === "closed") {
-              state.contexts.delete(this as unknown as AudioContext);
-            }
-          }
-        );
+        const self = this as unknown as AudioContext;
+        state.contexts.add(self);
+        self.addEventListener("statechange", () => {
+          if (self.state === "closed") state.contexts.delete(self);
+        });
+        if (self.state === "suspended") {
+          self.resume().catch(() => {
+            /* ignore */
+          });
+        }
       }
     };
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).webkitAudioContext = PatchedWebkit;
   }
 
+  attachGestureListeners();
   state.patched = true;
 }
 
