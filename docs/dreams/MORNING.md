@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 115)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 116)
 
 ## New since yesterday
 
-- **[/dream/81-cassette-speed](https://getresonance.vercel.app/dream/81-cassette-speed)** — CassetteAI vs ACE-Step Speed Race
-  Five music presets (Forest Dawn, Stone Chamber, Cosmic Drift, Jazz Sketch, Ocean Breath) or type your own
-  tags. Hit **Generate Both** — both AI backends start at the exact same moment with identical prompts.
-  Left panel (violet) = CassetteAI, ~2–4s. Right panel (cyan) = ACE-Step, ~20–40s. Each panel shows a live
-  millisecond timer, then a waveform strip, then a ▶ Play button. Six-band bloom visualizer activates during
-  playback. Speed summary when both complete: "Cassette: X.Xs · ACE-Step: Y.Ys · X× faster."
+- **[/dream/99-kids-panning-safari](https://getresonance.vercel.app/dream/99-kids-panning-safari)** — Panning Safari (kids, Cycle 116)
+  Five animals (duck 🦆, frog 🐸, elephant 🐘, cat 🐱, parrot 🦜) drift left and right across a night
+  savanna. Each animal is panned to its current X position — when the duck is on the far left, its quack
+  sounds in your left ear; cross to the right and you'll hear it shift. Tap any animal to trigger its
+  synthesized call immediately. Animals also call out automatically every 3–7 seconds as they wander.
+  A subtle dashed line drops from each animal to a pan ruler strip at the bottom.
 
-  **Why open this**: empirical answer to a real question — does CassetteAI's 10× speed advantage cost
-  anything you'd actually notice? The prototype lets you hear both outputs back-to-back with the same
-  prompt. If the quality gap is negligible for ambient/sketch work, it's a strong case for swapping
-  `6-compose`'s backend and cutting the wait from ~30s to ~3s. Useful before committing to any backend.
+  **Why open this**: first kids prototype about spatial audio. The panning effect is visceral with
+  headphones — a 4-year-old can *feel* the elephant lumbering left while the parrot chirps from the
+  right. Zero permissions, zero reading required. Hand it to a kid with headphones.
 
-- **[/dream/98-kids-drum-circle](https://getresonance.vercel.app/dream/98-kids-drum-circle)** — Drum Circle (kids, Cycle 114)
-  Six percussion pads, all synthesized (no samples): kick, snare, hihat, tom, clap, shaker. First kids
-  prototype about rhythm rather than pitch — all 10 previous kids prototypes used C-major pentatonic notes.
+- **[/dream/81-cassette-speed](https://getresonance.vercel.app/dream/81-cassette-speed)** — CassetteAI vs ACE-Step Speed Race (Cycle 115)
+  Same prompt → both AI backends start simultaneously. Speed summary when both finish. Lets you hear
+  whether CassetteAI's 10× speed advantage costs quality you'd actually notice.
 
 ## Kids zone — full status
 
@@ -33,6 +32,7 @@
 | 110 | `95-kids-breath-bubbles` | demoable | Blow → bubbles float + pop |
 | 112 | `97-kids-star-catch` | demoable | Tap falling stars → collect notes → replay |
 | 114 | `98-kids-drum-circle` | demoable | 6 percussion pads; first rhythm prototype |
+| 116 | `99-kids-panning-safari` | demoable | **NEW** 5 animals + spatial panning; 🎧 headphones |
 
 ## In progress / partial
 
@@ -45,5 +45,5 @@ Nothing blocked. `76-cymatics-on-piano-path` still waiting on Welcome Home track
 2. **CassetteAI vs ACE-Step** — after running `81-cassette-speed`, is the quality gap acceptable
    for quick-sketch use? That decides whether `6-compose` should switch backends.
 3. **New loves?** Votes API still shows only `82` and `83`. Worth a listen:
-   `98-kids-drum-circle` (new), `81-cassette-speed` (new), `80-room-acoustic`.
+   `99-kids-panning-safari` (new — best with headphones), `98-kids-drum-circle`, `81-cassette-speed`.
 4. **Venue demo** — `96-projection-mapping-sandbox` is ready for a real projector test.

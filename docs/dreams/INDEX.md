@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 115 — build)
+## ⭐ Newest (Cycle 116 — kids build)
+
+- **[/dream/99-kids-panning-safari](/dream/99-kids-panning-safari)** — Panning Safari (kids). `demoable`
+  Five animals — duck 🦆, frog 🐸, elephant 🐘, cat 🐱, parrot 🦜 — drift left and right across a night savanna at their own speeds. Each animal is panned to its current X position via `StereoPannerNode`: far left = left ear, far right = right ear, center = center. Tap any animal to trigger its synthesized call at the animal's current pan position. Animals also call automatically every 3–7 seconds as they wander. Distinct synthesized voices: duck = bandpass noise quack; frog = AM sine ribbit (140 Hz carrier modulated at 18 Hz); elephant = low sawtooth rumble through 280 Hz lowpass; cat = sine glide 580→340 Hz; parrot = chirp 1400→1900→850 Hz. Dashed drop-line from each animal to a pan ruler strip at the bottom; colored dot on ruler shows exact pan position. Background: night sky, ground strip, 38 static stars. Soft ambient pad from first tap. Hit radius 62 px for 4yo accuracy.
+  **"First kids prototype about spatial audio — tap the elephant on the left, its rumble fills your left ear."** Zero permissions · Zero API · Zero deps · 2.61 kB. Best with headphones.
+
+---
+
+## Previous (Cycle 115 — build)
 
 - **[/dream/81-cassette-speed](/dream/81-cassette-speed)** — CassetteAI vs ACE-Step Speed Race. `demoable`
   Side-by-side speed and quality comparison of two FAL music-generation backends. Pick one of five presets (Forest Dawn, Stone Chamber, Cosmic Drift, Jazz Sketch, Ocean Breath) or type freeform tags, then hit **Generate Both** — both backends start simultaneously. Left panel (violet) runs CassetteAI (`cassetteai/music-generator`, distilled model, ~2s); right panel (cyan) runs ACE-Step (`fal-ai/ace-step`, full diffusion, ~20–40s). Each panel shows a live millisecond timer, then a waveform strip on completion, then a ▶ Play button. Playback feeds a six-band bloom visualizer (violet→cyan→green→yellow→orange→magenta). When both complete a speed summary line appears: "Cassette: X.Xs · ACE-Step: Y.Ys · X× faster."

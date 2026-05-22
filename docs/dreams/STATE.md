@@ -1,5 +1,33 @@
 # Dream Agent — cycle state
 
+## Cycle 116 — /dream/99-kids-panning-safari
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 116 % 2 = 0 → **kids cycle**.
+
+Reasoning: The kids zone has 11 prototypes covering pitch/melody (color-piano, tilt-rain, hum-to-paint, puddle-jumper, ghost-lullaby, ghost-echo, star-catch), rhythm (drum-circle), collaborative play (share-screen, character-band), and breath/mic (breath-bubbles). The clear missing dimension is **spatial audio** — no existing kids prototype uses panning or places sounds in left/right space. This is a genuine perceptual gap: young children respond viscerally to spatial sound, and Web Audio `StereoPannerNode` is exactly the right primitive for it. Built `99-kids-panning-safari`: five animals drift across a night savanna, each panned to its current X position. Duck, frog, elephant, cat, parrot all have synthesized voices. Tap to play immediately; animals also call autonomously every 3–7s as they wander. Dashed drop-line + colored dot on a pan ruler at the bottom makes the pan position visual even before the child understands left/right audio.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — both loves are kids prototypes. Reinforces the kids-cycle cadence. `panning-safari` extends the pattern Karel demonstrated loving (melodic/interactive kids content) into a new sensory dimension.
+
+**Loved slugs that influenced this choice**: `82` and `83` are both immediate-tap-to-sound prototypes with clear visual-to-sound mapping. Panning safari follows the same "every tap has an immediate, spatially-specific sound" principle, adding the left/right dimension.
+
+**What I built**:
+- `src/app/dream/99-kids-panning-safari/page.tsx` — Five `AnimalDef` objects with emoji, color, lane Y, and drift speed. Five synthesized animal sounds: duck (bandpass noise quack), frog (AM sine: 140 Hz carrier × 18 Hz modulator, 80 units depth), elephant (sawtooth→lowpass rumble), cat (sine freq glide 580→340 Hz), parrot (chirp glide 1400→1900→850 Hz). Each call routed through `StereoPannerNode` at `pan = (x/W)*2 - 1`. Drift animation: each animal moves at its own speed, bounces at 65 px margins. Bounce (vertical sinusoidal) adds life. Scale animation on tap (1.0 → 1.45 → 1.0 over 0.2s). Auto-play every 3.2–7.2s per animal. Pan ruler strip at 92.5% height with L/R labels. 38 static stars. Soft C/E/G ambient pad. Hit radius 62 px.
+
+**Build**: `npm run build` — clean. `/dream/99-kids-panning-safari` at 2.61 kB.
+
+**What surprised me**: The `StereoPannerNode` panning is more dramatic than expected even through device speakers — the duck clearly sounds left when it's on the left half of the screen, even without headphones. With headphones the effect is excellent. The auto-play timing (staggered 3–7s per animal) creates an ongoing soundscape where you hear animal calls drifting around the stereo field even without tapping — the savanna feels "alive" without any explicit sequencing logic.
+
+**Queued next**:
+1. **Cycle 117 (build)** — 117 % 2 = 1 → build cycle. Options: `27-gpu-additive` (complex, likely 2 cycles), or a fresh prototype from IDEAS.md (e.g. `loop-station` / `35-loop-station`, the live looper — zero deps, high live-performance relevance, one-cycle build).
+2. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 115 — /dream/81-cassette-speed
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

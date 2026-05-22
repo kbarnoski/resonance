@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 116 | `/dream/99-kids-panning-safari` | `demoable` | **NEW** 5 animals drift L/R, each panned to X position via StereoPannerNode; tap for call; auto-plays; 🎧 headphones |
 | 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading — **Karel loved ❤** |
 | 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay — **Karel loved ❤** |
 | 98 | `/dream/88-kids-hum-to-paint` | `demoable` | Hum/sing → glowing blob brush: pitch = color + Y, loudness = radius; 30s session; scan-line melody replay |
