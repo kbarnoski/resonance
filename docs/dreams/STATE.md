@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 108 — /dream/94-kids-ghost-echo
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 108 % 2 = 0 → **kids cycle**. Building `94-kids-ghost-echo` per Cycle 107 queue.
+
+Reasoning: `kids-ghost-echo` was the top kids candidate queued in both Cycle 106 and Cycle 107 notes. It extends the `92-kids-ghost-lullaby` concept from "one floating Ghost you drag" to a "spirit pond" — tap anywhere, a Ghost appears, sings its note, drifts gently, and fades after 4 seconds. Up to 8 Ghosts can coexist, forming clusters and soft chords. The "pond" metaphor (each tap = a stone dropped in water, the Ghost = the ripple) resonated clearly from the KIDS.md research notes. Karel loved both `82-kids-color-piano` (tap → note) and `83-kids-tilt-rain` (sensorimotor, no fail state) — `kids-ghost-echo` combines tap immediacy with character identity. Zero permissions, zero API, pure canvas synthesis.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same two loves as all prior cycles. Both kids prototypes.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` and `83-kids-tilt-rain` both confirm the every-other-cycle kids cadence. `82` specifically (tap → immediate pentatonic note) is the direct ancestor of Ghost Echo — same interaction model extended to multi-Ghost.
+
+**What I built**:
+- `src/app/dream/94-kids-ghost-echo/page.tsx` — Full-screen dark sky canvas. Tap anywhere → Ghost appears at tap position, plays a pentatonic note (Y → pitch via PENTA_HZ[10]), sparkle burst (16 particles, upward fan with gentle `vy += 0.04` gravity), Ghost scale pulses from 1.32 → 1.0 over ~30 frames. Each Ghost drifts on a slow Lissajous orbit (0.52 + 0.38 rad/s, random phase per Ghost, amplitude 7–16 px). Ghosts fade via `alpha = (1 - lifeT)^0.75` (stays bright, quick final fade). Max 8 Ghosts; oldest removed when limit hit. First tap starts AudioContext + ambient C3/E3/G3 pad at gain 0.012. Ghost drawn identically to `92-kids-ghost-lullaby` (G_R=28, body path + eyes + eye-shines, shadowBlur=28). 2.12 kB / 108 kB.
+- `src/app/dream/94-kids-ghost-echo/README.md` — design notes, kids rules compliance matrix, connection to Karel's Ghost universe.
+
+**Build**: `npm run build` passed cleanly — `✓ Compiled successfully`. Zero TypeScript errors, zero ESLint errors. No fixes needed.
+
+**What surprised me**: The subtle differences between Ghosts become noticeable when 6–8 are on screen simultaneously. Each Ghost's random `driftPhase` means they move independently, and after a few seconds of tapping you have a loose flock with organic-feeling motion. The chorus of notes from rapid tapping creates an accidental arpeggio (each tap from top to bottom of screen plays C3→A4 in order). Kids can "play" the Ghost pond as a theremin-like instrument by tapping rhythmically at different heights.
+
+The `(1 - lifeT)^0.75` fade curve is meaningfully better than linear: the Ghost stays full-alpha for the first ~2.5s and only fades notably in the last 1.5s. This means the Ghost feels "present" for most of its life, then gently vanishes — not the gradual dimming that starts immediately with a linear curve.
+
+**Queued next**:
+1. **Cycle 109 (build)** — 109 % 2 = 1 → NOT a kids cycle. Top candidates:
+   - `84-wave-fluid` WebGPU compute upgrade (MLS-MPM particles — Cycle 2 of the two-cycle spec) if Karel wants to go deeper on the ocean
+   - `76-cymatics-on-piano-path` (Chladni patterns on Karel's Welcome Home tracks) if track IDs become available
+   - New non-kids prototype from IDEAS.md queue
+2. **Cycle 110 (kids)** — 110 % 2 = 0 → kids cycle. Candidates: polish pass on `82-kids-color-piano` (typography + tap-target refinements per AGENT.md typography rules) OR `kids-ghost-echo` polish (add subtle note label / pitch indicator at bottom for curious parents).
+3. **Open question carried forward**: Welcome Home album recording IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+4. **Open question**: Wave fluid height-field vs MLS-MPM upgrade — Karel's call.
+
+---
+
 ## Cycle 107 — /dream/84-wave-fluid
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 107 — build)
+## ⭐ Newest (Cycle 108 — kids build)
+
+- **[/dream/94-kids-ghost-echo](/dream/94-kids-ghost-echo)** — Ghost Echo Pond (kids). `demoable`
+  Tap anywhere on a starry night sky to summon an echo Ghost. Each Ghost appears at your tap, plays a pentatonic note (Y = pitch), bursts into sparkles, drifts gently on its own slow orbit, then fades after 4 seconds. Up to 8 Ghosts coexist — tap rapidly from top to bottom and you build a full 10-note arpeggio. The chorus of drifting Ghosts forms an organic flock with softly different rhythms. First tap starts a quiet ambient chord pad.
+  **"A spirit pond — each tap drops a Ghost, and they drift and fade like ripples."**
+  Zero permissions · Zero API · Zero deps · 2.12 kB.
+  Design notes: `src/app/dream/94-kids-ghost-echo/README.md`
+
+---
+
+## Previous newest (Cycle 107 — build)
 
 - **[/dream/84-wave-fluid](/dream/84-wave-fluid)** — Wave Fluid. `demoable`
   Audio-reactive ocean surface rendered in a single WebGPU fragment shader. Bass raises the swell (4 superimposed wave modes at incommensurable frequencies). Treble chops the surface (value-noise turbulence). Onsets create splash ripples (expanding ring + surface displacement). Click anywhere on the water for a manual splash. The sky above has twinkling stars and per-column spray particles arcing on parabolic paths. Below the surface: caustic shimmer, subsurface violet scatter. Rose/violet surface bloom at the waterline.

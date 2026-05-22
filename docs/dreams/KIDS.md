@@ -92,6 +92,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 102 | `/dream/91-kids-character-band` | `demoable` | 5 animal characters, tap each → distinct melodic phrase; Toca Band-style; all phrases harmonize by construction; sparkle particles |
 | 104 | `/dream/92-kids-ghost-lullaby` | `demoable` | Karel's Ghost floats starry sky; tap/drag → pentatonic note (Y=pitch); lullaby after 2 min; zero permissions; 80 px hit radius |
 | 106 | `/dream/93-kids-share-screen` | `demoable` | Two simultaneous voices (violet + rose); Y→pentatonic pitch; pointer capture; animated connecting line; pentatonic = no wrong notes |
+| 108 | `/dream/94-kids-ghost-echo` | `demoable` | Tap anywhere → Ghost appears + plays note (Y=pitch); up to 8 Ghosts coexist, each drifts + fades after 4s; "spirit pond" multi-tap |
 
 ---
 
@@ -166,6 +167,22 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 **Next kid-cycle ideas (Cycle 108)**:
 - `kids-ghost-echo`: tap anywhere on screen → a small echo Ghost appears at that spot, plays a single note, then fades after 4 s. Max 8 Ghosts coexist. The "multi-point pond" variant of ghost-lullaby — zero permissions, zero API.
 - `93-kids-share-screen` polish: show a subtle "harmony interval" indicator (colored arc between the two orbs showing whether they're playing a 3rd, 5th, or other interval) — educational layer for curious parents, invisible to kids.
+
+---
+
+### Cycle 108 — ghost-echo build
+
+**Built**: `94-kids-ghost-echo`. Key learnings:
+- `(1 - lifeT)^0.75` fade curve is noticeably better than linear for "presence" feeling. The exponent < 1 holds brightness through most of the Ghost's life; the fade is concentrated in the final ~1.5s. With a linear curve, the Ghost starts visibly dimming at 2s (half life) which feels like it's "giving up." The power curve feels like the Ghost is fully present until it decides to leave.
+- A per-Ghost random `driftPhase` (0 to 2π) and random `driftAmp` (7–16px) makes the Ghosts feel like individuals when multiple coexist. They drift at different parts of their Lissajous orbit simultaneously — some moving right while others move left. The emergent "flock" feel (6–8 Ghosts on screen) arises entirely from this parameter variation, not from any explicit flocking behavior.
+- Sparkle `vy += 0.04` per frame (downward acceleration): the sparkles rise then arc back down like they're affected by gravity. Without this, they just drift radially outward and feel flat. The parabolic trajectory (same trick used in `84-wave-fluid`'s spray particles) reads as physical without any complex simulation.
+- Max 8 Ghosts cap has a musical meaning: PENTA_HZ has 10 notes across the screen height. 8 Ghosts distributed at different Y-positions span most of the scale. Rapid tapping from top to bottom creates a natural arpeggio that sustains while you add more Ghosts.
+- Ghost drawing code reused verbatim from `92-kids-ghost-lullaby` (body path, eyes, eye-shines, shadowBlur=28). The character identity is immediately recognizable — a child who has played with ghost-lullaby will recognize the Ghost when it appears in ghost-echo. Cross-prototype character continuity.
+
+**Next kid-cycle ideas (Cycle 110)**:
+- Polish pass on `82-kids-color-piano`: bump all `text-white/40` → `text-white/75`, increase button sizes per AGENT.md typography rules. Tiny diff, big readability gain.
+- `94-kids-ghost-echo` polish: add very faint pitch "trail" lines (short horizontal line at spawn Y position, fading with the Ghost) so parents can visually map Y-position to pitch. Educational layer invisible to kids (too subtle to read), but a parent watching would see it.
+- Research: are there new 2026 WebAudio / Web MIDI creative tools shipping that the kids zone could use?
 
 ---
 
