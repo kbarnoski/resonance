@@ -93,6 +93,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | 104 | `/dream/92-kids-ghost-lullaby` | `demoable` | Karel's Ghost floats starry sky; tap/drag → pentatonic note (Y=pitch); lullaby after 2 min; zero permissions; 80 px hit radius |
 | 106 | `/dream/93-kids-share-screen` | `demoable` | Two simultaneous voices (violet + rose); Y→pentatonic pitch; pointer capture; animated connecting line; pentatonic = no wrong notes |
 | 108 | `/dream/94-kids-ghost-echo` | `demoable` | Tap anywhere → Ghost appears + plays note (Y=pitch); up to 8 Ghosts coexist, each drifts + fades after 4s; "spirit pond" multi-tap |
+| 110 | `/dream/95-kids-breath-bubbles` | `demoable` | Blow into mic → bubbles float up + pop; RMS amplitude → size + spawn rate; tap for manual bubbles; demo mode auto-breathes |
 
 ---
 
@@ -167,6 +168,23 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 **Next kid-cycle ideas (Cycle 108)**:
 - `kids-ghost-echo`: tap anywhere on screen → a small echo Ghost appears at that spot, plays a single note, then fades after 4 s. Max 8 Ghosts coexist. The "multi-point pond" variant of ghost-lullaby — zero permissions, zero API.
 - `93-kids-share-screen` polish: show a subtle "harmony interval" indicator (colored arc between the two orbs showing whether they're playing a 3rd, 5th, or other interval) — educational layer for curious parents, invisible to kids.
+
+---
+
+### Cycle 110 — breath-bubbles build
+
+**Built**: `95-kids-breath-bubbles`. Key learnings:
+- RMS amplitude alone is sufficient for breath detection at threshold 0.028 — it fires on blowing, humming, singing, clapping, but NOT on quiet room noise (~0.005–0.015). For a kids prototype, any sound making bubbles appear is the right behavior: the child will quickly learn "loud = more bubbles."
+- `hex + "38"` (8-digit hex with alpha) for canvas `fillStyle` is the cleanest way to get translucent color fills without `rgba(...)` string construction. Stacks bubbles cleanly without over-saturation.
+- `shadowBlur = r * 0.9` scales glow with bubble size automatically — small and large bubbles look equally vivid. This was not obvious in advance; a fixed shadowBlur would have made large bubbles look dull.
+- Demo breathing wave: `0.042 * |sin(t * 0.48)|` with period ≈ 13s matches human resting breath rate (4–5 breaths/min) well enough that it feels like watching someone breathe, not a metronome.
+- Speed ∝ 18/radius creates a natural physics feel: tiny bubbles streak upward while big bubbles drift. The `Math.max(0.7, ...)` floor ensures even very large bubbles eventually reach the top.
+- Tap-to-add-bubble (`pointerdown` on canvas) is an important secondary interaction — it lets kids play the prototype before the mic permission is granted, or in situations where blowing doesn't trigger (quiet room, shy child). Every interaction should have a "just tap it" fallback.
+
+**Next kid-cycle ideas (Cycle 112)**:
+- Polish pass on `82-kids-color-piano`: bump `text-white/40` → `text-white/75`, increase button size per AGENT.md typography rules.
+- `95-kids-breath-bubbles` polish: add a faint "breath guide" arc at the bottom showing mic activity level (parents can see if the mic is picking up).
+- Research: new 2026 Web Audio / WebAudio Worklet capabilities for kids?
 
 ---
 

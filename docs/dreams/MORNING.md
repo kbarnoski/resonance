@@ -1,22 +1,24 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 109)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 110)
 
 ## New since yesterday
 
+- **[/dream/95-kids-breath-bubbles](https://getresonance.vercel.app/dream/95-kids-breath-bubbles)** — Breath Bubbles (kids)
+  Blow into the mic → colorful soap bubbles appear at the bottom, float upward with gentle wobble,
+  and pop with a soft pentatonic ding. Louder breath = bigger bubbles, faster rate.
+  Tap the screen to drop manual bubbles. Demo mode auto-breathes.
+
+  **How to experience it**: Hit Start → breathe normally, then blow → watch the screen fill.
+  Tap anywhere to drop bubbles at your finger. Works without mic in demo mode.
+
+  **Why open this**: Blowing is one of the most satisfying physical actions for young children
+  (birthday candles, actual bubbles, windmills). This is the simplest kids prototype yet — no
+  pitch detection, just breath loudness. The soap bubble visual reads immediately on phone or iPad.
+
+## Previous notable (Cycle 109)
+
 - **[/dream/75-houdini-particle-flock](https://getresonance.vercel.app/dream/75-houdini-particle-flock)** — Houdini Particle Flock
-  6,000 WebGPU particles (6 species) flock together using Boids physics + curl-noise force fields,
-  over a themed backdrop image generated live by Flux Schnell.
-
-  **How to experience it**:
-  1. Pick a journey theme (Cosmic Homecoming, Earth Grounding, Ocean Breath, Snowflake, Inner Fire,
-     Deep Cosmos) — the particle colors change instantly.
-  2. Hit **Generate Backdrop** — a Flux image matching the theme appears behind the flock (~3s).
-  3. Hit **Start Mic** — the flock reacts: bass tightens flocks together, treble swirls the curl field,
-     onsets scatter them in a sudden burst (like a predator alarm), then they re-cohere.
-  4. Hit **Demo** if you want to see it without a mic.
-
-  **Why open this**: The screen-blend composite of glowing GPU particles over a Flux backdrop produces
-  something that looks genuinely bioluminescent — the particles feel like organisms swimming through
-  an environment, not sprites over a background image. Onset bursts are the highlight.
+  6,000 WebGPU particles (6 species) flock via Boids + curl-noise over a Flux backdrop image.
+  Pick journey theme → Generate Backdrop → Start Mic. Onset bursts are the highlight.
 
 ## Kids zone — full status
 
@@ -27,15 +29,10 @@
 | 98 | `88-kids-hum-to-paint` | demoable | hum → colored brush strokes |
 | 100 | `90-kids-puddle-jumper` | demoable | tap pond → ripples; zero permissions |
 | 102 | `91-kids-character-band` | demoable | 5 animals, Toca Band-style |
-| 104 | `92-kids-ghost-lullaby` | demoable | Ghost floats, tap/drag → notes, lullaby at 2 min |
-| 106 | `93-kids-share-screen` | demoable | Two-finger co-play; pentatonic harmony guarantee |
-| 108 | `94-kids-ghost-echo` | demoable | Spirit pond — tap anywhere → Ghost appears + fades |
-
-## Previous notable
-
-- **Cycle 108**: [/dream/94-kids-ghost-echo](https://getresonance.vercel.app/dream/94-kids-ghost-echo) — Ghost Echo Pond. Tap anywhere → Ghost appears, sings a pentatonic note, drifts and fades after 4s.
-- **Cycle 107**: [/dream/84-wave-fluid](https://getresonance.vercel.app/dream/84-wave-fluid) — WebGPU ocean. Bass raises swells, treble chops water, onsets ripple.
-- **Cycle 105**: [/dream/73-journey-arc-spread](https://getresonance.vercel.app/dream/73-journey-arc-spread) — 5 published journeys × distinct visual arcs.
+| 104 | `92-kids-ghost-lullaby` | demoable | Ghost floats, tap/drag → notes |
+| 106 | `93-kids-share-screen` | demoable | Two-finger co-play; pentatonic harmony |
+| 108 | `94-kids-ghost-echo` | demoable | Spirit pond — tap → Ghost appears + fades |
+| 110 | `95-kids-breath-bubbles` | demoable | Blow → bubbles float + pop |
 
 ## In progress / partial
 
@@ -45,7 +42,6 @@ Nothing blocked. Full queue in IDEAS.md.
 
 1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer`
    want to use your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **Houdini Particle Flock** — Does the screen-blend composite feel right? Any journey theme
-   that should have different species behavior or color palette?
-3. **New loves?** Votes API still shows only `82` and `83`. Anything new worth deepening?
-   `75-houdini-particle-flock`, `84-wave-fluid`, `94-kids-ghost-echo` are the freshest to try.
+2. **New loves?** Votes API still shows only `82` and `83`. Anything from the recent runs worth
+   deepening? `75-houdini-particle-flock`, `84-wave-fluid`, `94-kids-ghost-echo`,
+   `95-kids-breath-bubbles` are all fresh to try.

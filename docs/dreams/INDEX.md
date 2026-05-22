@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 109 — build)
+## ⭐ Newest (Cycle 110 — kids build)
+
+- **[/dream/95-kids-breath-bubbles](/dream/95-kids-breath-bubbles)** — Breath Bubbles (kids). `demoable`
+  Blow into the mic — colorful soap bubbles appear at the bottom of the screen, rise with gentle horizontal wobble, and pop at the top with a soft pentatonic ding. Louder breath = bigger bubbles, faster rate. Six-color palette (rose, violet, cyan, emerald, amber, blue). Tap anywhere to drop a manual bubble. Demo mode auto-animates a breathing wave. Graceful no-mic fallback: demo plays automatically.
+  **"Breath becomes music: every exhale floats bubbles upward."**
+  Mic optional · Zero API · Zero deps · 2.79 kB.
+  Design notes: `src/app/dream/95-kids-breath-bubbles/README.md`
+
+---
+
+## Previous newest (Cycle 109 — build)
 
 - **[/dream/75-houdini-particle-flock](/dream/75-houdini-particle-flock)** — Houdini Particle Flock. `demoable`
   6,000 WebGPU particles split into 6 species, flocking via Boids (separation, alignment, cohesion) + curl-noise force fields. Six journey themes — Cosmic Homecoming, Earth Grounding, Ocean Breath, Snowflake, Inner Fire, Deep Cosmos — each with matching species colors and a Flux Schnell backdrop image composited underneath via CSS screen blend. Generate Backdrop produces a themed 16:9 image in ~3s. Demo mode (6 oscillators + LFOs) or live mic. Bass → cohesion tightens flocks; treble → curl intensity swirls them; onsets → scatter impulse.

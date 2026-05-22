@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 110 — /dream/95-kids-breath-bubbles
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 110 % 2 = 0 → **kids cycle**. Building `95-kids-breath-bubbles` as queued in Cycle 109 notes.
+
+Reasoning: The "blow into mic → bubbles" concept is the top new kids prototype in Cycle 109's queue notes. It fills a gap in the kids collection: `88-kids-hum-to-paint` uses mic+pitch (speech/humming), but there's no prototype that uses breath alone as the primary input. Blowing is a natural, safe, and deeply satisfying action for young children — it's a core sensorimotor experience (birthday candles, bubbles, windmills). The prototype needs no pitch detection, just RMS amplitude, keeping it simpler than `88`. Karel's two loves are both kids prototypes, reinforcing the kids cadence. `95-kids-breath-bubbles` (new prototype) is better than a polish pass on `82` this cycle because it adds a genuinely new interaction modality.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**Loved slugs that influenced this cycle's choice**: Both loves are kids prototypes, confirming the every-other-cycle cadence. `82-kids-color-piano` (tap → immediate sound) and `83-kids-tilt-rain` (sensorimotor) are the direct ancestors of `95-kids-breath-bubbles` (breath → immediate visual+sound).
+
+**What I built**:
+- `src/app/dream/95-kids-breath-bubbles/page.tsx` — Full-screen canvas. Blow into mic → colorful soap bubbles spawn at the bottom, drift upward with per-bubble horizontal wobble, and pop at the top with a soft pentatonic ding. RMS amplitude above 0.028 triggers spawning; loudness maps to bubble radius (8–32px) and spawn rate. Smaller bubbles rise faster (speed scales as 18/r). Six-color palette (rose, violet, cyan, emerald, amber, blue). Each bubble: translucent fill + colored rim + highlight ellipse + specular dot (soap bubble appearance). Pop animation: expanding ring + 8 radial dots over ~280ms. Demo mode uses `sin(t * 0.48)` auto-breath. Tap anywhere in active state to drop a manual bubble at cursor/finger position. Soft ambient pad (C3/E3/G3 with LFO). Max 40 simultaneous bubbles. 2.79 kB.
+- `src/app/dream/95-kids-breath-bubbles/README.md` — design notes, kids rules compliance, physics choices.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The demo mode breathing wave (`0.042 * |sin(t * 0.48)|`) produces a very natural-feeling cadence — it rises for ~3s (inhale pause) then spawns bubbles for ~3s (exhale), with a natural-feeling period of about 13s per breath cycle. This matches real resting breath rate (4–6 breaths/min) well enough that when I set the prototype running in demo mode it feels like watching someone breathe, not a mechanical oscillator.
+
+The `hex + "38"` fill trick (8-digit hex alpha) produces exactly the right bubble translucency — light enough to stack without becoming opaque, saturated enough that the color reads clearly. The `shadowBlur = r * 0.9` glow makes small and large bubbles equally vivid since the glow scales with the bubble.
+
+**Queued next**:
+1. **Cycle 111 (build)** — 111 % 2 = 1 → NOT a kids cycle. Options:
+   - `76-cymatics-on-piano-path` if Welcome Home album track IDs arrive
+   - New non-kids prototype from IDEAS.md queue (WebGPU compute, journey theme)
+2. **Cycle 112 (kids)** — Polish pass on `82-kids-color-piano`: bump `text-white/40` → `text-white/75`, increase button sizes per AGENT.md typography rules. Small diff, big readability gain.
+3. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 109 — /dream/75-houdini-particle-flock
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
