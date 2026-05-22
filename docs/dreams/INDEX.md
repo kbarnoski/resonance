@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 98 — kids build)
+## ⭐ Newest (Cycle 99 — build)
+
+- **[/dream/89-marpi-void](/dream/89-marpi-void)** — Void Organism. `demoable`
+  A living entity breathes in the void. One founding organism; percussive onsets spawn offspring — after minutes of music a drifting colony fills the space. Arms extend on bass, jitter on treble (smooth noise, no deps). Each organism has a color type (bass=violet, mid=cyan, treble=rose) that determines its survival band; starve it of sound for 15s and it dissolves. Demo mode: LFO breathes the organism autonomously. `globalCompositeOperation = "lighter"` creates emergent white filaments where organisms overlap.
+  **"Overlapping organisms light up as if exchanging energy — emergent behavior from blending math."**
+  Zero deps · Zero API · 4.05 kB.
+  Design notes: `src/app/dream/89-marpi-void/README.md`
+
+---
+
+## Previous newest (Cycle 98 — kids build)
 
 - **[/dream/88-kids-hum-to-paint](/dream/88-kids-hum-to-paint)** — Hum to Paint (kids). `demoable`
   Hum or sing into the mic — your voice paints a glowing blob on the canvas in real time.

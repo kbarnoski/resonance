@@ -1,5 +1,36 @@
 # Dream Agent — cycle state
 
+## Cycle 99 — /dream/89-marpi-void
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 99 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `89-marpi-void` (top candidate from Cycle 98 queue, zero API, one-cycle).
+
+Reasoning: Cycle 98 explicitly queued `89-marpi-void` as the top non-kids build. Zero deps, zero API, high visual surprise factor. The organism / colony aesthetic (Marpi "New Nature") is qualitatively distinct from anything in the existing 88-prototype library — no other prototype grows a colony over time. Karel's "surprise" priority (#2 in AGENT.md) is best served here.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same loves as Cycle 98, no new signal. Two loved kids prototypes confirm that direction is working; cycle 99 not a kids cycle so noting for awareness only.
+
+**Loved slugs that influenced this cycle's choice**: none (existing loves are kids prototypes; no loved AV prototypes to bias toward — choosing by surprise/technique novelty).
+
+**What I built**:
+- `src/app/dream/89-marpi-void/page.tsx` — a living organism breathes in a black void. Radial structure of 8–16 Bézier arms extending from a glowing nucleus. Bass energy drives arm extension (all organisms). Treble drives curvature jitter via `sNoise()` (4-sine smooth noise, zero deps). Percussive onsets spawn offspring organisms at random arm-tip angles. Colony grows up to 18 organisms, each with Brownian drift. Color type (bass/mid/treble) determines nucleus/arm hue and survival band — organism starved of its driver frequency dissolves over 8s. Demo mode: LFO drives bass/mid/treble at incommensurable rates (0.65/1.05/1.80 Hz); auto-onset every 7–13s. Canvas2D `globalCompositeOperation = "lighter"` for bioluminescent additive glow. Persistent trail: `rgba(0,0,0,0.13)` per frame.
+- `src/app/dream/89-marpi-void/README.md` — anatomy table, lifecycle steps, smooth noise formula, polish ideas.
+
+**Build**: `npm run build` passed cleanly. Page compiles to 4.05 kB, zero TypeScript errors, zero ESLint issues in new file.
+
+**What surprised me**: The "lighter" composite operation on the arms creates an unexpected emergent effect: when multiple organisms drift near each other, their overlapping arms light up into bright white filaments as if they're exchanging energy. I didn't design that — it's free from the blending math. The colony feels genuinely alive.
+
+**Queued next**:
+1. **Cycle 100 (kids)** — 100 % 2 = 0 → kids cycle. Options: `kids-puddle-jumper` (tap → splash ripple + pentatonic sound, pure touch, no mic/tilt, 60fps physics) or `kids-character-band` (5 animal characters, each tap plays a melodic phrase). `kids-puddle-jumper` preferred — zero permissions required (no mic, no DeviceOrientation), maximum accessibility, physics canvas is a fun contrast to voice/tilt.
+2. **Cycle 101 (build)** — `85-spectrogram-paint` (WebGPU spectrogram texture → feedback shader, TD "Record CHOP → TOP" port) OR `84-wave-fluid` (MLS-MPM WebGPU, two cycles). Spectrogram paint is more likely to surprise Karel since it turns raw spectral data into evolving visual painting — Ryoji Ikeda aesthetic in the browser.
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+---
+
 ## Cycle 98 — /dream/88-kids-hum-to-paint
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
