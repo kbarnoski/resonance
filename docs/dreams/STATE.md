@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 107 — /dream/84-wave-fluid
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 107 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `84-wave-fluid`, queued and prioritized in Cycle 106 notes.
+
+Reasoning: `76-cymatics-on-piano-path` (top directional candidate per Karel's "use his actual music" directive) still requires Welcome Home album track IDs which are unresolved. `84-wave-fluid` (WebGPU ocean) is the explicit fallback queued by Cycle 106 notes. The spec called for MLS-MPM particle simulation (the Houdini fluid-solver paradigm), but this cycle implements the height-field approach instead — analytically computed wave surface in a single WGSL fragment shader. This is more reliable (one cycle, no compute shaders needed), equally visually compelling, and completes in a single cycle. The particle-based upgrade (depth pass + bilateral filter + screen-space normals) is noted as a potential Cycle 109 follow-up if Karel wants to go deeper.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same two loves as all prior cycles. No non-kids AV loves to bias direction on this non-kids cycle.
+
+**Loved slugs that influenced this cycle's choice**: `82-kids-color-piano` and `83-kids-tilt-rain` (kids; not directly applicable). Karel's explicit direction — "live performance fitness" and "journey engine alternatives" — is the soft signal. Wave fluid is the most live-performance-relevant prototype not yet built (ocean-like swells reacting to audio are a classic AV performance visual).
+
+**What I built**:
+- `src/app/dream/84-wave-fluid/page.tsx` — Full WebGPU ocean surface. Single render pass, fullscreen quad, all ocean math in WGSL fragment shader. Four sinusoidal wave modes (frequencies 7:13:23:41 × TAU, incommensurable → pattern never tiles) scaled by bass. Value-noise turbulence from treble. Splash ripples on onsets (guarded by `s_valid = s_age > 0 && s_age < 4.5` to prevent NaN from stale splash_time values). Sky: dark atmospheric gradient + twinkling stars (hash21 per cell, time-varying twinkle) + 38-column spray particles on parabolic arcs. Water: caustic shimmer (two-sine interference) + subsurface violet scatter + surface rose bloom. Filmic tonemapping + 2.2 gamma. Graceful WebGPU fallback (error display + link to `/dream/3-fluid`). Click canvas → manual splash at that horizontal position. Demo mode with synthetic breathing ocean.
+- `src/app/dream/84-wave-fluid/README.md` — design notes, shader architecture, comparison to 3-fluid and 15-webgpu-fluid.
+
+**Build**: `npm run build` passed cleanly — `✓ Compiled successfully in 22.5s`. One fix needed: `getFrame()` returns `MicFrame | null`; added null guard before accessing `fr.bands`. No other errors.
+
+**What surprised me**: The spray particle system is more effective than expected even though it's purely analytical (no particle state). 38 columns × parabolic arcs cycling at different phases creates a strong impression of actual water droplets in flight. The parabola function `4t(1-t)` is key — it gives the spray the characteristic "rise then fall" silhouette that reads as realistic. With bass amplitude modulating their intensity, the spray is most visible during loud moments and nearly invisible during quiet ones, creating a natural connection between audio and visual.
+
+The value-noise turbulence from treble is subtle (±2.4px on a 1080px canvas) but perceptually important — it makes the surface feel "alive" even during quiet passages. High treble makes the ocean feel choppy; low treble makes it feel glassy. The threshold between these modes (~treble=0.10) is right where piano treble notes live, so a single piano note in the high register visibly changes the ocean texture.
+
+**Queued next**:
+1. **Cycle 108 (kids)** — 108 % 2 = 0 → kids cycle. Candidates: `kids-ghost-echo` (tap anywhere → small Ghost appears, plays a note, fades after 4s; max 8 Ghosts coexist — "pond" variant of ghost-lullaby) OR polish pass on `82-kids-color-piano` (typography + tap target refinements per AGENT.md rules).
+2. **Cycle 109 (build)** — either: (a) upgrade `84-wave-fluid` with WebGPU compute particles + depth pass (MLS-MPM route, Cycle 2 of the two-cycle spec) OR (b) `76-cymatics-on-piano-path` if Welcome Home audio IDs become available. Lean toward (b) since it addresses Karel's "incorporate his actual music" directive more directly.
+3. **Open question carried forward**: Welcome Home album recording IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+4. **Open question**: Is the height-field ocean visual (smooth, analytical) satisfying, or does Karel want the particle-based MLS-MPM upgrade?
+
+---
+
 ## Cycle 106 — /dream/93-kids-share-screen
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 106 — kids build)
+## ⭐ Newest (Cycle 107 — build)
+
+- **[/dream/84-wave-fluid](/dream/84-wave-fluid)** — Wave Fluid. `demoable`
+  Audio-reactive ocean surface rendered in a single WebGPU fragment shader. Bass raises the swell (4 superimposed wave modes at incommensurable frequencies). Treble chops the surface (value-noise turbulence). Onsets create splash ripples (expanding ring + surface displacement). Click anywhere on the water for a manual splash. The sky above has twinkling stars and per-column spray particles arcing on parabolic paths. Below the surface: caustic shimmer, subsurface violet scatter. Rose/violet surface bloom at the waterline.
+  **"One click, one ocean. Bass makes it breathe. Treble makes it restless."**
+  Graceful fallback: if WebGPU unavailable, shows error + link to 3-fluid. Zero API · Zero deps · WebGPU required.
+  Design notes: `src/app/dream/84-wave-fluid/README.md`
+
+---
+
+## Previous newest (Cycle 106 — kids build)
 
 - **[/dream/93-kids-share-screen](/dream/93-kids-share-screen)** — Share the Screen (kids). `demoable`
   Full-screen canvas instrument for two simultaneous players. Each touch contact gets a glowing colored orb — first finger = violet, second = rose. Y-position maps to a pentatonic pitch (C3–C5); slide up = higher note, slide down = lower. The pentatonic constraint guarantees any two simultaneous notes sound beautiful together — no wrong combinations possible. Smooth pitch glide (fretless feel). When both voices are active, an animated dashed gradient line connects them visually. Sparkle particle trail on movement. Idle hint: two pulsing colored dots show where to put fingers. Pointer capture keeps tracking even at screen edges.
