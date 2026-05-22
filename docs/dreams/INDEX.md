@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 110 — kids build)
+## ⭐ Newest (Cycle 111 — build)
+
+- **[/dream/96-projection-mapping-sandbox](/dream/96-projection-mapping-sandbox)** — Projection Mapping Sandbox. `demoable`
+  WebGPU two-pass renderer for live venue projection mapping. Tap **Calibrate** and drag the four colored corner handles (TL/TR/BR/BL) to match any real-world surface shape — a wall, a screen, an arch. The journey feedback shader is warped onto the quad using bilinear inverse mapping (8-step Newton iteration) computed entirely on the GPU. Edge blend slider adds a soft vignette at the quad margins (professional keystone-correction look). Three visual themes: Cosmic, Earth, Ocean. Audio-reactive: bass drives bloom, treble adds edge shimmer, onsets inject color pulses. Demo mode or live mic.
+  **"Define any 4-corner shape, the shader fills it — drag corners live while the music plays."**
+  WebGPU required · Zero API · Zero deps · 6.44 kB.
+
+---
+
+## Previous (Cycle 110 — kids build)
 
 - **[/dream/95-kids-breath-bubbles](/dream/95-kids-breath-bubbles)** — Breath Bubbles (kids). `demoable`
   Blow into the mic — colorful soap bubbles appear at the bottom of the screen, rise with gentle horizontal wobble, and pop at the top with a soft pentatonic ding. Louder breath = bigger bubbles, faster rate. Six-color palette (rose, violet, cyan, emerald, amber, blue). Tap anywhere to drop a manual bubble. Demo mode auto-animates a breathing wave. Graceful no-mic fallback: demo plays automatically.

@@ -1,24 +1,28 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 110)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 111)
 
 ## New since yesterday
 
+- **[/dream/96-projection-mapping-sandbox](https://getresonance.vercel.app/dream/96-projection-mapping-sandbox)** — Projection Mapping Sandbox
+  WebGPU feedback shader warped onto any 4-corner shape you draw on screen.
+  This is the venue installation tool you asked for — drag the TL/TR/BR/BL corner handles
+  onto a wall corner, arch, or angled screen surface and the journey visual fills it live.
+
+  **How to experience it**: Open on desktop Chrome → hit "Calibrate" → drag the four colored
+  dots to the corners of whatever surface you want to project onto (or just pull them into an
+  interesting quadrilateral). Hit "Demo" for audio reactivity. The black area outside the quad
+  goes dark — exactly what a real projector would show.
+
+  **Why open this**: You've been asking about installation/venue mode for months. This is the
+  GPU primitive that makes it possible: define the projection surface by dragging four points,
+  the shader maps itself to fill it using bilinear inverse mapping. Edge blend adds soft
+  fade-out at the quad margins (standard projection technique for multi-projector overlap).
+  Rotate/zoom/decay sliders let you tune the feedback feel. Three color themes: Cosmic, Earth, Ocean.
+
+## Previous (Cycle 110 — kids)
+
 - **[/dream/95-kids-breath-bubbles](https://getresonance.vercel.app/dream/95-kids-breath-bubbles)** — Breath Bubbles (kids)
-  Blow into the mic → colorful soap bubbles appear at the bottom, float upward with gentle wobble,
-  and pop with a soft pentatonic ding. Louder breath = bigger bubbles, faster rate.
-  Tap the screen to drop manual bubbles. Demo mode auto-breathes.
-
-  **How to experience it**: Hit Start → breathe normally, then blow → watch the screen fill.
-  Tap anywhere to drop bubbles at your finger. Works without mic in demo mode.
-
-  **Why open this**: Blowing is one of the most satisfying physical actions for young children
-  (birthday candles, actual bubbles, windmills). This is the simplest kids prototype yet — no
-  pitch detection, just breath loudness. The soap bubble visual reads immediately on phone or iPad.
-
-## Previous notable (Cycle 109)
-
-- **[/dream/75-houdini-particle-flock](https://getresonance.vercel.app/dream/75-houdini-particle-flock)** — Houdini Particle Flock
-  6,000 WebGPU particles (6 species) flock via Boids + curl-noise over a Flux backdrop image.
-  Pick journey theme → Generate Backdrop → Start Mic. Onset bursts are the highlight.
+  Blow into the mic → colorful soap bubbles float upward and pop with pentatonic dings.
+  Tap to drop manual bubbles. Demo mode auto-breathes. Zero permissions needed for demo.
 
 ## Kids zone — full status
 
@@ -42,6 +46,8 @@ Nothing blocked. Full queue in IDEAS.md.
 
 1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer`
    want to use your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **New loves?** Votes API still shows only `82` and `83`. Anything from the recent runs worth
-   deepening? `75-houdini-particle-flock`, `84-wave-fluid`, `94-kids-ghost-echo`,
-   `95-kids-breath-bubbles` are all fresh to try.
+2. **New loves?** Votes API still shows only `82` and `83`. Anything worth deepening?
+   `96-projection-mapping-sandbox`, `75-houdini-particle-flock`, `84-wave-fluid`,
+   `94-kids-ghost-echo`, `95-kids-breath-bubbles` are all fresh to try.
+3. **Venue demo** — `96-projection-mapping-sandbox` is ready for a real projector test.
+   If you have a surface in mind, the corner calibration should get you there in ~30 seconds.

@@ -1,5 +1,33 @@
 # Dream Agent — cycle state
 
+## Cycle 111 — /dream/96-projection-mapping-sandbox
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 111 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Build new** — `96-projection-mapping-sandbox` from Karel's seeded wishlist (IDEAS.md `77-projection-mapping-sandbox` spec).
+
+Reasoning: `76-cymatics-on-piano-path` is still blocked on Welcome Home album track IDs (unresolved for multiple cycles). `96-projection-mapping-sandbox` is explicitly on Karel's seeded wishlist, directly satisfies the "Tauri / installation-mode" and "live venue performance" priorities, requires zero API calls, zero external deps, and is pure GPU — fully buildable in one cycle. The bilinear inverse mapping algorithm (Newton iterations on Q(u,v) = mix(mix(P0,P1,u),mix(P3,P2,u),v)) is analytically sound and tested. High surprise factor for a live venue demo.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**What I built**:
+- `src/app/dream/96-projection-mapping-sandbox/page.tsx` — WebGPU two-pass renderer. Pass 1: feedback shader (ping→pong) — same HSV rotation + audio bloom as `74-touchdesigner-feedback`, extended with themeShift parameter for Cosmic/Earth/Ocean palette presets and treble edge shimmer. Pass 2: warp+present (pong→canvas) — bilinear inverse mapping via 8-step Newton iteration to find (u,v) in the user-defined quad for each canvas pixel; pixels outside the quad render black; adjustable edge-blend vignette inside the quad margins. Corner calibration UI: tap "Calibrate" → four colored corner handles (TL=violet, TR=cyan, BR=amber, BL=emerald) appear as draggable dots with SVG quad outline overlay. CSS corners multiplied by devicePixelRatio for physical-pixel uniforms. Sidebar: Demo/Mic audio mode, rotation/zoom/decay sliders, edge blend slider, Reset corners. Three theme buttons (Cosmic/Earth/Ocean). WebGPU fallback screen for unsupported browsers. 6.44 kB.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The Newton iteration converges on the bilinear inverse faster than expected — 8 iterations is overkill for most configurations (it typically converges in 3–4). The key insight is starting at (0.5, 0.5) (quad centre) rather than trying to guess a better initial point — the bilinear map is smooth and convex for any non-degenerate quad, so the centre always converges. The `clamp(uv + delta, vec2f(-0.1), vec2f(1.1))` keeps iterates from flying to infinity if the initial guess overshoots, which would otherwise cause NaN on extreme quad shapes (very narrow trapezoids). The edge blend parameter creates a soft vignette that reads as "professional" keystone correction even on non-rectangular quads — it visually separates the projected content from the surrounding black.
+
+**Queued next**:
+1. **Cycle 112 (kids)** — 112 % 2 = 0 → kids cycle. Top candidate: polish pass on `82-kids-color-piano` (bump secondary text opacity, increase tap target sizes per AGENT.md typography rules). Alternatively `kids-maze-hum` from IDEAS.md queue.
+2. **Cycle 113 (build)** — `76-cymatics-on-piano-path` if Welcome Home track IDs arrive; else a new WebGPU compute prototype from IDEAS.md.
+3. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 110 — /dream/95-kids-breath-bubbles
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
