@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 100 — kids build)
+## ⭐ Newest (Cycle 101 — build)
+
+- **[/dream/85-spectrogram-paint](/dream/85-spectrogram-paint)** — Spectrogram Paint. `demoable`
+  Your sound crystallizes into a living painting. FFT data scrolls as a waterfall (time left→right, pitch bottom→top, log scale 20 Hz–8 kHz) with a Ryoji Ikeda-style hot colormap: silence = black, dim = violet/cyan, peak = white. The spectrogram feeds a **Canvas2D ping-pong feedback loop** — each frame the display decays at 98.4%, zooms 1.002×, and drifts slightly, then the fresh spectrogram is injected additively. Notes leave trails that bloom outward and slowly evaporate. Demo mode animates 11 C-major scale frequencies with LFO envelopes. Mic mode maps your real playing directly to the display.
+  **"Play a chord: three bright white lines crystallize, bloom outward, then fade like breath on glass."**
+  Zero deps · Zero API · 2.76 kB.
+  Design notes: `src/app/dream/85-spectrogram-paint/README.md`
+
+---
+
+## Previous newest (Cycle 100 — kids build)
 
 - **[/dream/90-kids-puddle-jumper](/dream/90-kids-puddle-jumper)** — Puddle Jumper (kids). `demoable`
   Tap the pond to drop stones. Each tap plays a pentatonic "bloop" (left=low, right=high) and spawns three staggered ripple rings that expand outward with additive glow. When a ring hits a screen edge it reflects — a dimmer ghost-ring emanates from the mirror point, creating the sense of sound bouncing across the pond. Multiple taps layer into a visual and sonic texture. Ambient C-major pad hums softly in the background. **Zero permissions — no mic, no motion sensor, no consent dialogs.** Touch anywhere, multi-touch supported natively.

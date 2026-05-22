@@ -1,5 +1,36 @@
 # Dream Agent — cycle state
 
+## Cycle 101 — /dream/85-spectrogram-paint
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 101 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `85-spectrogram-paint` (top candidate from Cycle 100 queue; zero API, zero deps, one-cycle scope, high visual surprise).
+
+Reasoning: Cycle 100 explicitly queued `85-spectrogram-paint` as the top non-kids build. The Ryoji Ikeda spectrogram-as-painting concept is qualitatively distinct from every other prototype in the lab — it's the only one where the raw frequency data IS the visual artifact (not a secondary mapping). Votes API returned `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same two loved kids prototypes, no new AV votes. No love bias to apply to non-kids pick; choosing by surprise/technique novelty.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same as prior cycles. No new loves.
+
+**Loved slugs that influenced this cycle's choice**: none (both loves are kids prototypes; not a kids cycle; choosing by technique novelty and explicit queue priority).
+
+**What I built**:
+- `src/app/dream/85-spectrogram-paint/page.tsx` — scrolling FFT spectrogram feeding a Canvas2D ping-pong feedback loop. Three offscreen HTMLCanvasElement buffers: `spect` (raw scrolling spectrogram, 512×256), `pingA`/`pingB` (feedback display). Per-frame: `getByteFrequencyData()` → log-Hz row mapping → scroll+write new column → decay 98.4% with zoom 1.002× and drift → inject fresh spectrogram additively ("lighter" composite) → blit to full-screen canvas. Color: Ryoji Ikeda hot monochrome with bass/treble hue tint (silence=black, mid=violet/cyan, peak=white). Demo mode: 11 C-major scale notes (C2–C6) animated with incommensurable LFOs, narrow Gaussian bandwidth (1.6%).
+- `src/app/dream/85-spectrogram-paint/README.md` — feedback parameters table, colormap table, architecture, demo mode description, Cycle 102 WebGPU upgrade path.
+
+**Build**: `npm run build` passed cleanly. Page compiles to 2.76 kB, zero TypeScript errors, zero ESLint issues in new file. One fix needed: `Uint8Array<ArrayBuffer>` explicit typing for `getByteFrequencyData()` (same pattern as other mic prototypes).
+
+**What surprised me**: The "lighter" composite mode for spectrogram injection creates an unexpected emergent effect — when a chord of 3+ notes plays simultaneously, their individual frequency-column contributions ADD together in the display buffer. If all three are loud, the overlapping region in the feedback buffer accumulates to white much faster than a single note. So chords "bloom" faster and more dramatically than single notes. The result is that harmonic richness is immediately visible: a C major chord blooms a characteristic cluster shape, an augmented chord a different cluster. The feedback loop turns harmony into morphology.
+
+**Queued next**:
+1. **Cycle 102 (kids)** — 102 % 2 = 0 → kids cycle. Top candidate: `kids-character-band` (5 animal characters, each tap plays a distinct melodic phrase, Toca Band style). Alternative: `kids-ghost-lullaby` (simplified Ghost journey for kids). `character-band` preferred — it's the richest interactive experience in the KIDS.md queue and hasn't been built yet.
+2. **Cycle 103 (build)** — `84-wave-fluid` (WebGPU MLS-MPM fluid, two-cycle build, most visually spectacular in the queue) OR `86-sound-to-video` (sound → FLUX.2 image → LTX-2.3 video, AI image inside AV, Karel's explicit direction). Both are strong. Recommend `84-wave-fluid` as the pure-visual surprise, and `86-sound-to-video` as the AI-inside-AV play.
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+---
+
 ## Cycle 100 — /dream/90-kids-puddle-jumper
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)
