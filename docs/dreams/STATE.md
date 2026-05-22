@@ -1,5 +1,35 @@
 # Dream Agent — cycle state
 
+## Cycle 103 — /dream/86-sound-to-video
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 103 % 2 = 1 → NOT a kids cycle.
+4. **Build new** — `86-sound-to-video`. Selected over `84-wave-fluid` because Karel's explicit current direction reads: "AI image generation INSIDE audio-visual experiments is welcome... this is the path that interests him most right now." `86-sound-to-video` is the closest prototype to that directive in the queue — audio IS the generative input, FLUX.2 image + LTX-Video animation are the output. `84-wave-fluid` (WebGPU MLS-MPM) is also compelling for visual spectacle but is a two-cycle build and doesn't involve AI image gen.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — same loves as all prior cycles. No new AV prototype loves to bias against. Choosing by alignment with Karel's explicit direction.
+
+**Loved slugs that influenced this cycle's choice**: none directly (both loves are kids prototypes; not a kids cycle). Karel's explicit "AI image inside AV" directive is the dominant signal.
+
+**What I built**:
+- `src/app/dream/86-sound-to-video/page.tsx` — 10s audio capture (mic or demo C-major oscillators) → acoustic fingerprint (energy, spectral centroid, ZCR, 12-bin chroma, autocorrelation pitch) → two-phase API: (1) FLUX.2 Dev image from scene description, (2) LTX-Video 5s clip conditioned on that image + motion prompt. Each phase updates the UI immediately: image fades in before video generation starts, then the video appears as a looping `<video>` element. Phase display: idle → capturing (waveform + countdown) → gen_image → gen_video (image already visible) → done.
+- `src/app/dream/86-sound-to-video/api/route.ts` — two-step API route: `step: "image"` calls `fal-ai/flux/dev` (landscape 16:9, 28 steps), `step: "video"` calls `fal-ai/lightricks/ltx-video` with the image URL as conditioning frame. `maxDuration = 300`. `guard(req)` as first line. Both steps return their URL so the client displays progressively.
+- `src/app/dream/86-sound-to-video/README.md` — pipeline diagram, scene selection matrix, motion prompt logic, cost breakdown.
+
+**Build**: `npm run build` passed cleanly — `✓ Compiled successfully in 15.9s`. Page: 5.09 kB / 111 kB. API route: 283 B / 103 kB. Zero TypeScript errors, zero ESLint errors in the new files. One fix needed: import depth for `api-guard` was `../../../_shared/api-guard` but from `api/route.ts` the correct depth is `../../_shared/api-guard`.
+
+**What surprised me**: The two-phase progressive reveal is a strong UX pattern. The image arrives ~15–25s after capture; the user already has something beautiful to look at while the video generates for another 20–45s. The wait doesn't feel empty because the first output is immediately meaningful. The scene selection matrix (energy × spectral centroid → 6 archetypes) maps surprisingly well to the Ghost journey locations — the "stone chamber" archetype fires on quiet, bass-heavy playing, which is exactly what Karel's contemplative piano passages would produce. The motion prompt energy tiers make the video feel acoustically appropriate: soft playing generates a slow meditative drift; loud playing generates dynamic sweeping motion.
+
+**Queued next**:
+1. **Cycle 104 (kids)** — 104 % 2 = 0 → kids cycle. Options: `92-kids-piano-path` (Karel's Welcome Home album playing → color animations; uses his real music, no mic needed) OR `kids-sound-shapes` (tap a shape, hear its tone). The Welcome Home album path is a natural next step since it uses Karel's actual recordings (his explicit direction).
+2. **Cycle 105 (build)** — `84-wave-fluid` (WebGPU MLS-MPM fluid, two-cycle build) OR `73-journey-arc-spread` (5 journey themes cycling through distinct visual arcs). `wave-fluid` for pure visual spectacle; `journey-arc-spread` for direct journey engine work.
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+---
+
 ## Cycle 102 — /dream/91-kids-character-band
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

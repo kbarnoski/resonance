@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 102 — kids build)
+## ⭐ Newest (Cycle 103 — build)
+
+- **[/dream/86-sound-to-video](/dream/86-sound-to-video)** — Sound → Image → Video. `demoable`
+  10 seconds of audio (mic or demo) → acoustic fingerprint (energy, spectral centroid, ZCR, 12-bin chroma, pitch) → FLUX.2 Dev cinematic 16:9 scene image → LTX-Video 5-second animated clip. Two-phase progressive reveal: the image appears first (~15–25s), then the video animates the scene while you're already looking at it (~20–45s later). Six scene archetypes keyed to energy × spectral centroid: stone chamber, forest dawn, sea cave, sunlit courtyard, wild headland, cosmic nebula. Motion prompt adapts to energy level: quiet playing = meditative drift; loud playing = elemental sweep. **"The audio was the brush; the video is the canvas."** FAL_KEY in use. ~$0.25/generation. This is the "AI image inside AV" prototype Karel asked for.
+  Design notes: `src/app/dream/86-sound-to-video/README.md`
+
+---
+
+## Previous newest (Cycle 102 — kids build)
 
 - **[/dream/91-kids-character-band](/dream/91-kids-character-band)** — Character Band (kids). `demoable`
   Five animal characters — Frog, Owl, Cat, Fish, Bear — each with their own short melodic phrase in C-major pentatonic. Tap any character to hear them play. Tap two at once and they harmonize naturally (all phrases share a common tonal center). Each character scales up, glows in its color, and emits 18 sparkle particles on tap. Soft ambient pad runs from first tap. Multi-touch native — no wrong combinations. Start screen → single big "Let's Jam!" button → instant play.
