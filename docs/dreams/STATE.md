@@ -1,5 +1,48 @@
 # Dream Agent — cycle state
 
+## Cycle 96 — /dream/83-kids-tilt-rain
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 96 % 4 = 0 → **kids cycle**. Building `83-kids-tilt-rain` per KIDS.md queue and Cycle 95 notes.
+
+Reasoning: `kids-tilt-rain` chosen over `kids-hum-to-paint` because it requires no mic permission (DeviceOrientation is permission-free on Android; iOS requires one tap). Gentler for a 4yo session — no microphone setup, no explaining "talk into the phone." The basket mechanic is also more embodied (tilting = physical movement matching KIDS.md's sensorimotor principle) vs. humming which requires sustained vocal effort.
+
+**Votes API**: `{}` — no love signal. No bias to apply.
+
+**What I built**:
+- `src/app/dream/83-kids-tilt-rain/page.tsx` — full canvas game: colored drops fall from the top of the screen; tilt the device (DeviceOrientation gamma) to slide a glowing bowl basket to catch them; each catch plays a pentatonic note; after ≥5 catches, Replay button plays the melody back
+- `src/app/dream/83-kids-tilt-rain/README.md` — design decisions, controls, physics parameters, polish ideas
+
+**How it works**:
+- Canvas fills the viewport. Game state is entirely in refs (no re-renders in the RAF loop).
+- DeviceOrientation gamma (left-right tilt, −90°…+90°) is smoothed with α=0.18 exponential moving average, then mapped to basket X position. Basket follows with an additional 0.16 EMA smoothing so it feels physical, not instant.
+- iOS 13+ requires `DeviceOrientationEvent.requestPermission()` → called on the Start button tap. Android fires `deviceorientation` events without permission; a flag flips on the first event.
+- Desktop/no-tilt fallback: pointer move (mouse or touch drag) sets basket X directly.
+- Drops spawn at 1350ms initially, decreasing 5ms per drop (floor: 680ms) — gentle challenge ramp.
+- Collision: AABB between drop circle and basket arc zone (basketTop ± 52px, ±BASKET_W/2 horizontally).
+- Catch: calls `playNote(noteIdx)`, records noteIdx to `caughtRef`, increments `caughtCount`.
+- Burst animation: caught drop switches to expanding ring (burstR += 3.8/frame, alpha -= 0.055) then is dropped from the array.
+- Pentatonic synthesis: triangle wave + sine 2nd harmonic (0.18 gain) → shared ADSR gain node. Same formula as `82-kids-color-piano`, confirmed warm + non-harsh.
+- Background pad: C3/E3/G3 sine with slow LFO (0.08–0.13Hz) at 3.2% master gain. App never feels dead.
+- Stars: deterministic golden-ratio spiral positions (no per-frame state allocation).
+
+**Build**: `npm run build` passed cleanly. Page compiles to 2.96 kB, zero errors, zero ESLint issues in new file. All warnings are pre-existing in other files.
+
+**What surprised me**: The iOS permission flow is actually elegant here — the child hands the device to a parent, parent taps Start, permission is granted, then the kid tilts and plays without any further interruption. The mandatory user-gesture requirement for `requestPermission` inadvertently creates a natural "parent hands off to child" moment.
+
+**Queued next**:
+1. **Cycle 97 (build)** — `87-piano-transcript` (top priority: zero API, zero deps, uses Karel's live playing as input → live piano-roll score from YIN pitch detection). One-cycle build. Directly aligned with Karel's "incorporate his actual music" direction.
+2. **Cycle 98** — `88-marpi-void` (zero API, zero deps, one-cycle, high visual payoff) OR `84-wave-fluid` (WebGPU, two cycles, most spectacular visual in queue).
+3. **Open question carried forward**: Welcome Home album recording IDs → `72-paths-visualizer`.
+
+**Loved slugs that influenced this cycle's choice**: none (votes API `{}`).
+
+---
+
 ## Cycle 95 — research sweep
 
 **When**: 2026-05-21 UTC (hourly autonomous cycle)

@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 95 — research sweep)
+## ⭐ Newest (Cycle 96 — kids build)
+
+- **[/dream/83-kids-tilt-rain](/dream/83-kids-tilt-rain)** — Rain Catcher (kids). `demoable`
+  Hold the iPad like a tray and tilt left/right to slide a glowing bowl across the screen. Colored
+  raindrops fall — each color is a note in C-major pentatonic. Catch a drop → it plays its note and
+  bursts into an expanding ring. After 5 catches, a Replay button plays your melody back.
+  DeviceOrientation gamma drives the basket; iOS 13+ permission is requested on the Start tap.
+  Desktop fallback: mouse/touch X position.
+  Background C/E/G pad keeps the app feeling "alive" between catches. No reading required, no fail state.
+  **"Tilt-based sensorimotor music — what Toca Band does, but contemplative."**
+  Zero deps · Zero API · 2.96 kB.
+  Design notes: `src/app/dream/83-kids-tilt-rain/README.md`
+
+---
+
+## Previous newest (Cycle 95 — research sweep)
 
 - **Cycle 95 was a deep research sweep** (no new prototype). 5 new entries in RESEARCH.md (§§166–170). 5 new prototype seeds added to IDEAS.md. Top picks for next builds:
   - **`84-wave-fluid`** (Cycle 97+ — two-cycle) — MLS-MPM WebGPU ocean surface, 100k particles, audio-reactive. Inspired by Houdini GPU fluid solver + `matsuoka-601/webgpu-ocean`. Most visually ambitious prototype in the queue.

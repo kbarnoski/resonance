@@ -86,6 +86,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
 | 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading |
+| 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay |
 
 ---
 
@@ -104,6 +105,20 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 **Next kid-cycle ideas** (queued in seeded list above):
 - `kids-tilt-rain`: DeviceOrientation API + falling drops. Need to request permission on iOS 13+ (`DeviceOrientationEvent.requestPermission()`). This requires a button tap first — still acceptable for kids (parent taps the "go" button).
 - `kids-hum-to-paint`: mic → autocorrelation pitch → brush stroke color. Core algorithm already proven in `13-piano-canvas`. Kids version: bigger strokes, brighter colors, playback mode at end.
+
+### Cycle 96 — tilt-rain build
+
+**Built**: `83-kids-tilt-rain`. Key learnings:
+- `DeviceOrientationEvent.requestPermission()` on iOS 13+ must be called from a user gesture. The Start button serves as the natural permission gate — it also creates the AudioContext. One tap gates two permissions cleanly.
+- The iOS permission flow accidentally creates a good UX ritual: parent taps Start → hands device to kid → kid tilts freely. The "permission wall" becomes a "parent handoff moment."
+- Exponential smoothing on gamma (α=0.18) + basket follow (α=0.16) stacked gives a double-smoothed response that feels physical without being sluggish.
+- Basket collision is more forgiving than visually strict: +5px horizontal tolerance hides the arc curvature mismatch and makes the game feel "right" rather than pixel-perfect.
+- Golden-ratio spiral for star positions (no per-frame array allocation): `sx = (i * 0.618) % 1 * W`. Runs at 60fps with no garbage.
+
+**Next kid-cycle ideas**:
+- `kids-hum-to-paint`: mic pitch → brush strokes. Core algorithm proven in `13-piano-canvas`. Kids version: bigger strokes, brighter colors, Replay-as-music at end.
+- `kids-character-band`: 5 animal characters, tap each → melodic phrase. Toca Band-style but calmer.
+- `kids-puddle-jumper`: tap to splash → ripples + sound bounce off edges. Calming infinite play.
 
 ### Cycle 0 (this doc) — sources
 
