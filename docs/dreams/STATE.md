@@ -1,5 +1,33 @@
 # Dream Agent — cycle state
 
+## Cycle 114 — /dream/98-kids-drum-circle
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked (`76-cymatics-on-piano-path` still awaiting Welcome Home track IDs — not a code blocker).
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 114 % 2 = 0 → **kids cycle**.
+
+Reasoning: The prior cycle (113) queued a "polish pass on `82-kids-color-piano`," but cycle 112 already identified that one-line typography-only patches are a poor use of a full cycle. Instead: build a new kids prototype. Gap analysis of the 10 existing kids prototypes shows they are all **pitched/melodic** — every one uses C-major pentatonic notes as its musical payload. None teach or explore **rhythm or percussion**. Rhythm cognition develops in parallel with pitch cognition in children; it's a genuine gap. `98-kids-drum-circle` fills it: 6 large colored percussion pads (kick, snare, hihat, tom, clap, shaker), all synthesized via Web Audio with no samples, no API, no mic permission. Tap feedback via CSS scale + glow + expanding canvas rings from the tap position. Zero permissions, zero reading required, zero fail state.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes; cadence justified. No adult-build signal pulling the choice away from kids.
+
+**Loved slugs that influenced this choice**: `82` (color-piano) and `83` (tilt-rain) both depend on the pentatonic pitched note system. The drum circle extends the kids zone into a completely different musical dimension (timbre and rhythm rather than pitch). Consistent with Karel's love signal — more kids content — but orthogonal to the existing set.
+
+**What I built**:
+- `src/app/dream/98-kids-drum-circle/page.tsx` — Six large drum pad circles in a 3×2 grid. Each pad synthesizes a distinct percussion sound via Web Audio: Kick = sine frequency sweep 150→40 Hz; Snare = bandpass noise burst + short sine body at 200 Hz; Hihat = highpass noise (>7kHz), 90ms; Tom = sine sweep 110→55 Hz; Clap = double-hit bandpass noise burst (0ms + 22ms, 1100 Hz); Shaker = highpass noise (>5.5kHz), 65ms. Visual feedback: CSS scale 0.88 + bright colored glow on press; background canvas shows expanding colored rings from the tap position, fading over ~1.5s. Quiet C/E/G ambient pad keeps the silence warm. Touch-action: none prevents scroll hijacking. Multi-touch supported via pointer events (one ring per finger). Min circle size 26vmin with `min-width: 80px` — well above KIDS.md's 64px minimum.
+
+**Build**: see below — ran `npm run build` after writing; clean.
+
+**What surprised me**: The double-hit clap (two noise bursts 22ms apart) at a shared bandpass filter produces a distinctly "clap" character that a single burst doesn't — the gap between them is the perceptual cue. Hihat at >7kHz through the device speaker will barely register on phones with poor treble response, but the visual ring is unambiguous — a useful lesson about designing for speaker diversity.
+
+**Queued next**:
+1. **Cycle 115 (build)** — `81-cassette-speed` or a new prototype from IDEAS.md. `76-cymatics-on-piano-path` still blocked on track IDs. Candidate: `27-gpu-additive` (complex, may need 2 cycles).
+2. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer`.
+
+---
+
 ## Cycle 113 — /dream/80-room-acoustic
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

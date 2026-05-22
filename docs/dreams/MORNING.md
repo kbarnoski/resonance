@@ -1,29 +1,21 @@
-# Morning digest — last updated 2026-05-22 UTC (Cycle 113)
+# Morning digest — last updated 2026-05-22 UTC (Cycle 114)
 
 ## New since yesterday
 
-- **[/dream/80-room-acoustic](https://getresonance.vercel.app/dream/80-room-acoustic)** — Room Acoustic
-  Draw a rectangular room, pick wall and floor materials, press **▶ play chord**.
-  A C-major chord sounds in that room via a real impulse response (image-source method,
-  3rd-order reflections, Web Audio ConvolverNode). The RT60 readout shows how reverberant
-  the space is — and it colors to tell you: emerald = studio dry, blue = room, violet = hall,
-  amber = cathedral/cave.
+- **[/dream/98-kids-drum-circle](https://getresonance.vercel.app/dream/98-kids-drum-circle)** — Drum Circle (kids)
+  Six large colored percussion pads: red=kick, orange=snare, yellow=hihat, teal=tom, blue=clap, purple=shaker.
+  Each synthesized via Web Audio (no samples): kick = sine sweep 150→40 Hz; snare = bandpass noise + sine
+  body; clap = classic double-burst 22ms apart; shaker = >5.5kHz highpass noise. Background canvas spawns
+  expanding colored rings from each tap point. Multi-touch supported.
 
-  Drag the amber ♪ source and violet 👂 listener within the room — the IR rebuilds automatically
-  after each drag. 9 presets to start with: **Stone Chamber** (RT60 ≈ 2.5s, your Ghost location),
-  **Concert Hall**, **Cathedral**, **Closet** (near-anechoic), **Forest Clearing** (soft outdoor).
+  **Why open this**: it's the first kids prototype about rhythm rather than pitch. All 10 previous kids
+  prototypes use C-major pentatonic melodic notes — this is the first pure percussion set. A 4yo can tap
+  any combination and get a layered beat, no music theory needed. The rings from overlapping taps create
+  a light show. Zero permissions, zero reading.
 
-  **Why open this**: it's the first prototype about the physics of space rather than the physics of
-  signal. The Stone Chamber preset sounds unmistakably like a stone chamber — ringy, metallic,
-  with dense early reflections. The Cathedral is diffuse and vast. You can now tune Ghost scene
-  acoustics with a slider rather than guessing. Also relevant to any venue installation you're
-  planning — put in the real room dimensions, hear whether it's too live.
-
-## Previous (Cycle 112 — kids build)
-
-- **[/dream/97-kids-star-catch](https://getresonance.vercel.app/dream/97-kids-star-catch)** — Star Catch (kids)
-  Pentatonic stars fall slowly, tap to catch → note plays + sparkles. After 3 catches, replay
-  button lets the child hear the melody they assembled. Zero permissions, zero reading required.
+- **[/dream/80-room-acoustic](https://getresonance.vercel.app/dream/80-room-acoustic)** — Room Acoustic (Cycle 113)
+  Simulates a physical room: draw width/depth, pick wall materials, drag source/listener — C-major chord
+  sounds through the computed impulse response. 9 presets from Closet to Cathedral.
 
 ## Kids zone — full status
 
@@ -39,6 +31,7 @@
 | 108 | `94-kids-ghost-echo` | demoable | Spirit pond — tap → Ghost appears + fades |
 | 110 | `95-kids-breath-bubbles` | demoable | Blow → bubbles float + pop |
 | 112 | `97-kids-star-catch` | demoable | Tap falling stars → collect notes → replay |
+| 114 | `98-kids-drum-circle` | demoable | 6 percussion pads; first rhythm prototype |
 
 ## In progress / partial
 
@@ -48,7 +41,6 @@ Nothing blocked. `76-cymatics-on-piano-path` still waiting on Welcome Home track
 
 1. **Welcome Home album track IDs** — `76-cymatics-on-piano-path` and `72-paths-visualizer`
    want to play your actual recordings. Needs audio IDs from the `journey_paths` table.
-2. **New loves?** Votes API still shows only `82` and `83`. Recent builds worth a listen:
-   `80-room-acoustic` (new this cycle), `96-projection-mapping-sandbox`, `75-houdini-particle-flock`.
+2. **New loves?** Votes API still shows only `82` and `83`. Worth a listen:
+   `98-kids-drum-circle` (new), `80-room-acoustic`, `96-projection-mapping-sandbox`.
 3. **Venue demo** — `96-projection-mapping-sandbox` is ready for a real projector test.
-4. **Next cycle (114) is kids** — planning a polish pass on `82-kids-color-piano` (text contrast).
