@@ -1,5 +1,36 @@
 # Dream Agent — cycle state
 
+## Cycle 115 — /dream/81-cassette-speed
+
+**When**: 2026-05-22 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked (`76-cymatics-on-piano-path` still awaiting Welcome Home track IDs — not a code blocker).
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 115 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Build new** — `81-cassette-speed` from IDEAS.md queue (Research Cycle 90, explicitly queued for Cycle 115 in STATE.md).
+
+Reasoning: `81-cassette-speed` was explicitly queued for this cycle in the Cycle 114 notes. It's the cleanest option: fully specced, FAL_KEY already in use, one-cycle build, useful empirical data for Karel — does CassetteAI's 10× speed advantage come at a quality cost Karel would actually notice? The prototype fires both backends simultaneously with the same prompt, shows live generation timers, waveform strips, and a bloom visualizer during playback. After both complete it reports the speed differential. This gives Karel a concrete data point for deciding whether to swap `6-compose`'s ACE-Step backend for faster iteration.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes; no adult-build signal pulling away from this choice.
+
+**Loved slugs that influenced this choice**: `82` and `83` are both kids — not directly relevant. `81-cassette-speed` selected by queue order and explicit prior-cycle queuing.
+
+**What I built**:
+- `src/app/dream/81-cassette-speed/api/route.ts` — POST handler protected by `guard(req)`. Accepts `{ backend: "cassette" | "ace", tags: string }`. Routes to `cassetteai/music-generator` (CassetteAI) or `fal-ai/ace-step` (ACE-Step) via `fal.subscribe`. Normalizes response across `data.audio.url / data.audio_url / data.url / data.audio[0].url` shapes. Returns `{ url }` on success.
+- `src/app/dream/81-cassette-speed/page.tsx` — Side-by-side speed/quality comparison. Five music presets (Forest Dawn, Stone Chamber, Cosmic Drift, Jazz Sketch, Ocean Breath) with a freeform tags textarea. **Generate Both** fires both backends concurrently (two async IIFE pattern with `void`). Each panel shows a live ms timer during generation, a waveform strip (600-bin `buildPeaks` drawn via `drawWaveform` to canvas) when done, and **▶ Play** / **⏹ Stop** controls. Six-band bloom visualizer (`runBloom` — 6 frequency bands, inner `tick()` using `requestAnimationFrame`) activates during playback. Speed summary shown only when both panels have completed: "Cassette: X.Xs · ACE-Step: Y.Ys · X× faster". Playback uses `AudioBufferSourceNode` after fetching audio as `arrayBuffer()` + `decodeAudioData()` — avoids CORS issues with FAL CDN URLs. Discriminated union `GenState` (`idle | generating | done | error`) for type-safe state.
+
+**Build**: Ran `npm run build` — one TypeScript fix needed: TypeScript doesn't narrow `const ctx = canvas.getContext("2d")` across the inner `tick()` closure. Fixed by assigning the narrowed type to a second const: `const ctxMaybe = ...; if (!ctxMaybe) return; const ctx = ctxMaybe;`. Build clean after fix.
+
+**What surprised me**: TypeScript's type narrowing correctly propagates to a new `const` assigned from a narrowed variable — `const ctx = ctxMaybe` after `if (!ctxMaybe) return` gives `ctx` the type `CanvasRenderingContext2D` (not nullable), and closures capturing `ctx` see the correct type. This is subtly different from capturing `ctxMaybe` directly. The naming pattern `ctxMaybe → ctx` is cleaner than `ctx!` non-null assertions scattered through the tick function.
+
+**Queued next**:
+1. **Cycle 116 (kids)** — New kids prototype. Gap in the kids zone: spatial audio / panning. Candidate: `99-kids-panning-safari` — six animal sounds panned left/right/center, tap the animal, it "walks" across the screen while the sound pans. Or simpler: add a Polish pass to `82-kids-color-piano` (waveform + larger labels). Check loved count at start of cycle.
+2. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer` remain blocked on those IDs.
+3. **CassetteAI vs ACE-Step data**: Run the prototype with "ambient piano, meditative, 60 BPM, gentle" and note the actual speed ratio Karel observes — useful signal for `6-compose` backend choice.
+
+---
+
 ## Cycle 114 — /dream/98-kids-drum-circle
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

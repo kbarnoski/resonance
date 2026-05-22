@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 114 — kids build)
+## ⭐ Newest (Cycle 115 — build)
+
+- **[/dream/81-cassette-speed](/dream/81-cassette-speed)** — CassetteAI vs ACE-Step Speed Race. `demoable`
+  Side-by-side speed and quality comparison of two FAL music-generation backends. Pick one of five presets (Forest Dawn, Stone Chamber, Cosmic Drift, Jazz Sketch, Ocean Breath) or type freeform tags, then hit **Generate Both** — both backends start simultaneously. Left panel (violet) runs CassetteAI (`cassetteai/music-generator`, distilled model, ~2s); right panel (cyan) runs ACE-Step (`fal-ai/ace-step`, full diffusion, ~20–40s). Each panel shows a live millisecond timer, then a waveform strip on completion, then a ▶ Play button. Playback feeds a six-band bloom visualizer (violet→cyan→green→yellow→orange→magenta). When both complete a speed summary line appears: "Cassette: X.Xs · ACE-Step: Y.Ys · X× faster."
+  **"Same prompt. Both start at once. Now you can hear whether the 10× speed gap costs anything you'd notice."** Direct empirical tool for Karel to decide whether to swap `6-compose`'s ACE-Step backend for faster iteration loops.
+  FAL_KEY required · 2 API calls / generation · waveform + bloom visualizer.
+
+---
+
+## Previous (Cycle 114 — kids build)
 
 - **[/dream/98-kids-drum-circle](/dream/98-kids-drum-circle)** — Drum Circle (kids). `demoable`
   Six large colored percussion pads in a 3×2 grid — red (kick), orange (snare), yellow (hihat), teal (tom), blue (clap), purple (shaker). Tap any pad to play its synthesized drum sound: kick is a sine sweep 150→40 Hz; snare is bandpass noise + short 200 Hz sine body; hihat is highpass noise above 7 kHz; tom is a slower sine sweep 110→55 Hz; clap is a double bandpass noise burst (0 ms + 22 ms apart — the gap between bursts is the perceptual cue for "clap"); shaker is highpass noise above 5.5 kHz. Background canvas draws expanding colored rings from each tap point. CSS scale (0.88) + bright glow on press. Quiet C/E/G ambient pad from first tap. Multi-touch: every finger gets its own ring. Zero permissions, zero API, zero deps. Min pad size 26vmin (≥80px).
