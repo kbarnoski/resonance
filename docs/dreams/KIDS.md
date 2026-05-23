@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 130 | `/dream/109-kids-bounce-notes` | `demoable` | **NEW** Gravity+elastic physics; 4 walls play pentatonic notes (bottom=C3 deep, top=A4 bright, sides=mid); tap to spawn up to 5 balls; flash glow on impact; autonomous music — no repeated gestures needed; zero permissions. |
+| 140 | `/dream/118-kids-mirror-melody` | `demoable` | **NEW** Draw on either half → instant mirror on opposite half; Y=pitch; rose left, cyan right; both voices panned opposite; 7s fade trails; multi-touch; ambient C–G–C pad; zero permissions. |
+| 130 | `/dream/109-kids-bounce-notes` | `demoable` | Gravity+elastic physics; 4 walls play pentatonic notes (bottom=C3 deep, top=A4 bright, sides=mid); tap to spawn up to 5 balls; flash glow on impact; autonomous music — no repeated gestures needed; zero permissions. |
 | 128 | `/dream/108-kids-kalimba` | `demoable` | 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
 | 122 | `/dream/104-kids-mirror-draw` | `demoable` | Draw anywhere → mirrors instantly across center axis; Y=pitch (top=high); lift to play melody; paths fade 7s. Zero permissions. |
 | 120 | `/dream/102-kids-echo-song` | `demoable` | Bird sings 2–4 note phrase → child taps 5 colored circles to reply → bird echoes child's notes + adds one new note. Call-and-response loop. Phrases grow each round. Zero permissions. |
@@ -138,6 +139,23 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 140 — mirror-melody build
+
+**Built**: `118-kids-mirror-melody`. Key learnings:
+- **The stereo mirror is the interaction** — no UI labels needed. A child who draws on the left immediately hears sound appear on the right. The cause-effect is spatial, not visual. This works because the pan offset (±0.55) is strong enough to localize on phone speakers, not just headphones.
+- **Y=pitch across the full canvas height is the right mapping** (same as `100-kids-paint-song` and `104-kids-mirror-draw`). The mental model "higher up = higher note" is intuitive enough that a 4yo discovers it without instruction, and consistent across three prototypes now — a pattern worth preserving.
+- **85ms note throttle is right for continuous drawing**. Too short (<50ms) → notes blur into a continuous tone (which sounds broken). Too long (>120ms) → feels unresponsive, especially for fast swipes. 85ms gives a clear pentatonic arpeggio on fast gestures, individual sustained notes on slow ones.
+- **Mirror is panned opposite, not same-side**. Tempting to pan both direct and mirror to the same side (e.g., both left when drawing on left), but that loses the spatial "call and response" quality. Panning opposite makes the stereo duet immediately perceptible — the child draws on the left and hears a voice on the right answer.
+- **Multi-touch with independent pointer throttling** enables parent+child simultaneous play. Each `pointerId` has its own last-note timestamp. Two simultaneous fingers never interfere with each other's note cadence.
+- **Subtle half-tints (4% opacity)** tell the child where each color lives without text labels. Rose blush on the left, cyan tint on the right. Barely visible but subconsciously registers which side is which.
+- **"Draw to play" hint at 35% opacity**: visible enough to find on a blank canvas, invisible enough not to distract during play. The canvas is never fully blank (ambient pad plays from button press), so the hint just signals that there's drawing to be done.
+
+**Next kid-cycle ideas (Cycle 142)**:
+- **Polish `116-kids-bloom-garden`**: add a faint expanding dashed ring at the press point during the 480ms hold (pre-bloom "loading ring"). Currently the bud appears without warning. A press ring would make the hold gesture feel more intentional. One-file edit, 20 lines.
+- **New seed**: `kids-rain-drum` — screen divided into 4 zones; hold phone upright and drops fall from each zone's "cloud"; drops play notes on landing at the zone's pentatonic pitch. Tap zone to change its weather (rain/snow/leaves). Extends `83-kids-tilt-rain`'s gravity aesthetic without requiring DeviceOrientation permissions.
+
+---
 
 Keep a running log here of relevant findings the agent uncovers during kid-cycles (mirrors `RESEARCH.md` structure).
 

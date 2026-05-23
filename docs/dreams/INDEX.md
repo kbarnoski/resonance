@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 139 — adult build)
+## ⭐ Newest (Cycle 140 — kids build)
+
+- **[/dream/118-kids-mirror-melody](/dream/118-kids-mirror-melody)** — Mirror Melody (kids). `demoable`
+  A split canvas: rose on the left, cyan on the right. **Draw on either half** — glowing dots trail your finger and play a pentatonic note in real time (Y=pitch, top=high). The **mirror path appears instantly** on the opposite half in the complementary color, playing the same note panned to the other ear. Two-voice stereo duet from a single gesture. Paths accumulate and fade over 7 seconds; a soft ambient C–G–C pad fills any silence. Multi-touch: two fingers create two independent mirror pairs simultaneously.
+  **"Left hand / right hand — draw both at once."** The prototype is its own music theory lesson: holding a finger high on both sides creates a two-voice unison; drawing one finger high and one low creates a two-voice interval. A 4yo discovers this in under 30 seconds without any instruction.
+  Zero permissions · Zero API · Zero deps · 2.26 kB.
+
+Next: **Cycle 141 → adult cycle** (`poem-fluid`: WebGL Navier-Stokes fluid + Markov text overlay keyed to vorticity — Memo Akten / Whitney Artport 2026 paradigm).
+
+---
+
+## Previous (Cycle 139 — adult build)
 
 - **[/dream/117-data-cosm](/dream/117-data-cosm)** — DATA-COSM. `demoable`
   Ryoji Ikeda aesthetic brought to the browser. A full-canvas scrolling matrix of **synthetic particle physics events** in CERN CMS format (`[μ+] pt=  48.3 eta= -1.270 phi=  2.950 m=0.1060 q=+1`) rendered in monospace on pure black. Every new event: characters **scatter from random offsets then snap into place** (300ms), a sine pulse fires at the current scale's tone frequency, trail particles arc upward. A continuous **sub-bass 38Hz drone** underlies — felt not heard.
@@ -20,8 +31,6 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
   - **COSMIC** — 1 event/10s, 110Hz sub-bass tone, 20px font, centered on black: a single event worth contemplating
   "All of nature's data is the same material." The three scales comment on each other — the identical data format means completely different things at different temporal densities.
   Tap to activate audio. Zero permissions · Zero API · Zero deps · 2.38 kB.
-
-Next: **Cycle 140 → kids cycle** (`kids-bloom-garden` polish or new kids prototype from KIDS.md queue).
 
 ---
 
