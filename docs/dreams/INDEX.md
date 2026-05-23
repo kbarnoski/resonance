@@ -10,14 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 138 — kids build)
+## ⭐ Newest (Cycle 139 — adult build)
+
+- **[/dream/117-data-cosm](/dream/117-data-cosm)** — DATA-COSM. `demoable`
+  Ryoji Ikeda aesthetic brought to the browser. A full-canvas scrolling matrix of **synthetic particle physics events** in CERN CMS format (`[μ+] pt=  48.3 eta= -1.270 phi=  2.950 m=0.1060 q=+1`) rendered in monospace on pure black. Every new event: characters **scatter from random offsets then snap into place** (300ms), a sine pulse fires at the current scale's tone frequency, trail particles arc upward. A continuous **sub-bass 38Hz drone** underlies — felt not heard.
+  Three **temporal scales** auto-advance every 40s with a white flash + scatter-all transition:
+  - **QUANTUM** — 8 events/s, 4kHz tones, 10px font, 90px/s scroll: dense flickering number matrix
+  - **BIOLOGICAL** — 1 event/s, 440Hz tones, slower cadence: graceful, measured
+  - **COSMIC** — 1 event/10s, 110Hz sub-bass tone, 20px font, centered on black: a single event worth contemplating
+  "All of nature's data is the same material." The three scales comment on each other — the identical data format means completely different things at different temporal densities.
+  Tap to activate audio. Zero permissions · Zero API · Zero deps · 2.38 kB.
+
+Next: **Cycle 140 → kids cycle** (`kids-bloom-garden` polish or new kids prototype from KIDS.md queue).
+
+---
+
+## Previous (Cycle 138 — kids build)
 
 - **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids). `demoable`
   A dark canvas that breathes. **Press and hold** anywhere to plant a glowing flower — it blooms over 650ms from a tiny bud into a 5-petal flower and plays a sustained pentatonic note (X position = pitch: violet/low left → rose/high right). After 10 seconds the flower **seeds itself**: petals scatter as sparkles and a new bud sprouts 30–62px away, inheriting the pitch ±1 note. **Tap any flower to burst it** — sparkle explosion + pop note. Up to 12 flowers coexist; the garden self-organizes over time toward harmonic clusters as notes drift ±1 each generation.
   **"The most contemplative kids prototype yet — designed for quiet play before sleep."** No tap targets. No fail state. No goal. Hold → bloom → watch the garden grow itself. Ambient C3+E3+G3 pad so the screen is never silent even before the first flower.
   Zero permissions · Zero API · Zero deps · 3.17 kB.
-
-Next: **Cycle 139 → `data-cosm`** (adult build — Ryoji Ikeda / data-cosm aesthetic, scrolling number matrices + sub-bass sine tones, zero deps, highest surprise rating from Cycle 137 research).
 
 ---
 

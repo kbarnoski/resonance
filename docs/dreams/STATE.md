@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 139 — /dream/117-data-cosm
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 139 % 2 = 1 → **adult cycle**.
+4. **Build new**: `data-cosm` explicitly queued for Cycle 139 in STATE.md Cycle 138 notes. Zero deps, zero API, one-cycle build. Highest surprise rating of all seeds from Cycle 137 research.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate, vivid, physical gesture → sound. `data-cosm` is the opposite emotional register (ambient, meditative, almost oppressive) — which is exactly why it has high surprise value. Karel hasn't seen Ikeda-aesthetic AV in the sandbox yet.
+
+**Loved slugs that influenced this choice**: The loved prototypes are both maximally responsive (tap = immediate sound). By contrast, `data-cosm` is passive — you watch, the universe speaks. This polarity is what AGENT.md means by "surprise." `82` and `83` prove Karel likes immediacy; `data-cosm` proves the agent isn't just deepening the same vein every cycle.
+
+**Note on route number**: IDEAS.md spec said `/dream/116-data-cosm` but `116` was used this cycle by `kids-bloom-garden`. Using `117-data-cosm` instead.
+
+**What I built**:
+- `src/app/dream/117-data-cosm/page.tsx` — Ryoji Ikeda data-cosm aesthetic in the browser
+  - **Full-canvas scrolling monospace matrix**: synthetic particle physics events (CERN CMS format: `[μ+] pt=  48.3 eta= -1.270 phi=  2.950 m=0.1060 q=+1`) rendered in monospace on pure black
+  - **Per-character scatter on each event**: new rows burst in with 300ms scatter-then-snap-back animation, each character offset randomly then smoothly decaying to position
+  - **Trail particles**: 7 particles spawn at each new event row, arc upward with realistic gravity
+  - **Three temporal scales** (auto-advance every 40s with white flash + scatter-all transition):
+    - **QUANTUM** — 8 events/s, 4kHz tone pulses, 10px font, 90px/s scroll — dense flickering matrix
+    - **BIOLOGICAL** — 1 event/s, 440Hz tones, 11px font, 26px/s scroll — graceful measured cadence
+    - **COSMIC** — 0.1 event/s (1 per 10s), 110Hz near-sub-bass, 20px font — one event centered, near-empty canvas
+  - **Sub-bass 38Hz drone** (OscillatorNode, gain 0.06) — felt not heard, activated on first tap
+  - **Timeline bar** at bottom shows progress toward next scale transition
+  - **Scale name** bottom-right ("QUANTUM" / "BIOLOGICAL" / "COSMIC") at 50% opacity
+  - **Caption** bottom-left: "All of nature's data is the same material."
+  - Typography: text-2xl title, text-base description, text-white/95 primary
+
+**What surprised me**: The COSMIC scale is the most striking. A single synthetic collision event — `[τ-] pt=  73.1 eta=  0.842 phi= -1.083 m=1.7770 q=-1` — appearing centered on a black screen, scattering to fragments then snapping into place, followed by 9.9 seconds of near-silence with just a 110Hz subharmonic rumble. The scale shifts what "information" feels like: QUANTUM is overwhelming data processing, COSMIC is a single event worth contemplating. The three scales comment on each other — the same format string means completely different things at different temporal densities.
+
+**What's queued next**:
+1. **Cycle 140 (kids, 140%2=0)** — kids cycle. KIDS.md Cycle 138 notes suggested polishing `116-kids-bloom-garden` (add pre-bloom "press ring" indicator), or building `kids-mirror-melody v2`. Check KIDS.md queue on next cycle.
+2. **Cycle 141 (adult)** — `poem-fluid` (WebGL fluid + Markov text overlay keyed to vorticity). Memo Akten / Whitney Artport 2026 paradigm. Zero deps, one cycle.
+
+---
+
 ## Cycle 138 — /dream/116-kids-bloom-garden
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

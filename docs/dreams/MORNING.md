@@ -1,64 +1,59 @@
-# Morning digest — last updated 2026-05-23 UTC (Cycle 138)
+# Morning digest — last updated 2026-05-23 UTC (Cycle 139)
 
 ## New since yesterday
 
+- **[/dream/117-data-cosm](/dream/117-data-cosm)** — DATA-COSM · *Cycle 139* · `demoable`
+  Ryoji Ikeda's data-cosm aesthetic, browser-native. A full-canvas scrolling
+  matrix of **synthetic particle physics events** in CERN CMS format, monospace
+  on pure black. Every new event: **characters burst apart then snap back** into
+  place over 300ms, a sine tone fires, trail particles arc upward. Sub-bass
+  38Hz drone underlies — felt not heard. Tap to activate audio.
+
+  Three **temporal scales** auto-advance every 40 s with white flash + scatter-all:
+  - **QUANTUM** — 8 events/s, 4kHz pings, dense flickering number wall
+  - **BIOLOGICAL** — 1 event/s, 440Hz tones, slow steady cadence
+  - **COSMIC** — 1 event/10s, 110Hz sub-bass, single event centered on black screen
+
+  "All of nature's data is the same material." Watch all three scales cycle once
+  (~2 min) — COSMIC is the payoff.
+  Zero permissions · Zero API · Zero deps · 2.38 kB.
+
 - **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids) · *Cycle 138* · `demoable`
-  **Press and hold** anywhere to plant a glowing flower. It blooms from a bud
-  over 650ms, plays a sustained pentatonic note (X=pitch: violet/low left →
-  rose/high right). After 10 seconds it **seeds itself** — petals scatter as
-  sparkles and a new bud sprouts 30–62px away, inheriting the pitch ±1 step.
-  **Tap any flower to burst it.** Up to 12 flowers; the garden slowly
-  self-organizes into harmonic clusters over 3–4 minutes as seeds drift ±1 each
-  generation.
+  Long-press anywhere to plant a glowing musical flower. It blooms from a bud
+  over 650ms, plays a sustained pentatonic note (X=pitch). After 10 seconds
+  it seeds itself — sparkle burst then new bud sprouts 30–62px away, pitch ±1.
+  Tap any flower to burst it. Garden self-organizes over 3–4 min.
   Zero permissions · Zero API · Zero deps · 3.17 kB.
-  **"The most contemplative kids prototype yet — designed for quiet play before
-  sleep."** Different from all prior kids builds: the gesture is a *hold* (not
-  a tap), the music is *sustained* (not a single note event), and the garden
-  *acts without you* (self-seeding means it keeps changing when you stop
-  touching).
 
-- **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids) · *Cycle 136* · `demoable`
-  Touch anywhere on the screen — you're inside that weather. Drag between
-  zones to blend four atmospheric music engines. Multi-touch blends both
-  simultaneously. Zero permissions · Zero deps · 3.48 kB.
+## Cycle 137 — research seeds still queued
 
-## Cycle 137 — research sweep (adult)
+From last adult research sweep (Cycle 137):
 
-6 new prototype seeds added to IDEAS.md and RESEARCH.md §191–§196:
+1. **`poem-fluid`** (queued for Cycle 141) — WebGL fluid + Markov text overlay
+   keyed to vorticity. Still water = full sentence; turbulence = single word.
+   Ghost narrative fragments. Memo Akten / Whitney Artport 2026 paradigm.
+   Zero deps, one cycle.
 
-1. **`data-cosm`** (zero deps, zero API, one cycle) — Ryoji Ikeda aesthetic.
-   Synthetic particle event stream: scrolling monospace matrix + sub-bass sine
-   tones. Three auto-advancing scales (Quantum → Biological → Cosmic).
-   **Queued for Cycle 139.**
+2. **`image-chord`** — Drag any image → HSL → chord quality / richness / register.
+   8 journey-theme swatches. Zero deps, zero API.
 
-2. **`poem-fluid`** — WebGL Navier-Stokes fluid + Markov text overlay keyed to
-   vorticity (Memo Akten / Whitney Artport 2026 paradigm). Still water = full
-   sentence; turbulence = single word.
+3. **`arc-steer`** (FAL_KEY) — 6-phase journey arc via 6 sequential ACE-Step
+   calls (~$0.036/journey). `5-arcs` realized with real AI-generated music.
 
-3. **`image-chord`** — Drag any image → hue/saturation/brightness maps to chord
-   quality / harmonic richness / register. 8 journey-theme swatches. Inspired by
-   Mozualization (Apr 2026).
+4. **`audio-cloud`** (WebGPU, 2 cycles) — 6 particle species × FFT bands,
+   per-species physics. Elekktronaut TD particlesGPU technique.
 
-4. **`arc-steer`** (FAL_KEY) — 6-phase journey arc via 6 sequential ACE-Step
-   calls. ~$0.036/journey.
-
-5. **`audio-cloud`** (WebGPU, 2 cycles) — 6 particle species × FFT bands,
-   distinct physics per species. Elekktronaut TD particlesGPU technique.
-
-6. **`body-conductor`** (CDN ~8MB, needs your OK) — MediaPipe PoseLandmarker:
-   full-body dance → synthesizer. Wrist Y=pitch, arm span=stereo, body speed=dynamics.
+5. **`body-conductor`** (MediaPipe CDN ~8MB, needs your OK) — full-body pose
+   → synthesizer. Wrist Y=pitch, arm span=stereo, body speed=dynamics.
 
 ## In progress / partial
 
-- Nothing in-progress.
+Nothing in-progress.
 
 ## Open questions for Karel
 
-1. **`data-cosm` vs `poem-fluid` for Cycle 139** — both zero deps, one cycle.
-   `data-cosm` = more visually striking / surprising (Ikeda aesthetic, completely
-   new to the sandbox). `poem-fluid` = more emotionally resonant (Ghost narrative
-   + fluid). Which calls to you?
-2. **`body-conductor` CDN dep** — MediaPipe ~8MB, CDN-loaded. Good to proceed?
-3. **`arc-steer` spend** — 6 × ACE-Step 30s ≈ $0.036/run. Good to proceed?
-4. **GEMINI_API_KEY** — unlocks `30-lyria-jam`, `43-lyria-ghost`. Any update?
-5. **`veo3-ghost` budget** — $2.00/clip (Veo 3 Fast). Still waiting for OK.
+1. **`body-conductor` CDN dep** — MediaPipe PoseLandmarker ~8MB, CDN-loaded.
+   Good to proceed?
+2. **`arc-steer` spend** — 6 × ACE-Step 30s ≈ $0.036/run. Good to proceed?
+3. **GEMINI_API_KEY** — unlocks `30-lyria-jam`, `43-lyria-ghost`. Any update?
+4. **Veo 3 Ghost animate budget** — ~$0.75/clip (Veo 3 Fast). Waiting for OK.
