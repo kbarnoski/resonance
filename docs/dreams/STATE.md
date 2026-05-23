@@ -1,5 +1,49 @@
 # Dream Agent — cycle state
 
+## Cycle 119 — /dream/101-camera-song
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 119 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Build new** — `101-camera-song` from Cycle 117 research, explicitly queued in both Cycle 117 and Cycle 118 notes as highest-priority one-cycle build.
+
+Reasoning: Zero new deps (R3F + drei + postprocessing already installed). Directly aligns with Karel's directive to spread prototypes across all six published journeys. The interaction model — orbiting to change the music mix — is genuinely novel: none of the 100 prior prototypes make *camera orientation* the primary musical parameter. High surprise factor, high live-performance relevance ("walk through the journeys"), zero API cost.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are kids. No adult-build signal, but `camera-song` was the explicit queued pick.
+
+**Loved slugs that influenced this choice**: `82` and `83` are both immediate-visual-to-sound prototypes. `camera-song` extends the same principle — the user's physical gesture (turning in 3D space) is the instrument.
+
+**What I built**:
+- `src/app/dream/101-camera-song/page.tsx` — 6 journey-theme orbs in a WebGL/R3F 3D space.
+  - **Splash screen**: lists all 6 journeys with their colors, "Enter the space" button, "drag to orbit · headphones recommended" instruction.
+  - **3D scene**: 6 glowing sphere orbs arranged in a constellation — Cosmic Homecoming (top), Earth Grounding (bottom), Inner Sanctuary (left-rear), Ocean Breath (right-front), Snowflake (far-right), Ghost (far-left).
+  - **Camera orientation → audio mix**: `CameraTracker` component runs `useFrame` each tick, computes `dotProduct(cameraDir, toOrb)` for each orb, applies `cos²` falloff. Updates `GainNode.gain.setTargetAtTime` (180ms smoothing) — focused orb gets up to 1.0 gain, unfocused orbs decay toward 0.03 floor.
+  - **6 distinct audio voices** (all pre-allocated oscillators, no API):
+    - Cosmic: 440/441.2/220/221 Hz detuned pad (slow beating)
+    - Earth: 61.74 Hz sawtooth + lowpass (deep bass)
+    - Sanctuary: 220 Hz FM synthesis (mod index ~0.43, warm flute-like)
+    - Ocean: C3/E3/G3 chord (C major, lush)
+    - Snowflake: 1760/1763.5 Hz triangle (barely-beating crystalline)
+    - Ghost: A-minor arpeggio (A3→C4→E4→C4), pre-scheduled 140 steps via `setValueAtTime` — no setTimeout needed
+  - **Visual feedback**: each orb's `emissiveIntensity` + `pointLight.intensity` update per frame from focus level. Focused orb glows 4.5× brighter, scales up ~0.58 extra.
+  - **Label DOM mutation**: focused journey name and description written directly to DOM refs (no React state re-renders).
+  - **Background**: 650 randomly placed stars on a sphere, dark void (#000008).
+  - **Bloom**: `luminanceThreshold 0.08, intensity 2.4, mipmapBlur` — strong glow on focused orbs.
+  - **Cleanup**: `cleanup()` on unmount stops all oscillators + closes AudioContext. Ghost's pre-scheduled arpeggio is cancelled by `ctx.close()`.
+
+**Build**: `npm run build` — clean. `/dream/101-camera-song` at 3.06 kB.
+
+**What surprised me**: The `cos²` falloff (not linear) creates a nice "snap to focus" quality — you have to actually point toward an orb to hear it clearly. With linear falloff, everything would blend into ambient soup. The squared function makes the focus feel deliberate. Also, because the orbs are at varying distances from origin (not on a perfect sphere), Earth (below) and Cosmic (above) are the hardest to focus on (you have to tilt the camera significantly up/down), which creates natural bias toward the equatorial journeys during casual orbiting.
+
+**Queued next**:
+1. **Cycle 120 (kids)** — 120 % 2 = 0 → kids cycle. From Cycle 117 seeds, none are kids-labeled. New kids idea to spawn: something that builds on `99-kids-panning-safari` or `100-kids-paint-song`. Gap remaining in the kids zone: instrument that teaches note names (first "educational" kids prototype), or a kids puzzle/matching game.
+2. **Cycle 121 (build)** — `listen-guide` (guided listening of Karel's Paths recordings with attention lens, per IDEAS.md §Cycle117 seeds). Zero API, zero deps. Directly uses Karel's actual piano recordings. Most aligned with his "use his real music" direction.
+
+---
+
 ## Cycle 118 — /dream/100-kids-paint-song
 
 **When**: 2026-05-22 UTC (hourly autonomous cycle)

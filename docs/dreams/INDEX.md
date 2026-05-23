@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 118 — kids build)
+## ⭐ Newest (Cycle 119 — build)
+
+- **[/dream/101-camera-song](/dream/101-camera-song)** — camera-song. `demoable`
+  Six journey-theme orbs float in the dark — Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake, Ghost. Each orb makes its own music (Cosmic = detuned pad; Earth = deep bass; Sanctuary = FM warmth; Ocean = C major chord; Snowflake = crystalline highs; Ghost = A-minor arpeggio). Orbit with mouse/touch: the orb your camera faces fills the mix. Turn away — it fades. Every other orb holds at a quiet floor (3%) so they're audible in the background as you pass. The transition is instant — `cos²` falloff snaps focus clearly. Glowing spheres swell and brighten as they come into focus. HUD shows the name + tagline of the journey you're currently facing.
+  **"You're not listening to music. You're walking through it."** First prototype where camera orientation IS the musical instrument.
+  Zero API · Zero deps · Zero permissions · ~3.06 kB. Headphones recommended.
+
+---
+
+## Previous (Cycle 118 — kids build)
 
 - **[/dream/100-kids-paint-song](/dream/100-kids-paint-song)** — Paint a Song (kids). `demoable`
   Draw a line with your finger — lift up to hear your melody play. The screen is a dark starry canvas. As you drag, a glowing sparkle trail appears behind your finger: dots colored by pitch (violet at left / low notes → pink at right / high notes). When you lift, the path plays back as a melody — each sparkle flashes bright when its note fires. Left side = C3 (low, violet); right side = A4 (high, pink); 10 pentatonic notes mapped across the full screen width. Notes are triangle-wave piano tones (60ms attack, ~550ms decay). Multiple paths persist and fade gently over 6 seconds — draw a new one while the last is still visible. A subtle pitch-gradient strip at the bottom (violet→pink) shows the note mapping without text. No reading required, no fail state. A child who draws left→right hears an ascending scale; right→left hears a descent; a squiggle hears a wandering tune.
