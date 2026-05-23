@@ -10,13 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 131 — adult build)
+## ⭐ Newest (Cycle 132 — kids build)
+
+- **[/dream/111-kids-shape-loop](/dream/111-kids-shape-loop)** — Shape Loop (kids). `demoable`
+  Draw any closed shape with your finger — when it closes, a glowing traversal dot orbits the perimeter and triggers a pentatonic note at each of the evenly-spaced trigger points (small colored dots on the shape). **Y position = pitch**: draw a tall shape and hear high notes; draw a wide flat shape and hear mid-register loops; draw a circle for a near-constant-pitch drone. Draw multiple shapes — each loops independently, creating polyphonic layers. Tap any existing shape to erase it. Auto-close: a dashed ring near the start point shows where to return to — when your finger enters it, the shape closes and starts playing immediately.
+  **"Your drawing loops as a melody forever."** First kids prototype about additive compositional layering — the child doesn't react to something, they construct a composition by drawing.
+  Zero permissions · Zero API · Zero deps · 2.84 kB.
+
+Next: **Cycle 133 → `bio-echo`** (Anadol DATALAND-inspired ecological canvas). **Cycle 134 → `kids-conductor-wand`** or `kids-weather-music`.
+
+---
+
+## Previous (Cycle 131 — adult build)
 
 - **[/dream/110-webcam-compose](/dream/110-webcam-compose)** — Webcam Compose. `demoable`
   Point your camera at anything — the image becomes a chord. Dominant hue → chord quality (warm reds=major, cool blues=minor, violets=diminished, greens=suspended, pinks=augmented). Brightness → register (dark=C2 bass, bright=C4 treble). Saturation → harmonic richness (1–3 triangle-wave voices per chord tone). Frame delta → arpeggio vs pad. Split view: left = camera feed with colored quadrant zone borders, right = 6-band bloom ring from the synthesis AnalyserNode (shows chord harmonics). Demo mode cycles all 5 chord qualities without camera permission.
   **"Point at a plant, a painting, a window. Each one plays a different chord."** First prototype where musical output is fully determined by where you look. Inspired by LUMIA (arxiv 2512.17228, Dec 2025). Zero API · Zero ML · webcam optional · 4.66 kB.
-
-Next: **Cycle 132 → `kids-shape-loop`** (draw a closed shape → looping melody). **Cycle 133 → `bio-echo`** (Anadol DATALAND-inspired ecological canvas).
 
 ---
 

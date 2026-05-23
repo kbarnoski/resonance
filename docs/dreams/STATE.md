@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 132 — /dream/111-kids-shape-loop
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 132 % 2 = 0 → **kids cycle**. No blockers, no in-progress work.
+4. **KIDS.md queue**: top recommendation from both STATE.md Cycle 131 and KIDS.md Cycle 130 research is `kids-shape-loop`. "Draw a closed shape → perimeter traversal plays looping melody. First looping/layering kids prototype."
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes: immediate gesture → vivid musical response. `kids-shape-loop` inherits this but adds a new dimension: the drawn shape becomes a *permanent musical loop* that keeps playing without any further gesture. First kids prototype about additive compositional layering.
+
+**What I built**:
+- `src/app/dream/111-kids-shape-loop/page.tsx` — draw a closed shape → it loops as a melody
+  - **Drawing**: Pointer events track the path in real-time. Auto-close when the finger returns within 42px CSS of the start point (animated dashed circle shows the target). Minimum 10 points required for a valid shape. Pointer capture ensures dragging off the canvas edge doesn't break the path.
+  - **Shape building** (`buildShape`): densifies the raw path to uniform ~5px spacing (`densifyClose`), stitches a closing segment back to the start, computes perimeter in pixels, then spaces `noteCount` trigger points evenly around the perimeter. `noteCount = clamp(3..12, round(perimPx / 92px))` — a small circle gets ~3 notes, a large shape ~10.
+  - **Traversal**: Each shape has a `t` float (0..1) that advances at `TRAVERSE_PX_S=195 px/s`. The traversal dot is a white glowing circle at `pts[floor(t*N)]`. Each frame checks which trigger thresholds were crossed (wrapping correctly for the 0.99→0.01 boundary).
+  - **Note trigger**: `pingNote()` — Y position → pitch (C-major pentatonic, top=A4/C5, bottom=C3). Triangle-wave fundamental + sine 2nd harmonic, 0.65s decay. Each trigger sets `shape.flash=1.0` which decays at 4.2/s, causing the traversal dot to glow bright and the shape outline to brighten.
+  - **Erase**: `pointerdown` checks each existing shape's densified pts for any point within 28px CSS. Nearest matching shape (checked reverse order = most-recently-drawn first) is erased.
+  - **Max 6 shapes**: oldest is silently dropped if the limit is reached and a 7th is drawn (slice behavior).
+  - **Ambient pad**: C3/G3/C4 triangle oscillators at gain 0.015, fade in over 2.8s.
+  - **Start screen**: text-3xl title, text-base description, 4 preview circles, min-h-[64px] button.
+
+**Build**: `✓ /dream/111-kids-shape-loop  2.84 kB  106 kB` — clean, zero errors.
+
+**What surprised me**: The shape-to-melody relationship is immediately legible without any explanation. A child who draws a tall narrow shape (mostly vertical points) hears mostly high notes because most of the perimeter is near the top. A flat wide shape hears mostly mid-register notes. A circle produces almost-constant-pitch since all points are at similar heights — one note repeating. These auditory fingerprints emerge directly from the shape's geometry with zero instruction.
+
+The trigger flash mechanic is subtle but important: the traversal dot brightens and the shape outline glows at the moment each note fires. This gives the child a visible "cause" (the dot crossing a trigger point) for the sound. After 2-3 loops, a 4yo will start anticipating the notes by watching the dot.
+
+**What's queued next**:
+1. **Cycle 133 (adult, 133%2=1)** — `bio-echo` (Anadol DATALAND-inspired ecological canvas: mic → bass=soil tendrils, mid=forest canopy particles, treble=bird arcs, treble shimmer=sky). Zero deps, zero API. High surprise factor.
+2. **Cycle 134 (kids, 134%2=0)** — `kids-conductor-wand` or `kids-weather-music` (KIDS.md queue). Both are zero deps, zero permissions.
+
+---
+
 ## Cycle 131 — /dream/110-webcam-compose
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

@@ -115,8 +115,8 @@ A glowing ball bounces inside the canvas with realistic physics (gravity, elasti
 
 The music is completely autonomous — the child doesn't have to "play correctly." They spawn balls and the physics makes music. Very different from all existing kids prototypes (which require active gesture per note). Inspired by Bouncy (ebraminio, open-source) and the "Sound Drop" paradigm.
 
-### `kids-shape-loop`
-Draw a closed shape with your finger (the loop closes automatically when the path returns within 30px of its start). A traversal point orbits the perimeter, triggering a note at each significant direction-change vertex (Y position = pitch, C-major pentatonic). The shape loops forever. Draw multiple shapes — each plays independently as a polyphonic layer. Tap an existing shape to erase it. No tempo control, no mode picker — just draw and hear.
+### `kids-shape-loop` ✓ built Cycle 132 — `/dream/111-kids-shape-loop` `demoable`
+Draw a closed shape with your finger (the loop closes automatically when the path returns within 42px CSS of its start — shown by a dashed ring). A traversal dot orbits the perimeter, triggering a pentatonic note at each of the evenly-spaced trigger points (N = clamp(3..12, round(perimPx/92px))). Y position = pitch (top=high, bottom=low). The shape loops forever. Draw multiple shapes — each loops independently as a polyphonic layer. Tap an existing shape to erase it. No tempo control, no mode picker — just draw and hear.
 
 Inspired by Shape Your Music (Elias Jarzombek, shapeyourmusic.dev) but simplified for a 4yo: no polygon vertex placement, no export, no settings — just freehand draw. A child who draws a rough triangle hears 3 notes looping; a jagged scribble hears 8–12 note loops. Different from `100-kids-paint-song` (linear path, one-shot playback) and `104-kids-mirror-draw` (bilateral symmetry): this creates LOOPING layers, enabling additive composition through drawing.
 
@@ -152,9 +152,27 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - The `NOTE_GAP` cooldown prevents rapid-fire but means a ball that hits bottom-left corner first hits bottom (C3), then has 100ms before it can fire again. It might hit the left wall (G3) too quickly and miss the note. This is acceptable — missing some notes is better than a chaotic burst.
 
 **Next kid-cycle ideas (Cycle 132)**:
-- `kids-shape-loop`: draw a closed shape → traversal point orbits perimeter → triggers notes at direction changes (Y=pitch). Additive looping layers. First kids prototype about compositional accumulation.
+- `kids-shape-loop`: ✓ **built Cycle 132** — `/dream/111-kids-shape-loop`
 - `kids-conductor-wand`: drag finger = conductor's baton; Y=register, speed=tempo. Four orchestras.
 - Polish on `109-kids-bounce-notes`: ball-ball collision detection (they currently pass through each other). Would make multi-ball dynamics much richer.
+
+---
+
+### Cycle 132 — shape-loop build
+
+**Built**: `111-kids-shape-loop`. Key learnings:
+- **Path densification is the key primitive.** The raw drawn path has irregular point spacing (fast finger = sparse points, slow finger = dense). Densifying to uniform ~5px steps before computing perimeter and triggers makes all subsequent math (perimeter, trigger spacing, traversal speed) consistent and shape-independent.
+- **Trigger count from perimeter length** (clamp 3–12, N = round(perimPx/92)) gives natural variability: a small loop (child's finger circle, ~200px perimeter) = 3 notes; a large sweeping shape (~900px) = ~10 notes. The child learns this by experimenting without any explanation.
+- **Y = pitch is self-discovering**: A child who draws a tall shape (reaching high on screen) will notice the melody has more high notes. A child who draws a flat shape hears mid-range loops. No legend needed — the spatial metaphor works.
+- **Trigger-flash mechanic**: setting `shape.flash = 1.0` on each note trigger, decaying at 4.2/s, makes the traversal dot glow and the outline brighten at the moment of sound. Gives visual confirmation of cause (dot crosses trigger point → sound plays). After 2-3 loops, a 4yo will start anticipating the notes by watching the dot.
+- **Pointer capture on `pointerdown`** (`canvas.setPointerCapture(e.pointerId)`) is essential — without it, `pointermove` events stop when the finger reaches the canvas edge on an iPad. With it, the path tracks smoothly off-edge.
+- **Erase by proximity to densified pts**: checking `Math.hypot(p.x - pos.x, p.y - pos.y) < 28*dpr` for any point in `shape.pts` is O(N*M) but N≤6 shapes and M≤400 pts per shape makes this ~2400 comparisons — imperceptible at 60fps.
+- **Auto-close dashed ring** should be more visible. Currently `globalAlpha=0.22` — quite subtle. Consider bumping to 0.35 and adding a fill flash when the finger enters the zone.
+
+**Next kid-cycle ideas (Cycle 134)**:
+- `kids-conductor-wand`: drag = conductor's baton; Y=register, speed=tempo. First gesture-as-conductor prototype.
+- `kids-weather-music`: four weather zones (sun/cloud/rain/wind); hold to blend; no tap targets, full screen is the instrument.
+- Polish `111-kids-shape-loop`: brighter auto-close ring; consider showing a brief "shape locked" sparkle burst at the moment of closing.
 
 ---
 
