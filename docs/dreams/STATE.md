@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 120 — /dream/102-kids-echo-song
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 120 % 2 = 0 → **kids cycle**.
+4. **What to build**: Cycle 119 identified the gap — "musical call-and-response / educational." None of the 12 existing kids prototypes do musical turn-taking or echo dialogue. Built `102-kids-echo-song`: musical conversation with a bird character.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are immediate-tap-to-sound with clear visual-to-sound mapping. `echo-song` follows the same principle: tap = immediate note + glow, but adds a new layer — the bird responds to what YOU played.
+
+**Loved slugs that influenced this choice**: `82` (tap circle → note, colored spatial feedback) and `83` (catch colored drops → melody). `echo-song` uses the same 5-color circle interaction model as `82`, adding the conversational echo layer.
+
+**What I built**:
+- `src/app/dream/102-kids-echo-song/page.tsx` — Musical echo / call-and-response.
+  - **Interaction**: Bird plays a 2–4 note phrase (lighting up colored circles as it goes), then it's the child's turn — tap any circles. After 4 taps or 3s, the bird echoes back the child's notes + adds one new note. Cycles indefinitely; phrases grow longer each round (max 4 notes).
+  - **5 colored circles**: C3=violet, E3=teal, G3=green, A3=amber, C4=rose. All pentatonic — no wrong note combinations possible.
+  - **Audio**: triangle-wave + sine 2nd harmonic piano tone (same recipe as `100-kids-paint-song`). Ambient C/E/G pad at gain 0.022.
+  - **Bird**: 🦜 emoji centered in the sky area, CSS `drop-shadow` glow + scale(1.15) on each note it plays. Phase label below (Listen… / Your turn! ✨ / Echo!) in `text-white/55` (tertiary hint text).
+  - **Echo logic**: `childNotes.slice() + one random note ≠ last note`. Simple but creates genuine musical response feel.
+  - **Phase gating**: `noteHitRef` is a ref-function updated inside `useEffect`, so button `onPointerDown` outside the effect can call into the game state without stale closures.
+  - **Tap targets**: 5 buttons with `flex-1 min-h-[80px]` in `p-3 gap-2` — gives ≥66px width per button on a 390px phone. ✓ KIDS.md 64px minimum.
+  - **Zero permissions** — no mic, no motion sensor, no camera. Works immediately on first tap.
+
+**Build**: `npm run build` — clean. `/dream/102-kids-echo-song` at 2.25 kB.
+
+**What surprised me**: The "bird adds one extra note" mechanic creates a natural escalation the child feels without any explicit game logic. If the child taps C-C-C-C (same note four times), the bird echoes C-C-C-C then adds E or G — teaching by example that melodies move. If the child taps a rising sequence, the bird mirrors it and extends. The Markov chain emerges from the child's behavior, not from any explicit teaching. After 3–4 rounds, phrases feel like genuine musical conversation.
+
+**Queued next**:
+1. **Cycle 121 (build)** — 121 % 2 = 1 → build cycle. Top candidate: `listen-guide` from Cycle 117 research (guided listening of Karel's Paths recordings, zero API, zero deps, directly uses his real music — most aligned with Karel's "use his real music" direction).
+2. **Cycle 122 (kids)** — consider polishing `82-kids-color-piano` per the long-queued typography polish (bump `text-white/40` → `text-white/75`, increase button sizes), or a new instrument that teaches note colors via a simple matching mechanic.
+
+---
+
 ## Cycle 119 — /dream/101-camera-song
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

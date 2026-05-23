@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 118 | `/dream/100-kids-paint-song` | `demoable` | **NEW** Draw a finger path → lift → melody plays. X position = pitch (C3 left → A4 right, pentatonic). Each dot flashes on its note. Paths fade in 6s. Zero permissions. |
+| 120 | `/dream/102-kids-echo-song` | `demoable` | **NEW** Bird sings 2–4 note phrase → child taps 5 colored circles to reply → bird echoes child's notes + adds one new note. Call-and-response loop. Phrases grow each round. Zero permissions. |
+| 118 | `/dream/100-kids-paint-song` | `demoable` | Draw a finger path → lift → melody plays. X position = pitch (C3 left → A4 right, pentatonic). Each dot flashes on its note. Paths fade in 6s. Zero permissions. |
 | 116 | `/dream/99-kids-panning-safari` | `demoable` | 5 animals drift L/R, each panned to X position via StereoPannerNode; tap for call; auto-plays; 🎧 headphones |
 | 92 | `/dream/82-kids-color-piano` | `demoable` | 8 pentatonic circles, pointer glissando, no reading — **Karel loved ❤** |
 | 96 | `/dream/83-kids-tilt-rain` | `demoable` | DeviceOrientation tilt → basket catches colored drops → pentatonic notes; melody replay — **Karel loved ❤** |
@@ -102,6 +103,23 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 ## Research log for Kids
 
 Keep a running log here of relevant findings the agent uncovers during kid-cycles (mirrors `RESEARCH.md` structure).
+
+### Cycle 120 — echo-song build
+
+**Built**: `102-kids-echo-song`. Key learnings:
+- The `noteHitRef` ref-function pattern is the right bridge between React event handlers (JSX buttons `onPointerDown`) and game state that lives inside a `useEffect` closure. The ref is assigned at the top of the effect and updated as closures capture new values. This avoids stale closure bugs and doesn't require `useCallback` re-renders.
+- A 3-second auto-advance on the child's turn (with 0 taps → bird plays a new phrase, skipping the echo) prevents the child from being "stuck" if they don't understand their turn. Important for 4yo: never have a "waiting for input" state that blocks progress indefinitely.
+- The bird "adds one note ≠ last child note" rule is musically effective: children who tap the same note repeatedly (natural first behavior) get a gentle nudge toward variety. Children who vary their taps get their phrase echoed faithfully. The prototype teaches by modeling without ever saying "try something different."
+- `function` declarations inside `useEffect` hoist correctly within the closure, allowing `startChildTurn` to call `startEchoTurn` (declared later) without forward-reference errors. Arrow functions don't hoist — using `function` declarations is the right pattern for mutually-referencing game state functions.
+- `min-h-[80px]` with `flex-1` and `gap-2 p-3` gives 66px button width on a 390px phone, just above the 64px KIDS.md minimum. Tight but workable; if polishing, increase to `gap-3` and consider 4 notes instead of 5 for a more generous tap target.
+- 5-note pentatonic (vs 4 in other prototypes) makes the note set feel richer — the child has more to explore — while still guaranteeing harmony. All pairs from {C3, E3, G3, A3, C4} are consonant (unison, m3, M3, P4, P5, or P8).
+
+**Next kid-cycle ideas (Cycle 122)**:
+- Polish pass on `82-kids-color-piano`: bump `text-white/40` → `text-white/75` throughout, increase button padding, confirm all tap targets are ≥64px. Long queued; should be done.
+- `echo-song` follow-up: expand to a 3-animal scenario (bird, frog, elephant) — each animal has a different pitch range and different note colors. Children can "choose" which animal to address by which circles they tap.
+- New concept: `kids-mirror-draw` — child draws on one half of the screen, it mirrors and plays on the other half. Symmetry as a musical concept.
+
+---
 
 ### Cycle 92 — first build
 

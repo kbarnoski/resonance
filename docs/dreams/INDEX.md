@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 119 — build)
+## ⭐ Newest (Cycle 120 — kids build)
+
+- **[/dream/102-kids-echo-song](/dream/102-kids-echo-song)** — Echo Song (kids). `demoable`
+  A musical conversation with a parrot 🦜. The bird sings a 2–4 note phrase — colored circles light up as it plays. Then it's your turn: tap any of the 5 colored circles to sing back. After 4 taps or 3 seconds, the bird echoes your notes back and adds one new note of its own. The conversation loops and grows; phrases get longer each round (max 4 notes). C major pentatonic — no wrong combinations. The bird's "add one note" mechanic is gently educational: if a child taps the same note four times, the bird mirrors it then introduces a new color. Zero permissions, no microphone, no reading required.
+  **"The bird listens — then sings back."** First kids prototype about musical call-and-response / turn-taking.
+  Zero permissions · Zero API · Zero deps · 2.25 kB.
+
+---
+
+## Previous (Cycle 119 — build)
 
 - **[/dream/101-camera-song](/dream/101-camera-song)** — camera-song. `demoable`
   Six journey-theme orbs float in the dark — Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake, Ghost. Each orb makes its own music (Cosmic = detuned pad; Earth = deep bass; Sanctuary = FM warmth; Ocean = C major chord; Snowflake = crystalline highs; Ghost = A-minor arpeggio). Orbit with mouse/touch: the orb your camera faces fills the mix. Turn away — it fades. Every other orb holds at a quiet floor (3%) so they're audible in the background as you pass. The transition is instant — `cos²` falloff snaps focus clearly. Glowing spheres swell and brighten as they come into focus. HUD shows the name + tagline of the journey you're currently facing.
