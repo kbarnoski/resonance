@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 121 — /dream/103-listen-guide
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 121 % 2 = 1 → NOT a kids cycle. Build cycle.
+4. **Build new** — `listen-guide` was explicitly queued as the top pick for Cycle 121 in both Cycle 119 and Cycle 120 STATE notes. Zero API, zero deps, directly uses Karel's actual music (file drop) or demo audio. Most aligned with Karel's directive to use his real piano recordings.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are kids / immediate audio-visual feedback. No love signal for adult prototypes — but `listen-guide` is the directed pick from the queue, not a love-driven one.
+
+**What I built**:
+- `src/app/dream/103-listen-guide/page.tsx` — Guided listening session.
+  - **Concept**: Six 22-second windows cycle through the 6 frequency bands (sub-bass → treble). Each window dims 5 bands and brightens only the focused one in the radial bloom viz. A text prompt tells you what to listen for: "Feel the lowest foundation — the weight beneath everything."
+  - **Demo mode**: 132 seconds of synthesized piano covering all 6 bands deliberately — sub-bass pad at 40Hz (pure sine, felt more than heard), bass melody at C2–G2, low-mid/mid melody at C4–A4, high-mid sparkle at C5–C6, treble shimmer at C7–G7 (triangle overtones reach 4–14 kHz). 54 BPM, peaceful pace.
+  - **File mode**: drag-and-drop or file picker accepts any audio file. `FileReader.readAsArrayBuffer` → `AudioContext.decodeAudioData`. File loops if shorter than 132s. This is Karel's path — drop a Welcome Home track, let the session guide him through its frequency layers.
+  - **Visual**: identical bloom ring layout as `1-live`, but focused band gets full alpha (0.18 + energy × 1.15) while unfocused bands are at 8% opacity. The visual "spotlight" is unmistakable.
+  - **DOM mutation for real-time elements**: progress bar and band bars updated directly via refs — no React re-renders per frame. `setLensIdx` fires only 6 times total (once per lens transition). 
+  - **Three screens**: idle (demo/file choice + drag target), playing (full-screen viz + lens text), done (completion message + listen-again).
+  - **Typography**: `text-2xl md:text-3xl` for the prompt, `text-base` for the detail text, `text-white/75` for secondary. Meets AGENT.md contrast rules throughout.
+
+**Build**: `npm run build` — clean. `/dream/103-listen-guide` at 4.96 kB.
+
+**What surprised me**: The focused/unfocused ratio is the whole prototype. At full brightness, the focused ring is unmistakably "the one" — the visual attention matches the textual attention. When the sub-bass window opens and the deep violet ring expands slightly from the 40Hz sine pad, it's immediately clear even though the audio content is near-inaudible. The visual makes the imperceptible frequencies legible.
+
+**Queued next**:
+1. **Cycle 122 (kids)** — 122 % 2 = 0 → kids cycle. Top candidates: polish `82-kids-color-piano` (bump `text-white/40` → `text-white/75`, increase button sizes — long-queued typography polish), or new prototype. KIDS.md suggested `kids-mirror-draw` (child draws on half the screen, mirrors and plays on the other half — symmetry as musical concept).
+2. **Cycle 123 (build)** — strong candidates: `concept-steer` (6-axis radar chart synthesizer: Brightness/Density/Regularity/Complexity/Energy/Mode → zero deps, one cycle), or `pluck-field` (Karplus-Strong virtual string field, 24 strings on a canvas, physical modeling synthesis).
+
+---
+
 ## Cycle 120 — /dream/102-kids-echo-song
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

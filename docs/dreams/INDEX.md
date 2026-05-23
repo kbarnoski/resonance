@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 120 — kids build)
+## ⭐ Newest (Cycle 121 — build)
+
+- **[/dream/103-listen-guide](/dream/103-listen-guide)** — Guided Listening. `demoable`
+  A frequency-attention practice in six movements. Six 22-second windows, each one spotlighting a different frequency register in the radial bloom viz: sub-bass (20–60 Hz, deep violet), bass (60–250 Hz, cyan), low-midrange (250–500 Hz, green), midrange (500 Hz–2 kHz, yellow), high-midrange (2–4 kHz, orange), treble (4–20 kHz, magenta). When a window is active, its ring blazes at full brightness; all other rings dim to 8% opacity. A text prompt per window tells you what to listen for. **File mode**: drag any audio file onto the page — Karel's own recordings, a Welcome Home track, anything. The session guides you through its frequency layers. Demo mode needs no permissions (synthesized piano spanning all 6 bands).
+  **"Your ear will learn to hear what it normally passes over."** First prototype that teaches listening rather than just responding to it.
+  Zero permissions (demo) · Zero API · Zero deps · 4.96 kB. Headphones recommended.
+
+---
+
+## Previous (Cycle 120 — kids build)
 
 - **[/dream/102-kids-echo-song](/dream/102-kids-echo-song)** — Echo Song (kids). `demoable`
   A musical conversation with a parrot 🦜. The bird sings a 2–4 note phrase — colored circles light up as it plays. Then it's your turn: tap any of the 5 colored circles to sing back. After 4 taps or 3 seconds, the bird echoes your notes back and adds one new note of its own. The conversation loops and grows; phrases get longer each round (max 4 notes). C major pentatonic — no wrong combinations. The bird's "add one note" mechanic is gently educational: if a child taps the same note four times, the bird mirrors it then introduces a new color. Zero permissions, no microphone, no reading required.
