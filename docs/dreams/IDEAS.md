@@ -1652,4 +1652,84 @@ Key findings from Cycle 129 (2026-05-23) — adult research sweep:
 - Superradiance / Memo Akten (§187, Feb 2026) — embodied simulation, landscape breathes with body. Inspires `landscape-resonance` — audio-reactive 3D terrain fly-through, zero deps, one cycle.
 - DATALAND / Refik Anadol (§188, opens June 20 2026) — Large Nature Model, data as pigment. Inspires `bio-echo` — mic → ecological canvas, zero deps, one cycle.
 - Pay Cross-Attention to Melody (§189, arxiv 2601.16150, Jan 2026) — mid-phrase chord prediction from melody. Inspires `live-harmonize` — predict harmony from partial phrase. Zero deps, one cycle.
+
+---
+
+## FROM RESEARCH (Cycle 137, 2026-05-23) — promoted to queue
+
+### data-cosm — particle physics data stream as audio-visual material `[queued, zero deps, zero API]`
+Route: `/dream/116-data-cosm`. Ryoji Ikeda data-cosm aesthetic: synthetic particle physics event stream as audio-visual medium. The visual: a full-canvas grid of monospace white text on pure black, rows scrolling upward, each row = one synthetic collision event (particle type label in brackets, 6 numeric fields for energy/momentum/angles — all synthetic, formatted as CERN CMS output: `[μ+] pt=48.3 eta=-1.27 phi=2.95 m=0.106 q=+1`). Events fire at a rate controlled by the current "scale." On each event: a 300ms scatter animation (each character in the row jumps to a random offset then snaps back via CSS transform), a 4kHz sine pulse (30ms attack, 80ms decay, gain 0.28), and a 3-pixel particle trail from the event row's position. Continuous sub-bass at 38Hz (OscillatorNode gain 0.06) underlies — felt not heard.
+
+Three temporal scales auto-advance every 40s with a timeline indicator at the bottom:
+1. **Quantum** — 8 events/second, 4kHz tones, dense flickering matrix, intense scatter
+2. **Biological** — 1 event/second, 440Hz tones, slower matrix, graceful scatter
+3. **Cosmic** — 1 event/10s, 110Hz tone (near sub-bass), near-empty canvas, one event at a time centered in the frame
+
+Scale transitions: full-canvas white flash (200ms) → all characters scatter to random positions (800ms) → snap back with new scale parameters.
+
+Typography: `font-mono text-xs` for the matrix rows (≈ 9px — intentionally small for density), `text-3xl font-mono` for the current scale name ("QUANTUM", "BIOLOGICAL", "COSMIC") displayed bottom-right at 60% opacity. One sentence at bottom-left: "All of nature's data is the same material." Zero deps, zero API. One-cycle build. Inspired by Ryoji Ikeda data-cosm [n°1] (RESEARCH.md §192). Highest surprise factor of this research batch.
+
+### poem-fluid — WebGL fluid simulation with generative text overlay `[queued, zero deps, zero API]`
+Route: `/dream/117-poem-fluid`. Memo Akten's "The Thinking Ocean" paradigm. A WebGL ping-pong Navier-Stokes fluid simulation (same approach as `3-fluid` and `15-webgpu-fluid`) driven by mouse/touch presence. The fluid's vorticity magnitude (curl of velocity field, computed per frame) controls which poem fragment appears:
+
+- `vorticity < 0.08` (still water) → long full sentence fades in, holds for 4s: *"The resonance here is ancient. Let yourself be absorbed."*
+- `vorticity 0.08–0.3` (gentle motion) → 3-5 word phrase: *"Let yourself drift."* / *"Something stirs beneath."* / *"The water remembers."*
+- `vorticity > 0.3` (turbulent) → single word: *"ANCIENT"* / *"LISTEN"* / *"DISSOLVE"* / *"VAST"*
+
+40 pre-written fragments drawn from the 6 Ghost scenes. Each fragment fades in over 800ms, holds, then fades out over 1.2s. At most one fragment visible at a time. CSS: `mix-blend-mode: screen` makes the white text glow through the dark fluid. Typography: `font-mono text-2xl text-white/80`, centered, `letter-spacing: 0.1em`. The vorticity threshold state is a 3-level EMA (α=0.05) so rapid turbulence doesn't flicker the text.
+
+Start: a still fluid canvas with no text. The first mouse movement generates vortex → short phrase appears. Heavy stirring → single-word intensity. Return to stillness → long sentence resurfaces. "The fluid speaks in fragments — the calmer the water, the fuller the thought." Zero deps, zero API. One-cycle build. Inspired by Memo Akten "The Thinking Ocean" (RESEARCH.md §193).
+
+### audio-cloud — 6-species audio-reactive WebGPU particle cloud (TD particlesGPU port) `[queued, zero deps, WebGPU required]`
+Route: `/dream/118-audio-cloud`. Port of Elekktronaut's TouchDesigner particlesGPU + CHOP audio technique to WebGPU compute shaders. Six frequency bands → six particle species clouds. Per-species physics defined as constants in the compute shader:
+- Species 0 (sub-bass 20–80 Hz): large radius (8px), strong downward gravity (0.004), slow birth rate, violet color
+- Species 1 (bass 80–250 Hz): medium radius (5px), weak gravity (0.002), medium birth rate, cyan
+- Species 2 (low-mid 250–500 Hz): small radius (3px), no gravity, emerald
+- Species 3 (mid 500–2kHz): small radius (3px), slight upward float, yellow
+- Species 4 (high-mid 2–4kHz): tiny radius (2px), repulsive neighbor force (species 4 particles push each other away), orange
+- Species 5 (high 4–20kHz): tiny radius (1.5px), fast chaotic velocity, strong repulsion, magenta
+
+Compute shader: `struct Particle { pos: vec2f; vel: vec2f; age: f32; species: u32; }`. Per-frame: JS reads `AnalyserNode.getByteFrequencyData()`, computes per-band energy, uploads as `band_energy: array<f32, 6>` uniform buffer. Compute dispatch: physics update per particle. New particles spawn at random positions when `band_energy[species] > threshold`. Particles age → alpha fade → recycle at 2.5s.
+
+Render pass: instanced quads (6 vertices/particle), per-particle `species` attribute → color lookup, alpha from age. Camera slowly rotates via `azimuth += 0.003` per frame (no three.js — raw WebGPU). Background: transparent over solid dark background.
+
+Demo mode: 6 LFO oscillators (one per band frequency range). Mic mode: live AnalyserNode. "Six clouds of sound, each behaving differently." Two-cycle build (compute shader setup is non-trivial). WebGPU required; fallback message links to `3-fluid`. Zero API, zero npm deps. Research basis: §194.
+
+### body-conductor — full-body pose tracking → music synthesis `[queued, CDN dep ~8MB, needs Karel OK]`
+Route: `/dream/119-body-conductor`. MediaPipe PoseLandmarker loaded from CDN (same CDN pattern as `31-gesture-music` HandLandmarker). Webcam → 33 body landmarks at 30fps → synthesizer. Mapping:
+- **Right wrist Y** (0=top, 1=bottom) → melody pitch: inverted (wrist high = high note). C2–C7, pentatonic snap. Short triangle-wave note envelope on each semitone change.
+- **Left wrist Y** → bass drone frequency: C1–C3 continuous glide (no snap). Drone gain 0.12, always playing.
+- **Wrist-to-wrist horizontal distance** (normalized 0→1 of screen width) → stereo spread: `panR = +spread`, `panL = -spread`. Arms wide = full stereo; arms together = mono center.
+- **Right elbow angle** (forearm-to-upper-arm vector dot product → 0°=fully bent, 180°=fully extended) → harmonic count: 1 harmonic (pure tone) at 0° → 6 harmonics (rich timbre) at 180°.
+- **Hip center Y position** → register bias: low Y (standing tall) = ×2 pitch multiplier; high Y (crouching) = ÷2.
+- **Overall motion speed** (sum of `|pos[t] - pos[t-1]|` across all 33 landmarks) → amplitude envelope gain + arpeggiation speed (still = sustained pad at 40 BPM; fast movement = 160 BPM arpeggiation).
+
+Canvas: webcam feed (scaled-down, 50% opacity) behind a full-canvas skeleton overlay: 33 joints as 8px violet circles, connections as 2px glowing lines. Companion audio-reactive bloom strip at the bottom (6-band energy, same as `1-live` style). "Dance and the music follows." CDN dep ~8MB, cached after first load. One-cycle build. Needs Karel OK on CDN dep. Research basis: §195.
+
+### image-chord — drag an image, hear its music `[queued, zero deps, zero API]`
+Route: `/dream/120-image-chord`. Drag a photo, screenshot, or artwork onto the canvas. JS extracts HSL from `getImageData()`: dominant hue H (largest cluster in hue histogram, ~10-bin), mean saturation S, mean brightness L. Maps to synthesizer:
+- **Hue H** → chord quality: 0°–60° (red/orange/warm) = bright major chord (C E G); 60°–120° (yellow/lime) = dominant 7th (C E G B♭); 120°–180° (green) = minor (C E♭ G); 180°–240° (cyan/blue) = minor 7th (C E♭ G B♭); 240°–300° (blue/violet) = minor with major 7th (Cmaj7 = C E G B); 300°–360° (magenta/violet) = diminished (C E♭ G♭)
+- **Saturation S** → harmonic richness: desaturated (S < 0.2) = 1 pure sine voice; vivid (S > 0.7) = 5 harmonics + subtle detuning
+- **Brightness L** → register + tempo: dark (L < 0.3) = bass register C2–C3, slow arpeggios at 35 BPM; bright (L > 0.7) = treble register C4–C6, fast arpeggios at 120 BPM; mid = C3–C4, 75 BPM
+
+8 preset palette swatches in a horizontal strip: one per journey theme (Cosmic Homecoming=deep violet, Earth Grounding=warm ochre, Inner Sanctuary=sage green, Ocean Breath=cyan, Snowflake=icy white, Ghost=cool grey, Inner Fire=amber, Mycelium=forest green). Click any swatch = instant chord/texture. Drag image = extracted chord. Current chord name shown in large monospace type ("Cmaj7", "E♭m"). A 6-band bloom ring animates to the synth output. "Your visual sense becomes music." One-cycle build. Inspired by Mozualization (RESEARCH.md §196) — zero-dep conceptual port.
+
+### arc-steer — 6-phase journey arc realized as an AI music chain `[queued, FAL_KEY in use]`
+Route: `/dream/121-arc-steer`. MusicRFM concept adapted for Resonance: instead of steering MusicGen activations (no browser API), steer ACE-Step via a sequential prompt chain. Six textarea fields, one per journey phase, pre-loaded with mood descriptors:
+1. *"sparse piano, introspective, major, very slow, 30 BPM"*
+2. *"minor arpeggios, building tension, rhythmic, cello drone, 60 BPM"*
+3. *"dense chromatic, dissonant, complex harmonics, climax approaching, 90 BPM"*
+4. *"bright triumphant, full orchestral, peak, ecstatic, 110 BPM"*
+5. *"bittersweet descending, resolving, minor to major shift, 70 BPM"*
+6. *"open fifth drone, fading, spacious, near-silence, 25 BPM"*
+
+Each field is editable. **▶ Start Journey** → sequentially fires 6 ACE-Step API calls (`fal-ai/ace-step`), 30s each (~$0.006/call × 6 = ~$0.036 total). Each 30s clip plays through the 6-band bloom visualizer immediately on receipt. A phase timeline at the bottom advances as each phase completes. Phases transition without gap: next generation starts 5s before current phase ends. "Write the arc. Hear it realized." FAL_KEY in use. Zero new npm deps. One-cycle build. Inspired by MusicRFM's time-based steering schedule concept (RESEARCH.md §191).
+
+Key findings from Cycle 137 (2026-05-23) — adult research sweep:
+- MusicRFM (§191, ICLR 2026) — frozen MusicGen steering via RFM probes. Time-based schedules. No browser API. Inspires `arc-steer` (ACE-Step prompt chain approximation, FAL_KEY in use).
+- Ryoji Ikeda data-cosm (§192, Oct 2025–Feb 2026) — particle physics to cosmic AV material. Inspires `data-cosm`. Zero deps, highest surprise, one cycle.
+- Memo Akten "The Thinking Ocean" (§193, Whitney 2026) — WebGPU fluid + generative real-time poem. Inspires `poem-fluid`. Zero deps, one cycle.
+- Elekktronaut particlesGPU + CHOP (§194, 2026) — TD audio-reactive per-species particle physics. Port to WebGPU inspires `audio-cloud`. Two cycles, WebGPU required.
+- MediaPipe PoseLandmarker (§195, confirmed 2026) — 33 body landmarks at 30fps. Inspires `body-conductor`. One cycle, CDN dep, needs Karel OK.
+- Mozualization (§196, Apr 2026) — multimodal input → music. Zero-dep port inspires `image-chord`. One cycle, zero deps.
 - Audio-Visual Foundation Models Survey (§190, arxiv 2605.04045, May 2026) — embodied AV agents as open frontier. Directional; no immediate prototype.

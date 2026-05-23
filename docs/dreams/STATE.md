@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 137 — research sweep: Ikeda data-cosm, Memo Akten Thinking Ocean, MusicRFM, TD particle cloud, body pose, image-chord
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 137 % 2 = 1 → **adult cycle**.
+4. **Research** — last adult research was Cycle 129 (8 adult cycles ago, threshold is 3–4). Research cycle is mandatory.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate gesture → vivid musical feedback. Love signal influenced `body-conductor` seed (full-body gesture → music, natural extension of the loved paradigm).
+
+**Research scope**: AGENT.md freshness mandate — last 90 days (Feb 23 – May 23 2026). Searched: arxiv, fal.ai blog, HN May 2026, Elekktronaut/TouchDesigner, Memo Akten, Ryoji Ikeda, Refik Anadol, MediaPipe body tracking, WebGPU audio synthesis, Mozualization (Apr 2026). Results: §191–§196 appended to RESEARCH.md.
+
+**What I found**:
+- **MusicRFM** (ICLR 2026, arxiv 2510.19127) — RFM probes steer frozen MusicGen activations for real-time chord/scale/intervallic control, time-based schedules (linear fade, sinusoidal, stochastic). No browser API yet. Inspires `arc-steer`: a 6-phase journey arc where each phase has a text mood descriptor sent to ACE-Step in sequence → 3-min AI journey from one ACE-Step call chain.
+- **Ryoji Ikeda data-cosm [n°1]** (180 Studios London, Oct 2025–Feb 2026) — particle physics to cosmic scale data as AV material. Mathematical precision: scrolling monospace number matrices, sub-bass hum + piercing sine tones. Inspires `data-cosm`: synthetic particle event data as visual/audio medium, Ikeda aesthetic, zero deps.
+- **Memo Akten & Katie Hofstadter — "The Thinking Ocean"** (Whitney Museum Artport, 2026) — WebGPU Navier-Stokes fluid simulation morphing between organic ocean and abstract data patterns. A "faintly visible humanoid form" generates currents. Real-time generative non-linear poem synthesized as you navigate. Inspires `poem-fluid`: WebGL fluid + Markov chain text overlay keyed to fluid vorticity level.
+- **Elekktronaut — Audioreactive Particle Cloud (New)** (elekktronaut.com, 2026) — TouchDesigner: particlesGPU component + CHOP audio energy → per-band particle species behavior. Port to WebGPU: AnalyserNode → per-band energy → uniform array in compute shader → 6 particle species clouds, distinct physics per species. Inspires `audio-cloud`.
+- **MediaPipe PoseLandmarker** (confirmed browser-native 2026, Bristol+Bath Creative R&D) — 33 body landmarks at 30fps, CDN loadable (~8MB). Inspires `body-conductor`: full-body dance → synthesizer. Wrists → pitch/bass; elbow angle → harmonics; hip → register; motion speed → dynamics. CDN dep, needs Karel OK.
+- **Mozualization** (arxiv 2504.13891, Apr 2026) — multimodal input (text, images, audio clips) → music generation. No browser API. Zero-dep conceptual port: `image-chord` — user drags an image file or picks a preset color palette; HSL values map immediately to chord quality, harmonic richness, tempo, register. "Your visual sense becomes music."
+
+**What surprised me**: Memo Akten's "The Thinking Ocean" (Whitney Artport 2026) carries a generative real-time poem that shifts as viewers navigate the fluid — the text IS as dynamic as the water. No prototype in the sandbox has combined a fluid simulation with generative text. The interaction model is deeply interesting: the physical motion of fluid vortices determines which poem fragment surfaces. This is fundamentally different from all 115 existing prototypes.
+
+Also: MusicRFM's time-based steering schedule concept (linear fades, sinusoidal strength patterns, stochastic burst application) maps perfectly onto Karel's 6-phase journey arc. If ACE-Step exposes activation-steering, `arc-steer` becomes the most powerful prototype in the sandbox — the Journey arc becomes a literal musical steering schedule.
+
+**Refik Anadol context**: Latent City at BRUSK, Bruges (May 8 – Nov 8 2026) — centuries of Bruges architectural/archival data + real-time city data → AI-driven immersive environments. The technique is the same as DATALAND (§188): training proprietary ML on millions of city images. Not directly browser-portable, but the concept of "using accumulated data from a place as visual pigment" is exactly what `data-cosm` explores with synthetic scientific data instead.
+
+**What's queued next**:
+1. **Cycle 138 (kids, 138%2=0)** — kids cycle. Top candidate: `kids-bloom-garden` (long-press to plant sustained notes, flower blooms with held tone) from KIDS.md queue. Or `kids-orbit-synth` (circular motion → pitch glide) — check KIDS.md for current top.
+2. **Cycle 139 (adult, 139%2=1)** — build `data-cosm`. Highest surprise rating of new seeds, zero deps, zero API, one-cycle build. Ikeda aesthetic is completely new to the sandbox.
+
+---
+
 ## Cycle 136 — /dream/115-kids-weather-music
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

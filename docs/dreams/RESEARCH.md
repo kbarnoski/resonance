@@ -1950,3 +1950,74 @@ Key findings from Cycle 129 (2026-05-23) — adult research sweep:
 - Pay Cross-Attention to Melody (§189, arxiv 2601.16150, Jan 2026) — single-encoder harmonization, mid-phrase chord prediction. Inspires `live-harmonize` — predict harmony from partial melody, not just detect existing chords. Zero deps, one cycle.
 - Audio-Visual Foundation Models Survey (§190, arxiv 2605.04045, May 2026) — confirms embodied AV agents as the open frontier. Directional signal for future research; no immediate prototype.
 - **Strongest next-cycle kids build**: `kids-kalimba` — one-cycle, zero deps, zero API, BANDIMAL-inspired, directly extends loved `82-kids-color-piano` paradigm.
+
+---
+
+## 2026-05-23 — Cycle 137 adult research sweep
+
+### 191. MusicRFM — Real-Time Latent Steering of Frozen Music Generation Models (ICLR 2026, arxiv 2510.19127)
+**Source**: https://arxiv.org/abs/2510.19127 · Published ICLR 2026
+
+Trains lightweight Recursive Feature Machine (RFM) probes on MusicGen-Large's 48 decoder blocks to discover "concept directions" for music-theoretic attributes: chord quality (major/minor/diminished/augmented), scale mode (Dorian, Mixolydian, etc.), and intervallic relationships (perfect fifth, tritone). During inference, discovered directions are injected back into the model's hidden states — steering output without retraining, without extra inference passes. Crucially: **time-based schedules** modulate steering strength over the generation timeline — linear fades, sinusoidal patterns, stochastic on/off bursts. A chord quality can fade from "bright major" (strength 1.0) to "minor" (strength 0.0) over 10 seconds during an active 30-second generation.
+
+**Could become a prototype**: `arc-steer` — a 6-phase journey arc editor. Each phase gets a mood descriptor (editable textarea): "sparse major, introspective" → "building minor, rhythmic" → "dense chromatic, tense" → "bright peak, triumphant" → "bittersweet descending, resolving" → "open fifth, silence fading." Click ▶ Start Journey → sends each descriptor in sequence to ACE-Step on fal.ai (30s × 6 = 3-minute journey arc, ~$0.036). Each 30s chunk streams through the bloom visualizer; phase indicators advance live. The user has authored the emotional arc; the AI realized it as music. No direct activation steering (no browser API for that), but the text-prompt chain approximates MusicRFM's temporal steering schedule concept. FAL_KEY in use. One-cycle build.
+
+---
+
+### 192. Ryoji Ikeda — data-cosm [n°1] (180 Studios London, Oct 2025 – Feb 2026)
+**Source**: https://www.180studios.com/data-cosm · https://www.factmag.com/2025/10/08/ryoji-ikeda-data-cosm-no-1-180-studios/ · [older, foundational]
+
+Immersive audio-visual installation charting the full spectrum of data in nature — from quantum/particle physics to astrophysical scale — rendered with mathematical precision. Visitors lie under a vast LED ceiling while a torrent of data begins at the microscopic level (particle tracks, collision matrices) and gradually zooms outward (atomic, molecular, geological, cosmic web). Aesthetic: pure monochrome — white scrolling monospace number matrices on black, fragmenting and reforming. Audio: Ikeda's signature sub-bass hum (felt more than heard), sharp piercing high-frequency sine tones, rhythmic data-burst clicks. Extended by popular demand from October 2025 to February 2026.
+
+**Could become a prototype**: `data-cosm` — synthetic particle physics event stream as audio-visual material. The visual: a full-canvas grid of monospace white text on black; rows scroll upward showing synthetic event data (particle type label, energy, momentum components, eta, phi — all synthetic but formatted exactly as CERN CMS output). Each "collision" event triggers: 300ms text scatter animation (each number flies to a random offset and snaps back), a 4kHz sine pulse (30ms attack, 80ms decay, gain 0.3), and a brief white particle trail. Continuous sub-bass at 38Hz (OscillatorNode gain 0.06) underlies. Three "scales" advance every 40s via timeline indicator: Quantum (fast, dense events, high sine), Biological (slow, sparse, mid sine 440Hz), Cosmic (very slow, single events, sub-bass only). Typography: `font-mono`, 9px rows for the matrix, 48px for the current scale label. Transition between scales: a full-canvas white flash + all numbers scatter. "What if all of nature's data is the same material?" Zero deps, zero API. One-cycle build. Research basis: §192.
+
+---
+
+### 193. Memo Akten & Katie Hofstadter — "The Thinking Ocean" (Whitney Museum Artport, 2026)
+**Source**: https://whitney.org/exhibitions/the-thinking-ocean · Whitney Museum commission, 2026
+
+A web-based artwork (Cosmosapience series) using WebGPU API + Navier-Stokes equations to simulate a dynamic body of water that morphs between realistic ocean and abstract data patterns — "demonstrating that fluids and computers are expressions of the same underlying principles." A faintly visible humanoid form generates fluid currents; drifting clouds of particulate matter and swirling bubbles populate the scene. As viewers navigate, the environment becomes increasingly abstracted into patterns resembling cellular structures, circuitry, and code. A real-time generative non-linear poem accompanies — dynamically generated voice/text that shifts as the fluid state changes. Requires recent Apple operating systems for WebGPU. [Date: 2026, Whitney Artport commission, current.]
+
+**Could become a prototype**: `poem-fluid` — WebGL Navier-Stokes fluid (same ping-pong texture approach as `3-fluid`) with a generative Markov text overlay keyed to fluid vorticity magnitude. Mouse/touch disturbs the fluid. A vorticity compute pass (curl of velocity field) produces a scalar vorticity map; the max vorticity in any cell drives the poem display state: `vorticity < 0.1` → long full sentence from Ghost narrative (e.g., "The resonance here is ancient — let yourself be absorbed."); `0.1–0.4` → short 3-5 word phrase; `vorticity > 0.4` → single isolated word. 40 pre-written fragments from the 6 Ghost scenes. Text renders at minimum `text-white/80` opacity, `font-mono`, centered, `text-2xl`. A `mix-blend-mode: screen` CSS property lets the text glow through the dark fluid. When vorticity drops back to zero (fluid stills), the text fades over 3s. "The fluid speaks in fragments." Zero deps, zero API. One-cycle build. Research basis: §193.
+
+---
+
+### 194. Elekktronaut — Audioreactive Particle Cloud (New) (TouchDesigner, 2026)
+**Source**: https://www.elekktronaut.com/tutorials/audioreactive-particle-cloud-new · 2026 tutorial update
+
+Bileam Tschepe's updated Audioreactive Particle Cloud tutorial: particlesGPU component in TouchDesigner combined with CHOP (audio Channel Operator) analysis — per-frequency-band audio energy drives particle birth rate, velocity injection, color hue, and size per particle species. Each audio band = one species; species coexist on screen simultaneously. The particlesGPU component is GPU-native in TD; particles live in texture memory (position/velocity as rgba16float render textures). CHOPs provide frame-by-frame scalar values per band. This is exactly the TouchDesigner equivalent of: `AnalyserNode.getByteFrequencyData()` → uniform buffer → WebGPU compute shader → per-species velocity injection.
+
+**WebGPU port approach**: A flat `struct Particle { vec2 pos; vec2 vel; float age; float species; }` buffer. Compute shader reads `band_energy[6]` uniforms each frame (from JS-side FFT). Per-species physics in the compute shader: species 0 (sub-bass) → strong downward gravity, large radius, slow birth rate; species 5 (treble) → no gravity, tiny radius, fast birth rate, repulsive neighbor force. 2,000 particles × 6 species = 12,000 total. Render pass: instanced quads with per-particle color from `species` attribute. The visual: 6 simultaneous glowing particle clouds, each responding to one frequency band, physically distinct from each other.
+
+**Could become a prototype**: `audio-cloud` — 6-species audio-reactive WebGPU particle cloud, Elekktronaut technique ported to browser. Zero API, zero npm deps (raw WebGPU). Demo mode: 6 LFO oscillators. Mic mode: live FFT. Camera slow-rotates via `requestAnimationFrame`. Different from `75-houdini-particle-flock` (Boids flocking, journey-themed, R3F) — this is pure physics per species, no flocking. The behavior difference is subtle but real: bass particles literally fall (gravity), treble particles scatter (repel). Two-cycle build (compute shader setup complex). WebGPU required. Research basis: §194.
+
+---
+
+### 195. MediaPipe PoseLandmarker — Full-Body Music Control in the Browser (confirmed 2026)
+**Source**: https://bristolbathcreative.org/article/mediapipe-to-osc-camera-based-motion-tracking-for-expanded-performance · https://mediapipe.org/ · 2026
+
+MediaPipe PoseLandmarker tracks 33 body landmarks (head to feet) at 30fps, entirely in-browser via WebAssembly + WebGPU acceleration. Model available via CDN (~8MB one-time download, `@mediapipe/tasks-vision` from jsDelivr). Bristol+Bath Creative R&D's mediapipe2osc project demonstrates streaming these landmarks to audio environments (Max/MSP, JUCE) via OSC. For a browser prototype, the OSC layer is unnecessary — landmarks can drive synthesizer parameters directly in the same JS context. The 33 landmark coordinates give: hand positions (8 per hand), elbow angles, shoulder width, hip position, knee bend, foot position, and full-body movement velocity (frame-delta of all 33 points).
+
+**Could become a prototype**: `body-conductor` — webcam → MediaPipe PoseLandmarker (CDN, same approach as `31-gesture-music` HandLandmarker) → 33 body landmarks → synthesizer. Mapping: right wrist Y → melody pitch (C2–C7, pentatonic snapping); left wrist Y → bass drone frequency; wrist-to-wrist horizontal distance → stereo width (arms wide = ±0.8 pan, arms together = mono); right elbow angle (forearm-to-upper-arm) → harmonic richness (1–6 OscillatorNode harmonics); hip center Y → register (crouching = bass, standing = treble); overall body motion (sum of frame-delta across all 33 points) → amplitude envelope + arpeggiation speed. Canvas: webcam feed with skeleton overlay (glowing violet joint dots + connection lines in Resonance color) + secondary bloom strip. "Dance and the music follows." CDN dep ~8MB; needs Karel OK. One-cycle build. Research basis: §195.
+
+---
+
+### 196. Mozualization — Multimodal Music Creation via Image, Text, and Audio Input (arxiv 2504.13891, April 2026)
+**Source**: https://arxiv.org/abs/2504.13891 · April 2026
+
+A music creation and editing system that accepts diverse multimodal inputs — keywords, images, audio clips (music segments, environmental sounds) — and transforms them into cohesive multi-style compositions. Rooted in how humans naturally express emotion across modalities: visual tone (warm/cool images), textual mood (mood-descriptive text), sonic atmosphere (reference sounds). Validated via user study (9 music enthusiasts); high ratings for engagement and emotional impact. No browser API available; server-side ML pipeline. [Date: April 2026, arxiv preprint.]
+
+**Could become a prototype**: `image-chord` — a zero-dep, zero-API conceptual port. User drags a photo onto the canvas or picks from 8 preset palette swatches (one per journey theme). JS extracts the dominant hue (H), average saturation (S), and average brightness (L) from the image/swatch via `getImageData()`. Synthesis mappings: H angle → chord quality (0°–60° warm orange/red = major, 120°–180° green = minor, 210°–270° cool blue/violet = minor 7th, 280°–360° violet/magenta = diminished/mystery); S → harmonic richness (desaturated = 1 voice, saturated = 5 voices + subtle delay); L → register and tempo (dark = bass, slow arpeggios; bright = treble, fast arpeggios). Four sustained OscillatorNode voices per chord tone + gain modulation. Canvas shows the image/swatch behind an animated FFT bloom. "Your visual sense becomes music." Distinct from `38-mood-xy` (explicit arousal/valence control) — this is implicit: choose an image, music emerges without theory knowledge. One-cycle build. Research basis: §196.
+
+---
+
+Key findings from Cycle 137 (2026-05-23) — adult research sweep:
+- MusicRFM (§191, ICLR 2026, arxiv 2510.19127) — RFM probe steering of frozen MusicGen for real-time chord/scale control with time-based schedules. No browser API. Concept inspires `arc-steer`: text mood descriptors per journey phase → ACE-Step call chain → 3-minute musical arc. FAL_KEY in use.
+- Ryoji Ikeda data-cosm (§192, 180 Studios Oct 2025–Feb 2026) [older, foundational] — particle physics to cosmic scale as mathematical AV material. White monospace matrix scrolling on black + sub-bass + sine tones. Inspires `data-cosm`: synthetic event data stream + Ikeda aesthetic. Zero deps, one cycle, HIGHEST surprise of this batch.
+- Memo Akten "The Thinking Ocean" (§193, Whitney Artport 2026) — WebGPU Navier-Stokes fluid + generative real-time poem keyed to vorticity state. Inspires `poem-fluid`: WebGL fluid + Markov Ghost narrative text overlay. Zero deps, one cycle.
+- Elekktronaut particlesGPU + CHOP audio (§194, elekktronaut.com 2026) — TD tutorial: per-band audio energy → particle species physics. Port to WebGPU: `band_energy[6]` uniforms → 6-species particle compute shader. Inspires `audio-cloud`. Zero deps, two cycles, WebGPU required.
+- MediaPipe PoseLandmarker (§195, confirmed 2026) — 33 body landmarks at 30fps, CDN-loadable. Inspires `body-conductor`: full-body pose → synthesizer. CDN dep ~8MB. One cycle, needs Karel OK on CDN.
+- Mozualization (§196, arxiv 2504.13891, April 2026) — multimodal image/text/audio → music gen. Zero-dep port inspires `image-chord`: drag image → extract HSL → chord quality/richness/tempo/register. One cycle, zero deps, zero API.
+- Refik Anadol Latent City [context, not new prototype] (BRUSK Bruges, May 8–Nov 8 2026) — centuries of city data + real-time urban rhythms → AI-driven immersive environments. Confirms the "accumulated data as visual pigment" trajectory Karel values. `data-cosm` and `bio-echo` are the browser-native equivalents.
+- **Strongest next adult build**: `data-cosm` — zero deps, zero API, one cycle, Ikeda aesthetic completely new to sandbox. Second: `poem-fluid` (fluid already well-explored, but poem layer is genuinely novel).
+- **Strongest next kids build**: check KIDS.md; `kids-bloom-garden` was the top candidate from Cycle 136 notes.
