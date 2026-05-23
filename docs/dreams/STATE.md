@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 128 — /dream/108-kids-kalimba
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 128 % 2 = 0 → **kids cycle**. No blockers. No in-progress work.
+4. **KIDS.md queue**: full (6 new seeds from Cycle 126 research sweep). Top recommendation: `kids-kalimba`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are kids prototypes, both reward immediate physical gesture → vivid musical response. `kids-kalimba` directly extends this signal: tap → physical bar resonates → natural string decay.
+
+**Loved slugs that influenced this choice**: `82` (tap → vivid circle + note, zero reading) and `83` (physical tilt = music). `kids-kalimba` is the convergence of both: immediate tap response + a physical tuning model (longer bar = lower note) that requires zero words to understand.
+
+**What I built**:
+- `src/app/dream/108-kids-kalimba/page.tsx` — 8-bar kalimba with Karplus-Strong synthesis
+  - **Synthesis**: Same offline Karplus-Strong approach as `105-pluck-field`. `buildKarplusBuffer` pre-computes the full pluck decay into an AudioBuffer: initialize ring buffer with white noise, iterate the KS feedback loop (0.9972 gain × 0.5 lowpass average), write result to AudioBuffer. `playBuffer` fires an AudioBufferSourceNode on each tap. Low strings (C3 = 130 Hz) use a longer buffer (dur ≈ 3.38s); high strings (A4 = 440 Hz) use shorter buffers (dur ≈ 1.5s). Gain 0.65 per pluck.
+  - **8 notes**: C3 E3 G3 A3 C4 E4 G4 A4 (C-major pentatonic, two octaves). All combinations consonant — no wrong notes.
+  - **Bar heights**: `barH[i] = maxBarH × (FREQS[0] / FREQS[i])`. C3 (130.81 Hz) is tallest (100%). A4 (440 Hz) is shortest (≈30%). The height ratio is the wavelength ratio — physically grounded.
+  - **Colors**: 8 vivid distinct hues (violet → indigo → sky → cyan → emerald → amber → orange → pink). One hue per bar, no legend needed — children associate color + height with pitch by repetition.
+  - **Visual**: Canvas animation. Bars drawn as gradient rounded-top rectangles (bright at top, dim at base). On pluck: `shadowBlur` glow + a ripple line traveling down the bar over ~0.45s + a white dot above the bar tip. Amp decays as `exp(-elapsed / 1.4)`. Dim outline border when at rest to keep bars visible.
+  - **Multi-touch / glissando**: `setPointerCapture` per pointerId. `handlePointerMove` fires `pluckBar` when the finger crosses from one bar to another — drag across all 8 bars for a full pentatonic glissando.
+  - **Demo mode**: auto-arpeggiated sequence stops the moment `touchedRef.current` is set true (on first `pointerdown`). Before first touch, gently introduces the sound; after: child is in control.
+  - **Ambient pad**: C3/E3/G3 triangle oscillators at gain 0.016, fades in over 1.5s on start.
+  - **Start screen**: mini bar preview (8 proportional-height divs), large "Let's play! 🎵" button (min-h-[64px], 4yo-usable).
+
+**Build**: `✓ /dream/108-kids-kalimba  2.71 kB  109 kB` — clean, zero errors or warnings.
+
+**What surprised me**: The bar-height-to-pitch mapping is immediately intuitive even as a 2D animation preview on the start screen. The proportional div heights (100% → 30%) form a staircase the eye immediately reads as "going up = getting shorter = getting higher pitched." This is the pre-tap teaching moment: the child sees the shape of the instrument before playing it. The Karplus-Strong synthesis sounds distinctly more resonant than triangle-wave piano — the frequency-domain warmth of the KS ring buffer makes low bars feel physically weighty.
+
+**What's queued next**:
+1. **Cycle 129 (adult, 129%2=1)** — research sweep is overdue (last adult research: Cycle 117, now 12 cycles ago). Will scan arxiv (Q1-Q2 2026), WebGPU trending, fal.ai new models, HN audio/creative-coding, TouchDesigner community for fresh prototype seeds.
+2. **Cycle 130 (kids)** — `kids-bounce-notes`: physics balls bounce on canvas walls, each collision plays a pentatonic note. Self-playing music — child taps to spawn more balls. First autonomous-music kids prototype (no active gesture per note).
+
+---
+
 ## Cycle 127 — /dream/107-ocean-presence
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

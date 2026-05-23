@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 127 — build)
+## ⭐ Newest (Cycle 128 — kids build)
+
+- **[/dream/108-kids-kalimba](/dream/108-kids-kalimba)** — Kalimba (kids). `demoable`
+  Eight colorful vertical bars (violet → pink). Tap any bar to pluck it with Karplus-Strong string synthesis — noise burst into tuned ring-buffer feedback loop, decay 1.5–4s. **Taller bars ring lower; shorter bars ring higher** — the physical law of string instruments, no words needed. Drag across for a glissando; multi-touch plucks multiple strings simultaneously. Demo auto-arpeggios silently until first touch. Ambient C-E-G pad. Start screen shows a mini bar-height preview so the instrument's shape is visible before play. Eight C-major pentatonic notes (C3–A4), all combinations consonant.
+  **"The longest bar rings the deepest — just like a real kalimba tine."**
+  Zero permissions · Zero API · Zero deps · 2.71 kB.
+
+---
+
+## Previous (Cycle 127 — build)
 
 - **[/dream/107-ocean-presence](/dream/107-ocean-presence)** — Ocean Presence. `demoable`
   Move your cursor through the ocean — it sings back. WebGPU ping-pong fluid (two 512×512 rgba16float textures): curl-noise velocity field + cursor vortex force advects dye, which shifts from cyan/teal (slow) to violet/indigo (fast). **No mic, no API** — audio is output only: sine oscillator tracks speed (130→630 Hz) over a constant ambient drone. Pulsing violet cursor glow. The first prototype where AUDIO IS OUTPUT, not input — cursor motion IS the instrument.

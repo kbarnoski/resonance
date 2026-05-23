@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 122 | `/dream/104-kids-mirror-draw` | `demoable` | **NEW** Draw anywhere → mirrors instantly across center axis; Y=pitch (top=high); lift to play melody; paths fade 7s. Zero permissions. |
+| 128 | `/dream/108-kids-kalimba` | `demoable` | **NEW** 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
+| 122 | `/dream/104-kids-mirror-draw` | `demoable` | Draw anywhere → mirrors instantly across center axis; Y=pitch (top=high); lift to play melody; paths fade 7s. Zero permissions. |
 | 120 | `/dream/102-kids-echo-song` | `demoable` | Bird sings 2–4 note phrase → child taps 5 colored circles to reply → bird echoes child's notes + adds one new note. Call-and-response loop. Phrases grow each round. Zero permissions. |
 | 118 | `/dream/100-kids-paint-song` | `demoable` | Draw a finger path → lift → melody plays. X position = pitch (C3 left → A4 right, pentatonic). Each dot flashes on its note. Paths fade in 6s. Zero permissions. |
 | 116 | `/dream/99-kids-panning-safari` | `demoable` | 5 animals drift L/R, each panned to X position via StereoPannerNode; tap for call; auto-plays; 🎧 headphones |
@@ -105,10 +106,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 All six are zero deps · zero API · zero permissions unless noted.
 
-### `kids-kalimba` ⭐ recommended next build
-Eight vertical glowing bars in a row, heights varied (tallest = lowest pitch C2, shortest = highest A4). Tap any bar to pluck it — Karplus-Strong synthesis (same pre-computed ring-buffer approach as `105-pluck-field`, simplified for 8 pitches). No note names shown; the physical analogy teaches itself (longer bar = lower note, like a real kalimba tine or guitar string). Drag a bar vertically while it rings to glide the pitch in real time. Multi-touch: tap all 8 simultaneously for a full chord. Soft ambient C-major pad from first tap. Bars glow and ripple on pluck; glow decays with the ring buffer.
-
-Why recommended: directly extends the loved `82-kids-color-piano` paradigm (tap → immediate sound) but adds a *tuning interaction* the child can discover without words. The "longer = lower" rule is physically grounded — it's how every real string/bar/tine instrument works. Inspired by BANDIMAL's Apple Design Award 2018 (bar height = note, zero reading). One-cycle build.
+### `kids-kalimba` ✓ built Cycle 128 — `/dream/108-kids-kalimba` `demoable`
+Eight vertical glowing bars in a row, heights varied (tallest = lowest pitch C3, shortest = highest A4). Tap any bar to pluck it — Karplus-Strong synthesis (same pre-computed ring-buffer approach as `105-pluck-field`, simplified for 8 pitches). No note names shown; the physical analogy teaches itself (longer bar = lower note, like a real kalimba tine or guitar string). Drag across bars for a glissando; multi-touch plucks multiple bars simultaneously. Soft ambient C-E-G pad from first tap. Bars glow and ripple on pluck; glow decays with the ring buffer. Demo auto-arpeggios until first touch, then stops. 8 C-major pentatonic notes — no wrong combinations. Zero deps, zero permissions.
 
 ### `kids-bounce-notes`
 A glowing ball bounces inside the canvas with realistic physics (gravity, elastic wall reflection, slight energy loss). Each collision with the bottom wall plays the lowest pentatonic note; top wall plays the highest; left/right walls play mid notes. Ball color matches its current energy level (bright on impact, dims between). Tap anywhere to spawn another ball (max 5 coexist). More balls = richer self-playing music. Zero permissions, no tap targets required — children just tap and watch. Infinite play, no fail state.
