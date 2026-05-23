@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 124 — kids polish)
+## ⭐ Newest (Cycle 125 — build)
+
+- **[/dream/106-beat-cut](/dream/106-beat-cut)** — Beat Cut. `demoable`
+  6,000 particles orbit in 6 journey-themed species (Cosmic Homecoming = violet, Earth Grounding = emerald, Ocean Breath = cyan, Snowflake = ice-blue, Inner Sanctuary = amber, Ghost = purple). Six camera presets — one per journey — hard-cut on every audio onset. No lerp, no tween: a hard snap, like a live edit suite firing on the beat. Spring-attractor physics (O(N)) keeps the cloud alive between cuts. Bloom post-processing. Demo mode: synthetic onset timer 700–1500ms. Mic mode: spectral flux fires camera cuts on attack transients.
+  **"The music cuts the camera. TouchDesigner's camSequencer, ported to the browser."** First prototype where the audio event IS the edit decision, and Karel's 6 published journey themes all coexist in one scene.
+  Zero deps · Zero API · WebGL (Three.js, already installed).
+
+---
+
+## Previous (Cycle 124 — kids polish)
 
 - **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `polished`
   Karel's most-loved prototype (❤) — polished this cycle. Added proper start screen ("Let's play! 🎵", violet button, title + description), bumped hint text from near-invisible 18% → 55% opacity, fixed audio context user-gesture timing. Piano play is unchanged — 20vmin circles, glissando, no wrong notes.

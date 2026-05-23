@@ -1,5 +1,38 @@
 # Dream Agent — cycle state
 
+## Cycle 125 — /dream/106-beat-cut
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 125 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — Cycle 124 STATE queued `chord-canvas` as the standing top pick for Cycle 125. However, `28-chord-canvas` was already built at Cycle 32 (exists in the filesystem and in INDEX.md). After checking the full queue, `beat-cut` (TouchDesigner camSequencer concept, IDEAS.md "FROM RESEARCH Cycle 117") is the strongest unbuild zero-dep one-cycle adult prototype: 6,000 particles + camera-snap on onset, covering all 6 of Karel's published journey themes. Directly aligns with Karel's directions: spread across journeys (not just Ghost), live-performance fitness (the camera cuts ARE the performance), high surprise (no prior prototype has used beat-synced camera switching). Zero new npm deps.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are immediate-visual-to-sound kids builds. Love-bias: the "immediate feedback per gesture" quality is preserved in `beat-cut` — each onset fires an instant visual cut.
+
+**Loved slugs that influenced this choice**: `82` (clear tap → vivid response) and `83` (physical gesture = musical instrument). `beat-cut` maps the audio event (onset) to the most immediate camera response possible: a hard cut. No lerp, no anticipation — just the cut.
+
+**What I built**:
+- `src/app/dream/106-beat-cut/page.tsx` — 6,000 particle flock with journey-themed camera presets.
+  - **Particle system**: 6 species × 1,000 particles each. Each species colored with one of Karel's 6 published journey theme palettes (Cosmic Homecoming = violet, Earth Grounding = emerald, Ocean Breath = cyan, Snowflake = ice-blue, Inner Sanctuary = amber, Ghost = purple). Particles orbit species-specific attractors that drift on Lissajous figures — the whole cloud breathes organically.
+  - **Physics**: spring-attractor model (O(N) per frame) — each particle pulled toward its species' current Lissajous position + damping + small turbulence. No O(N²) neighbor checks; the attractor drift creates apparent flocking at 1/1000th the cost.
+  - **Camera presets**: 6 positions in 3D space around the particle cloud origin — above (Cosmic), below-front (Earth), far-left (Ocean), high-right (Snowflake), front (Sanctuary), back-low-left (Ghost). Each gives a qualitatively different perspective on the cloud.
+  - **Onset detection**: spectral flux (sum of positive FFT delta between frames) with 380ms cooldown. In demo mode: synthetic random onset timer (700–1500ms intervals) drives the cuts without requiring mic.
+  - **Demo audio**: 6 sine oscillators (A3/Eb4/E4/A4/C♯5/E5 — approximate A minor 11th chord) audible during demo mode.
+  - **Camera cut**: instantaneous `camera.position.set(cx, cy, cz)` + `camera.lookAt(0,0,0)` — no lerp, no tween. 80ms white flash overlay marks each cut. Journey name + description fades in at bottom.
+  - **Bloom**: `@react-three/postprocessing` EffectComposer + Bloom (already installed). Particles glow additive.
+  - **Build**: `npm run build` — clean. 3.68 kB bundle, `/dream/106-beat-cut` at expected size.
+
+**What surprised me**: The hard-cut camera position change (no easing) is more cinematic than I expected. Because the particles are already in motion with their own physics, cutting to a completely different angle reveals a new "shape" of the swarm that feels like a reveal rather than a jump-cut. The cloud looks different from above (Cosmic — a tightly organized spiral) vs from below-front (Earth — a chaotic mass coming toward you). Same 6,000 particles; the camera IS the narrative.
+
+**Queued next**:
+1. **Cycle 126 (kids, 126%2=0)** — kids research sweep. KIDS.md seeded queue is empty; need fresh ideas. Research 2026 kids AV/music apps, kids haptic feedback, augmented music toys. Seed 5+ new kids prototype concepts.
+2. **Cycle 127 (build, 127%2=1)** — `ocean-presence` (WebGPU MLS-MPM fluid driven by mouse/touch → sound synthesis). First prototype where the user IS the disturbance and the fluid sings back. Two-cycle build. Or `anemone-av` (Three.js organic bioluminescent form, zero new deps, one cycle).
+
+---
+
 ## Cycle 124 — /dream/82-kids-color-piano polish
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)
