@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 127 — /dream/107-ocean-presence
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 127 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — Cycle 126 STATE queued `chord-canvas` for Cycle 127, but `28-chord-canvas` was already built at Cycle 32 (exists in filesystem). Scanned the full IDEAS queue for genuinely unbuilt adult prototypes. Only two adult items from Cycle 117 research remain unbuilt: `ocean-presence` (WebGPU, zero API) and `veo3-ghost` (needs Karel budget approval). `ocean-presence` has a clear spec and aligns with Karel's core directives: audio-visual, no voice gen, interactive. Chose `ocean-presence`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Love signal: immediate physical gesture → vivid sound response. `ocean-presence` is the first prototype where AUDIO IS OUTPUT (not input) and the cursor itself is the instrument — directness matches the loved prototypes.
+
+**Loved slugs that influenced this choice**: `82` (tap → vivid response, cursor IS the instrument) and `83` (physical gesture = music). `ocean-presence` extends both: cursor movement through a dark ocean → the fluid sings back in proportion to your speed.
+
+**What I built**:
+- `src/app/dream/107-ocean-presence/page.tsx` — WebGPU fluid simulation where cursor presence creates audio.
+  - **Fluid simulation**: Two 512×512 `rgba16float` textures (ping-pong). Each frame: a fragment shader reads from `texPair[src]`, advects the dye field backward along the computed velocity, injects new dye at the cursor, decays by 0.992, and writes to `texPair[dst]`.
+  - **Velocity field**: sum of (1) curl noise field — 2D curl of a smooth hash noise, giving organic background swirling that shifts slowly over time; (2) presence force — a vortex (tangential) + drag (directional) field centered on the cursor, strength proportional to `smoothSpd`.
+  - **Dye injection**: Gaussian blob at cursor position, intensity proportional to `smoothSpd`. Color shifts from cyan/teal at slow speeds to violet/indigo at fast speeds — slow fluid = ocean, fast fluid = vortex.
+  - **Display pass**: reads the dye texture, maps RGB+alpha to visual color with `lum = clamp(length(rgb)*0.65)`. Adds a pulsing violet cursor glow and a thin ring at r≈0.014.
+  - **Audio synthesis (no mic, pure output)**:
+    - *Fluid tone*: sine oscillator (130–630 Hz) + gain (0→0.15) — both track `smoothSpd` via `setTargetAtTime`. Fast cursor = high, bright tone; still cursor = silence.
+    - *Ambient ocean drone*: two detuned sines (110 Hz + 110.6 Hz, ~0.6 Hz beat) through a lowpass filter. Filter cutoff rises with speed (160→860 Hz). Always present at gain 0.035.
+  - **Cursor tracking**: EMA of per-frame displacement × 60 (normalized to ~1/s), decays at 0.94/frame when still.
+  - **Zero deps, zero API, no mic needed.**
+
+**What surprised me**: The curl noise + vortex sum produces surprisingly rich trails. When you move the cursor in slow circles, the curl background and the vortex force add constructively to create complex spiral patterns that persist for several seconds. The dye color-shifting (slow=cyan, fast=violet) means a slow drift through the ocean leaves a teal cloud, while a fast swipe leaves a violet/indigo streak — the trail literally encodes your speed history as a color gradient. The audio-visual synchrony is immediate: you hear exactly what you see (fast = high + bright, still = drone only).
+
+**What's queued next**:
+1. **Cycle 128 (kids, 128%2=0)** — `kids-kalimba` (BANDIMAL-inspired bar-height-to-pitch, Karplus-Strong synthesis, 8 bars). Recommended by Cycle 126 research as the top kids build.
+2. **Cycle 129 (adult, 129%2=1)** — research sweep is due (last adult research was Cycle 117, now 12 cycles ago). Alternatively, `veo3-ghost` if Karel approves the $2–3.20 budget.
+
+---
+
 ## Cycle 126 — kids research sweep
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

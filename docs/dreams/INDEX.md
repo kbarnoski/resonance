@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 126 — kids research sweep)
+## ⭐ Newest (Cycle 127 — build)
+
+- **[/dream/107-ocean-presence](/dream/107-ocean-presence)** — Ocean Presence. `demoable`
+  Move your cursor through the ocean — it sings back. WebGPU ping-pong fluid (two 512×512 rgba16float textures): curl-noise velocity field + cursor vortex force advects dye, which shifts from cyan/teal (slow) to violet/indigo (fast). **No mic, no API** — audio is output only: sine oscillator tracks speed (130→630 Hz) over a constant ambient drone. Pulsing violet cursor glow. The first prototype where AUDIO IS OUTPUT, not input — cursor motion IS the instrument.
+  **"Move your hand through this ocean. It sings back."**
+  Zero deps · Zero API · Zero permissions · WebGPU required · 3.55 kB.
+
+---
+
+## Previous (Cycle 126 — kids research sweep)
 
 No new prototype this cycle — the kids seeded queue was exhausted. Researched 2026 kids music
 interaction (BANDIMAL, Shape Your Music, Bouncy physics ball, CHI 2025 touchscreen review,
