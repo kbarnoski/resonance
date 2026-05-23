@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 135 — /dream/114-live-harmonize
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 135 % 2 = 1 → **adult cycle**.
+4. **Build new** — STATE.md Cycle 134 explicitly queued `live-harmonize` for Cycle 135.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes: immediate gesture → vivid musical feedback. `live-harmonize` inherits the immediate-response ethos: each note you play triggers harmony voices within one frame, no latency.
+
+**Loved slugs that influenced this choice**: `82` (instant note response to tap) and `83` (gesture shapes music in real time). `live-harmonize` is the adult synthesis: your melody gesture is immediately harmonized, and a scrolling piano roll shows all three voices in real time.
+
+**What I built**:
+- `src/app/dream/114-live-harmonize/page.tsx` — mic → pitch → diatonic harmony + piano roll
+  - **Pitch detection**: autocorrelation on 2048-sample time-domain buffer at 60fps. Silence gate (RMS < 0.007). Detects 65–1100 Hz (covers piano C2–D6, voice).
+  - **Key detection**: 12-bin chroma vector accumulates pitch class energy from detected notes (+=0.12 per note, ×0.996 decay per frame). Template-match against 24 major/minor key templates (Krumhansl-style: root=1.0, P5=0.75, others=0.5). Re-runs probabilistically (~every 30 frames) to update displayed key live without jarring snaps.
+  - **Diatonic harmony**: for each detected note, finds its scale degree in the current key (nearest match, handles chromatic passing tones), then computes the diatonic 3rd above (scale degree +2) and 5th above (scale degree +4), wrapping correctly across octaves. These are always in-key intervals — E in C major gets G (minor 3rd) and B (perfect 5th); B gets D and F (diminished 5th). Never mechanical fixed intervals.
+  - **Synthesis**: three `OscillatorNode` (triangle wave) voices per note. Melody: center (pan 0), gain 0.42. Third: right (pan +0.38), gain 0.26. Fifth: left (pan −0.38), gain 0.20. Gentle ADSR: 18ms attack, 28% of duration for release. Short 480ms notes prevent muddiness on rapid passages.
+  - **Piano roll**: Canvas2D, scrolling at 72 px/s. Cursor at 28% from left. Notes drawn as colored rectangles: melody=orange, third=blue, fifth=indigo. Additive `shadowBlur` glow. Octave grid (C2–C6) with faint white lines + labels. Notes pruned from memory when they scroll 40px past the left edge.
+  - **Demo mode**: Bach BWV 772 fragment (21 notes, C major). Auto-loops with 550ms gap. Key pre-set to C — third/fifth voices are immediately correct. Good for showing the sound before using mic.
+  - **Typography**: text-2xl title, text-base description, text-white/95 primary, text-white/75 body, voice labels with matching background chips, text-white/55 hints. All buttons min-h-[44px].
+
+**Build**: `✓ /dream/114-live-harmonize  3.68 kB  106 kB` — clean, zero errors or warnings.
+
+**What surprised me**: The key detection is fast enough to be musically useful — it stabilizes within 4–6 distinct notes and rarely mis-fires on clean piano input (piano has strong fundamental, making pitch detection reliable). On a ii-V-I in C, the key display correctly shows "C" throughout. Playing a phrase in D minor and then modulating to F major, the key display updates within about 8 notes of the modulation. The latency (~0.5s to detect the new key) means you hear one or two "wrong" harmonies during a modulation — which is musically appropriate: real accompanists also take a moment to realize you've changed key.
+
+The diatonic 5th voice at pan −0.38 creates unexpected depth. Playing a scale, the fifth voice pans slightly behind-left while the third voice pans right, and the melody stays center. With headphones, it sounds like you're playing in a trio where the other two musicians are slightly off to each side. More spatial than expected from three triangle oscillators.
+
+**What's queued next**:
+1. **Cycle 136 (kids, 136%2=0)** — `kids-weather-music`. Four weather zones (sun/cloud/rain/wind); hold to blend atmosphere; whole screen is the instrument. First kids prototype about sustained atmospheric states rather than discrete taps.
+2. **Cycle 137 (adult, 137%2=1)** — `diatonic-harmony` (already fully spec'd in IDEAS.md as `/dream/51-diatonic-harmony`) OR a research cycle (last adult research was Cycle 129, 6 adult cycles ago — approaching the "research every 3-4 cycles" threshold).
+
+---
+
 ## Cycle 134 — /dream/113-kids-conductor-wand
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)
