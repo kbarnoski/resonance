@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 130 — /dream/109-kids-bounce-notes
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 130 % 2 = 0 → **kids cycle**. No blockers. No in-progress work.
+4. **KIDS.md queue**: full (5 unbuilt seeds from Cycle 126 research). Top recommendation by INDEX.md and STATE.md: `kids-bounce-notes`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes reward immediate physical action → vivid musical response. `kids-bounce-notes` extends that to autonomous physics: the child sets a ball in motion and the physics makes music without requiring a correct gesture.
+
+**Loved slugs that influenced this choice**: `82` (tap → vivid circle + note) and `83` (tilt = music). `kids-bounce-notes` shares the same "action is immediately rewarded" core but introduces a new paradigm: autonomous music. The child doesn't need to tap repeatedly — they set physics in motion and then watch and listen.
+
+**What I built**:
+- `src/app/dream/109-kids-bounce-notes/page.tsx` — physics ball bouncer with pentatonic wall notes
+  - **Physics**: gravity (185 px/s²) + elastic wall reflection (RESTITUTION=0.86). Each ball has position, velocity, and a `flash` decay that glows on impact. `dt` clamped to 50ms prevents teleporting on tab-switch.
+  - **Audio**: `triggerWallNote(actx, wall)` fires two voices (triangle fundamental + sine 2nd harmonic at 0.055 gain). Walls play different pentatonic notes: bottom=C3 (deepest, satisfying bass), top=A4 (bright, tingly), left=G3 (mid), right=E4 (mid-high). Per-ball 100ms cooldown (`NOTE_GAP=0.1`) prevents rapid-fire from high-energy bouncing.
+  - **Ambient pad**: C3/G3/C4 triangle oscillators at gain 0.013, fades in over 1.8s. Keeps the canvas feeling alive between bounces.
+  - **Visual**: Glowing colored balls. Glow radius = speed-normalized base + `flash` burst. Inner highlight (upper-left arc) at opacity 0.1 + flash×0.38. Dark background (#0a0a14). 5 distinct ball colors (violet, cyan, emerald, orange, pink).
+  - **Multi-ball**: Tap anywhere on canvas to spawn a ball at that tap position (max 5). Ball spawned with slight random horizontal velocity and upward initial velocity, so it immediately starts bouncing. Count indicator at bottom tells how many balls remain to add.
+  - **Start screen**: 3 preview circles (violet, emerald, pink) in a staggered row, large "Let's play! 🎵" button (min-h-[64px]), title (text-3xl) and description (text-base/75).
+  - **Typography**: all AGENT.md rules applied — text-3xl title, text-base description, text-white/95 primary, text-white/75 secondary, text-white/55 tertiary.
+
+**Build**: `✓ /dream/109-kids-bounce-notes  2.39 kB  109 kB` — clean, zero errors or warnings.
+
+**What surprised me**: The `flash` parameter makes ball-to-wall hits feel physically *weighty* — the ball brightens on impact and dims as it coasts, which makes the physics feel grounded rather than arbitrary. Also: spawning a second ball at the tap position (rather than center) immediately teaches the child that "tap where you want the ball to start" — the tap point = spawn point is intuitive without words. The `NOTE_GAP` cooldown is critical; without it, a ball hitting a corner at high speed fires 3-4 notes per second, which sounds chaotic rather than musical.
+
+**What's queued next**:
+1. **Cycle 131 (adult, 131%2=1)** — `webcam-compose` (LUMIA-inspired camera-as-instrument, zero API, zero ML). Highest novelty in the queue.
+2. **Cycle 132 (kids, 132%2=0)** — `kids-shape-loop` (draw a closed shape → perimeter traversal plays looping melody). First looping/layering kids prototype.
+
+---
+
 ## Cycle 129 — adult research sweep
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

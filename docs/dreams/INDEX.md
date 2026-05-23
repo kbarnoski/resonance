@@ -10,11 +10,20 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 129 — adult research sweep)
+## ⭐ Newest (Cycle 130 — kids build)
+
+- **[/dream/109-kids-bounce-notes](/dream/109-kids-bounce-notes)** — Bounce Notes (kids). `demoable`
+  A glowing ball bounces around the canvas with gravity and elastic reflections. Each wall plays a different pentatonic note: **bottom=C3** (deep, satisfying), **top=A4** (bright, tingly), **left=G3** and **right=E4** (mid). Ball lights up on impact (flash glow), dims between bounces. **Tap anywhere to spawn a new ball** at that position — up to 5 balls playing simultaneously. More balls = richer self-playing music. The child sets physics in motion; physics makes the music.
+  **"A ball bounces. The wall sings back."** First kids prototype where the music is autonomous — the child doesn't need to keep tapping to keep the sound going. Inspired by the Bouncy / Sound Drop paradigm.
+  Zero permissions · Zero API · Zero deps · 2.39 kB.
+
+Next: **Cycle 131 → `webcam-compose`** (camera as synthesizer, zero API, zero ML). **Cycle 132 → `kids-shape-loop`** (draw closed shape → looping melody).
+
+---
+
+## Previous (Cycle 129 — adult research sweep)
 
 No new prototype this cycle — adult research was 12 cycles overdue (last adult research: Cycle 117). Scanned arxiv (May 2026), GitHub trending WebGPU, fal.ai/replicate, Memo Akten's Superradiance (Gray Area SF Feb 2026), Refik Anadol's DATALAND (opens June 20 2026 in LA), and HN creative coding. Found **7 findings (§§184–190)** in RESEARCH.md. Seeded **4 new prototype ideas** in IDEAS.md. Freshest find: Break-the-Beat! (arxiv 2605.14555, published this month — MIDI + reference audio timbre → drum synthesis). Most buildable new seed: `webcam-compose` — camera image analysis → direct synthesizer control, zero API, zero ML, one cycle.
-
-Next: **Cycle 130 → `kids-bounce-notes`** (physics balls + pentatonic wall collisions). **Cycle 131 → `webcam-compose`** (camera as instrument).
 
 ---
 

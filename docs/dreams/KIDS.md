@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 128 | `/dream/108-kids-kalimba` | `demoable` | **NEW** 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
+| 130 | `/dream/109-kids-bounce-notes` | `demoable` | **NEW** Gravity+elastic physics; 4 walls play pentatonic notes (bottom=C3 deep, top=A4 bright, sides=mid); tap to spawn up to 5 balls; flash glow on impact; autonomous music — no repeated gestures needed; zero permissions. |
+| 128 | `/dream/108-kids-kalimba` | `demoable` | 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
 | 122 | `/dream/104-kids-mirror-draw` | `demoable` | Draw anywhere → mirrors instantly across center axis; Y=pitch (top=high); lift to play melody; paths fade 7s. Zero permissions. |
 | 120 | `/dream/102-kids-echo-song` | `demoable` | Bird sings 2–4 note phrase → child taps 5 colored circles to reply → bird echoes child's notes + adds one new note. Call-and-response loop. Phrases grow each round. Zero permissions. |
 | 118 | `/dream/100-kids-paint-song` | `demoable` | Draw a finger path → lift → melody plays. X position = pitch (C3 left → A4 right, pentatonic). Each dot flashes on its note. Paths fade in 6s. Zero permissions. |
@@ -109,7 +110,7 @@ All six are zero deps · zero API · zero permissions unless noted.
 ### `kids-kalimba` ✓ built Cycle 128 — `/dream/108-kids-kalimba` `demoable`
 Eight vertical glowing bars in a row, heights varied (tallest = lowest pitch C3, shortest = highest A4). Tap any bar to pluck it — Karplus-Strong synthesis (same pre-computed ring-buffer approach as `105-pluck-field`, simplified for 8 pitches). No note names shown; the physical analogy teaches itself (longer bar = lower note, like a real kalimba tine or guitar string). Drag across bars for a glissando; multi-touch plucks multiple bars simultaneously. Soft ambient C-E-G pad from first tap. Bars glow and ripple on pluck; glow decays with the ring buffer. Demo auto-arpeggios until first touch, then stops. 8 C-major pentatonic notes — no wrong combinations. Zero deps, zero permissions.
 
-### `kids-bounce-notes`
+### `kids-bounce-notes` ✓ built Cycle 130 — `/dream/109-kids-bounce-notes` `demoable`
 A glowing ball bounces inside the canvas with realistic physics (gravity, elastic wall reflection, slight energy loss). Each collision with the bottom wall plays the lowest pentatonic note; top wall plays the highest; left/right walls play mid notes. Ball color matches its current energy level (bright on impact, dims between). Tap anywhere to spawn another ball (max 5 coexist). More balls = richer self-playing music. Zero permissions, no tap targets required — children just tap and watch. Infinite play, no fail state.
 
 The music is completely autonomous — the child doesn't have to "play correctly." They spawn balls and the physics makes music. Very different from all existing kids prototypes (which require active gesture per note). Inspired by Bouncy (ebraminio, open-source) and the "Sound Drop" paradigm.
@@ -139,6 +140,23 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ## Research log for Kids
 
 Keep a running log here of relevant findings the agent uncovers during kid-cycles (mirrors `RESEARCH.md` structure).
+
+### Cycle 130 — bounce-notes build
+
+**Built**: `109-kids-bounce-notes`. Key learnings:
+- The `flash` parameter (0→1, decays at 2.2/s) is the key to making physics feel *physical*. Without it, a bouncing ball reads as a simulation. With the brightness burst on impact, it reads as a ball hitting a wall — the light feedback is the substitute for the haptic thud.
+- Per-ball note cooldown (`NOTE_GAP = 0.1s`) is essential. At high velocities, a ball can hit a corner and "collide" with two walls in the same frame, firing two notes simultaneously. Without the cooldown, rapid rattling at a wall corner sounds chaotic. With it, only the first collision per 100ms registers — one note, clear and resonant.
+- Spawning the ball at the tap position (not at center) teaches the interaction model without text: the child taps near the top, the ball appears there and falls. The spatial mapping is intuitive.
+- `RESTITUTION = 0.86` is the right decay rate for this use case. 0.9+ keeps balls bouncing for too long and the canvas gets chaotic. 0.8 is too damped — balls settle in 5–10 seconds and the canvas goes silent. 0.86 gives a satisfying 30–60 second decay that lets the child explore between spawns.
+- Pentatonic wall mapping (bottom=C3, top=A4, left=G3, right=E4) works musically — when multiple balls hit different walls, they always sound consonant (all from C-major pentatonic). No combination of wall collisions produces dissonance.
+- The `NOTE_GAP` cooldown prevents rapid-fire but means a ball that hits bottom-left corner first hits bottom (C3), then has 100ms before it can fire again. It might hit the left wall (G3) too quickly and miss the note. This is acceptable — missing some notes is better than a chaotic burst.
+
+**Next kid-cycle ideas (Cycle 132)**:
+- `kids-shape-loop`: draw a closed shape → traversal point orbits perimeter → triggers notes at direction changes (Y=pitch). Additive looping layers. First kids prototype about compositional accumulation.
+- `kids-conductor-wand`: drag finger = conductor's baton; Y=register, speed=tempo. Four orchestras.
+- Polish on `109-kids-bounce-notes`: ball-ball collision detection (they currently pass through each other). Would make multi-ball dynamics much richer.
+
+---
 
 ### Cycle 126 — kids research sweep
 
