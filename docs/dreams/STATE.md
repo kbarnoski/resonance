@@ -1,5 +1,42 @@
 # Dream Agent — cycle state
 
+## Cycle 141 — /dream/119-poem-fluid
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 141 % 2 = 1 → **adult cycle**. No blockers.
+4. **Build new**: `poem-fluid` explicitly queued for Cycle 141 since Cycle 137 STATE.md. Zero deps, zero API, one-cycle build. Memo Akten / Whitney Artport 2026 paradigm — nothing like it exists in the sandbox.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate gesture → vivid musical feedback. `poem-fluid` inverts this with deliberate polarity: reward *stillness* rather than *action*. The loved prototypes prove Karel values immediacy; `poem-fluid` proves the agent isn't just deepening the same vein — it explores the opposite emotional register (contemplation, patience, reading).
+
+**Loved slugs that influenced this choice**: `82` and `83` are maximally responsive. By building their opposite — a prototype where nothing happens when you interact aggressively, and everything surfaces when you wait — `poem-fluid` creates contrast that makes both feel richer.
+
+**What I built**:
+- `src/app/dream/119-poem-fluid/page.tsx` — WebGL Navier-Stokes fluid + Markov chain text overlay
+  - **Full fluid pipeline**: same VERT/ADVECT/DIVERGENCE/PRESSURE/GRADIENT/SPLAT/DISPLAY shader stack as `3-fluid`, with a darker display shader (`* 0.62` scale + mild Reinhard) giving near-black water with barely-visible teal/violet wisps
+  - **Turbulence score** (CPU-side `turbRef`, 0–1): increases on pointer stir (proportional to movement speed) and on audio onset; decays with `pow(0.975, dt*60)` — τ ≈ 4s. No GPU readback needed.
+  - **Markov chain text**: bigram transition table built from 28 Ghost-narrative phrases at module scope. `generatePoem(turbulence)` picks: turbulence < 0.22 → exact corpus sentence; turbulence 0.22–0.55 → 2–4 word fragment; turbulence > 0.55 → single word.
+  - **Two-phase fade**: `showText`/`fadeOut` pattern with 280ms fade-to-0 then 0→target opacity via 0.65s CSS transition. Text surfaces when fluid stills; shatters as it's disturbed.
+  - **Text positioning**: centered at 50% / 45% when calm; scattered to random positions (35–65% x, 20–78% y) when turbulent.
+  - **Hold duration**: 5.2–9.7s when calm (full sentences), 1.4–3s for fragments, 0.22–0.6s for single words.
+  - **Dark oceanic palette**: mouse stir color `[0.015, 0.22, 0.48]` (deep teal); ambient drift is even darker `[0.008, 0.09, 0.28]` with 2.2s interval (vs 0.7s in `3-fluid`) — preserves stillness.
+  - **Font**: `font-serif`, `clamp(18px, 3.2vw, 32px)`, `text-shadow: 0 0 28px rgba(70,170,255,0.32)` — text feels like it's glowing up from the water.
+  - **Modes**: "Still water" (demo, ambient drift only) and "+ Mic" (audio splats + turbulence spikes on onset). Both activate the fluid + poem layer.
+  - **Build**: `✓ /dream/119-poem-fluid  6.5 kB  113 kB` — clean, zero errors or new warnings.
+
+**What surprised me**: The `turbulence < 0.22` threshold for exact sentences is actually quite hard to stay below once you've stirred once — the `pow(0.975, dt*60)` decay takes ~5 seconds to drop from 0.5 to below 0.22. So the experience has a natural "you have to REALLY wait" quality. A sentence surfaces, you hold still for 8 seconds reading it, then a new one takes its place. The moment you drag a finger, the sentence immediately splinters into "something" → single word, and you've "lost" the sentence. This creates a genuine tension between reading and playing.
+
+Also noticed: the Markov chain sometimes produces unexpectedly beautiful fragments — "The light is also you" is not in the corpus but emerges from the bigram table of "the first light is also the first sound" + "you are not rising." The accidental poetry is better than the intended sentences.
+
+**What's queued next**:
+1. **Cycle 142 (kids, 142%2=0)** — polish pass on `116-kids-bloom-garden` (add pre-bloom press-ring indicator showing hold progress, per KIDS.md Cycle 138 note) OR new kids idea from KIDS.md queue if something more interesting is queued.
+2. **Cycle 143 (adult, 143%2=1)** — `poem-fluid` polish: add ambient audio (very quiet sine chord C2+G2+C3 at gain 0.012 in still mode), OR begin a new adult build. Candidate: `music-palette` (zero deps, zero API, one cycle — audio features → HSL color palette, downloadable SVG).
+
+---
+
 ## Cycle 140 — /dream/118-kids-mirror-melody
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

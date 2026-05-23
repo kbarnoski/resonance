@@ -10,14 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 140 — kids build)
+## ⭐ Newest (Cycle 141 — adult build)
+
+- **[/dream/119-poem-fluid](/dream/119-poem-fluid)** — Poem Fluid. `demoable`
+  A WebGL Navier-Stokes fluid sim where the **turbulence state of the water drives a Markov chain text layer**. Start in **Still water** mode: the canvas is near-black, dark teal wisps drift slowly, and full Ghost-narrative sentences surface one at a time — "The water remembers every sound that has passed through this place." Now **drag your finger** to stir. The turbulence score rises; sentences fragment into phrases, then single words, then a cascade of fragments at different positions. Release — the fluid stills — and sentences begin to surface again. Add mic: audio onsets spike turbulence (beat = shatters a sentence into words), bass drives pressure pulses that add swirling velocity to the water.
+  Inspired by Memo Akten & Katie Hofstadter's *The Thinking Ocean* (Whitney Museum Artport, 2026): generative text that lives in the physical state of the fluid, not on top of it.
+  Zero API · Zero deps · 6.5 kB.
+
+---
+
+## Previous (Cycle 140 — kids build)
 
 - **[/dream/118-kids-mirror-melody](/dream/118-kids-mirror-melody)** — Mirror Melody (kids). `demoable`
   A split canvas: rose on the left, cyan on the right. **Draw on either half** — glowing dots trail your finger and play a pentatonic note in real time (Y=pitch, top=high). The **mirror path appears instantly** on the opposite half in the complementary color, playing the same note panned to the other ear. Two-voice stereo duet from a single gesture. Paths accumulate and fade over 7 seconds; a soft ambient C–G–C pad fills any silence. Multi-touch: two fingers create two independent mirror pairs simultaneously.
   **"Left hand / right hand — draw both at once."** The prototype is its own music theory lesson: holding a finger high on both sides creates a two-voice unison; drawing one finger high and one low creates a two-voice interval. A 4yo discovers this in under 30 seconds without any instruction.
   Zero permissions · Zero API · Zero deps · 2.26 kB.
-
-Next: **Cycle 141 → adult cycle** (`poem-fluid`: WebGL Navier-Stokes fluid + Markov text overlay keyed to vorticity — Memo Akten / Whitney Artport 2026 paradigm).
 
 ---
 

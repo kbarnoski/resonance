@@ -1,17 +1,16 @@
-# Morning digest — last updated 2026-05-23 UTC (Cycle 140)
+# Morning digest — last updated 2026-05-23 UTC (Cycle 141)
 
 ## New since yesterday
 
-- **[/dream/118-kids-mirror-melody](/dream/118-kids-mirror-melody)** — Mirror Melody (kids) · *Cycle 140* · `demoable`
-  Draw on either half of the screen. A **mirror path instantly appears** on the other side, same Y position. Both sides play the same pentatonic note simultaneously — one panned left, one panned right. Draw high on the canvas = high note; draw low = low note. Rose trails on the left, cyan on the right.
-  Multi-touch: two fingers create two independent mirror pairs. Parent + child can draw on opposite sides at the same time, creating a live two-voice duet.
-  Zero permissions · Zero API · Zero deps · 2.26 kB.
-  **Why open this**: put headphones on and draw a slow diagonal arc. The "left hand / right hand" stereo effect is immediately striking. Then tap the Start button and hand to a 4yo — they'll figure it out in 5 seconds.
+- **[/dream/119-poem-fluid](/dream/119-poem-fluid)** — Poem Fluid · *Cycle 141* · `demoable`
+  WebGL Navier-Stokes fluid + Markov chain text overlay. **Still water reveals the poem. Stir to fragment it.**
+  The turbulence state of the water controls which Ghost-narrative text surfaces: calm → full sentences ("The water remembers every sound that has passed through this place."); stir → phrases → single words. Inspired by Memo Akten's *The Thinking Ocean* (Whitney Artport 2026) — text lives in the physical state of the fluid, not on top of it.
+  Zero API · Zero deps · 6.5 kB.
+  **Why open this**: Click "Still water." Wait 10 seconds. Read the sentence that surfaces. Then drag your finger slowly across the canvas. Watch the sentence fragment. Let go and wait again.
 
-- **[/dream/117-data-cosm](/dream/117-data-cosm)** — DATA-COSM · *Cycle 139* · `demoable`
-  Ryoji Ikeda aesthetic. Synthetic particle physics events scroll as a monospace matrix on pure black. Characters scatter then snap back. 38Hz sub-bass drone. Auto-cycles through QUANTUM (8 events/s) → BIOLOGICAL (1/s) → COSMIC (1/10s). COSMIC is the payoff: a single event centered on an empty black screen.
-  Tap to activate audio. Zero permissions · Zero API.
-  **Why open this**: watch it cycle once (~2 min) from QUANTUM to COSMIC. The shift in what "information" feels like across time scales is the whole point.
+- **[/dream/118-kids-mirror-melody](/dream/118-kids-mirror-melody)** — Mirror Melody (kids) · *Cycle 140* · `demoable`
+  Draw on either half of a split canvas — the mirror path appears instantly on the opposite side, panned to the other ear. Put headphones on and draw a slow diagonal arc: left-hand / right-hand stereo effect is immediately striking.
+  Zero permissions · Zero API · Zero deps · 2.26 kB.
 
 ## In progress / partial
 
@@ -20,13 +19,13 @@ Nothing in-progress.
 ## Research findings worth a look
 
 From Cycle 137 sweep (still fresh):
-- **Memo Akten — The Thinking Ocean** (Whitney Artport 2026) — WebGPU Navier-Stokes fluid with a generative real-time poem that shifts as you navigate. Text IS as dynamic as the water. Direct inspiration for `poem-fluid` (next adult cycle, Cycle 141).
-- **Ryoji Ikeda data-cosm [n°1]** (180 Studios London, Oct 2025–Feb 2026) — realized as `117-data-cosm` above.
-- **MusicRFM** (ICLR 2026) — RFM probes steer MusicGen activations for real-time chord/scale control. Inspires `arc-steer`.
+- **Memo Akten — The Thinking Ocean** (Whitney Artport 2026) — realized as `119-poem-fluid` above. The agent's first prototype where the physical state of the simulation IS the narrative state.
+- **Ryoji Ikeda data-cosm [n°1]** (180 Studios London) — realized as `117-data-cosm`.
+- **MusicRFM** (ICLR 2026) — RFM probes steer MusicGen activations for real-time chord/scale control. Inspires `arc-steer` (6-phase journey arc with ACE-Step chain). ~$0.036/run. Needs spend approval.
 
 ## Open questions for Karel
 
-1. **`body-conductor` CDN dep** — MediaPipe PoseLandmarker ~8MB, CDN-loaded. OK to proceed?
-2. **`arc-steer` spend** — 6 × ACE-Step 30s calls ≈ $0.036/run. OK to proceed?
+1. **`arc-steer` spend** — 6 × ACE-Step 30s calls ≈ $0.036/run. Ready to build once you say go.
+2. **`body-conductor` CDN dep** — MediaPipe PoseLandmarker ~8MB CDN load. OK to proceed?
 3. **GEMINI_API_KEY** — unlocks `30-lyria-jam`, `43-lyria-ghost`, `44-binaural-lyria`. Any update?
 4. **Veo 3 Ghost animate budget** — ~$0.75/clip (Veo 3 Fast). Waiting for OK.
