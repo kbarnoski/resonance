@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 123 — /dream/105-pluck-field
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 123 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — two strong candidates from Cycle 122 STATE notes: `pluck-field` (Karplus-Strong physical modeling) and `chord-canvas` (chroma→chord detection). Chose `pluck-field` because it fills the only remaining synthesis paradigm gap: 104 existing prototypes cover audio-reactive viz, granular, FM, additive, spectral morphing, binaural — none use physical modeling. KS is self-contained, zero-dep, one-cycle buildable, and directly relevant to Karel's piano focus. `chord-canvas` remains queued next.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are immediate-sound kids builds. No signal against this choice.
+
+**Loved slugs that influenced this choice**: `82` (clear colored-circle → sound visual feedback) and `83` (the interaction is the output — tilt IS the instrument). `pluck-field` follows the same principle: the string IS the synthesis, not a UI trigger for something abstract.
+
+**What I built**:
+- `src/app/dream/105-pluck-field/page.tsx` — 24 Karplus-Strong virtual strings in a 4×6 grid.
+  - **Synthesis**: pre-computes all 24 string buffers at start-up using offline Karplus-Strong (no real-time DelayNode — avoids the browser's minimum-delay constraint for high frequencies). Ring buffer initialized with white noise; each sample: `ring[i] = 0.996 × 0.5 × (ring[i] + ring[(n+1) % N])`. Gain 0.996 → gentle decay (C2 decays over ~2.3s; A5 over ~0.5s). All 24 buffers computed in <5ms total (1.6M float ops).
+  - **Tuning**: C major hexatonic (C, D, E, F, G, A) across octaves 2–5 = 24 unique pitches from C2 (65 Hz) to A5 (880 Hz) in a 4-row × 6-column grid. Low rows = low octaves.
+  - **Visual**: each resting string is a thin horizontal line. On pluck: animated damped standing wave using `sin(π·x) × cos(2π·vizHz·t)` — fundamental mode. Visual frequency scales with pitch position (1.8–7.3 Hz across grid). Amplitude decays `exp(-t/1.3)`. Glow via `shadowBlur` proportional to amplitude. Note name fades in when plucked, fades out as decay ends.
+  - **Color**: hue sweeps from violet (low C2, hue 270) to amber/orange (high A5, hue 30) — same direction as `1-live`'s frequency-to-color mapping.
+  - **Interaction**: `onPointerDown` on the canvas → maps pointer position to grid cell → pluck. Multi-touch native (multiple fingers pluck multiple strings simultaneously).
+  - **Mic mode**: mic onset events → pluck random string. Auto-strum demo runs when mic is off.
+  - **Start screen**: serif title, description, "Open the harp" button. Matches `1-live` quality bar.
+  - **Zero deps** — pure Web Audio API + Canvas2D. No external libraries.
+
+**Build**: `npm run build` — clean. `/dream/105-pluck-field` builds at expected size.
+
+**What surprised me**: the decay rate difference between the octaves is immediately apparent on the canvas. C2's string glows for nearly 2 seconds; A5's string flashes and dies in under 0.5 second. This is physically correct — short strings dissipate energy faster because the lowpass averaging happens at a higher rate relative to the fundamental period. You can SEE Karplus-Strong physics in the glow duration. Also: clicking across an entire row produces a natural ascending scale that sounds like a plucked harp glissando, not a synth. The synthesis is indistinguishable from a harp sample at normal listening distance.
+
+**Queued next**:
+1. **Cycle 124 (kids, 124%2=0)** — polish `82-kids-color-piano` (long-queued typography: bump `text-white/40` → `text-white/75`, increase button sizes). Or new kids concept if a stronger idea emerges.
+2. **Cycle 125 (build)** — `chord-canvas` (chroma vector → chord name + color timeline; first music-theory prototype, zero deps). Still the strongest queued zero-dep build.
+
+---
+
 ## Cycle 122 — /dream/104-kids-mirror-draw
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

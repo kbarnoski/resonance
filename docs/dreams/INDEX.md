@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 122 — kids build)
+## ⭐ Newest (Cycle 123 — build)
+
+- **[/dream/105-pluck-field](/dream/105-pluck-field)** — Pluck Field. `demoable`
+  24 virtual strings in a 4×6 grid (C major hexatonic, octaves 2–5). Click any string to pluck it; the string vibrates as an animated damped standing wave and rings with Karplus-Strong physical modeling synthesis. Multi-touch: multiple fingers pluck simultaneously. Mic mode: onsets pluck random strings. Demo auto-strums. Color gradient: violet (low C2) → amber (high A5). Zero deps, zero API.
+  **"The first prototype where the synthesis IS a physical model — noise burst → feedback loop → string."** First physical modeling synthesis in the sandbox. KS pre-computed offline (no real-time delay line): works cleanly across all frequencies from 65 Hz (C2) to 880 Hz (A5).
+  Zero deps · Zero API · zero permissions.
+
+---
+
+## Previous (Cycle 122 — kids build)
 
 - **[/dream/104-kids-mirror-draw](/dream/104-kids-mirror-draw)** — Mirror Draw (kids). `demoable`
   Draw a line anywhere on screen — it mirrors instantly across the center axis on the other side. Lift your finger to hear the path play as a melody: Y position = pitch (top = A4 high, bottom = C3 low), dots colored by pitch (pink at top, violet at bottom). Both the drawn line and its mirror flash as each note fires. Paths fade over 7 seconds; multiple paths accumulate for a glowing butterfly canvas. Subtle vertical pitch-gradient strips on each edge (violet→pink, bottom→top) show the Y=pitch mapping without text. Ambient C/E/G pad keeps the screen alive between drawings. Zero permissions, zero API.
