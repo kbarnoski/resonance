@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 123 — build)
+## ⭐ Newest (Cycle 124 — kids polish)
+
+- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `polished`
+  Karel's most-loved prototype (❤) — polished this cycle. Added proper start screen ("Let's play! 🎵", violet button, title + description), bumped hint text from near-invisible 18% → 55% opacity, fixed audio context user-gesture timing. Piano play is unchanged — 20vmin circles, glissando, no wrong notes.
+  **"The first kids prototype now has the same polished entry as all Cycle 96+ builds."** Eight pentatonic circles that tap, hold, and slide across two octaves of C-major pentatonic.
+  Zero deps · Zero API · Zero permissions.
+
+---
+
+## Previous (Cycle 123 — build)
 
 - **[/dream/105-pluck-field](/dream/105-pluck-field)** — Pluck Field. `demoable`
   24 virtual strings in a 4×6 grid (C major hexatonic, octaves 2–5). Click any string to pluck it; the string vibrates as an animated damped standing wave and rings with Karplus-Strong physical modeling synthesis. Multi-touch: multiple fingers pluck simultaneously. Mic mode: onsets pluck random strings. Demo auto-strums. Color gradient: violet (low C2) → amber (high A5). Zero deps, zero API.
@@ -324,17 +333,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## Previous newest (Cycle 92 — kids build)
+## Previous newest (Cycle 92 — kids build) · polished Cycle 124
 
-- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `demoable`
-  First kids prototype. Eight pentatonic circles — C D E G A C D E across two octaves. Tap any
+- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `polished`
+  First kids prototype — and Karel's most-loved (❤). Eight pentatonic circles — C D E G A C D E across two octaves. Tap any
   circle to play, hold to sustain, drag across circles for a glissando, multiple fingers for chords.
   No wrong notes (C-major pentatonic, all consonant). Each circle has a bold saturated color. Soft
-  C-major ambient pad from first touch — silence never feels broken. No text, no score, no fail states.
-  Circles sized `20vmin`: ≥78px on a 390px phone, ≥153px on a 768px iPad — well above KIDS.md's
-  64px minimum. Pointer events handle both mouse and multi-touch with glissando baked in.
+  C-major ambient pad. No fail states.
+  **Polished Cycle 124**: Added start screen (title + description + "Let's play! 🎵" button) consistent with all Cycle 96+ kids prototypes. Bumped hint text from 18% → 55% opacity. Added `max(12px, 2vmin)` font-size floor. Audio context created on start button (correct user-gesture timing). Piano play screen unchanged — same circle sizes, glissando, colors.
+  Circles sized `20vmin`: ≥78px on 390px phone, ≥153px on 768px iPad.
   **For**: kids 4+ · handed to a toddler immediately.
-  Zero deps · Zero API · 1.58 kB.
+  Zero deps · Zero API · Zero permissions.
   Design notes: `src/app/dream/82-kids-color-piano/README.md`
 
 ---

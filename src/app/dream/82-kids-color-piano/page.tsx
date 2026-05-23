@@ -2,19 +2,17 @@
 
 import { useRef, useState } from "react";
 
-// C-major pentatonic across two octaves: C D E G A C D E
 const NOTES = [
-  { freq: 261.63, color: "#E63946" }, // C4 – red
-  { freq: 293.66, color: "#F4A261" }, // D4 – orange
-  { freq: 329.63, color: "#E9C46A" }, // E4 – yellow
-  { freq: 392.00, color: "#2ABFA8" }, // G4 – teal
-  { freq: 440.00, color: "#4A90D9" }, // A4 – blue
-  { freq: 523.25, color: "#A855C8" }, // C5 – purple
-  { freq: 587.33, color: "#F07830" }, // D5 – deep orange
-  { freq: 659.25, color: "#48CAE4" }, // E5 – cyan
+  { freq: 261.63, color: "#E63946" }, // C4
+  { freq: 293.66, color: "#F4A261" }, // D4
+  { freq: 329.63, color: "#E9C46A" }, // E4
+  { freq: 392.00, color: "#2ABFA8" }, // G4
+  { freq: 440.00, color: "#4A90D9" }, // A4
+  { freq: 523.25, color: "#A855C8" }, // C5
+  { freq: 587.33, color: "#F07830" }, // D5
+  { freq: 659.25, color: "#48CAE4" }, // E5
 ] as const;
 
-// C3 E3 G3 – very soft ambient pad
 const PAD_FREQS = [130.81, 164.81, 196.0] as const;
 
 type NoteHandle = { oscs: OscillatorNode[]; gainNode: GainNode };
@@ -25,6 +23,7 @@ export default function KidsColorPiano() {
   const pointerRef = useRef<Map<number, number>>(new Map());
   const pressedRef = useRef<Set<number>>(new Set());
   const [pressed, setPressed] = useState<ReadonlySet<number>>(new Set());
+  const [started, setStarted] = useState(false);
 
   function bootAudio() {
     if (!actxRef.current) {
@@ -58,6 +57,11 @@ export default function KidsColorPiano() {
     return actxRef.current;
   }
 
+  function handleStart() {
+    bootAudio();
+    setStarted(true);
+  }
+
   function playNoteOn(idx: number) {
     if (pressedRef.current.has(idx) || !actxRef.current) return;
     const actx = actxRef.current;
@@ -68,14 +72,12 @@ export default function KidsColorPiano() {
     gainNode.gain.linearRampToValueAtTime(0.52, actx.currentTime + 0.012);
     gainNode.connect(actx.destination);
 
-    // Triangle wave – warm fundamental
     const o1 = actx.createOscillator();
     o1.type = "triangle";
     o1.frequency.value = freq;
     o1.connect(gainNode);
     o1.start();
 
-    // Sine 2nd harmonic – adds brightness without harshness
     const g2 = actx.createGain();
     g2.gain.value = 0.18;
     const o2 = actx.createOscillator();
@@ -116,7 +118,6 @@ export default function KidsColorPiano() {
   }
 
   function handlePointerDown(e: React.PointerEvent) {
-    bootAudio();
     const idx = noteAtPoint(e.clientX, e.clientY);
     if (idx === null) return;
     pointerRef.current.set(e.pointerId, idx);
@@ -143,6 +144,30 @@ export default function KidsColorPiano() {
       playNoteOff(prev);
       pointerRef.current.delete(e.pointerId);
     }
+  }
+
+  if (!started) {
+    return (
+      <div
+        className="w-full flex flex-col items-center justify-center gap-10 px-6"
+        style={{ height: "calc(100vh - 3rem)" }}
+      >
+        <div className="text-center space-y-4">
+          <div className="text-7xl">🎹</div>
+          <h1 className="text-4xl font-bold text-white">Color Piano</h1>
+          <p className="text-lg text-white/75 max-w-xs leading-relaxed">
+            Eight colorful keys — tap, hold, or slide to play. No wrong notes.
+          </p>
+        </div>
+        <button
+          onClick={handleStart}
+          className="text-xl font-bold text-white bg-violet-600 hover:bg-violet-500 active:bg-violet-700 rounded-2xl px-12 py-5 min-h-[64px] min-w-[200px] transition-colors select-none"
+          style={{ touchAction: "manipulation" }}
+        >
+          {"Let's play! 🎵"}
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -184,8 +209,8 @@ export default function KidsColorPiano() {
         className="absolute pointer-events-none font-mono tracking-widest text-center"
         style={{
           bottom: "2.5vmin",
-          fontSize: "2vmin",
-          color: "rgba(255,255,255,0.18)",
+          fontSize: "max(12px, 2vmin)",
+          color: "rgba(255,255,255,0.55)",
         }}
       >
         tap · hold · slide

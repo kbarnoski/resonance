@@ -1,5 +1,35 @@
 # Dream Agent — cycle state
 
+## Cycle 124 — /dream/82-kids-color-piano polish
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 124 % 2 = 0 → **kids cycle**.
+4. **What to do**: KIDS.md seeded ideas queue is fully empty (all 14 seeded prototypes have been built). Per AGENT.md priority 3, when the kids queue is thin, the valid options are: (a) polish an existing prototype, (b) research sweep. `82-kids-color-piano` polish has been explicitly queued in STATE.md for Cycles 109, 111, 113, 115, 119, 121, 123 — seven consecutive deferrals. Karel loved this prototype (votes = 1). Doing the polish now.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Polishing `82` (loved) directly responds to Karel's signal.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` is explicitly loved. The polish makes the loved prototype more presentable — consistent with the "do more in this direction" love-bias.
+
+**What I built**:
+- `src/app/dream/82-kids-color-piano/page.tsx` — polished the first (and most-loved) kids prototype.
+  - **Added start screen**: Title "Color Piano" (text-4xl), emoji 🎹, description (text-lg text-white/75), "Let's play! 🎵" button (text-xl, min-h-[64px], min-w-[200px], violet-600, rounded-2xl). Matches the start-screen pattern established in Cycle 96+ prototypes. Audio context created on button click (user gesture) rather than first touch on the piano.
+  - **Bumped hint text opacity**: `rgba(255,255,255,0.18)` → `rgba(255,255,255,0.55)`. The previous 18% was sub-10% of AGENT.md's minimum 55% for tertiary text. The hint now reads at a "barely there" level that parents can notice without distracting a playing child.
+  - **Font size floor**: `fontSize: "2vmin"` → `fontSize: "max(12px, 2vmin)"` so the hint never goes below 12px on very small screens.
+  - **Piano play screen unchanged**: same 20vmin circle sizes (≥78px on 390px phone ✓), same 2.5vmin gap, same color palette, same glissando interaction, same audio synthesis. The core experience is identical — only the entry and hint legibility changed.
+- Build: clean (`npm run build`, 169/169 pages, 0 errors).
+
+**What surprised me**: the start screen makes the prototype dramatically more discoverable. Without it, the piano appeared instantly — no moment to orient. With the start screen, there's a natural "hand this to your child" moment. The purple "Let's play!" button is a clear primary action; Karel (or parent) taps, then passes the device. Every other kids prototype since Cycle 96 has had this affordance; `82` was the one holdout. Also: bumping the hint text from 18% to 55% turns it from literally invisible (I had to highlight the area to see text was there) to faint-but-readable. The 18% value was probably the correct "ambient design" intent at Cycle 92, but the typography rules (set 2026-05-21) supersede that.
+
+**Queued next**:
+1. **Cycle 125 (build, 125%2=1)** — adult build. `chord-canvas` (chroma vector → chord name + color timeline; first music-theory prototype, zero deps) is the standing top pick.
+2. **Cycle 126 (kids, 126%2=0)** — research sweep for new kids ideas (seeded queue is empty; need fresh seeds).
+
+---
+
 ## Cycle 123 — /dream/105-pluck-field
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)
