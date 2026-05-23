@@ -10,14 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 132 — kids build)
+## ⭐ Newest (Cycle 133 — adult build)
+
+- **[/dream/112-bio-echo](/dream/112-bio-echo)** — Bio Echo. `demoable`
+  Play piano into the mic — watch a forest grow, layer by layer, in real time. Five frequency strata map to five ecological layers: **sub-bass grows root tendrils** (deep violet lines crawling upward with Brownian drift); **bass builds the trunk** (amber pillar that only grows, never shrinks — every bass-heavy passage is permanently recorded in its height); **mid blooms the canopy** (emerald leaf-ellipses accumulating at 34–61% canvas height); **onsets send birds** (each attack fires a white bezier wing-arc into the sky — play 60 attacks and the sky fills with birds); **treble fills the sky** (tiny white star-dots at top 14%).
+  The canvas never clears — by the end of a piece, a complete forest ecosystem has grown that encodes the entire musical session. Download as PNG.
+  **"Every frequency band is a layer of the forest — sub-bass digs the roots, treble lights the sky."** Inspired by Refik Anadol's DATALAND (opens June 20, 2026, LA). Trunk gradient from accumulation (no gradient code — the canvas's own physics creates it).
+  Zero deps · Zero API · mic optional (demo mode) · 3.6 kB.
+
+Next: **Cycle 134 → `kids-conductor-wand`** or `kids-weather-music`. **Cycle 135 → `live-harmonize`**.
+
+---
+
+## Previous (Cycle 132 — kids build)
 
 - **[/dream/111-kids-shape-loop](/dream/111-kids-shape-loop)** — Shape Loop (kids). `demoable`
   Draw any closed shape with your finger — when it closes, a glowing traversal dot orbits the perimeter and triggers a pentatonic note at each of the evenly-spaced trigger points (small colored dots on the shape). **Y position = pitch**: draw a tall shape and hear high notes; draw a wide flat shape and hear mid-register loops; draw a circle for a near-constant-pitch drone. Draw multiple shapes — each loops independently, creating polyphonic layers. Tap any existing shape to erase it. Auto-close: a dashed ring near the start point shows where to return to — when your finger enters it, the shape closes and starts playing immediately.
   **"Your drawing loops as a melody forever."** First kids prototype about additive compositional layering — the child doesn't react to something, they construct a composition by drawing.
   Zero permissions · Zero API · Zero deps · 2.84 kB.
-
-Next: **Cycle 133 → `bio-echo`** (Anadol DATALAND-inspired ecological canvas). **Cycle 134 → `kids-conductor-wand`** or `kids-weather-music`.
 
 ---
 

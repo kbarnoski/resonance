@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 133 — /dream/112-bio-echo
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 133 % 2 = 1 → **adult cycle**.
+4. **Build new** — MORNING.md and INDEX.md both signal `bio-echo` as next adult build. IDEAS.md has a clear spec. Queue is healthy. Building `/dream/112-bio-echo`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — both loved prototypes are immediate, tactile, gesture→sound mappings. `bio-echo` follows the same direct-mapping philosophy: each frequency band is mapped to a distinct visual stratum, making the mapping legible without explanation. Influenced by Karel's love of immediate sensory feedback prototypes.
+
+**Inspiration**: Refik Anadol's DATALAND / Large Nature Model (opens June 20, 2026, LA) — treating ecological data as visual pigment. Here: audio energy IS the pigment that grows a forest, layer by layer.
+
+**What I built**:
+- `src/app/dream/112-bio-echo/page.tsx` — five-layer ecological canvas driven by mic input
+  - **Five frequency strata**:
+    - Sub-bass (bands[0]) → **root tendrils**: violet lines growing upward from ground level (y=88%). Up to 24 roots, each a Brownian walk. New segments drawn incrementally — canvas retains everything, so roots accumulate into a permanent record.
+    - Bass + low-mid (bands[1]+bands[2]) → **tree trunk**: amber pillar centered at W/2, 10px wide, grows only upward (never shrinks). Low alpha (0.18) per frame creates a natural gradient: base region is drawn hundreds of times = fully saturated; freshly-added top segment = still pale. Gradient emerges from accumulation.
+    - Mid (bands[3]) → **canopy**: emerald ellipses (leaf-shaped) scattered in the canopy zone (y=34–61%). Drawn each frame when mid>0.10. Accumulate over session into a forest canopy.
+    - Onset events → **birds**: white bezier wing-arcs drawn permanently at random positions in y=6–24%. Each onset = one bird. A piano piece with 60 attacks ≈ 60 birds in the sky.
+    - High (bands[5]) → **sky shimmer**: tiny white dots at top 14% of canvas. Density ∝ treble energy.
+  - **Demo mode**: 6 incommensurable LFOs (0.23, 0.37, 0.61, 0.89, 1.13, 1.73 Hz) drive all 6 bands. Demo onset fires ~every 1.5s when bass LFO peaks. Forest grows autonomously.
+  - **Download PNG**: `canvas.toDataURL("image/png")` + invisible anchor click. The forest painting at any moment is a unique artifact of that session.
+  - **Start screen**: title, description, band-strata legend, Start mic + Demo mode buttons. Running HUD: mode indicator + stop button + Save PNG.
+  - **Canvas accumulation**: canvas never cleared during a session. `initRef` guards re-initialization across stop/start cycles.
+
+**Build**: `✓ /dream/112-bio-echo  3.6 kB  110 kB` — clean, zero errors.
+
+**What surprised me**: The trunk gradient-from-accumulation effect is unexpected and beautiful. Because I draw the trunk each frame at low alpha (0.18), the base (drawn from the very first moment bass is present) builds up to fully saturated amber within 5-6 seconds. The top (most recently grown) stays paler. The result looks like a real tree — darker, denser at the base, lighter toward the crown — even though I wrote no gradient code. The canvas's own accumulation physics creates the visual.
+
+The bird arcs from onsets create a natural "history of attacks" record in the sky. Play a Chopin étude with lots of rapid attacks and you get a dense bird flock; play a slow Satie piece and you get 5-6 lone birds. The sky is a tempo indicator.
+
+**What's queued next**:
+1. **Cycle 134 (kids, 134%2=0)** — `kids-conductor-wand` or `kids-weather-music` (KIDS.md queue). Both zero deps, zero permissions.
+2. **Cycle 135 (adult)** — `live-harmonize` (play a melody → system predicts harmony, `/dream/112-live-harmonize` → actually `/dream/113-live-harmonize`). Pitch detection → chord prediction → 4-voice accompaniment. Zero deps.
+
+---
+
 ## Cycle 132 — /dream/111-kids-shape-loop
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)
