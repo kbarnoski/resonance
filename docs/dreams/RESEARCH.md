@@ -1807,3 +1807,70 @@ Key findings from Cycle 117 (2026-05-22):
 - Memo Akten "The Thinking Ocean" (§175) — presence-driven WebGPU fluid → audio from velocity field. Inspires `ocean-presence`.
 - DATALAND (§176) — Refik Anadol Museum of AI Arts, June 2026, multi-species ecosystem + World Models. Inspires `ecosystem-sim`.
 - Elekktronaut TD Tutorial #65 (§177) — camSequencer hard-cut beats. Inspires `beat-cut` (particles + onset-snapped camera presets, hard cut not orbit).
+
+---
+
+## 2026-05-23 — Cycle 126 kids research sweep
+
+### 178. Bouncy — Minimal Physics Ball Plays Pentatonic Notes on Wall Collision (F-Droid, open-source)
+**Source**: https://github.com/ebraminio/bouncy · https://f-droid.org/packages/io.github.ebraminio.bouncy/
+
+A tiny open-source Android app: fling a ball, it bounces off the four walls, each collision triggers a note from the diatonic scale. Simple physics (elastic wall reflection, slight energy damping). No game logic, no goals — just perpetual bouncing music. Zero ads, zero tracking, ~15KB. The pentatonic version of this pattern would be appropriate for a kids prototype.
+
+**Could become a prototype**: `kids-bounce-notes` — Canvas2D + Web Audio. One or more glowing balls bounce inside the canvas (gravity + elastic walls + slight energy loss). Each wall collision plays a pentatonic note (bottom wall = lowest, top = highest, left/right = mid register — or map collision velocity to note selection). Tap anywhere to spawn another ball (max 5). Colors match pitch register. All notes from C-major pentatonic so every collision sounds good. First physics-based prototype in the kids zone — the music is completely generative and self-playing; the child just adds more balls.
+
+---
+
+### 179. Shape Your Music — Draw Polygons, Hear Them Loop (shapeyourmusic.dev, Elias Jarzombek)
+**Source**: https://shapeyourmusic.dev · https://github.com/ejarzo/Shape-Your-Music
+
+Browser-native Web Audio app: draw any polygon on a canvas, a traversal point moves along its perimeter at constant speed, triggering a note at each vertex. Note pitch is determined by vertex Y position. Multiple shapes loop simultaneously (polyphony from drawing). Rate depends on perimeter length (small shapes = faster loops, large = slower). User can change tempo, mode (major/minor/pentatonic/dorian), key. Export as audio or MIDI. Built with React + Tone.js. GitHub repo active.
+
+**Could become a prototype**: `kids-shape-loop` — simplified kids version. Draw any closed shape with a finger (lift to close). System detects direction-change points along the drawn path (corners, inflections) as note triggers, Y position = pitch (C-major pentatonic). Shape immediately starts looping. Multiple shapes stack. Tap-to-erase. No tempo or mode controls — just draw and hear. Different from `100-kids-paint-song` (linear path, plays once) and `104-kids-mirror-draw` (symmetry, bilateral path): this makes closed shapes that LOOP forever, enabling the child to build up a polyphonic composition by drawing overlapping loops.
+
+---
+
+### 180. BANDIMAL — Kalimba-Inspired "Bar Height = Pitch" Interaction (Apple Design Award 2018, Yatatoy)
+**Source**: https://apps.apple.com/us/app/bandimal/id1065440354 · Fast Company review
+
+Children's music app that received the Apple Design Award 2018. Key design principle: **bar HEIGHT = pitch, bar count = note count in loop**. Inspired by the African kalimba (thumb piano), where tine length determines pitch. No note names shown to children — just "longer bar = lower/longer note, shorter bar = higher/shorter note." Drag a bar up to raise it (higher note); down to lower it. Set up a drum loop, choose animals as instrument voices. Every note guaranteed in-key (pentatonic scale). Genuinely novel interaction model that teaches pitch through physical analogy (longer = lower, like a guitar string or piano key's length correlates to pitch).
+
+**Could become a prototype**: `kids-kalimba` — 8 vertical glowing bars in a horizontal row. Tap any bar to pluck it (Karplus-Strong-style synthesis, same as `105-pluck-field` but simplified). Bar height = pitch (tallest bar = lowest note C2, shortest = highest note A4 — same visual-physical analogy as real kalimba tines). Drag a bar vertically to retune it while it plays. No note names shown. A gentle ambient pad in C-major plays from first tap. Bars light up and ripple on tap. Multi-touch: multiple bars play simultaneously. "Why it's fresh": directly extends the `82-kids-color-piano` paradigm (tap → note) but adds a *physical tuning model* the child can explore. The analogy is teachable without words.
+
+---
+
+### 181. CHI 2025 Touchscreen + Children Research — Self-Control Matters
+**Source**: https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1613625/full (Frontiers, 2025)
+
+Systematic review of 47 studies (2015–2025) on touchscreen digital exposure and children's social development. Key finding for interactive music design: **when children operate the device themselves, they learn task mechanics through repetition; when caregivers operate, children focus on vocabulary/comprehension**. Implication: children's apps must give CHILDREN full control from the first tap — not "demo mode" followed by hand-off. A secondary finding: **collaborative multi-touch** (parent + child on same device) increases shared attention and joint referencing behavior compared to solo use. Both findings validate the design of `93-kids-share-screen` (two-finger joint play) and our "start screen → hand device to child" pattern.
+
+**Relevance to sandbox**: No immediate new prototype, but validates: (1) our kids-first control model is correct; (2) `kids-share-screen` is the right direction for parent+child collaborative play — worth a polish cycle or a sequel. A `kids-share-screen-v2` with a more musical "conversation" (call-and-response between the two voices, not just simultaneous) would build directly on the joint-referencing finding.
+
+---
+
+### 182. Sound2Hap — Audio-to-Vibrotactile Haptic Generation (arxiv 2601.12245, Jan 2026)
+**Source**: https://arxiv.org/abs/2601.12245 · Arizona State University
+
+CNN-based model trained on 34 participants' vibration preference ratings across 1,000 diverse environmental sounds. Generates perceptually aligned vibrotactile haptic feedback from any audio signal. Beats signal-processing baselines on audio-vibration match. Published January 2026, dataset on HuggingFace.
+
+**Relevance to sandbox**: Browser haptics are currently limited to the Web Vibration API, which supports only binary on/off patterns (no frequency or amplitude shaping). Not directly buildable in the dream zone today. **Monitor**: iOS 26's new Haptic Engine API (announced WWDC 2026, not yet web-exposed) may change this. When/if the browser Vibration API gains continuous waveform control, `kids-haptic-rhythm` becomes viable: tap a rhythm, feel the groove through the screen. Tag [emerging, not yet buildable].
+
+---
+
+### 183. Conducting Gesture → Music (arxiv 2604.27957, Apr 2026) + Soundbrenner Spark (kids wearable)
+**Source**: https://arxiv.org/abs/2604.27957 · https://www.soundbrenner.com/blogs/articles/the-science-behind-why-kids-learn-music-better-with-haptic-feedback-soundbrenner-spark-preview
+
+Two related findings: (1) Conducting gesture recognition paper (Apr 2026): real-time skeleton tracking from camera → live music tempo/dynamics control. MediaPipe HandLandmarker + velocity analysis extracts "conducting beat pattern" with 87ms latency. (2) Soundbrenner Spark: kid-sized wearable (ages 6-12) that converts rhythm to vibration for music practice. Demonstrates market demand for **embodied rhythm tools for children**.
+
+**Could become a prototype**: `kids-conductor-wand` — a simplified, gesture-driven ensemble conductor that requires NO camera (avoids MediaPipe CDN dep and privacy considerations). Pure touch: drag a glowing wand across the screen. Y-position = register (high = bright treble voices, low = deep bass). Horizontal sweep speed = tempo (fast swipe = faster, slow drag = slower). Swipe in a leftward arc = strings; rightward arc = winds; quick center tap = percussion hit. 4 preset orchestras (Kids, Space, Forest, Ocean). The wand leaves a bright color trail as it moves. Zero deps, zero API, zero permissions — just a finger drawing musical "gestures." First prototype where the finger trajectory IS the conducting score.
+
+---
+
+Key findings from Cycle 126 (2026-05-23) — kids research sweep:
+- Bouncy (§178, ebraminio) — physics ball + pentatonic wall notes, open-source. First physics-music prototype missing from kids zone. Inspires `kids-bounce-notes`.
+- Shape Your Music (§179, shapeyourmusic.dev) — draw polygon → looping melody, polyphonic. Inspires `kids-shape-loop` (simplified: closed drawn path → looping notes).
+- BANDIMAL (§180, Apple Design Award 2018) — bar height = pitch, kalimba design, zero note literacy needed. Inspires `kids-kalimba` — the most Resonance-aligned new kids prototype.
+- CHI 2025 touchscreen review (§181) — children learn best when self-controlling; collaborative multi-touch increases joint attention. Validates kids-first design; suggests `kids-share-screen-v2` call-and-response sequel.
+- Sound2Hap (§182, arxiv 2601.12245, Jan 2026) — audio→haptic CNN. Browser Vibration API too coarse for this today; tag [emerging]. Monitor iOS 26 Haptic Engine API.
+- Conducting gesture paper (§183, arxiv 2604.27957, Apr 2026) — skeleton tracking → tempo/dynamics, 87ms. Inspires `kids-conductor-wand` (touch-only, no MediaPipe, pure finger gesture).
+- **Strongest next-cycle kids build**: `kids-kalimba` — one-cycle, zero deps, zero API, BANDIMAL-inspired, directly extends loved `82-kids-color-piano` paradigm.

@@ -1,5 +1,48 @@
 # Dream Agent — cycle state
 
+## Cycle 126 — kids research sweep
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 126 % 2 = 0 → **kids cycle**.
+4. **KIDS.md queue status**: seeded idea list fully exhausted (all 14 original seeded prototypes built; confirmed in Cycle 125 STATE.md). Per AGENT.md: "If KIDS.md's queue is thin, do a kids-focused research sweep instead and seed new ideas there." → **kids research sweep this cycle**.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged (6th consecutive cycle). Love signal points toward: immediate tap → vivid response, embodied physical gesture = musical output, zero permissions, zero reading. These qualities guided which new seeds to prioritize.
+
+**Loved slugs that influenced this choice**: `82` (tap → bright circle + note, zero reading) and `83` (tilt = music, embodied). `kids-kalimba` (top new seed) directly inherits both: tap → immediate sound + physical bar height teaches pitch without words.
+
+**What I researched**:
+- **Bouncy (ebraminio, open-source F-Droid)** — physics ball plays diatonic notes on wall collision. Simple Canvas + Web Audio, zero deps. First physics-music paradigm absent from our kids zone. → `kids-bounce-notes`.
+- **Shape Your Music (shapeyourmusic.dev, Elias Jarzombek)** — draw polygon shapes, traversal point plays note at each vertex (Y=pitch), polyphonic loops. Browser-native WebAudio. → `kids-shape-loop` (kids-simplified: freehand closed path).
+- **BANDIMAL design principles (Apple Design Award 2018, Yatatoy)** — kalimba-inspired: bar HEIGHT = pitch. No note names. "Longer bar = lower note" is the universal physical analogy for stringed/bar instruments. Best teachable interaction not yet in our kids zone. → `kids-kalimba`.
+- **CHI 2025 touchscreen + children review (Frontiers 2025)** — children learn task mechanics best when they control the device. Collaborative multi-touch increases joint attention. Validates kids-first design + `93-kids-share-screen` direction.
+- **Sound2Hap (arxiv 2601.12245, Jan 2026)** — audio → vibrotactile haptic generation, CNN-based. Not browser-buildable today (Web Vibration API too coarse). Tagged [emerging]. Monitor iOS 26 Haptic Engine API.
+- **Conducting gesture research (arxiv 2604.27957, Apr 2026)** — skeleton tracking → live tempo/dynamics, 87ms latency. Adapted to touch-only for `kids-conductor-wand` (no MediaPipe dep needed).
+- **Soundbrenner Spark** — kids wearable (6-12yo), rhythm → haptic. Confirms embodied rhythm market for children.
+
+**What I produced**:
+- 6 new kids prototype seeds added to KIDS.md "New ideas" section
+- 6 new RESEARCH.md entries (§§178–183) with full source dates and verification
+- MORNING.md rewritten with fresh digest
+- INDEX.md updated
+
+**New seeds in priority order**:
+1. **`kids-kalimba`** — 8 height-varied bars, tap to pluck (Karplus-Strong), drag to retune. Bar height = pitch, zero reading. One-cycle build, zero deps. **Recommended Cycle 128.**
+2. **`kids-bounce-notes`** — physics balls bounce, play pentatonic on wall collision, tap to spawn more. Self-playing, autonomous music. One-cycle build, zero deps.
+3. **`kids-shape-loop`** — draw closed shape → loops as melody (direction-change vertices = notes, Y=pitch). Multiple shapes = polyphony. One-cycle build, zero deps.
+4. **`kids-conductor-wand`** — drag wand to conduct: Y=register, speed=tempo, arc-direction=section. Touch-only. One-cycle build, zero deps.
+5. **`kids-weather-music`** — four weather quadrants, hold for music+visual blend. Full-screen instrument. One-cycle build, zero deps.
+6. **`kids-bloom-garden`** — long-press to plant sustained-note flower (X=pitch). Self-seeding, contemplative. One-cycle build, zero deps.
+
+**What's queued next**:
+1. **Cycle 127 (adult build, 127%2=1)** — `chord-canvas` (`28-chord-canvas`): chroma vector → chord name + color timeline. Has been queued since Cycle 123 STATE as "standing top pick." First music-theory prototype. Zero deps, one cycle.
+2. **Cycle 128 (kids build, 128%2=0)** — `kids-kalimba`. BANDIMAL-inspired, one-cycle, zero deps. Directly extends loved `82-kids-color-piano` with a physical pitch-tuning model.
+
+---
+
 ## Cycle 125 — /dream/106-beat-cut
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

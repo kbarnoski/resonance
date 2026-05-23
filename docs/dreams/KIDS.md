@@ -101,9 +101,69 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 ---
 
+## New ideas — Cycle 126 research sweep
+
+All six are zero deps · zero API · zero permissions unless noted.
+
+### `kids-kalimba` ⭐ recommended next build
+Eight vertical glowing bars in a row, heights varied (tallest = lowest pitch C2, shortest = highest A4). Tap any bar to pluck it — Karplus-Strong synthesis (same pre-computed ring-buffer approach as `105-pluck-field`, simplified for 8 pitches). No note names shown; the physical analogy teaches itself (longer bar = lower note, like a real kalimba tine or guitar string). Drag a bar vertically while it rings to glide the pitch in real time. Multi-touch: tap all 8 simultaneously for a full chord. Soft ambient C-major pad from first tap. Bars glow and ripple on pluck; glow decays with the ring buffer.
+
+Why recommended: directly extends the loved `82-kids-color-piano` paradigm (tap → immediate sound) but adds a *tuning interaction* the child can discover without words. The "longer = lower" rule is physically grounded — it's how every real string/bar/tine instrument works. Inspired by BANDIMAL's Apple Design Award 2018 (bar height = note, zero reading). One-cycle build.
+
+### `kids-bounce-notes`
+A glowing ball bounces inside the canvas with realistic physics (gravity, elastic wall reflection, slight energy loss). Each collision with the bottom wall plays the lowest pentatonic note; top wall plays the highest; left/right walls play mid notes. Ball color matches its current energy level (bright on impact, dims between). Tap anywhere to spawn another ball (max 5 coexist). More balls = richer self-playing music. Zero permissions, no tap targets required — children just tap and watch. Infinite play, no fail state.
+
+The music is completely autonomous — the child doesn't have to "play correctly." They spawn balls and the physics makes music. Very different from all existing kids prototypes (which require active gesture per note). Inspired by Bouncy (ebraminio, open-source) and the "Sound Drop" paradigm.
+
+### `kids-shape-loop`
+Draw a closed shape with your finger (the loop closes automatically when the path returns within 30px of its start). A traversal point orbits the perimeter, triggering a note at each significant direction-change vertex (Y position = pitch, C-major pentatonic). The shape loops forever. Draw multiple shapes — each plays independently as a polyphonic layer. Tap an existing shape to erase it. No tempo control, no mode picker — just draw and hear.
+
+Inspired by Shape Your Music (Elias Jarzombek, shapeyourmusic.dev) but simplified for a 4yo: no polygon vertex placement, no export, no settings — just freehand draw. A child who draws a rough triangle hears 3 notes looping; a jagged scribble hears 8–12 note loops. Different from `100-kids-paint-song` (linear path, one-shot playback) and `104-kids-mirror-draw` (bilateral symmetry): this creates LOOPING layers, enabling additive composition through drawing.
+
+### `kids-conductor-wand`
+A glowing conductor's wand follows the child's dragging finger. Y-position of the wand = register (high = bright, light treble voices; low = deep bass voices). Horizontal sweep speed = tempo (fast left-right arc = faster music, slow drag = slower). Quick center tap = percussion hit. Leftward arc = strings enter; rightward arc = winds enter; downward swipe = all instruments swell. Four preset "orchestras" (Kids Playground, Space, Forest, Ocean) selectable before conducting.
+
+The wand leaves a rainbow color trail. Music is never silent — there's always a drone holding from the last gesture. Zero notes, zero reading, zero fail state. The finger IS the conductor's baton. Inspired by conducting gesture research (arxiv 2604.27957, Apr 2026) adapted to touch-only (no MediaPipe/camera needed).
+
+### `kids-weather-music`
+The screen is divided into four weather quadrants: sun (top-right), cloud (top-left), rain (bottom-left), wind (bottom-right). Hold anywhere on the screen to "be in" that weather zone and hear+see its music: sun = bright C-major arpeggio + radial golden rays; cloud = soft minor pad + grey bloom; rain = pentatonic drops + falling blue specks; wind = glissando runs + swirling particles. Drag slowly across zones to morph the music and visual blends continuously.
+
+No text labels needed — the visuals communicate instantly. Multi-touch: two fingers in different zones blend both musics. The "drag from sun to rain" gesture produces a natural musical diminuendo that a 4yo will discover by accident. Completely different from existing kids prototypes (no notes to tap, no characters to find — just the whole screen IS the instrument).
+
+### `kids-bloom-garden`
+A dark canvas. Long-press anywhere to plant a glowing musical flower at that point. The flower grows with a ~600ms animation (bud → bloom) and plays a sustained pentatonic note (X position = pitch, pentatonic C). Up to 12 flowers coexist. After 10 seconds a flower "seeds" — it disperses sparkle petals and a new smaller bud sprouts 30–60px away, inheriting its pitch ±1 step. Over time, the garden self-organizes into a harmonic cluster. Tap any flower to burst it into sparkles (satisfying pop + note sting).
+
+Very contemplative — designed for the "quiet play" moment just before sleep. No goal, no fail state. The child plants sounds and watches them breathe and multiply. The self-seeding mechanic means the garden is never static — it slowly drifts across the screen over many minutes.
+
+---
+
 ## Research log for Kids
 
 Keep a running log here of relevant findings the agent uncovers during kid-cycles (mirrors `RESEARCH.md` structure).
+
+### Cycle 126 — kids research sweep
+
+**Did**: Full research sweep to refill the empty kids seeded queue. 5 web searches, 2 web fetches covering: Bouncy (physics ball music), Shape Your Music (polygon loops), BANDIMAL design principles, CHI 2025 touchscreen review, Sound2Hap haptic paper, conducting gesture research, Soundbrenner Spark.
+
+**Added 6 new prototype seeds** (see "New ideas" section above):
+- `kids-kalimba` — BANDIMAL-inspired bar-height-to-pitch. **Recommended next kids build.**
+- `kids-bounce-notes` — physics ball, self-playing pentatonic. First autonomous-music kids prototype.
+- `kids-shape-loop` — draw closed shape → loops as melody. First looping/layering kids prototype.
+- `kids-conductor-wand` — drag-to-conduct, Y=register, speed=tempo. First gesture-as-conductor prototype.
+- `kids-weather-music` — four weather zones, hold to blend. Full-screen instrument, no tap targets.
+- `kids-bloom-garden` — long-press to plant sustained notes, self-seeding garden. Most contemplative.
+
+**Key learnings from research**:
+- **BANDIMAL's bar-height-to-pitch rule** is the single most teachable music interaction for zero-literacy children. "Longer = lower" maps to every real string/bar/tine instrument. Our kids zone has tap-circles, tilt-baskets, drawn paths — but NOT this physical tuning model. `kids-kalimba` fills the gap.
+- **Physics-driven music** (Bouncy, Sound Drop) is a completely untapped paradigm in our kids zone. The child doesn't "play" — they set physics in motion and the physics makes music. High dwell time, very calm.
+- **CHI 2025**: collaborative multi-touch (§181) increases joint referencing. `93-kids-share-screen` is validated. A `kids-share-screen-v2` call-and-response sequel (each finger "talks to" the other) is worth seeding.
+- **Sound2Hap haptics** (§182) — not buildable in browser today (Web Vibration API too coarse). Monitor iOS 26 Haptic Engine API. Tag [emerging].
+- **Loved prototypes bias**: `82-kids-color-piano` (immediate tap → vivid circle + note) and `83-kids-tilt-rain` (physical gesture = music). `kids-kalimba` extends both: immediate tap + physical tuning model.
+
+**Next kid-cycle (Cycle 128)**:
+Build `kids-kalimba` — one-cycle build, zero deps, zero API, highest learning value.
+
+---
 
 ### Cycle 120 — echo-song build
 

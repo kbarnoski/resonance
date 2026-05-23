@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 125 — build)
+## ⭐ Newest (Cycle 126 — kids research sweep)
+
+No new prototype this cycle — the kids seeded queue was exhausted. Researched 2026 kids music
+interaction (BANDIMAL, Shape Your Music, Bouncy physics ball, CHI 2025 touchscreen review,
+Sound2Hap haptics, conducting gesture). Seeded **6 new kids prototype ideas** in `docs/dreams/KIDS.md`.
+Queue is now full. Next kids build: **Cycle 128 → `kids-kalimba`** (BANDIMAL-inspired bar-height-to-pitch).
+
+---
+
+## Previous (Cycle 125 — build)
 
 - **[/dream/106-beat-cut](/dream/106-beat-cut)** — Beat Cut. `demoable`
   6,000 particles orbit in 6 journey-themed species (Cosmic Homecoming = violet, Earth Grounding = emerald, Ocean Breath = cyan, Snowflake = ice-blue, Inner Sanctuary = amber, Ghost = purple). Six camera presets — one per journey — hard-cut on every audio onset. No lerp, no tween: a hard snap, like a live edit suite firing on the beat. Spring-attractor physics (O(N)) keeps the cloud alive between cuts. Bloom post-processing. Demo mode: synthetic onset timer 700–1500ms. Mic mode: spectral flux fires camera cuts on attack transients.
