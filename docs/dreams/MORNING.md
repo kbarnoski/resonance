@@ -1,15 +1,18 @@
-# Morning digest — last updated 2026-05-23 UTC (Cycle 141)
+# Morning digest — last updated 2026-05-23 UTC (Cycle 142)
 
 ## New since yesterday
 
+- **[/dream/120-kids-rain-drum](/dream/120-kids-rain-drum)** — Rain Drum (kids) · *Cycle 142* · `demoable`
+  Four weather clouds hang at the top of the screen. Each drops notes from the sky — its own pitch (C3, E3, G3, A3), its own physics, its own sound character. **Rain**: fast blue teardrops, quick plunk. **Snow**: slow crystalline flakes, soft sustained sine tone. **Leaves**: tumbling coloured ellipses, warm middle-decay tone. **Tap any cloud to cycle its weather.** The four pitches are always consonant (C-major pentatonic), so any combination of weathers sounds musical.
+  Zero permissions · Zero API · Zero deps · 2.78 kB.
+  **Why open this**: Hand this to a 4yo and say nothing. They'll tap the clouds and watch the rain change. Rain + snow + leaves + rain in parallel sounds like a gentle ambient ensemble that the child is composing by choosing weathers.
+
 - **[/dream/119-poem-fluid](/dream/119-poem-fluid)** — Poem Fluid · *Cycle 141* · `demoable`
-  WebGL Navier-Stokes fluid + Markov chain text overlay. **Still water reveals the poem. Stir to fragment it.**
-  The turbulence state of the water controls which Ghost-narrative text surfaces: calm → full sentences ("The water remembers every sound that has passed through this place."); stir → phrases → single words. Inspired by Memo Akten's *The Thinking Ocean* (Whitney Artport 2026) — text lives in the physical state of the fluid, not on top of it.
+  WebGL Navier-Stokes fluid + Markov chain text overlay. Still water reveals the poem. Stir to fragment it.
   Zero API · Zero deps · 6.5 kB.
-  **Why open this**: Click "Still water." Wait 10 seconds. Read the sentence that surfaces. Then drag your finger slowly across the canvas. Watch the sentence fragment. Let go and wait again.
 
 - **[/dream/118-kids-mirror-melody](/dream/118-kids-mirror-melody)** — Mirror Melody (kids) · *Cycle 140* · `demoable`
-  Draw on either half of a split canvas — the mirror path appears instantly on the opposite side, panned to the other ear. Put headphones on and draw a slow diagonal arc: left-hand / right-hand stereo effect is immediately striking.
+  Draw on either half of a split canvas — mirror path appears on the opposite side, panned to the other ear.
   Zero permissions · Zero API · Zero deps · 2.26 kB.
 
 ## In progress / partial
@@ -19,9 +22,8 @@ Nothing in-progress.
 ## Research findings worth a look
 
 From Cycle 137 sweep (still fresh):
-- **Memo Akten — The Thinking Ocean** (Whitney Artport 2026) — realized as `119-poem-fluid` above. The agent's first prototype where the physical state of the simulation IS the narrative state.
 - **Ryoji Ikeda data-cosm [n°1]** (180 Studios London) — realized as `117-data-cosm`.
-- **MusicRFM** (ICLR 2026) — RFM probes steer MusicGen activations for real-time chord/scale control. Inspires `arc-steer` (6-phase journey arc with ACE-Step chain). ~$0.036/run. Needs spend approval.
+- **MusicRFM** (ICLR 2026) — RFM probes steer MusicGen activations for real-time chord/scale control. Inspires `arc-steer`. Needs spend approval.
 
 ## Open questions for Karel
 

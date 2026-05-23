@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 140 | `/dream/118-kids-mirror-melody` | `demoable` | **NEW** Draw on either half → instant mirror on opposite half; Y=pitch; rose left, cyan right; both voices panned opposite; 7s fade trails; multi-touch; ambient C–G–C pad; zero permissions. |
+| 142 | `/dream/120-kids-rain-drum` | `demoable` | **NEW** 4 clouds drop pentatonic notes (C3/E3/G3/A3); tap cloud to cycle rain/snow/leaves; different physics + timbre per weather; consonant combination always; ambient pad; zero permissions. |
+| 140 | `/dream/118-kids-mirror-melody` | `demoable` | Draw on either half → instant mirror on opposite half; Y=pitch; rose left, cyan right; both voices panned opposite; 7s fade trails; multi-touch; ambient C–G–C pad; zero permissions. |
 | 130 | `/dream/109-kids-bounce-notes` | `demoable` | Gravity+elastic physics; 4 walls play pentatonic notes (bottom=C3 deep, top=A4 bright, sides=mid); tap to spawn up to 5 balls; flash glow on impact; autonomous music — no repeated gestures needed; zero permissions. |
 | 128 | `/dream/108-kids-kalimba` | `demoable` | 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
 | 122 | `/dream/104-kids-mirror-draw` | `demoable` | Draw anywhere → mirrors instantly across center axis; Y=pitch (top=high); lift to play melody; paths fade 7s. Zero permissions. |
@@ -139,6 +140,22 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 142 — rain-drum build
+
+**Built**: `120-kids-rain-drum`. Key learnings:
+- **Weather as tempo control (emergent)**. The three weather types have different spawn intervals (rain=28 frames, snow=50, leaves=38). A child who switches a zone from rain to snow isn't just changing the sound — they're slowing that voice down by ~79%. Four zones at mixed weather rates create polyrhythm driven purely by physics constants. A child who discovers this is implicitly adjusting tempo per voice. This wasn't the intended interaction but it's the most interesting one that emerged.
+- **Consonance guarantee via zone pitch assignment** (not per-drop pitch). All drops in zone 0 play C3 regardless of where they land in the zone. This is the right design: the child thinks "zone 0 makes a low note," not "drop position = pitch." The spatial simplicity (zone = pitch) matches 4yo mental models. Compare to `100-kids-paint-song` where X position = pitch — that requires understanding a continuous mapping. Here it's discrete: four zones, four sounds.
+- **65ms note throttle per zone** handles high-spawn rain without audio pops. Without it, four simultaneous rain drops landing in the same frame fire four notes at once, creating a brief crackling artifact. With the throttle, the first landing fires, the rest are suppressed — but since rain drops land within a single frame window and the spawn rate means the next group arrives ~28 frames later, the suppression is imperceptible.
+- **`wxRef` (mutable ref) vs state** for weather types: updating a ref in `handlePointerDown` and reading it in the `tick` closure each frame works cleanly without any React re-render. The canvas redraws every frame so the new weather appears on the very next frame after the tap — under 17ms latency. Using `setState` would add a re-render cycle lag and require a sync `useEffect`. Refs are the right primitive for this pattern.
+- **Snow snowflake visual** (6-arm star via line strokes + filled circle) is worth the 3× draw cost compared to a simple circle. Without the arms, snow reads as "tiny white circles falling" — could be rain drops. With the arms, it's immediately "snowflake" even at r=5–9px. Visual legibility of the weather type is essential for the child to understand what they changed.
+- **Amplitude 0.013 for ambient pad** is at the edge of audibility. On a laptop speaker at medium volume it's imperceptible; on iPhone at low volume it's a very faint C-major hum. This is intentional — the pad is a "the app is alive" signal, not a compositional element.
+
+**Next kid-cycle ideas (Cycle 144)**:
+- **Polish `116-kids-bloom-garden`**: pre-bloom "press ring" indicator (expanding dashed circle at press point during 480ms hold). Specifically queued since Cycle 140. One-file edit, ~20 lines. Still not done.
+- **New seed**: `kids-rain-drum` v2 — add a subtle pitch "landing note" indicator per zone (a horizontal glow stripe at the bottom of each zone that pulses when a drop lands, color = zone color). Educational layer: makes it clear that each column = one sound. Could also add zone-pitch labels (C · E · G · A) at the bottom in small monospace, text-white/40.
+
+---
 
 ### Cycle 140 — mirror-melody build
 

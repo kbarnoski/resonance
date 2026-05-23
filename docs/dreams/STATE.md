@@ -1,5 +1,45 @@
 # Dream Agent — cycle state
 
+## Cycle 142 — /dream/120-kids-rain-drum
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 142 % 2 = 0 → **kids cycle**. No blockers.
+4. **Build new**: KIDS.md Cycle 140 notes seeded `kids-rain-drum` — four weather clouds drop pentatonic notes; tap cloud to cycle rain/snow/leaves. Zero deps, zero permissions, one-cycle build. Chosen over the alternative (polish `116-kids-bloom-garden` with pre-bloom ring indicator) because new prototypes add more to Karel's morning review than small polish diffs.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate gesture → vivid, physics-driven musical feedback. `kids-rain-drum` is a direct extension of the `83-kids-tilt-rain` lineage (gravity + pentatonic drops) without requiring DeviceOrientation permissions — works on all devices including desktop browsers. Where tilt-rain requires the child to *steer*, rain-drum is fully autonomous (drops fall, music plays) and the child's agency is expressed through *choosing* which weather each cloud makes. A different level of intentionality: not reactive but compositional.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` (pentatonic, no wrong notes, immediate) and `83-kids-tilt-rain` (gravity physics, pentatonic drops, sensorimotor). `rain-drum` inherits both: same C-major pentatonic mapping, same physics-drives-music paradigm, but adds four independent voices and a weather-selection layer.
+
+**What I built**:
+- `src/app/dream/120-kids-rain-drum/page.tsx` — four weather clouds drop pentatonic notes
+  - **Four zones**: each zone is a quarter of the canvas. Zone pitches left→right: C3 (130.81 Hz), E3 (164.81 Hz), G3 (196.00 Hz), A3 (220.00 Hz). All four are consonant together (C-major pentatonic: C–E–G–A forms a Cadd9 voicing).
+  - **Three weather types** per zone, tappable: **rain** (fast teardrops, `triangle` wave, 0.7s decay), **snow** (slow snowflake crystals with 6-arm star, `sine` wave, 1.8s decay), **leaves** (tumbling oval shapes, autumn leaf colors, `triangle` wave 1.1s decay). Physics constants differ: rain g=0.22 maxVy=9, snow g=0.022 maxVy=2, leaves g=0.065 maxVy=4.
+  - **Weather toggle**: tap within top 90px of any zone → cycle that zone's weather. `wxRef` (plain ref) updated immediately; canvas reads it each frame so visual change is instant.
+  - **Drop physics**: each drop has its own `vy`, `vx`, `rot`, `phase`. Sine-based horizontal drift (`p.drift × sin(ts/900 + phase) × 0.01`) makes snow and leaves wander; rain falls nearly straight. Soft zone-bound clamps (`if (x < zoneLeft+4) vx += 0.15`) prevent drops from crossing into neighboring zones.
+  - **Note throttle**: `lastNoteMs[zone]` per-zone; minimum 65ms between notes per zone prevents audio pops during high-spawn-rate rain.
+  - **Cloud rendering**: three overlapping arcs (fluffed cloud shape) with weather-color `shadowBlur=20` glow. Emoji drawn centered on cloud at y=41.
+  - **Splashes**: ring expanding from landing point (`life 1→0` at 3.5/s, radius 0→maxR at 4×maxR/s).
+  - **Ambient pad**: C3+E3+G3 sine oscillators at gain 0.013 — never silent.
+  - **Typography**: text-2xl title, text-base description, text-white/95, text-white/75, text-white/55. Button min-h-[56px].
+  - **Build**: `✓ /dream/120-kids-rain-drum  2.78 kB  109 kB` — clean, zero errors.
+
+**What surprised me**: The four-zone simultaneous sound is richer than expected. With all four zones in their default states (rain, snow, leaves, rain), the four C-major pentatonic notes play at completely different rates — rain fires every ~28 frames, snow every ~50 — so the pitches interleave at a ratio driven by physics constants rather than any explicit rhythm. The result sounds like a minimalist generative composition. Switching zone 0 from rain to snow immediately shifts the tempo signature of C3: instead of quick plunk-plunk-plunk it becomes a slow sustained sine C3 surfacing every ~50 frames. The child is essentially adjusting the playback rate of each voice by choosing its weather. This feels compositionally interesting in a way that wasn't the original spec — the weather toggle is implicitly a *tempo control* per voice.
+
+Also noticed: rain + snow simultaneously creates a distinct aesthetic because rain plunks decay in 0.7s while snow sines decay in 1.8s — at any given moment you hear recent rain plunks against older snow reverberations. Natural reverb separation from physics alone.
+
+**What's queued next**:
+1. **Cycle 143 (adult, 143%2=1)** — candidates:
+   - Polish `116-kids-bloom-garden` (pre-bloom press ring) — quick, but now deferred since we built new this cycle.
+   - `music-palette` — audio features → HSL color palette, downloadable SVG. Zero deps, zero API, one cycle.
+   - Begin `loop-station` (35-loop-station from IDEAS.md queue) — 4-slot live loop station, live performance tool. Higher impact.
+2. **Cycle 144 (kids, 144%2=0)** — polish `116-kids-bloom-garden` pre-bloom ring, OR build `kids-rain-drum` v2 (add pitch labels on zone landing?).
+
+---
+
 ## Cycle 141 — /dream/119-poem-fluid
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

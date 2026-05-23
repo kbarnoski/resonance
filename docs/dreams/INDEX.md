@@ -10,7 +10,14 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 141 — adult build)
+## ⭐ Newest (Cycle 142 — kids build)
+
+- **[/dream/120-kids-rain-drum](/dream/120-kids-rain-drum)** — Rain Drum (kids). `demoable`
+  Four weather clouds drop pentatonic notes from the sky. Each cloud has its own pitch (C3, E3, G3, A3) and its own physics: rain (fast teardrops, quick plunk), snow (slow flakes, sine sustain), leaves (tumbling ellipses, warm tone). Tap any cloud to cycle its weather. All four pitches are pentatonic-consonant — any combination sounds musical. Zero permissions · Zero deps · 2.78 kB.
+
+---
+
+## Previous (Cycle 141 — adult build)
 
 - **[/dream/119-poem-fluid](/dream/119-poem-fluid)** — Poem Fluid. `demoable`
   A WebGL Navier-Stokes fluid sim where the **turbulence state of the water drives a Markov chain text layer**. Start in **Still water** mode: the canvas is near-black, dark teal wisps drift slowly, and full Ghost-narrative sentences surface one at a time — "The water remembers every sound that has passed through this place." Now **drag your finger** to stir. The turbulence score rises; sentences fragment into phrases, then single words, then a cascade of fragments at different positions. Release — the fluid stills — and sentences begin to surface again. Add mic: audio onsets spike turbulence (beat = shatters a sentence into words), bass drives pressure pulses that add swirling velocity to the water.
