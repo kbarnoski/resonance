@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 121 — build)
+## ⭐ Newest (Cycle 122 — kids build)
+
+- **[/dream/104-kids-mirror-draw](/dream/104-kids-mirror-draw)** — Mirror Draw (kids). `demoable`
+  Draw a line anywhere on screen — it mirrors instantly across the center axis on the other side. Lift your finger to hear the path play as a melody: Y position = pitch (top = A4 high, bottom = C3 low), dots colored by pitch (pink at top, violet at bottom). Both the drawn line and its mirror flash as each note fires. Paths fade over 7 seconds; multiple paths accumulate for a glowing butterfly canvas. Subtle vertical pitch-gradient strips on each edge (violet→pink, bottom→top) show the Y=pitch mapping without text. Ambient C/E/G pad keeps the screen alive between drawings. Zero permissions, zero API.
+  **"Draw a squiggle — it butterflies — lift to hear it."** First kids prototype about bilateral symmetry as a musical and visual concept.
+  Zero permissions · Zero API · Zero deps · 2.46 kB.
+
+---
+
+## Previous (Cycle 121 — build)
 
 - **[/dream/103-listen-guide](/dream/103-listen-guide)** — Guided Listening. `demoable`
   A frequency-attention practice in six movements. Six 22-second windows, each one spotlighting a different frequency register in the radial bloom viz: sub-bass (20–60 Hz, deep violet), bass (60–250 Hz, cyan), low-midrange (250–500 Hz, green), midrange (500 Hz–2 kHz, yellow), high-midrange (2–4 kHz, orange), treble (4–20 kHz, magenta). When a window is active, its ring blazes at full brightness; all other rings dim to 8% opacity. A text prompt per window tells you what to listen for. **File mode**: drag any audio file onto the page — Karel's own recordings, a Welcome Home track, anything. The session guides you through its frequency layers. Demo mode needs no permissions (synthesized piano spanning all 6 bands).

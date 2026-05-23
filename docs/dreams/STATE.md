@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 122 — /dream/104-kids-mirror-draw
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 122 % 2 = 0 → **kids cycle**.
+4. **What to build**: KIDS.md "Next kid-cycle ideas (Cycle 122)" explicitly listed `kids-mirror-draw` as a new concept. AGENT.md "Polish" is the *lowest* priority (6), so the kids-build option (priority 3) takes precedence over the `82-kids-color-piano` polish pass. `kids-mirror-draw` fills a genuine gap: none of the 13 existing kids prototypes use **bilateral symmetry** as the core mechanic.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are immediate-tap-to-sound with clear visual feedback. `mirror-draw` extends the same pattern: every draw gesture creates immediate glowing visual feedback + melody on lift.
+
+**Loved slugs that influenced this choice**: `82` (tap circle → note, bold colored feedback) and `83` (catch colored drops → notes). `mirror-draw` uses the same pentatonic note set and color-per-pitch palette (`NOTE_COLORS`), and adds the bilateral axis as the novel mechanic.
+
+**What I built**:
+- `src/app/dream/104-kids-mirror-draw/page.tsx` — bilateral symmetry drawing + melody playback.
+  - **Start screen**: butterfly emoji, title, one-sentence description, big "Let's draw!" button. Parent sets up; child plays.
+  - **Canvas mode**: full screen. A dashed symmetry axis at x=W/2. Subtle pitch-gradient strips on left/right edges (violet=bottom=low, pink=top=high) without text.
+  - **Drawing**: `pointerdown` creates a path; `pointermove` samples dots every 16px (max 32); `pointerup` triggers melody playback. Each dot is drawn at its original position AND mirrored at (W−x, y). Both the connecting line and its mirror are drawn.
+  - **Y=pitch**: top of screen → A4 (highest, pink); bottom → C3 (lowest, violet). `noteForY(y, H)` = `round((1 − y/H) × 9)`. Same pentatonic set and `NOTE_COLORS` as `100-kids-paint-song`.
+  - **Melody playback**: same `setTimeout`-chain pattern as `100-kids-paint-song` (190ms/note). `dot.lit` flash decays at 0.045/frame — bright burst then smooth decay. Both original and mirror dots flash simultaneously.
+  - **Fade**: paths fade over 7 seconds after playback. Multiple paths accumulate.
+  - **Audio**: same triangle + sine-2nd-harmonic piano tone. Ambient C/E/G pad at gain 0.022.
+  - **No permissions needed** — start screen button creates AudioContext; first pointer event resumes if suspended.
+
+**Build**: `npm run build` — clean. `/dream/104-kids-mirror-draw` at 2.46 kB.
+
+**What surprised me**: the `NOTE_COLORS` palette (violet=low, pink=high) along the Y axis creates a natural "aurora" effect — a vertical arch from bottom to top produces a smooth violet→indigo→cyan→green→amber→pink gradient as the melody rises. The mirrored arch doubles it into a symmetric butterfly shape. Drawing a simple dome at mid-height produces an almost perfectly symmetric color gradient on both sides with a chord-like melody (the Y barely varies). A child who draws a zigzag arch hears a jagged ascending/descending run.
+
+**Queued next**:
+1. **Cycle 123 (build, 123%2=1)** — adult build. Top candidates: `pluck-field` (Karplus-Strong virtual string field, 24 strings, physical modeling synthesis — zero deps, one cycle, fills the "physical modeling" gap in the sandbox), or `chord-canvas` (real-time chroma→chord name detection, first music-theory prototype). Both zero-dep, one-cycle builds.
+2. **Cycle 124 (kids, 124%2=0)** — `82-kids-color-piano` typography polish is still deferred and should happen. Or new kids concept.
+
+---
+
 ## Cycle 121 — /dream/103-listen-guide
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)
