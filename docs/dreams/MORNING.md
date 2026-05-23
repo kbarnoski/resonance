@@ -1,29 +1,29 @@
-# Morning digest — last updated 2026-05-23 UTC (Cycle 135)
+# Morning digest — last updated 2026-05-23 UTC (Cycle 136)
 
 ## New since yesterday
 
+- **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids) · *Cycle 136* · `demoable`
+  Touch anywhere on the screen — you're inside that weather. Hold top-right
+  for ☀️ Sun: bright C-major arpeggios + golden rays. Top-left for ☁️ Cloud:
+  soft Am chord + drifting grey puffs. Bottom-left for 🌧️ Rain: pentatonic
+  drops + falling streaks. Bottom-right for 💨 Wind: a gliding oscillator
+  sweeping the pentatonic scale + horizontal streaks.
+  **The magic**: drag slowly from ☀️ to 🌧️ and the arpeggio fades while
+  the rain notes build — a natural musical diminuendo a 4yo finds by accident.
+  Multi-touch: two fingers in different zones blend both sounds simultaneously.
+  No tap targets, no characters — the whole screen IS the instrument.
+  Zero permissions · Zero API · Zero deps · 3.48 kB.
+
 - **[/dream/114-live-harmonize](/dream/114-live-harmonize)** — Live Harmonize · *Cycle 135* · `demoable`
-  Play a melody into the mic — the system detects your key live and plays
-  diatonic 3rd and 5th harmony voices alongside each note.
-  Third pans slightly right; fifth slightly left. Like a trio: you lead, two
-  voices follow — always in your key. A scrolling piano roll records all three
-  parts (orange=melody, blue=3rd, indigo=5th).
-  **Key insight**: intervals change per scale degree — E in C major gets G
-  (minor 3rd) and B (P5); B gets D and diminished-5th F. Not mechanical
-  transposition. Key display updates live as you play.
-  Demo mode: Bach BWV 772 fragment, C major, loops.
-  Mic optional · Zero API · Zero deps · 3.68 kB.
+  Play a melody → diatonic 3rd and 5th harmony voices follow in your key.
+  Key detected live (chroma template matching). Scrolling piano roll:
+  melody=orange, 3rd=blue, 5th=indigo. Demo: Bach BWV 772 / C major.
+  Zero API · Zero deps · 3.68 kB.
 
 - **[/dream/113-kids-conductor-wand](/dream/113-kids-conductor-wand)** — Conductor Wand (kids) · *Cycle 134* · `demoable`
   Drag anywhere — wand follows, rainbow trail. Y=pitch, speed=note rate.
-  4 orchestras (Playground/Space/Forest/Ocean), each with own color + reverb.
-  Demo mode auto-conducts Lissajous figure until first touch.
+  4 orchestras (Playground/Space/Forest/Ocean). Demo auto-conducts on load.
   Zero permissions · Zero API · Zero deps · 2.84 kB.
-
-- **[/dream/112-bio-echo](/dream/112-bio-echo)** — Bio Echo · *Cycle 133* · `demoable`
-  Play piano → watch a forest grow. Sub-bass=tendrils, bass=trunk (never
-  shrinks), mid=canopy, onsets=birds, treble=sky. Canvas never clears.
-  Save as PNG. Zero deps · 3.6 kB.
 
 ## In progress / partial
 
@@ -31,21 +31,20 @@
 
 ## Research findings worth a look
 
-- **kids-weather-music** (Cycle 136): four atmosphere zones, drag to blend
-  continuously. Most different kids prototype yet — sustained states, not taps.
-- **Research cycle** (Cycle 137 or sooner): adult research is 6 adult cycles
-  overdue. Next research sweep should cover WebGPU compute, new fal.ai models
-  (since Cycle 129), and Houdini→browser techniques.
+- **Adult research** (Cycle 137): last adult research was Cycle 129 — 7 adult
+  cycles ago. Research rule says every 3–4 cycles. Cycle 137 should be a
+  research sweep. Ideas queue is healthy but may have stale entries.
 
 ## Open questions for Karel
 
-1. **Live-harmonize latency**: key detection stabilizes in ~6 notes. On a
-   modulation, you'll hear 1–2 "wrong" harmonies before it catches up — is that
-   acceptable, or should I freeze the key until a chord boundary?
-2. **Live-harmonize demo**: Bach fragment loops. Better demo: a more melodic
-   piece, or a ii-V-I jazz phrase that shows the harmony chord changes visually?
+1. **Weather Music zones**: bilinear blend from all four corners. Does the zone
+   layout feel right? (Sun=top-right, Cloud=top-left, Rain=bottom-left,
+   Wind=bottom-right). Happy to remap if one feels off.
+2. **Live-harmonize latency**: key detection catches up in ~6 notes. 1–2 "wrong"
+   harmonies during modulation — acceptable, or should it freeze key until
+   a chord boundary?
 3. **GEMINI_API_KEY** — still unlocks `30-lyria-jam`, `43-lyria-ghost`,
    `44-binaural-lyria`. Any update?
 4. **`veo3-ghost` budget** — $2.00/clip (Veo 3 Fast). Good to proceed?
-5. **Ball-ball collision** in `109-kids-bounce-notes` — balls pass through each
-   other. Polish cycle worth it?
+5. **Ball-ball collision** in `109-kids-bounce-notes` — balls pass through
+   each other. Polish cycle worth it?

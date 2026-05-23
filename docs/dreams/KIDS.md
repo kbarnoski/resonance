@@ -125,7 +125,7 @@ A glowing conductor's wand follows the child's dragging finger. Y-position of th
 
 The wand leaves a rainbow color trail. Music is never silent — there's always a drone holding from the last gesture. Zero notes, zero reading, zero fail state. The finger IS the conductor's baton. Inspired by conducting gesture research (arxiv 2604.27957, Apr 2026) adapted to touch-only (no MediaPipe/camera needed).
 
-### `kids-weather-music`
+### `kids-weather-music` ✓ built Cycle 136 — `/dream/115-kids-weather-music` `demoable`
 The screen is divided into four weather quadrants: sun (top-right), cloud (top-left), rain (bottom-left), wind (bottom-right). Hold anywhere on the screen to "be in" that weather zone and hear+see its music: sun = bright C-major arpeggio + radial golden rays; cloud = soft minor pad + grey bloom; rain = pentatonic drops + falling blue specks; wind = glissando runs + swirling particles. Drag slowly across zones to morph the music and visual blends continuously.
 
 No text labels needed — the visuals communicate instantly. Multi-touch: two fingers in different zones blend both musics. The "drag from sun to rain" gesture produces a natural musical diminuendo that a 4yo will discover by accident. Completely different from existing kids prototypes (no notes to tap, no characters to find — just the whole screen IS the instrument).
@@ -155,6 +155,22 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-shape-loop`: ✓ **built Cycle 132** — `/dream/111-kids-shape-loop`
 - `kids-conductor-wand`: drag finger = conductor's baton; Y=register, speed=tempo. Four orchestras.
 - Polish on `109-kids-bounce-notes`: ball-ball collision detection (they currently pass through each other). Would make multi-ball dynamics much richer.
+
+---
+
+### Cycle 136 — weather-music build
+
+**Built**: `115-kids-weather-music`. Key learnings:
+- **Bilinear zone weights are the right abstraction.** `xNorm × (1−yNorm)` for sun, `(1−x)(1−y)` for cloud, etc. — weights sum to 1 everywhere, interpolation is mathematically smooth, and no code distinguishes "inside a zone" vs "crossing a boundary." The child discovers blending by dragging; there's no mode switch.
+- **Smooth exponential weights (α=0.12 EMA) are essential for sustained audio.** Without smoothing, lifting and replacing a finger would cause abrupt gain jumps that are jarring. With smoothing, the audio gracefully fades in and out. The time constant (~5 frames to 50% response) maps to about 80ms at 60fps — fast enough to feel immediate, slow enough for no pops.
+- **Cloud + wind oscillators always running at low gain** provide the "no silence" ambient pad even before any touch. The Am chord (A3+C4+E4) + wind glissando together sound like a very quiet environmental hum. Kids (and parents) don't consciously hear it, but the screen feels "alive" from the first second.
+- **Rain particles in the left half only** (x < 0.55W): reinforces the zone geography — rain looks like it's coming from the rain corner. Wind streaks in the right half (x > 0.5W). Visual zones match audio zones without requiring labels.
+- **TypeScript narrowing in nested functions**: function declarations inside useEffect may cause "possibly null" errors for `canvas` even after a null check, because TypeScript doesn't propagate narrowing across hoisted function declarations. Fix: use `const drawFrame = (nowMs) => { ... }` (arrow function expression) — TypeScript maintains the narrowing in arrow function closures.
+- **Multi-touch with max() per zone** creates interesting multi-finger play: one finger in sun (arpeggio) + one finger in rain (drops) = both play simultaneously. A parent and child playing together each "own" their weather zone.
+
+**Next kid-cycle ideas (Cycle 138)**:
+- `kids-bloom-garden`: long-press to plant a glowing flower + sustained pentatonic note; flower self-seeds after 10s. Most contemplative kids prototype. Zero tap events needed — just long-press and let the garden grow.
+- Polish `115-kids-weather-music`: consider dynamically changing the opacity of the corner emoji overlays with zone weight (bright when active, dim when idle). Requires React state update or CSS variable, minor complexity.
 
 ---
 

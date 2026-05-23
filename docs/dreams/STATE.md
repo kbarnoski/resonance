@@ -1,5 +1,37 @@
 # Dream Agent — cycle state
 
+## Cycle 136 — /dream/115-kids-weather-music
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 136 % 2 = 0 → **kids cycle**.
+4. **Build queued kids idea** — STATE.md Cycle 135 and INDEX.md both explicitly queued `kids-weather-music` for Cycle 136.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are zero-permission, whole-screen-is-the-instrument, immediate-feedback designs. `kids-weather-music` extends this: no tap targets, full screen is four blended zones. The loved `83-kids-tilt-rain` gesture (sustained physical engagement → music) is the spiritual parent.
+
+**What I built**:
+- `src/app/dream/115-kids-weather-music/page.tsx` — four atmospheric weather zones, bilinear blend, zero permissions
+  - **Zone system**: bilinear weight interpolation from pointer position. Sun=top-right (xNorm×(1−yNorm)), Cloud=top-left ((1−x)×(1−y)), Rain=bottom-left ((1−x)×y), Wind=bottom-right (x×y). Weights always sum to 1. Multi-touch: max weight per zone across all active pointers.
+  - **Audio**: four synthesis engines. Sun: triangle-wave C-major arpeggio (C4→E4→G4→C5), note interval 185–1285ms proportional to zone weight. Cloud: Am chord (A3+C4+E4) via 3 sine oscillators always running, gain = smCloud×0.28+0.014 for ambient presence even at idle. Rain: random pentatonic sine drops (C-maj penta, 3 octaves), interval 100–850ms proportional to weight. Wind: sine oscillator gliding through pentatonic scale via `Math.sin(windPhase)` index, frequency glides via `setTargetAtTime`. All four feed into reverb-wet + reverb-dry routing.
+  - **Visuals**: radial gradient corner glows (amber/slate/sky-blue/emerald) proportional to zone weight. Sun: 14 triangle rays rotating from top-right, additive blend. Cloud: grey puffs rising, fade-out. Rain: elongated ellipse drops falling left half, lighter blend. Wind: horizontal streaks sweeping left, bottom-right quadrant. Smooth weights (α=0.12 EMA) prevent any jarring transitions.
+  - **Start screen**: 4 weather icon cards in 2×2 grid, Play button.
+  - **Typography**: text-3xl title, text-base description, text-base zone names, text-sm zone positions, min-h-[64px] button. All contrast ≥70%.
+
+**Build**: `✓ /dream/115-kids-weather-music  3.48 kB  106 kB` — clean, zero errors.
+
+**What surprised me**: The bilinear blend is a deceptively rich interaction model for a 4yo. Placing a finger in the center of the screen produces equal weight in all four zones — a gentle murmur of all four atmospheres simultaneously. Dragging toward a corner "selects" that zone. The smoothing (α=0.12) means a fast drag from ☀️ to 🌧️ creates a perceptible 1–2 second crossfade during which you hear both at once. That middle state sounds genuinely beautiful — arpeggios fading while rain drops build. A child will find this by accident and probably repeat it on purpose.
+
+The cloud chord (Am: A3+C4+E4) + wind glissando together form a soft ambient pad even when no finger is touching. The screen is never silent. This is the KIDS.md principle in practice.
+
+**What's queued next**:
+1. **Cycle 137 (adult, 137%2=1)** — adult research sweep. Last adult research was Cycle 129 (7 adult cycles ago, well past the 3–4 cycle recommendation). IDEAS queue is healthy but fal.ai and arxiv will have new things since Cycle 129.
+2. **After research**: `kids-bloom-garden` (long-press to plant sustained notes, self-seeding) is the other pending kids build from KIDS.md. Or a research-informed adult prototype.
+
+---
+
 ## Cycle 135 — /dream/114-live-harmonize
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

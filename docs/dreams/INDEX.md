@@ -10,14 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 135 — adult build)
+## ⭐ Newest (Cycle 136 — kids build)
+
+- **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids). `demoable`
+  Touch anywhere on screen — you're inside that weather zone. ☀️ Sun (top-right): bright C-major arpeggios + golden rotating rays. ☁️ Cloud (top-left): soft Am chord pad + drifting grey puffs. 🌧️ Rain (bottom-left): falling pentatonic drops + blue streaks. 💨 Wind (bottom-right): sweeping glissando oscillator + horizontal emerald streaks. **Drag between corners to blend all four atmospheres continuously** — the transition from Sun to Rain produces a natural musical diminuendo that a 4yo discovers by accident. Multi-touch: two fingers in different corners blend both sounds simultaneously.
+  **"No notes to tap, no characters to find — the whole screen is four blended weather instruments."** First kids prototype about sustained atmospheric states (hold) rather than discrete events (tap). Bilinear zone weights from pointer position (x × (1−y) = sun, etc.) — mathematically smooth in all directions.
+  Zero permissions · Zero API · Zero deps · 3.48 kB.
+
+Next: **Cycle 137 → adult research sweep** (last research was Cycle 129, 7 adult cycles ago).
+
+---
+
+## Previous (Cycle 135 — adult build)
 
 - **[/dream/114-live-harmonize](/dream/114-live-harmonize)** — Live Harmonize. `demoable`
   Play a melody into the mic — the system detects your key in real time (chroma template matching) and immediately plays diatonic 3rd and 5th harmony voices alongside each note. The third voice pans slightly right; the fifth pans slightly left. A scrolling piano roll records all three parts: melody in warm orange, 3rd in blue, 5th in indigo. Demo mode plays a Bach BWV 772 fragment with pre-set C major key.
   **"Play a melody — two harmony voices appear, always in your key."** Diatonic intervals change per scale degree (E in C major gets G minor-third and B fifth; B gets D and dim-5th F) — not mechanical fixed-interval transposition. Key display updates live as you play.
   Mic optional · Zero API · Zero deps · 3.68 kB.
-
-Next: **Cycle 136 → `kids-weather-music`**. **Cycle 137 → research cycle** (adult research overdue).
 
 ---
 
