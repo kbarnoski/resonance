@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 131 — /dream/110-webcam-compose
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 131 % 2 = 1 → NOT a kids cycle. Adult cycle.
+4. **Build new** — STATE.md Cycle 130 explicitly queued `webcam-compose` for Cycle 131. IDEAS.md spec confirmed. Route updated to `110-` (since `109-` was taken by Cycle 130's kids prototype).
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes reward immediate physical gesture → vivid musical feedback. `webcam-compose` directly extends this to the camera: every camera frame is an immediate chord — no gesture needed, just point.
+
+**Loved slugs that influenced this choice**: `82` and `83` both reward immediate action → vivid audio-visual response. `webcam-compose` inherits that but replaces the gesture with the camera's eye: you aim at something, it plays.
+
+**What I built**:
+- `src/app/dream/110-webcam-compose/page.tsx` — camera image analysis → live chord synthesis
+  - **Image analysis** (every 150ms): draws video frame to offscreen canvas (mirrored), samples 4 quadrants (TL/TR/BL/BR) with stride-8 pixel sampling. Each zone → average RGB → HSL. Aggregates: avgHue, avgLum, avgSat, frame-delta (|avgLum − prevLum| EMA).
+  - **Synth mapping**: `hueToChord(avgHue)` → chord name (0–60°=major, 60–120°=suspended, 120–200°=minor, 200–280°=diminished, 280–360°=augmented). `brightnessToRootHz(avgLum)` → root frequency (C2=65.41 Hz at lum=0, C4=261.63 Hz at lum=1, log-interpolated). `numVoices` = ceil(avgSat × 3), 1–3. `isArpeggio` when frameDelta > 0.04 (motion).
+  - **Synthesis**: `buildSynth()` creates triangle-wave OscillatorNodes (3 chord tones × numVoices) routed through a master GainNode and AnalyserNode. All frequency transitions use `setTargetAtTime(targetHz, now, 0.25)` for smooth gliding without clicks.
+  - **Bloom**: right-panel canvas reads the synthesis AnalyserNode's FFT byte data → 6-band bloom rings (same algorithm as `1-live`). Shows the chord's harmonic content visually — a major chord shows a clean fundamental and third/fifth harmonics; a diminished chord spreads differently.
+  - **Camera canvas**: left panel draws mirrored video feed + 4 colored quadrant borders (each border color = that zone's dominant HSL). White crosshair divides zones. Bottom info bar: chord name (colored per chord), root Hz, voice count, pad/arpeggio status.
+  - **Demo mode**: `setInterval` LFO loop cycles hue (0–360°), lum (0.3–0.7), sat (0.35–0.75) through incommensurable DEMO_LFO_SPEEDS. Chord cycles every ~6s through all 5 qualities. Demo quadrants show animated HSL colors. No camera permission required.
+  - **Start screen**: two buttons — "Open camera" (violet-600, primary) and "Demo mode" (ghost). Error state shows rose-300 message + camera error text.
+  - **Typography**: all AGENT.md rules — text-3xl title, text-base description, text-white/95 primary, text-white/75 secondary, text-white/55 tertiary.
+
+**Build**: `✓ /dream/110-webcam-compose  4.66 kB  111 kB` — clean, zero errors or warnings.
+
+**What surprised me**: The bloom on the right panel is driven by the synthesis AnalyserNode, not by the camera. So you're seeing the chord's actual harmonic spectrum as a bloom — a major chord (0, 4, 7 semitones) shows three distinct frequency clusters glowing in the outer rings; the center glows when all three tones reinforce each other. The demo mode immediately demonstrates the visual difference between chord qualities before the camera is involved: suspended chords produce a broader mid-band glow; diminished chords cluster the energy differently. The image-to-synth mapping is deterministic — a grey wall produces major (avgHue ≈ 0°), a blue sky produces minor, a green garden produces suspended. This is the first prototype where the musical result is entirely determined by what you look at.
+
+**What's queued next**:
+1. **Cycle 132 (kids, 132%2=0)** — `kids-shape-loop` (draw a closed shape → perimeter traversal plays a looping melody). First looping/layering kids prototype. Zero deps.
+2. **Cycle 133 (adult, 133%2=1)** — `bio-echo` (Anadol DATALAND-inspired ecological canvas: mic → bass=soil tendrils, mid=forest canopy particles, treble=bird arcs). Zero deps, zero API.
+
+---
+
 ## Cycle 130 — /dream/109-kids-bounce-notes
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

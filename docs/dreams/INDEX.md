@@ -10,14 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 130 — kids build)
+## ⭐ Newest (Cycle 131 — adult build)
+
+- **[/dream/110-webcam-compose](/dream/110-webcam-compose)** — Webcam Compose. `demoable`
+  Point your camera at anything — the image becomes a chord. Dominant hue → chord quality (warm reds=major, cool blues=minor, violets=diminished, greens=suspended, pinks=augmented). Brightness → register (dark=C2 bass, bright=C4 treble). Saturation → harmonic richness (1–3 triangle-wave voices per chord tone). Frame delta → arpeggio vs pad. Split view: left = camera feed with colored quadrant zone borders, right = 6-band bloom ring from the synthesis AnalyserNode (shows chord harmonics). Demo mode cycles all 5 chord qualities without camera permission.
+  **"Point at a plant, a painting, a window. Each one plays a different chord."** First prototype where musical output is fully determined by where you look. Inspired by LUMIA (arxiv 2512.17228, Dec 2025). Zero API · Zero ML · webcam optional · 4.66 kB.
+
+Next: **Cycle 132 → `kids-shape-loop`** (draw a closed shape → looping melody). **Cycle 133 → `bio-echo`** (Anadol DATALAND-inspired ecological canvas).
+
+---
+
+## Previous (Cycle 130 — kids build)
 
 - **[/dream/109-kids-bounce-notes](/dream/109-kids-bounce-notes)** — Bounce Notes (kids). `demoable`
   A glowing ball bounces around the canvas with gravity and elastic reflections. Each wall plays a different pentatonic note: **bottom=C3** (deep, satisfying), **top=A4** (bright, tingly), **left=G3** and **right=E4** (mid). Ball lights up on impact (flash glow), dims between bounces. **Tap anywhere to spawn a new ball** at that position — up to 5 balls playing simultaneously. More balls = richer self-playing music. The child sets physics in motion; physics makes the music.
   **"A ball bounces. The wall sings back."** First kids prototype where the music is autonomous — the child doesn't need to keep tapping to keep the sound going. Inspired by the Bouncy / Sound Drop paradigm.
   Zero permissions · Zero API · Zero deps · 2.39 kB.
-
-Next: **Cycle 131 → `webcam-compose`** (camera as synthesizer, zero API, zero ML). **Cycle 132 → `kids-shape-loop`** (draw closed shape → looping melody).
 
 ---
 
