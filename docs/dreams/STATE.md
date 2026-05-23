@@ -1,5 +1,40 @@
 # Dream Agent — cycle state
 
+## Cycle 138 — /dream/116-kids-bloom-garden
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 138 % 2 = 0 → **kids cycle**. No blockers.
+4. **KIDS.md queue**: `kids-bloom-garden` explicitly queued by both KIDS.md Cycle 136 notes and Cycle 137 STATE.md. "Long-press to plant a glowing musical flower; flowers self-seed after 10s." Most contemplative kids prototype in the queue — designed for quiet play before sleep.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate physical gesture → vivid musical feedback. `kids-bloom-garden` inherits the zero-permissions, immediate-response DNA but with an inverted gesture model: instead of a quick tap (loved prototypes), you *hold* — a sustained interaction that rewards patience. Different emotional register from everything else in the kids zone.
+
+**Loved slugs that influenced this choice**: `82` (whole-screen-is-the-instrument, immediate satisfaction) and `83` (sustained gesture = continuous music). Bloom garden extends both: the hold gesture is more intentional than a tap, and the sustaining flower note rewards staying still.
+
+**What I built**:
+- `src/app/dream/116-kids-bloom-garden/page.tsx` — long-press to plant musical flowers; flowers self-seed
+  - **Long-press plant**: hold 480ms without moving → flower bud appears at press point; audio attack begins
+  - **Bloom animation**: 650ms bud → full 5-petal flower (petals scale from 0 via bloomT, no pre-drawn petals)
+  - **Note mapping**: X position → note in C-major pentatonic (C3 left → A4 right, 8 notes). Color palette mirrors note: violet (C3) → indigo → blue → emerald → lime → yellow → amber → rose (A4)
+  - **Sustained audio**: triangle-wave oscillator + sine 2nd harmonic (0.06 relative gain). 850ms attack to 0.15 gain. Gentle glow/pulse at 2.2 Hz after bloom. Fade-out on seeding (1.6s)
+  - **Self-seeding**: at age=10s, flower enters seeding phase (fades over 1.6s, sparkle burst). At 0.5s into seeding, a new child bud sprouts 28–62px away at noteIdx ±1. Garden slowly self-organizes into harmonic clusters
+  - **Tap-to-burst**: tap within 50px of any live flower → sparkle explosion (20 particles, parabolic arc with gravity), pop note + noise burst, flower dies
+  - **Max 12 flowers** — prevents audio buildup; self-seeding checks live count before spawning
+  - **Ambient pad**: C3+E3+G3 sine oscillators at gain 0.02 (barely audible; screen never "dead")
+  - **Typography**: text-3xl title, text-base description, text-white/95 primary, text-white/80 body, min-h-[64px] button
+
+**What surprised me**: The self-seeding mechanic creates an interesting musical drift. A flower planted at X=0.25 (G3 noteIdx=2) will seed to noteIdx=1 (E3) or noteIdx=3 (A3). After several generations the cluster can drift toward either end of the pentatonic scale, creating a gradually changing harmonic "center of gravity." This wasn't planned as a compositional feature but emerges naturally from the ±1 note inheritance rule. Over 3–4 minutes of idle play, the garden self-organizes into a repeating chord voicing that didn't exist when the child first touched the screen.
+
+**Build**: `✓ /dream/116-kids-bloom-garden  3.17 kB  110 kB` — clean, zero errors or warnings specific to this file.
+
+**What's queued next**:
+1. **Cycle 139 (adult, 139%2=1)** — build `data-cosm`. Zero deps, zero API, one-cycle build. Ikeda aesthetic (scrolling monospace numbers + sub-bass sine tones) is completely new to the sandbox. Highest surprise rating of all research seeds from Cycle 137.
+
+---
+
 ## Cycle 137 — research sweep: Ikeda data-cosm, Memo Akten Thinking Ocean, MusicRFM, TD particle cloud, body pose, image-chord
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

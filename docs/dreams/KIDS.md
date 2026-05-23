@@ -130,8 +130,8 @@ The screen is divided into four weather quadrants: sun (top-right), cloud (top-l
 
 No text labels needed — the visuals communicate instantly. Multi-touch: two fingers in different zones blend both musics. The "drag from sun to rain" gesture produces a natural musical diminuendo that a 4yo will discover by accident. Completely different from existing kids prototypes (no notes to tap, no characters to find — just the whole screen IS the instrument).
 
-### `kids-bloom-garden`
-A dark canvas. Long-press anywhere to plant a glowing musical flower at that point. The flower grows with a ~600ms animation (bud → bloom) and plays a sustained pentatonic note (X position = pitch, pentatonic C). Up to 12 flowers coexist. After 10 seconds a flower "seeds" — it disperses sparkle petals and a new smaller bud sprouts 30–60px away, inheriting its pitch ±1 step. Over time, the garden self-organizes into a harmonic cluster. Tap any flower to burst it into sparkles (satisfying pop + note sting).
+### `kids-bloom-garden` ✓ built Cycle 138 — `/dream/116-kids-bloom-garden` `demoable`
+A dark canvas. Long-press anywhere to plant a glowing musical flower at that point. The flower grows with a 650ms animation (bud → bloom) and plays a sustained pentatonic note (X position = pitch, C-major pentatonic, violet/low at left → rose/high at right). Up to 12 flowers coexist. After 10 seconds a flower "seeds" — it disperses sparkle petals and a new smaller bud sprouts 30–62px away, inheriting its pitch ±1 step. Over time, the garden self-organizes into a harmonic cluster. Tap any flower to burst it into sparkles (pop note + noise burst).
 
 Very contemplative — designed for the "quiet play" moment just before sleep. No goal, no fail state. The child plants sounds and watches them breathe and multiply. The self-seeding mechanic means the garden is never static — it slowly drifts across the screen over many minutes.
 
@@ -155,6 +155,22 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-shape-loop`: ✓ **built Cycle 132** — `/dream/111-kids-shape-loop`
 - `kids-conductor-wand`: drag finger = conductor's baton; Y=register, speed=tempo. Four orchestras.
 - Polish on `109-kids-bounce-notes`: ball-ball collision detection (they currently pass through each other). Would make multi-ball dynamics much richer.
+
+---
+
+### Cycle 138 — bloom-garden build
+
+**Built**: `116-kids-bloom-garden`. Key learnings:
+- **Long-press as primary gesture is unexplored territory in the kids zone.** All prior kids prototypes use tap (bounce-notes, kalimba, echo-song, puddle-jumper) or drag (conductor-wand, tilt-rain, mirror-draw, weather-music). Bloom garden is the first that rewards *waiting* — the child must hold for 480ms. This is a different emotional register: anticipation before reward. Tests with the KIDS.md mental model (4yo): a child who doesn't read taps first (burst mode), then holds (plant mode). The two behaviors are discovered in that order.
+- **Close-proximity guard** (< 38px from any live flower prevents planting) keeps the garden readable. Without it, rapid pressing in one spot creates an overlapping glowing blob that's visually confusing and sonically muddy (12 oscillators in the same key, all at the same pitch). With it, the child naturally spreads the flowers across the screen to find plantable spots — which also distributes the pitches (X=pitch) and creates richer harmony.
+- **Self-seeding note drift (±1 step) is a subtle musical composition engine.** A C3 flower (noteIdx=0) can only seed to E3 (noteIdx=1). An E3 can seed to C3 (0) or G3 (2). Over 4–5 generations, a single starting note evolves into a small cluster of adjacent scale degrees. Starting at the left side (C3) → seeds drift right toward E3 → G3. Starting in the middle (C4, noteIdx=4) → seeds spread in both directions. The garden's "center of harmonic gravity" is determined by where the child first plants. This wasn't planned; it emerged from the ±1 rule.
+- **All-inside-effect architecture** (no JSX event handlers, all DOM listeners registered inside useEffect) eliminates react-hooks exhaustive-deps lint issues entirely. The closure captures everything it needs; stopFns Map and flowers array are fully local to the effect. Cleaner than useCallback + refs for this pattern.
+- **`ctx.ellipse()` for petals** with bloomT-scaled radiusX/radiusY cleanly animates bud → bloom: at bloomT=0, radiusX=0 and radiusY=0 → nothing drawn (bud is just the center circle). At bloomT=1, full petal. The Math.max(0.1, petalW) guard prevents a degenerate-ellipse browser warning at very small bloom values.
+- **Ambient pad at gain 0.02** (three sine oscillators, C3+E3+G3) is at the right level: audible to an adult listening closely, inaudible to a child in play mode. It just prevents the "is the app broken?" feeling between flowers.
+
+**Next kid-cycle ideas (Cycle 140)**:
+- **Polish `116-kids-bloom-garden`**: add a faint "press ring" indicator (expanding dashed circle at the press point during the 480ms hold) so the child can see the planting animation in progress. Currently the bud appears without visual warning. A pre-bloom "loading ring" would make the hold gesture feel more intentional.
+- **New seed**: `kids-mirror-melody` v2 — draw on one half, hear it play as the mirror draws on the other. Both halves play simultaneously (left hand + right hand metaphor). Natural two-player mode.
 
 ---
 

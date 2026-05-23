@@ -10,14 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 136 — kids build)
+## ⭐ Newest (Cycle 138 — kids build)
+
+- **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids). `demoable`
+  A dark canvas that breathes. **Press and hold** anywhere to plant a glowing flower — it blooms over 650ms from a tiny bud into a 5-petal flower and plays a sustained pentatonic note (X position = pitch: violet/low left → rose/high right). After 10 seconds the flower **seeds itself**: petals scatter as sparkles and a new bud sprouts 30–62px away, inheriting the pitch ±1 note. **Tap any flower to burst it** — sparkle explosion + pop note. Up to 12 flowers coexist; the garden self-organizes over time toward harmonic clusters as notes drift ±1 each generation.
+  **"The most contemplative kids prototype yet — designed for quiet play before sleep."** No tap targets. No fail state. No goal. Hold → bloom → watch the garden grow itself. Ambient C3+E3+G3 pad so the screen is never silent even before the first flower.
+  Zero permissions · Zero API · Zero deps · 3.17 kB.
+
+Next: **Cycle 139 → `data-cosm`** (adult build — Ryoji Ikeda / data-cosm aesthetic, scrolling number matrices + sub-bass sine tones, zero deps, highest surprise rating from Cycle 137 research).
+
+---
+
+## Previous (Cycle 136 — kids build)
 
 - **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids). `demoable`
   Touch anywhere on screen — you're inside that weather zone. ☀️ Sun (top-right): bright C-major arpeggios + golden rotating rays. ☁️ Cloud (top-left): soft Am chord pad + drifting grey puffs. 🌧️ Rain (bottom-left): falling pentatonic drops + blue streaks. 💨 Wind (bottom-right): sweeping glissando oscillator + horizontal emerald streaks. **Drag between corners to blend all four atmospheres continuously** — the transition from Sun to Rain produces a natural musical diminuendo that a 4yo discovers by accident. Multi-touch: two fingers in different corners blend both sounds simultaneously.
   **"No notes to tap, no characters to find — the whole screen is four blended weather instruments."** First kids prototype about sustained atmospheric states (hold) rather than discrete events (tap). Bilinear zone weights from pointer position (x × (1−y) = sun, etc.) — mathematically smooth in all directions.
   Zero permissions · Zero API · Zero deps · 3.48 kB.
-
-Next: **Cycle 137 → adult research sweep** (last research was Cycle 129, 7 adult cycles ago).
 
 ---
 

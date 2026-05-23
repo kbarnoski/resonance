@@ -1,64 +1,52 @@
-# Morning digest — last updated 2026-05-23 UTC (Cycle 137)
+# Morning digest — last updated 2026-05-23 UTC (Cycle 138)
 
 ## New since yesterday
 
-- **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids) · *Cycle 136* · `demoable`
-  Touch anywhere on the screen — you're inside that weather. Hold top-right
-  for ☀️ Sun: bright C-major arpeggios + golden rays. Top-left for ☁️ Cloud:
-  soft Am chord + drifting grey puffs. Bottom-left for 🌧️ Rain: pentatonic
-  drops. Bottom-right for 💨 Wind: gliding oscillator + horizontal streaks.
-  Drag slowly between zones — the music crossfades over ~1.5s. Multi-touch:
-  two fingers in different zones blend both sounds simultaneously.
-  Zero permissions · Zero API · Zero deps · 3.48 kB.
+- **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids) · *Cycle 138* · `demoable`
+  **Press and hold** anywhere to plant a glowing flower. It blooms from a bud
+  over 650ms, plays a sustained pentatonic note (X=pitch: violet/low left →
+  rose/high right). After 10 seconds it **seeds itself** — petals scatter as
+  sparkles and a new bud sprouts 30–62px away, inheriting the pitch ±1 step.
+  **Tap any flower to burst it.** Up to 12 flowers; the garden slowly
+  self-organizes into harmonic clusters over 3–4 minutes as seeds drift ±1 each
+  generation.
+  Zero permissions · Zero API · Zero deps · 3.17 kB.
+  **"The most contemplative kids prototype yet — designed for quiet play before
+  sleep."** Different from all prior kids builds: the gesture is a *hold* (not
+  a tap), the music is *sustained* (not a single note event), and the garden
+  *acts without you* (self-seeding means it keeps changing when you stop
+  touching).
 
-- **[/dream/114-live-harmonize](/dream/114-live-harmonize)** — Live Harmonize · *Cycle 135* · `demoable`
-  Play a melody → diatonic 3rd and 5th harmony voices follow in your key.
-  Key detected live. Scrolling piano roll: melody=orange, 3rd=blue, 5th=indigo.
-  Demo: Bach BWV 772 / C major. Zero API · Zero deps · 3.68 kB.
+- **[/dream/115-kids-weather-music](/dream/115-kids-weather-music)** — Weather Music (kids) · *Cycle 136* · `demoable`
+  Touch anywhere on the screen — you're inside that weather. Drag between
+  zones to blend four atmospheric music engines. Multi-touch blends both
+  simultaneously. Zero permissions · Zero deps · 3.48 kB.
 
 ## Cycle 137 — research sweep (adult)
 
-8 adult cycles since last research (threshold = 3–4). Full sweep done.
-**6 new prototype seeds** added to IDEAS.md and RESEARCH.md §191–§196:
+6 new prototype seeds added to IDEAS.md and RESEARCH.md §191–§196:
 
 1. **`data-cosm`** (zero deps, zero API, one cycle) — Ryoji Ikeda aesthetic.
-   Synthetic particle physics event stream: scrolling monospace matrix of
-   collision data on pure black + audio pulse per event (sub-bass hum +
-   4kHz sine burst). Three scales auto-advance every 40s: Quantum (dense, fast,
-   8 events/sec) → Biological (1/sec, 440Hz) → Cosmic (1/10s, near-silence,
-   single centered event). Scale transitions: full-canvas white flash → numbers
-   scatter → snap back. Completely different visual language from all 115
-   existing prototypes. **Highest surprise of this batch.**
+   Synthetic particle event stream: scrolling monospace matrix + sub-bass sine
+   tones. Three auto-advancing scales (Quantum → Biological → Cosmic).
+   **Queued for Cycle 139.**
 
-2. **`poem-fluid`** (zero deps, zero API, one cycle) — Memo Akten "The Thinking
-   Ocean" paradigm (Whitney Artport 2026: WebGPU fluid + generative real-time
-   poem). WebGL Navier-Stokes fluid driven by mouse presence + Markov text
-   overlay keyed to fluid vorticity: still water → long Ghost narrative sentence;
-   gentle motion → 3-5 word phrase; turbulence → single word. "The fluid speaks
-   in fragments — the calmer the water, the fuller the thought."
+2. **`poem-fluid`** — WebGL Navier-Stokes fluid + Markov text overlay keyed to
+   vorticity (Memo Akten / Whitney Artport 2026 paradigm). Still water = full
+   sentence; turbulence = single word.
 
-3. **`image-chord`** (zero deps, zero API, one cycle) — Drag any image onto
-   the canvas. Extract dominant hue H, saturation S, brightness L via
-   `getImageData()`. Map to synthesizer: hue → chord quality (warm=major,
-   cool=minor, violet=diminished); saturation → harmonic richness (1–5 voices);
-   brightness → register + tempo. 8 preset journey-theme swatches. "Your
-   visual sense becomes music." Inspired by Mozualization (Apr 2026).
+3. **`image-chord`** — Drag any image → hue/saturation/brightness maps to chord
+   quality / harmonic richness / register. 8 journey-theme swatches. Inspired by
+   Mozualization (Apr 2026).
 
-4. **`arc-steer`** (FAL_KEY in use, one cycle) — MusicRFM concept ported to
-   ACE-Step. 6 editable textarea fields, one per journey phase, each with a
-   mood descriptor. ▶ Start Journey → fires 6 sequential ACE-Step calls
-   (30s each, ~$0.036 total). Each phase plays through the bloom visualizer;
-   timeline advances live. "Write the emotional arc. Hear it realized."
+4. **`arc-steer`** (FAL_KEY) — 6-phase journey arc via 6 sequential ACE-Step
+   calls. ~$0.036/journey.
 
-5. **`audio-cloud`** (zero deps, WebGPU required, two cycles) — Elekktronaut
-   TouchDesigner particlesGPU technique → WebGPU. 6 particle species, one per
-   FFT band, each with distinct physics: sub-bass particles fall (gravity), high
-   particles scatter (repulsion), all other species between. 12,000 particles.
+5. **`audio-cloud`** (WebGPU, 2 cycles) — 6 particle species × FFT bands,
+   distinct physics per species. Elekktronaut TD particlesGPU technique.
 
-6. **`body-conductor`** (CDN ~8MB, one cycle, needs your OK) — MediaPipe
-   PoseLandmarker: 33 body landmarks at 30fps. Wrist Y → pitch/bass, arm span →
-   stereo width, elbow angle → harmonics, body motion → dynamics. Full-body
-   dance → music. Needs OK on CDN dep.
+6. **`body-conductor`** (CDN ~8MB, needs your OK) — MediaPipe PoseLandmarker:
+   full-body dance → synthesizer. Wrist Y=pitch, arm span=stereo, body speed=dynamics.
 
 ## In progress / partial
 
@@ -66,14 +54,11 @@
 
 ## Open questions for Karel
 
-1. **`body-conductor` CDN dep** — MediaPipe PoseLandmarker is ~8MB, CDN-loaded
-   (no package.json change). Same pattern as the queued `31-gesture-music`.
-   Good to proceed? Unlocks full-body dance → synthesizer.
-2. **`arc-steer` spend** — 6 × ACE-Step 30s = ~$0.036 per journey run. Small
-   budget. Good to proceed?
-3. **`veo3-ghost` budget** — $2.00/clip (Veo 3 Fast). Still waiting for OK.
-4. **GEMINI_API_KEY** — still unlocks `30-lyria-jam`, `43-lyria-ghost`. Any
-   update?
-5. **`data-cosm` vs `poem-fluid` for Cycle 139** — both are one-cycle, zero deps.
-   `data-cosm` is more visually striking / surprising. `poem-fluid` is more
-   emotionally resonant (Ghost narrative + fluid). Which calls to you?
+1. **`data-cosm` vs `poem-fluid` for Cycle 139** — both zero deps, one cycle.
+   `data-cosm` = more visually striking / surprising (Ikeda aesthetic, completely
+   new to the sandbox). `poem-fluid` = more emotionally resonant (Ghost narrative
+   + fluid). Which calls to you?
+2. **`body-conductor` CDN dep** — MediaPipe ~8MB, CDN-loaded. Good to proceed?
+3. **`arc-steer` spend** — 6 × ACE-Step 30s ≈ $0.036/run. Good to proceed?
+4. **GEMINI_API_KEY** — unlocks `30-lyria-jam`, `43-lyria-ghost`. Any update?
+5. **`veo3-ghost` budget** — $2.00/clip (Veo 3 Fast). Still waiting for OK.
