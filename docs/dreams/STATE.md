@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 129 — adult research sweep
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 129 % 2 = 1 → NOT a kids cycle. Adult cycle.
+4. **Research** — overdue (last adult research was Cycle 117, 12 cycles ago). Chose research per AGENT.md rule: "if you haven't researched in 3+ cycles, do a research cycle."
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Love signal: immediate physical gesture → vivid sound response. Research bias: look for prototype ideas that open NEW sensory modalities (camera as instrument, body as canvas, ecological audio-visual metaphors).
+
+**Loved slugs that influenced this choice**: `82` and `83` — immediate gesture → vivid response. The LUMIA paper (camera → music) directly extends this to camera as instrument; `webcam-compose` inherits the same immediacy in a wholly new modality.
+
+**What I researched**:
+- **arxiv (2026 papers, date-verified)**: Break-the-Beat! (2605.14555, May 2026 — MIDI+reference audio → drum synthesis); LUMIA (2512.17228, Dec 2025 — camera→music embodied composition); Pay-Cross-Attention-to-Melody (2601.16150, Jan 2026 — single-encoder melodic harmonization); Audio-Visual Intelligence in Foundation Models survey (2605.04045, May 2026); MoXaRt XR audio-visual sound separation (2603.10465, Mar 2026); Structure-Aware Piano Accompaniment (2602.15074, Feb 2026).
+- **GitHub trending**: WebGPU-Ocean (matsuoka-601, SPH fluid 60 FPS in browser); jeantimex/fluid (SPH+FLIP WebGPU compute shaders). Both 2025-2026, neither audio-reactive yet — gap exists.
+- **Art/installations**: Superradiance (Memo Akten + Katie Hofstadter, Feb 2026, Gray Area SF — embodied simulation, invisible dancers in landscapes); DATALAND (Refik Anadol, opens June 20 2026 in LA — world's first AI arts museum, Large Nature Model trained on 16 rainforests).
+- **fal.ai/replicate**: Google Veo 3 production on fal confirmed; Seedance 2.0; Kling 2.6 native audio; MiniMax Music 2.6 confirmed; Stable Audio 2.5 confirmed — no new surprises, existing queue covers these.
+- **HN/creative coding**: ÆTHRA music DSL (Feb 2026, Show HN); collaborative music studio (May 2026, updated with 35+ DSP effects and AI stem separation).
+- **Three.js/WebGPU status (confirmed 2026)**: WebGPU now Baseline across all major browsers including iOS 26 / Safari 26. TSL compiles to WGSL+GLSL automatically. iPlug3 updated for WebGPU + SDL3 + Skia Graphite for 120 FPS creative coding. 100K+ particles at 60 FPS with compute shaders.
+
+**What surprised me**: Break-the-Beat! (arxiv May 2026) is the freshest paper found — published this month. The key insight is not just drum synthesis but the broader paradigm of **timbral imprinting via reference audio**: MIDI pattern + reference WAV → output inherits the timbre. This has a browser-native approximation (AudioBuffer spectral envelope matching) that doesn't need the full model. The SPH fluid gap is also surprising — both WebGPU-Ocean and jeantimex/fluid are impressive physically accurate simulations but neither is audio-reactive. That's an obvious extension for the dream zone.
+
+**Research findings (§§184–190)**: Appended to RESEARCH.md this cycle.
+
+**New IDEAS.md seeds (4 added)**:
+1. `webcam-compose` — LUMIA-inspired: webcam image analysis → direct synthesizer parameter mapping. Camera is instrument. Zero API, zero ML, zero deps. Highest novelty of the four seeds.
+2. `sph-ocean-av` — WebGPU SPH fluid (proper Navier-Stokes physics, 10K+ particles) driven by audio pressure events. More physically rigorous than ping-pong texture approach. Two-cycle build.
+3. `bio-echo` — Anadol LNM-inspired: mic audio → "ecological" generative canvas (bass=soil tendrils, mid=forest canopy particles, treble=bird arcs, treble shimmer=sky). Zero deps, zero API. One-cycle build.
+4. `live-harmonize` — Melody harmonization: mic → pitch detect → predict best-fit chord progression for the notes played so far, synthesize the chord, display both melody and predicted harmony. Distinct from `28-chord-canvas` (detects what IS playing) — this predicts what SHOULD harmonize the partial phrase.
+
+**What's queued next**:
+1. **Cycle 130 (kids, 130%2=0)** — `kids-bounce-notes` (physics balls + pentatonic wall collisions, tap to spawn). First autonomous-music kids prototype. Zero deps, zero permissions, one cycle.
+2. **Cycle 131 (adult, 131%2=1)** — `webcam-compose` (LUMIA-inspired camera-as-instrument). Highest novelty in the new queue. Zero API, zero deps, one cycle.
+
+---
+
 ## Cycle 128 — /dream/108-kids-kalimba
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

@@ -1873,4 +1873,80 @@ Key findings from Cycle 126 (2026-05-23) — kids research sweep:
 - CHI 2025 touchscreen review (§181) — children learn best when self-controlling; collaborative multi-touch increases joint attention. Validates kids-first design; suggests `kids-share-screen-v2` call-and-response sequel.
 - Sound2Hap (§182, arxiv 2601.12245, Jan 2026) — audio→haptic CNN. Browser Vibration API too coarse for this today; tag [emerging]. Monitor iOS 26 Haptic Engine API.
 - Conducting gesture paper (§183, arxiv 2604.27957, Apr 2026) — skeleton tracking → tempo/dynamics, 87ms. Inspires `kids-conductor-wand` (touch-only, no MediaPipe, pure finger gesture).
+
+---
+
+## 2026-05-23 — Cycle 129 adult research sweep
+
+### 184. Break-the-Beat! — Controllable MIDI-to-Drum Synthesis with Timbral Reference (arxiv 2605.14555, May 2026)
+**Source**: https://arxiv.org/abs/2605.14555 · [Freshest paper this cycle — May 2026]
+
+Break-the-Beat! fine-tunes a pre-trained text-to-audio model to synthesize drum audio from MIDI input while adopting the timbre of a reference audio sample. Given a MIDI drum pattern + a reference drum recording, it renders the MIDI with the sonic character of the reference — enabling sample-library-free, timbral-customizable polyphonic drum synthesis. The model uses a content encoder and hybrid conditioning mechanism to bridge MIDI input and audio output. Evaluated on audio quality, rhythmic alignment, and beat continuity.
+
+**Could become a prototype**: `midi-drum-forge` — an 8-row × 16-step sequencer where each drum row can be "timbral-imprinted" by dragging a WAV sample file onto it. In-browser approximation: spectral envelope estimation (FFT magnitude profile of the reference sample) + AudioBuffer resampling at each step's start position shapes the synthesized percussive burst toward the reference character. Demo loads 4 preset timbres (acoustic kick, electronic snare, jazz hi-hat, lo-fi clap). Rows color-coded; loop plays via `AudioContext.currentTime` scheduling. BPM slider. First drum/rhythm prototype in the sandbox. Zero new npm deps. One-cycle build. Research basis: §184.
+
+---
+
+### 185. LUMIA — Handheld Camera as Compositional Instrument (arxiv 2512.17228, December 2025)
+**Source**: https://arxiv.org/abs/2512.17228 · December 2025
+
+LUMIA enables "composition through looking" — users point a device camera at their environment; a vision-language model analyzes the imagery and generates structured prompts that feed a text-to-music pipeline (Stable Audio), producing loopable musical segments that can be layered in real-time. The paradigm shift: music-making through framing and perceiving rather than parameter programming. The system performs embodied musical composition — your attention (where you look) is the score.
+
+**Could become a prototype**: `webcam-compose` — camera as synthesizer controller, zero API, zero ML inference. Webcam → `getImageData()` frame analysis → extract 4 zone average HSL values (top-left, top-right, bottom-left, bottom-right) → map directly to synthesizer parameters: dominant hue → chord quality (warm 0°–60° = major, cool 180°–270° = minor), brightness → register (dark = bass, bright = treble), saturation → harmonic richness (1–6 simultaneous OscillatorNodes), frame-delta brightness → effective tempo (static = 40 BPM, changing = 120 BPM). Canvas split: left = live camera feed with color-zone overlays, right = audio-reactive 6-band bloom ring (`1-live` style). "Point your camera at anything — it becomes music." Webcam permission required; graceful fallback to LFO demo mode. Zero API, zero external deps. One-cycle build. Directly inspired by LUMIA's "compose through looking" paradigm but achieved without any server inference.
+
+---
+
+### 186. WebGPU SPH Ocean — Smoothed Particle Hydrodynamics at 60 FPS in Browser (2025–2026)
+**Source**: https://github.com/jeantimex/fluid · https://github.com/matsuoka-601/WebGPU-Ocean · 2025–2026
+
+Two independent open-source projects implement WebGPU SPH (Smoothed Particle Hydrodynamics) fluid simulations running at 60 FPS in the browser. Unlike ping-pong texture advection (used in `107-ocean-presence`), SPH explicitly simulates each fluid particle's position, velocity, and pressure forces — producing physically accurate vortex formation, splash dynamics, and surface tension. GPU spatial sorting via parallel Prefix-Sum enables 10,000–50,000 particles at 60 FPS with WebGPU compute shaders. Neither project is audio-reactive — that gap is wide open.
+
+**Could become a prototype**: `sph-ocean-av` — port the jeantimex/fluid SPH compute shader pipeline and add audio pressure events: bass energy → inverted gravity field (fluid rises instead of falls); onset → explosion pressure impulse at a random position; spectral centroid → particle color (low centroid = blue, high = red); mic amplitude → fluid viscosity (quiet = thick/slow, loud = runny/fast). The result is physically accurate fluid dynamics that respond to music — qualitatively different from `107-ocean-presence`'s visual-only advection: real particle collisions, surface tension, vortex streets. WebGPU required. Two-cycle build (SPH port is non-trivial). Zero deps (pure WGSL compute shaders). Needs Karel OK on complexity. See jeantimex/fluid for reference WGSL code.
+
+---
+
+### 187. Superradiance — Embodied Simulation: Bodies in Living Landscapes (Memo Akten + Katie Hofstadter, Feb 2026)
+**Source**: https://grayarea.org/exhibitions/superradiance-memo-akten-katie-hofstadter/ · Gray Area San Francisco, Feb 11–15, 2026
+
+Superradiance (Gray Area SF, Feb 2026) uses "embodied simulation" — invisible dancers are embedded in AI-generated forests, oceans, and deserts so that viewers feel the dancers' movements in their own bodies. Generative AI, game engines, and code weave simulated landscapes with captured dance performance into a multi-channel large-format film experience. The core technique: biometric data from performers (movement, breath, rhythm) drives procedural landscape deformation, making the environment an extension of the body. [Date verified: Feb 11–15, 2026, Gray Area San Francisco.]
+
+**Could become a prototype**: `landscape-resonance` — a full-canvas procedural 3D landscape (simplex-noise terrain rendered via WebGL GLSL, camera flying forward over rolling hills) where audio energy deforms the terrain in real-time: bass energy → terrain height scale (loud bass = towering peaks); treble → surface roughness (high frequency noise texture on terrain mesh); onset → lightning flash + brief terrain inversion; mic amplitude → atmospheric fog density. The landscape breathes and deforms with the music — inspired by Superradiance's technique of making the environment respond to the performer's body. Different from all existing fluid/particle prototypes: a recognizable 3D landscape, not abstract geometry. Flying-through perspective gives live-performance projector-screen quality. Zero deps (WebGL + GLSL). One-cycle build.
+
+---
+
+### 188. DATALAND — World's First AI Arts Museum + Large Nature Model (Refik Anadol, June 2026)
+**Source**: https://dataland.art · https://www.npr.org/2026/04/25/nx-s1-5799511/dataland-refik-anadol-los-angeles-ai-art-museum · Opens June 20, 2026
+
+Refik Anadol opens DATALAND, the world's first Museum of AI Arts, on June 20, 2026 in downtown Los Angeles (The Grand LA, Frank Gehry building). The inaugural exhibition "Machine Dreams: Rainforest" uses his Large Nature Model (LNM) — open-source, trained on millions of ecological images and sounds from 16 rainforests, the Smithsonian, Cornell Lab of Ornithology, Getty, iNaturalist, and London's Natural History Museum — to generate "digital sculptures" of alternate, possible rainforests that evolve continuously based on interaction. Five multi-sensory galleries: data becomes pigment. [Date verified: NPR article April 25, 2026; museum opening confirmed June 20, 2026.]
+
+**Could become a prototype**: `bio-echo` — mic input → real-time 6-band FFT → generates an "ecological" generative canvas animated from audio energy. Five visual layers that mirror five ecological strata: (1) sub-bass → soil/root tendrils growing upward from the canvas bottom (dark violet particle paths); (2) low-mid → tree trunk column (amber vertical strokes that grow tallest at peak bass); (3) mid → canopy particle system (emerald leaf-like particles swirling at mid-height); (4) high-mid → bird arc trajectories (white curved short trails at top of canvas, each onset fires one bird arc); (5) treble → sky shimmer (small star-like dots, density = treble energy). The canvas accumulates over the session — by the end of a piano piece, a living forest has grown. Download as PNG. Zero deps, zero API. One-cycle build. "Your music grows a forest." Inspired by Anadol's metaphor of data as pigment, ecological structure as visual grammar.
+
+---
+
+### 189. Pay Cross-Attention to Melody — Single-Encoder Melodic Harmonization (arxiv 2601.16150, January 2026)
+**Source**: https://arxiv.org/abs/2601.16150 · January 2026
+
+A transformer-based system for automatic melodic harmonization using "curriculum masking" and a single shared encoder for both melody and harmony representations. Unlike dual-encoder architectures, the single-encoder approach learns the relationship between melodic and harmonic material in a shared representation space, enabling coherent chord-melody integration. Trained on the HookTheory dataset; evaluated on chord diversity, harmony-melody alignment, and rhythmic coherence. The result: given partial melody input, the system can predict plausible chord progressions mid-phrase — not just detect what's already there.
+
+**Could become a prototype**: `live-harmonize` — mic → autocorrelation pitch detection (same as `13-piano-canvas`) accumulates the last 4 detected notes → template-matches against 24 built-in progressions (I-IV-V-vi, ii-V-I jazz, I-V-vi-IV, III-IV-I-V, etc.) → finds the best-fit chord given the partial phrase → synthesizes the predicted chord via OscillatorNode stack (sustained, soft, panned slightly left at −15°) while the user's detected melody note plays at center. Three-panel display: top = detected melody (mini piano roll, warm orange bars), bottom left = predicted harmony (chord name in large type, e.g. "Am"), bottom right = chromagram showing all 12 pitch classes. Key label updates live. "You play a melody — the system supplies the harmony, live." Distinct from `28-chord-canvas` (detects chords from what IS playing) — this predicts what chord would fit the melody phrase so far, even mid-phrase. Zero deps. One-cycle build.
+
+---
+
+### 190. Audio-Visual Intelligence in Large Foundation Models — Survey (arxiv 2605.04045, May 2026)
+**Source**: https://arxiv.org/abs/2605.04045 · May 2026
+
+Comprehensive survey of how foundation models integrate audio and visual data — submitted May 2026, covering three capability tiers: understanding (speech recognition, sound localization, audio-visual correspondence), generation (audio-driven video synthesis, video-to-audio), and interaction (dialogue agents, embodied AI interfaces). Identifies "embodied agentic interfaces" — systems that see AND hear to produce behavioral outputs — as the current open frontier. Cross-modal attention fusion and multimodal tokenization are the dominant technical approaches. [Date verified: May 2026, arxiv submission.]
+
+**Relevance to Resonance**: Confirms the trajectory of AV AI is toward embodied, interactive, agent-mediated interfaces — Karel's "what does Resonance look like as an immersive installation" question is the correct forward direction. The "interaction" tier (embodied agents that see + hear) is where the sandbox has barely explored — `webcam-compose` (§185) is the first prototype in this space without server inference. Long-term: a Resonance "AV agent" that perceives the room's visual environment and adapts the audio-visual session arc in real-time. No new prototype yet; note direction for future research cycles. [older-research: tag if revisited — this is a survey, moves slowly]
+
+---
+
+Key findings from Cycle 129 (2026-05-23) — adult research sweep:
+- Break-the-Beat! (§184, arxiv 2605.14555, May 2026) — MIDI pattern + reference audio timbre → drum synthesis. Freshest paper this cycle. Inspires `midi-drum-forge` (step sequencer + timbral imprinting, in-browser approximation via AudioBuffer).
+- LUMIA (§185, arxiv 2512.17228, Dec 2025) — handheld camera → music generation. "Compose through looking." Inspires `webcam-compose` — pure image analysis → synthesizer control, zero API, zero ML, one cycle.
+- WebGPU SPH Ocean (§186, GitHub, 2025–2026) — physically accurate SPH fluid at 60 FPS in browser. Neither existing project is audio-reactive — obvious gap. Inspires `sph-ocean-av` (audio pressure events → particle physics). Two-cycle build.
+- Superradiance (§187, Memo Akten, Feb 2026 Gray Area SF) — embodied simulation: invisible dancers in AI-generated landscapes. Inspires `landscape-resonance` — procedural terrain that breathes with music. Zero deps, one cycle.
+- DATALAND (§188, Refik Anadol, opens June 20 2026 LA) — Large Nature Model, ecological data as pigment. Inspires `bio-echo` — mic → ecological canvas (bass=roots, mid=canopy, treble=birds). Zero deps, one cycle.
+- Pay Cross-Attention to Melody (§189, arxiv 2601.16150, Jan 2026) — single-encoder harmonization, mid-phrase chord prediction. Inspires `live-harmonize` — predict harmony from partial melody, not just detect existing chords. Zero deps, one cycle.
+- Audio-Visual Foundation Models Survey (§190, arxiv 2605.04045, May 2026) — confirms embodied AV agents as the open frontier. Directional signal for future research; no immediate prototype.
 - **Strongest next-cycle kids build**: `kids-kalimba` — one-cycle, zero deps, zero API, BANDIMAL-inspired, directly extends loved `82-kids-color-piano` paradigm.

@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 128 — kids build)
+## ⭐ Newest (Cycle 129 — adult research sweep)
+
+No new prototype this cycle — adult research was 12 cycles overdue (last adult research: Cycle 117). Scanned arxiv (May 2026), GitHub trending WebGPU, fal.ai/replicate, Memo Akten's Superradiance (Gray Area SF Feb 2026), Refik Anadol's DATALAND (opens June 20 2026 in LA), and HN creative coding. Found **7 findings (§§184–190)** in RESEARCH.md. Seeded **4 new prototype ideas** in IDEAS.md. Freshest find: Break-the-Beat! (arxiv 2605.14555, published this month — MIDI + reference audio timbre → drum synthesis). Most buildable new seed: `webcam-compose` — camera image analysis → direct synthesizer control, zero API, zero ML, one cycle.
+
+Next: **Cycle 130 → `kids-bounce-notes`** (physics balls + pentatonic wall collisions). **Cycle 131 → `webcam-compose`** (camera as instrument).
+
+---
+
+## Previous (Cycle 128 — kids build)
 
 - **[/dream/108-kids-kalimba](/dream/108-kids-kalimba)** — Kalimba (kids). `demoable`
   Eight colorful vertical bars (violet → pink). Tap any bar to pluck it with Karplus-Strong string synthesis — noise burst into tuned ring-buffer feedback loop, decay 1.5–4s. **Taller bars ring lower; shorter bars ring higher** — the physical law of string instruments, no words needed. Drag across for a glissando; multi-touch plucks multiple strings simultaneously. Demo auto-arpeggios silently until first touch. Ambient C-E-G pad. Start screen shows a mini bar-height preview so the instrument's shape is visible before play. Eight C-major pentatonic notes (C3–A4), all combinations consonant.
