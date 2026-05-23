@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 134 — /dream/113-kids-conductor-wand
+
+**When**: 2026-05-23 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 134 % 2 = 0 → **kids cycle**. No blockers.
+4. **KIDS.md queue**: top recommendation from both STATE.md Cycle 133 and KIDS.md Cycle 132 notes is `kids-conductor-wand`. "Drag finger = conductor's baton; Y=register, speed=tempo. First gesture-as-conductor kids prototype."
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved: immediate physical gesture → vivid musical feedback. `kids-conductor-wand` inherits this: the wand *is* the instrument, no buttons, no menu required. The direction you drag and how fast shapes the music in real time.
+
+**Loved slugs that influenced this choice**: `82` (tap anywhere → instant musical response) and `83` (physical gesture = music). `kids-conductor-wand` is the synthesis: a continuous gesture that IS the composition in motion.
+
+**What I built**:
+- `src/app/dream/113-kids-conductor-wand/page.tsx` — drag-to-conduct orchestra; 4 presets
+  - **4 orchestra presets**: Playground 🎪 (amber, triangle wave, C3 root), Space 🚀 (violet, sine, C2 root — slow attack/long decay), Forest 🌲 (emerald, triangle, G2 root), Ocean 🌊 (cyan, sine, C2 root — 3 drone notes). Each has its own color/glow, waveform, root MIDI, drone chord, attack/decay.
+  - **Wand**: glowing colored circle follows the pointer. Outer radial gradient glow in orchestra color, solid core, inner sparkle highlight. Always visible — follows the finger with no lag.
+  - **Rainbow trail**: last 1500ms of positions drawn as fading circles with rainbow hue shifted across the trail. Oldest = transparent/small, newest = bright/large. Canvas background fades at 0.18 alpha per frame (persistent glow).
+  - **Y → pitch**: pentatonic scale (C major, 2.5 octaves) mapped from top (high) to bottom (low). Moving the wand from bottom to top is a natural ascending glissando. `yToMidi(yNorm, rootMidi)` — 15-note PENTA array.
+  - **Speed → note rate**: `Math.abs(x - prevX) * 60` gives approximate px/s at 60fps. Fast sweep (>220 px/s) = 145ms between notes (≈ 16th notes at 100 BPM). Medium (80–220) = 300ms (8th notes). Slow (<80) = 580ms (quarter notes). The child discovers this by sweeping slowly then quickly.
+  - **Quick tap → drum**: pointer held <280ms fires a noise-burst percussive hit (white noise × exponential decay envelope, 130ms). Short swipe = melody; stab = drum. Natural separation without any UI.
+  - **Ambient drone**: 2–3 soft sine oscillators (drone notes per orchestra), gain faded in over 2.5s. Always on. Canvas never goes silent.
+  - **Demo mode**: auto-conducts a Lissajous figure (cos(angle) × sin(angle × 0.73)) until first touch. Child picks up the device and it's already playing — no "start" action required for sound. First touch takes over immediately.
+  - **Start screen**: 4 orchestra selector buttons (2×2 grid, min-h-[80px], emoji + name), large Start button (min-h-[64px], colored per orchestra). All text text-base+. No reading required — emoji communicates the vibe.
+  - **Reverb**: `buildImpulse` — 2.8s impulse with exponential decay 4. Wet gain 0.32; gives Space/Ocean a cavernous feel, Playground/Forest a moderate hall feel.
+
+**Build**: `✓ /dream/113-kids-conductor-wand  2.84 kB  106 kB` — clean, zero errors.
+
+**What surprised me**: The speed → note rate mapping creates a genuinely musical instrument. A child who sweeps slowly hears long sustained tones (like a held note). A child who sweeps quickly hears rapid arpeggios. The transition between them is continuous — there's no threshold UI. The child discovers by doing: slow it down and the music stretches; speed up and it brightens. This is exactly the sensorimotor principle from KIDS.md (Reggio Emilia: understanding through movement).
+
+The Lissajous demo mode is a happy accident — because it uses incommensurable frequencies (1.0 and 0.73), it never repeats the same path. The wand traces a slowly evolving figure-8-ish curve that visits both high and low register, demonstrating the Y=pitch mapping naturally before the child touches the screen.
+
+**What's queued next**:
+1. **Cycle 135 (adult, 135%2=1)** — `live-harmonize` or `114-live-harmonize`. Play a melody via mic → system detects each note → predicts harmony chord → plays 4-voice accompaniment panned slightly left. Pitch detection via autocorrelation (same as `13-piano-canvas`); chord prediction via pitch-class template matching (same algorithm as `28-chord-canvas`). Zero deps.
+2. **Cycle 136 (kids, 136%2=0)** — `kids-weather-music`. Four weather zones (sun/cloud/rain/wind); hold to blend; no tap targets, whole screen is the instrument. Most different from existing kids prototypes.
+
+---
+
 ## Cycle 133 — /dream/112-bio-echo
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

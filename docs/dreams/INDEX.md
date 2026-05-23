@@ -10,7 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 133 — adult build)
+## ⭐ Newest (Cycle 134 — kids build)
+
+- **[/dream/113-kids-conductor-wand](/dream/113-kids-conductor-wand)** — Conductor Wand (kids). `demoable`
+  Drag your finger anywhere — a glowing wand follows it, leaving a rainbow color trail. Y position = pitch (pentatonic, top=high, bottom=low). Drag speed = note rate: slow sweep → long sustained tones; fast sweep → rapid arpeggios. Quick tap → drum hit (noise burst). Choose from 4 orchestras before starting: **Playground** 🎪 (bright triangle waves, amber), **Space** 🚀 (slow-attack sine waves, violet), **Forest** 🌲 (warm triangle, emerald), **Ocean** 🌊 (flowing sine with 3-note drone, cyan). Ambient drone chord for that orchestra plays quietly always — canvas never goes silent. Demo mode auto-conducts a Lissajous figure until first touch (wand already moving = no cold start).
+  **"Your finger is the conductor's baton."** First kids prototype where a single continuous gesture controls both pitch AND rhythm simultaneously. No buttons, no tap targets — the whole screen is the instrument.
+  Zero permissions · Zero API · Zero deps · 2.84 kB.
+
+Next: **Cycle 135 → `live-harmonize`** (play melody → system harmonizes in 4 voices). **Cycle 136 → `kids-weather-music`**.
+
+---
+
+## Previous (Cycle 133 — adult build)
 
 - **[/dream/112-bio-echo](/dream/112-bio-echo)** — Bio Echo. `demoable`
   Play piano into the mic — watch a forest grow, layer by layer, in real time. Five frequency strata map to five ecological layers: **sub-bass grows root tendrils** (deep violet lines crawling upward with Brownian drift); **bass builds the trunk** (amber pillar that only grows, never shrinks — every bass-heavy passage is permanently recorded in its height); **mid blooms the canopy** (emerald leaf-ellipses accumulating at 34–61% canvas height); **onsets send birds** (each attack fires a white bezier wing-arc into the sky — play 60 attacks and the sky fills with birds); **treble fills the sky** (tiny white star-dots at top 14%).

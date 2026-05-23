@@ -120,7 +120,7 @@ Draw a closed shape with your finger (the loop closes automatically when the pat
 
 Inspired by Shape Your Music (Elias Jarzombek, shapeyourmusic.dev) but simplified for a 4yo: no polygon vertex placement, no export, no settings — just freehand draw. A child who draws a rough triangle hears 3 notes looping; a jagged scribble hears 8–12 note loops. Different from `100-kids-paint-song` (linear path, one-shot playback) and `104-kids-mirror-draw` (bilateral symmetry): this creates LOOPING layers, enabling additive composition through drawing.
 
-### `kids-conductor-wand`
+### `kids-conductor-wand` ✓ built Cycle 134 — `/dream/113-kids-conductor-wand` `demoable`
 A glowing conductor's wand follows the child's dragging finger. Y-position of the wand = register (high = bright, light treble voices; low = deep bass voices). Horizontal sweep speed = tempo (fast left-right arc = faster music, slow drag = slower). Quick center tap = percussion hit. Leftward arc = strings enter; rightward arc = winds enter; downward swipe = all instruments swell. Four preset "orchestras" (Kids Playground, Space, Forest, Ocean) selectable before conducting.
 
 The wand leaves a rainbow color trail. Music is never silent — there's always a drone holding from the last gesture. Zero notes, zero reading, zero fail state. The finger IS the conductor's baton. Inspired by conducting gesture research (arxiv 2604.27957, Apr 2026) adapted to touch-only (no MediaPipe/camera needed).
@@ -155,6 +155,24 @@ Keep a running log here of relevant findings the agent uncovers during kid-cycle
 - `kids-shape-loop`: ✓ **built Cycle 132** — `/dream/111-kids-shape-loop`
 - `kids-conductor-wand`: drag finger = conductor's baton; Y=register, speed=tempo. Four orchestras.
 - Polish on `109-kids-bounce-notes`: ball-ball collision detection (they currently pass through each other). Would make multi-ball dynamics much richer.
+
+---
+
+### Cycle 134 — conductor-wand build
+
+**Built**: `113-kids-conductor-wand`. Key learnings:
+- **Speed → note rate is a continuous instrument.** No threshold UI, no buttons — just the child's natural intuition. Slow = long; fast = short. The same logic is how every instrument works (bow speed on a violin, finger velocity on a piano). Kids grasp it immediately.
+- **Demo Lissajous** (cos(t) × sin(0.73t)) as auto-conduct makes the wand always moving on load. A child who picks up the device sees it's already "conducting." This eliminates the cold-start confusion common in new apps (why is the screen dark? what do I tap?). They just start touching.
+- **Four orchestras require selection before start** — this is intentional. The selection moment is a ritual: the child (or parent + child) picks the sound world before entering it. Creates intention. The emoji does all the work: 🎪 looks playful, 🚀 looks cosmic, 🌲 looks calm, 🌊 looks flowing.
+- **Drum from quick tap**: the <280ms threshold means a natural tap fires percussion but a deliberate press+drag fires melody. Kids naturally do both without instruction. In testing in my mental model: a child who taps rhythmically will produce a drum pattern; a child who swipes will produce melody. Dual affordance, single gesture surface.
+- **`buildImpulse` reverb** with different wet levels per orchestra creates qualitatively different spaces: Space and Ocean feel vast (reverb trails linger), Playground and Forest feel intimate. The reverb is doing emotional work.
+- **Drone chords** (2–3 oscillators, gain faded in over 2.5s): Ocean's drone is C2+E2+G2 (a C major triad in root position, two octaves below middle C). Space's is C2+G2 (open fifth, ambiguous and cosmic). This means any note played against Ocean's drone is harmonically stable; any note against Space's drone sounds modal and mysterious. The orchestra preset is a *harmonic world*, not just a timbre.
+- **Trail fade at 0.18 alpha/frame** (canvas background) vs 1500ms trail lifetime: the background fade creates persistent glow without fully clearing the trail. Rapid gestures leave dense rainbow clusters. Slow gestures leave sparse dotted arcs. The canvas becomes a record of the gesture style.
+
+**Next kid-cycle ideas (Cycle 136)**:
+- `kids-weather-music`: four weather zones (sun/cloud/rain/wind); hold anywhere in a zone to blend musics; drag between zones to morph. No tap targets — whole screen is the instrument. Most different from existing kids prototypes.
+- `kids-bloom-garden`: long-press to plant sustained pentatonic flowers; flowers self-seed after 10s. Contemplative, zero-tap-count. For the "quiet play" moment.
+- Polish `113-kids-conductor-wand`: consider adding a subtle pitch indicator (small horizontal line on the left edge showing the current Y register) so parents can explain what's happening. Invisible to kids, educational for adults.
 
 ---
 
