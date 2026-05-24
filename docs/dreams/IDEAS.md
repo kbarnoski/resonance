@@ -1733,3 +1733,59 @@ Key findings from Cycle 137 (2026-05-23) — adult research sweep:
 - MediaPipe PoseLandmarker (§195, confirmed 2026) — 33 body landmarks at 30fps. Inspires `body-conductor`. One cycle, CDN dep, needs Karel OK.
 - Mozualization (§196, Apr 2026) — multimodal input → music. Zero-dep port inspires `image-chord`. One cycle, zero deps.
 - Audio-Visual Foundation Models Survey (§190, arxiv 2605.04045, May 2026) — embodied AV agents as open frontier. Directional; no immediate prototype.
+
+---
+
+## FROM RESEARCH (Cycle 151, 2026-05-24) — promoted to queue
+
+### lyria3-journey — six Ghost scenes → Lyria 3 Pro ambient music via FAL_KEY (no GEMINI_API_KEY needed) `[queued, FAL_KEY — already in use]`
+Route: `/dream/128-lyria3-journey`. **Priority: build next adult cycle.** Six Ghost preset scenes (Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension). Each scene has a pre-written music prompt describing its acoustic character (e.g., Stone Chamber → "ambient score, slow tempo, single reverbed piano chord, stone cave resonance, 35 BPM, long decay tails, no percussion, eerie"). Click any scene → API call to `fal-ai/lyria3/pro` ($0.08/generation, FAL_KEY already in use) → receive 30s MP3 + BPM metadata → decode via `AudioContext.decodeAudioData` → play through six-band bloom visualizer (same as `1-live`). BPM from the metadata drives a subtle bloom-pulse animation at the detected tempo. Waveform strip shows duration. "Generate variation" re-calls with the same prompt + `seed: Math.random()`. All six prompts are editable before generating.
+
+**Why this is the highest-priority adult build**: MORNING.md's open question "GEMINI_API_KEY: unlocks 30-lyria-jam, 43-lyria-ghost, 44-binaural-lyria — still waiting" is now RESOLVED. `fal-ai/lyria3/pro` is Google's latest Lyria model, now available on fal.ai at $0.08/generation via FAL_KEY — no Gemini API key required. This prototype builds the simplest, most direct version: Ghost scene → Lyria music → bloom. After this ships, the more complex `43-lyria-ghost` (image + music together) and `44-binaural-lyria` (binaural beats + Lyria) can be updated to use `fal-ai/lyria3/pro` instead of waiting for GEMINI_API_KEY. Zero new npm deps. One-cycle build. Research basis: RESEARCH.md §197.
+
+### ghost-3d-orbit — Ghost LoRA image → Pixal3D 3D model → audio-reactive R3F scene `[queued, FAL_KEY — already in use, two-cycle build]`
+Route: `/dream/129-ghost-3d-orbit`. Admin-only. Step 1: generate Ghost LoRA image from a preset scene description (using existing `/api/ai-image/generate` + the Ghost LoRA). Step 2: pass the returned image URL to `fal-ai/pixal3d` (1024p, $0.30) → receive `.glb` 3D model. Step 3: load the GLB in a React Three Fiber scene using `@react-three/drei`'s `useGLTF` hook. Step 4: audio-reactive: attach a custom `MeshStandardNodeMaterial` with TSL `positionNode` displacement — bass energy → subtle global scale pulse (0.98→1.03×), treble energy → per-vertex normal displacement for surface shimmer. Step 5: `OrbitControls` for free camera orbit. Step 6: `@react-three/postprocessing` bloom (`UnrealBloomPass`). Dark background. Demo OscillatorNode audio drives the reactivity without mic.
+
+"The Ghost character becomes a 3D sculpture you can orbit — and it breathes with sound." This is the first prototype that gives the Ghost image spatial depth and interactive presence. The Ghost figure stops being a flat image and becomes a three-dimensional object. Pixal3D is accepted to **SIGGRAPH 2026** (TencentARC) and just released on fal.ai in May 2026 — state of the art image-to-3D. Zero new npm deps (drei, three@0.182, R3F, postprocessing already installed). Budget: ~$0.30 (Pixal3D) + Ghost LoRA image cost. FAL_KEY in use. Two-cycle build: Cycle A = Ghost image generation + Pixal3D integration + GLB loading; Cycle B = audio-reactive vertex displacement + polish. Research basis: RESEARCH.md §199.
+
+### tsl-particle-compute — Three.js TSL compute shader: 50k-particle Lorenz strange attractor `[queued, zero deps, WebGPU required]`
+Route: `/dream/130-tsl-particle-compute`. A 50,000-particle Lorenz strange attractor using Three.js TSL compute shaders — the correct 2026 approach vs. the FBO-based GPGPU hack used in `16-particle-life-gpu`. Implementation:
+
+```js
+const updateParticles = Fn(() => {
+  const i = instanceIndex;
+  const pos = storageObject('positions', 'vec3', N).element(i);
+  const vel = storageObject('velocities', 'vec3', N).element(i);
+  const sigma = uniform(10.0); // driven by bass energy
+  const rho = uniform(28.0);   // driven by treble energy
+  const dx = sigma.mul(vel.y.sub(pos.x));
+  const dy = pos.x.mul(rho.sub(pos.z)).sub(pos.y);
+  const dz = pos.x.mul(pos.y).sub(2.667.mul(pos.z));
+  // ... update pos, vel
+});
+```
+
+Audio mapping: bass energy → `sigma` (Lorenz σ, 8–14); treble energy → `rho` (ρ, 24–32); onset → brief velocity turbulence burst. Render: instanced points with color from particle speed magnitude (slow=violet, fast=cyan, intermediate=emerald). OrbitControls. Demo mode: LFO oscillators animate σ/ρ. Mic mode: live FFT. The strange attractor's wing shape changes as audio parameters shift — a different "signature" for bass-heavy vs. treble-heavy music. "The music attracts." WebGPU required; graceful fallback text links to `10-strange`.
+
+Why this now: `16-particle-life-gpu` (6-species flocking via FBO hack) and `75-houdini-particle-flock` (Boids) are the only GPU particle prototypes. TSL compute shaders as of Three.js r171 (WebGPU Baseline Jan 2026) are production-ready and clean — no more string-concatenated WGSL, no more ping-pong texture hacks. This is the idiomatic 2026 approach to GPU particle physics. Also: this simplified approach makes the `audio-cloud` two-cycle plan achievable in one cycle. Zero new npm deps (three@0.182 + R3F already installed). One-cycle build. Research basis: RESEARCH.md §200 (Maxime Heckel TSL field guide, Jan 2026).
+
+### kali-sustain — long-tone harmonic meditation: slow ratio glide (Kali Malone / drone music inspired) `[queued, zero deps, zero API]`
+Route: `/dream/131-kali-sustain`. Inspired by Kali Malone's slowly evolving harmonic music (pipe organs, just intonation, intervals held for minutes) performing at MUTEK Montréal 2026. Two `OscillatorNode`s: (1) **root drone** — a sustained C2 sine (gain 0.10) with a very slow LFO (0.05 Hz) for gentle beating; (2) **harmony voice** — a second `OscillatorNode` that slowly glides between pure-ratio target frequencies: 3:2 (perfect fifth), 4:3 (fourth), 5:4 (major third), 6:5 (minor third), 7:4 (harmonic seventh), 9:8 (whole tone). Each ratio holds for 12 seconds, then glides via `linearRampToValueAtTime` over another 12 seconds to the next ratio — a complete cycle through all 6 intervals takes ~144 seconds (2.4 minutes), then repeats.
+
+Canvas: a slow circular "ratio clock" — a circle with 6 labeled positions for each ratio, a glowing indicator that sweeps between them. Center: the current interval name in `font-serif text-2xl` ("3:2 — Perfect Fifth") and the ratio as a fraction. Background: very slow HSL color cycle synchronized to the current ratio (3:2=violet, 4:3=teal, 5:4=amber, 6:5=rose, 7:4=indigo, 9:8=emerald). Mic mode: autocorrelation pitch detection → detect user's sustained long tone → set root drone to detected pitch → begin glide sequence from that fundamental. "Hold a note. The world shifts beneath it."
+
+This fills a real gap: 130 prototypes have been built, and none explore the aesthetics of **drone music / sustained harmonic meditation** — Éliane Radigue, La Monte Young, Tony Conrad, Kali Malone. Resonance's "transcendent listening" vision maps exactly onto this tradition. The patient aesthetic is a counterpoint to the busy, reactive majority of the sandbox. Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §201 (MUTEK 2026, Kali Malone, Aug 25–30).
+
+### lmdm-echo — generative delay: your piano phrase, echoed back transformed `[queued, FAL_KEY — already in use]`
+Route: `/dream/132-lmdm-echo`. Inspired by the "generative delay" concept from Live Music Diffusion Models (arXiv:2605.22717, May 21, 2026). Mic → record a piano phrase (same `MediaRecorder` approach as `43-stable-extend`, 5–15s). When recording stops: (1) run chroma analysis (12-bin, same as `28-chord-canvas`) to detect dominant chord quality; (2) estimate tempo from onset intervals (same as `48-tap-rhythm`); (3) detect register from spectral centroid; (4) construct ACE-Step style prompt: `"piano improvisation echo, [quality] character, [tempo] BPM, [register] register, slight timbral variation, reverb, contemplative"`. Call `fal-ai/ace-step` ($0.006/30s). When response arrives: play both simultaneously — original recording left-panned (gain 0.65), AI echo right-panned (gain 0.45). Waveform strip: two-channel horizontal bar (original=amber, echo=blue). "Echo again" button re-generates with same analysis but different seed.
+
+Different from `44-vocal-bgm` (which uses `audio-to-audio` remix of raw signal): this is `text-to-audio` where the prompt is derived from harmonic analysis — the echo is in the same key and tempo but is a fresh composition, not a direct transformation. The echo responds to the musical *meaning* of the phrase (what chord quality, what register, what tempo) rather than its literal sonic content. "The piano echoes back — transformed." Different from `33-aria-companion` (Markov response, immediate, short) — this is a longer, richer, AI-generated echo of a full recorded phrase. FAL_KEY in use, $0.006/echo. Zero new npm deps. One-cycle build. Research basis: RESEARCH.md §198 (arXiv:2605.22717, May 21, 2026).
+
+Key findings from Cycle 151 (2026-05-24):
+- Lyria 3 Pro on fal.ai (§197) — $0.08/generation via FAL_KEY. Resolves MORNING.md open question re: GEMINI_API_KEY. Inspires `128-lyria3-journey` — highest-priority adult build (one cycle, zero new deps, directly unblocks 3+ prototypes).
+- Live Music Diffusion Models (§198, arXiv:2605.22717, May 21, 2026 — freshest paper) — "generative delay" concept. Inspires `132-lmdm-echo` — ACE-Step harmonic echo of pianist's phrase.
+- Pixal3D SIGGRAPH 2026 (§199, TencentARC, May 2026 fal.ai release) — $0.30 image→3D GLB, zero new deps. Inspires `129-ghost-3d-orbit` — two-cycle build, highest surprise of batch.
+- Three.js TSL Compute Shaders (§200, Jan 2026 confirmed baseline) — clean particle physics without WGSL strings. Inspires `130-tsl-particle-compute` — one-cycle build, simplifies `audio-cloud` two-cycle plan.
+- MUTEK 2026 / Kali Malone (§201, Aug 25–30 announcement) — slowly evolving harmonic meditation. Inspires `131-kali-sustain` — zero deps, zero API, fills the drone/sustain gap.
+- ACE-Step 1.5 in diffusers (§202) — likely already live on fal.ai endpoint; LongCat-AudioDiT needs fal.ai endpoint.
+- AUDIOLAB unified React tree pattern (§203) — apply as architecture for future Three.js prototypes.

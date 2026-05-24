@@ -1,5 +1,47 @@
 # Dream Agent — cycle state
 
+## Cycle 151 — research cycle
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 151 % 2 = 1 → NOT a kids cycle. Adult cycle.
+4. **Build new** — queue check: MORNING.md recommended `anemone-av` and `tap-rhythm` as top candidates, but both are already built (49-anemone-av, 50-tap-rhythm). Verified full prototype directory — the genuinely unbuilt adult candidates are `audio-cloud` (2-cycle build, WebGPU) and `body-conductor` (needs Karel OK on CDN dep). Neither is a clean one-cycle zero-approval pick.
+5. **Research** — last research was Cycle 137 (14 cycles ago). AGENT.md says "once every 3-4 cycles." Queue is stocked but **14 cycles overdue for research** strongly triggers this priority. Research is the right call.
+
+**Reasoning**: At 14 cycles since the last research sweep, the "once every 3-4 cycles" guideline is heavily violated. The MORNING.md recommended already-built prototypes — a symptom that the agent has been working without refreshing its view of the queue. A research cycle now ensures the next several build cycles pick genuinely fresh, high-quality targets rather than re-re-checking what's been built.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged since Cycle 112.
+
+**What I researched**:
+
+1. **Lyria 3 Pro on fal.ai (§197)** — Google's Lyria is now available as `fal-ai/lyria3/pro` at $0.08/generation via FAL_KEY. **This resolves MORNING.md's open question about GEMINI_API_KEY.** `43-lyria-ghost`, `44-binaural-lyria`, `30-lyria-jam` can all be built without waiting for the Gemini key. New prototype seed: `128-lyria3-journey`.
+
+2. **Live Music Diffusion Models (§198, arXiv:2605.22717, May 21, 2026 — 3 days ago)** — New paper proposing real-time interactive diffusion music on consumer hardware via block-wise KV caching. "Generative delay" concept: system listens to a live pianist's phrase and responds with a transformed musical echo. Directly inspiring: `132-lmdm-echo` — ACE-Step-based harmonic echo prototype.
+
+3. **Pixal3D SIGGRAPH 2026 (§199)** — TencentARC image→3D GLB model, $0.30 on fal.ai, released May 2026. Zero new npm deps (drei already installed). Ghost image → 3D sculpture prototype: `129-ghost-3d-orbit`. Highest surprise factor of this batch.
+
+4. **Three.js TSL Compute Shaders (§200)** — Maxime Heckel field guide confirms: as of Jan 2026, particle physics via TSL `Fn()` compute nodes is production-ready in Three.js without raw WGSL strings. Simplifies `audio-cloud` two-cycle plan to potentially one-cycle. New prototype seed: `130-tsl-particle-compute`.
+
+5. **MUTEK 2026 / Kali Malone (§201)** — August 25–30 festival in Montreal. Kali Malone's slowly-evolving harmonic music fills a gap in the sandbox: none of 127 prototypes explore drone/sustain meditation aesthetics. Seed: `131-kali-sustain` (long-tone Tonnetz glide, zero deps, zero API).
+
+6. **ACE-Step 1.5 + LongCat-AudioDiT in diffusers (§202)** — May 2026 HuggingFace release. ACE-Step 1.5 likely already live on fal.ai endpoint. LongCat-AudioDiT (longer audio, 3–5 min) needs fal.ai endpoint; monitor.
+
+7. **AUDIOLAB unified React tree pattern (§203)** — Clean pattern for combining R3F 3D geometry + Web Audio reactivity via shared React state. Apply as architecture reference for future Three.js prototypes.
+
+**Key breakthrough**: Lyria 3 Pro on fal.ai unblocks 3+ previously GEMINI_API_KEY-blocked prototypes. `128-lyria3-journey` is the highest-priority next adult build.
+
+**What's queued next**:
+1. **Cycle 152 (kids, 152%2=0)** — kids cycle. Check KIDS.md for next candidate.
+2. **Cycle 153 (adult, 153%2=1)** — Build `128-lyria3-journey` (one cycle, zero new deps, FAL_KEY, directly uses new Lyria 3 Pro endpoint). This is the highest-priority adult build.
+3. **Cycle 154 (kids)** — kids cycle.
+4. **Cycle 155 (adult)** — `130-tsl-particle-compute` (Three.js TSL compute shaders, zero deps, WebGPU) OR `131-kali-sustain` (zero deps/API, contemplative drone aesthetic).
+5. **Two-cycle target**: `129-ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026, highest surprise, two cycles).
+
+---
+
 ## Cycle 150 — /dream/127-kids-starfish
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
