@@ -15,6 +15,14 @@ interface SFDef {
   base: number;
 }
 
+interface Ripple {
+  x: number;
+  y: number;
+  r: number;
+  col: string;
+  t: number; // 0→1 over 300ms
+}
+
 // Five starfish on the ocean floor, each with a distinct chord
 const STARFISH: SFDef[] = [
   { xf: 0.13, yf: 0.83, r: 46, col: "#8b5cf6", base: 0 }, // violet — C3 chord
@@ -156,6 +164,7 @@ export default function KidsStarfish() {
     // Mutable animation state — no React re-renders needed
     const wiggle = STARFISH.map(() => 0);
     const bubbles = BUBBLE_SEED.map((b) => ({ ...b }));
+    const ripples: Ripple[] = [];
     let t = 0;
     let rafId = 0;
 
@@ -181,6 +190,7 @@ export default function KidsStarfish() {
         const sf = STARFISH[i];
         if (Math.hypot(cssX - sf.xf * W, cssY - sf.yf * H) < sf.r + 22) {
           wiggle[i] = 1.0;
+          ripples.push({ x: cssX, y: cssY, r: sf.r, col: sf.col, t: 0 });
           ringChord(actx, conv, sf.base);
           break;
         }
@@ -266,6 +276,22 @@ export default function KidsStarfish() {
       for (let i = 0; i < STARFISH.length; i++) {
         const sf = STARFISH[i];
         drawStar(ctx, sf.xf * W, sf.yf * H, sf.r, wiggle[i], sf.col);
+      }
+      ctx.restore();
+
+      // Tap ripple rings — expanding circle at tap point, fades over 300ms
+      ctx.save();
+      ctx.shadowBlur = 0;
+      for (let ri = ripples.length - 1; ri >= 0; ri--) {
+        ripples[ri].t = Math.min(1, ripples[ri].t + dt / 300);
+        const rp = ripples[ri];
+        ctx.globalAlpha = (1 - rp.t) * 0.65;
+        ctx.beginPath();
+        ctx.arc(rp.x, rp.y, rp.t * (rp.r + 52), 0, Math.PI * 2);
+        ctx.strokeStyle = rp.col;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        if (rp.t >= 1) ripples.splice(ri, 1);
       }
       ctx.restore();
 

@@ -145,6 +145,20 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 
 ## Research log for Kids
 
+### Cycle 154 — polish pass
+
+**Built**: Polish pass on three prototypes in one commit.
+
+- **`127-kids-starfish` tap-ripple ring**: expanding colored circle at CSS tap position (same color as the starfish hit), max radius = `sf.r + 52px`, fades over 300ms. The key implementation detail: `ctx.shadowBlur = 0` must be set explicitly at the top of the ripple draw section, because `drawStar()` sets `shadowBlur` and `shadowColor` without zeroing them, and the shadow state leaks past the enclosing `ctx.save()`/`ctx.restore()` block when the starfish section exits — the next context call outside that block inherits the non-zero shadow. Result: without the explicit reset, the ripple ring gets a glowing starfish-arm appearance instead of a clean ring. This is a general Canvas2D gotcha: `ctx.save()` preserves and restores shadow state correctly, but only if the intervening code is wrapped in the SAME save/restore scope. If you call `drawStar()` inside a save block and then draw outside the block, the shadow state from `drawStar()`'s own internal saves/restores still bleeds through.
+- **`128-kids-fish-tap` splash ring**: identical pattern. 250ms duration (dt * 4 increment per frame since dt is in seconds), 62px max radius. Positioned at the fish's CSS coordinates at the moment of tap — the fish then drifts away as `stopped` decays velocity, so the ring stays at the "where it sang" location.
+- **`82-kids-color-piano` opacity**: `rgba(255,255,255,0.55)` → `rgba(255,255,255,0.75)` for the "tap · hold · slide" hint. Queued 40 cycles; finally done.
+
+**Next kid-cycle ideas (Cycle 156)**:
+- **New kids prototype**: KIDS.md queue is thinning (no unseeded ideas after `109-kids-bounce-notes` v2 and `93-kids-share-screen` polish). If nothing stands out, do a targeted kids-research sweep on 2026 touchscreen music toys, CHI 2026 proceedings on child-computer interaction, and any new Toca Boca / Sago Mini releases.
+- **Candidate**: a kids prototype exploring motion-in-a-circle / orbit — child taps to launch a glowing note-ball in orbit around a center point; balls at different orbit radii play notes at different speeds (inner = fast, high pitch; outer = slow, low pitch). Polyrhythm from physics. Zero permissions.
+
+---
+
 ### Cycle 152 — fish-school build
 
 **Built**: `128-kids-fish-tap`. Key learnings:

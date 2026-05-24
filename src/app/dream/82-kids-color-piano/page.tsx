@@ -210,7 +210,7 @@ export default function KidsColorPiano() {
         style={{
           bottom: "2.5vmin",
           fontSize: "max(12px, 2vmin)",
-          color: "rgba(255,255,255,0.55)",
+          color: "rgba(255,255,255,0.75)",
         }}
       >
         tap · hold · slide

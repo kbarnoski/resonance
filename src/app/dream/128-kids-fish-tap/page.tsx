@@ -26,6 +26,13 @@ interface Fish {
   noteIdx: number;
 }
 
+interface Splash {
+  x: number;
+  y: number;
+  col: string;
+  t: number; // 0→1 over 250ms
+}
+
 function buildImpulse(actx: AudioContext): AudioBuffer {
   const sr = actx.sampleRate;
   const len = Math.floor(sr * 1.2);
@@ -146,6 +153,7 @@ export default function KidsFishTap() {
     let t = 0;
     let last = 0;
     let inited = false;
+    const splashes: Splash[] = [];
 
     const fishes: Fish[] = Array.from({ length: N }, (_, i) => ({
       x: 0,
@@ -196,6 +204,7 @@ export default function KidsFishTap() {
         fishes[bestI].stopped = 0.88;
         fishes[bestI].mouthT = 1.0;
         singNote(actx, conv, SCALE_HZ[fishes[bestI].noteIdx]);
+        splashes.push({ x: fishes[bestI].x, y: fishes[bestI].y, col: FISH_COLORS[fishes[bestI].noteIdx], t: 0 });
       }
     };
     canvas.addEventListener("pointerdown", onPointer);
@@ -306,6 +315,22 @@ export default function KidsFishTap() {
       for (let i = 0; i < N; i++) {
         paintFish(ctx, fishes[i], FISH_COLORS[i]);
       }
+
+      // Splash rings — brief expanding circle at fish position on tap, fades 250ms
+      ctx.save();
+      ctx.shadowBlur = 0;
+      for (let si = splashes.length - 1; si >= 0; si--) {
+        splashes[si].t = Math.min(1, splashes[si].t + dt * 4);
+        const sp = splashes[si];
+        ctx.globalAlpha = (1 - sp.t) * 0.72;
+        ctx.beginPath();
+        ctx.arc(sp.x, sp.y, sp.t * 62, 0, Math.PI * 2);
+        ctx.strokeStyle = sp.col;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        if (sp.t >= 1) splashes.splice(si, 1);
+      }
+      ctx.restore();
 
       rafId = requestAnimationFrame(frame);
     };

@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 153 — adult build)
+## ⭐ Newest (Cycle 154 — kids polish)
+
+**Polish pass**: three queued improvements shipped together.
+
+- **[/dream/127-kids-starfish](/dream/127-kids-starfish)** — Starfish Garden (kids). `demoable` ✨ polished Cycle 154
+  *Added*: tap-ripple ring — an expanding colored circle radiates from the tap point on each starfish hit, fading over 300ms. Makes the interaction location visible on large iPad screens. Previously the only feedback was the starfish wiggle + chord sound.
+
+- **[/dream/128-kids-fish-tap](/dream/128-kids-fish-tap)** — Fish School (kids). `demoable` ✨ polished Cycle 154
+  *Added*: splash ring — a brief expanding circle (62px max radius, 250ms) appears at the fish's position when tapped, in the fish's own color. Combined with the mouth-open animation, the fish now has two simultaneous visual feedback signals.
+
+- **[/dream/82-kids-color-piano](/dream/82-kids-color-piano)** — Color Piano (kids). `demoable` ❤️ Karel loved · ✨ polished Cycle 154
+  *Fixed*: hint text "tap · hold · slide" bumped from 55% → 75% opacity. Queued since Cycle 114 — finally done.
+
+---
+
+## Previous (Cycle 153 — adult build)
 
 - **[/dream/129-lyria3-journey](/dream/129-lyria3-journey)** — Ghost Scenes / Lyria 3 Journey. `demoable`
   Six scenes from the Ghost journey (Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension), each with a pre-written music prompt. Click "Generate" on any scene → `fal-ai/lyria3/pro` synthesizes 30 s of ambient music ($0.08/scene via FAL_KEY) → "▶ Play" through the six-band bloom visualizer. "↺" re-generates the same scene with a new random seed. Prompts are editable. Duration + BPM shown when playing.

@@ -1,5 +1,42 @@
 # Dream Agent — cycle state
 
+## Cycle 154 — polish: 127-kids-starfish + 128-kids-fish-tap + 82-kids-color-piano
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 154 % 2 = 0 → **kids cycle**.
+
+Reasoning: KIDS.md Cycle 152 research log explicitly queued three small polish tasks for Cycle 154. All three are ≤15 lines each and all three have been queued for multiple cycles without being done. Combining them into one commit is the right call — a single animation-loop change is too small a unit for a full cycle; grouping all three clears the backlog efficiently.
+
+1. **Polish `127-kids-starfish`** — tap-ripple ring: expanding circle at tap point, fades over 300ms. Makes the tap location visible on a large iPad screen where the starfish (r=30–52px) is small relative to the display area. The ring radiates outward from the CSS tap coordinates; its max radius = `sf.r + 52px`; alpha fades from 0.65 to 0 as `t` goes 0→1 over 300ms. Drawn with the starfish's own color.
+
+2. **Polish `128-kids-fish-tap`** — splash ring at fish position on tap: similar expanding circle (max radius 62px, 250ms duration, 0.72 alpha peak), drawn at the fish's CSS position when tapped. The fish moves after `stopped` kicks in (velocity decay), so the ring stays at the tap-moment position — it reads as "where the fish was when it sang." Combined with the mouth open animation, the fish now has two simultaneous feedback signals (visual splash + audio note).
+
+3. **Polish `82-kids-color-piano`** — bump hint text opacity 55% → 75%: `rgba(255,255,255,0.55)` → `rgba(255,255,255,0.75)`. Queued since Cycle 114 — 40 cycles overdue. The "tap · hold · slide" hint at the bottom of the play view is the one visible text element in the active state; 55% was below the AGENT.md "secondary text" floor of 75%. Now compliant.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes, reinforcing the kids cadence. The `82-kids-color-piano` love is directly relevant — it's the prototype we just polished.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` (Karel's love of it motivated finishing the long-queued typography fix).
+
+**What I built**:
+- `src/app/dream/127-kids-starfish/page.tsx` — added `Ripple` interface + `const ripples: Ripple[] = []` array + `ripples.push(...)` in `onPointer` on hit + ripple draw+expire loop in `frame` after starfish section. ~18 lines.
+- `src/app/dream/128-kids-fish-tap/page.tsx` — added `Splash` interface + `const splashes: Splash[] = []` array + `splashes.push(...)` in `onPointer` on hit + splash draw+expire loop in `frame` after fish draw. ~18 lines.
+- `src/app/dream/82-kids-color-piano/page.tsx` — one character change: `0.55` → `0.75` in the hint text style.
+
+**Build**: `npm run build` passed cleanly — zero TypeScript errors, zero ESLint errors. One pre-existing warning in `127-kids-starfish` (ternary expression as statement at original line 91) unchanged.
+
+**What surprised me**: The starfish ripple ring needs `ctx.shadowBlur = 0` before drawing it, otherwise the shadow context from the preceding `drawStar()` calls leaks into the ripple — the ring gets an unexpected glow that reads as a secondary starfish arm rather than a water ripple. Adding `ctx.shadowBlur = 0` at the top of the ripple save/restore block isolates it correctly. Same applies to the fish splash. This is a subtle canvas state leak pattern: `drawStar()` sets `shadowBlur` and `shadowColor` without restoring them (the `ctx.save()`/`ctx.restore()` block around the entire starfish section resets transform but NOT shadow state when the `drawStar` function exits normally). The ripple section is OUTSIDE that save/restore, so it inherits the last non-zero `shadowBlur`. Fix: explicit `ctx.shadowBlur = 0` at top of ripple section.
+
+**What's queued next**:
+1. **Cycle 155 (adult, 155%2=1)** — `130-tsl-particle-compute` (Three.js TSL compute shaders, one cycle, WebGPU, zero new deps) OR `131-kali-sustain` (zero deps/API, contemplative drone, one cycle). TSL-particle is higher visual impact; kali-sustain is zero risk.
+2. **Cycle 156 (kids, 156%2=0)** — new kids prototype. KIDS.md queue is thinning; if no strong seed appears, do a targeted kids-research sweep.
+3. **Two-cycle target (157–158 or later)** — `ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026, ~$0.30/gen). Waiting on Karel's budget OK.
+
+---
+
 ## Cycle 153 — /dream/129-lyria3-journey
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
