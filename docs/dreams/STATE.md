@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 153 — /dream/129-lyria3-journey
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 153 % 2 = 1 → NOT a kids cycle. Adult cycle.
+4. **Build new** — STATE.md Cycle 152 queue: `129-lyria3-journey` is the highest-priority adult build. Lyria 3 Pro on fal.ai (`fal-ai/lyria3/pro`) is now available at $0.08/gen via FAL_KEY (no GEMINI_API_KEY needed, resolved in Cycle 151 research). Clear spec, one-cycle build.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes; not directly relevant to this adult cycle but the ocean theme of `83-kids-tilt-rain` and the interactive aesthetic of `82-kids-color-piano` reinforce "keep it tactile and responsive."
+
+**What I built**:
+- `src/app/dream/129-lyria3-journey/page.tsx` — 3.87 kB.
+  - **Six Ghost scenes**: Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension. Each has a pre-written music prompt describing its acoustic character (BPM, instrumentation, mood). Prompts are editable in-place before generation.
+  - **Per-scene generation** (not sequential): click "Generate" on any scene → POST `/dream/129-lyria3-journey/api` with the scene's prompt + random seed → `fal-ai/lyria3/pro` → decode to AudioBuffer → scene moves to "ready". Unlike `126-arc-steer` (linear journey), scenes here are independent — Karel can generate just one scene to preview it.
+  - **Bloom visualizer**: same six-band radial gradient bloom as `1-live` and `126-arc-steer`. Plays through the AudioContext analyser; persists for the page session (one long-lived AudioContext). Canvas clears to black between scenes.
+  - **Playback controls per scene**: "▶ Play" starts bloom + audio; "■ Stop" in the active scene; "↺ variation" re-generates the same scene with a new random seed (disabled while playing).
+  - **Progress strip**: six colored bars at the bottom — each bar uses the scene's dot color. `transparent` = idle, `color×40` = generating, `color×80` = ready (full bar), `color` = playing (fills left-to-right with elapsed %).
+  - **Duration + BPM display**: when playing, shows `Scene Name · MM:SS / MM:SS` and BPM if the API returns it.
+  - **Scene color palette**: violet (Stone Chamber), amber (Root Portal), cyan (Underground Pool), emerald (Tiny Planet), light-green (Forest Dawn), pink (Cosmic Ascension) — directly referencing the Ghost journey's visual register.
+
+- `src/app/dream/129-lyria3-journey/api/route.ts` — 291 B (per build output).
+  - Guard first line. FAL_KEY check. Accepts `{ prompt, seed }`. Calls `fal-ai/lyria3/pro`. Returns `{ url, bpm }` (bpm is optional — tries `data.bpm` and `data.metadata.bpm`).
+
+**Build**: `✓ /dream/129-lyria3-journey 3.87 kB 110 kB` — zero TypeScript errors, zero ESLint errors. Build passed on second attempt (first attempt: import path `../../../_shared/api-guard` was one level too deep; fixed to `../../_shared/api-guard`).
+
+**What surprised me**: The design difference from `126-arc-steer` is more significant than it sounds. In arc-steer, the journey is the product — you press "Begin Journey" and the six phases unfold sequentially as an experience. In `129-lyria3-journey`, the six Ghost scenes are a **vocabulary** — you generate whichever scene you're curious about, store them, and compose your own listening order. The "Generate All then play them in sequence" use case is implicit (you can do it manually) but the primary loop is "I wonder what Lyria 3 thinks 'Stone Chamber' sounds like." This makes it more of a research tool for understanding Lyria's musical imagination.
+
+The per-scene independent generation also means Karel can accumulate all six audio clips across multiple sessions (if he generates them one at a time between visits) — though the buffers don't persist between page loads (they're in memory only). A future polish: `sessionStorage` serialization of the audio URLs so refreshing the page doesn't require re-generating.
+
+**What's queued next**:
+1. **Cycle 154 (kids, 154%2=0)** — kids cycle. Options: polish `127-kids-starfish` with tap-ripple ring (per KIDS.md, ~15 lines), or build next kids seed from KIDS.md queue.
+2. **Cycle 155 (adult, 155%2=1)** — `130-tsl-particle-compute` (Three.js TSL compute shaders, zero deps, WebGPU) OR `131-kali-sustain` (drone meditation, zero deps/API). Kali-sustain is the lower-effort path; TSL-particle is higher visual impact.
+3. **Two-cycle target (Cycle 155–156)** — `129-ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026, Ghost image → 3D GLB; two cycles). Highest surprise factor pending Karel's go-ahead on ~$0.30/generation budget.
+
+---
+
 ## Cycle 152 — /dream/128-kids-fish-tap
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

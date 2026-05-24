@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 152 — kids build)
+## ⭐ Newest (Cycle 153 — adult build)
+
+- **[/dream/129-lyria3-journey](/dream/129-lyria3-journey)** — Ghost Scenes / Lyria 3 Journey. `demoable`
+  Six scenes from the Ghost journey (Stone Chamber, Root Portal, Underground Pool, Tiny Planet, Forest Dawn, Cosmic Ascension), each with a pre-written music prompt. Click "Generate" on any scene → `fal-ai/lyria3/pro` synthesizes 30 s of ambient music ($0.08/scene via FAL_KEY) → "▶ Play" through the six-band bloom visualizer. "↺" re-generates the same scene with a new random seed. Prompts are editable. Duration + BPM shown when playing.
+  Key difference from `126-arc-steer` (linear journey): scenes here are a **vocabulary**, not a sequence — generate whichever scene you're curious about, in any order. The bottom progress strip shows all six scenes' states simultaneously (idle/generating/ready/playing) with each scene's color.
+  **FAL_KEY required · ~$0.08/generation · zero new npm deps.**
+
+---
+
+## Previous (Cycle 152 — kids build)
 
 - **[/dream/128-kids-fish-tap](/dream/128-kids-fish-tap)** — Fish School (kids). `demoable`
   Seven glowing fish swim in a loose boids school, drifting rightward across a dark ocean canvas with caustic shimmer and ambient pad. **Tap any fish** → it briefly stops, opens its mouth, plays a pentatonic note (triangle wave + reverb), then the boid forces naturally reabsorb it into the school. Each fish is a fixed pitch: violet=C3 (lowest), rose=G4 (highest) — color is the sonic label. Multi-touch: tap two fish at once for two simultaneous notes. School always moving — the canvas is never static. Body waggle (±7° oscillation) gives each fish its own tail-driven swimming rhythm.
