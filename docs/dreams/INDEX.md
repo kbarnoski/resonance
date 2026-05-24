@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 155 — adult build)
+## ⭐ Newest (Cycle 156 — kids build)
+
+- **[/dream/131-kids-orbit](/dream/131-kids-orbit)** — Orbit Garden (kids). `demoable`
+  Five glowing planets orbit a central sun, each on its own ring. **Tap any ring** → a planet appears at your tap angle, plays its note (triangle + 2nd harmonic, reverb tail), and begins orbiting. Inner planets spin faster and sing higher (C4/3.5s period); outer planets are slow and low (C3/13s). Each planet plays its note again on every completed orbit — place all five and listen to the polyrhythm build. Tap an occupied ring to teleport its planet to a new angle and retrigger its note. **"Clear"** button resets everything. No reading required; the five orbit rings are visible as faint dashed circles the moment you start.
+  **"Five rings. Five notes. Each planet makes its own rhythm — together they make music that's impossible to predict."** First kids prototype about polyrhythm-from-physics (joins `109-kids-bounce-notes` and `83-kids-tilt-rain` in the "physics autonomously makes music" family).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.83 kB.
+
+---
+
+## Previous (Cycle 155 — adult build)
 
 - **[/dream/130-tsl-particle-compute](/dream/130-tsl-particle-compute)** — Lorenz Attractor (WebGPU Compute). `demoable`
   50,000 particles simulated on the GPU via a WGSL compute shader, each following the Lorenz strange attractor equations. The attractor naturally collapses into its iconic butterfly shape within seconds. **Audio reactive**: microphone bass → σ (chaos width), treble → ρ (energy), onsets → turbulence kick. Demo mode oscillates σ and ρ with slow LFOs so it's always alive without a mic. Orbit with mouse or touch. Color gradient: slow particles = violet, mid = emerald, fast = cyan. Additive blending makes dense regions brighten. Falls back gracefully if WebGPU is unavailable.

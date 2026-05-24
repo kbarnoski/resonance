@@ -1,5 +1,46 @@
 # Dream Agent — cycle state
 
+## Cycle 156 — kids build: 131-kids-orbit (Orbit Garden — polyrhythmic planet orbits)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 156 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. **Build new** — KIDS.md Cycle 154 research log explicitly seeded the candidate: "motion-in-a-circle / orbit — child taps to launch a glowing note-ball in orbit around a center point; balls at different orbit radii play notes at different speeds (inner = fast, high pitch; outer = slow, low pitch). Polyrhythm from physics. Zero permissions." This is a clean one-cycle build with clear spec.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes. The orbital concept extends the "physics-makes-music" paradigm first seen in `83-kids-tilt-rain` (tilt physics) and `109-kids-bounce-notes` (gravity physics) — the love signal confirms this direction is right for the kids zone.
+
+**Loved slugs that influenced this choice**: `83-kids-tilt-rain` love confirms Karel values kids prototypes where physics autonomously generates the music rather than requiring active repeated gestures.
+
+**What I built**:
+- `src/app/dream/131-kids-orbit/page.tsx` — 2.83 kB.
+  - **5 orbital bands** (innermost → outermost): rose C4, amber A3, emerald G3, cyan E3, violet C3. Radii as fractions of canvas half-min dimension (0.175 → 0.595). Periods: 3.5s → 13.0s (inner = fastest, outer = slowest). Kepler-like relationship — ω = 2π / period.
+  - **Tap mechanic**: any tap snaps to the nearest orbital band. If empty: new planet placed at tap angle + plays note immediately. If occupied: existing planet teleported to tap position + plays note again. Max 1 planet per band (5 total). "Clear" button in top-right removes all.
+  - **Note trigger**: triangle wave + 2x harmonic sine, short convolver reverb (1.6s impulse, wet 14%). Planet plays its note immediately on placement, then again on every completed orbit.
+  - **Flash effect**: `ball.flash` jumps to 1.0 on note fire, decays at 2.2/s. Glow `shadowBlur = 12 + flash * 26` — planets pulse bright on each ring.
+  - **Trail arc**: Canvas2D arc behind each planet, `tailLen = min(π/3.5, phase)` (grows as planet moves, so no false-trail on first frame). Correct canvas angle conversion: `canvas_angle = my_angle - π/2`.
+  - **Orbit rings**: dashed (5px dash, 10px gap). Active rings show in band color at 33% opacity; empty rings at 8% white. Ring color changes immediately when a planet is placed.
+  - **Central sun**: radial gradient white → violet, with persistent violet `shadowBlur = 32`.
+  - **Star field**: 52 deterministic stars via golden-ratio spacing (reproducible, no allocation per frame).
+  - **Ambient drone**: C2 + G2 sine pads (0.011 / 0.008 gain) — app is never silent.
+  - **Start screen**: 🪐 emoji, `text-2xl font-serif` title, `text-base` description, `min-h-[64px]` button. Shrinking dot preview of the 5 band colors.
+  - Zero permissions · Zero API · Zero deps.
+
+**Build**: `✓ /dream/131-kids-orbit 2.83 kB 106 kB` — zero TypeScript errors, zero ESLint errors in the new file. Build passed first attempt.
+
+**What surprised me**: The polyrhythm that emerges from 5 simultaneous planets is immediately audible and beautiful without any explicit rhythmic programming — it's entirely from the different orbit periods. With all 5 planets active (C4/3.5s, A3/5s, G3/7s, E3/9.5s, C3/13s), you get complex polyrhythmic structures that are impossible to predict. The innermost (rose, C4) rings almost 4 times for every one ring of the outermost (violet, C3). A parent who taps all 5 orbits immediately discovers this without any explanation.
+
+The "tap to teleport" mechanic (tapping an occupied orbit moves the planet to the new angle + fires the note) turned out to be a more playful interaction than I expected — you can jam by repeatedly tapping an orbit to fire notes at will, while the other planets continue their autonomous orbits. It feels like conducting.
+
+**What's queued next**:
+1. **Cycle 157 (adult, 157%2=1)** — `131-kali-sustain` (now renamed to `132-kali-sustain` after this kids build). Contemplative drone meditation, zero deps, zero API. OR `132-lmdm-echo` (harmonic echo, ACE-Step, FAL_KEY).
+2. **Cycle 158 (kids, 158%2=0)** — KIDS.md queue: consider a `kids-ripple-pond` (touch → expanding ring waves that collide and interfere, each ring at a different pentatonic pitch), or do a kids research sweep if queue is thin.
+3. **Two-cycle target (Cycle 157–158)** — `ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026). Waiting on Karel's budget OK.
+
+---
+
 ## Cycle 155 — build: 130-tsl-particle-compute (Lorenz strange attractor, WebGPU compute)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

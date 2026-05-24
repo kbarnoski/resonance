@@ -145,6 +145,25 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 
 ## Research log for Kids
 
+### Cycle 156 — orbit-garden build
+
+**Built**: `131-kids-orbit`. Key learnings:
+
+- **Kepler-like period ratios create natural polyrhythm.** Periods 3.5 / 5.0 / 7.0 / 9.5 / 13.0 seconds — chosen to avoid simple integer ratios (e.g. 2:1 would be boring). With all 5 active, the patterns take a very long time to repeat, so the music never sounds mechanical. The child doesn't know what polyrhythm is; they hear that it sounds interesting and unpredictable.
+- **"Tap to teleport" is accidental jamming.** Tapping an occupied ring moves the planet to the new angle and fires the note immediately. This means rapid taps on the same ring produce a rhythmic burst of notes at that pitch. A parent or curious child will discover this "jamming" mode without instruction — it feels like playing a percussion instrument. This interaction was not planned; it emerged from the simple "replace on tap" rule.
+- **Trail arc must clamp to `min(π/3.5, ball.phase)`.** Without the clamp, a ball placed at phase=0 would show a trail arc extending "behind" it into a region it hasn't traveled yet — visually wrong. The clamp makes the trail grow from 0 to full length over the first ~1.5 seconds of orbit. Much cleaner.
+- **Canvas arc angle conversion: `canvas_angle = my_angle - π/2`.** My convention: angle=0=north, increases clockwise. Canvas convention: angle=0=east, increases clockwise in screen space (y-flipped). Conversion verified: at my_angle=0 (north), canvas_angle=-π/2 correctly places the arc start at the top of the circle.
+- **Golden-ratio star positions (`sin(s * 2.39996)`, `cos(s * 1.61803)`)** give visually uniform star distribution without any random allocation per frame. Star positions are stable across frames — no flickering, no Array creation per render. Zero garbage collector pressure.
+- **1 planet per orbit band is the right constraint.** Allowing multiple planets per band would require complex collision detection and remove the "one color = one note" simplicity. The child quickly learns "violet is the big slow outer planet that plays the low note." 5 planets × 5 pitches × 5 speeds = rich enough interaction for many minutes of play.
+- **Ambient C2 + G2 drone** at 0.011 / 0.008 gain — barely audible as a separate sound, but the space feels "alive" when no planets are active. The drone is pure sine, not triangle, so it blends as a felt warmth under the bell tones rather than competing.
+
+**Next kid-cycle ideas (Cycle 158)**:
+- **`kids-ripple-pond`**: tap anywhere → expanding ring that travels across the screen, plays a pentatonic note when created; when two rings collide, a brief bright flash + chord plays at the collision point. Physics of wave interference taught through play. Zero permissions.
+- **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
+- **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
 ### Cycle 154 — polish pass
 
 **Built**: Polish pass on three prototypes in one commit.
