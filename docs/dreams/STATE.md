@@ -1,5 +1,42 @@
 # Dream Agent — cycle state
 
+## Cycle 148 — /dream/125-kids-jellyfish
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 148 % 2 = 0 → **kids cycle**. No blocker/in-progress. Build `kids-jellyfish`.
+4. N/A — kids cycle takes precedence over build-new.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Loved prototypes: immediate sensorimotor feedback, zero latency, zero explanation needed. Jellyfish follows the same principle — you touch, it responds immediately with sound + movement.
+
+**Loved slugs that influenced this choice**: Both loved kids prototypes have a "chase / catch" quality: color-piano rewards touching the circle, tilt-rain rewards physically tilting the device. Jellyfish extends this: they drift autonomously and you nudge them. The slight evasiveness (they drift before you can nudge again) creates the same pursuit-reward loop that makes the loved prototypes compelling.
+
+**What I built**:
+- `src/app/dream/125-kids-jellyfish/page.tsx` — 2.66 kB.
+  - **5 jellyfish** drift upward autonomously through a deep ocean blue (`#03081c`) canvas, each on a sinusoidal wobble path (independent phase, speed, amplitude per jelly). They wrap top-to-bottom: exit the top → respawn at the bottom with a random X position. No jellyfish ever disappears.
+  - **Pitch assignment**: each jellyfish has a fixed pitch from C-major pentatonic (C3, E3, G3, A3, C4). The largest (radius 46px, violet) is the lowest (C3); the smallest (radius 22px, teal) is the highest (C4). This is BANDIMAL's physical tuning rule: bigger = lower. A child learns it without any text.
+  - **Touch interaction**: `pointerdown` on canvas finds the nearest jellyfish (no strict hit radius — always nudges *something*). Nudge direction: away from pointer + strong upward bias (−2.6 on vy). The jellyfish glows to `flash=1.0` on nudge, decaying over ~30 frames. Multi-touch is free with PointerEvents: two fingers nudge two jellyfish independently.
+  - **Physics**: horizontal velocity from nudge decays at 0.93/frame; vy recovers toward baseVy via EMA (`vy += (baseVy−vy) × 0.015`) — ~2 seconds to return to nominal upward drift. No jellyfish ever escapes: horizontal wrap at ±1.5r.
+  - **Bell tone**: triangle oscillator → ADSR envelope (15ms attack, 1.0s release) → direct output + ConvolverNode (1.8s IR, 0.33 wet). Reverb gives the bell a cave/ocean quality.
+  - **Ambient pad**: C3+E3+G3 sine oscillators at gain 0.013 (barely audible, prevents silence feeling "broken").
+  - **Drawing**: dome via `ctx.ellipse(x, y, r, r*0.58, 0, π, 0, false)` + `closePath()` = top half of squashed ellipse. 7 tentacles per jellyfish via bezier curves with phase-animated control points (wave motion). Radial gradient fill for translucency. Inner highlight ring (bioluminescent edge). ShadowBlur scales with flash.
+  - **Session**: audio starts in `handleStart` (browser autoplay compliance). Canvas shows after "🪼 Begin" tap. Demo silhouette preview (5 dome shapes, color-coded) shown on the pre-start screen.
+  - **Typography**: `text-2xl` header, `text-base` description, `text-sm` hint. `min-h-[64px]` button per KIDS.md.
+  - **Build**: `✓ /dream/125-kids-jellyfish 2.66 kB 109 kB` — zero TypeScript errors, zero ESLint errors. One pre-existing `_` catch-binding warning (same pattern as all other prototypes — not an error).
+
+**What surprised me**: The EMA velocity recovery creates an emergent behavior I didn't fully anticipate: after a strong downward nudge, the jellyfish fights gravity, slows, and then resumes upward drift. The moment of reversal — briefly motionless at the lowest point before floating back up — looks exactly like a real jellyfish pulsing. This happens entirely from the EMA math, not from any explicit "pulse" animation. The physics did something biological.
+
+Also: five jellyfish with independent wobble phases produce an emergent visual ecology. At any moment, some are drifting left, some right, some near the top about to wrap, some just spawned at the bottom. It never looks like a simple loop. The canvas is always compositionally different.
+
+**What's queued next**:
+1. **Cycle 149 (adult, 149%2=1)** — adult build. Candidates from STATE.md Cycle 147: `shepard-tone` (auditory illusion, no deps), `oracle-music` (I-Ching hexagram → musical params, already built as `69-oracle-music`), `synesthetic-sketch` (already built as `63-synesthetic-sketch`). Need to re-check IDEAS.md for genuinely unbuilt adult candidates. Best unbuilt option from IDEAS.md: `cellular` (Conway Game of Life grid → generative melody; `25-cellular` — check if built).
+2. **Ongoing**: GEMINI_API_KEY, Welcome Home track IDs, Veo 3 budget — still blocked.
+
+---
+
 ## Cycle 147 — /dream/124-image-chord
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

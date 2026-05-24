@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 147 — adult build)
+## ⭐ Newest (Cycle 148 — kids build)
+
+- **[/dream/125-kids-jellyfish](/dream/125-kids-jellyfish)** — Jellyfish Song (kids). `demoable`
+  Five translucent jellyfish drift upward through a deep ocean canvas, each on a sinusoidal wobble path with its own phase and speed. **Touch any jellyfish** — it flashes, flies away from your finger, and sings a reverb-soaked bell tone. Each jellyfish is a fixed pitch in C-major pentatonic: biggest (violet, radius 46px) = lowest (C3), smallest (teal, radius 22px) = highest (C4). The physical size→pitch mapping (BANDIMAL's bar-height rule) teaches itself without text. Jellyfish wrap top-to-bottom so the ocean is never empty. Autonomous drift keeps it alive between touches. Multi-touch OK.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.66 kB.
+
+---
+
+## Previous (Cycle 147 — adult build)
 
 - **[/dream/124-image-chord](/dream/124-image-chord)** — Image Chord. `demoable`
   Drop any photo, screenshot, or artwork → JS samples a 64×64 thumbnail, builds a weighted hue histogram, and reads out dominant H/S/L. The mapping: **hue → chord quality** (warm reds = C major, yellows = C7, greens = Cm, cyan = Cm7, violet = Cmaj7, magenta/purple = Cdim); **saturation → harmonic richness** (near-grey image = 1 pure sine; vivid image = 4 triangle-wave voices with slight detuning); **brightness → register + tempo** (dark = bass C2 at 35 BPM, bright = treble C5 at 120 BPM). The chord arpeggios continuously; a 6-band bloom ring animates to the synth output. **8 journey-palette swatches** (Cosmic, Earth, Sanctuary, Ocean, Snowflake, Ghost, Fire, Mycelium) for instant exploration — no image needed. Chord name displayed in large monospace over the bloom.

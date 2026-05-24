@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 148 | `/dream/125-kids-jellyfish` | `demoable` | **NEW** 5 translucent jellyfish drift upward; touch to nudge → bell tone + glow; size→pitch (BANDIMAL rule); top-to-bottom wrap; EMA velocity recovery creates biological pulse motion; pentatonic C3–C4; ambient pad; zero permissions. |
 | 144 | `/dream/122-kids-firefly-song` | `demoable` | **NEW** 10 drifting fireflies on black canvas; touch to catch → follows finger + plays note; release → scatters; multi-touch chords; "shyness" repulsion physics; pentatonic C3–A4; ambient pad; zero permissions. |
 | 142 | `/dream/120-kids-rain-drum` | `demoable` | 4 clouds drop pentatonic notes (C3/E3/G3/A3); tap cloud to cycle rain/snow/leaves; different physics + timbre per weather; consonant combination always; ambient pad; zero permissions. |
 | 140 | `/dream/118-kids-mirror-melody` | `demoable` | Draw on either half → instant mirror on opposite half; Y=pitch; rose left, cyan right; both voices panned opposite; 7s fade trails; multi-touch; ambient C–G–C pad; zero permissions. |
@@ -141,6 +142,23 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 148 — jellyfish-song build
+
+**Built**: `125-kids-jellyfish`. Key learnings:
+- **EMA velocity recovery produces biological pulse motion for free.** After a downward nudge, the EMA (`vy += (baseVy − vy) × 0.015`) pulls vy back toward the base upward speed. At the transition point, the jellyfish momentarily stalls — then resumes floating. This matches real jellyfish pulse motion exactly, without any explicit "pulse" code. The physics is doing biological work.
+- **BANDIMAL's size→pitch rule is immediately intuitive.** The biggest jellyfish (radius 46px, violet) plays C3; the smallest (radius 22px, teal) plays C4. Children who touch the largest one first hear the lowest tone; children who touch the small bright one hear the highest. After 2-3 interactions, they develop a mental model without any label or instruction. The same rule is why real pianos work (longer strings = lower pitch).
+- **Top-to-bottom vertical wrap is better than wall bounce for upward-drifting entities.** A bounce would be jarring and unnatural. The wrap is invisible — the jellyfish exits the top and reappears at a random X at the bottom. From the child's perspective, new jellyfish keep appearing from the bottom of the ocean. The canvas feels alive and continuously replenished, not like five objects in a closed box.
+- **Generous nudge detection (nearest jellyfish, no strict radius) is right for 4yo.** The interaction always succeeds — every tap nudges the nearest jellyfish. This is different from color-piano and firefly-song (which have explicit hit areas). The jellyfish prototype doesn't require aiming; the "nudge the nearest one" mechanic rewards any tap, anywhere on the canvas.
+- **Bezier tentacle control points driven by `tentPhase` create organic wave motion.** Three bezier control points, each with sin/cos of `tentPhase` at different frequencies (×1.4, ×0.9, ×1.8 of base phase), produce tentacles that wave at slightly different rates. The result looks like hair in water — a naturalistic slow swaying that's never periodic-looking.
+- **The pre-start silhouette preview is worth keeping.** Five dome shapes (color-coded, glow shadows) give a visual preview of what's coming before audio starts. This is more communicative than a blank screen + button, and more appropriate for parents reading over the child's shoulder.
+
+**Next kid-cycle ideas (Cycle 150)**:
+- **`kids-jellyfish` v2**: add a very faint size label on each jellyfish on first nudge (the note name C3–C4, opacity 0.25, same color, appears for 1.5s) — educational layer for parents.
+- **New seed**: `kids-starfish` — a grid of asterisk-shaped starfish on the ocean floor; tap to make them wiggle + play a chord (5 arms = 5 notes of a pentatonic chord). Different from jellyfish: stationary targets, chord not single note, different visual metaphor.
+- **Polish pass**: consider whether `125-kids-jellyfish` needs a "demo auto-nudge" mode (first 5 seconds, one jellyfish is nudged automatically to show the interaction). Currently the ambient pad plays but nothing moves until first touch; a brief auto-nudge would model the expected behavior.
+
+---
 
 ### Cycle 144 — firefly-song build
 
