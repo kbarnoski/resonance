@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 145 — /dream/123-landscape-resonance
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 145 % 2 = 1 → **adult cycle**. No blockers.
+4. **Build new**: STATE.md Cycle 144 listed `spectral-morph`, `mood-xy`, `shepard-tone` as adult candidates — but all three are already in the folder (built in earlier cycles). Searched IDEAS.md for genuinely unbuilt adult-cycle ideas. Found `landscape-resonance` from Cycle 129 research (2026-05-23): raw WebGL GLSL terrain fly-through, zero deps, one-cycle build, never built (111 was used for kids-shape-loop; it was not picked up in subsequent cycles).
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` and `83-kids-tilt-rain` both have high sensorimotor immediacy — you do something physical and the response is instant and visual. `landscape-resonance` extends this to adults: play loud bass and literal mountains rise in front of you. The immediacy is the same; the scale is larger. The terrain fly-through is also the highest live-performance candidate in the unbuilt queue — on a projector at a venue, bass-driven mountain peaks would be genuinely cinematic.
+
+**What I built**:
+- `src/app/dream/123-landscape-resonance/page.tsx` — audio-reactive 3D terrain fly-through. 3.63 kB.
+  - **Ray march**: 110-step ray marcher against a heightfield derived from 5-octave FBM value noise. Camera flies forward along Z at 0.38 units/sec (slow meditative pace — a full terrain "feature" takes ~47 seconds to traverse). Camera height scales with `uBass` to stay above the tallest possible peaks.
+  - **Audio uniforms**: `uBass` → terrain height scale (range 0.45–1.85×, so quiet = gentle hills, loud = towering peaks); `uTreble` → adds a second high-frequency noise octave (detail/roughness); `uAmp` → fog density (quiet playing = clear far horizon, loud = misty atmospheric blur); `uOnset` (100ms decay) → blue-white flash overlay on each percussive hit.
+  - **Color gradient**: valley floor = deep violet-900 (`#2b0646`), slopes = emerald-400 (`#1ab371`), peaks = near-white. Color mapped to normalized height, so color shifts dynamically with `uBass` — at low bass, everything is violet; at high bass, the peaks push into emerald then white.
+  - **Diffuse lighting**: sun direction `normalize(0.4, 0.9, 0.5)` with Lambert shading. Ambient term 0.22 prevents shadow areas going pure black. Finite-difference normals (`eps=0.012`) from the terrain function.
+  - **Demo mode**: three LFO oscillators (55 Hz / 180 Hz / 440 Hz) with amplitude-modulating sub-LFOs (0.08/0.25/0.63 Hz). Bass LFO makes mountains rise and fall on a slow 12-second cycle; treble LFO adds surface shimmer on a faster 1.6-second cycle. Demo oscillators route through the analyser (which drives the uniforms) then to destination — soft background audio that matches the terrain motion.
+  - **Fallback**: if mic is denied, error message + "Demo mode" button appears. If WebGL is unavailable, canvas renders black (no crash).
+  - **Typography**: `text-2xl` title, `text-base` description, `text-white/95` primary, `text-white/75` secondary, `text-white/55` tertiary. Buttons `min-h-[44px]`.
+  - **Build**: `✓ /dream/123-landscape-resonance 3.63 kB 107 kB` — clean, zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The camera height formula (`scaleH * 0.85 + 0.32`) creates an emergent "drama arc" as bass builds. At low bass, the camera is close to the ground and the terrain is flat — you feel like you're skimming a plain. As bass energy builds, mountains grow AND the camera rises to stay above them, so the viewing angle gets steeper and the mountains loom more dramatically at the edges of the screen. The effect is self-scaling: quiet music = pastoral gliding, intense music = flying over an alien mountain range.
+
+Also: the onset flash (blue-white) is subtly directional — it brightens the sky AND the lit terrain faces simultaneously, which makes it look like a lightning strike rather than a pure overlay. This happens because the flash is `mix(col, vec3(0.88, 0.93, 1.00), ...)` applied AFTER diffuse lighting, so the lit faces flash brighter than the shadowed ones.
+
+**What's queued next**:
+1. **Cycle 146 (kids, 146%2=0)** — polish `116-kids-bloom-garden` with pre-bloom press-ring indicator (has been queued since Cycle 140, 9 cycles now). OR a new kids prototype if something more compelling comes up from KIDS.md.
+2. **Cycle 147 (adult, 147%2=1)** — `image-chord` from Cycle 137 research: drag a photo/screenshot onto the canvas, JS extracts dominant hue/saturation/brightness, maps to chord quality + register + arpeggio speed. Zero deps, zero API, one-cycle build.
+3. **Ongoing**: Welcome Home track IDs still blocked for `72-paths-visualizer` and `76-cymatics-on-piano-path`. GEMINI_API_KEY still needed for `30-lyria-jam`, `43-lyria-ghost`, `44-binaural-lyria`. Veo 3 budget still pending.
+
+---
+
 ## Cycle 144 — /dream/122-kids-firefly-song
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

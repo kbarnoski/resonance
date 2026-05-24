@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 144 — kids build)
+## ⭐ Newest (Cycle 145 — adult build)
+
+- **[/dream/123-landscape-resonance](/dream/123-landscape-resonance)** — Landscape Resonance. `demoable`
+  Audio-reactive 3D terrain fly-through rendered in raw WebGL + GLSL (no Three.js). A ray-marched heightfield derived from 5-octave FBM value noise. **Bass lifts mountains**: louder playing = towering peaks, the camera rises to match so they loom at the screen edges. **Treble adds surface roughness**: a second noise octave makes the terrain more jagged at high frequencies. **Onsets** trigger a 100ms blue-white lightning flash. **Fog** thickens with overall amplitude (quiet = clear far horizon, loud = atmospheric blur). Color gradient: deep violet valleys → emerald slopes → near-white peaks; the entire gradient shifts dynamically with bass scale. Forward fly-through speed: 0.38 units/sec (a full terrain feature takes ~47 seconds — deliberately slow and meditative). Demo mode: three LFO oscillators (55/180/440 Hz) with amplitude-modulating sub-LFOs create a slow breathing terrain without mic. Live performance: bass-driven mountain peaks on a projector screen would be genuinely cinematic.
+  Zero permissions · Zero API · Zero deps · 3.63 kB · WebGL required.
+
+---
+
+## Previous (Cycle 144 — kids build)
 
 - **[/dream/122-kids-firefly-song](/dream/122-kids-firefly-song)** — Firefly Song (kids). `demoable`
   Ten glowing fireflies drift across a dark canvas, each carrying a pentatonic note. **Touch a firefly** — it flashes brighter and sings its note while following your finger. **Lift your finger** — it scatters in a new direction. Catch two or three simultaneously for an instant chord. Each firefly has a unique color (violet → rose, mapping low → high pitch on the C-major pentatonic scale). The "chase" interaction introduces intentional aiming without a fail state — miss a firefly and a sparkle note plays, and a new firefly appears nearby. Fireflies drift in slowly-curving Lissajous paths with gentle wall bounces and mild pointer repulsion (they sense your finger and ease away). Soft ambient C+E+G pad keeps it from going silent.
