@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 162 — kids build: 137-kids-hold-glow (Hold & Glow — duration-based light and tone)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 162 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. **Build new** — KIDS.md Cycle 160 log listed three options for Cycle 162: (a) `133-kids-ripple-pond` polish (stone-drop animation + edge-bounce rings, ~30 lines), (b) `135-kids-wheel-song` polish (note label flash, ~15 lines), (c) new seed "hold-duration prototype." Chose the new prototype because it fills a genuine gap not covered by any of the 35 existing kids prototypes: **hold-duration as the primary musical parameter**. Every prior kids prototype responds to tap-down events; this one rewards stillness and patience.
+
+**Votes API** (unchanged from Cycle 161): `{"82-kids-color-piano":1,"83-kids-tilt-rain":1,"130-tsl-particle-compute":1,"111-kids-shape-loop":1,"107-ocean-presence":1,"106-beat-cut":1,"105-pluck-field":1,"104-kids-mirror-draw":1,"101-camera-song":1,"100-kids-paint-song":1,"98-kids-drum-circle":1,"86-sound-to-video":1,"84-wave-fluid":1}` — 13 loves, unchanged.
+
+**Loved slugs that influenced this choice**: `100-kids-paint-song` (Karel loved — sustained creative interaction; draw a path and hear it play) and `104-kids-mirror-draw` (Karel loved — meditative drawing that produces music). Both reward deliberate, slow gestures over rapid tapping. `Hold & Glow` is the purest expression of that pattern: you hold still and the light grows. No path, no shape — just presence.
+
+**What I built**:
+- `src/app/dream/137-kids-hold-glow/page.tsx` — 2.17 kB
+  - **Interaction**: `pointerdown` → glowing orb appears immediately at touch point; holds and brightens while finger is down; `pointerup` → fading release ring expands outward
+  - **Pitch mapping**: screen width left→right maps to C-major pentatonic (C3/E3/G3/A3/C4); each color zone: violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4
+  - **Hold duration → visual**: orb core radius 28 → 92 px over 4 seconds; outer halo opacity 22% → 50%; `shadowBlur` 18 → 58. Saturates at 4 seconds (no indefinite growth)
+  - **Release ring**: expands from `20 + holdSec×8` px at speed `30 + holdSec×16` px/s — long holds generate faster-moving, larger-radius rings
+  - **Audio**: triangle OscillatorNode + GainNode envelope (attack 80ms, sustain, release `max(120ms, 80ms + holdSec×120ms)`)
+  - **Multi-touch**: up to 5 simultaneous orbs via `Map<pointerId, Orb>` with `setPointerCapture`
+  - **Build**: `✓ /dream/137-kids-hold-glow 2.17 kB 105 kB` — zero TypeScript errors, zero ESLint errors. Passed cleanly.
+- `src/app/dream/137-kids-hold-glow/README.md` — design notes, audio architecture, polish ideas
+
+**What surprised me**: The release ring's size and speed varying with hold duration gives the prototype a "stored energy" quality — a long hold produces a fast-moving, large ring on release, like releasing a compressed spring. A short tap produces a tiny slow ring that fades quickly. Children will discover this difference by accident: first quick-tap (small ring), then hold (big fast ring). The contrast communicates hold-duration without any instruction. The contemplative register is also genuinely different — there's a visible tension while holding (the glow is growing) and a visible exhale on release (the ring moves outward). This two-phase breath structure is new to the kids zone.
+
+**What's queued next**:
+1. **Cycle 163 (adult, 163%2=1)** — `arc-compose` (MiniMax Music 2.6, section-tag arc composer, $0.03/gen, FAL_KEY in use) — has been queued for several cycles and is the highest-value adult prototype that hasn't been built yet.
+2. **Cycle 164 (kids, 164%2=0)** — `133-kids-ripple-pond` polish (stone-drop animation at tap point + edge-bounce rings), or `135-kids-wheel-song` note-label flash. Both are quick and have been planned since Cycle 158.
+3. **Polish candidate** — `137-kids-hold-glow`: slow 0.5 Hz pulse on the core radius (living glow) + hue shimmer on long holds.
+
+---
+
 ## Cycle 161 — adult build: 136-kali-sustain (Kali Sustain — sustained harmonic drone meditation)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

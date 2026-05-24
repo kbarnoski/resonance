@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 162 | `/dream/137-kids-hold-glow` | `demoable` | **NEW** Hold anywhere → glowing orb brightens and grows (core 28→92 px, halo opacity 22→50% over 4s); release → fading ring expands at speed proportional to hold duration; 5 color zones (violet=C3→cyan=C4 pentatonic); triangle OscillatorNode attack 80ms / release `max(120ms, holdSec×120ms)`; multi-touch up to 5 orbs; empty-state hint text; zero permissions. First kids prototype where hold-duration is the musical parameter — rewards stillness over tapping. |
 | 160 | `/dream/135-kids-wheel-song` | `demoable` | **NEW** 5-segment spinning color wheel; golden striker at 12 o'clock fires pentatonic note per segment (violet=C3→cyan=C4); tap anywhere to add angular momentum (omega +=1.6 rad/s, max 6); deceleration to min 0.3 rad/s; segment flashes on strike; continuous pitch-tracking drone; rotation dot on rim; startup chime on open; zero permissions. First kids prototype where rotational speed determines musical rhythm (music-box mechanic). |
 | 158 | `/dream/133-kids-ripple-pond` | `demoable` | **NEW** Tap anywhere → expanding ripple ring plays pentatonic note (X=pitch, violet=C3 left → cyan=C4 right); when two rings first meet → white flash + chord at collision point; collision pair tracked per-ID to fire exactly once; max 12 rings; ambient C/E/G drone; caustic shimmer background; multi-touch; zero permissions. First kids prototype about wave interference / superposition. |
 | 156 | `/dream/131-kids-orbit` | `demoable` | **NEW** 5 orbital bands (rose C4 inner → violet C3 outer); tap ring → planet placed at tap angle, plays chime, orbits; tapping occupied ring teleports + retrigs; note fires on every completed orbit; Kepler-like periods (3.5–13s); polyrhythm from physics; dashed orbit rings; golden-ratio star field; ambient C2+G2 drone; zero permissions. |
@@ -165,6 +166,25 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 162 — hold-glow build
+
+**Built**: `137-kids-hold-glow`. Key learnings:
+
+- **Hold-duration as musical parameter is genuinely different.** All 35 prior kids prototypes produce notes on `pointerdown`. This is the first where the duration of the hold — the space between down and up — IS the composition. The child learns: hold longer = more light = longer sound. The mental model is simpler than velocity (harder to control) and more physical than counting beats.
+- **Release ring speed scaling with holdSec creates a "stored energy" metaphor.** A long hold launches a fast big ring; a quick tap produces a small slow ring. The contrast is large enough that a 3yo will discover it by accident after two taps of different lengths. No instruction needed — the physics does the communicating.
+- **Saturation at t=4s prevents infinite growth anxiety.** Without a cap, children (and adults) might keep holding forever waiting for something to "happen." Saturating at 4 seconds means the orb reaches its maximum and stabilizes — visually communicating "you're here, this is the peak." The ring on release can still be differentiated by whether you held 4 seconds vs 6 seconds (ring speed still scales with hold), so there's still reward for patience beyond 4 seconds.
+- **`Math.max(0.12, 0.08 + holdSec * 0.12)` for release fade length** creates a satisfying natural decay: a 0.2s tap fades in 0.10s (punchy), a 3s hold fades in 0.44s (soft exhale), a 5s hold fades in 0.68s (long resonance). Matches the intuitive piano-sustain analogy — longer press = longer decay.
+- **`actx.close()` in cleanup is cleaner than stopping individual oscillators.** If the component unmounts while fingers are still held (navigation, page reload), `actx.close()` kills everything immediately. The previous pattern (`for (const orb of activeRef.current.values()) { try { osc.stop() } }`) required try-catch for already-stopped oscillators and still left the AudioContext running. Closing the context is one line, zero error handling needed.
+- **`performance.now()` and rAF timestamp are in the same coordinate system.** `orb.startMs = performance.now()` at pointerdown; `nowMs = ts` from rAF callback. Both are DOMHighResTimeStamp in milliseconds from page load. `holdSec = (nowMs - orb.startMs) / 1000` is exact — no clock conversion needed.
+- **`cursor: none`** in the canvas play mode removes the browser cursor, which would interfere with the glow at the touch point on desktop. On touch devices it's invisible anyway. This keeps the glow as the sole visual feedback for the touch position.
+
+**Next kid-cycle ideas (Cycle 164)**:
+- **`133-kids-ripple-pond` polish** — stone-drop animation at tap origin (dark concentric circle shrinking inward over 80ms) + edge-bounce rings (reflected secondary ring at screen edge). Both ~30 lines combined. Has been planned since Cycle 158 — now the top priority for the next kids cycle.
+- **`137-kids-hold-glow` polish** — slow 0.5 Hz sinusoidal pulse on core radius (±6 px) while held. One extra `sin(nowMs * 0.001 * Math.PI) * 6` in the coreR calculation. Makes the held glow feel alive rather than frozen. ~3 lines.
+- **New seed** — a kids prototype where two fingers interact: holding both creates a "connection" between them (a glowing rope between the two orbs that vibrates as an audible string). The rope pitch = distance between fingers (closer = higher). Extends `Hold & Glow`'s duration metaphor into spatial relationship.
 
 ---
 

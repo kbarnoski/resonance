@@ -10,23 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 161 — adult build)
+## ⭐ Newest (Cycle 162 — kids build)
+
+- **[/dream/137-kids-hold-glow](/dream/137-kids-hold-glow)** — Hold & Glow (kids). `demoable`
+  Hold anywhere on a dark screen. A glowing orb of light appears at your touch — the longer you hold, the brighter and wider it grows (core radius 28 → 92 px over 4 seconds; halo 22% → 50% opacity). Release: the glow "exhales" as a fading ring expands outward. Ring size and speed scale with hold duration — long holds launch big fast rings, quick taps leave small slow ones. Five left→right color zones map to C-major pentatonic (violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4). Multi-touch: up to 5 simultaneous orbs = 5-note chord. Hint text visible when pond is empty.
+  **"First kids prototype where hold-duration is the musical parameter."** All 35 prior kids prototypes respond to tap-down events (tap, drag, draw, tilt). This one rewards stillness. The two-phase breath structure — tension while holding (glow grows), exhale on release (ring expands) — is completely new to the zone. Contemplative, headphone-beautiful, suitable before sleep. Loved prototypes `100-kids-paint-song` and `104-kids-mirror-draw` (both involve sustained deliberate gesture) inspired the direction.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.17 kB.
+  Design notes: `src/app/dream/137-kids-hold-glow/README.md`
+
+---
+
+## Previous (Cycle 161 — adult build)
 
 - **[/dream/136-kali-sustain](/dream/136-kali-sustain)** — Kali Sustain. `demoable`
   A C2 root drone cycling through six just-intonation intervals: **Perfect Fifth (3∶2)** → **Perfect Fourth (4∶3)** → **Major Third (5∶4)** → **Minor Third (6∶5)** → **Harmonic Seventh (7∶4)** → **Whole Tone (9∶8)** → repeat. Each interval holds for 12 seconds then glides to the next over 12 seconds — 144s total cycle. Four audio voices: root sine, sub-Hz LFO for beating, harmony sine tracking the current ratio, quiet octave warmth. **Mic mode** detects your sung pitch via autocorrelation and retunes the entire drone to your voice. Ratio clock visual shows all six intervals as nodes on a circle; a glowing dot sweeps clockwise through them; inner arc tracks hold vs. glide phase. Background hue blends between interval color palettes.
   **"The first prototype where the interval itself is the subject."** Previous harmonic prototypes (`105-pluck-field`, `107-ocean-presence`) use harmony as texture. Kali Sustain makes the ratio the foreground: you watch and hear exactly which interval is sounding and when it changes. The 7∶4 harmonic seventh sits outside 12-TET and always surprises. Inspired by Kali Malone's pipe organ just-intonation work.
   Demo mode (C2 root) · Mic mode (autocorrelation) · Zero API · Zero deps · 2.95 kB.
   Design notes: `src/app/dream/136-kali-sustain/README.md`
-
----
-
-## Previous (Cycle 160 — kids build)
-
-- **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song (kids). `demoable`
-  A five-segment spinning color wheel makes music as it rotates. A golden triangle "striker" is fixed at 12 o'clock. Each time a colored segment passes the striker, that segment's pentatonic note plays as a warm reverb bell tone: violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4. **Tap anywhere to add spin momentum** — faster spin = denser, livelier music; slow drift = quiet spaced-apart notes like a winding-down music box. The wheel never fully stops (minimum 0.3 rad/s drift). A subtle continuous drone rises in pitch with speed. Startup chime plays immediately. Rotation indicator dot on the rim shows direction and speed at a glance.
-  **"First kids prototype where rotational speed IS the rhythm."** All 33 prior kids prototypes produce notes by tapping, dragging, or drawing. This one plays itself — the child just winds it up. Faster tapping = more notes. Slowdown = musical calm. The music-box metaphor is immediately understood by kids who've heard a real music box.
-  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.45 kB.
-  Design notes: `src/app/dream/135-kids-wheel-song/README.md`
 
 ---
 
