@@ -1,5 +1,44 @@
 # Dream Agent — cycle state
 
+## Cycle 152 — /dream/128-kids-fish-tap
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 152 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loves are kids prototypes (ocean/aquatic theme of `83-kids-tilt-rain` informed the ocean setting here).
+
+**KIDS.md recommendation for Cycle 152**: `kids-fish-tap` — school of fish swimming horizontally, tap to hear them sing. Listed explicitly as the "New seed" from the Cycle 150 starfish build log.
+
+**What I built**:
+- `src/app/dream/128-kids-fish-tap/page.tsx` — 2.65 kB.
+  - **7 fish** in a loose school (one per pentatonic note: violet=C3, blue=E3, cyan=G3, emerald=A3, lime=C4, amber=E4, rose=G4). Color is the sonic label — no text identifies pitch.
+  - **Boids flocking**: cohesion (move toward average position), alignment (match school velocity), separation (push apart when < 50px). All weights tuned so the school stays loosely together but wobbles organically — fish drift apart and regroup continuously. Rightward swim bias (targeting ~68 px/s) keeps the school moving; vertical centering (pulling toward 48% of H) prevents drift to screen edges.
+  - **Tap mechanic**: nearest fish within 64px CSS hit radius fires. Fish enters `stopped` state for 0.88s: velocity decays toward zero (f.vx *= 0.88 each frame), fish hovers in place. After 0.88s, the boids forces naturally reabsorb it into the school — no explicit "rejoin" code. Multi-touch: each `pointerdown` fires independently, so two simultaneous taps on two fish play two notes at once.
+  - **Mouth animation**: `mouthT` jumps to 1.0 on tap and decays at 2.0/s (~0.5s to close). The mouth arc angle = `max(0.08, mouthT × 0.65)` — always a visible small arc when closed, wide open at peak. Combined with the stopped hover, the fish looks like it opens its mouth to sing, then closes.
+  - **Body waggle**: `waggle += dt × 5.5` per frame; the fish drawing rotates by `sin(waggle) × 0.12` rad — a ±7° oscillation that gives a tail-driven swimming motion. Each fish has a different starting waggle phase so they're not synchronized.
+  - **Fish shape**: rotated to match velocity direction (`atan2(vy, vx)`). Forked tail (V shape behind body), ellipse body, white eye sclera + dark pupil, arc mouth. All drawn in Canvas2D — no images.
+  - **Triangle oscillator + convolver reverb** (1.2s impulse response, wet gain 0.16). Same synthesis pattern as `127-kids-starfish`.
+  - **Caustic shimmer**: 4 slowly-drifting elliptical radial gradients at 4.5% opacity near the top of the canvas — underwater light rays. Phase-locked to time so they move continuously.
+  - **Ambient ocean pad**: C2 + G2 + C3 sine drones (gains 0.013/0.010/0.007). Same "app is alive" signal as other ocean prototypes.
+  - **Start screen**: silhouette fish blobs (css border-radius ellipses, blurred), `text-2xl font-serif` title, `text-base` description, 64px min-height button. Zero permissions stated.
+
+**Build**: `✓ /dream/128-kids-fish-tap 2.65 kB 105 kB` — zero TypeScript errors, zero ESLint errors. Build passed first attempt.
+
+**What surprised me**: The boids reabsorption mechanic is elegant — when `stopped` reaches 0, the fish has near-zero velocity. On the next frame, boids cohesion/alignment forces pull it toward the school's average position and velocity. Within ~1.5s it has rejoined seamlessly, with no teleport or snap. The "rejoining" emerges from the same physics that keeps the school together. No explicit "start swimming again" code.
+
+Also: the school doesn't hold a fixed formation — fish drift into clusters of 2-3, then split and regroup with different partners. After 30-60 seconds, the school looks qualitatively different than it did at start. This means the canvas is never static even when untouched, which is essential for keeping a 4yo's attention.
+
+**What's queued next**:
+1. **Cycle 153 (adult, 153%2=1)** — Build `128-lyria3-journey` → now `129-lyria3-journey` (numbering shifted). One cycle, FAL_KEY, fal-ai/lyria3/pro, six Ghost scenes → Lyria 3 music → bloom visualizer. Highest-priority adult build from Cycle 151 research.
+2. **Cycle 154 (kids)** — kids cycle. Polish `127-kids-starfish` with tap-ripple ring (~15 lines, per KIDS.md), or build next seed if a stronger idea appears.
+3. **Cycle 155 (adult)** — `130-tsl-particle-compute` (Three.js TSL compute shaders) or `131-kali-sustain` (zero deps/API).
+
+---
+
 ## Cycle 151 — research cycle
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 152 | `/dream/128-kids-fish-tap` | `demoable` | **NEW** 7 boid-flocking fish swim rightward; tap → fish stops, opens mouth, sings pentatonic note, boids reabsorb it into school; color=pitch (violet=C3→rose=G4); multi-touch chords; caustic shimmer; zero permissions. First kids prototype with emergent group behavior. |
 | 150 | `/dream/127-kids-starfish` | `demoable` | **NEW** 5 starfish on ocean floor; tap → 5-note pentatonic chord + wiggle arm-ripple; size→register (biggest=lowest); seaweed + bubble ambient; reverb; zero permissions. First tap=chord prototype. |
 | 148 | `/dream/125-kids-jellyfish` | `demoable` | **NEW** 5 translucent jellyfish drift upward; touch to nudge → bell tone + glow; size→pitch (BANDIMAL rule); top-to-bottom wrap; EMA velocity recovery creates biological pulse motion; pentatonic C3–C4; ambient pad; zero permissions. |
 | 144 | `/dream/122-kids-firefly-song` | `demoable` | **NEW** 10 drifting fireflies on black canvas; touch to catch → follows finger + plays note; release → scatters; multi-touch chords; "shyness" repulsion physics; pentatonic C3–A4; ambient pad; zero permissions. |
@@ -143,6 +144,24 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 152 — fish-school build
+
+**Built**: `128-kids-fish-tap`. Key learnings:
+
+- **Boids reabsorption is the right "rejoin" mechanic.** When a stopped fish's velocity decays to near-zero and `stopped` reaches 0, the boids cohesion/alignment forces on the next frame pull it toward the school's average position and velocity. Within ~1.5s it has rejoined with no teleport, no snap, no explicit "resume swimming" code. The same physics that maintains the school also handles re-entry. This is a clean design: one set of rules, two behaviors.
+- **"Stopped" hover vs. full velocity zeroing.** Decaying velocity (`f.vx *= 0.88` per frame) rather than zeroing it instantly creates a natural deceleration — the fish "brakes" over ~0.5s rather than stopping abruptly. Combined with the mouth animation over the same window, the fish appears to pause purposefully, open its mouth, sing, then gradually drift back to school speed. Instant zeroing would read as a freeze rather than a chosen stop.
+- **64px hit radius for a moving target is right for 4yo.** All prior kids prototypes with moving targets (jellyfish, fireflies) used the nearest-within-radius approach. Fish are roughly 64px long, so a 64px hit radius from center covers most of the body. Tapping anywhere near a fish succeeds. Missed taps (no fish within 64px) are silent — no penalty, no confusion.
+- **Boids velocity limits need both a max AND a min clamp.** Without a min clamp, separation forces can cancel the rightward bias and leave a fish nearly stationary mid-ocean (no visual motion). The `spd < 28` clamp keeps every active fish visibly moving. Without a max clamp, a fish emerging from `stopped` state (low velocity) gets pulled strongly by cohesion toward a fast-moving group and can briefly overshoot. The `spd > 95` clamp prevents the runaway.
+- **Caustic shimmer uses ellipses, not radial gradients on circles.** `ctx.ellipse()` before a radial gradient fill produces an asymmetric light patch — the "right shape" for underwater caustics (elongated, tilted). Circular radial gradients produce symmetrical blobs that read more as "glowing dots" than "light filtering through water." The 4.5% global alpha keeps them barely perceptible — atmospheric texture, not a distraction.
+- **One pitch per fish (not per tap) is essential.** The same rule as firefly-song. Violet is always C3. After 2–3 taps, the child knows "the purple fish makes the low sound." This is how color becomes a musical language — consistent association across repetitions. A fish that played a random note each time would undermine the learning.
+
+**Next kid-cycle ideas (Cycle 154)**:
+- **Polish `127-kids-starfish`**: add a tap-ripple ring — expanding circle at the tap point, fades over 300ms. ~15 lines. Makes the tap location visible on a large iPad screen. Still queued from KIDS.md Cycle 150 log.
+- **`128-kids-fish-tap` v2**: add a faint "splash" ring at the fish's position when tapped — a brief expanding circle in the fish's color, fades over 250ms. Makes the sound source visually obvious. ~10 lines.
+- **Polish `82-kids-color-piano`**: bump `text-white/40` → `text-white/75` hint text. One line. Queued since Cycle 114 — just do it.
+
+---
 
 ### Cycle 150 — starfish build
 

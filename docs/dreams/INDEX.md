@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 150 — kids build)
+## ⭐ Newest (Cycle 152 — kids build)
+
+- **[/dream/128-kids-fish-tap](/dream/128-kids-fish-tap)** — Fish School (kids). `demoable`
+  Seven glowing fish swim in a loose boids school, drifting rightward across a dark ocean canvas with caustic shimmer and ambient pad. **Tap any fish** → it briefly stops, opens its mouth, plays a pentatonic note (triangle wave + reverb), then the boid forces naturally reabsorb it into the school. Each fish is a fixed pitch: violet=C3 (lowest), rose=G4 (highest) — color is the sonic label. Multi-touch: tap two fish at once for two simultaneous notes. School always moving — the canvas is never static. Body waggle (±7° oscillation) gives each fish its own tail-driven swimming rhythm.
+  **"The fish sings when you catch it — then swims back to its friends."** First kids prototype with emergent group behavior (boids) as the play mechanic.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.65 kB.
+
+---
+
+## Previous (Cycle 150 — kids build)
 
 - **[/dream/127-kids-starfish](/dream/127-kids-starfish)** — Starfish Garden (kids). `demoable`
   Five glowing starfish rest on an ocean floor. **Touch any starfish** → it wiggles (arms ripple outward in a decaying wave) and plays a full 5-note pentatonic chord (all five notes sound simultaneously, ~900ms reverb tail). Each starfish plays a different chord: violet (biggest, left) = C3 cluster; pink = E3 cluster; amber (biggest overall) = G3 cluster; emerald (smallest) = A3 cluster; blue = C4 cluster. Bigger starfish = lower chord — size maps to pitch register without any label. Tapping multiple starfish at once plays multiple chords. All combinations are within C-major pentatonic: no dissonance possible. Ocean-floor background: seaweed sways with slow `sin()` drift, 10 micro-bubbles rise continuously, sandy floor gradient at the bottom.
