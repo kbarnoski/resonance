@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 159 — adult build: 134-anemone-av (Anemone — bioluminescent 3D form)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 159 % 2 = 1 → **adult cycle**. No blocker / in-progress.
+4. **Build new** — Cycle 158 STATE.md queued `anemone-av` as a candidate for Cycle 159. Chose it over `kali-sustain` (simple drone, lower impact) and `arc-compose` (AI music, interesting but not GPU-visual). The love of `130-tsl-particle-compute` is the strongest signal from the fresh votes API: Karel wants more GPU-driven organic visual experiments.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1,"130-tsl-particle-compute":1,"111-kids-shape-loop":1,"107-ocean-presence":1,"106-beat-cut":1,"105-pluck-field":1,"104-kids-mirror-draw":1,"101-camera-song":1,"100-kids-paint-song":1,"98-kids-drum-circle":1,"86-sound-to-video":1,"84-wave-fluid":1}` — 13 loves total.
+
+**Loved slugs that influenced this choice**: `130-tsl-particle-compute` (GPU particle compute, loved), `84-wave-fluid` (WebGPU ocean visual, loved), `107-ocean-presence` (immersive dark-canvas experience, loved). `anemone-av` sits in the same family: organic, dark-background, deeply visual, audio-reactive. The creature's tentacles use Three.js cylinder/tube geometry rather than GPU particles, but the aesthetic is the same "something alive in the dark responding to sound."
+
+**What I built**:
+- `src/app/dream/134-anemone-av/page.tsx` — 3.99 kB
+  - **Three.js R3F scene**: `Canvas` + `EffectComposer` + `Bloom` (all pre-installed deps, zero new packages)
+  - **Geometry**: central `CylinderGeometry` stalk (1.8 units tall, violet emissive), 8 tentacle arms each a `TubeGeometry` built from a 4-point `CatmullRomCurve3` with a gentle lean, + tip `SphereGeometry` per arm, + crown ring of 6 sky-blue spheres, + basal bulb
+  - **Audio → form**: sub-bass → macro sway amplitude of entire organism; low-mid → tentacle spread (XZ scale); high-mid → tip emissive intensity flicker (4 Hz oscillation in `useFrame`); onset → 1.0 → 0 decay driving +9% global scale pulse
+  - **Demo mode**: sinusoidal LFOs at incommensurable frequencies (0.28, 0.41, 0.67, 2.8 Hz) so the creature is always alive and moving
+  - **Mic mode**: `useMicAnalyser` hook, bands[0]/[1]/[3]/[4] mapped to sub-bass/bass/lowMid/highMid; onset decay maintained in a separate RAF loop
+  - **Bloom**: `luminanceThreshold=0.18`, `intensity=1.8`, `radius=0.85` — picks up all emissive materials with a soft corona
+  - **Typography / UX**: start screen with `text-3xl font-serif` title, `text-base` description, two `min-h-[44px]` buttons (Demo + Mic); HUD overlay during playback (title + mode indicator top-left, ← Dream lab top-right)
+  - **Build**: `✓ /dream/134-anemone-av  3.99 kB  433 kB` — zero TypeScript errors, zero ESLint errors. Passed first attempt.
+
+- `src/app/dream/134-anemone-av/README.md` — design notes, geometry breakdown, audio→form table, polish ideas.
+
+**What surprised me**: The `CatmullRomCurve3`-driven `TubeGeometry` tentacles read as genuinely organic even with only 4 control points — the slight lean in the curve builder (`(index % 2 === 0 ? 1 : -1) * 0.12` lean factor) makes the 8 arms lean in alternating directions, which breaks the pure radial symmetry and feels more like a real anemone than a mathematical construct. The alternating cyan/violet color assignment (arms 0,2,4,6 = cyan; 1,3,5,7 = violet) creates a subtle color interleave that reads as "alive" in the bloom. The crown ring of 6 sky-blue spheres at the stalk top was an addition beyond the spec — it adds a bright focal point above the tentacle spread that the eye naturally follows when watching the sway.
+
+The Bloom intensity at 1.8 is higher than the spec suggested but makes a dramatic difference: without bloom, the emissive materials look like glowing flat objects; with it, the creature has a genuine corona that expands on audio onsets and contracts during silences — the bloom itself becomes an audio visual.
+
+**What's queued next**:
+1. **Cycle 160 (kids, 160%2=0)** — `kids-ripple-pond` polish (stone-drop animation at tap point: brief dark expanding circle before the ring appears) OR new kids seed from KIDS.md.
+2. **Cycle 161 (adult, 161%2=1)** — `arc-compose` (MiniMax Music 2.6, section tags, hear the 6-phase Ghost arc as AI music, $0.03/gen, FAL_KEY already in use). High value prototype — directly turns the abstract arc concept into heard music.
+3. **Polish candidate** — `134-anemone-av`: add sub-branches (2-3 per arm) and `OrbitControls` from `@react-three/drei` (already installed).
+
+---
+
 ## Cycle 158 — kids build: 133-kids-ripple-pond (Ripple Pond — wave interference)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

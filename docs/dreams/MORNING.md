@@ -1,35 +1,33 @@
-# Morning digest — last updated 2026-05-24 UTC (Cycle 158)
+# Morning digest — last updated 2026-05-24 UTC (Cycle 159)
 
 ## New since yesterday
 
-- **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond · *Cycle 158* · `demoable` 🆕
-  Dark ocean canvas. **Tap to drop a stone** → glowing ring expands, plays a pentatonic note (X position = pitch, left=low violet, right=high cyan). **When two rings meet → white flash + chord.** The wave collision is the surprise — the child doesn't aim for anything, the rings find each other. Multi-touch: every finger drops its own ring. Try: tap left side and right side simultaneously, watch them race toward each other. The chord at the meeting point is always consonant (C-major pentatonic, so C+E, G+A, C+C — all pleasant). Physics of wave interference taught through curiosity.
-  *For kids 3+ · zero permissions · zero deps · 2.62 kB.*
+- **[/dream/134-anemone-av](/dream/134-anemone-av)** — Anemone · *Cycle 159* · `demoable` 🆕
+  A bioluminescent sea anemone in the dark. Eight cyan/violet tentacles sway to bass, spread outward on low-mids, and flicker at the tips when treble arrives. Percussion pulses the whole body. **Try Demo Mode first** — it breathes on its own, no mic needed. Then open mic: play bass-heavy music and watch it lurch; hit a sharp attack and it convulses. Built with Three.js R3F + Bloom — first intentionally organic 3D form in the sandbox (previously only rigid icosahedra and particles). Direct follow-up to `130-tsl-particle-compute` which you loved.
+  *Zero new deps · Bloom post-processing · WebGL required · 3.99 kB.*
+
+- **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond · *Cycle 158* · `demoable`
+  Tap to drop a stone. When two rings collide → chord. Kids 3+.
 
 - **[/dream/132-shepard-tone](/dream/132-shepard-tone)** — Shepard Tone · *Cycle 157* · `demoable`
-  Tone that climbs forever. Headphones, 30 seconds, eyes closed. Try Whole-tone mode at 5 BPM for the most musical version.
-
-- **[/dream/131-kids-orbit](/dream/131-kids-orbit)** — Orbit Garden · *Cycle 156* · `demoable`
-  Tap rings to send planets into orbit — polyrhythm from Kepler physics. Kids 3+.
+  Tone that climbs forever. Headphones, 30s, Whole-tone mode at 5 BPM.
 
 ## In progress / partial
 
 Nothing in-progress.
 
-## Notable: votes update
+## Notable: votes
 
-13 prototypes now loved (up from 2 last STATE entry). New loves include `130-tsl-particle-compute`, `111-kids-shape-loop`, `107-ocean-presence`, `106-beat-cut`, `105-pluck-field`, `104-kids-mirror-draw`, `101-camera-song`, `100-kids-paint-song`, `98-kids-drum-circle`, `86-sound-to-video`, `84-wave-fluid`. The WebGPU compute love (`130`) and kids-geometry loves (`111`, `104`) guided this cycle's direction.
+13 loved prototypes. New loves since last digest: `130-tsl-particle-compute`, `107-ocean-presence`, `84-wave-fluid`, `86-sound-to-video`, `106-beat-cut`. The WebGPU/3D loves shaped Cycle 159's direction toward `anemone-av`.
 
-## Research / queued highlights
+## Research / queued
 
-- **`kali-sustain`** — contemplative drone meditation, zero cost. Queued for Cycle 159 (adult).
-- **`anemone-av`** — organic bioluminescent 3D form (Three.js, all deps installed). High visual novelty.
-- **`arc-compose`** — MiniMax Music 2.6, hear the 6-phase arc as AI music. FAL_KEY in use, ~$0.03/gen.
-- **`130-tsl-particle-compute` love** → suggests more GPU compute experiments (WebGPU, Lorenz-style) are welcome.
+- **`arc-compose`** — MiniMax Music 2.6, hear the Ghost 6-phase arc as AI music, ~$0.03/gen.
+- **`concept-steer`** — 6-axis radar chart (Brightness/Density/Complexity/Mode), zero deps.
+- **Cycle 160 (kids)** — `kids-ripple-pond` polish (stone-drop animation on tap) OR new kids seed.
 
 ## Open questions for Karel
 
-1. **Ghost 3D orbit budget** — Pixal3D: Ghost image → animated 3D figure, ~$0.30/generation via FAL_KEY. OK to build?
-2. **Veo 3 Ghost animate** — ~$0.75/clip. Still want this?
-3. **Welcome Home track IDs** — `72-paths-visualizer` / `76-cymatics-on-piano-path` blocked ~80 cycles for audio URL access.
-4. **Shepard tone** — does the Whole-tone mode feel right at 5 BPM? Worth polishing the paradox-mode visual?
+1. **Ghost 3D orbit** — Pixal3D: Ghost image → animated 3D GLB, ~$0.30/gen via FAL_KEY. OK to build?
+2. **Welcome Home track IDs** — `72-paths-visualizer` + `76-cymatics-on-piano-path` blocked ~80 cycles.
+3. **Anemone feedback** — does the organic 3D form feel right? Worth adding sub-branches / orbit controls?

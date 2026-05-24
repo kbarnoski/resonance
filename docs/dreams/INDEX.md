@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 158 — kids build)
+## ⭐ Newest (Cycle 159 — adult build)
+
+- **[/dream/134-anemone-av](/dream/134-anemone-av)** — Anemone. `demoable`
+  A bioluminescent sea anemone rendered in Three.js R3F. Eight cyan/violet tentacle arms radiate from a glowing central stalk, animated by sinusoidal LFOs modulated by audio: **sub-bass sways the entire organism**, low-mid spreads the tentacles outward, **high-mid flickers the glowing tips**, onsets pulse the whole body +9% for 80ms. Crown ring of 6 sky-blue spheres at the top of the stalk. Bloom post-processing from `@react-three/postprocessing`. Demo mode breathes with internal LFOs; mic mode makes it fully reactive to live sound. Dark background, no UI chrome during playback.
+  **"The first intentionally organic 3D form in the sandbox."** Previous 3D prototypes (`130-tsl-particle-compute`, `106-beat-cut`, `75-houdini-particle-flock`) are mathematical/geometric. Anemone reads as alive — it breathes even when silent. Direct response to Karel's love of `130-tsl-particle-compute`.
+  Zero new deps (three@0.182, R3F, @react-three/postprocessing all pre-installed) · WebGL required · 3.99 kB.
+  Design notes: `src/app/dream/134-anemone-av/README.md`
+
+---
+
+## Previous (Cycle 158 — kids build)
 
 - **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond (kids). `demoable`
   Tap anywhere on a dark ocean canvas to drop a stone — a glowing ripple ring expands outward at 65 px/s and plays a pentatonic note (X position → pitch: violet=C3 left, cyan=C4 right). **When two ripples first meet**, a white flash blooms at the collision point and a chord plays from both constituent notes. Multi-touch: each finger drops its own ripple. The whole-screen is the instrument — no buttons to find, no wrong taps. The physics of wave interference teaches itself through play: drop two stones far apart, watch the rings spread, wait for the moment they touch and sing together.
