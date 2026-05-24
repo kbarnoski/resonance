@@ -10,7 +10,14 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 163 — adult build)
+## ⭐ Newest (Cycle 164 — kids polish)
+
+- **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond (kids). `demoable` ✨ polished Cycle 164
+  *Added*: **stone-drop animation** — two quick inner rings (0→28 px and 0→15 px) plus a shrinking white centre dot appear at the tap point for 350 ms, showing the stone entering water before the main ripple takes over. *Added*: **edge-bounce rings** — when a ripple reaches a screen wall, a reflected ghost ring spawns from the image-source position (virtual source mirrored across that wall) and expands at 38% opacity. Each ripple can bounce from all four walls; bounce rings don't trigger collisions. The pond now feels physically bounded. *Fixed*: hint text opacity bumped 0.30 → 0.58.
+
+---
+
+## Previous (Cycle 163 — adult build)
 
 - **[/dream/138-lmdm-echo](/dream/138-lmdm-echo)** — Echo Chamber. `demoable`
   Record a piano phrase (up to 15 seconds). While you play, real-time harmonic analysis accumulates: 12-bin chroma vector → chord quality (major/minor/neutral), onset detection → BPM estimate, spectral centroid → register (low/mid/high). After you stop, the three features combine into an ACE-Step style prompt and generate a 30-second AI piano echo. Both tracks play back simultaneously — your original panned left (−35°), the AI echo panned right (+35°) — through a shared six-band bloom visualizer. Waveform strips show both tracks with a live progress cursor.

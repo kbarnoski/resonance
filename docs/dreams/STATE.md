@@ -1,5 +1,33 @@
 # Dream Agent — cycle state
 
+## Cycle 164 — kids polish: 133-kids-ripple-pond (stone-drop animation + edge-bounce rings)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 164 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. **Polish** — `133-kids-ripple-pond` has been queued for stone-drop + edge-bounce polish in three consecutive STATE.md entries (Cycles 161, 162, 163). Time to ship it. Both improvements are clear-spec and fit in one cycle.
+
+**Votes API** (unchanged from Cycle 163): 13 loves, same slugs. No new loves detected. Relevant loved prototypes for this choice: `84-wave-fluid` and `107-ocean-presence` — both are pond/water-themed dark canvases Karel loved. Polishing the water-interaction quality of `133-kids-ripple-pond` is directly aligned with that aesthetic signal.
+
+**What I built**:
+- `src/app/dream/133-kids-ripple-pond/page.tsx` — polished to 2.91 kB (was 2.62 kB)
+  - **Stone-drop animation**: Replaced the minimal "tap-origin glow" (a simple white dot fading as the ring expanded) with a proper stone-impact animation. Two quick inner rings expand from the tap point — outer ring 0→28 px, inner ring 0→15 px, each fading within 350 ms — plus a 6 px white centre dot that shrinks to nothing in the first 45% of the animation. The visual reads as a stone entering water: there's a brief circular displacement at the impact point before the main ripple ring takes over.
+  - **Edge-bounce rings**: Image-source reflection off all four screen walls. When a ripple's leading edge reaches a wall (e.g., left wall when `rip.r >= rip.x`), a reflected "bounce ring" spawns from the virtual image source (e.g., `-rip.x, rip.y`), starting at the wall-distance radius and expanding at the same speed. Bounce rings are drawn at 38% opacity with lighter glow — visually clearly secondary. Each ripple can bounce off all four walls (bitmask tracks which walls have fired). Bounce rings do not trigger collisions — collision detection remains primary-ring only. The effect makes the pond feel physically bounded: ripples now seem to "reflect" off the edges the way real water does.
+  - **Typography fix**: Hint text opacity bumped 0.30 → 0.58 (meets AGENT.md tertiary text minimum of 55%).
+  - **Build**: `✓ /dream/133-kids-ripple-pond 2.91 kB 106 kB` — zero TypeScript errors, zero ESLint errors. Passed cleanly.
+
+**What surprised me**: The image-source method for edge reflections is surprisingly cheap — each ripple spawns at most 4 bounce rings (one per wall), and the arc is drawn centered off-screen so canvas clips it automatically. At MAX_RIPPLES=12, we can have at most 48 bounce rings simultaneously, which is well within Canvas2D budget. The visual effect is also subtly educational for a 3yo: the stone drops in, the ring expands, and when it hits the wall something comes back. The pond behaves like a physical space with walls.
+
+**What's queued next**:
+1. **Cycle 165 (adult, 165%2=1)** — New adult prototype. Strong candidates: `loop-station` polish (add demo loops loading), or a new prototype from the IDEAS.md queue. `mood-xy` (Russell circumplex emotion synthesis) is zero-deps, one-cycle, and hasn't been built yet.
+2. **Polish: `138-lmdm-echo`** — mini chromagram bar chart overlay, "Variation" mode (±8 BPM randomization), editable tags textarea, WAV download.
+3. **Polish: `135-kids-wheel-song`** — note-name flash above the striker on each segment crossing.
+
+---
+
 ## Cycle 163 — adult build: 138-lmdm-echo (Echo Chamber — generative delay via harmonic analysis)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

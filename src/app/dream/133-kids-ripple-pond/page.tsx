@@ -16,7 +16,8 @@ interface Ripple {
   x: number; y: number;   // CSS px, center
   r: number;              // current radius
   noteIdx: number;
-  maxR: number;           // fade-out distance (screen diagonal)
+  maxR: number;           // fade-out distance
+  bounced: number;        // bitmask: 1=left 2=right 4=top 8=bottom
 }
 
 interface Flash {
@@ -24,6 +25,19 @@ interface Flash {
   t: number;              // 0→1, drives fade + expansion
   col1: string;
   col2: string;
+}
+
+interface StoneDrop {
+  x: number; y: number;
+  t: number;              // 0→1 over 350 ms — stone-impact animation
+  noteIdx: number;
+}
+
+interface BounceRing {
+  cx: number; cy: number; // virtual image-source (may be off-screen)
+  r: number;              // current radius (starts at wall-distance)
+  noteIdx: number;
+  maxR: number;
 }
 
 function buildImpulse(actx: AudioContext): AudioBuffer {
@@ -67,13 +81,15 @@ function playNote(
 }
 
 export default function KidsRipplePond() {
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const actxRef     = useRef<AudioContext | null>(null);
-  const convRef     = useRef<ConvolverNode | null>(null);
-  const masterRef   = useRef<GainNode | null>(null);
-  const ripplesRef  = useRef<Ripple[]>([]);
-  const flashesRef  = useRef<Flash[]>([]);
-  const collidedRef = useRef<Set<string>>(new Set());
+  const canvasRef      = useRef<HTMLCanvasElement>(null);
+  const actxRef        = useRef<AudioContext | null>(null);
+  const convRef        = useRef<ConvolverNode | null>(null);
+  const masterRef      = useRef<GainNode | null>(null);
+  const ripplesRef     = useRef<Ripple[]>([]);
+  const flashesRef     = useRef<Flash[]>([]);
+  const stoneDropsRef  = useRef<StoneDrop[]>([]);
+  const bounceRingsRef = useRef<BounceRing[]>([]);
+  const collidedRef    = useRef<Set<string>>(new Set());
   const [started, setStarted] = useState(false);
 
   function handleStart() {
@@ -91,7 +107,7 @@ export default function KidsRipplePond() {
     convRef.current   = conv;
     masterRef.current = master;
 
-    // Ambient drone: C3 + E3 + G3 — barely audible, keeps the pond feeling alive
+    // Ambient drone: C3 + E3 + G3 — barely audible, keeps the pond alive
     ([130.81, 164.81, 196.0] as const).forEach((freq, i) => {
       const osc = actx.createOscillator();
       const g   = actx.createGain();
@@ -153,7 +169,11 @@ export default function KidsRipplePond() {
         r: 0,
         noteIdx,
         maxR,
+        bounced: 0,
       });
+
+      // Stone-drop impact animation (replaces the old tiny white dot)
+      stoneDropsRef.current.push({ x: px, y: py, t: 0, noteIdx });
 
       playNote(actx, conv, master, NOTE_HZ[noteIdx]);
     };
@@ -172,11 +192,42 @@ export default function KidsRipplePond() {
       const conv   = convRef.current;
       const master = masterRef.current;
 
-      // Expand all rings
+      // Expand all ripple rings
       for (const rip of ripplesRef.current) rip.r += RING_SPEED * dt;
+
+      // Expand bounce rings
+      for (const br of bounceRingsRef.current) br.r += RING_SPEED * dt;
 
       // Advance flash animations
       for (const f of flashesRef.current) f.t += dt * 2.4;
+
+      // Advance stone-drop animations (350 ms each)
+      for (const sd of stoneDropsRef.current) sd.t += dt / 0.35;
+
+      // Edge-bounce detection — image-source reflection off each wall
+      for (const rip of ripplesRef.current) {
+        const bR = rip.maxR * 0.65; // bounce rings travel slightly less far
+        // Left wall (x = 0): virtual source at (-x, y)
+        if (!(rip.bounced & 1) && rip.r >= rip.x) {
+          rip.bounced |= 1;
+          bounceRingsRef.current.push({ cx: -rip.x, cy: rip.y, r: rip.x, noteIdx: rip.noteIdx, maxR: bR });
+        }
+        // Right wall (x = W): virtual source at (2W - x, y)
+        if (!(rip.bounced & 2) && rip.r >= W - rip.x) {
+          rip.bounced |= 2;
+          bounceRingsRef.current.push({ cx: 2 * W - rip.x, cy: rip.y, r: W - rip.x, noteIdx: rip.noteIdx, maxR: bR });
+        }
+        // Top wall (y = 0): virtual source at (x, -y)
+        if (!(rip.bounced & 4) && rip.r >= rip.y) {
+          rip.bounced |= 4;
+          bounceRingsRef.current.push({ cx: rip.x, cy: -rip.y, r: rip.y, noteIdx: rip.noteIdx, maxR: bR });
+        }
+        // Bottom wall (y = H): virtual source at (x, 2H - y)
+        if (!(rip.bounced & 8) && rip.r >= H - rip.y) {
+          rip.bounced |= 8;
+          bounceRingsRef.current.push({ cx: rip.x, cy: 2 * H - rip.y, r: H - rip.y, noteIdx: rip.noteIdx, maxR: bR });
+        }
+      }
 
       // Collision detection — external tangency: r₁ + r₂ ≥ dist(c₁, c₂)
       const ripples = ripplesRef.current;
@@ -189,7 +240,7 @@ export default function KidsRipplePond() {
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
           if (a.r + b.r >= dist) {
             collidedRef.current.add(key);
-            // Collision point: along line from a to b, at distance r_a from a
+            // Collision point: along line from a to b at distance r_a from a
             const t = dist > 0 ? a.r / dist : 0.5;
             const fx = a.x + (b.x - a.x) * t;
             const fy = a.y + (b.y - a.y) * t;
@@ -210,8 +261,10 @@ export default function KidsRipplePond() {
       }
 
       // Expire rings and flashes
-      ripplesRef.current = ripplesRef.current.filter(r => r.r < r.maxR);
-      flashesRef.current = flashesRef.current.filter(f => f.t < 1);
+      ripplesRef.current     = ripplesRef.current.filter(r => r.r < r.maxR);
+      bounceRingsRef.current = bounceRingsRef.current.filter(br => br.r < br.maxR);
+      flashesRef.current     = flashesRef.current.filter(f => f.t < 1);
+      stoneDropsRef.current  = stoneDropsRef.current.filter(sd => sd.t < 1);
 
       // Clean collision history when pond is empty
       if (ripplesRef.current.length === 0) collidedRef.current.clear();
@@ -226,9 +279,9 @@ export default function KidsRipplePond() {
       const tSlow = ts * 0.00025;
       ctx.save();
       for (let i = 0; i < 14; i++) {
-        const cx = ((Math.sin(i * 2.399 + tSlow * 0.7) + 1) / 2) * W;
-        const cy = ((Math.cos(i * 1.618 + tSlow * 0.5) + 1) / 2) * H;
-        const rg = ctx.createRadialGradient(cx, cy, 0, cx, cy, 28 + i * 7);
+        const shimX = ((Math.sin(i * 2.399 + tSlow * 0.7) + 1) / 2) * W;
+        const shimY = ((Math.cos(i * 1.618 + tSlow * 0.5) + 1) / 2) * H;
+        const rg = ctx.createRadialGradient(shimX, shimY, 0, shimX, shimY, 28 + i * 7);
         rg.addColorStop(0, "rgba(40,140,220,0.045)");
         rg.addColorStop(1, "rgba(0,0,0,0)");
         ctx.fillStyle = rg;
@@ -236,7 +289,24 @@ export default function KidsRipplePond() {
       }
       ctx.restore();
 
-      // Ripple rings
+      // Bounce rings — dimmer, drawn behind primary rings
+      ctx.save();
+      for (const br of bounceRingsRef.current) {
+        const fade = Math.max(0, 1 - br.r / br.maxR);
+        ctx.globalAlpha = fade * 0.38;
+        ctx.shadowColor = NOTE_COLS[br.noteIdx];
+        ctx.shadowBlur  = 7 * fade;
+        ctx.beginPath();
+        ctx.arc(br.cx, br.cy, br.r, 0, 2 * Math.PI);
+        ctx.strokeStyle = NOTE_COLS[br.noteIdx];
+        ctx.lineWidth   = 1.6;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur  = 0;
+      ctx.restore();
+
+      // Primary ripple rings
       ctx.save();
       for (const rip of ripplesRef.current) {
         const alpha = Math.max(0, 1 - rip.r / rip.maxR);
@@ -262,18 +332,49 @@ export default function KidsRipplePond() {
       ctx.shadowBlur  = 0;
       ctx.restore();
 
-      // Tap-origin glows (tiny dot where ripple was born, fades quickly)
+      // Stone-drop impact animations — two quick rings + white dot at tap point
       ctx.save();
-      for (const rip of ripplesRef.current) {
-        const alpha = Math.max(0, 1 - rip.r / (rip.maxR * 0.12));
-        if (alpha <= 0) continue;
-        ctx.globalAlpha = alpha * 0.70;
-        ctx.beginPath();
-        ctx.arc(rip.x, rip.y, 5, 0, 2 * Math.PI);
-        ctx.fillStyle = "#fff";
-        ctx.fill();
+      for (const sd of stoneDropsRef.current) {
+        const col = NOTE_COLS[sd.noteIdx];
+        // Outer ring: expands 0→28 px over 350 ms, fades fast
+        const r1 = sd.t * 28;
+        const a1 = Math.max(0, 1 - sd.t * 1.65);
+        if (a1 > 0) {
+          ctx.globalAlpha = a1 * 0.90;
+          ctx.shadowColor = col;
+          ctx.shadowBlur  = 10;
+          ctx.beginPath();
+          ctx.arc(sd.x, sd.y, r1, 0, 2 * Math.PI);
+          ctx.strokeStyle = col;
+          ctx.lineWidth   = 2.2;
+          ctx.stroke();
+        }
+        // Inner ring: smaller, fades faster
+        const r2 = sd.t * 15;
+        const a2 = Math.max(0, 1 - sd.t * 2.4);
+        if (a2 > 0) {
+          ctx.globalAlpha = a2 * 0.55;
+          ctx.shadowBlur  = 0;
+          ctx.beginPath();
+          ctx.arc(sd.x, sd.y, r2, 0, 2 * Math.PI);
+          ctx.strokeStyle = col;
+          ctx.lineWidth   = 1.4;
+          ctx.stroke();
+        }
+        // Central white dot: 6 px → 0 over first 45% of animation
+        if (sd.t < 0.45) {
+          const dotFrac = 1 - sd.t / 0.45;
+          ctx.globalAlpha = dotFrac * 0.92;
+          ctx.shadowColor = "#ffffff";
+          ctx.shadowBlur  = 6;
+          ctx.beginPath();
+          ctx.arc(sd.x, sd.y, 5 * dotFrac, 0, 2 * Math.PI);
+          ctx.fillStyle = "#ffffff";
+          ctx.fill();
+        }
       }
       ctx.globalAlpha = 1;
+      ctx.shadowBlur  = 0;
       ctx.restore();
 
       // Collision flashes
@@ -303,9 +404,9 @@ export default function KidsRipplePond() {
       ctx.restore();
 
       // Empty-state hint
-      if (ripplesRef.current.length === 0) {
+      if (ripplesRef.current.length === 0 && stoneDropsRef.current.length === 0) {
         ctx.save();
-        ctx.globalAlpha = 0.30;
+        ctx.globalAlpha  = 0.58;
         ctx.font         = "16px monospace";
         ctx.fillStyle    = "#fff";
         ctx.textAlign    = "center";
