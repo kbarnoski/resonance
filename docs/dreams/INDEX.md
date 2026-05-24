@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 149 — adult build)
+## ⭐ Newest (Cycle 150 — kids build)
+
+- **[/dream/127-kids-starfish](/dream/127-kids-starfish)** — Starfish Garden (kids). `demoable`
+  Five glowing starfish rest on an ocean floor. **Touch any starfish** → it wiggles (arms ripple outward in a decaying wave) and plays a full 5-note pentatonic chord (all five notes sound simultaneously, ~900ms reverb tail). Each starfish plays a different chord: violet (biggest, left) = C3 cluster; pink = E3 cluster; amber (biggest overall) = G3 cluster; emerald (smallest) = A3 cluster; blue = C4 cluster. Bigger starfish = lower chord — size maps to pitch register without any label. Tapping multiple starfish at once plays multiple chords. All combinations are within C-major pentatonic: no dissonance possible. Ocean-floor background: seaweed sways with slow `sin()` drift, 10 micro-bubbles rise continuously, sandy floor gradient at the bottom.
+  **First kids prototype where one tap = a full chord.** All 25 prior kids prototypes play single notes on tap; this adds harmonic depth.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.50 kB.
+
+---
+
+## Previous (Cycle 149 — adult build)
 
 - **[/dream/126-arc-steer](/dream/126-arc-steer)** — Arc Steer. `demoable`
   Six-phase Resonance journey arc realized as sequential AI-generated music. Each phase is 30 s of ACE-Step output: **Opening** (sparse piano, vast reverb, 28 BPM) → **Descent** (minor arpeggios, cello drone, 55 BPM) → **Awakening** (ethereal pads, harmonic widening, 80 BPM) → **Peak** (full orchestral climax, 112 BPM) → **Integration** (bittersweet resolution, 70 BPM) → **Return** (single piano, near-silence, 25 BPM). All six phase prompts are editable before starting. Press **▶ Begin Journey** → phases generate and play sequentially (one at a time — each generates then plays before moving to the next). Bloom visualizer responds to each phase's audio. Phase timeline at the bottom advances live. Stop anytime. Reset to re-run with edited prompts.

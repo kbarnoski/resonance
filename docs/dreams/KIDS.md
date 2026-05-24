@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 150 | `/dream/127-kids-starfish` | `demoable` | **NEW** 5 starfish on ocean floor; tap → 5-note pentatonic chord + wiggle arm-ripple; size→register (biggest=lowest); seaweed + bubble ambient; reverb; zero permissions. First tap=chord prototype. |
 | 148 | `/dream/125-kids-jellyfish` | `demoable` | **NEW** 5 translucent jellyfish drift upward; touch to nudge → bell tone + glow; size→pitch (BANDIMAL rule); top-to-bottom wrap; EMA velocity recovery creates biological pulse motion; pentatonic C3–C4; ambient pad; zero permissions. |
 | 144 | `/dream/122-kids-firefly-song` | `demoable` | **NEW** 10 drifting fireflies on black canvas; touch to catch → follows finger + plays note; release → scatters; multi-touch chords; "shyness" repulsion physics; pentatonic C3–A4; ambient pad; zero permissions. |
 | 142 | `/dream/120-kids-rain-drum` | `demoable` | 4 clouds drop pentatonic notes (C3/E3/G3/A3); tap cloud to cycle rain/snow/leaves; different physics + timbre per weather; consonant combination always; ambient pad; zero permissions. |
@@ -142,6 +143,22 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 150 — starfish build
+
+**Built**: `127-kids-starfish`. Key learnings:
+- **Chord-per-tap is a new paradigm for the kids zone.** Every prior kids prototype plays a single note on a single tap. `kids-starfish` plays 5 notes simultaneously. A 4yo won't know what a "chord" is, but they hear the harmonic richness immediately — it sounds fuller and more resonant than a single note. The natural comparison: pressing one piano key vs. pressing a full-hand chord. The bigger sonic impact rewards tap just as effectively as single-note prototypes, but opens up a new timbral dimension.
+- **Consecutive pentatonic windows (noteBase 0–4) guarantee all multi-starfish combinations are consonant.** If two starfish share any notes (e.g., starfish 0 plays C3–C4 and starfish 1 plays E3–E4, sharing E3/G3/A3/C4), tapping them simultaneously layers the shared notes. Since all 9 notes are from C-major pentatonic, the worst-case collision is a unison (two copies of the same frequency) which sounds thicker, not dissonant. The design is deliberately structured so the child cannot produce dissonance by tapping anything in any order.
+- **Arm-ripple wiggle via `(1−wiggle) × 5π` sweep creates a traveling wave.** As `wiggle` decays from 1→0, the `sin()` argument sweeps through 5π, cycling the wave ~2.5 times around the 5 arms. This means the last few frames of the wiggle decay still show motion (the wave is completing its final orbit), rather than suddenly freezing. The wiggle never "pops" to rest — it spirals to rest.
+- **Static targets (vs. moving targets) shift the interaction mode from hunting to choosing.** Jellyfish drift, fireflies fly, star-catch objects fall — all require tracking. Starfish sit still and wait. A child with poor fine motor control (3–4yo) can tap the large amber starfish (r=52px, effective hit radius 74px) reliably. The prototypes with moving targets are exciting; stationary targets are accessible to younger children and lower-stress.
+- **`const X` → arrow function pattern for TypeScript narrowing in nested closures.** The build fails if `resize`, `onPointer`, `frame` are written as `function` declarations inside a `useEffect` that captures a narrowed `const canvas`. Arrow functions (`const resize = () => ...`) propagate the narrowing correctly. This is documented in KIDS.md Cycle 132 and worth noting as an evergreen pattern.
+
+**Next kid-cycle ideas (Cycle 152)**:
+- **Polish `127-kids-starfish`**: add a brief tap-ripple ring (expanding circle at tap point, fades over 300ms) to make the interaction location more visible on a large iPad screen. ~15 lines.
+- **New seed**: `kids-fish-tap` — a school of fish swim horizontally across the screen. Tap any fish → it briefly stops, opens its mouth, plays a note, then rejoins the school. Fish move in loose formation (simple flocking with cohesion + separation). Very different from jellyfish (horizontal vs. vertical drift; fish more directional than jellyfish; school formation = emergent visual). Zero permissions.
+- **Polish pass**: `82-kids-color-piano` typography bump — has been queued since Cycle 114. `text-white/40` → `text-white/75` for hint text. One line, readability gain.
+
+---
 
 ### Cycle 148 — jellyfish-song build
 

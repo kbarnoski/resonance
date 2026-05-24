@@ -1,5 +1,47 @@
 # Dream Agent — cycle state
 
+## Cycle 150 — /dream/127-kids-starfish
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 150 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. N/A — kids cycle takes precedence over build-new.
+
+Reasoning: All 7 original seeded kids prototypes are built, plus 6 more from the Cycle 126 research sweep, plus 12 individual cycles of kids builds since then (total 25 kids prototypes). The Cycle 148 research log introduced a new seed: `kids-starfish` — stationary starfish on the ocean floor, each tap plays a 5-note pentatonic chord (one chord per starfish). This fills a genuine gap: every prior kids prototype plays single notes on tap (color-piano, jellyfish, ghost-echo, etc.) or builds melodies from a stream of single notes. `kids-starfish` is the first where one tap produces a full **chord** — all 5 notes of a pentatonic cluster sounding simultaneously. A 4yo who taps multiple starfish at once hears a richer harmonic texture without any explicit "this is a chord" instruction. The mechanic is also calming and contemplative (static targets, low complexity, zero permissions).
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**Loved slugs that influenced this choice**: Both loves are kids prototypes. The visual style of `125-kids-jellyfish` (ocean theme, glowing characters on dark background) directly influenced the `127-kids-starfish` setting — same ocean, same pentatonic C-major notes, but different interaction model (static targets + chords vs. drifting targets + single notes).
+
+**What I built**:
+- `src/app/dream/127-kids-starfish/page.tsx` — 2.50 kB.
+  - **5 starfish** arranged on an ocean floor, each at a distinct position and size. Violet (r=46, left) to blue (r=42, right), with amber as the largest at centre. Bigger = lower chord, smaller = higher chord — the BANDIMAL size-to-pitch rule extended to chord clusters.
+  - **Pentatonic chords**: each starfish plays 5 consecutive notes from the C-major pentatonic scale (C3–C5). Starfish 0 (violet) → C3/E3/G3/A3/C4; starfish 1 (pink) → E3/G3/A3/C4/E4; starfish 2 (amber) → G3/A3/C4/E4/G4; starfish 3 (emerald) → A3/C4/E4/G4/A4; starfish 4 (blue) → C4/E4/G4/A4/C5. All 25-note combinations are within the C-major pentatonic — every possible multi-starfish tap is consonant.
+  - **Wiggle animation**: on tap, each arm of the 5-pointed star ripples outward with a decaying wave: `wAmp = wiggle × 0.3 × sin((1−wiggle)×5π + arm×1.257)`. Arms ripple through ~2.5 oscillations over ~650ms and settle back to rest. The formula produces an asymmetric arm-wave that travels around the star (different arms reach peak displacement at different phases), looking like a real starfish reacting to touch.
+  - **Glow flash**: `shadowBlur` jumps from 10 to `18 + wiggle×34 ≈ 52` on tap, decays with wiggle. The starfish briefly blazes with its own color.
+  - **ConvolverNode reverb**: 1.5s impulse response. Each chord's 5 triangle oscillators connect both to `destination` (dry) and through the convolver + `wetGain=0.18` (wet). The cave/ocean reverb tail distinguishes starfish from a dry piano hit.
+  - **Ambient ocean pad**: C2 + G2 sustained sine oscillators (gain 0.014) with independent slow LFOs (0.07 Hz and 0.097 Hz) modulating frequency ±`freq × 0.0022`. Produces a subtle underwater shimmer. Imperceptible to children in play mode; prevents "is the app broken?" silence.
+  - **Ocean background**: `LinearGradient` from near-black (#01091a) at top through dark navy (#041c30) to deep teal (#051b15) at floor level — distinct from `125-kids-jellyfish`'s palette (which is more blue).
+  - **Seaweed stems**: 3 stems at xf=[0.24, 0.47, 0.67], each a 12-step polyline with `sin(t×0.58 + phase)` sway. Line widths [6, 5, 7]px, stroke color animated with a slow alpha oscillator. Sway amplitude increases with height (× frac) — stems are anchored at bottom, tips sway freely.
+  - **Bubble drift**: 10 small circles (r=1.8–3.8px) rise slowly from bottom to top, wrapping. `strokeStyle = "rgba(100,185,225,0.22)"` — a hint of rising bubbles without visual noise.
+  - **Hit detection**: nearest starfish within `sf.r + 22px` fires — generous for 4yo accuracy. Multi-touch: `pointerdown` fires independently per finger, so simultaneous touches on two starfish play two chords at once.
+  - **Start screen**: dimmed blur-preview of the 5 starfish glows (color blobs at their relative sizes), `🪸 Begin` button (min-h-[64px]), `text-2xl font-serif` title, `text-base` description, `text-sm` hint. No text on canvas — zero reading required.
+
+**Build**: `✓ /dream/127-kids-starfish 2.50 kB 105 kB` — zero TypeScript errors, zero ESLint errors. One fix required: change nested `function resize()` / `function onPointer()` / `function frame()` declarations → arrow functions (`const resize = () => ...`) to satisfy TypeScript's narrowing propagation rule for `const canvas` (standard issue, documented in KIDS.md Cycle 132 learnings).
+
+**What surprised me**: The `wAmp = wiggle × 0.3 × sin((1−wiggle)×5π + arm×1.257)` wiggle formula creates a notable visual effect: when wiggle=1 (just tapped), each arm is at a fixed displacement `sin(arm×1.257)`. Arms 1 and 2 extend outward while arms 3 and 4 contract inward — an asymmetric star shape. As wiggle decays, the envelope travels around the star (the sin phase sweeps through 5π), producing a wave that circles the starfish before settling. This looks much more biological than a symmetric pulse would. The emergent quality: the star looks like it's "recoiling from touch" before relaxing — which is how a real starfish moves when disturbed.
+
+Also: the chord-per-starfish design means tapping all five in sequence plays a rising harmonic series (C3 cluster → C5 cluster in one-step increments). A child who experiments for 30 seconds will discover this "scale of chords" by accident. At that point they're doing implicit music theory exploration (chords built on scale degrees) with no vocabulary required.
+
+**What's queued next**:
+1. **Cycle 151 (adult, 151%2=1)** — adult build. Best unbuilt candidates: `anemone-av` (Three.js R3F bioluminescent form, zero new deps, zero API, Karel's interest in 3D), `tap-rhythm` (mic onset → step sequencer, zero deps, live performance fitness), `concept-steer` (hexagonal radar chart → music synthesis, zero deps). `anemone-av` is the strongest because it fills the "3D organic form" gap and uses installed Three.js deps.
+2. **Ongoing**: GEMINI_API_KEY, Welcome Home track IDs, Veo 3 budget — still blocked.
+
+---
+
 ## Cycle 149 — /dream/126-arc-steer
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
