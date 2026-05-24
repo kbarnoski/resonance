@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 157 — adult build)
+## ⭐ Newest (Cycle 158 — kids build)
+
+- **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond (kids). `demoable`
+  Tap anywhere on a dark ocean canvas to drop a stone — a glowing ripple ring expands outward at 65 px/s and plays a pentatonic note (X position → pitch: violet=C3 left, cyan=C4 right). **When two ripples first meet**, a white flash blooms at the collision point and a chord plays from both constituent notes. Multi-touch: each finger drops its own ripple. The whole-screen is the instrument — no buttons to find, no wrong taps. The physics of wave interference teaches itself through play: drop two stones far apart, watch the rings spread, wait for the moment they touch and sing together.
+  **"Two rings meet — and the pond makes a chord."** First kids prototype about wave interference. Related family: `90-kids-puddle-jumper` (single-ring splash); `109-kids-bounce-notes` (physics-makes-music autonomous).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.62 kB.
+  Design notes: `src/app/dream/133-kids-ripple-pond/README.md`
+
+---
+
+## Previous (Cycle 157 — adult build)
 
 - **[/dream/132-shepard-tone](/dream/132-shepard-tone)** — Shepard Tone. `demoable`
   Eight sine waves across eight octaves, each fading in at the bottom of the audible range and out at the top. All eight glide upward together. Result: **an auditory illusion of a tone that ascends forever without ever resolving**. Discovered by Roger Shepard (1964) — the most famous auditory illusion in music. RATE slider (0.5–30 BPM), Ascending/Descending toggle, three modes: Glide (smooth), Whole-tone (6 discrete steps per octave — you hear the major whole-tone scale ascending), Semitone (12 steps — slower, textbook-clear). Freeze button holds the current 8-oscillator chord. Phase ring (bottom-right) orbits once per octave traversal; center shows current note name (A, Bb, B, C...). Canvas: 8 glowing circles (A1=bottom, A8=top), brightness/size ∝ bell-curve gain, hue cycles violet→rose→amber as each octave completes.

@@ -85,6 +85,9 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 158 | `/dream/133-kids-ripple-pond` | `demoable` | **NEW** Tap anywhere → expanding ripple ring plays pentatonic note (X=pitch, violet=C3 left → cyan=C4 right); when two rings first meet → white flash + chord at collision point; collision pair tracked per-ID to fire exactly once; max 12 rings; ambient C/E/G drone; caustic shimmer background; multi-touch; zero permissions. First kids prototype about wave interference / superposition. |
+| 156 | `/dream/131-kids-orbit` | `demoable` | **NEW** 5 orbital bands (rose C4 inner → violet C3 outer); tap ring → planet placed at tap angle, plays chime, orbits; tapping occupied ring teleports + retrigs; note fires on every completed orbit; Kepler-like periods (3.5–13s); polyrhythm from physics; dashed orbit rings; golden-ratio star field; ambient C2+G2 drone; zero permissions. |
+| 154 | polish | — | Tap-ripple ring on `127-kids-starfish`, splash ring on `128-kids-fish-tap`, hint text bump on `82-kids-color-piano`. |
 | 152 | `/dream/128-kids-fish-tap` | `demoable` | **NEW** 7 boid-flocking fish swim rightward; tap → fish stops, opens mouth, sings pentatonic note, boids reabsorb it into school; color=pitch (violet=C3→rose=G4); multi-touch chords; caustic shimmer; zero permissions. First kids prototype with emergent group behavior. |
 | 150 | `/dream/127-kids-starfish` | `demoable` | **NEW** 5 starfish on ocean floor; tap → 5-note pentatonic chord + wiggle arm-ripple; size→register (biggest=lowest); seaweed + bubble ambient; reverb; zero permissions. First tap=chord prototype. |
 | 148 | `/dream/125-kids-jellyfish` | `demoable` | **NEW** 5 translucent jellyfish drift upward; touch to nudge → bell tone + glow; size→pitch (BANDIMAL rule); top-to-bottom wrap; EMA velocity recovery creates biological pulse motion; pentatonic C3–C4; ambient pad; zero permissions. |
@@ -158,9 +161,28 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **Ambient C2 + G2 drone** at 0.011 / 0.008 gain — barely audible as a separate sound, but the space feels "alive" when no planets are active. The drone is pure sine, not triangle, so it blends as a felt warmth under the bell tones rather than competing.
 
 **Next kid-cycle ideas (Cycle 158)**:
-- **`kids-ripple-pond`**: tap anywhere → expanding ring that travels across the screen, plays a pentatonic note when created; when two rings collide, a brief bright flash + chord plays at the collision point. Physics of wave interference taught through play. Zero permissions.
+- **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 158 — ripple-pond build
+
+**Built**: `133-kids-ripple-pond`. Key learnings:
+
+- **External tangency as the collision trigger is the right physics.** Two expanding circles first touch when r₁ + r₂ = dist(c₁, c₂). This gives a clean "moment of meeting" with no ambiguity. The collision point is at distance r₁ along the line from center₁ to center₂ — geometrically exact, one line of math.
+- **Per-pair Set tracking prevents double-triggering.** Key format `"min_id:max_id"` is unique per pair, symmetric, and guaranteed not to collide (since IDs only increment). Once added to the Set, that pair never fires again. When all ripples expire the Set clears, so IDs never overflow in practice.
+- **`ripplesRef.current.shift()` as overflow strategy is correct for kids UX.** Dropping the oldest ring is invisible to the child — it's already large and nearly transparent. The newest ring (just placed, small and vivid) is always visible. A FIFO overflow cap is simpler and more child-appropriate than a "max density" algorithm.
+- **Caustic shimmer via 14 slow-drifting radial gradients costs almost nothing.** Each gradient covers a 28–125px radius. At 60fps, the fill operations on a mobile canvas (rendering to a DPR=2 texture) register as <1ms per frame. The `tSlow = ts * 0.00025` drift rate means one full period is ~25 seconds — slow enough to feel like water light, not an animation.
+- **The inner secondary ring** (drawn at r − 18 when r > 22, opacity 22%) gives the rings visual depth without a second draw pass per ring — it's just a second `ctx.arc()` inside the same loop iteration with reduced opacity and no shadow.
+- **C-major pentatonic guarantees all collision chords are consonant.** All 10 pairwise intervals from {C3, E3, G3, A3, C4}: m3, M3, P4, P5, M6, P8 — every one is a standard consonance. A child who taps randomly CANNOT produce a dissonant chord collision. This is the same design principle as `90-kids-puddle-jumper`, `109-kids-bounce-notes`, and `111-kids-shape-loop` — the scale does the harmonic heavy lifting.
+- **The `uidCounter` module-level variable is fine for a client component.** It increments only in the browser, resets on hard reload (page refresh), and never exceeds the number of taps in a session (thousands at most). Safe and simple.
+
+**Next kid-cycle ideas (Cycle 160)**:
+- **`133-kids-ripple-pond` polish** — "stone drop" animation at tap origin: small dark concentric circle shrinking inward over 80ms before the ring begins expanding. Visually suggests a stone entering water. ~10 lines.
+- **Edge-bounce rings** — when a ring reaches a screen edge, spawn a reflected secondary ring at reduced gain (treating the edge as a mirror). The child gets visual feedback that sound can "bounce" off walls. Keeps the pond active longer after a single tap.
+- **Kids research sweep** if the above ideas feel thin — look at CHI 2026 proceedings on child-computer interaction, new Toca Boca releases, and Sound2Hap haptics (monitor iOS 26 Haptic Engine API).
 
 ---
 

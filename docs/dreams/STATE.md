@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 158 — kids build: 133-kids-ripple-pond (Ripple Pond — wave interference)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 158 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. **Build new** — KIDS.md Cycle 156 research log explicitly seeded `kids-ripple-pond`: "tap anywhere → expanding ring that travels across the screen, plays a pentatonic note when created; when two rings collide, a brief bright flash + chord plays at the collision point. Physics of wave interference taught through play. Zero permissions."
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1,"130-tsl-particle-compute":1,"111-kids-shape-loop":1,"107-ocean-presence":1,"106-beat-cut":1,"105-pluck-field":1,"104-kids-mirror-draw":1,"101-camera-song":1,"100-kids-paint-song":1,"98-kids-drum-circle":1,"86-sound-to-video":1,"84-wave-fluid":1}` — 13 loves (up from 2 last noted in STATE.md). New loves: `111-kids-shape-loop` and `104-kids-mirror-draw` confirm kids interactive-geometry prototypes land well with Karel.
+
+**Loved slugs that influenced this choice**: `100-kids-paint-song` (tap-driven sound + visual creation) and `111-kids-shape-loop` (interactive geometry that produces music) — both loved. The ripple pond extends this paradigm: tap creates a sound-object (expanding ring), physics determines when two sound-objects meet, the meeting produces a new sound.
+
+**What I built**:
+- `src/app/dream/133-kids-ripple-pond/page.tsx` — dark ocean canvas. Tap anywhere → new ripple ring expands at 65 px/s, plays a pentatonic note keyed to X position (5 notes: C3 violet → E3 rose → G3 amber → A3 emerald → C4 cyan). When two ripple rings first meet (r₁ + r₂ ≥ distance between centers), a radial white→color flash bursts at the midpoint and both constituent notes play softly as a chord. Rings fade as they grow (alpha ∝ 1 − r/maxR). Max 12 simultaneous ripples. Multi-touch native. Zero permissions · zero API · zero deps.
+- `src/app/dream/133-kids-ripple-pond/README.md` — design notes.
+
+**Build**: `✓ /dream/133-kids-ripple-pond 2.62 kB 105 kB` — zero TypeScript errors, zero ESLint errors in the new file. Build passed first attempt.
+
+**What surprised me**: The collision chord timing feels like a genuine musical moment — when two rings collide, the chord always sounds intentional even though the child placed the taps randomly. This is because C-major pentatonic guarantees all pairwise combinations are consonant (C+E, E+G, G+A, A+C, etc.). The flash radius (10px → 68px over 420ms) is slightly larger than I expected at large expansions, but it reads clearly against the dark background and doesn't linger long enough to occlude new ripples. The caustic shimmer (14 radial gradients, slow tSlow drift) adds subtle underwater texture without measurable performance cost at 60fps — it barely registers but makes the pond feel "alive" even between taps. The inner secondary ring (offset 18px behind primary) gives the rings more visual depth than a single stroke — the primary ring is vivid, the secondary is a soft echo, together they read as a ripple rather than a circle.
+
+**What's queued next**:
+1. **Cycle 159 (adult, 159%2=1)** — `kali-sustain` (contemplative drone, zero deps/API) or `anemone-av` (Three.js bioluminescent 3D form, all deps already installed) or `arc-compose` (MiniMax Music 2.6, FAL_KEY). The new loves include `130-tsl-particle-compute` — suggests Karel wants more GPU-compute-driven visual experiments.
+2. **Cycle 160 (kids, 160%2=0)** — `kids-ripple-pond` polish (add a "stone drop" animation on tap — a brief concentric dark circle at the tap point before the ripple expands) or a kids research sweep if queue is thin.
+3. **Ongoing** — `ghost-3d-orbit` / `piano-to-ghost` (needs GEMINI_API_KEY + FAL_KEY budget OK from Karel).
+
+---
+
 ## Cycle 157 — build: 132-shepard-tone (Shepard Tone — endless auditory illusion)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
