@@ -85,7 +85,8 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
-| 142 | `/dream/120-kids-rain-drum` | `demoable` | **NEW** 4 clouds drop pentatonic notes (C3/E3/G3/A3); tap cloud to cycle rain/snow/leaves; different physics + timbre per weather; consonant combination always; ambient pad; zero permissions. |
+| 144 | `/dream/122-kids-firefly-song` | `demoable` | **NEW** 10 drifting fireflies on black canvas; touch to catch → follows finger + plays note; release → scatters; multi-touch chords; "shyness" repulsion physics; pentatonic C3–A4; ambient pad; zero permissions. |
+| 142 | `/dream/120-kids-rain-drum` | `demoable` | 4 clouds drop pentatonic notes (C3/E3/G3/A3); tap cloud to cycle rain/snow/leaves; different physics + timbre per weather; consonant combination always; ambient pad; zero permissions. |
 | 140 | `/dream/118-kids-mirror-melody` | `demoable` | Draw on either half → instant mirror on opposite half; Y=pitch; rose left, cyan right; both voices panned opposite; 7s fade trails; multi-touch; ambient C–G–C pad; zero permissions. |
 | 130 | `/dream/109-kids-bounce-notes` | `demoable` | Gravity+elastic physics; 4 walls play pentatonic notes (bottom=C3 deep, top=A4 bright, sides=mid); tap to spawn up to 5 balls; flash glow on impact; autonomous music — no repeated gestures needed; zero permissions. |
 | 128 | `/dream/108-kids-kalimba` | `demoable` | 8 height-varied bars (violet→pink); tap to pluck KS synthesis; taller=lower; drag=glissando; multi-touch; demo auto-arpeggios then yields; zero permissions. |
@@ -140,6 +141,23 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 144 — firefly-song build
+
+**Built**: `122-kids-firefly-song`. Key learnings:
+- **The "shyness" behavior was unplanned.** Pointer repulsion (uncaught fireflies push away when a pointer comes within 52 CSS px) was added to prevent accidental catches. But what emerged: if you approach SLOWLY, the firefly drifts faster than you're moving and escapes. If you approach FAST, you overtake the repulsion and catch it. The catch success rate correlates directly with approach speed — no explicit difficulty level, no score, no fail — just the natural physics. A 4yo approaches impulsively (fast) and catches most times. An older child discovers they can corner a firefly against a wall. Same code, emergent skill gradient.
+- **Lissajous drift via rotating angle is cleaner than x/y velocity.** Storing `ff.angle` and doing `angle += rotSpeed` each frame gives the firefly a continuously curving path that's smooth and organic. The alternative (explicit vx/vy with random perturbations) produces jerkier, less natural-looking movement. The rotating angle approach naturally creates looping ellipses and figure-8 paths without any explicit path math.
+- **Wall reflection with direction-conditional check is important.** The naive `atan2(sin, -cos)` reflection always flips the horizontal component, even if the firefly is already moving away from the wall (due to repulsion forces pushing it into the wall). Adding `if (Math.cos(ff.angle) < 0)` for left-wall reflection prevents the firefly from "stuttering" at a corner.
+- **One pitch per firefly (not random on each approach) is essential.** If a firefly changed its note each time you caught it, the child couldn't predict what sound they'd get. Since `pitchIdx` is fixed at spawn, a violet firefly always plays C3. After 2-3 catches, the child learns "the purple one makes a low sound." This is BANDIMAL's core design insight applied to the catch mechanic.
+- **The multi-touch chord is discovered by accident.** On the first play session, a child uses one finger. When they add a second finger (natural for touch-fluent children), two fireflies follow two fingers simultaneously. The sounds stack. The child hasn't been told "this makes a chord" — they hear the harmony emerge from their own gesture. Identical discovery mechanics to `93-kids-share-screen`.
+- **`oscs.keys()` spread before iteration in cleanup**: `for (const id of [...oscs.keys()])` is necessary because `stopTone` calls `oscs.delete(id)` during iteration. Without the spread, modifying the Map while iterating would produce undefined behavior. Small but important correctness detail.
+
+**Next kid-cycle ideas (Cycle 146)**:
+- **Finally do bloom-garden press ring** — has been deferred 7 cycles. Pre-bloom expanding dashed circle at press point during 480ms hold. ~20 lines, one-file edit. Should just do it.
+- **`kids-firefly-song` v2** — add a very faint "pitch label" on each caught firefly (tiny note name C3–A4 appearing for 1.5s on catch, same color, opacity ~0.35). Educational layer for curious parents, invisible to kids in play mode.
+- **New seed**: `kids-jellyfish` — slow-moving translucent jellyfish drift up from the bottom. Touch to "nudge" them; each nudge plays a soft bell tone (triangle + convolver reverb). The jellyfish drifts in response to the touch direction. Multiple jellyfish develop a slow upward drift; they wrap when they reach the top. Each has its own "size class" → pitch (big = low, small = high). Fully autonomous if you don't touch — the ocean plays itself.
+
+---
 
 ### Cycle 142 — rain-drum build
 

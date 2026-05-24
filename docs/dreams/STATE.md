@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 144 — /dream/122-kids-firefly-song
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 144 % 2 = 0 → **kids cycle**. No blocker, no in-progress.
+4. **Build new** — Bloom-garden polish (pre-bloom press ring) has been deferred 6 cycles. Chose to build a genuinely new kids prototype instead, since new prototypes give Karel more to explore in the morning and the bloom-garden polish is a minor single-file change that could ship in a polish micro-cycle.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes share: immediate sensorimotor feedback (tap/tilt → vivid response) and pentatonic guarantee (no wrong combinations). `83-kids-tilt-rain` specifically has a chase mechanic: the child steers a basket to catch falling drops. `122-kids-firefly-song` extends this: instead of steering a basket, the child REACHES for individual fireflies. The catch paradigm is more intimate — you're catching a living thing, not a passive drop — and the "it follows your finger" phase after catching is entirely new in the kids zone.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` (immediate tap → color + note) and `83-kids-tilt-rain` (chase mechanic, pentatonic, sensorimotor physics). Firefly Song is their synthesis: the vivid per-pitch colors of color-piano + the chase/catch dynamic of tilt-rain, but transformed into a 2D pointer interaction that works without DeviceOrientation permissions on every device.
+
+**What I built**:
+- `src/app/dream/122-kids-firefly-song/page.tsx` — 10 drifting fireflies, catch to play, 2.84 kB.
+  - **Firefly drift**: each firefly moves via a slowly rotating direction vector (`angle += 0.013 + sin(phase*0.11)*0.005` rad/frame), creating organic Lissajous-like curves rather than straight lines. Wall bouncing reflects the angle correctly (horizontal: `atan2(sin, -cos)`; vertical: `atan2(-sin, cos)`). Different phases → different curve styles per firefly.
+  - **Catch mechanic**: `pointerdown` within 72 CSS px of an uncaught firefly catches it. The firefly switches to pointer-following mode (lerp coefficient 0.13 → spring-like lag). A sustained `OscillatorNode` starts on catch with 40ms attack, sustains while held, fades with 350ms release on pointer-up.
+  - **Multi-touch chords**: each `pointerId` can independently hold one firefly. Three simultaneous catches play a C-major chord (C+E+G from the pentatonic set). No additional logic needed — the pitch-per-firefly assignment guarantees consonance.
+  - **Miss behavior**: tap near empty space → sparkle note (pluckNote, 500ms decay) + new firefly spawns near the tap point. The miss is rewarded with a note, not punished. No fail state.
+  - **Colors**: `PENTA_HUE = [270, 235, 195, 155, 115, 75, 35, 355]` — violet through blue, cyan, teal, green, lime, orange, rose. 8 colors, one per pitch. On a black background these are maximally vivid.
+  - **Pointer repulsion**: uncaught fireflies feel a gentle push away from active pointers (< 52px range). This prevents accidental catches and makes the fireflies feel "alive" — they shy away from an approaching finger.
+  - **Build**: `✓ /dream/122-kids-firefly-song 2.84 kB 109 kB` — clean, zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The pointer repulsion creates an emergent "shyness" behavior. When you approach slowly, the firefly drifts away. When you approach fast (because the drift is slower than a quick pointer movement), you catch it before it can flee. This dynamic means the catch requires slightly deliberate movement — not a reaction test, but not trivially easy either. A 4yo will approach quickly (no fear of being wrong) and catch most tries. An older child will notice the shyness and try to corner a firefly against a wall. The same code produces two different skill levels of play without any explicit difficulty settings.
+
+Also: the `PENTA_HUE[i] % 8` distribution (10 fireflies, 8 pitches, so indices 0–7, 0, 1) means C3 and E3 each get an extra representative. This is the best result: C3 (violet, lowest note) and E3 (indigo/blue) are visually the most striking against the black background, so having two of each feels right.
+
+**What's queued next**:
+1. **Cycle 145 (adult, 145%2=1)** — candidates:
+   - `spectral-morph` (34-spectral-morph): FFT magnitude interpolation between two audio sources. AudioWorklet-based, zero deps, one cycle.
+   - `mood-xy` (38-mood-xy): Russell circumplex 2D emotion synthesizer. Zero deps, zero API, one cycle. Strong Karel-priority match ("Journey engine alternatives" #4 in AGENT.md).
+   - `shepard-tone` (40-shepard-tone): auditory illusion prototype. First psychoacoustics prototype in the sandbox. Surprise factor: high.
+2. **Cycle 146 (kids, 146%2=0)** — good time for the bloom-garden press-ring polish (has been queued since Cycle 140, very quick single-file edit). OR build from KIDS.md if a fresh idea emerges.
+3. **Open question**: bloom-garden polish has been deferred 7 times now. It should be done in the next kid-cycle.
+
+---
+
 ## Cycle 143 — /dream/121-loop-station
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

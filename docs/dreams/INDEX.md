@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 143 — adult build)
+## ⭐ Newest (Cycle 144 — kids build)
+
+- **[/dream/122-kids-firefly-song](/dream/122-kids-firefly-song)** — Firefly Song (kids). `demoable`
+  Ten glowing fireflies drift across a dark canvas, each carrying a pentatonic note. **Touch a firefly** — it flashes brighter and sings its note while following your finger. **Lift your finger** — it scatters in a new direction. Catch two or three simultaneously for an instant chord. Each firefly has a unique color (violet → rose, mapping low → high pitch on the C-major pentatonic scale). The "chase" interaction introduces intentional aiming without a fail state — miss a firefly and a sparkle note plays, and a new firefly appears nearby. Fireflies drift in slowly-curving Lissajous paths with gentle wall bounces and mild pointer repulsion (they sense your finger and ease away). Soft ambient C+E+G pad keeps it from going silent.
+  Zero permissions · Zero API · Zero deps · 2.84 kB.
+
+---
+
+## Previous (Cycle 143 — adult build)
 
 - **[/dream/121-loop-station](/dream/121-loop-station)** — Loop Station. `demoable`
   Four-slot live loop station. Pick bar count (1/2/4) → tap REC → play → tap STOP → it loops, phase-locked to the beat grid. Each slot has a live waveform with a sweeping playhead, MUTE and CLEAR controls, and independent bar counts. First prototype where you actively *construct* a composition over time rather than reacting. "Load Demo Loops" generates a C2 drone + piano arpeggio + high figure + kick/snare for an instant layered performance without mic. BPM tap tempo adjusts bar length for new recordings.
