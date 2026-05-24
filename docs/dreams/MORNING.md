@@ -1,15 +1,15 @@
-# Morning digest — last updated 2026-05-24 UTC (Cycle 162)
+# Morning digest — last updated 2026-05-24 UTC (Cycle 163)
 
 ## New since yesterday
 
-- **[/dream/137-kids-hold-glow](/dream/137-kids-hold-glow)** — Hold & Glow · *Cycle 162* · `demoable` 🆕
-  **The first kids prototype where hold-duration is the musical parameter.** Hold a finger on the screen: a glowing orb of light appears and grows brighter — the longer you hold, the wider and more radiant it gets. Release: the glow "exhales" as a fading ring expands outward. Five color zones (violet → cyan) map left-to-right to C-major pentatonic (C3–C4). Multi-touch chord: hold 3 fingers = 3 simultaneous tones. The release ring's speed and radius scale with how long you held — a long hold launches a big fast ring, a quick tap leaves a small slow one. **Contemplative, headphone-beautiful, works before sleep.** Zero deps, zero API, zero permissions. 2.17 kB.
+- **[/dream/138-lmdm-echo](/dream/138-lmdm-echo)** — Echo Chamber · *Cycle 163* · `demoable` 🆕
+  **Record a piano phrase → AI echoes your harmonic meaning back at you.** Up to 15 seconds via mic. Real-time analysis: chroma vector → chord quality (major/minor), onset detection → BPM, spectral centroid → register. Those three features become an ACE-Step style prompt. A 30-second AI piano piece generates, then both tracks play simultaneously — you panned left, echo panned right — through the bloom visualizer. "Same key, same tempo, same register — but freshly composed." Inspired by arXiv:2605.22717 "generative delay." Mic + FAL_KEY required ($0.006/gen).
+
+- **[/dream/137-kids-hold-glow](/dream/137-kids-hold-glow)** — Hold & Glow · *Cycle 162* · `demoable`
+  The first kids prototype where hold-duration is the musical parameter. Hold = orb grows brighter. Release = ring exhales outward. Five C-major pentatonic color zones. Zero deps, zero API.
 
 - **[/dream/136-kali-sustain](/dream/136-kali-sustain)** — Kali Sustain · *Cycle 161* · `demoable`
-  Drone meditation cycling through 6 just-intonation ratios over 144 seconds. The 7∶4 harmonic seventh (outside 12-TET) always surprises. Mic mode tunes to your voice. Ratio clock visual.
-
-- **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song · *Cycle 160* · `demoable`
-  Spinning color wheel; tap to add momentum; speed IS the rhythm. Music-box mechanic.
+  144s drone cycle through 6 just-intonation ratios. 7∶4 harmonic seventh always surprises. Mic mode tunes to your voice.
 
 ## In progress / partial
 
@@ -21,13 +21,14 @@ Nothing in-progress.
 
 ## Research / queued
 
-- **Cycle 163 (adult)** — `arc-compose`: MiniMax Music 2.6, section-tag arc composer ($0.03/gen, FAL_KEY in use). Hear a Cinematic Three-Act or EDM Build-and-Drop arc as actual AI music. Long-queued, highest value.
-- **Cycle 164 (kids)** — `133-kids-ripple-pond` polish: stone-drop animation + edge-bounce rings (~30 lines). Has been planned since Cycle 158.
-- **Polish: `137-kids-hold-glow`** — slow 0.5 Hz pulse on core radius (living glow effect) + hue shimmer on very long holds (>4 seconds).
+- **Cycle 164 (kids)** — `133-kids-ripple-pond` polish: stone-drop animation + edge-bounce rings (~30 lines). Planned since Cycle 158.
+- **Polish: `138-lmdm-echo`** — mini chromagram overlay (12-bin bar chart), "Variation" mode (±8 BPM), editable tags textarea, mix slider, WAV download.
+- **Polish: `137-kids-hold-glow`** — slow 0.5 Hz pulse on core radius + hue shimmer on very long holds.
 
 ## Open questions for Karel
 
-1. **Hold & Glow interaction** — does the hold-duration mechanic land for a 4yo? Or does it need a clearer visual affordance showing "this rewards holding" before the start?
-2. **Ghost 3D orbit** — Pixal3D: Ghost image → animated 3D GLB, ~$0.30/gen via FAL_KEY. OK to build?
-3. **Welcome Home track IDs** — `72-paths-visualizer` + `76-cymatics-on-piano-path` blocked ~80+ cycles. Still outstanding.
-4. **Kali Sustain** — 144s cycle too slow / too fast? Worth adding reverb tail + WAV export?
+1. **Echo Chamber latency** — ACE-Step generation takes ~10–20s. Is that acceptable as a "reply letter" experience, or does it need a progress indicator / visual countdown?
+2. **Echo Chamber analysis accuracy** — BPM only reliable with ≥3 onsets. Short staccato phrases work; single sustained chords fall back to 72 BPM default. OK?
+3. **Hold & Glow** — does the hold-duration mechanic land for a 4yo? Needs clearer affordance?
+4. **Ghost 3D orbit** — Pixal3D: Ghost image → animated 3D GLB, ~$0.30/gen via FAL_KEY. OK to build?
+5. **Welcome Home track IDs** — `72-paths-visualizer` + `76-cymatics-on-piano-path` blocked ~80+ cycles. Still outstanding.
