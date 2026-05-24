@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 164 — kids polish)
+## ⭐ Newest (Cycle 165 — adult build)
+
+- **[/dream/139-mood-xy](/dream/139-mood-xy)** — Mood XY. `demoable`
+  Drag a dot across a **valence × arousal** canvas (Russell circumplex model). The music
+  changes in real time: BPM 40→140, note duration 3 s pads → 0.24 s staccato, chord quality
+  diminished→minor→major, root C2→E3, filter 150→4500 Hz. Background bilinearly blends
+  deep indigo (calm·sad) ↔ dark emerald (calm·happy) ↔ dark rose (excited·sad) ↔ dark amber
+  (excited·happy). 9-second glowing trail marks your emotional journey through the session.
+  **"Set where you want to be. The music takes you there."**
+  Zero deps · Zero API · Zero permissions · 2.63 kB.
+  Design notes: `src/app/dream/139-mood-xy/README.md`
+
+---
+
+## Previous (Cycle 164 — kids polish)
 
 - **[/dream/133-kids-ripple-pond](/dream/133-kids-ripple-pond)** — Ripple Pond (kids). `demoable` ✨ polished Cycle 164
   *Added*: **stone-drop animation** — two quick inner rings (0→28 px and 0→15 px) plus a shrinking white centre dot appear at the tap point for 350 ms, showing the stone entering water before the main ripple takes over. *Added*: **edge-bounce rings** — when a ripple reaches a screen wall, a reflected ghost ring spawns from the image-source position (virtual source mirrored across that wall) and expands at 38% opacity. Each ripple can bounce from all four walls; bounce rings don't trigger collisions. The pond now feels physically bounded. *Fixed*: hint text opacity bumped 0.30 → 0.58.

@@ -1,5 +1,53 @@
 # Dream Agent — cycle state
 
+## Cycle 165 — adult build: 139-mood-xy (Mood XY — Russell circumplex emotion synthesis)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 165 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — picked `mood-xy` from the queued ideas. Explicitly primed in MORNING.md as
+   next adult pick, fully specced, zero deps, one-cycle build. Love signal analysis:
+   `84-wave-fluid` ❤️ and `107-ocean-presence` ❤️ both reward slow deliberate gesture over
+   direct canvas → sound mapping. Mood XY is the same paradigm generalized to an
+   emotion-coordinate system. Route assigned `139` (next available after `138-lmdm-echo`).
+
+**Built**:
+- `src/app/dream/139-mood-xy/page.tsx` — full prototype (2.63 kB gzipped)
+- `src/app/dream/139-mood-xy/README.md` — design notes
+
+**What it does**:
+- 2D canvas: valence (sad←happy) on X, arousal (calm↓excited) on Y
+- Drag the glowing dot → music changes in real time:
+  - **BPM**: 40 (calm) → 140 (excited)
+  - **Note duration**: 3.0 s overlapping pads (calm) → 0.24 s staccato (excited)
+  - **Chord quality**: diminished (sad) → minor (neutral) → major (happy)
+  - **Root register**: C2 (calm) → E3 (excited)
+  - **Filter brightness**: 150 Hz dark (calm·sad) → 4500 Hz bright (excited·happy)
+- Background bilinearly interpolates between 4 quadrant colors (deep indigo, dark emerald,
+  dark rose, dark amber) — the canvas tells you which emotional quadrant you're in visually
+- 9-second glowing trail accumulates the session's emotional journey
+- Quadrant label ("energetic · happy") floats near the dot
+- Zero deps · zero API · zero permissions. `setPointerCapture` for off-canvas drag.
+
+**Why mood-xy now**: 138 prototypes in — none map emotional intent to music directly. Most
+prototypes respond TO audio. This one goes the other direction: set where you want to be,
+the music takes you there. The Russell circumplex is the most evidence-backed model for this
+mapping (tempo, mode, brightness, attack). `130-tsl-particle-compute` ❤️ and
+`107-ocean-presence` ❤️ both pulled me toward immersive drag-interaction AV.
+
+**Queued next**:
+- Cycle 166 (kids) — `135-kids-wheel-song` polish (note-name flash above striker) OR a new
+  kids prototype from KIDS.md. KIDS.md research log has good seeds; check if queue is thin.
+- Cycle 167 (adult) — `loop-station` polish on `121-loop-station` OR `chord-canvas`
+  (`28-chord-canvas` — real-time chord name + color timeline from chroma vector).
+- **Research cycle due** — last adult research was Cycle 129. Consider scheduling a research
+  sweep at Cycle 167 or 169 if IDEAS queue thins further.
+
+---
+
 ## Cycle 164 — kids polish: 133-kids-ripple-pond (stone-drop animation + edge-bounce rings)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
