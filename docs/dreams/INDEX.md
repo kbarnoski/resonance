@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 165 — adult build)
+## ⭐ Newest (Cycle 166 — kids build)
+
+- **[/dream/140-kids-string-bridge](/dream/140-kids-string-bridge)** — String Bridge (kids). `demoable`
+  Hold two fingers on the dark canvas — a glowing string stretches between them and sings.
+  **Closer fingers = shorter string = higher note** (same physical law as guitar/kalimba).
+  Moving fingers >12 px "plucks" the string (triangle wave, 12ms attack, 450ms decay).
+  Visual: standing-wave animation — fundamental mode shape `sin(π×t)×cos(2π×phase)`, vibration
+  rate proportional to pitch (0.8 Hz at C2, 5.5 Hz at C5). Color shifts violet→amber with pitch.
+  Single finger anchors at canvas center for solo thereminvox play — pulling away lowers pitch,
+  approaching raises it. 3-octave C-major pentatonic (C2–C5, 13 steps). Faint note-name label
+  fades with the vibration. Amplitude floor 0.18 while held; faster fade on release.
+  **"The gap between your fingers is the instrument."** First kids prototype where the
+  *relationship* between two simultaneous touch points IS the musical parameter — not position,
+  duration, path, or physics of individual contacts.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.86 kB.
+  Design notes: `src/app/dream/140-kids-string-bridge/README.md`
+
+---
+
+## Previous (Cycle 165 — adult build)
 
 - **[/dream/139-mood-xy](/dream/139-mood-xy)** — Mood XY. `demoable`
   Drag a dot across a **valence × arousal** canvas (Russell circumplex model). The music

@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 166 | `/dream/140-kids-string-bridge` | `demoable` | **NEW** Hold 1–2 fingers → glowing string between them vibrates + plays; distance = pitch (closer = higher, C-major pentatonic C2–C5); standing-wave visual rate proportional to pitch; single finger anchors at center; pluck on >12 px finger movement; triangle oscillator; zero permissions. |
 | 162 | `/dream/137-kids-hold-glow` | `demoable` | **NEW** Hold anywhere → glowing orb brightens and grows (core 28→92 px, halo opacity 22→50% over 4s); release → fading ring expands at speed proportional to hold duration; 5 color zones (violet=C3→cyan=C4 pentatonic); triangle OscillatorNode attack 80ms / release `max(120ms, holdSec×120ms)`; multi-touch up to 5 orbs; empty-state hint text; zero permissions. First kids prototype where hold-duration is the musical parameter — rewards stillness over tapping. |
 | 160 | `/dream/135-kids-wheel-song` | `demoable` | **NEW** 5-segment spinning color wheel; golden striker at 12 o'clock fires pentatonic note per segment (violet=C3→cyan=C4); tap anywhere to add angular momentum (omega +=1.6 rad/s, max 6); deceleration to min 0.3 rad/s; segment flashes on strike; continuous pitch-tracking drone; rotation dot on rim; startup chime on open; zero permissions. First kids prototype where rotational speed determines musical rhythm (music-box mechanic). |
 | 158 | `/dream/133-kids-ripple-pond` | `demoable` | **NEW** Tap anywhere → expanding ripple ring plays pentatonic note (X=pitch, violet=C3 left → cyan=C4 right); when two rings first meet → white flash + chord at collision point; collision pair tracked per-ID to fire exactly once; max 12 rings; ambient C/E/G drone; caustic shimmer background; multi-touch; zero permissions. First kids prototype about wave interference / superposition. |
@@ -166,6 +167,24 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 166 — string-bridge build
+
+**Built**: `140-kids-string-bridge`. Key learnings:
+
+- **Distance-as-parameter is a genuinely new interaction class.** 36 prior kids prototypes respond to finger *position* (X/Y), *duration* (hold time), *path* (draw gesture), or *physical velocity* (tilt, collision). This is the first that responds to the *relationship* between two simultaneous contacts — the distance between them. A child with two fingers spontaneously discovers: squeeze together → pitch rises. Pull apart → pitch drops. This maps to the physical law of string instruments without any label or instruction.
+- **Single-finger anchor at center is the discovery path.** A child who starts with one finger experiences the thereminvox mode (distance from center = pitch). When a second finger appears, the anchor "moves" to that finger and the thereminvox becomes a string. The transition is seamless — the child never needs to understand "now I'm in two-finger mode." They just notice the string is stretching between their hands.
+- **Visual vibration rate proportional to pitch is subtly educational.** A 4yo watching C2 sees a slow wobble (0.8 Hz). Watching C5 sees a faster vibration (5.5 Hz). After a few plucks at different distances, the child builds a mental model: "when I hold them close, the string shakes faster." This is the correct physical intuition about string frequency without any physics instruction.
+- **Pluck-threshold of 12 px is right.** Too small (5 px) and normal finger tremor fires constantly — too noisy. Too large (30 px) and you need deliberate movement to hear anything — feels unresponsive. At 12 px, slow pinching produces a smooth pitch glide (oscillator retunes without pluck), while fast snapping produces a bright pluck burst. Two behaviors from one gesture threshold.
+- **`sin(π×t) × cos(2π×phase)` is the cleanest standing-wave formulation.** The `sin(π×t)` factor gives the mode shape (0 at both ends, max at center). The `cos(2π×phase)` oscillates the whole shape back and forth. Together they produce a standing wave in 3 lines. No traveling-wave artifacts, no aliasing, clear node-at-endpoints physics.
+- **Amplitude floor 0.18 while held prevents "dead string" visual.** Without a floor, a held but unplucked string would decay to invisible (0) within 1 second of the last pluck. With the floor, the string stays faintly visible at the last plucked shape — it looks like a sustained string that's still vibrating below the visual threshold. On release the floor is removed and it fades to 0 in ~0.4s.
+
+**Next kid-cycle ideas (Cycle 168)**:
+- **`135-kids-wheel-song` polish** — note-name flash above striker when a segment passes. Has been queued since Cycle 160. ~10 lines, one-file edit.
+- **`140-kids-string-bridge` polish** — (a) second harmonic overtone (+2nd oscillator at 2×freq, gain 0.10) for richer string timbre; (b) 3-finger chord variant: when 3 fingers are held, draw 3 strings between each adjacent pair (triangle formation), each tuned to the pairwise distances. May require 2-cycle implementation.
+- **New seed**: a kids prototype about **echo/canon** — the child hums or taps a 4-note phrase; after 2s silence the phrase echoes back transposed up a 5th (7 semitones). Second echo at +octave. Three overlapping voices, never dissonant (pentatonic). "Your phrase comes back higher."
 
 ---
 

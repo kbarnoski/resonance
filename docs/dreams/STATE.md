@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 166 — kids build: 140-kids-string-bridge (String Bridge — two-finger harmonic string)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 166 % 2 = 0 → **kids cycle**.
+4. **Build new** — STATE.md (Cycle 165) queued `135-kids-wheel-song` polish (note-name flash
+   above striker) OR a new kids prototype. KIDS.md Cycle 162 research log seeds a more exciting
+   new prototype: **two-finger string**. This fills a genuine gap — none of the 36 kids
+   prototypes make the *relationship between two simultaneous touch points* the instrument.
+   Every prior prototype responds to position, duration, path, or physics of individual contacts.
+   This one responds to the *distance between two fingers*, which maps to the physical law of
+   string instruments (shorter = higher). One-cycle build, zero deps, zero permissions.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences: `111-kids-shape-loop` ❤️ (multi-touch spatial interaction), `104-kids-mirror-draw` ❤️
+(bilateral two-point musical concept), `82-kids-color-piano` ❤️ (immediate response). All three
+loved prototypes reward finger-to-sound directness with minimal setup. This cycle's prototype
+sits in the same family.
+
+**Built**:
+- `src/app/dream/140-kids-string-bridge/page.tsx` — full prototype (2.86 kB)
+- `src/app/dream/140-kids-string-bridge/README.md` — design notes
+
+**What it does**:
+- Hold 1 or 2 fingers on a dark canvas. A glowing string stretches between them (or from
+  canvas center to the single finger).
+- **Distance → pitch**: shorter string = higher note (same physical law as kalimba/guitar).
+  Maps 80 px (C5=523 Hz) → 640 px (C2=65 Hz) across a 3-octave C-major pentatonic range.
+- **Pluck**: each time finger distance changes by >12 px, a new pluck fires (triangle wave
+  oscillator, 12ms attack, 450ms decay, 350ms release).
+- **Standing-wave animation**: fundamental mode shape (`sin(π×t) × cos(2π×phase)`), visual
+  rate proportional to pitch (0.8 Hz at C2, 5.5 Hz at C5 — higher notes vibrate faster).
+- **Color**: violet (C2, low) → emerald (G3, mid) → amber (C5, high).
+- **Note label**: faint note name (e.g. "G3") floats above the string midpoint while amplitude
+  > 0.12, fading with the vibration.
+- Single-finger mode: anchor dot softly pulses at canvas center, inviting a second finger.
+- Amplitude floor 0.18 while held (string stays visible), faster fade to 0 on release.
+
+**What surprised me**: The single-finger "thereminvox" interaction is unexpectedly strong. Pulling
+away from center lowers the pitch — a child who drags outward toward the corner hears a
+deepening tone that matches the gesture's sense of "reaching further." The two-finger interaction
+adds the collaborative element: parent and child each hold a side and slide toward each other
+for a rising pitch — natural "musical handshake."
+
+**What's queued next**:
+- Cycle 167 (adult, 167%2=1) — research sweep is overdue (last adult research: Cycle 129,
+  now 38 cycles ago). High priority to refill ideas queue. OR `chord-canvas` if queue still
+  has good ideas to build from.
+- Cycle 168 (kids, 168%2=0) — `135-kids-wheel-song` polish (note-name flash above striker,
+  has been queued since Cycle 160), OR KIDS.md new seed from the Cycle 162 log (three-finger
+  chord or "bow mode" variant of this prototype).
+
+---
+
 ## Cycle 165 — adult build: 139-mood-xy (Mood XY — Russell circumplex emotion synthesis)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
