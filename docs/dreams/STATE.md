@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 161 — adult build: 136-kali-sustain (Kali Sustain — sustained harmonic drone meditation)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 161 % 2 = 1 → **adult cycle**.
+4. **Build new** — STATE.md queued `arc-compose` for Cycle 161, but cross-referencing the actual `src/app/dream/` directory confirmed `48-arc-compose` already exists (built Cycle 57). Similarly `52-concept-steer` already exists. Chose the next unbuilt adult prototype from IDEAS.md: **`kali-sustain`** — sustained harmonic drone with six just-intonation intervals cycling above a C2 root. Zero deps, zero API, pure Web Audio.
+
+**What I built**:
+- `src/app/dream/136-kali-sustain/page.tsx` — 2.95 kB
+  - **Six intervals**: 3∶2 P5 (violet), 4∶3 P4 (teal), 5∶4 M3 (amber), 6∶5 m3 (rose), 7∶4 Harm. Seventh (indigo), 9∶8 Whole Tone (green)
+  - **Timing**: 12s hold + 12s linear glide per ratio = 144s full cycle, then repeats
+  - **Audio voices**: `rootOsc` (C2 sine) + `lfo` (0.05 Hz sub-Hz beating) + `harmOsc` (ratio × root, gliding via `setTargetAtTime` every 200ms) + `octOsc` (root × 2, subtle warmth) + `master` (2.5s fade-in, 0.4s fade-out)
+  - **Mic mode**: autocorrelation pitch detection on 2048-sample windows every 600ms; detected pitch in 40–500 Hz range resets rootHz + retunes `rootOsc` and `octOsc` with 300ms time constant
+  - **Ratio clock visual**: 6 nodes on a circle, active node glows + enlarges; sweeping dot + spoke traces position; inner arc shows phase within 24s window (solid = hold, dashed = glide); background hue blends between current/next interval colors
+  - **Build**: `✓ /dream/136-kali-sustain 2.95 kB 106 kB` — zero TypeScript errors, zero ESLint errors. Passed cleanly.
+- `src/app/dream/136-kali-sustain/README.md` — design notes, interval table, audio architecture, polish ideas.
+
+**What surprised me**: The 7∶4 harmonic seventh is the interval that most reliably stops listeners — it sits outside 12-TET (flat of Bb by about 31 cents), so when it arrives it sounds slightly "wrong" in the most compelling way. The 12s hold is long enough that the ear fully settles into the strangeness before the glide rescues it. The 9∶8 whole tone is the opposite: so close to unison that it barely registers as harmony, producing a fast beating (≈3.7 Hz at C2) that adds a wavering shimmer more felt than heard. The ratio clock makes these transitions legible — the sweeping dot gives the listener a sense of anticipation ("something is about to change") that the audio alone wouldn't.
+
+**What's queued next**:
+1. **Cycle 162 (kids, 162%2=0)** — `133-kids-ripple-pond` polish (stone-drop animation at tap point + edge-bounce rings), or new kids seed from KIDS.md.
+2. **Cycle 163 (adult, 163%2=1)** — Consider `lmdm-echo` (generative delay via ACE-Step, FAL_KEY), or a pure Canvas2D adult experiment from IDEAS.md.
+3. **Polish candidate** — `136-kali-sustain`: add a second harmony voice (complementary ratio), reverb tail via ConvolverNode, WAV export of the 144s journey.
+
+---
+
 ## Cycle 160 — kids build: 135-kids-wheel-song (Wheel Song — spinning color wheel music box)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

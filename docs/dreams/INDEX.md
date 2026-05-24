@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 160 — kids build)
+## ⭐ Newest (Cycle 161 — adult build)
+
+- **[/dream/136-kali-sustain](/dream/136-kali-sustain)** — Kali Sustain. `demoable`
+  A C2 root drone cycling through six just-intonation intervals: **Perfect Fifth (3∶2)** → **Perfect Fourth (4∶3)** → **Major Third (5∶4)** → **Minor Third (6∶5)** → **Harmonic Seventh (7∶4)** → **Whole Tone (9∶8)** → repeat. Each interval holds for 12 seconds then glides to the next over 12 seconds — 144s total cycle. Four audio voices: root sine, sub-Hz LFO for beating, harmony sine tracking the current ratio, quiet octave warmth. **Mic mode** detects your sung pitch via autocorrelation and retunes the entire drone to your voice. Ratio clock visual shows all six intervals as nodes on a circle; a glowing dot sweeps clockwise through them; inner arc tracks hold vs. glide phase. Background hue blends between interval color palettes.
+  **"The first prototype where the interval itself is the subject."** Previous harmonic prototypes (`105-pluck-field`, `107-ocean-presence`) use harmony as texture. Kali Sustain makes the ratio the foreground: you watch and hear exactly which interval is sounding and when it changes. The 7∶4 harmonic seventh sits outside 12-TET and always surprises. Inspired by Kali Malone's pipe organ just-intonation work.
+  Demo mode (C2 root) · Mic mode (autocorrelation) · Zero API · Zero deps · 2.95 kB.
+  Design notes: `src/app/dream/136-kali-sustain/README.md`
+
+---
+
+## Previous (Cycle 160 — kids build)
 
 - **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song (kids). `demoable`
   A five-segment spinning color wheel makes music as it rotates. A golden triangle "striker" is fixed at 12 o'clock. Each time a colored segment passes the striker, that segment's pentatonic note plays as a warm reverb bell tone: violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4. **Tap anywhere to add spin momentum** — faster spin = denser, livelier music; slow drift = quiet spaced-apart notes like a winding-down music box. The wheel never fully stops (minimum 0.3 rad/s drift). A subtle continuous drone rises in pitch with speed. Startup chime plays immediately. Rotation indicator dot on the rim shows direction and speed at a glance.
