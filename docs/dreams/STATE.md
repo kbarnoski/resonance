@@ -1,5 +1,46 @@
 # Dream Agent — cycle state
 
+## Cycle 149 — /dream/126-arc-steer
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 149 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — `126-arc-steer` from IDEAS.md `arc-steer` entry (Cycle 137 research). Best unbuilt one-cycle adult candidate: FAL_KEY already in use, zero new npm deps, directly addresses Karel's #4 priority (journey engine alternatives).
+
+Reasoning: Checked all other queued ideas. Many candidates from earlier cycles are already built (`25-cellular` ✓, `63-synesthetic-sketch` ✓, `40-shepard-tone` ✓, `69-oracle-music` ✓). Genuinely unbuilt adult candidates are: `arc-steer` (FAL_KEY, one cycle), `audio-cloud` (WebGPU, two cycles), `body-conductor` (CDN dep, needs Karel OK). `arc-steer` is the only one-cycle zero-approval option and it directly answers the central `5-arcs` question with actual generated sound. `48-arc-compose` (MiniMax, single structured piece) is different from `arc-steer` (ACE-Step, six sequential 30s phases). The distinction: arc-compose generates one 60-90s piece; arc-steer generates six separate pieces matched to each arc phase and plays them in sequence with visual phase-by-phase progression.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged since cycle 112. Both loves are kids prototypes, consistent with every-other cycle cadence.
+
+**Loved slugs that influenced this choice**: The two loved prototypes both have immediate sensorimotor feedback. `arc-steer` is a different axis — generative rather than reactive — but it connects to Karel's stated interest in journey engine alternatives. Not a direct lineage from the loved prototypes.
+
+**What I built**:
+- `src/app/dream/126-arc-steer/page.tsx` — 3.75 kB.
+  - **6 phase cards** (Opening/Descent/Awakening/Peak/Integration/Return) each with a colored dot, phase numeral (I–VI), name, editable textarea prompt, and per-phase status badge (idle/generating/ready/▶/done/error).
+  - **Phase prompts** are pre-loaded with arc-appropriate ACE-Step tag strings. All editable before starting — Karel can tune any phase before listening.
+  - **▶ Begin Journey** → launches async loop: `for i in 0..5: generate phase i (POST to API, await), play phase i (AudioContext + bloom), advance.`
+  - **Bloom canvas**: same 6-band radial gradient pattern as `1-live` / `48-arc-compose`. `globalCompositeOperation = "lighter"`. Background fades at 15% opacity per frame for trail effect.
+  - **Phase timeline**: 7 segments at the bottom. Each segment advances as the phase completes (done=100%, playing=elapsed/30, ready=25%, generating=10%).
+  - **Phase elapsed timer**: useEffect on `activePhase` resets and ticks every second. Displayed as `Phase Name · 0:12 / 0:30`.
+  - **Stop/Reset**: stop cancels the RAF loop, closes AudioContext, sets `stoppedRef.current = true` so the async loop exits at its next `if (stoppedRef.current) break` check. Reset clears statuses for re-run.
+  - Layout: left sidebar (phase list, scrollable, 320px desktop) + right panel (bloom canvas full height + controls) + bottom timeline strip.
+- `src/app/dream/126-arc-steer/api/route.ts` — POST handler with `guard(req)`, `export const maxDuration = 300` (ACE-Step takes 20-40s). Calls `fal.subscribe("fal-ai/ace-step", {tags, lyrics: "[inst]", duration: 30})`. Same response normalization as `6-compose`.
+
+**Build**: `✓ /dream/126-arc-steer 3.75 kB 110 kB` · `ƒ /dream/126-arc-steer/api 289 B 103 kB` — zero TypeScript errors, zero ESLint errors from new files. (Pre-existing warnings elsewhere in codebase are unrelated.)
+
+**What surprised me**: The six prompts, written as ACE-Step tag strings, express the full emotional arc in just 6 × one-line strings. "Sparse piano, introspective, major key, vast reverb, slow 28 BPM, long silence between phrases" — this is a complete compositional brief. You could give these 6 lines to a composer and get the same instructions. The tagging vocabulary of ACE-Step (genre, instrument, tempo, mood) maps naturally onto what a Resonance journey phase description already is: the same language Karel uses to describe scenes. Arc-steer is essentially a "playlist of compositional briefs" that plays itself.
+
+Also: the sequential generate-then-play approach (one at a time) rather than parallel generation + play means each phase takes ~50-70s total (generation + playback). The full arc runs in ~5-6 minutes. This is actually a good listening duration — it encourages sitting through all 6 phases rather than skipping ahead.
+
+**What's queued next**:
+1. **Cycle 150 (kids, 150%2=0)** — kids cycle. Candidate: new kids prototype from KIDS.md. Check if any seeded kids ideas haven't been built.
+2. **Cycle 151 (adult)** — candidates: `audio-cloud` (WebGPU 6-species particle physics, two-cycle build) or a new zero-dep idea from the queue.
+3. **Ongoing**: GEMINI_API_KEY, Welcome Home track IDs, Veo 3 budget — still blocked.
+
+---
+
 ## Cycle 148 — /dream/125-kids-jellyfish
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

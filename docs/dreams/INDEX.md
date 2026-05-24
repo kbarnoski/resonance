@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 148 — kids build)
+## ⭐ Newest (Cycle 149 — adult build)
+
+- **[/dream/126-arc-steer](/dream/126-arc-steer)** — Arc Steer. `demoable`
+  Six-phase Resonance journey arc realized as sequential AI-generated music. Each phase is 30 s of ACE-Step output: **Opening** (sparse piano, vast reverb, 28 BPM) → **Descent** (minor arpeggios, cello drone, 55 BPM) → **Awakening** (ethereal pads, harmonic widening, 80 BPM) → **Peak** (full orchestral climax, 112 BPM) → **Integration** (bittersweet resolution, 70 BPM) → **Return** (single piano, near-silence, 25 BPM). All six phase prompts are editable before starting. Press **▶ Begin Journey** → phases generate and play sequentially (one at a time — each generates then plays before moving to the next). Bloom visualizer responds to each phase's audio. Phase timeline at the bottom advances live. Stop anytime. Reset to re-run with edited prompts.
+  **"What does the 6-phase arc sound like? Edit these 6 lines and find out."** First prototype that turns the abstract journey arc concept into heard, AI-generated music — directly answers Karel's `5-arcs` question with audio.
+  FAL_KEY required · ~$0.04 / full journey · Zero new deps · 3.75 kB.
+
+---
+
+## Previous (Cycle 148 — kids build)
 
 - **[/dream/125-kids-jellyfish](/dream/125-kids-jellyfish)** — Jellyfish Song (kids). `demoable`
   Five translucent jellyfish drift upward through a deep ocean canvas, each on a sinusoidal wobble path with its own phase and speed. **Touch any jellyfish** — it flashes, flies away from your finger, and sings a reverb-soaked bell tone. Each jellyfish is a fixed pitch in C-major pentatonic: biggest (violet, radius 46px) = lowest (C3), smallest (teal, radius 22px) = highest (C4). The physical size→pitch mapping (BANDIMAL's bar-height rule) teaches itself without text. Jellyfish wrap top-to-bottom so the ocean is never empty. Autonomous drift keeps it alive between touches. Multi-touch OK.
