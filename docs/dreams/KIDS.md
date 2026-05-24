@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 160 | `/dream/135-kids-wheel-song` | `demoable` | **NEW** 5-segment spinning color wheel; golden striker at 12 o'clock fires pentatonic note per segment (violet=C3→cyan=C4); tap anywhere to add angular momentum (omega +=1.6 rad/s, max 6); deceleration to min 0.3 rad/s; segment flashes on strike; continuous pitch-tracking drone; rotation dot on rim; startup chime on open; zero permissions. First kids prototype where rotational speed determines musical rhythm (music-box mechanic). |
 | 158 | `/dream/133-kids-ripple-pond` | `demoable` | **NEW** Tap anywhere → expanding ripple ring plays pentatonic note (X=pitch, violet=C3 left → cyan=C4 right); when two rings first meet → white flash + chord at collision point; collision pair tracked per-ID to fire exactly once; max 12 rings; ambient C/E/G drone; caustic shimmer background; multi-touch; zero permissions. First kids prototype about wave interference / superposition. |
 | 156 | `/dream/131-kids-orbit` | `demoable` | **NEW** 5 orbital bands (rose C4 inner → violet C3 outer); tap ring → planet placed at tap angle, plays chime, orbits; tapping occupied ring teleports + retrigs; note fires on every completed orbit; Kepler-like periods (3.5–13s); polyrhythm from physics; dashed orbit rings; golden-ratio star field; ambient C2+G2 drone; zero permissions. |
 | 154 | polish | — | Tap-ripple ring on `127-kids-starfish`, splash ring on `128-kids-fish-tap`, hint text bump on `82-kids-color-piano`. |
@@ -164,6 +165,24 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 160 — wheel-song build
+
+**Built**: `135-kids-wheel-song`. Key learnings:
+
+- **Cumulative angle (thetaRef) rather than wrapped angle is essential for striker detection.** Using `theta = theta % (2π)` would reset the boundary counter every rotation, losing track of which segment is entering. Keeping theta unbounded and using `floor(theta / SEG_ARC)` gives a monotonically increasing count that only ever fires each boundary once.
+- **Minimum omega (0.3 rad/s) prevents the musical dead zone.** Without a minimum, the wheel could slow to near-zero and the prototype would go silent for long periods. A floor of 0.3 rad/s means a note fires at most every 4.2 seconds — still sparse but never silent. The child can always return and find the wheel still going.
+- **Segment flashes are per-segment scalars, not array-of-objects.** `segFlashRef = useRef([0,0,0,0,0])` is simpler than an array of flash objects and avoids the need to search/filter on each frame. Each `segFlashRef.current[k]` just decays linearly. Since a segment can't fire again before its previous flash has substantially decayed (the minimum inter-fire time at max speed is 0.21s, flash decays in 0.25s), there's no overlap issue.
+- **Startup chime is load-bearing.** Without it, the wheel looks like it's spinning but no note fires until the first segment boundary is crossed (~1.26s at omega=0.8). That gap makes the prototype feel broken. Playing C3 immediately on `handleStart` + setting `segFlashRef.current[0] = 1.0` gives instant audio+visual confirmation that the app is alive.
+- **The rotation indicator dot is subtle but important for adults.** A 4yo doesn't need to understand which direction the wheel is spinning — they just tap and enjoy. But a parent watching will wonder "is it going clockwise?" The white dot orbiting the rim makes this immediately readable without any label.
+- **`ctx.shadowBlur` glow on pie slices creates a halo that softens the geometry.** Without it, the 5 solid-color wedges look like a corporate chart. With shadowBlur proportional to flash state, the struck segment appears to glow outward into the dark background — the wheel "breathes" like a bioluminescent organism.
+
+**Next kid-cycle ideas (Cycle 162)**:
+- **`133-kids-ripple-pond` polish** — stone-drop animation at tap origin (dark concentric circle shrinking inward over 80ms) + edge-bounce rings (reflected secondary ring at screen edge). Both ~30 lines combined. Explicitly planned since Cycle 158.
+- **`135-kids-wheel-song` polish** — note name flash above the striker when a segment passes through ("C3", "E3"...), visible for 600ms, text-white/75 at `text-sm`. Makes the prototype gently educational without being didactic.
+- **New seed if needed**: a kids prototype about musical **duration** — a held tap produces a sustained note (how long = how long the note plays); the longer you hold the brighter the glow. Different from all existing prototypes (which respond to tap-down events, not hold duration). Contemplative, suitable before sleep.
 
 ---
 

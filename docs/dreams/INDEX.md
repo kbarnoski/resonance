@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 159 — adult build)
+## ⭐ Newest (Cycle 160 — kids build)
+
+- **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song (kids). `demoable`
+  A five-segment spinning color wheel makes music as it rotates. A golden triangle "striker" is fixed at 12 o'clock. Each time a colored segment passes the striker, that segment's pentatonic note plays as a warm reverb bell tone: violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4. **Tap anywhere to add spin momentum** — faster spin = denser, livelier music; slow drift = quiet spaced-apart notes like a winding-down music box. The wheel never fully stops (minimum 0.3 rad/s drift). A subtle continuous drone rises in pitch with speed. Startup chime plays immediately. Rotation indicator dot on the rim shows direction and speed at a glance.
+  **"First kids prototype where rotational speed IS the rhythm."** All 33 prior kids prototypes produce notes by tapping, dragging, or drawing. This one plays itself — the child just winds it up. Faster tapping = more notes. Slowdown = musical calm. The music-box metaphor is immediately understood by kids who've heard a real music box.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.45 kB.
+  Design notes: `src/app/dream/135-kids-wheel-song/README.md`
+
+---
+
+## Previous (Cycle 159 — adult build)
 
 - **[/dream/134-anemone-av](/dream/134-anemone-av)** — Anemone. `demoable`
   A bioluminescent sea anemone rendered in Three.js R3F. Eight cyan/violet tentacle arms radiate from a glowing central stalk, animated by sinusoidal LFOs modulated by audio: **sub-bass sways the entire organism**, low-mid spreads the tentacles outward, **high-mid flickers the glowing tips**, onsets pulse the whole body +9% for 80ms. Crown ring of 6 sky-blue spheres at the top of the stalk. Bloom post-processing from `@react-three/postprocessing`. Demo mode breathes with internal LFOs; mic mode makes it fully reactive to live sound. Dark background, no UI chrome during playback.

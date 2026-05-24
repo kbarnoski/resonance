@@ -1,5 +1,43 @@
 # Dream Agent — cycle state
 
+## Cycle 160 — kids build: 135-kids-wheel-song (Wheel Song — spinning color wheel music box)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 160 % 2 = 0 → **kids cycle**. No blocker / in-progress.
+4. **Build new** — KIDS.md research log for Cycle 158 suggested: (a) stone-drop polish on `133-kids-ripple-pond` (~10 lines), (b) edge-bounce rings (~20-30 lines), (c) kids research sweep if thin. The polish options are small; the seeded queue is consumed. I chose to invent a new kids prototype with a genuinely novel interaction not seen in any of the 33+ existing kids prototypes: **rotational speed → musical rhythm**. No existing prototype uses angular velocity as the primary musical parameter.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1,"130-tsl-particle-compute":1,"111-kids-shape-loop":1,"107-ocean-presence":1,"106-beat-cut":1,"105-pluck-field":1,"104-kids-mirror-draw":1,"101-camera-song":1,"100-kids-paint-song":1,"98-kids-drum-circle":1,"86-sound-to-video":1,"84-wave-fluid":1}` — 13 loves, unchanged.
+
+**Loved slugs that influenced this choice**: `83-kids-tilt-rain` (physics-makes-music, Karel loved) and `111-kids-shape-loop` (interactive geometry produces music, Karel loved). Both show Karel appreciates kids prototypes where physics autonomously generates rhythm and structure. The spinning wheel extends this pattern: tap to set physics in motion, then listen to the rhythm that emerges.
+
+**What I built**:
+- `src/app/dream/135-kids-wheel-song/page.tsx` — 2.45 kB
+  - **Spinning wheel**: 5 colored segments (violet=C3, rose=E3, amber=G3, emerald=A3, cyan=C4). Canvas2D arc drawing with rotation via cumulative `thetaRef`.
+  - **Striker mechanic**: golden triangle pointer fixed at 12 o'clock (just above the rim). Each time `floor(theta / SEG_ARC)` increments, the entering segment fires its pentatonic note via a triangle-wave OscillatorNode + reverb ConvolverNode. Note gain scales with spin speed (louder = faster).
+  - **Tap interaction**: `pointerdown` anywhere adds +1.6 rad/s to `omegaRef`, capped at 6 rad/s. Multi-touch adds multiple impulses. Deceleration at `0.993^(dt*60)` per frame → settles to minimum 0.3 rad/s after ~8 seconds without taps.
+  - **Segment flash**: `segFlashRef[k]` jumps to 1.0 on strike, decays at 4.0/s. Segment glow shadowBlur = `24 + flash * 24` when active.
+  - **Continuous tone**: sine OscillatorNode (C2 → A3 range), gain tracks speed01 × 0.038. Barely audible; gives warmth to the space between strikes.
+  - **Rotation indicator**: small white dot on the rim at angle θ — shows direction and speed of spin without any text.
+  - **Startup chime**: plays C3 immediately on `handleStart` so the app feels alive before the first segment has rotated into position.
+  - **Hint text**: "tap anywhere to spin faster" at opacity `max(0, 0.72 − speed01 × 1.8)` — visible when slow, invisible when spinning fast.
+  - **Build**: `✓ /dream/135-kids-wheel-song 2.45 kB 105 kB` — zero TypeScript errors, zero ESLint errors. Passed first attempt.
+- `src/app/dream/135-kids-wheel-song/README.md` — design notes, audio architecture, polish ideas.
+
+**What surprised me**: The striker mechanic gives the wheel a genuinely "mechanical" quality — it plays like a music box, where the instrument (the wheel) does the work and the child just winds it up (by tapping). At minimum drift (omega=0.3), a complete rotation takes ~21s and notes fire every ~4.2s — slow, contemplative, like a distant music box winding down. After 3-4 rapid taps (omega≈3.0+), notes fire every ~0.4s — a lively pentatonic cascade. The range from calm to energetic is entirely determined by tap cadence, which is intuitive for any age.
+
+The rotation indicator dot was added after the initial design — without it, the wheel's direction of rotation isn't always immediately clear (could be clockwise or counterclockwise from glancing at segment colors). The dot orbiting on the rim at angle θ makes the direction and speed of rotation instantly readable.
+
+**What's queued next**:
+1. **Cycle 161 (adult, 161%2=1)** — `arc-compose` (MiniMax Music 2.6, section tags, hear the 6-phase Ghost arc as AI music, ~$0.03/gen, FAL_KEY in use). Highest-value adult prototype in the queue — turns abstract arc structure into actual heard music.
+2. **Cycle 162 (kids, 162%2=0)** — `133-kids-ripple-pond` polish (stone-drop animation at tap + edge-bounce rings), or new kids seed from KIDS.md research.
+3. **Polish candidate** — `135-kids-wheel-song`: add note-name flash above the striker when a segment passes, and a BPM counter derived from inter-strike intervals.
+
+---
+
 ## Cycle 159 — adult build: 134-anemone-av (Anemone — bioluminescent 3D form)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
