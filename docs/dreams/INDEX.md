@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 145 — adult build)
+## ⭐ Newest (Cycle 147 — adult build)
+
+- **[/dream/124-image-chord](/dream/124-image-chord)** — Image Chord. `demoable`
+  Drop any photo, screenshot, or artwork → JS samples a 64×64 thumbnail, builds a weighted hue histogram, and reads out dominant H/S/L. The mapping: **hue → chord quality** (warm reds = C major, yellows = C7, greens = Cm, cyan = Cm7, violet = Cmaj7, magenta/purple = Cdim); **saturation → harmonic richness** (near-grey image = 1 pure sine; vivid image = 4 triangle-wave voices with slight detuning); **brightness → register + tempo** (dark = bass C2 at 35 BPM, bright = treble C5 at 120 BPM). The chord arpeggios continuously; a 6-band bloom ring animates to the synth output. **8 journey-palette swatches** (Cosmic, Earth, Sanctuary, Ocean, Snowflake, Ghost, Fire, Mycelium) for instant exploration — no image needed. Chord name displayed in large monospace over the bloom.
+  Zero permissions · Zero API · Zero deps · 3.58 kB.
+
+---
+
+## Previous (Cycle 146 — kids polish)
+
+- **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids). `polished`
+  *(See Cycle 138 entry below for full description.)* Cycle 146 added a growing violet press-ring — a progress arc sweeps clockwise during the 480ms hold, so users always know "keep holding."
+
+---
+
+## Previous (Cycle 145 — adult build)
 
 - **[/dream/123-landscape-resonance](/dream/123-landscape-resonance)** — Landscape Resonance. `demoable`
   Audio-reactive 3D terrain fly-through rendered in raw WebGL + GLSL (no Three.js). A ray-marched heightfield derived from 5-octave FBM value noise. **Bass lifts mountains**: louder playing = towering peaks, the camera rises to match so they loom at the screen edges. **Treble adds surface roughness**: a second noise octave makes the terrain more jagged at high frequencies. **Onsets** trigger a 100ms blue-white lightning flash. **Fog** thickens with overall amplitude (quiet = clear far horizon, loud = atmospheric blur). Color gradient: deep violet valleys → emerald slopes → near-white peaks; the entire gradient shifts dynamically with bass scale. Forward fly-through speed: 0.38 units/sec (a full terrain feature takes ~47 seconds — deliberately slow and meditative). Demo mode: three LFO oscillators (55/180/440 Hz) with amplitude-modulating sub-LFOs create a slow breathing terrain without mic. Live performance: bass-driven mountain peaks on a projector screen would be genuinely cinematic.

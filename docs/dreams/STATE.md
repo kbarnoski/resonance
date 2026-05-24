@@ -1,5 +1,41 @@
 # Dream Agent — cycle state
 
+## Cycle 147 — /dream/124-image-chord
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 147 % 2 = 1 → **adult cycle**. Skip kid rotation.
+4. **Build new** — STATE.md cycle 146 queued `image-chord` for this cycle. The spec exists in IDEAS.md (FROM RESEARCH Cycle 137 entry). One-cycle build, zero deps, zero API. Slug number is 124 (123 was landscape-resonance, 120 was taken by kids-rain-drum). Built as `/dream/124-image-chord`.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Loved slugs: both loved prototypes have instant sensorimotor feedback. `image-chord` is a different axis — *looking* at something triggers music. Not the same mechanic, but both loved prototypes involve immediate cause-effect. The swatch-click interaction (tap color → hear chord) has the same instant-response quality.
+
+**Loved slugs that influenced this choice**: Indirectly. Both loved prototypes are zero-permission, zero-API, immediate response. `image-chord` follows the same pattern — no API call, no ML model, just direct client-side computation.
+
+**What I built**:
+- `src/app/dream/124-image-chord/page.tsx` — 3.58 kB.
+  - **Pixel analysis**: drops to a 64×64 canvas, builds a 36-bin hue histogram weighted by saturation, finds the dominant hue peak. Mean S and L computed across all opaque pixels.
+  - **Mapping**: H → chord quality (6 × 60° zones: major / dom7 / minor / min7 / maj7 / dim); S → harmonic voices (1 sine through 4 triangle + detuned); L → root octave + BPM (C2/35 BPM dark through C5/120 BPM bright).
+  - **Arpeggio**: look-ahead scheduler (`setInterval` at 100ms, 400ms lookahead), schedules OscillatorNodes and GainNodes via AudioContext timing. Each note voice gets slight detune (±v×6 cents). ADSR envelope: 22ms attack, hold, 200ms release. Nodes self-disconnect in `onended`.
+  - **Bloom**: `AnalyserNode` receives the synthesized signal (not mic). `renderBloom()` reads frequency data, maps 6 bands to BAND_COLORS, draws radial gradient petals with `globalCompositeOperation = "lighter"`. Background fades at 16% opacity per frame to preserve glow trails.
+  - **8 journey swatches**: Cosmic, Earth, Sanctuary, Ocean, Snowflake, Ghost, Fire, Mycelium — precomputed H/S/L from their representative hex colors. Click = immediate chord change. Snowflake (icy pale blue, L=0.93) → Cm7 at 120 BPM. Cosmic (deep violet, L=0.21) → Cmaj7 at 35 BPM. Ghost (cool grey, S=0.19) → 1-voice Cm7 at 55 BPM.
+  - **Drop zone**: drag-and-drop + tap-to-open-file-picker. Shows image thumbnail after load.
+  - **Typography**: `text-2xl` header, `text-base` description, `text-5xl` chord name, `text-xs` analysis readout. Text shadows for readability over bloom.
+  - **Build**: `✓ /dream/124-image-chord 3.58 kB 106 kB` — clean, zero TypeScript errors, zero ESLint errors.
+
+**What surprised me**: The Snowflake swatch (L=0.93 = very bright → treble C5 at 120 BPM, S=1.0 → 4 harmonics, H=226 → Cm7) produces a fast, bright, slightly sad chord — which is exactly right for a crystalline ice sound world. The Earth swatch (H=22 → major, L=0.26 → bass C2 at 35 BPM, S=0.78 → 3 voices) produces a slow deep C major chord with harmonic richness — warm and grounded. The mapping did something musically coherent without me explicitly tuning it for each journey. The hue-to-quality relationship (warm = major, cool = minor, violet = major 7th) aligns with general cross-modal color-music associations in the synesthesia literature.
+
+Also: the bloom visualization is fed by the synthesized output, not mic input. So the bloom ring actually shows the spectral content of the arpeggio — you can see the chord's overtone structure in the colors. A Cmaj7 (4 notes) generates a more complex bloom than a pure C major (3 notes). A 1-voice sine (desaturated image) produces a near-silent bloom; a 4-voice vivid image generates a rich multi-color bloom. The visualization is a portrait of the chord's structure, not just arbitrary animation.
+
+**What's queued next**:
+1. **Cycle 148 (kids, 148%2=0)** — kids cycle. Queue ideas from KIDS.md: `kids-jellyfish` (slow-moving translucent jellyfish drift up; touch to nudge; bell tones; autonomous drift plays itself) — seeded in Cycle 144, never built.
+2. **Cycle 149 (adult, 149%2=1)** — adult cycle. Candidates: `shepard-tone` (auditory illusion, no deps), `oracle-music` (I-Ching hexagram → musical params, no deps), `synesthetic-sketch` (multi-dimensional shape canvas, no deps).
+3. **Ongoing**: GEMINI_API_KEY, Welcome Home track IDs, Veo 3 budget — still blocked.
+
+---
+
 ## Cycle 146 — polish: 116-kids-bloom-garden (press-ring indicator)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
