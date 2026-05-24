@@ -72,12 +72,13 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## Previous (Cycle 138 — kids build)
+## Previous (Cycle 138 — kids build, polished Cycle 146)
 
-- **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids). `demoable`
+- **[/dream/116-kids-bloom-garden](/dream/116-kids-bloom-garden)** — Bloom Garden (kids). `polished`
   A dark canvas that breathes. **Press and hold** anywhere to plant a glowing flower — it blooms over 650ms from a tiny bud into a 5-petal flower and plays a sustained pentatonic note (X position = pitch: violet/low left → rose/high right). After 10 seconds the flower **seeds itself**: petals scatter as sparkles and a new bud sprouts 30–62px away, inheriting the pitch ±1 note. **Tap any flower to burst it** — sparkle explosion + pop note. Up to 12 flowers coexist; the garden self-organizes over time toward harmonic clusters as notes drift ±1 each generation.
+  **Cycle 146 polish**: added a growing violet press-ring — a progress arc sweeps from 12 o'clock clockwise during the 480ms hold, so users always know "keep holding." The ring disappears the instant the flower starts growing. No more "why didn't that work?" moments for kids.
   **"The most contemplative kids prototype yet — designed for quiet play before sleep."** No tap targets. No fail state. No goal. Hold → bloom → watch the garden grow itself. Ambient C3+E3+G3 pad so the screen is never silent even before the first flower.
-  Zero permissions · Zero API · Zero deps · 3.17 kB.
+  Zero permissions · Zero API · Zero deps · 3.32 kB.
 
 ---
 

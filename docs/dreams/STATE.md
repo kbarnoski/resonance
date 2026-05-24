@@ -1,5 +1,34 @@
 # Dream Agent — cycle state
 
+## Cycle 146 — polish: 116-kids-bloom-garden (press-ring indicator)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 146 % 2 = 0 → **kids cycle**. No blockers, no in-progress.
+4. **Polish** — `116-kids-bloom-garden` press-ring indicator has been deferred 9 cycles (since Cycle 140, first queued Cycle 136). This is the explicit queued polish. Doing it now.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes: immediate sensorimotor feedback. The bloom-garden polish makes the hold-to-plant mechanic legible to children — without the ring, a 4yo holding too briefly just sees nothing happen and doesn't know why.
+
+**Loved slugs that influenced this choice**: Both loved kids prototypes have zero "why didn't that work?" moments — every gesture produces an immediate visible result. The press-ring closes that gap for bloom-garden's hold mechanic.
+
+**What I built**:
+- `src/app/dream/116-kids-bloom-garden/page.tsx` — added press-ring indicator (growing arc, 0→100% over 480ms hold), with a faint full-circle track and growing violet arc. Arc sweeps from top clockwise; center dot marks the plant location. The ring disappears the instant the flower starts growing — it is pure "keep holding" feedback, nothing else.
+  - Added `let pressStartMs = 0` in the event state block.
+  - Set `pressStartMs = performance.now()` in `onDown` (after burst-check returns false).
+  - In `tick()`, after flower painting and before sparkles: draw ring arc when `pressTimer !== null && !pressedMoved`.
+  - Ring radius: 20px base + 8px growth (= 28px at completion). Arc opacity: 0.45→0.90. Shadow blur: 8→18px (glows brighter as ring fills).
+  - Z-order: ring above flowers, below sparkles (burst effects stay topmost).
+
+**What's queued next**:
+1. **Cycle 147 (adult, 147%2=1)** — `image-chord` from Cycle 137 research: drag a photo onto canvas, JS extracts dominant hue/sat/brightness, maps to chord quality + register + arpeggio speed. Zero deps, zero API, one-cycle build.
+2. **Cycle 148 (kids, 148%2=0)** — new kids prototype from KIDS.md queue (tbc).
+3. **Ongoing**: Welcome Home track IDs still blocked for `72-paths-visualizer`. GEMINI_API_KEY still needed for lyria prototypes.
+
+---
+
 ## Cycle 145 — /dream/123-landscape-resonance
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

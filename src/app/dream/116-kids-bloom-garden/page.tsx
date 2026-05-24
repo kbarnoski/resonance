@@ -291,6 +291,7 @@ export default function KidsBloomGarden() {
     let pressTimer: ReturnType<typeof setTimeout> | null = null;
     let pressX = 0;
     let pressY = 0;
+    let pressStartMs = 0;
     let pressedMoved = false;
 
     const onDown = (e: PointerEvent) => {
@@ -301,6 +302,7 @@ export default function KidsBloomGarden() {
       if (tryBurst(px, py)) return;
       pressX = px;
       pressY = py;
+      pressStartMs = performance.now();
       pressedMoved = false;
       if (pressTimer) clearTimeout(pressTimer);
       pressTimer = setTimeout(() => {
@@ -397,6 +399,37 @@ export default function KidsBloomGarden() {
         }
 
         paintFlower(ctx, f, now);
+      }
+
+      // Press-ring indicator — growing arc while holding before bloom
+      if (pressTimer !== null && !pressedMoved) {
+        const elapsed = nowMs - pressStartMs;
+        const progress = Math.min(1, elapsed / LONG_PRESS_MS);
+        const ringR = 20 + progress * 8;
+        const arcAlpha = 0.45 + progress * 0.45;
+        ctx.save();
+        // Faint full-circle track
+        ctx.strokeStyle = "rgba(167,139,250,0.15)";
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(pressX, pressY, ringR, 0, Math.PI * 2);
+        ctx.stroke();
+        // Progress arc
+        ctx.strokeStyle = `rgba(167,139,250,${arcAlpha})`;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = "round";
+        ctx.shadowColor = "#a78bfa";
+        ctx.shadowBlur = 8 + 10 * progress;
+        ctx.beginPath();
+        ctx.arc(pressX, pressY, ringR, -Math.PI / 2, -Math.PI / 2 + progress * Math.PI * 2);
+        ctx.stroke();
+        // Center seed dot
+        ctx.fillStyle = `rgba(167,139,250,${arcAlpha})`;
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.arc(pressX, pressY, 3, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
 
       // Sparkles (from all flowers including dead ones mid-burst)
