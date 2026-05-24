@@ -1,5 +1,42 @@
 # Dream Agent — cycle state
 
+## Cycle 143 — /dream/121-loop-station
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 143 % 2 = 1 → **adult cycle**. No blockers.
+4. **Build new** — `loop-station` from IDEAS.md `35-loop-station`, queued since Cycle 35 research and explicitly noted in Cycle 142's "queued next" as the highest-impact adult candidate.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. Both loved prototypes are immediate gesture → sound. The loop station extends this to multi-layer composition: you build up a performance in real time rather than just reacting. Different paradigm, same immediacy principle.
+
+**Loved slugs that influenced this choice**: `82-kids-color-piano` and `83-kids-tilt-rain` both reward immediate sonic feedback. `loop-station` is their adult evolution: each REC → STOP gesture produces a permanent audio layer that accumulates into a composition. Karel can use it live on stage — it directly satisfies the "live performance fitness" priority in AGENT.md.
+
+**What I built**:
+- `src/app/dream/121-loop-station/page.tsx` — 4-slot live loop station, pure Web Audio API, 4.07 kB.
+  - **Four independent slots**, each with: bar-count selector (1/2/4 bars, default 2), waveform canvas, REC / MUTE / CLEAR controls.
+  - **Recording**: tap REC → mic recording begins via `MediaRecorder` (modern, non-deprecated). Tap STOP or wait for bar count × beat duration → auto-stops. `decodeAudioData` converts the blob to an `AudioBuffer`, trimmed/padded to exactly `loopDur` samples. 150ms fade-in/fade-out applied at loop boundaries to remove clicks.
+  - **Phase-lock**: first loop establishes `masterStart` + `masterDur`. Subsequent loops start at the next beat-1 boundary: `masterStart + ceil(elapsed / masterDur) * masterDur`. All loops stay synchronized regardless of when they were recorded.
+  - **MUTE**: toggles `GainNode.gain` between 0 and 1 — loops keep playing in the audio graph, so UNMUTE is instant (no re-sync needed).
+  - **CLEAR**: stops the `AudioBufferSourceNode`, resets the slot. If no other loops remain, resets the master clock so the next loop starts fresh.
+  - **Demo Loops**: "Load Demo Loops" generates 4 synthesized 2-bar loops entirely in JS (no audio files): sub-bass C2 drone (sine, 65.41 Hz), C-major piano phrase (triangle waves, 8th-note arpeggio), high C5–G5–C6 figure (16th notes, sine), kick+snare pattern (deterministic sin-hash "noise" + 60Hz kick tone). All loops start simultaneously at `now + 0.1s`.
+  - **Waveform visualization**: 128-point peak array per slot drawn on canvas. Past portion (before playhead) rendered at full opacity; future portion at 25%. White 2px playhead sweeps across the waveform for looping slots. Muted slots get a 50% black overlay.
+  - **BPM tap tempo**: up to 8 taps, 4s window, computes average inter-tap interval → BPM. Affects loop duration for new recordings (existing loops are not affected).
+  - **Typography**: text-2xl title, text-base description, text-white/95 primary, text-white/75 secondary, text-white/55 tertiary. All buttons min-h-[44px].
+
+**Build**: `✓ /dream/121-loop-station  4.07 kB  107 kB` — clean, zero TypeScript errors, zero ESLint errors. One pre-existing eslint-disable warning unrelated to this prototype.
+
+**What surprised me**: The phase-lock math produces a satisfying live performance dynamic. When you record a second loop after the first is playing, there's a brief "waiting for beat 1" gap — typically 0 to 2 seconds depending on where in the bar you stopped recording. This gap is exactly like a professional looper pedal (Boss RC-505, Ableton Looper) — it quantizes to the bar boundary automatically. The result is that even imprecisely-timed recordings end up perfectly in sync. The demo also revealed that the deterministic sin-hash noise (`Math.sin(d * 17.3 + b * 91.7) * Math.sin(d * 53.1 + b * 37.4)`) produces a reasonable kick+snare character without `Math.random()` — reproducible on every "Load Demo Loops" press.
+
+**What's queued next**:
+1. **Cycle 144 (kids, 144%2=0)** — polish `116-kids-bloom-garden` (pre-bloom press-ring showing hold progress) OR new kids prototype from KIDS.md. The bloom-garden polish has been deferred for 6 cycles — probably worth doing it now.
+2. **Cycle 145 (adult, 145%2=1)** — `music-palette` (audio features → HSL color palette, downloadable SVG) or a new IDEAS.md prototype. `spectral-morph` (34-spectral-morph) is interesting — FFT magnitude interpolation between two sources → genuine hybrid timbres. One-cycle build.
+3. **Open question**: Welcome Home album track IDs → `76-cymatics-on-piano-path` and `72-paths-visualizer` (blocked since Cycle 76).
+
+---
+
 ## Cycle 142 — /dream/120-kids-rain-drum
 
 **When**: 2026-05-23 UTC (hourly autonomous cycle)

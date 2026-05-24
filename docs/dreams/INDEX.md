@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 142 — kids build)
+## ⭐ Newest (Cycle 143 — adult build)
+
+- **[/dream/121-loop-station](/dream/121-loop-station)** — Loop Station. `demoable`
+  Four-slot live loop station. Pick bar count (1/2/4) → tap REC → play → tap STOP → it loops, phase-locked to the beat grid. Each slot has a live waveform with a sweeping playhead, MUTE and CLEAR controls, and independent bar counts. First prototype where you actively *construct* a composition over time rather than reacting. "Load Demo Loops" generates a C2 drone + piano arpeggio + high figure + kick/snare for an instant layered performance without mic. BPM tap tempo adjusts bar length for new recordings.
+  Live performance tool · Zero API · Zero deps · 4.07 kB.
+
+---
+
+## Previous (Cycle 142 — kids build)
 
 - **[/dream/120-kids-rain-drum](/dream/120-kids-rain-drum)** — Rain Drum (kids). `demoable`
   Four weather clouds drop pentatonic notes from the sky. Each cloud has its own pitch (C3, E3, G3, A3) and its own physics: rain (fast teardrops, quick plunk), snow (slow flakes, sine sustain), leaves (tumbling ellipses, warm tone). Tap any cloud to cycle its weather. All four pitches are pentatonic-consonant — any combination sounds musical. Zero permissions · Zero deps · 2.78 kB.
