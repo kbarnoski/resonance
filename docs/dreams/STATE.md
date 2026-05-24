@@ -1,5 +1,45 @@
 # Dream Agent — cycle state
 
+## Cycle 157 — build: 132-shepard-tone (Shepard Tone — endless auditory illusion)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 157 % 2 = 1 → **adult cycle**.
+4. **Build new** — MORNING.md and STATE.md had queued `kali-sustain` (contemplative drone, simple). Chose `132-shepard-tone` instead — from the Cycle 44 research queue. Higher surprise factor: 131 prototypes and zero auditory illusion/psychoacoustics entries. The Shepard tone is the canonical "forever ascending staircase" — zero deps, zero API, one-cycle build, and deeply aligned with Resonance's "transcendent listening" thesis (perceiving travel without destination).
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged. No direct signal for adult theme. The loves reinforce interactive prototypes where physics/math produces surprising music. The Shepard tone is mathematically simple (8 sine waves + bell-curve gains) but perceptually striking — same quality as the loved kids prototypes.
+
+**Loved slugs that influenced this choice**: No direct pull. Chose on IDEAS.md gap analysis: 131 prototypes, zero psychoacoustics entries; Cycle 44 research had clear spec.
+
+**What I built**:
+- `src/app/dream/132-shepard-tone/page.tsx` — 2.6 kB.
+  - **8 sine OscillatorNodes** at A1–A8 (55–7040 Hz, octave intervals). Phase `∈ [0,1)` advances at `rate/60` octaves/second. Each oscillator's frequency: `freq_i = 55 × 2^(i + phase)`.
+  - **Bell-curve envelope**: `gain_i = exp(−(logOct − 3.5)² / (2 × 1.55²)) × 0.13`. Peak at A4/A5 boundary (3.5 octaves above A1). Extremes fade to near-zero. As the highest oscillator leaves audible range, a new cycle enters from below — the seam is inaudible.
+  - **Three step modes**: Glide (continuous phase), Whole-tone (1/6 octave steps = 6 steps/octave, rhythmic feel), Semitone (1/12 octave steps = textbook demonstration).
+  - **Visual**: 8 glowing circles in a vertical stack (A1=bottom, A8=top). Brightness + size ∝ current bell-curve gain. Middle circles always brightest. Global hue cycles violet→rose→amber→... as phase completes one octave — visual periodicity matches audio periodicity.
+  - **Phase ring**: glowing violet dot orbits a small circle (bottom-right); one orbit = one octave traversal. Note name (A, Bb, B, C...) displayed in ring center.
+  - **Controls**: RATE slider (0.5–30 BPM), Ascending/Descending toggle, step mode picker (Glide / Whole-tone / Semitone), Freeze toggle.
+  - **Freeze**: stops phase. Chord holds at current 8-oscillator combination — demonstrates the multi-sine structure.
+  - Zero deps · zero API · zero permissions.
+
+- `src/app/dream/132-shepard-tone/README.md` — design notes: algorithm explanation, implementation details, what to listen for, Resonance connection, polish ideas.
+
+**Build**: `✓ /dream/132-shepard-tone 2.6 kB 105 kB` — zero TypeScript errors, zero ESLint errors. Build passed first attempt.
+
+**What surprised me**: The Whole-tone step mode (1/6 octave jumps) creates a surprisingly musical and hypnotic quality — like a tone ladder with rungs. It's distinct from the smooth glide: the intervals are audible as distinct pitch classes, and you hear the major whole-tone scale ascending (A→B→C#→D#→F→G→A) before the illusion loops. At 5 BPM, each whole-tone step takes 2 seconds — you have time to perceive each "rung" before it rises. The Glide mode sounds more like ambient texture (less clearly "ascending"); Whole-tone sounds more like a musical idea.
+
+The 8 circles visual is subtle — the bells barely change radius as the phase cycles. The hue cycle is the stronger visual signal: violet → rose → amber → green → violet completes once per octave traversal. At 5 BPM (12 seconds/octave), you see the canvas shift color with time. The phase-ring dot is the clearest motion indicator. Might benefit from showing brief "octave arrival" flashes in a future polish cycle.
+
+**What's queued next**:
+1. **Cycle 158 (kids, 158%2=0)** — kids cycle. KIDS.md Cycle 156 log suggests: `kids-ripple-pond` (tap → expanding ring waves that collide, each ring plays a pentatonic pitch at collision) or a kids research sweep if queue is thin.
+2. **Cycle 159 (adult)** — `kali-sustain` (contemplative drone, zero cost) or `anemone-av` (Three.js organic bioluminescent 3D form, all deps installed) or `arc-compose` (MiniMax Music 2.6 section tags, $0.03/gen, FAL_KEY).
+3. **Ongoing** — `ghost-3d-orbit` / `piano-to-ghost` (needs GEMINI_API_KEY + FAL_KEY budget OK from Karel).
+
+---
+
 ## Cycle 156 — kids build: 131-kids-orbit (Orbit Garden — polyrhythmic planet orbits)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

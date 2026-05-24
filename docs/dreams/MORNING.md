@@ -1,30 +1,31 @@
-# Morning digest — last updated 2026-05-24 UTC (Cycle 156)
+# Morning digest — last updated 2026-05-24 UTC (Cycle 157)
 
 ## New since yesterday
 
+- **[/dream/132-shepard-tone](/dream/132-shepard-tone)** — Shepard Tone · *Cycle 157* · `demoable` 🆕
+  An auditory illusion: a tone that climbs forever without resolving. Eight sine waves across eight octaves, each with a bell-curve gain envelope peaking at A4/A5. All eight glide upward together — when the highest fades out, the next cycle enters from below invisibly. **Put on headphones, close your eyes, let it run for 30 seconds.** Rate slider (0.5–30 BPM), Ascending/Descending, Glide/Whole-tone/Semitone modes, Freeze. Try Whole-tone at 5 BPM for the most musical version: you hear the major whole-tone scale (A→B→C#→D#→F→G→A) ascending with no ceiling. First psychoacoustics prototype in 132-prototype sandbox. Zero deps, zero API, zero cost.
+  *Resonance angle: the Shepard tone is a proof that perceptual ascent can be unbounded — the listener travels far without going anywhere. That's the journey thesis in pure math.*
+
 - **[/dream/131-kids-orbit](/dream/131-kids-orbit)** — Orbit Garden · *Cycle 156* · `demoable` 🆕
-  Five glowing planets orbit a central sun on dashed rings. Tap any ring → planet appears, plays its chime note, starts orbiting. Inner rings are fast + high (rose/C4, 3.5s period); outer rings are slow + low (violet/C3, 13s period). Each planet rings again on every completed orbit — put all five in motion and you get an unpredictable polyrhythm from physics alone. Tap an occupied ring to move the planet to a new position (and trigger its note again — good for jamming). Zero permissions. Great before-sleep toy.
+  Five glowing planets orbit a central sun. Tap any ring → planet appears, plays chime note, orbits forever. Inner rings fast+high, outer rings slow+low. Each planet plays again on every orbit completion — all five active = unpredictable polyrhythm from physics. Great before-sleep toy for kids 3+.
 
 - **[/dream/130-tsl-particle-compute](/dream/130-tsl-particle-compute)** — Lorenz Attractor · *Cycle 155* · `demoable`
-  50,000 particles on the GPU following the Lorenz strange attractor. Butterfly shape emerges in ~5 seconds. Orbit with mouse/touch. WebGPU required (Chrome/Edge desktop).
-
-- **[/dream/129-lyria3-journey](/dream/129-lyria3-journey)** — Ghost Scenes / Lyria 3 · *Cycle 153* · `demoable`
-  Six scenes (Stone Chamber → Cosmic Ascension). "Generate" → 30 s ambient music via Lyria 3 Pro ($0.08/scene, FAL_KEY). Try Stone Chamber vs. Cosmic Ascension for the starkest contrast.
+  50,000 GPU particles following the Lorenz equations. Butterfly shape emerges in ~5 seconds. WebGPU required.
 
 ## In progress / partial
 
-Nothing in-progress. Cycle 157 is an adult cycle.
+Nothing in-progress.
 
-## Research findings (Cycle 151 — still fresh)
+## Research findings worth a look
 
-1. **Lyria 3 Pro on fal.ai** — built as `129-lyria3-journey`. No GEMINI_API_KEY needed.
-2. **Pixal3D (SIGGRAPH 2026)** — Ghost image → 3D GLB orbit, ~$0.30/gen via FAL_KEY. Two-cycle build. Needs budget OK.
-3. **Kali Malone drone aesthetic** — `132-kali-sustain`, zero cost, zero API. Queued for Cycle 157.
-4. **Live Music Diffusion Models** (arXiv May 21) — `133-lmdm-echo`, harmonic echo responding to live piano.
+- **Pixal3D (SIGGRAPH 2026)** — Ghost LoRA image → 3D GLB orbit, ~$0.30/gen via FAL_KEY. Waiting on budget OK.
+- **Kali Malone drone / `kali-sustain`** — still queued. Zero cost, contemplative drone meditation. Moved to Cycle 159.
+- **`anemone-av`** — organic bioluminescent 3D form (Three.js + all deps installed). One-cycle build, very different aesthetic.
+- **`arc-compose`** — MiniMax Music 2.6 section tags, $0.03/gen. "Hear your 6-phase arc as AI music." FAL_KEY in use.
 
 ## Open questions for Karel
 
-1. **Ghost 3D orbit budget** — Pixal3D (SIGGRAPH 2026) Ghost image → 3D GLB, ~$0.30/figure via FAL_KEY. OK to build?
-2. **Veo 3 Ghost animate** — still waiting for approval. ~$0.75/clip via FAL_KEY.
-3. **Welcome Home track IDs** — `72-paths-visualizer` / `76-cymatics-on-piano-path`. Blocked ~78 cycles.
-4. **Kali Sustain** — zero cost, contemplative drone meditation. Worth Cycle 157?
+1. **Ghost 3D orbit budget** — Pixal3D: Ghost image → animated 3D figure, ~$0.30/generation via FAL_KEY. OK to build?
+2. **Veo 3 Ghost animate** — waiting ~many cycles. ~$0.75/clip. Still want this?
+3. **Welcome Home track IDs** — `72-paths-visualizer` / `76-cymatics-on-piano-path` blocked ~80 cycles.
+4. **Shepard tone feedback** — does the Whole-tone mode (most musical version) feel right at 5 BPM? Worth a polish cycle for the triangle-paradox mode?

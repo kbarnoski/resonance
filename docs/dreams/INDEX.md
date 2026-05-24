@@ -10,7 +10,17 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 156 — kids build)
+## ⭐ Newest (Cycle 157 — adult build)
+
+- **[/dream/132-shepard-tone](/dream/132-shepard-tone)** — Shepard Tone. `demoable`
+  Eight sine waves across eight octaves, each fading in at the bottom of the audible range and out at the top. All eight glide upward together. Result: **an auditory illusion of a tone that ascends forever without ever resolving**. Discovered by Roger Shepard (1964) — the most famous auditory illusion in music. RATE slider (0.5–30 BPM), Ascending/Descending toggle, three modes: Glide (smooth), Whole-tone (6 discrete steps per octave — you hear the major whole-tone scale ascending), Semitone (12 steps — slower, textbook-clear). Freeze button holds the current 8-oscillator chord. Phase ring (bottom-right) orbits once per octave traversal; center shows current note name (A, Bb, B, C...). Canvas: 8 glowing circles (A1=bottom, A8=top), brightness/size ∝ bell-curve gain, hue cycles violet→rose→amber as each octave completes.
+  **"A tone that climbs forever. The staircase has no top floor."** First psychoacoustics/auditory illusion prototype in the sandbox. Resonance angle: the Shepard tone proves perceptual ascent can be unbounded — the listener travels far without going anywhere. That IS the journey thesis.
+  Headphones recommended · Zero permissions · Zero API · Zero deps · 2.6 kB.
+  Design notes: `src/app/dream/132-shepard-tone/README.md`
+
+---
+
+## Previous (Cycle 156 — kids build)
 
 - **[/dream/131-kids-orbit](/dream/131-kids-orbit)** — Orbit Garden (kids). `demoable`
   Five glowing planets orbit a central sun, each on its own ring. **Tap any ring** → a planet appears at your tap angle, plays its note (triangle + 2nd harmonic, reverb tail), and begins orbiting. Inner planets spin faster and sing higher (C4/3.5s period); outer planets are slow and low (C3/13s). Each planet plays its note again on every completed orbit — place all five and listen to the polyrhythm build. Tap an occupied ring to teleport its planet to a new angle and retrigger its note. **"Clear"** button resets everything. No reading required; the five orbit rings are visible as faint dashed circles the moment you start.
