@@ -10,7 +10,16 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 154 — kids polish)
+## ⭐ Newest (Cycle 155 — adult build)
+
+- **[/dream/130-tsl-particle-compute](/dream/130-tsl-particle-compute)** — Lorenz Attractor (WebGPU Compute). `demoable`
+  50,000 particles simulated on the GPU via a WGSL compute shader, each following the Lorenz strange attractor equations. The attractor naturally collapses into its iconic butterfly shape within seconds. **Audio reactive**: microphone bass → σ (chaos width), treble → ρ (energy), onsets → turbulence kick. Demo mode oscillates σ and ρ with slow LFOs so it's always alive without a mic. Orbit with mouse or touch. Color gradient: slow particles = violet, mid = emerald, fast = cyan. Additive blending makes dense regions brighten. Falls back gracefully if WebGPU is unavailable.
+  **"50,000 particles. One equation. Everything chaotic, nothing random."** First compute-shader prototype in the sandbox — GPU physics at 60fps.
+  WebGPU required · Zero permissions · Zero API · Zero deps · ~400 lines.
+
+---
+
+## Previous (Cycle 154 — kids polish)
 
 **Polish pass**: three queued improvements shipped together.
 

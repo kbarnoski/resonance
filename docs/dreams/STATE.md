@@ -1,5 +1,39 @@
 # Dream Agent — cycle state
 
+## Cycle 155 — build: 130-tsl-particle-compute (Lorenz strange attractor, WebGPU compute)
+
+**When**: 2026-05-24 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 155 % 2 = 1 → **adult cycle**.
+4. **Build new** — STATE.md Cycle 154 queue: `130-tsl-particle-compute` (higher visual impact) OR `131-kali-sustain` (zero risk). Chose `130-tsl-particle-compute` — more compelling visual demo and directly exercises WebGPU compute pipeline, a gap in the dream sandbox.
+
+**Votes API**: `{"82-kids-color-piano":1,"83-kids-tilt-rain":1}` — unchanged.
+
+**What I built**:
+- `src/app/dream/130-tsl-particle-compute/page.tsx` — 50,000-particle Lorenz strange attractor via raw WebGPU compute shader (WGSL). Three phases: idle → running → no-gpu fallback.
+  - **Compute shader**: one WGSL `@compute @workgroup_size(64)` kernel updates all 50k positions per frame using Lorenz equations `dx=σ(y-x), dy=x(ρ-z)-y, dz=xy-βz`. Onset turbulence: random kick proportional to `u.onset`.
+  - **Render**: instanced quads (N×6 vertices), each particle rendered as a constant-pixel-radius circle (size * clip.w screen-space trick). Additive blending — particles accumulate for density visualization.
+  - **Color**: speed-based gradient violet → emerald → cyan.
+  - **Audio reactivity**: bass band → σ (8–14), treble band → ρ (24–32), onset → turbulence kick. Demo mode: σ(t) = 10 + 1.5sin(t×0.35), ρ(t) = 28 + 2sin(t×0.21+1).
+  - **Orbit controls**: mouse/touch drag azimuth + elevation.
+  - **HUD**: live σ and ρ values, mic toggle, demo/mic mode label.
+  - **Fallback**: if WebGPU unavailable, graceful message with link to `/dream/10-strange`.
+  - Zero new npm deps. ~400 lines.
+
+**Build**: `npm run build` passed — two TypeScript fixes applied (prefer-const `onset`, `Float32Array<ArrayBufferLike>` → `.buffer` for writeBuffer, closure narrowing `run(cv)` parameter).
+
+**What surprised me**: TypeScript 5.4+ parameterizes typed arrays as `Float32Array<ArrayBufferLike>` which is not directly assignable to the WebGPU `BufferSource | SharedArrayBuffer` union. Fix: pass `.buffer` (an `ArrayBuffer`) instead of the view. Also, closure narrowing doesn't propagate into nested async functions — `if (!canvas) return` in the outer scope doesn't narrow `canvas` inside `async function run()`. Fix: pass canvas as a parameter.
+
+**What's queued next**:
+1. **Cycle 156 (kids, 156%2=0)** — new kids prototype. KIDS.md queue is thinning; if no strong seed appears, do a targeted kids-research sweep.
+2. **Cycle 157 (adult)** — `131-kali-sustain` (contemplative drone, two OscillatorNodes, zero cost) OR `132-lmdm-echo` (harmonic echo responding to live piano).
+3. **Two-cycle target (future)** — `ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026, ~$0.30/gen). Waiting on Karel's budget OK.
+
+---
+
 ## Cycle 154 — polish: 127-kids-starfish + 128-kids-fish-tap + 82-kids-color-piano
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)
