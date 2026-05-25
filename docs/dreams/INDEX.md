@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 170 — kids build)
+## ⭐ Newest (Cycle 171 — adult build)
+
+- **[/dream/144-sa3-journey](/dream/144-sa3-journey)** — SA3 Journey. `demoable`
+  Two-mode Stable Audio 3 prototype. **Mode A — Write Journey**: pick one of 8 Resonance journey
+  themes (Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake, Ghost,
+  Inner Fire, Mycelium Dream), edit the prompt, choose 2/4/6 min → SA3 generates up to 6 minutes
+  of coherent ambient journey music. **Mode B — Extend Your Playing**: record 5–30 s of piano via
+  mic → SA3 treats it as a causal prefix and generates a musical continuation. Amber waveform =
+  your recording; blue waveform = AI continuation. Six-band bloom visualizer plays during output.
+  Download button. **"The first prototype that breaks the 30-second generation ceiling."**
+  All prior generation prototypes top out at 30–90 s. SA3 Large (released May 20, 2026) makes
+  6-minute coherent ambient music feasible in a single generation pass.
+  Note: fal.ai SA3 endpoint may still be in partner-access rollout; error is surfaced clearly.
+  FAL_KEY required · ~$0.20–0.50/generation · Zero new npm deps · 4.87 kB.
+  Design notes: `src/app/dream/144-sa3-journey/README.md`
+
+---
+
+## Previous (Cycle 170 — kids build)
 
 - **[/dream/143-kids-seed-song](/dream/143-kids-seed-song)** — Seed Song (kids). `demoable`
   Tap anywhere on a dark forest canvas to plant a glowing seed. A procedural tree grows from

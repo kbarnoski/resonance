@@ -1,5 +1,72 @@
 # Dream Agent — cycle state
 
+## Cycle 171 — adult build: 144-sa3-journey (Stable Audio 3 — 6-min journey generation + piano continuation)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 171 % 2 = 1 → adult cycle.
+4. **Build new** — `144-sa3-journey` explicitly queued from Cycle 170 as highest-priority adult build.
+   Addresses Karel's directive ("let his existing music be the input") and resolves the 30-second
+   generation ceiling with Stable Audio 3's 6-minute generation capability.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `86-sound-to-video` ❤️ (AI generation inside AV prototype, Karel's most
+explicit "AI image inside AV" love) + `43-stable-extend` pattern (piano recording → AI continuation)
+directly feeds Mode B. `105-pluck-field` ❤️ and `84-wave-fluid` ❤️ confirm Karel's appreciation for
+technically substantial audio prototypes — SA3's 6-min generation is the most ambitious single-clip
+audio generation in the sandbox.
+
+**Built**:
+- `src/app/dream/144-sa3-journey/api/route.ts` — single endpoint, content-type dispatch: JSON body
+  = Mode A (text-to-audio), FormData = Mode B (audio continuation). `maxDuration = 300`.
+- `src/app/dream/144-sa3-journey/page.tsx` — two-mode page: "Write Journey" (8 preset journey themes,
+  editable prompt, 2/4/6 min duration picker, generate button) + "Extend Your Playing" (MediaRecorder
+  capture, amber waveform, generate continuation). Shared: six-band bloom visualizer, download link.
+- `src/app/dream/144-sa3-journey/README.md` — design notes.
+
+**What it does**:
+- Mode A: pick a Resonance journey theme (8 presets: Cosmic Homecoming, Earth Grounding, Inner
+  Sanctuary, Ocean Breath, Snowflake, Ghost, Inner Fire, Mycelium Dream), or write a freeform
+  prompt. Choose 2/4/6 min. SA3 generates up to 6 minutes of coherent ambient journey music.
+  Same prompt textarea lets Karel tweak before generating.
+- Mode B: record 5–30 s of piano via mic (MediaRecorder, same pattern as 43-stable-extend).
+  SA3 treats the recording as a causal prefix and generates a continuation. Original = amber
+  waveform strip, AI continuation = blue strip (split at center).
+- Bloom visualizer: six-band radial gradient, same as 1-live and 43-stable-extend. Plays during
+  generation output. Replay + Download buttons appear after generation.
+- Error handling: if the SA3 fal.ai endpoint isn't live yet, shows a clear message ("endpoint
+  may still be rolling out") rather than a raw stack trace.
+
+**What surprised me**: The dual-mode architecture fits naturally into a single API route via
+content-type dispatch (multipart → Mode B, JSON → Mode A). No need for separate endpoint paths.
+The 6-minute generation time budget means the route needs `maxDuration = 300` — without this,
+Vercel would kill the function after 10–30 s (default). The `export const maxDuration = 300`
+line on the route is load-bearing for long SA3 runs.
+
+SA3 was released May 20, 2026 — 5 days before this cycle. The fal.ai endpoint (`fal-ai/stable-audio-3`)
+may still be in partner-access rollout. If it returns a 404, the error surface is clear and Karel
+can monitor fal.ai's model catalog for when it goes public.
+
+**What's queued next**:
+- **Cycle 172 (kids, 172%2=0)** — `135-kids-wheel-song` note-name flash polish (queued since Cycle 160,
+  now 12 kids cycles — just do it), or `143-kids-seed-song` ambient pad polish (~10 lines each).
+  If neither feels novel enough, seed a new kids build: visual sequencer (8 dots, BPM cursor sweeps,
+  tap to toggle — first rhythm-construction kids prototype).
+- **Cycle 173 (adult, 173%2=1)** — `145-eco-bloom` (3-species L-system rainforest, zero deps, zero API)
+  OR `146-spatial-palette` (drag synthesis voices on canvas, X=pan, Y=pitch). Both are zero-API,
+  zero-dep one-cycle builds.
+- **Cycle 174 (kids)** — new kids build or polish.
+
+---
+
 ## Cycle 170 — kids build: 143-kids-seed-song (Seed Song — plant a seed, L-system tree grows, Karplus-Strong plucks)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
