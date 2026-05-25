@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 187 — adult build)
+## ⭐ Newest (Cycle 188 — kids build)
+
+- **[/dream/160-kids-paint-loop](/dream/160-kids-paint-loop)** — Loop Garden (kids). `demoable`
+  Draw a freehand glowing stroke anywhere → it immediately loops as a pentatonic melody.
+  **Four color zones** give four timbres: left=violet/piano (sine, crisp attack), mid-left=amber/bells
+  (sine +8¢ detune, warm decay), mid-right=teal/chime (sine −6¢ detune, shorter decay),
+  right=rose/pads (sine, slow 70ms attack, long sustain). **Y position = pitch** (C-major
+  pentatonic, C3 bottom → C5 top). A glowing traversal dot sweeps each stroke's path in loop.
+  Up to 4 simultaneous loops. **Tap any stroke to delete it** — sparkle burst. Clear resets.
+  Demo mode seeds 3 loops at canvas open so the garden is immediately alive.
+  **"First kids prototype combining freehand drawing + multi-timbral loop station."**
+  Inspired by Karel's love of `153-paint-compose` ❤️ (adult version), `100-kids-paint-song` ❤️,
+  `111-kids-shape-loop` ❤️. Extends the drawing-as-music lineage into layered multi-timbral territory.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 3.27 kB.
+  Design notes: `src/app/dream/160-kids-paint-loop/README.md`
+
+---
+
+## Previous (Cycle 187 — adult build)
 
 - **[/dream/159-synesthetic-sketch](/dream/159-synesthetic-sketch)** — Synesthetic Sketch. `demoable`
   Music as shape — not just color. Every audio feature maps to a different visual dimension on
