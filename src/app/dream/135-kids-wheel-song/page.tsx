@@ -5,8 +5,9 @@ import { useRef, useEffect, useState } from "react";
 const SEG_FREQS = [130.81, 164.81, 196.00, 220.00, 261.63];
 const SEG_COLS  = ["#8b5cf6", "#f43f5e", "#f59e0b", "#10b981", "#06b6d4"];
 // violet    rose      amber    emerald   cyan
-const N_SEG   = 5;
-const SEG_ARC = (2 * Math.PI) / N_SEG; // 72° per segment
+const N_SEG      = 5;
+const SEG_ARC    = (2 * Math.PI) / N_SEG; // 72° per segment
+const NOTE_NAMES = ["C3", "E3", "G3", "A3", "C4"];
 
 function buildImpulse(actx: AudioContext): AudioBuffer {
   const sr  = actx.sampleRate;
@@ -59,7 +60,9 @@ export default function KidsWheelSong() {
   const omegaRef    = useRef(0.8);   // rad/s — starts auto-spinning
   const thetaRef    = useRef(0.0);   // cumulative angle (radians)
   const prevSegRef  = useRef(0);     // last floor(theta/SEG_ARC) value
-  const segFlashRef = useRef([0, 0, 0, 0, 0]); // per-segment flash decay 0→1
+  const segFlashRef  = useRef([0, 0, 0, 0, 0]); // per-segment flash decay 0→1
+  const noteFlashRef = useRef(0);               // 1→0 over 600ms for name label
+  const noteSegRef   = useRef(0);               // which segment last struck
   const [started, setStarted] = useState(false);
 
   function handleStart() {
@@ -91,6 +94,8 @@ export default function KidsWheelSong() {
     // Startup chime on the first segment color so the wheel feels alive immediately
     strikeNote(actx, conv, master, SEG_FREQS[0], 0.25);
     segFlashRef.current[0] = 1.0;
+    noteFlashRef.current   = 1.0;
+    noteSegRef.current     = 0;
 
     setStarted(true);
   }
@@ -148,6 +153,8 @@ export default function KidsWheelSong() {
         const entering = newSeg % N_SEG;
         prevSegRef.current = newSeg;
         segFlashRef.current[entering] = 1.0;
+        noteFlashRef.current          = 1.0;
+        noteSegRef.current            = entering;
         const actx   = actxRef.current;
         const conv   = convRef.current;
         const master = masterRef.current;
@@ -160,6 +167,7 @@ export default function KidsWheelSong() {
       for (let k = 0; k < N_SEG; k++) {
         segFlashRef.current[k] = Math.max(0, segFlashRef.current[k] - dt * 4.0);
       }
+      noteFlashRef.current = Math.max(0, noteFlashRef.current - dt / 0.6);
 
       // Update continuous tone: pitch + gain track spin speed
       const toneOsc  = toneOscRef.current;
@@ -272,6 +280,19 @@ export default function KidsWheelSong() {
       ctx.fillStyle = "#fbbf24";
       ctx.fill();
       ctx.restore();
+
+      // ── Note name above striker ──
+      const nf = noteFlashRef.current;
+      if (nf > 0) {
+        ctx.save();
+        ctx.globalAlpha    = nf * 0.75;
+        ctx.font           = "15px monospace";
+        ctx.fillStyle      = "#ffffff";
+        ctx.textAlign      = "center";
+        ctx.textBaseline   = "bottom";
+        ctx.fillText(NOTE_NAMES[noteSegRef.current], cx, sTop - 8);
+        ctx.restore();
+      }
 
       // ── "tap to spin" hint — fades as speed increases ──
       const hintAlpha = Math.max(0, 0.72 - speed01 * 1.8);

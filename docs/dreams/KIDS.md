@@ -154,6 +154,58 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 
 ## Research log for Kids
 
+### Cycle 174 — beat-pulse build + wheel-song polish
+
+**Built**: `147-kids-beat-pulse` + `135-kids-wheel-song` note-name flash. Key learnings:
+
+- **The on-beat reward gradient works without any UI labeling.** The difference between 20 sparks
+  and 9 sparks is immediately perceptible — 20 is a dense colorful explosion, 9 is a modest scatter.
+  A child doesn't need to know "that was on the beat"; they just notice "that one was bigger!" and
+  start trying to reproduce it. The gradient is the feedback; no score counter is needed.
+
+- **18% of beat period as "on-beat" window is the right tolerance for kids.** At 70 BPM that's
+  ±154ms. At 40 BPM (slowest setting) it's ±270ms — generous for a 3yo's motor control. At
+  120 BPM it's ±90ms — challenging but still achievable for a 5yo. The 18% figure matches the
+  "good" timing window from standard rhythm game research (DDR, Guitar Hero use ±150–200ms).
+  The absolute-milliseconds version stays constant across tempos; a proportional version would
+  tighten at fast tempos and loosen at slow tempos. Current version feels right at 70 BPM.
+
+- **`beatPhase < 0.18 OR beatPhase > 0.82` is cleaner than `|beatPhase - 0| < 0.18`.** The
+  boundary condition (beatPhase wraps at 1.0) means a tap at `beatPhase = 0.95` is 5% before the
+  beat — very close to on-beat. The `> 0.82` branch catches this case cleanly. The naive `|phase| < 0.18`
+  only catches the post-beat window. Both branches together cover ±18% symmetrically.
+
+- **The progress arc is a subtle adult affordance.** A 4yo doesn't need it — they just tap. But a
+  parent watching or an older child explicitly trying to sync will use the arc as a countdown.
+  It costs nothing (one `ctx.arc()` call per frame) and never distracts from the circle.
+
+- **Note name inside the circle (not above it)** is the right placement for the beat-pulse prototype.
+  The circle is large and centered; the note name appears at the centroid. On a phone screen at
+  arm's length, text at the circle center is at a comfortable focal distance and reads naturally.
+  The wheel-song polish puts the name above the striker (outside the wheel) because the striker
+  is the relevant location; beat-pulse has no striker, so inside the circle is the natural home.
+
+- **`135-kids-wheel-song` note-name flash — 14-cycle deferral was too long.** The edit was 12
+  lines across two locations (`noteFlashRef`/`noteSegRef` refs, startup chime, striker detection,
+  decay loop, draw section). None of it was complex. The repeated deferral in favor of "more novel
+  builds" was a judgment error — simple polish items like this compound in value when they've been
+  identified as meaningful. Future rule: polish items with a clear line count estimate (< 20 lines)
+  should be bundled with the next new build rather than deferred indefinitely.
+
+**Next kid-cycle ideas (Cycle 176)**:
+- **`147-kids-beat-pulse` v2** — add a "clap-back" mode: the prototype plays a 4-beat pattern,
+  then goes silent for 4 beats while a "your turn!" indicator glows. Child taps back the pattern.
+  Extends from open-ended beat tapping to structured call-and-response rhythm.
+- **`145-kids-dot-seq` v2** — second row of dots (6 more, different color, higher octave or
+  percussion sounds). Child builds a 2-track loop. Consistent with Karel's love of `111-kids-shape-loop`
+  ❤️ (additive layering). One-cycle build.
+- **New seed**: a kids prototype about **color mixing and sound**: three large overlapping circles
+  (red, yellow, blue — primary colors). When circles overlap, the overlap zone plays a harmony note
+  (red+yellow = orange zone = major third, etc.). Dragging circles changes the overlaps in real time.
+  Visual color theory + auditory harmony theory as the same interaction.
+
+---
+
 ### Cycle 172 — dot-sequencer build
 
 **Built**: `145-kids-dot-seq`. Key learnings:

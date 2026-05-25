@@ -1,5 +1,71 @@
 # Dream Agent — cycle state
 
+## Cycle 174 — kids build: 147-kids-beat-pulse + 135-kids-wheel-song polish (note-name flash)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 174 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md "Next kid-cycle ideas (Cycle 174)" explicitly seeds:
+   - `135-kids-wheel-song` note-name flash (deferred 14 kids cycles — must land now)
+   - New seed: "tempo and body" pulsing-circle beat-matching prototype
+
+Chose to do both in one cycle: the wheel-song polish is ~12 lines and overdue; the beat-pulse
+prototype fills the first genuine gap in the kids zone around **temporal attention** — learning to
+tap with a beat rather than just tapping. None of the 46 prior kids prototypes have a metronome
+pulse as their central mechanic.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `98-kids-drum-circle` ❤️ (rhythm focus — beat-pulse is the next
+step: rhythm as structured pulse, not free-form drum taps) and `100-kids-paint-song` ❤️ /
+`111-kids-shape-loop` ❤️ (sparks-as-visual-reward is proven across the kids zone).
+
+**Built**:
+- `src/app/dream/147-kids-beat-pulse/page.tsx` — new prototype
+- `src/app/dream/147-kids-beat-pulse/README.md` — design notes
+- `src/app/dream/135-kids-wheel-song/page.tsx` — note-name flash added (14-cycle deferral closed)
+
+**What 147-kids-beat-pulse does**:
+- Large circle at center pulses at 70 BPM (default). Each beat: circle flashes with the current
+  pentatonic color (C3→E3→G3→A3→C4 cycling), a quiet triangle pluck plays as the metronome,
+  and the note name briefly appears inside the circle.
+- Child taps anywhere → sparks fly from tap point + louder note fires.
+- On-beat taps (beatPhase < 0.18 or > 0.82 = ±154ms at 70 BPM): 20 sparks + extra 10-spark
+  burst from circle center. Off-beat: 9 sparks. No score, no penalty — bigger reward for
+  the beat without any "fail" state.
+- Thin progress arc around the circle shows current position in the beat (a clock-like preview).
+- BPM +/− buttons (±10, range 40–120) at bottom for parent/older-child tempo control.
+- Zero permissions, zero API, zero deps.
+
+**What 135-kids-wheel-song polish does**:
+- Added `NOTE_NAMES = ["C3", "E3", "G3", "A3", "C4"]` constant.
+- Added `noteFlashRef` (1→0 over 600ms) and `noteSegRef` (which note struck) refs.
+- On each segment strike: `noteFlashRef.current = 1.0`, `noteSegRef.current = entering`.
+- Draw: white text at `text-white/75` equivalent opacity above the golden striker triangle,
+  fading over 600ms. Font: `15px monospace`. Position: `sTop - 8` (above striker tip).
+- Same pattern fires on the startup chime too (C3 on open).
+- The note name makes the prototype gently educational without being didactic: a parent
+  watching over a child's shoulder can name the notes; the child just taps and hears music.
+
+**What surprised me**: At 70 BPM, the 18% on-beat window is ±154ms. This turns out to feel
+generous but not too forgiving — a child who taps *anywhere near* the flash gets the big reward.
+The circle's color change and flash are strong enough visual cues that even a 4yo will naturally
+try to tap with the flash after a few rounds, even without understanding "beat."
+
+**What's queued next**:
+- **Cycle 175 (adult)** — `spatial-palette` at route `/dream/148-spatial-palette`
+  (147 is now kids-beat-pulse). Drag synthesis voices on canvas: X=pan, Y=pitch,
+  scroll=filter+reverb. Chord label. Zero deps, zero API. Full spec in IDEAS.md.
+
+---
+
 ## Cycle 173 — adult build: 146-eco-bloom (Eco Bloom — procedural L-system rainforest, KS plucks, layered atmospheric synthesis)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

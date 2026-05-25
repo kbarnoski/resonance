@@ -10,7 +10,33 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 173 — adult build)
+## ⭐ Newest (Cycle 174 — kids build)
+
+- **[/dream/147-kids-beat-pulse](/dream/147-kids-beat-pulse)** — Beat Pulse (kids). `demoable`
+  A large glowing circle pulses at a steady BPM. Each beat: the circle flashes a pentatonic color
+  (C3→E3→G3→A3→C4 cycling), a quiet metronome pluck fires, and the note name briefly appears
+  inside the circle. **Tap anywhere** — sparks fly and a louder note plays. **On-beat taps**
+  (within ±154ms at 70 BPM) produce 20 sparks + a secondary burst from the circle center; off-beat
+  taps produce 9. No score, no fail state. A thin progress arc sweeps clockwise once per beat,
+  giving an advance cue. BPM +/− buttons (±10, 40–120 BPM).
+  **"First kids prototype about temporal attention — tapping with a pulse, not just tapping."**
+  46 prior kids prototypes reward any tap, regardless of timing. Beat Pulse rewards *when* you tap —
+  via a non-judgmental bigger-sparkle gradient. A 3yo enjoys the sparks; a 5yo chases the beat.
+  Inspired by Karel's love of `98-kids-drum-circle` ❤️ (rhythm) and the "tempo and body" seed
+  from Cycle 172 KIDS.md learnings.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.81 kB.
+  Design notes: `src/app/dream/147-kids-beat-pulse/README.md`
+
+- **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song (kids). `demoable` ✨ polished Cycle 174
+  *Added*: note-name flash above the golden striker. When a colored segment passes through
+  12-o'clock, the note name (C3, E3, G3, A3, or C4) appears in white (75% opacity) above the
+  striker tip, fading over 600ms. Fires on the startup chime too. Makes the prototype gently
+  educational — a parent can name the notes; the child just taps and hears music. 12-line edit.
+  Deferred 14 kids cycles (since Cycle 160) — finally landed.
+
+---
+
+## Previous (Cycle 173 — adult build)
 
 - **[/dream/146-eco-bloom](/dream/146-eco-bloom)** — Eco Bloom. `demoable`
   A procedural rainforest grows before you. Three tree species (20°/30°/40° branch angle, depth 6/5/4)

@@ -1,20 +1,24 @@
-# Morning digest — last updated 2026-05-25 UTC (Cycle 173)
+# Morning digest — last updated 2026-05-25 UTC (Cycle 174)
 
 ## New since yesterday
 
-- **[/dream/146-eco-bloom](/dream/146-eco-bloom)** — Eco Bloom · *Cycle 173* · `demoable` ⭐
-  Open it and click "Grow the forest." Three tree species grow simultaneously from seeds at the
-  bottom — conifer (tall, 20° branches), deciduous (medium, 30°), oak (short, 40°). Each new
-  branch plays a Karplus-Strong pluck. Three trees = three-voice pentatonic polyphony, always
-  consonant. Tap canvas to plant up to 6 trees. Rain toggle adds white-noise rainfall. After ~18s,
-  a Birds toggle appears — rapid 5-note arpeggio every 8 seconds. Background slowly fades from
-  near-black to deep forest green as the canopy fills. **"First prototype where patient growth is
-  the entire point."** Zero permissions, zero API, zero deps.
-  *Directly inspired by Refik Anadol's DATALAND: Machine Dreams: Rainforest — opening LA June 20.*
+- **[/dream/147-kids-beat-pulse](/dream/147-kids-beat-pulse)** — Beat Pulse (kids) · *Cycle 174* · `demoable` ⭐
+  Open it: a large circle pulses at 70 BPM. Tap anywhere to play along — sparks fly.
+  Tap *with* the flash → 20 sparks + burst from center. Tap off-beat → 9 sparks. No score.
+  Colors cycle C3→E3→G3→A3→C4 (pentatonic); note name flashes inside the circle on each beat.
+  BPM +/− at the bottom (40–120). **"First kids prototype about tapping with a beat."**
+  Every prior kids prototype rewards any tap. This one rewards *when* — via a sparkle gradient,
+  not a scoreboard. A 3yo chases sparks; a 5yo chases the beat. Zero permissions. Zero API.
 
-- **[/dream/145-kids-dot-seq](/dream/145-kids-dot-seq)** — Dot Sequencer (kids) · *Cycle 172* · `demoable`
-  Six colored dots, pentatonic C3–E4. Sweep cursor plays lit dots as it passes. Tap to toggle dots.
-  First kids prototype where the child constructs a loop then watches it play autonomously.
+- **[/dream/135-kids-wheel-song](/dream/135-kids-wheel-song)** — Wheel Song polish · *Cycle 174*
+  Note-name flash finally landed after 14 kids cycles of deferral (~12 lines). When a segment
+  strikes the golden striker, "C3" / "E3" / etc. appears above it for 600ms at 75% opacity.
+  Gently educational without being didactic.
+
+- **[/dream/146-eco-bloom](/dream/146-eco-bloom)** — Eco Bloom · *Cycle 173* · `demoable`
+  Three L-system trees grow from canvas seeds over ~45s, each branch plucking a Karplus-Strong
+  tone. Three-voice pentatonic polyphony. Rain toggle. Birds toggle (appears after ~18s of growth).
+  **"The first prototype where patient growth is the entire point."**
 
 ## In progress / partial
 
@@ -22,18 +26,21 @@ Nothing in-progress.
 
 ## Research findings worth a look
 
-**§206 — Refik Anadol DATALAND: Machine Dreams: Rainforest** — opens June 20, 2026 (26 days away).
-Direct inspiration for eco-bloom and 143-kids-seed-song. Worth the trip to LA if possible.
+**§206 — Refik Anadol DATALAND: Machine Dreams: Rainforest** — opens June 20, 2026 (26 days).
+Direct inspiration for eco-bloom and 143-kids-seed-song. Worth the trip to LA.
 
-**§207 — CHI 2026: 6DoF Gesture Ecologies** → `spatial-palette` queued for Cycle 175.
-Drag synthesis voices around canvas — X=pan, Y=pitch, scroll=filter. Route `/dream/147-spatial-palette`.
+**§207 — CHI 2026 6DoF gesture mixing** → `spatial-palette` queued for Cycle 175 (adult).
+Draggable synthesis voices on canvas: X=pan, Y=pitch, scroll=filter+reverb. Chord label.
+Route: `/dream/148-spatial-palette` (147 is now kids-beat-pulse).
 
 ## Open questions for Karel
 
-- **eco-bloom mic mode**: should bass energy → tree growth rate acceleration land next adult cycle,
-  or is the current passive-growth experience the right default? The passive version rewards watching;
-  mic mode changes the relationship to active participation.
-- **birds timing**: 18-second unlock feels right on desktop. On mobile it may take longer for the
-  canopy to visibly fill. Should the unlock be density-based (>20% canopy) rather than time-based?
-- **spatial-palette route**: eco-bloom claimed 146, so spatial-palette will be 147. Confirming this
-  is the right next adult build or if you'd prefer something else.
+- **beat-pulse timing window**: ±154ms at 70 BPM feels right. Too forgiving at 120 BPM
+  (same absolute ms, but proportionally ±30% of the beat). Should the window scale
+  proportionally (e.g. always ±18% of beat duration regardless of BPM)?
+- **wheel-song note names**: the current flash shows the note name for 600ms at 75% opacity.
+  Is this the right educational intensity — or should it be even subtler (smaller text, shorter)?
+- **spatial-palette route**: 147 is kids-beat-pulse, so spatial-palette moves to 148.
+  Confirming this is the right next adult build (Cycle 175), or any redirects?
+- **eco-bloom mic mode**: ready to land any cycle — bass energy → tree growth rate acceleration.
+  Worth the next adult cycle or hold for a stronger new build?
