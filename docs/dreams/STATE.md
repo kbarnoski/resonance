@@ -1,5 +1,61 @@
 # Dream Agent — cycle state
 
+## Cycle 187 — adult build: 159-synesthetic-sketch (every audio feature → different visual dimension; spread→shape, centroid→hue, richness→rings, amplitude→scale)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 187 % 2 = 1 → **adult cycle**, skip.
+4. **Build new** — IDEAS.md queue has many candidates. Cycle 186 MORNING.md listed
+   `diatonic-harmony` and `mood-vis` as candidates; also considered from the full queue:
+   `synesthetic-sketch` (§131), `osc-composer` (§82), `tap-rhythm` (§89).
+
+   Chose **`synesthetic-sketch`** because:
+   - 158 existing prototypes map audio to color, fluid, particles, or geometry. None map
+     audio to *morphological shape* in a multi-dimensional way. This fills a genuine gap.
+   - Karel loves `153-paint-compose` ❤️ (accumulating visual artifacts from audio) and
+     `130-tsl-particle-compute` ❤️ (rich accumulated visual output). This shares that DNA.
+   - Zero deps, zero API — guaranteed build in one cycle.
+   - The "shape legend" (circle=pure → star=complex) is immediately readable by Karel and
+     communicates acoustic structure rather than just aesthetics.
+
+Love signal influence: `153-paint-compose` ❤️ (session→canvas artifact), `148-spatial-palette` ❤️
+(each dimension mapped to independent control), `84-wave-fluid` ❤️ (dark accumulating visual field).
+
+**Built**:
+- `src/app/dream/159-synesthetic-sketch/page.tsx` — full interactive prototype (4.28 kB)
+- `src/app/dream/159-synesthetic-sketch/README.md` — design notes
+
+**What it does**:
+Every audio frame deposits a "musical object" on a Canvas2D (every 4 frames, amplitude-gated).
+Object dimensions are computed from the raw band energies returned by `useMicAnalyser`:
+- **Spectral centroid** → hue (violet=low, rose=high; same log-mapping as `1-live`)
+- **Spectral spread** (std dev of 6-band energies) → shape: circle < tri < square < hex < star
+- **Harmonic richness** (count of bands above threshold) → 0–4 inner concentric rings
+- **Amplitude** → object radius (7–33 px)
+- **Onset** → spark burst (22 particles + 4 extra objects at a random canvas position)
+
+Additive blending (`globalCompositeOperation = "lighter"`) makes overlapping shapes
+brighten rather than cover each other. A 0.3% per-frame fade prevents burn-in; the canvas
+takes ~3 min to fully clear. Download as PNG. Demo mode: 6 incommensurable LFOs cycle
+through all shape types over ~90 seconds — no mic needed.
+
+**What surprised me**:
+The additive blending produces genuinely beautiful results even before any careful
+parameter tuning — a sustained piano note builds up a glowing violet circle, while a
+chord with harmonics builds a hexagon with inner rings that overlap into a bright star
+pattern where onsets fired. The shape transitions feel natural rather than arbitrary.
+
+**What's queued next**:
+- **Cycle 188 (kids, 188%2=0)** — Polish `154-kids-clap-back` (pattern indicator dots,
+  deferred since Cycle 184). Or build a fresh kids prototype — check KIDS.md queue.
+- **Cycle 189 (adult)** — `diatonic-harmony` (live key detection → diatonic 3rd + 5th
+  harmony voices, zero deps) or `tap-rhythm` (clap → step sequencer, zero deps).
+
+---
+
 ## Cycle 186 — kids build: 158-kids-hum-paint (sing / hum → voice paints the screen; Y=pitch, color=pitch hue; ▶ Hear it! replays your painting as a melody)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

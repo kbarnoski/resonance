@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 186 — kids build)
+## ⭐ Newest (Cycle 187 — adult build)
+
+- **[/dream/159-synesthetic-sketch](/dream/159-synesthetic-sketch)** — Synesthetic Sketch. `demoable`
+  Music as shape — not just color. Every audio feature maps to a different visual dimension on
+  an accumulating Canvas2D: **spectral centroid → hue** (violet=low, rose=high), **spectral spread
+  → shape** (circle=pure sine, triangle=slight overtones, square=mid spread, hexagon=wide spread,
+  star=complex noise), **harmonic richness → inner ring count** (0–4 concentric rings),
+  **amplitude → object scale**, **onset → spark burst**. Objects deposit every 4 frames with
+  additive blending — overlapping shapes brighten, building a nebula-like visual record of the
+  session. A 0.3%/frame fade prevents burn-in; the canvas takes ~3 min to naturally clear.
+  **"First prototype to map audio to morphological shape — not just color."**
+  158 prior prototypes map audio to color, fluid, particles, or geometry. None classify audio
+  by *shape type*. A pure sine leaves circles; a chord leaves hexagons with inner rings; percussion
+  leaves star bursts. The canvas is the acoustic biography of the session.
+  Download as PNG · Demo mode (no mic) · Zero API · Zero deps · 4.28 kB.
+  Influenced by Karel's loves: `153-paint-compose` ❤️ (accumulating visual artifacts),
+  `130-tsl-particle-compute` ❤️ (rich visual output from audio), `84-wave-fluid` ❤️.
+  Research basis: musicolors (arxiv 2503.14220, multi-dimensional synesthetic visualization).
+  Design notes: `src/app/dream/159-synesthetic-sketch/README.md`
+
+---
+
+## Previous (Cycle 186 — kids build)
 
 - **[/dream/158-kids-hum-paint](/dream/158-kids-hum-paint)** — Voice Painting (kids). `demoable`
   Sing or hum — your voice becomes a colored painting on a dark canvas. **High notes fly up,

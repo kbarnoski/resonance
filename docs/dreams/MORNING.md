@@ -1,40 +1,49 @@
-# Morning digest — last updated 2026-05-25 UTC (Cycle 186)
+# Morning digest — last updated 2026-05-25 UTC (Cycle 187)
 
 ## New since yesterday
 
-- **[/dream/158-kids-hum-paint](https://getresonance.vercel.app/dream/158-kids-hum-paint)** —
-  Voice Painting (kids). **Why open this**: the first prototype where a child's singing voice
-  becomes the paintbrush. Hum → colored glowing trail on a dark canvas (Y = pitch, hue = pitch,
-  width = volume). **▶ Hear it!** plays the session back as a sine melody. Demo mode auto-draws
-  Twinkle Twinkle — tap "Watch the demo" and watch the colors. No mic required for the demo.
-  First kids prototype out of 158 that uses the voice rather than touch as primary input.
-  Inspired by your loves: `100-kids-paint-song` ❤️ and `152-kids-star-paint` ❤️.
+- **[/dream/159-synesthetic-sketch](https://getresonance.vercel.app/dream/159-synesthetic-sketch)** —
+  Synesthetic Sketch (adult). **Why open this**: it's the first prototype where music maps to
+  *shape*, not just color. Sustained piano note → violet circles accumulate. Play a chord →
+  hexagons with inner rings. Strum or use percussion → star bursts + sparks. After 5 minutes
+  the canvas fills into a luminous nebula — a visual record of what you played and *how complex
+  it was*. Additive blending makes overlap areas glow. **Demo mode shows the shape transitions
+  without mic**: watch circles morph into hexagons and stars as the LFOs cycle.
+  Try: play a single held note (circles) then a full chord (hexagons) then a cluster or
+  strum (star bursts). The shape legend is visible before you start.
+  Zero API · Zero deps · Download PNG at any time.
 
-- **[/dream/157-concept-steer](https://getresonance.vercel.app/dream/157-concept-steer)** —
-  Concept Steer (Cycle 185). Six music-AI concept axes (Brightness / Density / Regularity /
-  Complexity / Energy / Mode) as a hexagonal radar chart → live synthesizer. Axes sourced from
-  sparse autoencoder research on transformer music model weights. Regularity is the surprise axis:
-  strict timing + high Complexity sounds genuinely contrapuntal. Four presets.
+- **[/dream/158-kids-hum-paint](https://getresonance.vercel.app/dream/158-kids-hum-paint)** —
+  Voice Painting (kids, Cycle 186). Voice → colored glowing trail; ▶ Hear it! replays as melody.
+  First kids prototype where the voice replaces touch. Demo mode auto-draws Twinkle Twinkle.
 
 ## In progress / partial
 
-- Nothing in-progress. Cycle 187 will be an adult build (187%2=1).
+- Nothing in-progress. Cycle 188 is next (kids cycle, 188%2=0).
 
 ## Research findings worth a look
 
-- **Voice as instrument for kids**: all 158 prototypes prior to this cycle use touch. Voice
-  opens a qualitatively different mode — vocalization is central to kids' musical development
-  (Reggio Emilia approach, KIDS.md design principles). `158-kids-hum-paint` is the first test.
-  Watch whether kids figure it out without instruction.
+- **Shape = acoustic fingerprint**: in `159-synesthetic-sketch`, a session's shape distribution
+  is directly readable. A jazz improvisation (harmonically rich, many bands active) will fill the
+  canvas with hexagons and stars. A meditation session (single piano tones, no chords) will fill
+  it with circles. The download artifact encodes what KIND of music was played, not just that
+  music was played.
+- **Additive blending surprise**: overlapping objects at `lighter` composite produce color mixing
+  that's visually beautiful and acoustically meaningful — where two violet circles overlap
+  they become brighter violet (same pitch played twice at the same register). Where a violet
+  circle and a rose circle overlap they blend toward white (bass + treble simultaneously).
 
 ## Open questions for Karel
 
-- **`158-kids-hum-paint` — mic sensitivity**: autocorrelation threshold is 0.72 / RMS gate
-  0.0001. If kids' voices (which are quieter and higher-pitched) aren't registering,
-  bumping the RMS gate down to 0.00005 would help. Tell me if you test it on a real child.
-- **Concept Steer — mic root?**: mic → autocorrelation → retune synth to detected pitch.
-  One-cycle add if you want it.
-- **`154-kids-clap-back` pattern dots**: still deferred (10-line polish). Cycle 188 is next
-  kids cycle — I'll ship it then unless you want it sooner.
-- **Cycle 187 adult**: candidates are `diatonic-harmony` (live key → auto-harmony voices,
-  zero deps) or `mood-vis` (semantic audio classifier → visualizer mode switching). Any preference?
+- **`159-synesthetic-sketch` — object deposition rate**: currently 15 objects/sec at full
+  amplitude. If the canvas fills too fast on dense playing, I can halve it (every 8 frames).
+  If it's too sparse on quiet playing, the gate (amplitude > 0.10) can be lowered. Let me know
+  after you try it.
+- **`159-synesthetic-sketch` — shape placement**: objects are placed uniformly at random.
+  One alternative: scatter them radially from the canvas center (centroid radius = amplitude).
+  Would create a more organized composition. Want me to try it?
+- **`154-kids-clap-back` pattern dots**: still deferred. Cycle 188 is the kids cycle —
+  I'll ship it then (10-line polish).
+- **Cycle 189 adult candidates**: `diatonic-harmony` (detect your key live, generate diatonic
+  3rd + 5th harmony voices alongside your melody, zero deps) or `tap-rhythm` (clap a rhythm,
+  get a step sequencer). Any preference?
