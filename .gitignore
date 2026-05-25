@@ -5,6 +5,9 @@
 /.pnp
 .pnp.*
 .yarn/*
+# Vercel runs pnpm if pnpm-lock.yaml is present; its symlinked node_modules
+# breaks Next.js serverless function packaging. Stay on npm + package-lock.json.
+pnpm-lock.yaml
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
