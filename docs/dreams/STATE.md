@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 183 — adult build: 155-piano-hands (ghost fingers descend onto piano keys as notes are detected)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 183 % 2 = 1 → **adult cycle**, skip.
+4. **Build new** — STATE.md Cycle 182 explicitly queued `155-piano-hands` for this cycle.
+   MORNING.md confirmed: "PianoFlow (arXiv:2604.12856, April 2026) — animated ghost fingers
+   follow piano audio. Inspires `155-piano-hands`. Queued for Cycle 183 (adult)."
+
+Love signal: 19 loved (6 new since Cycle 182):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+**NEW**: `153-paint-compose` ❤️ `152-kids-star-paint` ❤️ `148-spatial-palette` ❤️
+`140-kids-string-bridge` ❤️ `138-lmdm-echo` ❤️ `133-kids-ripple-pond` ❤️
+
+Decision influenced by: Karel's new love of `153-paint-compose` ❤️ (visual representation of
+music, drawing-as-score) and `148-spatial-palette` ❤️ (spatial/positional music interface).
+`piano-hands` sits in this same zone: making the invisible (pitch detection, note presence)
+visible as a physical metaphor (fingers on keys).
+
+**Built**:
+- `src/app/dream/155-piano-hands/page.tsx` — full interactive prototype
+- `src/app/dream/155-piano-hands/README.md` — design notes
+
+**What it does**:
+Canvas piano keyboard (C3–B4, 2 octaves, 14 white + 10 black keys). Ghost fingers descend from
+above and press keys in sync with detected notes. Two modes:
+- **Demo**: Für Elise opening played by triangle-wave oscillators, scheduled via AudioContext
+  currentTime with 380ms look-ahead. Finger spawn/lift events are queued at schedule time and
+  triggered 16ms before the audio note sounds — visually synchronised.
+- **Mic**: Autocorrelation pitch detection (4096-sample FFT time-domain, same algorithm as
+  `13-piano-canvas`) runs every rAF frame. Detected MIDI note (if in C3–B4 range) spawns a
+  finger on that key; 320ms of silence lifts all fingers.
+
+Finger lifecycle: descend 220ms (ease-out quad) → press (stays while note active) → lift 400ms.
+Color = pitch class hue (same 12-step wheel as `1-live` 6-band, now mapped to 12 chromatic
+classes: C=violet, E=warm-green, G=amber, A=rose, B=magenta). Light trail glows upward above
+each active finger. Key illuminates in the finger's hue while pressed.
+
+**What surprised me**: The color-per-pitch-class makes simultaneous notes readable before you
+read the key labels. A violet finger (C4) and green finger (E4) press down and you see "C+E"
+as a color pair — the major third is visible in the hue contrast. The visual is music theory.
+
+Autocorrelation on piano is reliable monophonically; it picks the dominant partial when you
+play chords. That's acceptable and actually interesting: you see which pitch "wins" the harmonic
+competition. Playing a full C major chord shows the C finger (root = dominant partial).
+
+**What's queued next**:
+- **Cycle 184 (kids, 184%2=0)** — KIDS.md Cycle 182 queues "connect-the-stars" (pre-placed
+  stars, draw lines to unlock intervals; completed triangle = chord) OR polish `154-kids-clap-back`
+  (add round indicator showing which of 5 patterns is active, ~10 lines).
+- **Cycle 185 (adult)** — `156-concept-steer` (hexagonal radar chart → 6-axis synthesis:
+  Brightness/Density/Regularity/Complexity/Energy/Mode; zero deps, one cycle, high surprise factor)
+  OR continue from IDEAS queue.
+
+---
+
 ## Cycle 182 — kids build: 154-kids-clap-back (call-and-response rhythm game)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 182 — kids build)
+## ⭐ Newest (Cycle 183 — adult build)
+
+- **[/dream/155-piano-hands](/dream/155-piano-hands)** — Piano Hands. `demoable`
+  Canvas piano keyboard (C3–B4, 2 octaves). **Ghost fingers descend from above and press
+  the keys as notes play.** Pitch class → finger hue: C=violet, E=warm-green, G=amber,
+  A=rose, B=magenta. Light trail above each active finger; keys illuminate in the finger's
+  hue while pressed. **Demo**: Für Elise opening, AudioContext-scheduled triangle-wave
+  oscillators, fingers synced via 16ms look-ahead queue. **Mic**: autocorrelation pitch
+  detection (4096-sample time-domain) each rAF frame — detected MIDI spawns a finger,
+  silence for 320ms lifts all.
+  **"The pitch becomes a hand — the chord is visible before you read the labels."**
+  First prototype where the piano keyboard is the visual output, not a control surface.
+  Inspired by PianoFlow (arXiv:2604.12856). Zero API · Zero deps · Mic optional.
+  Design notes: `src/app/dream/155-piano-hands/README.md`
+
+---
+
+## Previous (Cycle 182 — kids build)
 
 - **[/dream/154-kids-clap-back](/dream/154-kids-clap-back)** — Clap Back (kids). `demoable`
   A call-and-response rhythm game for 4-year-olds. The prototype plays a 4-beat pattern —
