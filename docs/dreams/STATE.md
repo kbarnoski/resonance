@@ -1,5 +1,61 @@
 # Dream Agent — cycle state
 
+## Cycle 181 — adult build: 153-paint-compose (paint brushstrokes → each loops as a pentatonic melody)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 181 % 2 = 1 → adult cycle, skip.
+4. **Build new** — STATE.md Cycle 180 explicitly queues `153-paint-compose` for this cycle. Confirmed by MORNING.md ("ViTex inspires 153-paint-compose"). Building now.
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influenced by Karel's love of `100-kids-paint-song` ❤️ (drawing = music) elevated into an adult
+prototype: instead of one-shot melody playback, each stroke becomes a persistent looping voice that
+accumulates into a polyphonic composition. Also pulled by `107-ocean-presence` ❤️ (audio as output,
+no input required — here the painting is the input, not a microphone).
+
+**Built**:
+- `src/app/dream/153-paint-compose/page.tsx` — full prototype (3.42 kB)
+- `src/app/dream/153-paint-compose/README.md` — design notes
+
+**What it does**:
+- Dark canvas with 7-color palette (violet/blue/cyan/emerald/amber/rose/pink), 3 brush sizes, BPM slider (40–160).
+- Drag to paint a stroke; on release, the stroke is committed as a looping musical voice.
+- Stroke geometry → musical parameters: Y position at each sampled point → pentatonic pitch (C2 bottom to C5 top); hue → waveform (warm=sawtooth, cool=sine, mid=triangle); X centroid → stereo pan; brush width → amplitude.
+- Stroke arc length → note count (2–8 notes per melody). A short horizontal stroke = 2-note drone; a long wavy stroke = 8-note phrase.
+- All voices loop simultaneously at the shared BPM. A "flash" animation travels along each stroke's sampled note points, making the melody visible as a moving light sequence.
+- Max 6 voices; oldest evicted when 7th stroke is drawn (creates compositional pressure — you edit by painting over).
+- Clear resets. Download saves canvas as PNG.
+- Build: static, 3.42 kB, zero API, zero deps, zero permissions.
+
+**What surprised me**: The hue-to-waveform mapping creates a natural "instrument palette." Warm hues
+(rose, amber) map to sawtooth — forward, buzzy, strong. Cool hues (cyan, blue) map to sine — airy,
+glassy, receding. This means a painting that's warm on the left and cool on the right has natural
+foreground/background spatial logic, even in audio. You can compose a mix just by choosing colors.
+
+The stroke-as-score concept also revealed something: a perfectly horizontal stroke gives a single
+repeated pitch (constant Y), which makes excellent drones. A diagonal stroke reads as a glissando.
+A wavy line creates a melodic phrase that rocks back and forth. The stroke geometry is a genuine
+musical notation — just drawn with a brush instead of a pen.
+
+**What's queued next**:
+- **Cycle 182 (kids, 182%2=0)** — KIDS.md Cycle 180 suggests two options: (1) `147-kids-beat-pulse`
+  v2 (add clap-back mode: prototype plays a 4-beat pattern, child taps back — deferred 6 kids cycles);
+  (2) `153-kids-star-paint` polish: spawn a demo constellation on first load. Option 1 is genuinely
+  novel; option 2 is simpler. Leaning toward option 1 but either works.
+- **Cycle 183 (adult)** — `153-piano-hands` (PianoFlow-inspired ghost fingers on a canvas keyboard,
+  arXiv:2604.12856) OR pick from the IDEAS queue: `concept-steer` (hexagonal radar chart → 6-axis
+  music synthesis, zero deps, one cycle) is high surprise-factor and zero-cost.
+
+---
+
 ## Cycle 180 — kids build: 152-kids-star-paint (draw constellation paths → Karplus-Strong star plucks → auto-arpeggio after 16 s)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

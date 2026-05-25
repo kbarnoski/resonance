@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 180 — kids build)
+## ⭐ Newest (Cycle 181 — adult build)
+
+- **[/dream/153-paint-compose](/dream/153-paint-compose)** — Paint Compose. `demoable`
+  Dark canvas with 7-color palette, 3 brush sizes, BPM slider (40–160). **Paint a stroke — it
+  immediately begins looping as a melody.** Stroke geometry is the musical score: Y position at each
+  sampled point → pentatonic pitch (C2 bottom, C5 top); hue → waveform (warm=sawtooth, cool=sine,
+  mid=triangle); X centroid → stereo pan; brush width → amplitude; arc length → note count (2–8).
+  All voices loop simultaneously at the shared BPM. Flash animations travel along each stroke's note
+  points, making the melody visible as a moving light sequence. Max 6 voices; oldest evicted on
+  overflow — you edit by painting over. Clear resets; ↓ PNG saves the painting.
+  **"What if painting and composing were the same act?"**
+  Diagonal stroke = glissando. Wavy line = phrase rocking between registers. Horizontal = drone.
+  Warm colors (rose/amber → sawtooth) sit forward in the mix; cool colors (cyan/blue → sine) recede.
+  You mix by choosing hues.
+  Inspired by ViTex (arXiv:2603.01984, Mar 2026) and Karel's love of `100-kids-paint-song` ❤️.
+  Zero permissions · Zero API · Zero deps · 3.42 kB.
+  Design notes: `src/app/dream/153-paint-compose/README.md`
+
+---
+
+## Previous (Cycle 180 — kids build)
 
 - **[/dream/152-kids-star-paint](/dream/152-kids-star-paint)** — Star Song (kids). `demoable`
   A dark night sky with 90 twinkling background stars. **Drag anywhere** — every ~46 px of travel
