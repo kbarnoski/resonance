@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 168 — kids build)
+## ⭐ Newest (Cycle 170 — kids build)
+
+- **[/dream/143-kids-seed-song](/dream/143-kids-seed-song)** — Seed Song (kids). `demoable`
+  Tap anywhere on a dark forest canvas to plant a glowing seed. A procedural tree grows from
+  the tap point over ~20 seconds: violet trunk sprouts, indigo forks appear, sky-blue branches
+  split, emerald twigs extend, amber tips bloom with fluttering leaves. **Each branch plays a
+  Karplus-Strong pluck as it reaches its tip** — C3 from the trunk rising to C4 at the tips,
+  all C-major pentatonic. Plant up to 4 seeds; their trees grow and sing simultaneously in
+  gentle harmony. Soft wind layer throughout. Leaves flutter with slow sinusoidal drift.
+  **"First kids prototype where the reward is patient growth over time — plant once, watch and listen for 20 seconds."**
+  Inspired by Refik Anadol's *Machine Dreams: Rainforest* (DATALAND, June 20, 2026).
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.5 kB.
+  Design notes: `src/app/dream/143-kids-seed-song/README.md`
+
+---
+
+## Previous (Cycle 168 — kids build)
 
 - **[/dream/142-kids-echo-canon](/dream/142-kids-echo-canon)** — Echo Canon (kids). `demoable`
   Tap out a melody (up to 8 notes, X = pitch across C3–C4 pentatonic). After 1.5s silence,

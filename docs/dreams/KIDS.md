@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 170 | `/dream/143-kids-seed-song` | `demoable` | **NEW** Tap anywhere → glowing seed at tap point; procedural tree grows over ~20s (depth-5 branching, alternating ±25°/32° per level); each branch segment plays Karplus-Strong pluck when it reaches its tip (C3→C4 pentatonic, depth=pitch, pre-computed buffers); amber leaf clusters flutter at terminal tips; soft wind layer (looping noise buffer → lowpass 220Hz); up to 4 trees singing simultaneously. First kids prototype where reward is patient growth over time (not instant tap response). Zero permissions. |
 | 168 | `/dream/142-kids-echo-canon` | `demoable` | **NEW** Tap out a melody (up to 8 taps; X = pitch, C-major pentatonic C3–C4); 1.5s silence → 3-voice canon fires: amber (original), blue (+7 semitones / P5), violet (+12 semitones / octave), each voice starting 550ms after previous. Dots rise upward per voice (pitch-rise visual metaphor). Web Audio precise `osc.start(when)` scheduling; rAF `actx.currentTime` spark check. Zero permissions. First kids prototype where child's own phrase echoes back as polyphony. |
 | 166 | `/dream/140-kids-string-bridge` | `demoable` | **NEW** Hold 1–2 fingers → glowing string between them vibrates + plays; distance = pitch (closer = higher, C-major pentatonic C2–C5); standing-wave visual rate proportional to pitch; single finger anchors at center; pluck on >12 px finger movement; triangle oscillator; zero permissions. |
 | 162 | `/dream/137-kids-hold-glow` | `demoable` | **NEW** Hold anywhere → glowing orb brightens and grows (core 28→92 px, halo opacity 22→50% over 4s); release → fading ring expands at speed proportional to hold duration; 5 color zones (violet=C3→cyan=C4 pentatonic); triangle OscillatorNode attack 80ms / release `max(120ms, holdSec×120ms)`; multi-touch up to 5 orbs; empty-state hint text; zero permissions. First kids prototype where hold-duration is the musical parameter — rewards stillness over tapping. |
@@ -168,6 +169,23 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 170 — seed-song build
+
+**Built**: `143-kids-seed-song`. Key learnings:
+
+- **Patient growth is a genuinely new interaction mode.** All 38 prior kids prototypes produce a sound+visual response within 50ms of a tap. Seed Song is the first where the primary reward takes 20 seconds to arrive — a child taps once and then watches. The Karplus-Strong plucks that fire over 20 seconds are not reactions to more taps; they are the system's autonomous voice. This creates a different relationship: the child is an observer of something they initiated, not a performer of repeated gestures.
+- **Pre-computing KS buffers at start avoids rAF stutter.** Building the 5 Karplus-Strong buffers (one per pitch/depth) in `handleStart` costs ~5ms total. Each pluck then just creates an AudioBufferSourceNode (cheap) and starts it. Without pre-computation, building a buffer during rAF (when a branch completes) would take 1–3ms and cause a visible frame drop — noticeable because the branch "pops" at the moment of pluck. Pre-computation is the right pattern for any prototype with many scheduled playback events.
+- **Upfront segment generation + interpolated reveal is the right rendering architecture.** Computing all segments at plant time gives deterministic timing (segment N always has a specific tStart/tEnd regardless of frame rate). The rAF loop then just interpolates each segment's current endpoint and draws it — no branching logic inside the hot path. Alternative (computing each branch lazily when its parent completes) would require state management and could miss frame deadlines.
+- **Alternating ±25°/32° per depth level gives organic but not chaotic shapes.** Even depths = 25° spread (tighter forks); odd depths = 32° (wider). With ±4° jitter, each tree is unique while remaining recognizably tree-shaped. A constant angle (25° throughout) produces too regular a shape; purely random angles produce messy tangles. The alternating pattern echoes how real trees branch (major branches tighter near trunk, wider at tips).
+- **Wind layer at gain 0.038** is a design choice informed by `116-kids-bloom-garden`'s ambient pad (gain 0.02). The wind should be felt, not heard — audible only on headphones, invisible on phone speakers. This prevents audio fatigue for parents while maintaining the "living space" quality that makes the canvas feel inhabited even before the first tree.
+
+**Next kid-cycle ideas (Cycle 172)**:
+- **`135-kids-wheel-song` polish** — note-name flash above striker (queued since Cycle 160, now 12 kids cycles). Should finally land. ~10 lines.
+- **`143-kids-seed-song` polish** — (a) seed-drop animation: a brief downward arc before the seed glow appears (stone-drop metaphor from `133-kids-ripple-pond`); (b) "Clear forest" button appearing 30s after last seed, letting the child start over; (c) ambient C3+E3+G3 triangle pad at gain 0.010 from first tap, underneath the KS plucks.
+- **New seed**: a kids prototype about **visual sequencer** — 8 colored dots in a row (C-major pentatonic); a cursor sweeps left-to-right at a settable BPM; tap any dot to toggle it on (it glows). The cursor hits lit dots and plays their note. Children build 1-bar loops by tapping dots. Zero permissions, zero text, pure visual grid. First kids prototype about rhythm construction.
 
 ---
 

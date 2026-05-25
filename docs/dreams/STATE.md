@@ -1,5 +1,69 @@
 # Dream Agent — cycle state
 
+## Cycle 170 — kids build: 143-kids-seed-song (Seed Song — plant a seed, L-system tree grows, Karplus-Strong plucks)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 170 % 2 = 0 → **kids cycle**.
+4. **Build new** — Cycle 169 queued `143-kids-seed-song` explicitly as the next kids build.
+   Zero deps, zero API, zero permissions. One-cycle build. Directly inspired by Anadol's
+   Machine Dreams: Rainforest technique (RESEARCH.md §206).
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `105-pluck-field` ❤️ (Karplus-Strong physical-modeling synthesis)
+was the primary pull — Seed Song extends the same warm KS resonance to a growth-over-time context.
+`100-kids-paint-song` ❤️ (patient deliberate creation → artifact) was the second pull — Seed Song
+rewards watching rather than tapping, similar patient engagement.
+
+**Built**:
+- `src/app/dream/143-kids-seed-song/page.tsx` — full prototype (2.5 kB compiled)
+- `src/app/dream/143-kids-seed-song/README.md` — design notes
+
+**What it does**:
+- Dark forest canvas (`#060d06` background). Tap anywhere → seed glows violet at tap point.
+- Procedural tree grows from seed over ~20 seconds via recursive branching (not a formal
+  L-system string rewrite — direct recursive function, simpler to implement):
+  - Depth 0 trunk: straight up, deep violet, 4.5px, 20% canvas H, grows in 2.5s
+  - Depth 1 forks: ±25° from parent, indigo, 3px, grows in 1.8s
+  - Depth 2: ±32° from parent, sky blue, 2px, 1.4s
+  - Depth 3: emerald, 1.4px, 1.1s
+  - Depth 4 tips: amber, 0.9px, 0.9s — small amber leaf clusters flutter at each tip
+- All branch segments pre-computed upfront; rAF loop reveals each one progressively by
+  interpolating endpoint from x0,y0 toward x1,y1.
+- **Karplus-Strong pluck fires when each segment reaches its tip**: 5 pitch-precomputed
+  buffers (C3–E3–G3–A3–C4 per depth), soft gains (0.30 trunk → 0.12 tips).
+- Up to 4 trees; their voices overlap in C-major pentatonic harmony.
+- Soft wind layer: looping 2s noise buffer → lowpass 220Hz → gain 0.038 (audible only on headphones).
+- Leaves: 3 small amber ellipses at each terminal tip, fluttering via `sin(ts * 0.0013 + offset)`.
+
+**What surprised me**: Building the KS buffers offline upfront (same pattern as `108-kids-kalimba`)
+means zero audio computation during the rAF loop — only AudioBufferSourceNode creation, which is
+cheap. With 4 trees × ~31 segments max = ~124 potential pluck events over 20 seconds, the
+pre-computation decision was correct: computed once at start, played many times.
+
+The branching angles (alternating ±25° and ±32° per depth level) give a naturally asymmetric
+tree shape — not too symmetric-looking, not random-chaotic. The jitter (±4° random) means
+every tree looks slightly different even from the same seed point.
+
+**What's queued next**:
+- **Cycle 171 (adult, 171%2=1)** — `144-sa3-journey`: Stable Audio 3 Large on fal.ai,
+  6-minute journey generation + causal piano continuation. Highest-priority adult build.
+  Directly addresses Karel's "longer generation + his music as input" directive.
+- **Cycle 172 (kids, 172%2=0)** — `135-kids-wheel-song` polish (note-name flash above
+  striker, queued since Cycle 160) OR new kids seed if a more novel build surfaces.
+- **Cycle 173 (adult)** — `145-eco-bloom` (full procedural rainforest, adult depth:
+  3 simultaneous tree species + rain toggle + dawn birds) OR `146-spatial-palette`.
+
+---
+
 ## Cycle 169 — research sweep: §§204–208 (Stable Audio 3, Eco-Bloom, Face Synth, Spatial Palette, WavFlow)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
