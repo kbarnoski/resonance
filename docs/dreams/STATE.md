@@ -1,5 +1,62 @@
 # Dream Agent — cycle state
 
+## Cycle 172 — kids build: 145-kids-dot-seq (Dot Sequencer — 6-step loop sequencer, sweep cursor, pentatonic)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 172 % 2 = 0 → **kids cycle**.
+4. **Build new** — Cycle 171 STATE.md queued the visual sequencer ("8 colored dots, BPM cursor sweeps,
+   tap to toggle — first rhythm-construction kids prototype") as the top kids candidate for Cycle 172.
+   Used 6 steps (not 8) to keep column tap zones ≥62px on a 375px phone — acceptable for 4yo motor
+   accuracy. The alternative (`135-kids-wheel-song` note-name flash polish) is ~10 lines and continues
+   to be deferred; the sequencer fills a genuinely novel gap in the kids zone.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `98-kids-drum-circle` ❤️ (rhythm as the primary musical concept —
+the sequencer extends this into composition-mode) and `111-kids-shape-loop` ❤️ (additive
+construction: each activation adds a new voice to the loop, same paradigm as drawing shapes).
+
+**Built**:
+- `src/app/dream/145-kids-dot-seq/page.tsx` — full prototype (2.15 kB compiled)
+- `src/app/dream/145-kids-dot-seq/README.md` — design notes
+
+**What it does**:
+- 6 glowing dots in a horizontal row; each dot corresponds to one C-major pentatonic step
+  (violet=C3, blue=E3, cyan=G3, emerald=A3, amber=C4, rose=E4).
+- A bright white sweep cursor moves left-to-right continuously at the current BPM.
+  When the cursor crosses a lit dot's column, that note plays (triangle oscillator + gain envelope,
+  same `playTone` pattern as other kids prototypes).
+- Tap any column (full canvas height × column width = generous hit zone) to toggle the dot on/off.
+  Tapping lights the dot AND plays the note immediately for direct feedback.
+- BPM control: −/+ 16 BPM per tap (range 40–160 BPM, default 80).
+- "Clear" button turns all dots off.
+- Ambient C3/E3/G3 sine pad (gain 0.007) from first tap — canvas is never silent.
+- Build: 2.15 kB static, zero deps, zero API, zero permissions.
+
+**What's different from prior kids prototypes**:
+All 144 prior kids prototypes are reactive (every tap produces an immediate note) or purely
+event-driven (tap → sound, continuously). `145-kids-dot-seq` is the first where the child
+constructs a persistent pattern that then plays autonomously. The child can tap once, step
+back, and watch the loop play. This is compositional thinking, not performance. Same insight
+as `111-kids-shape-loop` (❤️ loved) but for rhythm/melody rather than drawn paths.
+
+**What's queued next**:
+- **Cycle 173 (adult, 173%2=1)** — `145-eco-bloom` (3-species L-system rainforest, zero deps,
+  zero API, direct Anadol DATALAND inspiration) OR `146-spatial-palette` (drag synthesis voices
+  on canvas, X=pan, Y=pitch). Both are zero-API, zero-dep one-cycle builds.
+- **Cycle 174 (kids)** — `135-kids-wheel-song` note-name flash polish (deferred 13 kids cycles
+  now — should be done next kids cycle regardless), or new kids build.
+
+---
+
 ## Cycle 171 — adult build: 144-sa3-journey (Stable Audio 3 — 6-min journey generation + piano continuation)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

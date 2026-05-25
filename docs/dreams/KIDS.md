@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 172 | `/dream/145-kids-dot-seq` | `demoable` | **NEW** 6 colored dots (C major pentatonic C3→E4); white sweep cursor moves left-to-right at BPM (default 80); tap any column to toggle dot on/off (full-column hit zone); cursor plays lit dots as it passes; +/- 16 BPM buttons; Clear button; ambient C3/E3/G3 pad. **First kids prototype about rhythm construction — child builds a looping pattern that plays autonomously.** Zero permissions. |
 | 170 | `/dream/143-kids-seed-song` | `demoable` | **NEW** Tap anywhere → glowing seed at tap point; procedural tree grows over ~20s (depth-5 branching, alternating ±25°/32° per level); each branch segment plays Karplus-Strong pluck when it reaches its tip (C3→C4 pentatonic, depth=pitch, pre-computed buffers); amber leaf clusters flutter at terminal tips; soft wind layer (looping noise buffer → lowpass 220Hz); up to 4 trees singing simultaneously. First kids prototype where reward is patient growth over time (not instant tap response). Zero permissions. |
 | 168 | `/dream/142-kids-echo-canon` | `demoable` | **NEW** Tap out a melody (up to 8 taps; X = pitch, C-major pentatonic C3–C4); 1.5s silence → 3-voice canon fires: amber (original), blue (+7 semitones / P5), violet (+12 semitones / octave), each voice starting 550ms after previous. Dots rise upward per voice (pitch-rise visual metaphor). Web Audio precise `osc.start(when)` scheduling; rAF `actx.currentTime` spark check. Zero permissions. First kids prototype where child's own phrase echoes back as polyphony. |
 | 166 | `/dream/140-kids-string-bridge` | `demoable` | **NEW** Hold 1–2 fingers → glowing string between them vibrates + plays; distance = pitch (closer = higher, C-major pentatonic C2–C5); standing-wave visual rate proportional to pitch; single finger anchors at center; pluck on >12 px finger movement; triangle oscillator; zero permissions. |
@@ -152,6 +153,29 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 172 — dot-sequencer build
+
+**Built**: `145-kids-dot-seq`. Key learnings:
+
+- **Full-column tap zones solve the narrow-column problem.** With 6 columns on a 375px phone, each column is ~62px wide — close to the 64px minimum but not ideal as a disc hit target. Using the full column height as the Y-axis of the hit zone (any tap within the column, regardless of Y) gives an effective target of ~62px × ~280px. A 4yo's rough motor control will hit this reliably. The visual dot is centered in the column; the tap zone is much larger than the dot. This is the same design insight as `113-kids-conductor-wand` (whole screen = one instrument).
+
+- **Note-on-tap is load-bearing for understanding.** When the child taps a dot, `playTone` fires immediately. This creates a two-part feedback loop: (1) tap → note plays NOW, dot glows; (2) cursor arrives → note plays AGAIN, dot flashes. After 2–3 taps, the child understands: "I decide what dots light up; the cursor decides when they play." Without the immediate tap-note, the child has to wait for the cursor to confirm their action — too slow for a 4yo.
+
+- **`phaseRef.current` accumulating past `N` and wrapping is cleaner than `% N` per frame.** `phaseRef.current += stepsPerSec * dt; if (phase >= N) phase -= N;` maintains sub-step precision across frames. Using `% N` would subtly discard fractional phase on each wrap, causing cumulative drift at non-integer BPM rates. The subtraction wrap is exact.
+
+- **Step detection via `Math.floor(phase) !== prevStep` fires once per column entry.** The cursor sweeps from the left edge of each column. The note fires as the cursor enters, then the cursor passes through the dot (at column center, phase = i + 0.5). This gives a "leading edge" trigger — the sound fires just before the cursor reaches the dot center. Slightly early but imperceptible at most BPMs.
+
+- **80 BPM default + 16 BPM steps gives a usable range for kids.** At 40 BPM: ~1.5s between notes, very slow but a patient child can hear each note distinctly. At 160 BPM: ~375ms between notes, fast enough to hear a looping melody. The ±16 BPM step means 8 button presses to go from min to max — never feels like turning a dial endlessly.
+
+- **Ambient C3/E3/G3 pad prevents the "is it broken?" moment.** A child who starts the prototype and sees 6 dim dots with no sound will assume the app failed. The ambient pad (gain 0.007, barely audible) is the "heartbeat" — there's already sound in the room before the first tap.
+
+**Next kid-cycle ideas (Cycle 174)**:
+- **`135-kids-wheel-song` note-name flash** — queued 14 kids cycles (since Cycle 160). Really should just land. ~10 lines above the striker, `text-white/75`, 600ms fade.
+- **`145-kids-dot-seq` v2** — add a second row of 6 dots below the first (different color, different octave / percussion sounds). Child builds a 2-track loop. Or: add a "record" button so the child can tap in a rhythm and have it auto-populate the dots.
+- **New seed** — a kids prototype about **tempo and body**: a large circle pulses at a BPM; child taps the circle to match the pulse rhythm; colored sparks appear on each match. Teaches beat-matching (clapping along to music) in a visual way.
+
+---
 
 ### Cycle 156 — orbit-garden build
 

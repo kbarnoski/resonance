@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 171 — adult build)
+## ⭐ Newest (Cycle 172 — kids build)
+
+- **[/dream/145-kids-dot-seq](/dream/145-kids-dot-seq)** — Dot Sequencer (kids). `demoable`
+  Six glowing colored dots in a row (C major pentatonic: violet=C3 → rose=E4). A bright white
+  cursor sweeps left to right continuously. **Tap any dot to light it up** — when the cursor
+  passes a lit dot, that note plays. Tap again to turn it off. The result is a one-bar loop
+  that plays forever at the current BPM. +/− buttons adjust speed (40–160 BPM in 16 BPM steps).
+  Full-column tap zones (canvas height × column width) give generous hit targets. All pentatonic
+  combinations are consonant — no wrong patterns.
+  **"First kids prototype where the child constructs a musical pattern that then plays itself."**
+  All 144 prior prototypes are reactive (tap → immediate note) or event-driven. This is the
+  first where a child builds a looping composition by deliberate gesture, then observes it play.
+  Different cognitive mode: composition over performance. Inspired by Karel's love of
+  `98-kids-drum-circle` ❤️ (rhythm) and `111-kids-shape-loop` ❤️ (additive layering).
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.15 kB.
+  Design notes: `src/app/dream/145-kids-dot-seq/README.md`
+
+---
+
+## Previous (Cycle 171 — adult build)
 
 - **[/dream/144-sa3-journey](/dream/144-sa3-journey)** — SA3 Journey. `demoable`
   Two-mode Stable Audio 3 prototype. **Mode A — Write Journey**: pick one of 8 Resonance journey
