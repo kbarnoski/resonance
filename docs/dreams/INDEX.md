@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 184 — kids build)
+## ⭐ Newest (Cycle 185 — adult build)
+
+- **[/dream/157-concept-steer](/dream/157-concept-steer)** — Concept Steer. `demoable`
+  A hexagonal radar chart where each of six vertices controls a named musical dimension:
+  **Brightness** (filter), **Density** (BPM + voices), **Regularity** (timing jitter),
+  **Complexity** (chord voicing), **Energy** (attack + gain), **Mode** (major→dim).
+  Drag any vertex — the polygon reshapes and the synthesizer tracks immediately.
+  Live chord name label updates as Complexity × Mode shift (C → Csus4 → Cm → Cdim9 etc.).
+  Four presets: Classical Fugue, Dark Ambient, Jazz Improv, Drone.
+  **"Navigate music as a space of named concepts — not moods, not knobs."**
+  The six axes come from sparse autoencoder research (arxiv 2505.18186, May 2026): they are
+  what music AI models actually learn internally. This UI makes those implicit axes explicit.
+  Zero permissions · Zero API · Zero deps · 3.23 kB.
+  Design notes: `src/app/dream/157-concept-steer/README.md`
+
+---
+
+## Previous (Cycle 184 — kids build)
 
 - **[/dream/156-kids-star-connect](/dream/156-kids-star-connect)** — Constellation Song (kids). `demoable`
   Thirteen glowing stars pre-placed on a dark sky in three loose clusters. **Draw a line from one

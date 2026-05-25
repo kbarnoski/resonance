@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 185 — adult build: 157-concept-steer (hexagonal radar chart · six music-AI axes → live synthesizer)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 185 % 2 = 1 → **adult cycle**, skip.
+4. **Build new** — STATE.md Cycle 184 explicitly queued `157-concept-steer` for Cycle 185.
+   IDEAS.md had the full spec under `concept-steer` (originally planned as `/dream/52-...`,
+   renumbered to 157 since 156 was used for `kids-star-connect`).
+
+Love signal: 19 loved (unchanged from Cycle 183). No new loves.
+Influenced by: Karel's love of `148-spatial-palette` ❤️ — that prototype makes musical
+parameters spatial. `concept-steer` does the same with theoretical vocabulary instead
+of geographic position. Also pulls from `138-lmdm-echo` ❤️ (music theory as UI).
+
+**Built**:
+- `src/app/dream/157-concept-steer/page.tsx` — full interactive prototype (3.23 kB)
+- `src/app/dream/157-concept-steer/README.md` — design notes
+
+**What it does**:
+A hexagonal radar chart where six vertices control six named synthesis dimensions:
+- **Brightness** (top) → low-pass filter fc 400–6000 Hz
+- **Density** (top-right) → BPM 40–140 · voices 1–5
+- **Regularity** (bottom-right) → timing jitter: free ↔ exact grid
+- **Complexity** (bottom) → chord voicing: unison → triad → 9th
+- **Energy** (bottom-left) → attack 800 ms → 40 ms · gain 0.3 → 1.0
+- **Mode** (top-left) → chord quality: major → suspended → minor → diminished
+
+Drag any vertex to reshape the hexagonal polygon — the synthesizer tracks in real time.
+A live chord name label (C, Csus4, Cm7, Cdim9…) updates as Complexity × Mode change.
+Four preset positions: Classical Fugue, Dark Ambient, Jazz Improv, Drone.
+
+**Where the axes come from**:
+Not invented — extracted from transformer weights. Sparse autoencoder research
+(arxiv 2505.18186, May 2026) found these six dimensions dominate internal representations
+in trained music AI models. The prototype makes those implicit model axes the explicit
+user interface. "Navigate music as a space of named concepts — not moods, not knobs."
+
+**What surprised me**:
+The Regularity axis does much more heavy lifting than expected. Classical Fugue preset
+(bright, regular, complex, major) produces genuine counterpoint-feel from pure grid timing
++ stacked 7th chord voices — no algorithmic voice leading, just the interaction of strict
+scheduling and chord complexity. Moving Regularity from 0 → 1 is one of the most
+musically dramatic parameter sweeps in the sandbox.
+
+Also: Mode + Complexity at the extremes (Cdim9, Cmaj9) land far enough from conventional
+territory that they feel like distinct emotional environments, not just chord names.
+
+**What's queued next**:
+- **Cycle 186 (kids, 186%2=0)** — KIDS.md queues `154-kids-clap-back` polish (add 5
+  indicator dots for which of 5 patterns is active, ~10 lines). Or a fresh kids seed.
+- **Cycle 187 (adult)** — IDEAS queue: `diatonic-harmony` (live key detection + diatonic
+  third+fifth harmony voices; zero deps, one cycle) OR `music-palette` (emotion→color
+  palette from audio; zero deps, one cycle).
+
+---
+
 ## Cycle 184 — kids build: 156-kids-star-connect (connect pre-placed stars to discover musical intervals; close a triangle to hear a chord)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
