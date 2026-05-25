@@ -1,5 +1,46 @@
 # Dream Agent — cycle state
 
+## Cycle 179 — adult build: 151-ritual-compose (I-Ching coin-toss divination → hexagram → Lyria 3 Pro journey music)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 179 % 2 = 1 → adult cycle, skip.
+4. **Build new** — STATE.md Cycle 178 explicitly queues `151-ritual-compose` for Cycle 179. Highest surprise factor in the queue: the first prototype to treat a Resonance session as a *ritual act* before music can be generated. Building now.
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influenced by Karel's love of `107-ocean-presence` ❤️ (transcendent, immersive, non-reactive — you don't control the ocean, you receive it) and `84-wave-fluid` ❤️ (visual depth, meditative absorption). `ritual-compose` is the same energy: the visitor doesn't play — they perform a ceremony and *receive* music as response.
+
+**Built**:
+- `src/app/dream/151-ritual-compose/page.tsx` — full prototype
+- `src/app/dream/151-ritual-compose/api/route.ts` — Lyria 3 Pro API route (guard in place)
+- `src/app/dream/151-ritual-compose/README.md` — design notes
+
+**What it does**:
+- Three animated coins on a dark canvas. Tap to toss all three simultaneously.
+- Six tosses build a hexagram, one line per toss (heads majority = yang solid, tails majority = yin broken).
+- Static lookup table maps 6-line pattern to King Wen hexagram (1–64) via trigram bits.
+- All 64 hexagrams have: Chinese character, name, 2-sentence interpretation, Lyria music prompt.
+- Hexagram appears line-by-line bottom-to-top as tosses are cast (traditional I Ching reveal order).
+- "Generate Journey Music" → POST to API → `fal-ai/lyria3/pro` with hexagram-derived prompt.
+- 30s ambient music plays through 6-band bloom radial visualizer (same as `129-lyria3-journey`).
+- "Re-cast" resets everything. ~$0.08/generation, FAL_KEY in use.
+
+**What surprised me**: The prototype has genuine ritual texture — because you must tap six times before music appears, there's a built-in pause and intention that single-tap prototypes lack. The 64-hexagram interpretation table surfaces surprising musical aesthetics: hexagram 29 (K'an, The Abysmal) maps to "deep water resonance, underground echoes"; hexagram 58 (Tui, The Joyous) maps to "bright arpeggios, pure delight." The I Ching's emotional range is a remarkably complete music taxonomy.
+
+**What's queued next**:
+- **Cycle 180 (kids, 180%2=0)** — kids build. Options: `152-paint-compose` is zero API + zero deps, but might suit an adult cycle better. Better kids option: `150-kids-beat-builder` v2 (pre-loaded demo pattern so kids see an active beat immediately on open), OR new KIDS.md seed.
+- **Cycle 181 (adult)** — `152-paint-compose` (ViTex-inspired: paint colored strokes → loop plays them back as music, zero API, zero deps) OR `153-piano-hands` (PianoFlow-inspired: ghost fingers on canvas keyboard).
+
+---
+
 ## Cycle 178 — kids build: 150-kids-beat-builder (two-row step sequencer — melody + drums)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

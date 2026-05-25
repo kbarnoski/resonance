@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 178 — kids build)
+## ⭐ Newest (Cycle 179 — adult build)
+
+- **[/dream/151-ritual-compose](/dream/151-ritual-compose)** — Oracle. `demoable`
+  Three ancient coins on a dark canvas. **Tap to toss all three simultaneously** — six times.
+  Each toss produces one hexagram line: heads majority = yang (solid), tails = yin (broken).
+  After six tosses the complete hexagram appears (1 of 64), with its Chinese character, King Wen
+  name, and a 2-sentence poetic interpretation. Press **Generate Journey Music** → `fal-ai/lyria3/pro`
+  receives a music prompt derived from the hexagram's meaning and returns 30s of ambient music that
+  plays through the 6-band bloom radial visualizer. **"Re-cast"** resets everything.
+  **"First prototype to treat a Resonance session as a ritual act."**
+  149 prior prototypes respond in real time. Oracle requires ceremony: six deliberate taps before
+  any music appears. The I Ching's 64-hexagram emotional vocabulary maps onto music surprisingly
+  well — hexagram 29 (The Abysmal) → deep water resonance; hexagram 58 (The Joyous) → bright
+  arpeggios; hexagram 52 (Keeping Still) → mountain silence, sustained single drone.
+  ~$0.08/generation · FAL_KEY · Zero new npm deps · 9.76 kB.
+  Design notes: `src/app/dream/151-ritual-compose/README.md`
+
+---
+
+## Previous (Cycle 178 — kids build)
 
 - **[/dream/150-kids-beat-builder](/dream/150-kids-beat-builder)** — Beat Builder (kids). `demoable`
   A two-row, 6-step loop sequencer. **Top row = melody** (6 cool-colored dots, C major pentatonic
