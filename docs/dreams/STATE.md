@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 180 — kids build: 152-kids-star-paint (draw constellation paths → Karplus-Strong star plucks → auto-arpeggio after 16 s)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 180 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md queue is thin (all original seeds built). STATE.md Cycle 179 queued
+   `150-kids-beat-builder` v2 (demo pattern) or `147-kids-beat-pulse` polish as options. Instead of
+   incremental polish, invented a fresh concept that hasn't existed in the zone: **constellation painting**.
+   Draw paths → stars appear + sing (KS plucks) → constellation persists 16 s → auto-arpeggio → fade.
+   Combines Karel's love of `105-pluck-field` ❤️ (KS synthesis) and `100-kids-paint-song` ❤️ (drawing=music).
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influenced by `105-pluck-field` ❤️ (Karplus-Strong synthesis = the exact same KS pluck model,
+pre-computed per pitch) and `100-kids-paint-song` ❤️ (drawing path = musical phrase). This is those
+two prototypes unified: KS timbre + drawing-as-music + a persistent sky that sings back unprompted.
+
+**Built**:
+- `src/app/dream/152-kids-star-paint/page.tsx` — full prototype (2.86 kB)
+- `src/app/dream/152-kids-star-paint/README.md` — design notes
+
+**What it does**:
+- Drag finger across dark canvas (90 twinkling bg stars). Every 46 px = new 5-pointed star + KS pluck.
+- Y position → pitch index 0–8 (C3 at bottom, C5 at top, C-major pentatonic, 9 steps).
+- Stars connect by glowing lines (constellation). Lift = constellation locked, lifecycle begins.
+- Phase 1 "live" (0–16 s): glowing, silent. Phase 2 "arping" (16–19 s): unique pitches play high→low,
+  stars pulse with sine-wave glow. Phase 3 "fading" (19–22.5 s): alpha decays to 0, removed.
+- Max 6 constellations simultaneously; oldest evicted on overflow.
+- C3+E3+G3 ambient pad (gain 0.012/0.008/0.006) from first interaction.
+- Multi-touch: each `pointerId` draws its own constellation simultaneously.
+- Hint text ("Draw across the sky ✦") fades over seconds 6–9.
+
+**What surprised me**: The 16-second "patience window" creates a genuinely new interaction rhythm
+in the kids zone. All 151 prior prototypes give sonic feedback within 50 ms. Star Song gives a
+second reward 16 seconds later, spontaneously. In my mental model of a 4-year-old playing it:
+they draw a path, forget about it, then suddenly the sky sings. The delayed arpeggio is a gift
+from a past self — it creates the sensation of being surprised by your own music.
+
+The KS plucks during drawing are already satisfying (bell-like resonance, ~2 s decay). But the
+auto-arpeggio is the differentiator: it pulls the unique set of pitches from the path, deduplicates,
+and plays highest-first. A swooping arc from C3 to C5 → 9-note descending scale. Rapid tapping at
+one height → single pitch sustained. The arpeggio always sounds like the constellation deserves it.
+
+**What's queued next**:
+- **Cycle 181 (adult, 181%2=1)** — `153-paint-compose` (ViTex-inspired: paint color strokes → music.
+  Zero API, zero deps, one cycle) OR `153-piano-hands` (PianoFlow ghost fingers on canvas keyboard).
+  `paint-compose` is surprising and zero-cost; `piano-hands` has visual elegance. Leaning `paint-compose`.
+- **Cycle 182 (kids)** — Polish `147-kids-beat-pulse` v2 (add clap-back mode: prototype plays a
+  4-beat pattern → child taps back → scored by timing). This has been deferred 6 kids cycles.
+  Or: polish `152-kids-star-paint` — add a demo constellation on first load so canvas isn't blank.
+
+---
+
 ## Cycle 179 — adult build: 151-ritual-compose (I-Ching coin-toss divination → hexagram → Lyria 3 Pro journey music)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

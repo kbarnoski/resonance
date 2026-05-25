@@ -10,7 +10,32 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 179 — adult build)
+## ⭐ Newest (Cycle 180 — kids build)
+
+- **[/dream/152-kids-star-paint](/dream/152-kids-star-paint)** — Star Song (kids). `demoable`
+  A dark night sky with 90 twinkling background stars. **Drag anywhere** — every ~46 px of travel
+  a glowing 5-pointed star appears and plays a **Karplus-Strong pluck** (bell-like string resonance,
+  pre-computed 2.5 s buffer per pitch). Y position = pitch: top of screen = C5 bright, bottom =
+  C3 deep; 9 pitches across C-major pentatonic. Stars connect with glowing constellation lines as
+  you draw. Lift your finger to lock the constellation into the sky. After 16 s, the constellation
+  **arpeggios itself** — unique pitches replay from high to low over 3 s — then fades over 3.5 s.
+  Up to 6 constellations coexist simultaneously, each on its own 22.5 s lifecycle. Soft C3+E3+G3
+  ambient pad throughout. Hint text fades after 9 s ("Draw across the sky ✦").
+  **"First kids prototype where the path you draw persists in the sky and then sings back at you."**
+  150 prior prototypes are reactive (draw → immediate sound) or ephemeral (fades immediately).
+  Star Song is the first where a drawing remains visible for 22 s after you stop, then spontaneously
+  sings its own arpeggio — a small surprise reward for patience and long sessions. A child who
+  draws a big swooping arc from bottom-left to top-right hears a full ascending scale 16 seconds
+  later. A child who makes quick dots near the top hears high plucks. The spatial memory of
+  "where I drew" persists as the sound memory of "what notes I made."
+  Inspired by Karel's love of `105-pluck-field` ❤️ (KS synthesis) and `100-kids-paint-song` ❤️
+  (drawing = music). Combines both: KS timbre + drawing-as-music + persistent visual artifact.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.86 kB.
+  Design notes: `src/app/dream/152-kids-star-paint/README.md`
+
+---
+
+## Previous (Cycle 179 — adult build)
 
 - **[/dream/151-ritual-compose](/dream/151-ritual-compose)** — Oracle. `demoable`
   Three ancient coins on a dark canvas. **Tap to toss all three simultaneously** — six times.

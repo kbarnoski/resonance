@@ -85,6 +85,10 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 180 | `/dream/152-kids-star-paint` | `demoable` | **NEW** Drag finger across dark sky → every 46 px a glowing 5-pointed star appears + KS pluck (Y=pitch, C3 bottom to C5 top, 9 pentatonic steps); stars connect as constellation; lift = constellation locked; after 16s auto-arpeggio (unique pitches high→low); fades over 3.5s; max 6 simultaneous; ambient C3+E3+G3 pad; hint text fades 9s; zero permissions. First kids prototype where drawing persists and sings back unprompted. |
+| 178 | `/dream/150-kids-beat-builder` | `demoable` | **NEW** Two-row 6-step sequencer; top row = melody (cool-color dots, C major pentatonic C3→E4); bottom row = drums (rose=kick, amber=snare, emerald=hihat, cyan=tom, pink=clap, violet=shaker); full-column tap zones (top half = melody, bottom half = drums); BPM ±16 (40–160); Clear; ambient C3/E3/G3 pad. First kids prototype with two simultaneous tracks. Zero permissions. |
+| 176 | `/dream/149-kids-color-mix` | `demoable` | **NEW** Three large colored circles (rose=C3, amber=E3, violet=G3); drag any circle; when two overlap → color blend + notes louder; all three overlapping → bright white + C major chord; breathing pulse on isolated circles; `setTargetAtTime` transitions prevent pops. First kids prototype where proximity IS the music. Zero permissions. |
+| 174 | `/dream/147-kids-beat-pulse` | `demoable` | **NEW** Large circle pulses at BPM; each beat: flash pentatonic color, quiet pluck, note name inside; tap anywhere for sparks; on-beat taps (±18% beat period) produce 20 sparks; off-beat: 9. Progress arc sweeps clockwise as beat cue. BPM ±10 buttons (40–120). Zero permissions. |
 | 172 | `/dream/145-kids-dot-seq` | `demoable` | **NEW** 6 colored dots (C major pentatonic C3→E4); white sweep cursor moves left-to-right at BPM (default 80); tap any column to toggle dot on/off (full-column hit zone); cursor plays lit dots as it passes; +/- 16 BPM buttons; Clear button; ambient C3/E3/G3 pad. **First kids prototype about rhythm construction — child builds a looping pattern that plays autonomously.** Zero permissions. |
 | 170 | `/dream/143-kids-seed-song` | `demoable` | **NEW** Tap anywhere → glowing seed at tap point; procedural tree grows over ~20s (depth-5 branching, alternating ±25°/32° per level); each branch segment plays Karplus-Strong pluck when it reaches its tip (C3→C4 pentatonic, depth=pitch, pre-computed buffers); amber leaf clusters flutter at terminal tips; soft wind layer (looping noise buffer → lowpass 220Hz); up to 4 trees singing simultaneously. First kids prototype where reward is patient growth over time (not instant tap response). Zero permissions. |
 | 168 | `/dream/142-kids-echo-canon` | `demoable` | **NEW** Tap out a melody (up to 8 taps; X = pitch, C-major pentatonic C3–C4); 1.5s silence → 3-voice canon fires: amber (original), blue (+7 semitones / P5), violet (+12 semitones / octave), each voice starting 550ms after previous. Dots rise upward per voice (pitch-rise visual metaphor). Web Audio precise `osc.start(when)` scheduling; rAF `actx.currentTime` spark check. Zero permissions. First kids prototype where child's own phrase echoes back as polyphony. |
@@ -153,6 +157,61 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 180 — star-paint build
+
+**Built**: `152-kids-star-paint`. Key learnings:
+
+- **Delayed arpeggio creates a "gift from past self" experience.** All 151 prior kids prototypes produce
+  sonic feedback within 50ms. Star Song's 16-second wait means the child draws, moves on, and then is
+  surprised when the sky sings. In contrast to `142-kids-echo-canon` (1.5s canon gap) and `116-kids-bloom-garden`
+  (10s seed-to-flower) which have short and medium delays, 16 s is long enough that the child has likely
+  started a new constellation before the first one arpeggios. The delayed arpeggio feels like an external
+  event, not a response to a gesture — the sky has its own agenda.
+
+- **KS synthesis for drag-triggered notes requires pre-computed buffers.** At C3 (131 Hz), the KS delay
+  line has P = round(44100/131) ≈ 337 samples. Computing this on pointer move events would be fine (40 ms
+  max) but creates an allocation spike. Pre-computing all 9 buffers at `handleStart` (~15 ms total)
+  eliminates any in-gesture stalls. This is the same pattern as `143-kids-seed-song` and `105-pluck-field`.
+  Generalizable rule: pre-compute KS buffers for any fixed pitch set; lazy-compute only for variable-pitch
+  instruments (like `140-kids-string-bridge` where distance = pitch and the range is continuous).
+
+- **`while (draft.dist >= STEP_PX)` not `if`** is critical for fast drags. A quick finger swipe can
+  accumulate 120 px between `pointermove` events on a high-latency mobile frame. With `if`, the 3rd star
+  would be skipped. With `while`, all 3 stars emit in the same event (at the same position — the endpoint
+  of the move). This causes a brief cluster of stars, which looks fine and sounds like a chord. The
+  per-star carryover (`draft.dist -= STEP_PX`) ensures precise star-spacing over the whole drag.
+
+- **Y = pitch (C3 bottom, C5 top) is immediately self-discovering.** Unlike X = pitch (which requires
+  understanding "left = low, right = high" — a spatial analogy), Y = pitch maps to the intuition "high
+  up = high note" which children understand from watching birds (birds are high, voices go up for high
+  notes). After two strokes — one low and one high — a 3-year-old understands the mapping. Verified
+  across `100-kids-paint-song`, `104-kids-mirror-draw`, `140-kids-string-bridge`.
+
+- **The hint text `"Draw across the sky ✦"` fades over 9 s** to avoid cluttering the sky during play.
+  But it fades gradually (appears at 2s, stays until 6s, then decays). The fade-in delay prevents the
+  hint from showing during the button press → canvas reveal transition (which can flicker on slow phones).
+  Entering the 2s fade-in gives the AudioContext time to initialize before the first hint is visible.
+
+- **Background stars must NOT respond to pointer events.** The canvas is `touch-none` (no pointer capture
+  on background). All pointer events are explicitly captured only inside `onDown`. The 90 background dots
+  are purely visual; they twinkle via `sin(ts * 0.0007 + phase)`. The random `phase` per star ensures
+  they don't all twinkle in sync (which would look mechanical and distracting). This is the same pattern
+  as `156-kids-orbit`'s golden-ratio star field (stable positions, no per-frame allocation).
+
+**Next kid-cycle ideas (Cycle 182)**:
+- **`147-kids-beat-pulse` v2 (clap-back mode)**: prototype plays a random 4-beat pattern (3 downbeats,
+  1 skip), then goes silent with a "your turn!" ring. Child taps back in the blank bars. After 4 beats,
+  compare timing. Non-judgmental: any timing produces sparks; on-beat timing produces bigger sparks.
+  This has been deferred 6 kids cycles — really should just land. One-cycle build.
+- **`152-kids-star-paint` polish**: spawn a demo constellation on first load (a pre-drawn arc from C3
+  to C5) so the canvas is immediately alive. Shows interaction model before first touch. ~10 lines.
+- **New seed**: a kids prototype about **musical constellations discovered by connecting stars** — the
+  reverse of star-paint: stars are pre-placed, child draws lines between them to "unlock" the notes.
+  Each completed connection plays the interval between the two stars. A completed triangle = a chord.
+  Different from star-paint (star-paint creates stars; this one reveals them).
+
+---
 
 ### Cycle 174 — beat-pulse build + wheel-song polish
 
