@@ -1,5 +1,49 @@
 # Dream Agent — cycle state
 
+## Cycle 178 — kids build: 150-kids-beat-builder (two-row step sequencer — melody + drums)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 178 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md Cycle 174 queues `beat-pulse v2` (clap-back mode) and `dot-seq v2` (second row). STATE.md Cycle 177 points toward `dot-seq v2`. Building **`/dream/150-kids-beat-builder`** — a two-row step sequencer: top row = melody (pentatonic C3–E4), bottom row = drums (synthesized kick/snare/hihat/tom/clap/shaker). First kids prototype combining beat-making and melody in one 6-column grid.
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influenced by Karel's love of `98-kids-drum-circle` ❤️ (percussion synthesis = the same drum engine from that prototype) and `111-kids-shape-loop` ❤️ (additive layering = tapping dots builds up a composition). Both loves converge: beat-builder IS a drum-circle + shape-loop in one grid.
+
+**Note on slot numbers**: IDEAS.md seeded `150-ritual-compose` for Cycle 179. That's been bumped to `151-ritual-compose`. `151-paint-compose` → `152-paint-compose`. `152-piano-hands` → `153-piano-hands`. Will update IDEAS.md during this cycle.
+
+**Built**:
+- `src/app/dream/150-kids-beat-builder/page.tsx` — full prototype
+- `src/app/dream/150-kids-beat-builder/README.md` — design notes
+
+**What it does**:
+- 6-column step sequencer with two rows: melody (top, cool-color dots) + drums (bottom, warm-color dots).
+- Melody row: C major pentatonic C3–E4 (same 6 notes as `145-kids-dot-seq`).
+- Drums row: synthesized kick (col 0, rose), snare (col 1, amber), hi-hat (col 2, emerald), tom (col 3, cyan), clap (col 4, pink), shaker (col 5, violet). Drum synthesis identical to `98-kids-drum-circle`.
+- Full-column tap zones, top-half = melody, bottom-half = drums. Cursor sweeps both rows simultaneously.
+- Dashed separator line at canvas mid-height; distinct color palettes signal "different type of sound."
+- BPM ±16 buttons (40–160). Clear button resets both rows. Ambient C3/E3/G3 pad from start.
+- Tap a melody dot → it lights up and plays immediately; cursor plays it on each pass.
+- Tap a drum dot → drum sound fires immediately; cursor fires it on each pass.
+- A child who lights kick on col 0, hi-hat on col 2, and E3 on col 2 hears: kick + melody note, hi-hat alone — first layered beat+melody composition.
+- Zero permissions · Zero API · Zero deps.
+
+**What surprised me**: The emergent polyphony is richer than `145-kids-dot-seq` because hitting a melody note and a hi-hat on the same column creates a natural accent — the melodic note lands on a percussive beat. Without any instruction, children will discover that placing melody notes on drum-beat columns sounds "right," while placing them off the drums sounds "floaty." The grid teaches rhythm placement by allowing experimentation.
+
+**What's queued next**:
+- **Cycle 179 (adult)** — build `151-ritual-compose` (I-Ching coin-toss simulation → hexagram → Lyria 3 Pro music generation, $0.08/gen, FAL_KEY in use). Highest surprise factor in the queue. Most transcendent seed yet. Karel has not objected (no response on MORNING.md question = soft OK given the ~$0.08/gen cost).
+- **Cycle 180 (kids)** — polish `147-kids-beat-pulse` (add on-beat spark burst on the downbeat, deferred 4 cycles) OR `150-kids-beat-builder` v2 (add a demo pattern pre-loaded on start so kids see an active beat immediately).
+
+---
+
 ## Cycle 177 — adult research sweep: 6 fresh findings (§§209–214), 3 new prototype seeds
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

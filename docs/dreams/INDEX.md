@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 177 — adult research sweep)
+## ⭐ Newest (Cycle 178 — kids build)
+
+- **[/dream/150-kids-beat-builder](/dream/150-kids-beat-builder)** — Beat Builder (kids). `demoable`
+  A two-row, 6-step loop sequencer. **Top row = melody** (6 cool-colored dots, C major pentatonic
+  C3→E4). **Bottom row = drums** (6 warm-colored dots: rose=kick, amber=snare, emerald=hi-hat,
+  cyan=tom, pink=clap, violet=shaker). One sweeping cursor crosses both rows simultaneously. Tap
+  any dot to light it; the cursor fires it each time it passes. BPM ±16 buttons (40–160). Clear resets
+  all. Ambient C3/E3/G3 pad runs from start.
+  **"First kids prototype with two simultaneous tracks — melody above, drums below."**
+  All 149 prior kids prototypes use a single sound type per tap event. Beat Builder is the first
+  where the child operates two independent musical layers in one grid. The emergent discovery:
+  melody notes placed on the same column as a drum hit land on a percussive accent — the child hears
+  this without any explanation and starts placing notes deliberately.
+  Drum synthesis identical to `98-kids-drum-circle` ❤️. Sequencer grid from `145-kids-dot-seq`.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.81 kB.
+  Design notes: `src/app/dream/150-kids-beat-builder/README.md`
+
+---
+
+## Previous (Cycle 177 — adult research sweep)
 
 No new prototype this cycle — adult research was 8 cycles overdue (last: Cycle 169). Scanned
 arxiv (March–May 2026), fal.ai model catalog, Replicate explore, GitHub monthly trending, HN
