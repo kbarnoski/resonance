@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 185 — adult build)
+## ⭐ Newest (Cycle 186 — kids build)
+
+- **[/dream/158-kids-hum-paint](/dream/158-kids-hum-paint)** — Voice Painting (kids). `demoable`
+  Sing or hum — your voice becomes a colored painting on a dark canvas. **High notes fly up,
+  low notes drift down** (log-scale pitch → Y position). **Every pitch glows in its own hue**
+  (low voice = warm amber/violet, high voice = cool cyan/rose). Amplitude controls stroke width:
+  sing louder for a thicker brush. The painting accumulates in a left-to-right scroll, wrapping
+  at the edge to fill the screen over a long session. Press **▶ Hear it!** — up to 56 sampled
+  notes from the session play back as sine tones, replaying the session as a short melody.
+  Demo mode auto-draws **Twinkle Twinkle** (no mic needed) — the visual shape of the opening
+  C–C–G–G–A–A–G is recognizable as a pattern of flat stripes and jumps.
+  **"First kids prototype where your voice is the paintbrush."** All 157 prior prototypes use
+  touch (tap, drag, draw). This one replaces gesture with voice, unlocking vocal music-making
+  without any reading or instruction. A 3yo humming randomly sees their voice trace a path;
+  an older child can try to match the demo's color pattern by singing the right notes.
+  Inspired by Karel's love of `100-kids-paint-song` ❤️, `152-kids-star-paint` ❤️, and the
+  KIDS.md seeded idea `kids-hum-to-paint`.
+  For kids 3+ · Mic optional · Zero API · Zero deps · 2.3 kB.
+  Design notes: `src/app/dream/158-kids-hum-paint/README.md`
+
+---
+
+## Previous (Cycle 185 — adult build)
 
 - **[/dream/157-concept-steer](/dream/157-concept-steer)** — Concept Steer. `demoable`
   A hexagonal radar chart where each of six vertices controls a named musical dimension:

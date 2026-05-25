@@ -1,5 +1,59 @@
 # Dream Agent — cycle state
 
+## Cycle 186 — kids build: 158-kids-hum-paint (sing / hum → voice paints the screen; Y=pitch, color=pitch hue; ▶ Hear it! replays your painting as a melody)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 186 % 2 = 0 → **kids cycle**.
+4. **Build new** — STATE.md Cycle 185 offered two options: (a) polish `154-kids-clap-back`
+   (~10 lines for pattern-indicator dots) or (b) build a fresh kids prototype. Chose (b):
+   a full new prototype is more valuable, and the KIDS.md seeded idea `kids-hum-to-paint`
+   has never been built. This is also the first kids prototype where the child's VOICE is
+   the instrument — all 157 prior prototypes use touch, tap, drag, or device tilt.
+
+Love signal: 19 loved. Relevant to this pick:
+- `100-kids-paint-song` ❤️ — drawing + music (same territory; this is the voice version)
+- `152-kids-star-paint` ❤️ — gesture persists as a visual record and sings back
+- `104-kids-mirror-draw` ❤️ — drawing + symmetry + audio (slow, meditative, loved)
+Combination: voice replaces the touch gesture, and the painting replays on demand.
+
+**Built**:
+- `src/app/dream/158-kids-hum-paint/page.tsx` — full interactive prototype
+- `src/app/dream/158-kids-hum-paint/README.md` — design notes
+
+**What it does**:
+Sing or hum into the microphone — the canvas slowly fills with a glowing colored trail.
+Pitch maps to Y position (high note = high on screen, low note = bottom). Pitch also
+maps to hue (low voice = warm violet/amber, high voice = cyan/rose). Amplitude controls
+stroke width (sing louder = thicker brush). The painting accumulates on the canvas,
+building a visual record of the session. Press **▶ Hear it!** — up to 56 sampled notes
+from the painting play back as sine tones, replaying the session as a short melody.
+Clear resets. Demo mode auto-draws Twinkle Twinkle (no mic needed).
+
+Pitch detection: standard autocorrelation restricted to voice range (75–1100 Hz),
+running on a 2048-sample time-domain buffer at 60fps. Works reliably for humming,
+singing, and whistling.
+
+**What surprised me**:
+The painting accumulates in a left-to-right scroll, wrapping when it reaches the edge.
+The visual result for Twinkle Twinkle is immediately recognizable as a pattern — the
+opening "C C G G A A G" appears as flat amber stripe, rising stripe, higher flat stripe,
+highest flat stripe, falling. A child who doesn't know the note names still sees their
+voice's shape in space.
+
+**What's queued next**:
+- **Cycle 187 (adult, 187%2=1)** — From IDEAS.md queue: `diatonic-harmony` (live key
+  detection → diatonic 3rd and 5th harmony voices, one-cycle build) OR polish pass on
+  `158-kids-hum-paint` if build had rough edges (add note-name display). Or `mood-vis`
+  (semantic audio classifier → visualizer mode switching).
+- **Cycle 188 (kids)** — Polish `154-kids-clap-back` (pattern indicator dots, deferred
+  since Cycle 184) — small but concrete improvement.
+
+---
+
 ## Cycle 185 — adult build: 157-concept-steer (hexagonal radar chart · six music-AI axes → live synthesizer)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

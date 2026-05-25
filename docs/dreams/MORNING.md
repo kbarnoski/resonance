@@ -1,37 +1,40 @@
-# Morning digest — last updated 2026-05-25 UTC (Cycle 185)
+# Morning digest — last updated 2026-05-25 UTC (Cycle 186)
 
 ## New since yesterday
 
-- **[/dream/157-concept-steer](https://getresonance.vercel.app/dream/157-concept-steer)** —
-  Concept Steer. Hexagonal radar chart where each vertex is a music-AI concept axis.
-  **Why open this**: drag the six vertices (Brightness, Density, Regularity, Complexity,
-  Energy, Mode) and hear the synthesizer change in real time. The axes come from sparse
-  autoencoder research on transformer music model weights — they're what AI models actually
-  learn. Now you're navigating the same space with your hands.
-  Four presets: Classical Fugue, Dark Ambient, Jazz Improv, Drone. Live chord name label.
+- **[/dream/158-kids-hum-paint](https://getresonance.vercel.app/dream/158-kids-hum-paint)** —
+  Voice Painting (kids). **Why open this**: the first prototype where a child's singing voice
+  becomes the paintbrush. Hum → colored glowing trail on a dark canvas (Y = pitch, hue = pitch,
+  width = volume). **▶ Hear it!** plays the session back as a sine melody. Demo mode auto-draws
+  Twinkle Twinkle — tap "Watch the demo" and watch the colors. No mic required for the demo.
+  First kids prototype out of 158 that uses the voice rather than touch as primary input.
+  Inspired by your loves: `100-kids-paint-song` ❤️ and `152-kids-star-paint` ❤️.
 
-- **[/dream/156-kids-star-connect](https://getresonance.vercel.app/dream/156-kids-star-connect)** —
-  Constellation Song (kids, Cycle 184). 13 pre-placed stars in three clusters. Draw a line
-  between two stars → both pitches ring as an interval. Close a triangle → chord + sparkles.
-  Companion to `152-kids-star-paint` ❤️.
+- **[/dream/157-concept-steer](https://getresonance.vercel.app/dream/157-concept-steer)** —
+  Concept Steer (Cycle 185). Six music-AI concept axes (Brightness / Density / Regularity /
+  Complexity / Energy / Mode) as a hexagonal radar chart → live synthesizer. Axes sourced from
+  sparse autoencoder research on transformer music model weights. Regularity is the surprise axis:
+  strict timing + high Complexity sounds genuinely contrapuntal. Four presets.
 
 ## In progress / partial
 
-- Nothing in-progress. Cycle 186 will be a kids build (186%2=0).
+- Nothing in-progress. Cycle 187 will be an adult build (187%2=1).
 
 ## Research findings worth a look
 
-- **arxiv 2505.18186 (May 2026)** — *Interpretable Concepts in Music Models*: sparse
-  autoencoders extract Brightness / Density / Regularity / Complexity / Energy / Mode from
-  trained music transformer weights. The `concept-steer` prototype makes these axes the UI.
-  Regularity doing more musical work than expected: strict grid timing + high Complexity
-  = counterpoint-like feel from pure scheduling (no voice-leading algorithm).
+- **Voice as instrument for kids**: all 158 prototypes prior to this cycle use touch. Voice
+  opens a qualitatively different mode — vocalization is central to kids' musical development
+  (Reggio Emilia approach, KIDS.md design principles). `158-kids-hum-paint` is the first test.
+  Watch whether kids figure it out without instruction.
 
 ## Open questions for Karel
 
-- **Concept Steer — mic root detection?** Right now synth is always C3 root. One-cycle add:
-  mic → autocorrelation → retune to detected pitch. Then concept-steer harmonizes *in your key*.
-- **Journey-theme presets?** The four presets (Classical Fugue / Dark Ambient / Jazz Improv /
-  Drone) are placeholders. If you map Resonance journey themes to axis coordinates I'll add them.
-- **Cycle 186 kids** — Polish `154-kids-clap-back` pattern-indicator dots (~10 lines) or a
-  fresh kids build? Leaning fresh build; let me know if the polish should land first.
+- **`158-kids-hum-paint` — mic sensitivity**: autocorrelation threshold is 0.72 / RMS gate
+  0.0001. If kids' voices (which are quieter and higher-pitched) aren't registering,
+  bumping the RMS gate down to 0.00005 would help. Tell me if you test it on a real child.
+- **Concept Steer — mic root?**: mic → autocorrelation → retune synth to detected pitch.
+  One-cycle add if you want it.
+- **`154-kids-clap-back` pattern dots**: still deferred (10-line polish). Cycle 188 is next
+  kids cycle — I'll ship it then unless you want it sooner.
+- **Cycle 187 adult**: candidates are `diatonic-harmony` (live key → auto-harmony voices,
+  zero deps) or `mood-vis` (semantic audio classifier → visualizer mode switching). Any preference?
