@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 182 — kids build: 154-kids-clap-back (call-and-response rhythm game)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 182 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md Cycle 180 and STATE.md Cycle 181 both queue the clap-back
+   rhythm prototype, flagged as "deferred 6 kids cycles — really should just land."
+   Building now.
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influenced by Karel's love of `98-kids-drum-circle` ❤️ (rhythm). This takes the rhythm
+paradigm from Drum Circle (tap a pad, hear a drum sound) and adds the temporal dimension:
+not just "tap to make rhythm" but "tap in time with a heard rhythm." First prototype where
+WHEN you tap determines the visual reward, not which pad you tap or where on screen.
+
+**Built**:
+- `src/app/dream/154-kids-clap-back/page.tsx` — full prototype (2.63 kB)
+- `src/app/dream/154-kids-clap-back/README.md` — design notes
+
+**What it does**:
+Three-phase loop (80 BPM):
+- **DEMO** (4 beats, violet): circle glows bright on active beats + plays triangle pluck; dim on rest beats.
+- **WAIT** (1.5 beats, green): circle pulses "✨ your turn!" — no sound, just visual transition cue.
+- **LISTEN** (4 beats, cyan): same 4-beat clock runs silent; child taps. On-beat taps (±165ms / ±22%
+  of beat) on active beats → 22 big sparks + loud pluck. Off-beat or rest-beat taps → 9 small sparks + quiet note.
+
+5 patterns cycle from easy to syncopated:
+1. `[1 2 3 4]` — all 4 beats (learn the tempo)
+2. `[1 2 . 4]` — skip beat 3
+3. `[1 . 3 4]` — skip beat 2
+4. `[1 2 3 .]` — skip beat 4
+5. `[. 2 . 4]` — backbeat only
+
+Four beat-indicator dots below the circle show active (lit) vs. rest (dim) beats across all phases.
+Triangle oscillator notes C4/E4/G4/A4. Ambient C3+G3 sine pad. Full-screen tap target.
+
+**What surprised me**: The all-4-beats opening (pattern 1) is unexpectedly engaging even for adults.
+Just tapping in time with a steady 80 BPM grid, aiming for the big sparks, is pleasant. The
+transition from pattern 1 to pattern 2 (first skip) creates a small "aha" moment — the circle
+goes dim on beat 3 and you feel the rest as a held breath. A 4yo who has internalized pattern 1
+will feel the pull to tap on beat 3 anyway. When they don't (or when they do and get small sparks),
+they're experiencing syncopation for the first time without knowing that's what it's called.
+
+The three-color phase system works without any text instruction. Green = "your turn" is universal.
+I didn't need to add any additional signage beyond the emoji labels above the circle.
+
+**What's queued next**:
+- **Cycle 183 (adult, 183%2=1)** — `155-piano-hands` (PianoFlow-inspired ghost fingers on a canvas
+  keyboard, arXiv:2604.12856, first mentioned in MORNING.md Cycle 181) OR pick from IDEAS queue.
+  STATE.md Cycle 181 queued this.
+- **Cycle 184 (kids)** — polish `154-kids-clap-back` (add round indicator dots showing which of 5
+  patterns is active) OR build the "connect-the-stars" prototype seeded in KIDS.md Cycle 180.
+
+---
+
 ## Cycle 181 — adult build: 153-paint-compose (paint brushstrokes → each loops as a pentatonic melody)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

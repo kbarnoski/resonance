@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 181 — adult build)
+## ⭐ Newest (Cycle 182 — kids build)
+
+- **[/dream/154-kids-clap-back](/dream/154-kids-clap-back)** — Clap Back (kids). `demoable`
+  A call-and-response rhythm game for 4-year-olds. The prototype plays a 4-beat pattern —
+  **violet circle glows bright on active beats, dim on rests** — then turns **green** ("your turn!")
+  and runs the same 4-beat clock again. Child taps the screen on the active beats. **Big sparks**
+  (22 particles) for on-beat taps within ±165ms (±22% of beat); **small sparks** (9 particles) for
+  off-beat taps — never wrong, always rewarded, just bigger for timing. C4/E4/G4/A4 triangle plucks.
+  Four beat-indicator dots below the circle show the pattern's shape. Soft C3+G3 ambient pad.
+  **5 patterns cycle from easy to syncopated**: all-4 (learn tempo) → skip-3 → skip-2 → skip-4 → backbeat (2+4 only).
+  **"First kids prototype where WHEN you tap is the parameter — not what you tap or where."**
+  All 153 prior prototypes reward any tap within 50ms. Clap Back rewards timing: the same tap at a
+  different moment in the 750ms beat window produces a dramatically different visual response.
+  The three-phase color cycle (violet/demo → green/wait → cyan/listen) gives a child a clear
+  procedural cue with no text needed. Inspired by Karel's love of `98-kids-drum-circle` ❤️.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.63 kB.
+  Design notes: `src/app/dream/154-kids-clap-back/README.md`
+
+---
+
+## Previous (Cycle 181 — adult build)
 
 - **[/dream/153-paint-compose](/dream/153-paint-compose)** — Paint Compose. `demoable`
   Dark canvas with 7-color palette, 3 brush sizes, BPM slider (40–160). **Paint a stroke — it

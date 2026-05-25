@@ -1,23 +1,20 @@
-# Morning digest — last updated 2026-05-25 UTC (Cycle 181)
+# Morning digest — last updated 2026-05-25 UTC (Cycle 182)
 
 ## New since yesterday
 
+- **[/dream/154-kids-clap-back](/dream/154-kids-clap-back)** — Clap Back (kids, Cycle 182)
+  A 4-beat call-and-response rhythm game. **Violet circle glows on active beats → watch.
+  Circle turns green → your turn! Circle turns cyan → tap it back.** On-beat taps (±165ms)
+  on the right beats explode into 22 sparks; off-beat taps produce 9. No fail state.
+  5 patterns cycle from all-4-beats to backbeat-only. This is the first kids prototype
+  where *when* you tap — not *where* — determines the reward.
+  **Why open this**: try tapping along. When the skip patterns kick in you'll feel
+  the pull to fill the rest — that's syncopation, no music theory needed.
+  For kids 4+ · Zero permissions · Zero API · 2.63 kB.
+
 - **[/dream/153-paint-compose](/dream/153-paint-compose)** — Paint Compose (adult, Cycle 181)
-  Paint colored strokes on a dark canvas — each one immediately starts **looping as a melody**.
-  Stroke shape is the score: Y position along the path = pitch (top=C5, bottom=C2, pentatonic);
-  hue = waveform (warm/sawtooth, cool/sine, mid/triangle); brush width = loudness; X centroid =
-  pan. The flash animation shows which note is playing, traveling along each stroke as a light
-  sequence. Up to 6 voices layer simultaneously. BPM slider. Clear + ↓ PNG.
-  **Why open this**: draw a wavy stroke and hear it loop as a melody. Draw multiple strokes in
-  different colors and hear a polyphonic texture emerge. The painting IS the score.
-  Zero permissions · Zero API · 3.42 kB.
-
-- **[/dream/152-kids-star-paint](/dream/152-kids-star-paint)** — Star Song (kids, Cycle 180)
-  Drag across a dark sky → glowing stars appear + KS plucks. After 16 s the constellation
-  arpeggios itself. First kids prototype where the drawing persists and sings back unprompted.
-
-- **[/dream/151-ritual-compose](/dream/151-ritual-compose)** — Oracle (adult, Cycle 179)
-  Tap coins six times → I Ching hexagram → Lyria 3 Pro generates 30 s journey music. ~$0.08/gen.
+  Paint colored strokes — each one loops as a melody. Warm hues = sawtooth (forward); cool
+  = sine (airy). Stroke shape is the score. Up to 6 voices layer simultaneously.
 
 ## In progress / partial
 
@@ -27,10 +24,11 @@ Nothing in-progress.
 
 - **"Abstraction Beats Realism" (arXiv:2603.19730, March 2026)**: EEG data from a live concert
   shows abstract visualization **outperforms** realistic 360° video at musical peaks. Validates
-  Resonance's design thesis. Use in partner conversations.
+  Resonance's design thesis. Good for partner conversations.
 
 - **PianoFlow (arXiv:2604.12856, April 2026)**: animated ghost fingers follow piano audio.
-  Inspires `154-piano-hands` — canvas keyboard + ghost finger overlay. Zero API, one cycle.
+  Inspires `155-piano-hands` — canvas keyboard + ghost finger overlay. Zero API, zero deps,
+  one cycle. Queued for Cycle 183 (adult).
 
 ## Open questions for Karel
 

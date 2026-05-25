@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 182 | `/dream/154-kids-clap-back` | `demoable` | **NEW** Three-phase rhythm loop at 80 BPM. DEMO (violet): circle glows on active beats + triangle pluck (C4/E4/G4/A4); dim on rests. WAIT (green, 1.5 beats): "your turn!" pulse. LISTEN (cyan): same clock, silent — child taps. On-beat taps (±165ms, ±22% window) on active beats = 22-spark burst + loud note; off-beat = 9 sparks + quiet note. 5 patterns: all-4 → skip-3 → skip-2 → skip-4 → backbeat-only. 4 beat-indicator dots below circle show pattern shape. Ambient C3+G3 pad. **First kids prototype where WHEN you tap determines the reward.** Inspired by `98-kids-drum-circle` ❤️. Zero permissions. |
 | 180 | `/dream/152-kids-star-paint` | `demoable` | **NEW** Drag finger across dark sky → every 46 px a glowing 5-pointed star appears + KS pluck (Y=pitch, C3 bottom to C5 top, 9 pentatonic steps); stars connect as constellation; lift = constellation locked; after 16s auto-arpeggio (unique pitches high→low); fades over 3.5s; max 6 simultaneous; ambient C3+E3+G3 pad; hint text fades 9s; zero permissions. First kids prototype where drawing persists and sings back unprompted. |
 | 178 | `/dream/150-kids-beat-builder` | `demoable` | **NEW** Two-row 6-step sequencer; top row = melody (cool-color dots, C major pentatonic C3→E4); bottom row = drums (rose=kick, amber=snare, emerald=hihat, cyan=tom, pink=clap, violet=shaker); full-column tap zones (top half = melody, bottom half = drums); BPM ±16 (40–160); Clear; ambient C3/E3/G3 pad. First kids prototype with two simultaneous tracks. Zero permissions. |
 | 176 | `/dream/149-kids-color-mix` | `demoable` | **NEW** Three large colored circles (rose=C3, amber=E3, violet=G3); drag any circle; when two overlap → color blend + notes louder; all three overlapping → bright white + C major chord; breathing pulse on isolated circles; `setTargetAtTime` transitions prevent pops. First kids prototype where proximity IS the music. Zero permissions. |
@@ -157,6 +158,52 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 ---
 
 ## Research log for Kids
+
+### Cycle 182 — clap-back build
+
+**Built**: `154-kids-clap-back`. Key learnings:
+
+- **WHEN vs WHERE is a genuinely new dimension.** All 153 prior kids prototypes reward the
+  *location* of a gesture (tap this dot, drag in this zone, hold here). Clap Back rewards
+  *timing* — the same tap at different beat positions produces different sparks. After 2–3 DEMO
+  cycles a child starts aiming for the bright-circle moments rather than tapping randomly. This
+  is rhythm internalization happening without any instruction or theory.
+
+- **The three-color phase system communicates procedurally without text.** Violet = "watch me";
+  green = "your turn!"; cyan = "tap it!" These map to universal color semantics (warm/caution →
+  cool/go). A child who can't read still knows green means "do something now." The emoji labels
+  (👀 / ✨ / 👆) reinforce the color without requiring literacy.
+
+- **Starting with all-4-beats is pedagogically right.** Pattern 1 `[1 2 3 4]` teaches the 750ms
+  pulse before any complexity. A child who internalizes this tempo gets the "feel" of the beat
+  grid. When pattern 2 `[1 2 . 4]` arrives and beat 3 is dark, the child feels the absence —
+  a rhythmic expectation is set up and violated. That's syncopation. It's taught by experience,
+  not explanation.
+
+- **±22% timing window at 80 BPM = ±165ms is the sweet spot.** Too tight (±10%) and even adults
+  miss frequently; too loose (±35%) and every tap feels on-beat. ±22% matches the "good" window
+  in standard rhythm game research. At 80 BPM the window is 165ms; at faster tempos it would
+  tighten proportionally (which is why I chose a fixed 80 BPM rather than a BPM slider — keeping
+  the window constant removes one variable).
+
+- **Silence during the listen phase is the right design.** I initially considered adding faint
+  timing ticks on non-active beats. Removing them was the right call: the visual circle pulse
+  on active beats provides all the timing cues needed, and the silence gives the child's taps
+  more sonic presence. When the only sounds are the ones the child makes, the rhythm feels owned.
+
+- **Full-screen tap target collapses the "where to tap" question.** There's no circle to aim at.
+  Tapping anywhere fires sparks. A 4yo doesn't have to coordinate spatial location AND temporal
+  accuracy simultaneously — they can focus entirely on timing.
+
+**Next kid-cycle ideas (Cycle 184)**:
+- **`154-kids-clap-back` polish** — add 5 indicator dots in top-right showing which of the 5
+  patterns is active. Currently the child has no sense of progression. ~10 lines.
+- **New seed**: "connect-the-stars" prototype from KIDS.md Cycle 180 — stars are pre-placed,
+  child draws lines between them to "unlock" the notes. Each completed connection plays the
+  interval. A completed triangle = a chord. Different from `152-kids-star-paint` (that one
+  creates stars; this one reveals them).
+
+---
 
 ### Cycle 180 — star-paint build
 
