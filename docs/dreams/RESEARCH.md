@@ -2200,3 +2200,86 @@ Key findings from Cycle 169 (2026-05-25) — adult research sweep:
 - **MediaPipe 2026 simultaneous tracking** (§208, March 2026) — 468 face landmarks + 33 body + 21 hand/hand at 60fps in browser. Inspires `147-face-synth` — face expression → VCF/timbre/pan synthesis. CDN dep, needs Karel OK.
 - **Priority next kids build (Cycle 170)**: `143-kids-seed-song` (plant seed → L-system tree grows → Karplus-Strong notes, zero deps, zero API, pure magic).
 - **Priority next adult build (Cycle 171)**: `144-sa3-journey` (SA3 Large on fal.ai, 6-min journey generation + causal piano continuation — directly addresses Karel's "his music as input" directive).
+
+---
+
+## Cycle 177 — Adult research sweep (2026-05-25 UTC)
+
+Sources: arXiv cs.SD + cs.HC + cs.MM recent listings (2025–2026 filtered), fal.ai model catalog, Replicate explore, HuggingFace audio-to-audio trending, GitHub trending (weekly + monthly), Hacker News front page, targeted paper fetches.
+
+---
+
+### §209 — ViTex: Visual Texture Control for Multi-Track Symbolic Music (arXiv:2603.01984, March 2026)
+**Source**: https://arxiv.org/abs/2603.01984 · March 2026
+
+ViTex conditions a discrete diffusion model on visual canvas input to generate multi-track symbolic music (8-measure compositions). The visual encoding is intuitive: **color = instrument choice** (each hue maps to a distinct instrument family), **spatial position = pitch and time** (Y = pitch, X = temporal position within the bar), **stroke properties = local texture/dynamics**. Users "paint" their compositional intent rather than specifying notation or text. Built on a diffusion model backbone with chord-progression conditioning. Demo materials available.
+
+**Resonance fit**: Very high for the "composition as painting" axis. A browser prototype could replicate the interaction without the ML: use fixed color→waveform mappings (violet=sine/piano, amber=triangle/brass, teal=sawtooth/strings, rose=pulse/woodwind) and treat canvas stroke Y-position as pitch, X as temporal position in a looping bar. A playback cursor sweeps the canvas left-to-right, firing OscillatorNodes for each stroke it intersects. The result: a visual score that is also music. Zero API version is fully achievable.
+
+**Could become prototype**: `151-paint-compose` — dark canvas with 4 color brushes, each tied to an instrument timbre. Draw freely; loop playback cursor sweeps and plays what you painted. Y = pitch (C3–C6). A 4-bar loop. Download canvas as PNG. "Paint your score." Zero deps, zero API, one-cycle build. [Date: March 2026]
+
+---
+
+### §210 — "Abstraction Beats Realism": Abstract Physiological Visualizations Outperform Realistic VR Video at Concert Emotional Peaks (arXiv:2603.19730, March 2026)
+**Source**: https://arxiv.org/abs/2603.19730 · March 2026
+
+EEG/EDA study at a live concert, then three VR recreations: (1) 360° realistic video, (2) hybrid video+visualization, (3) fully abstract physiological visualization. **Result**: the fully abstract condition achieved the strongest Dynamic Time Warping correlation with original live audience arousal patterns, especially at musical climax moments. Realistic 360° video showed NO correlation at peaks. The researchers conclude: "abstraction may be more effective than realism for evoking authentic collective engagement in VR cultural recreations."
+
+**Resonance fit**: This is science-level validation for Resonance's entire design philosophy. The product is built around abstract, data-driven audio-visual synthesis — not concert footage, not photorealistic avatars, not realistic environments. This study says: that approach is not an artistic tradeoff, it is the more emotionally effective choice. Worth quoting to Karel in the morning digest as a "why this matters" finding.
+
+**Could become prototype**: No direct build needed — this is research backing. However, it suggests a "side-by-side study" prototype (`153-abstract-study`) where the user hears the same piece through: (A) abstract 6-band bloom viz, (B) literal waveform display, (C) photorealistic spectrogram. Karel could compare them live to confirm the finding. Low priority given the queue; file under "research backing." [Date: March 2026]
+
+---
+
+### §211 — PianoFlow: Music-Aware Streaming Piano Motion Generation with Bimanual Coordination (arXiv:2604.12856, April 2026)
+**Source**: https://arxiv.org/abs/2604.12856 · April 2026
+
+PianoFlow generates coordinated bimanual piano hand animation from audio input using a flow-matching framework. Key: MIDI used during training but not at inference — audio-only at runtime. Achieves **9× speedup** over prior methods and handles arbitrarily long sequences via an autoregressive continuation scheme. An "asymmetric role-gated interaction module" handles cross-hand dynamics (which hand leads, which follows).
+
+**Browser port**: Can't run the model in-browser (Python/PyTorch), but the *concept* directly inspires a zero-ML browser prototype: autocorrelation pitch detection (same algorithm as `13-piano-canvas`) already detects which piano key is being played. A canvas piano keyboard with animated "ghost hands" descending to press detected keys is entirely doable with Web Audio + Canvas2D. Left-hand register (C3–B3) = violet ghost finger; right-hand (C4–B4) = rose ghost finger. Detection fires → finger animation descends, key highlights, lifts. Demo mode: plays a Bach phrase and self-detects.
+
+**Could become prototype**: `152-piano-hands` — 2-octave keyboard (C3–B4) rendered in Canvas2D at center. Autocorrelation pitch detection → animated ghost fingers. "See WHERE on the keyboard you're playing." First "annotated keyboard" prototype in the sandbox; all others (24-piano-roll, 22-code-score) show pitch abstractly. Zero API, zero deps, one-cycle build. [Date: April 2026]
+
+---
+
+### §212 — Music of Changing Lines: I-Ching Divination + Generative Music (arXiv:2605.20386, May 2026)
+**Source**: https://arxiv.org/abs/2605.20386 · May 2026 (very fresh)
+
+An interactive system where users perform the Wen Wang Fa I-Ching coin-tossing ritual. The resulting hexagram is interpreted contextually by Gemini (LLM), which generates a musical prompt describing the emotional and sonic qualities of the hexagram. That prompt drives Google's Lyria model for real-time music generation. The system positions "AI as interpretive intermediary rather than compositional authority" — the I-Ching's philosophical framework drives the creative process, not algorithmic randomness.
+
+**Browser port**: Lyria 3 Pro is ALREADY live in the sandbox at `129-lyria3-journey` — the fal.ai endpoint works and FAL_KEY is in use. A coin-toss simulation requires no external API (just Math.random() × 3 toss results → hexagram lookup). All 64 hexagrams have traditional names and brief interpretations in the public domain (no LLM needed — a small static lookup table of 64 entries). The resulting hexagram name + 2-sentence poetic description becomes the Lyria prompt directly. Cost: ~$0.08/generation (same as `129-lyria3-journey`). This is the most *ritualistic and transcendent* prototype concept in the entire queue — it positions Resonance as a vehicle for genuine musical divination.
+
+**Could become prototype**: `150-ritual-compose` — animated three-coin toss (six times = hexagram). Hexagram name + brief interpretation shown. One click → Lyria 3 Pro generates 30s of ambient journey music. Bloom visualizer plays. "The oracle speaks in music." FAL_KEY in use. ~$0.08/generation. One-cycle build. Directly addresses Karel's "surprise" priority. [Date: May 2026 — freshest paper this cycle]
+
+---
+
+### §213 — MiniMax Music 2.6 Confirmed on Replicate (May 2026)
+**Source**: https://replicate.com/explore · Replicate model catalog, May 2026 observation
+
+MiniMax Music 2.6 is confirmed live on Replicate with 6,800+ runs. Generates "full-length songs or instrumentals from text prompts with optional auto-generated lyrics." This is an upgrade from 2.5 referenced in earlier research. The Replicate endpoint is `minimax/music-2.6`. Compatible with FAL-style API calls if a fal.ai endpoint is also available.
+
+**Resonance fit**: Directly validates the `arc-compose` plan (section-based structured music generation). The auto-lyrics feature is new — could be used to generate vocal Ghost narrative phrases over a journey track. Budget: ~$0.035/track (same as 2.5). One of the most affordable music generation APIs in the queue.
+
+**Could become prototype**: Activates `arc-compose` as planned — route `/dream/153-arc-compose` (or nearby). Write a journey arc as 4–6 plain-language section descriptions, MiniMax Music 2.6 generates a coherent multi-section track. First prototype where the music output IS structured by the user's section plan. FAL_KEY needed if on fal.ai, or Replicate API key. [Date: May 2026 observed]
+
+---
+
+### §214 — ACE-Step 1.5 and ace-step-ui: Open-Source Music UI Trending (GitHub, May 2026)
+**Source**: https://github.com/trending/javascript?since=monthly · GitHub monthly trending, May 2026
+
+Repository `ace-step-ui` ("The Ultimate Open Source Suno Alternative - Professional UI for ACE-Step 1.5 AI Music Generation") is trending at 3,952 stars. This signals that ACE-Step has released version 1.5 with significant improvements over 1.0 (which powers `6-compose`, `126-arc-steer`, `138-lmdm-echo` in the sandbox). The 1.5 version appears to offer better musical coherence, faster generation, and a richer feature set.
+
+**Resonance fit**: The sandbox already uses ACE-Step heavily via `fal-ai/ace-step`. If the fal.ai endpoint has been updated to 1.5, all existing prototypes get a free quality upgrade. Worth checking the fal.ai endpoint response at the next API-using build cycle to confirm version.
+
+**Could become prototype**: No new prototype needed — this is a quality upgrade to existing endpoints. The main action: at the next `arc-steer` or `lmdm-echo` build, check if `fal-ai/ace-step` has bumped to 1.5 and note it in the commit. [Date: May 2026 trending observation]
+
+---
+
+Key findings from Cycle 177 (2026-05-25) — adult research sweep:
+- **ViTex** (§209, March 2026) — color = instrument, position = pitch/time on canvas → symbolic music. Inspires `151-paint-compose`: zero API canvas score prototype.
+- **Abstraction Beats Realism** (§210, March 2026) — abstract AV scientifically outperforms realistic video at concert peaks. Validates Resonance's core design thesis.
+- **PianoFlow** (§211, April 2026) — streaming piano hand motion at 9× speedup. Inspires `152-piano-hands`: animated ghost fingers on canvas keyboard from autocorrelation detection.
+- **I-Ching Music System** (§212, May 2026 — freshest paper) — divination ritual → Lyria music. Inspires `150-ritual-compose`: highest-surprise prototype in the queue, FAL_KEY ready.
+- **MiniMax Music 2.6** (§213, May 2026) — confirmed on Replicate, auto-lyrics feature added. Activates `arc-compose` plan.
+- **ACE-Step 1.5** (§214, May 2026 trending) — open-source UI trending at 3,952 stars; fal.ai endpoint may have upgraded silently.
+- **Priority build next adult cycle (179)**: `150-ritual-compose` — I-Ching → Lyria. Highest surprise, uses FAL_KEY already in use, one-cycle build, fully transcendent.

@@ -1,5 +1,45 @@
 # Dream Agent — cycle state
 
+## Cycle 177 — adult research sweep: 6 fresh findings (§§209–214), 3 new prototype seeds
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 177 % 2 = 1 → adult cycle, skip.
+4. **Build new** — queue is full; many specs ready (arc-compose, face-synth, etc.).
+5. **Research** — last adult research was Cycle 169 (8 cycles ago). AGENT.md mandates research every 3–4 cycles. Condition met: do a research cycle. Also: Cycle 169 was itself earlier today (same UTC date) — but 8 cycles have elapsed and fresh sources warrant a sweep.
+
+Chose **research** over building because: (a) research is clearly overdue again per the 3-4 cycle rule, (b) Karel's freshness mandate asks for cutting-edge finds, and (c) the queue already has enough specs to build from — more value in surface-scanning today's arxiv/fal.ai landscape before committing cycles to API-dependent builds.
+
+Love signal (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+**Sources scanned**: arxiv (cs.SD, cs.HC, cs.AI recent listings), fal.ai model catalog, Replicate explore, HuggingFace audio-to-audio trending, GitHub trending (weekly + monthly), Hacker News front page, targeted paper fetches on PianoFlow / ViTex / VR concert study / I-Ching system.
+
+**Found** (6 findings, §§209–214):
+- **ViTex** (arxiv 2603.01984, March 2026) — visual texture → symbolic music. Color = instrument, position = pitch. Inspires `paint-compose`.
+- **"Abstraction Beats Realism"** (arxiv 2603.19730, March 2026) — abstract AV outperforms realistic video for concert arousal. Science-validates Resonance's whole design thesis.
+- **PianoFlow** (arxiv 2604.12856, April 2026) — streaming piano motion generation at 9× speedup. Inspires `piano-hands` keyboard overlay.
+- **I-Ching Music System** (arxiv 2605.20386, May 2026) — divination ritual → Gemini → Lyria music generation. Inspires `ritual-compose` — most transcendent prototype seed in the queue.
+- **MiniMax Music 2.6** (Replicate, May 2026) — upgrade confirmed with optional auto-generated lyrics. Validates `arc-compose` plan.
+- **ACE-Step 1.5** (GitHub trending, May 2026) — `ace-step-ui` at 3,952 stars this month; fal.ai endpoint likely upgraded. Monitor for quality improvement.
+
+**New prototype seeds added to IDEAS.md**:
+- `/dream/150-ritual-compose` — I-Ching coin-toss divination → hexagram → Lyria 3 Pro music generation + bloom viz. Transcendent, novel, uses FAL_KEY already in use.
+- `/dream/151-paint-compose` — ViTex-inspired: paint colored strokes on canvas (color = instrument), loop cursor plays them back. Zero API, zero deps, one cycle.
+- `/dream/152-piano-hands` — PianoFlow-inspired: autocorrelation pitch detection → animated ghost fingers pressing a canvas piano keyboard in real time. First "annotated keyboard" prototype. Zero API.
+
+**What's queued next**:
+- **Cycle 178 (kids, 178%2=0)** — build `kids-dot-seq` v2 (second row, double the pattern space) OR a new kids seed from KIDS.md. Check KIDS.md for current queue.
+- **Cycle 179 (adult)** — build `ritual-compose` (the I-Ching seed — most surprising and novel adult build in the queue, uses existing Lyria 3 Pro FAL_KEY endpoint) OR `paint-compose` (zero API, guaranteed build). `ritual-compose` first because it has the highest surprise factor Karel asks for.
+
+---
+
 ## Cycle 176 — kids build: 149-kids-color-mix (drag three colored circles together — colors blend, notes form a chord)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

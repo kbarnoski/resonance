@@ -1879,3 +1879,82 @@ Key findings from Cycle 169 (2026-05-25):
 - Refik Anadol DATALAND + Machine Dreams: Rainforest (§206, opens June 20, 2026) — ecological data → digital sculpture. L-system + Karplus-Strong + atmospheric noise technique. Inspires `143-kids-seed-song` (kids) and `145-eco-bloom` (adult).
 - CHI 2026 6DoF gesture mixing (§207, Feb 2026) — spatial sculpting > sliders for musical expressivity. Inspires `146-spatial-palette` — draggable synthesis voices on canvas.
 - MediaPipe 2026 simultaneous multi-modal tracking (§208, March 2026) — 468 face landmarks at 60fps in browser. Inspires `147-face-synth` — face expression → synthesizer. Needs Karel OK on CDN dep.
+
+---
+
+## FROM RESEARCH (Cycle 177, 2026-05-25) — promoted to queue
+
+### ritual-compose — I-Ching divination as musical intent-setting via Lyria `[queued, FAL_KEY in use, ~$0.08/gen]`
+Route: `/dream/150-ritual-compose`. The most transcendent concept in the queue: users perform an animated I-Ching coin-tossing ritual that resolves to a hexagram, which becomes the musical intent for a Lyria 3 Pro generation.
+
+**Interaction**:
+- Start screen: a dark canvas with three ancient coins centered; a brief text ("Cast the oracle"). Tap/click → one animated coin toss (three coins flip simultaneously with a CSS rotation animation, each landing heads or tails via `Math.random()`).
+- Six tosses = one hexagram line each = complete hexagram (1–64). After each toss, the line is drawn in the hexagram display: solid line (yang, two or more heads) or broken line (yin, two or more tails).
+- Hexagram display: 6 horizontal lines in a vertical stack (top = line 6, bottom = line 1), glowing amber/violet for solid/broken. Hexagram number and name appear below (static lookup table of all 64, e.g. "Hexagram 11 — T'ai / Peace" or "Hexagram 29 — K'an / The Abysmal Water").
+- A 2–3 sentence poetic interpretation (all 64 in a static `const` lookup, derived from public-domain I-Ching text) appears in italic `text-white/80 text-base`.
+- "Generate Journey Music" button → POST to `/dream/150-ritual-compose/api/route.ts` with hexagram name + interpretation as the Lyria prompt (e.g. "peaceful, calm, prosperous union of sky and earth, ancient ceremony, ascending piano tones, open harmony, reverbed strings — Inner Sanctuary journey"). Calls `fal-ai/lyria3/pro` ($0.08/generation, FAL_KEY in use).
+- Response: 30s of ambient music plays through the six-band bloom radial visualizer (same as `1-live`). Hexagram + interpretation displayed during playback. "Re-cast" button to toss a new hexagram and generate fresh music.
+
+**Technical**:
+- API route uses `guard(req)` as first line (origin + rate-limit + quota).
+- All 64 hexagram name/interpretation pairs fit in ~3KB of static data — no external API for the text.
+- Lyria 3 Pro endpoint: `fal-ai/lyria3/pro` (same as `129-lyria3-journey`).
+- Zero new npm deps. Pure CSS coin animation + Canvas2D bloom.
+
+**Why this now**: "Surprise" is Karel's #2 priority. Nothing in the sandbox treats a session as a *ritual act* — all 149 existing prototypes are instrumental (tap, play, record, generate). This is the first where the user performs a ceremony first, then receives music as a response to that ceremony. The I Ching connection also ties to East Asian musical traditions (an underrepresented axis in the sandbox so far). Research basis: §212 (arXiv:2605.20386, May 2026).
+
+---
+
+### paint-compose — paint colored strokes on a canvas → loop plays them back as music `[queued, zero deps, zero API]`
+Route: `/dream/151-paint-compose`. Inspired by ViTex (RESEARCH.md §209, March 2026). A dark canvas with four color brushes (tabs at top):
+
+- **Violet** = sine/piano timbre (OscillatorNode type "sine" + harmonics 2+3 at 0.3 gain)
+- **Amber** = triangle/brass timbre (OscillatorNode "triangle" + 3rd harmonic)
+- **Teal** = sawtooth/strings timbre (OscillatorNode "sawtooth" with mild low-pass 2kHz)
+- **Rose** = pulse/woodwind timbre (OscillatorNode "square" with 600Hz low-pass + reverb)
+
+Draw anywhere on the canvas with mouse/touch. Each stroke records its color and Y-position (normalized 0–1, top=C6, bottom=C3, mapped through `Math.pow(freq, y)` log-scale). Strokes are stored as `{color, x, y, width, height}` rectangles — the visual position IS the note position in time and pitch.
+
+**Playback**: A `▶ Loop` button starts a cursor bar sweeping left-to-right across the canvas over 4 seconds (a single bar at ~60 BPM). When the cursor intersects a stroke at X position, it fires the note: pitch from Y, duration from stroke width, timbre from color. Multiple strokes at the same X column play simultaneously (chords). The cursor loops indefinitely.
+
+**Canvas interactions**:
+- Select brush color from the 4 tabs
+- Draw by dragging — freehand strokes are rasterized as filled rectangles aligned to the canvas grid
+- `⌫ Clear` erases all strokes
+- Eraser brush: 5th tool option
+
+**Visual**: strokes glow with a subtle additive shadow (`shadowBlur=12`) in their color, on a pure-black background. The cursor is a thin white vertical line. No other chrome during playback — the canvas IS the score.
+
+**Why this now**: 151 prototypes visualize audio; none let you compose by painting. ViTex proved the metaphor is learnable and musically productive. The zero-API version (timbre per color) is feasible in one cycle and produces genuinely musical results — all pentatonic if Y maps to C-major pentatonic semitones (C3 D3 E3 G3 A3 C4 D4...). "Your painting loops as a melody." Different from `22-code-score` (text notation) and `13-piano-canvas` (painting from playing) — this is painting BEFORE playing. Zero deps, zero API. One-cycle build. Research basis: §209.
+
+---
+
+### piano-hands — PianoFlow-inspired: animated ghost fingers press detected keys on a canvas keyboard `[queued, zero deps, zero API]`
+Route: `/dream/152-piano-hands`. Inspired by PianoFlow (RESEARCH.md §211, April 2026). A canvas piano keyboard in the center of the screen, with autocorrelation pitch detection driving animated "ghost finger" presses in real time.
+
+**Canvas layout**:
+- Top half: a dark visual area showing a glowing note trail (same additive-dot technique as `13-piano-canvas`) — each detected note leaves a color dot that fades over 3s.
+- Bottom half: a 2-octave keyboard (C3–B4, 24 keys): white keys labeled C3–B4, black keys unlabeled. Drawn in Canvas2D: white keys as slightly warm-white rectangles with a 1px violet border, black keys as deep-indigo raised rectangles.
+
+**Ghost finger animation**:
+- On pitch detection: a semi-transparent finger silhouette (a soft rounded ellipse, ~12px wide, ~28px tall) descends from above onto the detected key over 60ms, stays depressed for the note duration (onset-to-silence), lifts in 80ms.
+- Left-hand register (C3–B3) = violet ghost finger.
+- Right-hand register (C4–B4) = rose ghost finger.
+- The key itself brightens to 80% opacity when pressed; returns to 30% when released.
+- Note name label appears briefly above the finger in `text-xs text-white/90`.
+
+**Mic mode**: `getUserMedia({ audio: true })` → `AnalyserNode` → autocorrelation pitch detection (same `detectPitch()` function as `13-piano-canvas`, `24-piano-roll`). Real-time: 30Hz detection cycle.
+
+**Demo mode** (no mic): plays a Bach BWV 772 Invention fragment (same score as `22-code-score`) via OscillatorNodes at scheduled `AudioContext.currentTime`, which the pitch detector reads back from the AnalyserNode — the demo self-drives its own keyboard display. The fingers animate to a piece Karel knows.
+
+"See exactly where your hands are on the keyboard — in real time." First prototype in the sandbox that renders a literal piano keyboard as a responsive instrument. Different from `22-code-score` (static score display) and `24-piano-roll` (scrolling pitch history) — this shows WHERE on the keyboard, not WHAT or WHEN. Natural complement to the piano-roll triptych (`13-piano-canvas`, `22-code-score`, `24-piano-roll`). Zero deps, zero API. One-cycle build. Research basis: §211.
+
+---
+
+Key findings from Cycle 177 (2026-05-25) — adult research sweep:
+- ViTex (§209, March 2026) — paint color strokes = instrument + pitch + time. Inspires `151-paint-compose`, zero API, one cycle.
+- "Abstraction Beats Realism" (§210, March 2026) — science validates Resonance's abstract AV thesis.
+- PianoFlow (§211, April 2026) — streaming bimanual piano motion. Inspires `152-piano-hands`, animated keyboard, zero API.
+- I-Ching Music System (§212, May 2026 — freshest) — coin ritual → Lyria music. Inspires `150-ritual-compose`, highest-surprise build in the queue.
+- MiniMax Music 2.6 confirmed (§213, May 2026) — activates `arc-compose` plan.
+- ACE-Step 1.5 trending (§214, May 2026) — monitor fal.ai endpoint for silent upgrade.
