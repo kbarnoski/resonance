@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 173 — adult build: 146-eco-bloom (Eco Bloom — procedural L-system rainforest, KS plucks, layered atmospheric synthesis)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 173 % 2 = 1 → **adult cycle**.
+4. **Build new** — Cycle 172 queued `eco-bloom` or `spatial-palette` for Cycle 173.
+   Chose `eco-bloom`: directly tied to Refik Anadol's DATALAND (opens June 20, 26 days away),
+   extends the aesthetic of `143-kids-seed-song`, fills the "patient growth" gap that no prior prototype
+   has explored. Both options are zero-API zero-dep one-cycle builds; eco-bloom has the stronger
+   conceptual hook right now.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `105-pluck-field` ❤️ (Karplus-Strong resonance — eco-bloom uses the same
+KS delay-line approach for branch plucks) and `107-ocean-presence` ❤️ (slow, immersive, patient
+environmental atmosphere — eco-bloom is the forest counterpart). `130-tsl-particle-compute` ❤️
+(technically substantial, GPU-forward) noted for future eco-bloom GPU upgrade.
+
+**Built**:
+- `src/app/dream/146-eco-bloom/page.tsx` — full prototype (3.27 kB compiled, static)
+- `src/app/dream/146-eco-bloom/README.md` — design notes
+
+**What it does**:
+- Three tree species grow from canvas bottom simultaneously using recursive L-system branching:
+  species 0 (20° angle, depth 6, tall conifer), species 1 (30°, depth 5, deciduous),
+  species 2 (40°, depth 4, broad oak). Segment generation is deterministic per seed integer.
+- Each branch segment spawns and plays a Karplus-Strong pluck (delay-line feedback on seeded white
+  noise, 2.8s buffer). Depth 0–2 = low KS bank (C3–C4), depth 3+ = high KS bank (C4–C5).
+  All pitches C-major pentatonic. Three simultaneous trees = three-voice polyphony.
+- `tBirth`-relative timing: each tree tracks `startedAt` (elapsed seconds at plant time), so newly
+  planted or cleared trees always grow from zero. This fixes the "instant appearance" bug that would
+  occur after 30+ seconds of runtime.
+- Layered atmosphere: C1 root resonance (sine + 0.08 Hz LFO, fades in over 9s), brown-noise wind
+  (bandpass 650 Hz, fades in over 28s), white-noise rain (lowpass 1.1 kHz, toggle), bird calls
+  (5-note KS arpeggio every 8s, unlock after 18s of canopy growth).
+- Background fades from near-black (#030904) toward deep forest green as canopy density grows.
+- Leaf clusters at terminal branches (ellipses, additive low opacity, slow rotation).
+- Canvas tap → plant additional tree (max 6). Clear → fresh seeds. Rain toggle. Birds toggle.
+- Build: static, zero deps, zero API, zero permissions.
+
+**What surprised me**: The three simultaneous growing trees naturally produce three-voice counterpoint
+without any explicit composition logic — each species grows at a slightly different rate (different depth
+limits, different segment lengths), and the branch-pluck timing reflects the structural differences.
+Species 0 plays low slow chords (long trunk segments at C3–E3); species 1 plays faster mid-register
+runs; species 2 fires quick high bursts as it reaches its shallow maximum depth quickly. It sounds
+compositionally varied without any intentional programming.
+
+**What's queued next**:
+- **Cycle 174 (kids, 174%2=0)** — `135-kids-wheel-song` note-name flash polish (deferred 14 kids
+  cycles now — this must land). ~10 lines of code, one file edit. If feeling novel, build new kids
+  seed instead from KIDS.md "tempo and body" idea (pulsing circle + tap-to-match rhythm teaching).
+- **Cycle 175 (adult)** — `spatial-palette` (drag synthesis voices on canvas, X=pan, Y=pitch, wheel=filter
+  + reverb, chord label). Route `/dream/147-spatial-palette` (146 is now taken by eco-bloom).
+
+---
+
 ## Cycle 172 — kids build: 145-kids-dot-seq (Dot Sequencer — 6-step loop sequencer, sweep cursor, pentatonic)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

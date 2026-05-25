@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 172 — kids build)
+## ⭐ Newest (Cycle 173 — adult build)
+
+- **[/dream/146-eco-bloom](/dream/146-eco-bloom)** — Eco Bloom. `demoable`
+  A procedural rainforest grows before you. Three tree species (20°/30°/40° branch angle, depth 6/5/4)
+  unfold simultaneously from seeds at the canvas bottom using recursive L-system branching. Each new
+  branch segment plays a **Karplus-Strong pluck** (physical string model: delay-line feedback on seeded
+  noise). Depth maps to pitch — shallow trunks = low register, fine terminal twigs = high. All pitches
+  C-major pentatonic; three simultaneous trees = three-voice polyphony that's always consonant.
+  Leaf clusters accumulate at terminal branches, rotating gently in virtual wind. Background fades from
+  near-black toward deep forest green as canopy density increases. **Rain toggle** (white noise through
+  lowpass 1.1 kHz). **Bird calls toggle** (rapid 5-note arpeggio every 8 s, appears after ~18 s).
+  **"First prototype where patient growth over time is the primary musical metaphor."** 142 prior
+  prototypes were reactive or event-driven. Eco Bloom rewards watching. Tap canvas to plant more trees
+  (max 6). Clear resets to fresh seeds. Directly inspired by Refik Anadol's DATALAND: Machine Dreams:
+  Rainforest (opening June 20, 2026 — 26 days away at build time). Zero permissions · Zero API · Zero deps · 3.27 kB.
+  Design notes: `src/app/dream/146-eco-bloom/README.md`
+
+---
+
+## Previous (Cycle 172 — kids build)
 
 - **[/dream/145-kids-dot-seq](/dream/145-kids-dot-seq)** — Dot Sequencer (kids). `demoable`
   Six glowing colored dots in a row (C major pentatonic: violet=C3 → rose=E4). A bright white
