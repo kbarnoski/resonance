@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 167 — adult build)
+## ⭐ Newest (Cycle 168 — kids build)
+
+- **[/dream/142-kids-echo-canon](/dream/142-kids-echo-canon)** — Echo Canon (kids). `demoable`
+  Tap out a melody (up to 8 notes, X = pitch across C3–C4 pentatonic). After 1.5s silence,
+  the phrase echoes back as a **three-voice canon**: amber (you), blue (+perfect fifth),
+  violet (+octave). Voices start 550ms apart — they overlap, creating genuine polyphony.
+  Visual: dots rise upward per voice (higher pitch = higher on screen). Audio scheduled via
+  Web Audio precise timing; sparks triggered by rAF `currentTime` check.
+  **"First kids prototype where your own melody echoes back as polyphony."**
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.55 kB.
+  Design notes: `src/app/dream/142-kids-echo-canon/README.md`
+
+---
+
+## Previous (Cycle 167 — adult build)
 
 - **[/dream/141-chord-canvas](/dream/141-chord-canvas)** — Chord Canvas. `demoable`
   Play any chord into the mic — it appears instantly as a large glowing name (C, F♯m, Bdim)

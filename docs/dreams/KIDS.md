@@ -85,6 +85,7 @@ The screen is a pond. Tap to drop a stone — the splash makes a sound, ripples 
 
 | Cycle | Slug | Status | Notes |
 |-------|------|--------|-------|
+| 168 | `/dream/142-kids-echo-canon` | `demoable` | **NEW** Tap out a melody (up to 8 taps; X = pitch, C-major pentatonic C3–C4); 1.5s silence → 3-voice canon fires: amber (original), blue (+7 semitones / P5), violet (+12 semitones / octave), each voice starting 550ms after previous. Dots rise upward per voice (pitch-rise visual metaphor). Web Audio precise `osc.start(when)` scheduling; rAF `actx.currentTime` spark check. Zero permissions. First kids prototype where child's own phrase echoes back as polyphony. |
 | 166 | `/dream/140-kids-string-bridge` | `demoable` | **NEW** Hold 1–2 fingers → glowing string between them vibrates + plays; distance = pitch (closer = higher, C-major pentatonic C2–C5); standing-wave visual rate proportional to pitch; single finger anchors at center; pluck on >12 px finger movement; triangle oscillator; zero permissions. |
 | 162 | `/dream/137-kids-hold-glow` | `demoable` | **NEW** Hold anywhere → glowing orb brightens and grows (core 28→92 px, halo opacity 22→50% over 4s); release → fading ring expands at speed proportional to hold duration; 5 color zones (violet=C3→cyan=C4 pentatonic); triangle OscillatorNode attack 80ms / release `max(120ms, holdSec×120ms)`; multi-touch up to 5 orbs; empty-state hint text; zero permissions. First kids prototype where hold-duration is the musical parameter — rewards stillness over tapping. |
 | 160 | `/dream/135-kids-wheel-song` | `demoable` | **NEW** 5-segment spinning color wheel; golden striker at 12 o'clock fires pentatonic note per segment (violet=C3→cyan=C4); tap anywhere to add angular momentum (omega +=1.6 rad/s, max 6); deceleration to min 0.3 rad/s; segment flashes on strike; continuous pitch-tracking drone; rotation dot on rim; startup chime on open; zero permissions. First kids prototype where rotational speed determines musical rhythm (music-box mechanic). |
@@ -167,6 +168,24 @@ Very contemplative — designed for the "quiet play" moment just before sleep. N
 - **`kids-ripple-pond`**: ✓ **built Cycle 158** — `/dream/133-kids-ripple-pond`
 - **Polish `131-kids-orbit`**: consider a "north gate" sparkle on each active orbit ring — a small bright flare at the top of the ring when a planet passes through it (completes an orbit). Visually shows the trigger moment. ~10 lines.
 - **Kids research sweep** if queue is thin at Cycle 158.
+
+---
+
+### Cycle 168 — echo-canon build
+
+**Built**: `142-kids-echo-canon`. Key learnings:
+
+- **Canon polyphony is the first genuinely new interaction paradigm in 8 kids cycles.** Cycles 160–166 built prototypes that are reactive (tap/hold → immediate note). Echo Canon is the first in that run that has a *temporal gap* between input and output — the 1.5s silence window. A child who taps randomly and then waits discovers the echo without any instruction. The 1.5s is long enough to be surprising but short enough that a 3yo won't forget what they played.
+- **Perfect-fifth transposition from C-major pentatonic is always consonant.** C3→G3, E3→B3, G3→D4, A3→E4, C4→G4. Three of the five (G3, E4, G4) are in the key; B3 and D4 are passing tones that blend naturally. No combination of pentatonic taps + 5th transposition produces a dissonance. This is the same "pentatonic does the harmonic heavy lifting" principle used in `133-kids-ripple-pond` (collision chords) and `90-kids-puddle-jumper` (X=pitch mapping).
+- **Y-shift as pitch-rise metaphor is immediately readable.** Voice 1 dots appear at the tap Y. Voice 2 dots appear 27% above. Voice 3 dots appear 54% above. A child watching their echo can see the dots rising even if they don't consciously register "higher pitch = higher on screen." The visual and audio cues reinforce each other. After 2-3 phrases, the child will start placing taps deliberately to control where the echo dots go.
+- **Web Audio `osc.start(when)` is the right primitive for canon scheduling.** All notes for all three voices are scheduled before the first note fires. The canon timing (550ms gap) is embedded in the `when` parameter, not in setTimeout chains. This gives microsecond accuracy across all three voices. `setTimeout` chains would drift and the voices would sound sloppy; precise scheduling makes the canon feel intentional.
+- **rAF visual check `actx.currentTime >= note.when - 0.008` gives sub-frame accuracy.** The 8ms look-ahead compensates for rAF jitter — the dot appears in the same frame as the audio, not one frame after. Without the look-ahead, the visual consistently lags the audio by one frame (17ms at 60fps), which feels disconnected.
+- **"Playing" state blocking new input is essential.** If taps were accepted during canon playback, a child excited by the echo would immediately start a new phrase, interrupting the second and third voices. The blocking state prevents this without any UI feedback — the taps simply don't register, and when the echo finishes the canvas returns to idle naturally.
+
+**Next kid-cycle ideas (Cycle 170)**:
+- **`135-kids-wheel-song` polish** — note-name flash above striker (queued since Cycle 160, now 10 kids cycles). The most deferred item in the kids queue. Should finally land next kids cycle unless a more novel build is seeded.
+- **`142-kids-echo-canon` polish** — (a) pulsing ring at canvas center during 1.5s silence gap ("waiting for echo"); (b) mic mode: detect hummed pitches via autocorrelation, echo them back transposed. Both <30 lines each.
+- **New seed** — a kids prototype about **visual rhythm**: a row of 8 colored circles (pentatonic scale); a "cursor dot" sweeps across them left-to-right at a settable tempo; when the cursor hits a circle, that note plays. Children tap circles to toggle them on/off, building a 1-bar loop sequencer. "Draw your melody by tapping dots." Zero permissions, zero text — sequencer as pure visual grid.
 
 ---
 

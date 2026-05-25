@@ -1,5 +1,59 @@
 # Dream Agent — cycle state
 
+## Cycle 168 — kids build: 142-kids-echo-canon (Echo Canon — tap a phrase, hear it echo as a 3-voice canon)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 168 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md (Cycle 166) offered two options: (a) `135-kids-wheel-song` polish
+   (~10 lines, note-name flash above striker, queued since Cycle 160); (b) new echo/canon
+   prototype. Chose new prototype — fills a genuine gap: 37 kids prototypes exist but none
+   play the child's own phrase back as multi-voice polyphony. The wheel-song polish can land
+   in a future cycle.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences: `100-kids-paint-song` ❤️ (tap → delayed playback of what you created),
+`104-kids-mirror-draw` ❤️ (your gesture becomes a second voice). Both loved prototypes
+reward deliberate gesture with a transformed return. Echo Canon extends both: tap a phrase
+→ hear it back as three voices simultaneously.
+
+**Built**:
+- `src/app/dream/142-kids-echo-canon/page.tsx` — full prototype (2.55 kB compiled)
+- `src/app/dream/142-kids-echo-canon/README.md` — design notes
+
+**What it does**:
+- Canvas divided into 5 pentatonic columns (C3–E3–G3–A3–C4 left to right)
+- Tap anywhere → plays nearest pentatonic note immediately; amber dot appears at tap position
+- Up to 8 taps per phrase; 1.5s silence → canon fires:
+  - Voice 1 (amber): original phrase, dots at original positions
+  - Voice 2 (blue): +7 semitones (perfect fifth), dots appear 27% higher on screen
+  - Voice 3 (violet): +12 semitones (octave), dots appear 54% higher
+  - All three voices staggered by 550ms — overlapping canon effect
+- After all voices finish → idle, ready for new phrase
+- Audio: precise Web Audio scheduling (`osc.start(when)`)
+- Visual sparks: rAF loop checks `actx.currentTime >= note.when - 0.008`; dots appear within one frame
+
+**What surprised me**: The perfect-fifth transposition from a C-major pentatonic note always
+produces a consonant result — the five transposed pitches (G3, B3, D4, E4, G4) all blend
+beautifully with the original. Random tap sequences sound intentional. A child who taps
+chaotically produces richer harmony than one who taps carefully, which is the right inversion.
+
+**What's queued next**:
+- Cycle 169 (adult, 169%2=1) — **research sweep** (last adult research: Cycle 129 — now 40
+  adult-equivalent cycles overdue). This is the highest priority next cycle. Target: arxiv,
+  fal.ai new models, HN last week, TouchDesigner community, Houdini techniques. Expect 3-5
+  new prototype seeds with dated sources.
+
+---
+
 ## Cycle 167 — adult build: 141-chord-canvas (Chord Canvas — real-time chord detection + color timeline)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
