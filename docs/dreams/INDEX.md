@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 188 — kids build)
+## ⭐ Newest (Cycle 189 — adult build)
+
+- **[/dream/161-tap-rhythm](/dream/161-tap-rhythm)** — Tap Rhythm. `demoable`
+  Tap any rhythm (spacebar / TAP button) — select kick/snare/hat beforehand, then tap freely.
+  After 2 s of silence: BPM auto-detected (median IOI), taps quantized to nearest 16th-note
+  in a **32-step circular clock face**. Three tap sessions layer kick + snare + hat. Click any
+  ring dot to cycle its type. BPM slider adjusts live. Demo pattern auto-loads on open.
+  **"First prototype where rhythm timing is the primary input."** 160 prior prototypes take
+  pitch, spectrum, or gesture as input. This one asks: *when* are you tapping? A non-pianist
+  can build a 2-bar drum groove in under a minute. Live performance tool.
+  Zero permissions · Zero API · Zero deps · 3.7 kB.
+  Design notes: `src/app/dream/161-tap-rhythm/README.md`
+
+---
+
+## Previous (Cycle 188 — kids build)
 
 - **[/dream/160-kids-paint-loop](/dream/160-kids-paint-loop)** — Loop Garden (kids). `demoable`
   Draw a freehand glowing stroke anywhere → it immediately loops as a pentatonic melody.

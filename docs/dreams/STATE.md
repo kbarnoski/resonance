@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 189 — adult build: 161-tap-rhythm (tap a rhythm → BPM detection → circular 32-step drum loop; kick/snare/hat; click ring to edit)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 189 % 2 = 1 → **adult cycle**, skip.
+4. **Build new** — STATE.md Cycle 188 queued `tap-rhythm` for Cycle 189.
+   `diatonic-harmony` was the other candidate but `/dream/114-live-harmonize` already
+   implements it (key detection → diatonic 3rd/5th voices). `tap-rhythm` is genuinely
+   unbuilt: none of 160 prior prototypes take rhythm timing as primary input.
+
+**Decision rationale**:
+- Karel loves `98-kids-drum-circle` ❤️ (rhythm as primary interaction). `tap-rhythm` is
+  the adult version: instead of colored circles triggering sounds, you *clap the rhythm*
+  and the system builds the pattern from your timing.
+- AGENT.md priority #3 is "live performance fitness." A drum loop you built by tapping
+  is immediately stageable alongside mic prototypes.
+- Zero deps, guaranteed one-cycle build. No API keys, no permissions required.
+- Inspired by DARC (arxiv 2601.02357, Jan 2026) and the "tap-rhythm" spec in IDEAS.md.
+
+**Love signal influence**: `98-kids-drum-circle` ❤️ (rhythm input), `148-spatial-palette`
+❤️ (clear visual grid = music theory made tactile), `107-ocean-presence` ❤️ (cursor /
+gesture IS the instrument, not a trigger).
+
+**Built**:
+- `src/app/dream/161-tap-rhythm/page.tsx` — full interactive prototype (3.7 kB)
+- `src/app/dream/161-tap-rhythm/README.md` — design notes
+
+**What it does**:
+Select a drum type (kick/snare/hat). Tap the TAP button or spacebar rhythmically.
+After 2 s of silence the system finalizes: median inter-onset interval → BPM, each
+tap quantized to nearest 16th-note slot in a 32-step circular grid. Pattern overlays
+on existing steps so you can build kick → snare → hat in three tap sessions.
+Clock face canvas shows all 32 steps as colored dots (violet=kick, amber=snare,
+emerald=hat) with a rotating playback hand. Click any dot to cycle its type.
+BPM slider adjusts speed mid-loop. Demo pattern auto-starts on mount.
+
+Drum synthesis: all Web Audio. Kick = 80→36 Hz exponential-ramp sine. Snare = white
+noise through 2200 Hz bandpass BiquadFilter. Hat = white noise through 8500 Hz highpass.
+Scheduler: `setInterval(20ms)` lookahead buffer pattern (same Web Audio clock approach as
+industry tools). Canvas: pure Canvas2D RAF loop reading refs directly — no React re-renders
+during draw.
+
+**What surprised me**:
+The overlay-append approach (tap sessions don't erase other drum types) means the
+muscle-memory workflow is natural: kick first, snare second, hat third. Each layer adds
+without conflict. Users discover this without being told — it's the same intuition as
+playing a drum kit one limb at a time.
+
+**What's queued next**:
+- **Cycle 190 (kids, 190%2=0)** — Research sweep to refill KIDS.md queue (exhausted after
+  Cycle 188). Possibly also land `154-kids-clap-back` pattern dots polish (~10 lines).
+- **Cycle 191 (adult)** — `music-palette` (audio → live HSL color palette, downloadable
+  SVG, zero deps, zero API) or `osc-composer` (Lissajous figure designer → oscilloscope
+  music WAV artifact). Both zero-dep, one-cycle builds.
+
+---
+
 ## Cycle 188 — kids build: 160-kids-paint-loop (draw a freehand stroke → loops as melody; 4 color-timbre zones; multi-stroke garden)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
