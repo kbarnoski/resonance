@@ -2099,3 +2099,104 @@ Key findings from Cycle 151 (2026-05-24) — adult research sweep:
 - **AUDIOLAB unified React tree pattern** (§203, May 2026) — apply to all future Three.js prototypes for cleaner audio + 3D state management.
 - **Priority next adult build**: `128-lyria3-journey` (one cycle, zero new deps, FAL_KEY, directly unblocks 3+ waiting prototypes). Second: `130-tsl-particle-compute` (one cycle, WebGPU, zero new deps, TSL is the correct tool now). Third: `131-kali-sustain` (one cycle, zero deps/API, contemplative aesthetic gap).
 - **Priority next two-cycle build**: `129-ghost-3d-orbit` (Pixal3D, SIGGRAPH 2026 quality, highest surprise).
+
+---
+
+## Cycle 169 — Adult research sweep (2026-05-25 UTC)
+
+Sources: arXiv cs.SD recent listings, Stability AI announcement, Refik Anadol studio/events, fal.ai model pages, HuggingFace, Three.js 2026 state-of-the-art summary, MediaPipe browser guide (March 2026), CHI 2026 arXiv.
+
+---
+
+### §204 — Stable Audio 3.0 family (Stability AI / fal.ai, May 20, 2026)
+**Source**: https://stability.ai/news-updates/meet-stable-audio-3-the-model-family-built-for-artistic-experimentation-with-open-weight-models · Announced May 20, 2026
+
+Stability AI released a four-model family: **Small SFX** (459M, mobile/on-device SFX), **Small** (459M, up to 2-min music, open-weight), **Medium** (1.4B, up to 6+ min music, open-weight on HuggingFace), **Large** (2.7B, music platforms, via Stability AI API + partner fal.ai only). All models share a semantic-acoustic autoencoder that generates audio in a compact latent space. Key capabilities over SA2.5:
+
+- **Variable-length generation at per-second granularity** — finally fills the gap between 30s (ACE-Step, MiniMax) and unlimited (real instruments). Medium generates up to 6+ minutes.
+- **Inpainting + causal continuation** — record Karel's piano → call SA3 Large in "causal continuation" mode → AI extends the recording for several more minutes in the same style.
+- **Fast inference** — less than 2s on H200; a few seconds on MacBook Pro M4. SA3 Medium open-weight is self-hostable.
+- **fal.ai partner endpoint** — SA3 Large is accessible via fal.ai (specific endpoint ID not yet confirmed at time of research — check `fal-ai/stable-audio-3` or `fal-ai/stable-audio-3/large`; FAL_KEY already in use). SA3 Medium is open-weight on HuggingFace (`stabilityai/stable-audio-3-medium`).
+- **LoRA fine-tuning** — Small and Medium models support LoRA training on a user's audio library. Future: a "Karel Piano LoRA" that generates Resonance-flavored ambient music.
+
+**Resonance fit**: Very high. Karel said "let his existing music be the input." SA3's causal continuation does exactly this — play 30s of piano, get 5 more minutes of continuation in the same key/tempo/mood. The Medium model is also free to run locally after a one-time download. 
+
+**Could become prototype**: `144-sa3-journey` — two modes: (A) text prompt → 3–6 minute journey track ("Inner Sanctuary meditation, slow reverbed piano, soft cello, 3 minutes"); (B) record 30s of mic input → SA3 Large extends it to 3–5 min via causal continuation (Karel's playing, extended). Both modes play through the six-band bloom radial visualizer. Waveform strip shows full duration. Download MP3 button. FAL_KEY in use. Budget estimate: ~$0.20–0.50 per generation for Large (not yet confirmed — fallback to SA3 Medium locally or via HuggingFace Inference if fal.ai endpoint isn't live). One-cycle build. [Date: May 20, 2026 — 5 days ago]
+
+---
+
+### §205 — WavFlow: Audio Generation in Raw Waveform Space (arXiv:2605.18749, May 18, 2026)
+**Source**: https://arxiv.org/abs/2605.18749 · Submitted May 18, 2026
+
+WavFlow generates high-fidelity audio directly in raw waveform space without intermediate latent representations. Technical innovations: waveform patchify (2D token grids for sequence manageability), amplitude lifting (scale alignment for stable optimization), flow matching (direct x-prediction). Trained on 5M video-text-audio triplets. Strong performance on both text-to-audio (AudioCaps) and video-to-audio (VGGSound) benchmarks, matching or beating prior SOTA.
+
+**Resonance fit**: Moderate, server-only. The waveform-space approach means lower-latency round-trips vs. latent-space models in theory. Video-to-audio is directly relevant to the Ghost video pipeline (extend Ghost images → video → audio in one pipeline). No fal.ai endpoint yet; monitor for future video-to-audio model on fal.ai. No immediate prototype — foundational finding. [Date: May 18, 2026]
+
+**Could become prototype**: Not immediately — when/if a video-to-audio fal.ai endpoint appears using WavFlow or similar architecture, it can replace/upgrade the MMAudio V2 step in the Ghost pipeline.
+
+---
+
+### §206 — Refik Anadol: DATALAND + Machine Dreams: Rainforest (2026)
+**Sources**: https://refikanadol.com/events/ · https://mymodernmet.com/dataland-ai-museum-refik-anadol/ · Various museum press releases, May 2026
+
+Three simultaneous major Anadol presentations in 2026:
+
+1. **DATALAND** — World's first AI arts museum, co-founded by Anadol, opening June 20, 2026 at The Grand LA (Frank Gehry building), downtown Los Angeles. 35,000 sq ft, multiple galleries. Inaugural exhibition: **Machine Dreams: Rainforest** — vast quantities of ecological data (birdsongs, plant life cycles, weather patterns) processed into generative "digital sculptures." The data doesn't decorate the walls — it IS the material. Anadol's phrase: "data as the site of an evolving architecture."
+
+2. **Latent City** — at BRUSK museum, Bruges, Belgium (May 8–Nov 8, 2026). Centuries of Bruges' architectural, archival, and urban memory → immersive AI-driven environments. Real-time city data feeds ongoing generation. First solo Belgium exhibition.
+
+3. **Earth Dreams** — Museum of the Future, Dubai. Four interconnected chapters narrating large nature-themed datasets through dynamic visuals.
+
+**Technique to port to browser**: Ecological data → generative audio-visual synthesis:
+- Birdsong catalog → Karplus-Strong "plucked string" synthesis (bird calls = short resonant transients). 5 pentatonic notes, 5 bird species.
+- Plant branching patterns → L-system fractal tree canvas visualization (deterministic angle + length ratios that grow organically over 30–60 seconds).
+- Weather layers → atmospheric noise (white noise low-pass = rain; brownian noise high-pass = wind), intensity driven by a "weather" slider.
+- Growth = time: the canvas gains complexity as the session continues; each new branch sprouts a new sonic voice.
+
+**Resonance fit**: Very high. Inner Sanctuary journey ("a forest sanctuary, ancient, present"), Earth Grounding journey, Cosmic Homecoming (emergence aesthetic). Opposite of existing prototypes — these are synthetic, generative, autonomous rather than reactive to mic. The patient aesthetic (slow growth over minutes) complements the busy, beat-reactive majority of the sandbox.
+
+**Could become prototype**: `143-kids-seed-song` — plant a tree seed by tapping the canvas; watch it grow as Karplus-Strong bird calls emerge at each branch node. 5 pentatonic notes, 3 branch species. Simple enough for a 4-year-old. No mic needed. Kids build.
+
+**Could also become**: `145-eco-bloom` (adult version) — full L-system + 5-layer atmospheric synthesis (rain, wind, bass drone, birdsong voices, root resonance). A procedural ecosystem you inhabit rather than control. Zero deps, zero API. High surprise. [Date: June 20, 2026 opening, Latent City May 8, 2026]
+
+---
+
+### §207 — Beyond Faders: 6DoF Gesture Ecologies in Music Mixing (CHI 2026, arXiv:2602.23090, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.23090 · February 2026, published at CHI 2026
+
+Ecological study of spatial gesture interaction for audio mixing in XR. Participants wore VR headsets and used spatial "levers" (3D handles for audio faders and eq knobs) at physical locations in their environment. Key finding: **embodied spatial control makes mixing feel more musical** — participants preferred sculpting the soundscape physically over precise numerical GUI control, even when accuracy suffered. DAW faders reduce mixing to a visual/cognitive task; spatial mixing keeps it physical and musical.
+
+**Browser port strategy** (no XR headset needed): Replace 6DoF with 2D canvas drag + mouse wheel = depth. Synthesis voices as colored dots on a canvas; X = stereo pan, Y = pitch, scroll wheel = reverb/filter. Dragging a dot moves a sound through stereo space and pitch space simultaneously. Multiple voices overlap and interact. This is spatially less expressive than XR but browser-accessible.
+
+**Resonance fit**: Strong for live performance fitness priority. The "sculpting" metaphor — rather than tweaking sliders — is much closer to how pianists think about performance. A live performer using this could genuinely *place* sounds in the room.
+
+**Could become prototype**: `146-spatial-palette` — 6–8 colored synthesis voices (each a different Karplus-Strong or sine timbre) as draggable dots on a full-screen dark canvas. X → stereo pan, Y → pitch (C2–C7), scroll → filter fc + reverb amount. Tap-to-add, right-click-to-remove. Demo mode: pre-placed chord voicing (C major triad, spread stereo). Mic: onset detection → brief brightness flash on the nearest voice. "Sculpt your soundscape." Zero deps, one cycle. [Date: Feb 2026, CHI 2026 — slightly older, foundational]
+
+---
+
+### §208 — MediaPipe Browser 2026: Simultaneous Multi-Modal Tracking at 60fps (March 2026)
+**Source**: https://levelup.gitconnected.com/hand-tracking-face-detection-gesture-recognition-with-mediapipe-in-the-browser · March 2026
+
+March 2026 comprehensive state-of-the-art: MediaPipe HandLandmarker (21 pts/hand), FaceLandmarker (468 pts), PoseLandmarker (33 pts) confirmed running simultaneously in browser via WASM + GPU delegate at 30–60 fps. Privacy-safe on-device inference. Architecture: detection-once + tracking model for subsequent frames (re-detects when confidence drops). No network round-trip.
+
+**Key for Resonance**: FaceLandmarker's 468 landmarks include precise jaw/mouth opening, eyebrow height, head tilt, cheek movement, and eye gaze direction — all of which map intuitively to music synthesis parameters. A performer playing with their face as an expressive instrument has very different creative opportunities than a performer using their hands.
+
+**Specific parameter mappings** (mapped from face landmarks to synthesis params):
+- Jaw opening (inner-lip distance normalized by face height) → filter cutoff 400–8000 Hz (VCF sweep)
+- Inner eyebrow height (above neutral) → harmonic count 1→8 (timbre richness)
+- Head tilt angle (left/right from neutral) → stereo pan –1→+1
+- Mouth corner spread (smile width) → major/minor chord quality blend
+- Nose tip Z-depth (forward lean) → reverb send level
+
+**Could become prototype**: `147-face-synth` — MediaPipe FaceLandmarker loaded from CDN (~5MB WASM, one-time). Webcam feed at 30% opacity. Skeleton overlay on face with 5 parameter readouts. Pure triangle-wave chord synthesis (C pentatonic major). Canvas: live Lissajous figure of the stereo output (same as `20-scope`) to show what the face is sculpting. "Your face is the instrument." Needs Karel OK on CDN dep (~5MB). One cycle. [Date: March 2026 confirmed baseline]
+
+---
+
+Key findings from Cycle 169 (2026-05-25) — adult research sweep:
+- **Stable Audio 3** (§204, May 20, 2026 — 5 days ago!) — four-model family, Medium open-weight on HuggingFace, Large on fal.ai. Up to 6+ min. Causal continuation of user's recordings. Resolves the "Karel's music as input for long-form generation" gap. Inspires `144-sa3-journey` — highest-priority adult build next cycle.
+- **WavFlow** (§205, May 18, 2026) — waveform-space audio gen. Server-only, no immediate browser prototype. Monitor for fal.ai video-to-audio endpoint.
+- **Refik Anadol DATALAND + Machine Dreams: Rainforest** (§206, opens June 20, 2026 + already running May 8) — ecological data → digital sculptures. Technique: L-system tree + Karplus-Strong birdsong + weather noise. Inspires `143-kids-seed-song` (kids: plant a seed, hear it grow), `145-eco-bloom` (adult: full procedural ecosystem).
+- **6DoF Gesture / CHI 2026** (§207, Feb 2026) — spatial sculpting > precision sliders for musical mixing. Inspires `146-spatial-palette` — draggable voices on canvas. Zero deps.
+- **MediaPipe 2026 simultaneous tracking** (§208, March 2026) — 468 face landmarks + 33 body + 21 hand/hand at 60fps in browser. Inspires `147-face-synth` — face expression → VCF/timbre/pan synthesis. CDN dep, needs Karel OK.
+- **Priority next kids build (Cycle 170)**: `143-kids-seed-song` (plant seed → L-system tree grows → Karplus-Strong notes, zero deps, zero API, pure magic).
+- **Priority next adult build (Cycle 171)**: `144-sa3-journey` (SA3 Large on fal.ai, 6-min journey generation + causal piano continuation — directly addresses Karel's "his music as input" directive).

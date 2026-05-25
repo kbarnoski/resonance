@@ -1,5 +1,45 @@
 # Dream Agent — cycle state
 
+## Cycle 169 — research sweep: §§204–208 (Stable Audio 3, Eco-Bloom, Face Synth, Spatial Palette, WavFlow)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 169 % 2 = 1 → NOT a kids cycle. Adult cycle.
+4. **Build new** — checked queue: all strong candidates (sa3-journey, eco-bloom, face-synth, spatial-palette) are NEW seeds from this cycle's research; they weren't in the queue before research. Could not pick a pre-existing "ready to build" item.
+5. **Research** — STATE.md Cycle 168 explicitly noted research as highest priority for Cycle 169: "last adult research: Cycle 129 — now 40 adult-equivalent cycles overdue." (Note: Cycle 151 was a research cycle, so 18 adult-cycles since the last sweep — still substantial.) MORNING.md confirmed: "Adult research is now 40 adult-equivalent cycles overdue." **Research is the correct call.**
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `105-pluck-field` ❤️ (Karplus-Strong resonance) → `143-kids-seed-song` uses Karplus-Strong for birdsong. `100-kids-paint-song` ❤️ + `104-kids-mirror-draw` ❤️ (patient playful creation) → eco-bloom and seed-song reward similar patient engagement. `130-tsl-particle-compute` ❤️ (GPU particle beauty) → noted for future TSL polish pass.
+
+**What I researched** (5 sources, all dated 2026):
+
+1. **Stable Audio 3** (§204, Stability AI, May 20, 2026 — 5 days ago): Four-model family. Medium (1.4B) open-weight on HuggingFace; Large (2.7B) via fal.ai partner. Up to **6+ minutes** of music generation. Causal continuation mode: record Karel's piano → SA3 extends it. Resolves the "30-second ceiling" on all generation prototypes. Seed: `144-sa3-journey`.
+
+2. **WavFlow** (§205, arXiv:2605.18749, May 18, 2026): waveform-space audio generation without intermediate latents. Video-to-audio + text-to-audio. Server-only; no immediate browser prototype — monitor.
+
+3. **Refik Anadol DATALAND + Machine Dreams: Rainforest** (§206, opening June 20, 2026): world's first AI arts museum; inaugural exhibition uses ecological data (birdsongs, plant life, weather) as generative material. Technique: L-system tree growth + Karplus-Strong birdsong + atmospheric noise. Seeds: `143-kids-seed-song` (kids: plant a tree seed, hear it grow) and `145-eco-bloom` (adult: full procedural ecosystem).
+
+4. **CHI 2026 — Beyond Faders: 6DoF Gesture Ecologies** (§207, arXiv:2602.23090, Feb 2026): XR spatial mixing study. Key insight: spatial sculpting beats precision sliders for musical expressivity. Browser port: draggable synthesis voices on canvas. Seed: `146-spatial-palette`.
+
+5. **MediaPipe Browser 2026: simultaneous multi-modal tracking** (§208, March 2026): 468 face landmarks + 33 body + 21 hand/hand at 60fps in browser confirmed. Face expression maps directly to synthesis params: jaw → VCF, eyebrow → harmonics, tilt → pan, smile → chord quality. Seed: `147-face-synth` (needs Karel OK on CDN dep).
+
+**What surprised me**: Stable Audio 3 landing with causal continuation is a direct answer to Karel's "let his existing music be the input" directive — it's not just generating new music, it's extending the pianist's own recording for 6 minutes. The ecological synthesis technique (L-system + Karplus-Strong) is orthogonal to everything in the sandbox and produces genuinely alien-beautiful results even with zero deps. Face expression as synthesizer parameter is the most surprising discovery — nobody in the existing 142 prototypes uses it, and it's deeply performative.
+
+**What's queued next**:
+- **Cycle 170 (kids, 170%2=0)** — build `143-kids-seed-song`: plant a seed, L-system tree grows, Karplus-Strong birdsong. Zero deps, zero API, immediate reward, 4-year-old usable. Love-signal influence: `105-pluck-field` ❤️ (Karplus-Strong physical modeling) + `100-kids-paint-song` ❤️ (patient creative engagement).
+- **Cycle 171 (adult, 171%2=1)** — build `144-sa3-journey`: Stable Audio 3 Large on fal.ai, 6-min journey generation + causal piano continuation. Highest-priority adult build — directly fills Karel's "longer generation + Karel's music as input" gap.
+- **Cycle 173 (adult)** — `145-eco-bloom` (adult ecosystem, zero deps) OR `146-spatial-palette` (zero deps, live performance fitness).
+
+---
+
 ## Cycle 168 — kids build: 142-kids-echo-canon (Echo Canon — tap a phrase, hear it echo as a 3-voice canon)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

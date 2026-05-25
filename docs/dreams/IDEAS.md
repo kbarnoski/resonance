@@ -1789,3 +1789,93 @@ Key findings from Cycle 151 (2026-05-24):
 - MUTEK 2026 / Kali Malone (§201, Aug 25–30 announcement) — slowly evolving harmonic meditation. Inspires `131-kali-sustain` — zero deps, zero API, fills the drone/sustain gap.
 - ACE-Step 1.5 in diffusers (§202) — likely already live on fal.ai endpoint; LongCat-AudioDiT needs fal.ai endpoint.
 - AUDIOLAB unified React tree pattern (§203) — apply as architecture for future Three.js prototypes.
+
+---
+
+## FROM RESEARCH (Cycle 169, 2026-05-25) — promoted to queue
+
+### kids-seed-song — plant a seed, grow an L-system tree, hear it sing `[queued, zero deps, zero API, kids build]`
+Route: `/dream/143-kids-seed-song`. Tap anywhere on the canvas to plant a seed. A procedural L-system tree grows from the seed over ~20 seconds: trunk sprouts, branches fork at 25°/35° alternating angles, each fork spawns 2 sub-branches, recursion depth 5. Each branch segment has a pitch: root trunk = C3, first fork = E3, second fork = G3, third = A3, fourth = C4 (C major pentatonic, low to high as depth increases). As each new branch segment grows into existence, its pitch plays as a short Karplus-Strong pluck: `DelayNode` (delay = 1/freq), `BiquadFilterNode(lowpass, 2000 Hz)`, `GainNode(0.995)` decay, 5ms noise burst to seed. Multiple trees grow simultaneously if multiple seeds planted; their voices overlap in gentle harmony.
+
+Atmospheric layer: soft brown-noise wind at gain 0.04, always present. Color: branches warm from root (deep violet) to tip (amber/golden). Background: very dark forest green. Tap-to-plant target area: the whole canvas (no reading required). Leaves — small oval polygons drawn at the terminal branches — flutter slowly via a sin-time offset.
+
+**Why this is a kids build**: zero inputs beyond one tap, immediate visual + audio reward, grows patiently across 20s (rewards attention), multiple trees create organic ensemble harmony. The Karplus-Strong resonance gives it a warm, gentle character that won't startle. 4-year-old friendly. No mic, no permissions. Inspired by Anadol's Machine Dreams: Rainforest (RESEARCH.md §206). Fills a gap: 37+ kids prototypes react to taps immediately; none show patient growth over time.
+
+**One-cycle build**. Zero deps. Zero API. Pure Web Audio + Canvas2D.
+
+---
+
+### sa3-journey — Stable Audio 3: 6-minute journey generation + piano continuation `[queued, FAL_KEY in use]`
+Route: `/dream/144-sa3-journey`. Two modes on a single page:
+
+**Mode A — Write Your Journey**: Textarea pre-filled with a journey theme prompt ("Inner Sanctuary — slow reverbed piano, soft cello drone, ancient forest, meditative, 3 minutes"). Dropdown for target duration: 2 min / 4 min / 6 min. Click "Generate Journey" → server route calls Stable Audio 3 Large on fal.ai (endpoint: `fal-ai/stable-audio-3` or via Stability AI API — check at build time; FAL_KEY in use) → receive WAV/MP3 → decode via `AudioContext.decodeAudioData` → play through six-band bloom radial visualizer (same as `1-live`). Waveform strip shows full duration with a playhead. Download MP3 button.
+
+**Mode B — Extend Your Playing**: Mic capture (same `MediaRecorder` approach as `43-stable-extend`): tap ● REC → play piano for 30s → tap ■ STOP. Server route sends captured audio to SA3 Large in "causal continuation" mode — SA3 treats the recording as the prefix and generates continuation audio for the selected duration (2/4/6 min). The result plays back: original recording (first 30s, amber waveform strip) then SA3 continuation (blue strip). Crossfade at the boundary. "Your playing, continued."
+
+Preset prompts panel: one button per Resonance journey theme (Cosmic Homecoming, Earth Grounding, Inner Sanctuary, Ocean Breath, Snowflake, Ghost, Inner Fire, Mycelium). Click any → pre-fills the prompt textarea with a theme-appropriate music description. Goal: Karel can hear a 4-minute generative ambient score for each journey theme in 10 seconds.
+
+**Why this fills a real gap**: all existing generation prototypes top out at 30–90 seconds (ACE-Step, MiniMax, Lyria). SA3 changes that — 6 minutes is enough for a full Resonance journey phase. Mode B directly addresses Karel's directive: "let his existing music be the input." Budget: ~$0.20–0.50/generation (SA3 Large pricing not yet confirmed; monitor fal.ai). Fallback: SA3 Medium is open-weight on HuggingFace — if fal.ai endpoint isn't available, build Mode A only using `stabilityai/stable-audio-3-medium` via HuggingFace Inference API. FAL_KEY in use. One-cycle build. Research basis: RESEARCH.md §204.
+
+---
+
+### eco-bloom — procedural rainforest: L-system growth + layered atmospheric synthesis `[queued, zero deps, zero API]`
+Route: `/dream/145-eco-bloom`. Inspired by Refik Anadol's Machine Dreams: Rainforest (RESEARCH.md §206, DATALAND opens June 20, 2026). A full procedural ecosystem on canvas:
+
+**Visual**: Three simultaneous L-system trees with different species parameters (branching angle 20°/30°/40°, segment length 8–20px, max depth 6/5/4). All three begin as seeds at canvas bottom and grow simultaneously over 45 seconds. Terminal branches accumulate oval leaves (additive blending, low opacity). Background slowly fades from near-black to very deep forest green as canopy density increases.
+
+**Synthesis** — layered, never abruptly on/off:
+- **Root resonance**: a C1 sine at gain 0.06, subtle 0.08 Hz LFO — felt rather than heard, always present.
+- **Branch plucks**: Karplus-Strong at each new branch segment spawn (5 pentatonic pitches, depth → octave). Simultaneous trees = 3-voice polyphony, always harmonious.
+- **Wind layer**: band-passed brown noise, gain rising from 0 to 0.03 as canopy grows. Subtle leaf rustle.
+- **Rain layer** (toggle): white noise low-pass at 1200 Hz, very low gain. On/off toggle in bottom corner. When rain plays, growth slightly accelerates.
+- **Dawn birds** (toggle): every 8 seconds, a rapid pentatonic arpeggio (5 Karplus-Strong notes in 400ms) from a random tree tip — a bird call. Appears only after canopy density > 30%.
+
+**Interactions**: Tap canvas to plant an additional seed (up to 6 simultaneous trees). Drag an existing tree root to move it. "Clear" removes all trees and returns to silence. "Rain" toggle.
+
+Mic mode: bass energy → growth rate multiplier (play a low note and the forest grows faster); onset → triggers an immediate bird call.
+
+**Why this now**: 142 prototypes exist; none explore **patient growth over time** as the primary metaphor. Most are instantaneous-response. Eco-bloom rewards watching — you plant it and step back. Closest aesthetic to the Inner Sanctuary and Earth Grounding journeys. "What does a Resonance journey sound like before the human starts playing?" Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §206.
+
+---
+
+### spatial-palette — drag synthesis voices to sculpt your soundscape `[queued, zero deps, zero API]`
+Route: `/dream/146-spatial-palette`. Inspired by CHI 2026 6DoF gesture paper (RESEARCH.md §207). A full-screen dark canvas with 6–8 colored synthesis voice dots, each draggable:
+
+- **X position** → stereo pan (–1=far left, +1=far right)
+- **Y position** → pitch (top=C6, bottom=C2, log-scaled) — drags are musical, not abstract
+- **Mouse wheel over a dot** → filter cutoff + reverb send: scroll up = brighter+drier, scroll down = darker+wetter
+- **Tap/click canvas (empty area)** → add a new voice dot (up to 8 total)
+- **Double-click dot** → cycle through timbres: sine → triangle → sawtooth → Karplus-pluck
+- **Long-press dot** → remove it
+
+Each voice produces a continuous, sustained tone at its current pitch and timbre with a slow Hann-windowed envelope (150ms attack, 400ms release on position change). Chord quality emerges from the spatial arrangement: voices on the upper-left cluster → minor chord (dark); voices spread wide and high → bright major spread.
+
+Canvas decoration: a very faint 2D grid with semitone lines (horizontal) and stereo-field lines (vertical). A small stereo waveform display at the bottom (same as `20-scope` in Lissajous mode) shows the combined stereo output. Current chord label (from `28-chord-canvas` chroma template matching on the synthesized output) in the top-right corner.
+
+Demo: pre-placed C major triad (C4 center, E4 right, G4 left) with slight reverb. The voices hum quietly. Drag the E4 down a step → chord becomes C minor; drag it up → back to major. "Sculpt your soundscape." Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §207.
+
+---
+
+### face-synth — MediaPipe FaceLandmarker → expressive face synthesizer `[queued, needs CDN dep ~5MB MediaPipe, needs Karel OK]`
+Route: `/dream/147-face-synth`. MediaPipe FaceLandmarker loaded from jsDelivr CDN (WASM, ~5MB one-time download). Webcam feed at 40% opacity. 5 synthesis parameters driven by face expression:
+
+- **Jaw opening** (normalized inner-lip distance / face height, 0–1) → filter cutoff 400–8000 Hz. Open mouth wide = full treble; jaw relaxed = dark filtered tone.
+- **Inner eyebrow height** (brow-to-eye distance above neutral) → harmonic count 1→8 (pure sine at closed, rich timbre at raised). Raise your eyebrows = richer sound.
+- **Head tilt angle** (left/right from vertical) → stereo pan –1→+1. Tilt head left = sound moves left.
+- **Mouth corner spread** (smile width normalized) → chord quality interpolation: no smile = minor; full smile = major. Smile and the chord brightens.
+- **Nose tip forward lean** (Z-depth, camera-relative) → reverb send 0–0.8. Lean toward camera = more reverb.
+
+Visual: 468-point face mesh drawn as glowing violet dots at 30fps. A secondary Lissajous canvas (same as `20-scope`) shows the stereo shape of the current synthesis output — your face expression is visible in both the webcam overlay and the Lissajous shape simultaneously. 5 parameter gauges on the right side (vertical bars, color-coded). Chord name label updates live ("Cm" / "C"). 
+
+Demo: without face tracking active, a slow LFO auto-drives each parameter in a breathing cycle so the synthesis plays on its own and the visitor can see what's possible before activating the webcam.
+
+"Your face is the instrument." CDN dep ~5MB. Needs Karel OK. One-cycle build once approved. Research basis: RESEARCH.md §208.
+
+---
+
+Key findings from Cycle 169 (2026-05-25):
+- Stable Audio 3 (§204, May 20, 2026 — 5 days ago) — family of open + partner-access models, up to 6+ min, inpainting + causal continuation. SA3 Large on fal.ai (FAL_KEY in use). **Highest priority adult build next cycle** → `144-sa3-journey`. Resolves the "30-second generation ceiling" problem.
+- WavFlow (§205, May 18, 2026) — waveform-space audio gen, video-to-audio + text-to-audio. Server-only; monitor for fal.ai endpoint.
+- Refik Anadol DATALAND + Machine Dreams: Rainforest (§206, opens June 20, 2026) — ecological data → digital sculpture. L-system + Karplus-Strong + atmospheric noise technique. Inspires `143-kids-seed-song` (kids) and `145-eco-bloom` (adult).
+- CHI 2026 6DoF gesture mixing (§207, Feb 2026) — spatial sculpting > sliders for musical expressivity. Inspires `146-spatial-palette` — draggable synthesis voices on canvas.
+- MediaPipe 2026 simultaneous multi-modal tracking (§208, March 2026) — 468 face landmarks at 60fps in browser. Inspires `147-face-synth` — face expression → synthesizer. Needs Karel OK on CDN dep.
