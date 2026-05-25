@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 167 — adult build: 141-chord-canvas (Chord Canvas — real-time chord detection + color timeline)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 167 % 2 = 1 → NOT a kids cycle. Adult build.
+4. **Build new** — `chord-canvas` (now `141-chord-canvas`) was explicitly queued in STATE.md
+   Cycle 166 as the next adult pick. It is the first prototype in the sandbox to surface music
+   theory directly — 140 prior prototypes react to audio signal properties (energy, spectrum,
+   pitch, tempo) but none NAME the musical structure. This fills a genuine gap.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences: `105-pluck-field` ❤️ (direct pitch-physics interaction), `84-wave-fluid` ❤️
+(visual representation of audio state over time — the timeline strip is analogous). Both
+loved prototypes reward deliberate musical input with a persistent visual record. Chord Canvas
+extends this: your harmonic decisions accumulate as a color timeline rather than a momentary
+reaction.
+
+**Built**:
+- `src/app/dream/141-chord-canvas/page.tsx` — full prototype (3.4 kB compiled)
+- `src/app/dream/141-chord-canvas/README.md` — design notes
+
+**What it does**:
+- Mic input → 4096-point FFT → 12-bin chroma vector (sum magnitude² by pitch class, C2–A♯6)
+- Template matching against 24 chord templates (12 major + 12 minor triads): dot-product
+  correlation, highest score wins. 5-frame stability filter before committing a new chord —
+  no flickering, the display holds the last confirmed chord during transitions.
+- **Hero display**: chord name fills center of canvas in large glowing monospace (C, F♯m, Bdim).
+  Radial glow behind it uses the chord's hue. Quality label ("major" / "minor") below.
+- **Scrolling timeline**: 30-second window. Each chord = a colored rectangle. Hue from root
+  pitch class (C=violet, cycling around the chromatic circle), saturation from quality
+  (major=vivid, minor=desaturated). Block width = hold duration. "Now" cursor at right edge.
+  Chord names appear inside wide blocks.
+- **Chromagram**: 12 pitch-class bars at the bottom. Active chord tones (root, M3/m3, P5)
+  highlighted brighter + a small colored underline marker.
+- Demo mode: ii–V–I in C (Dm → G7 → C, 2s each, repeating). G7 includes the 7th (F), which
+  slightly confuses the triad detector — a known limitation of 24-template approach.
+
+**What surprised me**: The timeline strip is the most revealing feature — a ii–V–I in C
+produces three distinct colored blocks (purple for Dm, yellow-green for G, indigo for C),
+and you can read the harmonic rhythm of a passage at a glance, even after you've stopped
+playing. It's a chord chart that writes itself.
+
+**Known limitation**: 24 templates (major + minor only). Dom7, maj7, min7, suspended, and
+augmented chords are not detected. G7 usually registers as G because the triad tones (G, B,
+D) outweigh the 7th (F). Addressed in README polish ideas (add 7th chord templates).
+
+**What's queued next**:
+- Cycle 168 (kids, 168%2=0) — `135-kids-wheel-song` polish (note-name flash above striker,
+  queued since Cycle 160), OR a new kids seed from KIDS.md.
+- Cycle 169 (adult, 169%2=1) — **research sweep is now 39 adult-equivalent cycles overdue**
+  (last adult research: Cycle 129). Should be a research sweep unless a compelling in-progress
+  build exists.
+
+---
+
 ## Cycle 166 — kids build: 140-kids-string-bridge (String Bridge — two-finger harmonic string)
 
 **When**: 2026-05-24 UTC (hourly autonomous cycle)

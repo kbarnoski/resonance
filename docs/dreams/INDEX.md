@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 166 — kids build)
+## ⭐ Newest (Cycle 167 — adult build)
+
+- **[/dream/141-chord-canvas](/dream/141-chord-canvas)** — Chord Canvas. `demoable`
+  Play any chord into the mic — it appears instantly as a large glowing name (C, F♯m, Bdim)
+  and paints a colored block on a scrolling 30-second timeline. Hue = root pitch class
+  (C=violet, cycling chromatically); saturation = quality (major=vivid, minor=desaturated).
+  A 12-bin chromagram at the bottom shows which pitch classes are active; active chord tones
+  (root, third, fifth) highlight brighter with a colored underline.
+  **First prototype to name musical structure.** 140 prior prototypes react to audio signal
+  properties — energy, spectrum, pitch. This one says "that's an F♯ minor." Algorithm: chroma
+  extraction (C2–A♯6), template matching against 24 triad templates, 5-frame stability filter.
+  Demo mode: ii–V–I in C (Dm → G7 → C repeating) shows the timeline writing a chord chart.
+  Zero deps · Zero API · mic optional · 3.4 kB.
+  Design notes: `src/app/dream/141-chord-canvas/README.md`
+
+---
+
+## Previous (Cycle 166 — kids build)
 
 - **[/dream/140-kids-string-bridge](/dream/140-kids-string-bridge)** — String Bridge (kids). `demoable`
   Hold two fingers on the dark canvas — a glowing string stretches between them and sings.
