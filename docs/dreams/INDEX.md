@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 183 — adult build)
+## ⭐ Newest (Cycle 184 — kids build)
+
+- **[/dream/156-kids-star-connect](/dream/156-kids-star-connect)** — Constellation Song (kids). `demoable`
+  Thirteen glowing stars pre-placed on a dark sky in three loose clusters. **Draw a line from one
+  star to a neighboring star** — both pitches ring as a two-voice interval (triangle waves, 1.8s
+  decay). **Close a triangle** (connect all three sides) → three-note chord plays with staggered
+  onset, the triangle interior shimmers pale blue, and 15 colored sparkles radiate from the centroid.
+  Star color encodes pitch class: violet=C, emerald=E, amber=G, rose=A, cyan=C5.
+  Soft C3+G3 ambient pad throughout. ↺ Clear resets all connections.
+  **"First prototype where the musical structure is hidden in the sky — the child reveals it by connecting."**
+  All 155 prior prototypes produce sound from tapping, dragging, or freehand drawing. This one
+  produces an interval only when you connect two existing stars (the *relationship* is the sound),
+  and a chord only when three stars form a closed triangle (the *graph structure* is the music theory).
+  Companion to `152-kids-star-paint` ❤️ — that one creates stars, this one reveals them.
+  Inspired by Karel's love of `152-kids-star-paint` ❤️ and `148-spatial-palette` ❤️.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.7 kB.
+  Design notes: `src/app/dream/156-kids-star-connect/README.md`
+
+---
+
+## Previous (Cycle 183 — adult build)
 
 - **[/dream/155-piano-hands](/dream/155-piano-hands)** — Piano Hands. `demoable`
   Canvas piano keyboard (C3–B4, 2 octaves). **Ghost fingers descend from above and press

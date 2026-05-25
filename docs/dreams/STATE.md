@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 184 — kids build: 156-kids-star-connect (connect pre-placed stars to discover musical intervals; close a triangle to hear a chord)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 184 % 2 = 0 → **kids cycle**.
+4. **Build new** — STATE.md Cycle 183 queued two options: (a) polish `154-kids-clap-back` (~10 lines,
+   add pattern-indicator dots) or (b) build the "connect-the-stars" seed from KIDS.md Cycle 180.
+   Chose (b) — a full new prototype is more valuable than a 10-line polish, and the concept is
+   genuinely distinct from anything in the sandbox.
+
+Love signal: unchanged at 19 loved (same as Cycle 183). No new loves since Cycle 183.
+Influenced by Karel's love of `152-kids-star-paint` ❤️ (stars + sky + music) — this is the
+complementary counterpart: Star-paint creates stars; Star-connect reveals them. Same sky,
+opposite creative posture.
+
+**Built**:
+- `src/app/dream/156-kids-star-connect/page.tsx` — full interactive prototype
+- `src/app/dream/156-kids-star-connect/README.md` — design notes
+
+**What it does**:
+13 pre-placed stars on a dark sky canvas, arranged in three loose clusters (left, right, bottom).
+Each star has a fixed C-major pentatonic pitch and a color encoding the pitch class (violet=C,
+emerald=E, amber=G, rose=A, cyan=C5). A soft C3+G3 ambient pad runs throughout.
+
+**Interaction**:
+- Tap/drag from one star to a nearby star → line snaps when within 56px → both pitches ring as
+  a two-voice interval (triangle wave OscillatorNodes, 1.8s decay).
+- When 3 stars form a closed triangle (all three pairs connected) → three-note chord plays with
+  55ms stagger, the triangle interior shimmers pale blue, 15 colored sparkles radiate from centroid.
+- ↺ Clear button resets all connections.
+
+**What surprised me**:
+The sparkle color cycling (n % 3 picks from the three connected star colors) creates a color
+signature per triangle. A violet-emerald-amber burst looks different from a rose-cyan-amber
+burst — the sky builds a visual record of which specific constellations the child discovered.
+
+The rubber-band dashed line during drag perfectly models the mechanic before the connection is
+confirmed. Even at 3 years old, a child instinctively understands "line from here to there" as
+a pointer gesture. No instruction needed.
+
+**How it differs from `152-kids-star-paint`**:
+| | Star-paint | Star-connect |
+|---|---|---|
+| Stars | Created by gesture | Pre-placed |
+| Sound | Delayed arpeggio (16s) | Immediate on snap |
+| Shape | Drawn path | Graph edge |
+| Reward | Patient gift from past self | Immediate + compound (triangle) |
+
+**What's queued next**:
+- **Cycle 185 (adult, 185%2=1)** — Pick from IDEAS queue. Candidates: `156-concept-steer`
+  (hexagonal radar chart → 6-axis synthesis: Brightness/Density/Regularity/Complexity/Energy/Mode)
+  or `loop-station` polish (more demo loops, waveform colors). Both are zero-API, zero-dep.
+- **Cycle 186 (kids)** — Polish `154-kids-clap-back` (pattern indicator dots, ~10 lines) OR
+  build "tap-to-chord" star variant (select 3-5 stars to build a chord, tap to play and clear).
+
+---
+
 ## Cycle 183 — adult build: 155-piano-hands (ghost fingers descend onto piano keys as notes are detected)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
