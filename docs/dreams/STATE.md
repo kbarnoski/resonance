@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 175 — adult build: 148-spatial-palette (drag voices on canvas — X=pan, Y=pitch, scroll=filter+reverb)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 175 % 2 = 1 → adult cycle, skip.
+4. **Build new** — STATE.md cycle 174 explicitly queued `spatial-palette` at `/dream/148-spatial-palette`.
+   Spec was clear in IDEAS.md. Zero API, zero deps, one-cycle build. Built as planned.
+
+**Love signal** (unchanged — 13 loved):
+`82-kids-color-piano` ❤️ `83-kids-tilt-rain` ❤️ `130-tsl-particle-compute` ❤️
+`111-kids-shape-loop` ❤️ `107-ocean-presence` ❤️ `106-beat-cut` ❤️ `105-pluck-field` ❤️
+`104-kids-mirror-draw` ❤️ `101-camera-song` ❤️ `100-kids-paint-song` ❤️
+`98-kids-drum-circle` ❤️ `86-sound-to-video` ❤️ `84-wave-fluid` ❤️
+
+Influences from love signal: `107-ocean-presence` ❤️ (slow interactive draping — spatial palette
+is similarly meditative and continuous) and `101-camera-song` ❤️ (spatial metaphor for music:
+the position is the sound). Both confirm the "position = musical parameter" design axis.
+
+**Built**:
+- `src/app/dream/148-spatial-palette/page.tsx` — full prototype
+- `src/app/dream/148-spatial-palette/README.md` — design notes
+
+**What it does**:
+- Full-screen dark canvas, semitone grid (horizontal lines per MIDI note, C-octave lines
+  labeled and brighter), stereo field verticals (center line marked, L/R labeled).
+- Up to 8 colored voice dots. Pre-placed: C major triad — C4 center, E4 right (+0.38 pan),
+  G4 left (−0.38 pan). Chord label top-right reads "C".
+- Drag any dot: X → StereoPannerNode.pan (−1…+1 with 60ms smoothing), Y → OscillatorNode
+  frequency snapped to nearest semitone (midiToFreq(round(freqToMidi(yToFreq)))). Glides
+  are smooth; no click artifacts.
+- Scroll over dot: adjusts `bright` (0=dark/wet → 1=bright/dry); maps to BiquadFilter fc
+  (200–8000 Hz) and reverb wet send (40% at dark, 0% at bright).
+- Double-click dot: cycles timbre sine → triangle → sawtooth → square.
+- Long-press dot (600ms): fades out and removes voice.
+- Click empty canvas: adds new voice at that pitch/pan (max 8).
+- Shared ConvolverNode reverb: procedural IR (noise × exp decay, 2.5s, stereo), routed
+  through a 0.5 gain master before destination.
+- Chord label: chroma vector from voice pitch classes → template match against 24
+  major/minor triads → updates on every drag. Drag C4→D4: chord becomes "Dm".
+- Scope strip: composite waveform computed analytically from current voice frequencies
+  (sum of sines, no analyser tap required).
+- Build: static, zero deps, zero API. 3.87 kB compiled.
+
+**What surprised me**: The semitone-grid canvas makes the musical relationship between voices
+visually explicit in a way sliders don't. Dragging E4 down one semitone to Eb4 and watching
+the chord label instantly flip "C" → "Cm" makes the major/minor interval relationship
+spatially obvious — the minor third is literally one row closer. Kids at this prototype would
+probably discover the major/minor difference in under a minute without being taught it.
+
+**What's queued next**:
+- **Cycle 176 (kids, 176%2=0)** — pick from KIDS.md queue. Good candidates: "spatial sound
+  for kids" (stereo panning discovery) or a new seed. KIDS.md has a full queue.
+- **Cycle 177 (adult)** — `face-synth` (MediaPipe face → synthesizer, needs Karel OK on ~5MB
+  CDN dep) OR `arc-compose` (MiniMax Music 2.6 structured section composer, FAL_KEY in use).
+  Lean toward `arc-compose` since it needs no new dep approval and FAL_KEY is already granted.
+
+---
+
 ## Cycle 174 — kids build: 147-kids-beat-pulse + 135-kids-wheel-song polish (note-name flash)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

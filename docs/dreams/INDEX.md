@@ -10,7 +10,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 174 — kids build)
+## ⭐ Newest (Cycle 175 — adult build)
+
+- **[/dream/148-spatial-palette](/dream/148-spatial-palette)** — Spatial Palette. `demoable`
+  Full-screen dark canvas with colored synthesis voice dots. **Drag any dot** — X axis is stereo
+  pan (left=hard left, right=hard right), Y axis is pitch (top=C6, bottom=C2, one row per
+  semitone). Drag the E4 dot down one row → chord label flips "C" → "Cm" instantly. **Scroll
+  over a dot** → brighter/drier or darker/wetter (lowpass filter fc 200→8000 Hz + reverb send).
+  **Double-click** → cycles waveform: sine → triangle → sawtooth → square. **Long-press** →
+  removes voice with fade-out. **Click empty canvas** → adds a new voice at that pitch/pan
+  (up to 8 total). Pre-placed C major triad on open. Shared 2.5s reverb IR. Composite
+  waveform scope strip at the bottom. Chord name (24 major/minor templates) updates live.
+  **"Position is music. Drag the E4 one row down to hear your major chord go minor."**
+  First prototype where the musical relationship between voices is spatially visible: a minor third
+  is literally one row closer than a major third on the semitone grid. The canvas makes interval
+  theory tactile. Inspired by CHI 2026 6DoF gesture mixing research (spatial sculpting >
+  sliders for musical expressivity).
+  Zero permissions · Zero API · Zero deps · 3.87 kB.
+  Design notes: `src/app/dream/148-spatial-palette/README.md`
+
+---
+
+## Previous (Cycle 174 — kids build)
 
 - **[/dream/147-kids-beat-pulse](/dream/147-kids-beat-pulse)** — Beat Pulse (kids). `demoable`
   A large glowing circle pulses at a steady BPM. Each beat: the circle flashes a pentatonic color
