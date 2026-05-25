@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 175 — adult build)
+## ⭐ Newest (Cycle 176 — kids build)
+
+- **[/dream/149-kids-color-mix](/dream/149-kids-color-mix)** — Color Mix (kids). `demoable`
+  Three large colored circles on a dark canvas — rose (C3), amber (E3), violet (G3) — placed
+  in a triangle. **Drag any circle** to move it. When two circles overlap their colors blend
+  (screen compositing: rose+amber=orange, rose+violet=magenta, amber+violet=warm green) and
+  their notes get louder together. When all three converge: the overlap zone glows **bright
+  white** and a full C major chord rings out. The visual peak and auditory peak are simultaneous.
+  Each isolated circle breathes with a gentle ±5px pulse to signal it's alive and waiting.
+  Gain transitions via `setTargetAtTime(τ=50ms)` — no pops. Faint C/E/G labels inside each
+  circle for parents; invisible to kids in play mode.
+  **"First kids prototype where the proximity between three distinct objects IS the music."**
+  All 47 prior kids prototypes respond to single-object events (tap, drag, hold, draw).
+  This is the first where the relationship between three moveable objects is the primary
+  musical parameter. A child discovers color theory and music theory as the same interaction.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.0 kB.
+  Design notes: `src/app/dream/149-kids-color-mix/README.md`
+
+---
+
+## Previous (Cycle 175 — adult build)
 
 - **[/dream/148-spatial-palette](/dream/148-spatial-palette)** — Spatial Palette. `demoable`
   Full-screen dark canvas with colored synthesis voice dots. **Drag any dot** — X axis is stereo

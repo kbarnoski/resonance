@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 176 — kids build: 149-kids-color-mix (drag three colored circles together — colors blend, notes form a chord)
+
+**When**: 2026-05-25 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle rotation** — 176 % 2 = 0 → **kids cycle**.
+4. **Build new** — KIDS.md Cycle 174 notes seed three candidates:
+   - `147-kids-beat-pulse` v2 (clap-back mode)
+   - `145-kids-dot-seq` v2 (second row)
+   - New seed: color mixing + sound (three large circles, overlap = chord)
+
+Chose **color-mix** because it's the most novel interaction paradigm in the kids zone. All 47 prior
+kids prototypes respond to single-object events (tap, drag, hold, draw). This is the first where
+the **proximity/overlap between three distinct objects** is the primary musical parameter. And the
+visual color mixing (screen compositing → white when all three overlap) mirrors the chord formation
+exactly: red+yellow+blue → white, C3+E3+G3 → C major chord. A 4yo discovers both music theory and
+color theory simultaneously, with no labels, no reading, no wrong moves.
+
+Love signal: `98-kids-drum-circle` ❤️ (rhythm focus — circles pulsing gently animate like
+drum-heads) and `111-kids-shape-loop` ❤️ / `107-ocean-presence` ❤️ (continuous spatial interaction,
+position IS the music).
+
+**Built**:
+- `src/app/dream/149-kids-color-mix/page.tsx` — full prototype
+- `src/app/dream/149-kids-color-mix/README.md` — design notes
+
+**What it does**:
+- Three circles (rose=C3/130Hz, amber=E3/165Hz, violet=G3/196Hz) placed in a triangle on the
+  canvas. Canvas fills the screen.
+- Each circle breathes with a gentle ±5px sine pulse when isolated (alive, inviting drag).
+- Drag any circle to reposition it. setPointerCapture for smooth tracking past edges.
+- Overlap detection: distance(c_i, c_j) < 2R → overlap. Each circle tracks overlapCount (0/1/2).
+- Screen compositing makes overlapping circles mix colors naturally: rose+amber=warm orange,
+  rose+violet=magenta, amber+violet=warm yellow-green, all three=bright white (the magic moment).
+- Audio: triangle oscillators at C3/E3/G3, always running.
+  - 0 overlaps: gain 0.042 (quiet ambient hum)
+  - 1 overlap: gain 0.14 (clearly audible)
+  - 2 overlaps (all-3-together): gain 0.22 (prominent)
+  - Gain transitions via setTargetAtTime(τ=0.05s) — no clicks, no pops.
+- Pre-start hint: "drag the circles together" in white/72. Disappears after first touch.
+- Faint note labels (C/E/G, 0.45 opacity) inside each circle — visible to parents, invisible
+  to children in flow state.
+- Zero permissions · Zero API · Zero deps. First prototype about inter-object proximity as music.
+
+**What surprised me**: The triple-overlap white glow is genuinely startling even knowing it's
+coming. On a near-black background with screen compositing, three colored circles at 44% alpha
+produce a brilliant white region when they converge — it looks like a small sun appearing. The
+auditory and visual peak happen in the same instant: C major chord + white light. For a child who
+has been hearing the separated notes hum quietly, the full chord emerging when the three colors
+meet is a real "wow" moment. The visual teaches the audio; the audio validates the visual.
+
+**What's queued next**:
+- **Cycle 177 (adult)** — `arc-compose` (MiniMax Music 2.6 structured section composer, FAL_KEY
+  in use) OR `beat-cut` polish. Lean toward `arc-compose` since it extends the `5-arcs` idea
+  with real generated music. Alternatively: adult research sweep (last research was well over
+  20 adult cycles ago — check STATE.md for exact count).
+- **Cycle 178 (kids)** — `147-kids-beat-pulse` v2 (clap-back mode) or `145-kids-dot-seq` v2
+  (second row). Both are well-specified in KIDS.md.
+
+---
+
 ## Cycle 175 — adult build: 148-spatial-palette (drag voices on canvas — X=pan, Y=pitch, scroll=filter+reverb)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)
