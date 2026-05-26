@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 190 — kids build)
+## ⭐ Newest (Cycle 191 — adult build)
+
+- **[/dream/163-paths-visualizer](/dream/163-paths-visualizer)** — Paths Visualizer. `demoable`
+  Lorenz strange-attractor visualization that responds to audio in real time. The attractor
+  trail is colored by frequency band (sub-bass = violet, treble = pink); bass energy drives the
+  orbit scale; treble sharpens the line width. Six radial bloom gradients (one per band) pulse
+  around the canvas center. A bass-onset ring expands on strong beats. **Demo mode** plays a
+  synthesized piano phrase so the visualization works with zero setup. **Live mode** accepts a
+  Resonance recording ID — calls `/api/audio/[id]` for a signed URL, routes the `<audio>` element
+  through `MediaElementAudioSourceNode → AnalyserNode → destination`, and visualizes Karel's
+  actual piano recordings from the Paths.
+  **"First prototype that uses Karel's own recordings as the audio source for AV visualization."**
+  Directly fulfills AGENT.md directive: "let his existing music be the input." Connected to love
+  signal `138-lmdm-echo` ❤️ (Karel's piano phrase analyzed + echoed) — extends that concept to
+  full-track real-time visualization.
+  Demo mode · Recording ID input · Zero new deps · 2.9 kB.
+  Design notes: `src/app/dream/163-paths-visualizer/README.md`
+
+---
+
+## Previous (Cycle 190 — kids build)
 
 - **[/dream/162-kids-bubble-pop](/dream/162-kids-bubble-pop)** — Bubble Pop (kids). `demoable`
   Colorful glowing bubbles drift upward through a dark canvas, swaying gently. Five bubble colors

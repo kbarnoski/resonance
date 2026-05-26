@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 191 — adult build: 163-paths-visualizer (Lorenz attractor + 6-band bloom responding to Karel's actual piano recordings via /api/audio/[id])
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 191 % 2 = 1 → **adult cycle**, skip kid rule.
+4. **Build new** — STATE.md Cycle 190 suggested `music-palette` or `osc-composer` for Cycle 191.
+   Both are ALREADY BUILT: `/dream/60-music-palette` and `/dream/46-osc-composer` both exist.
+   Checked IDEAS.md for unbuilt items; folder `72-*` is absent from the dream directory →
+   `72-paths-visualizer` is genuinely unbuilt.
+
+**Decision rationale**:
+- AGENT.md directive (2026-05-21): "Incorporate Karel's actual music from the Paths. Build prototypes
+  that USE his real piano tracks as the audio source." This is the most direct fulfillment possible:
+  the user enters a recording ID → `/api/audio/[id]` returns a signed URL → the audio is routed
+  through Web Audio API for real-time visualization.
+- New love signal `138-lmdm-echo` ❤️ — Karel loved the prototype where his piano phrase is analyzed
+  and echoed back. A full-track real-time visualizer is the logical extension: not a 4-second phrase
+  but a complete recording, with the attractor itself becoming the visual fingerprint of his playing.
+- Strange attractor is a proven visual language in this sandbox (`10-strange` is the oldest; Karel
+  knows the Lorenz form). Combining it with bloom radials (from `1-live`) and real-audio input
+  produces something genuinely new: a visualization that is DIFFERENT every time Karel plays a
+  different recording, because the spectral content drives the trail scale and line weight.
+- Demo mode ensures the prototype works with zero setup for visitors.
+
+**Love signal influence**: `138-lmdm-echo` ❤️ (Karel's piano as audio input), `130-tsl-particle-compute`
+(particle trails loved), `10-strange` (Lorenz attractor precedent in sandbox).
+
+**Built**:
+- `src/app/dream/163-paths-visualizer/page.tsx` — full interactive prototype (2.9 kB)
+
+**What it does**:
+Dark canvas with Lorenz attractor trail computed at 3 steps/frame. Trail colored by frequency band
+(violet at the oldest points, cycling through 6 BAND_COLORS to pink at the newest). Bass energy
+(bands 0+1) modulates the attractor scale; treble energy (bands 4+5) controls line width. Six radial
+bloom gradients pulse around canvas center, one per frequency band. Bass onset (>0.3) triggers
+a glowing ring that pulses at beat frequency. Canvas fades to near-black each frame (alpha 0.18)
+creating natural motion blur. Demo mode: synthesized 12-note piano phrase (triangle osc) + pad
+drone through AnalyserNode. Live mode: recording ID input → fetch `/api/audio/[id]` → signed URL
+→ `<audio>` element → `MediaElementAudioSourceNode` → `AnalyserNode` → visualization.
+
+**What surprised me**:
+The Lorenz attractor's two-wing butterfly shape maps naturally to piano dynamics: soft playing
+keeps the trail in one wing (small orbit), a loud phrase sends it briefly across to the other
+wing before it settles back. This is a musically meaningful mapping that wasn't designed — it
+emerges from the chaotic nature of the attractor responding to energy spikes.
+
+**What's queued next**:
+- **Cycle 192 (kids, 192%2=0)** — KIDS.md research sweep to refill queue (exhausted after
+  Cycle 188; needed before Cycle 194 at the latest). Also consider: `154-kids-clap-back`
+  pattern dots (~10 lines, deferred since Cycle 184).
+- **Cycle 193 (adult)** — Candidate: extend `163-paths-visualizer` with track list from
+  `journey_paths` (show Karel's 13 Welcome Home tracks by name, click to load), OR build
+  `cymatics-on-piano-path` (76) — standing wave cymatics responding to a recorded piano path.
+
+---
+
 ## Cycle 190 — kids build: 162-kids-bubble-pop (floating pentatonic bubbles drift upward; tap/drag to pop → sparkle burst + note; bigger = lower; autonomous respawn)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

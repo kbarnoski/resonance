@@ -1,43 +1,47 @@
-# Morning digest — last updated 2026-05-26 UTC (Cycle 190)
+# Morning digest — last updated 2026-05-26 UTC (Cycle 191)
 
 ## New since yesterday
 
-- **[/dream/162-kids-bubble-pop](https://getresonance.vercel.app/dream/162-kids-bubble-pop)** —
-  Bubble Pop (kids, Cycle 190). **Why open this**: colorful glowing bubbles drift upward from
-  the bottom of a dark canvas, swaying gently side to side. Tap any bubble to pop it — sparkle
-  burst + pentatonic note. Drag your finger across to pop a chain of bubbles and play a fast
-  melody. Bigger bubbles sing lower (BANDIMAL rule: violet radius-52 = C3, cyan radius-20 = C4).
-  Bubbles continuously respawn so the canvas is never empty. Two-oscillator triangle wave gives
-  each note a warm chorus sound; lower pitches ring longer. Zero permissions · Zero API · Zero deps.
-  **First kids prototype where destruction is the musical act** — all 161 prior prototypes reward
-  touching, holding, dragging, or connecting. This one rewards the pop.
+- **[/dream/163-paths-visualizer](https://getresonance.vercel.app/dream/163-paths-visualizer)** —
+  Paths Visualizer (adult, Cycle 191). **Why open this**: a Lorenz strange-attractor trail snakes
+  across the dark canvas, colored from violet (sub-bass) to pink (treble) as it traces your
+  recording's spectrum. Six radial bloom halos pulse around the center — one per frequency band.
+  Bass drives the orbit scale; treble sharpens the line. Hit **▶ Play demo** to hear a synthesized
+  piano phrase shape the attractor with no setup. To visualize your own recordings: paste any
+  Resonance recording UUID into the ID field → **Load** → **▶ Visualize recording**. The prototype
+  calls `/api/audio/[id]`, gets a signed URL, routes the audio element through Web Audio API,
+  and the attractor responds to your actual piano in real time. Every recording draws a different
+  butterfly — soft passages stay in one wing; loud phrases send the trail crossing to the other.
+  Zero new deps · `<audio>` + Web Audio API + Canvas2D only.
 
-- **[/dream/161-tap-rhythm](https://getresonance.vercel.app/dream/161-tap-rhythm)** —
-  Tap Rhythm (adult, Cycle 189). Tap any rhythm (spacebar / TAP button) → BPM auto-detected →
-  32-step circular drum loop. Layer kick / snare / hat. Live performance tool. Zero API · Zero deps.
+- **[/dream/162-kids-bubble-pop](https://getresonance.vercel.app/dream/162-kids-bubble-pop)** —
+  Bubble Pop (kids, Cycle 190). Colorful glowing bubbles drift upward; tap or drag to pop →
+  sparkle burst + pentatonic note. Bigger = lower pitch. Continuous respawn. First prototype
+  where destruction is the musical act.
 
 ## In progress / partial
 
-- Nothing in-progress. Cycle 191 is next (adult cycle, 191%2=1).
-  Candidates: `music-palette` (audio → HSL color palette, downloadable SVG) or
-  `osc-composer` (Lissajous figure designer → oscilloscope melody).
+- Nothing in-progress. Cycle 192 is next (kids cycle, 192%2=0).
 
 ## Research findings worth a look
 
-- **KIDS.md queue exhausted** — Cycle 188 built the last seeded kids idea (`160-kids-paint-loop`).
-  Cycle 190 built `162-kids-bubble-pop` from first principles. Cycle 192 should include a kids
-  research sweep to refill the queue for future kids cycles.
-- **Bubble Pop lineage**: related to `95-kids-breath-bubbles` (mic blow → bubbles), but interaction
-  model is inverted — bubbles spawn autonomously and the child pops them rather than creating them.
-  The pop+sparkle paradigm is new to the sandbox and worth extending: what if bubbles played
-  different chord qualities based on which cluster they're in? Or if popping 3 at once plays a
-  special chord burst?
+- **KIDS.md queue exhausted** — Cycle 188 built the last seeded kids idea. Cycle 190 built from
+  first principles. **Cycle 192 must be a KIDS.md research sweep** to refill the queue for
+  Cycle 194+. Without a sweep, the agent will keep building from first principles — fine but
+  less intentional than feeding Karel's actual design instincts back in.
+- **Paths Visualizer connection to love signals**: `138-lmdm-echo` ❤️ (Karel loved his own piano
+  analyzed + echoed) is the closest prior prototype. `163-paths-visualizer` extends that in two
+  directions: full-length recording instead of a 4-second phrase, and visual output instead of
+  audio output. The attractor trail IS Karel's recording — a visual fingerprint of how he played.
 
 ## Open questions for Karel
 
-- **`162-kids-bubble-pop` feel**: should bubbles ever bounce off each other (creating collisions
-  that play chord intervals, like `133-kids-ripple-pond` wave collisions)? Would add one more
-  mechanic but may overcomplicate.
-- **`161-tap-rhythm` mic mode**: should I add optional mic onset-detection so clapping / desk-tapping
-  triggers steps? One more cycle to add this.
-- **`154-kids-clap-back` pattern dots**: deferred since Cycle 184. Still wanted? ~10 lines if yes.
+- **`163-paths-visualizer` — track list**: Should Cycle 193 fetch Karel's actual Welcome Home
+  track names from the `journey_paths` table and show them as a clickable list? Would make the
+  prototype feel like a proper album visualization tool rather than a UUID-paste dev demo.
+- **`163-paths-visualizer` — attractor color mapping**: Current mapping ties trail color to
+  trail age (oldest = violet → newest = pink). An alternative: map color to the dominant
+  frequency band at each point, so a bass-heavy phrase paints violet/blue and a treble-heavy
+  phrase paints orange/pink. More musically meaningful — worth a second cycle?
+- **`154-kids-clap-back` pattern dots**: deferred since Cycle 184. Still wanted? ~10 lines.
+- **`162-kids-bubble-pop` feel**: bubble collisions? (→ chord intervals, like ripple-pond waves)
