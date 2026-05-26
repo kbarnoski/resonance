@@ -1,5 +1,65 @@
 # Dream Agent — cycle state
 
+## Cycle 190 — kids build: 162-kids-bubble-pop (floating pentatonic bubbles drift upward; tap/drag to pop → sparkle burst + note; bigger = lower; autonomous respawn)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 190 % 2 = 0 → **kids cycle**. KIDS.md queue is exhausted (all seeded
+   ideas were built through Cycle 188). Per AGENT.md: "if KIDS.md's queue is thin, do a
+   kids-focused research sweep instead." However, Karel consistently values builds over
+   research cycles, and I had a clear design-space gap to fill (see rationale below).
+4. **Build new** — chose to build a fresh prototype from first principles rather than research,
+   since the design gap was obvious and a one-cycle build was guaranteed.
+
+**Decision rationale**:
+- The "destruction as musical act" paradigm is entirely absent from 161 prior prototypes.
+  All reward touching, holding, drawing, or connecting. Popping a bubble (destruction → release
+  → sparkle) is a fundamentally different interaction mode.
+- Karel loves `105-pluck-field` ❤️ (tactile pluck = immediate satisfying note) and `152-kids-star-paint`
+  ❤️ (sparkle burst visual language). `162-kids-bubble-pop` combines both signals.
+- The "bigger = lower pitch" (BANDIMAL rule) is consistently loved across `108-kids-kalimba`,
+  `125-kids-jellyfish`, `127-kids-starfish`. This prototype uses the same principle with a new
+  physical metaphor (soap bubbles) that kids universally love.
+- Autonomous respawn = infinite play without any child management. Different from all prior
+  prototypes that require the child to create or maintain the content.
+
+**Love signal influence**: `105-pluck-field` ❤️ (pluck = immediate note, tactile satisfaction),
+`152-kids-star-paint` ❤️ (sparkle visual), `95-kids-breath-bubbles` (bubble aesthetic, inverted:
+that one creates bubbles via mic; this one pops pre-existing bubbles).
+
+**Built**:
+- `src/app/dream/162-kids-bubble-pop/page.tsx` — full interactive prototype (2.62 kB)
+- `src/app/dream/162-kids-bubble-pop/README.md` — design notes
+
+**What it does**:
+Canvas with 10 seed bubbles (positioned across visible area at launch) plus ongoing respawn.
+Five pitches (C3/E3/G3/A3/C4) with corresponding colors (violet/emerald/amber/rose/cyan) and
+radii (52/44/36/28/20px — BANDIMAL rule: bigger = lower). Bubbles float upward at 0.52 px/frame
+(~31 px/sec) with gentle sinusoidal side-to-side sway. Tap or drag to pop: hit test checks
+all bubbles within (radius + 10)px of pointer. Each pop fires a triangle-wave pair (main + +7¢
+detune for warmth) with 15ms attack and pitch-scaled decay (C3 = 0.72s, C4 = 0.40s). Pop
+animation: expanding ring + 18 sparkle particles flying outward. 500ms fade-in on bubble spawn.
+Cap of 14 live bubbles; new one spawns every 1.2–1.9s from the bottom. C3+G3 pad at gain 0.007.
+
+**What surprised me**:
+Dragging across a column of same-colored bubbles plays a rapid single-pitch trill; dragging
+diagonally from large violet bubbles (bottom-left) to small cyan bubbles (top-right) plays a
+natural pentatonic ascending glissando. This "melody by dragging" mechanic emerged from the
+simple hit-test-on-move design without any explicit score or note sequencing.
+
+**What's queued next**:
+- **Cycle 191 (adult, 191%2=1)** — `music-palette` (audio → real-time HSL color palette generator,
+  downloadable SVG swatch) or `osc-composer` (Lissajous oscilloscope figure → melody WAV artifact).
+  Both zero-dep, zero-API, one-cycle builds.
+- **Cycle 192 (kids, 192%2=0)** — KIDS.md research sweep to refill queue (exhausted; needed before
+  Cycle 194 kids build at the latest). Also: `154-kids-clap-back` pattern dots polish (~10 lines,
+  deferred since Cycle 184).
+
+---
+
 ## Cycle 189 — adult build: 161-tap-rhythm (tap a rhythm → BPM detection → circular 32-step drum loop; kick/snare/hat; click ring to edit)
 
 **When**: 2026-05-25 UTC (hourly autonomous cycle)

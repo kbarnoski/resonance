@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 189 — adult build)
+## ⭐ Newest (Cycle 190 — kids build)
+
+- **[/dream/162-kids-bubble-pop](/dream/162-kids-bubble-pop)** — Bubble Pop (kids). `demoable`
+  Colorful glowing bubbles drift upward through a dark canvas, swaying gently. Five bubble colors
+  map to five pentatonic pitches (violet=C3, emerald=E3, amber=G3, rose=A3, cyan=C4).
+  **Tap any bubble to pop it** — sparkle burst (18 particles) + triangle-wave note. **Drag your
+  finger** across bubbles to pop a chain and play a fast melody or glissando. Bigger bubbles
+  sing lower (BANDIMAL rule: radius 52→20). Two-oscillator triangle pair (+7¢ detuning) gives
+  each note warmth; lower pitches ring longer (C3 = 0.72s decay, C4 = 0.40s). Bubbles respawn
+  continuously — 10 seeded at start, new one every 1.2–1.9s, cap of 14 live. C3+G3 ambient pad
+  keeps the canvas alive between pops. Fade-in on spawn (500ms), pop-ring expansion animation.
+  **"First prototype where destruction is the musical act."** 161 prior prototypes reward touching,
+  holding, or drawing. Bubble Pop rewards the pop — the release — the burst.
+  Inspired by Karel's love of `105-pluck-field` ❤️ (tactile pluck = immediate note), `95-kids-breath-bubbles`
+  (bubble aesthetic, inverted mechanic), `152-kids-star-paint` ❤️ (sparkle burst visual language).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.62 kB.
+  Design notes: `src/app/dream/162-kids-bubble-pop/README.md`
+
+---
+
+## Previous (Cycle 189 — adult build)
 
 - **[/dream/161-tap-rhythm](/dream/161-tap-rhythm)** — Tap Rhythm. `demoable`
   Tap any rhythm (spacebar / TAP button) — select kick/snare/hat beforehand, then tap freely.
