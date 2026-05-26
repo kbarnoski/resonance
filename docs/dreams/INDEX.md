@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 200 — kids build)
+## ⭐ Newest (Cycle 201 — adult build)
+
+- **[/dream/172-loop-station](/dream/172-loop-station)** — Loop Station. `demoable`
+  4-slot phase-locked loop station — pure Web Audio API. **Load demo** synthesizes four loops
+  offline (sub-bass drone, pentatonic melody, high arpeggio, rhythm pattern) and starts them
+  all on the same beat grid with no permissions needed. **Tap REC** on any slot to record from
+  mic; the loop closes on the next tap and snaps to the beat-1 boundary — a 1-bar loop and a
+  2-bar loop automatically stay in rhythmic alignment. Per-slot bar-length picker (1/2/4 bars),
+  MUTE (crossfade to zero), ✕ (clear). Waveform canvas per slot shows the recorded buffer as
+  amplitude bars with a sweeping playhead while looping. TAP TEMPO sets BPM from median
+  inter-tap interval. **"Build a multi-layer performance in real time."**
+  This is the first sandbox prototype about *constructing* a composition — not reacting to audio,
+  not generating via API, but layering loops deliberately. The phase-lock is the key surprise:
+  close a second loop and it snaps into rhythmic alignment with the first, no quantization step.
+  Influenced by Karel's loves of `153-paint-compose` ❤️, `138-lmdm-echo` ❤️, `148-spatial-palette` ❤️.
+  Demo path: Zero permissions · Zero API · Zero deps · 4.55 kB.
+  Design notes: `src/app/dream/172-loop-station/README.md`
+
+---
+
+## Previous (Cycle 200 — kids build)
 
 - **[/dream/171-kids-snow-globe](/dream/171-kids-snow-globe)** — Snow Globe (kids). `demoable`
   Tap anywhere on a dark night sky — a burst of 5–8 glowing snowflakes scatter from the touch

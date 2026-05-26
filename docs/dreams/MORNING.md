@@ -1,58 +1,46 @@
-# Morning digest — last updated 2026-05-26 UTC (Cycle 200)
+# Morning digest — last updated 2026-05-26 UTC (Cycle 201)
 
 ## New since yesterday
 
-- **[/dream/171-kids-snow-globe](https://getresonance.vercel.app/dream/171-kids-snow-globe)** — Snow Globe (kids) `demoable`
-  Tap anywhere on the dark night sky — 5–8 glowing snowflakes scatter from your touch and
-  drift down with gentle sinusoidal wobble. **The note plays when the flake lands**, not on tap:
-  a triangle-wave bell chime rings on touchdown, colored sparkles burst at ground level.
-  Tap high → high note (rose/C4). Tap low → low note (violet/C3). Hold for blizzard mode.
-  Demo auto-rains from center for 3.5 s — you can just watch on first open.
-  **Why open this**: it's the first kids prototype where the musical cause-effect loop has a
-  gravity-delay built in (~0.5–1.4 s per flake). The child taps, watches, then hears. After one
-  tap near the top and one near the bottom, they have the pitch mapping without any explanation.
+- **[/dream/172-loop-station](https://getresonance.vercel.app/dream/172-loop-station)** — Loop Station `demoable`
+  **Load demo** immediately — four phase-locked loops start with no mic needed:
+  violet sub-bass drone (2 bars), emerald pentatonic melody (2 bars), amber arpeggio (1 bar),
+  cyan kick+hihat rhythm (1 bar). All four snap to the same beat grid and loop in perfect alignment.
+  **Tap REC** on any slot to layer your own mic recording. Tap again to stop — the recorded loop
+  trims to the nearest bar and aligns to beat 1 with no manual quantization.
+  Per-slot controls: bar length (1b/2b/4b), MUTE (smooth crossfade), ✕ (clear). TAP TEMPO.
+  **Why open this**: first sandbox prototype about *constructing* a composition. 171 prior
+  prototypes react to audio or generate it. This one asks you to build it deliberately.
+  Zero permissions for demo · Zero API · Zero deps · 4.55 kB.
+
+- **[/dream/171-kids-snow-globe](https://getresonance.vercel.app/dream/171-kids-snow-globe)** — Snow Globe (kids) `demoable` (Cycle 200)
+  Tap high on sky → high note (C4 rose); tap low → low note (C3 violet). The note plays when
+  the flake LANDS, not on tap — gravity delay as musical pedagogy.
 
 - **[/dream/170-spectral-morph](https://getresonance.vercel.app/dream/170-spectral-morph)** — Spectral Morph `demoable` (Cycle 199)
-  40-partial harmonic blend: drag the morph slider to mix any two waveforms spectrally.
-  First prototype to synthesize from spectral manipulation rather than just visualize it.
-
-- **[/dream/169-kids-marble-run](https://getresonance.vercel.app/dream/169-kids-marble-run)** — Marble Music (kids) `demoable` (Cycle 198)
-  Draw ramps → drop marbles → KS pluck notes on each bounce.
-  First kids prototype where you build the machine before the music plays.
+  Drag slider to blend two waveforms' harmonic spectra. First prototype to synthesize from
+  spectral manipulation rather than just analyze.
 
 ## In progress / partial
 
-- Nothing in-progress. Cycle 200 (kids) shipped cleanly.
+- Nothing in-progress. Cycle 201 shipped cleanly.
 
 ## Kids queue (cycle 202)
 
-- `kids-garden-bloom` — hold finger on soil → stem grows upward, petals unfold one by one
-  (each petal = one note, triangle wave, pitch rising per petal). Hold 4s = 5-petal chord.
-  Release mid-growth = flower loops its chord softly. Up to 6 flowers coexist.
-  Sustained-hold = growth is a new interaction paradigm for the kids zone.
-- `kids-raindrop-rhythm` — tap any of 3 colored clouds → burst of raindrops fall → play note
-  on landing. Auto-rain keeps canvas alive. Three clouds = three-voice pentatonic polyphony.
+- `kids-garden-bloom` — hold finger on soil → stem grows, petals unfold one per second (each
+  petal = triangle-wave note, pitch rising). Hold 4s = 5-petal chord. Up to 6 flowers.
+- `kids-raindrop-rhythm` — tap clouds → burst of raindrops → pentatonic note on landing.
+  Three-voice polyphony, auto-rain keeps canvas alive.
 
-## Adult queue (cycle 201)
+## Research note
 
-- `loop-station` — 4-slot live looper. BPM-synced lengths (1/2/4 bars). Tap REC → loop
-  immediately. All active slots phase-locked. Overdub. Waveform mini-strip per slot.
-  Highest live-performance value idea in the queue. Zero deps, pure Web Audio.
-- Research sweep is also overdue (22 adult cycles since Cycle 177). Consider dedicating
-  Cycle 201 to a fresh pass: WebGPU audio compute, new fal.ai AV models, RAVE/BRAVE browser
-  ports, Refik Anadol's DATALAND: Rainforest (opened June 20 — any new technique releases?).
-
-## Love-signal context
-
-19 prototypes loved (unchanged since Cycle 197). Snow Globe drawn directly from
-`133-kids-ripple-pond` ❤️ (physics delay = note), `100-kids-paint-song` ❤️ (tap = music),
-`152-kids-star-paint` ❤️ (dark sky + sparkle language).
+Adult research last done Cycle 177 (23 cycles ago). Getting overdue. Could pair nicely
+with a Cycle 203 research sweep — but the build queue is still rich.
 
 ## Open questions for Karel
 
-- **Snow Globe bell pitch**: currently C4/A3/G3/E3/C3 mapped to 5 equal canvas strips.
-  Worth narrowing to 3 pitches (simpler for very young kids) or keeping 5?
-- **Spectral Morph pitch slider**: source is locked to C3. Add C2–C5 slider? ~10 lines.
-- **Loop station**: ready to build Cycle 201 unless you'd prefer a research sweep first.
-  Which is more useful right now — new builds or fresh research?
-- **Marble run restitution**: 0.68 (32% energy lost per bounce). Feel right?
+- **Loop station overdub**: tap REC on a looping slot to mix new recording into existing buffer.
+  Worth ~2 cycles. Want this for v2?
+- **Spectral Morph pitch**: root locked to C3. Add pitch slider?
+- **Snow Globe bell count**: 5 pitches (C3–C4). Too many for 3-year-olds? Narrow to 3?
+- **Marble run restitution**: 0.68 energy retained per bounce. Too bouncy / not enough?

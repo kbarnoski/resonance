@@ -1,5 +1,58 @@
 # Dream Agent — cycle state
 
+## Cycle 201 — adult build: 172-loop-station (4-slot phase-locked loop station; demo + mic recording)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 201 % 2 = 1 → **adult cycle**.
+4. **Build new** — `loop-station` was the explicit next recommendation from Cycle 200 STATE.md.
+
+**Decision rationale**:
+- `loop-station` is the highest live-performance-fitness idea in the adult queue. A browser
+  looper is something a performer can actually use on stage — record a bass drone, a melody,
+  an arpeggio, layer them live, mute/unmute in real time.
+- Zero API, zero npm deps, zero permissions for the demo path — pure Web Audio API.
+- Prototype number: `172` (next in sequence after 171-kids-snow-globe).
+
+**Love signals influencing this cycle**:
+- `153-paint-compose` ❤️ — layered composition over time, user constructs the piece
+- `138-lmdm-echo` ❤️ — mic capture + audio processing
+- `105-pluck-field` ❤️ — tactile physical interaction with synthesized audio
+- `148-spatial-palette` ❤️ — live musical control surface, real-time audio manipulation
+
+**Built**:
+- `src/app/dream/172-loop-station/page.tsx` — full loop station (4.55 kB)
+  - 4 record slots: sub-bass (violet), melody (emerald), arpeggio (amber), rhythm (cyan)
+  - Load demo: renders 4 OfflineAudioContext loops in parallel, starts them phase-locked
+  - Phase lock: all loops share `clockOrigin`; each new loop starts at the next beat-1 boundary
+  - Per-slot bar length picker: 1/2/4 bars — controls loop length for next recording
+  - REC → MediaRecorder capture → decodeAudioData → trim to bars → fadeEdges → startLoop
+  - MUTE: GainNode crossfade; ✕: clear slot; TAP TEMPO: median-IOI BPM detection
+  - Waveform canvas per slot: static waveform bars + sweeping playhead when looping
+  - Recording state: animated level meter from AnalyserNode
+  - Zero deps · zero API · mic optional (demo works without it)
+- `src/app/dream/172-loop-station/README.md` — design notes
+
+**Build**: `npm run build` passed cleanly. `/dream/172-loop-station` = 4.55 kB. One fix required:
+`getFloatTimeDomainData` needs `Float32Array<ArrayBuffer>` cast (same pattern as `_shared/use-mic-analyser.ts`).
+
+**What surprised me**:
+The `alignedStart` function needs two guards: one for `phase < 0.015` (you're already AT beat 1,
+so start immediately), and one for `startAt < now + 0.02` (to guarantee ≥20ms scheduling ahead).
+Without both guards, the first loop sometimes starts one bar later than expected on slow machines.
+The `Promise.all` for demo rendering cuts load time from ~1.5s sequential to ~0.4s parallel —
+all 4 OfflineAudioContext renders run simultaneously on different threads.
+
+**What's queued next**:
+- **Cycle 202 (kids, 202%2=0)** — `kids-garden-bloom` (hold to grow a musical flower; sustained
+  hold = growth = richer chord). Or `kids-raindrop-rhythm` (tap cloud, raindrops fall and play on
+  landing). Cycle 200 STATE.md names `kids-garden-bloom` as the lead.
+
+---
+
 ## Cycle 200 — kids build: 171-kids-snow-globe (tap to scatter snowflakes; each lands with a bell chime)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)
