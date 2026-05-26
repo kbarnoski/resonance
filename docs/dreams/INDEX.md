@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 193 — adult build)
+## ⭐ Newest (Cycle 194 — kids build)
+
+- **[/dream/166-kids-lantern](/dream/166-kids-lantern)** — Night Garden (kids). `demoable`
+  A near-black canvas hides 16 pentatonic stars — each one holds a note. Hold your finger
+  anywhere and a warm amber lantern follows: stars within the radius glow and play their pitch
+  (triangle waves, C-major pentatonic C3–A4). Stars outside stay as a faint twinkle.
+  Move slowly → arpeggio as individual stars enter the light. Hold still → sustained harmony.
+  Sweep broadly → a moving chord across the canvas.
+  **"First kids prototype about exploration and revelation."** 165 prior prototypes respond to
+  explicit gestures (tap, draw, drag, rhythm). Night Garden has no buttons, no tap targets.
+  The whole canvas is one gesture field; the lantern is the key. A 3yo discovers that moving
+  their finger slightly reveals a new sound; an older child deliberately hunts for all 16 stars.
+  Inspired by Karel's loves of `133-kids-ripple-pond` ❤️ (canvas = instrument),
+  `152-kids-star-paint` ❤️ (dark sky + stars aesthetic), `100-kids-paint-song` ❤️ (gesture = music).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.19 kB.
+  Design notes: `src/app/dream/166-kids-lantern/README.md`
+
+---
+
+## Previous (Cycle 193 — adult build)
 
 - **[/dream/165-cymatics](/dream/165-cymatics)** — Cymatics. `demoable`
   Chladni plate standing-wave patterns from audio. Each audio frequency resonates a

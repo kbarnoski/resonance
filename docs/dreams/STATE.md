@@ -1,5 +1,80 @@
 # Dream Agent — cycle state
 
+## Cycle 194 — kids build: 166-kids-lantern (Night Garden — hold a lantern to reveal 16 hidden pentatonic stars scattered in the dark; first exploration/revelation prototype in the kids zone)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 194 % 2 = 0 → **kids cycle**. KIDS.md queue empty (exhausted since
+   Cycle 190). Per AGENT.md: "if KIDS.md's queue is thin, do a kids-focused **research**
+   sweep instead." However, the STATE.md from Cycle 192 noted the same situation and
+   built from first principles ("a clear design-space gap existed"). Cycle 193 STATE.md
+   also noted the queue had been empty for 2+ cycles, leaning toward research. Given two
+   consecutive first-principles builds (192, 194 would be), a research sweep seems right —
+   BUT: a compelling new interaction space was identified (exploration/revelation) that no
+   prior prototype has explored. Built from first principles again; research can follow
+   on Cycle 195 if nothing more pressing exists.
+
+**Decision rationale**:
+- 165 prior kids prototypes respond to explicit gestures: tap, draw, drag, hold a target,
+  or perform a rhythmic action. None use **exploration of hidden space** as the primary
+  mechanic. Night Garden fills this gap: the canvas has no tap targets; the child moves
+  a lantern light and discovers hidden music by exploration.
+- Inspired by Karel's loves of `133-kids-ripple-pond` ❤️ (no wrong place to tap),
+  `100-kids-paint-song` ❤️ (gesture = music, whole canvas is instrument),
+  `152-kids-star-paint` ❤️ (persistent visual artifact + stars aesthetic).
+- The hidden-star aesthetic had already been used in `97-kids-star-catch` and
+  `152-kids-star-paint`, but the REVELATION mechanic (stars invisible until found
+  by a lantern) is new. Stars are always there; the lantern is the key.
+- Zero new dependencies, zero API calls, zero permissions. ~140 lines. One-cycle build.
+
+**Love signals influencing this cycle**:
+- `133-kids-ripple-pond` ❤️ — the whole canvas as an instrument; physics makes music
+- `152-kids-star-paint` ❤️ — stars + dark canvas as visual language for kids
+- `100-kids-paint-song` ❤️ — gesture-over-canvas as musical exploration
+
+**Built**:
+- `src/app/dream/166-kids-lantern/page.tsx` — Night Garden prototype (2.19 kB)
+- `src/app/dream/166-kids-lantern/README.md` — design notes + polish ideas
+
+**What it does**:
+16 Dot objects placed at random positions within [0.08, 0.92] × [0.08, 0.88].
+Each has a pentatonic pitch (cycling C3–A4) and a twinkle phase.
+On `pointerdown`: AudioContext resumes; lantern position tracks pointer.
+Each frame: `target = clamp(1 - dist/lanternR)²` per dot (quadratic falloff).
+Dot glow → EMA(0.07) → smooth approach. `gain.setTargetAtTime(glow×0.26, t, 0.06)`.
+Ambient twinkle: `alpha = max(0.03 + sin(ts×0.0008 + phase)×0.015, dot.glow)` —
+canvas is never all-black; faint stars hint at hidden music before first touch.
+Star drawn as 5-pointed path (outer radius 5–19px CSS, inner 40%).
+`shadowBlur = 4 + glow×30` — lights up dramatically when the lantern arrives.
+Lantern: two-layer radial gradient (outer warm bloom + inner hot core).
+Build: 2.19 kB · `○ /dream/166-kids-lantern` (static).
+
+**What surprised me**:
+The quadratic falloff (`t*t` instead of linear `t`) dramatically improves the "lantern
+feels like light" quality. Linear falloff makes the illumination feel uniform and digital.
+Quadratic makes it feel like a real light source — bright at center, rapid falloff at edges.
+This also means the child has to get noticeably close to a star before it lights up, which
+makes the exploration/discovery feeling more pronounced.
+
+The ambient twinkle (3–4.5% opacity oscillating with a slow sin) is doing a lot of work.
+Without it, the dark canvas before first touch looks like a blank error screen. With it,
+the child can sense there's something in the darkness — shapes barely there — which creates
+genuine curiosity about what the lantern will reveal.
+
+**What's queued next**:
+- **Cycle 195 (adult, 195%2=1)** — Strong candidates from IDEAS queue:
+  `aria-companion` (Markov-chain piano dialogue, no ML, zero deps), `piano-roll`
+  (live scrolling piano roll from mic, autocorrelation pitch detection), or
+  `chord-canvas` (real-time chord name detection + color timeline). All one-cycle builds.
+  STATE.md Cycle 193 recommended `aria-companion`.
+- **Cycle 196 (kids, 196%2=0)** — Consider running a kids-focused research sweep
+  (Cycle 195 or 196) since the queue has now been empty for 3 kids cycles (190, 192, 194).
+
+---
+
 ## Cycle 193 — adult build: 165-cymatics (Chladni plate standing-wave patterns from audio — 25 resonant modes; recording-ID input drives mode selection from Karel's piano recordings)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)
