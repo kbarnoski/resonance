@@ -2363,3 +2363,152 @@ Key findings from Cycle 196 (2026-05-26) — kids research sweep:
 - **Embodied music for kids** (§217, IJMEC 2025) — full-arm gestures + immediate sound reinforced as gold standard. Validates ramp-drawing gesture.
 - **MIROR-Impro** (§218, 2017→2026 cited) — kids respond to reflexive music systems. Seeds `kids-echo-aria` as future idea.
 - **Priority build (Cycle 198 kids)**: `kids-marble-run` — most validated idea, most novel interaction (construction-first), directly inspired by Karel's loves.
+
+---
+
+## Research cycle — Cycle 203 (2026-05-26)
+
+### §219 — AI Harmonizer: Real-Time Vocal SATB Harmonization (NIME 2025, Jun 2025)
+**Source**: https://arxiv.org/abs/2506.18143 — AI Harmonizer: Expanding Vocal Expression with a
+Generative Neurosymbolic Music AI System. Blanchard, Holt, Paradiso. NIME 2025, Canberra.
+
+Real-time vocal harmonization: mic → Basic Pitch (open-source voice-to-MIDI, no external API) →
+Anticipatory Music Transformer → four-part SATB choral harmony generated without prior harmonic
+input from the user. "Anticipatory" model pre-generates the next bars so harmonies feel responsive.
+Choral texture: soprano + alto + tenor + bass, all auto-voiced to avoid voice crossing.
+
+Key for Resonance: a zero-dep browser version is achievable with autocorrelation pitch detection
+(already in sandbox) + three OscillatorNodes tuned to +4 / +7 / -12 semitones from detected pitch.
+The SATB-style HRTF spatialization (soprano upper-left, alto upper-right, bass below) makes the
+result feel choral rather than just chord-stacking. Four colored orbs arranged in a semicircle —
+user at center bottom — visualize the spatial formation.
+
+**Could become prototype**: `vocal-choir` — you sing a pitch; three harmony voices appear around you
+in 3D space. Zero deps, zero API, one cycle. Aligns with `148-spatial-palette` ❤️ love (spatial
+synthesis). First "choir" prototype in the sandbox. [Date: Jun 2025, NIME 2025 proceedings]
+
+### §220 — NeoLightning: 3D Gesture Sound Design via MediaPipe (ICMC 2025, May 2025)
+**Source**: https://arxiv.org/abs/2505.10686 — NeoLightning: A Modern Reimagination of Gesture-Based
+Sound Design. ICMC 2025, May 2025.
+
+Modernizes Don Buchla's Lightning (1990s IR gesture instrument) using MediaPipe Hands for 3D hand
+skeleton at 30fps, <30ms latency. Key insight: 3D hand pose as a 6-DOF control surface — not just
+X/Y but finger curl, wrist angle, hand velocity, palm spread. Bilateral asymmetry (left hand = one
+parameter set, right = another) enables continuous simultaneous control of independent parameters.
+"Depth-as-reverb" (hand scale → camera Z estimate → reverb decay) is highly intuitive.
+
+New vs. the `31-gesture-music` spec already in IDEAS.md: add depth-as-reverb mapping and
+bilateral asymmetry. Left wrist Y → bass drone pitch; right wrist Y → melody pitch; left palm Z →
+reverb decay; right palm Z → harmonic count; both wrist distance → stereo spread.
+
+**Updates `31-gesture-music` spec**. Confirms MediaPipe CDN approach is right. [Date: May 2025, ICMC]
+
+### §221 — Structure-Aware Piano Accompaniment via Style Plan (arxiv 2602.15074, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.15074 — Structure-Aware Piano Accompaniment via Style Planning
+and Dataset-Aligned Pattern Retrieval. Feb 16, 2026.
+
+Lightweight transformer predicts per-measure style plan (sparse/dense, legato/staccato,
+arpeggiated/block-chord) conditioned on section structure + functional harmony. Retriever selects
+human-performed patterns from a corpus and reharmonizes them. The style plan — a sequence of symbols
+like [sparse, legato] → [dense, arpeggiated] — is interpretable and visualizable as a timeline.
+
+Resonance relevance: the style plan VISUALIZATION is the novel part. A horizontal timeline strip
+showing "what kind of playing happened here" per section gives pianists structural feedback. Nothing
+like this exists in the sandbox — all existing prototypes show signal (FFT, pitch, tempo) but none
+analyze *compositional character* per section.
+
+**Could become prototype**: `score-structure` — mic → chord detection + density analysis → build a
+scrolling timeline grid. Each 4-bar section gets: chord label, density rating, register label.
+Accumulated view shows the *architecture* of Karel's improvisation. Zero deps. [Date: Feb 2026]
+
+### §222 — WebSplatter: 3D Gaussian Splatting in Browser via WebGPU (arxiv 2602.03207, Feb 2026)
+**Source**: https://arxiv.org/abs/2602.03207 — WebSplatter: Enabling Cross-Device Efficient Gaussian
+Splatting in Web Browsers via WebGPU. Feb 2026.
+
+First WebGPU framework for real-time 3D Gaussian Splat rendering in browser. Visual quality:
+objects appear as overlapping soft oriented ellipses that collectively form photorealistic scenes.
+Not particles, not meshes — oriented Gaussian densities with position/rotation/scale/color/opacity.
+Demo works on Chrome 120+ desktop and mobile at 30–60fps.
+
+The *visual language* of splatting is what matters for Resonance: soft, organic, photographic.
+All 173 existing prototypes use particles (points), fluid (density fields), 3D meshes, or 2D canvas.
+Oriented soft ellipses is qualitatively different — the same technique that makes photographs look
+volumetric is achievable in Canvas2D with oriented ellipses and screen-blend compositing.
+
+**Could become prototype**: `splat-bloom` — 500 Canvas2D oriented ellipses, audio-reactive. No
+WebGPU needed; Canvas2D + transform matrix. Bass = nearby splats bloom outward; treble = rotation
+drift; onset = scatter + coalesce. Zero deps, one cycle. [Date: Feb 2026, arxiv 2602.03207]
+
+### §223 — Voxtral Mini 4B + Web Speech API: Spoken-Word AV Control (Feb 2026)
+**Source**: https://huggingface.co/spaces/mistralai/Voxtral-Realtime-WebGPU — Voxtral Realtime WebGPU
+demo. Feb 2026. Mistral AI Apache 2.0.
+
+Voxtral Mini 4B runs entirely in browser via WebGPU+WASM (2.5GB quantized). 480ms latency.
+The concept for Resonance is more important than the specific model: spoken-word control of AV
+parameters. The simpler path: the browser-native Web SpeechRecognition API (zero model, zero deps,
+<50ms latency on Chrome) achieves the same control loop.
+
+Novel interaction: what if a pianist could SPEAK intent while playing? "Slower" → BPM decreases.
+"Ocean" → visual mode shifts. "Ghost" → theme activates. Live performance use: speak a scene name
+into a lapel mic before playing each piece. This closes the gap between conscious intent (language)
+and system state — all 173 prototypes are gestural but none respond to direct language commands.
+
+**Could become prototype**: `voice-scene` — Web Speech API → spoken scene token → AV mode switch.
+8 mode tokens (ocean / fire / ghost / rain / storm / forest / space / night), each with a distinct
+visual + ambient sound. Zero deps, zero API key. Chrome-only graceful fallback. [Date: Feb 2026]
+
+### §224 — MUTEK Montréal 2026: Sphaîra + Architectural Acoustics (announced May 2026)
+**Source**: https://montreal.mutek.org/en/news/mutek-montreal-announces-full-2026-lineup —
+MUTEK Montréal 2026 full lineup. Aug 25–30, 2026.
+
+Key for Resonance: **Sphaîra** (Sara Persico + Mika Oki) — draws from acoustic properties of Oscar
+Niemeyer's dome in Tripoli. Voice + architecture + light feedback loop: the dome's resonant modes
+shape the music; the music shapes the projected light. Core concept: the *room is an instrument*.
+Also: Noémi Büchi (Exuvie) — new electroacoustic + immersive spatial sound; drone aesthetic
+with architectural resonance. Confirms the "architectural drone" aesthetic has traction at the
+highest level of the AV art world.
+
+**Could become prototype**: `sdf-cave` — SDF ray-marching WebGL fragment shader renders a cave-like
+interior space. Bass = walls pulse; treble = ceiling deforms; centroid = color temperature. User
+is *inside* a space that responds to what they play. First prototype in sandbox where the viewer is
+inside the visual space rather than observing it. Zero new deps (inline GLSL). [Date: May 2026 ann.]
+
+### §225 — Revision 2026 Shader Showdown: SDF smin Audio-Reactive (Apr 2026)
+**Source**: https://www.shadertoy.com/view/ffXSRj — Revision 2026 Shader Showdown 2. Apr 8, 2026.
+
+Premier demoscene demoparty. 2026 Shader Showdown shaders on Shadertoy feature real-time SDF
+ray-marching with smooth-min (smin) blending — distance field primitives melt into each other
+rather than hard-intersecting. Audio-reactive uniforms drive the blend factor and noise displacement.
+Visual: surreal architectural spaces and organic forms, dark palette.
+
+Key technique: `smin(a, b, k)` where k is driven by bass energy → shapes melt together on bass
+hits and separate on silence. Creates organic rhythmic morphing that no particle/fluid simulation
+produces. Combined with domain repetition (infinite cave tunnels) and Blinn-Phong lighting in a
+deep-violet palette = visually stunning interior environment.
+
+**Also seeds `sdf-cave`** alongside §224. Fragment-shader-only: just `<canvas>` + inline GLSL
+string, zero external deps. [Date: Revision demoparty, Apr 2026]
+
+### §226 — Real-Time Gesture Control via MediaPipe Body Landmarks (arxiv 2504.19460, Apr 2026)
+**Source**: https://arxiv.org/abs/2504.19460 — A Real-Time Gesture-Based Control Framework. Apr 2026.
+
+MediaPipe PoseLandmarker (33 body joints at 30fps) → musical parameter control. Key finding:
+relative joint distances normalize better for live performance than absolute positions. Wrist-to-wrist
+distance, elbow-to-hip distance — these don't change with where you stand on stage. Velocity
+estimates (EMA of joint position deltas) give "gesture expressiveness" without gesture recognition.
+
+Non-linear mapping insight: small movements = fine control; large movements = dramatic effect.
+Achieved via a cubic curve: `param = movement³` for the low range + linear saturation above 0.7.
+
+**Updates `body-conductor` spec**: use relative joint distances instead of absolute Y. Add velocity
+as arousal estimator (fast movement → higher BPM + harmonic density). [Date: Apr 2026, arxiv 2504.19460]
+
+Key findings from Cycle 203 (2026-05-26) — adult research sweep:
+- AI Harmonizer (§219, NIME Jun 2025) — real-time vocal SATB harmony from mic. Seeds `vocal-choir`.
+- NeoLightning (§220, ICMC May 2025) — 3D gesture synthesis, depth-as-reverb. Updates `gesture-music`.
+- Structure-Aware Piano Accompaniment (§221, Feb 2026) — style plan visualization. Seeds `score-structure`.
+- WebSplatter (§222, Feb 2026) — Gaussian splat visual language, Canvas2D approach. Seeds `splat-bloom`.
+- Voxtral + Web Speech API (§223, Feb 2026) — spoken-word AV control, zero deps. Seeds `voice-scene`.
+- MUTEK 2026 Sphaîra (§224, May 2026) — architectural acoustics as instrument. Seeds `sdf-cave`.
+- Revision 2026 Shader Showdown (§225, Apr 2026) — SDF smin blending, audio-reactive. Also seeds `sdf-cave`.
+- Gesture-Based Control Framework (§226, Apr 2026) — relative joint distances. Updates `body-conductor`.

@@ -1958,3 +1958,125 @@ Key findings from Cycle 177 (2026-05-25) — adult research sweep:
 - I-Ching Music System (§212, May 2026 — freshest) — coin ritual → Lyria music. Inspires `150-ritual-compose`, highest-surprise build in the queue.
 - MiniMax Music 2.6 confirmed (§213, May 2026) — activates `arc-compose` plan.
 - ACE-Step 1.5 trending (§214, May 2026) — monitor fal.ai endpoint for silent upgrade.
+
+---
+
+## FROM RESEARCH (Cycle 203, 2026-05-26) — promoted to queue
+
+### vocal-choir — sing into mic → 3 auto-harmony voices appear in 3D space `[queued, zero deps, zero API]`
+Route: `/dream/174-vocal-choir`. Mic → autocorrelation pitch detection (same `detectPitch()` as
+`13-piano-canvas`) at 30Hz. On a stable detected pitch: spawn three `OscillatorNode`s tuned
+to +4 semitones (major third, violet), +7 semitones (perfect fifth, teal), and −12 semitones
+(bass octave, rose). Each voice run through a `GainNode(0.25)` + `StereoPannerNode` for basic L/R
+placement, then through a `PannerNode` (HRTF model) for 3D spatialization: M3 voice at azimuth
+−45° elevation +20°, P5 voice at +45° elevation +20°, bass at azimuth 0° elevation −25°. User voice
+= center. The four voices together form a choral SATB formation around the listener's head.
+
+Visual: dark canvas, 4 glowing orbs in a semicircle (user = bottom center, white; M3 = upper left,
+violet; P5 = upper right, teal; bass = lower center, rose). Orb radius scales with voice amplitude.
+A thin arc connects the 4 orbs. When the detected pitch shifts, all three harmony oscillators glide
+to their new target via `linearRampToValueAtTime(newFreq, now + 0.05)` — smooth 50ms portamento.
+Wear headphones: the choir wraps around you. On speakers: clear chord bloom.
+
+Demo mode: slow ascending pentatonic LFO oscillator self-plays so the choir is always active,
+showing 4 orbs orbiting around each other at the current pitch without requiring mic permission.
+
+"You sing one voice. Three more appear." First choir prototype in the sandbox. Different from
+`23-pitch-harmonize` (phase vocoder pitch-shift, same timbre, 1D shift) — this is additive
+synthesis at independent frequencies, giving genuinely distinct voices. Different from
+`7-spatial` (existing audio file source) — this uses your own voice as the root. Zero deps,
+zero API. One cycle. Inspired by §219 (AI Harmonizer, NIME 2025). Aligns with Karel's love of
+`148-spatial-palette` ❤️ (spatial synthesis) and `105-pluck-field` ❤️ (resonant harmonic synthesis).
+
+### sdf-cave — audio-reactive SDF ray-marching shader: an architectural space that breathes with sound `[queued, zero deps, zero API]`
+Route: `/dream/175-sdf-cave`. A WebGL fragment shader renders a cave-like interior space via SDF
+(signed-distance function) ray marching. No Three.js, no external deps — just a `<canvas>` with
+a `WebGLRenderingContext` and an inline GLSL shader string.
+
+SDF scene: three primitives combined with smooth-min blending:
+- A rounded box (cave room walls)
+- A torus (ceiling arch)
+- A series of stalactite columns (domain-repeated vertical capsules)
+Smooth-min `smin(a, b, k)` merges them organically; `k` is the key audio-reactive parameter.
+
+Audio mapping:
+- **Bass energy** → `k` (smin blend factor 0.1→0.8): walls melt together and separate rhythmically
+- **Treble energy** → Perlin-style noise displacement on the SDF: surface becomes rough, jagged
+- **Spectral centroid** → color temperature of the cave light (violet = deep bass, ice-blue = treble)
+- **Onset** → brief camera shake (translate ray origin ±0.03 for 2 frames)
+
+Lighting: single directional ambient point inside the cave (warm amber, dim, distance-attenuated).
+Dark palette: near-black stone + deep violet shadows + the centroid-driven color accent.
+
+Camera: slow orbital drift (0.005 rad/s) — the cave rotates lazily. Mic button stops the drift
+and lets the music drive the feel entirely. Demo oscillators (same as `10-strange`) fill in when
+no mic.
+
+"You are inside a space that breathes with your music." First prototype in the sandbox where the
+viewer is *inside* the visual space — 173 prior prototypes produce visuals *on* the canvas. SDF
+ray-marching is a completely new visual paradigm for the sandbox. Zero deps, zero API. One cycle.
+Inspired by §224 (MUTEK Sphaîra, architectural acoustics) + §225 (Revision 2026 Shader Showdown,
+SDF smin technique). Highest surprise factor of this research batch.
+
+### score-structure — the architecture of your improvisation, visualized `[queued, zero deps, zero API]`
+Route: `/dream/176-score-structure`. Mic → two simultaneous analysis streams:
+1. **Chord detection** (same 12-bin chroma + template match as `28-chord-canvas`): detect root + quality every 2 beats (≈2s at 60 BPM).
+2. **Density analysis**: count onsets per 2-second window via autocorrelation confidence peaks.
+
+Build a scrolling 2D grid (X = time, right-to-left, one column per 2-second window; Y = 12 pitch
+classes). Each detected chord fills a colored column cell: hue from root class (same pitch-class
+wheel as `1-live`), saturation from density (sparse = desaturated, dense = vivid), brightness from
+quality (major = warm, minor = cool). After 8 columns (16 seconds ≈ 4 bars), auto-label the section
+with a short tag: "Intro" (sparse + wide intervals), "Build" (density rising), "Climax" (dense +
+rapid chord changes), "Resolution" (consonant + slowing density), "Coda" (very sparse).
+
+Secondary display: a small "style bar" at the top shows the current section's character as 3
+horizontal gauges: Density (0-10 onsets/2s), Complexity (chord changes/min), Register (FFT spectral
+centroid low/high). The labels change in real time.
+
+"The architecture of your improvisation." First prototype to analyze musical *structure* rather
+than signal — all 175 prior prototypes visualize FFT, pitch, or timbre. This surfaces the
+compositional shape of what Karel is playing. Natural complement to `28-chord-canvas` (single chord),
+`24-piano-roll` (pitch history), and `22-code-score` (written score) — these four form a complete
+"four perspectives on your playing" suite. Zero deps, zero API. One cycle. Inspired by §221 (Style
+Plan visualization, arxiv 2602.15074).
+
+### splat-bloom — Gaussian-language audio-reactive visual field `[queued, zero deps, zero API]`
+Route: `/dream/177-splat-bloom`. 500 oriented Canvas2D ellipses, each defined by position (x, y),
+rotation (angle), scale (rx, ry with rx:ry ≈ 1:3–1:8 for elongated splat shape), opacity (0.3–0.7),
+and hue. Initial layout: Gaussian scatter around canvas center (σ = 0.2 × canvas width/height).
+Render: `ctx.save() → ctx.translate(x,y) → ctx.rotate(angle) → ctx.scale(rx,ry) → ctx.beginPath()
+→ ctx.arc(0,0,1,0,2π) → ctx.fillStyle = hsla(hue, 80%, 70%, opacity) → ctx.fill() → ctx.restore()`.
+`globalCompositeOperation = "screen"` (additive) so overlapping splats bloom rather than occlude.
+
+Audio mapping:
+- **Bass energy** → "bloom push": the 100 splats nearest to the canvas centroid scale outward (rx,ry
+  × 1 + bass × 0.6) and fade slightly (opacity − 0.15 × bass). Creates an outward bloom on bass hits.
+- **Treble energy** → slow rotation drift: all splats rotate += treble × 0.008 rad/frame. High treble
+  makes the field slowly swirl.
+- **Spectral centroid** → hue shift: all splat hues lerp toward warm (centroid > 2kHz = amber/rose)
+  or cool (centroid < 500Hz = violet/teal). Hue moves 1°/frame.
+- **Onset** → scatter burst: 50 random splats get velocity impulse (random direction, magnitude =
+  onset strength × 60px), then spring back to rest position over 90 frames (k=0.015 spring constant).
+
+Background: pure black (#000). The splats accumulate light additively to create a luminous,
+cloud-like field — like looking at a galaxy through a soft lens. Completely different visual quality
+from all existing prototypes (which are either hard points, fluid fields, or crisp geometry).
+
+Demo mode: 3-LFO oscillator demo signal auto-drives the mapping (no mic needed). Mic mode:
+`getUserMedia` → `AnalyserNode` → extract bass/treble/centroid/onset.
+
+"A painting that breathes." Different from `16-particle-life-gpu` (discrete particles with physics)
+and `3-fluid` (density field) — this is a *texture field*, a middle ground between particles and
+continuous media. Zero deps, zero API. One cycle. Inspired by §222 (WebSplatter, Feb 2026). Aligns
+with Karel's loves of `130-tsl-particle-compute` ❤️ and `153-paint-compose` ❤️.
+
+Key findings from Cycle 203 (2026-05-26) — adult research sweep:
+- AI Harmonizer (§219, NIME Jun 2025) — 3-voice vocal harmony from mic. Seeds `vocal-choir`.
+- NeoLightning (§220, ICMC May 2025) — 3D gesture synthesis, depth-as-reverb. Updates `gesture-music`.
+- Structure-Aware Piano Accompaniment (§221, Feb 2026) — style plan timeline. Seeds `score-structure`.
+- WebSplatter (§222, Feb 2026) — Gaussian splat Canvas2D technique. Seeds `splat-bloom`.
+- Voxtral + Web Speech API (§223, Feb 2026) — spoken-word AV control. Seeds `voice-scene`.
+- MUTEK 2026 Sphaîra (§224, May 2026) — architectural sound. Seeds `sdf-cave`.
+- Revision 2026 Shader Showdown (§225, Apr 2026) — SDF smin technique. Also seeds `sdf-cave`.
+- Gesture Control Framework (§226, Apr 2026) — relative joint distances. Updates `body-conductor`.

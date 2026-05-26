@@ -1,5 +1,60 @@
 # Dream Agent — cycle state
 
+## Cycle 203 — adult research sweep: 8 fresh findings across arxiv, fal.ai, MUTEK 2026, demoscene
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 203 % 2 = 1 → adult cycle. Skip.
+4. **Build new** — queue has multiple ready specs.
+5. **Research** — "haven't researched in 3+ cycles" triggered. Last sweep was Cycle 177 (26 cycles ago).
+   Cycle 202 STATE.md explicitly flagged: "adult research is 25 cycles overdue." Research wins over
+   building when the IDEAS queue is 26 cycles stale — a build from outdated queue material is
+   lower-value than refreshing the queue first. Freshness mandate applies.
+
+**Decision rationale**:
+- 26 cycles since last sweep (Cycle 177, 2026-05-25). The AGENT.md cadence is every 3-4 cycles. This
+  is ~7× overdue. A research cycle now unblocks higher-quality builds for the next 10+ cycles.
+- Love signal (19 loved prototypes): `148-spatial-palette` ❤️, `130-tsl-particle-compute` ❤️,
+  `105-pluck-field` ❤️, `153-paint-compose` ❤️, `138-lmdm-echo` ❤️. Strong signal: spatial synthesis,
+  GPU particles, physical modeling, and accumulating/transforming audio are the loved themes.
+  New seeds aligned with these directions.
+
+**Shipped**:
+- `docs/dreams/RESEARCH.md` — §219–226 appended (8 new dated entries from this cycle's sweep).
+- `docs/dreams/IDEAS.md` — 4 new prototype seeds added: `vocal-choir`, `sdf-cave`, `score-structure`,
+  `splat-bloom`. Plus updates to `gesture-music` spec (§220: depth-as-reverb, bilateral asymmetry).
+- `docs/dreams/STATE.md` — this entry.
+- `docs/dreams/MORNING.md` — fresh digest.
+
+**Research sources scanned**:
+- arxiv (eess.AS, cs.SD listings for 2026) — 8 papers reviewed
+- fal.ai releases April–May 2026 — 3 new models checked (Seedance 2.0, GPT Image 2, HappyHorse all
+  already in IDEAS queue; no new audio models since last sweep)
+- Hacker News — recent music/audio/generative-coding posts
+- MUTEK Montréal 2026 — full lineup announcement (Aug 25–30 event)
+- Shadertoy — Revision 2026 Shader Showdown featured shaders
+- MediaPipe / WebGPU community — 2026 confirmed baseline status
+
+**Loved prototypes influencing next-cycle pick**:
+- `148-spatial-palette` ❤️ → `vocal-choir` is a natural complement (spatial synthesis, HRTF, same paradigm)
+- `130-tsl-particle-compute` ❤️ → `splat-bloom` extends the "particles as AV material" love
+- `105-pluck-field` ❤️ → physical synthesis appreciated; confirms `vocal-choir` K-S-adjacent approach
+- `153-paint-compose` ❤️ → layered composition valued; `score-structure` shows composition's shape
+
+**Queued next**:
+- **Cycle 204 (kids, 204%2=0)** — kids cycle. Best seed: a new kids-echo-aria variant (simplified Markov
+  echo for young children with big colored circles, from KIDS.md §218). Or reseed with a simpler
+  fresh idea discovered this cycle. Check KIDS.md at build time.
+- **Cycle 205 (adult, 205%2=1)** — top adult build: `vocal-choir` (zero deps, first choir prototype,
+  aligns with spatial-palette + pluck-field loves, one cycle). Second choice: `sdf-cave` (highest
+  surprise factor — SDF ray-marching is a completely new visual paradigm). Third: `chord-canvas`
+  (music theory, no deps, one cycle, longest in queue without being built).
+
+---
+
 ## Cycle 202 — kids build: 173-kids-garden-bloom (hold soil to grow a musical flower; petal-per-note synthesis)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)
