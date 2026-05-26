@@ -1,5 +1,73 @@
 # Dream Agent — cycle state
 
+## Cycle 200 — kids build: 171-kids-snow-globe (tap to scatter snowflakes; each lands with a bell chime)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 200 % 2 = 0 → **kids cycle**. KIDS.md queue lists `kids-snow-globe` as the top
+   candidate after `kids-marble-run` (built Cycle 198). STATE.md from Cycle 198 explicitly named
+   `kids-snow-globe` as the Cycle 200 target. Build it now.
+
+**Decision rationale**:
+- `kids-snow-globe` is the next seed from the Cycle 196 research sweep — the first prototype where
+  LANDING is the musical event, not tap-down. 170 prior kids prototypes play note on gesture (tap,
+  drag, hold). Snow Globe plays note when physics resolves: the flake falls, the ground rings it.
+- This is the purest form of "delay-as-pedagogy": the child taps, watches, and then hears — cause
+  and effect separated by ~0.5–1.4 seconds of gravity.
+- Directly inspired by Karel's loves of `133-kids-ripple-pond` ❤️ (collision = note), `100-kids-paint-song` ❤️
+  (tap gesture = music), `152-kids-star-paint` ❤️ (dark sky aesthetic + sparkle bursts).
+- Contemplative, pre-sleep vibe — a genuine gap in the kids zone (most prototypes are reactive and
+  immediate; few reward patient watching).
+
+**Love signals influencing this cycle**:
+- `133-kids-ripple-pond` ❤️ — physics collision = musical event; same pedagogy inverted: landing instead of meeting
+- `100-kids-paint-song` ❤️ — tap gesture initiates musical consequence
+- `152-kids-star-paint` ❤️ — dark sky + sparkle burst visual language
+- `105-pluck-field` ❤️ — resonant bell/pluck sound from physical model analogy
+
+**Built**:
+- `src/app/dream/171-kids-snow-globe/page.tsx` — full snow-globe prototype (2.76 kB)
+  - Tap → burst of 5–8 snowflakes scatter from touch point with random horizontal spread
+  - Y of tap → pitch index: top = C4 (rose, high), bottom = C3 (violet, low); 5 pentatonic pitches
+  - Snowflake physics: gravity 0.16 px/frame, sinusoidal horizontal wobble (A=9–17px, ω=0.038–0.062 rad/frame)
+  - Landing (y ≥ H×0.88) → triangle-wave bell chime (τ=0.45s decay, ~1.5s ring) + 9-sparkle burst
+  - Hold-finger mode: emit 1 flake per 120ms for continuous snowfall (blizzard)
+  - Demo mode: 3.5s auto-snowfall from H×0.40 on first open (shows interaction before first touch)
+  - Background: deep navy gradient + 60 golden-ratio-distributed twinkling stars
+  - Ground glow: faint blue-white gradient at bottom 12% (snow accumulation feel)
+  - Ambient pad: C3+E3+G3 triangle waves at 0.003–0.005 gain (barely audible warm hum)
+  - Zero permissions · Zero API · Zero deps · 2.76 kB
+- `src/app/dream/171-kids-snow-globe/README.md` — design notes
+- `docs/dreams/INDEX.md` — Cycle 200 entry added
+- `docs/dreams/MORNING.md` — fresh digest
+
+**Build**: `npm run build` passed cleanly. `/dream/171-kids-snow-globe` = 2.76 kB. No errors in the
+new prototype file; all warnings are from pre-existing files.
+
+**What surprised me**:
+The sinusoidal wobble formula needed careful derivation. The correct continuous form is:
+`x(t) = x₀ + A × sin(ω × t)`, so per-frame: `dx = A × ω × cos(phase)` with `phase += ω`.
+This keeps the oscillation amplitude equal to `A` regardless of `ω`. An earlier draft used
+`sin(phase) × A × ω × 60` (with a * 60 scale) which would have made the snowflakes oscillate
+at 60× the intended frequency — visually jitter, not drift. The corrected formula gives the
+expected ±9–17px wobble over 1.7–2.7 second periods.
+
+Fall time math: `t = sqrt(2 × d / g)` where g=0.16 px/frame. From y=H×0.40 to y=H×0.88:
+d ≈ 0.48 × 800 = 384 px → t = sqrt(4800) ≈ 69 frames ≈ 1.15 s. Feels right.
+
+**What's queued next**:
+- **Cycle 201 (adult, 201%2=1)** — `loop-station` (4-slot live looper — highest live-performance
+  value in the adult queue; pure Web Audio, no API). Or `kids-garden-bloom` skip since it's a kids
+  build next cycle anyway. `loop-station` leads for Cycle 201.
+- **Cycle 202 (kids, 202%2=0)** — `kids-garden-bloom` (hold to grow musical flower, sustained hold
+  = growth = richer chord). Or `kids-raindrop-rhythm` (tap cloud to release raindrops, each plays
+  on landing). KIDS.md Cycle 196 seeds both. `kids-garden-bloom` leads.
+
+---
+
 ## Cycle 198 — kids build: 169-kids-marble-run (draw ramps, drop marbles, each bounce plays a KS pluck note)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

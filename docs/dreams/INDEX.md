@@ -10,7 +10,31 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 199 — adult build)
+## ⭐ Newest (Cycle 200 — kids build)
+
+- **[/dream/171-kids-snow-globe](/dream/171-kids-snow-globe)** — Snow Globe (kids). `demoable`
+  Tap anywhere on a dark night sky — a burst of 5–8 glowing snowflakes scatter from the touch
+  point and drift down with gentle sinusoidal wobble. **The note plays when the flake lands**, not
+  when you tap: a triangle-wave bell chime rings on touchdown, colored sparks burst at the landing
+  point. **Tap high on the screen → high note** (rose = C4); **tap low → low note** (violet = C3).
+  Five pitches across C-major pentatonic. Hold a finger for continuous snowfall ("blizzard mode").
+  Demo mode auto-rains from center-height for 3.5 s on first open — shows the mechanic before any
+  touch. 60 golden-ratio stars twinkle in the deep navy background. Faint snow glow at the ground.
+  Soft C3+E3+G3 ambient pad throughout.
+  **"First kids prototype where LANDING is the musical event — not the tap."**
+  170 prior kids prototypes play a note on gesture (tap-down, drag, hold). Snow Globe plays when
+  physics resolves: the child taps, watches the flake fall, then hears the ground ring. Cause and
+  effect are separated by ~0.5–1.4 s of gravity — the same delay-as-pedagogy principle that makes
+  `133-kids-ripple-pond` ❤️ so effective (two ripples meet → chord). The "high up = high note"
+  mapping is self-discovering: after one tap at the top and one at the bottom, a 3yo has the model.
+  Directly inspired by Karel's loves of `133-kids-ripple-pond` ❤️ (physics delay = music),
+  `100-kids-paint-song` ❤️ (tap gesture = music), `152-kids-star-paint` ❤️ (dark sky + sparkles).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.76 kB.
+  Design notes: `src/app/dream/171-kids-snow-globe/README.md`
+
+---
+
+## Previous (Cycle 199 — adult build)
 
 - **[/dream/170-spectral-morph](/dream/170-spectral-morph)** — Spectral Morph. `demoable`
   Drag the morph slider to blend the harmonic spectrum between two waveforms. 40 sine
