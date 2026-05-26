@@ -9737,3 +9737,55 @@ Anthropic cloud.
 - The /dream/1-live prototype is the quality bar. Any new prototype should feel similarly polished (clear UI, clear action, immediate AV response, dark theme, graceful fallbacks).
 - The `_shared/use-mic-analyser.ts` hook is reusable — prefer importing it over reimplementing the mic pipeline.
 - Karel reviews each morning at ~06:30 PT. If you finish a big thing right before then, leave a "review this first!" pointer at the top of INDEX.md.
+
+---
+
+## Cycle 199 — Spectral Morph
+
+**When**: 2026-05-26 UTC
+
+**Decided**: Adult cycle (199 % 2 = 1). No blockers; no in-progress work.
+MORNING.md queued `spectral-morph` for this slot. Love signal: 19 loved
+prototypes spanning particles, physical modeling, spatial audio, and
+accumulating visual artifacts. `153-paint-compose` ❤️ and `138-lmdm-echo` ❤️
+both involve audio-as-material-to-transform — spectral-morph fits that aesthetic.
+This is also the only remaining major audio paradigm not yet covered: resynthesis
+FROM the spectral domain (all prior prototypes use FFT for read-only analysis).
+
+**Built**:
+- `src/app/dream/170-spectral-morph/page.tsx` — 40-partial additive synthesizer
+  with per-harmonic amplitude blending. Morph slider 0→1 interpolates every
+  partial's amplitude simultaneously between Source A and Source B. Sources:
+  sawtooth / triangle / square / sine — all four waveforms represented as their
+  exact Fourier series (1/k, 1/k² odd, 1/k odd, k=1 only). The midpoint between
+  sawtooth and sine is acoustically real and distinct from both.
+- Canvas viz: three stacked bar charts showing Source A spectrum (dim), blended
+  spectrum (bright, updates live), Source B spectrum (dim). Same violet→magenta
+  palette as `1-live`. Background tint on the middle strip for visual hierarchy.
+- `src/app/dream/170-spectral-morph/README.md` — design notes, source formulae,
+  polish ideas.
+- Build: ✅ clean (`/dream/170-spectral-morph` — 2.79 kB, `○ Static`).
+
+**Loved prototypes influencing this pick**:
+- `153-paint-compose` ❤️ — audio as material to shape (painting = composing)
+- `138-lmdm-echo` ❤️ — transforming audio signal into something new
+
+**Queued next**:
+- Cycle 200: **kids build** (200 % 2 = 0). `kids-snow-globe` from MORNING.md queue:
+  tap to scatter snowflakes that play soft bell notes when they land. Landing = note
+  (not tap-down). Contemplative, pre-sleep vibe. Check KIDS.md for spec.
+- Cycle 201: adult. Consider `loop-station` (`121-loop-station` may already exist —
+  check INDEX before starting). If taken, next from IDEAS queue: `aria-companion`
+  variants or `spectral-morph` polish (mic mode for Source A).
+
+**Notes**:
+- Chose additive synthesis (N=40 OscillatorNodes) over AudioWorklet + FFT resynthesis.
+  Reason: AudioWorklet FFT in a single cycle is risky (custom radix-2 FFT in JS, no
+  native AudioWorklet FFT API). The additive approach gives identical perceptual
+  results for discrete waveform sources and is zero-risk for build. The result IS
+  genuine spectral morphing — amplitude per harmonic partial interpolated independently.
+- The harmonic series formulas (sawtooth=1/k, triangle=1/k² odd, square=1/k odd)
+  are exact Fourier expansions, not approximations. The blended waveform exists
+  in the mathematical sense between the two.
+- 22 adult cycles since last research sweep (Cycle 177). Consider Cycle 201 as a
+  research cycle if no specific build is queued.

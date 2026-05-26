@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 198 — kids build)
+## ⭐ Newest (Cycle 199 — adult build)
+
+- **[/dream/170-spectral-morph](/dream/170-spectral-morph)** — Spectral Morph. `demoable`
+  Drag the morph slider to blend the harmonic spectrum between two waveforms. 40 sine
+  partials (harmonics of C3) are amplitude-interpolated independently — at 50% you hear
+  a genuine acoustic hybrid between, say, a sawtooth and a sine: a timbre that exists
+  between them, not a volume crossfade. Three stacked bar charts show Source A (dim),
+  the live blend (bright), and Source B (dim) in real time as you drag. Source picker:
+  Sawtooth / Triangle / Square / Sine for both A and B — mix any two.
+  **"The first sandbox prototype to synthesize audio from spectral manipulation, not just
+  analyze it."** 169 prior prototypes use FFT for read-out (AnalyserNode) — this one uses
+  it as a compositional parameter: the harmonic amplitude vector IS the instrument.
+  Formulas are exact Fourier series (sawtooth=1/k, triangle=1/k² odd k, square=1/k odd k).
+  Inspired by Karel's loves of `153-paint-compose` ❤️ and `138-lmdm-echo` ❤️ (audio as
+  transformable material). Zero deps · Zero API · Zero permissions · 2.79 kB.
+  Design notes: `src/app/dream/170-spectral-morph/README.md`
+
+---
+
+## Previous (Cycle 198 — kids build)
 
 - **[/dream/169-kids-marble-run](/dream/169-kids-marble-run)** — Marble Music (kids). `demoable`
   Draw glowing colored ramps on a dark canvas — then drop marbles and watch them fall,
