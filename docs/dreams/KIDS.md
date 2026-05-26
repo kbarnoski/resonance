@@ -853,3 +853,171 @@ Build `kids-kalimba` — one-cycle build, zero deps, zero API, highest learning 
 - "Does Music Training Improve Inhibition Control in Children?" (biorxiv 2023.02.08) — meta-analysis on early childhood music + executive function
 
 (Agent: extend this list with each kid-cycle's research. Use `WebSearch` filtered to the current year.)
+
+---
+
+## New seeds — Cycle 196 research sweep (2026-05-26)
+
+These four ideas come from the Cycle 196 kids research sweep. All are zero-permissions, zero-API,
+zero-deps. All follow KIDS.md design principles. Recommended build order: marble-run first (strongest).
+
+### `kids-marble-run` ✦ **top priority — build Cycle 198**
+**Question**: what if the child draws the musical machine, and the machine plays itself?
+
+A dark canvas with pre-loaded demo ramps (glowing colored lines, each color = pitch). A "Drop 🎵"
+button at the bottom launches a glowing marble from a random top position. Marbles fall with gravity,
+bounce off ramps, and play a pentatonic note on each bounce. Pitch = Y position of the ramp midpoint
+(ramps higher on screen play higher notes — intuitive physical analogy). Child draws new ramps by
+dragging finger across the canvas (drag >30px = new ramp). Ramp flash-glow on marble hit. Marbles
+auto-launch every 4 seconds so the canvas is always alive. "Clear" button resets ramps + marbles.
+Max 10 ramps, max 6 marbles. Trail behind each marble. C-major pentatonic: C3–E4 (6 pitches). For
+kids 4+. Three demo ramps pre-loaded so it's immediately playable.
+
+**Why this first**: no existing kids prototype lets the child BUILD a machine that then plays music
+autonomously. All prior prototypes are reactive (tap = note). This one is constructive: design first,
+then watch. The marble-run mechanic is culturally validated (BooSnoo 2026, Sago Mini Music Machine 2026,
+Wintergarten Marble Machine viral videos, Snapchat Marble Run Music). The draw-your-own-ramps interaction
+is the novel piece no existing app offers. Directly inspired by Karel's love of `105-pluck-field` ❤️
+(physical modeling = immediate note), `133-kids-ripple-pond` ❤️ (physics makes music), `100-kids-paint-song`
+❤️ (drawing = music). Zero permissions · Zero API · Zero deps.
+
+### `kids-snow-globe`
+**Question**: what if snowflakes played notes when they landed?
+
+Tap anywhere on a dark night canvas → a burst of 5–8 glowing snowflakes scatter from that point with
+slight random drift, then fall with gravity. Each snowflake is one of 5 pentatonic pitches (mapped to
+the Y position where the finger tapped: top-tap = high pitch, bottom-tap = low pitch). When a snowflake
+reaches the "ground" (bottom 12% of canvas), it plays its note as a soft bell chime (triangle wave +
+quick attack + 1.5s decay) and dissolves in a tiny sparkle. Hold a finger = continuous snowfall from
+that point (one flake every 100ms). Snowflakes have a gentle sinusoidal left-right drift as they fall
+(±12px amplitude). For kids 3+. No scoring, no fail state — just peaceful falling snow and soft notes.
+Ambient C3+E3+G3 pad throughout. Background: deep navy, barely visible tiny star dots (same as
+`152-kids-star-paint` background stars). Demo mode: holds a finger at mid-height for 3 seconds on
+first open, then releases — shows the interaction model before first touch.
+
+**Why**: contemplative, pre-sleep vibes. First kids prototype where LANDING is the musical event
+(all prior prototypes play note on tap-down, not on landing). Teaches cause-and-effect with a
+time delay (~0.5s for snowflake to fall). Novel physics: gravity as the "wait" in the cause-effect
+chain. Zero permissions · Zero API · Zero deps.
+
+### `kids-garden-bloom`
+**Question**: what if growing a flower was the same as playing a note?
+
+Dark soil at the bottom of the canvas, twilight sky gradient above. Hold a finger anywhere on the
+soil strip → a glowing seed appears, then a stem grows upward at ~15px/s, then petals unfold one by
+one (each petal = one note, triangle wave, pitch rising per petal). Hold for 2s = 3 petals + short chord.
+Hold for 4s = 5 petals + richer chord. Release mid-growth = flower stays at current height and loops
+its chord softly. X position of finger = flower color + timbre zone:
+- Left (violet) = piano timbre (triangle wave, fast attack)
+- Center-left (amber) = bells (triangle + 2nd harmonic, warm decay)
+- Center-right (teal) = plucked string (Karplus-Strong simplified)
+- Right (rose) = pad (sine, slow 70ms attack)
+Y position doesn't matter — only X for pitch class and timbre.
+
+Up to 6 flowers coexist. When the 6th flower blooms, all flowers play their notes simultaneously (a
+gentle 6-voice chord) and then slowly sway in virtual wind (sinusoidal drift). After 12 more seconds
+they all fade, and the garden resets. Ambient soft wind layer (white noise through lowpass 180Hz).
+Demo mode plants a violet flower and a rose flower at startup (no touch needed to see the mechanic).
+For kids 3+ · Zero permissions · Zero API · Zero deps.
+
+**Why**: new gesture type for the kids zone — SUSTAINED HOLD = growth. All 166 prior kids prototypes
+trigger on tap-down or tap-and-drag. This one rewards patience (hold longer = more petals = richer chord).
+The garden-fill-then-reset arc gives a clear narrative: plant, grow, chord, fade, repeat.
+
+### `kids-raindrop-rhythm`
+**Question**: what if catching raindrops made music?
+
+Three colored clouds at the top of the canvas (violet, amber, rose — always visible, gently animated
+with slow pulsing breath). Tap any cloud to release a burst of 3–5 raindrops in that cloud's color.
+Drops fall with gravity and gentle sine drift. At the bottom: a soft floor of "water" that ripples
+when drops land. Each drop plays its note when it hits the floor (color = pitch: violet=C3, amber=G3,
+rose=C4). Multiple drops from different clouds = automatic harmony (pentatonic = always consonant).
+Hold a cloud = continuous rain (one drop per 200ms). Drops make a small ripple animation on the floor
+(expanding circle, fades over 600ms). Second interaction: drag the floor level up or down (hold and
+drag) to change the "catch" zone — fun but musically irrelevant, pure tactile play.
+
+Auto-rain: each cloud emits one drop every 3 seconds autonomously so the canvas is never silent.
+For kids 3+ · Zero permissions · Zero API · Zero deps.
+
+**Why**: new interaction paradigm — the child SENDS rather than RECEIVES. Tapping a cloud is an action
+that causes a consequence below (different from ripple-pond where the child taps the floor to make ripples).
+Gravity adds delay between action and sound. Three simultaneous cloud colors = three-voice polyphony
+from one gesture. Extends `133-kids-ripple-pond` ❤️ (landing = event) into downward flow.
+
+---
+
+## Research log for Kids — Cycle 196 (2026-05-26)
+
+**Scope**: Kids-focused research sweep. Scanned: new kids music apps (2026), CHI 2026 proceedings,
+Toca Boca / Sago Mini releases, physics-based music toys, embodied music research.
+
+### Key findings
+
+**Sago Mini Music Machine** (2026 — Sago Mini World update):
+- Kids can "tinker with tunes" and "make their own musical masterpieces" in a Music Machine mini-game
+  within Sago Mini World. Machines as music-making metaphor is actively being explored by the industry.
+- Validates `kids-marble-run` design space. Our version is differentiated: free-draw ramps (Sago Mini's
+  machine is likely pre-built/node-based). The draw-your-own-machine interaction is genuinely novel.
+
+**BooSnoo** (2026 — animated show):
+- A slow, calming show following a red ball triggering art, mechanics, and music in a "Rube Goldberg
+  meets marble run" format. Target audience: young children. Demonstrates that marble-run + music is
+  a proven format for kids media in 2026 — not just a niche concept.
+- The "slow and calming" tone matches Resonance Kids' design philosophy (no sudden transients,
+  parent-tolerable). Our `kids-marble-run` should preserve this: soft bounce sounds, not percussive cracks.
+
+**Marble Run Music popularity** (Snapchat / YouTube, 2026):
+- "Marble Run Music Videos" is a searchable Snapchat topic. Multiple YouTube channels dedicated to
+  marble-run music. This is an active 2026 content genre for kids and parents.
+- Cultural confirmation that `kids-marble-run` has an existing audience who will instantly
+  understand the concept.
+
+**Wintergarten Marble Machine** (viral reference):
+- The original physical marble-run-as-xylophone (2016, Martin Molin) has millions of views and is
+  still referenced in "2026 music machine" search results. The marble → xylophone analogy is culturally
+  established. Our prototype inherits this understanding without needing to explain it.
+
+**BeSound** (Dalcroze embodied music for kids, IJMEC 2025):
+- Recent Dalcroze-inspired research confirms that embodied whole-body movement + music creation is
+  the gold standard in early music education. Browser implementation: canvas-gesture-as-instrument
+  already matches this paradigm. Our ramp-drawing gesture (full-arm sweep across iPad) is embodied.
+- Also supports: motion-based interactions (swipe, hold, drag) over point-and-click.
+
+**MIROR-Impro** (CHI history reference, 2025 NIH citation):
+- A system that "mirrors" children's keyboard improvisations with repetitions and variations — similar
+  to `aria-companion` conceptually. Kids responded positively to being "listened to and echoed."
+- Future seed: a kids version of Aria — smaller phrases, simpler responses, more visual feedback.
+  Could be `kids-echo-aria`: child taps 3-4 notes, system echoes + extends. Simpler than full aria.
+
+**PianoBand** (CHI 2026, April 2026):
+- Wristband + printed keyboard sheet for portable piano: 99%+ tap detection accuracy, 8.9px fingertip
+  error. Not browser-feasible (requires hardware). But confirms that music researchers are actively
+  working on accessible piano interaction for all ages.
+- Not a prototype seed, but worth noting: the "print a keyboard anywhere" concept could inspire a
+  future `kids-paper-piano` prototype that uses the camera (MediaPipe) to detect finger taps on a
+  real surface.
+
+### Design learnings applied to new seeds
+
+1. **Construction-first** (vs reaction-first): `kids-marble-run` is the only kids prototype where
+   the child designs before the music plays. Prior prototypes are all reactive or performance-based.
+
+2. **Delay-between-gesture-and-note** as pedagogy: `kids-snow-globe` (0.5s fall delay) and
+   `kids-raindrop-rhythm` (gravity delay) teach cause-effect with temporal separation — the same
+   mechanism that makes `133-kids-ripple-pond` ❤️ educational: you tap, then something happens,
+   then something else happens.
+
+3. **Calmer, more contemplative**: The 2026 kids media landscape (BooSnoo, Yoto screen-free audio)
+   shows appetite for *slow, calming* kids experiences alongside fast-reaction ones. `kids-garden-bloom`
+   and `kids-snow-globe` are the calmer end of the spectrum; `kids-marble-run` can go either way.
+
+4. **BANDIMAL principle still gold**: bar-height-to-pitch rule (bigger = lower, smaller = higher) remains
+   the most teachable single physical-to-musical mapping. Applied in `kids-marble-run` via ramp Y position
+   (higher ramp = higher note = intuitive because the marble needs to fall less distance for the high note).
+
+### Next kids cycle (Cycle 198) recommendation
+
+Build `kids-marble-run`. It's the strongest idea: culturally validated, design-space gap confirmed,
+zero deps, one-cycle build, directly inspired by Karel's loves of `105-pluck-field` ❤️ and
+`133-kids-ripple-pond` ❤️. The pre-loaded demo ramps + auto-launch ensure it's immediately playable
+without any instruction. Expected size: ~250-300 lines.

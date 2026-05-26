@@ -2283,3 +2283,83 @@ Key findings from Cycle 177 (2026-05-25) — adult research sweep:
 - **MiniMax Music 2.6** (§213, May 2026) — confirmed on Replicate, auto-lyrics feature added. Activates `arc-compose` plan.
 - **ACE-Step 1.5** (§214, May 2026 trending) — open-source UI trending at 3,952 stars; fal.ai endpoint may have upgraded silently.
 - **Priority build next adult cycle (179)**: `150-ritual-compose` — I-Ching → Lyria. Highest surprise, uses FAL_KEY already in use, one-cycle build, fully transcendent.
+
+---
+
+## Cycle 196 — Kids research sweep (2026-05-26)
+
+### §215 — Sago Mini Music Machine (2026)
+**Source**: https://sagomini.com/apps — Sago Mini World update catalog, May 2026 observation
+
+Sago Mini World's 2026 updates include a "Music Machine" mini-game where kids can "tinker with tunes,
+add new sounds, and make the songs their own." This is a construction-based music mechanic — distinct
+from Toca Band's character-tap approach. Kids interact with a machine that makes music, not characters
+that perform. The app is part of the Piknik subscription bundle (Toca Boca + Sago Mini + Originator).
+
+**Resonance fit**: Validates the `kids-marble-run` design space. Confirms that construction-first
+music interaction (build the machine → watch it play) is a direction the major players are pursuing
+in 2026. Our differentiation: free-draw ramps on a canvas vs. fixed machine nodes. The physical marble
+metaphor is stronger for kids than abstract node-based sequencing.
+
+**Could become prototype**: Directly activates `kids-marble-run` (route `/dream/168-kids-marble-run`).
+Draw ramps → marbles fall → bounce = notes. One-cycle build. Zero deps. [Date: May 2026 observed]
+
+### §216 — BooSnoo (2026 — Rube Goldberg meets marble run for kids)
+**Source**: https://www.boosnoo.com — BooSnoo show website, 2026
+
+BooSnoo is described as "a show that follows a red ball, as it triggers art, mechanics, music and
+sensory moments in a calming, slow Rube Goldberg meets marble run format." Designed for young children.
+The "calming, slow" descriptor is significant — most marble-run content is high-tempo and chaotic.
+BooSnoo proves that a slow, deliberate marble-run aesthetic works specifically for young children.
+
+**Resonance fit**: Reinforces the `kids-marble-run` prototype concept AND the production aesthetic.
+The Resonance version should feel calm: soft bounce sounds (triangle wave, not sharp percussion),
+gentle marble trails, ambient pad underneath. Not a high-energy action game — a meditative machine.
+
+**Could become prototype**: Further validates `kids-marble-run` as the top priority seed. The
+"calming, slow" tone specifically matches Resonance Kids' design language. [Date: 2026 observed]
+
+### §217 — Embodied Music for Kids (Dalcroze, IJMEC 2025–2026)
+**Source**: https://intellectdiscover.com/content/journals/10.1386/ijmec_00011_1 — International Journal
+of Music Education in Childhood, 2025 issue
+
+Recent Dalcroze-inspired research confirmed that embodied learning (whole-body gesture + music creation)
+is the gold standard for early childhood music education. The specific study analyzed a project where
+students made music videos using tablets, combining movement + music. Tablets "served as easy and
+manageable digital tools for meaning-making and multimodal expression."
+
+**Resonance fit**: Validates our core design philosophy (gesture-as-instrument, full-canvas interaction).
+The research specifically supports: (1) full-arm gestures (like drawing a ramp across the full iPad
+screen) over small tap targets; (2) immediate sound feedback from movement; (3) multi-sensory (visual
++ audio + motor) reinforcement. All three are central to our kids zone design.
+
+**Could become prototype**: Doesn't directly seed a new prototype, but reinforces existing direction.
+The `kids-marble-run` ramp-drawing gesture is a full-arm sweep — embodied in the Dalcroze sense.
+[Date: IJMEC 2025, accessed May 2026]
+
+### §218 — MIROR-Impro: Reflexive Music System for Children (CHI history, NIH 2025)
+**Source**: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5266797/ — Child-Computer Interaction
+at Beginner Stage of Music Learning, PMC 2017 (still actively cited in 2025–2026 kids music HCI)
+
+The MIROR-Impro system allows children to improvise on a keyboard and receive a "reflexive" response —
+the system mirrors their inputs with repetitions and variations. Children showed increased musical
+engagement and improvisation willingness when the system responded to them vs. pre-programmed music.
+The reflexive interaction model directly validates the `aria-companion` design for adults.
+
+**Resonance fit**: Suggests a kids version of aria-companion would be well-received. Children
+specifically respond well to being "listened to and echoed" — the core mechanism of `167-aria-companion`.
+A simplified kids version: child taps 3–4 big colored circles → system echoes + extends with a Markov
+bigram → pentatonic round-trip. Simpler visuals than the piano-roll, bigger tap targets.
+
+**Could become prototype**: `kids-echo-aria` — child taps 3–4 colored circles (C3/E3/G3/A3/C4);
+after 1.5s silence, the same colors light up in a new order (Markov bigram response). Visual: the
+tapped circles flash in sequence. No piano roll — just colors and sounds. Zero deps. For kids 4+.
+This is weaker than `kids-marble-run` for the next cycle but worth seeding. [Date: first published
+2017, actively cited in 2025–2026 kids music HCI research]
+
+Key findings from Cycle 196 (2026-05-26) — kids research sweep:
+- **Sago Mini Music Machine** (§215, May 2026) — construction-based music machine in Sago Mini World. Validates `kids-marble-run`.
+- **BooSnoo** (§216, 2026) — calming slow Rube Goldberg + marble run show for kids. Aesthetic match for `kids-marble-run`.
+- **Embodied music for kids** (§217, IJMEC 2025) — full-arm gestures + immediate sound reinforced as gold standard. Validates ramp-drawing gesture.
+- **MIROR-Impro** (§218, 2017→2026 cited) — kids respond to reflexive music systems. Seeds `kids-echo-aria` as future idea.
+- **Priority build (Cycle 198 kids)**: `kids-marble-run` — most validated idea, most novel interaction (construction-first), directly inspired by Karel's loves.
