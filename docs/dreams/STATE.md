@@ -1,5 +1,70 @@
 # Dream Agent — cycle state
 
+## Cycle 193 — adult build: 165-cymatics (Chladni plate standing-wave patterns from audio — 25 resonant modes; recording-ID input drives mode selection from Karel's piano recordings)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 193 % 2 = 1 → **adult cycle**, skip kid rule.
+4. **Build new** — IDEAS.md has many unbuilt queued entries.
+
+**Decision rationale**:
+- AGENT.md directive (2026-05-21): "Incorporate Karel's actual music from the Paths. Build
+  prototypes that USE his real piano tracks as the audio source." `165-cymatics` accepts
+  a Resonance recording ID → `/api/audio/[id]` → real-time Chladni mode selection from
+  Karel's actual piano recordings. Direct fulfillment.
+- Conceptual resonance (pun intended): "Resonance" = acoustic resonance = Chladni figures.
+  This prototype visualizes the exact phenomenon the app is named after. The delay in
+  building it is embarrassing in retrospect — it should have been prototype 1.
+- Zero new dependencies, zero API calls, zero budget. 300×300 ImageData updated at ~60fps
+  with pure sine + cosine math per pixel. One-cycle build.
+- Surprised that an existing `/dream/19-cymatics` prototype already exists, but checked the
+  build output — it's a different (older) implementation. This `165-cymatics` is independent.
+
+**Love signals influencing this cycle**:
+- `138-lmdm-echo` ❤️ — Karel's piano phrase analyzed + echoed; this extends to full
+  recordings driving pattern selection.
+- `84-wave-fluid` ❤️ — fluid physics as visual. Chladni standing waves are the related cousin.
+- `105-pluck-field` ❤️ — physical modeling synthesis; Chladni is physical acoustics made visual.
+
+**Built**:
+- `src/app/dream/165-cymatics/page.tsx` — interactive Chladni plate prototype (3.75 kB)
+- `src/app/dream/165-cymatics/README.md` — design notes + polish ideas
+
+**What it does**:
+Canvas 300×300 (CSS-scaled to max 480px). Each pixel computed as:
+  `Z(x,y) = |sin(mπx)sin(nπy) + sin(nπx)sin(mπy)|`
+Normalized, then painted: `brightness = Z² × amplitude`. Color = dominant FFT band
+(sub-bass→violet, bass→cyan, lo-mid→emerald, mid→yellow, hi-mid→orange, high→rose).
+
+Demo mode: OscillatorNode sweeps from 55Hz (mode 1,1) through 25 modes at 3.5s each.
+Oscillator → AnalyserNode (full amplitude for analysis) → masterGain(0.07) → speakers.
+
+Recording mode: recording UUID → `/api/audio/[id]` → signed URL → `<audio crossOrigin=
+"anonymous">` → MediaElementAudioSourceNode → AnalyserNode → destination. Peak FFT bin
+→ `findMode()` (nearest Chladni eigenfrequency) → pattern switch (1s cooldown).
+
+**What surprised me**:
+The symmetric combination `sin(mπx)sin(nπy) + sin(nπx)sin(mπy)` produces much richer
+patterns than the pure `sin(mπx)sin(nπy)` alone — the superposition creates diagonal
+symmetry for asymmetric modes (m ≠ n). Mode (2,3) is a 6-petaled flower; (3,5) is an
+asymmetric star with 15 cells. All from two lines of math.
+
+Also: there was already a `/dream/19-cymatics`. Different approach (the old one likely
+uses a 2D wave simulation PDE rather than eigenmode analytic formula). Both are valid.
+
+**What's queued next**:
+- **Cycle 194 (kids, 194%2=0)** — KIDS.md queue is empty. Either (a) build from first
+  principles (as Cycle 192 did), or (b) run a kids-focused research sweep to refill.
+  Leaning toward (b) since the queue has been empty for 2+ cycles.
+- **Cycle 195 (adult, 195%2=1)** — Strong candidate: `aria-companion` (turn-taking piano
+  AI companion: mic → Markov-chain response after silence, split piano roll display).
+  No ML, no deps, high surprise factor per Karel's priorities.
+
+---
+
 ## Cycle 192 — kids build: 164-kids-pendulum-harp (five swinging pendulums; each plucks a pentatonic note at the bottom of its arc; different lengths = emergent polyrhythm)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

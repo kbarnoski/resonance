@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 192 — kids build)
+## ⭐ Newest (Cycle 193 — adult build)
+
+- **[/dream/165-cymatics](/dream/165-cymatics)** — Cymatics. `demoable`
+  Chladni plate standing-wave patterns from audio. Each audio frequency resonates a
+  distinct nodal-line pattern on a virtual square plate. 25 modes from simple (1,1) to
+  complex (5,5) — a four-lobed cross, six-petaled flower, 50-cell symmetric grid.
+  **Demo mode** sweeps a sine oscillator through all 25 modes at 3.5 s each; the pattern
+  transforms continuously. **Recording mode** accepts a Resonance recording UUID →
+  `/api/audio/[id]` → Karel's actual piano recordings drive mode selection in real time.
+  Color follows the dominant FFT band (violet=bass, cyan=low-mid, emerald=mid, amber=high).
+  **"Chladni figures are the literal physics behind the name 'Resonance.' This is what
+  the app is named for — acoustic standing waves made visible."**
+  Inspired by `138-lmdm-echo` ❤️ (Karel's recordings as audio input), `84-wave-fluid` ❤️
+  (fluid physics visuals), `105-pluck-field` ❤️ (physical modeling). Fulfills AGENT.md
+  directive: "let his existing music be the input."
+  Zero permissions (demo) · Recording-ID input · Zero new deps · 3.75 kB.
+  Design notes: `src/app/dream/165-cymatics/README.md`
+
+---
+
+## Previous (Cycle 192 — kids build)
 
 - **[/dream/164-kids-pendulum-harp](/dream/164-kids-pendulum-harp)** — Pendulum Harp (kids). `demoable`
   Five glowing pendulums hang from a bar at the top of a dark canvas. Each pendulum

@@ -1,37 +1,38 @@
-# Morning digest — last updated 2026-05-26 UTC (Cycle 192)
+# Morning digest — last updated 2026-05-26 UTC (Cycle 193)
 
 ## New since yesterday
 
-- **[/dream/164-kids-pendulum-harp](https://getresonance.vercel.app/dream/164-kids-pendulum-harp)**
-  — Pendulum Harp (kids). Five glowing pendulums, each a different note. They swing
-  on their own — tap any pendulum to push it. The five different lengths create an
-  emergent polyrhythm before you've touched anything. Lower notes swing slower on
-  longer strings (BANDIMAL: bigger = lower). Sparkle burst on each pluck.
-  **Why open this**: it's the first kids prototype where physics sets the rhythm, not
-  the child's timing. Try tapping all five and watching the pattern drift apart.
+- **[/dream/165-cymatics](https://getresonance.vercel.app/dream/165-cymatics)**
+  — Cymatics (adult). Chladni plate standing-wave patterns driven by audio.
+  Hit "Demo" and watch the plate morph through 25 resonant modes — a four-lobed
+  cross (1,1) → six-petaled flower (2,3) → 50-cell symmetric grid (5,5) — over ~87
+  seconds. Or paste a recording ID and your piano recordings drive the mode selection
+  in real time: sustained bass notes lock into low modes, melodic runs drift through
+  mid-complexity shapes.
+  **Why open this**: Chladni figures ARE what Resonance is named for — acoustic
+  resonance made visible. This is the literal physics of the app's name. The patterns
+  are beautiful and the math is surprisingly simple (two sine products per pixel).
 
-- **[/dream/163-paths-visualizer](https://getresonance.vercel.app/dream/163-paths-visualizer)**
-  — Paths Visualizer (Cycle 191, adult). Lorenz attractor responding to your actual
-  piano recordings via `/api/audio/[id]`. Enter a recording ID → your music drives the
-  attractor trail in real time.
+- **[/dream/164-kids-pendulum-harp](https://getresonance.vercel.app/dream/164-kids-pendulum-harp)**
+  — Pendulum Harp (kids, Cycle 192). Five glowing pendulums, each a different note.
+  Physics sets the rhythm — the child just pushes.
 
 ## In progress / partial
 
-Nothing currently in-progress. Both recent cycles reached `demoable` status cleanly.
+Nothing in-progress. Both cycles reached `demoable` cleanly.
 
 ## Research findings worth a look
 
-- KIDS.md queue is now empty (all seeded ideas built through Cycle 192). Cycle 194 is
-  the next kids cycle (194%2=0). Before then, a kids research sweep would seed 3+ ideas.
-  Adult queue is also getting thin — recommend a combined research cycle at Cycle 193.
-- Possible Cycle 193 adult build if skipping research: Chladni standing-wave patterns
-  (cymatics) responding to your recordings from `/api/audio/[id]`.
+- KIDS.md queue is empty. Cycle 194 (194%2=0) is the next kids cycle. If you want
+  kids ideas beyond first-principles, I should run a research sweep before then.
+- Adult IDEAS queue has ~15+ queued entries (piano-roll, chord-canvas, aria-companion,
+  loop-station, spectral-morph, mood-xy, etc.) — no research sweep needed yet.
 
 ## Open questions for Karel
 
-- **Pendulum Harp**: want mic input added so pendulums get pushed by loud sounds?
-  Currently zero permissions — easy polish cycle to add.
-- **KIDS.md queue**: any ideas for the next kids prototype? Original seeded list is
-  exhausted. I can research or build from first principles (as this cycle did).
-- **Cycle 193 direction**: extend `163-paths-visualizer` with your 13-track Welcome
-  Home list (click to load), OR build Chladni cymatics, OR research sweep?
+- **Cymatics**: want mic input added? The mode would follow your singing or playing
+  live without a recording ID. One-cycle add-on.
+- **Cymatics**: want a manual frequency slider? Drag to sweep through modes by hand —
+  like the classic Chladni sand-on-plate demo.
+- **KIDS.md queue**: exhausted. I can (a) build from first principles next kids cycle,
+  or (b) run a kids-focused research sweep on Cycle 194 to refill the queue.
