@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 194 — kids build)
+## ⭐ Newest (Cycle 195 — adult build)
+
+- **[/dream/167-aria-companion](/dream/167-aria-companion)** — Aria. `demoable`
+  Play piano into your mic. After two seconds of silence, Aria responds — a phrase
+  built by walking a Markov bigram of your own note transitions. The table grows
+  across the session: by the 5th call-and-response, Aria sounds like she's been
+  listening carefully. Two-panel scrolling piano roll: YOU (warm orange bars) on
+  top, ARIA (cool blue bars) below, both scrolling at 80px/s with a live-tail
+  for the currently-detected note. Demo button (no mic): plays a C-pentatonic
+  phrase and fires the first response in ~5s.
+  **"The piano responds when you rest."** 166 prior prototypes are reactive (every
+  frame) or generative (one-shot API call). Aria is the first **dialogue** prototype:
+  listens, waits, then composes a response from what it heard. Zero ML inference,
+  zero API, zero deps — the Markov chain is ~25 lines of JS.
+  Mic optional (demo mode) · Zero API · Zero deps · 3.88 kB.
+  Design notes: `src/app/dream/167-aria-companion/README.md`
+
+---
+
+## Previous (Cycle 194 — kids build)
 
 - **[/dream/166-kids-lantern](/dream/166-kids-lantern)** — Night Garden (kids). `demoable`
   A near-black canvas hides 16 pentatonic stars — each one holds a note. Hold your finger

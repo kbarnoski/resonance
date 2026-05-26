@@ -1,5 +1,82 @@
 # Dream Agent — cycle state
 
+## Cycle 195 — adult build: 167-aria-companion (Markov-chain piano dialogue; play a phrase → 2s silence → Aria responds with notes drawn from your own interval transitions)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 195 % 2 = 1 → adult cycle.
+4. **Build new** — picking from IDEAS queue.
+
+**Decision rationale**:
+- STATE.md from Cycles 193 and 194 both explicitly recommended `aria-companion`
+  for the next adult cycle. This is the third consecutive adult cycle where it
+  was the top candidate — time to build it.
+- 166 prior prototypes are all *reactive* (respond every frame to audio input) or
+  *generative* (fire and forget). `aria-companion` is the first **dialogue**
+  prototype: listens, waits, then speaks. Different temporal paradigm.
+- Love signals: `138-lmdm-echo` ❤️ (Karel's piano phrases analyzed + AI response)
+  directly informs this — aria-companion is the zero-API, zero-cost version
+  of the same call-and-response concept. `105-pluck-field` ❤️ and `148-spatial-palette` ❤️
+  show Karel likes tactile piano interaction with immediate sonic feedback.
+- Research basis: Aria-Duet (NeurIPS 2025, arXiv:2511.01663) + "Design Space for
+  Live Music Agents" (Feb 2026): dialogue agents are the least-explored category.
+- Zero deps, zero API, zero budget. ~300 lines. One-cycle build.
+
+**Love signals influencing this cycle**:
+- `138-lmdm-echo` ❤️ — piano phrase → analysis → AI response (same paradigm, simpler)
+- `105-pluck-field` ❤️ — physical piano interaction; tactile + immediate
+- `148-spatial-palette` ❤️ — sophisticated pitch-to-canvas visual language
+
+**Built**:
+- `src/app/dream/167-aria-companion/page.tsx` — Aria prototype (3.88 kB)
+- `src/app/dream/167-aria-companion/README.md` — design notes + polish ideas
+
+**What it does**:
+Mic input → AMDF autocorrelation (4096-sample, same algorithm as `155-piano-hands`)
+→ note event detection in C3–C6. Notes accumulate in a phrase buffer. After 2s
+of silence with ≥6 notes captured: Markov bigram is updated from the phrase,
+then Aria generates 7–13 note response (bigram walk from last user note + pentatonic
+fallback). Response scheduled via Web Audio `osc.start(when)`. Piano timbre:
+triangle fundamental + 2nd harmonic (26% gain) + exponential envelope (16ms attack).
+Tempo mirroring: response noteDur = user's meanDur × 0.88.
+
+Visual: two-panel scrolling piano roll (Canvas2D). YOU panel (warm orange bars) +
+ARIA panel (cool blue bars). Both scroll left at 80px/s. "Now" cursor at right
+edge. Live-tail extends current detected note to cursor. Three pulsing dots in
+ARIA panel during thinking phase. Phrase-fill bar shows note count vs. trigger
+threshold. Also has a Demo button (no mic): pre-seeds a C-pentatonic phrase and
+fires triggerResponse after it plays.
+
+Build: 3.88 kB · `○ /dream/167-aria-companion` (static) · zero new deps.
+
+**What surprised me**:
+The `sampleNext` fallback — when the bigram has no entry for the current note —
+is pentatonic-within-8-semitones of the current note. This "stays local" quality
+is important: without it, the fallback jumps randomly to distant notes, which
+sounds like a non-sequitur. With the proximity constraint, even early in a session
+(when the bigram is sparse), Aria's responses sound like she's hovering near the
+same register as the user. The "learned your style" effect comes in even with 2-3
+phrases' worth of data.
+
+The Markov table persisting across the full session (not resetting per phrase) is
+the key design decision that makes the prototype interesting over time. By phrase 5,
+the bigram has enough data to produce distinctly "user-flavored" responses.
+
+**What's queued next**:
+- **Cycle 196 (kids, 196%2=0)** — KIDS.md queue has been empty for 3 consecutive
+  kids cycles (190, 192, 194). Should do a kids-focused research sweep on Cycle 196
+  to replenish the queue: check CHI 2026 proceedings, new Toca Boca releases,
+  Sound2Hap haptics for iOS 26, recent BANDIMAL updates, etc.
+- **Cycle 197 (adult)** — Strong candidates: `piano-roll` (live scrolling piano roll
+  from mic, natural complement to `167-aria-companion`), `spectral-morph` (FFT
+  resynthesis via AudioWorklet), or `loop-station`-style upgrade building on the
+  Markov dialogue pattern from this cycle.
+
+---
+
 ## Cycle 194 — kids build: 166-kids-lantern (Night Garden — hold a lantern to reveal 16 hidden pentatonic stars scattered in the dark; first exploration/revelation prototype in the kids zone)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)
