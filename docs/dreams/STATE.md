@@ -1,5 +1,69 @@
 # Dream Agent — cycle state
 
+## Cycle 192 — kids build: 164-kids-pendulum-harp (five swinging pendulums; each plucks a pentatonic note at the bottom of its arc; different lengths = emergent polyrhythm)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 192 % 2 = 0 → **kids cycle**. KIDS.md queue exhausted (all seeded
+   ideas built through Cycle 190). Per AGENT.md: "if KIDS.md's queue is thin, do a
+   kids-focused research sweep instead and seed new ideas there." However, a clear
+   design-space gap existed: build from first principles rather than research,
+   since the new idea was obviously buildable in one cycle.
+4. **Build new** — fresh prototype from first principles.
+
+**Decision rationale**:
+- 163 prior kids prototypes play notes on tap/drag/draw events. None yet uses
+  **physics-as-instrument**: a system where the child adds energy and the physics
+  determines when notes fire. Pendulums fill this gap exactly.
+- Love signal influence: `105-pluck-field` ❤️ (physical string resonance → note),
+  `98-kids-drum-circle` ❤️ (polyrhythm discovery), `133-kids-ripple-pond` ❤️
+  (physics makes music autonomously without the child directing each note).
+- The five pendulums have incommensurable periods (√L ratios), creating a natural
+  polyrhythm that never simply repeats. A child tapping all five hears a complex
+  rhythmic texture emerge from simple taps — same discovery as ripple-pond collisions
+  or pluck-field chords, but with temporal rather than harmonic structure.
+- Zero permissions, zero API, zero new deps.
+
+**Love signals influencing this cycle**: `105-pluck-field` ❤️, `98-kids-drum-circle` ❤️,
+`133-kids-ripple-pond` ❤️.
+
+**Built**:
+- `src/app/dream/164-kids-pendulum-harp/page.tsx` — full interactive prototype (2.8 kB)
+- `src/app/dream/164-kids-pendulum-harp/README.md` — design notes
+
+**What it does**:
+Five pendulums of different lengths (0.42H, 0.32H, 0.22H, 0.14H, 0.08H) hang from
+a horizontal bar at 7% from the top. Physics: θ'' = -(1800/L)·sin(θ) − 0.12·ω.
+Each time a bob crosses the center (zero-crossing with |ω| > 0.35) it plucks a sine
+wave note (C3→C4 pentatonic, 0.40–0.60s decay). Bobs sized by BANDIMAL rule:
+violet/C3 is biggest (r=26px), cyan/C4 smallest (r=14px). Tap anywhere near any
+pendulum → add angular velocity toward center. All five start displaced at ±0.38 rad
+(alternating sides) and immediately begin swinging. Soft sparkle burst on each pluck.
+C3+G3 ambient pad at gain 0.005.
+
+**What surprised me**:
+Starting all five at the same amplitude but alternating directions (+0.38, −0.34,
++0.38, −0.34, +0.38) means the first few seconds are already a staggered cascade
+of notes — the five different periods guarantee they reach zero at different times
+even from a symmetric start. The child doesn't need to understand this; they just
+hear a musical rain of notes before they've even touched anything.
+
+**What's queued next**:
+- **Cycle 193 (adult, 193%2=1)** — candidate: `cymatics-on-piano-path` (standing-wave
+  Chladni patterns responding to recorded piano audio from `/api/audio/[id]`). Extends
+  the "Karel's recordings as input" directive from Cycle 191. Or: extend
+  `163-paths-visualizer` with a track list from `journey_paths`.
+- **KIDS.md queue replenishment** — Cycle 194 (194%2=0) is the next kids cycle. The
+  queue is now empty. Before Cycle 194, either (a) build from first principles again
+  as this cycle did, or (b) do a dedicated kids research sweep on Cycle 193 to seed
+  3+ ideas for future kids cycles. Recommend option (b) on Cycle 193 if the adult
+  queue is also thin.
+
+---
+
 ## Cycle 191 — adult build: 163-paths-visualizer (Lorenz attractor + 6-band bloom responding to Karel's actual piano recordings via /api/audio/[id])
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

@@ -10,7 +10,32 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 191 — adult build)
+## ⭐ Newest (Cycle 192 — kids build)
+
+- **[/dream/164-kids-pendulum-harp](/dream/164-kids-pendulum-harp)** — Pendulum Harp (kids). `demoable`
+  Five glowing pendulums hang from a bar at the top of a dark canvas. Each pendulum
+  is a different length → different natural period → different speed of oscillation.
+  Each time a bob swings through the bottom of its arc it plucks a pentatonic note
+  (sine wave, bell-like decay). Longer pendulum = lower note = bigger bob (BANDIMAL
+  rule). Tap any pendulum to push it — tap more pendulums and their different periods
+  create an emergent polyrhythm that never simply repeats. All five start displaced
+  on alternating sides so the canvas immediately plays without any touch needed.
+  Sparkle burst on each pluck. C3+G3 ambient pad throughout.
+  **"First kids prototype where physics sets the rhythm — not the child's timing."**
+  163 prior prototypes fire notes on tap/drag/draw events. Pendulum Harp fires notes
+  when a physically-simulated bob reaches its natural turning point. The child adds
+  energy; gravity decides when each note plays. Same surprise-discovery mechanic as
+  `133-kids-ripple-pond` ❤️ (collision fires the chord) and `109-kids-bounce-notes`
+  (wall bounce fires the note), but now the timing emerges from pendulum physics rather
+  than collision events.
+  Directly inspired by Karel's loves of `105-pluck-field` ❤️ (tactile pluck = immediate note),
+  `98-kids-drum-circle` ❤️ (polyrhythm), `133-kids-ripple-pond` ❤️ (physics = music).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.8 kB.
+  Design notes: `src/app/dream/164-kids-pendulum-harp/README.md`
+
+---
+
+## Previous (Cycle 191 — adult build)
 
 - **[/dream/163-paths-visualizer](/dream/163-paths-visualizer)** — Paths Visualizer. `demoable`
   Lorenz strange-attractor visualization that responds to audio in real time. The attractor
