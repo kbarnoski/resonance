@@ -1,5 +1,70 @@
 # Dream Agent — cycle state
 
+## Cycle 197 — adult build: 168-piano-roll (real-time scrolling piano roll from mic; pitch→colored bar, violet=C2 low, red=C6 high)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 197 % 2 = 1 → adult cycle. Skip.
+4. **Build new** — picking from IDEAS queue.
+
+**Decision rationale**:
+- STATE.md from Cycles 195 and 196 both explicitly recommended `piano-roll` for the
+  next adult cycle. This is the fourth consecutive adult cycle where it was the top
+  candidate — building it now.
+- 167 prior prototypes visualize audio as abstract art (fluid, particles, terrain, shaders)
+  or physics (pendulums, ripples). None render recognizable musical notation.
+  Piano Roll is the first prototype a pianist can look at and immediately understand:
+  "that bar is C4, that's E4, that's a rising scale."
+- Natural sequel to `167-aria-companion` (same AMDF pitch detection, same piano roll
+  rendering paradigm). Together they form a "what you played / what Aria played" triptych
+  with `13-piano-canvas`.
+
+**Love signals influencing this cycle**:
+- `138-lmdm-echo` ❤️ — Karel's piano phrases analyzed + AI response; confirms interest
+  in pitch-tracking tools
+- `153-paint-compose` ❤️ — music as a persistent visual artifact; piano roll is the
+  notation analog of the paint-compose paradigm
+- `148-spatial-palette` ❤️ — complex multi-voice visualization
+- New loves since Cycle 196: 14 additional prototypes (total 19 loved) — biggest love
+  signal batch yet. Suggests Karel is actively reviewing the full sandbox.
+
+**Built**:
+- `src/app/dream/168-piano-roll/page.tsx` — full piano roll prototype. 280 lines.
+  - MIDI range C2–C6 (48 semitones)
+  - AMDF pitch detection at 4096 samples, same algorithm as `167-aria-companion`
+  - Color: HSL sweep violet(260°) → red(0°) as pitch rises, matching `1-live` palette
+  - Black key rows slightly darker (keyboard reference)
+  - Octave C-note lines with colored labels (C2–C6) on left strip
+  - Live tail: current note extends to "now" cursor; note name in header
+  - BPM slider (30–200) adjusts scroll speed
+  - Demo mode: 26-note C major passage, notes pre-loaded and scroll in from right
+  - Zero deps, zero API, zero permissions for demo mode
+- `src/app/dream/168-piano-roll/README.md` — design notes
+- `docs/dreams/INDEX.md` — Cycle 197 entry
+- `docs/dreams/MORNING.md` — fresh digest
+
+**Build**: `npm run build` passed cleanly. `/dream/168-piano-roll` = 3.59 kB.
+
+**What surprised me**:
+The love signal count jumped from 5 (noted in Cycle 196) to 19 in one cycle — Karel
+apparently did a full sandbox review. The new loves include `153-paint-compose`,
+`148-spatial-palette`, `138-lmdm-echo`, `130-tsl-particle-compute`, `107-ocean-presence`,
+`106-beat-cut`, `101-camera-song`, and `86-sound-to-video`. These span particles, spatial
+audio, video generation, beat tools, and the "music as artifact" theme that `168-piano-roll`
+directly serves. The breadth of new loves is encouraging — he's engaging with many directions.
+
+**What's queued next**:
+- **Cycle 198 (kids, 198%2=0)** — `kids-marble-run`: draw ramps, glowing marbles fall and
+  bounce notes. Top priority per KIDS.md and Cycle 196/197 recommendations.
+- **Cycle 199 (adult, 199%2=1)** — `spectral-morph` (FFT resynthesis AudioWorklet) or
+  `diatonic-harmony` (key-detecting scale-correct harmony voices). Both one-cycle builds.
+  `diatonic-harmony` leans higher priority given the piano-roll ecosystem now in place.
+
+---
+
 ## Cycle 196 — kids research sweep: 4 new prototype seeds added (kids-marble-run, kids-snow-globe, kids-garden-bloom, kids-raindrop-rhythm)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

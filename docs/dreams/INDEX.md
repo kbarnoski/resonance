@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 195 — adult build)
+## ⭐ Newest (Cycle 197 — adult build)
+
+- **[/dream/168-piano-roll](/dream/168-piano-roll)** — Piano Roll. `demoable`
+  Play piano into your mic — each note appears as a glowing colored bar scrolling left.
+  Pitch sets the vertical row (C2 bottom to C6 top, 48 semitones); color shifts from
+  violet (low) to red (high), matching the `1-live` band palette. Black-key rows are
+  slightly darker, giving a familiar keyboard reference without being distracting.
+  The "now" cursor sits near the right edge; the currently-detected note shows a live
+  tail extending to it — you see the pitch in real time, not just after it ends.
+  Note name (e.g. "F♯4") updates in the status bar while held.
+  **Demo mode** plays a 26-note C major passage; notes scroll in from the right like a
+  player-piano roll. **BPM slider** adjusts scroll speed (30–200).
+  **"First notation-style prototype in the sandbox."** All 167 prior prototypes visualize
+  audio as abstract art (fluid, particles, terrain) or physics (pendulums, ripples).
+  Piano Roll renders recognizable musical information — a pianist sees their phrases as
+  intervals, scales, and rhythm. Natural triptych with `13-piano-canvas` (abstract painting)
+  and `22-code-score` (write→play). Influenced by `138-lmdm-echo` ❤️ and `153-paint-compose` ❤️.
+  Mic optional (demo mode) · Zero API · Zero deps · 3.59 kB.
+  Design notes: `src/app/dream/168-piano-roll/README.md`
+
+---
+
+## Previous (Cycle 195 — adult build)
 
 - **[/dream/167-aria-companion](/dream/167-aria-companion)** — Aria. `demoable`
   Play piano into your mic. After two seconds of silence, Aria responds — a phrase

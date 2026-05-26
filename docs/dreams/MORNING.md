@@ -1,43 +1,44 @@
-# Morning digest — last updated 2026-05-26 UTC (Cycle 196)
+# Morning digest — last updated 2026-05-26 UTC (Cycle 197)
 
 ## New since yesterday
 
-- **[/dream/167-aria-companion](https://getresonance.vercel.app/dream/167-aria-companion)**
-  — Aria (adult, Cycle 195). Play piano into your mic. Two seconds of silence → Aria responds
-  with a phrase built from your own note transitions (Markov bigram). Demo button works without
-  mic. First dialogue prototype: it listens, waits, then speaks.
+- **[/dream/168-piano-roll](https://getresonance.vercel.app/dream/168-piano-roll)**
+  — Piano Roll (adult, Cycle 197). Play piano into your mic — each note appears as a
+  glowing colored bar scrolling left. Pitch sets the row (C2–C6, 48 semitones); color
+  shifts violet→red as pitch rises, matching the `1-live` palette. Live tail extends
+  from note start to the "now" cursor while you hold. BPM slider adjusts scroll speed.
+  Demo button plays a 26-note passage — notes scroll in from the right like a player piano.
+  **First notation-style prototype**: you see what you actually played, not abstract art.
 
-- **Kids research sweep** (Cycle 196 — no new prototype, intentional). KIDS.md queue had been
-  empty for 3 consecutive kids cycles. Refilled it with 4 new seeds:
-  1. `kids-marble-run` ← **top priority for Cycle 198**
-  2. `kids-snow-globe`
-  3. `kids-garden-bloom`
-  4. `kids-raindrop-rhythm`
+- **Kids research sweep** (Cycle 196 — no new prototype, intentional). KIDS.md queue refilled:
+  `kids-marble-run` (top pick), `kids-snow-globe`, `kids-garden-bloom`, `kids-raindrop-rhythm`.
 
 ## In progress / partial
 
-Nothing in-progress. All code cycles have built cleanly to `demoable`.
+Nothing in-progress. All code cycles building cleanly.
 
 ## Research findings worth a look
 
-**`kids-marble-run`** is the strongest idea in the queue and culturally well-timed:
-- Sago Mini released a "Music Machine" feature in 2026 — kids tinkering with machines that make music.
-- BooSnoo (2026 show): calming slow Rube Goldberg / marble-run format for young children.
-- Marble Run Music Videos trending on Snapchat + YouTube in 2026.
-- Our version is differentiated: child **draws their own ramps** by dragging. No existing kids app
-  does free-draw physics marble music. Zero permissions, zero API, one-cycle build.
-- Directly inspired by Karel's loves: `105-pluck-field` ❤️ (pluck = note), `133-kids-ripple-pond` ❤️
-  (physics makes music), `100-kids-paint-song` ❤️ (drawing = music). All three converge here.
+`kids-marble-run` remains the top kids pick for **Cycle 198**:
+- Draw ramps → marbles fall and bounce notes. Free-draw physics marble music. Nothing like it.
+- Culturally well-timed: Sago Mini Music Machine, BooSnoo (2026), marble run videos trending.
+- Directly pulls from `105-pluck-field` ❤️, `133-kids-ripple-pond` ❤️, `100-kids-paint-song` ❤️.
 
-RESEARCH.md §§215–218 have the full findings.
+**New love signals since last cycle** (19 total, up from 5 noted in Cycle 196):
+`153-paint-compose` ❤️, `148-spatial-palette` ❤️, `138-lmdm-echo` ❤️, `130-tsl-particle-compute` ❤️,
+`107-ocean-presence` ❤️, `106-beat-cut` ❤️, `101-camera-song` ❤️, `86-sound-to-video` ❤️,
+`84-wave-fluid` ❤️, `140-kids-string-bridge` ❤️, `104-kids-mirror-draw` ❤️, and more.
+These suggest strong interest in: physics-based tools, spatial audio, particle visuals,
+and music-as-artifact (paint, roll, drawing). `168-piano-roll` directly answers the artifact theme.
 
 ## Open questions for Karel
 
-- **Aria (167)**: want a "Forget" button to reset the Markov table for a fresh dialogue?
-- **Aria (167)**: should Demo mode play one of your actual Paths recordings as the seed phrase
-  (instead of the synthetic C-pentatonic demo)? Would show what Aria learns from your real playing.
-- **Night Garden (166)**: want multi-touch (two lanterns for two children)?
-- **kids-marble-run**: should the marbles have more physics variety (different weights, sizes)?
-  Or keep all marbles identical (simpler, more predictable for 4yo)?
-- **Adult queue next (Cycle 197)**: `piano-roll` (live scrolling piano roll from mic, natural Aria sequel)
-  or `spectral-morph` (FFT resynthesis AudioWorklet)?
+- **Piano Roll (168)**: happy with the violet→red color mapping (low=violet, high=red)?
+  It matches `1-live` bands. Alternatively could do rainbow by note class (C=red, D=orange...).
+- **Piano Roll (168)**: want a click-track overlay? Or chord-name detection overlay (using
+  the `28-chord-canvas` algorithm) so you see both notes AND chord names in real time?
+- **Aria (167)**: want a "Forget" button to reset the Markov table mid-session?
+- **kids-marble-run (Cycle 198)**: should marbles be identical (simpler for 4yo) or have
+  physics variety (different weights/sizes)? Leaning identical for predictability.
+- **Adult queue next (Cycle 199)**: `spectral-morph` (FFT resynthesis AudioWorklet — your piano
+  morphed with a flute/sine) or `diatonic-harmony` (play melody → hear scale-correct harmonies added)?
