@@ -1,5 +1,71 @@
 # Dream Agent — cycle state
 
+## Cycle 198 — kids build: 169-kids-marble-run (draw ramps, drop marbles, each bounce plays a KS pluck note)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 198 % 2 = 0 → **kids cycle**. KIDS.md queue has `kids-marble-run` as top priority (seeded in Cycle 196 research sweep). Build it now.
+4. Skip.
+
+**Decision rationale**:
+- STATE.md from Cycles 196 and 197 both explicitly recommended `kids-marble-run` as the next kids build.
+- `kids-marble-run` was the top seed from the Cycle 196 research sweep — the first prototype where the child **builds the machine** before the music plays. All 168 prior kids prototypes are reactive (tap/drag → immediate note). This one separates design from performance.
+- Directly inspired by Karel's loved prototypes: `105-pluck-field` ❤️ (KS synthesis), `133-kids-ripple-pond` ❤️ (physics makes music), `100-kids-paint-song` ❤️ (drawing = music). Marble Music fuses all three: you draw (paint-song), physics plays it (ripple-pond), using KS plucks (pluck-field).
+- Cultural validation: BooSnoo (2026 show), Sago Mini Music Machine (2026), Wintergarten Marble Machine (viral). The draw-your-own-ramps interaction is genuinely novel — no existing marble music toy offers free-draw ramps.
+
+**Love signals influencing this cycle**:
+- `105-pluck-field` ❤️ — KS synthesis: tactile pluck = immediate note. Marble Music uses KS for all bounce sounds.
+- `133-kids-ripple-pond` ❤️ — physics drives music (collision = chord). Marble bounce = note.
+- `100-kids-paint-song` ❤️ — drawing = musical act. Marble Music extends: drawing = ramp = music machine.
+- `152-kids-star-paint` ❤️ — dark canvas + drawing + persistent visual result.
+- `140-kids-string-bridge` ❤️ — physics relationship IS the sound.
+
+**Built**:
+- `src/app/dream/169-kids-marble-run/page.tsx` — full marble-run prototype (3.24 kB)
+  - 3 demo ramps pre-loaded at start so canvas is immediately playable
+  - Draw ramps by dragging finger/mouse (>30px drag creates ramp)
+  - Pitch from ramp's Y midpoint: top=E4 (rose), bottom=C3 (violet), 6-step pentatonic
+  - Ramp color matches its pitch (rose/amber/emerald/cyan/indigo/violet)
+  - Marble physics: gravity 0.22px/frame, restitution 0.68, tangential friction 0.92
+  - Wall bounces (left/right edges) at 60% restitution
+  - KS pluck on each bounce (pre-computed 2.2s buffers at startup)
+  - Trail behind each marble (16-frame circular buffer)
+  - Glowing marble with specular highlight
+  - Ramp flash-glow on hit (decays over ~28 frames)
+  - Auto-launch every 4.2s, max 6 marbles
+  - Drop 🎵 button + Clear button
+  - Soft C3+G3 ambient pad at gain 0.005
+  - Zero permissions · Zero API · Zero deps
+- `src/app/dream/169-kids-marble-run/README.md` — design notes
+- `docs/dreams/INDEX.md` — Cycle 198 entry
+- `docs/dreams/MORNING.md` — fresh digest
+
+**Build**: `npm run build` passed cleanly. `/dream/169-kids-marble-run` = 3.24 kB.
+
+**What surprised me**:
+The signed-distance collision approach needed a careful `approach < 0` guard — without it, a marble that's
+already moving away from a ramp (after a bounce) would immediately re-detect as a collision and get
+stuck. The guard "only bounce if approaching the ramp surface" solves this cleanly and is exactly the
+right physics invariant. The `NOTE_GUARD = 200ms` cooldown per ramp prevents audio stuttering when
+a slow marble rolls along a ramp rather than bouncing cleanly off it.
+
+The KS synthesis gives a beautiful wood-xylophone sound that perfectly matches the marble-bouncing
+metaphor — much better than a sine wave would. Pre-computing all 6 buffers at startup costs ~10ms
+total; no per-bounce allocation overhead.
+
+**What's queued next**:
+- **Cycle 199 (adult, 199%2=1)** — `spectral-morph` (FFT resynthesis AudioWorklet, first prototype
+  to synthesize FROM spectral manipulation rather than just visualizing). Or `loop-station` (4-slot
+  live looper — high live-performance value). `spectral-morph` leads.
+- **Cycle 200 (kids, 200%2=0)** — `kids-snow-globe` (next in KIDS.md queue: tap to scatter
+  snowflakes that play notes on landing; contemplative, pre-sleep vibe). Or `kids-garden-bloom`
+  (hold to grow musical flowers). `kids-snow-globe` leads.
+
+---
+
 ## Cycle 197 — adult build: 168-piano-roll (real-time scrolling piano roll from mic; pitch→colored bar, violet=C2 low, red=C6 high)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

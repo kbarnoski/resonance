@@ -1,44 +1,39 @@
-# Morning digest — last updated 2026-05-26 UTC (Cycle 197)
+# Morning digest — last updated 2026-05-26 UTC (Cycle 198)
 
 ## New since yesterday
 
-- **[/dream/168-piano-roll](https://getresonance.vercel.app/dream/168-piano-roll)**
-  — Piano Roll (adult, Cycle 197). Play piano into your mic — each note appears as a
-  glowing colored bar scrolling left. Pitch sets the row (C2–C6, 48 semitones); color
-  shifts violet→red as pitch rises, matching the `1-live` palette. Live tail extends
-  from note start to the "now" cursor while you hold. BPM slider adjusts scroll speed.
-  Demo button plays a 26-note passage — notes scroll in from the right like a player piano.
-  **First notation-style prototype**: you see what you actually played, not abstract art.
+- **[/dream/169-kids-marble-run](https://getresonance.vercel.app/dream/169-kids-marble-run)** — Marble Music (kids) `demoable`
+  Draw ramps with your finger — drop a marble — hear it bounce down the ramps as a
+  Karplus-Strong pentatonic melody. Ramp color = pitch (high ramp = high note, just like
+  string length). Three demo ramps pre-loaded; auto-launches a new marble every 4 seconds.
+  **Why open this**: it's the first kids prototype where you build a machine, then watch it
+  play. Drawing a steep zigzag creates a fast arpeggio; a gentle diagonal gives a slow
+  descending phrase. Every ramp layout is a different piece. Kids 4+, zero permissions.
 
-- **Kids research sweep** (Cycle 196 — no new prototype, intentional). KIDS.md queue refilled:
-  `kids-marble-run` (top pick), `kids-snow-globe`, `kids-garden-bloom`, `kids-raindrop-rhythm`.
+- **[/dream/168-piano-roll](https://getresonance.vercel.app/dream/168-piano-roll)** — Piano Roll `demoable` (Cycle 197)
+  Play piano → notes appear as glowing colored bars scrolling left. Notation-style,
+  immediately readable by a pianist. Demo mode plays a C major passage.
 
 ## In progress / partial
 
-Nothing in-progress. All code cycles building cleanly.
+- Nothing in-progress. Next adult cycle (199) targets `spectral-morph` (FFT resynthesis
+  AudioWorklet — first prototype to synthesize audio FROM spectral manipulation). One-cycle build.
 
-## Research findings worth a look
+## Kids queue (next cycle 200)
 
-`kids-marble-run` remains the top kids pick for **Cycle 198**:
-- Draw ramps → marbles fall and bounce notes. Free-draw physics marble music. Nothing like it.
-- Culturally well-timed: Sago Mini Music Machine, BooSnoo (2026), marble run videos trending.
-- Directly pulls from `105-pluck-field` ❤️, `133-kids-ripple-pond` ❤️, `100-kids-paint-song` ❤️.
+- `kids-snow-globe` — tap to scatter snowflakes that play soft bell notes when they land.
+  Landing = note (not tap-down). Contemplative, pre-sleep vibe.
 
-**New love signals since last cycle** (19 total, up from 5 noted in Cycle 196):
-`153-paint-compose` ❤️, `148-spatial-palette` ❤️, `138-lmdm-echo` ❤️, `130-tsl-particle-compute` ❤️,
-`107-ocean-presence` ❤️, `106-beat-cut` ❤️, `101-camera-song` ❤️, `86-sound-to-video` ❤️,
-`84-wave-fluid` ❤️, `140-kids-string-bridge` ❤️, `104-kids-mirror-draw` ❤️, and more.
-These suggest strong interest in: physics-based tools, spatial audio, particle visuals,
-and music-as-artifact (paint, roll, drawing). `168-piano-roll` directly answers the artifact theme.
+## Love-signal context
+
+19 prototypes loved (biggest batch — Karel reviewed full sandbox). Recent loves span
+particles, spatial audio, physical modeling, physics-as-music, and music-as-visual-artifact.
+Marble Music sits at the intersection of all five themes.
 
 ## Open questions for Karel
 
-- **Piano Roll (168)**: happy with the violet→red color mapping (low=violet, high=red)?
-  It matches `1-live` bands. Alternatively could do rainbow by note class (C=red, D=orange...).
-- **Piano Roll (168)**: want a click-track overlay? Or chord-name detection overlay (using
-  the `28-chord-canvas` algorithm) so you see both notes AND chord names in real time?
-- **Aria (167)**: want a "Forget" button to reset the Markov table mid-session?
-- **kids-marble-run (Cycle 198)**: should marbles be identical (simpler for 4yo) or have
-  physics variety (different weights/sizes)? Leaning identical for predictability.
-- **Adult queue next (Cycle 199)**: `spectral-morph` (FFT resynthesis AudioWorklet — your piano
-  morphed with a flute/sine) or `diatonic-harmony` (play melody → hear scale-correct harmonies added)?
+- **Marble Music physics feel**: restitution = 0.68 (marbles lose 32% per bounce). Too
+  bouncy / not bouncy enough? Easy 1-line change.
+- **Auto-launch interval**: 4.2s. Faster (2s) for more chaos, slower (6s) for meditation?
+- **Adult research cycle**: 22 adult cycles since last research sweep (Cycle 177). Worth
+  doing a dedicated sweep at Cycle 201 if no specific build direction queued.

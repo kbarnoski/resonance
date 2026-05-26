@@ -10,7 +10,31 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 197 — adult build)
+## ⭐ Newest (Cycle 198 — kids build)
+
+- **[/dream/169-kids-marble-run](/dream/169-kids-marble-run)** — Marble Music (kids). `demoable`
+  Draw glowing colored ramps on a dark canvas — then drop marbles and watch them fall,
+  bounce off the ramps, and play Karplus-Strong pluck notes on each collision.
+  Ramp color encodes pitch: **high ramp = high note** (rose=E4 top, violet=C3 bottom),
+  the same physical analogy as string length on a real instrument — a child discovers it
+  without needing any explanation. Three demo ramps are pre-loaded so the canvas plays
+  immediately. Marbles auto-launch every 4 seconds (up to 6 live); tap **Drop 🎵** for
+  instant addition. Draw new ramps with a finger drag (>30px). **Clear** resets to the
+  demo layout.
+  **"First kids prototype where the child builds the machine before the music plays."**
+  All 168 prior kids prototypes are reactive (tap/drag → immediate note). Marble Music
+  separates construction from performance: draw first, then observe what physics makes.
+  Three cognitive layers: passive (watch), active (drop more marbles), constructive
+  (redesign the ramp layout to change the melody). Inspired by Karel's loves of
+  `105-pluck-field` ❤️ (KS synthesis), `133-kids-ripple-pond` ❤️ (physics = music),
+  `100-kids-paint-song` ❤️ (drawing = music). Culturally validated: BooSnoo (2026),
+  Sago Mini Music Machine (2026), Wintergarten Marble Machine (viral).
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 3.24 kB.
+  Design notes: `src/app/dream/169-kids-marble-run/README.md`
+
+---
+
+## Previous (Cycle 197 — adult build)
 
 - **[/dream/168-piano-roll](/dream/168-piano-roll)** — Piano Roll. `demoable`
   Play piano into your mic — each note appears as a glowing colored bar scrolling left.
