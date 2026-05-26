@@ -1,5 +1,62 @@
 # Dream Agent — cycle state
 
+## Cycle 202 — kids build: 173-kids-garden-bloom (hold soil to grow a musical flower; petal-per-note synthesis)
+
+**When**: 2026-05-26 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 202 % 2 = 0 → **kids cycle**. STATE.md from Cycle 201 explicitly names
+   `kids-garden-bloom` as the Cycle 202 target. KIDS.md has full spec. Build it now.
+
+**Decision rationale**:
+- `kids-garden-bloom` fills a genuine gap in the kids zone: **sustained hold = accumulating growth**.
+  All 172 prior prototypes trigger immediately on tap-down. This one rewards patience proportionally.
+- Directly aligned with Karel's love of `153-paint-compose` ❤️ (layered composition over time),
+  `105-pluck-field` ❤️ (physical synthesis), `133-kids-ripple-pond` ❤️ (physics delay = music).
+- Zero API, zero deps, zero permissions. Clean one-cycle build.
+- Prototype number: `173` (next after 172-loop-station).
+
+**Love signals influencing this cycle**:
+- `153-paint-compose` ❤️ — layered composition builds over time; garden fills the same way
+- `133-kids-ripple-pond` ❤️ — physics delay between gesture and note; same principle in hold→petal
+- `105-pluck-field` ❤️ — KS pluck synthesis for teal zone; tactile physical interaction
+- `100-kids-paint-song` ❤️ — hold gesture = musical act
+- `152-kids-star-paint` ❤️ — dark sky + glowing visual language
+
+**Built**:
+- `src/app/dream/173-kids-garden-bloom/page.tsx` — full garden-bloom prototype (3.63 kB)
+  - Hold soil strip (bottom 22% of canvas) → stem grows at 14px/s; petal every 0.75s of hold
+  - 4 timbres by X position: piano (violet, left), bells (amber, center-left),
+    pluck/KS (teal, center-right), pad (rose, right)
+  - Pitches: C3/E3/G3/A3/C4 per petal (C-major pentatonic, always consonant)
+  - Release → flower blooms, loops soft chord every 4.2s
+  - 6-flower grand chord: staggered arpeggio → 12s ceremonial sway-and-fade → garden resets
+  - Demo: violet + rose flower pre-planted at 0.7s (no touch needed to see mechanic)
+  - Ambient wind: looped noise → lowpass 180Hz
+  - Zero permissions · Zero API · Zero deps · 3.63 kB
+- `src/app/dream/173-kids-garden-bloom/README.md` — design notes
+
+**Build**: `npm run build` passed cleanly. `/dream/173-kids-garden-bloom` = 3.63 kB. No errors.
+
+**What surprised me**:
+The `onUp` edge case for quick taps: if `pointerdown` and `pointerup` fire before the first RAF
+frame runs, the flower transitions to "bloomed" with `petalCount = 0`. Fixed by ensuring `onUp`
+fires at least 1 petal + note before transitioning state. Quick taps now always play something.
+
+KS synthesis: creating a fresh `AudioBuffer` per pluck note costs ~5ms for C3 (337-sample delay
+line × 1.8s = ~80K samples). Entirely off the hot path (triggered only on petal unfold), no
+perceptible stall even at the grand-chord moment (30 notes staggered over ~2s).
+
+**What's queued next**:
+- **Cycle 203 (adult, 203%2=1)** — `kids-raindrop-rhythm` is kids, so next adult build.
+  Queue has `gesture-music` (MediaPipe hands → synth), `mood-vis` (semantic classifier → visual mode),
+  `ratio-lab` (Tonnetz lattice), or a research sweep (adult research is 25 cycles overdue).
+  Research sweep leads for Cycle 203 — IDEAS queue is rich but adult freshness has drifted.
+
+---
+
 ## Cycle 201 — adult build: 172-loop-station (4-slot phase-locked loop station; demo + mic recording)
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

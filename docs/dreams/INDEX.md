@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 201 — adult build)
+## ⭐ Newest (Cycle 202 — kids build)
+
+- **[/dream/173-kids-garden-bloom](/dream/173-kids-garden-bloom)** — Garden Bloom (kids). `demoable`
+  Hold the soil to grow a glowing flower — stem rises, petals unfold one by one as notes.
+  Hold 0.75s = 1 petal; 2s = 3-note chord; 4s = full 5-petal pentatonic chord.
+  X position sets timbre: violet/piano · amber/bells · teal/pluck · rose/pad.
+  Release → flower loops its chord softly. Six flowers fill the garden → grand staggered
+  chord → 12-second ceremonial sway-and-fade → garden resets. Demo flowers pre-planted
+  at startup. **First kids prototype where hold duration = accumulating musical growth.**
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 3.63 kB.
+  Design notes: `src/app/dream/173-kids-garden-bloom/README.md`
+
+---
+
+## Previous (Cycle 201 — adult build)
 
 - **[/dream/172-loop-station](/dream/172-loop-station)** — Loop Station. `demoable`
   4-slot phase-locked loop station — pure Web Audio API. **Load demo** synthesizes four loops
