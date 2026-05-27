@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 209 — adult build: 178-splat-bloom (Gaussian additive splat field)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 209 % 2 = 1 → adult cycle. Skip kids queue.
+4. **Build new** — `splat-bloom` explicitly queued from cycle 208 STATE.md.
+
+**Decision rationale**:
+- `splat-bloom` was the explicit next target from cycle 208's STATE.md.
+- 500 oriented Canvas2D ellipses with `globalCompositeOperation = "screen"` — additive
+  blending creates a nebula-like luminous cloud that is qualitatively different from all
+  178 prior prototypes. Not particles (discrete physics), not fluid (density field) — a
+  *texture field*: statistically distributed but individually oriented primitives.
+- One-cycle build, zero deps, zero API, zero permissions.
+- Aligns with Karel's loves of `130-tsl-particle-compute` ❤️ (luminous GPU-native fields)
+  and `153-paint-compose` ❤️ (additive blending as a painting medium).
+
+**Loves influencing this cycle** (26 total):
+- `130-tsl-particle-compute` ❤️ → dense luminous particle / splat aesthetics
+- `153-paint-compose` ❤️ → additive blending; painting that accumulates and breathes
+- `84-wave-fluid` ❤️ → GPU-native visual path; splat field is conceptually adjacent
+
+**Built**:
+- `src/app/dream/178-splat-bloom/page.tsx` — 3.68 kB
+  - 500 Splat objects: position (x,y), rest position, velocity (vx,vy), angle, axes (rx,ry),
+    hue (0-360), opacity (0.3-0.7), isNear flag (pre-computed: nearest 100 to canvas centre)
+  - `globalCompositeOperation = "screen"` — overlapping splats add light, never occlude
+  - **Bass** → bloom push: nearest 100 splats scale (1 + bass × 0.6), fade (−bass × 0.15)
+  - **Treble** → all splats rotate += treble × 0.008 rad/frame (slow global swirl)
+  - **Centroid** → hue target: 265° (violet, ≈500 Hz) → 35° (amber, ≈2 kHz); each splat
+    converges 1°/frame via shortest-arc interpolation
+  - **Onset** → 50 random splats receive velocity impulse (40–100 px); spring back k=0.015
+  - Demo mode: three LFOs (0.72 Hz bass, 1.38 Hz treble, 0.51 Hz centroid); onset every 2.8 s
+  - Gaussian initial layout: σ = 0.22 × min(W,H); elongation ratio 1:3–1:8 per splat
+  - Phase: idle → demo → mic (same pattern as 176-sdf-cave)
+- `src/app/dream/178-splat-bloom/README.md` — design notes + research basis
+
+**Build**: `npm run build` passed cleanly. `/dream/178-splat-bloom` = 3.68 kB. Zero errors.
+
+**What surprised me**:
+The "screen" composite makes the dense centre bloom to near-white even at low individual
+opacities. When 80+ ellipses overlap at the canvas centre, each at 0.4–0.6 opacity, the
+additive sum saturates to bright white — the centre always glows brightly, which gives the
+field a "star cluster" quality without any explicit brightness control. The periphery where
+ellipses are sparse shows individual coloured splats clearly. This density-as-brightness
+property emerges naturally from the compositing; it was not explicitly programmed.
+
+**Queued next**:
+- **Cycle 210 (kids, 210%2=0)** → `kids-voice-monster` — hum/sing to feed a glow-monster;
+  grows with amplitude, color-shifts with pitch, sings back pitches after 30s.
+- **Cycle 211 (adult, 211%2=1)** → `score-structure` (real-time improvisation architecture
+  analyser, seeded in IDEAS.md from Karel's piano-recordings directive) OR `loop-station` v2
+  (SA3 integration: generate a loop continuation via SA3 Large after recording).
+
+---
+
 ## Cycle 208 — kids build: 177-kids-lego-sequencer (Lego Beats — 2D block sequencer)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)

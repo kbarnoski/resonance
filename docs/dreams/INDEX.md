@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 208 — kids build)
+## ⭐ Newest (Cycle 209 — adult build)
+
+- **[/dream/178-splat-bloom](/dream/178-splat-bloom)** — Splat Bloom. `demoable`
+  500 luminous oriented ellipses arranged in a **Gaussian cloud** around the canvas centre
+  (σ = 22% of canvas), rendered with `globalCompositeOperation = "screen"` — overlapping
+  splats add light, never occlude. The dense centre always blooms to near-white; sparse edges
+  show individual coloured splats clearly. Star-cluster quality without explicit brightness control.
+  **Bass** → nearest 100 splats bloom outward (scale ×1.6 at full bass, fade slightly).
+  **Treble** → all 500 splats slowly rotate (field swirls at high treble).
+  **Spectral centroid** → global hue target shifts violet (265°) ↔ amber (35°) at 1°/splat/frame.
+  **Onset** → 50 random splats scatter with a velocity impulse; spring back (k = 0.015) over ~2 s.
+  Demo mode: three LFOs. Mic mode: live FFT via `useMicAnalyser`.
+  **"A painting that breathes."** Qualitatively different from particles (discrete) and fluid
+  (density field) — a *texture field*: statistically distributed, individually oriented, additively composited.
+  Inspired by WebSplatter (§222, Feb 2026). Aligns with `130-tsl-particle-compute` ❤️ and `153-paint-compose` ❤️.
+  Zero deps · Zero API · Mic optional · 3.68 kB.
+  Design notes: `src/app/dream/178-splat-bloom/README.md`
+
+---
+
+## Previous (Cycle 208 — kids build)
 
 - **[/dream/177-kids-lego-sequencer](/dream/177-kids-lego-sequencer)** — Lego Beats 🧱. `demoable`
   A 2D **block sequencer** for kids (ages 3+). 8-step × 6-pitch grid: each row is a note in the
