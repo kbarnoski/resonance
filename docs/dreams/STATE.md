@@ -1,5 +1,72 @@
 # Dream Agent — cycle state
 
+## Cycle 205 — adult build: 175-vocal-choir (sing a note → 3 HRTF harmony voices in 3D space)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 205 % 2 = 1 → adult cycle. Skip.
+4. **Build new** — multiple ready specs in queue. Build `175-vocal-choir`.
+
+**Decision rationale**:
+- STATE.md from Cycle 203 named `vocal-choir` as top pick for Cycle 205.
+- New love signals since last cycle: `172-loop-station` ❤️, `157-concept-steer` ❤️,
+  `163-paths-visualizer` ❤️, `166-kids-lantern` ❤️, `160-kids-paint-loop` ❤️,
+  `158-kids-hum-paint` ❤️. Total loved prototypes: 26.
+- `157-concept-steer` ❤️ (new) validates Karel's interest in named-concept musical control.
+  `vocal-choir` extends that into spatial synthesis — the six "concept axes" of the choir
+  are explicit: M3, P5, bass octave, all labeled on-screen.
+- Aligned with `148-spatial-palette` ❤️ (spatial synthesis, HRTF, draggable voices) and
+  `105-pluck-field` ❤️ (resonant harmonic layering, physical analog).
+- `163-paths-visualizer` ❤️ (Karel's own recordings as input) is a separate vector;
+  `vocal-choir` uses *your voice* as input — parallel philosophy.
+- Zero deps, zero API, one-cycle build. No blockers.
+
+**Built**:
+- `src/app/dream/175-vocal-choir/page.tsx` — full choir prototype (~3.2 kB)
+  - Autocorrelation pitch detection at ~30 Hz, range 60–1400 Hz
+  - 3 OscillatorNodes: M3 (+4st, violet, azimuth −45° el +20°), P5 (+7st, teal, +45° el +20°),
+    bass (−12st, rose, 0° el −20°) — each through GainNode → PannerNode(HRTF) → destination
+  - 50ms portamento via `linearRampToValueAtTime` on pitch change
+  - 4 glowing orbs: user (white, center), M3 (upper-left), P5 (upper-right), bass (lower-center)
+  - Orb radius scales with amplitude (EMA-smoothed); dim connector lines between orbs
+  - Note name label above user orb (e.g. "C3") updates live
+  - Demo mode: pentatonic LFO cycles C3–E3–G3–A3–C4 at 1.6s/note — choir always audible
+  - Mic mode: getUserMedia → analyser → autocorrelation pitch detection
+- `src/app/dream/175-vocal-choir/README.md` — design notes + polish ideas
+
+**Build**: `npm run build` passed cleanly. `/dream/175-vocal-choir` = 3.2 kB. No errors.
+
+**What surprised me**:
+TypeScript 5 strict mode requires `Float32Array<ArrayBuffer>` explicitly when passing to
+`AnalyserNode.getFloatTimeDomainData()` — the lib.dom.d.ts method signature is typed with
+the concrete `ArrayBuffer` parameter, not the broader `ArrayBufferLike`. The fix: annotate
+both the `sRef.tbuf` field and the `autocorrPitch` parameter as `Float32Array<ArrayBuffer>`.
+This is an increasingly common pattern as TypeScript's typed array generics tighten.
+
+Also: TypeScript's control flow narrowing doesn't carry through inner `function` declarations
+(closures). After `if (!canvas) return` in the outer function, `canvas` is still seen as
+potentially null inside an inner `function frame()`. Fix: move the null check inside `frame`
+itself. `getContext('2d')` is a cheap cached lookup — no perf cost at 60fps.
+
+**Loved prototypes influencing this cycle**:
+- `148-spatial-palette` ❤️ → spatial synthesis is appreciated; choir extends that into 3D HRTF
+- `105-pluck-field` ❤️ → Karel appreciates physical/resonant synthesis; harmonic stacking is adjacent
+- `157-concept-steer` ❤️ → named musical concepts (Brightness/Density/Mode) valued; choir labels match
+
+**Queued next**:
+- **Cycle 206 (kids, 206%2=0)** — kids cycle. Check KIDS.md for top seed. Recent loves include
+  `160-kids-paint-loop` ❤️ and `158-kids-hum-paint` ❤️ — both drawing/voice + looping themes.
+  Strong candidate: a new kids prototype building on the voice/drawing axis (kids-voice-garden
+  or kids-echo-trail), or polish `174-kids-raindrop-rhythm` if KIDS.md queue is thin.
+- **Cycle 207 (adult, 207%2=1)** — `sdf-cave` (highest surprise factor: SDF ray-marching,
+  completely new visual paradigm, zero deps) OR `splat-bloom` (Gaussian splat field, aligns with
+  `130-tsl-particle-compute` ❤️).
+
+---
+
 ## Cycle 203 — adult research sweep: 8 fresh findings across arxiv, fal.ai, MUTEK 2026, demoscene
 
 **When**: 2026-05-26 UTC (hourly autonomous cycle)

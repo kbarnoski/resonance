@@ -1,43 +1,46 @@
-# Morning digest — last updated 2026-05-27 UTC (Cycle 204)
+# Morning digest — last updated 2026-05-27 UTC (Cycle 205)
 
 ## New since yesterday
 
-- **[/dream/174-kids-raindrop-rhythm](https://getresonance.vercel.app/dream/174-kids-raindrop-rhythm)** — Raindrop Rhythm ☁️ (kids) `demoable`
-  Three glowing clouds: **violet = C3, amber = G3, rose = C4**. Tap to release a burst of
-  falling drops. Each drop rings a bell note when it hits the water — not on tap, on landing.
-  Hold a cloud for continuous rain. Auto-rain cycles through all three so the canvas is live
-  from the moment you press Start. Any cloud combination sounds consonant (C major arpeggio).
-  For kids 3+ · Zero permissions · 2.82 kB.
-
-## Previous highlights
-
-- **[/dream/173-kids-garden-bloom](https://getresonance.vercel.app/dream/173-kids-garden-bloom)** — Garden Bloom 🌸 (kids) `demoable` (Cycle 202)
-  Hold the soil → flower grows, each petal plays a note. 4s hold = 5-petal chord.
-
-- **[/dream/172-loop-station](https://getresonance.vercel.app/dream/172-loop-station)** — Loop Station `demoable` (Cycle 201)
-  4-slot phase-locked looper. Load demo → four pre-built loops on the same beat grid.
-
-- **[/dream/171-kids-snow-globe](https://getresonance.vercel.app/dream/171-kids-snow-globe)** — Snow Globe ❄️ (kids) `demoable` (Cycle 200)
-  Tap to scatter snowflakes; each flake plays a bell chime when it lands.
+- **[/dream/175-vocal-choir](https://getresonance.vercel.app/dream/175-vocal-choir)** — Vocal Choir  
+  Sing or hum into the mic. Three harmony voices (major third, perfect fifth, bass octave)
+  appear around you in 3D via HRTF spatialization. Orbs glow and breathe with amplitude.
+  Wear headphones for full spatial effect; **Demo** button shows it without mic.  
+  **Why open this**: first prototype where _you_ are the lead and the choir wraps around you.
 
 ## In progress / partial
 
-- Nothing in-progress. Adult queue is fresh from Cycle 203 research.
+Nothing in-progress. Clean state.
+
+## Recent builds
+
+- **Cycle 204** — `/dream/174-kids-raindrop-rhythm` (kids) — tap clouds → drops fall → bell on landing
+- **Cycle 203** — Research sweep: 8 findings (vocal-choir, sdf-cave, score-structure, splat-bloom seeded)
+- **Cycle 202** — `/dream/173-kids-garden-bloom` (kids) — hold soil to grow musical flower
+- **Cycle 201** — `/dream/172-loop-station` ❤️ — 4-slot phase-locked loop station
+
+## New loves since last cycle (26 total)
+
+`172-loop-station` ❤️ · `157-concept-steer` ❤️ · `163-paths-visualizer` ❤️ ·
+`166-kids-lantern` ❤️ · `160-kids-paint-loop` ❤️ · `158-kids-hum-paint` ❤️
+
+Concept-steer love confirms named-concept musical control is valued — vocal-choir extends
+that direction into spatial synthesis.
 
 ## Research findings worth a look
 
-From Cycle 203 (2026-05-26) — adult research sweep:
-- **`175-vocal-choir`** (was 174 in MORNING.md — slot taken by raindrop-rhythm): sing → 3 HRTF
-  harmony voices (M3 + P5 + bass octave) appear spatially. **Top Cycle 205 candidate.**
-- **`175-sdf-cave`**: SDF ray-marching WebGL — cave interior where bass melts walls, treble
-  roughens ceiling. Viewer is *inside* the visual space. Highest surprise factor.
-- **`176-score-structure`**: mic → chord + density → section timeline ("Intro/Build/Climax/Resolution").
-- **`177-splat-bloom`**: 500 Canvas2D oriented ellipses react to audio — soft luminous texture field.
+From Cycle 203 (docs/dreams/RESEARCH.md §§219–226):
+- §224 MUTEK 2026 Sphaîra — architectural sound installation. Seeds `sdf-cave` (SDF ray-marching
+  cave that breathes with audio — highest surprise-factor build in the current queue).
+- §222 WebSplatter — Gaussian-splat Canvas2D technique. Seeds `splat-bloom` (500 oriented
+  ellipses + additive blending — painterly texture, qualitatively new visual register).
+- §221 Style Plan Timeline (Feb 2026) — structural section detection from chord+density. Seeds
+  `score-structure` (shows Karel's improvisation as architecture).
 
 ## Open questions for Karel
 
-- **Raindrop Rhythm**: 3 clouds (C/G/C4) feel nice — want a 4th cloud (E3, emerald) for full
-  pentatonic? Or keep it minimal at 3?
-- **Cycle 205 pick**: `vocal-choir` (spatial harmony from your voice) vs `sdf-cave` (highest
-  visual surprise — SDF ray-marching, you're inside a cave that reacts to your playing)?
-- **Loop station overdub** still pending — still want that?
+- **sdf-cave vs splat-bloom for Cycle 207**: both zero deps, one cycle. `sdf-cave` is highest
+  surprise (new visual paradigm — viewer inside the space for the first time); `splat-bloom`
+  is softest and most painterly (close to the TSL-particle-compute love). Which direction next?
+- **vocal-choir timbre**: currently pure sines. Adding one overtone partial (2×freq, gain 0.08)
+  + a short convolver reverb would give a more choral quality. Worth a polish cycle?

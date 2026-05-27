@@ -10,7 +10,29 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 204 — kids build)
+## ⭐ Newest (Cycle 205 — adult build)
+
+- **[/dream/175-vocal-choir](/dream/175-vocal-choir)** — Vocal Choir. `demoable`
+  Sing or hum a note — three harmony voices materialise around you in 3D space via HRTF
+  spatialization: a **major third** (violet, upper-left, azimuth −45°), a **perfect fifth**
+  (teal, upper-right, azimuth +45°), and a **bass octave** (rose, below, elevation −20°).
+  All three follow every pitch change with 50ms portamento — smooth glides as you move
+  between notes. Canvas: four glowing orbs in a choir formation, orb radius breathing with
+  amplitude. A live note-name label ("C3", "G♯4") tracks the detected pitch.
+  **"You sing one voice. Three more appear."** All 174 prior prototypes are either reactive
+  (audio → visuals) or generative (API → audio). Vocal Choir does both: your voice is the
+  input, and the output wraps spatially back around you. First choir prototype in the sandbox.
+  Different from `23-pitch-harmonize` (raw pitch-shift, same timbre) — this generates
+  additive voices at distinct frequencies for genuinely separate harmonic parts.
+  Wear headphones · Mic optional (demo mode) · Zero API · Zero deps · 3.2 kB.
+  Inspired by Karel's loves of `148-spatial-palette` ❤️ (spatial synthesis) and
+  `105-pluck-field` ❤️ (resonant harmonic layering). Research basis: AI Harmonizer
+  (NIME Jun 2025, RESEARCH.md §219).
+  Design notes: `src/app/dream/175-vocal-choir/README.md`
+
+---
+
+## Previous (Cycle 204 — kids build)
 
 - **[/dream/174-kids-raindrop-rhythm](/dream/174-kids-raindrop-rhythm)** — Raindrop Rhythm (kids). `demoable`
   Three glowing clouds in a dark sky — violet (C3), amber (G3), rose (C4). **Tap any cloud** →
