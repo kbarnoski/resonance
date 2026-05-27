@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 210 — kids build)
+## ⭐ Newest (Cycle 211 — adult build)
+
+- **[/dream/180-cellular](/dream/180-cellular)** — Cellular. `demoable`
+  Conway's Game of Life on a 64 × 16 grid, where each column maps to a musical pitch (C2→C5,
+  log-spaced). Every Life generation tick fires triangle-wave notes for all columns containing
+  at least one live cell. **Gliders** trace rising 4-note melodies that walk right and vanish.
+  **Pulsars** (period-3 oscillators) produce repeating 2-bar loops. **R-pentomino** evolves
+  chaotically for 1,103 generations — sounds like free-jazz improv. **Acorn** grows for 5,206
+  generations, melodically unpredictable throughout. **Random 20%** self-organizes from dense
+  noise into rhythmic clusters over tens of seconds.
+  Click/drag the canvas to draw or erase cells. BPM slider (40–120) controls tick rate.
+  **"What if generative music was also life?"** — first sandbox prototype where the musical
+  structure is not reactive (every frame) or API-generated (one-shot) but self-organizing:
+  initial conditions → evolving autonomous composition. The spatial position of patterns IS their
+  pitch: left = bass, right = treble, symmetry = acoustic balance.
+  Zero permissions · Zero API · Zero deps · 3.02 kB.
+  Design notes: `src/app/dream/180-cellular/README.md`
+
+---
+
+## Previous (Cycle 210 — kids build)
 
 - **[/dream/179-kids-voice-monster](/dream/179-kids-voice-monster)** — Voice Monster. `demoable`
   A glowing blob-monster on a dark starry canvas. **Hum or sing** into the mic — the monster

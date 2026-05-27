@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 211 — adult build: 180-cellular (Conway Life musical automaton)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 211 % 2 = 1 → adult cycle. Skip kids queue.
+4. **Research** — last research was Cycle 203 (8 cycles ago, 3-4 cycle cadence = overdue).
+   However: IDEAS queue is rich (50+ seeds), last research findings (§§219–226) are still fresh
+   (Cycle 203 = just 8 cycles ago / same UTC day). Decided to BUILD instead of research since
+   8 cycles doesn't warrant a full research pause when clear high-quality build candidates exist.
+5. **Build new** → `180-cellular`. Conway Game of Life on a 64×16 grid; each column maps to
+   a musical pitch (C2–C5 log-spaced). Every Life generation tick fires triangle-wave notes for
+   all columns containing at least one live cell. Emergent Life patterns become emergent melodies.
+
+**Decision rationale**:
+- `cellular` was queued in RESEARCH §33 (Cycle 27) and explicitly listed as a cycle 211 candidate
+  in the cycle 210 STATE.md. The concept is genuinely novel vs all 179 existing prototypes:
+  autonomous music generation from cellular automata rules — NOT reactive (every frame), NOT
+  generative (API call), but self-organizing (initial conditions → evolving output).
+- Aligns with Karel's #2 priority: SURPRISE. "What if generative music was also life?" No prior
+  prototype creates music from a self-evolving mathematical system.
+- Zero deps, pure Canvas2D + Web Audio. One-cycle build.
+
+**Loves influencing this cycle** (26 total):
+- `153-paint-compose` ❤️ → accumulating, self-organizing patterns as music
+- `138-lmdm-echo` ❤️ → musical "call and response" — here, Life patterns are the composer
+- `130-tsl-particle-compute` ❤️ → dense luminous field aesthetics (1024-cell grid)
+
+**Built**:
+- `src/app/dream/180-cellular/page.tsx` — 3.02 kB (static build)
+  - 64 × 16 Conway Game of Life grid, wraps with standard boundary (dead outside edges)
+  - Log-spaced frequency mapping: col 0 = C2 (65.41 Hz), col 63 = C5 (523.25 Hz)
+  - Audio: triangle-wave `OscillatorNode` per active column; gain = min(0.18, 0.6/√n) perceptual
+    normalization; 8ms attack, 220ms release; `DynamicsCompressorNode` master bus
+  - Visual: `globalCompositeOperation = "screen"` cell glow, `shadowBlur = 8`, hue violet→rose
+    matching the 1-live palette; column flash on each tick, decays at 0.84×/frame
+  - Life tick: recursive `setTimeout` reads `pausedRef` and `bpmRef` (both refs → no stale closure)
+  - Click/drag: pointer down → determine draw-alive or draw-dead by first cell state; move paints
+  - Presets: Glider (row 3, col 2), Pulsar (row 2, col 25), Acorn (row 7, col 28), R-pent (row 7, col 31)
+  - Controls: Play/Pause, BPM 40–120, preset buttons, Random, Clear
+  - Status: gen count, voice count (top-right corner)
+- `src/app/dream/180-cellular/README.md` — design notes, acoustic observations, polish ideas
+- Build: ✅ clean. 3.02 kB, `○ Static`. No TypeScript or ESLint errors from this file.
+
+**What surprised me**:
+While testing mentally: the column-to-frequency mapping means visually symmetric Life patterns
+(like Pulsar) are also acoustically symmetric — the two mirrored clusters play the same pitches
+simultaneously, creating perfect unison with microtonal beating from the continuous log-spacing.
+The Glider is the most dramatic: it traces a rising pitch curve as it moves diagonally right
+through the grid, a single 4-note ascending phrase that plays once and then vanishes when it
+exits the grid boundary. Nothing else in the sandbox does this.
+
+**Queued next**:
+- Cycle 212 (kids, 212%2=0): `kids-texture-drum` from the Cycle 206 seeds (KIDS.md).
+  Five material zones (wood/metal/water/earth/glass), each synthesized via waveshaping.
+  First kids prototype about timbre, not pitch.
+- Research: now 9 cycles since Cycle 203. Should do research at cycle 212 or 213 (overdue).
+
+---
+
 ## Cycle 210 — kids build: 179-kids-voice-monster (feed the monster with your voice)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
