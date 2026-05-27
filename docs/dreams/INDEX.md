@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 215 — adult build)
+## ⭐ Newest (Cycle 216 — kids build)
+
+- **[/dream/184-kids-gravity-harp](/dream/184-kids-gravity-harp)** — Gravity Harp. `demoable`
+  Six glowing horizontal strings on a dark canvas: C5/A4/G4/E4/D4/C4 (top→bottom, BANDIMAL rule).
+  Tap to drop a colored ball — it falls through the strings, each one plucking a **Karplus-Strong**
+  note as the ball passes. **Pass-through physics**: strings absorb 38% kinetic energy per crossing
+  (vy × 0.62) without reversing direction, so a ball traverses all 6 strings top-to-bottom then
+  bounces off the floor and returns bottom-to-top — a descending then ascending pentatonic scale
+  from a single tap. Each string glows and visually vibrates (fundamental mode shape) on contact;
+  sparks burst at the collision point. Up to 8 balls fall simultaneously.
+  **"A mallet falling through a harp."** Key difference from `109-kids-bounce-notes` (wall bounce,
+  1D): here strings are permeable energy-absorbers, and the entire pitch range is traversed per ball.
+  2 demo balls auto-spawn (no permissions needed). Ambient C2 + G2 pad from first tap.
+  Inspired by `169-kids-marble-run` ❤️ (physics+pitch), `105-pluck-field` ❤️ (KS synthesis).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.57 kB.
+  Design notes: `src/app/dream/184-kids-gravity-harp/README.md`
+
+---
+
+## Previous (Cycle 215 — adult build)
 
 - **[/dream/183-piano-motion](/dream/183-piano-motion)** — Piano Motion. `demoable`
   Watch a piano being played — two cartoon hands (violet left / rose right) float above a

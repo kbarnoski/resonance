@@ -1,5 +1,66 @@
 # Dream Agent — cycle state
 
+## Cycle 216 — kids build: 184-kids-gravity-harp (6 KS strings, pass-through ball physics)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 216 % 2 = 0 → kids cycle. ✓
+4. **Build new** → `184-kids-gravity-harp`. Pass-through physics harp: colored balls fall through
+   6 horizontal Karplus-Strong strings, each crossing absorbs energy without reversing direction.
+   A ball dropped from the top traverses all 6 strings (C5→C4), hits the floor, bounces back up
+   through all 6 strings in reverse (C4→C5). Full pentatonic scale descending then ascending.
+
+**Decision rationale**:
+The core design challenge: with elastic reversal physics, a ball bouncing off the top string
+never has enough energy to reach the lower strings. Solution — strings as energy-absorbing
+curtains (vy × 0.62 per crossing, direction unchanged). This lets every dropped ball traverse
+the full harp range rather than being trapped near the top string. The metaphor shifts from
+"rubber ball on a trampoline" to "mallet striking a string curtain." First prototype where
+ball + string is the interaction paradigm (as opposed to ball + wall in `109-kids-bounce-notes`).
+
+**Loves influencing this cycle** (26 total):
+- `169-kids-marble-run` ❤️ → physics-based discovery, height-as-pitch spatial layout
+- `105-pluck-field` ❤️ → Karplus-Strong synthesis, physical modeling, tactile immediacy
+- `98-kids-drum-circle` ❤️ → percussive tapping, every interaction produces sound
+- `133-kids-ripple-pond` ❤️ → tap to spawn objects that trigger musical events + sparks
+
+**Built**:
+- `src/app/dream/184-kids-gravity-harp/page.tsx` — 2.57 kB, `○ Static`
+  - 6 horizontal strings: C5/A4/G4/E4/D4/C4 (violet/emerald/amber/rose/sky/lavender)
+  - Pass-through crossing: ball center crosses string y → KS pluck + vy × 0.62 + vibration + sparks
+  - Floor elastic bounce: vy × −0.80 (20% energy loss per floor bounce)
+  - 90 ms per-string cooldown prevents double-triggering on adjacent frames
+  - KS buffers pre-computed at first tap: P × 700 samples, gain 0.997, uses d[i-1] IIR term
+  - Ambient C2 + G2 sine pad (0.010/0.007 gain) from first tap
+  - 2 demo balls auto-spawn at t=300ms and t=950ms — no touch needed
+  - Max 8 balls; oldest replaced on overflow
+  - String vibration: fundamental mode shape sin(πt) × cos(2πf_visual × t)
+- `src/app/dream/184-kids-gravity-harp/README.md` — design notes
+- Build: ✅ clean. `○ Static`, 2.57 kB. No TypeScript or ESLint errors.
+
+**What surprised me**:
+The `vy × 0.62` pass-through coefficient produces a natural musical arc. Ball 1 drops from top
+and plays C5, A4, G4, E4, D4, C4 with each note slightly quieter (speed reduced per crossing)
+— natural diminuendo. Floor bounce reverses direction and ball plays C4, D4, E4, G4, A4, C5 with
+each note louder (gravity re-accelerates it between strings) — natural crescendo. This emergent
+dynamic shape wasn't planned; it comes directly from the physics.
+
+Also: having `lastPluck[i]` as a timestamp (vs a flag) was the right call. Without it, fast-falling
+balls hit the same string multiple times per frame (the crossing detection fires before the ball's
+position is fully updated), producing double-strikes. The 90 ms cooldown eliminates these cleanly.
+
+**Queued next**:
+- Cycle 217 (adult, 217%2=1): Build from queue. Top candidates:
+  - `sdf-cave` — SDF ray-marching, zero deps, new visual paradigm not yet in sandbox
+  - `chord-canvas` — zero deps, chroma-based chord detection + color timeline
+  - `voice-scene` — Web Speech API → AV mode switching, novel browser API, zero API key
+  - `camera-compose` — webcam → Gemini vision → Lyria music (needs GEMINI_API_KEY)
+
+---
+
 ## Cycle 213 — adult research sweep: §§227–233 (Stable Audio 3, I-Ching music, PianoFlow, SAMUeL, LUMIA, Lyria 3 Pro, Mirelo SFX 1.6)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
