@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 207 — adult build: 176-sdf-cave (SDF ray-marching cave interior)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 207 % 2 = 1 → adult cycle. Skip.
+4. **Build new** — multiple ready specs. Top candidates from STATE.md cycle 205 open question:
+   `sdf-cave` (highest surprise factor) vs `splat-bloom`.
+
+**Decision rationale**:
+- `sdf-cave` wins: first prototype in the sandbox where the viewer is *inside* the visual space.
+  SDF ray-marching is a completely new visual paradigm — 175 prior prototypes render on the 2D canvas plane.
+- `splat-bloom` is strong but stylistically adjacent to `130-tsl-particle-compute` ❤️ and
+  `153-paint-compose` ❤️ (additive blending fields already explored). Cave is a genuine leap.
+- Aligns with Karel's top priority: **Surprise** — "things he hasn't considered."
+- Aligns with `107-ocean-presence` ❤️ (immersive environment feel) and `84-wave-fluid` ❤️ (GPU-only path).
+- Zero deps, zero API. One-cycle build. GLSL inline in the component.
+
+**Loves influencing this cycle** (26 total):
+- `107-ocean-presence` ❤️ → immersive enveloping environment; cave extends that to architectural interior
+- `84-wave-fluid` ❤️ → GPU-only visual path; SDF ray-march is the natural next step
+- `130-tsl-particle-compute` ❤️ → Karel values GPU-native compute visuals
+
+**Built**:
+- `src/app/dream/176-sdf-cave/page.tsx` — 5.64 kB
+  - WebGL1 fullscreen quad rendered by inline GLSL fragment shader
+  - SDF scene: inverted rounded box (cave room) + 12 stalactite capsules + 5 stalagmite capsules
+  - `smin(a, b, k)` smooth-min blending; `k` driven by bass energy (0.05→0.68)
+  - Value-noise surface displacement driven by treble energy (roughens stone)
+  - Spectral centroid → accent colour: deep violet (low) → ice blue (high)
+  - Onset → camera shake ±0.055 NDC + white surface pulse
+  - 64-step sphere tracing; 6-tap central-difference normal
+  - Renders at ~55% CSS resolution (bilinear upscale) for comfortable 60fps on mid-range GPU
+  - Demo mode: three slow LFOs simulate breathing cave; no audio output
+  - Mic mode: `useMicAnalyser` hook, 6 bands → bass/treble/centroid extraction
+- `src/app/dream/176-sdf-cave/README.md` — design notes + polish ideas
+
+**Build**: `npm run build` passed cleanly. `/dream/176-sdf-cave` = 5.64 kB. Zero errors.
+
+**TypeScript gotchas**:
+- Control-flow narrowing (`if (!gl) return`) does NOT carry through inner `function` declarations.
+  Fix: create a non-null alias (`const gl = glMaybe`) that TypeScript treats as non-null in scope.
+  Same applies to `canvas`. This is now a known pattern — applies to any `useEffect` that initialises
+  a WebGL/Canvas context inside an inner function.
+
+**What surprised me**:
+The `smin` blend between cave walls and stalactites driven by bass creates an effect I didn't
+expect: at low bass the stalactites are hard, sharp, crystalline; at high bass they melt smoothly
+into the ceiling as if the rock itself is becoming viscous. The visual metaphor for bass — "weight,
+density, liquidity" — maps perfectly onto smooth-min geometry. This might be the most physically
+correct audio-visual metaphor in the sandbox.
+
+**Queued next**:
+- **Cycle 208 (kids, 208%2=0)** → build `176-kids-lego-sequencer` (renamed 208-kids-lego-sequencer
+  since 176 is now taken by sdf-cave). First 2D pitch×time grid in the kids zone. Seeded in cycle 206.
+- **Cycle 209 (adult, 209%2=1)** → `splat-bloom` (177-splat-bloom) — Gaussian splat additive field,
+  aligns with `130-tsl-particle-compute` ❤️. Was the other candidate this cycle.
+
+---
+
 ## Cycle 206 — kids research sweep (all Cycle 196 seeds exhausted)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)

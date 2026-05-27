@@ -10,7 +10,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 205 — adult build)
+## ⭐ Newest (Cycle 207 — adult build)
+
+- **[/dream/176-sdf-cave](/dream/176-sdf-cave)** — Cave. `demoable`
+  A WebGL1 fragment shader renders a stone cave interior via **SDF ray-marching** — the first
+  sandbox prototype where the viewer is *inside* the visual space. Camera orbits slowly inside
+  the chamber looking toward centre. **Bass** drives the `smin` blend factor (0.05→0.68): stalactites
+  and walls melt together on heavy bass, crystallise on silence. **Treble** roughens the stone
+  surface via value-noise displacement. **Spectral centroid** shifts the cave glow from deep
+  violet (bass-heavy) to ice blue (treble-heavy). **Onset** shakes the camera and pulses the
+  surfaces white. Demo mode: three slow LFOs simulate a breathing cave with no audio output.
+  Mic mode: live 6-band FFT drives all parameters via `useMicAnalyser`.
+  **"You are inside a space that breathes with your music."** Completely new visual paradigm —
+  175 prior prototypes render visuals *on* the canvas plane; this one puts you inside the geometry.
+  SDF ray-marching + inline GLSL, zero deps, zero API. Renders at 55% CSS resolution for
+  comfortable 60fps on mid-range GPUs.
+  Influenced by `107-ocean-presence` ❤️ (immersive environment), `84-wave-fluid` ❤️ (GPU-only path).
+  Research basis: MUTEK 2026 Sphaîra (§224), Revision 2026 Shader Showdown (§225).
+  Design notes: `src/app/dream/176-sdf-cave/README.md`
+
+---
+
+## Previous (Cycle 205 — adult build)
 
 - **[/dream/175-vocal-choir](/dream/175-vocal-choir)** — Vocal Choir. `demoable`
   Sing or hum a note — three harmony voices materialise around you in 3D space via HRTF
