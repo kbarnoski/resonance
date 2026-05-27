@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 211 — adult build)
+## ⭐ Newest (Cycle 212 — kids build)
+
+- **[/dream/181-kids-texture-drum](/dream/181-kids-texture-drum)** — Texture Drum. `demoable`
+  Five full-height canvas zones: 🪵 **Wood** (lowpass noise + 185Hz body thud) · 🔔 **Metal**
+  (820Hz bandpass Q=18, 820ms bell ring) · 💧 **Water** (noise sweeping 900→180Hz over 320ms)
+  · 🥁 **Earth** (72Hz sub-kick, 440ms decay) · 🫙 **Glass** (2440Hz sharp ping, 86ms).
+  **Tap** any zone for a hit. **Hold** for a 12.5Hz rapid-fire roll. **Two fingers** → louder
+  accent + zone-color full-screen flash. Visual textures visible before first tap: wavy wood
+  grain, diagonal metal hatch, animated water waves, stippled earth dots, sparkle glass crosses.
+  **"The first kids prototype about timbre, not pitch."** All 180 prior prototypes use C-major
+  pentatonic — the musical dimension is always high vs. low. Texture Drum asks: what does
+  material sound like? A 3yo comparing Wood and Glass discovers instrumental timbre without
+  any theory — just ears and fingers.
+  Inspired by Hitmachine (2025) + `98-kids-drum-circle` ❤️ + `105-pluck-field` ❤️.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 3.13 kB.
+  Design notes: `src/app/dream/181-kids-texture-drum/README.md`
+
+---
+
+## Previous (Cycle 211 — adult build)
 
 - **[/dream/180-cellular](/dream/180-cellular)** — Cellular. `demoable`
   Conway's Game of Life on a 64 × 16 grid, where each column maps to a musical pitch (C2→C5,

@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 212 — kids build: 181-kids-texture-drum (five material timbres)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 212 % 2 = 0 → kids cycle. ✓
+4. **Kids queue** — `kids-texture-drum` explicitly queued in Cycle 211 STATE.md and Cycle 206 KIDS.md.
+   Spec is fully defined in KIDS.md. Build it.
+
+**Decision rationale**:
+- `kids-texture-drum` was seeded in the Cycle 206 research sweep (inspired by Hitmachine tangible
+  music platform and BrickMusicTable, 2025). It fills a genuine gap: all 30+ prior kids prototypes
+  use C-major pentatonic — the musical dimension is always **pitch**. This is the first where
+  **timbre** (sound quality) is primary. A 3yo comparing Wood and Glass isn't comparing low/high —
+  they're comparing acoustic textures. Different cognitive experience.
+- Aligns with `98-kids-drum-circle` ❤️ (tapping as rhythm, immediate response) and
+  `105-pluck-field` ❤️ (physical modeling synthesis, tactile = immediate note).
+- Zero deps, zero permissions, zero API. One-cycle build. ~220 lines spec.
+
+**Loves influencing this cycle** (26 total):
+- `98-kids-drum-circle` ❤️ → rhythm + percussive tapping as primary interaction
+- `105-pluck-field` ❤️ → tactile synthesis, physical modeling
+- `158-kids-hum-paint` ❤️ → non-pitch dimension as musical instrument (here: material, there: voice)
+
+**Built**:
+- `src/app/dream/181-kids-texture-drum/page.tsx` — 3.13 kB (static build)
+  - 5 zones (full-height canvas columns): Wood/Metal/Water/Earth/Glass
+  - Each zone has distinct synthesis: Wood = lowpass noise + 185Hz thud; Metal = bandpass noise
+    at 820Hz Q=18 (ring 820ms); Water = lowpass noise sweeping 900→180Hz over 320ms; Earth = 72Hz
+    sine kick (440ms decay); Glass = 2440Hz sine (86ms sharp ping)
+  - Hold = rapid-fire hits at 80ms intervals ("roll" effect)
+  - Two simultaneous pointers = accent hit (1.35× volume + full-screen zone-color flash)
+  - Visual: animated zone backgrounds — Wood (wavy grain lines), Metal (diagonal hatch), Water
+    (animated sine waves, phase-offset rows), Earth (stippled dots), Glass (sparkle crosses)
+  - Ripples expand from exact tap position (canvas-pixel coords via dpr scaling)
+  - Hint text ("tap · hold to roll · two fingers for accent") hides on first tap
+  - AudioContext initialized on first interaction (satisfies browser autoplay policy)
+- `src/app/dream/181-kids-texture-drum/README.md` — design notes, synthesis table, polish ideas
+- Build: ✅ clean. 3.13 kB, `○ Static`. Two TypeScript fixes needed (nested function scope
+  narrowing for `canvas` and `ctx` — applied `as HTMLCanvasElement` cast to silence false positives).
+
+**What surprised me**:
+The Water synthesis is the most character-rich of the five: the `exponentialRampToValueAtTime`
+sweep from 900→180Hz creates a convincing water-droplet sound that's clearly distinguishable from
+both Wood (lower, duller) and Glass (higher, sharper). Earth at 72Hz may not be audible on phone
+speakers (below their range) but will register as a felt thud on laptop speakers and headphones.
+The five sounds together form an acoustic "periodic table" — kids can discover combinations.
+
+**Queued next**:
+- Cycle 213 (adult, 213%2=1): **Research sweep** — Cycle 203 was the last research, now 10 cycles
+  ago (exceeded the 3-4 cycle cadence). Queue is rich so build is tempting, but Karel values freshness.
+  Will scan arxiv (May 2026), fal.ai/Replicate new models, GitHub trending, HN front page.
+  Candidate builds if research is skipped: `chord-canvas` (zero deps, chord detection + color
+  timeline), `voice-scene` (Web Speech API → AV mode switching, novel browser API).
+
+---
+
 ## Cycle 211 — adult build: 180-cellular (Conway Life musical automaton)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
