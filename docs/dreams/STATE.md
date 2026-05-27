@@ -10833,3 +10833,69 @@ Three candidates from the Cycle 213 research sweep:
   Fix: explicit cast `as Float32Array<ArrayBuffer>` + typed interface field.
   Same pattern used in `163-paths-visualizer`.
 
+
+---
+
+## Cycle 217 — adult build: 185-score-structure
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Adult cycle (217 % 2 = 1). No blockers; nothing in-progress.
+No API keys (GEMINI_API_KEY, FAL_KEY absent) → zero-deps, zero-API build.
+Three candidates:
+- `ritual-generate` → needs GEMINI_API_KEY → skip
+- `camera-compose` → needs GEMINI_API_KEY → skip
+- `score-structure` → zero deps, zero API. Selected.
+
+**Loves influencing this pick**:
+- `163-paths-visualizer` ❤️ — analysis of musical content from real recordings
+- `172-loop-station` ❤️ — compositional structure built over time
+- `153-paint-compose` ❤️ — music theory surfaced visually
+
+**What I built**:
+- `src/app/dream/185-score-structure/page.tsx` — mic or demo ii–V–I–IV (triangle wave) →
+  12-bin chroma extraction (FFT magnitude summed by pitch class, C2–C8 range) → EMA-smoothed
+  chroma → chord detection via 24 major/minor dot-product templates → scrolling right-to-left
+  chord timeline (block width ∝ duration, hue from root pitch class, root PC band highlighted
+  inside each block) → live chromagram (12 vertical bars at bottom) → section classifier running
+  every 8 seconds: onset density (onset/s), chord-change rate (changes/min), spectral centroid
+  → labels Intro / Build / Climax / Resolution / Coda. Three HUD gauges update per section
+  window. Ghost section label overlaid on canvas background.
+- Build: ✅ clean (exit code 0, `○ Static`).
+
+**What's new about this prototype**:
+1. **First to surface musical structure, not signal.** 184 prior prototypes visualize FFT,
+   pitch, timbre, or time-domain waveform. This one reads compositional shape — sections,
+   chord sequences, density arc. A pianist sees their improvisation's narrative structure,
+   not just its acoustic properties.
+2. **Chord timeline as history strip.** Block width = how long a chord was held; this encodes
+   musical rhythm visually without needing a metronome or beat tracker. A static V chord = wide
+   amber block. A sequence of fast passing chords = narrow slivers.
+3. **Section classifier from three features only.** No ML, no external library — just density +
+   change rate + centroid mapped to five section labels via threshold rules. Fast, always-on,
+   completely transparent.
+4. **Demo mode self-demonstrates the full system.** The ii–V–I–IV progression in C (Dm7 → G7 →
+   Cmaj7 → Fmaj7) cycles through all four chords at 2.2s each. Within one loop cycle Karel can
+   watch the chord timeline build, see the chromagram shift roots, and confirm the chord detection
+   names. The chroma extraction and chord templates are validated against known harmonic content.
+
+**Queued next**:
+- Cycle 218: **kids build** (218 % 2 = 0). Candidates from KIDS.md:
+  - New seed: a kids prototype about **breathing with music** — a large glowing shape that
+    slowly expands (inhale cue) and contracts (exhale cue), playing a soft sustained chord on
+    each phase. Child matches their breathing to the visual. Calm, pre-sleep.
+  - `kids-glow-bug` — tap to release fireflies that land on dark canvas plants and ring notes.
+  - Polish of `182-kids-crystal-song`: add inharmonic partial ratios (2.76×, 5.40×) for a
+    richer glass-bell timbre vs. the current integer multiples.
+- Cycle 219: adult. `ritual-generate` if GEMINI_API_KEY appears; otherwise `185-score-structure`
+  polish (add dominant-7th and diminished templates to chord detection, section smoothing
+  with hysteresis to prevent rapid label flipping).
+
+**Notes**:
+- Chord detection is 24-template (major + minor only). Dominant 7th (G7 in the demo) is
+  detected as G major (closest match). A future polish cycle can add dom7/dim/maj7 templates.
+- Section classifier thresholds were calibrated for a piano playing naturally at moderate tempo.
+  Very sparse or very dense playing may stay in "Intro" or "Climax" too long. Hysteresis (require
+  2 consecutive windows to agree before flipping) would help — deferred to polish cycle.
+- The `Float32Array<ArrayBuffer>` cast is required for `getFloatFrequencyData()` in this
+  TypeScript version. Same pattern as `163-paths-visualizer` and `183-piano-motion`.

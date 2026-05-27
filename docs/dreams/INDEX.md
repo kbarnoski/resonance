@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 216 — kids build)
+## ⭐ Newest (Cycle 217 — adult build)
+
+- **[/dream/185-score-structure](/dream/185-score-structure)** — Score Structure. `demoable`
+  The architecture of your improvisation, revealed in real time. Mic input (or demo ii–V–I–IV
+  progression) → 12-bin **chroma extraction** → **chord detection** (24 major/minor templates,
+  dot-product correlation) → scrolling **chord timeline** (right-to-left, block width = duration
+  held, hue = root pitch class). Below the timeline: a live **chromagram** (12 vertical bars,
+  root highlighted). Every 8 seconds: **section classifier** labels the current window as Intro /
+  Build / Climax / Resolution / Coda based on onset density, chord-change rate, and spectral
+  centroid. Three gauges (Density, Chord rate, Register) update in real time. Ghost section label
+  floats in the canvas background. Demo: triangle-wave ii–V–I–IV in C, self-analyzed.
+  First prototype to surface **musical structure** rather than signal — 184 prior prototypes
+  visualize FFT/pitch/timbre; this one reads compositional shape. Natural complement to
+  `28-chord-canvas` (single chord), `24-piano-roll` (pitch roll), `22-code-score` (score).
+  Zero deps · Zero API · Mic or demo · 185-score-structure · cycle 217.
+  Design notes: `src/app/dream/185-score-structure/README.md`
+
+---
+
+## Previous (Cycle 216 — kids build)
 
 - **[/dream/184-kids-gravity-harp](/dream/184-kids-gravity-harp)** — Gravity Harp. `demoable`
   Six glowing horizontal strings on a dark canvas: C5/A4/G4/E4/D4/C4 (top→bottom, BANDIMAL rule).
