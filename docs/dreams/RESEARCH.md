@@ -2512,3 +2512,132 @@ Key findings from Cycle 203 (2026-05-26) — adult research sweep:
 - MUTEK 2026 Sphaîra (§224, May 2026) — architectural acoustics as instrument. Seeds `sdf-cave`.
 - Revision 2026 Shader Showdown (§225, Apr 2026) — SDF smin blending, audio-reactive. Also seeds `sdf-cave`.
 - Gesture-Based Control Framework (§226, Apr 2026) — relative joint distances. Updates `body-conductor`.
+
+---
+
+## 2026-05-27 — Cycle 213 research sweep
+
+### §227 — Stable Audio 3 (arxiv 2605.17991, May 18, 2026)
+**Source**: https://arxiv.org/abs/2605.17991
+
+Stability AI's next-gen latent diffusion family (small/medium/large) for variable-length audio
+generation and editing. Key advances: semantic-acoustic autoencoder for compact latent representation,
+adversarial post-training for fast inference — generates several minutes of audio in under 2s on an
+H200, a few seconds on a MacBook M4. Supports inpainting (targeted audio editing) and continuation
+(extend a short recording). Small + medium weights publicly released for consumer hardware.
+
+**Impact for dream zone**: upgrade path for `43-stable-extend` when Stable Audio 3 appears on fal.ai.
+Small model could also run locally on Karel's M4 Mac — first truly offline AI audio extension. Also
+seeds a new **live-extend** interaction: record a phrase, model extends it in <5s (vs. 10–30s for SA
+2.5), enabling a near-real-time call-and-response feel. [Date: May 2026, arxiv 2605.17991]
+
+---
+
+### §228 — Music of Changing Lines: I-Ching as Real-Time Music Generator (arxiv 2605.20386, May 2026)
+**Source**: https://arxiv.org/abs/2605.20386 — presented at ICMC 2026.
+
+Traditional Wen Wang Fa coin casting ritual (three coins thrown six times → hexagram) fed into
+Gemini LLM for contextual interpretation, then Lyria real-time music generation. The ritual act IS
+the music input — not a typed prompt, not mic, not MIDI. Each of the 64 I-Ching hexagrams generates
+unique music. "Controlled randomness as sacred input": you cast to discover what the music wants
+to be. First published system connecting ceremonial gesture to AI music at ICMC.
+
+**Could become prototype**: `ritual-generate` — six rounds of virtual coin throws (tap screen 3
+times per round, coin results shown as solid/broken lines), 6 rounds builds a hexagram. The hexagram
+number (1–64) maps to one of Resonance's Ghost journey themes + an ambient music prompt sent to
+Lyria 3 Pro. Canvas shows the hexagram symbol building line by line with ink-brush animation. After
+6 casts: "Generate" → 30s ambient piece plays through live-bloom visualizer. Six casts → six-line
+hexagram → one meditation. Ceremonial, non-Western, genuinely surprising.
+Needs GEMINI_API_KEY (same key already planned). One-cycle build. [Date: May 2026, arxiv 2605.20386]
+
+---
+
+### §229 — PianoFlow: Streaming Bimanual Piano Motion Synthesis (arxiv 2604.12856, April 2026)
+**Source**: https://arxiv.org/abs/2604.12856
+
+Flow-matching architecture for real-time bimanual piano hand motion synthesis from audio. 9×
+faster than prior SOTA; autoregressive flow continuation enables streaming for arbitrarily long
+pieces. Uses MIDI as a privileged training modality (better motion realism) while remaining
+audio-only at inference. Output: continuous skeletal hand/finger positions synchronized to audio.
+
+**Could become prototype**: `piano-motion` — load Karel's piano track via `/api/audio/[id]`,
+run offline pitch detection (autocorrelation, same as `13-piano-canvas`) to extract note events.
+Animate simplified top-down piano hands on Canvas2D: each note event moves the appropriate hand
+(left=below C4, right=C4+) to the correct key position, with a brief "finger press" animation
+(mild scale + subtle drop shadow). No ML needed — rule-based hand animation derived from pitch data.
+Hands follow smooth spring-interpolated trajectories between notes. "Watch your music being played."
+First prototype that visualizes the ACT of piano performance rather than the audio output. Zero deps.
+Incorporates Karel's real music (AGENT.md directive). One-cycle build. [Date: Apr 2026, arxiv 2604.12856]
+
+---
+
+### §230 — SAMUeL: 15M-Param Real-Time Vocal Accompaniment (arxiv 2507.19991, Jul 2025)
+**Source**: https://arxiv.org/abs/2507.19991
+
+Ultra-compact (15M params, 220× smaller than SOTA) latent diffusion model for vocal-conditioned
+accompaniment. Soft alignment attention mechanism adapts between local and global temporal
+dependencies per diffusion timestep — enables 52× faster inference, real-time on consumer hardware.
+Take vocal input → generate synchronized musical accompaniment.
+
+**Note for queue**: `44-vocal-bgm` already queued uses ACE-Step (one-shot, ~5–10s generation).
+SAMUeL's key advantage is **streaming real-time**: vocal phrase → accompaniment starts in <0.5s.
+No public fal.ai or WASM port confirmed. If SAMUeL releases a fal.ai endpoint, upgrade `44-vocal-bgm`
+to use it for substantially lower latency. Monitor for fal.ai listing. [Date: Jul 2025, arxiv 2507.19991]
+
+---
+
+### §231 — LUMIA: Handheld Vision-to-Music Composition (arxiv 2512.17228, Dec 2025)
+**Source**: https://arxiv.org/abs/2512.17228 — NeurIPS 2025 Creative AI track.
+
+Camera-based "compose through looking" system: photograph a scene → GPT-4V interprets the visual
+content → structured music prompt → Stable Audio generates a loopable segment. Users layer multiple
+segments from different camera angles; user-selected instrumentation guides each generation.
+"An improvisational practice driven by contextual, sensory engagement." Published Dec 2025.
+
+**Could become prototype**: `camera-compose` — webcam snapshot button → Gemini Flash vision API
+(describe scene in ≤40 words) → Lyria 3 Pro prompt ("ambient [description], 60 BPM, minimal,
+contemplative") → 30s ambient piece plays through live-bloom radial visualizer. Simple UI: large
+"📷 Take snapshot" button, generated scene description shown in secondary text, waveform player.
+"Take a photo. Hear its music." Admin-only gate (GEMINI_API_KEY, same key). Zero new npm deps.
+One-cycle build. Unique in sandbox: all 181 prior prototypes use mic or demo tones — this is the
+first that reads the visual world. [Date: Dec 2025, arxiv 2512.17228]
+
+---
+
+### §232 — Lyria 3 Pro on fal.ai (new, May 2026)
+**Source**: https://fal.ai/models — model ID `fal-ai/lyria3/pro`, tagged as newly added, May 2026.
+
+Lyria 3 Pro is now listed on fal.ai as the "latest music model from Google" — an upgrade over the
+previously catalogued Lyria 3 Clip (`lyria-3-clip-preview`). Same API family, presumably higher
+quality and/or more control. Same GEMINI_API_KEY path. All queued Lyria prototypes should reference
+this endpoint.
+
+**Impact**: update `43-lyria-ghost`, `44-binaural-lyria`, `45-piano-to-ghost` specs to use
+`fal-ai/lyria3/pro`. Also enables `camera-compose` (§231) and `ritual-generate` (§228) without
+additional API approval, since GEMINI_API_KEY is already planned for those prototypes. [Date: May 2026, fal.ai]
+
+---
+
+### §233 — Mirelo AI SFX 1.6 Full Suite Update (fal.ai, new 2026)
+**Source**: https://fal.ai/models?categories=audio — Mirelo suite newly expanded.
+
+Mirelo AI SFX 1.6 expanded from basic text-to-audio to a four-endpoint suite:
+- `mirelo-ai/sfx1.6/text-to-audio` — text → ambient SFX
+- `mirelo-ai/sfx1.6/video-to-video` — synchronized video SFX (now up to 60s)
+- `mirelo-ai/sfx1.6/extend-audio` — seamless audio continuation from a clip
+- `mirelo-ai/sfx1.6/inpaint-audio` — selective regeneration of audio segments
+
+**Impact**: `extend-audio` endpoint enables `41-mirelo-ghost-loop` to create 60s seamless Ghost
+soundscapes (was 30s). `inpaint-audio` opens a new interaction: select a segment of a generated
+soundscape → regenerate just that part → iterate toward the perfect Ghost scene atmosphere.
+Also: in `43-stable-extend`, use Mirelo `extend-audio` as a cheaper alternative for ambient/SFX
+content (Stable Audio 3 for music, Mirelo for environmental sound). [Date: May 2026, fal.ai]
+
+Key findings from Cycle 213 (2026-05-27) — adult research sweep:
+- Stable Audio 3 (§227, May 2026) — sub-2s generation, inpainting/continuation, public weights. Upgrade path for `43-stable-extend`.
+- I-Ching + Lyria (§228, ICMC May 2026) — ceremonial coin casting → AI music. Seeds `ritual-generate`.
+- PianoFlow (§229, Apr 2026) — 9× faster bimanual piano motion synthesis. Seeds `piano-motion`.
+- SAMUeL (§230, Jul 2025) — 15M real-time vocal accompaniment, 52× faster. Monitor for fal.ai.
+- LUMIA vision-to-music (§231, Dec 2025) — webcam → Gemini vision → ambient track. Seeds `camera-compose`.
+- Lyria 3 Pro on fal.ai (§232, May 2026) — new fal.ai endpoint. Upgrades all Lyria-based queued specs.
+- Mirelo SFX 1.6 full suite (§233, May 2026) — extend-audio + inpaint-audio added. Upgrades `ghost-loop` + `stable-extend`.

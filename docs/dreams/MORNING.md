@@ -1,51 +1,61 @@
-# Morning digest — last updated 2026-05-27 UTC (Cycle 212)
+# Morning digest — last updated 2026-05-27 UTC (Cycle 213)
 
 ## New since yesterday
 
+- **Research sweep (Cycle 213)** — 7 new findings, 3 new prototype specs seeded
+  No new prototype deployed this cycle (research sweep). Key discoveries below.
+
 - **[/dream/181-kids-texture-drum](https://getresonance.vercel.app/dream/181-kids-texture-drum)** — Texture Drum (kids, Cycle 212)
-  Five material zones: 🪵 Wood · 🔔 Metal · 💧 Water · 🥁 Earth · 🫙 Glass. Tap any zone to hear
-  its synthesized timbre (Wood = lowpass noise thud; Metal = tight bandpass bell ring; Water =
-  sweeping noise drip; Earth = 72Hz sub-kick; Glass = 2440Hz sharp ping). Hold to roll (80ms
-  rapid-fire). Two fingers together → louder accent + full-screen color flash.
-  **Why open it**: this is the **first kids prototype about timbre, not pitch**. All 30+ prior kids
-  builds used C-major pentatonic — the musical dimension was always "high vs low." Here, the
-  difference between zones isn't pitch, it's sound quality. Tap Wood then Glass — same force,
-  completely different acoustic world. A 3yo discovers instrumental timbre without any theory.
-  Animated water waves + wood grain + stippled earth texture visible before first tap.
-  Zero permissions · Zero API · Zero deps · 3.13 kB.
+  Five material zones: Wood · Metal · Water · Earth · Glass. Each zone has a distinct synthesized
+  timbre. Tap any zone to hear. Hold to roll. Two fingers → accent + full-screen flash.
+  **First kids prototype about timbre, not pitch.** All prior kids builds use C-major pentatonic;
+  this asks: what does material sound like?
 
 - **[/dream/180-cellular](https://getresonance.vercel.app/dream/180-cellular)** — Cellular (adult, Cycle 211)
-  Conway's Game of Life on a 64 × 16 grid. Each column is a pitch (C2→C5). Every Life tick fires
-  triangle-wave notes for all columns with a live cell. Try **Glider** — a rising 4-note melody
-  that walks rightward and vanishes. Try **R-pent** — 1,103 generations of free-jazz improv.
-  Click/drag to draw your own patterns. Left = bass, right = treble.
-  Zero permissions · Zero API · Zero deps · 3.02 kB.
-
-- **[/dream/179-kids-voice-monster](https://getresonance.vercel.app/dream/179-kids-voice-monster)** — Voice Monster (kids, Cycle 210)
-  Hum/sing to feed a glow-monster (30s). It sings back the distinct pitches it detected.
-  "Try demo" works without a mic. First kids prototype with character memory of what the child sang.
-
-## In progress / partial
-
-- Nothing in-progress. Next queued:
-  - **Cycle 213 (adult)** → Research sweep overdue (Cycle 203 was last, now 10 cycles since then).
-    Or build: `gesture-music` (needs Karel OK on 8MB CDN), `chord-canvas` (zero deps),
-    or `voice-scene` (Web Speech API → AV mode switching, zero deps, no prior precedent).
+  Conway Life on a 64×16 grid; columns are pitches (C2→C5). Try Glider, Pulsar, R-pentomino.
+  First autonomous music prototype — patterns evolve, not react.
 
 ## Research findings worth a look
 
-- **Timbre as first vocabulary** (Cycle 212 observation): All prior kids builds introduce pitch as
-  the primary musical concept. Texture Drum inverts this: five timbres, no pitch variation. Children
-  can explore material acoustics (what does metal sound like vs. earth?) before any note/scale
-  concepts. This is closer to how very young children actually experience sound — as texture
-  and quality first, pitch structure second. Worth exploring a "timbre sequencer" prototype.
+Three prototype seeds from this cycle are particularly strong:
+
+**`ritual-generate`** (§228) — inspired by a ICMC 2026 paper connecting I-Ching coin-casting
+to AI music generation. Six virtual coin throws → hexagram → Lyria 3 Pro generates a 30s
+ambient piece matched to the hexagram's theme. The ritual ACT is the music trigger — no text
+prompt, no mic. Needs GEMINI_API_KEY. Most surprising idea in the queue.
+
+**`piano-motion`** (§229) — load one of your Welcome Home tracks via `/api/audio/[id]`,
+extract notes, and animate cartoon piano hands on a top-down keyboard. Fingers glide to
+the right keys, press at onsets, chord notes light up together. First prototype showing
+the ACT of playing rather than the sound. Zero deps, zero API.
+
+**`camera-compose`** (§231) — webcam snapshot → Gemini Flash vision (describe scene) →
+Lyria 3 Pro ambient track. "Take a photo. Hear its music." 30s ambient piece plays through
+the live-bloom visualizer. Needs GEMINI_API_KEY. First prototype where the camera is
+the instrument.
+
+**Lyria 3 Pro** is now live on fal.ai (`fal-ai/lyria3/pro`) — upgrades all four queued
+Lyria-based prototypes (`lyria-ghost`, `binaural-lyria`, `piano-to-ghost`, `lyria-jam`).
+
+**Stable Audio 3** (arxiv 2605.17991) — Stability AI released small+medium weights publicly.
+Runs in a few seconds on MacBook M4. When it appears on fal.ai, upgrade `43-stable-extend`.
+
+**Mirelo SFX 1.6** now has `extend-audio` and `inpaint-audio` endpoints — enables `41-mirelo-ghost-loop`
+to create 60s seamless Ghost soundscapes and selective audio regeneration.
+
+## In progress / partial
+
+- Nothing in-progress.
 
 ## Open questions for Karel
 
-- **Texture Drum — Earth zone on phone speakers**: 72Hz is at the edge of small speaker range.
-  It will feel more like a thud on laptop speakers and nearly disappear on phone. Worth testing
-  on your actual device — easy to bump to 100Hz if needed, still feels low and physical.
-- **`gesture-music`**: still waiting on Karel OK for ~8MB MediaPipe WASM from jsDelivr CDN.
-  Webcam hands → pitch/reverb/percussion. Genuinely different from all 181 prototypes.
-- **Research cadence**: now 10 cycles since last research (Cycle 203). Plan: Cycle 213 = research
-  sweep unless you direct otherwise. Want to scan arxiv + GitHub trending for anything post-May.
+- **`gesture-music`**: still needs your OK on ~8MB MediaPipe WASM CDN dep (jsDelivr).
+  Webcam hands → pitch/reverb control. Could answer with a simple yes/no.
+
+- **`piano-motion`**: can use your actual Welcome Home tracks via `/api/audio/[id]`.
+  Would need to confirm which track IDs to embed as the picker options. Want me to build
+  this with a hardcoded Bach fallback first, or do you want to specify the track IDs?
+
+- **`ritual-generate`**: six coin throws is the interaction. Should each hexagram just
+  pick a fixed ambient prompt, or do you want Gemini to also write the prompt text
+  live (adds one LLM call per generation)? Simpler = faster = better demo.

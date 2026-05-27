@@ -2080,3 +2080,96 @@ Key findings from Cycle 203 (2026-05-26) — adult research sweep:
 - MUTEK 2026 Sphaîra (§224, May 2026) — architectural sound. Seeds `sdf-cave`.
 - Revision 2026 Shader Showdown (§225, Apr 2026) — SDF smin technique. Also seeds `sdf-cave`.
 - Gesture Control Framework (§226, Apr 2026) — relative joint distances. Updates `body-conductor`.
+
+---
+
+## FROM RESEARCH (Cycle 213, 2026-05-27) — promoted to queue
+
+### ritual-generate — I-Ching coin casting → Lyria 3 Pro meditation music `[queued, needs GEMINI_API_KEY — already planned]`
+Route: `/dream/182-ritual-generate`. Six rounds of virtual coin throwing: each round, tap
+the screen 3 times (or click a large "Throw" button). Each throw shows 3 coins landing heads/tails
+(animated flip). Three coin results determine one hexagram line: 3 tails → broken line with moving
+dot (·⁻⁻); mixed → solid line (——) or broken line (⁻⁻); 3 heads → solid line with dot. After 6
+rounds: the hexagram (1–64) is complete, drawn line by line from bottom to top on the canvas as an
+ink-brush animation.
+
+The hexagram number maps to one of Resonance's journey themes + a meditative music prompt:
+- Hexagrams 1–8 → Cosmic / Space themes → "vast orchestral drone, long reverb, celestial pad, no melody, 50 BPM"
+- Hexagrams 9–16 → Earth / Grounding → "low cello drone, stone resonance, slow pulse, 40 BPM"
+- Hexagrams 17–24 → Inner Sanctuary → "solo piano meditation, sparse, 55 BPM, warm reverb"
+- Hexagrams 25–32 → Ghost journey → "piano echoes in vast hall, haunting, 45 BPM"
+- Hexagrams 33–40 → Forest / Organic → "forest ambience, birdsong, gentle piano, 60 BPM"
+- Hexagrams 41–48 → Water / Flow → "water trickle, resonant room, 50 BPM, minimal piano"
+- Hexagrams 49–56 → Snowflake / Crystal → "bright piano harmonics, crystalline texture, 65 BPM"
+- Hexagrams 57–64 → Homecoming / Resolution → "warm major chords, home key, gentle 55 BPM"
+
+Server route calls `fal-ai/lyria3/pro` with the prompt. 30s ambient piece plays through
+live-bloom radial visualizer. Below the hexagram: traditional Chinese name + one-line interpretation.
+"Cast the coins. Receive music." Admin-only (GEMINI_API_KEY). Zero new npm deps. One-cycle build.
+
+**Why this stands out**: all 181 prior prototypes trigger music via mic, click, slider, or text.
+This is the first where the trigger is a **ritual act** — a series of chance operations that carry
+symbolic weight. The I-Ching connection to Resonance's journey themes is natural: both navigate
+states of being through structured phases. Inspired by §228 (ICMC 2026, Music of Changing Lines).
+Surprise factor: very high. Aligns with Karel's #3 priority: live performance / ceremony.
+
+### camera-compose — webcam snapshot → Gemini vision → Lyria 3 Pro ambient track `[queued, needs GEMINI_API_KEY — already planned]`
+Route: `/dream/183-camera-compose`. Single-page UI: large camera preview area (webcam via
+`getUserMedia({ video: true })`). A large "📷 Take snapshot" button freezes one frame and sends
+it as a base64 JPEG to a server route. Server calls Gemini Flash vision API: system prompt =
+"Describe this scene in ≤30 words, focusing on light quality, mood, textures, and any motion.
+Avoid naming people." The description is displayed as secondary text ("I see: [description]...").
+Then a second server call: `fal-ai/lyria3/pro` with prompt
+`"ambient music for: [description]. Minimal, contemplative, 60 BPM, no lyrics."` →
+returns 30s MP3 → decode → play through live-bloom radial visualizer.
+
+After playback: "Take another snapshot" re-triggers the cycle. Three snapshot history (small
+thumbnails at bottom) with their generated descriptions. No audio saved; just plays once.
+Fallback (no webcam): a 6-scene picker (Stone Chamber / Forest Dawn / Cosmic / Winter / Waves /
+Desert Night) with hand-authored descriptions that go directly to Lyria.
+
+Admin-only (GEMINI_API_KEY). Zero new npm deps. One-cycle build.
+
+**Why this stands out**: first prototype that reads the visual world as a music trigger. All 181
+prior prototypes use audio (mic), keyboard/mouse, or API text. This inverts the direction: you
+look at your environment, the system listens through your eyes and plays back what it hears.
+Deeply aligned with LUMIA (§231, NeurIPS 2025) and the "camera as instrument" paradigm. Natural
+for a morning ritual or workspace setup: "play me music for where I am right now."
+
+### piano-motion — watch Karel's piano tracks being played, animated `[queued, zero deps, zero API — uses /api/audio/[id]]`
+Route: `/dream/184-piano-motion`. Load one of Karel's piano tracks from the Resonance audio API
+(`/api/audio/[id]`). A track picker shows 3–4 of his Welcome Home album pieces. On selection: fetch
+and decode the audio → run offline autocorrelation pitch detection (same algorithm as `13-piano-canvas`)
+→ extract note events (onset time, pitch, duration, amplitude).
+
+Visualization: full-width top-down piano keyboard (88 keys, C0–B7). Two cartoon hands positioned
+above the keys: left hand (bass clef register, below C4) and right hand (treble clef, C4 and up).
+For each note event:
+- The appropriate hand's finger (index or middle finger, alternating) glides smoothly to the
+  correct key position via spring interpolation (k=0.12, damping=0.6).
+- At onset: key brightens (overlay glow) + finger scales down slightly ("press"), then springs back.
+- Multiple simultaneous notes: fingers spread across the keys; chords show all active fingers lit.
+- Hand color: left = deep violet/indigo, right = warm rose/amber (matching `1-live` palette).
+
+Background: pure dark canvas; keys are slim white/black rectangles with subtle edge glow. No
+tablature, no score overlay — just the hands and keys. A small "Now playing:" title and a playhead
+below the keyboard.
+
+Demo/fallback: if `/api/audio/[id]` is unavailable, falls back to the Bach fragment from
+`22-code-score` (pre-hardcoded note array). But the primary use is Karel's real recordings.
+
+**Why this stands out**: first prototype that animates the ACT of playing rather than the SOUND.
+All 181 prior prototypes visualize audio output. This visualizes musical gesture — the hands,
+the reach, the simultaneous notes. Watching your own music being played back as animation is an
+entirely different emotional experience. Zero deps (Canvas2D + Web Audio). Implements AGENT.md
+directive: "build prototypes that USE his real piano tracks as the audio source."
+Inspired by §229 (PianoFlow, arxiv 2604.12856).
+
+Key findings from Cycle 213 (2026-05-27) — adult research sweep:
+- Stable Audio 3 (§227, May 2026) — sub-2s generation, inpainting/continuation, public weights. Upgrade path for `43-stable-extend`.
+- I-Ching + Lyria (§228, ICMC May 2026) — ceremonial coin casting → AI music. Seeds `ritual-generate`.
+- PianoFlow (§229, Apr 2026) — streaming bimanual piano motion synthesis, 9× faster. Seeds `piano-motion`.
+- SAMUeL (§230, Jul 2025) — 15M real-time vocal accompaniment, 52× faster. Monitor for fal.ai listing.
+- LUMIA vision-to-music (§231, Dec 2025) — webcam → Gemini vision → ambient track. Seeds `camera-compose`.
+- Lyria 3 Pro on fal.ai (§232, May 2026) — `fal-ai/lyria3/pro` now live. Upgrades all Lyria-based queued specs.
+- Mirelo SFX 1.6 full suite (§233, May 2026) — extend-audio + inpaint-audio added. Upgrades `ghost-loop` + `stable-extend`.

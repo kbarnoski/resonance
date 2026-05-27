@@ -1,5 +1,67 @@
 # Dream Agent — cycle state
 
+## Cycle 213 — adult research sweep: §§227–233 (Stable Audio 3, I-Ching music, PianoFlow, SAMUeL, LUMIA, Lyria 3 Pro, Mirelo SFX 1.6)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 213 % 2 = 1 → adult cycle. Skip kids queue.
+4. **Research** — last research was Cycle 203 (10 cycles ago, 3–4 cycle cadence = significantly overdue).
+   Queue is rich (50+ seeds) but freshness mandate applies. Full research sweep this cycle.
+
+**Decision rationale**:
+Research cadence was last satisfied Cycle 203. At Cycle 213 that's 10 cycles elapsed — well past
+the 3–4 cycle guideline. Despite a full build queue, research cycles are the primary way Karel gets
+fresh findings (arxiv 2026, new fal.ai models, AV art developments). The Cycle 212 STATE.md also
+explicitly pre-committed to this being a research cycle. Executed full sweep.
+
+**Loves influencing this cycle** (26 total as of Cycle 212):
+No direct love-signal influence on a research cycle. However, noting that loved prototypes
+`98-kids-drum-circle` ❤️, `105-pluck-field` ❤️ (tactile synthesis) and `163-paths-visualizer` ❤️
+(Karel's real music as source) shaped which research directions to seed into IDEAS — specifically
+`piano-motion` (Karel's actual tracks as input) and the physical/ceremonial interaction model of
+`ritual-generate`.
+
+**Built**:
+- No new prototype this cycle (research sweep).
+- Appended §§227–233 to `docs/dreams/RESEARCH.md`:
+  - §227 Stable Audio 3 (arxiv 2605.17991, May 2026) — sub-2s generation, inpainting/continuation
+  - §228 I-Ching + Lyria ICMC 2026 (arxiv 2605.20386, May 2026) — ceremonial music generation
+  - §229 PianoFlow (arxiv 2604.12856, Apr 2026) — streaming bimanual piano motion synthesis
+  - §230 SAMUeL (arxiv 2507.19991, Jul 2025) — 15M-param real-time vocal accompaniment (52× faster)
+  - §231 LUMIA vision-to-music (arxiv 2512.17228, Dec 2025) — camera → Gemini → Lyria music
+  - §232 Lyria 3 Pro on fal.ai (May 2026) — `fal-ai/lyria3/pro` now live, upgrades all Lyria specs
+  - §233 Mirelo AI SFX 1.6 full suite (May 2026) — extend-audio + inpaint-audio new endpoints
+- Added 3 new prototype specs to `docs/dreams/IDEAS.md`:
+  - `ritual-generate` (`/dream/182-ritual-generate`) — I-Ching hexagram → Lyria 3 Pro ambient
+  - `camera-compose` (`/dream/183-camera-compose`) — webcam snapshot → Gemini vision → Lyria music
+  - `piano-motion` (`/dream/184-piano-motion`) — Karel's audio tracks → animated piano hands Canvas2D
+
+**What surprised me**:
+The I-Ching prototype (§228) is the most unexpected finding: a paper at ICMC 2026 demonstrated a
+complete pipeline from ancient coin-casting ritual → LLM interpretation → AI music generation.
+What struck me is how naturally it maps to Resonance's journey architecture: both navigate states
+of being through structured phases, and both treat the human as a ritual participant rather than
+a controller. "Ritual" as an interaction paradigm is underexplored in the sandbox — all 181 prior
+prototypes are reactive (mic) or generative (API text prompt). None are ceremonial.
+
+Also notable: Lyria 3 Pro is now on fal.ai (`fal-ai/lyria3/pro`), a step up from Lyria 3 Clip.
+This quietly upgrades the potential of all four queued Lyria prototypes at no additional API cost.
+
+**Queued next**:
+- Cycle 214 (kids, 214%2=0): Pick from kids queue in KIDS.md. Strong candidates: `kids-xylophone-color`
+  (color-coded bar xylophone, pitch range, tap-tap-tap interaction) or a fresh kids research sweep
+  if the KIDS.md queue is thin. Check KIDS.md on next cycle for current queue depth.
+- Cycle 215 (adult, 215%2=1): Build new from queue. Top candidates after research:
+  - `ritual-generate` — most surprising, aligns with ceremony/journey themes, one-cycle GEMINI_API_KEY
+  - `piano-motion` — uses Karel's actual tracks (explicit AGENT.md directive), zero deps, zero API
+  - `sdf-cave` — zero deps, highest visual surprise factor (SDF ray-marching = new visual paradigm)
+  - `camera-compose` — needs GEMINI_API_KEY, most novel interaction (webcam as music input)
+
+---
+
 ## Cycle 212 — kids build: 181-kids-texture-drum (five material timbres)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
