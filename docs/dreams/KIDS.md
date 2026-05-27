@@ -1021,3 +1021,181 @@ Build `kids-marble-run`. It's the strongest idea: culturally validated, design-s
 zero deps, one-cycle build, directly inspired by Karel's loves of `105-pluck-field` ❤️ and
 `133-kids-ripple-pond` ❤️. The pre-loaded demo ramps + auto-launch ensure it's immediately playable
 without any instruction. Expected size: ~250-300 lines.
+
+---
+
+## New seeds — Cycle 206 research sweep (2026-05-27)
+
+All four Cycle 196 seeds were built (marble-run, snow-globe, garden-bloom, raindrop-rhythm).
+Queue was empty → full research sweep. Sources: CHI EA 2026, IDC 2026 theme, ACM children's music
+proceedings, Scientific Reports (Apr 2025), arxiv tangible music research, App Store surveys.
+
+### `kids-lego-sequencer` ✦ **top priority — build Cycle 208**
+**Question**: what if the child built their melody by placing colored blocks on a grid?
+
+A 5-row × 8-column canvas grid of square "block cells" (rows = 5 pentatonic pitches, columns =
+8 time steps). Tap any cell → place a glowing colored block (row color: violet=C3, emerald=E3,
+amber=G3, rose=A3, cyan=C4). A bright vertical sweep cursor moves left-to-right at a constant
+BPM, playing all blocks in its current column. Tap a placed block to remove it. No column limit —
+the child can fill an entire column (chord!) or spread notes across rows (melody). Loop repeats
+continuously; changes take effect immediately on the next cursor pass.
+
+BPM +/− buttons (40–120 BPM). **Clear** erases all blocks. **Demo** pre-fills 8 columns with a
+C-major pentatonic phrase so the sequencer immediately plays. Blocks glow brighter as the cursor
+passes through them (flash = 1.0, decays at 3/s). Soft C3+G3 ambient pad under the sequence.
+For kids 4+ · Zero permissions · Zero API · Zero deps.
+
+**Why this first**: `145-kids-dot-seq` has 6 dots in a single row (time only, no pitch control).
+`150-kids-beat-builder` has melody vs drums but no pitch-per-row vertical control. This is the
+first kids prototype with a real 2D pitch × time grid — the browser equivalent of the Lego brick
+tabletop sequencer (BrickMusicTable, arxiv 2411.13224) validated with 150+ children ages 3–13.
+A child who fills one row hears a steady repeating note; a child who fills a diagonal hears a
+rising scale; a child who fills one column hears a 5-note chord burst. Discovery happens without
+any explanation. Directly inspired by Karel's love of `98-kids-drum-circle` ❤️ (rhythm) and
+`111-kids-shape-loop` ❤️ (additive layering). Expected size: ~220 lines.
+
+### `kids-voice-monster`
+**Question**: what if singing fed a hungry character that sang back what it ate?
+
+A large glowing "glow-monster" character on a dark canvas (simple rounded blob with two glowing
+eyes). Hum or sing into the mic → the monster grows (radius scales with RMS amplitude up to 2×).
+Pitch shifts its color (low voice = violet/blue, mid = emerald/amber, high = rose/cyan). After
+30 seconds of accumulated voice input, the monster is "full" — it does a happy bounce animation
+and then sings back a short melody drawn from the distinct pitches it detected (up to 8 notes,
+played via sine oscillators with the same pitches the child sang, in order of first detection).
+After singing back, the monster shrinks to resting size and the cycle begins again.
+
+Secondary interaction: tap the monster to get a single surprised "boop" sound (quick harmonic
+series arpeggio) and a brief eye-wobble. If the child is silent for 5+ seconds, the monster's
+eyes look around (Lissajous drift) as if searching for sound.
+
+**Why new**: `158-kids-hum-paint` ❤️ uses voice to paint a visual stroke. This uses voice to
+feed a character narrative — the same voice input with a completely different emotional frame.
+The "sing to me" → "I sing back what I learned" loop activates neural reward circuits identified
+in the Apr 2025 fMRI study: improvisation → reward, no judgment barriers, character response
+removes self-consciousness. The monster mediates between the child and the sound — the child
+isn't "performing," they're "feeding." For kids 3+ · Mic required · Zero API · Zero deps.
+
+### `kids-texture-drum`
+**Question**: what if every surface had its own sound — and you could drum on anything?
+
+Five large rectangular canvas zones (each ~20% of canvas width, full height), each representing
+a physical material:
+- **Wood** (warm amber): low-pass filtered noise burst + sine transient at ~200Hz. Sounds like
+  tapping a wooden table.
+- **Metal** (cool cyan): high-Q bandpass resonator at ~800Hz + long sustain. Sounds like a
+  small bell or tin can.
+- **Water** (blue-violet): filtered noise + pitch-falling glide (800→200Hz over 300ms). Sounds
+  like a water drop splash.
+- **Earth** (deep amber): very low-frequency sine burst at ~80Hz. Sounds like a deep drum.
+- **Glass** (bright rose): high-frequency sine at 2.4kHz, fast decay 80ms. Sounds like tapping
+  a wine glass.
+
+Each zone shows its material texture (grainy noise overlay, gentle shimmer, or smooth surface).
+On tap: zone ripples with a canvas2D circular pulse (color = zone color, max radius = tap
+distance from center × 1.5). Hold a zone = rapid fire (one hit per 80ms) — "roll" effect.
+Two-finger tap = accent (louder hit, full-screen color flash).
+
+**Why new**: all 30+ prior kids prototypes use pitched musical notes in C-major pentatonic. This
+is the first where **timbre** (sound texture/quality) is the primary dimension, not pitch. A
+3yo discovers "this sounds different from that" without any reference to notes or scales. Directly
+inspired by Hitmachine (2025) and the tangible instrument workshops. The material metaphor is
+immediately accessible — even without reading the labels, the visual texture of each zone suggests
+its sound. For kids 3+ · Zero permissions · Zero API · Zero deps.
+
+### `kids-mirror-dance` [needs Karel OK — ~8MB CDN dep]
+**Question**: what if your hands conducted the music while the camera watched?
+
+Webcam (front-facing) → MediaPipe HandLandmarker (loaded once from jsDelivr CDN, ~8MB WASM) →
+hand skeleton tracking at ~25fps. Right hand Y-position → pitch (C2 bottom to C5 top, continuous
+glide via OscillatorNode frequency ramp). Right-hand palm spread (thumb-to-pinky distance) →
+reverb wetness. Left hand Y → bass drone pitch. Wrist speed (frame delta) → amplitude. Clap
+both hands together (palm distance < 40px) → percussive burst (noise filter, 40ms). 
+
+Visual: live camera feed in background (semi-transparent, 40% opacity), canvas overlay with
+glowing hand skeleton drawn as colored dots + lines (additive blending, same palette as `1-live`).
+A secondary horizontal spectrum strip at the bottom shows the synthesized audio output.
+
+Demo mode (no camera): animated hand-skeleton performs a demo gesture sequence — shows the
+interaction model before permissions are requested. "Conduct the music with your hands."
+
+**Why new**: no existing kids prototype uses the camera. Rhythm Pals (2026) is the first
+mainstream kids app to use camera movement detection — validates this design space. Directly
+inspired by Karel's love of `104-kids-mirror-draw` ❤️ (mirror aesthetic) and the embodied
+music research showing full-body gesture → richer music understanding. For kids 4+ · Camera
+required · ~8MB one-time CDN load (jsDelivr, same origin as other CDN prototypes) · Zero API.
+**Needs Karel approval** before building.
+
+---
+
+## Research log for Kids — Cycle 206 (2026-05-27)
+
+**Scope**: Kids research sweep to refill empty queue (all Cycle 196 seeds built). Scanned:
+CHI EA 2026, IDC 2026, ACM proceedings, Scientific Reports 2025, arxiv Nov 2024–Feb 2026,
+App Store surveys (Toca Boca Jr, Sago Mini Music Box, Rhythm Pals), tangible music research.
+
+### Key findings
+
+**MusiBubbles — Input-Envelope-Output framework** (arxiv 2602.22813, CHI EA 2026, Feb 2026):
+- Web-based prototype for post-task music rewards in motor training for children with autism (ASD).
+- Defines 4 verifiable safety principles: (1) bounded audio output, (2) no sudden transients,
+  (3) cause-effect chain preserved (child action → direct sound consequence, no delay surprises),
+  (4) interventions are auditable/logged.
+- **Design implication**: principles (1)-(3) are already satisfied by our pentatonic + no-wrong-notes
+  design. Principle (4) is for clinical settings. Good checklist for any new kids prototype.
+- Date: February 26, 2026. [older, foundational for ASD contexts]
+
+**Neural Rewards in Children's Musical Improvisation** (PMC11986006, Scientific Reports, Apr 2025):
+- fMRI study with 12 children ages 9-11: improvisation vs rote scale playing.
+- **Key finding**: improvisation activated reward structures (amygdala, caudate, nucleus accumbens)
+  SIGNIFICANTLY MORE than memorized tasks. "Deactivation of executive control areas (DLPFC)" —
+  children didn't need self-monitoring to improvise creatively.
+- **Design implication**: explains why kids spend longer in free-play modes than guided play.
+  "Remove judgment barriers — make mistakes impossible." Validates our entire design philosophy.
+  Could justify adding explicit "free mode" versions of structured prototypes (echo-canon, clap-back).
+- Date: April 10, 2025. [older, but foundational — cited by 2026 IDC submissions]
+
+**BrickMusicTable: A LEGO Brick Tabletop Sequencer** (arxiv 2411.13224, Nov 2024 / Springer 2025):
+- Physical 2D grid sequencer where children place colored Lego bricks to compose music.
+- Validated with 150+ children ages 3–13 in workshops. Strong engagement across all ages.
+- Key design: rows = pitch, columns = time steps, colored bricks = notes, cursor sweeps = playback.
+- **Browser equivalent**: `kids-lego-sequencer` directly maps this paradigm to canvas2D.
+  Construction-as-composition is a validated pedagogy; the draw-your-own-melody interaction
+  is distinct from all 30 existing kids prototypes.
+- Date: November 2024. [older, foundational]
+
+**Hitmachine tangible music platform** (2025):
+- Over 150 children ages 3-13 built their own musical instruments from Lego using sensors.
+- Reinforces that even very young children engage with construction-before-play paradigm.
+- Inspired `kids-texture-drum` (material zones as instrument surfaces) and confirms
+  `kids-lego-sequencer` design space.
+- Date: 2025. [older, foundational]
+
+**Rhythm Pals 2026** (App Store):
+- New kids music app featuring a "dance-along mode" that uses the device camera to detect
+  movement, turning toddler movement into a musical game.
+- First mainstream kids music app with camera integration (2026).
+- **Design implication**: camera-based interaction for kids is now commercially validated.
+  `kids-mirror-dance` is timely. The CDN-loaded MediaPipe approach (no package.json change)
+  is the right technical path.
+- Date: 2026 (confirmed active). [fresh]
+
+**Toca Boca Jr — Band update** (March 2025):
+- Beat mixing with 16 characters added to Piknik/Toca Boca Jr. Each character = distinct
+  sound + rhythm. Mix beats by tapping characters.
+- Gap we have: our `91-kids-character-band` plays melodic phrases; Toca's new Band plays
+  rhythmic loops. `kids-lego-sequencer` fills the rhythm-construction gap in our zone.
+- Date: March 2025. [older, market context]
+
+**IDC 2026 theme: Sustainable Futures** (idc.acm.org, June 22-25 Brighton):
+- Conference accepting submissions now; proceedings not yet public. Theme focuses on technology
+  for sustainable, equitable futures. Kids music prototypes that work without internet
+  connectivity (all our zero-API prototypes) align with accessibility + equity framing.
+- **Design implication**: zero-permissions, zero-API prototypes are the most equitable — they
+  work offline, on shared devices, with no data collection. Reinforce this as our design north star.
+- Date: 2026 (upcoming). [fresh context]
+
+### Next kids cycle (Cycle 208) recommendation
+
+Build `kids-lego-sequencer` (slot `176-`). Strongest idea: BrickMusicTable validation with 150+
+children, fills the 2D-grid gap in our kids zone, zero deps, one-cycle build. Expected ~220 lines.

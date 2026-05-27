@@ -1,5 +1,77 @@
 # Dream Agent — cycle state
 
+## Cycle 206 — kids research sweep (all Cycle 196 seeds exhausted)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 206 % 2 = 0 → kids cycle. ✓
+4. **Kids queue check** — all four Cycle 196 seeds have been built:
+   `kids-marble-run` (198), `kids-snow-globe` (200), `kids-garden-bloom` (202),
+   `kids-raindrop-rhythm` (204). Queue is empty. → **do a kids research sweep.**
+5. Last kids research: Cycle 196 (10 kids cycles ago = 20 total cycles ago).
+   AGENT.md rule: "if KIDS.md queue is thin, do kids-focused research sweep."
+
+**Loves influencing this cycle** (26 total, kids subset):
+- `158-kids-hum-paint` ❤️ (voice as instrument) — seeded `kids-voice-monster`
+- `160-kids-paint-loop` ❤️ (drawing → loops) — background context
+- `133-kids-ripple-pond` ❤️ (physics delay) — seeded `kids-texture-drum`
+- `104-kids-mirror-draw` ❤️ (mirror/camera aesthetic) — seeded `kids-mirror-dance`
+
+**Researched**:
+- Scanned CHI EA 2026, IDC 2026 theme, ACM children's music 2025-2026 proceedings
+- Fetched MusiBubbles (arxiv 2602.22813, CHI EA 2026): web-based Input-Envelope-Output framework
+  for safe generative music in sensory-sensitive contexts. Key principle: preserving cause-effect
+  chains is the key safety design (not limiting amplitude). Web-based, directly applicable.
+- Fetched Neural Rewards in Children's Musical Improvisation (PMC11986006, Scientific Reports
+  Apr 2025): fMRI shows children's reward structures (amygdala, caudate, nucleus accumbens)
+  activate MORE during improvisation than memorized tasks. "Remove judgment barriers" — mistakes
+  impossible, exploration rewarded. Scientifically validates our pentatonic + no-wrong-notes design.
+- Scanned tangible music research: BrickMusicTable (arxiv 2411.13224, Nov 2024) — Lego brick
+  grid sequencer for kids, 150+ children age 3-13. Validates construction-as-composition paradigm.
+  Hitmachine platform (2025): same approach. Hybrid digital instrument workshops (Wiley, May 2025).
+- Scanned Toca Boca Jr (March 2025 Band update): 16 characters, beat mixing. Sago Mini Music Box
+  still active. Rhythm Pals 2026: camera-based movement detection ("dance-along mode") — first
+  mainstream kids music app with camera integration.
+- IDC 2026 (Jun 22-25 Brighton, theme: sustainable futures) — proceedings not yet public.
+
+**Seeded 4 new prototype ideas** (see KIDS.md "New seeds — Cycle 206 research sweep"):
+1. `kids-lego-sequencer` — 2D pitch × time block grid. Tap to place colored block; sweep cursor
+   plays columns. First piano-roll-style grid in kids zone. Inspired by BrickMusicTable. **Build
+   next kids cycle (208).**
+2. `kids-voice-monster` — mic → hum/sing to feed a glow-monster; it grows with amplitude,
+   color-shifts with pitch; after 30s it "sings back" the pitches it ate. Character narrative +
+   neural reward. Inspired by improvisation reward research. Cycle ~210.
+3. `kids-texture-drum` — 5 "material" canvas zones (wood/metal/water/earth/glass); tap each to
+   hear its characteristic synthesized timbre. First kids prototype about timbre, not pitch. Zero
+   permissions. Inspired by Hitmachine / tangible instrument workshops. Cycle ~212.
+4. `kids-mirror-dance` — front camera + MediaPipe hand tracking; hand Y → pitch, speed →
+   amplitude, clap → percussive burst. First camera-based kids prototype. ~8MB CDN dep. Needs
+   Karel approval. Cycle ~214 if approved.
+
+**Queued next**:
+- Cycle 207: **adult build** (207 % 2 = 1). Top candidates (from open questions in MORNING.md):
+  `sdf-cave` (SDF ray-marching cave interior, highest surprise) or `splat-bloom` (Gaussian splat
+  additive painting, most painterly). Karel asked which direction — build whichever feels strongest
+  or check if he replied.
+- Cycle 208: **kids build** (208 % 2 = 0) → build `176-kids-lego-sequencer`.
+
+**Notes**:
+- BrickMusicTable and Hitmachine are physical systems; the browser equivalent is exactly what our
+  existing `145-kids-dot-seq` and `150-kids-beat-builder` attempt. `kids-lego-sequencer` is the
+  next evolution: 2D grid (pitch on Y, time on X) rather than a single row of dots.
+- The neural reward finding is not a new design principle — it's confirmation. We've applied it
+  from Cycle 92 (no wrong notes). What's new: the fMRI evidence explains WHY kids spend longer
+  sessions in improvisation mode than play-along mode. Could justify adding "free play" modes to
+  existing structured prototypes (e.g. `142-kids-echo-canon` free mode before canon mode).
+- MusiBubbles I-E-O principle (safe bounds on audio output) is already implicit in our gain levels
+  and synthesis choices; worth explicitly checking new prototypes against the 4 verifiable
+  principles (bounded output, no sudden transients, cause-effect preserved, auditable).
+
+---
+
 ## Cycle 205 — adult build: 175-vocal-choir (sing a note → 3 HRTF harmony voices in 3D space)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
