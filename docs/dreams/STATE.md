@@ -10711,3 +10711,64 @@ will shift to 185–187 when those are built).
 - The cave floor is drawn OVER the crystal bases. This gives the illusion of crystals emerging from
   rock (bases hidden under the stone) while keeping the canvas draw order simple (no clipping needed).
 
+---
+
+## Cycle 215 — adult build: 183-piano-motion
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Adult cycle (215 % 2 = 1). No blockers; nothing in-progress.
+Three candidates from the Cycle 213 research sweep:
+- `ritual-generate` (§228) — needs GEMINI_API_KEY (not in environment, MORNING.md confirms).
+- `camera-compose` (§231) — also needs GEMINI_API_KEY.
+- `piano-motion` (§229) — **zero deps, zero API key needed**, uses existing `/api/audio/[id]`
+  endpoint. Direct implementation of AGENT.md directive: "build prototypes that USE his real
+  piano tracks as the audio source." Selected.
+
+**Loves influencing this pick**:
+- `163-paths-visualizer` ❤️ — Karel's actual recordings as AV source; same audio API pattern
+- `148-spatial-palette` ❤️ — spatial relationship between sounds; hands mapping register to position
+- `155-piano-hands` — prior piano-hands prototype informs this design direction
+
+**What I built**:
+- `src/app/dream/183-piano-motion/page.tsx` — 61-key keyboard (C2–C7), two cartoon hands
+  with spring physics. Violet left hand tracks bass (below C4) via FFT peak detection;
+  rose right hand tracks treble (C4–C7). Three modes: Bach Invention No. 1 demo (both
+  voices, all notes pre-scheduled as OscillatorNodes); mic (live FFT peak per register);
+  recording (paste UUID → `/api/audio/[id]` → MediaElementSource → FFT). Spring: k=0.12,
+  damping=0.60. Active keys glow violet. Connector lines (dashed, hand → keyboard).
+  Canvas precomputes key layout table at module load to avoid O(N) whitesBelow() in draw.
+- `src/app/dream/183-piano-motion/README.md` — design notes, mode descriptions, polish ideas.
+- Build: ✅ clean (`/dream/183-piano-motion` — 4.34 kB, `○ Static`).
+
+**What's new about this prototype**:
+1. **First to visualize musical gesture rather than signal** — 182 prior prototypes visualize
+   audio output (spectrum, pitch, chords, waveform). This shows the physical act of playing.
+2. **Two-register hand tracking** — separating the FFT into bass/treble windows and tracking
+   independent hand positions; watching left and right hands crossing each other on a melody
+   is a qualitatively different reading of the music than a spectrum or piano roll.
+3. **Spring physics on key-to-key movement** — the spring (k=0.12, damp=0.60) makes the
+   hand feel like it has physical weight. Fast passages: the hand trails behind. Slow passages:
+   it settles precisely on the key. The lag IS the information.
+4. **Direct use of Karel's actual recordings** via the existing `/api/audio/[id]` endpoint —
+   no new backend needed, no new dependencies.
+
+**Queued next**:
+- Cycle 216: **kids build** (216 % 2 = 0). Consider `kids-glow-bug` — tap to release fireflies
+  that land on plants and play bell notes; or a kids version of crystal-song with color-coded
+  crystals. Check KIDS.md for queue.
+- Cycle 217: adult. `ritual-generate` (I-Ching → Lyria 3 Pro) if GEMINI_API_KEY lands, or
+  `183-piano-motion` polish — add velocity-to-press-depth visual, add chord spread for
+  simultaneous treble notes.
+
+**Notes**:
+- The FFT peak detection approach for real recordings is a heuristic: it finds the
+  *dominant* frequency in each register per frame. For polyphonic piano this will track the
+  loudest note in each register, not all simultaneous notes. This is a known limitation —
+  the README notes offline batch analysis with OfflineAudioContext as the accurate path
+  for future polish cycles.
+- TypeScript gotcha: `new Float32Array(n)` returns `Float32Array<ArrayBufferLike>` in this
+  TypeScript version, but `getFloatFrequencyData()` expects `Float32Array<ArrayBuffer>`.
+  Fix: explicit cast `as Float32Array<ArrayBuffer>` + typed interface field.
+  Same pattern used in `163-paths-visualizer`.
+

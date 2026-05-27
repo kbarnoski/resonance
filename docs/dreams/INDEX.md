@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 214 — kids build)
+## ⭐ Newest (Cycle 215 — adult build)
+
+- **[/dream/183-piano-motion](/dream/183-piano-motion)** — Piano Motion. `demoable`
+  Watch a piano being played — two cartoon hands (violet left / rose right) float above a
+  61-key keyboard (C2–C7) and spring-animate to each key as music sounds. **Bass register
+  (below C4)** drives the left hand; **treble (C4–C7)** drives the right. Active keys
+  glow violet when pressed. Three modes: **Bach demo** (Invention No. 1 fragment, all notes
+  pre-scheduled, both voices visible); **mic** (play live — hands follow in real time via
+  FFT peak detection per register); **recording** (paste a Resonance recording UUID →
+  `/api/audio/[id]` → animated playback).
+  Spring physics: k=0.12, damping=0.60 — fast enough to track melodies, smooth enough to
+  look like a real hand sliding rather than teleporting. First prototype visualizing the ACT
+  of playing rather than the sound of it. Implements AGENT.md directive: "use his real piano
+  tracks as the audio source."
+  Inspired by PianoFlow (arxiv 2604.12856, §229). Zero deps · Zero API · 4.34 kB.
+  Design notes: `src/app/dream/183-piano-motion/README.md`
+
+---
+
+## Cycle 214 — kids build
 
 - **[/dream/182-kids-crystal-song](/dream/182-kids-crystal-song)** — Crystal Song. `demoable`
   Six glowing crystal formations rise from a dark cave floor. **Taller crystal = lower pitch**
