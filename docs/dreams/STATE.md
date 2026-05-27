@@ -1,5 +1,72 @@
 # Dream Agent — cycle state
 
+## Cycle 208 — kids build: 177-kids-lego-sequencer (Lego Beats — 2D block sequencer)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 208 % 2 = 0 → kids cycle. ✓
+4. **Kids queue check** — cycle 206 research seeded 4 ideas; top of queue is `kids-lego-sequencer`.
+   Build it.
+
+**Decision rationale**:
+- `kids-lego-sequencer` was explicitly queued for cycle 208 in STATE.md cycle 207.
+- First 2D pitch×time grid in the kids zone — all prior kids prototypes are 1D (single row of
+  dots or beats) or spatial (tap anywhere). This introduces the piano-roll metaphor to the kids
+  zone: X = time, Y = pitch.
+- Inspired by BrickMusicTable (arxiv 2411.13224, Nov 2024): tangible lego brick grid sequencer
+  validated with 150+ kids aged 3–13. Construction-as-composition is naturally intuitive.
+- Zero deps, zero API, zero permissions. One-cycle build.
+- Aligns with Karel's love of `160-kids-paint-loop` ❤️ (visual composition → playback) and
+  `98-kids-drum-circle` ❤️ (rhythm construction).
+
+**Loves influencing this cycle** (26 total, kids subset):
+- `160-kids-paint-loop` ❤️ → visual composition that loops; lego sequencer extends to pitched grid
+- `98-kids-drum-circle` ❤️ → beat construction; lego sequencer extends to 2D pitch dimension
+- `133-kids-ripple-pond` ❤️ → kids love immediate tap response; seeded the instant-play-on-tap design
+
+**Built**:
+- `src/app/dream/177-kids-lego-sequencer/page.tsx` — 2.84 kB (static build size)
+  - 8-column × 6-row grid (8 beat steps, 6 pentatonic pitches: C3 E3 G3 A3 C4 E4)
+  - Each row = distinct bold color (violet/amber/emerald/rose/cyan/orange)
+  - Tap = toggle cell on/off; drag = draw mode (paint multiple cells)
+  - White cursor sweeps left→right at BPM, plays every active block it passes
+  - Block visual: lego brick = rounded rect + top plastic sheen gradient + center stud dot
+  - Bounce animation (scale 1.08×, 18px glow) on play and tap activation
+  - BPM control: −/+ buttons, range 40–160, step 10. React state + ref sync (no useEffect for BPM)
+  - Seeded starter melody: C4+C3 octave beat 1, G3 beat 2, C4 beat 3, E4 beat 4, G3+C4+E4 loop
+  - Ambient pad: C3+G3 sine waves fade in over 2.5s
+  - Clear button erases all blocks (cursor keeps running)
+  - Beat clock: rAF + timestamp comparison (avoids setInterval drift); initialized on first frame
+    to prevent immediate-beat on first tick
+- `src/app/dream/177-kids-lego-sequencer/README.md` — design notes + research basis
+
+**Build**: `npm run build` passed cleanly. `/dream/177-kids-lego-sequencer` = 2.84 kB. Zero errors.
+
+**TypeScript notes**:
+- `drawRoundRect` and `playNote` defined outside component (no hook confusion)
+- `bpmRef` updated synchronously in `handleBpm` + React `setBpm` for re-render — cleaner than
+  `useEffect(() => { bpmRef.current = bpm }, [bpm])`
+- Beat clock initialized with `lastBeatRef.current = ts / 1000` on first rAF frame to prevent
+  immediate beat on load (performance.now() in browser is often in the millions of ms)
+
+**What surprised me**:
+The "clear and rebuild" loop is surprisingly compelling even with a simple 6-note pentatonic. The
+colored blocks mean you can see the melody's shape: a diagonal line of blocks from top-left to
+bottom-right is a descending scale; a V-shape is a melodic arc. The visual pattern of placed blocks
+communicates musical structure. This may be the most "composing vs. playing" prototype in the kids
+zone — you plan before you hear.
+
+**Queued next**:
+- **Cycle 209 (adult, 209%2=1)** → `splat-bloom` (was 177, now 178 since lego-sequencer took 177).
+  Gaussian splat additive Canvas2D painting field. Aligns with `130-tsl-particle-compute` ❤️.
+- **Cycle 210 (kids, 210%2=0)** → `kids-voice-monster` — mic → hum/sing to feed a glow-monster;
+  grows with amplitude, color-shifts with pitch, sings back pitches after 30s.
+
+---
+
 ## Cycle 207 — adult build: 176-sdf-cave (SDF ray-marching cave interior)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)

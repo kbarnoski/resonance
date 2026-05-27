@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 207 — adult build)
+## ⭐ Newest (Cycle 208 — kids build)
+
+- **[/dream/177-kids-lego-sequencer](/dream/177-kids-lego-sequencer)** — Lego Beats 🧱. `demoable`
+  A 2D **block sequencer** for kids (ages 3+). 8-step × 6-pitch grid: each row is a note in the
+  C-major pentatonic scale (C3→E4), each column is one beat. Tap any block to activate it — a
+  white cursor sweeps left to right and plays every lit block, looping endlessly. **Drag** to paint
+  a run of notes. **−/+** buttons adjust BPM (40–160). **✕ Clear** to start fresh.
+  Visual: lego-brick blocks (rounded rect + plastic sheen + center stud) with bounce-and-glow
+  animation on play. Ambient C3+G3 pad fills the silence between notes.
+  **"Place bricks to build a melody."** First 2D pitch×time grid in the kids zone — all prior
+  kids prototypes are 1D (single row of dots) or spatial (tap-anywhere). This introduces the
+  piano-roll metaphor to kids: X = time, Y = pitch. Construction-as-composition.
+  Inspired by BrickMusicTable (arxiv 2411.13224, Nov 2024): lego block grid sequencer validated
+  with 150+ children aged 3–13. Zero permissions, zero API, zero deps. 2.84 kB.
+  Aligned with Karel's loves: `160-kids-paint-loop` ❤️ (visual composition → playback),
+  `98-kids-drum-circle` ❤️ (beat construction).
+  Design notes: `src/app/dream/177-kids-lego-sequencer/README.md`
+
+---
+
+## Previous (Cycle 207 — adult build)
 
 - **[/dream/176-sdf-cave](/dream/176-sdf-cave)** — Cave. `demoable`
   A WebGL1 fragment shader renders a stone cave interior via **SDF ray-marching** — the first
