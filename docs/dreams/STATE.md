@@ -10022,3 +10022,57 @@ FROM the spectral domain (all prior prototypes use FFT for read-only analysis).
   in the mathematical sense between the two.
 - 22 adult cycles since last research sweep (Cycle 177). Consider Cycle 201 as a
   research cycle if no specific build is queued.
+
+---
+
+## Cycle 204 — Raindrop Rhythm (kids build)
+
+**When**: 2026-05-27 UTC
+
+**Decided**: Kids cycle (204 % 2 = 0). No blockers; no in-progress work.
+Built `174-kids-raindrop-rhythm` — the last of the four seeds from the Cycle 196
+kids research sweep. Marble-run (198), snow-globe (200), and garden-bloom (202)
+were all built; raindrop-rhythm was deferred. Also directly relevant to the
+Cycle 203 research: AI Harmonizer (§219) confirmed the "landing = musical event"
+thesis that this prototype embodies.
+
+Love signals influencing this pick:
+- `169-kids-marble-run` ❤️ — physics-based music, gravity delay
+- `166-kids-lantern` ❤️ — exploration + hidden discovery
+- `133-kids-ripple-pond` ❤️ — landing = musical event (direct lineage)
+
+**Built**:
+- `src/app/dream/174-kids-raindrop-rhythm/page.tsx` — three colored clouds
+  (violet=C3, amber=G3, rose=C4); tap → burst of 3-5 teardrops; hold → continuous
+  rain; auto-rain every second cycles through all three clouds. Drops fall with
+  gravity (280 px/s²) + sine drift (±12 px). Bell note (triangle wave, ~1.8s decay)
+  plays on landing. Expanding ripple ring at each landing point. Ambient C3+G3 pad.
+  Background: deep navy + 28 twinkling stars + water surface at 82% canvas height.
+- `src/app/dream/174-kids-raindrop-rhythm/README.md` — design notes, audio spec,
+  design lineage, polish ideas.
+- Build: ✅ clean (`/dream/174-kids-raindrop-rhythm` — 2.82 kB, `○ Static`).
+
+**Design notes**:
+- The three-cloud → three-pitch mapping (C major triad C3/G3/C4) means any
+  combination of clouds sounds musical. Classic pentatonic-does-the-harmonic-work
+  principle applied to a 3-cloud interface.
+- Gravity delay (~0.5-0.9s fall time) creates the cause-effect chain: tap,
+  watch the drop fall, then hear the note. This temporal gap is the pedagogical
+  heart of the prototype — the same principle that makes ripple-pond and snow-globe
+  engaging beyond purely reactive prototypes.
+- Auto-rain at 1-second cycle means the canvas is never silent from the moment
+  the start button is pressed. A child picks up the device and it's already raining.
+- The reverse-iterate splice pattern (`for (let di = drops.length - 1; di >= 0; di--)`)
+  is the cleanest way to remove landed drops without disturbing indices ahead.
+
+**Queued next**:
+- Cycle 205: **adult build** (205 % 2 = 1). Top candidate: `174-vocal-choir`
+  (now slot 175 since 174 is taken — autocorrelation pitch detection → 3 HRTF
+  harmony voices in SATB formation). MORNING.md flagged it as "Top Cycle 205
+  candidate." Zero deps, zero API. Aligns with `148-spatial-palette` ❤️ love.
+  Alternative: `175-sdf-cave` — WebGL SDF ray-marching (cave interior, highest
+  surprise factor). Both are one-cycle builds.
+- Cycle 206: **kids build** (206 % 2 = 0). Consider a kids research sweep
+  (last kids research was Cycle 196 — 8 kids cycles ago). KIDS.md queue may
+  be thin. Or: `174-kids-raindrop-rhythm` polish — add emerald cloud (E3) for
+  full pentatonic, thunderstorm mode, drop trails.

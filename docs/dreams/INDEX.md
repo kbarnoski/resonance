@@ -10,7 +10,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 202 — kids build)
+## ⭐ Newest (Cycle 204 — kids build)
+
+- **[/dream/174-kids-raindrop-rhythm](/dream/174-kids-raindrop-rhythm)** — Raindrop Rhythm (kids). `demoable`
+  Three glowing clouds in a dark sky — violet (C3), amber (G3), rose (C4). **Tap any cloud** →
+  3-5 glowing teardrops scatter and fall with gravity + gentle sine drift. **Hold a cloud** →
+  continuous rain (one drop per 200ms). When a drop lands on the water surface below, it rings
+  a bell note and leaves an expanding ripple. Auto-rain cycles through all three clouds every
+  second so the canvas is never silent. C3+G3+C4 form a C major arpeggio — any combination of
+  clouds sounds consonant.
+  **"The note plays when the drop lands, not when you tap."** Same delay-as-pedagogy principle
+  as `133-kids-ripple-pond` ❤️ (two waves meet → chord) and `171-kids-snow-globe` (snowflake
+  lands → bell). Here the child has control over *which pitch* (which cloud) and *how much rain*
+  (tap vs hold), making this the most musically intentional of the three landing-note prototypes.
+  Directly inspired by `169-kids-marble-run` ❤️ (physics = music) and Karel's loves of
+  `133-kids-ripple-pond` ❤️, `166-kids-lantern` ❤️ (hidden discovery). Three-cloud polyphony:
+  different children can each "own" a color and contribute separate voices.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.82 kB.
+  Design notes: `src/app/dream/174-kids-raindrop-rhythm/README.md`
+
+---
+
+## Previous (Cycle 202 — kids build)
 
 - **[/dream/173-kids-garden-bloom](/dream/173-kids-garden-bloom)** — Garden Bloom (kids). `demoable`
   Hold the soil to grow a glowing flower — stem rises, petals unfold one by one as notes.
