@@ -10649,3 +10649,65 @@ Love signals influencing this pick:
   (last kids research was Cycle 196 — 8 kids cycles ago). KIDS.md queue may
   be thin. Or: `174-kids-raindrop-rhythm` polish — add emerald cloud (E3) for
   full pentatonic, thunderstorm mode, drop trails.
+
+---
+
+## Cycle 214 — kids build: 182-kids-crystal-song
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Kids cycle (214 % 2 = 0). No blockers; nothing in-progress.
+Queue is rich. Chose `182-kids-crystal-song` — a crystal cave with six glowing
+formations that ring as glass bells when held. This cycle takes prototype slot 182
+(IDEAS.md proposals for ritual-generate / camera-compose / piano-motion at 182–184
+will shift to 185–187 when those are built).
+
+**Loves influencing this pick**:
+- `105-pluck-field` ❤️ — resonant physical synthesis as the primary metaphor
+- `166-kids-lantern` ❤️ — dark canvas, glowing objects discovered by touch
+- `169-kids-marble-run` ❤️ — height-as-pitch physical analogy; construction + visual delight
+- `181-kids-texture-drum` (Cycle 212) — timbral variety opened the "new timbre" design axis
+
+**What I built**:
+- `src/app/dream/182-kids-crystal-song/page.tsx` — six crystal formations in a dark cave.
+  Taller = lower pitch (BANDIMAL rule). Glass bell synthesis: 3 sine oscillators per crystal
+  (fundamental + octave + 2-octave, gains 1.0 / 0.14 / 0.04) with 10ms attack, ~2.2s release.
+  Sustained while held (GainNode setTargetAtTime sustain), decays on pointer-up.
+  Sparkle burst (16 particles) + two ripple rings at each tap. Autonomous shimmer per crystal
+  (10s period, π/3 phase offset per crystal — cave breathes before first touch). Resonance flash
+  when 4+ crystals held simultaneously (cool-white canvas overlay). Ambient C2 drone from first tap.
+  Canvas: cave floor wavy edge, ceiling vignette, per-crystal breathing scale, facet highlights.
+- `src/app/dream/182-kids-crystal-song/README.md` — design notes, sound spec, design lineage.
+- Build: ✅ clean (`/dream/182-kids-crystal-song` — 3.07 kB, `○ Static`).
+
+**What's new about this prototype**:
+1. **Sustained tones while held** — most kids prototypes play-on-tap-down. This sustains while
+   finger is down, decays on release. A child learns: hold longer = longer note.
+2. **Glass bell timbre** — different from KS pluck (string), triangle wave, or pure sine.
+   The additive synthesis with octave partials is a genuinely distinct sound in the kids zone.
+3. **Autonomous shimmer before first touch** — the cave is animated immediately (no start button,
+   no hint needed to know something is alive). Crystals beckon to be tapped.
+4. **Multi-crystal resonance reward** — 4+ simultaneous holds triggers a visible cave-wide flash,
+   encouraging full-hand engagement.
+
+**Queued next**:
+- Cycle 215: **adult build** (215 % 2 = 1). Top candidates from IDEAS.md and RESEARCH:
+  - `185-ritual-generate` — I-Ching coin casting → Lyria 3 Pro meditation music (§228, ICMC May 2026).
+    Needs GEMINI_API_KEY already planned. Very high surprise factor. One-cycle build.
+  - `183-camera-compose` — webcam snapshot → Gemini vision → Lyria 3 Pro ambient track (§231, NeurIPS 2025).
+    Also needs GEMINI_API_KEY. First prototype that reads the visual world as music.
+  - `piano-motion` (§229) — Karel's piano tracks animated as hand motion on a keyboard. Zero deps.
+  Note: the IDEAS.md entries for these were pre-numbered 182-184; they'll be renumbered when built.
+
+**Notes**:
+- The IDEAS.md entries `182-ritual-generate`, `183-camera-compose`, `184-piano-motion` were
+  written during the Cycle 213 research sweep as slot proposals. Since this kids cycle claims 182,
+  those adult prototypes will naturally be renumbered to 185/186/187 when built. No action needed
+  now — the building cycle will assign the next available number.
+- Glass bell synthesis: partials are integer multiples (2×, 4×) rather than the inharmonic ratios
+  of a real glass resonator (~2.76×, ~5.40×). The integer ratios sound slightly more tonal/pure
+  than a real glass bell but are cleaner and more pleasant on small speakers. The inharmonic version
+  could be an optional "crystal type" toggle in a future polish pass.
+- The cave floor is drawn OVER the crystal bases. This gives the illusion of crystals emerging from
+  rock (bases hidden under the stone) while keeping the canvas draw order simple (no clipping needed).
+

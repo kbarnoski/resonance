@@ -10,7 +10,27 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 212 — kids build)
+## ⭐ Newest (Cycle 214 — kids build)
+
+- **[/dream/182-kids-crystal-song](/dream/182-kids-crystal-song)** — Crystal Song. `demoable`
+  Six glowing crystal formations rise from a dark cave floor. **Taller crystal = lower pitch**
+  (BANDIMAL rule). **Tap** to ring; **hold** to sustain a glass-bell note (3 sine partials:
+  fundamental + octave + 2-octave, 2.2s decay on release). **Hold 4+ crystals together** → a
+  resonance flash lights the whole cave. Crystals shimmer autonomously before first touch — the
+  cave is alive from the moment the page loads. Ambient C2 drone from first tap.
+  **"First kids prototype with sustained tones and glass bell timbre."** 181 prior prototypes
+  play on tap-down; this sustains while held. Completely distinct from KS pluck (marble-run,
+  pluck-field), triangle wave, or pure sine — the additive partials give a crystalline, slightly
+  metallic ring. New dimension: a child discovers that holding longer = longer note (duration as
+  a musical parameter). Four-crystal resonance rewards full-hand engagement.
+  Inspired by `105-pluck-field` ❤️ (resonant physical synthesis), `166-kids-lantern` ❤️
+  (dark canvas + glowing objects to discover), `169-kids-marble-run` ❤️ (height-as-pitch).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 3.07 kB.
+  Design notes: `src/app/dream/182-kids-crystal-song/README.md`
+
+---
+
+## Previous (Cycle 212 — kids build)
 
 - **[/dream/181-kids-texture-drum](/dream/181-kids-texture-drum)** — Texture Drum. `demoable`
   Five full-height canvas zones: 🪵 **Wood** (lowpass noise + 185Hz body thud) · 🔔 **Metal**
