@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 209 — adult build)
+## ⭐ Newest (Cycle 210 — kids build)
+
+- **[/dream/179-kids-voice-monster](/dream/179-kids-voice-monster)** — Voice Monster. `demoable`
+  A glowing blob-monster on a dark starry canvas. **Hum or sing** into the mic — the monster
+  grows with your amplitude and its color shifts with pitch (low=violet, mid=teal, high=rose).
+  A hunger bar fills as you sing. After **30 accumulated seconds** of voice, the monster bounces
+  excitedly then **sings back a melody** from the distinct pitches it detected (up to 8 notes,
+  in order-of-first-detection, 0.56s per note). Tap the monster for a surprised boop + eye-wobble.
+  After 5s silence, eyes drift in a Lissajous wander. Demo mode (no mic) runs a LFO simulation.
+  **"Feed me with your voice — I'll sing back what I heard."**
+  First kids prototype with a character that accumulates a memory of the child's singing.
+  Inspired by Apr 2025 fMRI research: improvisation activates neural reward circuits more than
+  memorized tasks. Extends `158-kids-hum-paint` ❤️ into character narrative.
+  For kids 3+ · Mic optional · Zero API · Zero deps · 4.71 kB.
+  Design notes: `src/app/dream/179-kids-voice-monster/README.md`
+
+---
+
+## Previous (Cycle 209 — adult build)
 
 - **[/dream/178-splat-bloom](/dream/178-splat-bloom)** — Splat Bloom. `demoable`
   500 luminous oriented ellipses arranged in a **Gaussian cloud** around the canvas centre

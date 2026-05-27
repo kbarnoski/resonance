@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 210 — kids build: 179-kids-voice-monster (feed the monster with your voice)
+
+**When**: 2026-05-27 UTC (hourly autonomous cycle)
+
+**Decided**: Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 210 % 2 = 0 → kids cycle. ✓
+4. **Kids queue** — `kids-voice-monster` explicitly queued in both Cycle 208 and 209 STATE.md.
+   Spec in KIDS.md. Build it.
+
+**Decision rationale**:
+- `kids-voice-monster` was seeded in the Cycle 206 research sweep, inspired by the Apr 2025
+  fMRI study (neural reward circuits activate MORE during improvisation than memorized tasks).
+  Character narrative ("you're feeding, not performing") removes performance anxiety.
+- Extends `158-kids-hum-paint` ❤️ (voice → visual) into temporal accumulation + character response.
+  First kids prototype where the monster has memory: it collects pitches and sings them back.
+- Zero deps, zero API. Mic optional (demo mode). One-cycle build.
+
+**Loves influencing this cycle** (26 total):
+- `158-kids-hum-paint` ❤️ → voice as instrument; this extends to character narrative
+- `133-kids-ripple-pond` ❤️ → delayed reward mechanics (accumulate → full → sing back)
+- `169-kids-marble-run` ❤️ → satisfying cause-effect payoff
+
+**Sync note**: local main was at cycle 110 at session start (stale container); reset --hard to
+origin/main (cycle 209) before building. No local changes were lost.
+
+**Built**:
+- `src/app/dream/179-kids-voice-monster/page.tsx` — 4.71 kB (static build size)
+  - Mic input via `useMicAnalyser` (smoothing=0.78, gain=2.5)
+  - RMS amplitude → monster radius (1×–2× base radius, EMA-smoothed at dt*7)
+  - Spectral centroid → hue (log-scale: ~130 Hz=violet, ~500 Hz=teal, ~2000 Hz=rose)
+  - Pitch collection: centroid → snapPenta() → nearest C-major pentatonic → stored if
+    distinct, every 600ms, up to 8 unique pitches
+  - State machine: hungry → bouncing (1.7s bounce) → singing (0.56s/note) → resting (2.5s) → hungry
+  - Sing-back: sine oscillators, pitches in order-of-first-detection
+  - Tap-boop: harmonic arpeggio C4 × {1,2,3,4}, staggered 65ms
+  - Eye animations: wobble (post-boop), Lissajous wander (5s silence), vertical squash-stretch (singing)
+  - Hunger progress bar: pill-shaped, hue-colored, fills to 100% over TARGET_SEC=30s
+  - Demo mode: LFO simulates humming child (amp ≈ 0.13+0.11sin, cent ≈ 240+140sin)
+  - Ambient: C2+G2 sine pad, gain 0.010/0.007, 3s fade-in
+- `src/app/dream/179-kids-voice-monster/README.md` — design notes, audio spec, polish ideas
+- Build: ✅ clean. No TS errors, no ESLint errors (eslint-disable on intentional deps omission
+  in rAF loop). 4.71 kB, `○ Static`.
+
+**What surprised me**:
+The centroid-to-hue mapping creates beautiful color transitions even in demo mode — the LFO
+centroid oscillates between 240–560 Hz, which sweeps violet→teal→emerald. The monster visibly
+"breathes" color as if the pitch itself is alive, independent of size. The eye wander (Lissajous
+path at silence > 5s) was the most effective UX addition: it makes the monster feel genuinely
+expectant rather than frozen. Kids prototypes shouldn't have idle states that look broken.
+
+**Queued next**:
+- Cycle 211 (adult, 211%2=1): `score-structure` or `kids-texture-drum` polish, or a new
+  adult prototype. Candidates: `gesture-music` (webcam hand gestures → synth, needs Karel OK
+  on ~8MB CDN), `cellular` (Conway automaton composer), or a research sweep (last adult
+  research: Cycle 177, now 34 cycles ago — overdue).
+- Cycle 212 (kids, 212%2=0): `kids-texture-drum` from the Cycle 206 research seeds.
+  Five material zones (wood/metal/water/earth/glass), each with its own synthesized timbre.
+  First kids prototype about timbre, not pitch.
+
+---
+
 ## Cycle 209 — adult build: 178-splat-bloom (Gaussian additive splat field)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)
