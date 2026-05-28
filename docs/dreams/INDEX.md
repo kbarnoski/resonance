@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 226 — kids build)
+## ⭐ Newest (Cycle 227 — adult build)
+
+- **[/dream/195-chord-canvas](/dream/195-chord-canvas)** — Chord Canvas. `demoable`
+  Real-time chord detection from mic or demo audio. 12-bin chroma extraction (C2–C8 FFT, EMA
+  smoothed) → dot-product match against 72 templates (12 roots × 6 qualities: major, minor, dom7,
+  m7, maj7, dim). Large chord name at top changes color by pitch class (chromatic wheel) and
+  quality (major=vivid, minor=desaturated, dom7=warm shift, dim=near-grey). Scrolling timeline
+  below: each chord is a colored block whose width = duration held; blocks fade with age. Bottom:
+  12-bin chromagram with root pitch class highlighted. Demo: Dm7→G7→Cmaj7→Bdim × 3 reps.
+  **First prototype to explicitly name musical structure** — 194 prior prototypes visualize signal;
+  this names the chord. Zero permissions · Zero API · Zero deps · 3.38 kB.
+  Design notes: `src/app/dream/195-chord-canvas/README.md`
+
+---
+
+## Previous (Cycle 226 — kids build)
 
 - **[/dream/194-kids-turtle-trail](/dream/194-kids-turtle-trail)** — Turtle Trail. `demoable`
   Four glowing turtles (violet C3 / teal E3 / amber G3 / rose A3) wander a dark canvas, each

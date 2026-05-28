@@ -1,56 +1,54 @@
-# Morning digest — last updated 2026-05-28 UTC (Cycle 226)
+# Morning digest — last updated 2026-05-28 UTC (Cycle 227)
 
 ## New since yesterday
 
-- **[/dream/194-kids-turtle-trail](https://getresonance.vercel.app/dream/194-kids-turtle-trail)** — Turtle Trail (kids, Cycle 226)
-  Four glowing turtles wander a dark canvas. Each leaves a colored trail (violet/teal/amber/rose
-  = C3/E3/G3/A3 pentatonic). When a turtle crosses another's trail, it plays its note. Tap
-  anywhere to drop a golden food treat — all turtles steer toward it, their converging paths
-  create crossing clusters → brief musical burst.
-  **Why open this:** watch it for 30 seconds without touching — the turtles naturally intersect
-  each other's trails and the notes emerge on their own. Then tap a few times to direct them.
-  The music is in the geometry, not in your fingers. First kids prototype where trail crossing
-  triggers sound (193 prior prototypes all require a tap for a note event). Zero permissions.
+- **[/dream/195-chord-canvas](https://getresonance.vercel.app/dream/195-chord-canvas)** — Chord Canvas (adult, Cycle 227)
+  Real-time chord naming from mic. Play any chord → prototype reads the chroma vector,
+  matches against 72 templates (major/minor/dom7/m7/maj7/dim), and displays the chord name
+  in large colored text. Color encodes both pitch class (chromatic wheel) and quality
+  (major=vivid, minor=desaturated, dom7=warm, dim=grey). Below: a scrolling timeline where
+  each chord is a colored block sized by how long you held it.
+  **Why open this:** play a ii-V-I in any key and watch the chord names appear with matching
+  colors. The timeline builds a visual record of your harmonic journey — wider blocks for
+  sustained chords, thin slivers for passing chords. First prototype that explicitly *names*
+  what you're playing (194 prior prototypes visualized the signal; this reads the structure).
+  Demo included (Dm7 → G7 → Cmaj7 → Bdim × 3).
 
-- **[/dream/193-anemone-tsl](https://getresonance.vercel.app/dream/193-anemone-tsl)** — Anemone TSL (adult, Cycle 225)
-  Torus-knot organism with GLSL travelling waves. Bass rolls slowly across the surface; mid
-  wrinkles it; high-mid makes it flutter. Try with piano: the knot breathes with your bass
-  notes and flickers with fast runs. Demo mode included. First torus-knot geometry in sandbox.
+- **[/dream/194-kids-turtle-trail](https://getresonance.vercel.app/dream/194-kids-turtle-trail)** — Turtle Trail (kids, Cycle 226)
+  Four turtles wander a dark canvas leaving pentatonic trails. Trail crossings play notes.
+  Tap to drop food — turtles converge, trails cross, music bursts. First prototype where
+  the note trigger is spatial geometry, not a tap.
 
 ## Previous
 
+- **[/dream/193-anemone-tsl](https://getresonance.vercel.app/dream/193-anemone-tsl)** — Anemone TSL (adult, Cycle 225)
+  Torus-knot organism with GLSL travelling waves driven by bass/mid/treble. Demo included.
+
 - **[/dream/192-kids-magnet-notes](https://getresonance.vercel.app/dream/192-kids-magnet-notes)** — Magnet Notes (kids, Cycle 224)
-  Six pentatonic orbs drift and attract; notes hum as chords on proximity, spike on collision.
-  Autonomous — just watch the magnets find each other.
+  Six pentatonic orbs attract each other; proximity = chord, collision = spike.
 
 - **[/dream/191-eco-bloom](https://getresonance.vercel.app/dream/191-eco-bloom)** — Eco-Bloom (adult, Cycle 223)
-  L-system fractal plant grows through 4 iterations, each playing a Karplus-Strong chord.
-
-- **[/dream/190-kids-wave-organ](https://getresonance.vercel.app/dream/190-kids-wave-organ)** — Wave Organ (kids, Cycle 222)
-  Seven pipes rise from the ocean floor; wave height = which notes play. Already ringing on load.
+  L-system fractal plant, 4 iterations, Karplus-Strong chord on each growth step.
 
 ## In progress / partial
 
-- `185-score-structure` polish (dom7/dim/maj7 templates + section hysteresis) — queued Cycle 227.
-- `arc-compose` (MiniMax Music + arc journey): needs FAL_KEY availability confirmed.
+- `185-score-structure` polish (dom7/dim/maj7 templates + section hysteresis) — queued Cycle 229.
+- `arc-compose` (MiniMax Music + arc journey): needs FAL_KEY.
 
 ## Research findings worth a look
 
-- **Turtle Trail adult variant**: 12 turtles spanning two octaves, smaller crossing radius
-  (7px) for denser music — closer to a generative composition than a kids toy. Could become
-  `195-turtle-field`.
-- **Trail-as-score**: the trail left by `194-kids-turtle-trail` is visually a "score" —
-  each crossing is a note event. Recording the turtle trajectories and replaying them as
-  a MIDI file could be a demo of Resonance's recording/export concept.
-- **Proximity-as-chord adult variant** (from `192-kids-magnet-notes`): 12 orbs at chromatic
-  pitches, orbits governed by consonance-vs-dissonance gravity. Simple ratios attract,
-  complex ratios repel. Clusters = chords; orbit resonances = modes.
+- **Chord Canvas → Diatonic Harmony**: `195-chord-canvas` detects the current chord. Natural
+  next step: once the key is detected (from chord sequence), generate diatonic harmony voices
+  in real time — `51-diatonic-harmony` from IDEAS.md. Zero deps, one cycle.
+- **`chord-canvas` + timeline export**: the scrolling chord blocks are already duration-encoded.
+  Exporting as a chord sheet (text: "Dm7 [2.2s] · G7 [2.2s] · Cmaj7 [3.0s]") would be the
+  first Resonance prototype that produces a musical document from a performance.
 
 ## Open questions for Karel
 
-- **Turtle Trail**: crossing radius is 11px CSS — feels right on desktop; might be too small
-  on a phone (turtles glide past each other without triggering). Want me to increase it for
-  mobile, or do you like the sparse character?
-- **anemone-tsl knot morphing**: still interested in a (p, q) slider that transforms the
-  knot shape live? Or auto-animate slowly over the session for a metamorphosis effect?
+- **Chord Canvas notation**: currently shows sharps only (A#, C#, etc.). Would you prefer
+  flat notation for some keys (Bb instead of A#, Eb instead of D#)? Flat keys in jazz/classical
+  context are standard — easy to add a key-snapped notation option.
 - **`kids-mirror-dance`** (MediaPipe, ~8MB CDN): still needs your OK to build.
+- **Turtle Trail crossing radius**: 11px CSS — feels right on desktop; might be small on phone.
+  Want me to bump it for mobile viewports?

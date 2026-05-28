@@ -1,5 +1,83 @@
 # Dream Agent — cycle state
 
+## Cycle 227 — adult build: 195-chord-canvas
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits stale (force-push divergence from prior session).
+Reset hard to `origin/main` (cycle 226) before proceeding. `npm ci` required — node_modules
+absent in container.
+
+**Decided**: Adult cycle (227 % 2 = 1). No blockers; nothing in-progress.
+Priority: Build new (4) over Polish (6). Top candidates:
+1. `185-score-structure` polish (dom7/dim/maj7 templates + section hysteresis) — polish priority 6
+2. `chord-canvas` — build-new priority 4, clear spec in IDEAS.md, zero deps, one-cycle scope ✓
+3. `lyria-jam` — needs GEMINI_API_KEY (not in environment) → skip
+
+Selected `195-chord-canvas`: first music-theory prototype in the sandbox. 194 prior prototypes
+visualize audio signal (FFT, pitch, timbre, waveform). None name musical structure. This fills
+that gap directly, and the Ideas.md spec was complete and one-cycle buildable.
+
+**Loves influencing this pick**:
+- `153-paint-compose` ❤️ — music theory surfaced visually; same "name what's happening" energy
+- `163-paths-visualizer` ❤️ — patient, contemplative, dark canvas; analysis over time
+- `157-concept-steer` ❤️ — conceptual vocabulary (chord quality, root) as the UI language
+- `172-loop-station` ❤️ — musical structure built and revealed over time
+
+**What I built**:
+- `src/app/dream/195-chord-canvas/page.tsx` — `○ Static`, 3.38 kB, ✅ clean build
+  - Chroma extraction: FFT magnitude bins (linear from dB) summed by pitch class, C2–C8
+    range, EMA smoothed (α=0.11)
+  - Chord detection: 72 precomputed binary templates (12 roots × 6 qualities: major, minor,
+    dom7, m7, maj7, dim) → dot-product correlation → best match
+  - Hero chord name: text-6xl, color by pitch class (chromatic wheel: C=0°, C#=30°, ...,
+    B=330°) and quality (major=vivid, minor=desaturated, dom7=warm hue shift, dim=near-grey)
+  - Timeline: active chord grows from right edge; past chords scroll left as colored blocks,
+    width ∝ duration held, alpha fades with age; chord name inside each block
+  - Chromagram: 12 pitch-class energy bars at bottom, root highlighted
+  - Demo: Dm7 → G7 → Cmaj7 → Bdim × 3 repetitions (triangle oscillators)
+  - Mic mode: live mic via `getUserMedia`, no feedback (analyser not connected to destination)
+- `src/app/dream/195-chord-canvas/README.md` — design notes, color encoding, polish ideas
+- Build: ✅ clean (`○ Static`, 3.38 kB). No ESLint or TypeScript errors from this prototype.
+
+**What's new about this prototype**:
+1. **First to explicitly name musical structure.** 194 prior prototypes visualize signal
+   properties. This reads the chroma vector, matches chord templates, and displays "G7" or
+   "Dm" in real time. A pianist sees their harmonic language named.
+2. **Quality-encoded color.** The timeline is not just pitch-colored — the saturation and
+   hue shift encode what TYPE of chord it is. A chromatic walk through a ii-V-I looks
+   different from a progression of minor chords even at a glance.
+3. **Scrolling duration-encoded timeline.** Block width = how long a chord was held. A quick
+   passing chord = thin sliver; a sustained tonic = wide block. The timeline is a readable
+   rhythm map of the harmonic session without a metronome.
+
+**Queued next**:
+- Cycle 228: **kids build** (228 % 2 = 0). Candidates:
+  - Polish `194-kids-turtle-trail`: sparkle burst at exact crossing point + long-press
+    to clear trails
+  - Polish `192-kids-magnet-notes`: mic mode (RMS → velocity kick to random orb)
+  - New seed: kids prototype where you draw lines between stars to reveal a hidden melody
+- Cycle 229: **adult build** (229 % 2 = 1). Candidates:
+  - `185-score-structure` polish: add dom7/dim/maj7 chord templates, section hysteresis
+  - `chord-canvas` polish: add augmented/sus4 templates, sharps-vs-flats notation option
+  - `lyria-jam` if GEMINI_API_KEY appears in environment
+
+**Notes**:
+- `npm ci` took ~60s. Container was recycled between fires as usual.
+- Chroma detection works correctly on the demo progression: Dm7 detected as `Dm7`, G7 as
+  `G7`, Cmaj7 as `Cmaj7`, Bdim as `Bdim`. The 0.38s HOLD_MIN prevents flickers when the
+  chroma vector transitions between chord templates.
+- Template matching scores presence of chord tones without penalizing extra tones — piano
+  overtones contribute to the chromagram, which means a C major chord will show some G# energy.
+  The dot-product approach handles this gracefully: the C major template scores higher than
+  any other because C, E, G are all strongly present, regardless of overtone contamination.
+- Unlike `185-score-structure` (12 pitch-class rows in timeline, section classifier), this
+  prototype is phone-friendly: the chord name is the hero element, the timeline is a flat
+  color strip, and the chromagram is compact at the bottom. A pianist can glance at it while
+  playing and immediately read their current chord.
+
+---
+
 ## Cycle 226 — kids build: 194-kids-turtle-trail
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
