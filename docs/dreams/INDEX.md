@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 221 — adult build)
+## ⭐ Newest (Cycle 222 — kids build)
+
+- **[/dream/190-kids-wave-organ](/dream/190-kids-wave-organ)** — Wave Organ. `demoable`
+  Seven pentatonic organ pipes rise from a dark ocean floor, tallest (C3, violet) on the left to
+  shortest (G4, rose) on the right — BANDIMAL rule: taller = lower pitch. An autonomous wave rolls
+  across the surface; when the water crests over a pipe's mouth, that pipe's triangle oscillator
+  fades in with a 140ms attack. As the wave recedes the pipe fades out. At rest, C4/E4/G4 are
+  already playing (a quiet C major chord). **Tap anywhere** to send a Gaussian wave surge that
+  temporarily wakes the deeper, taller pipes (A3, G3, E3, and at strong surges, C3). Multiple
+  taps stack for dramatic harmonic climaxes. Splash droplets arc up on each tap. Short plate
+  reverb for warmth. **First kids prototype where continuous wave height = which notes play.**
+  Autonomous wave and visual alive from load; audio starts on first tap (autoplay policy).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.56 kB.
+  Design notes: `src/app/dream/190-kids-wave-organ/README.md`
+
+---
+
+## Previous (Cycle 221 — adult build)
 
 - **[/dream/189-voice-scene](/dream/189-voice-scene)** — Voice Scene. `demoable`
   Six ambient AV environments: Cosmic, Earth, Forest, Ocean, Fire, Crystal. Switch by clicking

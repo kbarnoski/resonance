@@ -1,5 +1,52 @@
 # Dream Agent — cycle state
 
+## Cycle 222 — kids build: 190-kids-wave-organ
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (force-push divergence). Reset hard to `origin/main` (cycle 221) before proceeding.
+
+**Decided**: Kids cycle (222 % 2 = 0). No blockers; nothing in-progress.
+Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kids cycle** — 222 % 2 = 0. Check KIDS.md queue and recent loved prototypes.
+4. **Build new** — `190-kids-wave-organ`: ocean waves submerge pentatonic organ pipes. Zero permissions, zero API, zero deps.
+
+**Loves influencing this pick**:
+- `133-kids-ripple-pond` ❤️ — wave motion as core aesthetic; water surface geometry
+- `184-kids-gravity-harp` ❤️ — physics triggers on pentatonic pipes/strings; spatial tones
+- `166-kids-lantern` ❤️ — dark canvas, glowing objects alive before first touch
+- `160-kids-paint-loop` ❤️ — layered, contemplative, always-in-motion (wave never stops)
+
+**What I built**:
+- `src/app/dream/190-kids-wave-organ/page.tsx` — Seven pentatonic organ pipes (C3→G4 left→right, BANDIMAL: taller=lower). An autonomous three-sinusoid wave undulates continuously; when the water surface rises over a pipe's mouth, that pipe's triangle oscillator ramps up (140ms attack); as the wave recedes, it fades (220ms release). Tap anywhere → Gaussian wave surge (decays over ~3 s), temporarily submerging deeper pipes. Splash droplets on tap (additive composite). Short plate reverb (1.8 s IR, 22% wet). AudioContext deferred to first tap (autoplay policy); wave is already animated on load. 2.56 kB. ✅ clean build.
+- `src/app/dream/190-kids-wave-organ/README.md` — design notes, lineage, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.56 kB).
+
+**What's new about this prototype**:
+1. **Wave submersion as musical trigger.** 189 prior kids prototypes use taps, holds, drags, voice, or falling objects to play notes. This is the first where a *continuous wave surface height* determines which notes are active at any moment. The wave IS the score.
+2. **Alive before first touch.** The three shortest pipes (C4/E4/G4 = C major chord) are already playing from load because the wave at rest sits above their mouths. The prototype has a harmonic environment before any tap — same design principle as 186-kids-breath-bloom but driven by physics rather than cosine envelope.
+3. **BANDIMAL spatial narrative.** The physical rule (taller pipe = lower pitch) maps intuitively to the wave: small crests only catch the short high pipes, big surges reach the deep tall ones. A child who taps near the tall violet C3 pipe specifically to "wake" it is discovering the physical tuning model independently.
+4. **Overlapping taps create harmonic climaxes.** Multiple rapid taps stack Gaussian impulses, temporarily submerging all 7 pipes. The convergence is musical (all pentatonic = no wrong combinations) and satisfying — a momentary full-chord swell before the wave subsides.
+
+**Queued next**:
+- Cycle 223: **adult build** (223 % 2 = 1). Top candidates:
+  - `185-score-structure` polish: add dom7/dim/maj7 chord templates, section hysteresis.
+  - `191-splat-bloom`: 500 Gaussian splats driven by audio (from Cycle 203 research — `177-splat-bloom` already built at cycle 178, check if `191` slot is available or this is already done).
+  - `sdf-cave` (`176-sdf-cave` check): ray-marched cave — verify if built.
+  - New adult prototype from research queue.
+- Cycle 224: **kids build** (224 % 2 = 0). Candidates:
+  - Polish `190-kids-wave-organ`: underwater pipe glow, coastal ambient noise layer.
+  - New kids idea: `kids-magnet-notes` — colored orbs that attract when close; proximity = chord.
+
+**Notes**:
+- Wave rest level (WAVE_Y = 0.73) ensures C4/E4/G4 are submerged at rest and C3/E3/G3 require wave crests or tap surges. Tap impulses use `−0.22 * H * exp(−dt × 1.1) × Gaussian(σ ≈ 0.126 * W)` — strong enough to reach C3 with a tap near the left edge.
+- Triangle oscillator is the right timbre for organ pipes: rich odd harmonics, warmer than sine, less harsh than square/sawtooth.
+- `setTargetAtTime` rather than `linearRamp` for gain transitions: no AudioParam scheduling conflicts when a pipe submerges/surfaces repeatedly on rapid taps.
+
+---
+
 ## Cycle 221 — adult build: 189-voice-scene (spoken-word AV scene controller)
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
