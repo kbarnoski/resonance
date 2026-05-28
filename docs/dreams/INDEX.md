@@ -10,7 +10,32 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 228 — kids build)
+## ⭐ Newest (Cycle 230 — kids build)
+
+- **[/dream/197-kids-rain-chain](/dream/197-kids-rain-chain)** — Rain Chain. `demoable`
+  Five pentatonic cups in a staircase (top-left biggest/violet/C3 → bottom-right smallest/sky/C4).
+  Rain falls autonomously, filling the biggest cup first. When a cup overflows a glowing bezier
+  stream arcs into the next cup (CASCADE_DELAY = 0.22s = ~sixteenth note). **Five-note ascending
+  pentatonic arpeggio C3→E3→G3→A3→C4 emerges from gravity + overflow physics** — the staircase
+  geometry IS the musical scale. Tap anywhere for rain burst; drag for sustained downpour.
+  Cup 0 pre-filled 38% so first cascade arrives ~12s autonomously. Two-speed loop: slow fill
+  (anticipation) → rapid five-note release (payoff). Additive bell tones (triangle + 2.756× +
+  5.404× partials, 4.5s decay). Ambient C3+G3 drone. Night-sky gradient.
+  **First prototype where the route water takes downhill determines the musical scale.**
+  BANDIMAL: bigger = lower = violet. For kids 3+ · Zero permissions · Zero API · Zero deps · 3.11 kB.
+  Design notes: `src/app/dream/197-kids-rain-chain/README.md`
+
+---
+
+## Previous (Cycle 229 — adult polish)
+
+- **[/dream/195-chord-canvas](/dream/195-chord-canvas)** — Chord Canvas (polished). `demoable`
+  Cycle 229 polish: added aug/sus4/sus2 (72→108 templates), ♭/♯ toggle, chord lock button.
+  See Cycle 227 entry below for full description.
+
+---
+
+## Previous (Cycle 228 — kids build)
 
 - **[/dream/196-kids-wind-chimes](/dream/196-kids-wind-chimes)** — Wind Chimes. `demoable`
   Eight pentatonic wind chimes hang from a dark bar, longest (C3, violet) on the left,

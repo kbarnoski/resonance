@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 230 — kids build: 197-kids-rain-chain
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 119 commits stale (force-push divergence from prior session).
+Reset hard to `origin/main` (cycle 229) before proceeding. `npm ci` required —
+node_modules absent in container.
+
+**Love signal** (26 loved prototypes):
+- Kids loves that shaped this pick: `169-kids-marble-run` ❤ (physics = music),
+  `133-kids-ripple-pond` ❤ (collisions = notes), `152-kids-star-paint` ❤ (autonomous
+  persistent music), `166-kids-lantern` ❤ (directed motion → destination note).
+- Pattern: Karel consistently loves physics-or-geometry AS the musical event —
+  not button presses, just physics playing music. Rain chain is the staircase version:
+  gravity + water fill + overflow = cascade arpeggio.
+
+**Decided**: Kids cycle (230 % 2 = 0). No blockers; nothing in-progress.
+Priority: New build (4) — STATE.md cycle 229 explicitly listed "kids rain-chain"
+as the top new-build candidate.
+
+**What I built**:
+- `src/app/dream/197-kids-rain-chain/page.tsx` — `○ Static`, 3.11 kB, ✅ clean build
+  - 5 cups in a staircase: top-left (biggest, C3, violet) → bottom-right (smallest, C4, sky)
+  - BANDIMAL rule: bigger cup = lower pitch = widest catch area = fills first from rain
+  - Rain drops: autonomous at ~5/sec biased 65% toward cup 0; burst of 32 on tap; drag = sustained
+  - Cup fill: each rain drop adds 3.4% fill; cup 0 pre-filled to 38% so first cascade arrives ~12s
+  - Overflow: fill >= 1 → play bell (same additive triangle 3-partial as wind-chimes) + set streamTimer
+  - CASCADE_DELAY = 0.22s between cups (sixteenth note at 68 BPM) → audible arpeggio not chord
+  - STREAM_DUR = 0.70s bezier arc stream visual (remains visible 0.48s past cascade trigger)
+  - 5 notes in rapid succession: C3 E3 G3 A3 C4 over ~0.88s
+  - Ambient C3+G3 sine drone; splash ring particles at drop landing; additive glow on overflow
+
+**What's genuinely new**:
+1. **Gravity-routed arpeggio**: melody C3-E3-G3-A3-C4 emerges from staircase geometry +
+   overflow physics. Not scripted — positioned cups = positioned music. First kids prototype
+   where the *route water takes downhill* determines the *musical scale*.
+2. **Cascade delay**: 0.22s between each cup's bell creates a recognizable ascending pentatonic
+   arpeggio. The arpeggio is the physics. Tap more → shorter cycle → hear it again.
+3. **Two-speed interaction**: slow build (rain fills cups over ~12s), rapid release (cascade
+   plays all 5 notes in <1s). Anticipation + payoff loop is immediately compelling.
+
+**Build**: ✅ clean (`○ Static`). No ESLint or TypeScript errors.
+
+**Queued next**:
+- Cycle 231: **adult build** (231 % 2 = 1). Candidates:
+  - `198-aria-companion` (Markov-chain piano dialogue — RESEARCH.md §35, turn-taking)
+  - `198-loop-station` (4-slot live loop station — RESEARCH.md §35, LoopGen-inspired)
+  - `198-spectral-morph` (FFT spectral morphing resynthesis — no prototype uses FFT for resynthesis yet)
+  - Love signal: `172-loop-station` ❤ — Karel loved the loop station prototype; building the spectral-morph
+    or aria-companion would extend in a new direction.
+
+**Notes**:
+- The `CASCADE_DELAY = 0.22s` was carefully chosen: < 0.05s = chord (indistinguishable pitches);
+  > 0.40s = too slow, cascade feels broken. 0.22s ≈ the fastest "clearly sequential" interval
+  in music cognition literature (~5 notes/sec = 200ms gap). Sounds like a fast arpeggio.
+- Overflow fill = 1.0 (guaranteed cascade) means the pentatonic arpeggio ALWAYS completes once
+  triggered. No partial cascades. Reliable and satisfying.
+- `streamTimer` set to 0.70s but cascade fires at 0.22s → 0.48s of visual stream overlap
+  after the next cup has already started filling. This "causal overlap" is intentional: child
+  sees stream while hearing the next bell. Reinforces water-causes-sound causality.
+
+---
+
 ## Cycle 229 — adult polish: 195-chord-canvas
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
