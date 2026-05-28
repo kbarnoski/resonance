@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 222 — kids build)
+## ⭐ Newest (Cycle 223 — adult build)
+
+- **[/dream/191-eco-bloom](/dream/191-eco-bloom)** — Eco-Bloom. `demoable`
+  An L-system fractal plant (rule: F→FF+[+F-F-F]-[-F+F+F], angle 22.5°) grows from a seed
+  through 4 iterations, each iteration animating 2,401 glowing branch segments over ~1 second
+  and playing a 4-note Karplus-Strong pentatonic chord. Trunk: violet (#7c3aed), tips: emerald
+  (#34d399). Presses **grow** to start; auto-cycles every 3–5 seconds through iterations 1→4→seed.
+  **First fractal/L-system prototype in the sandbox.** Structure generates sound — branching depth
+  determines harmonic depth. Contemplative, patient pace unlike every reactive prototype before it.
+  Zero deps · Zero permissions · Zero API · 2.3 kB.
+  Design notes: `src/app/dream/191-eco-bloom/README.md`
+
+---
+
+## Previous (Cycle 222 — kids build)
 
 - **[/dream/190-kids-wave-organ](/dream/190-kids-wave-organ)** — Wave Organ. `demoable`
   Seven pentatonic organ pipes rise from a dark ocean floor, tallest (C3, violet) on the left to

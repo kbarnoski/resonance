@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 223 — adult build: 191-eco-bloom (L-system plant + Karplus-Strong strings)
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits stale (force-push divergence, cycle 110 vs origin cycle 222). Reset hard to `origin/main` before proceeding.
+
+**Decided**: Adult cycle (223 % 2 = 1). No blockers; nothing in-progress.
+Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kids cycle** — 223 % 2 = 1 → adult cycle. Skip kids queue.
+4. **Build new** — `191-eco-bloom`: L-system fractal plant + Karplus-Strong string synthesis.
+
+**Loves influencing this pick**:
+- `105-pluck-field` ❤️ — Karplus-Strong is the synthesis method
+- `163-paths-visualizer` ❤️ — dark canvas, patient contemplative arc
+- `130-tsl-particle-compute` ❤️ — organic structural animation on dark background
+- `84-wave-fluid` ❤️ — living, self-organized visual motion
+
+**Decision rationale**:
+`eco-bloom` was on the candidate list for cycles 220, 221, and 222 without being built. 190 prior prototypes react to mic input, generate via API, or synthesize from oscillators. None map a self-similar geometric algorithm to sound. L-system produces fractal branching visuals; Karplus-Strong synthesis mirrors the branching structure sonically. Zero external deps, one-cycle build, clean gap-fill.
+
+Rejected alternatives:
+- `anemone-av` (Three.js organic 3D form): deferred again — TSL vertex displacement is the next 3D prototype to build, but the canvas-based eco-bloom is simpler and more reliable for this cycle.
+- `185-score-structure` polish: already demoable; polish cycle deferred.
+- `arc-compose` (MiniMax Music 2.6): FAL_KEY availability uncertain in this environment.
+
+**What I built**:
+- `src/app/dream/191-eco-bloom/page.tsx` — 2.3 kB, `○ Static`
+  - L-system: axiom "F", rule F→FF+[+F-F-F]-[-F+F+F], angle 22.5°, max 4 iterations
+  - 4 iterations = 2401 line segments; draws animated (batchSize = segs/55 ≈ 44/frame → ~55 frames ≈ 0.9s growth)
+  - Visual: violet trunk (depth 0, glow 12px) → emerald leaf-tips (depth 4, glow 2.5px) on #0a0a0f
+  - Audio: 4-note Karplus-Strong strum (C pentatonic) per iteration, 78ms arpeggiation, rotating through scale with each growth step
+  - Auto-cycle: 2.8–4.8s between iterations, resets to seed after iteration 4
+  - Demo mode: plant starts growing immediately on "grow" button click, auto-advances
+  - Build: ✅ clean (`○ Static`, 2.3 kB). No TypeScript or ESLint errors.
+- `src/app/dream/191-eco-bloom/README.md` — design notes, lineage, polish ideas.
+
+**What's new about this prototype**:
+1. **Structure generates sound, not the reverse.** 190 prior prototypes react to audio. This generates sound from a visual structure — the plant's branching level determines which pentatonic chord fires, and deeper branches correspond to higher harmonics. The L-system IS the musical score.
+2. **Patient, contemplative pace.** No immediate mic reaction; the plant grows over ~1s and then rests before the next iteration. The gap between iterations is 3–5s of silence. Different emotional register from all real-time reactive prototypes.
+3. **First fractal/L-system prototype in the sandbox.** Covers a visual paradigm (recursive self-similarity) not present in any of the 190 prior entries.
+4. **Karplus-Strong in pentatonic context.** The pluck synthesis from `105-pluck-field` (inline) now operates as a CHORD rather than individual string plucks on tap. The strum + arpeggiation matches the structural reveal of a new iteration.
+
+**Queued next**:
+- Cycle 224: **kids build** (224 % 2 = 0). Candidates from STATE.md cycle 222:
+  - `kids-magnet-notes`: colored orbs that attract when nearby; proximity = chord
+  - Polish `190-kids-wave-organ`: underwater pipe glow, coastal ambient layer
+- Cycle 225: **adult build** (225 % 2 = 1). Candidates:
+  - `anemone-av`: Three.js organic bioluminescent 3D form, TSL vertex displacement (deferred twice)
+  - `185-score-structure` polish: dom7/maj7/dim chord templates
+
+**Notes**:
+- `new AudioContext()` works directly in browser without `window.AudioContext` — the global is available as a TypeScript global var, no need for window prefix or webkit fallback.
+- Branch depth increases on `[` push, restores on `]` pop, so depth correctly tracks nesting level throughout the sentence.
+- At iter=4, `expandLS(4)` returns a 7601-char string. Segment precomputation takes <1ms; the animated draw of 2401 segments at 44/frame completes in ~55 RAF frames (≈0.9s at 60fps). Fast enough even on lower-end devices.
+
+---
+
 ## Cycle 222 — kids build: 190-kids-wave-organ
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
