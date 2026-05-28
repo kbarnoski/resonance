@@ -1,5 +1,76 @@
 # Dream Agent — cycle state
 
+## Cycle 220 — kids build: 188-kids-glow-bug (garden lamps + directed-flight fireflies)
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Decided**: Kids cycle (220 % 2 = 0). No blockers; nothing in-progress.
+Chose `188-kids-glow-bug` — release glow-bugs that drift upward to garden lamps and ring
+bell-chime notes on arrival — directly from the Cycle 219 STATE.md queue.
+
+**Decision rationale**:
+KIDS.md queue had one remaining no-deps seed (`kids-glow-bug`, seeded in Cycle 218/219 STATE.md)
+and one waiting on Karel approval (`kids-mirror-dance`, needs CDN dep OK). Built the ready one.
+The design fills a genuine gap: all 187 prior kids prototypes fire sound at the tap point. This
+is the first where the note fires at the destination, not the interaction origin. 1–2 second flight
+creates visible anticipation — a different emotional register from instant tap feedback.
+
+**Loves influencing this pick** (26 total):
+- `122-kids-firefly-song` lineage + `166-kids-lantern` ❤️ → dark canvas, glowing drifting objects
+- `133-kids-ripple-pond` ❤️ → circular organic forms, physics-derived timing
+- `169-kids-marble-run` ❤️ → directed physics: tap → agent moves → sound fires on arrival
+- `105-pluck-field` ❤️ → physical modeling, satisfying arrival sound
+
+**Built**:
+- `src/app/dream/188-kids-glow-bug/page.tsx` — 2.92 kB, `○ Static`
+  - 5 garden lamps on stems: C3 (violet, r=32) → E3 (emerald, r=27) → G3 (amber, r=23)
+    → A3 (rose, r=19) → C4 (sky, r=16). BANDIMAL: bigger = lower pitch.
+  - Lamp visual: outer radial halo + inner orb gradient + CSS shadowBlur on arrival
+  - Each lamp pulses independently at a slow rate (period ~10.5s per lamp)
+  - Bug physics: spawn at tap, vy=-1.6 upward + `(dx/dist)×0.057` attraction per frame
+    + sinusoidal x-drift `sin(phase)×0.85`, damping 0.96/frame
+  - Arrival: within 36px of lamp → sparkle burst (14 particles) + bell chime + glow=1.0
+  - Bell chime: triangle + 2nd harmonic (freq×2.013) + impulse reverb (1.4s), wet bus 0.30
+  - Ambient pad: C3 + G3 sine at gain 0.012 (barely audible garden hum)
+  - Demo: auto-spawn from soil every 3.2s — garden alive before any interaction
+  - Max 10 flying bugs; oldest displaced on overflow
+  - Hint: "tap anywhere to release glow-bugs ✨" at H×0.72; clears on first tap
+- `src/app/dream/188-kids-glow-bug/README.md` — design notes
+- Build: ✅ clean (`○ Static`, 2.92 kB). No TypeScript or ESLint errors.
+
+**What's new about this prototype**:
+1. **Directed flight as interaction paradigm.** Tap → bug navigates to lamp → note fires at
+   destination. All prior kids prototypes produce sound at the tap origin. The spatial journey
+   is the new element.
+2. **Visual anticipation.** 1–2 seconds between tap and chime. The child watches the bug move
+   before the note sounds. The sound feels like a completion, not a reaction.
+3. **Garden as persistent world.** Lamps pulse, bugs emerge from soil, sparks decay. The scene
+   is inhabited between interactions — not just waiting for input.
+4. **Nearest-lamp targeting.** Tapping near a lamp = predictable; tapping far away = exploratory.
+   Same mechanic, two interaction modes discovered naturally.
+
+**What surprised me**:
+The attraction force + damping produces a natural curved-approach trajectory: bugs initially
+fly toward the lamp's general direction (upward), then curve toward the precise lamp position
+as they get closer. This looks organic — not a straight line, not a random drift, but a
+purposeful arc like a real insect homing toward a light source. The sinusoidal x-drift
+amplifies this: the bug wanders but always converges. The physics does the storytelling.
+
+Also: placing the hint text at H×0.72 (between lamps at 0.60H and ground at 0.80H) puts it
+in the exact zone where demo bugs emerge from the soil — the child sees "tap here" while
+watching a bug emerge from roughly the same area. The spatial collocation reinforces the hint.
+
+**Queued next**:
+- Cycle 221: **adult build** (221 % 2 = 1). Top candidates:
+  - `185-score-structure` polish: add dom7/dim/maj7 chord templates + section hysteresis
+  - `anemone-av`: organic bioluminescent 3D Three.js form (zero new deps, live performance)
+  - `osc-composer`: design a Lissajous figure → hear the WAV it generates
+- Cycle 222: **kids build** (222 % 2 = 0). Candidates:
+  - `kids-mirror-dance` (needs Karel OK on ~8MB CDN MediaPipe dep)
+  - Kids research sweep if queue is empty (only one seeded idea left needing approval)
+
+---
+
 ## Cycle 216 — kids build: 184-kids-gravity-harp (6 KS strings, pass-through ball physics)
 
 **When**: 2026-05-27 UTC (hourly autonomous cycle)

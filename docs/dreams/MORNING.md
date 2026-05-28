@@ -1,39 +1,44 @@
-# Morning digest — last updated 2026-05-28 UTC (Cycle 219)
+# Morning digest — last updated 2026-05-28 UTC (Cycle 220)
 
 ## New since yesterday
 
-- **[/dream/187-shepard-tone](https://getresonance.vercel.app/dream/187-shepard-tone)** — Shepard Tone
-  The auditory illusion of the endless staircase: a pitch that rises forever without ever getting
-  higher. Eight sine tones (A1–A8) rise together, weighted by a bell curve so the extremes are
-  inaudible — the brain only hears the weighted center, which climbs endlessly. No mic needed
-  to start; just click Start and listen for ~10 seconds. Try: Rising → Falling mid-play.
-  Try: Freeze mid-ascent — you get a dense A5 chord. Try: Mic mode while playing piano loudly.
-  **Why open this:** it's the first prototype that doesn't just *visualize* audio — it reveals
-  how your brain *constructs* pitch from physical signals, and then deliberately tricks it.
-  Connects to Resonance's transcendent listening thesis: what you hear is not what is happening.
+- **[/dream/188-kids-glow-bug](https://getresonance.vercel.app/dream/188-kids-glow-bug)** — Glow Bugs
+  Five glowing garden lamps on stems. Tap anywhere to release a glow-bug (warm amber firefly).
+  It drifts upward with organic sinusoidal flight toward the nearest lamp. When it arrives:
+  sparkle burst + bell-chime note. Demo bugs auto-spawn every 3.2s — the garden is alive before
+  any touch. BANDIMAL rule: bigger lamp = lower pitch (left violet C3 = biggest, right sky C4 =
+  smallest). C-major pentatonic across all 5, impossible to produce dissonance.
+  **Why open this:** first kids prototype where the note fires at the destination, not the tap
+  point. 1–2 second journey creates visible anticipation before sound — a genuinely new interaction
+  paradigm for the kids zone. On an iPad it's calming and garden-like. New aesthetic territory.
 
-## Previous (Cycle 218 — kids)
+## Previous
 
-- **[/dream/186-kids-breath-bloom](https://getresonance.vercel.app/dream/186-kids-breath-bloom)** — Breath Bloom
-  A breathing flower with 5 pentatonic petals that animates before any tap. First kids prototype
-  with autonomous motion on load.
+- **[/dream/187-shepard-tone](https://getresonance.vercel.app/dream/187-shepard-tone)** — Shepard Tone (Cycle 219 — adult)
+  The endless auditory staircase illusion. Pitch rises forever. First psychoacoustics prototype.
+  Try Freeze + Mic mode: becomes a resonant 8-partial drone generator.
+
+- **[/dream/186-kids-breath-bloom](https://getresonance.vercel.app/dream/186-kids-breath-bloom)** — Breath Bloom (Cycle 218 — kids)
+  Breathing flower with 5 staggered pentatonic petals. First kids prototype that animates before
+  any tap — the flower is alive on load.
 
 ## In progress / partial
 
-- `185-score-structure` polish queued (cycle 221): add dom7/dim/maj7 chord templates +
-  section hysteresis to prevent rapid label flips. Currently only major/minor templates.
-- `kids-glow-bug` prototype queued for cycle 220 (kids build).
+- `185-score-structure` polish (cycle 221): add dom7/dim/maj7 chord templates + section hysteresis.
+- `anemone-av` (Three.js organic bioluminescent 3D form): queued for adult cycle 221.
+- `osc-composer` (design a Lissajous figure → hear + download as WAV): adult candidate.
 
 ## Research findings worth a look
 
-- Nothing new this cycle (build cycle). Next research cycle should scan psychoacoustics:
-  Risset rhythm (tempo equivalent of Shepard), Deutsch scale illusion, tritone paradox —
-  all zero-dep browser-buildable follow-ups to today's prototype.
+- Psychoacoustics follow-ups from `187-shepard-tone`: Risset rhythm (tempo equivalent of Shepard),
+  Deutsch scale illusion, tritone paradox — all zero-dep browser-buildable. Worth a research cycle.
+- Next research cycle should also sweep for new kids music app releases (2026 App Store) and
+  any CHI / IDC 2026 proceedings that landed since the Cycle 206 sweep.
 
 ## Open questions for Karel
 
-- `185-score-structure`: Is adding dom7/dim templates worth a cycle, or is major/minor "good enough"?
-- `anemone-av` (Three.js organic bioluminescent 3D form): worth queuing for cycle 221?
-  Zero new deps, live performance aesthetic.
-- `osc-composer` (design a Lissajous figure → stereo WAV): the downloadable WAV is the
-  "artifact" equivalent of `13-piano-canvas`'s painting. Interest level?
+- `188-kids-glow-bug`: do you want the bugs to carry a color (indicating which lamp they target)?
+  Would make the pitch-assignment visible during the flight.
+- `185-score-structure`: add dom7/dim templates this cycle, or move on to something new?
+- `kids-mirror-dance` (MediaPipe CDN, ~8MB): still needs your OK to build. Camera-based kids
+  prototype. Rhythm Pals 2026 validated the design space — it's ready to build if you say go.

@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 219 — adult build)
+## ⭐ Newest (Cycle 220 — kids build)
+
+- **[/dream/188-kids-glow-bug](/dream/188-kids-glow-bug)** — Glow Bugs. `demoable`
+  Release glowing fireflies that drift to garden lamps and chime pentatonic notes. Five lamps on
+  stems, left-to-right C3→C4 (BANDIMAL: bigger = lower). Tap anywhere to spawn a glow-bug; it
+  flies upward with sinusoidal drift, magnetically attracted to the nearest lamp. When it arrives:
+  sparkle burst + bell chime (triangle + 2nd harmonic + reverb). Demo bugs auto-emerge from the
+  soil every 3.2s so the garden is alive before first tap. **First kids prototype with directed
+  flight**: the note fires at the destination, not at the tap point. 1–2 second journey creates
+  visual anticipation before sound. All 5 pitches are C-major pentatonic — impossible to produce
+  dissonance. Bigger lamp = lower pitch; child discovers this without instruction after 2–3 releases.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.92 kB.
+  Design notes: `src/app/dream/188-kids-glow-bug/README.md`
+
+---
+
+## Previous (Cycle 219 — adult build)
 
 - **[/dream/187-shepard-tone](/dream/187-shepard-tone)** — Shepard Tone. `demoable`
   The auditory illusion of the infinite staircase. Eight sine-wave oscillators (A1–A8, one
