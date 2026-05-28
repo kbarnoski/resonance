@@ -10960,3 +10960,70 @@ breathes autonomously before first touch.
   before audio is initialized.
 - Next-auth canvas DPR clamped at 3× for retina devices. The `Math.min(devicePixelRatio, 3)`
   pattern prevents 4× or 5× screens from creating excessively large canvases.
+
+---
+
+## Cycle 219 — adult build: 187-shepard-tone
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was at cycle 110 (50 commits behind remote). Reset hard to
+`origin/main` (cycle 218) before proceeding.
+
+**Decided**: Adult cycle (219 % 2 = 1). No GEMINI_API_KEY in environment (ruled out
+`ritual-generate`). AGENT.md priority order: Build new (4) > Polish (6). Despite
+STATE.md cycle 218 queuing a polish for `185-score-structure`, a compelling new build
+was available with zero deps and one-cycle scope: `187-shepard-tone` (psychoacoustics).
+
+**Loves influencing this pick**:
+- `157-concept-steer` ❤️ — "reveals something surprising about music" energy matches
+- `105-pluck-field` ❤️ — also a zero-dep, physics-grounded audio prototype
+- `163-paths-visualizer` ❤️ — Karel's appetite for surprising audio science
+
+**What I built**:
+- `src/app/dream/187-shepard-tone/page.tsx` — Shepard tone illusion (Roger Shepard, 1964).
+  Eight sine oscillators (A1–A8), each at consecutive octaves. Bell-curve amplitude
+  weighting (σ=1.5 octave-units, centered at A5). As `phase` advances at `rate/60`
+  oct/s, each oscillator's position wraps mod 8 and the frequency jumps are inaudible
+  (bell weight ≈ 0 at extremes). Result: pitch ascends forever. Two visual panels:
+  left column (8 glowing circles, sized by bell weight — wave sweeps upward), right
+  circular dial (needle sweeps one full rotation per octave traversal, mirroring the
+  circular pitch space). Controls: Rising/Falling, Slow→Fast slider (0.5–10), Freeze,
+  Mic mode (amplitude modulates speed). 3.38 kB. ✅ clean build.
+- `src/app/dream/187-shepard-tone/README.md` — design notes, mechanics, connection to
+  `42-binaural` and `157-concept-steer`, live performance notes, polish ideas.
+- Build: ✅ clean (`○ Static`, 3.38 kB).
+
+**What's new about this prototype**:
+1. **First psychoacoustics prototype.** 186 prior prototypes visualize audio signal
+   properties (FFT, pitch, timbre, patterns). This one uses audio to reveal that pitch
+   perception is a mental construction — and deliberately misuses that construction.
+2. **Circular geometry as content, not decoration.** The clockface dial's needle sweeps
+   in an endless circle, geometrically encoding the circular nature of pitch space that
+   makes the illusion work. The metaphor IS the mechanism.
+3. **Freeze mode.** Stopping the phase mid-spiral gives a static octave chord (all 8
+   sine partials at a fixed bell-curve position). With mic mode on and frozen, it becomes
+   a resonant drone generator — 8 overtones of A5, filtered by the bell curve.
+4. **Mic modulation.** The relationship between playing amplitude and ascent rate creates
+   an expressive dimension: soft playing → meditative slow rise; loud playing → dramatic
+   fast rush upward. This maps well to live performance.
+
+**Queued next**:
+- Cycle 220: **kids build** (220 % 2 = 0). Candidates:
+  - `kids-glow-bug` — tap to release fireflies that land on dark plants and ring notes.
+  - Polish `186-kids-breath-bloom`: add mic mode (RMS → breath speed), harmonic overtone layer.
+- Cycle 221: **adult build**. Top candidates:
+  - `185-score-structure` polish: add dom7/dim/maj7 chord templates + section hysteresis.
+  - `anemone-av`: organic bioluminescent 3D Three.js form (zero new deps, live performance).
+  - `osc-composer`: design a Lissajous figure, generate the audio that draws it.
+
+**Notes**:
+- The bell-curve parameters (σ=1.5, centered at pos 4 = A5) were chosen so that the
+  edge oscillators (A1 and A8) have gain ≈ 0.028 — barely audible at any volume. This
+  makes the octave-wrap inaudible even at elevated listening levels.
+- `(i + phase) % N` gives each oscillator a continuously advancing octave-position.
+  The `% N` handles the wrap; since `N=8` and positions wrap cleanly mod 8, all 8
+  oscillators cover the full A1–A8 range at all times (just different phases within it).
+- The `runningRef.current = true` is set immediately (before `setRunning(true)`) so the
+  rAF loop begins updating oscillators in the same frame that audio starts. No one-frame
+  gap where audio plays but phase is frozen.

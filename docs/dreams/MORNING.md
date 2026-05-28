@@ -1,38 +1,39 @@
-# Morning digest — last updated 2026-05-28 UTC (Cycle 218)
+# Morning digest — last updated 2026-05-28 UTC (Cycle 219)
 
 ## New since yesterday
 
-- **[/dream/186-kids-breath-bloom](https://getresonance.vercel.app/dream/186-kids-breath-bloom)**
-  — *The flower breathes before you touch it.* Five glowing pentatonic petals ripple around a
-  central orb in a staggered 9-second cosine wave. Tap any petal → sparkle + note pulse. Tap
-  the open canvas → all five bloom at once. No start button, no permissions. **Why open this**:
-  it's the first kids prototype that's already alive on load — the flower is breathing the
-  moment the URL opens. Calming, pre-sleep appropriate, beautiful on dark phone screens.
+- **[/dream/187-shepard-tone](https://getresonance.vercel.app/dream/187-shepard-tone)** — Shepard Tone
+  The auditory illusion of the endless staircase: a pitch that rises forever without ever getting
+  higher. Eight sine tones (A1–A8) rise together, weighted by a bell curve so the extremes are
+  inaudible — the brain only hears the weighted center, which climbs endlessly. No mic needed
+  to start; just click Start and listen for ~10 seconds. Try: Rising → Falling mid-play.
+  Try: Freeze mid-ascent — you get a dense A5 chord. Try: Mic mode while playing piano loudly.
+  **Why open this:** it's the first prototype that doesn't just *visualize* audio — it reveals
+  how your brain *constructs* pitch from physical signals, and then deliberately tricks it.
+  Connects to Resonance's transcendent listening thesis: what you hear is not what is happening.
+
+## Previous (Cycle 218 — kids)
+
+- **[/dream/186-kids-breath-bloom](https://getresonance.vercel.app/dream/186-kids-breath-bloom)** — Breath Bloom
+  A breathing flower with 5 pentatonic petals that animates before any tap. First kids prototype
+  with autonomous motion on load.
 
 ## In progress / partial
 
-- **185-score-structure** chord detection is major/minor only; G7 in the demo appears as "G".
-  Dom7/dim/maj7 templates are the obvious next polish (deferred to a future adult cycle).
+- `185-score-structure` polish queued (cycle 221): add dom7/dim/maj7 chord templates +
+  section hysteresis to prevent rapid label flips. Currently only major/minor templates.
+- `kids-glow-bug` prototype queued for cycle 220 (kids build).
 
 ## Research findings worth a look
 
-- Nothing new this cycle. Cycle 213 research (Stable Audio 3, PianoFlow, LUMIA, Lyria 3 Pro)
-  remains the freshest queue. See RESEARCH.md §§227–233.
+- Nothing new this cycle (build cycle). Next research cycle should scan psychoacoustics:
+  Risset rhythm (tempo equivalent of Shepard), Deutsch scale illusion, tritone paradox —
+  all zero-dep browser-buildable follow-ups to today's prototype.
 
 ## Open questions for Karel
 
-- **GEMINI_API_KEY**: `ritual-generate` (I-Ching → Lyria 3 Pro) and `camera-compose`
-  (webcam snapshot → ambient track) are both spec-complete. Either ships in one cycle the
-  moment this key lands in environment variables.
-- **Score Structure chord templates**: add dom7/dim/maj7 for jazz-accurate labels?
-  (Dm7/G7/Cmaj7 instead of Dm/G/C in the demo.)
-
-## Recent cycle log
-
-| Cycle | Type     | Prototype               | Summary |
-|-------|----------|-------------------------|---------|
-| 218   | kids     | 186-kids-breath-bloom   | Breathing flower: 5 staggered pentatonic petals, alive on load, no start button. |
-| 217   | adult    | 185-score-structure     | Chord timeline + section classifier. First structural analysis prototype. |
-| 216   | kids     | 184-kids-gravity-harp   | Balls fall through KS strings, ascending+descending pentatonic scale. |
-| 215   | adult    | 183-piano-motion        | Two animated hands spring across a 61-key keyboard via FFT peak detection. |
-| 214   | kids     | 182-kids-crystal-song   | Glass-bell cave: 6 crystals, hold to sustain, resonance flash at 4+. |
+- `185-score-structure`: Is adding dom7/dim templates worth a cycle, or is major/minor "good enough"?
+- `anemone-av` (Three.js organic bioluminescent 3D form): worth queuing for cycle 221?
+  Zero new deps, live performance aesthetic.
+- `osc-composer` (design a Lissajous figure → stereo WAV): the downloadable WAV is the
+  "artifact" equivalent of `13-piano-canvas`'s painting. Interest level?

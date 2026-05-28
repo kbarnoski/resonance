@@ -10,7 +10,28 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 218 — kids build)
+## ⭐ Newest (Cycle 219 — adult build)
+
+- **[/dream/187-shepard-tone](/dream/187-shepard-tone)** — Shepard Tone. `demoable`
+  The auditory illusion of the infinite staircase. Eight sine-wave oscillators (A1–A8, one
+  octave apart) all rise in pitch simultaneously, weighted by a bell curve so only the middle
+  range is audible. When any oscillator exits the top of the audible range, it's already inaudible
+  (bell weight ≈ 0), so the wrap-back to A1 is imperceptible — the pitch ascends forever.
+  **Left column**: 8 glowing circles, each sized by its current bell weight — a wave of brightness
+  sweeps upward continuously. **Right dial**: a clockface needle sweeps clockwise; one full rotation
+  = one octave traversal (15s at default speed), its circular geometry mirroring the circular
+  nature of the illusion. Controls: Rising/Falling toggle, Slow→Fast slider, Freeze (stops
+  phase mid-spiral), Mic mode (amplitude → rate modulation). "What you hear is not what is
+  physically happening" — the most fundamental demonstration of constructive pitch perception.
+  **First psychoacoustics prototype in the sandbox.** 186 prior prototypes visualize audio.
+  This one reveals that your brain is actively constructing pitch from physical signals, and
+  that construction can be deliberately tricked.
+  Zero permissions (Start mode) · Mic optional · Zero API · Zero deps · 3.38 kB.
+  Design notes: `src/app/dream/187-shepard-tone/README.md`
+
+---
+
+## Previous (Cycle 218 — kids build)
 
 - **[/dream/186-kids-breath-bloom](/dream/186-kids-breath-bloom)** — Breath Bloom. `demoable`
   A breathing flower with five glowing petals — one per note of the C-major pentatonic scale
