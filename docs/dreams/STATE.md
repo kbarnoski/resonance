@@ -10899,3 +10899,64 @@ Three candidates:
   2 consecutive windows to agree before flipping) would help — deferred to polish cycle.
 - The `Float32Array<ArrayBuffer>` cast is required for `getFloatFrequencyData()` in this
   TypeScript version. Same pattern as `163-paths-visualizer` and `183-piano-motion`.
+
+---
+
+## Cycle 218 — kids build: 186-kids-breath-bloom
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Decided**: Kids cycle (218 % 2 = 0). No blockers; nothing in-progress.
+Chose `186-kids-breath-bloom` — breathing flower with 5 staggered pentatonic petals —
+directly from the Cycle 217 STATE.md queue. This is the first kids prototype that
+breathes autonomously before first touch.
+
+**Loves influencing this pick**:
+- `166-kids-lantern` ❤️ — dark canvas, glowing objects that are alive before you tap them
+- `133-kids-ripple-pond` ❤️ — circular spatial arrangement; wave motion as core aesthetic
+- `169-kids-marble-run` ❤️ — physics-like rhythm; organic movement
+- `160-kids-paint-loop` ❤️ — layered, contemplative, always-in-motion
+
+**What I built**:
+- `src/app/dream/186-kids-breath-bloom/page.tsx` — Five glowing petals in a circle
+  (C3/E3/G3/A3/C4 pentatonic). Each petal breathes via a cosine envelope (9s cycle)
+  with a 35% stagger per petal-index, creating a continuous ripple wave around the
+  flower. Tap any petal: sparkle burst (16 particles) + note spikes to 0.42 gain then
+  decays exponentially. Tap open canvas: all 5 petals bloom at once. Audio: triangle
+  oscillators + 3.5s impulse-response reverb. Gain continuously tracks per-petal phase
+  (peak ~0.22). `globalCompositeOperation = "lighter"` on petals + radial gradients for
+  glow. Center orb pulses with master breath phase. Autonomous motion runs before first
+  tap (AudioContext deferred to first touch per autoplay policy). 2.84 kB. ✅ clean build.
+- `src/app/dream/186-kids-breath-bloom/README.md` — design notes, sound spec, design lineage.
+- Build: ✅ clean (`/dream/186-kids-breath-bloom` — 2.84 kB, `○ Static`).
+
+**What's new about this prototype**:
+1. **Breathes before first touch** — all 185 prior prototypes are static until interaction.
+   Breath Bloom is already animated on route load; the flower is alive from the first render.
+2. **Staggered wave motion** — per-petal offset of (i/5 × 9.0 × 0.35)s ensures the petals
+   never all peak simultaneously. The ripple feels organic, never mechanical.
+3. **Cosine breath curve** — `(1 - cos(2π*norm)) / 2` gives ease-in ease-out on both
+   inhale and exhale. The petals accelerate through the middle of each phase and decelerate
+   at the extremes — like real breathing.
+4. **"Open canvas" chord bloom** — tapping between petals triggers all 5 simultaneously.
+   A child who misses a petal still gets a reward; no dead zones.
+
+**Queued next**:
+- Cycle 219: **adult build** (219 % 2 = 1). Top candidates:
+  - `ritual-generate` (I-Ching → Lyria 3 Pro) if GEMINI_API_KEY appears in environment.
+  - `185-score-structure` polish: add dom7/dim/maj7 chord templates, section smoothing
+    with hysteresis. High-value incremental improvement.
+  - `concept-steer` polish: tune the six-axis synthesizer presets; label contrast bump.
+- Cycle 220: **kids build** (220 % 2 = 0). Candidates:
+  - `kids-glow-bug` — fireflies that land on plants and ring notes; tap to release more.
+  - Polish `186-kids-breath-bloom`: mic mode (RMS → breath speed), harmonic overtone layer.
+
+**Notes**:
+- The stagger formula `(i / N) * BREATH_DUR * 0.35` gives offsets of 0 / 0.63 / 1.26 / 1.89 / 2.52s.
+  The maximum petal that can peak simultaneously with another is ~35% of a cycle ahead — they
+  are always visually separated.
+- `gainRefs.current[i]` guard (`if (actx && g)`) is needed because gainRefs is empty
+  until `initAudio()` runs on first tap. The guard prevents the rAF loop from erroring
+  before audio is initialized.
+- Next-auth canvas DPR clamped at 3× for retina devices. The `Math.min(devicePixelRatio, 3)`
+  pattern prevents 4× or 5× screens from creating excessively large canvases.

@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 217 — adult build)
+## ⭐ Newest (Cycle 218 — kids build)
+
+- **[/dream/186-kids-breath-bloom](/dream/186-kids-breath-bloom)** — Breath Bloom. `demoable`
+  A breathing flower with five glowing petals — one per note of the C-major pentatonic scale
+  (C3 / E3 / G3 / A3 / C4). Each petal expands and contracts on a 9-second cosine breath
+  cycle, staggered so they ripple around the center in a continuous wave — **the flower is
+  alive before the first tap**. Tap any petal: sparkle burst + note pulses louder. Tap empty
+  canvas: all five petals bloom at once. Audio: triangle-wave oscillators with 3.5s
+  impulse-response reverb; per-petal gain follows its breath phase smoothly.
+  **"First kids prototype that breathes before any interaction."** 185 prior prototypes are
+  static until touch. Breath Bloom is already animated on route load. Also the first with a
+  cosine ease-in/ease-out breath curve — the petals accelerate through the midpoint and
+  decelerate at the extremes, like real breathing.
+  Inspired by `166-kids-lantern` ❤️, `133-kids-ripple-pond` ❤️, `182-kids-crystal-song`.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.84 kB.
+  Design notes: `src/app/dream/186-kids-breath-bloom/README.md`
+
+---
+
+## Previous (Cycle 217 — adult build)
 
 - **[/dream/185-score-structure](/dream/185-score-structure)** — Score Structure. `demoable`
   The architecture of your improvisation, revealed in real time. Mic input (or demo ii–V–I–IV
