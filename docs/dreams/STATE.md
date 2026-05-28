@@ -1,5 +1,68 @@
 # Dream Agent — cycle state
 
+## Cycle 229 — adult polish: 195-chord-canvas
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Container fresh; node_modules present from prior npm ci. `git pull --ff-only origin main` succeeded cleanly.
+
+**Decided**: Adult cycle (229 % 2 = 1). No blockers; nothing in-progress.
+Priority: Polish `195-chord-canvas` — explicitly queued in cycle 228 notes and listed
+first in MORNING.md as top candidate for cycle 229.
+
+**Why chord-canvas over score-structure**:
+- Chord-canvas was built only 2 cycles ago (227); Karel is seeing it fresh.
+- Adding aug/sus4/sus2 rounds out the template library from 6 → 9 quality types
+  (72 → 108 templates); the gap was visible in the demo (Caug wasn't detected).
+- Sharps/flats toggle is a direct Karel question from MORNING.md ("sharps or flats?").
+- Lock button is immediately practical: lets you hold a chord for analysis while
+  the audio continues changing.
+
+**What I built** (polish only — no new prototype number):
+- `src/app/dream/195-chord-canvas/page.tsx` — `○ Static`, clean build ✅
+  - Added 3 chord qualities: **aug** (0,4,8), **sus4** (0,5,7), **sus2** (0,2,7)
+  - Template count: 72 → **108** (9 qualities × 12 roots)
+  - **♭/♯ toggle**: `useFlats` state + `flatsRef` ref; `chordDisplay(root, quality, flat)`
+    computes name at render time — flats toggle instantly updates hero label AND
+    all past blocks in the timeline without rebuilding Block array
+  - **Lock button**: `locked` state + `lockedRef`; detection pauses without stopping
+    rAF loop; locked indicator dims the hero color to rgba(255,255,255,0.45)
+  - `Block` interface simplified: stores `{root, quality, duration}` — `name` field
+    removed; labels computed at draw time so flats toggle is instant
+  - `detected` boolean state: cleaner sentinel than `chord !== "—"` pattern
+  - DEMO_NOTES extended: Dm7 → G7 → Cmaj7 → Bdim → **Caug** → **Dsus4** (6 chords)
+  - Footer updated: "cycle 229 polish · 9 types · ♭/♯ · lock · 108 templates"
+
+**What's genuinely new**:
+1. **aug/sus4/sus2 detection**: Augmented chords (whole-tone symmetry) and suspended
+   chords (no third) were previously misidentified as their nearest major/minor neighbor.
+   With explicit templates they resolve correctly to e.g. "Caug", "Dsus4", "Asus2".
+2. **Enharmonic toggle**: Single tap switches between F#m and Gbm, C# and Db, etc.
+   Because display is computed from (root, quality) at render time, all timeline
+   blocks update simultaneously — no re-detection needed.
+3. **Chord lock**: Useful during practice — play a chord, lock it, then move to the
+   next chord on the instrument while the label stays visible for reference.
+
+**Build**: ✅ clean (`○ Static`). No ESLint or TypeScript errors.
+
+**Queued next**:
+- Cycle 230: **kids build** (230 % 2 = 0). Candidates:
+  - Polish `196-kids-wind-chimes`: two-finger = stronger gust; bar glows on cascade
+  - Polish `194-kids-turtle-trail`: sparkle burst at exact crossing point
+  - New seed: kids "rain chain" — tap to place cups; rain fills them; overflow chains
+    to the next cup → cascading pentatonic sequence
+
+**Notes**:
+- `curNameRef.current` always stores canonical sharps name (for chord-change comparison).
+  This is intentional: comparison in the rAF loop is notation-agnostic; only display
+  switches between sharps and flats.
+- sus4 and sus2 templates have intentionally lower saturation (52/48) than major/minor
+  (70/65) because suspended chords feel more "open" and color-theoretically neutral.
+- aug is given a distinct orange-hue range (hs:35) vs major (hs:0 red) to make it
+  visually distinctive in the timeline.
+
+---
+
 ## Cycle 228 — kids build: 196-kids-wind-chimes
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
