@@ -1,54 +1,37 @@
-# Morning digest — last updated 2026-05-28 UTC (Cycle 227)
+# Morning digest — last updated 2026-05-28 UTC (Cycle 228)
 
 ## New since yesterday
 
-- **[/dream/195-chord-canvas](https://getresonance.vercel.app/dream/195-chord-canvas)** — Chord Canvas (adult, Cycle 227)
-  Real-time chord naming from mic. Play any chord → prototype reads the chroma vector,
-  matches against 72 templates (major/minor/dom7/m7/maj7/dim), and displays the chord name
-  in large colored text. Color encodes both pitch class (chromatic wheel) and quality
-  (major=vivid, minor=desaturated, dom7=warm, dim=grey). Below: a scrolling timeline where
-  each chord is a colored block sized by how long you held it.
-  **Why open this:** play a ii-V-I in any key and watch the chord names appear with matching
-  colors. The timeline builds a visual record of your harmonic journey — wider blocks for
-  sustained chords, thin slivers for passing chords. First prototype that explicitly *names*
-  what you're playing (194 prior prototypes visualized the signal; this reads the structure).
-  Demo included (Dm7 → G7 → Cmaj7 → Bdim × 3).
+- **[/dream/196-kids-wind-chimes](https://getresonance.vercel.app/dream/196-kids-wind-chimes)**
+  — Eight pentatonic wind chimes with pendulum physics. Longer = lower (BANDIMAL).
+  Tap left side of canvas = leftward wind; right side = rightward. Adjacent chimes
+  collide → additive bell tones + color halos. Autonomous swaying from load.
+  *Why open this:* It's the first prototype where physics composes the melody.
+  A strong gust cascades through all 8 chimes as a rising or falling arpeggio —
+  unscripted, different every time. Kids just tap and hear a chord ripple appear.
 
-- **[/dream/194-kids-turtle-trail](https://getresonance.vercel.app/dream/194-kids-turtle-trail)** — Turtle Trail (kids, Cycle 226)
-  Four turtles wander a dark canvas leaving pentatonic trails. Trail crossings play notes.
-  Tap to drop food — turtles converge, trails cross, music bursts. First prototype where
-  the note trigger is spatial geometry, not a tap.
-
-## Previous
-
-- **[/dream/193-anemone-tsl](https://getresonance.vercel.app/dream/193-anemone-tsl)** — Anemone TSL (adult, Cycle 225)
-  Torus-knot organism with GLSL travelling waves driven by bass/mid/treble. Demo included.
-
-- **[/dream/192-kids-magnet-notes](https://getresonance.vercel.app/dream/192-kids-magnet-notes)** — Magnet Notes (kids, Cycle 224)
-  Six pentatonic orbs attract each other; proximity = chord, collision = spike.
-
-- **[/dream/191-eco-bloom](https://getresonance.vercel.app/dream/191-eco-bloom)** — Eco-Bloom (adult, Cycle 223)
-  L-system fractal plant, 4 iterations, Karplus-Strong chord on each growth step.
+- **[/dream/195-chord-canvas](https://getresonance.vercel.app/dream/195-chord-canvas)** (Cycle 227)
+  — Real-time chord detection: 12-bin chroma → 72 template dot-product → "G7", "Dm", "Cmaj7"
+  displayed live. Scrolling timeline where each chord is a colored block (width = how long
+  you held it). Demo: Dm7→G7→Cmaj7→Bdim. *First prototype to name musical structure.*
 
 ## In progress / partial
 
-- `185-score-structure` polish (dom7/dim/maj7 templates + section hysteresis) — queued Cycle 229.
-- `arc-compose` (MiniMax Music + arc journey): needs FAL_KEY.
+Nothing in progress. Next cycle (229) is adult — chord-canvas polish (aug/sus4 templates,
+sharps/flats toggle) or score-structure dom7/dim additions are the top candidates.
 
 ## Research findings worth a look
 
-- **Chord Canvas → Diatonic Harmony**: `195-chord-canvas` detects the current chord. Natural
-  next step: once the key is detected (from chord sequence), generate diatonic harmony voices
-  in real time — `51-diatonic-harmony` from IDEAS.md. Zero deps, one cycle.
-- **`chord-canvas` + timeline export**: the scrolling chord blocks are already duration-encoded.
-  Exporting as a chord sheet (text: "Dm7 [2.2s] · G7 [2.2s] · Cmaj7 [3.0s]") would be the
-  first Resonance prototype that produces a musical document from a performance.
+Nothing new this cycle (build cycle, not research).
 
 ## Open questions for Karel
 
-- **Chord Canvas notation**: currently shows sharps only (A#, C#, etc.). Would you prefer
-  flat notation for some keys (Bb instead of A#, Eb instead of D#)? Flat keys in jazz/classical
-  context are standard — easy to add a key-snapped notation option.
-- **`kids-mirror-dance`** (MediaPipe, ~8MB CDN): still needs your OK to build.
-- **Turtle Trail crossing radius**: 11px CSS — feels right on desktop; might be small on phone.
-  Want me to bump it for mobile viewports?
+- **196-kids-wind-chimes**: Would you like the tap interaction to also play a small
+  pluck note on tap — or keep it wind-only (notes only from physics collisions)?
+  Current design is wind-only, which feels more emergent but means a gentle tap
+  might not produce immediate sound if chimes are too far apart at that moment.
+- **lyria-jam**: If you have a spare Gemini API key to drop in the environment,
+  cycle 229+ can build the infinite-AI-music steering prototype. Currently skipped
+  each cycle because GEMINI_API_KEY is absent.
+- **195-chord-canvas**: Would sharps (F#m) or flats (Gbm) be your preference for
+  enharmonic equivalents? Current: uses sharps throughout.

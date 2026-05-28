@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 227 — adult build)
+## ⭐ Newest (Cycle 228 — kids build)
+
+- **[/dream/196-kids-wind-chimes](/dream/196-kids-wind-chimes)** — Wind Chimes. `demoable`
+  Eight pentatonic wind chimes hang from a dark bar, longest (C3, violet) on the left,
+  shortest (A4, pink) on the right — BANDIMAL rule: longer = lower. Pendulum physics: each
+  chime swings under gravity, damping, and wind force. Tap left half of canvas → leftward
+  wind; tap right half → rightward wind; drag for sustained breeze. When adjacent chime tips
+  collide, both ring as additive bell tones (triangle × 3 slightly-inharmonic partials, 4.8s
+  decay) and flash a color halo. Autonomous gust on load; spontaneous gusts every 3–6s.
+  **First pendulum-physics prototype in the kids sandbox. First prototype where the physics
+  itself writes a chord progression — when a strong gust cascades through all 8 chimes,
+  you hear a physical arpeggio.** Soft C3+G3 ambient drone. Night-sky additive glow.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.65 kB.
+  Design notes: `src/app/dream/196-kids-wind-chimes/README.md`
+
+---
+
+## Previous (Cycle 227 — adult build)
 
 - **[/dream/195-chord-canvas](/dream/195-chord-canvas)** — Chord Canvas. `demoable`
   Real-time chord detection from mic or demo audio. 12-bin chroma extraction (C2–C8 FFT, EMA

@@ -1,5 +1,88 @@
 # Dream Agent — cycle state
 
+## Cycle 228 — kids build: 196-kids-wind-chimes
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits stale (force-push divergence, prior session).
+Reset hard to `origin/main` (cycle 227) before proceeding. `npm ci` required —
+node_modules absent in container.
+
+**Decided**: Kids cycle (228 % 2 = 0). No blockers; nothing in-progress.
+Priority: Build new (4) — no kids prototype in-progress, queue open.
+
+**Loves influencing this pick**:
+- `169-kids-marble-run` ❤️ — physics-based emergent music from object interactions
+- `133-kids-ripple-pond` ❤️ — autonomous spatial events = music
+- `166-kids-lantern` ❤️ — directed-flight, destination = note
+- `152-kids-star-paint` ❤️ — persistent autonomous visual + musical output
+
+Pattern: Karel consistently loves prototypes where physics or geometry IS the musical
+event — not a button press, not an API call, just physics playing music. Wind chimes
+are the purest expression of this: gravity + damping + wind → pendulum swing → collision
+= note. The child sets initial conditions; the physics writes the music.
+
+**Selected `196-kids-wind-chimes`**: 8 pentatonic wind chimes with pendulum physics.
+Longer = lower (BANDIMAL). Adjacent chimes ring when tips collide. Tap/drag to blow
+wind. Autonomous gust on load. First pendulum-physics prototype in the kids sandbox.
+Zero permissions · Zero API · Zero deps.
+
+**What I built**:
+- `src/app/dream/196-kids-wind-chimes/page.tsx` — `○ Static`, 2.65 kB, ✅ clean build
+  - 8 chimes: C3 (violet, longest, left) → A4 (pink, shortest, right); BANDIMAL rule
+  - Linearized pendulum ODE: `α = -(G/L)·θ − D·ω + wind/L`; Euler integration dt-clamped
+  - Wind: autonomous gusts every 3–6s + tap (left half = left wind, right half = right);
+    continuous drag for sustained breeze; exponential decay `wind *= exp(-2.2·dt)`
+  - Collision: adjacent-pair tip distance < 18 px → elastic momentum exchange ×0.60 →
+    both chimes ring + flash; 0.55s per-chime cooldown prevents re-triggering
+  - Audio: additive bell (triangle × 3 partials: 1×, 2.756×, 5.404× — slightly inharmonic,
+    glass-metal character); 4.8s exponential decay; soft C3+G3 ambient sine drone
+  - Visual: night-sky gradient; additive "lighter" blending for glow; per-chime flash
+    glow halo at collision point
+  - Startup gust: chimes are moving before first touch
+  - Hint text: fades in at 1s, fades out at 7s; never obscures chimes
+- `src/app/dream/196-kids-wind-chimes/README.md` — design notes, physics details, polish ideas
+- Build: ✅ clean (`○ Static`, 2.65 kB). No ESLint or TypeScript errors.
+
+**What's genuinely new**:
+1. **First pendulum-physics prototype in the kids sandbox.** 195 prior kids prototypes
+   use tap-response, elastic bouncing, or Karplus-Strong strings. Pendulum physics
+   creates qualitatively different motion: the chime decelerates as it swings out,
+   pauses, reverses — a visibly graceful, organic arc that ball-bounce never achieves.
+2. **Coupled collision cascade.** When a strong gust hits, chimes cascade left-to-right
+   or right-to-left: A hits B, B's momentum carries it to hit C, etc. The resulting
+   chord progression follows the spatial arrangement of pitches — effectively a
+   physical arpeggio. Unscripted and unpredictable.
+3. **Directional wind from tap position.** Left-side tap = left wind, right-side tap =
+   right wind. No UI label needed — kids discover this by tapping different sides and
+   hearing different chimes swing first.
+
+**Queued next**:
+- Cycle 229: **adult build** (229 % 2 = 1). Candidates:
+  - `195-chord-canvas` polish: add augmented/sus4 chord templates; sharps vs. flats
+    notation option; "lock chord" button to hold current detection while playing
+  - `185-score-structure` polish: dom7/dim/maj7 templates + section hysteresis
+  - `lyria-jam` if GEMINI_API_KEY appears in environment
+- Cycle 230: **kids build** (230 % 2 = 0). Candidates:
+  - Polish `196-kids-wind-chimes`: two-finger = stronger gust; bar glows on cascade
+  - Polish `194-kids-turtle-trail`: sparkle burst at exact crossing point
+  - New seed: kids "rain chain" — tap to place cups; rain fills them; overflow chains
+    to the next cup → cascading pentatonic sequence
+
+**Notes**:
+- Physics tuning: G_eff=260 (not 9.8×pixels — scaled for visible swing at canvas
+  sizes). DAMP=0.30 gives 6–8s natural decay per swing. Increasing to 0.45 would
+  silence chimes after ~3s (too quiet); decreasing to 0.15 would ring indefinitely
+  (too noisy for a kids app).
+- Inharmonic partials (2.756× and 5.404×) are characteristic of real metal tubes
+  where the cross-section mass distribution shifts the overtone series away from
+  integer multiples. The slight inharmonicity makes the bell sound "real" rather
+  than "synthesizer."
+- Adjacent-pair collision only: with 8 linear chimes, non-adjacent pairs can't
+  physically meet. This simplification is correct for this geometry.
+
+---
+
 ## Cycle 227 — adult build: 195-chord-canvas
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
