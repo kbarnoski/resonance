@@ -1,5 +1,70 @@
 # Dream Agent — cycle state
 
+## Cycle 221 — adult build: 189-voice-scene (spoken-word AV scene controller)
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Decided**: Adult cycle (221 % 2 = 1). No blockers; nothing in-progress.
+Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kid-cycle** — 221 % 2 = 1 → adult cycle. Skip kids queue.
+4. **Build new** — `189-voice-scene`: spoken-word AV controller using Web Speech API.
+
+**Decision rationale**:
+Three adult candidates from Cycle 220 STATE.md: `185-score-structure` polish, `anemone-av`
+(exists as 134), `osc-composer` (exists as 46). Chose a genuinely new build instead.
+`voice-scene` fills a real gap: 188 prototypes accept audio analysis, sliders, or buttons —
+none use Web Speech API for verbal commands. Karel's love of `157-concept-steer` ❤️ (conceptual
+synthesis axes) and `163-paths-visualizer` ❤️ (immersive single-canvas AV) both support
+a "one input → whole environment changes" design. Web Speech API also opens a live performance
+direction: speak scene names on stage, the room follows.
+
+**Loves influencing this pick** (26 total):
+- `157-concept-steer` ❤️ → conceptual AV control, named axes driving synthesis
+- `163-paths-visualizer` ❤️ → immersive canvas field, ambient synthesis from one trigger
+- `107-ocean-presence` ❤️ → ambient, scene-as-environment aesthetic
+- `84-wave-fluid` ❤️ → mode-switched particle/wave behavior
+
+**Built**:
+- `src/app/dream/189-voice-scene/page.tsx` — 3.82 kB, `○ Static`
+  - 6 scenes: Cosmic/Earth/Forest/Ocean/Fire/Crystal — each with trigger words, hue, particle
+    mode, drone synthesis (root + fifth sine oscillators), pentatonic arpeggio at scene BPM
+  - Particle modes: rise / fall / drift / wave (sinusoidal) / burst (radial) / swirl (orbital)
+  - Web Speech API: continuous recognition, word → scene mapping; graceful fallback to buttons
+  - Scene switch: hue lerps (0.04/frame), drone frequencies glide over 1.1s, arpeggio restarts
+  - ~270 particles, `globalCompositeOperation: "screen"` for additive glow + shadowBlur trail
+  - Imports from `@/lib/browser/speech-recognition` (existing project shim, not npm dep)
+  - Build: ✅ clean, no TypeScript or ESLint errors.
+- `src/app/dream/189-voice-scene/README.md` — design notes + live performance context
+
+**What's new about this prototype**:
+1. **Voice as primary input.** All prior prototypes accept audio (mic FFT), clicks, or sliders.
+   This accepts language. A word changes the entire audio-visual environment.
+2. **Live performance framing.** Speak "cosmic" at the peak; "earth" for the descent; "ocean"
+   for the resolution. Voice control is a natural stage tool — no hands needed during performance.
+3. **Six-way mode synthesis.** Each scene has distinct particle physics, BPM, register, and
+   harmonic scale. Fire (108 BPM, burst, C4 major pentatonic) vs. Cosmic (24 BPM, rise,
+   C2 fifths) feel like completely different rooms.
+
+**What surprised me**:
+The arpeggio BPM variation is more dramatic than expected. Fire at 108 BPM creates urgency;
+Cosmic at 24 BPM creates near-stillness. The word trigger happens, the particles start changing
+immediately, and then the music follows — the visual leads the audio by about half a beat,
+which feels right. The environmental transition plays out over 2-3 seconds, not instantly.
+
+**Queued next**:
+- Cycle 222: **kids build** (222 % 2 = 0). Candidates:
+  - `kids-mirror-dance` (needs Karel OK on ~8MB MediaPipe CDN dep)
+  - Kids research sweep if queue is thin
+- Cycle 223: **adult build** (223 % 2 = 1). Candidates:
+  - `185-score-structure` polish: add dom7/maj7/dim chord templates
+  - `190-voice-journey`: extend `189-voice-scene` with Karel's actual journey narrative scenes
+    (Ghost text → spoken → scene switch → ambient). Voice + narrative.
+  - `eco-bloom` style: patient L-system growth + Karplus-Strong synthesis
+
+---
+
 ## Cycle 220 — kids build: 188-kids-glow-bug (garden lamps + directed-flight fireflies)
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)

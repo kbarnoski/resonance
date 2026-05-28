@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 220 — kids build)
+## ⭐ Newest (Cycle 221 — adult build)
+
+- **[/dream/189-voice-scene](/dream/189-voice-scene)** — Voice Scene. `demoable`
+  Six ambient AV environments: Cosmic, Earth, Forest, Ocean, Fire, Crystal. Switch by clicking
+  a button or **speaking a trigger word** (Web Speech API, Chrome/Edge). Each scene has distinct
+  particle behavior (rise/fall/drift/wave/burst/swirl), a root+fifth drone, and a pentatonic
+  arpeggio at scene-specific BPM (24–108). Hue transitions smoothly, drone pitches glide, arpeggio
+  restarts. Say "cosmic" for violet rising particles at C2 + 24 BPM; "fire" for radial amber burst
+  at C4 + 108 BPM. Live performance framing: a performer speaks scene names on stage, the projected
+  environment follows. First prototype using the Web Speech API as primary input. Zero deps · Zero API.
+  Design notes: `src/app/dream/189-voice-scene/README.md`
+
+---
+
+## Previous (Cycle 220 — kids build)
 
 - **[/dream/188-kids-glow-bug](/dream/188-kids-glow-bug)** — Glow Bugs. `demoable`
   Release glowing fireflies that drift to garden lamps and chime pentatonic notes. Five lamps on
