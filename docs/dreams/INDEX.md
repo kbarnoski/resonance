@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 223 — adult build)
+## ⭐ Newest (Cycle 224 — kids build)
+
+- **[/dream/192-kids-magnet-notes](/dream/192-kids-magnet-notes)** — Magnet Notes. `demoable`
+  Six glowing pentatonic orbs (C3 E3 G3 A3 C4 E4) drift on a dark canvas. When two orbs come
+  within 200px CSS of each other, magnetic attraction pulls them together and their triangle
+  oscillators fade up as a soft chord (gain ∝ proximity²). When orbs **touch**, 24 sparkle
+  particles burst at the collision point and both notes spike loud. **Tap** an orb to kick it
+  toward its farthest partner. Tap open canvas to nudge all orbs outward. The app is autonomous —
+  orbs find each other unprompted, so a child can just watch and occasionally flick. Connection
+  lines (gradient-colored, brightness ∝ proximity²) appear as orbs attract. Short plate reverb
+  for warmth. **First kids prototype where proximity IS the chord** — no tap needed to make music,
+  just let the magnets do their work. For kids 3+ · Zero permissions · Zero API · Zero deps · 3.17 kB.
+  Design notes: `src/app/dream/192-kids-magnet-notes/README.md`
+
+---
+
+## Previous (Cycle 223 — adult build)
 
 - **[/dream/191-eco-bloom](/dream/191-eco-bloom)** — Eco-Bloom. `demoable`
   An L-system fractal plant (rule: F→FF+[+F-F-F]-[-F+F+F], angle 22.5°) grows from a seed

@@ -1,5 +1,81 @@
 # Dream Agent — cycle state
 
+## Cycle 224 — kids build: 192-kids-magnet-notes (magnetic orbs + proximity chords)
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main had diverged from origin/main (force-push remote, 50 commits each side).
+Reset hard to `origin/main` before proceeding.
+
+**Decided**: Kids cycle (224 % 2 = 0). No blockers; nothing in-progress.
+Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Kids cycle** — 224 % 2 = 0. Build `192-kids-magnet-notes` directly from Cycle 223 queue.
+
+**Loves influencing this pick**:
+- `133-kids-ripple-pond` ❤️ — "things that interact when they meet" → proximity = music
+- `166-kids-lantern` ❤️ — glowing objects drifting alive before first touch
+- `169-kids-marble-run` ❤️ — physics-based movement with collision rewards
+- `160-kids-paint-loop` ❤️ — always-in-motion, layered, contemplative
+
+**Decision rationale**:
+`kids-magnet-notes` was queued directly from Cycle 223's "next" list. It fills a gap: none of
+the 30+ kids prototypes make sound autonomously through object physics (proximity as the musical
+parameter). The closest are `133-kids-ripple-pond` (rings that collide) and `149-kids-color-mix`
+(overlapping circles). Magnet Notes is distinct: 6 floating bodies with full 2D physics, elastic
+collisions, and per-pair proximity gain. The child can flick an orb to trigger chords, or just
+watch the orbs find each other. Autonomous first; interactive second.
+
+**What I built**:
+- `src/app/dream/192-kids-magnet-notes/page.tsx` — 3.17 kB, `○ Static`
+  - 6 pentatonic orbs (C3 E3 G3 A3 C4 E4) with random initial positions in a ring + random drift
+  - Physics: elastic collision when d < 2R (velocity exchange, position correction); magnetic
+    attraction when 2R < d < 200 CSS px (force ∝ (1-t)² where t = normalized distance from touch
+    to edge); viscous damping VISC=0.988 per frame; boundary bounce (0.75 restitution)
+  - Audio: triangle oscillators + plate reverb IR; gain = proximity² × 0.09 per orb; collision
+    spike: gain → 0.20, decay via setTargetAtTime with τ=0.55 s
+  - Connection lines: gradient from one orb's hue to the other's, opacity ∝ proximity²
+  - Additive blending for orbs and sparks; outer halo radius grows with proximity
+  - Tap flick: sends tapped orb toward its farthest partner at 6×dpr px/frame kick
+  - Build: ✅ clean (`○ Static`, 3.17 kB). npm ci required (node_modules/.bin/ was empty this cycle)
+- `src/app/dream/192-kids-magnet-notes/README.md` — design notes, sound spec, polish ideas.
+
+**What's new about this prototype**:
+1. **Proximity IS the chord.** Every prior kids prototype requires a tap, hold, drag, or voice
+   input to make sound. Magnet Notes makes sound before any interaction — as soon as two orbs
+   drift within range, the notes hum together. A child can sit still and listen.
+2. **Elastic collision physics.** 190+ prior prototypes use simulated springs, gravity, or
+   smooth curves. This is the first to use proper elastic collision (velocity exchange at contact)
+   — the orbs bounce off each other in a physically realistic way.
+3. **Color-gradient connection lines.** When two orbs attract, the line between them fades in
+   as a gradient between their two hue values — the line is "half violet, half teal" for C3+E3.
+   Visual music theory: the line's color shows which interval is forming.
+
+**Queued next**:
+- Cycle 225: **adult build** (225 % 2 = 1). Top candidates:
+  - `anemone-av`: Three.js organic bioluminescent 3D form — TSL vertex displacement, deferred
+    three times (cycles 220, 221, 223). Time to finally build it.
+  - `185-score-structure` polish: dom7/maj7/dim chord templates + section hysteresis.
+  - `arc-compose`: MiniMax Music 2.6 + arc → generated AI journey soundtrack.
+- Cycle 226: **kids build** (226 % 2 = 0). Candidates:
+  - Polish `192-kids-magnet-notes`: mic mode (RMS energy → velocity impulse to random orb);
+    gravity mode toggle; more orbs (8 on wider viewports).
+  - `kids-hum-conductor`: hum a pitch into the mic → the orb matching that pitch glows bright
+    and drifts faster, steering it toward others.
+
+**Notes**:
+- `npm ci` was required this cycle because `node_modules/.bin/` was empty (packages existed
+  in node_modules but symlinks were missing). Running `npm ci` restored the bin symlinks.
+  Future cycles should check `node_modules/.bin/next` exists before running the build.
+- The elastic collision `dot < 0` check prevents re-applying impulse on separating pairs.
+  Without it, overlapping orbs would get an impulse applied multiple frames in a row, causing
+  explosive launches instead of natural bouncing.
+- ATTRACT force 0.090 × dpr at t=0 (touching threshold) gives ~11 CSS px/frame² at dpr=1 —
+  strong enough to cause visible convergence within ~30 frames (~0.5 s) from mid-range.
+
+---
+
 ## Cycle 223 — adult build: 191-eco-bloom (L-system plant + Karplus-Strong strings)
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
