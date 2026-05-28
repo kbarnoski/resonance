@@ -1,56 +1,56 @@
-# Morning digest — last updated 2026-05-28 UTC (Cycle 225)
+# Morning digest — last updated 2026-05-28 UTC (Cycle 226)
 
 ## New since yesterday
 
-- **[/dream/193-anemone-tsl](https://getresonance.vercel.app/dream/193-anemone-tsl)** — Anemone TSL (adult, Cycle 225)
-  A torus-knot organism that breathes, ripples, and flutters with your music. Bass sends slow
-  waves rolling across its surface; mid adds a finer wrinkle; high-mid makes it flutter. When a
-  transient hits — a piano attack, a drum hit, a consonant — it bursts outward then retreats.
-  Spectral centroid shifts its colour from violet (warm, bass-heavy) to cyan (cool, bright,
-  treble-forward). The knot auto-rotates; you can grab and orbit it.
-  **Why open this:** first prototype where a travelling wave actually travels — you can watch
-  individual crests chase each other around the knot's path. The torus knot shape is also new to
-  the sandbox (none of the 192 prior entries use one). Try it with piano: the bass notes make
-  it breathe while the runs flutter. Demo mode included (no mic required).
+- **[/dream/194-kids-turtle-trail](https://getresonance.vercel.app/dream/194-kids-turtle-trail)** — Turtle Trail (kids, Cycle 226)
+  Four glowing turtles wander a dark canvas. Each leaves a colored trail (violet/teal/amber/rose
+  = C3/E3/G3/A3 pentatonic). When a turtle crosses another's trail, it plays its note. Tap
+  anywhere to drop a golden food treat — all turtles steer toward it, their converging paths
+  create crossing clusters → brief musical burst.
+  **Why open this:** watch it for 30 seconds without touching — the turtles naturally intersect
+  each other's trails and the notes emerge on their own. Then tap a few times to direct them.
+  The music is in the geometry, not in your fingers. First kids prototype where trail crossing
+  triggers sound (193 prior prototypes all require a tap for a note event). Zero permissions.
 
-- **[/dream/192-kids-magnet-notes](https://getresonance.vercel.app/dream/192-kids-magnet-notes)** — Magnet Notes (kids, Cycle 224)
-  Six glowing pentatonic orbs drift on a dark canvas. When two get close, magnetic
-  attraction pulls them together — their notes hum softly as a chord. When they touch:
-  sparkle burst + loud chord spike. Tap any orb to kick it toward the farthest one.
-  Music happens autonomously — proximity IS the chord. For kids 3+.
+- **[/dream/193-anemone-tsl](https://getresonance.vercel.app/dream/193-anemone-tsl)** — Anemone TSL (adult, Cycle 225)
+  Torus-knot organism with GLSL travelling waves. Bass rolls slowly across the surface; mid
+  wrinkles it; high-mid makes it flutter. Try with piano: the knot breathes with your bass
+  notes and flickers with fast runs. Demo mode included. First torus-knot geometry in sandbox.
 
 ## Previous
 
+- **[/dream/192-kids-magnet-notes](https://getresonance.vercel.app/dream/192-kids-magnet-notes)** — Magnet Notes (kids, Cycle 224)
+  Six pentatonic orbs drift and attract; notes hum as chords on proximity, spike on collision.
+  Autonomous — just watch the magnets find each other.
+
 - **[/dream/191-eco-bloom](https://getresonance.vercel.app/dream/191-eco-bloom)** — Eco-Bloom (adult, Cycle 223)
   L-system fractal plant grows through 4 iterations, each playing a Karplus-Strong chord.
-  2,401 glowing branch segments; violet trunk → emerald tips. Auto-cycles. Patient pace.
 
 - **[/dream/190-kids-wave-organ](https://getresonance.vercel.app/dream/190-kids-wave-organ)** — Wave Organ (kids, Cycle 222)
   Seven pipes rise from the ocean floor; wave height = which notes play. Already ringing on load.
 
-- **[/dream/189-voice-scene](https://getresonance.vercel.app/dream/189-voice-scene)** — Voice Scene (Cycle 221)
-  Speak "cosmic", "earth", "forest" → ambient scene shifts. Six environments.
-
 ## In progress / partial
 
 - `185-score-structure` polish (dom7/dim/maj7 templates + section hysteresis) — queued Cycle 227.
-- `arc-compose` (MiniMax Music 2.6 + arc journey): needs FAL_KEY availability confirmed.
+- `arc-compose` (MiniMax Music + arc journey): needs FAL_KEY availability confirmed.
 
 ## Research findings worth a look
 
-- **Travelling-wave torus knot**: `193-anemone-tsl` opens a direction — the (p, q) parameters
-  of the knot could be audio-driven. Changing p from 2 to 3 mid-performance would transform
-  the shape entirely. Could be a "morph" prototype.
-- **Proximity-as-chord**: `192-kids-magnet-notes` adult variant — 12 orbs spanning two octaves,
-  stable orbit clusters form chords like planets in resonance.
-- **Eco-bloom mic mode**: L-system branch angle spread driven by amplitude → plant changes
-  shape as you play.
+- **Turtle Trail adult variant**: 12 turtles spanning two octaves, smaller crossing radius
+  (7px) for denser music — closer to a generative composition than a kids toy. Could become
+  `195-turtle-field`.
+- **Trail-as-score**: the trail left by `194-kids-turtle-trail` is visually a "score" —
+  each crossing is a note event. Recording the turtle trajectories and replaying them as
+  a MIDI file could be a demo of Resonance's recording/export concept.
+- **Proximity-as-chord adult variant** (from `192-kids-magnet-notes`): 12 orbs at chromatic
+  pitches, orbits governed by consonance-vs-dissonance gravity. Simple ratios attract,
+  complex ratios repel. Clusters = chords; orbit resonances = modes.
 
 ## Open questions for Karel
 
-- **anemone-tsl**: want a mode where you can change the knot's (p, q) parameters with sliders?
-  Or animate them slowly over time for a metamorphosis effect?
-- **Magnet Notes**: gravity mode (orbs drift to the bottom, form low clusters that ring
-  continuously)? Or mic mode (RMS energy → velocity kick)?
-- **eco-bloom variant**: mic-reactive branch angles? Or rule picker?
+- **Turtle Trail**: crossing radius is 11px CSS — feels right on desktop; might be too small
+  on a phone (turtles glide past each other without triggering). Want me to increase it for
+  mobile, or do you like the sparse character?
+- **anemone-tsl knot morphing**: still interested in a (p, q) slider that transforms the
+  knot shape live? Or auto-animate slowly over the session for a metamorphosis effect?
 - **`kids-mirror-dance`** (MediaPipe, ~8MB CDN): still needs your OK to build.

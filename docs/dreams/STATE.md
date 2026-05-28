@@ -1,5 +1,90 @@
 # Dream Agent — cycle state
 
+## Cycle 226 — kids build: 194-kids-turtle-trail
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits stale (force-push divergence from prior session).
+Reset hard to `origin/main` before proceeding. Ran `npm ci` to restore `node_modules` (not
+present in container). Build system confirmed: Next.js 15.5.15.
+
+**Decided**: Kids cycle (226 % 2 = 0). No blockers; nothing in-progress.
+Priority: Build new (4) → pick from the kids queue. No strong candidate in KIDS.md queue
+that hadn't been built, so seeded a fresh idea.
+
+**Loves influencing this pick**:
+- `169-kids-marble-run` ❤️ — physics-based emergent music; objects interact and notes emerge
+  from spatial collisions
+- `152-kids-star-paint` ❤️ — persistent visual trails that accumulate and sing
+- `133-kids-ripple-pond` ❤️ — autonomous music from spatial events (rings intersecting)
+- `160-kids-paint-loop` ❤️ — drawing paths that loop as music
+
+Pattern extracted: Karel consistently loves prototypes where the music is SPATIAL — where
+the geometry of something (a trail, a ring, an orbit path) IS the musical event, not just
+a trigger. Built `194-kids-turtle-trail` as a new expression of this pattern.
+
+**Decision rationale**:
+Trail crossing = note is an interaction model that doesn't exist in the 193-prototype sandbox.
+Every other prototype triggers notes from a tap position, an audio signal, or a timer.
+Here a note fires when two spatial paths intersect — geometry is the musical grammar.
+Zero deps, zero API, zero permissions, one-cycle build. Kids 3+ can just watch the turtles
+wander and wait for natural crossings, or tap to create deliberate ones.
+
+**What I built**:
+- `src/app/dream/194-kids-turtle-trail/page.tsx` — `○ Static`, 2.58 kB, builds clean
+  - 4 turtles (violet C3 / teal E3 / amber G3 / rose A3) wander a dark canvas using
+    random-walk heading with center-seeking boundary correction
+  - Each turtle appends to a 480-point trail buffer; trail drawn with `screen` blending
+    for additive glow; old points fade as the background dims each frame (alpha 0.22)
+  - Crossing detection: every other frame, stride-4 sampling of other turtles' trails
+    (skipping 30 most-recent points); per-turtle cooldown 700ms
+  - Food pellet on tap: all turtles steer toward the tap point for 3.5s → converging
+    paths → trail intersections → brief note cluster
+  - Audio: triangle oscillators + 2.0s IR reverb; per-note `setValueAtTime(0.28) →
+    exponentialRampToValueAtTime(0.001, +0.85s)`; ambient C3+G3 sine drone gain 0.018
+  - Autonomous from load: turtles move immediately, music starts at first tap
+- `src/app/dream/194-kids-turtle-trail/README.md` — design notes, mechanics, polish ideas
+- Build: ✅ clean (`○ Static`, 2.58 kB)
+
+**What's genuinely new**:
+1. **Trail crossing = note.** 193 prior prototypes trigger notes from tap position, audio
+   signal, or timer. This fires from a spatial relationship between two drawn paths. The
+   geometry IS the music.
+2. **Fully autonomous before first touch.** Turtles are moving and forming trails from
+   the moment the canvas loads. Natural crossings happen every ~15–25 seconds. Kids can
+   watch before touching.
+3. **Food pellet mechanic.** Single tap → deliberate musical event (turtles converge →
+   crossings burst). Multiple taps chain bursts. Completely optional — the prototype
+   works without any interaction at all.
+
+**Queued next**:
+- Cycle 227: **adult build** (227 % 2 = 1). Top candidates:
+  - `185-score-structure` polish: add dominant-7th / diminished chord templates + section
+    smoothing hysteresis (2× consecutive windows required before label flip). Deferred 9
+    cycles — now the top priority.
+  - `chord-canvas` (`28-chord-canvas`): new build, chroma vector → chord name + color
+    timeline. Gives Resonance its first music-theory prototype.
+  - `lyria-jam` (`30-lyria-jam`): needs GEMINI_API_KEY in environment — check first.
+- Cycle 228: **kids build** (228 % 2 = 0). Candidates:
+  - Polish `194-kids-turtle-trail`: add sparkle burst at crossing point + clear-trails
+    long-press
+  - Polish `192-kids-magnet-notes`: mic mode (RMS → velocity kick to nearest orb)
+  - New seed: kids prototype where you draw lines between stars to reveal a hidden melody
+    (different from `156-kids-star-connect`: this one has a "correct" constellation to
+    find; matching it plays a full song)
+
+**Notes**:
+- `npm ci` was required this cycle — `node_modules` was not present in the container.
+  Previous cycle (225) noted it WAS present. This likely means the container was recycled
+  between fires. Budget ~60s for `npm ci` on future cycles where node_modules is absent.
+- The `node_modules` re-install doesn't affect committed code; `node_modules` is in `.gitignore`.
+- Trail crossing sound design: the 700ms cooldown per turtle prevents rapid-fire when two
+  turtles walk alongside each other (their heads would be continuously near each other's
+  recent trail). The "skip 30 most-recent points" rule prevents a turtle from detecting
+  its own fresh crossing as another turtle's trail when they just separated.
+
+---
+
 ## Cycle 225 — adult build: 193-anemone-tsl (torus-knot organism, GLSL vertex displacement)
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)

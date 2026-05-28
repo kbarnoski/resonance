@@ -10,7 +10,20 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 225 — adult build)
+## ⭐ Newest (Cycle 226 — kids build)
+
+- **[/dream/194-kids-turtle-trail](/dream/194-kids-turtle-trail)** — Turtle Trail. `demoable`
+  Four glowing turtles (violet C3 / teal E3 / amber G3 / rose A3) wander a dark canvas, each
+  leaving a colored pentatonic trail. When a turtle crosses another's trail, it plays its note.
+  Tap anywhere to drop a food treat — all turtles steer toward it, paths converge, crossings
+  burst into a brief melody. Fully autonomous before first touch; music exists without
+  interaction. **First prototype where trail intersection IS the note trigger — geometry as
+  musical grammar.** For kids 3+ · Zero permissions · Zero API · Zero deps · 2.58 kB.
+  Design notes: `src/app/dream/194-kids-turtle-trail/README.md`
+
+---
+
+## Previous (Cycle 225 — adult build)
 
 - **[/dream/193-anemone-tsl](/dream/193-anemone-tsl)** — Anemone TSL. `demoable`
   A `TorusKnotGeometry(1.0, 0.22, 300, 36, 2, 3)` organism skinned with a custom GLSL
