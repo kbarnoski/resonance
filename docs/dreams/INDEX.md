@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 224 — kids build)
+## ⭐ Newest (Cycle 225 — adult build)
+
+- **[/dream/193-anemone-tsl](/dream/193-anemone-tsl)** — Anemone TSL. `demoable`
+  A `TorusKnotGeometry(1.0, 0.22, 300, 36, 2, 3)` organism skinned with a custom GLSL
+  ShaderMaterial. `uv.x` (0→1 along the tube path) drives three travelling waves at spatial
+  frequencies 18.85, 37.70, and 94.25 cycles/tube — bass rolls slowly, mid wrinkles, high-mid
+  flutters. Sub-bass breathes the whole surface; onset transients send a burst that decays at
+  ×0.88/frame. Spectral centroid shifts hue from violet (low, warm) to cyan (high, bright).
+  Rim lighting adds bright cyan silhouettes; filmic tonemap for depth. Demo mode: 5 incommensurable
+  LFOs. Mic mode: live audio via `useMicAnalyser`. OrbitControls auto-rotate; Bloom post-processing.
+  **First torus-knot geometry in the sandbox; first travelling-wave GLSL displacement.**
+  WebGL · Two-screen start/run pattern · `@react-three/fiber`.
+  Design notes: `src/app/dream/193-anemone-tsl/README.md`
+
+---
+
+## Previous (Cycle 224 — kids build)
 
 - **[/dream/192-kids-magnet-notes](/dream/192-kids-magnet-notes)** — Magnet Notes. `demoable`
   Six glowing pentatonic orbs (C3 E3 G3 A3 C4 E4) drift on a dark canvas. When two orbs come

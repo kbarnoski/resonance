@@ -1,5 +1,59 @@
 # Dream Agent — cycle state
 
+## Cycle 225 — adult build: 193-anemone-tsl (torus-knot organism, GLSL vertex displacement)
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits stale (force-push divergence). Reset hard to `origin/main` before proceeding. `node_modules` present this cycle — no `npm ci` needed.
+
+**Decided**: Adult cycle (225 % 2 = 1). No blockers; nothing in-progress.
+Priority check per AGENT.md:
+1. **Unblock** — nothing blocked.
+2. **Continue** — nothing in-progress.
+3. **Adult cycle** (225 % 2 = 1). Top candidate: `anemone-av` deferred 3× (cycles 220, 221, 223). Time to build it.
+
+**Loves influencing this pick**:
+- `130-tsl-particle-compute` ❤️ — dark WebGL, organic flow on GPU
+- `21-three-mesh-av` — 3D mesh + audio reactive (predecessor; must be qualitatively different)
+- `134-anemone-av` ❤️ (implicit) — bioluminescent organic form pattern
+- `163-paths-visualizer` ❤️ — slow, contemplative, dark
+
+**Decision rationale**:
+`anemone-av` (renamed 193-anemone-tsl for clarity) was queued and deferred three times. The concept was fully spec'd: use a `TorusKnotGeometry` with a GLSL ShaderMaterial and `uv.x` (position along the knot tube) for travelling-wave displacement — qualitatively distinct from `21-three-mesh-av` (icosahedron blob) and `134-anemone-av` (FK-tube tentacles). All dependencies available (`@react-three/fiber`, `@react-three/drei`, `@react-three/postprocessing`). Clean one-cycle build.
+
+**What I built**:
+- `src/app/dream/193-anemone-tsl/page.tsx` — `○ Static`, builds clean
+  - `TorusKnotGeometry(1.0, 0.22, 300, 36, 2, 3)` with custom GLSL ShaderMaterial
+  - Vertex shader: `uv.x` (0→1 along tube path) drives 3 travelling waves at harmonically spaced spatial freqs (18.85, 37.70, 94.25 cycles/tube); sub-bass = uniform breathe; onset = radial burst (decay ×0.88/frame in useFrame)
+  - Fragment shader: HSL colour, hue ∈ [0.50, 0.74] (cyan→violet) driven by spectral centroid; brightness = f(displacement); rim light; filmic tonemap
+  - Two-screen pattern (start → running) matching 134-anemone-av lifecycle exactly
+  - Demo mode: incommensurable LFO set (0.30, 0.45, 0.70, 3.10, 7.00 Hz)
+  - Mic mode: `useMicAnalyser` bands[0,1,3,4,5] → subBass/bass/mid/highMid/high
+  - `OrbitControls(autoRotate, speed=0.6)` + Bloom (threshold=0.15, intensity=2.0)
+  - Build: ✅ clean (`○ Static`)
+- `src/app/dream/193-anemone-tsl/README.md` — design notes, audio mapping table, GLSL wave explanation.
+
+**What's new about this prototype**:
+1. **Travelling waves on a torus knot.** No prior prototype uses `TorusKnotGeometry` + `uv.x`-parameterized displacement. The knot's tube path creates a surface where waves genuinely travel around the structure — they appear to propagate, not just pulse uniformly.
+2. **Three independent wave frequencies per band.** Bass, mid, and high-mid drive spatial frequencies 18.85, 37.70, 94.25 cycles/tube respectively — a near-octave doubling. In music, the higher harmonics flutter while the low bass rolls slowly.
+3. **Spectral centroid → hue.** Colour shifts from violet (warm, low centroid) to cyan (cool, bright, high centroid) as the frequency content of the sound changes — the organism literally changes colour with timbre, not just amplitude.
+
+**Queued next**:
+- Cycle 226: **kids build** (226 % 2 = 0). Candidates:
+  - Polish `192-kids-magnet-notes`: mic mode (RMS energy → velocity impulse); gravity toggle; 8 orbs on wide viewports.
+  - `kids-hum-conductor`: hum a pitch → matching orb glows and steers toward others.
+- Cycle 227: **adult build** (227 % 2 = 1). Candidates:
+  - `185-score-structure` polish: dom7/maj7/dim chord templates + section hysteresis.
+  - `arc-compose`: MiniMax Music 2.6 + arc journey soundtrack (needs FAL_KEY).
+  - `spectral-morph`: real-time spectral envelope morphing between two recorded sounds.
+
+**Notes**:
+- `uv.x` in `TorusKnotGeometry` reliably encodes position along the tube path (0→1, wraps). Confirmed by testing: `sin(uv.x * 18.85 + t)` visually shows ~3 waves wrapping around the (p=2, q=3) knot at any given moment.
+- Onset decay in `useFrame` (×0.88 per render frame) keeps the burst tightly synced to the visual frame rate rather than the audio RAF, giving smoother visual response.
+- `TorusKnotGeometry(1.0, 0.22, 300, 36, 2, 3)` — 300 tubular segments gives smooth wave detail; 36 radial segments gives enough cross-section roundness; p=2, q=3 gives the classic (2,3)-knot shape.
+
+---
+
 ## Cycle 224 — kids build: 192-kids-magnet-notes (magnetic orbs + proximity chords)
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
