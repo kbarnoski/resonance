@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 230 — kids build)
+## ⭐ Newest (Cycle 231 — adult build)
+
+- **[/dream/198-osc-composer](/dream/198-osc-composer)** — Oscilloscope Composer. `demoable`
+  Design a Lissajous figure, then download the stereo WAV file that draws it on a real oscilloscope.
+  Two sine oscillators at `n×220 Hz` and `d×220 Hz` are routed to separate stereo channels via
+  `ChannelMergerNode` — left channel = X axis, right channel = Y axis. Seven frequency ratios
+  map to musical intervals (Unison through Minor 7th). Phase slider (0–360°) sweeps the figure
+  through its family of shapes. X/Y balance slider stretches the aspect ratio. Traveling dot
+  traces the parametric curve while audio plays. Puzzle mode: match a ghost target figure by ear
+  and by eye. WAV download (↓ WAV): generates a 5-second 44.1 kHz 32-bit float stereo file in
+  pure JS — no server, no deps, works offline. Five named presets: Circle, Figure-8, Trefoil,
+  Rose, Starburst. **First prototype to generate oscilloscope music** — audio that draws itself.
+  Zero permissions · Zero API · Zero deps · No mic needed.
+  Design notes: `src/app/dream/198-osc-composer/README.md`
+
+---
+
+## Previous (Cycle 230 — kids build)
 
 - **[/dream/197-kids-rain-chain](/dream/197-kids-rain-chain)** — Rain Chain. `demoable`
   Five pentatonic cups in a staircase (top-left biggest/violet/C3 → bottom-right smallest/sky/C4).

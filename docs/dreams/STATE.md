@@ -11771,3 +11771,40 @@ was available with zero deps and one-cycle scope: `187-shepard-tone` (psychoacou
 - The `runningRef.current = true` is set immediately (before `setRunning(true)`) so the
   rAF loop begins updating oscillators in the same frame that audio starts. No one-frame
   gap where audio plays but phase is frozen.
+
+---
+
+## Cycle 231 — adult build: 198-osc-composer
+
+**When**: 2026-05-28 UTC (hourly autonomous cycle)
+
+**Git sync**: main was at cycle 230 (197-kids-rain-chain). Hard-reset to origin/main after fast-forward failure (origin had been force-updated during prior context window).
+
+**Note**: STATE.md was not updated for cycles 220–230 (bug in prior agent runs — each cycle added docs but skipped appending here). Cycle 219 (187-shepard-tone) is the last properly written entry.
+
+**Decided**: Adult cycle (231 % 2 = 1). Reviewed IDEAS.md queue — `osc-composer` has been queued since cycle 219, has zero deps, and a complete one-cycle spec. Chose it over `aria-companion` (needs more architecture planning) and MORNING.md stale candidates (aria-companion/spectral-morph/loop-station all already built as 167/170/172).
+
+**What I built**:
+- `src/app/dream/198-osc-composer/page.tsx` — Lissajous figure composer. Two OscillatorNodes routed through ChannelMergerNode to separate L/R stereo channels. Canvas renders 3000-point parametric curve with glow passes. Ratio dropdown (7 musical intervals), Phase slider (0–360°), X/Y Balance slider. WAV download via pure-JS IEEE float32 PCM encoder. Puzzle mode shows ghost target figure. Five presets: Circle, Figure-8, Trefoil, Rose, Starburst. 4.69 kB static. ✅ clean build.
+- `src/app/dream/198-osc-composer/README.md` — design notes, WAV encoding details, interval↔shape table.
+- Build: ✅ clean (`○ Static`, 4.69 kB).
+
+**What's new about this prototype**:
+1. **First oscilloscope music prototype.** The WAV download is not just a recording — it is audio geometrically encoded as a Lissajous figure. Play the stereo file through a real oscilloscope in XY mode and the waveform draws itself.
+2. **Puzzle mode.** Ghost target figure (semi-transparent blue) challenges the user to find matching ratio + phase by ear and eye. Reveal button shows the solution.
+3. **Pure-JS WAV encoder.** No server, no deps, no permissions. The `buildWav()` function writes a valid 44-byte RIFF header and interleaved IEEE float32 samples directly into an ArrayBuffer.
+4. **Musical intervals as visual shapes.** The ratio n:d determines how many lobes and crossings the figure has. An octave (1:2) draws a figure-8. A perfect 5th (2:3) draws a trefoil. Minor 7th (5:7) draws a complex star. The geometry encodes music theory.
+
+**Queued next**:
+- Cycle 232: **kids build** (232 % 2 = 0). Candidates:
+  - `kids-glow-bug` — fireflies that land on plants and ring notes; tap to release more.
+  - Polish `197-kids-rain-chain`: add Karel's preferred cascade delay (0.22s / 0.35s / 0.15s).
+- Cycle 233: **adult build**. Candidates:
+  - `aria-companion` (Markov-chain piano dialogue, turn-taking).
+  - `spectral-morph` polish (FFT resynthesis).
+  - `185-score-structure` / `195-chord-canvas` polish.
+
+**Notes**:
+- Balance normalization `mbMax = max(bal, 100-bal)` ensures `max(xAmp, yAmp) = 1` always, preventing the figure from ever leaving the canvas regardless of slider position.
+- `launchOscillators()` is wrapped in `useCallback` and triggered by the `[rIdx, playing]` effect so changing the ratio while playing seamlessly restarts oscillators at the new frequency pair.
+- Canvas uses mount-only rAF loop reading all mutable state via refs — the standard Resonance dream pattern from `187-shepard-tone`.
