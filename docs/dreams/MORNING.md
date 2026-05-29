@@ -1,41 +1,37 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 242)
+# Morning digest — last updated 2026-05-29 UTC (cycle 243)
 
 ## New since yesterday
 
-- **[/dream/209-kids-drum-tap](https://getresonance.vercel.app/dream/209-kids-drum-tap)** (Cycle 242 — kids build)
-  Four full-screen drum pads. Tap any pad → immediate percussive sound + ripple glow:
-  - Violet (top-left, biggest) — kick: deep 110→40 Hz sine glide
-  - Amber (top-right, smallest) — hi-hat: bright noise burst
-  - Rose (bottom-left) — snare: bandpass noise + 185 Hz crack
-  - Teal (bottom-right) — tom: 155→75 Hz mid glide
-  After 2+ taps + 1.5 s of silence → **Markov drum talks back**: 8-step response shaped by
-  your own tap sequence (which pads you chain together). Pads flash in sequence as it plays.
-  → **Why open this**: tap kick-hat-kick-hat four times, pause. The drum will respond. The
-  more you play, the more it learns to mirror your rhythm style. Works great as a quick demo
-  for anyone (kids OR adults — the Markov mechanic is satisfying even at Karel's age).
+- **`/dream/210-aria-companion`** — Play piano, pause, hear Aria respond. 1st-order Markov
+  chain built from your own note transitions shapes each reply. Split piano roll: your phrase
+  in warm orange (top), Aria's response in cool blue (bottom). No mic? Demo mode plays a
+  pentatonic phrase and Aria responds automatically. **Why open this**: it's the first dialogue
+  prototype in the sandbox — not reactive, not a generator, but a back-and-forth musical
+  conversation. The longer you play, the more Aria sounds like you.
 
-- **[/dream/208-param-layer](https://getresonance.vercel.app/dream/208-param-layer)** (Cycle 241 — adult build)
-  Four concentric draggable rings sculpt a harmonic bell tone. Outer = pitch, Ring 2 = partials,
-  Ring 3 = inharmonicity, Inner = decay. Ring 3 from 0→max is the best demo (pure organ → gong).
+## Recent (last 3 cycles)
+
+- **`/dream/209-kids-drum-tap`** (cycle 242) — Four drum pads, tap a rhythm, Markov drum
+  talks back. Auto-demo after 2.2s idle. Kids-scale (4+, BANDIMAL sizing).
+- **`/dream/208-param-layer`** (cycle 241) — Four concentric rings control pitch, partials,
+  inharmonicity, decay for a bell synth. Drag rings to sculpt timbre; tap center to strike.
 
 ## In progress / partial
 
-- Nothing in-progress.
+Nothing in-progress. Both queues (adult + kids) are clear.
 
 ## Research findings worth a look
 
-- Cycle 213: `piano-motion` — Karel's Paths recordings → animated hands pressing keys.
-  High alignment with "use his real music as input" directive. Candidate for adult Cycle 243.
-- Cycle 203: `splat-bloom` — 500 Gaussian-splat ellipses, additive blending, audio-reactive.
-  Different visual quality (texture field) from particles or fluid. Still unbuilt.
+Research is overdue — last cycle was 213, now 30+ cycles ago. Cycle 245 is the target for
+the next sweep. Topics to prioritize: WebGPU compute audio, Three.js R3F mesh deformation,
+Lyria RealTime API (already speced in `30-lyria-jam`), MediaPipe hand tracking.
 
 ## Open questions for Karel
 
-- **`aria-companion`** — 15+ cycles deferred. The Markov piano dialogue (you play → it responds
-  when you pause) is directly analogous to `209-kids-drum-tap` but for piano melody. Should I
-  build it next adult cycle (243)? It would make a natural sibling to drum-tap.
-- **Research sweep (Cycle 243)?** Now ~30 cycles since last full research pass (Cycle 213).
-  The AGENT.md cadence is every 3-4 cycles — overdue. Worth doing Cycle 243 as a research cycle?
-- **Ring 3 presets for `208-param-layer`**: Bell / Flute / Piano / Marimba snap. Quick polish.
-- **Drum-tap polish (Cycle 244)?**: mic mode (onset detection → auto pad hits), 16th-note roll
-  on hold, BPM display from inter-tap intervals. Or build `kids-firefly-web` instead.
+- **Aria Companion polish**: after trying it, which direction interests you most — (a) velocity
+  mapping (amplitude → note thickness in the roll), (b) 2nd-order Markov for better style
+  capture, or (c) Aria responds in a different octave register to create actual harmony?
+- **Cycle 244 kids pick**: `kids-firefly-web` (fireflies + silk threads + chimes) vs.
+  `kids-echo-drum` (exact echo + one added beat). Both are one-cycle builds. Preference?
+- **Research sweep**: approve a full research cycle at 245 to refresh with June 2026
+  findings? The IDEAS queue is healthy but the newest entries are 30+ cycles old.

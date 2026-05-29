@@ -4446,6 +4446,15 @@ through the fluid/live visualizer. "Compose your journey soundtrack."
 WebGPU upgrade of 8-particle-life: same physics but WGSL compute shader, 50k+
 particles. Requires WebGPU (2026: 70%+ browsers). Will look like a galaxy.
 
+### 210-aria-companion
+**Status**: `demoable` · **Cycle shipped**: 243 · **Last touched**: 2026-05-29
+
+Open `/dream/210-aria-companion`. Click **Start mic** and play piano (or sing a melody). After you pause for 1.5 seconds, Aria responds with an 8-note phrase built from a Markov chain of your own note transitions. Your phrase appears as warm orange bars on the top piano roll; Aria's response as cool blue bars below. The Markov table accumulates across rounds — the longer you play, the more Aria mirrors your melodic style. No mic? Click anyway: a demo pentatonic phrase seeds the chain and Aria responds automatically.
+
+Design notes: `src/app/dream/210-aria-companion/README.md`
+
+---
+
 ### 9-ghost-sound `[queued — from Cycle 4 research]`
 Ghost LoRA images + MMAudio V2 soundscaping: Ghost scenes that breathe.
 Admin-only. ~$0.01/generation.

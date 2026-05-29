@@ -12373,3 +12373,46 @@ MORNING.md from cycle 241 explicitly flagged `kids-drum-tap` as a candidate: "ta
 - TypeScript control flow narrowing does NOT extend to nested closure functions in this project's TS config. All inner functions that close over `canvas` need explicit `if (!canvas) return;` guards at their top. Pattern confirmed by 205-kids-bubble-bath and is consistent across the dream zone.
 - The Markov response uses 8th notes at 80 BPM (375ms per step, 8 steps = 3s). This is long enough to be clearly "a pattern" but short enough that a 4yo stays engaged. The drum pads flash in sequence so the child can see which pad the drum is hitting — no separate indicator needed.
 - `padIdx(x, y, W, H)` maps: TL=0 (kick), TR=1 (hihat), BL=2 (snare), BR=3 (tom). This puts the loudest/lowest drum at top-left (natural "prime position" for right-handed children). Hihat in top-right gives balance — two contrasting timbres in the top row.
+
+---
+
+## Cycle 243 — adult build: 210-aria-companion
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 132 commits behind origin/main (freshly cloned container, force-push history). Hard-reset to `origin/main` (cycle 242) before proceeding.
+
+**Decided**: Adult build cycle (243 % 2 = 1). No blockers; nothing in-progress.
+`aria-companion` has been flagged as the top adult candidate for 15+ consecutive cycles. Choosing it now — delaying further would be a waste of clear signal.
+
+**Loves influencing this pick**:
+- `138-lmdm-echo` ❤️ — dialogue/response pattern; aria-companion is a musical dialogue
+- `163-paths-visualizer` ❤️ — piano-centric output; Aria responds with piano tones
+- `105-pluck-field` ❤️ — physical piano sound synthesis; same harmonic partial approach used here
+
+**What I built**:
+- `src/app/dream/210-aria-companion/page.tsx` — Mic input → 20 Hz autocorrelation pitch detection → 1st-order Markov chain → 8-note piano response after 1.5s silence. Scrolling dual-lane piano roll: YOU (warm orange, top) / ARIA (cool blue, bottom). Response plays via 3-partial sine piano + synthetic reverb. Markov table persists across rounds; session resets captured notes after each response so Aria always reacts to the latest phrase. Demo mode: pentatonic phrase auto-plays and Aria responds without mic. 3.68 kB static, ✅ clean build.
+- `src/app/dream/210-aria-companion/README.md` — design notes, audio architecture, Markov mechanics, polish ideas.
+- Build: ✅ clean (`○ Static`, 3.68 kB, 0 errors, only pre-existing Resonance core warnings).
+
+**What's new about this prototype**:
+1. **First dialogue prototype in the sandbox.** All prior prototypes are reactive (every-frame response) or generative (API call). Aria waits, listens, then composes — a turn-taking structure entirely unlike anything else here.
+2. **Markov chain learns from the session.** After 3+ rounds, the transition table captures the player's characteristic intervals. A player who favors perfect fifths gets a response heavy in fifths. The machine reflects you back to yourself.
+3. **Dual piano roll is the most "musical notation" display in the sandbox.** The YOU/ARIA split makes the dialogue visual — you can literally see who is playing, what notes, in what register.
+4. **Zero dependencies.** Autocorrelation, Markov chain, piano synthesis, scrolling canvas — all Web Audio API + Canvas2D.
+
+**Queued next**:
+- Cycle 244: **kids build** (244 % 2 = 0). Candidates:
+  - `kids-firefly-web` — fireflies spin glowing silk threads between them; thread chimes when two meet
+  - `kids-echo-drum` — tap a rhythm → drum echoes it back exactly, then adds one more beat
+  - Polish `209-kids-drum-tap`: mic onset mode, BPM display, roll mode
+- Cycle 245: **adult build**. Strong candidates:
+  - `diatonic-harmony` — live melody → parallel thirds/fifths in key, zero deps
+  - `chord-canvas` — mic → chroma → chord name + color timeline
+  - Research sweep (now 32 cycles since last research at Cycle 213 — overdue by cadence)
+
+**Notes**:
+- `drawLane` is a helper defined inside the `useEffect` closure. TypeScript loses null-narrowing of `gc` across nested function boundaries — fix was to pass `gc` as an explicit `CanvasRenderingContext2D` parameter. This is the standard pattern for this codebase (see 208-param-layer `ringRadii`/`canvasXY` module-level approach).
+- Pitch stability requires 2 consecutive frames (100ms) to confirm a note onset. This prevents Aria from reacting to transient detection artifacts. Piano attacks often trigger a brief wrong-pitch frame before settling.
+- The Markov fallback (no transitions from current note) uses random pentatonic intervals [0, 2, 4, 7, 9, 12]. This prevents atonal chaos on first rounds before the table fills.
+- `scheduleResponse` checks `st.scheduled` before proceeding — prevents the silence timer and demo timeout from both triggering a response on the same round.
