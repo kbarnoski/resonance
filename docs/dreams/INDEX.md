@@ -4455,6 +4455,15 @@ Design notes: `src/app/dream/210-aria-companion/README.md`
 
 ---
 
+### 211-kids-firefly-web
+**Status**: `demoable` · **Cycle shipped**: 244 · **Last touched**: 2026-05-29
+
+Open `/dream/211-kids-firefly-web`. Tap anywhere on the dark canvas to release a glowing firefly. Fireflies drift with gentle physics and subtle mutual attraction. When two come within range, a vibrating silk thread forms between them — and a pentatonic chime plays, pitched by thread length (short = high, long = low). All threads harmonize. Seed up to 8 fireflies; the web evolves on its own.
+
+Design notes: `src/app/dream/211-kids-firefly-web/README.md`
+
+---
+
 ### 9-ghost-sound `[queued — from Cycle 4 research]`
 Ghost LoRA images + MMAudio V2 soundscaping: Ghost scenes that breathe.
 Admin-only. ~$0.01/generation.

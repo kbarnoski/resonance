@@ -12416,3 +12416,50 @@ MORNING.md from cycle 241 explicitly flagged `kids-drum-tap` as a candidate: "ta
 - Pitch stability requires 2 consecutive frames (100ms) to confirm a note onset. This prevents Aria from reacting to transient detection artifacts. Piano attacks often trigger a brief wrong-pitch frame before settling.
 - The Markov fallback (no transitions from current note) uses random pentatonic intervals [0, 2, 4, 7, 9, 12]. This prevents atonal chaos on first rounds before the table fills.
 - `scheduleResponse` checks `st.scheduled` before proceeding — prevents the silence timer and demo timeout from both triggering a response on the same round.
+
+---
+
+## Cycle 244 — kids build: 211-kids-firefly-web
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50+ commits behind origin/main (fresh container, force-push divergence). Hard-reset to `origin/main` (cycle 243) before proceeding.
+
+**Love signal** (26 loved prototypes — relevant to kids pick):
+- `140-kids-string-bridge` ❤️ — silk/string connections between tapped anchor points; firefly-web makes the endpoints alive (drifting fireflies) instead of static
+- `133-kids-ripple-pond` ❤️ — proximity → harmonic event; same spatial-music logic (two objects meet → sound)
+- `169-kids-marble-run` ❤️ — gentle organic physics toy feel; firefly drift shares the same unhurried motion aesthetic
+- `158-kids-hum-paint` ❤️ + `160-kids-paint-loop` ❤️ — spatial placement creates evolving musical compositions
+
+**Decided**: Kids cycle (244 % 2 = 0). No blockers; nothing in-progress.
+STATE.md cycle 243 listed `kids-firefly-web` as the top kids candidate. MORNING.md also listed it as the cycle 244 pick. Chose it over `kids-echo-drum` because:
+- Direct lineage from `140-kids-string-bridge` ❤️ (most relevant love signal for this type of mechanic)
+- New interaction class for the kids zone: **fireflies as alive endpoints** — strings become silk threads, static points become drifting lights
+- `kids-echo-drum` (exact rhythm echo) is a good follow-up but closer in spirit to `209-kids-drum-tap` (just built); spacing them further apart gives more variety
+
+**What I built**:
+- `src/app/dream/211-kids-firefly-web/page.tsx` — tap anywhere to release a glowing firefly. Fireflies drift with gentle Brownian motion + soft mutual attraction. When two come within 155 px: a glowing silk thread forms between them (quadratic Bézier with sinusoidal perpendicular vibration + canvas shadowBlur=12 glow). On thread formation: a triangle-oscillator chime fires, pitch from C pentatonic major, mapped by thread length (short = high note, long = low note). All notes always harmonize. Up to 8 fireflies; up to 28 simultaneous threads. Halo radial gradient pulses at ~0.5 Hz per firefly. 2 fireflies auto-seeded on load. `○ Static`, ✅ clean build.
+- `src/app/dream/211-kids-firefly-web/README.md` — design notes, physics, audio design, polish ideas.
+- Build: ✅ clean (one fix: added `if (!canvas || !gc) return;` in `drawFrame` to satisfy TS null-narrowing across closure boundary — standard pattern in this codebase).
+
+**What's new about this prototype**:
+1. **First "alive endpoints" string prototype.** `140-kids-string-bridge` had static tapped endpoints; here the endpoints drift with physics and attraction, so the web evolves over time without more taps.
+2. **Thread formation is the musical event, not the tap.** In most kids prototypes, the tap IS the sound. Here, you tap → release a firefly → WAIT → thread forms → chime. The anticipation window (drifting toward another firefly) is new pacing for the kids zone.
+3. **Pentatonic pitch-by-proximity.** Shorter thread = higher note (short string = higher pitch — physically intuitive). All 8 notes are C pentatonic, so overlapping chimes always harmonize regardless of order.
+4. **Vibrating threads.** The quadratic Bézier control point oscillates sinusoidally perpendicular to the thread axis, giving silk-like motion. Children can see which threads are "active" without any UI labels.
+
+**Queued next**:
+- Cycle 245: **adult build** (245 % 2 = 1). This is also the research sweep target (32+ cycles since Cycle 213 — overdue). Candidates:
+  - **Research sweep** (highest priority — IDEAS queue needs fresh 2026 entries)
+  - `diatonic-harmony` — live melody → parallel thirds + fifths in key, zero deps
+  - `chord-canvas` — mic → chroma → chord name + color timeline
+- Cycle 246: **kids build**. Candidates:
+  - `kids-echo-drum` — tap a rhythm → drum echoes it back exactly, then adds one more beat
+  - Polish `211-kids-firefly-web`: mic mode (RMS → fly speed), thread-break pluck sound, color quadrant harmony
+  - `kids-shadow-puppet` — hand blocks camera light → shadow shape triggers instrument sounds
+
+**Notes**:
+- TypeScript null-narrowing fix: `if (!canvas || !gc) return;` at the top of `drawFrame`. This is the same pattern as `205-kids-bubble-bath`. `gc` is obtained as `canvas.getContext("2d")` → `CanvasRenderingContext2D | null`; TypeScript does not track the narrowing past the outer `if (!gc) return;` into nested function closures.
+- `FRICTION = 0.983` per frame gives a natural speed decay: 1.3 px/frame max → ~0.3 px/frame after 60 frames (1 second). This means fireflies slow when they've been drifting without input, but the wander jitter (±0.055) keeps them always moving gently.
+- The `nowThreads` Set approach ensures chimes fire exactly once per connection onset (same pattern as `colPairs` Set in `205-kids-bubble-bath`). On the frame a thread forms, the key is absent from `st.threads` (last frame's set) → chime fires and key is added to `nowThreads`. Next frame, key is in `st.threads` → no chime.
+- Wall repulsion uses a 22 px dead zone from each edge. On a 375 × 667 CSS px mobile screen, fireflies effectively drift in a ~330 × 575 play area, keeping them visible and giving plenty of room for threads to form.
