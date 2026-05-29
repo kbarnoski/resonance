@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 235 — adult build)
+## ⭐ Newest (Cycle 236 — kids build)
+
+- **[/dream/203-kids-lantern-launch](/dream/203-kids-lantern-launch)** — Lantern Launch. `demoable`
+  Tap the dark starry sky to release a glowing paper lantern. Each lantern drifts upward with a
+  gentle sinusoidal sway (10px peak, unique phase per lantern). When it floats off the top of the
+  screen it plays a bright bell chime and scatters 14 sparkles. Pitch is determined by horizontal
+  tap position: left = C3 (violet), stepping through E3/G3/A3, right = C4 (cyan) — pentatonic, no
+  wrong notes. Up to 8 lanterns coexist; two demo lanterns auto-spawn so the canvas is alive before
+  first touch. Launch tone: quiet triangle (0.14 gain, 0.85s). Exit chime: triangle fundamental +
+  octave partial (0.30/0.08 gain, 1.8s) — noticeably brighter than launch, rewards patience.
+  **First kids prototype where the note fires at the END of a journey** (not at tap or collision) —
+  5–10 seconds of floating before the reward. Extends the `166-kids-lantern` ❤️ motif.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.54 kB.
+  Design notes: `src/app/dream/203-kids-lantern-launch/README.md`
+
+---
+
+## Previous (Cycle 235 — adult build)
 
 - **[/dream/202-membrane-drum](/dream/202-membrane-drum)** — Membrane Drum. `demoable`
   A circular drumhead solved with the 2D wave equation on a 64×64 grid.

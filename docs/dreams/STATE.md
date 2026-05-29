@@ -1,5 +1,60 @@
 # Dream Agent — cycle state
 
+## Cycle 236 — kids build: 203-kids-lantern-launch
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits diverged from origin (force-updated remote, freshly cloned container). Hard-reset to `origin/main` (cycle 235). npm install required — node_modules absent.
+
+**Love signal** (26 loved prototypes — relevant to kids pick):
+- `166-kids-lantern` ❤ — the glowing lantern aesthetic Karel explicitly loved; this prototype is a direct extension
+- `169-kids-marble-run` ❤ — physics toy with predictable flight arc; lantern float is the same "passive watching" paradigm
+- `160-kids-paint-loop` ❤ + `111-kids-shape-loop` ❤ — Karel loves prototypes where the child releases something and watches it evolve
+- `152-kids-star-paint` ❤ — delayed reward: draw now, hear later (star constellation arpeggios at 16s). Lanterns are similar: tap now, chime later (5–10s)
+
+**Decided**: Kids cycle (236 % 2 = 0). No blockers; nothing in-progress. STATE.md (cycle 234) queued `kids-lantern-launch` as a strong candidate for 236:
+> "New seed: `kids-lantern-launch` — tap to release glowing lanterns that float upward, each plays a note when it exits the top; extends `166-kids-lantern` motif Karel loved"
+
+Chose this over `kids-harmonic-piano` (from cycle 235 queue) because:
+- `166-kids-lantern` ❤ is a direct love signal for this exact motif
+- The "delayed exit chime" interaction is genuinely novel — no prior kids prototype plays its note at the END of a journey
+- Self-contained in one cycle with zero new deps
+
+**What I built**:
+- `src/app/dream/203-kids-lantern-launch/page.tsx` — tap dark starry sky → paper lantern spawns, floats upward at 22 CSS px/sec, chimes when it exits off the top (`○ Static`, 2.54 kB, ✅ clean build)
+  - Pitch zone from X position: 5 horizontal bands → C3/E3/G3/A3/C4 pentatonic (left=low, right=high)
+  - Lantern shape: rounded-rect body with equator rib, top handle arc, tassel bob; color = pitch-zone hue
+  - Sinusoidal sway: `baseX + sin(phase + age × 0.0009) × 10px` — each lantern has its own phase offset
+  - Launch tone: triangle osc, 0.14 gain, 0.85s decay; Exit chime: fundamental + octave partial, 0.30/0.08 gain, 1.8s decay
+  - 14-particle sparkle burst on exit (ring pattern, gravity decay, 0.75s lifetime)
+  - 58 twinkling stars: pre-placed fractions (no per-frame allocation), sin-modulated opacity
+  - Ambient C3/G3/C4 sine pad at gain 0.006 from first tap
+  - Two demo lanterns auto-spawn at 120ms delay so canvas is alive before first touch
+  - Max 8 simultaneous lanterns; `shift()` removes oldest if over limit
+- `src/app/dream/203-kids-lantern-launch/README.md` — design notes, sound design, what's new, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 2.54 kB). No TypeScript or ESLint errors.
+
+**What's new about this prototype**:
+1. **Destination arrival chime** — all 202 prior prototypes play a note at tap/collision/frame trigger. This is the first where the note fires at the END of a journey: the lantern floats for 5–10 seconds and sings when it exits. Reward is temporally displaced from the gesture.
+2. **Passive watching as gameplay** — once released, lanterns drift autonomously. Child taps, then watches. Same paradigm as `143-kids-seed-song` (patient growth) but with visible motion rather than static change.
+3. **Sky filling** — releasing 8 lanterns simultaneously creates a glowing collage of different colors at different heights. Visual density scales with enthusiasm (the more you tap, the fuller the sky).
+
+**Queued next**:
+- Cycle 237: **adult build** (237 % 2 = 1). STRONG candidate for **research sweep** — last full sweep was Cycle 213, now 24 cycles ago. IDEAS queue is deep (40+ entries) so research is a "freshness" pick, not a necessity. Alternative: `param-layer` (DEMON-inspired hierarchical timbre synth, ready to build).
+- Cycle 238: **kids build**. Candidates:
+  - Polish `203-kids-lantern-launch`: mic mode (RMS → auto-spawn rate); wind bias shared across all lanterns
+  - `kids-harmonic-piano`: simplified single-slider from `200-harmonic-series` (cartoon instrument illustration, 3 additive partials, no UI complexity)
+  - Fresh research for kids if KIDS.md queue thins out
+
+**Notes**:
+- `drawRoundRect` helper (manual arcTo approach) preferred over `ctx.roundRect()` to avoid potential TS lib-DOM version gaps in strict mode. All six corners use the standard arcTo pattern. ✅
+- Stars use pre-placed `{x, y}` fractions × canvas dimensions; no per-frame `Math.random()`. The `const stars = Array.from({...}, () => ...)` call runs once inside `useEffect` after canvas mount. ✅
+- `Math.min(ts - st.lastTs, 50)` for deltaTime: on first frame `st.lastTs = 0`, so dt is capped at 50ms (one step of ~1.1px float). Same pattern as all reference prototypes. ✅
+- `emitBurst` spawns sparkles at `y = Math.max(H * 0.02, 5)` (near top edge) even though the lantern exits above the canvas; sparkles are visible and gravity pulls them back down into view. ✅
+
+---
+
 ## Cycle 235 — adult build: 202-membrane-drum
 
 **When**: 2026-05-29 UTC (hourly autonomous cycle)
