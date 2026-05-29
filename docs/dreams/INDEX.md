@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 233 — adult build)
+## ⭐ Newest (Cycle 234 — kids build)
+
+- **[/dream/201-kids-glow-worm](/dream/201-kids-glow-worm)** — Glow Worms. `demoable`
+  Three autonomous glowing caterpillars crawl across the dark canvas with chain-link physics —
+  each segment follows the head with a distance constraint, creating organic sine-wave undulation.
+  Each of the 5 body segments = one pentatonic note: head = C4 (small/bright, BANDIMAL high),
+  tail = C3 (large/deep, BANDIMAL low). Colors: head=cyan, segments descend through violet → teal
+  → amber → rose. Three worms are spatially panned: left (−0.52), center, right (+0.52) — three
+  simultaneous taps produce a stereo chord. After first tap: each worm's head auto-beats C4 at its
+  own interval (2.1 / 2.4 / 2.9 s) for ambient polyrhythm. Tap tolerance 50 CSS px — generous for
+  4yo motor control. Ambient C2+G2 pad. **First kids prototype where the instrument is a moving
+  creature** — the worm body is the keyboard, not a fixed grid or static object.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.4 kB.
+  Design notes: `src/app/dream/201-kids-glow-worm/README.md`
+
+---
+
+## Previous (Cycle 233 — adult build)
 
 - **[/dream/200-harmonic-series](/dream/200-harmonic-series)** — Harmonic Series Explorer. `demoable`
   Every pitched sound is the sum of sine waves at integer multiples of a fundamental. This prototype

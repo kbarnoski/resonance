@@ -11896,3 +11896,72 @@ was available with zero deps and one-cycle scope: `187-shepard-tone` (psychoacou
 - The `if (!canvas) return;` guard inside `onPointerDown` (which is always called via `canvas.addEventListener`) is needed for TypeScript's closure narrowing — it can't prove `canvas` is non-null inside the closure even after the outer `if (!canvas) return;` guard.
 - 80 BPM default gives a 6-second revolution (8 × 60/80 = 6s). With 1 peg active: fires once every 6s. With all 8 active: fires 8 notes in 6s = 80 beats/min effective. The BPM maps intuitively to the note rate with all segments lit.
 - The `pegs.fill(false)` in the Clear button handler mutates the existing array in-place, which is correct since `stRef.current.pegs` is aliased inside the `useEffect` closure as `st.pegs`.
+
+---
+
+## Cycle 234 — kids build: 201-kids-glow-worm
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind remote (freshly cloned container, diverged).
+Hard-reset to `origin/main` (cycle 233) before proceeding.
+
+**Decided**: Kids cycle (234 % 2 = 0). No blockers; nothing in-progress.
+MORNING.md (cycle 233) suggested "circular / physics-based toy" for the kids slot.
+After reviewing all 55+ kids prototypes, the biggest gap is **moving-creature-as-instrument**:
+every prior prototype uses static objects (circles, bars, fish, jellyfish, grid cells) or
+drawn paths. `201-kids-glow-worm` fills this gap — the worm body IS the keyboard, and you
+have to reach for the segments as they move past.
+
+**Loves influencing this pick**:
+- `169-kids-marble-run` ❤️ — physics toy with predictable trajectory, organic movement
+- `166-kids-lantern` ❤️ — glow aesthetic, dark canvas, soft ambient light
+- `160-kids-paint-loop` ❤️ + `111-kids-shape-loop` ❤️ — Karel loves prototypes where
+  motion is the musical instrument
+
+**What I built**:
+- `src/app/dream/201-kids-glow-worm/page.tsx` — Three autonomous caterpillars with
+  chain-link physics (each segment follows the previous via a distance constraint).
+  5 segments per worm: C4/A3/G3/E3/C3 (head=high, tail=low — BANDIMAL). Segment colors:
+  cyan/violet/teal/amber/rose. Worm body drawn as thick `lineCap="round"` stroke with
+  glowing bumps on top. Two white dot eyes track movement direction. Three worms panned
+  left/center/right. Auto-beats: each worm's head rings C4 at its own interval after first
+  tap. Tap tolerance 50 CSS px — generous for 4yo motor control. Ambient C2+G2 pad.
+  2.4 kB static. ✅ clean build.
+- `src/app/dream/201-kids-glow-worm/README.md` — design notes, what's new, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.4 kB). One TypeScript fix applied: `function animate` →
+  `const animate = (ts: number) =>` to preserve `ctx` narrowing in arrow function closure.
+
+**What's new about this prototype**:
+1. **Moving-creature-as-instrument** — first kids prototype where you tap a MOVING BODY,
+   not a static target. The worm's position changes every frame; the child has to reach for it.
+2. **BANDIMAL via body anatomy** — head is small and high-pitched; tail is large and low-pitched.
+   Anatomically intuitive: head = sharp/bright, body = resonant/deep.
+3. **Spatial stereo chord** — three worms at −0.52 / 0 / +0.52 pan create genuine stereo.
+   Tapping all three simultaneously fills the stereo field with a C major chord.
+4. **Organic chain physics** — the sine-wave head path creates naturalistic undulation in the
+   body segments. Each worm has a different phase and speed, so they never look mechanical.
+
+**Queued next**:
+- Cycle 235: **adult build** (235 % 2 = 1). Research cycle strongly recommended — last full
+  sweep was Cycle 213, 22 cycles ago. Alternatively:
+  - `param-layer` (DEMON-inspired, builds on `200-harmonic-series`)
+  - `anemone-av` (Three.js organic bioluminescent form, zero new deps)
+  - `membrane-drum` (2D drumhead finite-difference, Bessel overtones)
+- Cycle 236: **kids build**. Candidates:
+  - Polish `201-kids-glow-worm`: mic mode (RMS → worm speed), sparkle burst on tap
+  - New seed: `kids-lantern-launch` — tap to release glowing lanterns that float upward,
+    each plays a note when it exits the top; extends `166-kids-lantern` motif Karel loved
+
+**Notes**:
+- The `function animate` → `const animate = (ts: number) =>` change is the standard fix for
+  TypeScript narrowing in Next.js strict mode: function declarations hoist and TypeScript
+  loses narrowing of outer-scope variables (like `ctx`) inside them. Arrow function closures
+  maintain the narrowing. This pattern appears in all reference prototypes (spin-wheel uses
+  `const animate = (ts: number) => {}`).
+- `canvas.offsetWidth` (CSS px) vs `canvas.width` (physical px): all worm coordinates are in
+  CSS px; drawing multiplies by `dpr = canvas.width / canvas.offsetWidth`. Tap detection
+  subtracts `rect.left/top` and compares in CSS px. Consistent throughout. ✅
+- The `if (ts - w.lastBeat > w.beatMs * 2) w.lastBeat = ts - w.beatMs` guard prevents a burst
+  of auto-beats if the page was idle before first tap (e.g., user opens page, goes away for
+  10s, comes back and taps — without the guard, 4–5 beats would fire simultaneously).

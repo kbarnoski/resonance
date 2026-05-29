@@ -1,36 +1,37 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 233)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 234)
 
 ## New since yesterday
 
-- **[/dream/200-harmonic-series](https://getresonance.vercel.app/dream/200-harmonic-series)** (Cycle 233 — adult build)
-  — Harmonic Series Explorer. Every pitched sound is a sum of sine waves at integer multiples of a
-  fundamental. 16 togglable partial rows — mute/solo any harmonic and hear timbre change in real time.
-  Eight instrument presets: Natural (1/n rolloff), Flute (near-pure fundamental), Clarinet (odd
-  partials only — forced by its closed cylindrical bore), Violin (dense slow-rolloff cloud), Pipe
-  Organ (all equal), Bell (inharmonic BELL_RATIOS like 1.5× 2.47× 2.98×), Brass (partials 2–5
-  dominant), Oboe. Mic mode auto-locks the fundamental to your pitch via autocorrelation.
-  **First prototype dedicated to instrument-science education.**
-  Zero API · Zero deps · Web Audio API only.
-
-## Research note (Cycle 233)
-
-- **§234 DEMON** (arXiv:2605.28657, May 27 2026) — real-time diffusion music instrument with
-  hierarchical parameter propagation. One gesture reshapes entire timbre. Seeds two new prototypes:
-  `param-layer` (201) and `membrane-drum` (202) — both zero-dep, one-cycle scope.
+- **[/dream/201-kids-glow-worm](https://getresonance.vercel.app/dream/201-kids-glow-worm)** (Cycle 234 — kids build)
+  — **Glow Worms.** Three autonomous glowing caterpillars crawl across the dark canvas.
+  Each worm has 5 body segments — tap any to ring its pentatonic note (head=C4 bright,
+  tail=C3 deep, BANDIMAL rule). Chain-link physics makes the worm body undulate as it
+  walks; segments follow the head with a distance constraint. Three worms pan left/center/right
+  — tapping different worms makes spatial chords. After first tap, each worm auto-beats C4
+  at its own rhythm. **First kids prototype where the instrument is a moving creature** —
+  the worm body IS the keyboard. For kids 3+.
 
 ## In progress / partial
 
 Nothing marked WIP.
 
-## Next cycle (234 — even → kids build) candidates
+## Research notes
 
-- `param-layer` (201) — DEMON-inspired 4-ring hierarchical timbre synth, builds on `200`
-- `membrane-drum` (202) — 2D finite-difference drumhead, Bessel overtones emerge from physics
-- kids zone candidate: circular / physics-based toy (spin wheel was cycle 232 kids build)
+- §234 DEMON (arXiv:2605.28657, May 2026) — real-time diffusion music instrument, hierarchical
+  parameter propagation. Still queued: `param-layer` (201) and `membrane-drum` (202).
+- Research cycle overdue (last full sweep: Cycle 213). Cycle 235 (adult) is a strong candidate
+  for a dedicated research sweep.
+
+## Next cycle (235 — odd → adult build) candidates
+
+- Research sweep (overdue since Cycle 213 — dedicated full research cycle)
+- `param-layer` — DEMON-inspired 4-ring hierarchical timbre synth
+- `membrane-drum` — 2D finite-difference drumhead, Bessel overtones from physics
+- `anemone-av` — organic 3D Three.js bioluminescent form (zero new deps)
 
 ## Open questions for Karel
 
-- Cycles 231 and 232 built prototypes but skipped STATE.md append. Fixed in cycle 233 STATE.md entry.
-  Full history: `git log --oneline src/app/dream/` is authoritative.
-- Research is overdue (last full sweep: Cycle 213, May 27). Cycle 234 or 235 should be a dedicated
-  research cycle. §234 (DEMON) was a single-paper note, not a full sweep.
+- Love signal for cycle 234: `169-kids-marble-run` ❤️ and `166-kids-lantern` ❤️ shaped the
+  choice — organic movement + glow aesthetic. Glow Worms extends those patterns.
+- If you love `201-kids-glow-worm`, polish ideas are in the README: mic mode (louder = faster
+  worms), sparkle burst on tap, worm-worm collision harmonics.
