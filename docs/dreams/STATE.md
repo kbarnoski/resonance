@@ -1,5 +1,55 @@
 # Dream Agent — cycle state
 
+## Cycle 240 — kids build: 207-kids-harmonic-piano
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main diverged from origin (fresh container). Hard-reset to `origin/main` (cycle 239). npm install required — node_modules absent.
+
+**Love signal** (26 loved prototypes — relevant to kids pick):
+- `82-kids-color-piano` ❤ — big tap circles as instruments; Voice Circles is a direct spiritual descendant
+- `100-kids-paint-song` ❤ + `160-kids-paint-loop` ❤ + `111-kids-shape-loop` ❤ — Karel loves additive layering in kids zone; Voice Circles is additive layering of *sound layers*, not melody loops
+- `105-pluck-field` ❤ — Karel responds to physical-model synthesis; harmonics are the physics of sound (Fourier decomposition)
+- `98-kids-drum-circle` ❤ + `169-kids-marble-run` ❤ — Karel values kids prototypes where multiple simultaneous elements create ensemble sounds
+
+**Decided**: Kids cycle (240 % 2 = 0). No blockers; nothing in-progress.
+
+STATE.md cycle 239 queued `kids-harmonic-piano` and `kids-puppet-orchestra` as candidates. Chose `kids-harmonic-piano` because:
+- Explicitly the top-listed candidate in cycle 239 queue
+- Genuinely new interaction class for kids zone: **toggleable harmonic voices** — 206 prior kids prototypes respond to WHERE/WHEN; this is the first where the child controls which *timbral layers* are active
+- `91-kids-character-band` (already built) covers the "tap character → phrase" interaction; `kids-harmonic-piano` fills a different gap (sound science / additive synthesis as play)
+- Connected to Karel's loved `105-pluck-field` ❤ (physical model of string resonance = harmonic partials) and just-built `200-harmonic-series` (adult version of same concept)
+
+**What I built**:
+- `src/app/dream/207-kids-harmonic-piano/page.tsx` — four harmonic voice circles (`○ Static`, 2.53 kB, ✅ clean build)
+  - Four triangle oscillators at C3/C4/G4/C5 (harmonics 1–4 of a C chord)
+  - First tap wakes all four voices simultaneously; subsequent taps toggle individual voices on/off
+  - Last active voice protected (can't silence everything)
+  - Visual: pulsing glowing circles (VIS_HZ 0.45–1.20), auto-ripple rings at 1.4s period, tapScale bounce, 10-sparkle burst on activation
+  - BANDIMAL rule: biggest circle (76px r) = deepest pitch; smallest (38px r) = brightest
+  - All tap targets ≥ 76px diameter (min 64px rule satisfied with margin)
+  - Ambient: pre-wake hint "tap to wake the voices" fades in over 1s
+- `src/app/dream/207-kids-harmonic-piano/README.md` — design notes, audio design, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 2.53 kB). No TypeScript or ESLint errors.
+
+**What's genuinely new**:
+1. **First kids prototype about timbre control.** Every prior kids prototype produces notes at a specific pitch. Voice Circles lets the child assemble the harmonic spectrum of a sound — adding/removing layers changes the *quality* of the tone, not just which note plays.
+2. **BANDIMAL applied to harmonic number, not pitch row.** Prior BANDIMAL uses: kalimba tines, marimba bars, fish sizes, jellyfish sizes. Here, circle size encodes the harmonic *order* (big = low harmonic number = deep), teaching the same "bigger/lower" intuition in a 2D spatial arrangement.
+3. **Combination play.** The child explores 2^4=16 possible combinations (minus the all-off state = 15 meaningful combinations). Each sounds distinct: 1 alone = pure flute, 1+2 = warm organ, 1+2+3 = piano-like, all four = rich cluster tone.
+
+**Queued next**:
+- Cycle 241: **adult build** (241 % 2 = 1). Candidates:
+  - `param-layer` — DEMON-inspired hierarchical ring synthesizer (deferred from cycle 239, 240)
+  - `piano-motion` — Karel's Paths recordings → animated hands (needs `/api/audio/[id]` auth check)
+  - `splat-bloom` — Gaussian splat audio-reactive canvas field
+
+**Notes**:
+- `setTargetAtTime(0.0001, now, τ)` instead of `setValueAtTime(0, now)` avoids discontinuity clicks. The 0.0001 floor keeps the oscillator numerically stable in the gain node. Pattern confirmed correct from prior oscillator prototypes.
+- `Math.min(ts - st.lastTs, 50)` deltaTime cap on first frame: lastTs=0 gives dtMs=ts (very large). Cap at 50ms prevents first-frame physics explosion. ✅
+
+---
+
 ## Cycle 239 — adult build: 206-sdf-cave
 
 **When**: 2026-05-29 UTC (hourly autonomous cycle)

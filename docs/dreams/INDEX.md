@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 239 — adult build)
+## ⭐ Newest (Cycle 240 — kids build)
+
+- **[/dream/207-kids-harmonic-piano](/dream/207-kids-harmonic-piano)** — Voice Circles. `demoable`
+  Four large glowing circles, each a harmonic partial of C3 (131 Hz fundamental → C4 → G4 → C5).
+  First tap wakes all four simultaneously; subsequent taps toggle individual circles on/off.
+  BANDIMAL: biggest violet circle (76px) = deep C3 fundamental; smallest amber (38px) = bright C5.
+  Triangle oscillators with 1/n gain rolloff; `setTargetAtTime` for click-free transitions.
+  Visual: each circle breathes at its own slow pulse rate (0.45–1.20 Hz), emits expanding ripple
+  rings while active, fires 10 sparkles + bounce-scale on toggle. Last active voice protected.
+  **First kids prototype where the child controls timbre** (harmonic composition of a tone) rather
+  than which note plays. 15 active combinations; each sounds perceptibly different.
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.53 kB.
+  Design notes: `src/app/dream/207-kids-harmonic-piano/README.md`
+
+---
+
+## Previous (Cycle 239 — adult build)
 
 - **[/dream/206-sdf-cave](/dream/206-sdf-cave)** — Cave. `demoable`
   Audio-reactive stone cave rendered via SDF ray-marching in a WebGL fragment shader.
