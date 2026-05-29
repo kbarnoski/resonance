@@ -11808,3 +11808,40 @@ was available with zero deps and one-cycle scope: `187-shepard-tone` (psychoacou
 - Balance normalization `mbMax = max(bal, 100-bal)` ensures `max(xAmp, yAmp) = 1` always, preventing the figure from ever leaving the canvas regardless of slider position.
 - `launchOscillators()` is wrapped in `useCallback` and triggered by the `[rIdx, playing]` effect so changing the ratio while playing seamlessly restarts oscillators at the new frequency pair.
 - Canvas uses mount-only rAF loop reading all mutable state via refs — the standard Resonance dream pattern from `187-shepard-tone`.
+
+---
+
+## Cycle 232 — kids build: 199-kids-spin-wheel
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (freshly cloned container). Hard-reset to origin/main (cycle 231) before proceeding.
+
+**Decided**: Kids cycle (232 % 2 = 0). STATE.md queued `kids-glow-bug` for this slot, but `188-kids-glow-bug` was already built in cycle 220. Chose a fresh new idea: `199-kids-spin-wheel` — first circular step sequencer in the kids zone.
+
+**Loves influencing this pick**:
+- `160-kids-paint-loop` ❤️ + `111-kids-shape-loop` ❤️ — Karel loves interactive composition prototypes where kids place/draw to build a melody
+- `98-kids-drum-circle` ❤️ — rhythm construction prototype
+- `169-kids-marble-run` ❤️ — physics-driven toy metaphor
+
+**What I built**:
+- `src/app/dream/199-kids-spin-wheel/page.tsx` — 8-sector spinning color wheel. Each sector = C major pentatonic note (C3 E3 G3 A3 / C4 E4 G4 A4). Tap to toggle a glowing peg. A ✦ indicator at 12 o'clock plays each lit sector as the wheel rotates past. BPM ± buttons control spin speed (30–160, default 80). Clear resets all pegs. 1 revolution = N beats at current BPM. Additive bell synthesis (triangle + ×2.756 + ×5.404 partials, 1.3s decay). Ambient C3+G3 sine pad at gain 0.009. Canvas RAF loop reads from `stRef` (single mutable state object). Tap detection: world angle − rotation → sector-local angle → Math.floor(rel / SECTOR_ARC). 2.41 kB static. ✅ clean build.
+- `src/app/dream/199-kids-spin-wheel/README.md` — design notes, sound design, what's new vs. existing sequencers, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.41 kB).
+
+**What's new about this prototype**:
+1. **First circular sequencer.** All previous kids sequencers (dot-seq, beat-builder, lego-sequencer) are linear (cursor sweeps left-to-right) or grid. The spinning circle makes the loop visible as geometry — kids see the sequence wrap around.
+2. **Spinning toy metaphor.** Kids universally understand spinning wheels (prize wheel, pinwheel, music box). No instruction needed: tap to make it glow, watch the star play it.
+3. **BPM = physical speed.** Changing BPM visually changes how fast the wheel spins — tempo is literal, not abstract.
+4. **Fire-exactly-once-per-revolution logic.** `firedRef[i] = true` when a sector enters the needle zone; reset to `false` when it exits. Prevents double-firing and ensures clean rhythmic output at any BPM.
+
+**Queued next**:
+- Cycle 233: **adult build** (233 % 2 = 1). Top candidates:
+  - `aria-companion` — Markov-chain piano dialogue, turn-taking, zero deps (one-cycle build)
+  - `anemone-av` — organic bioluminescent 3D Three.js form dancing to audio (zero new deps)
+  - `spectral-morph` — FFT magnitude interpolation resynthesis (AudioWorklet, zero deps)
+
+**Notes**:
+- The `if (!canvas) return;` guard inside `onPointerDown` (which is always called via `canvas.addEventListener`) is needed for TypeScript's closure narrowing — it can't prove `canvas` is non-null inside the closure even after the outer `if (!canvas) return;` guard.
+- 80 BPM default gives a 6-second revolution (8 × 60/80 = 6s). With 1 peg active: fires once every 6s. With all 8 active: fires 8 notes in 6s = 80 beats/min effective. The BPM maps intuitively to the note rate with all segments lit.
+- The `pegs.fill(false)` in the Clear button handler mutates the existing array in-place, which is correct since `stRef.current.pegs` is aliased inside the `useEffect` closure as `st.pegs`.

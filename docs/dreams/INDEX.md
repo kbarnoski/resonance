@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 231 — adult build)
+## ⭐ Newest (Cycle 232 — kids build)
+
+- **[/dream/199-kids-spin-wheel](/dream/199-kids-spin-wheel)** — Spin Wheel. `demoable`
+  A large spinning color wheel with 8 segments, each a different color and pentatonic pitch
+  (C3 E3 G3 A3 / C4 E4 G4 A4 — every combination consonant). A glowing ✦ triangle sits at
+  12 o'clock. Tap any segment to add a glowing peg; as the wheel rotates, the ✦ plays each
+  lit segment it passes. **First circular step sequencer in the kids zone.** Previous sequencers
+  (`145-kids-dot-seq`, `150-kids-beat-builder`, `177-kids-lego-sequencer`) are linear/grid —
+  this makes the loop visible as a spinning circle. BPM ± buttons change the physical spin speed.
+  Clear resets all pegs. Additive bell synthesis (triangle + ×2.756 + ×5.404 partials, 1.3s decay).
+  Ambient C3+G3 pad. BANDIMAL: top segment = C3, rotate clockwise for ascending pitches.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.41 kB.
+  Design notes: `src/app/dream/199-kids-spin-wheel/README.md`
+
+---
+
+## Previous (Cycle 231 — adult build)
 
 - **[/dream/198-osc-composer](/dream/198-osc-composer)** — Oscilloscope Composer. `demoable`
   Design a Lissajous figure, then download the stereo WAV file that draws it on a real oscilloscope.
