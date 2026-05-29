@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 241 — adult build)
+## ⭐ Newest (Cycle 242 — kids build)
+
+- **[/dream/209-kids-drum-tap](/dream/209-kids-drum-tap)** — Drum Tap. `demoable`
+  Four large colored drum pads fill the screen. Tap any pad for an instant percussive sound
+  + ripple ring: kick (violet, top-left, biggest), hi-hat (amber, top-right, smallest), snare
+  (rose, bottom-left), tom (teal, bottom-right). BANDIMAL rule: bigger = lower pitch.
+  After 2+ taps and 1.5s of silence, a **1st-order Markov chain** generates an 8-step drum
+  response (8th notes at 80 BPM = 3s). The drum pads flash in sequence as the response plays.
+  Transition matrix builds from the user's own tap sequence — the drum gradually mirrors
+  which pads you tend to chain together. Tapping during response interrupts and rebuilds.
+  Auto-demo plays a kick-hat-snare-hat pattern after 2.2s to show the interaction model.
+  Drum sounds: kick (sine 110→40 Hz glide), hihat (noise → highpass 7500 Hz), snare
+  (bandpass noise 1800 Hz + 185 Hz transient), tom (sine 155→75 Hz glide). Zero deps.
+  **First kids prototype with explicit call-and-response rhythm dialogue.**
+  For kids 4+ · Zero permissions · Zero API · Zero deps · 2.88 kB.
+  Design notes: `src/app/dream/209-kids-drum-tap/README.md`
+
+---
+
+## Previous (Cycle 241 — adult build)
 
 - **[/dream/208-param-layer](/dream/208-param-layer)** — Param Layer. `demoable`
   Four concentric draggable rings sculpt a harmonic bell tone in real time. Outer (violet) = pitch

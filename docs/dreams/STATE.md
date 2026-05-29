@@ -12330,3 +12330,46 @@ MORNING.md from cycle 240 explicitly flagged `param-layer` as "Build next adult 
 - `pRef.current` is updated in `onPointerMove` before calling `setDispParams`, so the draw loop (which reads `pRef.current` directly) always has fresh values without waiting for a React re-render.
 - The exponential pitch mapping `65 × 13.538^p` maps p=0.5 to exactly A3 (220 Hz) — a natural center pitch. Karel's piano recordings often center on A3-C4; the default p=0.52 starts at 228 Hz (close to A3) for a good first impression.
 - Ring 3 default p=0.0 (no inharmonicity) means the first strike sounds like a pure harmonic bell. The surprise comes when users drag Ring 3 up — the tone goes from "organ" to "gong" in one gesture.
+
+
+---
+
+## Cycle 242 — kids build: 209-kids-drum-tap
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (freshly cloned container, diverged after force-push). Hard-reset to `origin/main` (cycle 241) before proceeding.
+
+**Decided**: Kids cycle (242 % 2 = 0). No blockers; nothing in-progress.
+MORNING.md from cycle 241 explicitly flagged `kids-drum-tap` as a candidate: "tap a rhythm → Markov drum pattern responds." Chose it over `kids-firefly-web` (less connected to loved prototypes) and `208-param-layer` polish (adult prototype, wrong cycle parity).
+
+**Loves influencing this pick**:
+- `98-kids-drum-circle` ❤️ — direct ancestor; drum-tap extends the drum interaction into call-and-response dialogue
+- `172-loop-station` ❤️ — rhythm + repetition; drum-tap creates a similar "build a loop" satisfaction without the full looper complexity
+- `169-kids-marble-run` ❤️ — organic physics toy; drum response feels like the toy "waking up" and playing back
+
+**What I built**:
+- `src/app/dream/209-kids-drum-tap/page.tsx` — Four colored quadrant drum pads (kick/hihat/snare/tom). Tap any pad: immediate synthesized percussive sound + ripple ring expansion + pad glow. After 2+ taps and 1.5s of silence: 1st-order Markov chain generates an 8-step response sequence (8th notes at 80 BPM, 3 seconds total). Drum pads flash in sequence during response. Auto-demo: 8-step pattern auto-plays after 2.2s if no interaction. BANDIMAL sizing: bigger circle = lower drum. 2.88 kB static, ✅ clean build.
+- `src/app/dream/209-kids-drum-tap/README.md` — design notes, sound design, Markov chain mechanics, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.88 kB, `npm run build` 0 errors, only pre-existing warnings in Resonance core files).
+
+**What's new about this prototype**:
+1. **First kids prototype with explicit call-and-response rhythm dialogue.** Prior prototypes react every frame (fluid, bloom) or on each tap (bubbles, piano). Drum-tap has a deliberate turn structure: you play, then the drum plays back. The 1.5s silence threshold creates a clear conversational pause.
+2. **Markov chain learns your style.** The transition matrix builds up over each tap sequence. After 8+ taps, the drum starts mirroring which pads you tend to chain together. A child who favors kick→hihat will get a response heavy in that pair.
+3. **Four distinct timbres from zero dependencies.** Kick (sine glide 110→40 Hz), hihat (noise → highpass 7500 Hz), snare (bandpass noise + sine transient), tom (sine glide 155→75 Hz) — each perceptibly different by timbre AND by visual size (BANDIMAL). Children learn which big colored shape makes which sound.
+4. **Interruption model.** User tapping while the drum is responding cancels the response immediately and starts building a new Markov sequence. Kids naturally interrupt; the prototype rewards that impulse.
+
+**Queued next**:
+- Cycle 243: **adult build** (243 % 2 = 1). Candidates:
+  - `aria-companion` — Markov-chain piano dialogue, most deferred high-value prototype (15+ cycles deferred)
+  - Research sweep — now 30 cycles since Cycle 213; approaching cadence. MORNING.md has flagged this.
+  - `diatonic-harmony` — live melody → key-correct thirds + fifths, zero deps, one-cycle build
+- Cycle 244: **kids build**. Candidates:
+  - `kids-firefly-web` — fireflies spin glowing silk threads between them when two meet; thread chimes
+  - Polish `209-kids-drum-tap`: mic mode (onset detection → automatic pad tap), roll mode (hold for 16th-note roll), BPM display
+  - `kids-echo-drum` — tap a rhythm → drum echoes it back EXACTLY (not Markov), then adds one more note
+
+**Notes**:
+- TypeScript control flow narrowing does NOT extend to nested closure functions in this project's TS config. All inner functions that close over `canvas` need explicit `if (!canvas) return;` guards at their top. Pattern confirmed by 205-kids-bubble-bath and is consistent across the dream zone.
+- The Markov response uses 8th notes at 80 BPM (375ms per step, 8 steps = 3s). This is long enough to be clearly "a pattern" but short enough that a 4yo stays engaged. The drum pads flash in sequence so the child can see which pad the drum is hitting — no separate indicator needed.
+- `padIdx(x, y, W, H)` maps: TL=0 (kick), TR=1 (hihat), BL=2 (snare), BR=3 (tom). This puts the loudest/lowest drum at top-left (natural "prime position" for right-handed children). Hihat in top-right gives balance — two contrasting timbres in the top row.
