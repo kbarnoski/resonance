@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 236 — kids build)
+## ⭐ Newest (Cycle 237 — adult build)
+
+- **[/dream/204-anemone-av](/dream/204-anemone-av)** — Anemone AV. `demoable`
+  A bioluminescent sea anemone breathing with audio. Central stalk + 12 tentacles (TubeGeometry
+  along CatmullRomCurve3 paths), each with its own wave phase (golden-ratio-ish offsets). Bass
+  drives slow radial sway; mid drives lateral shimmer; treble makes the tips flicker fast. Onsets
+  pulse the form outward. Color: deep cyan at tentacle bases → violet at tips. Bloom
+  (intensity 1.9) makes the tips glow against the near-black ocean backdrop. Single `useFrame`
+  updates all 12 ShaderMaterials. First organic living 3D form in the sandbox — different
+  aesthetic from the icosahedron of `21-three-mesh-av`. Zero new deps (Three.js + R3F + postprocessing
+  already installed). Full WebGL2 (no WebGPU required). 4.36 kB.
+  Design notes: `src/app/dream/204-anemone-av/README.md`
+
+---
+
+## Previous (Cycle 236 — kids build)
 
 - **[/dream/203-kids-lantern-launch](/dream/203-kids-lantern-launch)** — Lantern Launch. `demoable`
   Tap the dark starry sky to release a glowing paper lantern. Each lantern drifts upward with a

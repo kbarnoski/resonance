@@ -12064,3 +12064,43 @@ have to reach for the segments as they move past.
 - The `if (ts - w.lastBeat > w.beatMs * 2) w.lastBeat = ts - w.beatMs` guard prevents a burst
   of auto-beats if the page was idle before first tap (e.g., user opens page, goes away for
   10s, comes back and taps — without the guard, 4–5 beats would fire simultaneously).
+
+---
+
+## Cycle 237 — adult build: 204-anemone-av
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (freshly cloned container, diverged after force-push). Hard-reset to `origin/main` (cycle 236) before proceeding.
+
+**Decided**: Adult cycle (237 % 2 = 1). No blockers; nothing in-progress. STATE.md for Cycle 236 flagged this cycle as a strong research candidate (24 cycles since last sweep at Cycle 213), but also noted the IDEAS queue is deep (40+ entries). With 40+ queued ideas and Karel reviewing at 06:30, a tangible build is more valuable than a research doc today. Chose `anemone-av` — the only remaining major visual paradigm in the queue that has zero new deps and a clear one-cycle spec.
+
+**Loves influencing this pick**:
+- `21-three-mesh-av` is the only 3D prototype and it's a rigid platonic solid (icosahedron). Anemone fills the "organic 3D" gap the same way `21` proved the R3F pipeline.
+- `157-concept-steer` ❤️ and `153-paint-compose` ❤️ — Karel gravitates toward prototypes with visual richness and complexity. An anemone with 12 independently-phased glowing tentacles is qualitatively richer than a single mesh.
+- `163-paths-visualizer` ❤️ — Karel likes prototypes that feel "alive." An anemone with continuous motion even in demo mode has that quality.
+
+**What I built**:
+- `src/app/dream/204-anemone-av/page.tsx` — Three.js R3F anemone. 12 TubeGeometry tentacles (CatmullRomCurve3 paths, 24 segments, r=0.046, 8 radial sides) fan outward from a central stalk. Each has its own `u_phase` uniform (i × 0.523, near-golden-ratio spacing) so no two sway in sync. GLSL vertex shader: radial sway (along outX/outZ from XZ vertex position), lateral sway (perpendicular), tip flicker (quadratic t² falloff, treble-driven), onset pulse. FRAG: cyan (0.53) at base → violet (0.76) at tip. Single `useFrame` updates all 12 ShaderMaterials + stalk in one loop. Bloom intensity 1.9. 4.36 kB static. ✅ clean build.
+- `src/app/dream/204-anemone-av/README.md` — design notes, audio mapping table, technical notes, polish ideas.
+- Build: ✅ clean (`○ Static`, 4.36 kB, `npm run build` 0 errors, only pre-existing warnings).
+
+**What's new about this prototype**:
+1. **First organic living 3D form.** `21-three-mesh-av` deforms a geometric solid. Anemone is a creature with anatomy — stalk, crown, tentacles. The CatmullRomCurve3 paths give natural drooping tips; the 12-phase offsets make the crown ripple like a real sea anemone.
+2. **Radial sway direction.** The XZ outward vector `(position.x / rLen, 0, position.z / rLen)` means each tentacle sways along its own radial axis, not in a uniform global direction. Qualitatively richer than the icosahedron's normal-aligned displacement.
+3. **Tip-only flicker via t².** The `t * t` falloff in the treble flicker term means the base is rock-solid while the tips tremble at 5 Hz. Looks like bioluminescent cilia.
+4. **Onset radial pulse.** EMA-smoothed onset energy → `1 + onset × 0.22 × t` scale factor. Loud percussive hits make the tentacle tips jump outward briefly. In demo mode this pulses naturally with the LFO amplitude changes.
+
+**Queued next**:
+- Cycle 238: **kids build** (238 % 2 = 0). Candidates:
+  - New idea: `kids-bubble-bath` — freehand draw bubbles that stack and harmonize when they touch; extends `162-kids-bubble-pop` ❤️ theme.
+  - `kids-drum-tap` — tap rhythm → AI (Markov) drum pattern responds; extends `98-kids-drum-circle` ❤️.
+  - Polish `201-kids-glow-worm`: mic RMS → worm speed.
+- Cycle 239: **adult build**. STRONG candidate for research sweep (now 25 cycles since Cycle 213, clear overflow of the 3-4 cycle cadence). Alternatively:
+  - `diatonic-harmony` — play melody → diatonic thirds + fifths generated live (zero deps, one-cycle, IDEAS §972).
+  - `aria-companion` — Markov-chain piano dialogue (has been queued many cycles).
+
+**Notes**:
+- The `TENTACLE_VERT` shader uses `uv.y` (Three.js built-in attribute in ShaderMaterial, automatically available) as the "position along tube" coordinate. For TubeGeometry: `uv.y = 0` at path start (base), `uv.y = 1` at path end (tip). This is the correct per-vertex along-tube coordinate — confirmed consistent with `21-three-mesh-av`'s similar use of normals.
+- `STALK_VERT` (a draft version) was removed before build to avoid `@typescript-eslint/no-unused-vars` failure. Using `STALK_VERT2` (the cleaner version) only.
+- PHASES array uses `i × 0.523` — close to π - φ (≈ 0.528 rad). Not quite golden-angle (2.399 rad in 3D) since we're in 1D phase space, but close enough to avoid phase aliasing. At 12 tentacles × 0.523 = 6.276 rad ≈ 2π, meaning phases wrap around almost exactly once — good distribution.
