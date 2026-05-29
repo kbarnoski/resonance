@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 237 — adult build)
+## ⭐ Newest (Cycle 238 — kids build)
+
+- **[/dream/205-kids-bubble-bath](/dream/205-kids-bubble-bath)** — Bubble Bath. `demoable`
+  Tap to blow a soap bubble — bubbles drift upward, when two touch they chime a harmony chord.
+  Pitch by X zone (left=C3/violet → right=C4/cyan, pentatonic). BANDIMAL sizing (bigger=lower).
+  Collision tracked via `colPairs` Set: chord fires once per collision onset (re-fires on
+  re-contact). Soap bubble visual: translucent fill, colored rim with outer glow, inner
+  iridescent ring (hue+40°), two radial-gradient highlights (top-left crescent + bottom glint).
+  Gentle wobble (radius ±2.5 px, unique phase). Pop at top: bell pair + 12-sparkle burst.
+  **First kids prototype where harmony arises from spatial proximity of floating objects** —
+  tapping near existing bubbles guarantees harmonies; spatial placement becomes composition.
+  Auto-respawn when sparse. Demo: 2 bubbles at 120ms. Ambient C3+G3. Zero permissions · 2.7 kB.
+  Design notes: `src/app/dream/205-kids-bubble-bath/README.md`
+
+---
+
+## Previous (Cycle 237 — adult build)
 
 - **[/dream/204-anemone-av](/dream/204-anemone-av)** — Anemone AV. `demoable`
   A bioluminescent sea anemone breathing with audio. Central stalk + 12 tentacles (TubeGeometry

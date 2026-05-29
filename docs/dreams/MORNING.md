@@ -1,17 +1,18 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 237)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 238)
 
 ## New since yesterday
 
-- **[/dream/204-anemone-av](https://getresonance.vercel.app/dream/204-anemone-av)** (Cycle 237 — adult build)
-  A bioluminescent sea anemone that breathes with sound. 12 tentacles fan outward from a central
-  stalk, each glowing deep cyan at the base and violet at the tip. Bass = slow radial sway; treble =
-  fast tip flicker; onsets pulse the whole crown. Each tentacle has its own wave phase so they never
-  move in unison — the form ripples organically. **First living-creature 3D form in the sandbox.**
-  Zero new deps (Three.js + R3F already installed). Open and try Demo mode; then Start mic and play.
+- **[/dream/205-kids-bubble-bath](https://getresonance.vercel.app/dream/205-kids-bubble-bath)** (Cycle 238 — kids build)
+  Tap to blow a soap bubble — bubbles drift upward slowly. When two touch, they chime a harmony
+  chord together (white glow at contact point). Bubbles pop at the top with a sparkle burst.
+  **First kids prototype where harmony arises from spatial proximity**: tap two bubbles close
+  together and they'll harmonize as they drift into each other. Soap bubble visual: crescent
+  highlight + iridescent inner ring. Zero deps · zero permissions · 2.7 kB.
 
-- **[/dream/203-kids-lantern-launch](https://getresonance.vercel.app/dream/203-kids-lantern-launch)** (Cycle 236 — kids build)
-  Tap the dark starry sky → glowing paper lanterns drift upward → bright bell chime when they exit.
-  First kids prototype where the reward fires at journey END (5–10s of floating builds anticipation).
+- **[/dream/204-anemone-av](https://getresonance.vercel.app/dream/204-anemone-av)** (Cycle 237 — adult build)
+  A bioluminescent sea anemone breathing with sound. 12 tentacles, each with its own sway phase —
+  bass = trunk sway, treble = tip flicker, onsets = radial pulse. First organic living 3D form
+  in the sandbox. Zero new deps. Demo mode works immediately; Start Mic responds to live audio.
 
 ## In progress / partial
 
@@ -19,16 +20,16 @@ Nothing in-progress. All recent prototypes are `demoable`.
 
 ## Research findings worth a look
 
-Last research sweep: Cycle 213 (now 24 cycles ago — overdue on the 3-4 cycle cadence). Cycle 239
-(adult) is the planned research slot. Key areas to refresh: WebGPU post-iOS-26 coverage, Three.js
-R172+ TSL updates, new fal.ai models, Houdini/TD browser-port techniques.
+Last research sweep: Cycle 213 (**26 cycles ago** — cadence breach). Cycle 239 (adult) is the
+firm research slot. Key areas: WebGPU post-iOS 26, Three.js R172+ TSL, new fal.ai models,
+Houdini/TD→WebGPU ports, MediaPipe Hand Landmarker v2.
 
 ## Open questions for Karel
 
-- **Research cadence**: Should research happen every 3-4 cycles strictly, or stay as "when IDEAS
-  is thin"? Currently ~20-25 cycle gaps. Proposal: lock in Cycle 239 for a full sweep regardless.
-- **Anemone polish ideas**: tapered tubes (narrower tips), inner ring of 16 shorter tentacles,
-  particle spores on onsets. Worth a polish pass on 204, or move to next build?
-- **Live-performance focus**: `172-loop-station` ❤️ is loved — does that signal you want more
-  live-performance tools? `lyria-jam` (live AI music steering) and `gesture-music` (hand tracking)
-  are next in that theme.
+- **Research cadence**: lock in Cycle 239 for a full sweep regardless of queue depth?
+- **Bubble Bath idea**: should bubbles gently drift *toward* each other when close (magnetic pull),
+  making chords happen organically without extra taps? Easy 10-line add for Cycle 240.
+- **Anemone polish**: tapered TubeGeometry tips, inner ring of 16 shorter tentacles, spore particles
+  on onsets — worth a dedicated pass, or fold into next adult build?
+- **Live-performance priority**: `172-loop-station` ❤️ still the only loop tool. `lyria-jam` and
+  `gesture-music` are queued — should either move up?

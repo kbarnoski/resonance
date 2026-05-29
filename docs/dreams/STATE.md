@@ -12104,3 +12104,77 @@ have to reach for the segments as they move past.
 - The `TENTACLE_VERT` shader uses `uv.y` (Three.js built-in attribute in ShaderMaterial, automatically available) as the "position along tube" coordinate. For TubeGeometry: `uv.y = 0` at path start (base), `uv.y = 1` at path end (tip). This is the correct per-vertex along-tube coordinate — confirmed consistent with `21-three-mesh-av`'s similar use of normals.
 - `STALK_VERT` (a draft version) was removed before build to avoid `@typescript-eslint/no-unused-vars` failure. Using `STALK_VERT2` (the cleaner version) only.
 - PHASES array uses `i × 0.523` — close to π - φ (≈ 0.528 rad). Not quite golden-angle (2.399 rad in 3D) since we're in 1D phase space, but close enough to avoid phase aliasing. At 12 tentacles × 0.523 = 6.276 rad ≈ 2π, meaning phases wrap around almost exactly once — good distribution.
+
+---
+
+## Cycle 238 — kids build: 205-kids-bubble-bath
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (freshly cloned container, diverged after force-push). Hard-reset to `origin/main` (cycle 237) before proceeding.
+
+**Decided**: Kids cycle (238 % 2 = 0). No blockers; nothing in-progress.
+STATE.md cycle 237 queued `kids-bubble-bath` as the top candidate for this slot.
+Chose it over `kids-drum-tap` (more complex — Markov + rhythm timing analysis) and
+`201-kids-glow-worm` polish (polish cycle less valuable than a fresh prototype right now).
+
+**Loves influencing this pick**:
+- `133-kids-ripple-pond` ❤️ — collision events make harmony; bubble-bath extends this theme
+  to sustained floating objects rather than transient ripple rings
+- `160-kids-paint-loop` ❤️ + `158-kids-hum-paint` ❤️ — Karel gravitates toward prototypes
+  where spatial placement produces musical structure; bubble proximity creates harmony here
+- `169-kids-marble-run` ❤️ — gentle physics-toy metaphor; bubbles have similar "organic drift" quality
+
+**What I built**:
+- `src/app/dream/205-kids-bubble-bath/page.tsx` — tap to blow a soap bubble. Bubbles drift
+  upward (20 px/s base + random 0–6). When two overlap: chord plays (both pitches as triangle
+  oscillators, 1.4s decay) + white glow dot at contact point. Collision detection: per-frame
+  O(n²) check of up to 10 bubbles; `colPairs` Set tracks active pairs so chord fires once per
+  collision onset (re-fires if they separate and re-converge). Each bubble drawn with: translucent
+  fill, colored rim (shadowBlur glow), inner iridescent ring (hue + 40°), two radial-gradient
+  highlights (soap bubble optics: top-left crescent + small bottom glint). Gentle wobble: radius
+  ±2.5 px at each bubble's own phase. Pop at top: bell pair (freq×2 + freq×4) + 12-sparkle burst.
+  BANDIMAL sizing: bigger radius = lower pitch. Auto-respawn when awake and <3 bubbles remain.
+  Demo: 2 bubbles seeded at 120ms. Ambient C3+G3 pad. 2.7 kB static. ✅ clean build.
+- `src/app/dream/205-kids-bubble-bath/README.md` — design notes, sound design, visual details,
+  pitch/color table, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.7 kB, `npm run build` 0 errors, only pre-existing warnings).
+
+**What's new about this prototype**:
+1. **First prototype where harmony arises from proximity** — not a designed chord or two specific
+   buttons, but where floating objects happen to meet. Tapping near existing bubbles guarantees
+   harmony quickly; far-apart taps rarely collide. Spatial positioning becomes composition.
+2. **Soap bubble optical simulation** — two radial gradients (top-left crescent + bottom glint)
+   give a genuine soap-bubble appearance distinct from plain circles. The inner iridescent ring
+   (hue + 40°) adds the characteristic rainbow sheen without needing a gradient shader.
+3. **Sustained harmonic field** — each bubble is a 15–30 second entity, not a transient event.
+   Multiple bubbles coexist, creating an evolving chord field as they drift and meet. Different
+   from `133-kids-ripple-pond` where ripple rings are transient and from `162-kids-bubble-pop`
+   where destruction is the act.
+4. **Collision onset tracking** — the `colPairs: Set<string>` keyed by `"${minId}-${maxId}"`
+   ensures chord fires exactly once per collision event. New collisions register on the first
+   overlapping frame. This pattern is reusable for any "spatial proximity triggers harmony" prototype.
+
+**Queued next**:
+- Cycle 239: **adult build** (239 % 2 = 1). STRONG research candidate — now 26 cycles since
+  the last full sweep (Cycle 213). MORNING.md explicitly flags this. If not research, then:
+  - `aria-companion` — Markov-chain piano dialogue, turn-taking, zero deps
+  - `diatonic-harmony` — play melody → diatonic thirds + fifths generated live
+  - Polish `204-anemone-av`: tapered tubes, inner ring of shorter tentacles
+- Cycle 240: **kids build**. Candidates:
+  - `kids-drum-tap` — tap a rhythm → Markov drum pattern responds (extends `98-kids-drum-circle` ❤️)
+  - Polish `205-kids-bubble-bath`: mic mode (RMS → spawn rate), magnetic drift toward neighbors
+  - New seed: `kids-firefly-web` — tap to release fireflies that spin a glowing silk thread
+    between them when two meet in the same zone; thread chimes when it vibrates
+
+**Notes**:
+- The `colPairs` Set is cleared and rebuilt each frame. This means if two bubbles are in contact
+  for multiple frames, only the first frame fires the chord — subsequent frames find the key
+  already in `nowPairs` (not in `colPairs.has(key)` because `colPairs` was replaced by `nowPairs`
+  last frame). Wait — let me re-examine: `st.colPairs = nowPairs` at end of frame, so next frame
+  `st.colPairs.has(key)` checks `nowPairs` from last frame. If still colliding, key is in
+  `nowPairs` (now `colPairs`) → chord does NOT fire. Correct one-shot per collision. ✅
+- Float speed 20 px/s base: on a 375×500 CSS px canvas, a bubble starting at H×0.65 = 325px takes
+  ~17s to exit. Kids will see several collisions in that window if they tap 2+ bubbles nearby.
+- The `🫧` bubble emoji in the hint text is Unicode 1FAB7 (2021), present on iOS 15.4+ and
+  Android 12L+. Safe for all current-era devices.
