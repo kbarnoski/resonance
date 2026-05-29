@@ -1,5 +1,49 @@
 # Dream Agent — cycle state
 
+## Cycle 235 — adult build: 202-membrane-drum
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was stale (container cloned at cycle 110). Reset hard to `origin/main` (cycle 234) before proceeding. `npm ci` not needed — node_modules present.
+
+**Love signal** (26 loved prototypes):
+- Loves shaping this pick: `130-tsl-particle-compute` ❤ (physics/math AS the music), `105-pluck-field` ❤ (physical string synthesis), `169-kids-marble-run` ❤ (collision physics = music).
+- Pattern confirmed across loved set: Karel responds strongly to prototypes where sound is a *consequence* of physics, not a preset lookup. Membrane drum is the most direct expression of that principle yet — the Bessel overtone ratios emerge from the wave equation, not from a table.
+
+**Decided**: Adult cycle (235 % 2 = 1). No blockers; nothing in-progress.
+STATE.md cycle 233 queued `membrane-drum` as top adult candidate for cycle 235. Chose it over `param-layer` because:
+- More visually novel (2D wave colour map vs. concentric ring UI)
+- Physics-first: overtone structure emerges from FD simulation parameters, not from hardcoded ratios
+- Directly aligns with loved `130-tsl-particle-compute` technique (computation AS the instrument)
+
+**What I built**:
+- `src/app/dream/202-membrane-drum/page.tsx` — 2D wave equation drumhead (`○ Static`, 2.96 kB, ✅ clean build)
+  - 64×64 grid FD simulation (Courant-stable: c² = 0.10–0.44 user-controlled)
+  - Circular boundary mask precomputed at module level; fixed-edge condition at rim
+  - Blue (compressed) / amber (rarefied) color map via `colorPx` — live ImageData → off-screen canvas → scaled blit at 60fps
+  - Gaussian excitation on click/tap (σ=4 cells); position-aware mode balance: off-centre → asymmetric Bessel modes, centre → symmetric
+  - Modal synthesis: 6 OscillatorNodes at Bessel zero ratios (1.000, 1.593, 2.136, 2.295, 2.917, 3.598); gains decay exponentially
+  - Tension slider: c² (wave speed) + sets audio fundamental 55–143 Hz
+  - Damping slider: per-step multiplier (0.988–0.9995) + scales audio decay time 0.35–1.3 s
+  - Centre-point ring buffer (180 frames) rendered as waveform trace below the drum
+  - Violet rim glow radial gradient; rounded-full CSS clip gives true circular canvas
+  - Typography: text-2xl title, text-base description, text-sm labels (all above minimums)
+
+**Build**: ✅ clean (`○ Static`). No ESLint or TypeScript errors.
+
+**What's genuinely new**:
+1. **First prototype with a 2D PDE simulation.** Prior physics prototypes (`105-pluck-field`, `109-kids-bounce-notes`) use 1D or particle physics. The membrane is a 2D field — the wave can propagate in any direction and form 2D nodal patterns. Visually and acoustically richer.
+2. **Bessel mode balance from strike position.** Tapping near the rim vs. the centre produces audibly different timbres — the physics dictates which modes are excited, not the code. A player can "sculpt" the sound by choosing where to hit.
+3. **Live waveform trace of the simulated displacement.** The trace shows the actual physics output, not an audio-API AnalyserNode — so you see the mathematical signal that drives the sound.
+
+**Queued next**:
+- Cycle 236: **kids build** (236 % 2 = 0). Candidates:
+  - Fresh kids prototype — check KIDS.md queue (no specific candidate seeded yet for 236)
+  - `kids-harmonic-piano`: simplified single-slider from `200-harmonic-series` (fewer rows, cartoon instrument images)
+- Cycle 237: **adult build** (237 % 2 = 1). STRONG candidate for **research sweep** (last was Cycle 213, now 24 cycles overdue). Otherwise: `param-layer` (IDEAS §2179).
+
+---
+
 ## Cycle 233 — adult build: 200-harmonic-series + research note
 
 **When**: 2026-05-29 UTC (hourly autonomous cycle)

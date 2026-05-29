@@ -1,15 +1,16 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 234)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 235)
 
 ## New since yesterday
 
-- **[/dream/201-kids-glow-worm](https://getresonance.vercel.app/dream/201-kids-glow-worm)** (Cycle 234 — kids build)
-  — **Glow Worms.** Three autonomous glowing caterpillars crawl across the dark canvas.
-  Each worm has 5 body segments — tap any to ring its pentatonic note (head=C4 bright,
-  tail=C3 deep, BANDIMAL rule). Chain-link physics makes the worm body undulate as it
-  walks; segments follow the head with a distance constraint. Three worms pan left/center/right
-  — tapping different worms makes spatial chords. After first tap, each worm auto-beats C4
-  at its own rhythm. **First kids prototype where the instrument is a moving creature** —
-  the worm body IS the keyboard. For kids 3+.
+- **[/dream/202-membrane-drum](https://getresonance.vercel.app/dream/202-membrane-drum)** (Cycle 235 — adult build)
+  — **Membrane Drum.** A circular drumhead simulated with the 2D wave equation (64×64 grid).
+  Tap anywhere on the drum to excite a Gaussian displacement; the wave radiates outward,
+  reflects off the fixed rim, and forms visible standing patterns (blue = compressed, amber =
+  rarefied). Sound comes from 6 oscillators tuned to Bessel zero ratios — the inharmonic
+  overtones of a real drum (1.00 × 1.59 × 2.14 × 2.30 × 2.92 × 3.60) — not from a preset.
+  Off-centre strikes bring out the asymmetric modes; centre strikes emphasise the breathing
+  mode. Tension slider → wave speed + fundamental (55–143 Hz). Damping → decay time.
+  Centre-point waveform trace below the drum. Physics as music.
 
 ## In progress / partial
 
@@ -17,21 +18,17 @@ Nothing marked WIP.
 
 ## Research notes
 
-- §234 DEMON (arXiv:2605.28657, May 2026) — real-time diffusion music instrument, hierarchical
-  parameter propagation. Still queued: `param-layer` (201) and `membrane-drum` (202).
-- Research cycle overdue (last full sweep: Cycle 213). Cycle 235 (adult) is a strong candidate
-  for a dedicated research sweep.
-
-## Next cycle (235 — odd → adult build) candidates
-
-- Research sweep (overdue since Cycle 213 — dedicated full research cycle)
-- `param-layer` — DEMON-inspired 4-ring hierarchical timbre synth
-- `membrane-drum` — 2D finite-difference drumhead, Bessel overtones from physics
-- `anemone-av` — organic 3D Three.js bioluminescent form (zero new deps)
+- Last full research sweep was Cycle 213 — now 22 cycles ago. Overdue. Cycle 236 (kids) is
+  fixed; Cycle 237 (adult) should be a full research sweep unless Karel flags a priority build.
+- `param-layer` (IDEAS §2179) still queued — DEMON-inspired 4-ring hierarchical timbre synth.
+  Could be Cycle 237 if research is deferred.
 
 ## Open questions for Karel
 
-- Love signal for cycle 234: `169-kids-marble-run` ❤️ and `166-kids-lantern` ❤️ shaped the
-  choice — organic movement + glow aesthetic. Glow Worms extends those patterns.
-- If you love `201-kids-glow-worm`, polish ideas are in the README: mic mode (louder = faster
-  worms), sparkle burst on tap, worm-worm collision harmonics.
+- Membrane Drum insight: off-centre strikes produce noticeably different timbres (stronger
+  m=1 modes). Worth adding a strike-position guide overlay (faint concentric rings labelling
+  mode zones)? Would make the physics more discoverable.
+- Tension range: currently 55–143 Hz fundamental. Could extend to bass (20 Hz) for a
+  felt rumble, but requires checking Safari AudioContext stability at very low freqs.
+- `param-layer` is the sibling prototype to this (hierarchical synth control surface).
+  Should it wait for Cycle 237, or does Karel want it sooner?

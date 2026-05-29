@@ -2195,7 +2195,7 @@ waveform shape. Zero deps · Zero API · one cycle scope.
 
 ---
 
-### membrane-drum — 2D finite-difference drumhead simulation `[queued, zero deps, zero API]`
+### membrane-drum — 2D finite-difference drumhead simulation `[demoable, built Cycle 235 — /dream/202-membrane-drum]`
 Route: `/dream/202-membrane-drum`.
 Inspired by §234 (DEMON, May 2026) and `200-harmonic-series` Bell preset: a circular drumhead
 solved with 2D finite-difference wave equation on an N×N grid (~128×128). Tension (c²) and

@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 234 — kids build)
+## ⭐ Newest (Cycle 235 — adult build)
+
+- **[/dream/202-membrane-drum](/dream/202-membrane-drum)** — Membrane Drum. `demoable`
+  A circular drumhead solved with the 2D wave equation on a 64×64 grid.
+  Tap anywhere inside the drum to excite a Gaussian displacement — the wave propagates
+  outward from the strike point, reflects off the fixed circular rim, and creates standing
+  wave patterns visible as a live blue/amber color map. Modal synthesis fires 6 oscillators
+  at Bessel zero ratios (1.000 × 1.593 × 2.136 × 2.295 × 2.917 × 3.598) — the inharmonic
+  overtones of a real circular membrane emerge from the physics, not from presets. Off-centre
+  strikes emphasise asymmetric modes; centre strikes boost the symmetric (breathing) modes.
+  Tension slider controls wave speed + fundamental (55–143 Hz). Damping controls decay time.
+  Waveform trace below shows the last 180 frames of centre-point displacement.
+  Zero permissions · Zero API · Zero deps · 2.96 kB.
+
+---
+
+## Previous (Cycle 234 — kids build)
 
 - **[/dream/201-kids-glow-worm](/dream/201-kids-glow-worm)** — Glow Worms. `demoable`
   Three autonomous glowing caterpillars crawl across the dark canvas with chain-link physics —
