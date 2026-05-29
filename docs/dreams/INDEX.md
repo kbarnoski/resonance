@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 232 — kids build)
+## ⭐ Newest (Cycle 233 — adult build)
+
+- **[/dream/200-harmonic-series](/dream/200-harmonic-series)** — Harmonic Series Explorer. `demoable`
+  Every pitched sound is the sum of sine waves at integer multiples of a fundamental. This prototype
+  makes that structure visible and audible simultaneously. 16 partials displayed as togglable rows —
+  mute or solo any partial and hear the timbre change live. Eight instrument presets: Natural (1/n
+  rolloff), Flute (almost pure fundamental), Clarinet (odd partials only — a consequence of its closed
+  cylindrical bore), Violin (dense harmonic cloud), Pipe Organ (all harmonics equal), Bell (inharmonic
+  ratios — BELL_RATIOS like 1.5, 2.47, 2.98 approximating real bell physics), Brass (partials 2–5
+  dominate), Oboe (complex alternating pattern). Each row shows a live animated sine trace and an
+  amplitude bar. **🎤 Mic mode**: click Start mic to have the fundamental auto-lock to your pitch via
+  4096-point parabolic-interpolated autocorrelation (same algorithm as `13-piano-canvas`). Row colors
+  follow the `1-live` band palette (violet=low, amber/magenta=high). **First prototype dedicated to
+  instrument-science education** — lets you hear WHY a clarinet sounds hollow and a violin sounds warm.
+  Zero permissions beyond optional mic · Zero API · Zero deps · Web Audio API only.
+  Design notes: `src/app/dream/200-harmonic-series/README.md`
+
+---
+
+## Previous (Cycle 232 — kids build)
 
 - **[/dream/199-kids-spin-wheel](/dream/199-kids-spin-wheel)** — Spin Wheel. `demoable`
   A large spinning color wheel with 8 segments, each a different color and pentatonic pitch

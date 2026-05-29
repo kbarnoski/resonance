@@ -1,33 +1,36 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 232)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 233)
 
 ## New since yesterday
 
-- **[/dream/199-kids-spin-wheel](https://getresonance.vercel.app/dream/199-kids-spin-wheel)** (Cycle 232 — kids build)
-  — Spinning 8-sector color wheel. Tap segments to add glowing pegs; a ✦ triangle at 12 o'clock
-  plays each lit segment as it spins past. C major pentatonic C3–A4 (no wrong combos).
-  BPM ± controls spin speed (30–160). **First circular step sequencer in the kids zone**
-  — previous ones (dot-seq, lego-sequencer, beat-builder) were linear or grid.
-  For kids 3+ · Zero permissions · Zero API · 2.41 kB.
+- **[/dream/200-harmonic-series](https://getresonance.vercel.app/dream/200-harmonic-series)** (Cycle 233 — adult build)
+  — Harmonic Series Explorer. Every pitched sound is a sum of sine waves at integer multiples of a
+  fundamental. 16 togglable partial rows — mute/solo any harmonic and hear timbre change in real time.
+  Eight instrument presets: Natural (1/n rolloff), Flute (near-pure fundamental), Clarinet (odd
+  partials only — forced by its closed cylindrical bore), Violin (dense slow-rolloff cloud), Pipe
+  Organ (all equal), Bell (inharmonic BELL_RATIOS like 1.5× 2.47× 2.98×), Brass (partials 2–5
+  dominant), Oboe. Mic mode auto-locks the fundamental to your pitch via autocorrelation.
+  **First prototype dedicated to instrument-science education.**
+  Zero API · Zero deps · Web Audio API only.
 
-- **[/dream/198-osc-composer](https://getresonance.vercel.app/dream/198-osc-composer)** (Cycle 231 — adult build)
-  — Oscilloscope Composer. Design a Lissajous figure — then download the stereo WAV
-  file that *draws* it. Seven frequency ratios (Unison → Minor 7th), Phase 0–360°,
-  Puzzle mode, five presets. First prototype to generate oscilloscope music.
+## Research note (Cycle 233)
+
+- **§234 DEMON** (arXiv:2605.28657, May 27 2026) — real-time diffusion music instrument with
+  hierarchical parameter propagation. One gesture reshapes entire timbre. Seeds two new prototypes:
+  `param-layer` (201) and `membrane-drum` (202) — both zero-dep, one-cycle scope.
 
 ## In progress / partial
 
-Nothing marked WIP. Next cycle (233, odd → adult build) candidates:
-- `aria-companion` — Markov-chain piano dialogue, zero deps
-- `anemone-av` — organic 3D Three.js form dancing to audio (zero new deps)
-- `spectral-morph` — FFT resynthesis / timbre blending
+Nothing marked WIP.
 
-## Research findings worth a look
+## Next cycle (234 — even → kids build) candidates
 
-Nothing new this cycle (build). IDEAS.md queue healthy — research not needed yet.
+- `param-layer` (201) — DEMON-inspired 4-ring hierarchical timbre synth, builds on `200`
+- `membrane-drum` (202) — 2D finite-difference drumhead, Bessel overtones emerge from physics
+- kids zone candidate: circular / physics-based toy (spin wheel was cycle 232 kids build)
 
 ## Open questions for Karel
 
-- Cycles 220–230 had incomplete STATE.md logging (code landed but some append steps were skipped).
-  KIDS.md "What's been built" table is accurate. For the full history: `git log --oneline src/app/dream/`.
-- The STATE.md queue for cycle 232 referenced `kids-glow-bug` — but that was already built as
-  `188-kids-glow-bug` (cycle 220). Built `199-kids-spin-wheel` instead.
+- Cycles 231 and 232 built prototypes but skipped STATE.md append. Fixed in cycle 233 STATE.md entry.
+  Full history: `git log --oneline src/app/dream/` is authoritative.
+- Research is overdue (last full sweep: Cycle 213, May 27). Cycle 234 or 235 should be a dedicated
+  research cycle. §234 (DEMON) was a single-paper note, not a full sweep.

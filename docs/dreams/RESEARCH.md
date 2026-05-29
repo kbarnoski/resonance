@@ -2641,3 +2641,35 @@ Key findings from Cycle 213 (2026-05-27) — adult research sweep:
 - LUMIA vision-to-music (§231, Dec 2025) — webcam → Gemini vision → ambient track. Seeds `camera-compose`.
 - Lyria 3 Pro on fal.ai (§232, May 2026) — new fal.ai endpoint. Upgrades all Lyria-based queued specs.
 - Mirelo SFX 1.6 full suite (§233, May 2026) — extend-audio + inpaint-audio added. Upgrades `ghost-loop` + `stable-extend`.
+
+---
+
+## 2026-05-29 — Cycle 233 research note
+
+### §234 — DEMON: Real-Time Diffusion-Based Expressive Music Instrument
+**Source**: https://arxiv.org/abs/2605.28657 (May 27, 2026)
+
+DEMON (Diffusion-based Expressive Music instrument cONtrol) is a real-time playable instrument
+that maps arbitrary high-dimensional parameter vectors to generated audio via a latent diffusion
+model trained specifically for low-latency synthesis. Key property: parameters don't map to
+individual knobs — they form *layers* that propagate through a hierarchy, so moving one control
+reshapes dozens of synthesis dimensions simultaneously. The authors demo it as a playable live
+instrument at <100ms latency. Training corpus: diverse timbres; any sound in the latent space is
+reachable by interpolating parameter vectors.
+
+**Could become a prototype**: `param-layer` — a zero-dep browser instrument where 4 concentric
+ring controls (each a drag-ring, not a slider) broadcast their values as a parameter vector
+through a 4-layer harmonic synthesis graph. Outer ring = fundamental / "mass"; next ring = odd/even
+harmonic balance; next = inharmonicity (stretch factor); inner ring = amplitude envelope shape.
+Each ring influences *all* layers below it, mimicking DEMON's hierarchical propagation. No
+diffusion model needed — the same perceptual effect (one gesture, global timbre reshape) can be
+approximated with the harmonic-series engine built in `200-harmonic-series`. Zero deps, zero API,
+one cycle scope.
+
+**Also seeds**: `membrane-drum` — a 2D finite-difference wave equation drumhead. A circular
+membrane whose tension, damping, and strike position are controlled by the same concentric ring
+UI. Tapping anywhere on the drum surface strikes it; the wave propagates outward visible on canvas.
+Physically accurate overtone ratios (not integer — real drums are inharmonic like bells). Zero deps.
+
+Key findings from Cycle 233 (2026-05-29) — research note (brief, build cycle):
+- DEMON (§234, May 2026) — real-time diffusion music instrument with hierarchical parameter propagation. Seeds `param-layer` and `membrane-drum`.

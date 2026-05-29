@@ -2173,3 +2173,43 @@ Key findings from Cycle 213 (2026-05-27) — adult research sweep:
 - LUMIA vision-to-music (§231, Dec 2025) — webcam → Gemini vision → ambient track. Seeds `camera-compose`.
 - Lyria 3 Pro on fal.ai (§232, May 2026) — `fal-ai/lyria3/pro` now live. Upgrades all Lyria-based queued specs.
 - Mirelo SFX 1.6 full suite (§233, May 2026) — extend-audio + inpaint-audio added. Upgrades `ghost-loop` + `stable-extend`.
+
+---
+
+### param-layer — hierarchical parameter-ring synthesizer `[queued, zero deps, zero API]`
+Route: `/dream/201-param-layer`.
+Inspired by §234 (DEMON, arXiv:2605.28657, May 2026): 4 concentric drag-ring controls,
+each broadcasting through all layers below it — outer ring = fundamental/mass, next = odd/even
+harmonic balance, next = inharmonicity stretch, inner = amplitude envelope shape. Each drag
+gesture simultaneously reshapes all timbral dimensions below it, giving the "one control,
+global timbre reshape" feeling of DEMON without any diffusion model.
+
+Implementation: build on the harmonic-series oscillator graph from `200-harmonic-series`
+(16 OscillatorNode → GainNode chain, same BELL_RATIOS trick for inharmonicity). Replace the
+preset buttons with 4 SVG concentric rings — drag angle maps to 0–1 parameter. JavaScript
+propagation: outer ring scales fundamental (60–500 Hz); ring 2 adds/removes even harmonics;
+ring 3 stretches partial ratios from integer toward bell inharmonicity; ring 4 shapes ADSR
+of the master gain. One AnimationFrame loop updates all OscillatorNode frequencies + GainNode
+values using setTargetAtTime. Canvas: ring UI + live Lissajous-style overlay showing summed
+waveform shape. Zero deps · Zero API · one cycle scope.
+
+---
+
+### membrane-drum — 2D finite-difference drumhead simulation `[queued, zero deps, zero API]`
+Route: `/dream/202-membrane-drum`.
+Inspired by §234 (DEMON, May 2026) and `200-harmonic-series` Bell preset: a circular drumhead
+solved with 2D finite-difference wave equation on an N×N grid (~128×128). Tension (c²) and
+damping (d) are user-controlled via sliders; clicking/tapping anywhere on the canvas strikes
+the membrane at that point. Wave propagates outward; boundary condition: fixed (zero at rim).
+
+Audio: sample the center point of the grid each frame as a 1D time-domain signal → feed into
+an AudioContext ScriptProcessorNode or AudioWorklet for audible output. The inharmonic overtone
+ratios of a real circular membrane (2.295×, 3.598×, 4.904×, … the Bessel zeros) emerge
+naturally from the physics without any manual partial tuning.
+
+Canvas: visualize the Z-displacement as a color map (blue=negative, white=zero, amber=positive)
+drawn to a 2D canvas element with ImageData. A ring of colored waveform traces below shows the
+last 1s of center-point audio. Zero deps · Zero API · one cycle scope.
+
+Key findings from Cycle 233 (2026-05-29) — research note (brief, build cycle):
+- DEMON (§234, May 2026) — real-time diffusion music instrument, hierarchical parameter propagation. Seeds `param-layer` and `membrane-drum`.

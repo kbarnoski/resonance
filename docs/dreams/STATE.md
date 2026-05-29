@@ -1,5 +1,56 @@
 # Dream Agent — cycle state
 
+## Cycle 233 — adult build: 200-harmonic-series + research note
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was diverged (50 commits each way, stale container). Reset hard to `origin/main` (cycle 232). `npm ci` required — node_modules absent.
+
+**Love signal** (26 loved prototypes):
+- Loves shaping this pick: `157-concept-steer` ❤ (conceptual vocabulary = primary UI), `130-tsl-particle-compute` ❤ (physics/math AS the music), `148-spatial-palette` ❤ (synthesis controls = the experience).
+- Pattern: Karel responds strongly to prototypes that surface the hidden vocabulary of music and physics — making the invisible structure visible AND audible simultaneously.
+
+**Orientation notes**:
+- STATE.md missing cycles 231 and 232 (those cycles didn't append entries — build code landed but docs step was skipped).
+- Cycle 231 = 198-osc-composer (adult, Lissajous WAV download).
+- Cycle 232 = 199-kids-spin-wheel (kids, circular step sequencer).
+- IDEAS.md queue: last research was Cycle 213 (2026-05-27), 20 cycles ago — OVERDUE.
+- Zero-dep adult builds in IDEAS queue: all confirmed built (167-aria-companion, 170-spectral-morph, 175-vocal-choir, 176-sdf-cave, 178-splat-bloom all exist). Generating fresh ideas from research below.
+
+**Decided**: Adult cycle (233 % 2 = 1). No blockers; nothing in-progress.
+Rule: 3+ cycles since research → research is priority 5, but build (4) takes precedence if a clear idea exists.
+Decision: BUILD `200-harmonic-series` + brief RESEARCH.md append (DEMON, §234 — freshest paper found).
+The harmonic-series prototype is genuinely new for the sandbox: 199 prototypes visualize audio signal, none explore the harmonic series as an interactive instrument-science tool.
+
+**What I built**:
+- `src/app/dream/200-harmonic-series/page.tsx` — harmonic series explorer
+  - 16 OscillatorNodes, each = nth partial of a detected or selected fundamental
+  - Mic mode: autocorrelation pitch detection locks fundamental to live pitch
+  - Demo mode: C3 (130.81 Hz) fundamental with slow amplitude LFO
+  - Toggle any partial on/off by clicking its row
+  - Amplitude bar per row: 1/n natural harmonic decay, adjustable via slider
+  - 8 instrument presets: Flute (fundamental only), Clarinet (odd only), Violin (all, rolloff), Organ (all equal), Bell (inharmonic ×2.756), Piano (full harmonic), Brass (2nd–5th strong), Oboe (even stronger than odd)
+  - Visual: 16 horizontal rows (violet=sub/bass, emerald=mid, amber=high), each showing an animated sine trace + amplitude level bar + partial number and frequency label
+  - Current fundamental displayed top-left; sum chord name detected via 12-bin chroma matching
+  - Typography: text-base minimum, text-white/80 secondary, text-white/95 primary
+
+**Research appended**:
+- RESEARCH.md §234: DEMON real-time diffusion music instrument (arXiv:2605.28657, May 27, 2026)
+- IDEAS.md: seeded `param-layer` and `membrane-drum` from research findings
+
+**Build**: ✅ clean.
+
+**Queued next**:
+- Cycle 234: **kids build** (234 % 2 = 0). Candidates:
+  - New kids build — check KIDS.md for queue
+  - Consider `kids-harmonic-piano`: simplified single-slider version of `200-harmonic-series` for younger users (fewer rows, cartoon instrument images, tap to toggle)
+- Cycle 235: **adult build** (235 % 2 = 1). Candidates:
+  - `param-layer` (DEMON-inspired 4-ring parameter propagation synth, zero deps, seeded this cycle)
+  - `membrane-drum` (2D wave equation drumhead, zero deps, seeded this cycle)
+  - Camera-compose if GEMINI_API_KEY appears
+
+---
+
 ## Cycle 230 — kids build: 197-kids-rain-chain
 
 **When**: 2026-05-28 UTC (hourly autonomous cycle)
