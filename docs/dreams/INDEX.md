@@ -10,7 +10,25 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 240 — kids build)
+## ⭐ Newest (Cycle 241 — adult build)
+
+- **[/dream/208-param-layer](/dream/208-param-layer)** — Param Layer. `demoable`
+  Four concentric draggable rings sculpt a harmonic bell tone in real time. Outer (violet) = pitch
+  (C2 → A5 via exponential mapping); Ring 2 (teal) = partial count (1 pure sine → 16 rich stack);
+  Ring 3 (amber) = inharmonicity stretch (0% perfect harmonics → 22% metallic spread, via
+  `f_n = f₀ × n × (1 + ih × (n-1))`); Inner (rose) = decay (0.15s sharp click → 5.0s slow gong).
+  A quiet 16-partial drone plays continuously so parameter changes are heard instantly. Tap the
+  center ▶ circle to fire a loud bell strike at the current timbre — decays with the Decay ring.
+  Center shows a live circular waveform from the AnalyserNode (summed partials, 256 sample path).
+  HUD row shows live values: note name + Hz, partial count, inharmonicity %, decay seconds.
+  **First prototype with a hierarchical ring control surface** — outer gestures set register/mass,
+  inner rings set fine timbre detail. Inspired by DEMON (arXiv:2605.28657, May 2026).
+  Zero deps · Zero API · Zero permissions · 3.3 kB.
+  Design notes: `src/app/dream/208-param-layer/README.md`
+
+---
+
+## Previous (Cycle 240 — kids build)
 
 - **[/dream/207-kids-harmonic-piano](/dream/207-kids-harmonic-piano)** — Voice Circles. `demoable`
   Four large glowing circles, each a harmonic partial of C3 (131 Hz fundamental → C4 → G4 → C5).

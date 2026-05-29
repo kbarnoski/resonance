@@ -12287,3 +12287,46 @@ Chose it over `kids-drum-tap` (more complex — Markov + rhythm timing analysis)
   ~17s to exit. Kids will see several collisions in that window if they tap 2+ bubbles nearby.
 - The `🫧` bubble emoji in the hint text is Unicode 1FAB7 (2021), present on iOS 15.4+ and
   Android 12L+. Safe for all current-era devices.
+
+---
+
+## Cycle 241 — adult build: 208-param-layer
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits behind origin/main (freshly cloned container, diverged after force-push). Hard-reset to `origin/main` (cycle 240) before proceeding.
+
+**Decided**: Adult build cycle (241 % 2 = 1). No blockers; nothing in-progress.
+MORNING.md from cycle 240 explicitly flagged `param-layer` as "Build next adult cycle (241)?" — the strongest possible signal. Chose it over `aria-companion` (many times deferred, still a good candidate) and `diatonic-harmony` (simpler, less novel).
+
+**Loves influencing this pick**:
+- `148-spatial-palette` ❤️ — Karel gravitates toward draggable synthesis voices; `param-layer` extends this paradigm with a ring-based control surface instead of a free canvas
+- `105-pluck-field` ❤️ — physical modeling synthesis with harmonic resonance; `param-layer` generalizes this to arbitrary partial stacks with inharmonicity
+- `172-loop-station` ❤️ — compositional tools, not just visualizers; rings invite deliberate sculpting
+
+**What I built**:
+- `src/app/dream/208-param-layer/page.tsx` — Four concentric draggable rings on a dark canvas. Outer (violet) = pitch (C2→A5, exponential mapping); Ring 2 (teal) = partial count (1–16); Ring 3 (amber) = inharmonicity stretch (0–22%, formula `f_n = f₀ × n × (1 + ih × (n-1))`); Inner (rose) = decay (0.15–5.0s). 16 OscillatorNode drone plays at low gain (~0.036/√n per partial) immediately on start. Center ▶ button fires a loud bell chord with exponential decay. Circular waveform in the center ring area (256-point path from AnalyserNode time-domain data). HUD row shows live note name / Hz, partial count, inharmonicity %, decay seconds. Pointer events with setPointerCapture for smooth drag on mobile. 3.31 kB static, ✅ clean build.
+- `src/app/dream/208-param-layer/README.md` — design notes, audio architecture diagram, inharmonicity formula, polish ideas.
+- Build: ✅ clean (`○ Static`, 3.31 kB, `npm run build` 0 errors, only pre-existing warnings).
+
+**What's new about this prototype**:
+1. **First ring-based control surface in the sandbox.** All 207 prior prototypes use sliders, tap grids, canvas drags, or mouse position. Concentric rings as a continuous parameter space is a qualitatively different interaction — spatial and gestural rather than linear.
+2. **Hierarchical parameter feel.** Outer ring = coarse (the instrument's register/character), inner ring = fine (envelope timing). Dragging the outer ring while striking with the other hand feels like playing a physical instrument.
+3. **Drone + strike separation.** The quiet drone lets you confirm parameter intent before committing; the strike reveals the full amplitude. Two modes of interaction (shaping vs. triggering) without any mode switching.
+4. **Inharmonicity as a timbral axis.** At 0% the tone is artificially pure (all exact integer harmonics — sounds like an organ or flute). At 22%, the upper partials are stretched ~15-60% sharp — sounds metallic, gong-like, piano-like. Dragging Ring 3 from 0 to max is audibly dramatic even with just 4 partials.
+
+**Queued next**:
+- Cycle 242: **kids build** (242 % 2 = 0). Candidates:
+  - `kids-drum-tap` — tap a rhythm → Markov drum pattern responds (extends `98-kids-drum-circle` ❤️)
+  - `kids-firefly-web` — fireflies spin silk threads between them when they meet; thread chimes
+  - Polish `208-param-layer`: preset buttons (Bell, Flute, Piano, Marimba), mic mode auto-tune
+- Cycle 243: **adult build**. Strong candidates:
+  - `aria-companion` — Markov-chain piano dialogue (most deferred high-value prototype)
+  - `diatonic-harmony` — live melody → diatonic thirds/fifths generated in parallel
+  - Research sweep (now 28 cycles since Cycle 213 — approaching the 3-4 cycle cadence again)
+
+**Notes**:
+- The `canvasXY`, `hitRing`, and `ringRadii` helpers are defined at module level (not inside the component) to avoid `react-hooks/exhaustive-deps` warnings — they don't reference any component state.
+- `pRef.current` is updated in `onPointerMove` before calling `setDispParams`, so the draw loop (which reads `pRef.current` directly) always has fresh values without waiting for a React re-render.
+- The exponential pitch mapping `65 × 13.538^p` maps p=0.5 to exactly A3 (220 Hz) — a natural center pitch. Karel's piano recordings often center on A3-C4; the default p=0.52 starts at 228 Hz (close to A3) for a good first impression.
+- Ring 3 default p=0.0 (no inharmonicity) means the first strike sounds like a pure harmonic bell. The surprise comes when users drag Ring 3 up — the tone goes from "organ" to "gong" in one gesture.

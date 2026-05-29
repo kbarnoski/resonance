@@ -1,21 +1,22 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 240)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 241)
 
 ## New since yesterday
 
-- **[/dream/207-kids-harmonic-piano](https://getresonance.vercel.app/dream/207-kids-harmonic-piano)** (Cycle 240 — kids build)
-  Four large glowing circles, each one a harmonic voice of a C chord.
-  First tap wakes all four voices; each subsequent tap toggles one circle on or off.
-  BANDIMAL rule: biggest violet circle (C3) = the deep fundamental; smallest amber (C5) = bright overtone.
-  Sound goes from a pure flute-like tone (just fundamental) to a warm organ-like chord (all four).
-  → **Why open this**: it's the first kids prototype where the child controls the *timbre* by
-  adding/removing layers, not just which note plays. A 4yo discovers that circles = voices and
-  combinations = different sounds. Introduce it as "the big circle is the voice's home, the small
-  ones are its friends."
+- **[/dream/208-param-layer](https://getresonance.vercel.app/dream/208-param-layer)** (Cycle 241 — adult build)
+  Four concentric rings, each draggable, each sculpting one dimension of a harmonic bell tone:
+  - Outer (violet) — pitch: C2 → A5, drag clockwise to go higher
+  - Ring 2 (teal) — harmonics: 1 pure sine → 16 rich overtone stack
+  - Ring 3 (amber) — spread: 0% pure harmonics → 22% metallic inharmonicity (gong-like)
+  - Inner (rose) — decay: 0.15s sharp click → 5.0s slow gong
+  A quiet drone plays as you drag so you hear changes immediately. Tap the center ▶ to strike.
+  Center shows a live circular waveform from the synthesis output.
+  → **Why open this**: the interaction is different from anything else in the lab — drag the outer
+  ring while tapping center with your other hand, like playing a physical instrument. Dragging Ring 3
+  from 0 to max (pure organ → metallic gong) with Ring 2 at ~8 partials is the best demo path.
+  Inspired by DEMON (hierarchical parameter propagation, arXiv May 2026).
 
-- **[/dream/206-sdf-cave](https://getresonance.vercel.app/dream/206-sdf-cave)** (Cycle 239 — adult build)
-  Dark stone cave via SDF ray-marching — you're *inside* the space, not looking at a surface.
-  Bass melts the cave geometry; treble roughens the stone; spectral centroid shifts the cave light.
-  First SDF/ray-marching shader in the sandbox. On a projector = immersive stage backdrop.
+- **[/dream/207-kids-harmonic-piano](https://getresonance.vercel.app/dream/207-kids-harmonic-piano)** (Cycle 240 — kids build)
+  Four harmonic voice circles, tap to add/remove. First kids prototype where the child controls timbre.
 
 ## In progress / partial
 
@@ -23,15 +24,17 @@
 
 ## Research findings worth a look
 
-- Cycle 213: `piano-motion` — Karel's Paths recordings → cartoon hands pressing keys in real time.
-  High alignment with "use his real music as input" directive.
+- Cycle 213: `piano-motion` — Karel's Paths recordings → cartoon animated hands pressing keys.
+  High alignment with "use his real music as input" directive. Strong adult build candidate.
+- Cycle 203: `splat-bloom` — 500 Gaussian-splat ellipses, additive blending, audio-reactive.
+  Different visual quality from all existing prototypes (texture field, not particles or fluid).
 
 ## Open questions for Karel
 
-- **Voice Circles "Mic mode" idea**: detect pitch via autocorrelation, tune all four oscillators
-  to harmonics of the detected fundamental (play A2 on piano → circles tune to A2/A3/E4/A4).
-  One-cycle add-on if desired — would make this a live instrument.
-- **Cave Paths mode**: add a track picker inside the cave — Karel's actual piano plays while
-  the cave responds. One-cycle addition if desired.
-- **`param-layer`** (DEMON hierarchical ring synthesizer) — deferred adult candidate.
-  Build next adult cycle (241)?
+- **Ring 3 presets**: Bell / Flute / Piano / Marimba — snap all 4 rings to instrument-matched
+  positions. One-cycle addition. Worth it?
+- **Mic auto-tune for pitch ring**: autocorrelation → tune Ring 1 to detected fundamental.
+  Play a note on piano → rings tune to it → strike = harmonic chord of your note. One-cycle.
+- **`aria-companion`** has been queued 15+ cycles. Should I build it next adult cycle (243)?
+  It's the Markov-chain piano dialogue — you play, it responds when you pause.
+- **Kids drum-tap**: tap a rhythm → Markov drum pattern responds. Good for Cycle 242?
