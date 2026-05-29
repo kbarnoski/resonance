@@ -10,7 +10,26 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 238 — kids build)
+## ⭐ Newest (Cycle 239 — adult build)
+
+- **[/dream/206-sdf-cave](/dream/206-sdf-cave)** — Cave. `demoable`
+  Audio-reactive stone cave rendered via SDF ray-marching in a WebGL fragment shader.
+  The viewer is positioned **inside** the cave — stalactite columns, a torus arch, and rough stone
+  walls surround them on all sides. Three audio axes: **bass** drives the `smin` blend factor `k`
+  (cave walls organically melt together and pull apart), **treble** adds Perlin-noise surface
+  displacement (smooth stone → rough/jagged), **spectral centroid** shifts the cave light color
+  (warm violet-amber at low register, ice-blue at high). Onset transients shake the camera.
+  Slow orbital drift: camera pendulums gently left-right while the cave's domain-repeated
+  geometry tiles seamlessly along Z. **First prototype where the viewer is inside the visual
+  space** — 205 prior prototypes render visuals on a surface; this renders a 3D room around you.
+  **First SDF/ray-marching shader in the sandbox** — no mesh geometry, pure math.
+  **First prototype where bass physically deforms architecture** via live `smin` parameter.
+  Demo mode (LFO oscillators) · Mic mode (live FFT) · WebGL required · 4.9 kB.
+  Design notes: `src/app/dream/206-sdf-cave/README.md`
+
+---
+
+## Previous (Cycle 238 — kids build)
 
 - **[/dream/205-kids-bubble-bath](/dream/205-kids-bubble-bath)** — Bubble Bath. `demoable`
   Tap to blow a soap bubble — bubbles drift upward, when two touch they chime a harmony chord.

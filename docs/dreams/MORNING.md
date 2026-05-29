@@ -1,35 +1,40 @@
-# Morning digest — last updated 2026-05-29 UTC (Cycle 238)
+# Morning digest — last updated 2026-05-29 UTC (Cycle 239)
 
 ## New since yesterday
 
-- **[/dream/205-kids-bubble-bath](https://getresonance.vercel.app/dream/205-kids-bubble-bath)** (Cycle 238 — kids build)
-  Tap to blow a soap bubble — bubbles drift upward slowly. When two touch, they chime a harmony
-  chord together (white glow at contact point). Bubbles pop at the top with a sparkle burst.
-  **First kids prototype where harmony arises from spatial proximity**: tap two bubbles close
-  together and they'll harmonize as they drift into each other. Soap bubble visual: crescent
-  highlight + iridescent inner ring. Zero deps · zero permissions · 2.7 kB.
+- **[/dream/206-sdf-cave](https://getresonance.vercel.app/dream/206-sdf-cave)** (Cycle 239 — adult build)
+  A dark stone cave rendered via SDF ray-marching in a WebGL fragment shader.
+  You're **inside** the cave — stalactites overhead, arch above, rough stone walls surrounding you.
+  Bass melts the cave geometry together/apart (`smin` blend k = 0.15 + bass × 0.55).
+  Treble roughens the stone with Perlin-noise displacement. Cave light color shifts warm
+  violet-amber (low register) → ice-blue (high register) with spectral centroid.
+  Camera drifts slowly left-right with domain-repeated stalactite columns tiling the depth.
+  **Open demo** for immediate animation; **open with mic** and play piano to hear the cave breathe.
+  → **Why open this**: first prototype where you are _inside_ the space, not looking at it.
+  First SDF/ray-marching shader in 206 prototypes. On a projector = immersive stage backdrop.
 
-- **[/dream/204-anemone-av](https://getresonance.vercel.app/dream/204-anemone-av)** (Cycle 237 — adult build)
-  A bioluminescent sea anemone breathing with sound. 12 tentacles, each with its own sway phase —
-  bass = trunk sway, treble = tip flicker, onsets = radial pulse. First organic living 3D form
-  in the sandbox. Zero new deps. Demo mode works immediately; Start Mic responds to live audio.
+- **[/dream/205-kids-bubble-bath](https://getresonance.vercel.app/dream/205-kids-bubble-bath)** (Cycle 238 — kids build)
+  Soap bubbles drift upward; when two overlap they chime a harmony chord.
+  First kids prototype where harmony arises from spatial proximity of floating objects.
 
 ## In progress / partial
 
-Nothing in-progress. All recent prototypes are `demoable`.
+- Nothing in-progress.
 
 ## Research findings worth a look
 
-Last research sweep: Cycle 213 (**26 cycles ago** — cadence breach). Cycle 239 (adult) is the
-firm research slot. Key areas: WebGPU post-iOS 26, Three.js R172+ TSL, new fal.ai models,
-Houdini/TD→WebGPU ports, MediaPipe Hand Landmarker v2.
+- Cycle 203 (2026-05-26): SDF `smin` technique + MUTEK Sphaîra → inspired this prototype.
+  Also seeded: `splat-bloom` (Gaussian splat canvas field), `vocal-choir` (sing → 3D choir),
+  `score-structure` (improvisation structure visualization).
+- Cycle 213 (2026-05-27): `piano-motion` — Karel's Paths recordings → cartoon hands pressing
+  keys in real time. High alignment with "use his real music as input" directive.
 
 ## Open questions for Karel
 
-- **Research cadence**: lock in Cycle 239 for a full sweep regardless of queue depth?
-- **Bubble Bath idea**: should bubbles gently drift *toward* each other when close (magnetic pull),
-  making chords happen organically without extra taps? Easy 10-line add for Cycle 240.
-- **Anemone polish**: tapered TubeGeometry tips, inner ring of 16 shorter tentacles, spore particles
-  on onsets — worth a dedicated pass, or fold into next adult build?
-- **Live-performance priority**: `172-loop-station` ❤️ still the only loop tool. `lyria-jam` and
-  `gesture-music` are queued — should either move up?
+- **Cave Paths mode**: add a track picker inside the cave — Karel's actual piano plays while
+  the cave responds. The cave light would track the harmonic register of the recording.
+  One-cycle addition if desired.
+- **`param-layer`** (DEMON hierarchical ring synthesizer) — deferred from this cycle.
+  Build next adult cycle?
+- **`piano-motion`** needs `/api/audio/[id]` reachable server-side. Is auth required or is
+  it open for server routes in the dream zone?

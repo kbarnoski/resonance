@@ -1,5 +1,64 @@
 # Dream Agent — cycle state
 
+## Cycle 239 — adult build: 206-sdf-cave
+
+**When**: 2026-05-29 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50 commits diverged from origin (force-updated remote, freshly cloned container). Hard-reset to `origin/main` (cycle 238). `npm install` required — node_modules absent.
+
+**Love signal** (26 loved prototypes — relevant to adult pick):
+- `107-ocean-presence` ❤ — viewer presence inside a fluid space that "sings back"; sdf-cave is the same "you are inside the space" paradigm but architectural
+- `130-tsl-particle-compute` ❤ — physics computation AS the visual; sdf-cave is geometry-as-math (no mesh, pure SDF equation)
+- `157-concept-steer` ❤ — Karel responds to multi-axis interactive controls; sdf-cave's bass/treble/centroid axes are exactly that
+- `153-paint-compose` ❤ + `148-spatial-palette` ❤ — Karel appreciates contemplative visuals that accumulate/evolve; cave glow shifts and morphs across a session
+
+**Decided**: Adult cycle (239 % 2 = 1). No blockers; nothing in-progress.
+
+Chose `sdf-cave` over:
+- `param-layer` (DEMON-inspired hierarchical timbre rings) — still valid, queued for next adult build
+- `splat-bloom` (Gaussian splat canvas field) — compelling but lower surprise delta vs. current sandbox
+- `piano-motion` (Karel's Paths animated hands) — great Karel-music-as-input prototype but heavier to implement cleanly in one cycle
+
+`sdf-cave` wins on **surprise factor** (highest in Cycle 203 research batch) + **new visual paradigm** (SDF ray-marching, first prototype where viewer is inside the space, not looking at it). Directly extends the "immersive presence" aesthetic Karel loved in `107-ocean-presence` ❤.
+
+**What I built**:
+- `src/app/dream/206-sdf-cave/page.tsx` — WebGL SDF ray-marching cave interior (`○ Static`, 4.9 kB, ✅ clean build)
+  - Three SDF primitives: inverted rounded box (cave room) + torus (ceiling arch, subtracted) + domain-repeated capsules (stalactite columns)
+  - `smin(a, b, k)` blending with `k = 0.15 + bass × 0.55` — bass energy melts the cave geometry
+  - Perlin-noise `noise3` displacement when treble > 0.01 — stone becomes rough/jagged on bright passages
+  - Cave light color interpolates warm violet-amber ↔ ice-blue based on spectral centroid
+  - Onset → brief ray-origin camera shake (2-frame noise displacement)
+  - Soft shadow (12 march steps) + distance-squared light attenuation + AO approximation
+  - ACES filmic tone-mapping
+  - Slow orbital camera: `sin/cos(t × 0.12)` pendulum left-right sway + domain-repeated Z floor tiles
+  - Demo mode: 6 incommensurable LFO oscillators; mic mode: live AnalyserNode FFT
+  - Graceful pre-start screen with two buttons (demo / mic)
+- `src/app/dream/206-sdf-cave/README.md` — design notes, technique explanation, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 4.9 kB). One TypeScript fix during build: `Uint8Array<ArrayBuffer>` explicit type annotation for `getByteFrequencyData`.
+
+**What's genuinely new**:
+1. **First prototype where the viewer is inside the visual space.** 205 prior prototypes produce visuals on a canvas surface. This one positions the camera inside a 3D room; cave walls, arch, and stalactites surround the viewer on all sides.
+2. **First SDF / ray-marching shader in the sandbox.** No mesh geometry — the scene is pure mathematical equations (SDF primitives) evaluated per-pixel. The cave's shape is `smin(room, -arch, k)` blended live with audio.
+3. **First prototype where bass physically deforms architecture.** The `smin` blend factor `k` driven by bass energy makes stone walls organically melt together and pull apart — a fundamentally different visual consequence than "particle expands" or "fluid surges".
+
+**Queued next**:
+- Cycle 240: **kids build** (240 % 2 = 0). Candidates:
+  - `kids-harmonic-piano` — simplified `200-harmonic-series` for kids: 3 additive partials, BANDIMAL cartoon sizing, no math labels
+  - `kids-puppet-orchestra` — tap animal puppet → looping phrase contributes to an ensemble
+  - Research sweep for kids zone if KIDS.md queue is thin
+- Cycle 241: **adult build** (241 % 2 = 1). Candidates:
+  - `param-layer` (hierarchical ring synthesizer, deferred from 239)
+  - `piano-motion` (Karel's Paths recordings → animated hands on keyboard)
+  - `splat-bloom` (Gaussian splat audio-reactive field)
+
+**Notes**:
+- `Uint8Array<ArrayBuffer>` (not `Uint8Array`) required for `getByteFrequencyData` in TypeScript 5.7+ strict mode; narrowing to `Uint8Array` will fail. Pattern for all future mic-analyser inline code (vs. using `useMicAnalyser` hook from `_shared/`).
+- `smin` blend with negative `arch` (subtraction) is the idiomatic SDF pattern for hollowing out solids; setting up the room as a negative box first (`-sdBox(...)`) gives `room` the interior-positive semantics needed.
+- WebGL canvas DPR capped at 1.5 for SDF ray-marching (per-pixel computation is expensive at 2× DPR). Acceptable quality tradeoff — the cave is dark and atmospheric, not a crisp-edge subject.
+
+---
+
 ## Cycle 236 — kids build: 203-kids-lantern-launch
 
 **When**: 2026-05-29 UTC (hourly autonomous cycle)
