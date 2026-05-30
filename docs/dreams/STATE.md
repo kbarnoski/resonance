@@ -2,6 +2,64 @@
 
 ---
 
+## Cycle 248 — kids build: 214-kids-dance-avatar
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 454a17a (cycle 247, research sweep). npm install required (fresh container, node_modules absent).
+
+**Love signal** (26 loved prototypes — kids-relevant):
+- `140-kids-string-bridge` ❤️ — physical analog interaction; dance-avatar is the body-as-instrument extension of this
+- `169-kids-marble-run` ❤️ — intuitive physics toy feel; spring-bounce shares the same satisfying rebound
+- `160-kids-paint-loop` ❤️ — body-scale canvas interaction; dance-avatar fills same "whole screen = one instrument" category
+- `98-kids-drum-circle` ❤️ — rhythm via body tapping; dance-avatar is the non-percussion pitched extension
+- `166-kids-lantern` ❤️ — visual demo before first touch (demo flies before interaction); dance-avatar visual-only demo mirrors this
+
+**Decided**: Kids cycle (248 % 2 = 0). No blockers; nothing in-progress. STATE.md cycle 247 listed three candidates:
+1. Polish `213-kids-echo-drum` — valid but just built 2 cycles ago; spacing is good to let it breathe
+2. `kids-shadow-puppet` — webcam required (permission friction for kids)
+3. **`kids-dance-avatar`** — chosen: zero permissions, zero deps, fills a genuine paradigm gap (first human body shape as instrument), directly inspired by DiscoForcing (ICML 2026) research from cycle 247
+
+`214-kids-dance-avatar` wins over the others because:
+- First kids prototype where the instrument IS a human body — entirely new paradigm
+- BANDIMAL sizing maps directly to anatomy: feet (biggest) = C3/E3, head (smallest) = C4
+- Visual demo before first touch shows the interaction without any instructions
+- Connects to DiscoForcing research (audio → body movement) at the zero-deps browser level
+
+**What I built**:
+- `src/app/dream/214-kids-dance-avatar/page.tsx` — 5 BANDIMAL body parts (head/hands/feet) connected
+  by skeleton lines. Each part: bell timbre (triangle + ×2.756 + ×5.404 partials, 1.5s decay).
+  Spring physics on tap (scaleV += 0.28, 220 k-spring, Math.pow(0.02, dt) damping).
+  Cute face drawn inside head circle. Visual-only demo cycles DEMO_SEQ before first user touch
+  (sound unlocks on first tap). Hint text "Tap the dancer! 🕺" fades 5.5→8s.
+  `○ Static`, 2.7 kB, ✅ clean build.
+- `src/app/dream/214-kids-dance-avatar/README.md` — design notes, body-part table, new-paradigm analysis, polish ideas.
+- **Build**: ✅ clean (0 TypeScript + ESLint errors). `npm run build` required `npm install` first (fresh container); no dep changes, just missing node_modules.
+
+**What's genuinely new**:
+1. **First kids prototype where the instrument IS a human body shape.** Head/hands/feet as tap zones. The skeleton lines make it immediately recognizable as a person. BANDIMAL maps directly to anatomy.
+2. **First kids prototype with a character face.** Two eye dots + smile arc drawn inside the head circle. Makes the body instantly feel like a character, not just abstract shapes.
+3. **First kids prototype with visual-only pre-interaction demo.** Demo bounces body parts (visual + ripple + sparkles) before AudioContext is created. Shows the interaction model to children who don't yet know to tap. Sound unlocks on first user touch.
+
+**Queued next**:
+- Cycle 249: **adult build** (249 % 2 = 1). Top candidates from Cycle 247 research:
+  - **`dance-avatar`** (now renumbered `215-dance-avatar`) — 12-joint spring-physics skeleton dances to audio. Highest surprise factor; fills human-figure paradigm in adult zone. Zero deps.
+  - **`fm-explorer`** (`215-fm-explorer` → now `216-fm-explorer`) — foundational FM synthesis gap. Zero deps.
+  - **`waveshape-draw`** — `createPeriodicWave` paradigm inversion. Zero deps.
+- Cycle 250: **kids build** (250 % 2 = 0). Candidates:
+  - Polish `214-kids-dance-avatar`: mic mode (RMS → breath scale multiplier), multi-touch chord mode
+  - `kids-shadow-puppet`: full-screen webcam brightness map → 6 instrument zones (no MediaPipe)
+  - Polish `213-kids-echo-drum`: auto-play demo round on load (4-beat pattern before first tap)
+
+**Notes**:
+- `PARTS as const` with 5 elements — TypeScript treats indexing with `number` correctly. `partXY(i, W, H)` returns `[number, number]` cleanly.
+- `Math.pow(0.02, dt)` damping: at 60fps (dt=0.0167), multiplier = 0.02^0.0167 ≈ 0.929 per frame. Velocity halves in ~10 frames (~0.16s). Gives crisp, satisfying bounce without wobble.
+- Visual demo uses `punchPart(i)` which checks `if (st.actx && st.awake)` before playing sound. Demo is visual-only until first user tap creates AudioContext and sets `awake = true`. No sound plays without user gesture.
+- IDEAS.md adult seeds `214-218` from Cycle 247 shift up by 1 (slot 214 is now used by this kids build). Adult dance-avatar → `215-dance-avatar`; fm-explorer → `216-fm-explorer`; etc.
+
+---
+
+
 ## Cycle 247 — research sweep
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)

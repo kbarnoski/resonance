@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 246 — kids build)
+## ⭐ Newest (Cycle 248 — kids build)
+
+- **[/dream/214-kids-dance-avatar](/dream/214-kids-dance-avatar)** — Dance Avatar. `demoable`
+  A glowing cartoon character with five tap zones: head (C4/cyan), left hand (G3/emerald), right hand
+  (A3/amber), left foot (C3/violet), right foot (E3/teal). Connected by a skeleton of dim white lines.
+  Tap any body part → bell tone + spring bounce + sparkle burst. BANDIMAL sizing: feet are largest (C3/E3
+  = deepest), head is smallest (C4 = highest) — a child discovers pitch-by-size intuitively in 2 taps.
+  Cute face (two eyes + smile) drawn inside the head circle. Idle breathing animation (unique phase per
+  part, slow sine pulse) makes the body feel alive before any touch. Visual-only demo cycles DEMO_SEQ
+  before first user interaction — body parts bounce silently; sound unlocks on first tap.
+  **First kids prototype where the instrument IS a human body shape** — no prior prototype uses the body
+  as its interaction surface. Connects to DiscoForcing (ICML 2026) audio→animation research.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.7 kB.
+  Design notes: `src/app/dream/214-kids-dance-avatar/README.md`
+
+---
+
+## Previous (Cycle 246 — kids build)
 
 - **[/dream/213-kids-echo-drum](/dream/213-kids-echo-drum)** — Echo Drum. `demoable`
   Four BANDIMAL drum pads fill the screen. Tap any rhythm; after 1.5 seconds of silence the drum
