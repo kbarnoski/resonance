@@ -10,7 +10,24 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 250 — kids build)
+## ⭐ Newest (Cycle 251 — adult build)
+
+- **[/dream/217-dance-avatar](/dream/217-dance-avatar)** — Dance Avatar. `demoable`
+  A 12-joint spring-physics skeleton that dances to audio — head, shoulders, elbows, wrists, hips,
+  knees, feet. Each body part is driven by its own frequency band: sub-bass bounces hips/feet, bass
+  lifts shoulders, low-mid sways the torso left-right, mid swings arms counter-phase, high-mid flutters
+  the wrists, treble nods the head. Spring physics (K=140, D=10) gives body-like movement — joints
+  overshoot, oscillate, and settle as real limbs do. Demo mode: 6 incommensurable LFOs produce continuous
+  fluid motion from the moment the page opens. Mic mode: skeleton mirrors whatever is playing in real time.
+  **First prototype with an animated human skeleton.** 216 prior prototypes visualize audio as particles,
+  fluid, terrain, rings, or canvas marks; this is the first where the visualization IS a human figure.
+  Inspired by DiscoForcing (ICML 2026). Live-performance fitness: high — works as a stage visualizer at
+  projection scale. Zero permissions (mic optional) · Zero API · Zero deps · 3.43 kB.
+  Design notes: `src/app/dream/217-dance-avatar/README.md`
+
+---
+
+## Previous (Cycle 250 — kids build)
 
 - **[/dream/216-kids-band-builder](/dream/216-kids-band-builder)** — Band Builder. `demoable`
   Five glowing circles on a dark canvas — Bass (violet), Mid (teal), Melody (cyan), Rhythm (amber),

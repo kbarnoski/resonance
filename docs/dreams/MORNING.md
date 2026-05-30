@@ -1,17 +1,19 @@
-# Morning digest — last updated 2026-05-30 UTC (cycle 250)
+# Morning digest — last updated 2026-05-30 UTC (cycle 251)
 
 ## New since yesterday
 
-- **`/dream/216-kids-band-builder`** (cycle 250) — Band Builder. Five glowing circles,
-  each one an instrument: Bass (violet), Mid (teal), Melody (cyan), Rhythm (amber), Shimmer (rose).
-  Tap any circle to add its looping voice; tap again to remove it. All five loops phase-lock to a
-  shared 80 BPM beat clock — a new voice always enters on-beat, never mid-measure. BANDIMAL sizing
-  (bigger = lower). When all five are on: "✨ Full Band! ✨" flash. **Why open this**: tap one
-  circle, then add the next, and feel the music build. The moment all five fire together is the payoff.
+- **`/dream/217-dance-avatar`** (cycle 251) — Dance Avatar. A 12-joint spring-physics skeleton
+  that dances to audio. Each body part is driven by its own frequency band: sub-bass bounces hips
+  and feet, bass lifts the shoulders, low-mid sways the torso, mid swings the arms counter-phase,
+  high-mid flutters the wrists, treble nods the head. Opens immediately in demo mode — just watch
+  it move. Enable Mic to make it dance to whatever you're playing.
+  **Why open this**: play any piano passage and watch the figure react. Bass chords = hips sink;
+  fast arpeggios = hands flutter; a sforzando = head snaps. First human-figure prototype in 216 builds.
 
-- **`/dream/215-fm-explorer`** (cycle 249) — FM Explorer. 2D canvas timbral landscape.
-  Move cursor: X = carrier pitch (C2–C7), Y = mod ratio (0.5–8×). **Why open this**: drag from the
-  Bell preset toward top-right; tone goes from pure bell → gong → industrial clang in one gesture.
+- **`/dream/216-kids-band-builder`** (cycle 250) — Five glowing circles, each one an instrument.
+  Tap to add, tap again to remove. All voices phase-lock to 80 BPM — each new voice enters on-beat.
+  **Why open this**: tap one circle, then add the next, and feel the music build. When all five
+  fire together the "✨ Full Band!" flash is the payoff.
 
 ## In progress / partial
 
@@ -19,22 +21,24 @@ Nothing in-progress.
 
 ## Research findings worth a look
 
-- **`waveshape-draw`** (suggested `217-waveshape-draw`): Draw a waveform on canvas → hear the timbre via
-  `createPeriodicWave`. **First prototype that sculpts the synthesis source** rather than reacting to audio.
-  Proposed triptych with `20-scope` and `13-piano-canvas`. Cycle 247 research sweep seeded this.
+- **`waveshape-draw`** (suggested `218-waveshape-draw`): Draw a waveform on canvas → hear the
+  timbre via `createPeriodicWave`. First prototype that sculpts the synthesis SOURCE rather than
+  reacting to audio. Natural triptych with `20-scope` (observe) and `13-piano-canvas` (play → paint).
+  Cycle 247 research sweep seeded this; Karel's love of `153-paint-compose` is a direct signal.
 
-- **`optical-flow-music`** (suggested `217` or `218`): Webcam frame differencing → brightness delta →
-  synthesis. Zero CDN deps, zero permissions beyond camera. Like a theremin for your body. Cycle 247 seed.
+- **`paths-granular`** (suggested `219-paths-granular`): granular synthesis cloud driven by
+  Karel's Welcome Home piano tracks via `/api/audio/[id]`. First prototype using Karel's actual
+  recordings as the synthesis source. Depends on whether the audio route is publicly accessible —
+  flagged below.
 
-- **`paths-granular`** (suggested `218-paths-granular`): granular synthesis of Karel's Welcome Home piano
-  tracks via `/api/audio/[id]`. First prototype using Karel's actual recordings as synth source — the
-  most direct realization of the "incorporate Karel's music" directive.
+- **`optical-flow-music`** (`218` or `219`): Webcam frame differencing → brightness delta →
+  synthesis. Like a theremin for body movement. Zero CDN deps; needs camera permission.
 
 ## Open questions for Karel
 
-- **Adult cycle 251**: `waveshape-draw` (draw a waveform → timbre), `dance-avatar` (spring-physics
-  skeleton, live-perf projection), or `optical-flow-music` (webcam body motion → synthesis)?
-- **`/api/audio/[id]`**: publicly accessible or auth-gated? Needed to build `paths-granular`.
-- **Band Builder (216)**: want BPM buttons (±20 BPM) or a mic mode (louder playing = louder band)?
-  Both are ~10 lines. Could add to next kids polish cycle.
-- **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready to build when confirmed.
+- **`/api/audio/[id]`**: publicly accessible or auth-gated? Needed to build `paths-granular`
+  (granular synthesis of Welcome Home tracks). If public: builds next adult cycle.
+- **Dance Avatar (217)**: want to add a "trail" (ghost copies of previous joint positions for
+  motion blur effect)? ~15 lines. Also: onset flash (sharp transient → joints scatter then spring back)?
+- **Band Builder (216)**: want BPM buttons (±20)? Or mic mode (louder playing = louder active voices)?
+- **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready to build on confirmation.

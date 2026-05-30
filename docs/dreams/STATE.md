@@ -2,6 +2,77 @@
 
 ---
 
+## Cycle 251 — adult build: 217-dance-avatar
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 7beab9d (cycle 250, kids-band-builder). npm install confirmed present.
+
+**Love signal** (26 loved prototypes — relevant to adult pick):
+- `130-tsl-particle-compute` ❤️ — physics/math AS the visual; dance-avatar is the direct extension to physics-as-body
+- `107-ocean-presence` ❤️ — immersive presence in a visual space; dance-avatar puts a *character* in the space for the first time
+- `163-paths-visualizer` ❤️ — Karel's recordings as the audio source; demo mode LFOs approximate this until paths-granular lands
+- `172-loop-station` ❤️ — live performance fitness; skeleton works as a stage visualizer
+
+**Decided**: Adult cycle (251 % 2 = 1). No blockers; nothing in-progress.
+`dance-avatar` has been the top adult candidate in three consecutive cycle queues (248, 249, 250 each listed it). Cycle 249 chose `fm-explorer` (filling the FM synthesis gap first), but `dance-avatar` remains the highest-surprise-factor prototype in the queue. Building it now.
+
+Chose `dance-avatar` over:
+- `waveshape-draw` — also compelling (Karel loved `153-paint-compose` → drawing=music); queued for next adult cycle
+- `paths-granular` — needs `/api/audio/[id]` auth check; best to confirm before building
+- `optical-flow-music` — webcam permission friction; lower priority than zero-permission options
+
+`dance-avatar` wins because:
+1. **First human-figure animation** in 216 prior prototypes — genuine paradigm gap
+2. **Highest surprise factor** in queue per 3 consecutive STATE.md entries
+3. **Live performance fitness** — works as stage visualizer at projection scale
+4. **Zero permissions** in demo mode (LFOs run immediately on mount)
+5. **DiscoForcing** (ICML 2026) research from cycle 247 directly inspired it; using it now keeps the research fresh
+6. Complements the just-landed kids `214-kids-dance-avatar` — adult version at the same concept shows how the paradigm scales
+
+**What I built**:
+- `src/app/dream/217-dance-avatar/page.tsx` — 12-joint spring-physics skeleton (`○ Static`, 3.43 kB, ✅ clean build)
+  - Joints: head, lShoulder/rShoulder, lElbow/rElbow, lHand/rHand, hips, lKnee/rKnee, lFoot/rFoot
+  - 6-band FFT (same palette + ranges as `1-live`): each band drives a specific body region
+    - sub-bass (violet) → hips/knees/feet: body bounce + stomp (dy += e0×fh×0.16)
+    - bass (cyan) → shoulders: chest lift / breathe (dy -= e1×fh×0.08)
+    - low-mid (green) → hips: lateral body sway (dx += e2×fh×0.09×sin(t×0.9))
+    - mid (yellow) → elbows+hands: arms swing counter-phase (dx ± e3×fh×0.13×sin(t×0.7+ph))
+    - high-mid (orange) → hands: wrist flutter (dy += e4×fh×0.08×sin(t×3.7×±))
+    - high (rose) → head: nod forward (dy += e5×fh×0.09)
+  - Spring physics: K=140 (snappy), D=10 (moderate damp). Per-joint: `vx += ((tx-x)×K − vx×D)×dt`
+  - Demo mode: 6 LFO_HZ = [0.31, 0.47, 0.63, 0.79, 0.97, 1.13]; raw[i] = 0.30 + 0.65×|sin(t×hz×2π)|
+  - EMA smoothing τ=0.08s: alpha = 1 − 0.01^(dt/0.08)
+  - Render: `globalCompositeOperation = "screen"` for additive glow; linear gradient per bone; radial gradient per joint; head ring; band energy bars (bottom-right)
+  - Mic mode: `getUserMedia({audio:true})` → `AnalyserNode(fftSize=2048)` → `extractBands()`
+  - Typography: h1 text-2xl/white/95, p text-base/white/75, buttons text-base min-h-[44px]
+- `src/app/dream/217-dance-avatar/README.md` — design notes, audio mapping table, physics explanation, inspiration, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 3.43 kB). Zero TypeScript or ESLint errors in 217-dance-avatar.
+
+**What's genuinely new**:
+1. **First prototype with an animated human skeleton.** 216 prior prototypes use particles, fluid, rings, terrain, canvas strokes. This is the first where audio is visualized as a *person*. The head-nods, the shoulders bounce, the arms swing — it reads instantly as a dancer.
+2. **Counter-phase arm swings.** The mid-frequency arms move in opposite phase (left arm forward = right arm back) using `sin(t×0.7)` for left and `sin(t×0.7+π)` for right. This single trigonometric choice makes the figure walk/dance rather than simply expanding and contracting symmetrically.
+3. **Body part ↔ frequency band as embodied music theory.** Sub-bass in your legs, melody in your hands, air (treble) in your head — this maps how humans *experience* music in their bodies, not just how audio spectra look on a screen.
+
+**Queued next**:
+- Cycle 252: **kids build** (252 % 2 = 0). Candidates:
+  - Polish `216-kids-band-builder`: BPM ± buttons (±20 BPM), or mic mode (louder playing = louder band voices)
+  - Polish `214-kids-dance-avatar`: mic mode (RMS → breathing scale), multi-touch chord mode
+  - New kids seed: `kids-loom-weave` — drag finger across vertical strings to "weave" sound threads; crossing threads make chords
+- Cycle 253: **adult build** (253 % 2 = 1). Candidates:
+  - **`waveshape-draw`** (218) — draw a waveform → hear timbre via `createPeriodicWave`; Karel loved `153-paint-compose`; this is the direct complement
+  - **`paths-granular`** (if `/api/audio/[id]` confirmed public) — granular synthesis of Karel's Welcome Home tracks
+  - **`optical-flow-music`** — webcam frame differencing → synthesis params
+
+**Notes**:
+- The `as const` assertion on BANDS gives TypeScript literal types for r/g/b values — eliminates string-formatting ambiguity in `rgba()` calls. Pattern worth repeating in future canvas prototypes.
+- `ctx.setTransform(dpr, 0, 0, dpr, 0, 0)` on resize (instead of `ctx.scale()`) prevents cumulative scale multiplication across multiple resize calls. Correct pattern for canvas resize handlers.
+- Spring K=140, D=10 gives velocity-halving time of ≈ ln(2)/(D×√(K/m)) ≈ 0.4s at m=1. Feels body-like: snappy onset, brief overshoot, clean settle. Lower K (< 80) felt mushy; higher D (> 16) felt over-damped and mechanical.
+- DiscoForcing (ICML 2026) used a causal music encoder + diffusion-forcing sequence model for 30-joint animation. This prototype reduces that to 6-band FFT + 12-joint spring system. Retains the core insight: music has kinetic energy that maps naturally to body motion.
+
+---
+
 ## Cycle 248 — kids build: 214-kids-dance-avatar
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)
