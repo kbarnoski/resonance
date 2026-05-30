@@ -12768,3 +12768,47 @@ MORNING.md (cycle 248) explicitly listed three adult candidates and asked Karel 
 - `micRef` (not React state `micMode`) is read in the RAF closure for the mic toggle. Avoids stale closure issue. `micMode` state is kept in parallel only for rendering the UI button color.
 - The offscreen background canvas `bgRef` is re-rendered on every call to `renderBg(idx)` — called on: (1) window resize, (2) slider change, (3) preset button press. Not on every animation frame. This is the correct tradeoff: the background only changes when index changes, not continuously.
 - Ratio labels (8×, 6×, 4×, 3×, 2×, 1.5×, 1×, 0.5×) and pitch labels (C2–C7) are drawn each frame as canvas text — inexpensive since there are ≤14 labels total. Alternatively could be static DOM overlays.
+
+---
+
+## Cycle 250 — kids build: 216-kids-band-builder
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Pulled 5 commits from origin/main (cycles 245–249). Now at cycle 249 (215-fm-explorer).
+
+**Decided**: Kids cycle (250 % 2 = 0). No blockers; nothing in-progress.
+STATE.md cycle 249 listed three candidates: `kids-echo-drum` (already built as `213-kids-echo-drum` in cycle 246), `kids-shadow-puppet` (camera-based, complex), and polish of `214-kids-dance-avatar`. Chose a fresh idea: **`kids-band-builder`** — five phase-locked instrument loops the child adds/removes by tapping circles.
+
+**Loves influencing this pick**:
+- `172-loop-station` ❤️ — muting/unmuting tracks is the same paradigm; band-builder is the kids version of that interaction
+- `98-kids-drum-circle` ❤️ — rhythm construction and layering; band-builder extends from tapping pads to entire instrument voices
+- `111-kids-shape-loop` ❤️ — additive composition by adding elements; band-builder does this with taps instead of draws
+- `160-kids-paint-loop` ❤️ — multiple simultaneous loops building a musical texture
+
+**What I built**:
+- `src/app/dream/216-kids-band-builder/page.tsx` — Five glowing circles (BANDIMAL: bigger=lower). Bass (C3/violet/r=76), Mid (G3/teal/r=62), Melody (C4/cyan/r=50), Rhythm (A4 click/amber/r=40), Shimmer (C5/rose/r=30). Tap a circle: its loop activates immediately, phase-locked to a shared beat clock (t0 = first tap). All loops are 4 beats at 80 BPM. Look-ahead scheduler (LOOK=0.12s) fires notes via triangle oscillators. When all 5 are on: "✨ Full Band! ✨" flash at center. Thin colored connection lines between active circles. 2.82 kB static. ✅ clean build.
+- `src/app/dream/216-kids-band-builder/README.md` — design notes, phase-lock explanation, audio design, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.82 kB, `npm run build` 0 errors, only pre-existing Resonance core ESLint warning).
+
+**What's new about this prototype**:
+1. **First kids prototype about muting/unmuting independent tracks.** All prior sequencer prototypes (dot-seq, lego-sequencer, spin-wheel) have the child add notes to a pattern. Band-builder inverts this: five loops run on a shared clock; the child decides which to hear. Same paradigm as a DJ working with stems.
+2. **Phase-locked multi-layer composition.** Each layer uses look-ahead audio scheduling from a shared `t0`. A new layer entering always snaps to the current beat, not to time=0. The band stays tight even when voices are added mid-cycle.
+3. **"All 5 on" reward.** When the child activates all five layers, a full-band flash + sparkle burst from all circles triggers. Gives a clear goal and a satisfying payoff. Natural discovery arc: start with one sound, add another, another, until the full band fires.
+4. **Connection lines as visual metaphor.** Thin colored lines connect all active circles, making the concept of "playing together" visible. The web grows as layers are added.
+
+**Queued next**:
+- Cycle 251: **adult build** (251 % 2 = 1). From MORNING.md, top candidates:
+  - `waveshape-draw` (217) — draw a waveform → hear the timbre via `createPeriodicWave`. Inversion of `20-scope`. Zero deps.
+  - `dance-avatar` (adult spring-physics skeleton dances to audio) — live performance projection piece
+  - `optical-flow-music` — webcam frame differencing → synthesis (no CDN, zero deps)
+- Cycle 252: **kids build**. Candidates:
+  - Polish `216-kids-band-builder`: mic mode (RMS → master gain), panning (stereo spread), BPM ± buttons
+  - `kids-xylophone-drops` — drops fall from top, hit color-coded xylophone bars at bottom, play their note
+  - `kids-glow-garden` — new variant of the organic growth idea with different mechanic
+
+**Notes**:
+- The look-ahead scheduler (`LOOK = 0.12s`) runs every RAF frame rather than on a separate `setInterval`. This means scheduling resolution = 60fps (16.7ms). At LOOK=120ms, each frame schedules up to 7 notes per active layer in a 4-beat window. Negligible CPU cost.
+- `scheduleActive()` computes `iter0 = floor((now - t0) / LDUR) - 1` and `iter1 = ceil((now + LOOK - t0) / LDUR) + 1` to find which loop iterations overlap the look-ahead window. The −1/+1 buffer ensures we never miss a note at loop boundaries.
+- The `scheduled: Set<string>` uses key `"${li}_${iter}_${beat}"` (layer, iteration, beat-offset). Pruning removes keys with `iter < cutIter - 2` when size > 300. At 80 BPM, 4-beat loop, 5 layers × max 8 notes = 40 keys per 3s → ~13 keys/s. Set grows to 300 in ~23 seconds, then prunes. No memory leak.
+- ESLint warning in build: `Unused eslint-disable directive (no-console)` at some line in the output — this is a pre-existing project-level config warning, not from this prototype.

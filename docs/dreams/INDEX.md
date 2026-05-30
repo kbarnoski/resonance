@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 249 — adult build)
+## ⭐ Newest (Cycle 250 — kids build)
+
+- **[/dream/216-kids-band-builder](/dream/216-kids-band-builder)** — Band Builder. `demoable`
+  Five glowing circles on a dark canvas — Bass (violet), Mid (teal), Melody (cyan), Rhythm (amber),
+  Shimmer (rose). Tap any circle to add its instrument voice to a phase-locked band at 80 BPM. Tap again
+  to remove it. All five loops share a common beat clock; a new voice always enters on-beat. BANDIMAL sizing:
+  bigger circle = lower pitch (Bass r=76, Shimmer r=30). When all five are on: "✨ Full Band! ✨" flash +
+  sparkle burst from all circles. Thin colored lines connect active circles (visual "playing together" metaphor).
+  **First kids prototype about muting/unmuting independent looping tracks** — same paradigm as a DJ with stems.
+  Zero permissions · Zero API · Zero deps · 2.82 kB.
+  Design notes: `src/app/dream/216-kids-band-builder/README.md`
+
+---
+
+## Previous (Cycle 249 — adult build)
 
 - **[/dream/215-fm-explorer](/dream/215-fm-explorer)** — FM Explorer. `demoable`
   Move your cursor (or drag on touch) across a 2D canvas to sweep through hundreds of FM timbres.
