@@ -2,6 +2,73 @@
 
 ---
 
+## Cycle 255 — adult build: 221-optical-flow-music
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to b69e636 (cycle 254, 220-kids-fireworks). 10 commits ahead.
+
+**Love signal** (27 loved prototypes — relevant to adult pick):
+- `217-dance-avatar` ❤️ — NEWLY loved, just built cycle 251. Motion ↔ music is exactly what optical-flow-music does, but with real camera motion driving the audio instead of LFO spring physics.
+- `107-ocean-presence` ❤️ — mouse presence → fluid → audio; optical-flow-music is the same paradigm but using video motion field instead of cursor.
+- `163-paths-visualizer` ❤️ — Karel's recordings as audio source; noted: paths-granular still waiting on `/api/audio/[id]` confirmation.
+- `153-paint-compose` ❤️ — drawing as musical input; optical flow is the gestural equivalent via camera.
+
+**Decided**: Adult cycle (255 % 2 = 1). No blockers; nothing in-progress.
+
+Chose `221-optical-flow-music` over:
+- `paths-granular` — open question about `/api/audio/[id]` public access still unresolved; cannot build without auth confirmation
+- `spectral-morph` — already built at `/dream/170-spectral-morph` (and earlier at 34); not needed again
+- New research speculations — IDEAS.md is well-stocked; best to build from existing spec
+
+`optical-flow-music` wins because:
+1. **Motion ↔ music gap.** `110-webcam-compose` uses camera color → music. This is the first where camera MOTION (not color) drives audio — stillness = silence.
+2. **Karel's love of `217-dance-avatar` ❤️** is a direct signal. Dance-avatar = LFO motion → skeleton. This = real camera motion → oscillator. Natural progression.
+3. **Spec was crystal-clear** in IDEAS.md (Cycle 247 research, §237/244). V2M-Zero paper validated the paradigm; the frame-differencing approach is browser-native and zero-dep.
+4. **Demo mode works without camera.** Three glowing blobs generate optical flow automatically, so the prototype is immediately usable even without camera permission.
+5. **Queued 3+ cycles.** State 253 listed it as a top candidate for cycle 255.
+
+Loved prototypes influencing this cycle: `217-dance-avatar` ❤️ (motion = music axis), `107-ocean-presence` ❤️ (presence → audio output paradigm).
+
+**What I built**:
+- `src/app/dream/221-optical-flow-music/page.tsx` — optical flow synthesizer (`○ Static`, clean build)
+  - 20×15 flow grid computed from luminance frame differences (320×240 capture canvas)
+  - Three aggregate signals: totalMag → filter cutoff (400–6000 Hz) + arpeggiation interval (60–800ms); hBias → pitch (C major pentatonic, C2–C6); vBias → reverb wet gain
+  - EMA smoothing (α=0.12) on all three signals to prevent video-noise jitter
+  - Audio: OscillatorNode(sine) → BiquadFilterNode(lowpass) → GainNode(dry) + ConvolverNode(synthetic IR) → GainNode(wet) → GainNode(master) → AnalyserNode → destination
+  - Arpeggiation: gain envelope fires (peak 0.04–0.26, decay τ=0.14s) at rate = max(60ms, 800ms − totalMag×740ms)
+  - Demo mode: three bouncing colored blobs on a dark canvas; generates realistic flow field without camera
+  - Camera mode: selfie-mirrored video capture, graceful fallback to demo on permission denial
+  - Arrow visualization: per-cell glowing vectors colored by direction (amber/violet/teal/rose, smooth blend)
+  - 6-band spectrum bar at bottom (analyser reads synthesizer output, same palette as 1-live)
+  - HUD: current note name + motion % top-left
+  - Typography: h1 text-3xl/white/95, p text-base/white/75, buttons text-base min-h-[52px]
+- `src/app/dream/221-optical-flow-music/README.md` — design notes, audio architecture, visual design, what's new
+
+**Build**: ✅ clean (`○ Static`). One TypeScript fix: `Uint8Array<ArrayBuffer>` explicit cast for `getByteFrequencyData`. No ESLint errors in dream zone.
+
+**What's genuinely new**:
+1. **First motion-primary musical input.** All prior webcam prototypes (110-webcam-compose, 101-camera-song) use color or image content. Here: stillness = silence, only movement makes sound.
+2. **Zero-dep optical flow.** Frame differencing on a 20×15 grid is 40 lines of pure JS — no MediaPipe, no WASM, no CDN dependency. The flow field is rough but musically sufficient.
+3. **Arpeggiation from motion speed.** The note rate is directly proportional to how fast things are moving — slow drift = spacious half-second notes, fast movement = rapid 60ms bursts. Motion speed becomes rhythm.
+
+**Queued next**:
+- Cycle 256: **kids build** (256 % 2 = 0). Candidates:
+  - New kids seed: `kids-magnet-notes` — tap to drop a magnet; notes are attracted to/repelled from it, creating orbital melodies
+  - Polish `220-kids-fireworks`: add mic mode (clap/hum → auto-launch rockets)
+  - Polish `218-kids-xylophone-drops`: add BPM-synced drop rate (clap to set tempo)
+- Cycle 257: **adult build** (257 % 2 = 1). Candidates:
+  - **`paths-granular`** — Karel's Welcome Home tracks granularized. Needs `/api/audio/[id]` public confirmation. If still blocked: build `fourier-paint` (draw a 2D path → Fourier epicycles → hear harmonic spectrum).
+  - **`optical-flow-music` polish** — if Karel opens it and wants richer timbre: multi-oscillator chord mode, motion history glow map, BPM-lock arpeggiation.
+
+**Notes**:
+- The `as Uint8Array<ArrayBuffer>` cast for Web Audio `getByteFrequencyData` is now the established pattern for strict TypeScript compatibility. TypeScript 5.x infers `Uint8Array<ArrayBufferLike>` from `new Uint8Array(n)` but the Web Audio API types require `Uint8Array<ArrayBuffer>`. Use this cast in all future audio analyser code.
+- Demo mode blobs could be more musically interesting with Lissajous-like paths instead of straight bouncing — the current version generates somewhat bursty motion at wall boundaries. Would make the demo sound more melodic with smoother, continuous flow.
+- Reverb controlled by vBias (downward flow) is a nice surprise: standing still with downward camera tilt deepens the reverb. But it's subtle. Could make it more dramatic with a higher max wet gain.
+- STATE.md shows Cycle 253 at top even though cycle 254 was the last commit — the cycle 254 agent may not have logged its state entry. That's fine; cycle 255 (this entry) picks up from where the git log shows.
+
+---
+
 ## Cycle 253 — adult build: 219-waveshape-draw
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)

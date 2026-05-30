@@ -10,7 +10,33 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 253 — adult build)
+## ⭐ Newest (Cycle 255 — adult build)
+
+- **[/dream/221-optical-flow-music](/dream/221-optical-flow-music)** — Optical Flow Music. `demoable`
+  Move in front of the camera — the motion IS the music. Frame-differencing on a 20×15 grid yields
+  three aggregate signals: totalMag (motion speed) → filter cutoff + arpeggiation rate;
+  hBias (rightward vs. leftward flow) → pitch snapped to C major pentatonic; vBias (downward flow)
+  → reverb depth. Arrow overlay shows each cell's flow vector, colored by direction (amber=right,
+  violet=left, teal=up, rose=down). Demo mode: three glowing blobs bounce around a dark canvas
+  generating flow without any camera permission needed. **First prototype where motion — not
+  audio — is the primary musical input.** Different from `110-webcam-compose` (color → music):
+  here stillness = silence, only movement makes sound. Inspired by Karel's love of
+  `217-dance-avatar` ❤️. Zero permissions (demo) · Zero API · Zero deps · demoable.
+  Design notes: `src/app/dream/221-optical-flow-music/README.md`
+
+---
+
+## Previous (Cycle 254 — kids build)
+
+- **[/dream/220-kids-fireworks](/dream/220-kids-fireworks)** — Fireworks. `demoable`
+  Tap the dark star-filled sky → rocket launches toward your finger → 22 pentatonic sparks explode.
+  Five color zones (violet=C4 → cyan=C5, left to right, C major pentatonic). Three rockets auto-demo.
+  First kids prototype with a projectile-arc you aim.
+  Design notes: `src/app/dream/220-kids-fireworks/README.md`
+
+---
+
+## Previous (Cycle 253 — adult build)
 
 - **[/dream/219-waveshape-draw](/dream/219-waveshape-draw)** — Waveshape Draw. `demoable`
   Draw a waveform on a canvas — hear its timbre live via `createPeriodicWave`. Drag finger or mouse
