@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 255 — adult build)
+## ⭐ Newest (Cycle 256 — kids build)
+
+- **[/dream/222-kids-magnet-notes](/dream/222-kids-magnet-notes)** — Musical Magnets. `demoable`
+  Tap anywhere to drop a glowing star magnet. Six pentatonic note-bubbles (BANDIMAL: bigger=lower,
+  violet C3 → rose E4) float on a dark star-field and are pulled toward the nearest magnet by spring
+  physics. Each bubble spirals in, rings its note at 52px distance, bounces outward, drifts back in
+  — creating periodic, naturally-paced pentatonic melody from orbital dynamics. Multiple magnets (up to 4)
+  produce layered polyrhythm without a clock. Two magnets auto-appear at load. AudioContext created on
+  first tap. **First prototype where magnet placement geometry determines the melody** — not direct
+  tapping but "composing forces." First orbital-physics sound generator in the dream zone.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.35 kB.
+  Design notes: `src/app/dream/222-kids-magnet-notes/README.md`
+
+---
+
+## Previous (Cycle 255 — adult build)
 
 - **[/dream/221-optical-flow-music](/dream/221-optical-flow-music)** — Optical Flow Music. `demoable`
   Move in front of the camera — the motion IS the music. Frame-differencing on a 20×15 grid yields

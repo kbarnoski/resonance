@@ -1,23 +1,22 @@
-# Morning digest — last updated 2026-05-30 UTC (cycle 255)
+# Morning digest — last updated 2026-05-30 UTC (cycle 256)
 
 ## New since yesterday
 
-- **`/dream/221-optical-flow-music`** (cycle 255, adult) — Move in front of the camera —
-  the motion IS the music. Webcam frame differencing over a 20×15 grid yields three musical
-  signals: motion speed → filter brightness + arpeggiation rate; rightward flow → higher pitch
-  (C major pentatonic); downward flow → deeper reverb. Arrow overlay shows each cell's vector,
-  colored by direction. **Why open this**: try demo mode first (no camera needed — three glowing
-  blobs bounce and make music automatically), then switch to camera and dance. Fast motion = rapid
-  bright arpeggios; stillness = silence. First prototype where moving your body is the instrument,
-  not your hands. Directly inspired by your love of `217-dance-avatar` ❤️. Zero deps · demoable.
+- **`/dream/222-kids-magnet-notes`** (cycle 256, kids) — Tap anywhere to drop a glowing star
+  magnet; six pentatonic note-bubbles (violet C3 → rose E4) float on a dark star-field and are
+  pulled toward it by spring physics. Each bubble spirals in, rings its note on arrival, bounces
+  outward, drifts back. Multiple magnets (up to 4) layer independent orbital melodies. **Why open
+  this**: two magnets auto-appear at load so the bubbles are already drifting before you tap —
+  touch the screen, a magnet appears, and two more bubbles swing toward it. Place magnets in
+  different spots to hear how the orbital rate changes (closer = faster rings). Kids 3+ · Zero
+  permissions · Zero deps · demoable.
 
-- **`/dream/220-kids-fireworks`** (cycle 254, kids) — Tap the dark sky → glowing rocket arcs
-  toward your finger → explodes into 22 pentatonic sparks. Five color zones (violet=C4 → cyan=C5).
-  Three auto-demo rockets on load.
+- **`/dream/221-optical-flow-music`** (cycle 255, adult) — Move in front of the camera — the
+  motion IS the music. Frame differencing → filter brightness + pitch + reverb. Demo mode works
+  without camera. First prototype where stillness = silence. Inspired by `217-dance-avatar` ❤️.
 
-- **`/dream/219-waveshape-draw`** (cycle 253, adult) — Draw a waveform on canvas, hear the timbre
-  live via `createPeriodicWave`. Harmonic spectrum shows which partials you drew. Inspired by your
-  love of `153-paint-compose` ❤️.
+- **`/dream/220-kids-fireworks`** (cycle 254, kids) — Tap the dark sky → rocket arcs toward your
+  finger → 22 pentatonic sparks explode.
 
 ## In progress / partial
 
@@ -25,25 +24,24 @@ Nothing in-progress.
 
 ## Research findings worth a look
 
-- **`paths-granular`** (suggested `222`) — granular synthesis of your Welcome Home album tracks
-  via `/api/audio/[id]`. Still awaiting confirmation: is that route publicly accessible without auth?
-  One yes unlocks it. Demo fallback is ready (synthetic audio if route returns 401).
+- **`fourier-paint`** (suggested next adult cycle 257) — draw a 2D closed path → watch Fourier
+  epicycles decompose it into rotating arms → hear the harmonic magnitudes as tones. Direct sibling
+  to `219-waveshape-draw`. Zero deps, high surprise.
 
-- **`fourier-paint`** (suggested `222`, alternative) — draw a 2D closed path on canvas → watch
-  it decomposed into Fourier epicycles (rotating arm orbits) → hear the harmonic magnitudes as tones.
-  Direct companion to `219-waveshape-draw`. Zero deps, high surprise. Can build regardless of audio
-  route question.
+- **`paths-granular`** (waiting on your OK) — granular synthesis of your Welcome Home album tracks
+  via `/api/audio/[id]`. Is that route publicly accessible without auth? One "yes" unlocks it.
 
 ## Open questions for Karel
 
-- **`/api/audio/[id]`**: is it publicly accessible (no auth required) for at least one of your
-  Welcome Home tracks? One confirmation unlocks `paths-granular` — granular synthesis of your
-  actual piano recordings. A "no" means we'll build `fourier-paint` next adult cycle instead.
+- **`/api/audio/[id]`**: publicly accessible without auth? Unlocks `paths-granular` — granular
+  synthesis of your actual piano recordings.
 
 - **Optical Flow Music (221)**: want a multi-oscillator chord mode? Currently one sine oscillator.
-  A minor-third + fifth stack (3 oscillators) when totalMag > 0.5 would give richer texture.
-  Also: want a sensitivity slider for low-light cameras?
+  A minor-third + fifth stack when totalMag > 0.5 would give richer texture. Also: sensitivity
+  slider for low-light cameras?
 
-- **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) and `sound-to-video`
-  (~$0.25–0.35/generation, your piano recording → FLUX.2 image → LTX-2.3 video) are both ready
-  on your confirmation.
+- **Kids magnet notes (222)**: the bubbles ring on every inward pass at COOLDOWN=0.7s. Want faster
+  (more notes) or slower (more space)? Also considering adding a second harmonic partial for richer
+  bell timbre.
+
+- **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready on your go-ahead.

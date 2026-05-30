@@ -2,6 +2,99 @@
 
 ---
 
+## Cycle 256 — kids build: 222-kids-magnet-notes
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 7839e98 (cycle 255, 221-optical-flow-music). 11 commits ahead.
+
+**Love signal** (27 loved prototypes — relevant to kids pick):
+- `169-kids-marble-run` ❤️ — physics-first prototype; magnet-notes uses spring physics for the same
+  "autonomous physics generates music" paradigm.
+- `133-kids-ripple-pond` ❤️ — wave propagation as musical event; magnet-notes is orbital infall as
+  musical event — same physics-as-melody concept, different geometry.
+- `140-kids-string-bridge` ❤️ — two-finger string distance = pitch; magnet-notes is tap-placement
+  = orbital radius = ring rate. Both use geometry as a musical parameter.
+- `111-kids-shape-loop` ❤️ — additive layers (draw more shapes = more loops); magnet-notes is
+  tap more magnets = more orbital voices. Same additive paradigm.
+
+**Decided**: Kids cycle (256 % 2 = 0). No blockers; nothing in-progress. Adult candidates deferred
+to cycle 257.
+
+Chose `222-kids-magnet-notes` over:
+- Polish `220-kids-fireworks` (mic mode) — less novel; fireworks works well as-is.
+- Polish `218-kids-xylophone-drops` (BPM-sync) — similarly low-novelty vs building something new.
+
+`kids-magnet-notes` wins because:
+1. **No prior prototype uses attraction physics for melody.** 221 prior kids builds use tap/drag/hold
+   as direct triggers. This is the first where placing an object determines what plays next — a
+   fundamentally different interaction paradigm. Closer to a toy than an instrument.
+2. **Spring physics creates natural polyrhythm without a clock.** Notes at different distances ring at
+   different intervals (determined by orbital dynamics), creating emergent polyphony from geometry.
+3. **STATE.md cycle 255 suggested it explicitly** ("kids-magnet-notes: tap to drop a magnet; notes
+   are attracted to/repelled from it, creating orbital melodies").
+4. **Karel's loves of `169-kids-marble-run` ❤️ and `133-kids-ripple-pond` ❤️ point toward
+   physics-driven music.** This continues that direction in a new way.
+
+Loved prototypes influencing this cycle: `169-kids-marble-run` ❤️ (physics-first melody),
+`140-kids-string-bridge` ❤️ (geometry as musical parameter), `111-kids-shape-loop` ❤️ (additive
+layering by placement).
+
+**What I built**:
+- `src/app/dream/222-kids-magnet-notes/page.tsx` — Musical Magnets (`○ Static`, 2.35 kB, ✅ clean build)
+  - Six pentatonic note-bubbles (C3/E3/G3/A3/C4/E4; BANDIMAL: bigger=lower=violet, smaller=higher=rose)
+  - Tap → drop glowing 5-point star magnet (max 4; shift-out oldest when exceeded)
+  - Spring attraction: accel = SPRING(0.20) × displacement toward nearest magnet
+  - Velocity damping 0.987/frame + Brownian random walk (BROWN=18 px/s²) for organic drift
+  - Ring at RING_R=52px: play triangle oscillator (τ=0.42s decay) + 82 px/s outward kick
+  - COOLDOWN=0.7s per bubble; with 6 bubbles and 2 magnets, a note rings roughly every 0.4–1.5s
+  - Auto-demo: 2 magnets placed at 900ms + 2000ms; visual attraction starts immediately, sound on
+    first user tap (browser AudioContext policy)
+  - Attraction rings (3 concentric halos) show magnet's influence zone
+  - Hint text ("Tap the sky to drop a magnet ✦") fades after 6s
+  - Stars background (same 64-star twinkling pattern as `220-kids-fireworks`)
+  - Typography: h1 text-2xl/white/95, p text-base/white/75
+- `src/app/dream/222-kids-magnet-notes/README.md` — physics explanation, audio spec, what's new
+
+**Build**: ✅ clean (`○ Static`, 2.35 kB). No TypeScript or ESLint errors in dream zone.
+Pre-existing Google Font warnings at line 222 in some other file — unrelated to this prototype.
+
+**What's genuinely new**:
+1. **First orbital-physics melody prototype.** All 221 prior kids builds trigger notes directly
+   (tap, drag, hold). Here the physics engine generates notes autonomously from magnet placement
+   geometry — the child is a "composer of forces," not a "player of notes."
+2. **Emergent polyrhythm from geometry.** No BPM clock. Notes at different orbital distances ring
+   at naturally different rates. Two magnets = two independent orbital period layers.
+3. **Spring zero-natural-length model** is the first time this physics primitive appears in the
+   dream zone. Different from elastic wall bounce (fireworks) or Karplus-Strong string (pluck-field)
+   or ripple ring propagation (ripple-pond).
+
+**Queued next**:
+- Cycle 257: **adult build** (257 % 2 = 1). Candidates:
+  - **`fourier-paint`** — draw a 2D closed path → Fourier epicycles → hear harmonic spectrum.
+    Direct sibling to `219-waveshape-draw`. Zero deps. High Karel-surprise factor.
+  - **`paths-granular`** — granular synthesis of Welcome Home album tracks. Blocked by `/api/audio/[id]`
+    auth confirmation from Karel (asked in MORNING.md again).
+- Cycle 258: **kids build** (258 % 2 = 0). Candidates:
+  - Polish `222-kids-magnet-notes`: add second harmonic partial for richer bell timbre; add drag-to-move
+    magnets so child can steer an active orbital; consider "magnet pulse" on REMOVE (oldest magnet flashes
+    out with a gliss before disappearing).
+  - New seed: `kids-snowflake-song` — tap to place snowflakes; flakes drift down, chime when they land
+    or collide. Seasonal companion to lantern + fireworks. (See KIDS.md seeded ideas.)
+
+**Notes**:
+- The spring constant SPRING=0.20 s⁻² gives natural oscillation period T = 2π/√0.20 ≈ 14s. With
+  damping, bubbles settle in ~4s. RING_R=52px + KICK_V=82px/s creates periodic ringing every 1–4s
+  per bubble (depends on magnet distance). With 6 bubbles at 2 magnets: ~1 ring/sec aggregate — a
+  pleasant, spacious melody rate for kids.
+- Hint text drawn on canvas (not DOM overlay) ensures it scales with DPR and doesn't interfere with
+  touch events. The `ts` timestamp drives the fade: `Math.max(0, (8000 - ts) / 3000)` fades the hint
+  from opacity 0.55 → 0 between 5s and 8s after load.
+- The `buildStars` helper is a named function (not a `use*` name) and avoids the React hooks linting
+  rule. Pattern consistent with other kids prototypes.
+
+---
+
 ## Cycle 255 — adult build: 221-optical-flow-music
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)
