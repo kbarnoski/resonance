@@ -12721,3 +12721,50 @@ STATE.md cycle 243 listed `kids-firefly-web` as the top kids candidate. MORNING.
 - `FRICTION = 0.983` per frame gives a natural speed decay: 1.3 px/frame max → ~0.3 px/frame after 60 frames (1 second). This means fireflies slow when they've been drifting without input, but the wander jitter (±0.055) keeps them always moving gently.
 - The `nowThreads` Set approach ensures chimes fire exactly once per connection onset (same pattern as `colPairs` Set in `205-kids-bubble-bath`). On the frame a thread forms, the key is absent from `st.threads` (last frame's set) → chime fires and key is added to `nowThreads`. Next frame, key is in `st.threads` → no chime.
 - Wall repulsion uses a 22 px dead zone from each edge. On a 375 × 667 CSS px mobile screen, fireflies effectively drift in a ~330 × 575 play area, keeping them visible and giving plenty of room for threads to form.
+
+---
+
+## Cycle 249 — adult build: 215-fm-explorer
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Pulled 4 commits from origin/main (cycles 245–248). Now at cycle 248 (214-kids-dance-avatar).
+
+**Decided**: Adult build cycle (249 % 2 = 1). No blockers; nothing in-progress.
+MORNING.md (cycle 248) explicitly listed three adult candidates and asked Karel to choose: `dance-avatar`, `fm-explorer`, or `waveshape-draw`. No reply before this autonomous cycle; choosing `fm-explorer` based on:
+- **Biggest synthesis gap in the sandbox**: 214 prototypes (cycles 1–248), zero use FM synthesis. The DX7, Rhodes, 808 sub-bass, bell tones, and metallic percussion all come from FM. This is a glaring omission.
+- **Loved prototype signals**: `105-pluck-field` ❤️ (physical synthesis exploration) and `148-spatial-palette` ❤️ (2D drag surface for synthesis parameters) both map directly to `fm-explorer`'s 2D timbral landscape design.
+- **One-cycle feasibility**: FM is 3 Web Audio API nodes (`OscillatorNode`, `GainNode`, `AudioParam.connect`). Zero deps.
+- **Surprise**: moving a cursor and hearing tones shift from organ → bell → gong → metallic in one gesture is qualitatively different from anything else in the sandbox.
+
+**Loves influencing this pick**:
+- `105-pluck-field` ❤️ — physical synthesis with a hands-on exploration surface; fm-explorer is the same paradigm (2D spatial control of synthesis params)
+- `148-spatial-palette` ❤️ — 2D canvas where position = synthesis parameter; fm-explorer extends this to a full timbral landscape
+- `84-wave-fluid` ❤️ — Karel gravitates toward visually textured backgrounds that reinforce the audio character
+
+**What I built**:
+- `src/app/dream/215-fm-explorer/page.tsx` — 2D canvas timbral landscape. X axis = carrier pitch (C2–C7, log-spaced). Y axis = modulator ratio (0.5–8.0, low-to-high). Moving the cursor (or dragging on touch) changes both axes live. FM index slider (0–15) controls modulation depth. Background color field: emerald = harmonic ratios (simple fractions), amber = bell-like (near √2), violet = metallic/noisy (high ratio inharmonic). Waveform oscilloscope strip at bottom shows the FM output. 5 preset buttons: Bell (E4, ratio √2, idx 8), Rhodes (C3, ratio 2:1, idx 3.5), Clangy (G3, ratio 3.5:1, idx 12), Sub (A1, ratio 1:1, idx 2), Metallic (D3, ratio 5:3, idx 15). Mic mode: RMS amplitude → FM index (play louder = more complex metallic timbre). ○ Static, 4.05 kB, ✅ clean build.
+- `src/app/dream/215-fm-explorer/README.md` — design notes, FM equation, audio routing diagram, preset table, polish ideas.
+- Build: ✅ clean (`○ Static`, 4.05 kB, `npm run build` 0 errors, only pre-existing Resonance core warnings).
+
+**What's new about this prototype**:
+1. **First FM synthesis prototype in 214 prototypes.** FM was the defining synthesis paradigm of the 1980s and remains the basis of electric piano, bell tones, and metallic percussion. Every prior prototype uses either additive sine partials, subtractive (BiquadFilter), granular, or Karplus-Strong. FM fills the last major classical synthesis gap.
+2. **Timbral landscape as a navigable 2D space.** Rather than a preset selector, the canvas IS the parameter space — moving across it continuously transitions between hundreds of distinct timbres without menus or knobs. The moment the cursor crosses a "harmonic ratio" horizontal line (ratio=1, 2, 3...) the tone shifts audibly from complex to pure. This is teachable music theory.
+3. **Color-coded timbral complexity.** The background encodes harmonicity: simple integer ratios glow emerald, irrational/complex ratios (√2, 5:3) glow violet. The visual and audio information reinforce each other — the color tells you what you'll hear before you move there.
+4. **AudioParam.connect FM routing.** The key Web Audio primitive `modGain.connect(carrier.frequency)` is used here for the first time in the sandbox. This routes audio-rate modulation directly to a parameter rather than another destination node. A technique used in zero prior prototypes.
+
+**Queued next**:
+- Cycle 250: **kids build** (250 % 2 = 0). Candidates:
+  - `kids-echo-drum` — tap a rhythm → drum echoes it back exactly then adds one more beat (deferred from cycle 246)
+  - `kids-shadow-puppet` — hand blocks camera, shadow shape triggers instrument sounds
+  - Polish `214-kids-dance-avatar`: multi-touch chord mode (each finger = different body part, ~20 lines)
+- Cycle 251: **adult build**. Candidates:
+  - `dance-avatar` — spring-physics skeleton dances to audio (live performance: project on stage)
+  - `waveshape-draw` — draw a waveform on canvas → hear the timbre via createPeriodicWave (paradigm inversion)
+  - `optical-flow-music` — webcam frame differencing → synthesis (no CDN, zero deps)
+
+**Notes**:
+- The FM modulation depth formula is `depth = index × mod_freq`, matching the standard DX7 convention: the frequency deviation is `I × F_m` Hz, not `I × F_c`. This means at high ratios, higher index values are needed to achieve the same "amount" of FM effect — which is exactly the behavior heard on physical DX7 patches and matches the PRESETS.
+- `micRef` (not React state `micMode`) is read in the RAF closure for the mic toggle. Avoids stale closure issue. `micMode` state is kept in parallel only for rendering the UI button color.
+- The offscreen background canvas `bgRef` is re-rendered on every call to `renderBg(idx)` — called on: (1) window resize, (2) slider change, (3) preset button press. Not on every animation frame. This is the correct tradeoff: the background only changes when index changes, not continuously.
+- Ratio labels (8×, 6×, 4×, 3×, 2×, 1.5×, 1×, 0.5×) and pitch labels (C2–C7) are drawn each frame as canvas text — inexpensive since there are ≤14 labels total. Alternatively could be static DOM overlays.

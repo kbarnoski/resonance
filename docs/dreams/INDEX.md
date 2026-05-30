@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 248 — kids build)
+## ⭐ Newest (Cycle 249 — adult build)
+
+- **[/dream/215-fm-explorer](/dream/215-fm-explorer)** — FM Explorer. `demoable`
+  Move your cursor (or drag on touch) across a 2D canvas to sweep through hundreds of FM timbres.
+  X axis = carrier pitch (C2–C7, log). Y axis = modulator ratio (0.5–8.0). FM index slider controls
+  depth. Background color field encodes timbral complexity: emerald = harmonic ratios (organ-like),
+  amber = bell-like, violet = metallic/noisy. Waveform scope strip shows FM output in real time.
+  5 presets: Bell, Rhodes, Clangy, Sub, Metallic. Mic mode: RMS → FM index (play louder = more
+  metallic). **First FM synthesis prototype in 214 prior prototypes.** FM underlies the DX7 (1983),
+  Rhodes piano, 808 sub-bass, and bell tones — three Web Audio nodes, zero deps.
+  Zero permissions (mic optional) · Zero API · Zero deps · 4.05 kB.
+  Design notes: `src/app/dream/215-fm-explorer/README.md`
+
+---
+
+## Previous (Cycle 248 — kids build)
 
 - **[/dream/214-kids-dance-avatar](/dream/214-kids-dance-avatar)** — Dance Avatar. `demoable`
   A glowing cartoon character with five tap zones: head (C4/cyan), left hand (G3/emerald), right hand
@@ -4526,6 +4541,15 @@ particles. Requires WebGPU (2026: 70%+ browsers). Will look like a galaxy.
 Open `/dream/210-aria-companion`. Click **Start mic** and play piano (or sing a melody). After you pause for 1.5 seconds, Aria responds with an 8-note phrase built from a Markov chain of your own note transitions. Your phrase appears as warm orange bars on the top piano roll; Aria's response as cool blue bars below. The Markov table accumulates across rounds — the longer you play, the more Aria mirrors your melodic style. No mic? Click anyway: a demo pentatonic phrase seeds the chain and Aria responds automatically.
 
 Design notes: `src/app/dream/210-aria-companion/README.md`
+
+---
+
+### 215-fm-explorer
+**Status**: `demoable` · **Cycle shipped**: 249 · **Last touched**: 2026-05-30
+
+Open `/dream/215-fm-explorer`. Click **Start FM** and move your cursor across the canvas. X = carrier pitch (C2–C7), Y = modulator ratio (0.5–8×). Moving left-to-right transposes the tone across five octaves; moving top-to-bottom sweeps from complex metallic textures (high ratio) to pure harmonic tones (low ratio near 1:1). The FM index slider controls modulation depth — at 0 you hear a pure sine everywhere; at 15 the canvas becomes a noise-to-bell landscape. Preset buttons jump to Bell (E4, ratio √2), Rhodes (C3, ratio 2:1), Clangy (G3, ratio 3.5:1), Sub (A1, ratio 1:1), Metallic (D3, ratio 5:3). Mic mode routes your RMS amplitude to the index — play louder for more metallic edge.
+
+Design notes: `src/app/dream/215-fm-explorer/README.md`
 
 ---
 
