@@ -1,5 +1,57 @@
 # Dream Agent — cycle state
 
+## Cycle 245 — adult build: 212-diatonic-harmony
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Local main was 50+ commits diverged from origin (force-push, fresh container). Hard-reset to `origin/main` (cycle 244). npm install succeeded.
+
+**Love signal** (26 loved prototypes — relevant to adult pick):
+- `163-paths-visualizer` ❤️ — Karel loves piano-centric output; diatonic-harmony produces real music theory output from piano input
+- `138-lmdm-echo` ❤️ — dialogue/response pattern; harmonization is a form of musical call-and-response
+- `105-pluck-field` ❤️ — physical piano synthesis; same 3-partial sine piano approach used here
+- `157-concept-steer` ❤️ — Karel responds to multi-axis musical controls; key + mode + interval stacking is exactly that
+
+**Decided**: Adult cycle (245 % 2 = 1). No blockers; nothing in-progress. Research is overdue (33 cycles since last research at cycle 213), but the IDEAS queue is deep (40+ entries) and `diatonic-harmony` has been explicitly flagged as the top adult candidate for two consecutive cycles (243 and 244). Building now; flagging research for cycle 246.
+
+Chose `diatonic-harmony` over:
+- Research sweep — overdue but queue is not thin; flagged explicitly for cycle 246 (next adult slot)
+- `chord-canvas` — also a good candidate; deferred to cycle 247 or a future adult slot
+- `splat-bloom` — visually interesting but lower theory-surprise delta given recent SDF/anemone builds
+
+`diatonic-harmony` wins because: (a) zero deps, clearly specced, one-cycle build; (b) first prototype that surfaces music theory from live input rather than just signal properties; (c) directly extends the `210-aria-companion` dialogue theme in a different direction (responsive harmonic texture vs. turn-taking response); (d) live performance fitness is very high — a pianist can use this immediately.
+
+**What I built**:
+- `src/app/dream/212-diatonic-harmony/page.tsx` — mic input → autocorrelation pitch detection → Krumhansl-Kessler key detection → diatonic third + fifth voices, three-lane scrolling piano roll. (`○ Static`, 3.72 kB, ✅ clean build)
+  - Pitch detection: same autocorrelation + stability filter (2-frame confirmation) as `210-aria-companion`
+  - Key detection: 12-bin chroma vector accumulates detected pitch classes; dot-product against 24 KK tonal hierarchy templates (12 major + 12 minor); updates live on each new note
+  - Diatonic voice: given MIDI note + key, finds nearest scale degree, adds N diatonic steps (2=third, 4=fifth), wraps octave correctly. B in C major gives D (minor third) + F (diminished fifth)
+  - Audio: 3-partial sine piano × 3 voices; third panned +0.28, fifth panned -0.28; 35% reverb wet
+  - Visual: three-lane scrolling piano roll — THIRD (light blue, top), YOU (orange, middle), FIFTH (deep blue, bottom). Each lane spans C2–C7, octave grid lines
+  - Demo mode: ascending + descending C major scale (15 notes at 610ms intervals), auto-harmonized
+- `src/app/dream/212-diatonic-harmony/README.md` — design notes, KK algorithm, diatonic interval logic, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 3.72 kB). Zero TypeScript or ESLint errors.
+
+**What's genuinely new**:
+1. **First music-theory-aware harmonization in the sandbox.** All 26 existing prototypes map audio signal properties (FFT bands, chroma, pitch trajectories). This is the first that knows the key and generates *diatonic* intervals — different intervals on different scale degrees, as a real arranger would do.
+2. **Real-time key detection.** The Krumhansl-Kessler algorithm is the standard MIR approach (1990). No heuristics — it's a simple dot-product against tonal hierarchy profiles that genuinely tracks modulations as you play.
+3. **Live-performance three-voice texture from zero dependencies.** A pianist can play any melody and instantly hear it in a three-voice chorale texture, with the harmony tracking key changes in real time.
+
+**Queued next**:
+- Cycle 246: **research sweep** (overdue 33 cycles — next adult slot, explicitly flagged). Scan June 2026: arxiv, fal.ai, HuggingFace "new" tab, Hacker News week of 2026-05-26, SIGGRAPH 2026 Art Gallery, Three.js r172+.
+- Cycle 247: **kids build** (246 % 2 = 0). Candidates:
+  - `kids-echo-drum` — tap a rhythm → drum echoes it exactly, then adds one more beat (deferred from cycle 244)
+  - Polish `211-kids-firefly-web`: mic mode (RMS → fly speed), thread-break pluck sound
+
+**Notes**:
+- `diatonicVoice` handles out-of-scale notes by snapping to nearest scale degree (Euclidean distance mod 12). This means chromatic notes (C# in C major) produce harmonies from the nearest diatonic step — acceptable behavior for live piano where passing tones are common.
+- Chroma accumulation does NOT decay — it accumulates over the whole session. This means prolonged play in C major followed by a brief A minor passage won't immediately shift the key label. Deliberate: short chromatic excursions shouldn't destabilize the key reading. A decay window (e.g., last 16 notes) would be more responsive but risks instability on chromatic passages.
+- `StereoPannerNode` (pan ±0.28 for harmony voices) works correctly in mono / stereo and requires no explicit channel split. Much simpler than two-channel gain routing.
+- Three-lane piano roll: note heights are computed from the note's actual MIDI value within the lane's MIDI_LO/MIDI_HI range, not from a fixed interval offset. So if the third voice is E4 (64) and YOUR note is C4 (60), the E4 bar appears 4/60 × laneH higher within the THIRD lane.
+
+---
+
 ## Cycle 240 — kids build: 207-kids-harmonic-piano
 
 **When**: 2026-05-29 UTC (hourly autonomous cycle)

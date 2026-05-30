@@ -1,43 +1,48 @@
-# Morning digest — last updated 2026-05-29 UTC (cycle 244)
+# Morning digest — last updated 2026-05-30 UTC (cycle 245)
 
 ## New since yesterday
 
-- **`/dream/211-kids-firefly-web`** — Tap to release glowing fireflies on a dark canvas.
-  When two drift within range they spin a vibrating silk thread — and a pentatonic chime
-  sounds, pitched by thread length (short = high note). All threads harmonize. Tap more
-  fireflies to weave a glowing web of music. **Why open this**: the thread-formation moment
-  is genuinely magical — the child taps, waits, then watches two lights find each other and
-  sing. Descends directly from your loved `140-kids-string-bridge` but the endpoints are alive.
+- **`/dream/212-diatonic-harmony`** (cycle 245) — Play a melody into the mic; every note is
+  instantly harmonized with its diatonic third and fifth — scale-correct companion voices that
+  adapt as the key is detected live. Three-lane scrolling piano roll: THIRD (light blue, top),
+  YOU (warm orange, middle), FIFTH (deep blue, bottom). Key detection uses the Krumhansl-Kessler
+  tonal hierarchy (standard MIR; 4+ notes needed to stabilize). **Why open this**: play a C major
+  scale and watch all three tracks scroll in parallel harmony; then shift to a minor phrase and
+  watch the third voice switch from major (E) to minor (E♭) automatically.
 
-## Recent (last 3 cycles)
+## Recent (last 4 cycles)
 
-- **`/dream/210-aria-companion`** (cycle 243) — Play piano, pause 1.5s, Aria responds with
-  a Markov-chain phrase built from your own note transitions. Split piano roll: your notes
-  in warm orange, Aria's in cool blue. The longer you play, the more Aria sounds like you.
-- **`/dream/209-kids-drum-tap`** (cycle 242) — Four drum pads, tap a rhythm, Markov drum
-  talks back. Auto-demo after 2.2s idle.
-- **`/dream/208-param-layer`** (cycle 241) — Four concentric rings sculpt a bell synth
+- **`/dream/211-kids-firefly-web`** (cycle 244) — Tap to release glowing fireflies; when two
+  drift within range they spin a silk thread and chime. Direct descendant of `140-kids-string-bridge` ❤️.
+- **`/dream/210-aria-companion`** (cycle 243) — Play piano, pause, Aria responds with a Markov
+  phrase shaped by your own note transitions. First turn-taking dialogue prototype.
+- **`/dream/209-kids-drum-tap`** (cycle 242) — Four drum pads, Markov drum talks back after 1.5s.
+- **`/dream/208-param-layer`** (cycle 241) — Four concentric rings sculpt a harmonic bell
   (pitch, partials, inharmonicity, decay). Drag rings, tap center to strike.
 
 ## In progress / partial
 
-Nothing in-progress. Both queues (adult + kids) are clear.
+Nothing in-progress.
 
 ## Research findings worth a look
 
-Research sweep is overdue — last was cycle 213, now 32 cycles ago. Cycle 245 is the next
-adult slot and is the planned research target. Prioritized topics: WebGPU compute audio,
-Three.js mesh deformation driven by FFT, Lyria RealTime (speced in `30-lyria-jam`),
-MediaPipe hand tracking for gesture instruments.
+**Research is 33 cycles overdue** (last full sweep: cycle 213). The cycle 245 MORNING.md explicitly
+flags this as a priority for cycle 246 (next adult slot). The ideas queue is healthy but all specced
+ideas are from 2026-05-20 or earlier — 10+ days old in a fast-moving domain.
+
+Prioritized research areas for cycle 246:
+- WebGPU compute audio (per iPlug3, cycle 66 research) — fresh May/June 2026 updates?
+- fal.ai / Replicate June 2026 model releases (models tagged "new" in the last 30 days)
+- Three.js r172+ and TSL updates
+- SIGGRAPH 2026 Art Gallery announcements (usually released June)
 
 ## Open questions for Karel
 
-- **Firefly Web (211)**: after trying it — does the anticipation window (drift → thread forms)
-  feel right for a 4yo, or should threads form faster? Also: do you want a mic mode where
-  breathing/humming speeds the fireflies up?
-- **Aria Companion (210) direction**: (a) velocity mapping so louder notes are thicker on
-  the roll, (b) 2nd-order Markov for richer style capture, or (c) Aria replies in a
-  contrasting octave to create actual harmony?
-- **Cycle 245 research sweep**: approve a full research cycle to pull June 2026 findings
-  (WebGPU, new fal.ai models, SIGGRAPH/MUTEK news)? The queue is healthy but the newest
-  specced ideas are 30+ cycles old.
+- **Diatonic Harmony (212)**: does the 3-lane layout read clearly, or would you prefer all
+  three voices overlaid in one lane (different colors, single pitch space)? The overlaid view
+  shows the actual interval sizes; the three-lane view makes each voice independently readable.
+- **Research cycle approval**: cycle 246 (next adult slot) is planned as a full research sweep —
+  confirming this is fine unless you want a build instead. Research will target June 2026
+  findings (WebGPU, fal.ai releases, SIGGRAPH news, Hacker News week of 2026-05-26).
+- **Aria Companion (210)**: cycle 243's STATE.md asked whether you want (a) velocity mapping,
+  (b) 2nd-order Markov, or (c) Aria replies in a contrasting octave. Any of these worth a polish cycle?

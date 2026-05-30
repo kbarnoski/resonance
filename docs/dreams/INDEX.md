@@ -10,7 +10,49 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 242 — kids build)
+## ⭐ Newest (Cycle 245 — adult build)
+
+- **[/dream/212-diatonic-harmony](/dream/212-diatonic-harmony)** — Diatonic Harmony. `demoable`
+  Play a melody into the mic; every note is instantly joined by its diatonic third and fifth —
+  scale-correct companion voices that adapt as the key is detected. Three-lane scrolling piano roll:
+  THIRD (light blue, top), YOU (warm orange, middle), FIFTH (deep blue, bottom). Key detection via
+  Krumhansl-Kessler tonal hierarchy profiles (12-bin chroma × 24 major/minor templates, dot-product
+  scoring). Diatonic intervals computed per scale degree — B in C major gets a minor third (D) and
+  diminished fifth (F), not a fixed +4/+7 offset. Demo: ascending + descending C major scale.
+  **First prototype that generates musically-correct companion voices for live performance.**
+  Zero deps · Mic optional · Zero API · 3.72 kB.
+  Design notes: `src/app/dream/212-diatonic-harmony/README.md`
+
+---
+
+## Previous (Cycle 244 — kids build)
+
+- **[/dream/211-kids-firefly-web](/dream/211-kids-firefly-web)** — Firefly Web. `demoable`
+  Tap to release glowing fireflies on a dark canvas. When two drift within 155 px they spin
+  a vibrating silk thread — and a pentatonic chime fires, pitched by thread length (short = high,
+  long = low). All threads harmonize. Up to 8 fireflies, 28 simultaneous threads. Fireflies drift
+  with gentle Brownian motion + soft mutual attraction so threads form naturally. Halo pulse per
+  firefly at ~0.5 Hz. 2 auto-seeded on load. **First kids prototype where the endpoints are alive**
+  — extends `140-kids-string-bridge` ❤️ (static anchor points → drifting lights).
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.88 kB.
+  Design notes: `src/app/dream/211-kids-firefly-web/README.md`
+
+---
+
+## Previous (Cycle 243 — adult build)
+
+- **[/dream/210-aria-companion](/dream/210-aria-companion)** — Aria Companion. `demoable`
+  Play piano into the mic. After you pause 1.5s, Aria responds with an 8-note phrase built from
+  a 1st-order Markov chain of your own note transitions. Split scrolling piano roll: YOU (warm
+  orange, top) / ARIA (cool blue, bottom). The Markov table accumulates across rounds — the longer
+  you play, the more Aria mirrors your style. Demo: pentatonic phrase seeds the chain and Aria
+  responds automatically. **First dialogue prototype** — turn-taking structure (you play, Aria
+  responds) unlike all prior reactive prototypes. Zero deps · Mic optional · 3.68 kB.
+  Design notes: `src/app/dream/210-aria-companion/README.md`
+
+---
+
+## Previous (Cycle 242 — kids build)
 
 - **[/dream/209-kids-drum-tap](/dream/209-kids-drum-tap)** — Drum Tap. `demoable`
   Four large colored drum pads fill the screen. Tap any pad for an instant percussive sound
