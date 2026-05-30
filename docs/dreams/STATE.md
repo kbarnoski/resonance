@@ -2,6 +2,71 @@
 
 ---
 
+## Cycle 253 — adult build: 219-waveshape-draw
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 1c2ba3c (cycle 252, kids-xylophone-drops). npm install required (fresh container).
+
+**Love signal** (26 loved prototypes — relevant to adult pick):
+- `153-paint-compose` ❤️ — drawing = music; waveshape-draw is the direct complement (draw → timbre instead of play → painting)
+- `172-loop-station` ❤️ — live performance construction; same zero-deps synthesis spirit
+- `107-ocean-presence` ❤️ — immersive sustained audio; waveshape-draw is the first prototype about *shaping* a sustained tone
+- `105-pluck-field` ❤️ — physical modeling synthesis (Karplus-Strong); waveshape-draw is additive synthesis (Fourier), the natural companion
+
+**Decided**: Adult cycle (253 % 2 = 1). No blockers; nothing in-progress.
+`waveshape-draw` has been the top adult candidate in three consecutive STATE.md queue entries (cycles 251, 252). MORNING.md from cycle 252 explicitly flags it as "high time to build." Karel's love of `153-paint-compose` ❤️ is a direct signal — the draw-as-music axis is strongly preferred.
+
+Chose `waveshape-draw` (→ `219-waveshape-draw`) over:
+- `paths-granular` — still waiting on `/api/audio/[id]` auth confirmation (open question in MORNING.md)
+- `optical-flow-music` — webcam permission friction; lower priority
+- `spectral-morph` (34) — AudioWorklet resynthesis; more complex; save for a later cycle
+
+`waveshape-draw` wins because:
+1. **Paradigm inversion of scope/visualizer.** All 218 prior prototypes convert audio → visual. This is the first where you draw a visual (waveform shape) and it becomes audio timbre. Complete reversal.
+2. **Karel's love of `153-paint-compose` ❤️ is a direct signal.** Both prototypes treat drawing as musical input; this adds the synthesis dimension.
+3. **Harmonic chart is educational.** The DFT bar chart showing which harmonics are present makes music-theory concepts (why a square wave sounds buzzy, why a sine is clean) tangible and visible.
+4. **Zero deps, zero permissions.** Pure Web Audio `createPeriodicWave` — a rarely-used API that unlocks arbitrary timbre synthesis from drawn curves.
+5. **Queued 3+ cycles.** Should have landed sooner.
+
+**What I built**:
+- `src/app/dream/219-waveshape-draw/page.tsx` — waveform drawing canvas → `createPeriodicWave` oscillator (`○ Static`, 3.25 kB, ✅ clean build)
+  - Canvas layout: top 62% = waveform drawing zone, next 28% = 32-bar harmonic chart, bottom 10% = labels
+  - Drawing: pointer events write amplitude values into `Float32Array[128]`; linear interpolation fills gaps from fast drags
+  - DFT: 128 samples × 64 harmonics → `createPeriodicWave(real, imag)`. ~0.3ms per call; throttled to 30fps during drawing
+  - Amber overlay: `AnalyserNode.getFloatTimeDomainData()` shows actual oscillator output vs. drawn waveform — should match closely
+  - Presets: Sine, Square, Triangle, Sawtooth — each loads instantly and plays its classic timbre
+  - Pitch slider: 55–880 Hz (A1–A5), note name shown; Volume: 0–70%
+  - RAF reads all dynamic state from refs (no React re-renders during drawing)
+  - Typography: h1 text-2xl/white/95, p text-base/white/75, buttons text-base min-h-[44px]
+- `src/app/dream/219-waveshape-draw/README.md` — design notes, DFT math, rendering architecture, what's new
+
+**Build**: ✅ clean (`○ Static`, 3.25 kB). Zero TypeScript or ESLint errors in 219-waveshape-draw.
+Fixed one TypeScript issue: ctx narrowing through closures requires explicit typed const aliases (`const ctx: CanvasRenderingContext2D = ctxRaw`).
+
+**What's genuinely new**:
+1. **First timbre-drawing prototype.** 218 prior prototypes visualize audio as light. This is the first where you draw light (waveform shape) and it becomes audio timbre.
+2. **DFT in both directions.** Every other prototype uses FFT for analysis (audio → spectrum). This prototype uses DFT for synthesis (drawn spectrum → audio). The harmonic chart makes the bridge visible.
+3. **`createPeriodicWave` as primary interaction.** This Web Audio API is rarely surfaced interactively; most prototypes use OscillatorNode with `type = "sine"/"square"`. Here the user directly sculpts the Fourier series.
+
+**Queued next**:
+- Cycle 254: **kids build** (254 % 2 = 0). Candidates:
+  - Polish `218-kids-xylophone-drops`: add BPM-synced drop rate or mic mode (clap → extra drop)
+  - Polish `216-kids-band-builder`: BPM ± buttons, or mic mode (louder playing = louder voices)
+  - New kids seed: `kids-color-wheel-song` — a spinning color wheel where each colored sector plays a pentatonic note; tap to start/stop spinning; landing sector determines pitch
+- Cycle 255: **adult build** (255 % 2 = 1). Candidates:
+  - **`paths-granular`** — granular synthesis of Karel's Welcome Home tracks (if `/api/audio/[id]` confirmed public)
+  - **`optical-flow-music`** — webcam frame differencing → synthesis parameters; no mic needed
+  - **`spectral-morph`** (34) — AudioWorklet FFT magnitude interpolation between two sources
+
+**Notes**:
+- The `const cvs: HTMLCanvasElement = canvas; const ctx: CanvasRenderingContext2D = ctxRaw;` pattern is now established for canvas RAF effects. TypeScript loses control-flow narrowing inside nested function closures; explicit typed const assignments propagate the non-null type cleanly. Use this pattern in all future canvas prototypes.
+- `createPeriodicWave` with `disableNormalization: false` lets the browser scale the waveform to prevent clipping. This means a very spiky hand-drawn waveform sounds similar in volume to a smooth one — useful for a demo but would need manual normalization for a production synth.
+- Throttling the DFT to 30fps during pointer move is the right balance: the waveform visual updates at 60fps (RAF reads waveRef directly), but the timbre synthesis updates at 30fps (DFT + setPeriodicWave). The gap between visual update and audio update is imperceptible at 33ms.
+- Loved prototypes that influenced this cycle: `153-paint-compose` ❤️ (drawing=music axis), `105-pluck-field` ❤️ (synthesis paradigm rather than effects/visualization).
+
+---
+
 ## Cycle 251 — adult build: 217-dance-avatar
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)

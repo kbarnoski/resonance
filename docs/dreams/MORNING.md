@@ -1,23 +1,25 @@
-# Morning digest — last updated 2026-05-30 UTC (cycle 252)
+# Morning digest — last updated 2026-05-30 UTC (cycle 253)
 
 ## New since yesterday
 
-- **`/dream/218-kids-xylophone-drops`** (cycle 252, kids) — Five colored xylophone bars sit at
-  the bottom in a staircase. Drops fall from the top every 1.8 seconds, each aimed at a bar. When
-  a drop hits, the bar glows and rings a pentatonic note. Tap the sky to aim a drop; tap a bar
-  directly to ring it instantly. Tallest bar = deepest note — a physical lesson built into the shape.
-  **Why open this**: watch it for 10 seconds with no interaction, then tap the sky above each bar
-  column and hear the staircase. First kids prototype with temporal anticipation — you see the drop
-  coming before it rings.
+- **`/dream/219-waveshape-draw`** (cycle 253, adult) — Draw a waveform on canvas, hear its timbre
+  live. Drag your finger to reshape the oscillator's period; an amber overlay shows the actual
+  oscillator output vs. your drawn violet curve. A 32-bar harmonic chart below shows the Fourier
+  spectrum of what you drew. Presets: Sine (one harmonic), Square (odd harmonics), Triangle
+  (falling odd harmonics), Sawtooth (all harmonics). **Why open this**: load the Square preset,
+  hear the buzz; switch to Sine, hear the purity; draw something jagged between them and hear the
+  metallic hybrid. The harmonic chart is the bridge between what you see and what you hear.
+  **First prototype that inverts the audio→visual axis**: instead of audio → light, you draw light
+  → audio. Directly inspired by Karel's love of `153-paint-compose` ❤️.
 
-- **`/dream/217-dance-avatar`** (cycle 251) — 12-joint spring-physics skeleton that dances to
-  audio. Each body part driven by its own frequency band: sub-bass bounces hips, treble nods the
-  head. Demo mode on load. Enable Mic to dance to live piano.
-  **Why open this**: play any passage and watch the figure react. First human-figure prototype in
-  217 builds.
+- **`/dream/218-kids-xylophone-drops`** (cycle 252, kids) — Five colored xylophone bars in a
+  staircase; drops fall every 1.8s from the top. Tallest bar = deepest note. Tap the sky above a
+  bar to aim a drop; tap a bar directly to ring it instantly. First kids prototype with temporal
+  anticipation — you see the drop coming before the note fires.
 
-- **`/dream/216-kids-band-builder`** (cycle 250) — Five glowing instrument circles. Tap to add,
-  tap again to remove. All voices phase-lock to 80 BPM.
+- **`/dream/217-dance-avatar`** (cycle 251, adult) — 12-joint spring-physics skeleton dances to
+  audio. Sub-bass bounces hips, treble nods the head, mid swings arms counter-phase. Demo mode
+  runs on page load; enable Mic to dance to live piano.
 
 ## In progress / partial
 
@@ -25,19 +27,21 @@ Nothing in-progress.
 
 ## Research findings worth a look
 
-- **`waveshape-draw`** (suggested `219`): Draw a waveform on canvas → hear the timbre via
-  `createPeriodicWave`. Inversion of `20-scope`. Zero deps. Karel's love of `153-paint-compose` ❤️
-  is a direct signal. Flagged for 3 cycles — high time to build.
+- **`paths-granular`** — granular synthesis of Karel's Welcome Home piano tracks via
+  `/api/audio/[id]`. Flagged for 2+ cycles. Awaiting Karel's confirmation that the audio route
+  is publicly accessible (open question below).
 
-- **`paths-granular`** (suggested `219` or `220`): Granular synthesis of Karel's Welcome Home
-  piano tracks via `/api/audio/[id]`. First prototype using Karel's actual recordings as source.
-  Depends on whether the audio route is publicly accessible — flagged below.
+- **`spectral-morph`** (suggested `220`) — AudioWorklet FFT magnitude interpolation between two
+  audio sources: morph your piano into a sine wave in real time. Complement to `219-waveshape-draw`
+  (this cycle's build), since both prototype the synthesis/analysis duality.
 
 ## Open questions for Karel
 
-- **`/api/audio/[id]`**: publicly accessible without auth? Needed to build `paths-granular`.
-  If public: builds next adult cycle. If gated: need a workaround (pre-fetch + store in public/).
-- **Xylophone Drops (218)**: want mic mode (clap/hum → more drops spawn)? Or BPM-synced drops?
-- **Dance Avatar (217)**: want a "ghost trail" (semi-transparent joint history for motion blur)?
-  ~15 lines. Or onset scatter (sharp transient → joints scatter then spring back)?
+- **`/api/audio/[id]`**: publicly accessible without auth? One confirmation unlocks
+  `paths-granular` — granular synthesis of your actual Welcome Home recordings.
+- **Waveshape Draw (219)**: try the "additive mode" polish idea — instead of drawing the waveform
+  directly, draw the harmonic envelope (bar heights) and hear the additive result. A simpler and
+  more intuitive UI for non-musicians. ~40 lines.
+- **Xylophone Drops (218)**: want BPM-synced drop rate? Or mic mode (clap/hum → extra drops spawn)?
+- **Dance Avatar (217)**: ghost trail (~15 lines) or onset scatter? Still open from last cycle.
 - **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready on confirmation.

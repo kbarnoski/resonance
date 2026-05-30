@@ -10,7 +10,35 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 251 — adult build)
+## ⭐ Newest (Cycle 253 — adult build)
+
+- **[/dream/219-waveshape-draw](/dream/219-waveshape-draw)** — Waveshape Draw. `demoable`
+  Draw a waveform on a canvas — hear its timbre live via `createPeriodicWave`. Drag finger or mouse
+  across the top 62% of the screen to reshape the oscillator's period; the timbre updates in real time
+  as you draw. An amber overlay shows the actual oscillator output from `AnalyserNode`; a 32-bar harmonic
+  chart below shows the Fourier spectrum of what you drew. Presets: Sine, Square, Triangle, Sawtooth.
+  Pitch slider (A1–A5), volume slider. **First prototype where you draw a waveform shape and hear it as
+  audio timbre** — the paradigm inversion of every other prototype (which convert audio → visual). All
+  218 prior prototypes use FFT for analysis; this is the first that uses DFT for synthesis. The harmonic
+  chart shows why a square wave sounds buzzy (odd harmonics only), why a sine is clean (harmonic 1 only),
+  and why a jagged drawn curve sounds metallic (many harmonics populated). Inspired by Karel's love of
+  `153-paint-compose` ❤️. Zero permissions · Zero API · Zero deps · 3.25 kB.
+  Design notes: `src/app/dream/219-waveshape-draw/README.md`
+
+---
+
+## Previous (Cycle 252 — kids build)
+
+- **[/dream/218-kids-xylophone-drops](/dream/218-kids-xylophone-drops)** — Xylophone Drops. `demoable`
+  Five colored xylophone bars sit at the bottom in a staircase (tallest=lowest). Drops fall every 1.8s
+  aimed at each bar; when a drop hits, the bar glows and rings a pentatonic note. Tap the sky to aim a
+  drop; tap a bar directly to ring it. First kids prototype with temporal anticipation — you see the drop
+  coming before it rings. For kids 3+ · Zero permissions · Zero API · Zero deps.
+  Design notes: `src/app/dream/218-kids-xylophone-drops/README.md`
+
+---
+
+## Previous (Cycle 251 — adult build)
 
 - **[/dream/217-dance-avatar](/dream/217-dance-avatar)** — Dance Avatar. `demoable`
   A 12-joint spring-physics skeleton that dances to audio — head, shoulders, elbows, wrists, hips,
