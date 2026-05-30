@@ -12997,3 +12997,51 @@ Cycle 251 STATE.md listed three cycle-252 candidates: polish `216-kids-band-buil
 - `gc.setTransform(dpr, 0, 0, dpr, 0, 0)` is applied every frame (defensive approach vs. applying once in `resize`). This ensures correct DPR scaling even if `resize` fires between frames.
 - The `barTop()` function closes over `cssH()` and `dpr`, both of which update in `resize()`. This means drop collision detection uses the correct bar positions after window resize. Drops in-flight during resize will snap to new collision targets on the next frame.
 - `strikeNote` function name avoids the `use` prefix rule (would be treated as a React hook).
+
+---
+
+## Cycle 254 — kids build: 220-kids-fireworks
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main — pulled 9 commits (cycles 245–253). Now at cycle 253 (219-waveshape-draw).
+
+**Love signal** (26 loved prototypes — relevant to kids pick):
+- `169-kids-marble-run` ❤️ — physics toy where objects travel before the sound fires; fireworks is the same anticipation arc but vertical and explosive
+- `166-kids-lantern` ❤️ — upward float before the reward at the top; rocket extends this to a trajectory you can aim
+- `133-kids-ripple-pond` ❤️ — tap → spatial event at the tap location; fireworks expands this to projectile-travel before the event fires
+- `82-kids-color-piano` ❤️ — BANDIMAL color=pitch system (left=low/violet, right=high/cyan); fireworks inherits this mapping
+
+**Decided**: Kids cycle (254 % 2 = 0). No blockers; nothing in-progress.
+STATE.md cycle 253 (MORNING.md) listed three cycle-254 candidates: polish `218-kids-xylophone-drops`, `kids-glow-garden` (mechanic TBD), `kids-shadow-puppet` (camera). Chose `kids-fireworks` over all three because:
+1. **New interaction class — projectile-arc with aimed trajectory.** Prior "anticipation" prototypes (lantern-launch, xylophone-drops) have linear or vertical trajectories. Fireworks is the first where the CHILD AIMS — tap position sets both direction and height of the arc. That spatial agency is qualitatively new.
+2. **Strongest love-signal confluence.** Four loved prototypes (marble-run, lantern, ripple-pond, color-piano) directly inspired this prototype's mechanics.
+3. **"Kids-glow-garden" mechanic was still TBD.** Better to build a fully-specified idea than design a new one this cycle.
+4. **One-cycle feasibility.** Canvas2D + triangle oscillator + quadratic rocket trajectory = clean build, no deps.
+
+**What I built**:
+- `src/app/dream/220-kids-fireworks/page.tsx` — Tap anywhere on the night sky → colored rocket launches from bottom-center toward tap point over 0.75s. At peak: triangle-oscillator chord (fundamental + 2nd + 3rd harmonic) plays, 22 glowing sparks radiate outward with random velocities + gravity (290 px/s²), fade over 1.6s. Five palette zones (X position): violet=C4, emerald=E4, amber=G4, rose=A4, cyan=C5 (C major pentatonic — all combinations harmonize). 72 twinkling stars for the night sky. 3 auto-demo rockets fire at 0.9s/1.85s/2.8s on load (silent — AC not yet created). Up to 7 simultaneous rockets. `○ Static`, 2.01 kB, ✅ clean build.
+- `src/app/dream/220-kids-fireworks/README.md` — design notes, audio design, anticipation series comparison, polish ideas.
+- Build fix: TypeScript null-narrowing — `function` declarations (unlike arrow functions) lose narrowing for captured `const canvas` across closure boundary. Added `if (!canvas || ...)` guard at top of `launchRocket`. Standard pattern.
+
+**What's new about this prototype**:
+1. **First "aimed projectile" prototype in kids zone.** 219 prior kids builds are tap-direct (sound fires at tap point immediately) or physics-passive (object drifts/falls without aim). Fireworks is the first where the child deliberately aims — the tap position IS the target coordinate, not just a spawn point. The rocket's trajectory is visible and directed.
+2. **0.75s travel window creates kinetic anticipation.** Shorter than xylophone-drops (1.2s fall) and much shorter than lantern-launch (5–10s float). The fast arc feels explosive and exciting — appropriate for fireworks. The child sees the rocket climbing and knows exactly when and where it will burst.
+3. **Spatial chord construction.** Multiple simultaneous rockets at different X positions → different pitches → simultaneous explosions → chord. The child's finger geography in the sky becomes the chord voicing. No prior kids prototype creates harmony through spatial separation across both X and Y.
+4. **First "night sky" aesthetic in kids zone.** All prior dark-background prototypes use the darkness as a neutral canvas. Fireworks uses 72 twinkling stars as active background; the sparks' glow against the star field creates the fireworks-on-a-clear-night visual identity.
+
+**Queued next**:
+- Cycle 255: **adult build** (255 % 2 = 1). Top candidates:
+  - `spectral-morph` (`221`) — AudioWorklet FFT magnitude interpolation between two sources; morphs piano into sine wave in real time. Complement to `219-waveshape-draw` (both prototype the synthesis/analysis duality). MORNING.md has listed this for 2 cycles.
+  - `optical-flow-music` — webcam frame differencing → synthesis; zero CDN deps.
+  - `paths-granular` — granular of Karel's Welcome Home tracks (pending `/api/audio/[id]` auth confirmation).
+- Cycle 256: **kids build**. Candidates:
+  - `kids-glow-garden` — organic growth variant with proximity-resonance mechanic (TBD; deferred from this cycle)
+  - Polish `220-kids-fireworks`: mic mode (RMS → rocket spawn rate), multi-color explosion, confetti on 5-simultaneous
+  - `kids-shadow-puppet` — hand blocks camera, shadow shape triggers sounds
+
+**Notes**:
+- `function launchRocket` (declaration) loses TypeScript narrowing for `const canvas` captured from outer scope — unlike arrow functions defined in the same scope. Fix: add `if (!canvas || ...) return` at the top of the function. This is now the documented pattern for function declarations inside useEffect. Arrow functions used for `onPointer` and `animate` work without the extra check.
+- `([...] as [number, number][]).forEach(([hz, gain]) => {...})` — explicit type assertion on the array literal needed to prevent TypeScript inferring `number[][]` (which would prevent destructuring into typed `[number, number]` pairs). Alternatively, could have used a typed constant array. The `as` cast is cleaner inline.
+- `st.spks.filter(sp => sp.age < SLIFE && sp.y < h + 60)` — the `h + 60` clamp prevents expired sparks from accumulating off-screen. Sparks that exit at the bottom are cleaned in the same filter pass as expired sparks. No separate `offscreen` tracking needed.
+- Auto-demo rockets fire before AudioContext is created (no user gesture). They travel and "explode" visually (sparks appear) but `burstNote` is gated on `if (acRef.current)` — so the first 3 explosions are silent. The first user tap creates the AC and all subsequent explosions ring. This is the standard pattern for visual demos that need to run before first user interaction.

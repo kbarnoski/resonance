@@ -4659,3 +4659,12 @@ In rough order:
 Open `/dream/218-kids-xylophone-drops`. Five glowing bars sit at the bottom in a staircase — the tallest bar (violet) plays the deepest note; the shortest (rose) the highest. Drops fall every 1.8 seconds from the top, each aimed at a random bar. Watch them fall and hear them ring. Tap the sky above any column to spawn a drop there; tap directly on a bar to ring it instantly. All bars are C major pentatonic — every drop harmonizes.
 
 Design notes: `src/app/dream/218-kids-xylophone-drops/README.md`
+
+---
+
+### 220-kids-fireworks
+**Status**: `demoable` · **Cycle shipped**: 254 · **Last touched**: 2026-05-30
+
+Open `/dream/220-kids-fireworks`. Tap anywhere in the dark star-filled sky to launch a glowing rocket toward that spot. The rocket arcs upward over 0.75 seconds — watch it climb — then explodes into 22 glowing sparks falling with gravity, and a pentatonic chord rings out. Left side = violet = C4 (deep); right side = cyan = C5 (bright); three more colors/pitches in between. All five notes are C major pentatonic — every explosion harmonizes. Three rockets auto-launch on load so the canvas is never silent.
+
+Design notes: `src/app/dream/220-kids-fireworks/README.md`
