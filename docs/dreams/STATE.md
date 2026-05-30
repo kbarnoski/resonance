@@ -2,6 +2,85 @@
 
 ---
 
+## Cycle 247 — research sweep
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to dc6668b (cycle 246, kids-echo-drum).
+
+**Love signal** (26 loved prototypes — research-cycle bias):
+- `138-lmdm-echo` ❤️ — generative echo pipeline; validates analysis→generation prototypes
+- `130-tsl-particle-compute` ❤️ — GPU compute physics; TSL patterns worth seeding further
+- `163-paths-visualizer` ❤️ — Karel's own recordings as input; `paths-granular` seed directly addresses this
+- `153-paint-compose` ❤️ — drawing = music; `waveshape-draw` inverts this (draw a waveform → hear timbre)
+
+**Decided**: Research sweep. 247 % 2 = 1 (adult cycle). No blockers; nothing in-progress.
+Last research was Cycle 213 (2026-05-27) — 34 cycles ago, well past the 3-cycle cadence. Both Cycle 245
+and 246 STATE.md entries flagged research as the top priority for Cycle 247. IDEAS queue is populated
+(40+ entries) but all seeded from Cycle 213 and earlier; freshness mandate requires a new sweep.
+
+**What I researched** (full entries §235–§244 in RESEARCH.md):
+
+1. **DiscoForcing** (ICML 2026, arXiv:2605.28491, May 27, 2026) — streaming audio-driven full-body
+   character animation. Diffusion-forcing sequence model with causal music encoder; strictly real-time,
+   handles non-stationary audio at interactive frame rates. Browser-native adaptation: spring-physics
+   12-joint skeleton driven by FFT bands. Seeds `dance-avatar`.
+
+2. **EchoAvatar** (arXiv:2605.28272, May 27, 2026) — 3D character motion synthesis from audio + LLM
+   intent modeling. Server-side; not browser-feasible. Directional: validates audio→motion linkage.
+
+3. **V2M-Zero** (arXiv:2603.11042, Mar/May 2026) — video-to-music without paired training data, via
+   within-modality temporal matching. Validates optical flow → synthesis mapping. Seeds `optical-flow-music`.
+
+4. **BEAT tokenization** (arXiv:2604.19532, April 2026) — uniform beat-based tokenization: 1 beat = 1 token,
+   better long-range coherence in symbolic music generation. Foundational paper; no browser API yet.
+
+5. **Ace-Step UI trending** (GitHub, May 2026) — 1,940 stars this month (3,999 total). Confirms ACE-Step 1.5
+   is the dominant community music generation model. Validates timing of `vocal-bgm` and `arc-compose` builds.
+
+6. **Seedance 2.0** (fal.ai + Replicate, 438.5K Replicate runs) — top video model by community usage.
+   Multimodal: text + image + audio reference → cinematic video with native audio. Updates `ghost-animate`
+   plan: can now supply Ghost LoRA ambient SFX as audio reference for video-audio coherence.
+
+7. **Lyria 3 Pro confirmed "new"** on fal.ai — latest generation endpoint. All queued Lyria prototypes
+   confirmed against this model.
+
+8. **FM synthesis gap** — 213 prototypes, none use FM synthesis. OscillatorNode as modulator feeding into
+   a second OscillatorNode's `frequency` AudioParam is exactly the right Web Audio primitive. Seeds `fm-explorer`.
+
+9. **`createPeriodicWave` gap** — no prototype uses `AudioContext.createPeriodicWave()`. User draws a
+   waveform on canvas → FFT decompose → `PeriodicWave` → `OscillatorNode.setPeriodicWave()`. Real-time
+   timbre sculpting. Seeds `waveshape-draw`.
+
+10. **Dance avatar visual paradigm gap** — 213 prototypes, none animate a human figure. Spring physics +
+    FFT = procedural dancer. Highest surprise factor; live performance fitness. Seeds `dance-avatar`.
+
+**What I seeded** (added to IDEAS.md):
+- `214-dance-avatar` — spring-physics 12-joint skeleton dances to audio (zero deps, one cycle)
+- `215-fm-explorer` — 2D FM timbral landscape: X=pitch, Y=modulator ratio (zero deps, one cycle)
+- `216-waveshape-draw` — draw a waveform → hear timbre via createPeriodicWave (zero deps, one cycle)
+- `217-optical-flow-music` — webcam frame differencing → synthesis params, no CDN (zero deps, one cycle)
+- `218-paths-granular` — granular synthesis of Karel's Welcome Home tracks (zero deps, one cycle)
+
+**Queued next**:
+- Cycle 248: **kids build** (248 % 2 = 0). Candidates:
+  - Polish `213-kids-echo-drum`: auto-play demo round on load (4-beat pattern before first tap), mic mode (clap onset detection auto-registers taps)
+  - `kids-shadow-puppet`: full-screen webcam brightness map (no MediaPipe, raw pixel luminance) → 6 instrument zones. Dark zone = deep bass pulse; bright zone = high chime.
+  - Kids dance-avatar adaptation: simple cartoon body (circle head + 4 colored limb pads), tap any limb → pentatonic note, mic drives breathing animation
+- Cycle 249: **adult build** (249 % 2 = 1). Candidates:
+  - **`dance-avatar`** — highest surprise, live performance fitness, fills human-figure paradigm gap
+  - **`fm-explorer`** — foundational synthesis gap, musically surprising, immediately explorable
+  - **`waveshape-draw`** — inverts the prototype direction (sculpt the source, not react to it)
+
+**Notes**:
+- DiscoForcing (ICML 2026) is the most significant paper this cycle. Spring-physics browser adaptation retains the core insight: music has kinetic energy and a human body is its natural receiver.
+- FM synthesis gap is real and surprising — OscillatorNode used as audio source in every prototype, never as a modulator. Three nodes, one `connect()` call, 200+ timbres from sine to metallic noise.
+- `createPeriodicWave` is the most underused Web Audio primitive in the sandbox. `waveshape-draw` would be the first prototype where the user sculpts the synthesis source itself.
+- Kids queue is healthy. No kids research needed this cycle.
+
+---
+
+
 ## Cycle 246 — kids build: 213-kids-echo-drum
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)

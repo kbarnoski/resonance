@@ -2672,4 +2672,224 @@ UI. Tapping anywhere on the drum surface strikes it; the wave propagates outward
 Physically accurate overtone ratios (not integer — real drums are inharmonic like bells). Zero deps.
 
 Key findings from Cycle 233 (2026-05-29) — research note (brief, build cycle):
+- DEMON (§234, May 2026) — hierarchical parameter propagation instrument. Seeds `param-layer` and `membrane-drum`.
+
+---
+
+## 2026-05-30 — Cycle 247 research sweep
+
+### §235 — DiscoForcing: Streaming Audio-Driven Full-Body Character Animation (ICML 2026)
+**Source**: https://arxiv.org/abs/2605.28491 (May 27, 2026)
+
+DiscoForcing generates full-body skeleton animations synchronized to music in real time. A causal music
+encoder captures rhythmic structure and phase dynamics; a diffusion-forcing sequence model with
+heterogeneous noise levels handles streaming. Strictly causal, bounded-latency — handles abrupt tempo
+shifts and audio changes that defeat offline systems. Accepted ICML 2026. EchoAvatar (§236) extends
+the idea to 3D + LLM intent.
+
+**Browser adaptation**: `dance-avatar` — a 12-joint spring-physics skeleton (head, shoulders×2,
+elbows×2, hands×2, hips, knees×2, feet×2) animated by FFT bands. No ML, no CDN. Bass → hip sway
+amplitude; treble → arm elevation angle; onset → upward joint velocity impulse; spectral centroid →
+forward/backward lean. Joints as `{pos, vel, restPos}` objects; per-frame `pos += vel; vel += k(rest-pos) - damping*vel`.
+Canvas2D glow-line skeleton on black background. "Your music finds a body." Paradigm gap: 213 existing
+prototypes, none animate a human figure. Live-performance fitness: project on stage next to the pianist.
+Zero deps, one cycle. [Date: May 27, 2026, ICML 2026, arXiv:2605.28491]
+
+---
+
+### §236 — EchoAvatar: 3D Character Motion from Audio with LLM Intent (arXiv:2605.28272, May 2026)
+**Source**: https://arxiv.org/abs/2605.28272 (May 27, 2026)
+
+Synthesizes high-fidelity 3D character motion from audio with an LLM integration layer that bridges
+reactive animation (frame-by-frame) with intent-driven behavior (long-horizon goal). Designed for
+interactive avatar deployment (games, virtual performances). Not browser-feasible as an ML model.
+
+**Note for queue**: confirms §235's core claim — audio-driven character animation is a live frontier
+(two simultaneous ICML-accepted papers). The intent/goal modeling layer from EchoAvatar is something
+the `33-aria-companion` Markov chain approximates at the musical level. Future: combine DiscoForcing's
+motion style with Aria's turn-taking structure for a "Ghost dancer" that responds to your playing phrase
+by phrase rather than frame by frame. [Date: May 27, 2026, arXiv:2605.28272]
+
+---
+
+### §237 — V2M-Zero: Zero-Pair Video-to-Music Generation (arXiv:2603.11042, Mar/May 2026)
+**Source**: https://arxiv.org/abs/2603.11042 (March 2026, updated May 2026)
+
+Generates music from video without any paired video-music training data. Key technique: match temporal
+structure within modalities (video rhythm ↔ music rhythm) rather than cross-modal alignment, avoiding
+paired-data scarcity. State-of-the-art video-music synchronization on benchmarks.
+
+**Could become prototype**: `optical-flow-music` — inverts V2M-Zero's direction: webcam optical flow
+(frame differencing, Canvas2D, no MediaPipe) → synthesis parameters. Extract total motion magnitude,
+horizontal bias (left/right flow asymmetry), vertical bias (up/down). Map: magnitude → filter cutoff
++ arpeggiation speed; horizontal → pitch glide (C3–C5); vertical → reverb depth. Show webcam at 40%
+opacity with flow arrows drawn as glowing gradient lines. "Dance in front of the camera — movement IS
+the music." First prototype using optical flow synthesis without a CDN dep. Different from `31-gesture-music`
+(MediaPipe hand landmarks) — this is pure pixel math. Zero deps, one cycle.
+[Date: March/May 2026, arXiv:2603.11042]
+
+---
+
+### §238 — BEAT: Uniform Beat-Based Tokenization for Symbolic Music Generation (arXiv:2604.19532, April 2026)
+**Source**: https://arxiv.org/abs/2604.19532 (April 2026, submitted May 2026)
+
+Proposes beat-based tokenization where each beat is one fixed-length token rather than a variable-length
+event sequence. Uniform time progression enables better long-range pattern capture and structural coherence
+in music generation. Outperforms event-based baselines on accompaniment generation tasks.
+
+**Note for queue**: no browser API yet; server-side LM. Foundational insight: beat-quantized representation
+is computationally superior for structural coherence. Informs design of future `beat-looper` prototype —
+a zero-dep browser beat grid where each column = one beat, user draws patterns, system plays them
+beat-quantized. Not the same as `48-tap-rhythm` (which detects free-tapped rhythm) — this would be
+a structured grid with explicit beat identity. One-cycle build candidate. [Date: April 2026, arXiv:2604.19532]
+
+---
+
+### §239 — ACE-Step 1.5 Local UI Trending on GitHub (May 2026)
+**Source**: https://github.com/trending/javascript (week of May 30, 2026)
+
+`ace-step-ui` (fspecii) gained 1,940 GitHub stars THIS MONTH (3,999 total) — top-trending JS audio repo.
+Described as "Professional UI for ACE-Step 1.5 AI Music Generation — free, local alternative to paid
+music platforms." Confirms ACE-Step 1.5 is the most actively used community music generation model.
+
+**Impact**: validates timing of `44-vocal-bgm` (ACE-Step audio-to-audio) and `48-arc-compose` (ACE-Step
+section-tagged generation). The local-UI trend also suggests Karel may want a local-first dream lab mode
+(Tauri build running ACE-Step locally, no API cost). Tag for Tauri installation-mode discussion.
+[Date: May 2026, GitHub trending]
+
+---
+
+### §240 — Seedance 2.0: Top Video Model on Replicate (438.5K Runs, May 2026)
+**Source**: https://replicate.com/explore (May 2026); also on fal.ai
+
+Seedance 2.0 (ByteDance) is the top-usage video model on Replicate with 438.5K runs. Accepts multimodal
+inputs: text + image + audio reference + up to 3 reference videos → cinematic video with native audio.
+Also available on fal.ai with identical functionality.
+
+**Impact on `ghost-animate`**: previous plan used Ghost LoRA image alone as Seedance input. Can now also
+supply an audio reference clip (e.g., a 10s ambient Ghost soundscape generated by Mirelo SFX 1.6) so the
+resulting video's native audio is coherent with the scene's acoustic character. Estimated budget:
+~$0.05–0.15/clip. Plan update: (1) generate Ghost LoRA image, (2) generate Ghost ambient SFX clip
+(Mirelo text-to-audio), (3) supply both as Seedance 2.0 inputs → one cinematic clip with matched audio.
+Admin-only. FAL_KEY in use. [Date: May 2026, Replicate explore]
+
+---
+
+### §241 — FM Synthesis: Foundational Browser Gap in the Dream Sandbox (synthesis research note, 2026-05-30)
+**Source**: Web Audio API spec + synthesis literature (John Chowning 1973; Yamaha DX7 1983); no external URL.
+
+FM (frequency modulation) synthesis: output = carrier_freq + sin(modulator_phase) × FM_index × modulator_freq.
+Implemented in Web Audio with two `OscillatorNode`s and one `AudioParam.connect()`:
+
+```js
+const carrier = actx.createOscillator();
+const modulator = actx.createOscillator();
+const modGain = actx.createGain();   // FM index
+modulator.connect(modGain);
+modGain.connect(carrier.frequency);  // modulates carrier frequency
+carrier.connect(actx.destination);
+```
+
+Timbral space: ratio 1:1 (same frequency) + varying index → metallic growl; ratio 2:1 + high index → bell
+partials; ratio 3.5:1 + low index → woody; ratio 7:4 + sweeping index → bass FM growl (classic 808-style).
+213 existing prototypes — none use FM synthesis despite being a foundational technique (DX7 is the best-selling
+synthesizer ever made). The paradigm gap is complete.
+
+**Could become prototype**: `fm-explorer` — Route `/dream/215-fm-explorer`. A 2D canvas: X axis = carrier
+pitch (C2–C7 log), Y axis = modulator-to-carrier ratio (0.5–8.0). Mouse/touch position determines pitch and
+ratio. FM index driven by mouse distance from canvas center (or a large slider). A background color field
+shows timbral complexity (spectral richness estimate: low-ratio/low-index = smooth, high-ratio/high-index =
+complex). Moving across the canvas sweeps through hundreds of timbres without reading any labels. Mic mode:
+RMS amplitude → FM index (quiet → simple tone, loud → complex metallic). Presets: Bell (E4, √2 ratio, index 8),
+Rhodes (C3, 2:1, index 3.5), Clangy (G3, 3.5:1, index 12), Sub-bass (A1, 1:1, index 2). Zero deps, zero API.
+One cycle. [Date: 2026-05-30, synthesis note]
+
+---
+
+### §242 — Web Audio `createPeriodicWave`: Draw-Your-Waveform Interaction (API research note, 2026-05-30)
+**Source**: W3C Web Audio API spec (https://www.w3.org/TR/webaudio/#dom-baseaudiocontext-createperiodicwave)
+
+`AudioContext.createPeriodicWave(cosineTerms: Float32Array, sineTerms: Float32Array)` creates an arbitrary
+periodic waveform from Fourier coefficients, which can then be set on an `OscillatorNode` via
+`OscillatorNode.setPeriodicWave()`. The waveform updates in real time — no click, no restart needed. To
+convert a user-drawn curve to Fourier coefficients: sample the curve at N=512 evenly-spaced points into
+a Float32Array, compute the forward DFT (written inline in ~20 lines, or use a pre-baked Cooley-Tukey FFT),
+extract the real (cosine) and imaginary (sine) parts → `createPeriodicWave(cosTerms, sinTerms)`.
+
+213 existing prototypes — none use `createPeriodicWave`. Every prototype uses preset oscillator types
+(`sine`, `square`, `sawtooth`, `triangle`) or audio input. No prototype lets the user sculpt the synthesis
+source directly.
+
+**Could become prototype**: `waveshape-draw` — Route `/dream/216-waveshape-draw`. Canvas shows a 1-period
+sine wave. User draws directly on the canvas (drag up/down to deform the wave). Each `pointermove`:
+re-sample the drawn curve → DFT → `createPeriodicWave` → `setPeriodicWave()`. Timbre changes in real time
+as you draw. Secondary horizontal strip shows harmonic spectrum (bar chart of DFT magnitude bins 1–32).
+Preset buttons: Sine, Square, Sawtooth, Triangle, and "Piano" (pre-loaded 32-coefficient shape approximating
+a piano's harmonic series). Pitch slider C2–C7. Mic input: RMS → draw pressure (louder = more distortion
+applied to current shape). "Draw the voice of your instrument." Paradigm inversion: all prior prototypes
+react to or visualize sound; this sculpts the source. Zero deps, zero API. One cycle.
+[Date: 2026-05-30, API research note]
+
+---
+
+### §243 — Spring-Physics Dance Avatar: Design Sketch (design note, 2026-05-30)
+
+Derived from §235 (DiscoForcing). A 12-joint skeleton for 2D Canvas2D:
+
+```
+Joints: head, shoulderL, shoulderR, elbowL, elbowR, handL, handR, hip, kneeL, kneeR, footL, footR
+Segments: head-shoulderL, head-shoulderR, shoulderL-elbowL, elbowL-handL, shoulderR-elbowR, elbowR-handR,
+          hip-shoulderL (via torso), hip-shoulderR, hip-kneeL, kneeL-footL, hip-kneeR, kneeR-footR
+```
+
+Per-frame update: `vel += (restPos - pos) * k - vel * damping; pos += vel`. Audio mappings to rest positions:
+- `restPos[hip].x = center + sin(t * 1.2) * bass * 40` (bass → hip sway amplitude)
+- `restPos[handL].y = center - mid * 80; restPos[handR].y = center - mid * 80` (mid → arm raise)
+- `restPos[head].x = center + treble * 12` (treble → head tilt)
+- On onset: all `vel.y -= onset * 120` (upward impulse → jump)
+- `restPos[shoulderL].x = center - (1 + centroid * 0.3) * 45` (centroid → posture width)
+
+Render: each limb as a glowing line (`lineWidth=3`, `shadowBlur=12`, hue shifts with audio band —
+sub-bass=violet, bass=teal, mid=amber, treble=rose). Head as a circle, radius 18px. Black background.
+Optional: draw a subtle echo of the figure 5 frames behind at 30% opacity (motion trail effect).
+
+"Why zero deps": spring physics is 10 lines of JS. No skeletal rig library needed. The figure does not need
+anatomically correct anatomy — an abstracted Matisse-cutout silhouette, simple and expressive, is better.
+One-cycle build. Route `/dream/214-dance-avatar`. [Date: 2026-05-30, design note]
+
+---
+
+### §244 — Webcam Optical Flow Synthesis: Frame-Differencing Approach (design note, 2026-05-30)
+
+Derived from §237 (V2M-Zero). No MediaPipe, no CDN dep. Pure Canvas2D pixel math:
+
+1. `getUserMedia({ video: true })` → `<video>` element
+2. Each animation frame: draw video frame to an offscreen canvas, call `getImageData()` to get current pixels
+3. Compute per-pixel delta from previous frame: `delta = |curr_gray - prev_gray|` where `gray = 0.299R + 0.587G + 0.114B`
+4. Downsample to a 20×15 grid (8 cells per cell). Per cell: `magnitude = avg(deltas in cell)`, `dx = avg(right-half − left-half deltas)`, `dy = avg(bottom-half − top-half deltas)`
+5. Global features: `totalMag = sum(magnitude) / 300`, `hBias = sum(dx) / 300` (positive = rightward flow), `vBias = sum(dy) / 300`
+
+Web Audio synthesis:
+- `totalMag` → `filter.frequency.value = 400 + totalMag * 5600` (still=dark, moving=bright)
+- `hBias` → pitch via `oscillator.frequency.value = 220 * Math.pow(2, hBias * 2.5)` (left=down, right=up, ~±2.5 octaves)
+- `vBias` → `reverbGain.gain.value = Math.max(0, vBias * 2)` (downward flow = more reverb)
+- `totalMag` → arpeggiation rate: `noteInterval = Math.max(0.05, 0.8 - totalMag)` seconds per note
+
+Display: webcam at 40% opacity. Per grid cell: a glowing gradient line from cell center in the direction
+of `(dx, dy)`, length proportional to `magnitude`. 6-band spectrum bar at the bottom (same style as `1-live`).
+Zero deps, zero CDN, one cycle. Route `/dream/217-optical-flow-music`. [Date: 2026-05-30, design note]
+
+---
+
+Key findings from Cycle 247 (2026-05-30) — full research sweep:
+- DiscoForcing (§235, ICML 2026, May 2026) — streaming audio-driven character animation. Browser adaptation seeds `dance-avatar` (spring physics, zero deps, human-figure paradigm gap, live performance).
+- EchoAvatar (§236, May 2026) — audio + LLM → 3D character motion. Server-side; directional only.
+- V2M-Zero (§237, Mar/May 2026) — video-to-music without paired training. Validates `optical-flow-music` concept (frame differencing → synthesis, zero CDN).
+- BEAT tokenization (§238, April 2026) — beat-quantized token = better structural coherence. Seeds future `beat-looper` idea.
+- ACE-Step UI trending (§239, May 2026) — 1,940 stars/month. Confirms `vocal-bgm` and `arc-compose` timing.
+- Seedance 2.0 (§240, May 2026) — 438.5K Replicate runs, multimodal (image + audio ref). Updates `ghost-animate` to supply audio reference.
+- FM synthesis gap (§241, synthesis note) — 213 prototypes, none use FM. Seeds `fm-explorer` (2D timbral landscape, zero deps).
+- createPeriodicWave gap (§242, API note) — most underused Web Audio primitive. Seeds `waveshape-draw` (draw → timbre, paradigm inversion).
+- Dance avatar design (§243, design note) — 12-joint spring-physics skeleton, zero deps, one cycle. Route `/dream/214-dance-avatar`.
+- Optical flow synthesis design (§244, design note) — frame differencing → pitch/filter/reverb, zero CDN. Route `/dream/217-optical-flow-music`.
 - DEMON (§234, May 2026) — real-time diffusion music instrument with hierarchical parameter propagation. Seeds `param-layer` and `membrane-drum`.

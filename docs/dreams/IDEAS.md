@@ -2213,3 +2213,183 @@ last 1s of center-point audio. Zero deps · Zero API · one cycle scope.
 
 Key findings from Cycle 233 (2026-05-29) — research note (brief, build cycle):
 - DEMON (§234, May 2026) — real-time diffusion music instrument, hierarchical parameter propagation. Seeds `param-layer` and `membrane-drum`.
+
+---
+
+## FROM RESEARCH (Cycle 247, 2026-05-30) — promoted to queue
+
+### dance-avatar — spring-physics stick figure that dances to audio `[queued, zero deps, zero API]`
+Route: `/dream/214-dance-avatar`. A 12-joint skeleton (head, shoulders×2, elbows×2, hands×2, hip,
+knees×2, feet×2) animated by spring physics driven in real time by FFT bands. No ML, no CDN dep.
+
+**Joint physics**: per-joint `{pos, vel, restPos}` object. Each frame:
+`vel += (restPos - pos) * k - vel * damping; pos += vel` (spring constant k=0.18, damping=0.82).
+
+**Audio mappings to rest positions** (all relative to canvas center):
+- **Sub-bass** → hip sway: `restPos[hip].x = center.x + sin(t×1.2) × bass × 40px`
+- **Bass** → knee lift: `restPos[kneeL/R].y = center.y - bass × 35px` (knees rise)
+- **Mid** → arm raise: `restPos[handL/R].y -= mid × 80px`
+- **Treble** → arm splay: `restPos[handL].x = center.x - 60 - treble × 30px`; handR mirrors
+- **Onset** → jump impulse: `vel[all].y -= onset × 120` (upward velocity on every joint)
+- **Spectral centroid** → lean: `restPos[head].x = center.x + (centroid - 0.5) × 20px`
+
+**Render**: each limb segment as a glowing Canvas2D line (`lineWidth=3`, `shadowBlur=14`). Hue per band
+segment: hip/torso=violet (sub-bass), upper arms=teal (bass), forearms=amber (mid), hands=rose (treble).
+Head: circle, radius 18px, white glow. Black background, pure additive blending. Subtle motion trail:
+ghost skeleton 5 frames behind at 25% opacity.
+
+Demo mode: same LFO oscillators as other prototypes, figure dances to the LFOs. Mic mode: live FFT.
+Start screen: "▶ Watch it dance" (demo) / "🎤 Let it hear you" (mic), matching `1-live` UX pattern.
+
+**Why this fills a paradigm gap**: 213 existing prototypes — none animate a human figure. Fluid, particles,
+terrain, geometry, piano rolls — all non-human visual languages. A dancing figure is qualitatively
+different: it reads as *responsive* rather than *reactive*. Live performance fit: project onto a wall
+next to the pianist; the figure dances to their music. High surprise factor. Inspired by DiscoForcing
+(ICML 2026, arXiv:2605.28491): "music has kinetic energy; a body is its natural receiver."
+Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §§235, 243.
+
+---
+
+### fm-explorer — FM synthesis timbral landscape `[queued, zero deps, zero API]`
+Route: `/dream/215-fm-explorer`. FM (frequency modulation) synthesis underlies the DX7 (1983, best-selling
+synthesizer ever), 808 bass, electric piano, metallic percussion. Two `OscillatorNode`s: carrier (C) and
+modulator (M). FM equation: C_freq_input = C_freq + sin(M_phase) × FM_index × M_freq.
+
+```js
+const carrier = actx.createOscillator();          // heard output
+const modulator = actx.createOscillator();         // modulates carrier freq
+const modGain = actx.createGain();                 // FM index controls depth
+modulator.connect(modGain);
+modGain.connect(carrier.frequency);               // AudioParam.connect — the key line
+carrier.connect(masterGain);
+```
+
+**Interaction**: A 2D canvas. X axis = carrier pitch (C2–C7, log-spaced). Y axis = modulator-to-carrier
+ratio (0.5–8.0). Mouse position determines both. FM index = distance from canvas center (0 at center,
+max at corner), OR a vertical range slider at right. Moving across the canvas sweeps through hundreds
+of timbres without any label-reading. A light background color field encodes timbral complexity (green=simple
+sine, amber=bell, rose=metallic, violet=complex/noisy).
+
+Presets: **Bell** (E4, ratio √2, index 8), **Rhodes** (C3, ratio 2:1, index 3.5), **Clangy** (G3, ratio 3.5:1,
+index 12), **Sub** (A1, ratio 1:1, index 2), **Metallic** (D3, ratio 5:3, index 15). Each preset fires a
+short note on click. Display below canvas: carrier Hz + note name, ratio, index value as a small monospace
+HUD row. Live Lissajous waveform strip (same as `20-scope`) shows the FM output shape.
+
+Mic mode: RMS amplitude → FM index (quiet=gentle sine, loud=complex metallic). "Play loud and the timbre
+becomes more complex." Live performance: vary ratio while playing = timbral glide through FM space.
+
+**Why this fills a gap**: 213 prototypes, none use FM synthesis. OscillatorNode has been used as audio
+source in every prototype but never as a modulator. The DX7's 6-operator FM creates a vast palette from
+3 lines of Web Audio code. "Navigate the space of synthesized timbre." Zero deps, zero API. One-cycle build.
+Research basis: RESEARCH.md §241.
+
+---
+
+### waveshape-draw — draw a waveform on canvas, hear your timbre change in real time `[queued, zero deps, zero API]`
+Route: `/dream/216-waveshape-draw`. A canvas shows a 1-period waveform as a white curve on black. User
+draws directly on the wave by dragging (mouse or touch), deforming it to any shape. The drawn curve is
+immediately converted to a `PeriodicWave` and applied to an `OscillatorNode` — the timbre changes in
+real time as you draw.
+
+**Conversion pipeline** (runs on each `pointermove`, ~0.3ms):
+1. Sample drawn curve at 512 evenly-spaced x positions → `Float32Array` (amplitude values −1..1)
+2. Forward DFT (Cooley-Tukey, inline ~20 lines of JS): extract bins 0–63 (the perceptually significant partials)
+3. `cosTerms[k] = real[k] / 512; sinTerms[k] = imag[k] / 512`
+4. `const wave = actx.createPeriodicWave(cosTerms, sinTerms, {disableNormalization: false})`
+5. `oscillator.setPeriodicWave(wave)`
+
+**UI**: The waveform canvas is the primary element (full width, ~200px height). Below it: a harmonic
+spectrum strip (horizontal bar chart of magnitudes for partials 1–32, color-coded by partial index,
+same hue mapping as `1-live`). A pitch slider below (C2–C7). Draw interactions: left-drag reshapes the
+curve; right-click (or two-finger on mobile) resets to flat sine.
+
+**Presets** (7 buttons): Sine, Square, Sawtooth, Triangle, "DX7 Piano" (pre-loaded 32-coefficient
+shape that approximates a DX7 FM piano patch), "Glass Harmonica" (strong 2nd+3rd harmonics, weak
+fundamentals), "Bowed String" (odd harmonics with amplitude decay, like violin). Each preset loads a
+pre-computed Float32Array into the canvas and immediately applies `createPeriodicWave`.
+
+Mic mode: RMS amplitude → distorts the current drawn shape (multiplies values by `1 + rms × 2`, then
+clips at ±1) — louder playing = more harmonic distortion.
+
+**Why this inverts the paradigm**: all 213 prior prototypes react to or visualize sound. `waveshape-draw`
+sculpts the source. The visitor draws a shape and hears exactly what that mathematical shape sounds like
+— an inverted oscilloscope. Natural triptych with `20-scope` (visualize waveform of audio) and
+`13-piano-canvas` (playing draws art): now completing the set with "draw the art, it becomes audio."
+Zero deps, zero API. One-cycle build. Research basis: RESEARCH.md §242.
+
+---
+
+### optical-flow-music — webcam frame differencing → expressive synthesis, no CDN `[queued, zero deps, zero API]`
+Route: `/dream/217-optical-flow-music`. Webcam → Canvas2D frame differencing optical flow → Web Audio synthesis.
+No MediaPipe, no CDN dep — pure pixel math.
+
+**Flow extraction**:
+1. `getUserMedia({ video: true })` → `<video>` element (360p sufficient)
+2. Each rAF: draw frame to offscreen canvas, `getImageData()` → per-pixel grayscale
+3. Per-pixel: `delta[i] = |curr_gray[i] - prev_gray[i]|` (stores luminance change)
+4. Downsample to 20×15 grid (300 cells). Per cell: `mag = avg(|deltas| in 8 pixels)`,
+   `dx = avg(right-half - left-half)`, `dy = avg(bottom-half - top-half)`
+5. Global: `totalMag = Σmag/300`, `hBias = Σdx/300` (rightward flow), `vBias = Σdy/300`
+
+**Synthesis** (2 OscillatorNodes + BiquadFilter + ConvolverNode reverb):
+- **totalMag** → filter cutoff: `400 + totalMag × 5600 Hz` (still=dark, moving=bright)
+- **hBias** → pitch: `C3 × 2^(hBias × 2.5)` ≈ ±2.5 octaves around C3 (flow right=up, left=down)
+- **vBias** → reverb send gain: `Math.max(0, vBias × 2)` (downward motion=wet)
+- **totalMag** → note rate: arpeggiation interval = `max(50ms, 800 - totalMag × 700)ms` (fast motion=rapid notes)
+
+**Display**: webcam feed at 40% opacity. Per grid cell: a glowing gradient line from cell center in direction
+`(dx, dy)` (arrow visualization). Line length = `mag × 30px`. Color: hue from motion direction
+(rightward=amber, leftward=violet, upward=teal, downward=rose). 6-band spectrum bar at bottom (same as `1-live`).
+
+"Dance in front of the camera — the motion IS the music." First prototype using optical flow (no landmarks,
+no CDN, zero deps). Different from `31-gesture-music` (MediaPipe hand tracking), `101-camera-song`,
+`147-face-synth`. Inspired by V2M-Zero (arXiv:2603.11042). Zero deps, zero API. One-cycle build.
+Research basis: RESEARCH.md §§237, 244.
+
+---
+
+### paths-granular — Karel's piano tracks granularized `[queued, zero deps, zero API — uses /api/audio/[id]]`
+Route: `/dream/218-paths-granular`. Load one of Karel's Welcome Home album tracks from the Resonance
+audio API (`/api/audio/[id]`). Track picker shows 3–4 available pieces. On selection: fetch → decode
+via `AudioContext.decodeAudioData()` → store as `AudioBuffer`. Granular synthesis engine plays tiny
+windowed segments (grains) from the buffer at user-controlled parameters.
+
+**Controls** (large sliders, mobile-friendly):
+- **Scrub position** (full-width horizontal) — extraction point in the track (0–100%)
+- **Grain size** (20–500ms slider) — window size per grain (Hann-windowed)
+- **Density** (2–30 grains/second)
+- **Pitch shift** (−12 to +12 semitones, via playback rate)
+- **Scatter** (0–400ms random offset from scrub position per grain)
+
+**Per-grain render**: extract buffer slice at `scrubPos + rand(-scatter, scatter)`, apply Hann window
+(`w[i] = 0.5 × (1 − cos(2π×i/N))`), create `AudioBufferSourceNode`, set `.playbackRate` for pitch shift,
+pan to random position within ±0.3, start at `actx.currentTime + jitter`. All in JS, no external deps.
+
+**Display**: full waveform of the decoded track as a glowing amber horizontal strip (use `OffscreenCanvas`
+or `ImageData` to render the waveform at page load). A bright cursor at the current scrub position.
+Sparkle particles fly off the scrub point (one per grain, direction = random, decay 0.6s) — visible indicator
+of grain density. Current track name and duration shown.
+
+**Why Karel's own music**: granular synthesis of his piano recordings produces something entirely new —
+a crystallized, non-linear texture of his own playing. Scrubbing slowly at high density over a chord =
+ethereal shimmer. Large grain + low density = scattered piano chords in silence. The visitor becomes a
+DJ of Karel's own work. First prototype to address AGENT.md directive "build prototypes that USE his
+real piano tracks as the audio source" in a purely transformative (not playback) way.
+
+Demo/fallback: if `/api/audio/[id]` returns 401 or 404, load a 10s demo buffer of a C major chord
+generated from OscillatorNodes at page open — granular synthesis still works, just on synthetic audio.
+Zero new npm deps. One-cycle build. Research basis: Dennis Gabor (1946), Curtis Roads (1978, granular
+synthesis foundations); RESEARCH.md §163 (Karel's Paths tracks), AGENT.md Karel-music directive.
+
+---
+
+Key findings from Cycle 247 (2026-05-30) — full research sweep:
+- DiscoForcing (§235, ICML 2026, May 2026) — streaming audio→full-body animation, zero ML in browser. Seeds `dance-avatar` (spring physics, zero deps, human-figure gap, live performance fitness).
+- EchoAvatar (§236, May 2026) — 3D character from audio + LLM. Server-side; validates audio→motion linkage.
+- V2M-Zero (§237, Mar/May 2026) — video-to-music without paired data. Seeds `optical-flow-music` (frame diff, no CDN, zero deps).
+- BEAT tokenization (§238, April 2026) — beat-quantized tokens improve music generation coherence. Seeds future `beat-looper` concept.
+- ACE-Step UI trending (§239, May 2026) — 1,940 stars/month confirms ACE-Step 1.5 community momentum.
+- Seedance 2.0 multimodal (§240, May 2026) — top video model with audio-reference input. Updates `ghost-animate`.
+- FM synthesis gap (§241, synthesis note) — none of 213 prototypes use FM. Seeds `fm-explorer`.
+- createPeriodicWave gap (§242, API note) — most underused Web Audio primitive. Seeds `waveshape-draw`.
+- Dance avatar design (§243) + optical flow design (§244) — detailed build specs for zero-dep one-cycle implementations.
