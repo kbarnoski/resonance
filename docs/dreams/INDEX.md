@@ -4622,3 +4622,12 @@ In rough order:
 3. **INDEX.md** (this file) — prototype status board
 4. **RESEARCH.md** — findings from research cycles (created cycle ~4)
 5. **IDEAS.md** — full queue
+
+---
+
+### 218-kids-xylophone-drops
+**Status**: `demoable` · **Cycle shipped**: 252 · **Last touched**: 2026-05-30
+
+Open `/dream/218-kids-xylophone-drops`. Five glowing bars sit at the bottom in a staircase — the tallest bar (violet) plays the deepest note; the shortest (rose) the highest. Drops fall every 1.8 seconds from the top, each aimed at a random bar. Watch them fall and hear them ring. Tap the sky above any column to spawn a drop there; tap directly on a bar to ring it instantly. All bars are C major pentatonic — every drop harmonizes.
+
+Design notes: `src/app/dream/218-kids-xylophone-drops/README.md`

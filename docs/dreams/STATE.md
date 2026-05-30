@@ -12883,3 +12883,52 @@ STATE.md cycle 249 listed three candidates: `kids-echo-drum` (already built as `
 - `scheduleActive()` computes `iter0 = floor((now - t0) / LDUR) - 1` and `iter1 = ceil((now + LOOK - t0) / LDUR) + 1` to find which loop iterations overlap the look-ahead window. The −1/+1 buffer ensures we never miss a note at loop boundaries.
 - The `scheduled: Set<string>` uses key `"${li}_${iter}_${beat}"` (layer, iteration, beat-offset). Pruning removes keys with `iter < cutIter - 2` when size > 300. At 80 BPM, 4-beat loop, 5 layers × max 8 notes = 40 keys per 3s → ~13 keys/s. Set grows to 300 in ~23 seconds, then prunes. No memory leak.
 - ESLint warning in build: `Unused eslint-disable directive (no-console)` at some line in the output — this is a pre-existing project-level config warning, not from this prototype.
+
+---
+
+## Cycle 252 — kids build: 218-kids-xylophone-drops
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to df0cd58 (cycle 251, dance-avatar). 7 commits pulled (cycles 245–251).
+
+**Love signal** (26 loved prototypes — relevant to kids pick):
+- `169-kids-marble-run` ❤️ — physics-based drops/balls on pitched objects; xylophone-drops is the direct extension to top-to-bottom falling drops
+- `82-kids-color-piano` ❤️ — color-coded pitched bars that ring; xylophone-drops adds physics anticipation to the same paradigm
+- `166-kids-lantern` ❤️ — objects travel with temporal anticipation before the note fires; drops create the same "watch it fall, wait for the ring" tension
+- `133-kids-ripple-pond` ❤️ — spatial placement → musical event; drops aimed by column, creating spatial cause-and-effect
+
+**Decided**: Kids cycle (252 % 2 = 0). No blockers; nothing in-progress.
+Cycle 251 STATE.md listed three cycle-252 candidates: polish `216-kids-band-builder`, `kids-xylophone-drops`, `kids-glow-garden`. Chose `kids-xylophone-drops` because:
+1. **Temporal anticipation is genuinely new** in the kids zone. 51 prior kids builds produce sound within 50ms of a tap. Xylophone-drops introduces a ~1.2s fall window where the child watches a colored drop descending and anticipates its ring. The emotional arc (see it coming → it hits → it rings) is new pacing.
+2. **BANDIMAL staircase teaches physics.** Taller bar = lower note. This mirrors real xylophone/marimba construction (longer resonators vibrate more slowly). A child who discovers this without prompting has learned acoustic physics through play.
+3. **Loved prototype confluence.** Three loved prototypes (marble-run, color-piano, lantern) directly inspired this one. The love signal is unusually clear.
+4. **One-cycle feasibility.** Canvas2D + triangle oscillator + simple physics = clean build with no new deps.
+
+**What I built**:
+- `src/app/dream/218-kids-xylophone-drops/page.tsx` — Five pentatonic xylophone bars in staircase (tallest violet C4 on left, shortest rose C5 on right). Drops auto-spawn every 1.8s + user tap spawns in that column. Fall physics: V0=2 px/frame, gravity=0.18 px/frame² → ~1.2s fall time on typical mobile. On hit: triangle oscillator note plays, bar glows (GLOW_MAX=24 frames), 7-particle splash burst. Tap directly on a bar to ring it instantly. 3 seed drops on load (bars 0, 2, 4 at 80ms/440ms/800ms). `○ Static`, 2.05 kB, ✅ clean build.
+- `src/app/dream/218-kids-xylophone-drops/README.md` — design notes, audio design, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.05 kB, `npm run build` 0 errors, only pre-existing Resonance core warnings in other files).
+
+**What's new about this prototype**:
+1. **First "falling object hits pitched target" prototype in the kids zone.** 51 prior kids builds are tap-direct (note fires on tap), physics-drift (objects wander and collide), or hold-and-release. This is the first top-to-bottom gravity arc where note fires at the end of a journey. The fall time creates anticipation — the child is emotionally invested before the ring.
+2. **Staircase bar heights encode pitch.** Tallest bar (110px) = deepest note (C4, 262 Hz). Shortest bar (66px) = highest note (C5, 523 Hz). The visual size directly represents the acoustic physics. No instruction needed — a child discovers the mapping by watching and listening.
+3. **Auto-spawn creates ambient musical wallpaper.** Even without interaction, the prototype loops drops and rings bars continuously. It works as a passive visual-audio ambient piece, not only as an interactive instrument.
+4. **Simultaneous tap modes.** Tap sky area → spawn drop (delayed ring). Tap bar directly → instant ring. Two interaction modes from one pointer handler based on Y position relative to bar top.
+
+**Queued next**:
+- Cycle 253: **adult build** (253 % 2 = 1). Top candidates:
+  - `waveshape-draw` (`219-waveshape-draw`) — draw a waveform on canvas → hear the timbre via `createPeriodicWave`. Inversion of `20-scope`. Zero deps. Karel's love of `153-paint-compose` ❤️ is a direct signal. MORNING.md has flagged this for 2 cycles.
+  - `paths-granular` — granular of Karel's Welcome Home tracks; depends on `/api/audio/[id]` auth check.
+  - `optical-flow-music` — webcam frame differencing → synthesis; zero CDN deps, camera permission only.
+- Cycle 254: **kids build**. Candidates:
+  - Polish `218-kids-xylophone-drops`: mic mode (RMS amplitude → drop spawn rate), BPM-sync spawn, confetti on 5-bar simultaneous hit
+  - `kids-glow-garden` — new variant of organic growth idea (different from bloom-garden; mechanic TBD)
+  - `kids-shadow-puppet` — hand blocks camera, shadow shape triggers instrument sounds (requires camera)
+
+**Notes**:
+- Drop collision uses `d.y + BARS[d.bi].dropR >= barTop(d.bi)`. At V~=13 px/frame on impact (after ~76 frames of acceleration), the drop bottom edge crosses the bar top in one frame cleanly. No multi-frame collision detection needed.
+- `acRef.current` is initialized lazily on first user interaction (pointer or auto-timer triggering through the `hitBar` path). Auto-spawned drops create drops but don't make sound until `hitBar` is called, which initializes the AudioContext. First ring always has an initialized context. ✅
+- `gc.setTransform(dpr, 0, 0, dpr, 0, 0)` is applied every frame (defensive approach vs. applying once in `resize`). This ensures correct DPR scaling even if `resize` fires between frames.
+- The `barTop()` function closes over `cssH()` and `dpr`, both of which update in `resize()`. This means drop collision detection uses the correct bar positions after window resize. Drops in-flight during resize will snap to new collision targets on the next frame.
+- `strikeNote` function name avoids the `use` prefix rule (would be treated as a React hook).
