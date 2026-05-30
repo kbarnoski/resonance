@@ -1,24 +1,29 @@
-# Morning digest — last updated 2026-05-30 UTC (cycle 245)
+# Morning digest — last updated 2026-05-30 UTC (cycle 246)
 
 ## New since yesterday
 
+- **`/dream/213-kids-echo-drum`** (cycle 246) — Four BANDIMAL drum pads. Tap any rhythm;
+  after 1.5s silence the drum echoes it back exactly (cool-cyan overlay = drum's voice vs.
+  your warm hue). Then fires one +1 bonus beat at the average inter-tap interval — most-used
+  pad, with a gold sparkle burst. Phase indicator at canvas center shows recording (pulsing red
+  dot + colored orbit dots) vs. echoing (pulsing cyan dot). **First rhythmic call-and-response
+  prototype** — echoes exact timing, pure affirmation: whatever you tap comes back perfectly
+  plus one more. For kids 3+, zero permissions, 3.18 kB.
+  **Why open this**: tap kick three times slowly → hear it back + one more kick. Tap a chaotic
+  scatter across all 4 pads → hear exactly that chaos mirrored. Watch the sparkle on beat 9.
+
 - **`/dream/212-diatonic-harmony`** (cycle 245) — Play a melody into the mic; every note is
-  instantly harmonized with its diatonic third and fifth — scale-correct companion voices that
-  adapt as the key is detected live. Three-lane scrolling piano roll: THIRD (light blue, top),
-  YOU (warm orange, middle), FIFTH (deep blue, bottom). Key detection uses the Krumhansl-Kessler
-  tonal hierarchy (standard MIR; 4+ notes needed to stabilize). **Why open this**: play a C major
-  scale and watch all three tracks scroll in parallel harmony; then shift to a minor phrase and
-  watch the third voice switch from major (E) to minor (E♭) automatically.
+  instantly harmonized with its diatonic third and fifth, scale-correct and key-adaptive.
+  **Why open this**: play a C major scale and watch three lanes scroll in parallel harmony;
+  shift to minor and watch the third switch from major to minor automatically.
 
 ## Recent (last 4 cycles)
 
-- **`/dream/211-kids-firefly-web`** (cycle 244) — Tap to release glowing fireflies; when two
-  drift within range they spin a silk thread and chime. Direct descendant of `140-kids-string-bridge` ❤️.
+- **`/dream/211-kids-firefly-web`** (cycle 244) — Tap to release fireflies; when two drift within
+  range they spin a silk thread and chime. Direct descendant of `140-kids-string-bridge` ❤️.
 - **`/dream/210-aria-companion`** (cycle 243) — Play piano, pause, Aria responds with a Markov
   phrase shaped by your own note transitions. First turn-taking dialogue prototype.
 - **`/dream/209-kids-drum-tap`** (cycle 242) — Four drum pads, Markov drum talks back after 1.5s.
-- **`/dream/208-param-layer`** (cycle 241) — Four concentric rings sculpt a harmonic bell
-  (pitch, partials, inharmonicity, decay). Drag rings, tap center to strike.
 
 ## In progress / partial
 
@@ -26,23 +31,26 @@ Nothing in-progress.
 
 ## Research findings worth a look
 
-**Research is 33 cycles overdue** (last full sweep: cycle 213). The cycle 245 MORNING.md explicitly
-flags this as a priority for cycle 246 (next adult slot). The ideas queue is healthy but all specced
-ideas are from 2026-05-20 or earlier — 10+ days old in a fast-moving domain.
+**Research sweep now 34 cycles overdue** (last full sweep: cycle 213, 2026-05-19).
+Cycle 247 (next adult slot) should be a full research cycle — the IDEAS queue is healthy but
+all entries are from 10+ days ago in a fast-moving domain.
 
-Prioritized research areas for cycle 246:
-- WebGPU compute audio (per iPlug3, cycle 66 research) — fresh May/June 2026 updates?
-- fal.ai / Replicate June 2026 model releases (models tagged "new" in the last 30 days)
-- Three.js r172+ and TSL updates
-- SIGGRAPH 2026 Art Gallery announcements (usually released June)
+Prioritized areas for cycle 247 research:
+- June 2026 fal.ai / Replicate model releases (models tagged "new" in last 30 days)
+- Three.js r172+ TSL node material updates
+- SIGGRAPH 2026 Art Gallery early announcements (usually released in June)
+- WebGPU compute audio new demos on HN / CodePen / shadertoy this month
+- Any Lyria RealTime API updates (Google DeepMind — real-time music WebSocket)
 
 ## Open questions for Karel
 
-- **Diatonic Harmony (212)**: does the 3-lane layout read clearly, or would you prefer all
-  three voices overlaid in one lane (different colors, single pitch space)? The overlaid view
-  shows the actual interval sizes; the three-lane view makes each voice independently readable.
-- **Research cycle approval**: cycle 246 (next adult slot) is planned as a full research sweep —
-  confirming this is fine unless you want a build instead. Research will target June 2026
-  findings (WebGPU, fal.ai releases, SIGGRAPH news, Hacker News week of 2026-05-26).
-- **Aria Companion (210)**: cycle 243's STATE.md asked whether you want (a) velocity mapping,
-  (b) 2nd-order Markov, or (c) Aria replies in a contrasting octave. Any of these worth a polish cycle?
+- **Echo Drum (213)**: should the +1 beat always be the most-tapped pad, or should it
+  "surprise" — picking the *least*-used pad to introduce a new voice? Currently it echoes
+  the dominant voice; the alternate design would feel more like the drum adding something new.
+- **Diatonic Harmony (212)**: does the 3-lane layout read clearly, or prefer all three voices
+  overlaid in one pitch space? The overlaid view shows actual interval sizes; 3-lane makes each
+  voice independently readable.
+- **Aria Companion (210)**: want (a) velocity mapping, (b) 2nd-order Markov, or (c) Aria
+  replies in a contrasting octave? Any worth a polish cycle?
+- **Research cycle**: cycle 247 is slated for a full sweep — confirming this is the right call
+  unless you want a build instead. Will target June 2026 findings.

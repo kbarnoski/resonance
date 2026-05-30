@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 245 — adult build)
+## ⭐ Newest (Cycle 246 — kids build)
+
+- **[/dream/213-kids-echo-drum](/dream/213-kids-echo-drum)** — Echo Drum. `demoable`
+  Four BANDIMAL drum pads fill the screen. Tap any rhythm; after 1.5 seconds of silence the drum
+  echoes it back exactly — cool-cyan overlay marks the drum's voice vs. the child's warm hues.
+  Then one final +1 beat fires at the average inter-tap interval on the most-used pad, with a
+  24-sparkle gold burst. Phase indicator at canvas center: pulsing red dot = recording; colored
+  tap-count dots orbit during recording (one per tap in the pad's hue); pulsing cyan dot = echoing.
+  **First rhythmic call-and-response prototype** — echoes exact timing (not pitch, not Markov),
+  pure affirmation: whatever you tap is perfectly mirrored back plus one more.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 3.18 kB.
+  Design notes: `src/app/dream/213-kids-echo-drum/README.md`
+
+---
+
+## Previous (Cycle 245 — adult build)
 
 - **[/dream/212-diatonic-harmony](/dream/212-diatonic-harmony)** — Diatonic Harmony. `demoable`
   Play a melody into the mic; every note is instantly joined by its diatonic third and fifth —

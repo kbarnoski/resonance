@@ -1,5 +1,74 @@
 # Dream Agent — cycle state
 
+---
+
+## Cycle 246 — kids build: 213-kids-echo-drum
+
+**When**: 2026-05-30 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 195ba66 (cycle 245 diatonic-harmony).
+
+**Love signal** (26 loved prototypes — kids-relevant):
+- `98-kids-drum-circle` ❤️ — rhythm + drum sounds; echo-drum is the call-and-response extension
+- `169-kids-marble-run` ❤️ — patient physical toy feel; echo gap shares the same "wait then reward" pacing
+- `140-kids-string-bridge` ❤️ — silent gap between gesture and audio event is the magic
+- `160-kids-paint-loop` ❤️ — building something that plays back is the core loop
+
+**Decided**: Kids cycle (246 % 2 = 0). No blockers; nothing in-progress.
+STATE.md cycle 244 (and MORNING.md) listed `kids-echo-drum` as the top kids candidate for cycle 246.
+Chose it over `kids-shadow-puppet` (requires webcam — more complex) and polish of `211-kids-firefly-web`
+(just built two cycles ago; spacing is good). `kids-echo-drum` fills a genuinely new interaction class:
+**rhythmic call-and-response**. All prior kids prototypes play notes on tap; this one records timing
+across multiple taps, then echoes the full rhythm back. The +1 beat is the delight: the drum adds one
+more hit at the natural interval, so it sounds like the drum "knows what comes next."
+
+**What I built**:
+- `src/app/dream/213-kids-echo-drum/page.tsx` — 4 BANDIMAL drum pads (kick/hihat/snare/tom).
+  Tap any combination; after 1.5s silence (or 8 taps) the drum echoes the exact rhythm back
+  with a cool-cyan overlay (visual cue: "drum's voice"). Then fires one final +1 beat at the
+  average inter-tap interval — most-tapped pad, with 24-sparkle gold burst. Phase indicator at
+  canvas center: pulsing red dot = recording, pulsing cyan dot = echoing, with colored
+  tap-count dots orbiting the center during recording. `○ Static`, 3.18 kB, ✅ clean build.
+- `src/app/dream/213-kids-echo-drum/README.md` — design notes, audio architecture, polish ideas.
+- Build: ✅ clean (one fix: `if (!canvas) return;` guards in `setTimeout` callbacks — same
+  pattern as all prior prototypes using scheduled audio events).
+
+**What's new about this prototype**:
+1. **First rhythmic call-and-response prototype.** `142-kids-echo-canon` echoes note pitches;
+   `154-kids-clap-back` judges timing accuracy. Echo Drum is the first that echoes EXACT timing
+   regardless of correctness — whatever the child taps is perfectly mirrored back. Pure affirmation.
+2. **+1 beat mechanic.** The drum adds one more note at the statistical "next" position. For a
+   steady rhythm this feels prescient; for an irregular rhythm it lands at an interesting off-beat.
+   The gold sparkle burst marks this moment as distinct from the echo.
+3. **Two visual voices.** Warm hue = child; cool cyan overlay = drum. Same principle as
+   `210-aria-companion` (orange/blue) but adapted for a 4yo interaction pattern.
+4. **Phase dots at canvas center.** Colored dots orbiting the center show how many taps have
+   been recorded so far (up to 8). No text, no numbers — just colored circles in the pad's hue.
+
+**Queued next**:
+- Cycle 247: **adult build** (247 % 2 = 1). Research sweep is now overdue (35+ cycles since
+  Cycle 213 — well past the 3-cycle cadence). Strong candidates:
+  - **Research sweep** (highest priority — IDEAS queue needs fresh 2026 entries, Cycle 213 was last)
+  - `chord-canvas` (195-chord-canvas exists, check if already shipped)
+  - `loop-station` (172-loop-station exists, check if already shipped)
+  - `mood-xy` — Russell circumplex emotion synthesis, 2D canvas, zero deps
+- Cycle 248: **kids build**. Candidates:
+  - Polish `213-kids-echo-drum`: demo round (auto-play a 4-beat demo on load with cyan flash),
+    multi-echo (second playback transposed), rhythm fingerprint strip
+  - `kids-echo-drum` mic mode: onset detection → auto-register taps from clapping
+  - New seed: `kids-shadow-puppet` (webcam light/shadow → instrument zones)
+
+**Notes**:
+- `if (!canvas) return;` at the top of `setTimeout` callbacks is required in this project's TS
+  config — TypeScript does not track null narrowing from the outer `useEffect` scope into nested
+  callbacks. Pattern confirmed again here (same as 205, 211, and prior kids prototypes).
+- `Math.max(...freq)` on a `number[]` of length 4 is fine; spread arg limit is not a concern at n=4.
+- Average inter-tap interval clamped to 150ms–1000ms prevents extreme tempos from producing an
+  unintelligible bonus beat (e.g., 30ms if the child spammed, or 3000ms if they paused mid-tap).
+
+---
+
+
 ## Cycle 245 — adult build: 212-diatonic-harmony
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)
