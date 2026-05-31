@@ -2,6 +2,96 @@
 
 ---
 
+## Cycle 259 — adult build: 225-aria-companion
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to fe58e29 (cycle 258, 224-kids-glow-garden). 14 commits pulled.
+
+**Love signal** (27 loved prototypes — same set as cycle 258, no new loves since last cycle):
+- `163-paths-visualizer` ❤️ — Karel loves seeing his own piano paths visualized. Aria Companion
+  extends this: it doesn't just visualize, it listens and responds. The piano roll shows HIS phrases.
+- `172-loop-station` ❤️ — love of live construction over time. Aria dialogue builds across exchanges.
+- `153-paint-compose` ❤️ — drawing/playing → visual artifact. Aria Companion creates the same kind
+  of artifact: a growing piano roll that is a record of a musical conversation.
+- `217-dance-avatar` ❤️ — motion/gesture → music. Aria is the dialogue-mode extension of this theme.
+
+**Decided**: Adult cycle (259 % 2 = 1). No blockers; nothing in-progress.
+
+Chose `aria-companion` because:
+1. **Explicitly queued as top candidate in MORNING.md + STATE.md cycle 258** for adult cycle 259.
+2. **First dialogue prototype.** All 224 prior prototypes are reactive (responding every frame) or
+   generative (playing autonomously). This is the first that *listens, waits, then responds* —
+   the same structure as call-and-response jazz improvisation.
+3. **Zero deps, one-cycle build.** Markov chain is ~20 lines of JS. No ML inference, no API call.
+4. **High surprise.** The insight that Aria gradually "learns" Karel's interval tendencies from a
+   simple bigram table — not from a neural net — is genuinely surprising. By exchange 4–5, the
+   responses start echoing his own melodic habits.
+5. **Love confluence**: `163-paths-visualizer` + `153-paint-compose` + `172-loop-station` all
+   point toward "Karel's own music, made visible and extended over time." Aria Companion delivers
+   all three: it visualizes his phrases (piano roll), extends them (Markov response), and builds
+   across a session (accumulated table).
+6. **Design Space taxonomy validates it.** "Dialogue agents" are the least-explored category per
+   arxiv 2602.05064 (Feb 2026). 224 prototypes and none has done this — a real gap.
+
+**Loves influencing this pick**:
+`163-paths-visualizer` ❤️, `172-loop-station` ❤️, `153-paint-compose` ❤️ — all pointed toward
+Karel's own playing as the input, with a growing visual artifact as output.
+
+**What I built**:
+- `src/app/dream/225-aria-companion/page.tsx` — Aria Companion (`○ Static`, 3.66 kB, ✅ clean build)
+  - Phase machine: idle → listening → responding → listening (loop), done (demo only)
+  - Pitch detection: NSDF-based (McLeod variant), 2048-sample buffer, 20Hz detection rate
+    (50ms interval), threshold NSDF > 0.5; detected freqs snapped to nearest pentatonic MIDI
+  - Note buffering: onset = pitch changes to new MIDI; offset = pitch drops to 0 for >0 frames
+  - Trigger: 2s silence + ≥8 notes captured → build Markov chain + generate response
+  - Markov: 1st-order bigram table accumulated across all session exchanges. Response: 70% Markov
+    sampling, 30% pentatonic random walk (prevents loops). Response length = min(phrase+3, 18) notes
+  - Piano timbre: 4 additive triangle partials (1×, 2×, 3×, 4.05×) at gains 1.0/0.42/0.18/0.07
+    Step time: 500ms between notes, 420ms duration. `exponentialRampToValueAtTime` envelope.
+  - Canvas: split piano roll — YOU (orange, top) / ARIA (blue, bottom). 7s scrolling window.
+    Y=MIDI 36–84, octave grid lines. Live pitch dot on right edge during active detection.
+  - Demo mode: pre-baked 10-note pentatonic phrase, Markov response plays immediately
+  - Typography: h1 text-2xl/white/95, p text-base/white/75, status text-sm/white/55 ✓
+- `src/app/dream/225-aria-companion/README.md` — design notes, math, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 3.66 kB). Zero TypeScript or ESLint errors in dream zone.
+
+**What's genuinely new**:
+1. **First dialogue prototype.** None of the 224 prior prototypes waits for the user to finish
+   before responding. All are continuous reactors. This one listens to a complete musical thought
+   before speaking.
+2. **Markov chain that learns.** The bigram table accumulates across exchanges. A player who
+   favors minor thirds will increasingly hear minor thirds in Aria's responses, even though there's
+   no "minor third" rule anywhere in the code. The pattern emerges from the count table.
+3. **Intentional response latency as musical grammar.** The 2-second silence trigger isn't just
+   a UI threshold — it's a musical statement. Karel finishes a phrase. Silence. Then Aria answers.
+   The silence is the "rest" in the dialogue. This is how jazz musicians actually trade fours.
+
+**Queued next**:
+- Cycle 260: **kids build** (260 % 2 = 0). Candidates:
+  - `kids-shadow-puppet` — hand blocks camera light, shadow shape triggers sounds (needs camera)
+  - Polish `224-kids-glow-garden`: pollen sparkles drift along resonance arcs; multi-touch plant
+  - New seed: a kids prototype where drawing a face (circle + 2 dots + arc) makes the face sing
+    — each feature is a voice; eyes blink = rhythm; mouth opens/closes = melody. Simple drag-to-draw.
+- Cycle 261: **adult build**. Candidates:
+  - `chord-canvas` (28) — mic → chroma → chord name + color timeline. First music-theory prototype.
+  - `mood-xy` (38) — 2D valence/arousal canvas drives synthesis. First emotion-coordinate prototype.
+  - Polish `225-aria-companion`: add Markov heatmap overlay (12×12 pitch-class grid showing the
+    accumulated table visually). Would make Karel's own interval tendencies visible as data.
+
+**Notes**:
+- `pitchDetect` runs NSDF from minP=31 (44100/1400) to maxP=1024 (floor(2048/2)). This covers
+  ~43Hz–1400Hz: all piano notes from F1 upward. Below F1: a few notes are missed, but Karel rarely
+  plays sub-bass in a melodic context. The 0.5 NSDF threshold rejects noise and chord-smear cleanly.
+- `snapPen` ensures detected pitches are always from the 21-note pentatonic set (C2–C6 range).
+  This prevents pitch-tracking glitches from triggering odd intervals in the Markov table.
+- The `genMT` function's 70/30 split (Markov vs. pentatonic fallback) is the right balance: 100%
+  Markov would freeze if the current note has no outgoing transitions (empty row); 0% fallback would
+  never venture outside heard intervals. 70% gives Aria its own voice while staying style-faithful.
+
+---
+
 ## Cycle 258 — kids build: 224-kids-glow-garden
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

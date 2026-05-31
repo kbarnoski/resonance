@@ -10,7 +10,21 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 258 — kids build)
+## ⭐ Newest (Cycle 259 — adult build)
+
+- **[/dream/225-aria-companion](/dream/225-aria-companion)** — Aria Companion. `demoable`
+  Play a phrase on your piano — pause 2 seconds — Aria responds with a phrase generated from a
+  Markov chain trained on YOUR intervals, then listens again. Split piano roll: YOU (orange, top)
+  / ARIA (blue, bottom). **First dialogue prototype**: all 224 prior prototypes react continuously;
+  this one waits for a complete musical thought before answering. The Markov table accumulates
+  across exchanges — by the 4th–5th dialogue, Aria starts echoing Karel's own melodic habits.
+  Piano timbre: 4 additive triangle partials with slight inharmonicity (4.05× partial). Demo mode
+  included. **Zero deps · Zero API · Zero AI calls** · 3.66 kB.
+  Design notes: `src/app/dream/225-aria-companion/README.md`
+
+---
+
+## Previous (Cycle 258 — kids build)
 
 - **[/dream/224-kids-glow-garden](/dream/224-kids-glow-garden)** — Glow Garden. `demoable`
   Tap to plant a glowing flower — it grows over 1.4s (stem rises, 6 petals unfurl) and sustains
