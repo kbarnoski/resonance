@@ -2,6 +2,61 @@
 
 ---
 
+## Cycle 264 — kids build: 230-kids-bubble-duet
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main 19 commits to cycle 263 (229-chord-canvas).
+
+**Love signal** (27 loved prototypes — kids-relevant):
+- `217-dance-avatar` ❤️ — body-shaped playful character. Bubble Duet extends this: two characters with distinct identities trade musical phrases.
+- `169-kids-marble-run` ❤️ — physics + sound = music. Bubbles bounce when they sing.
+- `133-kids-ripple-pond` ❤️ — two expanding rings meeting = chime. Bubble Duet is the character version: two named "characters" meet and exchange notes.
+- `111-kids-shape-loop` ❤️ — layered musical voices. Duet adds: those voices belong to distinct characters with distinct turns.
+- `166-kids-lantern` ❤️ — objects with clear sound identity. Each bubble IS an identity.
+
+**Decided**: Kids cycle (264 % 2 = 0). No blockers; nothing in-progress.
+
+Chose `kids-bubble-duet` because:
+1. **First kids dialogue prototype.** 228 prior prototypes either react immediately (tap → note) or do call-and-response with a faceless system (echo-drum, echo-canon). Bubble Duet has TWO named characters with visual identities: YOU (rose) and FRIEND (cyan). The turn-taking has a social narrative: "your friend heard you and wants to sing back." That framing is new.
+2. **Zero permissions.** No mic, no camera, no accelerometer. Pure pointer events. Most accessible possible entry point.
+3. **Novel among 59 kids builds.** `205-kids-bubble-bath` has bubbles colliding to make chords, but no character identity. `213-kids-echo-drum` echoes rhythms but uses a generic system, not a named friend bubble. This is the first prototype where the responder has a distinct color, shape, and musical identity.
+4. **Aligns with recent loves.** `217-dance-avatar` ❤️ (just loved — Karel responds to playful character-shaped interactives). `169-kids-marble-run` ❤️ (physics → bounce → music). The bubble bounce mechanic on each "sing" event is a direct callback to the marble run's physics-as-music principle.
+5. **Simple, clean mechanic.** Tap pink bubble → note plays → cyan bubble glows + responds 1.2s later → dashed arc connects them → repeat. No game-over, no score, infinite dialogue.
+
+**Loves influencing this pick**:
+`217-dance-avatar` ❤️ (character identity), `169-kids-marble-run` ❤️ (physics-bounce sound), `133-kids-ripple-pond` ❤️ (two-entity musical meeting), `111-kids-shape-loop` ❤️ (layered musical voices).
+
+**What I built**:
+- `src/app/dream/230-kids-bubble-duet/page.tsx` — Bubble Duet
+  - YOU bubble (rose, left) pulses invitingly; FRIEND bubble (cyan, right) dormant until YOU plays
+  - Tap YOU → bounce animation + random pentatonic note (C3/E3/G3/A3/C4) + 14-sparkle burst
+  - After 1.2s: FRIEND brightens, bounces, plays a consonant response (P5/P4 lookup table), 16 cyan sparkles arc toward YOU + dashed connection arc between the two bubbles
+  - After 0.9s: back to idle; "your turn ♪" label appears
+  - Ambient C3+G3 sine pad from first tap (gain 0.013/0.008)
+  - Smiley face drawn inside YOU bubble; ♪ symbol inside FRIEND bubble
+  - 45 twinkling stars as background; fullscreen tap detection with +24px tolerance
+  - Phase labels: "♪ listening…" (thinking) / "your turn ♪" (idle)
+  - Zero deps · Zero permissions · Pure Web Audio + Canvas2D
+
+**Build**: ✅ clean. Verified before commit.
+
+**What's genuinely new**:
+1. **First kids prototype where the responder has a distinct character identity.** Prior dialogue prototypes (echo-drum, echo-canon) respond with a generic "system." Bubble Duet's FRIEND bubble has a name, a color, and a face — it's a musical friend, not a machine.
+2. **Musical harmony built into the response lookup.** RESPONSE table ensures every YOU note gets a consonant partner: C3→G3 (P5), E3→A3 (P4), G3→C4 (P4), A3→C3 (P8 below), C4→G3 (P4 below). The child always hears something that sounds "right" no matter which note they trigger.
+3. **Visual connection arc during exchange.** The dashed quadratic arc between bubbles during FRIEND's response is the first prototype to use a visual "conversation thread" between two characters. Reinforces the social narrative: something is passing between them.
+
+**Queued next**:
+- Cycle 265: **adult build** (265 % 2 = 1). Candidates:
+  - `mood-xy` (38) — 2D valence/arousal canvas drives synthesis. First emotion-coordinate prototype.
+  - `scene-spatial` (29) — Ghost preset scenes as HRTF 3D audio environments. Zero deps.
+  - `loop-station` polish — `172-loop-station` ❤️ is loved; polish the phase-lock or UX.
+- Cycle 266: **kids build** (266 % 2 = 0). Candidates:
+  - Polish `230-kids-bubble-duet`: add a 3rd "grandparent" bubble that joins after 5 exchanges and plays the bass note — growing the ensemble.
+  - `kids-rain-xylophone` — drops fall from above onto BANDIMAL bars; catch with touch to ring them.
+
+---
+
 ## Cycle 262 — kids build: 228-kids-creature-grow
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

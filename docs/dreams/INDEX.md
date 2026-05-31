@@ -10,7 +10,22 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 262 — kids build)
+## ⭐ Newest (Cycle 264 — kids build)
+
+- **[/dream/230-kids-bubble-duet](/dream/230-kids-bubble-duet)** — Bubble Duet. `demoable`
+  **For kids 3+** — Two soap bubbles float on a starry canvas: **YOU** (pink, smiley face) and **FRIEND** (cyan, ♪). Tap the pink bubble to play a random pentatonic note and bounce it; 1.2 seconds later FRIEND brightens, bounces, and plays a **consonant response** (C3→G3 P5, E3→A3 P4, G3→C4 P4, A3→C3 octave, C4→G3 P4). During the exchange, 16 cyan sparkles arc from FRIEND toward YOU and a dashed quadratic arc connects the two bubbles as a "conversation thread." After FRIEND sings: "your turn ♪" appears and the cycle repeats. **First kids prototype where the responder has a distinct character identity** — prior call-and-response prototypes (echo-drum, echo-canon) use a generic system; here FRIEND has a face, a color, and a musical voice. Every response is harmonically consonant — no music theory needed. Zero permissions · Zero deps · 2.99 kB.
+  Design notes: `src/app/dream/230-kids-bubble-duet/README.md`
+
+---
+
+## Previous (Cycle 263 — adult build)
+
+- **[/dream/229-chord-canvas](/dream/229-chord-canvas)** — Chord Canvas. `demoable`
+  Mic → FFT chroma vector → template match against 24 major/minor chord templates → chord name (e.g. "F♯m", "Cmaj7") in large monospace + scrolling color timeline. Hue from root note (12-tone color wheel), saturation from quality (major=vivid, minor=desaturated). Secondary chromagram strip shows per-pitch-class energy. Demo: ii-V-I progression (Dm7→G7→Cmaj7). **First prototype to explicitly surface music theory** — 228 prior prototypes visualize signal; this one names the chord. Zero deps · Zero API.
+
+---
+
+## Previous (Cycle 262 — kids build)
 
 - **[/dream/228-kids-creature-grow](/dream/228-kids-creature-grow)** — Creature Grow. `demoable`
   **For kids 4+** — A glowing creature hatches from an egg and grows as you feed it pentatonic notes. Each of the six taps permanently adds a new body part: **eyes** (cyan, C4) → **ears** (emerald, D4) → **smile** (amber, E4) → **arms** (blue, G4) → **legs** (rose, A4) → **wings** (gold, C5). Tap 6 = fully grown: 60-sparkle burst + "✨ Fully grown! ✨" + creature sings all six notes back with each body part glowing on its note. Tap again any time to sing again. **First kids prototype where tapping literally grows anatomy** — unlike face-song (pre-drawn face you toggle) or voice-monster (mic/blob), this starts from nothing: the body only exists because you tapped. Progress dots at canvas bottom fill with each part's color. Zero permissions · Zero deps · 3.18 kB.

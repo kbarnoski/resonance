@@ -1,64 +1,54 @@
-# Morning digest — last updated 2026-05-31 UTC (cycle 263)
+# Morning digest — last updated 2026-05-31 UTC (cycle 264)
 
 ## New since yesterday
 
-- **`/dream/229-chord-canvas`** (cycle 263, adult) — Play any chord on piano and the detector
-  names it: "Dm", "G", "C♯m". The chord fills the screen in large colored text (C = red,
-  D = yellow, A = violet — same hue wheel as `1-live`). A timeline strip scrolls left at the
-  bottom: each chord you played becomes a colored block (width = duration). A 12-bin chromagram
-  shows live pitch-class energy beneath. **Try demo mode first** — it plays a ii–V–I (Dm → G
-  → C) automatically, then switch to mic. **First music-theory prototype in 228 builds** — prior
-  prototypes visualized audio *signal*; this one names musical *structure*. No ML, no server. 3.85 kB.
+- **`/dream/230-kids-bubble-duet`** (cycle 264, kids) — Two soap bubbles float on a starry canvas.
+  **YOU** (pink smiley) + **FRIEND** (cyan ♪). Tap the pink bubble → note plays → FRIEND brightens,
+  bounces 1.2 s later, and sings a consonant response (C3→G3, E3→A3, G3→C4, A3→C3, C4→G3). Dashed
+  arc connects them during exchange. Then "your turn ♪" — repeat forever. **First kids prototype
+  where the responder has a distinct character identity** — prior call-and-response prototypes use a
+  generic system; FRIEND here has a face, a color, and a musical voice. Zero permissions · Zero deps
+  · 2.99 kB.
 
-- **`/dream/228-kids-creature-grow`** (cycle 262, kids) — An egg hatches and a creature grows
-  as you feed it notes. Six taps (eyes → ears → smile → arms → legs → wings) build full anatomy.
-  Completion: 60-sparkle burst + creature sings back your six notes with each body part glowing
-  on its note. **First kids prototype where tapping literally grows anatomy from nothing.** Zero
-  permissions · Zero deps · 3.18 kB.
+- **`/dream/229-chord-canvas`** (cycle 263, adult) — Play any chord and the detector names it:
+  "Dm", "G", "C♯m". Color timeline scrolls left (hue = root, saturation = quality). **First
+  music-theory prototype in 228 builds.** Demo plays a ii–V–I automatically. 3.85 kB.
 
-- **`/dream/227-paths-granular`** (cycle 261, adult) — Upload any audio file and sculpt it into
-  a grain cloud. Scrub to a moment; scatter Hann-windowed fragments (20–500 ms) at configurable
-  density with ±12 st pitch shift. **First granular synthesis prototype.** Zero deps · 3.65 kB.
+- **`/dream/228-kids-creature-grow`** (cycle 262, kids) — Tap six times to grow a creature from
+  egg → eyes → ears → smile → arms → legs → wings. Completion: creature sings all six notes back
+  with each body part glowing on its note. Zero permissions · 3.18 kB.
 
 ## In progress / partial
 
-Nothing in-progress. Next: kids cycle 264.
+Nothing in-progress.
 
 ## Research findings worth a look
 
-- **Chord detection is more forgiving than expected.** Open voicings, octave doublings, and
-  even inversions all return the correct chord label reliably — because the chroma vector sums
-  pitch-class energy across all octaves. A C major chord with a C in the bass + E+G in the
-  treble (standard piano voicing) gives the same [C, E, G] fingerprint regardless of which
-  octave each note is in. The chromagram is, in a sense, already an "inversion-invariant"
-  representation.
+- **Turn-taking dialogue is the least-explored kids interaction class.** 59 kids builds exist; only
+  `213-kids-echo-drum` and `142-kids-echo-canon` do call-and-response — and both use a faceless
+  "system" responder. Bubble Duet adds character identity to the exchange. The "Design Space for
+  Live Music Agents" taxonomy (arxiv 2602.05064) specifically identifies dialogue agents as the
+  most musically interesting and least-built category.
 
-- **The ii–V–I demo teaches unconsciously.** A visitor who plays the demo and watches Dm → G
-  → C cycle learns the most fundamental jazz chord progression without any text instruction.
-  The hue shift (Dm: muted blue-green → G: warm amber-green → C: red) makes the progression
-  feel like a visual "return home."
+- **Consonant response lookup vs. Markov chain.** The lookup table (C3→G3 P5 always) is
+  predictable and always consonant — right for a 3-year-old. For older kids or an adult version,
+  a Markov chain that learns from YOU's intervals (like `225-aria-companion`) would be richer.
+  The duo could be extended: FRIEND learns your style after 5 exchanges.
 
-- **`217-dance-avatar` ❤️ (loved this cycle!)** — Karel loved the spring-physics skeleton.
-  This opens a direction: more audio-reactive 3D geometry. Three.js R3F + TSL node materials
-  (already installed) could give a `three-mesh-av` prototype where an icosahedron breathes
-  with FFT data. Zero new deps.
+- **`217-dance-avatar` ❤️ (still loved).** Spring-physics body shapes resonate with Karel.
+  Natural next step: a Three.js R3F icosahedron that breathes with FFT data — first audio-reactive
+  3D mesh prototype (zero new deps, `@react-three/fiber` + `three@0.182` already installed).
 
 ## Open questions for Karel
 
-- **`229-chord-canvas`**: Does the `CHORD_THRESHOLD = 0.28` feel right? Too low → false
-  positives on ambiguous sounds; too high → misses quiet chords. Try playing a single note
-  (should show nothing), then a full chord (should detect). If you're getting false positives
-  on noise, I can bump to 0.32.
+- **`230-kids-bubble-duet` pitch control?** Currently YOU taps a random note each time. Option:
+  make the note depend on WHERE on the YOU bubble you tap (top = C4, bottom = C3, five zones) —
+  adds agency without reading requirement.
 
-- **Extensions for chord-canvas**: (1) dominant 7th templates (Dm7, G7, Cmaj7) — more useful
-  for jazz; needs 4-note templates; (2) chord shown on a virtual piano keyboard; (3) export
-  the timeline as a chord chart. Which matters most?
+- **FRIEND's response speed.** 1.2 s "thinking" window. Too slow for excited 3-year-olds? Too fast
+  and the exchange loses its conversational feel. Try it and tell me; happy to tune to 0.8s or 1.6s.
 
 - **`/api/audio/[id]`** — still pending your OK. Unlocks `paths-granular` auto-load + future
-  Karel's-music prototypes.
-
-- **Cycle 264 kids candidates**: `kids-chord-garden` (tap → colored flower = pitch; nearby
-  same-color flowers harmonize — kids version of chord-canvas), polish `228-kids-creature-grow`
-  (extend to 8-tap arc + faster sing-back), or `kids-shadow-puppet` (camera-based).
+  Karel's-music prototypes built around Welcome Home recordings.
 
 - **FAL_KEY budget** — `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready on your go-ahead.
