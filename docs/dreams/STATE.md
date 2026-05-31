@@ -2,6 +2,62 @@
 
 ---
 
+## Cycle 260 — kids build: 226-kids-face-song
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to a701884 (cycle 259, 225-aria-companion). 15 commits pulled.
+
+**Love signal** (27 loved prototypes — relevant to this kids pick):
+- `111-kids-shape-loop` ❤️ — additive layering of independent looping voices. Face Song is the same: tap to add/remove each voice, build the texture.
+- `169-kids-marble-run` ❤️ — each marble is an instrument following a path. Face Song maps this to anatomy: each face feature = a distinct instrument voice.
+- `166-kids-lantern` ❤️ — tappable visual objects that each carry a sound identity. Same mechanics; face parts are the "lanterns."
+- `160-kids-paint-loop` ❤️ — assembling multiple simultaneous looping voices. Face Song is the same idea but with recognizable body-part scaffolding instead of freehand strokes.
+
+**Decided**: Kids cycle (260 % 2 = 0). No blockers; nothing in-progress.
+
+Chose `kids-face-song` because:
+1. **First prototype where the instrument IS a recognizable human face.** 225 prior prototypes use circles, fish, flowers, drums, stars. A face is the most universally legible shape to a 4-year-old — they can point to "eyes" and "mouth" before they can name colors. The body-part → voice mapping is immediately learnable.
+2. **BANDIMAL rule through anatomy.** Head (biggest) = lowest pitch; nose (smallest) = highest beat. Size teaches pitch through a shape children already understand kinesthetically — their own face.
+3. **Polyrhythm by design.** G3 (800ms) + E3 (1200ms) + A3 (600ms) create interlocking rhythms. The child doesn't know the word "polyrhythm" — they just discover that having all three on sounds more interesting than one alone. The mouth melody (500ms) weaves through all three layers.
+4. **Clear goal + reward.** The "all 5 active" celebration (sparkle burst + "La la la!") gives the prototype a clear completion state without making it a game (you can't fail; you can only build or un-build).
+5. **One-cycle feasibility.** Five `setInterval`-scheduled plucks + one sustained oscillator + canvas face drawing = well within one cycle. No permissions, no API, no deps.
+
+**Loves influencing this pick**:
+`111-kids-shape-loop` ❤️, `160-kids-paint-loop` ❤️, `169-kids-marble-run` ❤️ — all pointed toward "assemble independent looping voices, hear the result build."
+
+**What I built**:
+- `src/app/dream/226-kids-face-song/page.tsx` — Face Song (`○ Static`, 2.84 kB, ✅ clean build)
+  - Five face parts, each tappable toggle: HEAD (C2 sustained triangle), LEYE (G3/800ms), REYE (E3/1200ms), NOSE (A3/600ms), MOUTH (C3-G3-A3-E3-C4 melody/500ms)
+  - Canvas face geometry computed as fractions of `min(W,H)` — fully responsive for any screen
+  - Hit detection: eyes enlarged to `max(32px, 2.2× eyeR)`; nose `max(32px, 2.6× noseR)`; mouth = ±52px Y from arc center + 88% of arc radius X; head = everything else within 1.1× headR
+  - Blink animation: left eye `|sin(ts × 0.0025)|`, right eye `|sin(ts × 0.0020 + 1.1)|` — independent periods, never sync-blinks
+  - Nose bounce: `1 + 0.18|sin(ts × 2π/600)|` — bounces at 600ms = nose beat period
+  - Mouth open: arc Y shifts `mR × openFactor × 0.35` upward while `openFactor` breathes at 500ms (melody note period)
+  - Celebration: `celebrateUntil = performance.now() + 2400ms` set in pointerdown; drawn while `ts < celebrateUntil`; 36-sparkle burst + "La la la! ✨" text
+  - Ambient: C2 + G2 sine pads (gain 0.009/0.006), fade in over 3s on first gesture
+  - Typography: h1 text-2xl/white/95, p text-base/white/75, hint text-xs fading ✓
+- `src/app/dream/226-kids-face-song/README.md` — design notes, audio table, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 2.84 kB). Zero TypeScript or ESLint errors in dream zone.
+
+**What's genuinely new**:
+1. **First kids prototype shaped like a human face.** All prior kids prototypes use abstract shapes (circles, stars, grids) or environmental metaphors (garden, ocean, fireworks). The face is different: a 4-year-old has a bodily relationship with it. "The nose makes a bouncy sound" maps to their proprioception — they feel a nose bounce.
+2. **Body part → audio parameter mapping.** Head size → drone pitch, eye blinking → rhythmic plucks, nose bouncing → beat, mouth opening → melody. The face IS the mixer, and the mixing interface IS anatomy.
+3. **Polyrhythm from independent-period intervals.** The three rhythmic parts (800ms / 1200ms / 600ms) create an interlocking pattern that never resolves to a common beat within 2.4 seconds. A child building up all three hears the complexity emerge without any "add complexity" button.
+
+**Queued next**:
+- Cycle 261: **adult build** (261 % 2 = 1). Candidates:
+  - `chord-canvas` (28) — mic → chroma → chord name + color timeline. First music-theory prototype.
+  - `mood-xy` (38) — 2D valence/arousal canvas drives synthesis. First emotion-coordinate prototype.
+  - Polish `225-aria-companion`: add Markov heatmap overlay (12×12 pitch-class grid showing accumulated interval table). Would make Karel's own interval tendencies visible as data.
+- Cycle 262: **kids build** (262 % 2 = 0). Candidates:
+  - Polish `226-kids-face-song`: auto-demo (face parts activate one by one on load); eyebrows optional; mic mode for mouth brightness
+  - `kids-shadow-puppet` (needs camera) — hand blocks camera light, shadow shape triggers sounds
+  - New seed: kids prototype where you grow a musical creature by feeding it notes (hum → creature gains features → fully-fed creature sings back)
+
+---
+
 ## Cycle 259 — adult build: 225-aria-companion
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

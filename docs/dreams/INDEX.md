@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 259 — adult build)
+## ⭐ Newest (Cycle 260 — kids build)
+
+- **[/dream/226-kids-face-song](/dream/226-kids-face-song)** — Face Song. `demoable`
+  A glowing face made of five musical parts. Tap each to wake it up: **head** (violet circle) = deep C2 drone; **left eye** (teal) = G3 pluck every 800ms + gentle blink; **right eye** (amber) = E3 pluck every 1200ms (polyrhythm offset); **nose** (rose) = A3 bounce every 600ms; **mouth** (cyan arc) = C3–G3–A3–E3–C4 melody (500ms/note), arc opens/closes while singing. Tap again to silence any part. When all five are active → sparkle burst + "La la la! ✨" flashes. BANDIMAL sizing throughout (head biggest = lowest, nose smallest = highest). **First kids prototype where the instrument IS a recognizable human face** — assembling it teaches pitch–size relationships through body analogy. Zero permissions · Zero API · Zero deps · 2.84 kB.
+  Design notes: `src/app/dream/226-kids-face-song/README.md`
+
+---
+
+## Previous (Cycle 259 — adult build)
 
 - **[/dream/225-aria-companion](/dream/225-aria-companion)** — Aria Companion. `demoable`
   Play a phrase on your piano — pause 2 seconds — Aria responds with a phrase generated from a
