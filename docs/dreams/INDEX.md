@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 261 — adult build)
+## ⭐ Newest (Cycle 262 — kids build)
+
+- **[/dream/228-kids-creature-grow](/dream/228-kids-creature-grow)** — Creature Grow. `demoable`
+  **For kids 4+** — A glowing creature hatches from an egg and grows as you feed it pentatonic notes. Each of the six taps permanently adds a new body part: **eyes** (cyan, C4) → **ears** (emerald, D4) → **smile** (amber, E4) → **arms** (blue, G4) → **legs** (rose, A4) → **wings** (gold, C5). Tap 6 = fully grown: 60-sparkle burst + "✨ Fully grown! ✨" + creature sings all six notes back with each body part glowing on its note. Tap again any time to sing again. **First kids prototype where tapping literally grows anatomy** — unlike face-song (pre-drawn face you toggle) or voice-monster (mic/blob), this starts from nothing: the body only exists because you tapped. Progress dots at canvas bottom fill with each part's color. Zero permissions · Zero deps · 3.18 kB.
+  Design notes: `src/app/dream/228-kids-creature-grow/README.md`
+
+---
+
+## Previous (Cycle 261 — adult build)
 
 - **[/dream/227-paths-granular](/dream/227-paths-granular)** — Granular. `demoable`
   Upload any audio file (WAV, MP3, or the built-in C major demo) and reshape it into a grain cloud. Four parameters: **scrub** position (which moment in the file), **grain size** (20–500 ms), **density** (2–30 grains/sec), **pitch shift** (±12 semitones), **scatter** (how far grains stray from the scrub point). Each grain is Hann-windowed, randomly panned, and given an attack+decay envelope; the result ranges from smooth frozen-chord textures to glitchy percussive clouds. Waveform strip shows the buffer; sparkle particles burst from the scrub cursor on every grain. **First granular synthesis prototype** — try Karel's Welcome Home recordings for instant time-stretching of real piano textures. Zero deps · Zero API · Zero permissions · 3.65 kB.

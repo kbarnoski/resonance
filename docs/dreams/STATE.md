@@ -2,6 +2,65 @@
 
 ---
 
+## Cycle 262 — kids build: 228-kids-creature-grow
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to cycle 261 (227-paths-granular). 17 commits pulled.
+
+**Love signal** (relevant kids prototypes loved by Karel):
+- `111-kids-shape-loop` ❤️ — additive layering of independent looping voices. Creature Grow is the same: tap to add each permanent voice/body-part.
+- `160-kids-paint-loop` ❤️ — assembling simultaneous looping voices; same "build up complexity" mechanic.
+- `169-kids-marble-run` ❤️ — distinct instrument voices building complexity. Each body part = a distinct note.
+- `166-kids-lantern` ❤️ — tappable objects with distinct sound identity. Creature parts are "lanterns."
+- `217-dance-avatar` ❤️ — body-as-instrument. Creature Grow extends this: the instrument grows via feeding, not pre-drawn.
+
+**Decided**: Kids cycle (262 % 2 = 0). No blockers; nothing in-progress.
+
+Chose `kids-creature-grow` because:
+1. **First kids prototype about progressive assembly through sequential feeding.** All 227 prior prototypes either show a pre-drawn body (face-song, dance-avatar) or a blob that reacts to input (voice-monster uses mic). Creature Grow is different: the creature's body IS the history of your taps. Each body part is permanent. You grow it from scratch.
+2. **Growth arc = narrative.** Egg → eyes → ears → smile → arms → legs → wings. The sequence is emotionally satisfying: you watch a living thing come into being because of you. After 6 taps, it sings your notes back.
+3. **Zero permissions.** No mic, no camera, no gyroscope. Tap anywhere = feed a note. More accessible than voice-monster (needs mic) or tilt-rain (needs accelerometer).
+4. **Sing-back is the payoff.** When stage 6 is reached, the creature replays all 6 notes in sequence with each body part glowing on its note. The child sees their sequence of actions "remembered" by the creature. This is cause-and-effect with a 1-second delay — more cognitively interesting than instant feedback.
+5. **BANDIMAL sizing via anatomy.** Wings = highest note (gold, smallest); body+head = frame; eyes/ears/arms/legs arranged by musical register. The child doesn't know pentatonic theory; they experience "feeding 6 things = a song appears."
+
+**Loves influencing this pick**:
+`111-kids-shape-loop` ❤️, `160-kids-paint-loop` ❤️, `169-kids-marble-run` ❤️ — all pointed toward "assemble independent voices by tapping, hear complexity build."
+
+**What I built**:
+- `src/app/dream/228-kids-creature-grow/page.tsx` — Creature Grow
+  - Stage 0: pulsing violet egg with crack line, "Tap to hatch!" hint
+  - Stages 1–6: eyes (cyan), ears (emerald), smile (amber), arms (blue), legs (rose), wings (gold)
+  - Wings drawn BEHIND body (painter's algorithm: wings → body → head → features → arms → legs)
+  - Each body part glows when first added AND when the creature sings that note back
+  - Completion: 60-sparkle burst (6 colors, all angles) + "✨ Fully grown! ✨" text + 1s pause + auto sing-back
+  - Sing-back: 580ms between notes; each body part glows (glow decays at 0.012/frame)
+  - Progress dots: 6 dots at canvas bottom, each fills with its part color as you tap
+  - After fully grown: tap again = instant re-sing with 24-sparkle burst
+  - Triangle oscillators + Hann-window envelope for clean non-clicky tones
+  - Zero deps · Zero permissions · Pure Web Audio + Canvas
+- `src/app/dream/228-kids-creature-grow/README.md` — design notes
+- `src/app/dream/227-paths-granular/README.md` — added missing README (cycle 261 forgot it)
+
+**Build**: ✅ clean (verified before commit). Zero TypeScript or ESLint errors.
+
+**What's genuinely new**:
+1. **First kids prototype where tapping literally grows anatomy.** Face-song and dance-avatar show pre-drawn bodies; you toggle parts. Creature Grow starts from nothing — the body only exists because you tapped. The egg has no eyes yet. You gave it eyes.
+2. **Sing-back with per-part glow.** The "memory" mechanic — creature replays your tap sequence with visual confirmation on each body part — is new. The child can see which part corresponds to which note in the song.
+3. **6-stage growth arc with celebration.** The arc has a clear beginning (egg), middle (growing), and end (wings unfurl + celebration). The endpoint is unambiguous. Prior kids build-up prototypes (`111-kids-shape-loop`, `216-kids-band-builder`) don't have a terminal "fully complete" state.
+
+**Queued next**:
+- Cycle 263: **adult build** (263 % 2 = 1). Candidates:
+  - `chord-canvas` (28) — mic → chroma → chord name + color timeline. First music-theory prototype.
+  - `mood-xy` (38) — 2D valence/arousal canvas drives synthesis. First emotion-coordinate prototype.
+  - `scene-spatial` (29) — Ghost preset scenes as HRTF 3D audio environments.
+- Cycle 264: **kids build** (264 % 2 = 0). Candidates:
+  - Polish `228-kids-creature-grow`: mic mode for mic-humming to feed notes instead of tap; creature bounces after fully grown.
+  - `kids-bubble-duet` — two bubbles trade notes back and forth (kids version of 225-aria-companion turn-taking mechanic).
+  - `full-body-instrument` (from MORNING.md cycle 261 open questions) — head = drone, shoulders = chord, hands = melody, feet = kick.
+
+---
+
 ## Cycle 261 — adult build: 227-paths-granular
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)
