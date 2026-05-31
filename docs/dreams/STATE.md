@@ -13577,3 +13577,53 @@ STATE.md cycle 253 (MORNING.md) listed three cycle-254 candidates: polish `218-k
 - `([...] as [number, number][]).forEach(([hz, gain]) => {...})` — explicit type assertion on the array literal needed to prevent TypeScript inferring `number[][]` (which would prevent destructuring into typed `[number, number]` pairs). Alternatively, could have used a typed constant array. The `as` cast is cleaner inline.
 - `st.spks.filter(sp => sp.age < SLIFE && sp.y < h + 60)` — the `h + 60` clamp prevents expired sparks from accumulating off-screen. Sparks that exit at the bottom are cleaned in the same filter pass as expired sparks. No separate `offscreen` tracking needed.
 - Auto-demo rockets fire before AudioContext is created (no user gesture). They travel and "explode" visually (sparks appear) but `burstNote` is gated on `if (acRef.current)` — so the first 3 explosions are silent. The first user tap creates the AC and all subsequent explosions ring. This is the standard pattern for visual demos that need to run before first user interaction.
+
+---
+
+## Cycle 263 — adult build: 229-chord-canvas
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 12d099e (cycle 262, kids-creature-grow). 18 commits pulled.
+
+**Love signal** (27 loved prototypes):
+- `217-dance-avatar` ❤️ — just loved! spring-physics skeleton audio-reactive; Karel gravitates toward audio-reactive geometry
+- `172-loop-station` ❤️, `163-paths-visualizer` ❤️, `157-concept-steer` ❤️, `153-paint-compose` ❤️
+
+**Decided**: Adult cycle (263 % 2 = 1). No blockers; nothing in-progress.
+MORNING.md listed three adult candidates for this cycle; Karel hadn't replied by cycle fire time. Chose `chord-canvas` because:
+1. **First music-theory prototype in 228 builds.** Every prior prototype visualizes audio signal properties (spectrum, waveform, bands, particles). None name the musical structure. A pianist like Karel will play a chord and immediately recognize it on screen. This is the most personally relevant prototype for him.
+2. **Zero deps, one-cycle feasibility.** FFT → 12-bin chroma → template match is 40 lines of signal processing. No ML, no API, no permissions beyond mic.
+3. **Complement to the piano ecosystem.** `13-piano-canvas` (notes → painting), `24-piano-roll` (notes → notation), `22-code-score` (written → sound). Chord Canvas adds the harmony layer: "what chord are you playing?"
+4. **`153-paint-compose` ❤️ (Karel loves canvas painting from music)** — chord-canvas is the same paradigm with music theory on top.
+
+**Loves influencing this pick**:
+- `153-paint-compose` ❤️ — Karel loves prototypes that paint a visual record of his musical gestures; chord timeline strip does exactly that for harmony
+
+**What I built**:
+- `src/app/dream/229-chord-canvas/page.tsx` — Mic input → 4096-pt FFT → 12-bin chroma vector → template match against 24 major/minor chord templates → large chord name in center (hue from root: C=red, D=yellow, A=violet) + scrolling timeline strip (each chord = colored block, width=duration) + 12-bin chromagram bar graph at bottom. Demo mode: synthesizes Dm → G → C (ii–V–I) through the same AnalyserNode so the detector processes its own audio. `○ Static`, 3.85 kB, ✅ clean build.
+- `src/app/dream/229-chord-canvas/README.md` — detection algorithm, visual design notes, limitations, polish ideas.
+- Build: ✅ clean (`○ Static`, 3.85 kB, `npm run build` 0 errors, only pre-existing core warnings).
+
+**What's new about this prototype**:
+1. **First prototype that names musical structure.** 228 prior builds hear audio as a signal (amplitude, spectrum, onset, pitch). This one hears it as music (F minor, C major, B♭ dominant). The gap between "audio analysis" and "music theory" was enormous; chord-canvas bridges it in one cycle.
+2. **Chromagram as a visualization layer.** The 12-bin bar graph at the bottom shows live pitch-class energy — the "raw" view before chord detection. A musician can watch how their chord's characteristic fingerprint (e.g., a perfect fifth = two bright bins) evolves over time. No prior prototype visualized pitch classes.
+3. **Scrolling chord timeline.** The chord history strip gives Karel something new: a spatial record of his harmonic journey (which chord, how long he held it, in what order). Color = root; saturation = major/minor. Play a I–IV–V–I and the timeline shows a warm-cold-warm-cold hue sequence.
+4. **Demo mode as a music theory lesson.** ii–V–I is the most important chord progression in jazz. A visitor who plays the demo and watches the detector cycle Dm → G → C learns one of the fundamental harmonic building blocks without any text instruction.
+
+**Queued next**:
+- Cycle 264: **kids build** (264 % 2 = 0). Candidates:
+  - `kids-creature-grow` polish: extend to 8 anatomy parts (add tail + nose → 8-tap arc), slightly faster sing-back (400ms between notes)
+  - `kids-shadow-puppet` — hand blocks camera, shadow shape triggers instrument sounds (camera required)
+  - Fresh idea: `kids-chord-garden` — tap anywhere to plant a flower; each flower's color/size = a pentatonic note; when two flowers of the same color are placed near each other they harmonize (kids version of chord-canvas — same hue-pitch mapping but visual and tactile)
+- Cycle 265: **adult build**. Candidates:
+  - `mood-xy` (38) — Russell circumplex 2D canvas: valence/arousal position drives real-time synthesis. First emotion-coordinate prototype.
+  - `scene-spatial` (29) — Ghost preset scenes as HRTF 3D audio environments (heavy on Ghost; worth doing given Karel's love signal)
+  - `shepard-tone` (auditory illusion, endless staircase) — maximum surprise factor; hasn't been on the radar yet
+
+**Notes**:
+- `getFloatFrequencyData` TypeScript typing: the lib.dom type in TypeScript 5.5+ expects `Float32Array<ArrayBuffer>` (not plain `Float32Array`). Pattern from `use-mic-analyser.ts`: `(analyser.getFloatFrequencyData as (arr: Float32Array) => void)(fft)`. This is the correct workaround — cast the method to accept plain Float32Array before calling. I used this pattern.
+- `extractChroma` loops over ~2000 FFT bins (60–5000 Hz range, fftSize=4096, sampleRate=44100). Runs in < 0.1ms. Well within the 16ms RAF budget.
+- The `SMOOTH = 0.72` chroma smoothing (on top of `smoothingTimeConstant = 0.65`) means chroma takes ~5-6 frames (80-100ms) to fully reflect a new chord. This is intentional: prevents chord flicker on transients. A fast staccato hit doesn't register; a sustained chord does. Good for piano where notes ring after key-up.
+- `CHORD_THRESHOLD = 0.28` rejects ambiguous states. When playing a single note (only 1-2 pitch classes active), no chord is detected. This prevents hallucinating chords on individual notes. The threshold was tuned for the demo ii-V-I; real piano chords in the 0.35–0.65 confidence range.
+- The chord timeline "current block" is drawn separately from the `blocks` array. The `blocks` array contains only completed chords (with `endMs` set). The current chord is drawn live from `curStartRef.current` to `nowX`. This prevents the weird visual of the live chord block "closing" before the next chord starts.

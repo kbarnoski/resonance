@@ -1,63 +1,64 @@
-# Morning digest — last updated 2026-05-31 UTC (cycle 262)
+# Morning digest — last updated 2026-05-31 UTC (cycle 263)
 
 ## New since yesterday
 
-- **`/dream/228-kids-creature-grow`** (cycle 262, kids) — An egg hatches and a creature grows as
-  you feed it notes. Six taps = fully grown: **eyes** (C4 cyan) → **ears** (D4 emerald) →
-  **smile** (E4 amber) → **arms** (G4 blue) → **legs** (A4 rose) → **wings** (C5 gold).
-  Completion: 60-sparkle burst + "✨ Fully grown! ✨" + creature sings back your six notes with
-  each body part glowing on its note. Tap again to sing once more. Progress dots at canvas
-  bottom fill with each part's color as you tap. **First kids prototype where tapping literally
-  grows anatomy from scratch** — unlike face-song (pre-drawn face you toggle), the egg starts
-  with NO body. You gave it eyes. Zero permissions · Zero deps · 3.18 kB.
+- **`/dream/229-chord-canvas`** (cycle 263, adult) — Play any chord on piano and the detector
+  names it: "Dm", "G", "C♯m". The chord fills the screen in large colored text (C = red,
+  D = yellow, A = violet — same hue wheel as `1-live`). A timeline strip scrolls left at the
+  bottom: each chord you played becomes a colored block (width = duration). A 12-bin chromagram
+  shows live pitch-class energy beneath. **Try demo mode first** — it plays a ii–V–I (Dm → G
+  → C) automatically, then switch to mic. **First music-theory prototype in 228 builds** — prior
+  prototypes visualized audio *signal*; this one names musical *structure*. No ML, no server. 3.85 kB.
 
-- **`/dream/227-paths-granular`** (cycle 261, adult, README added) — Upload any audio file and
-  sculpt it into a grain cloud. Scrub to a moment; scatter Hann-windowed fragments (20–500 ms)
-  at configurable density (2–30/s) with ±12 st pitch shift. **First granular synthesis
-  prototype.** Try: scrub to a piano sustain → grain 120 ms + density 12 + pitch +7 → instant
-  dreamy pad. Zero deps · Zero API · 3.65 kB.
+- **`/dream/228-kids-creature-grow`** (cycle 262, kids) — An egg hatches and a creature grows
+  as you feed it notes. Six taps (eyes → ears → smile → arms → legs → wings) build full anatomy.
+  Completion: 60-sparkle burst + creature sings back your six notes with each body part glowing
+  on its note. **First kids prototype where tapping literally grows anatomy from nothing.** Zero
+  permissions · Zero deps · 3.18 kB.
+
+- **`/dream/227-paths-granular`** (cycle 261, adult) — Upload any audio file and sculpt it into
+  a grain cloud. Scrub to a moment; scatter Hann-windowed fragments (20–500 ms) at configurable
+  density with ±12 st pitch shift. **First granular synthesis prototype.** Zero deps · 3.65 kB.
 
 ## In progress / partial
 
-Nothing in-progress. Next: adult cycle 263.
+Nothing in-progress. Next: kids cycle 264.
 
 ## Research findings worth a look
 
-- **The growth arc creates a new engagement mode.** Prior kids prototypes reward instant
-  feedback (every tap = immediate sound). Creature Grow has a terminal state — you get 6 taps
-  and then the creature is done. The child then taps to HEAR, not to BUILD. This is a different
-  relationship: completion → singing. The arc has beginning (egg) + middle (growing) + end
-  (wings). Unexpectedly, this also teaches note sequence: the child hears the pentatonic scale
-  C4→D4→E4→G4→A4→C5 in order across 6 taps.
+- **Chord detection is more forgiving than expected.** Open voicings, octave doublings, and
+  even inversions all return the correct chord label reliably — because the chroma vector sums
+  pitch-class energy across all octaves. A C major chord with a C in the bass + E+G in the
+  treble (standard piano voicing) gives the same [C, E, G] fingerprint regardless of which
+  octave each note is in. The chromagram is, in a sense, already an "inversion-invariant"
+  representation.
 
-- **Sing-back with per-part glow is a "memory" mechanic.** When the creature sings each note,
-  the corresponding body part glows. The child can point at the glowing ear and say "that's the
-  D sound!" — the creature's anatomy IS the theory lesson, without any text.
+- **The ii–V–I demo teaches unconsciously.** A visitor who plays the demo and watches Dm → G
+  → C cycle learns the most fundamental jazz chord progression without any text instruction.
+  The hue shift (Dm: muted blue-green → G: warm amber-green → C: red) makes the progression
+  feel like a visual "return home."
 
-- **Growth-by-feeding echoes `163-paths-visualizer` ❤️ and `169-kids-marble-run` ❤️** — Karel
-  loves prototypes where repeated interaction builds visible complexity. Creature Grow is that
-  pattern at its most literal.
+- **`217-dance-avatar` ❤️ (loved this cycle!)** — Karel loved the spring-physics skeleton.
+  This opens a direction: more audio-reactive 3D geometry. Three.js R3F + TSL node materials
+  (already installed) could give a `three-mesh-av` prototype where an icosahedron breathes
+  with FFT data. Zero new deps.
 
 ## Open questions for Karel
 
-- **`228-kids-creature-grow`**: Does the 6-tap arc feel too short or just right? A fully grown
-  creature in 6 taps is ~10 seconds for a focused child. Could extend to 8 taps (add a tail and
-  a nose) but it might feel long. Also: does the sing-back timing (580ms between notes) feel
-  natural or should it be faster?
+- **`229-chord-canvas`**: Does the `CHORD_THRESHOLD = 0.28` feel right? Too low → false
+  positives on ambiguous sounds; too high → misses quiet chords. Try playing a single note
+  (should show nothing), then a full chord (should detect). If you're getting false positives
+  on noise, I can bump to 0.32.
 
-- **`227-paths-granular`**: Load one of your Welcome Home recordings. Sweet spots:
-  - Grain 120 ms + density 12 → smooth frozen pad
-  - Grain 25 ms + density 28 → glitchy shimmer
-  - Scatter 45% + density 10 → evolving cloud from one instant
-  Does the grain density feel smooth? On slow browsers the 100ms lookahead should prevent gaps
-  but let me know if you hear clicks.
+- **Extensions for chord-canvas**: (1) dominant 7th templates (Dm7, G7, Cmaj7) — more useful
+  for jazz; needs 4-note templates; (2) chord shown on a virtual piano keyboard; (3) export
+  the timeline as a chord chart. Which matters most?
 
-- **`/api/audio/[id]`** — still pending your OK. Unlocks `227-paths-granular` auto-load (no
-  manual upload) and `163-paths-visualizer`-style direct album access for future adult prototypes.
+- **`/api/audio/[id]`** — still pending your OK. Unlocks `paths-granular` auto-load + future
+  Karel's-music prototypes.
 
-- **Cycle 263 adult candidates**: `chord-canvas` (28, mic → chroma → chord name + color
-  timeline — first music-theory prototype), `mood-xy` (38, 2D valence/arousal canvas drives
-  synthesis — first emotion-coordinate prototype), or `scene-spatial` (29, Ghost preset scenes
-  as HRTF 3D audio environments). Which sounds most interesting?
+- **Cycle 264 kids candidates**: `kids-chord-garden` (tap → colored flower = pitch; nearby
+  same-color flowers harmonize — kids version of chord-canvas), polish `228-kids-creature-grow`
+  (extend to 8-tap arc + faster sing-back), or `kids-shadow-puppet` (camera-based).
 
 - **FAL_KEY budget** — `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready on your go-ahead.

@@ -4779,3 +4779,14 @@ Design notes: `src/app/dream/218-kids-xylophone-drops/README.md`
 Open `/dream/220-kids-fireworks`. Tap anywhere in the dark star-filled sky to launch a glowing rocket toward that spot. The rocket arcs upward over 0.75 seconds — watch it climb — then explodes into 22 glowing sparks falling with gravity, and a pentatonic chord rings out. Left side = violet = C4 (deep); right side = cyan = C5 (bright); three more colors/pitches in between. All five notes are C major pentatonic — every explosion harmonizes. Three rockets auto-launch on load so the canvas is never silent.
 
 Design notes: `src/app/dream/220-kids-fireworks/README.md`
+
+---
+
+### 229-chord-canvas
+**Status**: `demoable` · **Cycle shipped**: 263 · **Last touched**: 2026-05-31
+
+Open `/dream/229-chord-canvas`. Play any chord on piano or guitar and watch the detector name it: "Dm", "Gmaj", "F♯m". The chord name fills the top of the screen in large monospace type, colored by root note (C = red, D = yellow, A = violet — same chromatic hue wheel as `1-live`). A timeline strip scrolls left at the bottom: each chord you play becomes a colored block, width = duration. A 12-bin chromagram shows live pitch-class energy. **Try demo mode first** (ii–V–I: Dm → G → C plays automatically). Then switch to mic and play your own chords.
+
+Detection: 4096-point FFT → 12-bin chroma → dot-product match against 24 major/minor templates. No ML, no server, no API. First music-theory prototype in the sandbox — 228 prior builds visualized audio signal properties; this one names the musical structure.
+
+Design notes: `src/app/dream/229-chord-canvas/README.md`
