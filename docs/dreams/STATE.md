@@ -2,6 +2,35 @@
 
 ---
 
+## Cycle 261 — adult build: 227-paths-granular
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Continued from context-compacted cycle on main.
+
+**Love signal** (relevant adult prototypes loved by Karel):
+- `163-paths-visualizer` ❤️ — Karel's own Welcome Home album as a visual journey along a path. Direct inspiration for granular: same emotional territory (Karel's recordings), new dimension (time stretching, pitch shifting, cloud texture).
+- `193-anemone-tsl` ❤️ — audio → 3D deformation; shows Karel values responsive, tactile audio feedback that's also beautiful.
+
+**Decided**: Adult cycle (261 % 2 = 1). Slot 227.
+
+Chose `paths-granular` because:
+1. **First granular synthesis prototype.** All 226 prior prototypes work with synthesis (additive, FM, physical model) or real-time mic input. None let Karel upload a recording, freeze time inside it, and re-texture the result via grain clouds.
+2. **Zero new deps.** Web Audio API covers all of it: `AudioBufferSourceNode` for grains, `StereoPannerNode` for spatial scatter, `GainNode` envelope for Hann-window-like amplitude, `OfflineAudioContext` for demo buffer synthesis.
+3. **Loved prototype resonance.** `163-paths-visualizer` is Karel's own album. Granular is the natural next step: not just visualising the music but *reshaping its texture in real time*.
+4. **File upload approach.** `/api/audio/[id]` is still pending Karel's OK. Using `<input type="file" accept="audio/*">` is more flexible (any recording, any device, immediate), sidesteps the API dependency entirely, and models the final feature intent clearly.
+
+**Implementation summary**:
+- `spawnGrain()`: extracts a buffer slice, applies Hann window, wraps in `AudioBufferSourceNode` with `playbackRate = 2^(pitchSt/12)`, `StereoPannerNode` (random ±0.4), `GainNode` envelope (attack + decay)
+- `buildDemoBuffer()`: `OfflineAudioContext` renders an 8-second C major phrase + Am7 pad with triangle oscillators + impulse reverb
+- `buildWaveCanvas()`: draws the waveform once into an offscreen `HTMLCanvasElement`, composited onto the main canvas each frame
+- RAF tick: grain scheduling via `ctx.currentTime + 0.1` lookahead, particle sparkles emanate from scrub cursor
+- Sliders: scrub (0–1), grain size (20–500 ms), density (2–30/s), pitch (±12 st), scatter (0–50%)
+
+**Bundle**: 3.65 kB (build verified clean, zero errors)
+
+---
+
 ## Cycle 260 — kids build: 226-kids-face-song
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

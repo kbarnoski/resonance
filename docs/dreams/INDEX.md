@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 260 — kids build)
+## ⭐ Newest (Cycle 261 — adult build)
+
+- **[/dream/227-paths-granular](/dream/227-paths-granular)** — Granular. `demoable`
+  Upload any audio file (WAV, MP3, or the built-in C major demo) and reshape it into a grain cloud. Four parameters: **scrub** position (which moment in the file), **grain size** (20–500 ms), **density** (2–30 grains/sec), **pitch shift** (±12 semitones), **scatter** (how far grains stray from the scrub point). Each grain is Hann-windowed, randomly panned, and given an attack+decay envelope; the result ranges from smooth frozen-chord textures to glitchy percussive clouds. Waveform strip shows the buffer; sparkle particles burst from the scrub cursor on every grain. **First granular synthesis prototype** — try Karel's Welcome Home recordings for instant time-stretching of real piano textures. Zero deps · Zero API · Zero permissions · 3.65 kB.
+  Design notes: `src/app/dream/227-paths-granular/README.md`
+
+---
+
+## Previous (Cycle 260 — kids build)
 
 - **[/dream/226-kids-face-song](/dream/226-kids-face-song)** — Face Song. `demoable`
   A glowing face made of five musical parts. Tap each to wake it up: **head** (violet circle) = deep C2 drone; **left eye** (teal) = G3 pluck every 800ms + gentle blink; **right eye** (amber) = E3 pluck every 1200ms (polyrhythm offset); **nose** (rose) = A3 bounce every 600ms; **mouth** (cyan arc) = C3–G3–A3–E3–C4 melody (500ms/note), arc opens/closes while singing. Tap again to silence any part. When all five are active → sparkle burst + "La la la! ✨" flashes. BANDIMAL sizing throughout (head biggest = lowest, nose smallest = highest). **First kids prototype where the instrument IS a recognizable human face** — assembling it teaches pitch–size relationships through body analogy. Zero permissions · Zero API · Zero deps · 2.84 kB.
