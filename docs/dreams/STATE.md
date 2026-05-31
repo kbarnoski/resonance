@@ -2,6 +2,58 @@
 
 ---
 
+## Cycle 258 — kids build: 224-kids-glow-garden
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 941b595 (cycle 257, 223-fourier-paint). 13 commits pulled (cycles 245–257).
+
+**Love signal** (27 loved prototypes — relevant to this kids pick):
+- `111-kids-shape-loop` ❤️ — spatial composition: where you draw shapes determines the loop's sound. Glow Garden applies the same principle to planted flower positions.
+- `160-kids-paint-loop` ❤️ — building multiple simultaneous looping voices through additive creation. Flowers are the same: place them, they loop their note, you build a garden.
+- `140-kids-string-bridge` ❤️ — proximity as a musical parameter (finger distance = pitch). Glow Garden is the non-contact version: flower spatial distance = harmony.
+- `133-kids-ripple-pond` ❤️ — tap → persistent spatial musical event. Glow Garden adds permanence and inter-flower social structure.
+
+**Decided**: Kids cycle (258 % 2 = 0). No blockers; nothing in-progress.
+Prior cycle (257) MORNING.md listed "next: kids cycle 258." The `kids-glow-garden` idea has been deferred since cycle 252, 254, and 256. Its mechanic (proximity = harmony) is now fully specified. Chose it over `kids-shadow-puppet` (requires camera, complex) and polishing `222-kids-magnet-notes` because:
+1. **Spatial composition is genuinely new.** No prior kids prototype makes WHERE you plant something determine harmonic relationships. All prior proximity prototypes are transient (drag circles into overlap) or passive (bubbles drift together). Glow Garden's flowers stay PUT — the child intentionally positions them to compose.
+2. **Deferred 3 cycles.** This has been "mechanic TBD" for too long. The spec is now clear and buildable.
+3. **Love-signal confluence.** Four loved prototypes (shape-loop, paint-loop, string-bridge, ripple-pond) map directly to the core mechanic: spatial → musical structure.
+4. **One-cycle feasibility.** Sustained triangle oscillators + proximity arc drawing + chime on pair formation = clean build, zero deps.
+
+**Loves influencing this pick**:
+- `111-kids-shape-loop` ❤️, `160-kids-paint-loop` ❤️, `140-kids-string-bridge` ❤️, `133-kids-ripple-pond` ❤️ — all pointed toward "spatial arrangement = music."
+
+**What I built**:
+- `src/app/dream/224-kids-glow-garden/page.tsx` — Tap to plant a glowing flower (grows over 1.4s: stem extends, 6 petals unfurl). Five pentatonic zones (left=C3/violet/r=52 → right=C4/rose/r=24). Each flower sustains a triangle-oscillator tone (gain 0.055, fades in with growth). When two flowers are within 34% of canvas width: a pulsing white bezier arc connects their heads, both flowers glow brighter (+14 shadowBlur), and a resonance chime plays (both pitches + perfect fifth above the lower = 3 sine waves, 2.4s decay). Up to 7 flowers; oldest evicted on 8th. Tap a flower head to remove it. Demo: 2 flowers plant at 900ms and 1600ms (visual-only until first tap, then retroactively gain audio + chime). C2+G2 ambient drone fades in on first user gesture. `○ Static`, 2.81 kB, ✅ clean build.
+- `src/app/dream/224-kids-glow-garden/README.md` — design notes, audio design, loved-prototype influences, polish ideas.
+- Build: ✅ clean (`○ Static`, 2.81 kB, `npm run build` 0 errors, only pre-existing Resonance core warnings in other files).
+
+**What's new about this prototype**:
+1. **First prototype where spatial composition IS the harmonic structure.** All 223 prior prototypes create music through gestures (tap, drag, hold, draw). Glow Garden creates music through PLACEMENT — the child decides where flowers go, and that spatial decision determines what chords form. The garden layout is the score.
+2. **Retroactive resonance chime on first tap.** Demo flowers are planted visually before any user gesture. When the user first taps, the AudioContext is created, all existing flowers gain audio, and any pairs already in proximity range chime together. First user interaction = garden wakes up musically. Rewarding, magical.
+3. **Proximity as a teaching tool.** The resonance arc makes the proximity relationship visible. A child who discovers "putting flowers close makes them glow and sing a third sound" has learned something real about harmonic consonance — without any instruction.
+4. **Gentle removal mechanic.** Tap a flower to remove it. The generous tap radius (1.7× flower radius) makes this accessible for small fingers. Removing a flower breaks its resonance pair, removing the arc. The garden is editable — not just additive.
+
+**Queued next**:
+- Cycle 259: **adult build** (259 % 2 = 1). Top candidates:
+  - `aria-companion` — Markov-chain piano duet: play a phrase, system responds when you pause. Zero deps. Dialogue prototype, no prior example in sandbox. High surprise.
+  - `chord-canvas` — mic → chroma → chord name + color timeline. First music-theory-named prototype.
+  - `mood-xy` — 2D valence/arousal canvas drives synthesis. First emotion-coordinate prototype.
+- Cycle 260: **kids build**. Candidates:
+  - Polish `224-kids-glow-garden`: pollen sparkles drift along resonance arcs; multi-touch simultaneous plant.
+  - `kids-shadow-puppet` — hand blocks camera light, shadow shape triggers sounds (needs camera permission).
+  - Polish `222-kids-magnet-notes`: mic mode (RMS → magnetic pull strength).
+
+**Notes**:
+- `NEAR_FRAC = 0.34` scales proximity with screen width. Demo flowers at 29% and 62% of width (separation = 33% < 34%) are always in resonance range on any screen. This avoids the fixed-pixel problem where 130px resonance range would miss on wide tablets.
+- `chimeResonance` fires once per pair (tracked in `chimedPairs` Set keyed `"${minId}_${maxId}"`). Removing a flower clears its pairs so replanting in the same zone can chime again with the remaining flowers.
+- `startFlowerAudio(f, ac, retroactive=true)` uses a 0.5s gain ramp (not the full 1.4s GROW_MS) since the flower is already visually grown when audio attaches retroactively.
+- `drawFlower` checks `flowers.some(o => o.id !== f.id && Math.abs(o.x - f.x) < nd)` to set `isNear`. O(n²) per frame but max n=7 → max 21 comparisons per frame, negligible. No separate state needed.
+- Petal rotation `ang = (i/6)*π*2 + ts*0.00022` gives a slow 0.22 mrad/ms = 0.22 rad/s spin — barely perceptible but makes the garden feel alive. At 60fps and ts in ms, one full rotation ≈ 28.6 seconds.
+
+---
+
 ## Cycle 257 — adult build: 223-fourier-paint
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

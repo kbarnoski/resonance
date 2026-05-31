@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 257 — adult build)
+## ⭐ Newest (Cycle 258 — kids build)
+
+- **[/dream/224-kids-glow-garden](/dream/224-kids-glow-garden)** — Glow Garden. `demoable`
+  Tap to plant a glowing flower — it grows over 1.4s (stem rises, 6 petals unfurl) and sustains
+  its pentatonic note. BANDIMAL sizing: violet C3 (biggest, r=52) → rose C4 (smallest, r=24).
+  **Plant two flowers within 34% of screen width**: a pulsing white arc connects their heads,
+  both glow brighter, and a resonance chord rings out (both pitches + perfect fifth above the lower).
+  **First prototype where spatial placement IS the harmonic composition** — WHERE you plant
+  determines which chords form. Prior proximity prototypes (color-mix, bubble-bath) are transient;
+  flowers stay put. First tap retroactively wakes all demo flowers with audio + chime. Tap a flower
+  to remove it and break its resonance pairs.
+  For kids 3+ · Zero permissions · Zero API · Zero deps · 2.81 kB.
+  Design notes: `src/app/dream/224-kids-glow-garden/README.md`
+
+---
+
+## Previous (Cycle 257 — adult build)
 
 - **[/dream/223-fourier-paint](/dream/223-fourier-paint)** — Fourier Paint. `demoable`
   Draw any closed shape → Discrete Fourier Transform decomposes it into N rotating epicycles →
