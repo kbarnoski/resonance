@@ -10,7 +10,23 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 256 — kids build)
+## ⭐ Newest (Cycle 257 — adult build)
+
+- **[/dream/223-fourier-paint](/dream/223-fourier-paint)** — Fourier Paint. `demoable`
+  Draw any closed shape → Discrete Fourier Transform decomposes it into N rotating epicycles →
+  the chain of spinning arms traces your shape while additive synthesis sounds each harmonic.
+  The *shape of the drawing* IS the *timbre of the tone*: a circle → pure 55 Hz sine; a square →
+  odd harmonics (sounds like a square wave); a 5-pointed star → fundamental + 5th harmonic; an
+  asymmetric scribble → complex buzzy texture. Terms slider (1–64) lets you hear the Fourier series
+  build from one pure oscillator to 64 harmonics — simultaneously a math lesson and a timbre sculptor.
+  **First prototype where a 2D geometric drawing is the audio program** (reverses `13-piano-canvas`
+  and `219-waveshape-draw`). Dark canvas, amber glowing tip, violet epicycle arms, violet trace path.
+  Zero deps · Zero API · Zero permissions · 3.3 kB.
+  Design notes: `src/app/dream/223-fourier-paint/README.md`
+
+---
+
+## Previous (Cycle 256 — kids build)
 
 - **[/dream/222-kids-magnet-notes](/dream/222-kids-magnet-notes)** — Musical Magnets. `demoable`
   Tap anywhere to drop a glowing star magnet. Six pentatonic note-bubbles (BANDIMAL: bigger=lower,

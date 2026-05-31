@@ -1,47 +1,44 @@
-# Morning digest — last updated 2026-05-30 UTC (cycle 256)
+# Morning digest — last updated 2026-05-31 UTC (cycle 257)
 
 ## New since yesterday
 
-- **`/dream/222-kids-magnet-notes`** (cycle 256, kids) — Tap anywhere to drop a glowing star
-  magnet; six pentatonic note-bubbles (violet C3 → rose E4) float on a dark star-field and are
-  pulled toward it by spring physics. Each bubble spirals in, rings its note on arrival, bounces
-  outward, drifts back. Multiple magnets (up to 4) layer independent orbital melodies. **Why open
-  this**: two magnets auto-appear at load so the bubbles are already drifting before you tap —
-  touch the screen, a magnet appears, and two more bubbles swing toward it. Place magnets in
-  different spots to hear how the orbital rate changes (closer = faster rings). Kids 3+ · Zero
-  permissions · Zero deps · demoable.
+- **`/dream/223-fourier-paint`** (cycle 257, adult) — Draw any closed shape, press Animate.
+  The Fourier Transform decomposes your path into rotating epicycles — a chain of spinning arms
+  reconstructs your shape while each arm's harmonic plays as a sine tone. **The shape IS the
+  timbre**: draw a circle → pure 55 Hz sine. Draw a square → square wave harmonics. Draw a 5-point
+  star → fundamental + 5th harmonic cluster. The **Terms slider** (1–64) lets you hear the harmonic
+  series build in real time — slide from 1 to 64 and watch the wiggly path converge to your
+  drawing while the sound fills out. High surprise factor — this connection between geometry
+  and timbre isn't obvious until you try it. Zero deps · 3.3 kB.
 
-- **`/dream/221-optical-flow-music`** (cycle 255, adult) — Move in front of the camera — the
-  motion IS the music. Frame differencing → filter brightness + pitch + reverb. Demo mode works
-  without camera. First prototype where stillness = silence. Inspired by `217-dance-avatar` ❤️.
-
-- **`/dream/220-kids-fireworks`** (cycle 254, kids) — Tap the dark sky → rocket arcs toward your
-  finger → 22 pentatonic sparks explode.
+- **`/dream/222-kids-magnet-notes`** (cycle 256, kids) — Tap to drop a star magnet; pentatonic
+  note-bubbles orbit it via spring physics, ringing each time they pass. Two auto-magnets make
+  sound before you tap. Orbital polyrhythm from geometry. Kids 3+.
 
 ## In progress / partial
 
-Nothing in-progress.
+Nothing in-progress. Next build: kids cycle 258.
 
 ## Research findings worth a look
 
-- **`fourier-paint`** (suggested next adult cycle 257) — draw a 2D closed path → watch Fourier
-  epicycles decompose it into rotating arms → hear the harmonic magnitudes as tones. Direct sibling
-  to `219-waveshape-draw`. Zero deps, high surprise.
+- **`fourier-paint` worked** — the scale-normalization (center + scale to 36% of min(W,H) before
+  DFT) solves the "drawing too big/small" problem that made `219-waveshape-draw` awkward. Worth
+  applying retroactively to 219 on a polish cycle.
 
-- **`paths-granular`** (waiting on your OK) — granular synthesis of your Welcome Home album tracks
-  via `/api/audio/[id]`. Is that route publicly accessible without auth? One "yes" unlocks it.
+- **`paths-granular`** — still blocked on your OK for `/api/audio/[id]`. One "yes" unlocks it.
 
 ## Open questions for Karel
 
-- **`/api/audio/[id]`**: publicly accessible without auth? Unlocks `paths-granular` — granular
-  synthesis of your actual piano recordings.
+- **`/api/audio/[id]`**: publicly accessible without auth? Unlocks `paths-granular` —
+  granular synthesis of your Welcome Home album tracks.
 
-- **Optical Flow Music (221)**: want a multi-oscillator chord mode? Currently one sine oscillator.
-  A minor-third + fifth stack when totalMag > 0.5 would give richer texture. Also: sensitivity
-  slider for low-light cameras?
+- **`217-dance-avatar`** — you ❤️ loved it. Want more in this direction? `221-optical-flow-music`
+  was the last follow-up (camera motion → sound). Next candidates: gesture-music (hand landmarks
+  via MediaPipe → synth params) or a body-tracking + Fourier composition (dance moves → harmonic
+  content via pose keypoints). Say the word.
 
-- **Kids magnet notes (222)**: the bubbles ring on every inward pass at COOLDOWN=0.7s. Want faster
-  (more notes) or slower (more space)? Also considering adding a second harmonic partial for richer
-  bell timbre.
+- **`223-fourier-paint`** — try drawing: (1) a perfect circle, (2) a square, (3) a 5-point star.
+  The three timbres should be noticeably distinct. Terms slider at 1 is the most dramatic: one
+  pure tone + one epicycle circle, regardless of shape. Worth opening with headphones.
 
 - **FAL_KEY budget**: `ghost-animate` (HappyHorse-1.0, ~$0.05–0.30/clip) ready on your go-ahead.

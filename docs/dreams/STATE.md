@@ -2,6 +2,92 @@
 
 ---
 
+## Cycle 257 — adult build: 223-fourier-paint
+
+**When**: 2026-05-31 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main to e460c72 (cycle 256, 222-kids-magnet-notes). 12 commits ahead.
+
+**Love signal** (27 loved prototypes — new love since last cycle):
+- `217-dance-avatar` ❤️ — new since cycle 256. Motion → music direction confirmed by Karel.
+  `221-optical-flow-music` was already inspired by it; `223-fourier-paint` takes a different angle
+  (geometric drawing → harmonic synthesis rather than video motion → audio).
+- `172-loop-station` ❤️ — love of live performance construction.
+
+**Decided**: Adult cycle (257 % 2 = 1). No blockers; nothing in-progress.
+
+Chose `223-fourier-paint` because:
+1. **Explicitly queued from STATE.md + MORNING.md** for cycle 257. Clear spec ready.
+2. **Zero deps, one-cycle build.** O(N²) DFT on 256 points ≈ 3ms — no FFT library needed.
+3. **High surprise factor.** The insight that the *shape* of your drawing determines the *timbre*
+   of the tone is not obvious until you try it. A circle → pure sine. A square → odd harmonics
+   (sounds like a square wave). A star → fundamental + Nth harmonic. The Terms slider makes the
+   relationship viscerally clear: at Terms=1 you hear a pure tone; at Terms=64 the complex shape
+   sounds.
+4. **Fills a gap**: 222 prior prototypes use audio as input (mic → viz) OR as output (synth → viz).
+   This is the first where a **2D geometric drawing IS the audio program** — the shape of the path
+   defines the harmonic spectrum. Reverse direction of `13-piano-canvas` and `219-waveshape-draw`.
+5. **`217-dance-avatar` ❤️** confirms Karel's interest in motion-as-music. Fourier Paint extends this
+   into the mathematical domain: geometric motion (the epicycle chain) IS the sound generation.
+6. **`paths-granular` still blocked** (no auth confirmation on `/api/audio/[id]` from Karel).
+
+**What I built**:
+- `src/app/dream/223-fourier-paint/page.tsx` — Fourier Paint (`○ Static`, 3.3 kB, ✅ clean build)
+  - Draw mode: freehand stroke on canvas (mouse + touch), pointer events
+  - Animate: arc-length resample to 256 points → center + scale to 36% of smaller canvas dim →
+    O(N²) DFT treating path as complex signal z[n] = x[n] + i·y[n] → top 64 epicycles by amplitude
+  - Visual: epicycle chain (purple arms + faint circle outlines) + amber glowing tip
+    Accumulated trace (ring buffer 2×N pts) builds up the reconstructed path in violet
+  - Audio: each epicycle k > 0 with k × 55 Hz ≤ 14 kHz → sine OscillatorNode at k × 55 Hz
+    Gain normalized: g[i] = amp[i] / Σ_active amp, master = 0.32
+    `setTargetAtTime` for smooth transitions on slider change
+  - Terms slider (1–64): live — changes both visible epicycle count and active oscillator count
+  - Idle state: dashed flower-curve hint drawn on canvas (violet, low opacity)
+  - Typography: h1 text-2xl/white/95, p text-base/white/75, controls text-sm minimum
+- `src/app/dream/223-fourier-paint/README.md` — full math explanation, interaction model, polish ideas
+
+**Build**: ✅ clean (`○ Static`, 3.3 kB). No TypeScript or ESLint errors in dream zone.
+
+**What's genuinely new**:
+1. **First prototype where 2D drawing = audio program.** The drawing specifies harmonic content
+   directly. This is fundamentally different from `219-waveshape-draw` (1D waveform → single tone)
+   and `13-piano-canvas` (mic input → painting). Here the direction is drawing → decomposition → timbre.
+2. **Fourier decomposition visualized as audio in real time.** Dragging the Terms slider from 1→64
+   is simultaneously a Fourier series lesson and a timbre sculptor. No prior prototype demonstrates
+   the harmonic series so directly.
+3. **Scale normalization**: path is pre-centered + scaled to 36% of canvas before DFT, so the
+   animation always fits regardless of how large/small the user drew. Previous drawing prototypes
+   (13, 219) rendered in place; this one always centers beautifully.
+
+**Queued next**:
+- Cycle 258: **kids build** (258 % 2 = 0). Candidates:
+  - `kids-snowflake-song` — tap to place snowflakes; flakes drift down, chime when they land.
+    Seasonal companion to lantern + fireworks. (State.md cycle 256 suggested it.)
+  - Polish `222-kids-magnet-notes`: add second harmonic partial for richer bell timbre; drag-to-move
+    magnets.
+- Cycle 259: **adult build** (259 % 2 = 1). Candidates:
+  - `paths-granular` — granular synthesis of Welcome Home album tracks. Still blocked pending Karel's
+    yes on `/api/audio/[id]` auth.
+  - `fourier-paint` polish: shape library (circle/square/star presets), spectrogram strip showing
+    live harmonic spectrum, phase-coloring on epicycle arms.
+  - `mood-xy` — Russell circumplex: drag XY → music responds (valence × arousal → chord quality ×
+    BPM). High surprise, zero deps.
+
+**Notes**:
+- The DFT for closed path z[n] = x[n] + i·y[n] gives real physics: c[k] amplitude = the radius
+  of the k-th epicycle in pixels. A circle of radius R → c[1] = R exactly (verified: cosines sum
+  to N, scaled by 1/N = 1). The trace path that builds up over time IS the reconstructed Fourier
+  series at the chosen number of terms — so the user sees the approximation quality change in real time.
+- BASE_FREQ = 55 Hz (A1). Harmonics: 110, 165, 220, 275... up to 64 × 55 = 3520 Hz (A6). All
+  musically meaningful, none ultra-high. A circle sounds like a warm 55 Hz sine; a star sounds
+  like its tips' harmonic ratio over the fundamental.
+- Path normalization prevents the "too big for canvas" / "too small to see" problem. The maxR of the
+  centered resampled path is mapped to 36% of min(W, H), giving a comfortable animation regardless
+  of drawing size. This is the most robust approach — prior prototypes (219) struggled with paths that
+  hit canvas edges.
+
+---
+
 ## Cycle 256 — kids build: 222-kids-magnet-notes
 
 **When**: 2026-05-30 UTC (hourly autonomous cycle)
