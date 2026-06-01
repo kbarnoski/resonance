@@ -2881,6 +2881,36 @@ Zero deps, zero CDN, one cycle. Route `/dream/217-optical-flow-music`. [Date: 20
 
 ---
 
+## 2026-06-01 — Cycle 267 research dive (15-min, per Ambition mandate)
+
+### §245 — Earthquake Pulse Map & the silent-globe gap (showcase + USGS feed, current)
+
+**Source:** webgpu.com showcase — *"Earthquake Pulse Map: A Century of Seismic
+Activity on a WebGL Globe"* (plots M6+ quakes 1900–2026 + a live USGS 2.5_week
+feed on a three.js globe with custom GLSL shaders and binary-packed data).
+Supporting: USGS real-time GeoJSON feeds
+(`earthquake.usgs.gov/earthquakes/feed/v1.0/`, public, keyless, CORS-open), and
+the **"Sounds of Seismic" (SOS)** / **IRIS SeisSound** sonification tradition.
+
+**Why it's surprising / relevant:** The visualization community has thoroughly
+mined USGS seismicity as a *visual* dataset — spinning globes, pulse maps, heat
+layers — but these globes are **silent**. Meanwhile the seismology-education
+world has a deep sonification tradition (time-compress a seismogram into the
+audible band), but it stays at the single-station-waveform level, not the
+*global event catalog as a sequenced composition*. Nobody has joined the two:
+a live globe where each plotted quake also *sounds*, sequenced in compressed
+real time, with magnitude/depth/longitude mapped to pitch/timbre/pan.
+
+**Could become a prototype that:** pulls the USGS `all_day` feed, time-compresses
+24h into ~2.5 min, and plays each quake as a sounding event over a pulsing r3f
+globe — bigger = deeper boom, deeper = muffled, longitude = stereo. → **Built
+this cycle as `233-earth-pulse`.** Also seeds: a `weather-score` (NOAA/SWPC
+space-weather Kp index → drone texture), a `transit-pulse` (live flight/AIS
+positions → spatial arpeggio), and an `iss-pass` sonifier — the whole
+*real-world-data-sonification* category the lab is empty on.
+
+---
+
 Key findings from Cycle 247 (2026-05-30) — full research sweep:
 - DiscoForcing (§235, ICML 2026, May 2026) — streaming audio-driven character animation. Browser adaptation seeds `dance-avatar` (spring physics, zero deps, human-figure paradigm gap, live performance).
 - EchoAvatar (§236, May 2026) — audio + LLM → 3D character motion. Server-side; directional only.

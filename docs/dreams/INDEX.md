@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 266 — kids build)
+## ⭐ Newest (Cycle 267 — adult build)
+
+- **[/dream/233-earth-pulse](/dream/233-earth-pulse)** — Earth Pulse. `demoable`
+  The **last 24 hours of global earthquakes, played as music.** Pulls the live USGS "all_day" GeoJSON feed (public, keyless, CORS-open) and turns every quake into a sounding event sequenced in compressed real time over a pulsing wireframe globe. **Magnitude → loudness + pitch** (bigger = deeper boom: M2≈170 Hz, M7≈30 Hz); **depth → timbre** (shallow = bright crack, deep = muffled rumble); **longitude → stereo pan**. A full day compresses into ~1.25–4 min (Slow/Normal/Fast); aftershock swarms become audible flurries. The globe (react-three-fiber: wireframe graticule + occluding core + a `Points` shader colored warm→violet by depth + Bloom) flares each quake as it sounds; drag to orbit. Synthetic fallback set if the feed is blocked. **First prototype in the lab to sonify a real external API** — the world writes the score; open it on different days and it's a different piece. Reference: the *silent* "Earthquake Pulse Map" WebGL globe + the "Sounds of Seismic" / IRIS SeisSound tradition. Ties to the **Earth Grounding** journey. 4 subsystems · zero permissions · 4.77 kB.
+  Design notes: `src/app/dream/233-earth-pulse/README.md`
+
+---
+
+## Previous (Cycle 266 — kids build)
 
 - **[/dream/232-kids-rain-xylophone](/dream/232-kids-rain-xylophone)** — Rain Xylophone. `demoable`
   **For kids 4+** — Five BANDIMAL xylophone bars sit at the bottom (C3/violet/tallest → C4/cyan/shortest). Coloured drops fall from above, one per column, with ~3–4s of fall time. **Tap a drop while it's falling** → loud bell note (triangle + ×2.756 partial) + 20-sparkle burst + bright bar flash. **Let it land** → quiet note + 10-sparkle splash. **Tap a bar directly** → note + sparkles, any time. Drops drift gently toward their column center as they fall — catch zone is predictable. Auto-spawn: 1 drop every 1.5s, 2 demo drops at load. Pentatonic C3–C4 only — no uncaught drop ever sounds wrong. **First kids prototype where the mechanic is catching a moving target** — 231 prior kids prototypes respond to WHERE you tap; this adds WHEN (timing + moving-target tracking). Three reward tiers (catch/land/bar-tap) are immediately perceptible without score counters. Zero permissions · Zero deps · 2.65 kB.

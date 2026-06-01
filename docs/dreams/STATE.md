@@ -13796,3 +13796,55 @@ MORNING.md listed three adult candidates for this cycle; Karel hadn't replied by
 - The `SMOOTH = 0.72` chroma smoothing (on top of `smoothingTimeConstant = 0.65`) means chroma takes ~5-6 frames (80-100ms) to fully reflect a new chord. This is intentional: prevents chord flicker on transients. A fast staccato hit doesn't register; a sustained chord does. Good for piano where notes ring after key-up.
 - `CHORD_THRESHOLD = 0.28` rejects ambiguous states. When playing a single note (only 1-2 pitch classes active), no chord is detected. This prevents hallucinating chords on individual notes. The threshold was tuned for the demo ii-V-I; real piano chords in the 0.35–0.65 confidence range.
 - The chord timeline "current block" is drawn separately from the `blocks` array. The `blocks` array contains only completed chords (with `endMs` set). The current chord is drawn live from `curStartRef.current` to `nowX`. This prevents the weird visual of the live chord block "closing" before the next chord starts.
+
+---
+
+## Cycle 267 — adult build: 233-earth-pulse
+
+**When**: 2026-06-01 UTC (autonomous cycle, ~2h cadence)
+
+**Git sync**: Fast-forwarded main b70e575 (25 commits pulled: cycles 245–266 + the Ambition & Diversity Mandate commit + two Vercel deploy fixes — `.npmrc` / package-manager guard, both outside the dream scope). node_modules was absent → ran `npm ci` (clean, exit 0).
+
+**Research-first dive** (per mandate): RESEARCH.md §245 (2026-06-01). Found the *silent-globe gap* — the viz community plots USGS seismicity on spinning WebGL globes (the recent "Earthquake Pulse Map", 1900–2026, webgpu.com showcase) but they make no sound; the seismology-education world sonifies single-station seismograms (SOS / IRIS SeisSound) but not the global catalog as a sequenced piece. Nobody joins the two. **Today's research → today's build chain is direct: §245 → `233-earth-pulse`.**
+
+**Decided**: Adult cycle (267 % 2 = 1). No blocker, nothing in-progress.
+I **overrode** MORNING.md's stale cycle-267 candidate list (shepard-tone / scene-spatial / loop-station-polish) — under the Ambition & Diversity Mandate all three fail the floor: shepard-tone is a single-oscillator illusion (1 subsystem, no novel technique), scene-spatial is Ghost-heavy + 2 subsystems, loop-station-polish isn't a build. Picked **earth-pulse** instead.
+
+**Ambition floor** — cleared **3 of 5** (need 2): `ambition: novel-technique + 3-subsystems + named-reference`
+- **(1) Technique never used** — first prototype to **sonify a real external API**. Grepped INDEX + all READMEs for `usgs|earthquake|noaa|sonif|seismic|satellite|weather api` → zero hits. The whole *real-world-data-sonification* menu category was empty.
+- **(2) ≥3 subsystems** — 4 distinct: live USGS GeoJSON fetch (+ offline fallback) · Web Audio sonification engine (per-event synth graph, convolution reverb, compressor bus) · react-three-fiber 3D globe (wireframe + occluding core + Points shader + Bloom) · time-compression transport (24h→minutes, play/pause/restart, 3 speeds).
+- **(3) Named reference** — cited in README: "Earthquake Pulse Map" (webgpu.com), "Sounds of Seismic" (SOS), IRIS SeisSound.
+- (Also brushes (5): built directly off this cycle's RESEARCH §245.)
+
+**Diversity audit** (last 10 = 223–232):
+`diversity: banned=[touch · canvas2d · kids] · picked=[external-data-input · three.js/r3f-output · data-sonification · cosmic/earth-grounding-vibe]`
+- Tallies over the last 10: INPUT `touch` ≥7 (223,224,226,228,230,231,232), OUTPUT `canvas2d` ~9 (everything except r3f-based), VIBE `kids` 5 (224,226,228,230,232) → all three BANNED for this cycle.
+- Earth Pulse uses none of them: INPUT = external USGS data (no touch beyond orbit-drag), OUTPUT = three.js/r3f WebGL globe, TECHNIQUE = data-sonification, VIBE = cosmic/Earth-Grounding. Clean.
+
+**Categorical-diversity menu**: picked **"Real-world data sonification"** — explicitly listed as a category the lab is empty on, and it hadn't appeared in the last 15 cycles (in fact ever).
+
+**Loves influencing this pick**:
+- `130-tsl-particle-compute` ❤️ — Karel loves GPU/3D compute spectacle; reused its discipline (3D math, additive-blended glowing points). Earth Pulse moves from WebGPU compute to r3f but keeps the "thousands of glowing points in 3D" language.
+- `163-paths-visualizer` ❤️ / `227-paths-granular` ❤️ — Karel loves *data → form* pieces and using a real source rather than synthesized noise. Earth Pulse takes that to its logical extreme: the data source is the planet.
+
+**What I built**:
+- `src/app/dream/233-earth-pulse/page.tsx` — live USGS `all_day.geojson` → `Quake[]` (sorted by time, filtered for finite coords). Transport compresses [tMin,tMax] into 75/150/240 s. One `useFrame` loop in the r3f `GlobeScene` advances progress, fires each quake as its compressed time arrives (audio + sets a per-point activation=1), decays activations frame-rate-independently, and throttles a HUD `onTick` at ~8 Hz. `fireQuake`: sine + sub-triangle + filtered-noise crack → per-event low-pass (cutoff from depth) → stereo panner (from longitude) → dry bus + convolution-reverb bus → compressor → out. Globe = wireframe `SphereGeometry` graticule + near-black solid core (depth occlusion) + a `THREE.Points` cloud with a custom `ShaderMaterial` (point size from activation, color warm-amber→violet by depth), additive blending, Bloom postprocessing. Deterministic 44-quake fallback if the feed is unreachable. New typography rules followed throughout. `○ Static`, **4.77 kB**, `npm run build` ✅ 0 errors.
+- `src/app/dream/233-earth-pulse/README.md` — sonification mapping table, globe construction, the 4 subsystems, references, honest limitations, next-cycle ideas.
+
+**What's new about this prototype**:
+1. **First real-external-API sonification.** Every prior prototype's audio is synthesized internally or comes from mic/file. This one's score is written by the Earth — open it on two different days and it's two different pieces. That's a genuinely new axis for the lab.
+2. **A composition with real-world state/evolution.** Quiet stretches, then an aftershock swarm arrives as a sonic flurry. The piece is structurally different at minute 1 vs minute 2 because the day was.
+3. **Cross-modal mapping that teaches geophysics by ear.** Without instruction you learn that big quakes are rare deep booms and shallow ones are bright cracks — the mapping encodes the physics.
+4. **Joins two silos** — silent seismic globes (viz) and single-station seismogram sonification (education) — into one live, sequenced, spatial instrument.
+
+**Queued next**:
+- Cycle 268: **kids build** (268 % 2 = 0). Must pass the mandate too — candidates that clear the floor: `kids-shadow-puppet` (first camera/body-tracking kids piece — MediaPipe or simple frame-diff = novel technique + new input modality), or a kids data-sonification (e.g. tap a country on a simple globe → hear its current weather as a little tune; reuses today's external-API technique for kids). Avoid touch+canvas2d+kids triple if the diversity audit still bans it.
+- Cycle 269: **adult build**. Earth-Pulse extensions (coastline line-geometry so location is legible; `all_week` M2.5+ window selector; swarm-aware reverb) OR a sibling from §245's seeds — `weather-score` (NOAA SWPC Kp index → drone), `transit-pulse` (live flight/AIS → spatial arpeggio). All clear the floor (external API = novel technique + ≥3 subsystems).
+
+**Notes**:
+- USGS feed is CORS-open and keyless, so **no dream API route and no `guard` needed** — the fetch happens client-side in the browser. Nothing server-side, no secrets, fully within the scope fence.
+- Reused the proven r3f + drei `OrbitControls` + `@react-three/postprocessing` `Bloom` stack from `21-three-mesh-av` (already builds on this Next/React version) to de-risk a one-shot clean build. Imperative `BufferGeometry`/`ShaderMaterial` in `useMemo` with explicit `dispose()` on unmount, matching that prototype's discipline.
+- Activation decay uses `Math.pow(0.12, delta)` (not a fixed per-frame multiply) so the pulse-flare looks identical at 60 fps and 120 fps.
+- The whole transport + audio scheduler + visual lives in a single `useFrame` so a quake's boom and its globe-flare fire on the same tick. HUD state is updated via a throttled `onTick` (~8 Hz) to avoid 60 Hz React re-renders of the Canvas tree.
+- `getFloatFrequencyData` / `Float32Array<ArrayBuffer>` typing gymnastics not needed here — Earth Pulse generates events, it doesn't analyze a spectrum.
+- Fallback set is deterministic (seeded LCG) and time-anchored to `Date.now()`, so the demo always has a lively, time-correct 24h even fully offline.
