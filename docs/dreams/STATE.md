@@ -2,6 +2,64 @@
 
 ---
 
+## Cycle 274 — kids build (WIDE orchestration) — 248-kids-stir-garden
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main 35 commits to cycle 273 (`246-spectral-splat`). Worked directly on main. `node_modules` absent in this fresh container → ran `npm ci` (next present, ready) before the authoritative builds.
+
+**Research dive (mandatory, 15-min)** → RESEARCH.md 2026-06-01 cycle-274 entry: **interactive Gray-Scott reaction-diffusion as a *stir-able living surface*** in a pure WebGL shader — Amanda Ghassaei's RD shader + her directed-vector-field variant (click to move sinks/steer the pattern), cake23.de's "Turing-pattern fluid" mashup, framed against 2026 GPGPU-water perf work. The surprise: RD is normally a *passive* art toy you watch; the current interactive work treats it as a **responsive surface you stir** — input seeds the chemistry and the pattern grows *from* where you touched, rather than resetting. That's the missing affordance for an embodied kids instrument (plant→bloom, not tap→chime), and the kids zone has **zero raw-GLSL-shader pieces**. Chain **today's research → today's build** is direct and visible: the dive seeded WIDE-fire brief B → the shipped `248-kids-stir-garden`.
+
+**Decided**: Kids cycle (274 % 2 = 0). No blocker, nothing in-progress. JURY (2026-06-01) is explicit: *"run the same WIDE/DEEP fan-out on the kids cadence that you run on adults — a solo kids cycle regresses to the chime every time,"* and bans the `touch + canvas2d + pentatonic-chime + kids` template for the week (next kids build MUST use a non-touch input OR three.js). Orchestrated accordingly.
+
+**Mode**: **WIDE** (3 builders). Alternates correctly (271 DEEP → 272 WIDE → 273 DEEP → **274 WIDE**) and WIDE — three unrelated non-touch directions in one fire — is the most direct attack on the kids-zone monoculture JURY named. The three briefs differed on **input** (voice / camera-motion / tilt) and **technique** (fbm-sky / reaction-diffusion / metaball-fluid) and **palette** (bedtime / bioluminescent / candy), deliberately **sharing a raw-WebGL-fragment-shader output family** — because the diversity audit (below) banned BOTH three.js and canvas2d, so this whole fire pivots the lab's output off its three.js monoculture and into hand-written GLSL the kids zone had never used.
+
+**Diversity audit** (last 10 = 230,231,232,233,234,236,238,243,244,246):
+`diversity: banned=[three.js-output · canvas2d-output] · forced=[kids-vibe (rotation)] · picked=[camera-motion-input · raw-WebGL2-ping-pong-shader-output · Gray-Scott-reaction-diffusion-technique · organic/bioluminescent-palette]`
+- OUTPUT tallies: **three.js = 6×** (233,234,238,243,244,246) → BANNED; **canvas2d = 4×** (230,231,232,236) → BANNED. INPUT: touch = 3× (under 4, but JURY bans touch-for-kids this week anyway). VIBE: kids = 5× → over-represented but rotation FORCES it. 248 uses **camera-motion input** (non-touch) + **raw WebGL2 ping-pong shader output** (neither banned output) — shares zero input/output tags with the last 10.
+
+**Ambition floor** — winner cleared **3 of 5** (need 2): `ambition: 3-subsystems + named-reference + recent-research(≤14d)`
+- (2) **≥3 subsystems** — 3 distinct: zero-dep webcam frame-differencing (motion energy) · GPU **Gray-Scott reaction-diffusion** ping-pong sim (WebGL2 render-to-texture, 6 sub-steps/frame, FLOAT→HALF_FLOAT→8-bit fallback) · Web Audio (always-on pad + 5-zone pentatonic, compressor/limiter).
+- (3) **Named reference** — README cites Amanda Ghassaei (Gray-Scott RD shader + directed-field variant), cake23.de Turing-fluid, Karl Sims (RD parameter map), Daniel Rozin (motion mirror).
+- (5) **Recent research** — built directly off this cycle's RESEARCH §274 (same-day, ≤14d).
+- (NOTE on criterion (1): reaction-diffusion is NOT "never used in the lab" — adult `9-reaction-diffusion` exists — so I did **not** claim novel-technique. It IS the first RD/ping-pong-GPU-sim in the **kids** zone and the first raw-GLSL kids piece, but I scored it conservatively on the lab-wide reading of the floor.)
+
+**Categorical-diversity**: the kids zone's first **raw-GLSL / GPU-simulation** piece — every prior kids build is touch+canvas2d or (recently) three.js. New affordance entirely: *grow a living organism by moving*.
+
+**Loves influencing this pick** (32 loved; new since last cycle: `234-kids-hand-creature` ❤️, `236-particle-life-song` ❤️, `243-spectral-cloud` ❤️, `217-dance-avatar` ❤️):
+- **`234-kids-hand-creature` ❤️ (newly loved)** — Karel just loved the no-touch, embodied, camera-driven 3D kids creature. 248 is the strongest continuation: another no-touch camera-embodied kids piece, but trading MediaPipe+3D for zero-dep motion + a living GPU surface.
+- `104-kids-mirror-draw` ❤️ · `101-camera-song` ❤️ · `133-kids-ripple-pond` ❤️ · `84-wave-fluid` ❤️ · `100-kids-paint-song` ❤️ — the cluster of loved *camera/mirror* and *living-organic-surface you stir* kids pieces all point at exactly this toy.
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (247 / 248 / 249), each fully briefed, told NOT to run git or touch shared docs. All three returned demoable + README. I (Curator) ran the authoritative `npm run build` with ALL THREE present (exit 0, "Compiled successfully", every route built) — so all three are genuinely **build-verified** — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only (exit 0, `248-kids-stir-garden` `○ Static` **5.93 kB**).
+
+**Winner = 248-kids-stir-garden.** Reasoning: highest surprise + ambition of the trio (a living reaction-diffusion organism a 4-year-old grows by *dancing* — a genuinely different *temporality* of play vs the lab's tap→chime reflex), tightest research→build chain (today's §274 dive), strongest love alignment (the just-loved `234` + the camera/mirror/living-surface kids-love cluster), and it dodges the banned outputs hardest while breaking the kids monoculture (first raw-GLSL + first GPU-sim kids piece). The other two built clean and are banked:
+- `247-kids-sing-garden` (voice→fbm-sky GLSL + pentatonic loopback) — the safe runner-up; fills the empty calm/bedtime niche, descends directly from loved `158-kids-hum-paint`/`100-kids-paint-song`. Banked, build-verified.
+- `249-kids-tilt-pour` (tilt→metaball/SDF lava-lamp, collisions ring notes) — playful, loved-tilt lineage (`83`/`169`/`84`). Banked, build-verified. (Lower surprise: metaball is a known form; tilt was just used in 238.)
+
+**What I shipped**:
+- `src/app/dream/248-kids-stir-garden/page.tsx` — WebGL2 ping-pong Gray-Scott RD (320×240, feed 0.037 / kill 0.0603 / Du 0.16 / Dv 0.08, 6 sub-steps/frame, 3×3 Laplacian, clamp-stabilized, GPU-initialized so FLOAT/HALF_FLOAT/8-bit paths all work) displayed via a teal→coral→gold bioluminescent ramp with edge-glow. Hidden 64×48 offscreen frame-diff → motion energy injected as `v`-chemical seed (mirrored) so movement *grows* pattern. 5 horizontal zones = C-pentatonic notes (sine+triangle, gentle env, feedback-delay shimmer, DynamicsCompressor limiter, ~360ms refractory); always-on pad swells with total motion; auto-bloom after 3s stillness. Camera-denied → pointer "stir" fallback (`text-rose-300` notice); no-WebGL2 → readable notice + pad keeps playing. Video hidden + frames discarded each tick (privacy); full GL/rAF/track/AudioContext cleanup on unmount. Typography + kids rules followed.
+- `src/app/dream/248-kids-stir-garden/README.md` — concept, RD math + chosen params + why, motion→seed→sound mapping, degradation, privacy, references, honest limitations (RD stability, perf, coarse motion, 8-bit fallback), next-cycle deepening.
+- Banked `247-kids-sing-garden` + `249-kids-tilt-pour` as build-verified seeds in IDEAS.md; `rm -rf`'d both folders (never committed). Appended RESEARCH §274. Added INDEX entry. Rewrote MORNING.md.
+
+**What's new about this prototype**:
+1. **First reaction-diffusion / GPU ping-pong simulation in the kids zone, and the first raw-GLSL kids piece.** ~115 prior kids builds were touch+2D-canvas or (last few) three.js. A living Turing-pattern organism is a categorically different toy.
+2. **A different *temporality* of play.** Every other kids piece is instant cause→effect (tap→chime). This one is *plant→bloom*: you seed by moving and the pattern keeps growing on its own. Slower, more contemplative, more "alive" — directly attacks the tap-chime reflex JURY flagged.
+3. **Embodied, no-touch, no-ML.** Whole-body motion grows the garden with zero-dependency frame-differencing — lighter and more forgiving than `234`'s MediaPipe, and it extends the just-loved no-touch-camera direction.
+4. **Orchestration on the kids cadence, as JURY demanded.** Three unrelated non-touch directions explored in one fire; the critic shipped the most ambitious and banked the other two build-verified. No solo kids regression to the chime.
+
+**Queued next**:
+- Cycle 275: **adult build** (275 % 2 = 1). Strongest banked: `spectral-tunnel` (kinetic wormhole flythrough, build-verified TWICE — completes the "fly through your music" trio JURY called the richest vein) OR `spectral-canyon` (terrain, Z-fix implemented; do the GPU-displacement perf fix first); a 2nd **real-world-data sonification** to make `233-earth-pulse`'s category not-a-fluke (`weather-score` NOAA/SWPC Kp, `transit-pulse` live flight/AIS); `tonnetz-lattice` (only spatial-harmony instrument). All clear the floor. NOTE: three.js is heavily over-represented — prefer the non-three.js options or pair three.js with a genuinely novel subsystem.
+- Cycle 276: **kids build** (276 % 2 = 0). Orchestrate (never solo). Build-verified banked this fire: `247-kids-sing-garden` (voice→GLSL sky, bedtime niche) and `249-kids-tilt-pour` (tilt→metaball lava-lamp); also `kids-clap-dancers` (mic-onset→3D band, three.js) and `kids-sing-garden`'s sibling threads. Keep dodging the banned kids template.
+- **Housekeeping flag (open since 269)**: INDEX.md still missing detailed entries for 230–232, 236, 238, 243 — worth a polish cycle to reconcile.
+
+**Notes**:
+- No API route / no `guard` needed: getUserMedia + WebGL2 + Web Audio are all client-side; nothing server-side, no secrets. Within the scope fence (`src/app/dream/**` + `docs/dreams/**` only).
+- WIDE-curation cost paid off: building with all 3 present first (then winner-only) cost ~48s extra but confirmed the two banked losers genuinely compile, so the "build-verified" IDEAS claims are true.
+- RD on WebGL2 needs a render-to-texture float path; the builder's FLOAT→HALF_FLOAT→8-bit fallback + GPU-side state init is the right pattern (8-bit packs the chemicals so even no-float-buffer devices run). Documented for future GPU-sim kids/adult pieces.
+- Builder discipline held: three agents wrote concurrently in isolated folders with zero conflict; none touched git or shared docs; I (orchestrator) alone committed.
+
+---
+
 ## Cycle 273 — adult build (DEEP orchestration) — 246-spectral-splat
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
