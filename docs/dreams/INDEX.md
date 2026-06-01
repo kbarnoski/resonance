@@ -4836,3 +4836,14 @@ Open `/dream/229-chord-canvas`. Play any chord on piano or guitar and watch the 
 Detection: 4096-point FFT → 12-bin chroma → dot-product match against 24 major/minor templates. No ML, no server, no API. First music-theory prototype in the sandbox — 228 prior builds visualized audio signal properties; this one names the musical structure.
 
 Design notes: `src/app/dream/229-chord-canvas/README.md`
+
+---
+
+### 236-particle-life-song
+**Status**: `demoable` · **Cycle shipped**: 269 · **Last touched**: 2026-06-01
+
+Open `/dream/236-particle-life-song`. Press **Start** and watch ~2,400 particles in five colored species self-organize into living cells, chasers, and membranes — driven by an asymmetric attraction matrix where (say) rose chases emerald while emerald flees rose. The twist: each species owns a pentatonic voice that **blooms louder and brighter as its swarm condenses** and fades as it disperses, so you are literally hearing the system find its own structure. Hit **New world** to reseed the matrix and hunt for regimes that sing; drag to stir. Music FROM emergence, not music visualized.
+
+Tech: classic Particle Life (Ventrella's *Clusters* / CodeParade) — CPU sim with a toroidal spatial-hash grid (O(N) neighbors), rendered as additive WebGL `THREE.Points`. Each frame an exact per-species clustering metric (avg same-species neighbors) is EMA-smoothed and mapped to each voice's gain + filter cutoff. First emergent-simulation piece in the lab; first to sonify cluster self-organization. Shipped as the winner of a WIDE 3-builder orchestration cycle (siblings `spectral-terrain` + `tonnetz-lattice` banked in IDEAS.md).
+
+Design notes: `src/app/dream/236-particle-life-song/README.md`

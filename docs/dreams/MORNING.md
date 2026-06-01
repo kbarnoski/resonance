@@ -1,25 +1,22 @@
-# Morning digest — last updated 2026-06-01 UTC (Cycle 268)
+# Morning digest — last updated 2026-06-01 UTC (Cycle 269)
 
 ## New since yesterday
 
-- **[/dream/234-kids-hand-creature](/dream/234-kids-hand-creature)** — Hand Creature 🪼 `demoable`
-  **A glowing 3D creature a 4-year-old grows and plays with their hands — no touching the screen.** Hold your hands up to the front camera and *conduct* it: raise them → it inflates, brightens, rings soft pentatonic notes; open them wide → it spikes and sparkles; second hand → a satellite blob orbits. Tap **Wake the creature 🪼**, allow the camera, lift your hands.
-  **Open this if**: you want to see the lab leave the touch-+-canvas2d rut for good. This is the **first MediaPipe (hand-tracking) prototype in the lab AND the first 3D/WebGL piece in the kids zone** — every kids prototype before it was finger-on-glass 2D. Vertex-shader noise blob (three.js) conducted by 21 hand landmarks.
+- **[/dream/236-particle-life-song](/dream/236-particle-life-song)** — Particle Life Song `demoable`
+  **Music that comes FROM emergence.** ~2,400 particles in 5 colored species self-organize into living cells and chasers (classic Particle Life — an asymmetric attraction matrix where rose chases emerald while emerald flees rose). Each species owns a pentatonic voice that **blooms louder and brighter as its swarm condenses, and fades as it disperses** — so you're not hearing a soundtrack over a sim, you're hearing the system find its own structure. Hit **New world** to reseed and hunt for regimes that sing; drag to stir.
+  **Open this if**: you want genuine surprise. First emergent-simulation piece in 235 prototypes, and the first to *sonify* self-organization (everyone else runs it backwards as audio-reactive eye-candy).
 
-## How this was made (new this cycle)
+## How this was made (orchestration)
 
-- I ran as an **orchestrator**: fanned out **2 parallel builder agents** on one ambitious concept ("a 3D creature a kid controls *without touching the screen*"), then curated the winner. Mode **DEEP**. Shipped the hand-tracking version; the **voice-grown twin** (`kids-sing-creature` — sing and the creature sings your note back in tune) built clean too and is **banked in IDEAS.md** for a fast next-cycle ship. Two directions explored, one commit.
-
-## In progress / partial
-
-Nothing half-built. `kids-sing-creature` is build-verified and ready to resurrect from IDEAS.md whenever you want the voice companion.
+- **WIDE cycle**: I planned **3 unrelated adult briefs**, fanned out **3 parallel builder agents**, and shipped the strongest — a direct answer to your "too similar" note. All three built clean. The two I didn't ship are banked as detailed, **build-verified** seeds in IDEAS.md:
+  - **`spectral-terrain`** — fly *through* a recording's spectrogram as a 3D canyon (upload your Paths tracks; extends your loved `227-paths-granular`).
+  - **`tonnetz-lattice`** — harmony as a place you walk: click triads, P/L/R neo-Riemannian voice-leading, mic chord-tracking, all on a glowing 3D note-lattice.
 
 ## Research findings worth a look
 
-- **MediaPipe Hands as a hand-conducting surface** (Derivative's TouchDesigner "Hand Tracking Master Class" + Google's on-device 21-keypoint tracker). The TD world treats hand landmarks like audio-reactive channels driving 3D; the browser has the same primitive free via CDN. The lab had **never** used it — now it has. RESEARCH.md §268.
+- WebGPU Particle Life is everywhere in 2026 (1M particles @60fps in a browser tab) — but every example is silent eye-candy or audio-*reactive*. **Nobody runs the causality forward: let the self-organization be the score.** That gap is exactly what `236` fills. RESEARCH.md cycle-269 entry.
 
 ## Open questions for Karel
 
-- **Camera in the kids zone — OK?** This is the first kids prototype that needs the front camera (on-device, nothing leaves the browser, no recording). Comfortable shipping camera-based kids toys, or keep kids strictly touch/mic?
-- **Want the voice twin next?** `kids-sing-creature` is ready to ship in one cycle — say the word and it lands alongside the hand version as a two-input set.
-- **Diversity gate is working** — I'm deliberately steering away from mic+canvas+pentatonic. Hand Creature shares *zero* input/output tags with the last 10. Keep pushing this hard, or is some of the canvas2d kids stuff still worth deepening?
+- Which thread to deepen next: **emergence** (`236` + a mic-conductor variant that perturbs the matrix), **your real music in 3D** (`spectral-terrain`), or **spatial harmony** (`tonnetz-lattice`)?
+- Housekeeping: INDEX.md is missing entries for prototypes 230–234 (earlier cycles didn't backfill). Want a polish cycle to reconcile it?

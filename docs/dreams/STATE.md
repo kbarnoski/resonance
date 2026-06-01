@@ -2,6 +2,45 @@
 
 ---
 
+## Cycle 269 — adult build (WIDE orchestration) — 236-particle-life-song
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main 29 commits (ecdb887 → 63ed797, cycle 268 / `234-kids-hand-creature`). Worked directly on main.
+
+**Love signal** (29 loved now; +3 since last recorded): new loves `217-dance-avatar` ❤️ (body/dance), `227-paths-granular` ❤️ (his REAL music as source), `223-fourier-paint` ❤️; standing `130-tsl-particle-compute` ❤️ (particle/compute). Coherent pull toward **emergent/particle systems + his real music + WebGL/compute** — exactly the territory this cycle's winner sits in.
+
+**Research dive (mandatory, 15-min)** → RESEARCH.md 2026-06-01 cycle-269 entry: **WebGPU Particle Life has gone mainstream-browser** (lisyarus WebGPU particle-life blog; markaicode 1M-particles; webgpu.com "Party"; "Medusae" audio-reactive GPU physics — all 2026). The surprise: every example runs causality *backwards* (audio→particles); **nobody sonifies the emergence itself**. Hook: each species → a pentatonic voice that swells with its clustering. → built directly as the winner. The chain **today's research → today's build is the single most direct it's ever been.**
+
+**Decide gates:**
+- **Cycle parity**: 269 % 2 = 1 → adult build. No blocker, nothing in-progress.
+- **Diversity audit (last 10, 225–234)**: `canvas2d` 6× (227,228,229,230,231,232) → **BANNED**; `kids` 5× → **BANNED** (naturally avoided in adult cycle); `touch`-primary ~5× → avoided. `diversity: banned=[canvas2d, kids, touch-primary] · picked=[autonomous-input, WebGL-three.js-points, particle-life, organic-emergent]` — winner uses none of the banned tags.
+- **Ambition floor (cleared 4 of 5, need 2)**: (1) **never-used technique** — Particle Life / emergent simulation; grepped INDEX + READMEs, zero prior; (2) **named reference** — Ventrella's *Clusters* + CodeParade/Tom Mohr *Particle Life* (cited in README); (3) **≥3 subsystems** — CPU spatial-hash sim + per-species clustering analysis + 5-voice Web Audio synthesis + WebGL additive renderer; (5) **research finding <14 days** — this cycle's dive. `ambition: never-used-technique + named-reference (+ ≥3-subsystems + recent-research)`.
+- **Categorical menu**: opens the **emergent/generative-simulation** category the lab was completely empty on; also nudges the thin "conceptual" axis (music *about* a self-organizing system).
+
+**Mode**: **WIDE** (default; no JURY.md exists). Directly answers Karel's "too similar" critique — three unrelated adult directions in one fire, each clearing the floor via *different* tags, none touching the banned set. Last cycle (268) was DEEP, so alternating is correct.
+
+**Orchestration — 3 parallel Builder subagents (pre-allocated distinct numbers):**
+- `235-spectral-terrain` — audio-file(upload) → 3D scrolling-spectrogram terrain (three.js), TouchDesigner waterfall reference. Built clean.
+- `236-particle-life-song` — autonomous Particle Life → per-species sonified voices (WebGL Points). **WINNER.**
+- `237-tonnetz-lattice` — click/mic → navigable 3D Tonnetz + neo-Riemannian PLR voice-leading (three.js), Euler/Riemann reference. Built clean.
+
+**Curation**: All three built and were demoable + clean. Picked **236** because (a) it's the direct implementation of *this cycle's* research dive (tightest research→build chain), (b) maximum surprise — "music FROM emergence" is a paradigm Karel hasn't seen, (c) it opens the empty emergent-simulation category, (d) aligns with the `130-tsl-particle-compute` ❤️ + generative direction, (e) CPU spatial-hash sim is build-safe and the per-species clustering metric is *exact*. 235 and 237 were both genuinely strong (235 leans on the loved paths-granular real-music thread; 237 is the lab's only spatial-harmony instrument) — banked as detailed, build-verified IDEAS.md seeds, folders removed (not committed).
+
+**Winner build**: ✅ `npm run build` clean after ONE fix (two `prefer-const` errors on `sx`/`sy` in the stir code). `/dream/236-particle-life-song` → 3.76 kB. Zero new deps, zero API routes, zero permissions.
+
+**What's genuinely new**:
+1. **First emergent-simulation piece in 235 prototypes.** Particle Life's asymmetric attraction matrix produces real emergent life from trivial local rules — a technique class the lab had never touched.
+2. **Forward-causality sonification.** Not audio→viz; the self-organization *is* the score. A species' note blooms exactly when its swarm condenses (squared-gain mapping → silent when dispersed), brightness tracks the same level so eye and ear move together.
+3. **"New world" as a search instrument.** Reseeding the matrix lands in genuinely different regimes; the interaction model is *hunting for emergent worlds that sing* rather than playing notes.
+
+**Queued next**:
+- Cycle 270: **kids build** (270 % 2 = 0). Candidates: `kids-constellation` (tap stars → lines trigger chord tones); polish `230-kids-bubble-duet` (add 3rd bass "grandparent" bubble). Diversity note: kids zone is heavy touch+canvas2d — prefer a kids piece that breaks that (the banked `kids-sing-creature` voice piece, or a three.js kids form).
+- Cycle 271: **adult build** (271 % 2 = 1). Strong banked seeds: `spectral-terrain` (uses Karel's real Paths audio — loved thread) and `tonnetz-lattice` (only spatial-harmony instrument); both build-verified this cycle. Also `particle-life-conductor` (mic onset perturbs the matrix) as a deepening of 236.
+- Housekeeping flag for a future cycle: INDEX.md is missing entries for 230–234 (prior cycles didn't backfill); worth a polish cycle to reconcile.
+
+---
+
 ## Cycle 266 — kids build: 232-kids-rain-xylophone
 
 **When**: 2026-06-01 UTC (hourly autonomous cycle)
