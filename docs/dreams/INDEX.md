@@ -10,7 +10,15 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 267 — adult build)
+## ⭐ Newest (Cycle 268 — kids build · DEEP orchestration, 2 explored)
+
+- **[/dream/234-kids-hand-creature](/dream/234-kids-hand-creature)** — Hand Creature 🪼. `demoable`
+  **For kids 4+ — grow and play a glowing 3D creature with your hands, no touching the screen.** Hold your hands up in front of the iPad's front camera and *conduct* a blobby creature: **raise your hands** and it inflates, brightens, and rings soft pentatonic notes (C4→C5 by height); **open your hands wide** and it spikes and sparkles; **bring up a second hand** and a little satellite blob orbits the main one. Built on raw three.js — a high-detail icosahedron displaced in a **vertex shader** by 3D simplex noise (Ashima `snoise`), rim-lit jelly glow — driven live by **MediaPipe HandLandmarker** (21 keypoints/hand, GPU, CDN-loaded, never silent thanks to an always-on sine pad). **First MediaPipe prototype in the lab and first 3D/WebGL piece in the kids zone** — the entire kids zone before this was touch + canvas2d. Camera-denied or offline degrades to a self-playing pentatonic auto-demo + tap-to-bounce. References Derivative's TouchDesigner "Hand Tracking Master Class" (landmarks conducting visuals) + spite/clicktorelease vertex-displacement blob. Camera input · three.js output · 5.51 kB. *(Sibling approach `kids-sing-creature` — voice-grown twin — explored in the same fire and banked in IDEAS.md.)*
+  Design notes: `src/app/dream/234-kids-hand-creature/README.md`
+
+---
+
+## Previous (Cycle 267 — adult build)
 
 - **[/dream/233-earth-pulse](/dream/233-earth-pulse)** — Earth Pulse. `demoable`
   The **last 24 hours of global earthquakes, played as music.** Pulls the live USGS "all_day" GeoJSON feed (public, keyless, CORS-open) and turns every quake into a sounding event sequenced in compressed real time over a pulsing wireframe globe. **Magnitude → loudness + pitch** (bigger = deeper boom: M2≈170 Hz, M7≈30 Hz); **depth → timbre** (shallow = bright crack, deep = muffled rumble); **longitude → stereo pan**. A full day compresses into ~1.25–4 min (Slow/Normal/Fast); aftershock swarms become audible flurries. The globe (react-three-fiber: wireframe graticule + occluding core + a `Points` shader colored warm→violet by depth + Bloom) flares each quake as it sounds; drag to orbit. Synthetic fallback set if the feed is blocked. **First prototype in the lab to sonify a real external API** — the world writes the score; open it on different days and it's a different piece. Reference: the *silent* "Earthquake Pulse Map" WebGL globe + the "Sounds of Seismic" / IRIS SeisSound tradition. Ties to the **Earth Grounding** journey. 4 subsystems · zero permissions · 4.77 kB.
@@ -18,7 +26,7 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## Previous (Cycle 266 — kids build)
+## Earlier (Cycle 266 — kids build)
 
 - **[/dream/232-kids-rain-xylophone](/dream/232-kids-rain-xylophone)** — Rain Xylophone. `demoable`
   **For kids 4+** — Five BANDIMAL xylophone bars sit at the bottom (C3/violet/tallest → C4/cyan/shortest). Coloured drops fall from above, one per column, with ~3–4s of fall time. **Tap a drop while it's falling** → loud bell note (triangle + ×2.756 partial) + 20-sparkle burst + bright bar flash. **Let it land** → quiet note + 10-sparkle splash. **Tap a bar directly** → note + sparkles, any time. Drops drift gently toward their column center as they fall — catch zone is predictable. Auto-spawn: 1 drop every 1.5s, 2 demo drops at load. Pentatonic C3–C4 only — no uncaught drop ever sounds wrong. **First kids prototype where the mechanic is catching a moving target** — 231 prior kids prototypes respond to WHERE you tap; this adds WHEN (timing + moving-target tracking). Three reward tiers (catch/land/bar-tap) are immediately perceptible without score counters. Zero permissions · Zero deps · 2.65 kB.

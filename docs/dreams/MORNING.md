@@ -1,26 +1,25 @@
-# Morning digest — last updated 2026-06-01 UTC (Cycle 267)
+# Morning digest — last updated 2026-06-01 UTC (Cycle 268)
 
 ## New since yesterday
 
-- **[/dream/233-earth-pulse](/dream/233-earth-pulse)** — Earth Pulse `demoable`
-  **The last 24 hours of global earthquakes, played as music.** Live USGS feed → each quake sounds the moment it happened: bigger = deeper boom, deeper = more muffled, longitude = stereo position. A full day compressed into ~2.5 min over a pulsing 3D globe (drag to orbit). Aftershock swarms become flurries. Hit **▶ Play the day**.
-  **Open this if**: you want to hear the lab break out of its rut — this is the **first prototype that sonifies the real world** (an external API), not synthesized or mic audio. Ties to your **Earth Grounding** journey. The world wrote the score; it'll sound different every morning.
+- **[/dream/234-kids-hand-creature](/dream/234-kids-hand-creature)** — Hand Creature 🪼 `demoable`
+  **A glowing 3D creature a 4-year-old grows and plays with their hands — no touching the screen.** Hold your hands up to the front camera and *conduct* it: raise them → it inflates, brightens, rings soft pentatonic notes; open them wide → it spikes and sparkles; second hand → a satellite blob orbits. Tap **Wake the creature 🪼**, allow the camera, lift your hands.
+  **Open this if**: you want to see the lab leave the touch-+-canvas2d rut for good. This is the **first MediaPipe (hand-tracking) prototype in the lab AND the first 3D/WebGL piece in the kids zone** — every kids prototype before it was finger-on-glass 2D. Vertex-shader noise blob (three.js) conducted by 21 hand landmarks.
 
-## Previous highlight
+## How this was made (new this cycle)
 
-- **[/dream/232-kids-rain-xylophone](/dream/232-kids-rain-xylophone)** — Rain Xylophone `demoable`
-  Catch coloured drops falling onto BANDIMAL xylophone bars. First kids chase-mechanic (catch vs. tap). Pentatonic, zero permissions.
+- I ran as an **orchestrator**: fanned out **2 parallel builder agents** on one ambitious concept ("a 3D creature a kid controls *without touching the screen*"), then curated the winner. Mode **DEEP**. Shipped the hand-tracking version; the **voice-grown twin** (`kids-sing-creature` — sing and the creature sings your note back in tune) built clean too and is **banked in IDEAS.md** for a fast next-cycle ship. Two directions explored, one commit.
 
 ## In progress / partial
 
-Nothing half-built. Earth Pulse is demoable today; its README lists clean next-cycle extensions (coastline geometry, week-window feed, swarm-aware reverb).
+Nothing half-built. `kids-sing-creature` is build-verified and ready to resurrect from IDEAS.md whenever you want the voice companion.
 
 ## Research findings worth a look
 
-- **"Earthquake Pulse Map"** — a recent WebGL/WebGPU globe plotting 1900–2026 USGS seismicity as *silent* pulses (webgpu.com showcase). Earth Pulse is the inverse: same data, but adds the dimension that map omits — sound. See RESEARCH.md §245.
+- **MediaPipe Hands as a hand-conducting surface** (Derivative's TouchDesigner "Hand Tracking Master Class" + Google's on-device 21-keypoint tracker). The TD world treats hand landmarks like audio-reactive channels driving 3D; the browser has the same primitive free via CDN. The lab had **never** used it — now it has. RESEARCH.md §268.
 
 ## Open questions for Karel
 
-- **Ambition mandate, applied**: I overrode the old cycle-267 candidate list (shepard-tone / scene-spatial / loop-station polish) — all three failed the new ambition floor (single-subsystem, no novel technique). Earth Pulse clears 3 gates. Was that the right call? If you'd still like shepard-tone as a quick palate-cleanser, say so.
-- **Mapping taste**: the magnitude→pitch and depth→timbre curves are tuned for musicality, not geophysics. Want it more accurate (brutal dynamic range) or more musical (current)?
-- **Earth Pulse legibility**: the globe is a graticule, no coastlines yet — you can't read *where* a quake is. Worth a cycle to add continent outlines?
+- **Camera in the kids zone — OK?** This is the first kids prototype that needs the front camera (on-device, nothing leaves the browser, no recording). Comfortable shipping camera-based kids toys, or keep kids strictly touch/mic?
+- **Want the voice twin next?** `kids-sing-creature` is ready to ship in one cycle — say the word and it lands alongside the hand version as a two-input set.
+- **Diversity gate is working** — I'm deliberately steering away from mic+canvas+pentatonic. Hand Creature shares *zero* input/output tags with the last 10. Keep pushing this hard, or is some of the canvas2d kids stuff still worth deepening?

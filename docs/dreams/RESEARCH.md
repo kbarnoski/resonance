@@ -2923,3 +2923,14 @@ Key findings from Cycle 247 (2026-05-30) — full research sweep:
 - Dance avatar design (§243, design note) — 12-joint spring-physics skeleton, zero deps, one cycle. Route `/dream/214-dance-avatar`.
 - Optical flow synthesis design (§244, design note) — frame differencing → pitch/filter/reverb, zero CDN. Route `/dream/217-optical-flow-music`.
 - DEMON (§234, May 2026) — real-time diffusion music instrument with hierarchical parameter propagation. Seeds `param-layer` and `membrane-drum`.
+
+---
+
+## 2026-06-01 — Cycle 268 research dive (15-min, per mandate)
+
+### MediaPipe Hands + three.js as a hand-conducted instrument — and the kids gap
+**Sources**: Derivative, "Hand Tracking Master Class in TouchDesigner with MediaPipe" (derivative.ca community tutorial) · Google Research, "On-Device, Real-Time Hand Tracking with MediaPipe" (21 3D keypoints from a single frame) · spite/clicktorelease, "Vertex displacement with a noise function using GLSL and three.js" (the canonical Perlin-noise blob shader).
+
+What's surprising: the TouchDesigner community has fully normalized MediaPipe hand/pose landmarks as a *conducting* surface for real-time 3D visuals (the Derivative master class treats 21 hand keypoints like CHOP channels driving geometry), and the browser has the exact same primitives for free — `@mediapipe/tasks-vision` HandLandmarker loads from jsDelivr at runtime (no build dep) and runs `detectForVideo` at 30fps on-device. Yet **the Resonance lab has never shipped a single MediaPipe prototype** (all are queued: `31-gesture-music`, `119-body-conductor`, `147-face-synth`) and **no kids prototype has ever used three.js** — the entire kids zone is touch + canvas2d. The two silos (TD-style body-conducted 3D, and the kids-music space) have never met.
+
+**Could become a prototype**: a 3D creature a child grows and plays *without touching the screen* — hand height/openness (MediaPipe) or voice pitch/loudness (mic autocorrelation) drives a Perlin-displaced blob (three.js) and rings a pentatonic call-and-response. This cycle's build chain (DEEP, 2 parallel approaches: `234-kids-hand-creature` camera, `235-kids-sing-creature` voice) implements this hook directly. First MediaPipe-or-3D piece in the kids zone; breaks the touch+canvas2d local minimum the diversity audit flagged.

@@ -13848,3 +13848,56 @@ I **overrode** MORNING.md's stale cycle-267 candidate list (shepard-tone / scene
 - The whole transport + audio scheduler + visual lives in a single `useFrame` so a quake's boom and its globe-flare fire on the same tick. HUD state is updated via a throttled `onTick` (~8 Hz) to avoid 60 Hz React re-renders of the Canvas tree.
 - `getFloatFrequencyData` / `Float32Array<ArrayBuffer>` typing gymnastics not needed here — Earth Pulse generates events, it doesn't analyze a spectrum.
 - Fallback set is deterministic (seeded LCG) and time-anchored to `Date.now()`, so the demo always has a lively, time-correct 24h even fully offline.
+
+---
+
+## Cycle 268 — kids build (DEEP orchestration): 234-kids-hand-creature
+
+**When**: 2026-06-01 UTC (autonomous ~2h cadence). First fire to run as a multi-agent orchestrator end-to-end.
+
+**Git sync**: Fast-forwarded main to b70e575 (cycle 267, earth-pulse). node_modules present (three OK) — no `npm ci` needed.
+
+**Love signal** (29 loved): newly loved since last cycle — `227-paths-granular` ❤️, `223-fourier-paint` ❤️ (Karel loves data→form and analysis/paint pieces). Kids loves remain broad (`82,83,98,100,104,111,133,152,158,160,166,169`). No single love forced this pick; the kids-love breadth supports continuing to invest in the kids zone, and `130-tsl-particle-compute` ❤️ (GPU/3D spectacle) backs moving kids into 3D.
+
+**Research-first dive** (mandate): RESEARCH.md §268 (2026-06-01). MediaPipe Hands has been normalized in the TouchDesigner world (Derivative "Hand Tracking Master Class") as a *conducting* surface for real-time 3D — and the browser has the same primitive free via CDN — yet the lab had **never shipped a MediaPipe prototype** and **no kids piece had ever used three.js**. Chain today's research → today's build: §268 → `234-kids-hand-creature`.
+
+**Decided**: Kids cycle (268 % 2 = 0). No blocker, nothing in-progress.
+
+**Ambition floor** — cleared **3 of 5** (need 2): `ambition: novel-technique + 3-subsystems + named-reference`
+- (1) **Technique never used** — grepped INDEX + all `src/app/dream/*/page.tsx`: zero `mediapipe/HandLandmarker/PoseLandmarker` hits (all such ideas were queued-only: `31-gesture-music`, `119-body-conductor`, `147-face-synth`) AND zero kids prototypes import `three`/`@react-three`. So this is **first MediaPipe in the lab** and **first 3D/WebGL in the kids zone** — two firsts.
+- (2) **≥3 subsystems** — 4 distinct: webcam capture + MediaPipe HandLandmarker tracking · per-frame hand-state→audio/visual mapping · raw three.js vertex-shader noise-displacement renderer (+ satellite mesh) · Web Audio synth (pentatonic plucks + always-on pad + delay + compressor).
+- (3) **Named reference** — README cites Derivative "Hand Tracking Master Class in TouchDesigner with MediaPipe" + spite/clicktorelease "Vertex displacement with a noise function… three.js."
+- (Also brushes (5): built directly off this cycle's RESEARCH §268.)
+
+**Diversity audit** (last 10 = 224–233):
+`diversity: banned=[touch · canvas2d · kids-vibe] · picked=[camera/hand-tracking-input · three.js-output · landmark-tracking+vertex-displacement-technique · kids-vibe(rotation-forced)]`
+- Tallies: INPUT `touch` ×5 (224,228,230,231,232) → BANNED; OUTPUT `canvas2d` ~9 (all but 233) → BANNED; VIBE `kids` ×5 → over-represented but the rotation **forces** kids this cycle. Per cycle-267's own note ("avoid the touch+canvas2d+kids triple"), I satisfied the spirit by dodging both banned **tag combinations**: Hand Creature uses **camera/hand-tracking input** (not touch) and **three.js/WebGL output** (not canvas2d). It shares zero input/output tags with the last 10.
+
+**Mode**: **DEEP** (no JURY.md present → Planner's call). One ambitious concept — "a 3D creature a kid controls without touching the screen" — attacked via two input approaches in parallel:
+- `234-kids-hand-creature` — MediaPipe hand-tracking (camera).
+- `235-kids-sing-creature` — mic voice pitch/RMS (autocorrelation).
+
+**Orchestration**: spawned 2 Builder subagents in parallel (single message), each fully briefed and folder-isolated (234 vs 235), told NOT to run git or touch shared docs. Both returned demoable + README. I (Curator) ran the authoritative `npm run build` with both present (exit 0, both `○ Static`), then picked the winner, banked the loser, and rebuilt with winner-only.
+
+**Winner = 234-kids-hand-creature.** Reasoning: it's the strictly more ambitious of the twins — 234 is *first MediaPipe ever* + first body-tracking kids piece + first 3D kids piece; 235 is "only" first-3D-kids + autocorrelation-pitch (and mic was just used in 229). 234 is the bigger surprise for Karel and breaks the local minimum hardest. 235 built clean and is the safe fallback — now banked.
+
+**What I built/shipped**:
+- `src/app/dream/234-kids-hand-creature/page.tsx` — raw three.js `WebGLRenderer` rendering an `IcosahedronGeometry(detail 24)` displaced in a vertex shader by layered Ashima `snoise` (uniforms `uGrow/uSpike/uHue/uBright/uTime`), rim-lit jelly fragment + filmic tonemap; second mesh = two-hand satellite blob. Webcam (mirrored corner preview) → MediaPipe HandLandmarker (CDN ESM via `webpackIgnore` dynamic import, GPU delegate, numHands 2) → per-frame hand state: height→`uGrow`+hue+pentatonic step (C4–C5), openness→`uSpike`+brightness, second hand→satellite. Raise past threshold rings soft sine+triangle pentatonic notes (gentle env → feedback-delay shimmer → DynamicsCompressor limiter). Always-on 3-voice tremolo pad = never silent. Degradation: idle breathing pre-gesture; camera-denied/offline → self-playing pentatonic auto-demo + `text-rose-300` message + tap-to-bounce. New typography rules followed. `○ Static`, **5.51 kB**, `npm run build` ✅ exit 0.
+- `src/app/dream/234-kids-hand-creature/README.md` — concept, hand→sound→visual mapping table, references, degradation, limitations, next-cycle ideas.
+- Banked `235-kids-sing-creature` as a build-verified seed in IDEAS.md; `rm -rf`'d its folder (never committed, per orchestration safety). Appended RESEARCH §268. Rewrote MORNING.md; added INDEX entry.
+
+**What's new about this prototype**:
+1. **First MediaPipe / body-tracking prototype the lab has ever shipped.** Three were queued for months; this is the first to actually land — and it landed in the kids zone, the last place you'd expect camera ML.
+2. **First 3D in the kids zone.** 233 prior kids builds were canvas2d finger painting. A noise-displaced glowing blob in real WebGL is a categorically different toy.
+3. **No-touch interaction for a 4-year-old.** The whole kids design space had assumed finger-on-glass. Conducting with your whole hands in the air is a new, more embodied affordance — and it still obeys every kids rule (no reading, immediate response, safe sounds, no fail states, always-on bed).
+4. **Orchestration proof.** Two unrelated input approaches explored in one wall-clock fire; the critic shipped the stronger and banked the other build-verified. This is the managed-agent studio choreography working as intended.
+
+**Queued next**:
+- Cycle 269: **adult build** (269 % 2 = 1). Must clear the floor. Candidates: extend the MediaPipe foothold into the adult zone — resurrect `119-body-conductor` (PoseLandmarker, 33 landmarks → live tempo/dynamics, now that the CDN pattern is proven here) or `31-gesture-music` (hand → synthesis). Both clear the floor (named research seeds + ≥3 subsystems + now-proven novel-in-lab tracking). Alternatively an Earth-Pulse sibling (`weather-score` / `transit-pulse`, external-API sonification).
+- Cycle 270: **kids build**. Strong candidate: ship the banked `kids-sing-creature` voice twin (build-verified, one cycle) so the no-touch-creature concept exists in both hand and voice form — a two-input set. Or `kids-shadow-puppet` (camera frame-diff motion — note: frame-diff was used by adult 221, so weaker on novelty than MediaPipe).
+
+**Notes**:
+- **MediaPipe loads with no package.json edit** via `await import(/* webpackIgnore: true */ "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.20/+esm")` + FilesetResolver pointing at the CDN `/wasm` + the Google-hosted `.task` model. The `webpackIgnore` magic comment is what keeps Next/webpack from trying to resolve the URL at build time. Type the module as `any`. This is now the documented, build-verified pattern for any future MediaPipe prototype — it unblocks the whole queued tracking family (`119-body-conductor`, `147-face-synth`, `31-gesture-music`).
+- DEEP-mode curation cost: building with BOTH candidates present first (then winner-only) is worth the extra ~18s — it confirms the loser also compiles before I bank it as a "build-verified" seed (so the IDEAS claim is true), and de-risks the winner pick.
+- No API route / no `guard` needed: getUserMedia + MediaPipe + Web Audio are all client-side; nothing server-side, no secrets.
+- Builder discipline held: folder isolation meant two agents wrote concurrently with zero conflict; neither touched git or shared docs; I (orchestrator) alone committed. One builder noted RESEARCH.md was already modified + the sibling folder already present — correctly left both alone.
