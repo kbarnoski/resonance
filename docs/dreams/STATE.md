@@ -2,6 +2,46 @@
 
 ---
 
+## Cycle 272 — kids build (WIDE orchestration) — 244-kids-sing-creature
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main 33 commits to cycle 271 (`243-spectral-cloud`). Worked directly on main. (`node_modules` absent in this fresh container — ran `npm ci` before building, exit 0.)
+
+**Love signal** (29 loved): for a kids cycle the decisive pull is the **voice/hum thread** — `158-kids-hum-paint` ❤️ (sing→paint) + `100-kids-paint-song` ❤️ — which points straight at the winner (voice→creature). Each of the three briefs in this fire was love-anchored: `101-camera-song` ❤️ (→ body-band), `98-kids-drum-circle` ❤️ (→ clap-dancers), and the voice pair (→ sing-creature). The winner sits on the strongest pair.
+
+**Research dive (mandatory, 15-min)** → RESEARCH.md 2026-06-01 cycle-272 entry: Google's **"Jump to play: Building with Gemini & MediaPipe"** (developers.googleblog.com, 2026) — whole-body POSE as a browser play-controller, 33 body keypoints at 30+fps on a plain webcam, on-device/WebGPU. The surprise: body-as-controller is mainstream-feasible *today*, yet the lab has one camera-hands kids piece (`234`) and zero whole-body/motion pieces; ~110 kids prototypes are fingers on flat glass. Hook → a child plays by *moving their whole body* in front of the camera (zero-dep frame-differencing). The dive's developmental-pitch cross-reference (voice as a child's first instrument) tethered the **winner**: the banked, research-backed `kids-sing-creature` (voice is the *other* embodied non-touch input). Chain **today's research → today's build** is visible: the dive surfaced embodied non-touch kids input; all three briefs are embodied non-touch, and the winner consumes a recent-dive seed.
+
+**Decide gates:**
+- **Cycle parity**: 272 % 2 = 0 → **kids build**. No blocker, nothing in-progress.
+- **JURY.md (2026-06-01) hard guidance — followed exactly**: (1) *"Orchestrate the kids cadence — stop shipping solo kids builds"* → ran a WIDE 3-builder fan-out (the five floor-0 regressions were all solo kids cycles). (2) *"The kids touch+canvas2d+pentatonic triple is banned for a week — every kids build must use a non-touch input OR three.js"* → all three briefs used non-touch input; the winner uses mic-pitch input **and** three.js. (3) *"234 and 238 showed the door — walk through it again, don't slide back to flat glass"* → winner is three.js (custom GLSL), not canvas2d.
+- **Diversity audit (last 10, 229–243)**: OUTPUT `canvas2d` over-represented (JURY: 10×/15) → **BANNED**; INPUT `touch` (JURY: 7×) → **BANNED**; `pentatonic-triangle-tap-chime` template (5×) → **BANNED**. `diversity: banned=[canvas2d-output, touch-input, pentatonic-tap-chime-template] · picked=[voice-pitch-input(mic-autocorrelation), three.js-3D/GLSL-output, voice→vertex-displacement-morph + call-and-response-melody, calm/bedtime palette]` — winner touches none of the banned tags (it uses pentatonic *snap*, but the technique is voice→3D-morph, not the tap-chime template). **245-kids-body-band was held precisely because its output was canvas2d** (a banned tag) despite a novel camera input.
+- **Ambition floor (cleared 3 of 5, need 2)**: (1) **never-used technique** — first kids piece driven by **voice pitch into a 3D morphing creature** (grepped INDEX + KIDS.md: ~110 kids pieces are touch+2D; `158-kids-hum-paint` is voice→2D paint; `234` is hands→3D; none are voice→3D-morph); (2) **≥3 subsystems** — mic autocorrelation pitch detection (parabolic-interp + RMS gate) + three.js icosphere displaced by GLSL simplex noise in a custom `ShaderMaterial` + melody record→playback synth with ambient pad; (5) **research finding** — consumes the banked `kids-sing-creature` seed which came from recent research dives, and this cycle's dive (embodied non-touch kids input) is its frame. `ambition: never-used-technique + ≥3-subsystems (+ recent-research seed)`.
+- **Categorical menu**: lands in **embodied / cross-modal** (voice → 3D form) + the contemplative/bedtime niche KIDS.md explicitly flags as the market gap.
+
+**Mode**: **WIDE** (3 builders). JURY directive is explicit: *"run the same WIDE/DEEP fan-out on the kids cycle that you run on adults — a solo kids cycle regresses to the chime every time."* Last cycle (271) was DEEP, so WIDE alternates correctly, and three unrelated non-touch directions in one fire is the most direct attack on the kids-zone touch+canvas2d monoculture JURY named.
+
+**Orchestration — 3 parallel Builder subagents (pre-allocated distinct numbers 244/245/246); all returned demoable, all reported clean tsc+eslint:**
+- `244-kids-sing-creature` — VOICE-pitch (mic autocorrelation) → three.js GLSL displaced-icosphere creature that grows/recolors as you sing + sings your melody back. **WINNER.**
+- `245-kids-body-band` — CAMERA whole-body motion (zero-dep frame-differencing) → 5-zone pentatonic voices + Canvas2D glowing particles. Novel input; **held — canvas2d output is a banned diversity tag this cycle.**
+- `246-kids-clap-dancers` — MIC-onset (spectral-flux + RMS, NOT pitch) → three.js squash-stretch character band with rolling-tempo backing groove. Strong; rhythm-via-clap is a fresh dimension.
+
+**Curation**: All three were demoable and clean. Picked **244** because (a) **strongest love alignment** — two loved voice pieces (`158-kids-hum-paint` ❤️ + `100-kids-paint-song` ❤️) vs one each for the others; (b) **clears JURY's door cleanly** — non-touch input AND three.js, escaping flat glass like 234/238 (245 partially slides back via canvas2d output); (c) **most novel + pedagogically deep** — first voice→3D-morph creature in the lab, with call-and-response ear-training (KIDS.md prizes vocalization for language+music development); (d) **fills KIDS.md's stated market gap** — the calm, contemplative, parent-tolerable bedtime piece; (e) custom GLSL `ShaderMaterial` is premium for the kids zone. 246 (clap→3D rhythm band, three.js, the first onset-driven kids piece) was a very close second — banked as a detailed seed. 245 (camera body-motion) banked with the explicit note: resurrect with a **three.js/WebGL** output, not canvas2d. Both folders `rm -rf`'d (not committed).
+
+**Winner build**: ✅ authoritative `npm run build` clean (`✓ Compiled successfully in 25.7s`, winner-only, full TS+ESLint+prod pipeline). `/dream/244-kids-sing-creature` → 6.13 kB route / 297 kB first-load (three.js). Zero new deps, zero API routes, zero permissions beyond the optional mic (graceful tap-and-hold fallback when denied/absent; WebGL-absent notice). Typography verified: `text-4xl`-class title, `text-base`+ body, `text-rose-300` mic note, ≥44px violet buttons.
+
+**What's genuinely new**:
+1. **First voice→3D-morphing creature in the kids zone.** ~110 prior kids pieces are fingers on 2D glass; this one is *sung to* — pitch snaps to C-pentatonic and sets the creature's hue, loudness inflates it, sustained singing grows it, all via a custom GLSL simplex-noise vertex displacement.
+2. **Call-and-response ear-training through play.** The creature remembers the last ~7 snapped notes and, after a beat of silence, sings the child's tune back as glowing pulses — vocalization in, melody out, no instruction.
+3. **Orchestrated the kids cadence.** Per JURY: ran a WIDE 3-builder fire on the kids cycle (not solo), all three escaped the banned touch+canvas2d+chime template; the two unshipped readings (clap-onset 3D band, camera body-motion) are detailed seeds, not dead ends.
+
+**Queued next**:
+- Cycle 273: **adult build** (273 % 2 = 1). Strongest banked: `spectral-tunnel` (kinetic wormhole flythrough of your own music, build-verified cycle 271 — JURY: "the 'fly through YOUR music' thread is the lab's richest vein, go DEEP"); `tonnetz-lattice` (only spatial-harmony instrument); a second real-world-data-sonification piece to make 233's category not-a-fluke (`weather-score` / `transit-pulse`).
+- Cycle 274: **kids build** (274 % 2 = 0). Banked + brief-verified this cycle: `kids-clap-dancers` (mic-onset → 3D character band, three.js) and `kids-body-band` (camera body-motion — **must get a three.js/WebGL output**, not canvas2d). Also `kids-sing-garden` (first kids GLSL fragment-shader sky).
+- **Housekeeping flag (still open since 269)**: INDEX.md is missing detailed entries for 230–234; worth a polish cycle to reconcile.
+
+---
+
 ## Cycle 271 — adult build (DEEP orchestration) — 243-spectral-cloud
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
