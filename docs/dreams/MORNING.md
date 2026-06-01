@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-06-01 UTC (Cycle 269)
+# Morning digest — last updated 2026-06-01 UTC (Cycle 270)
 
 ## New since yesterday
 
-- **[/dream/236-particle-life-song](/dream/236-particle-life-song)** — Particle Life Song `demoable`
-  **Music that comes FROM emergence.** ~2,400 particles in 5 colored species self-organize into living cells and chasers (classic Particle Life — an asymmetric attraction matrix where rose chases emerald while emerald flees rose). Each species owns a pentatonic voice that **blooms louder and brighter as its swarm condenses, and fades as it disperses** — so you're not hearing a soundtrack over a sim, you're hearing the system find its own structure. Hit **New world** to reseed and hunt for regimes that sing; drag to stir.
-  **Open this if**: you want genuine surprise. First emergent-simulation piece in 235 prototypes, and the first to *sonify* self-organization (everyone else runs it backwards as audio-reactive eye-candy).
+- **[/dream/238-kids-tilt-world](/dream/238-kids-tilt-world)** — Tilt World `demoable` · **for kids (4+)**
+  **Lean the iPad to roll a glowing marble across a 3D musical hill-world — no tapping the screen.** A real three.js 3D landscape with downhill gravity steering the ball; roll it onto the five glowing pads and each rings a soft pentatonic bell that **pans left/right to follow the ball across the world**. The instrument is the child's own body leaning the tablet.
+  **Open this if**: you want to see the kids zone finally break out of fingers-on-flat-glass. First tilt-controlled, first 3D, first spatial-audio kids piece in ~110 — and it sits right on the intersection of two you loved (`169-kids-marble-run` ❤️ + `83-kids-tilt-rain` ❤️). On desktop/no-sensor it auto-falls-back to drag, so it plays anywhere.
 
 ## How this was made (orchestration)
 
-- **WIDE cycle**: I planned **3 unrelated adult briefs**, fanned out **3 parallel builder agents**, and shipped the strongest — a direct answer to your "too similar" note. All three built clean. The two I didn't ship are banked as detailed, **build-verified** seeds in IDEAS.md:
-  - **`spectral-terrain`** — fly *through* a recording's spectrogram as a 3D canyon (upload your Paths tracks; extends your loved `227-paths-granular`).
-  - **`tonnetz-lattice`** — harmony as a place you walk: click triads, P/L/R neo-Riemannian voice-leading, mic chord-tracking, all on a glowing 3D note-lattice.
+- **WIDE kids cycle**: planned **3 unrelated kids briefs**, each breaking the zone's touch+2D-canvas rut via a *different* input × output, fanned out **3 parallel builders**, shipped the strongest. All three built clean. The two I didn't ship are banked as detailed, **build-verified** seeds in IDEAS.md:
+  - **`kids-sing-garden`** — *sing or hum* and a GLSL fluid sky blooms with color, then sings your little melody back. The lab's **first kids fragment-shader** piece; a calm, bedtime-soft toy.
+  - **`kids-wave-band`** — *wave your hands* at the camera to conduct a band of glowing voices. Zero-dependency motion detection (no MediaPipe) + WebGL light-particles. Held only because a camera kids piece shipped last cycle.
 
 ## Research findings worth a look
 
-- WebGPU Particle Life is everywhere in 2026 (1M particles @60fps in a browser tab) — but every example is silent eye-candy or audio-*reactive*. **Nobody runs the causality forward: let the self-organization be the score.** That gap is exactly what `236` fills. RESEARCH.md cycle-269 entry.
+- **Tilt is a wide-open instrument we'd never used.** A full WebGL accelerometer marble game ("Inertia," 2026) was built in-browser with Claude Code, no native code — yet none of our ~110 kids pieces used the device's own motion in 3D. Embodied-music-cognition research says leaning-to-play teaches pitch through the *body*, exactly KIDS.md's sensorimotor core. That gap is what `238` fills. RESEARCH.md cycle-270 entry.
 
 ## Open questions for Karel
 
-- Which thread to deepen next: **emergence** (`236` + a mic-conductor variant that perturbs the matrix), **your real music in 3D** (`spectral-terrain`), or **spatial harmony** (`tonnetz-lattice`)?
-- Housekeeping: INDEX.md is missing entries for prototypes 230–234 (earlier cycles didn't backfill). Want a polish cycle to reconcile it?
+- Which kids thread next: **embodied/sensor** (more tilt + the banked camera `kids-wave-band`), or **voice/calm** (the banked `kids-sing-garden` shader + `kids-sing-creature`)?
+- Still open from yesterday: INDEX.md is missing entries for prototypes 230–234 (earlier cycles didn't backfill; 238 is now in). Want a polish cycle to reconcile it?

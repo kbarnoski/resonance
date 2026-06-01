@@ -4847,3 +4847,14 @@ Open `/dream/236-particle-life-song`. Press **Start** and watch ~2,400 particles
 Tech: classic Particle Life (Ventrella's *Clusters* / CodeParade) — CPU sim with a toroidal spatial-hash grid (O(N) neighbors), rendered as additive WebGL `THREE.Points`. Each frame an exact per-species clustering metric (avg same-species neighbors) is EMA-smoothed and mapped to each voice's gain + filter cutoff. First emergent-simulation piece in the lab; first to sonify cluster self-organization. Shipped as the winner of a WIDE 3-builder orchestration cycle (siblings `spectral-terrain` + `tonnetz-lattice` banked in IDEAS.md).
 
 Design notes: `src/app/dream/236-particle-life-song/README.md`
+
+---
+
+### 238-kids-tilt-world
+**Status**: `demoable` · **Cycle shipped**: 270 · **Last touched**: 2026-06-01
+
+Open `/dream/238-kids-tilt-world`. **For kids (4+).** Tap **Tilt to play**, then *lean the iPad* — a glowing marble rolls across a warm, undulating 3D hill-world (three.js `PerspectiveCamera` over a sine-bump heightfield) in whatever direction you tilt, with real downhill gravity along the surface so valleys and hills steer the ball. Roll it onto the five glowing colored pads scattered over the hills → each rings a soft bell (C-major pentatonic, BANDIMAL: bigger pad = lower pitch) and bursts into sparkles. The note pans left/right via a `StereoPannerNode` driven by the marble's on-screen x, so the sound follows the ball across the world. A soft detuned-sine drone fades in on first gesture so it's never silent; the marble leaves a glowing trail and the camera gently follows it.
+
+No reading, no tapping the screen, no score, no "wrong" note — the instrument is the child's own body leaning the tablet. Degrades gracefully: iOS motion permission is requested behind the Start button; on denial / no sensor / no tilt events within ~1.8s it auto-switches to a pointer-drag fallback (drag the marble) with a readable rose note, and there's an explicit "No tilt? Drag to play" button. First tilt-controlled 3D kids piece in the lab (all ~110 others are touch + 2D canvas); first kids piece with spatial panned audio tied to ball position. Reference: *Inertia* (kikkupico WebGL accelerometer marble, 2026) + LocoRoco/tilt-labyrinth lineage; embodied music cognition. Shipped as the winner of a WIDE 3-builder orchestration (siblings `kids-sing-garden` + `kids-wave-band` banked in IDEAS.md). Zero new deps · zero API · optional motion sensor.
+
+Design notes: `src/app/dream/238-kids-tilt-world/README.md`

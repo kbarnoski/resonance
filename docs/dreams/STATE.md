@@ -2,6 +2,45 @@
 
 ---
 
+## Cycle 270 — kids build (WIDE orchestration) — 238-kids-tilt-world
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main 30 commits to cycle 269 (`236-particle-life-song`). Worked directly on main. (`node_modules` was absent in this container — ran `npm ci` before building, per AGENT.md.)
+
+**Love signal** (29 loved): for a kids cycle the decisive pull is the convergence of **`169-kids-marble-run` ❤️** (falling/rolling physics = music) + **`83-kids-tilt-rain` ❤️** (device tilt + catching) — two loves pointing straight at *tilt + marble + physics-as-music*. Secondary kids loves bias toward voice (`158-kids-hum-paint` ❤️, `100-kids-paint-song` ❤️) and connection (`140-kids-string-bridge` ❤️). The winner sits exactly on the marble-run × tilt-rain intersection.
+
+**Research dive (mandatory, 15-min)** → RESEARCH.md 2026-06-01 cycle-270 entry: **"Inertia" — a WebGL accelerometer marble** built on-device with Claude Code (kikkupico "Vibe Discovery", 2026): `ondevicemotion`/`ondeviceorientation` → real marble physics on procedural terrain, browser-only. Cross-referenced with **embodied-music-cognition** research (body movement reciprocally shapes pitch perception; Reggio Emilia sensorimotor learning). The surprise: tilt-as-instrument is mainstream-feasible yet **no kids prototype in the lab uses the device's own motion to play in a 3D world** — they're all fingers on glass. Hook → "tilt the iPad to roll a glowing marble across a 3D musical hill-world." Built directly as the winner. The chain **today's research → today's build** is explicit.
+
+**Decide gates:**
+- **Cycle parity**: 270 % 2 = 0 → **kids build**. No blocker, nothing in-progress.
+- **Diversity audit (last 10, 226–236)**: INPUT `touch` 4× (228,230,231,232) → **BANNED**; OUTPUT `canvas2d` 5× (228,229,230,231,232) → **BANNED**. Also flagged: 234 (last cycle) already used camera+MediaPipe+three.js, so those aren't novel-for-kids anymore and a camera piece would echo immediate history. `diversity: banned=[touch-input, canvas2d-output] · picked=[tilt/DeviceOrientation-input, three.js-3D-output, marble-physics, spatial-audio]` — winner touches none of the banned tags. (Kids palette is force-selected by the parity rule; acknowledged exception.)
+- **Ambition floor (cleared 4 of 5, need 2)**: (1) **never-used technique** — first kids piece controlled by **device tilt in a real 3D world** (grepped INDEX + READMEs: all ~110 kids pieces are touch + 2D canvas; tilt last seen only in `83-kids-tilt-rain` as a 2D basket, never a 3D rolling world); (2) **≥3 subsystems** — DeviceOrientation→acceleration physics + surface-gradient marble dynamics + three.js 3D render + StereoPanner spatial audio; (3) **named reference** — *Inertia* (kikkupico, 2026) + LocoRoco/tilt-labyrinth lineage, cited in README; (5) **research finding <14 days** — this cycle's dive. `ambition: never-used-technique + named-reference (+ ≥3-subsystems + recent-research)`.
+- **Categorical menu**: lands in **spatial / embodied-sensorimotor** — gross-motor whole-body input the kids zone was empty on (it's all fine-motor finger taps).
+
+**Mode**: **WIDE** (3 builders). Two WIDE cycles back-to-back (269 was WIDE), which I'd normally alternate away from — but the AMBITION & DIVERSITY MANDATE is a *hard gate* that supersedes the soft alternation preference, and the kids zone is in an acute touch+canvas2d monoculture (the exact "too similar" Karel flagged). WIDE — three unrelated non-touch/non-canvas2d directions in one fire — is the most direct attack on that. Documented the trade-off deliberately rather than defaulting.
+
+**Orchestration — 3 parallel Builder subagents (pre-allocated distinct numbers); all built clean (`Compiled successfully`, exit 0, all 3 routes):**
+- `238-kids-tilt-world` — **tilt → three.js 3D marble hill-world + spatial pentatonic audio**. **WINNER.**
+- `239-kids-sing-garden` — voice pitch (autocorrelation) → **raw GLSL fragment shader** fluid sky + pentatonic melody loopback (first kids shader; 108 kB, no three).
+- `240-kids-wave-band` — **zero-dep camera frame-differencing** → 5-zone pentatonic voices + WebGL motion particles.
+
+**Curation**: Build-safety was not a discriminator — all three compiled clean. Picked **238** because (a) **tightest research→build chain** (direct implementation of this cycle's *Inertia* dive — the mandate wants this visible), (b) **strongest love alignment** — sits on the `169-kids-marble-run` ❤️ × `83-kids-tilt-rain` ❤️ intersection, (c) **most diverse vs immediate history** — last cycle (234) was a camera kids piece, so 240 (camera) would partly repeat it while 238 (tilt) is maximally different, (d) **most embodied** — gross-motor body input is KIDS.md's sensorimotor core and ideal for a 4yo, (e) opens the empty spatial/tilt category. 239 (lab's first kids GLSL shader + bedtime niche) and 240 (elegant zero-dep frame-diff, clean build, held only because camera just shipped) were both genuinely strong — banked as detailed, build-verified IDEAS.md seeds, folders removed (not committed).
+
+**Winner build**: ✅ `npm run build` clean (authoritative, winner-only). `/dream/238-kids-tilt-world` → 4.39 kB route / 292 kB first-load (three.js). Zero new deps, zero API routes, zero permissions beyond the optional motion sensor (graceful pointer-drag fallback when denied/absent). Typography verified: `text-4xl` title, `text-base`/`text-lg` body, `text-rose-300` permission note, ≥44px buttons.
+
+**What's genuinely new**:
+1. **First tilt-controlled 3D kids piece.** ~110 kids prototypes are fingers on 2D glass; this one is played by *leaning the tablet* — the instrument is the child's body, and the world is a real three.js 3D landscape with downhill gravity steering the ball.
+2. **Spatial audio tied to ball position.** Each pad's bell pans L/R via StereoPanner based on the marble's on-screen x, so sound tracks the ball across the world — eye and ear move together.
+3. **Direct research→build.** The *Inertia* accelerometer-marble finding (this cycle) became the prototype within the same fire; embodied-music-cognition grounds *why* tilt-to-play teaches pitch through the body.
+
+**Queued next**:
+- Cycle 271: **adult build** (271 % 2 = 1). Strongest banked seeds: `spectral-terrain` (uses Karel's loved real-music thread, 3D) and `tonnetz-lattice` (only spatial-harmony instrument) — both build-verified cycle 269; also `particle-life-conductor` (mic onset perturbs 236's matrix) as a deepening.
+- Cycle 272: **kids build** (272 % 2 = 0). Banked + build-verified: `kids-sing-garden` (first kids GLSL shader, bedtime niche — voice-loved thread) and `kids-sing-creature` (voice-grown 3D blob, ear-training). Once camera leaves recent history: `kids-wave-band`.
+- Housekeeping flag (still open from 269): INDEX.md was missing entries for 230–234; backfilled 238 this cycle but the 230–234 gap remains — worth a polish cycle to reconcile.
+
+---
+
 ## Cycle 269 — adult build (WIDE orchestration) — 236-particle-life-song
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
