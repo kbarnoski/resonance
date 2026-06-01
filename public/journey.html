@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From the First Line — A Builder's Path to Agentic Systems</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#181b20; --panel2:#1f242b; --line:#2b323b;
+    --txt:#e6e8eb; --muted:#9aa3ad; --faint:#6b7480;
+    --coral:#d97757; --coral2:#e8916f; --teal:#5bb3a6; --gold:#c9a86b;
+    --green:#6fbf73; --red:#e06c6c; --blue:#6ea8d8; --purple:#a98fd0;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;line-height:1.55}
+  a{color:var(--coral2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1000px;margin:0 auto;padding:48px 24px 96px}
+  header.hero{margin-bottom:40px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--coral);margin:0 0 12px}
+  h1{font-size:40px;line-height:1.08;margin:0 0 16px;letter-spacing:-.015em}
+  .lede{font-size:18px;color:var(--muted);max-width:680px;margin:0}
+  .lede b{color:var(--txt);font-weight:600}
+  section{margin-top:52px}
+  h2{font-size:13px;font-family:var(--mono);letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);border-bottom:1px solid var(--line);padding-bottom:10px;margin:0 0 24px}
+  h3{font-size:18px;margin:0 0 6px;letter-spacing:-.01em}
+  p{color:var(--muted)}
+  .grid{display:grid;gap:16px}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:760px){.g4,.g3,.g2{grid-template-columns:1fr}.wrap{padding:32px 16px 64px}h1{font-size:30px}}
+
+  /* stat band */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:8px}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .stat .n{font-size:30px;font-weight:700;letter-spacing:-.02em;color:var(--txt)}
+  .stat .n small{font-size:15px;color:var(--coral2);font-weight:600}
+  .stat .l{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--faint);margin-top:4px}
+
+  /* timeline */
+  .tl{position:relative;margin-top:8px;padding-left:28px}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(180deg,var(--coral),var(--teal),var(--gold))}
+  .ev{position:relative;margin-bottom:22px}
+  .ev::before{content:"";position:absolute;left:-28px;top:4px;width:14px;height:14px;border-radius:50%;
+    background:var(--bg);border:2px solid var(--coral)}
+  .ev.t::before{border-color:var(--teal)} .ev.g::before{border-color:var(--gold)}
+  .ev.f::before{border-color:var(--purple);background:var(--bg)}
+  .ev .when{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--faint);text-transform:uppercase}
+  .ev h3{margin:3px 0 4px;font-size:16px}
+  .ev p{margin:0;font-size:14px}
+  .ev .badge{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.08em;
+    text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:8px;vertical-align:middle;
+    border:1px solid var(--line);color:var(--muted)}
+
+  /* tables */
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:12px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+  td b{color:var(--txt)}
+  td .ph{font-family:var(--mono);font-size:11px;color:var(--coral);font-weight:700}
+  td code,.ic{font-family:var(--mono);font-size:12.5px;background:var(--panel2);border:1px solid var(--line);
+    padding:1px 6px;border-radius:5px;color:var(--coral2)}
+  .story{color:var(--teal);font-style:italic}
+  .tablecard{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+  .tablecard table th:first-child,.tablecard table td:first-child{padding-left:18px}
+  .tablecard table th:last-child,.tablecard table td:last-child{padding-right:18px}
+  tr.now td{background:rgba(217,119,87,.06)}
+  tr.future td{background:rgba(169,143,208,.05)}
+
+  /* skills ledger */
+  .ledger{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media(max-width:760px){.ledger{grid-template-columns:1fr}}
+  .col{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .col .h{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .col.was .h{color:var(--faint)} .col.now .h{color:var(--coral)} .col.next .h{color:var(--purple)}
+  .col ul{margin:0;padding-left:16px}
+  .col li{font-size:13.5px;color:var(--muted);margin:7px 0}
+  .col li b{color:var(--txt)}
+
+  /* thesis */
+  .thesis{background:linear-gradient(160deg,#1c2026,#15181d);border:1px solid var(--line);
+    border-left:3px solid var(--coral);border-radius:12px;padding:26px 28px}
+  .thesis p{font-size:16px;color:var(--txt);margin:0 0 14px;line-height:1.6}
+  .thesis p:last-child{margin-bottom:0}
+  .thesis .arc{font-family:var(--mono);font-size:13px;color:var(--teal);margin-top:6px}
+  .thesis b{color:var(--coral2)}
+
+  footer{margin-top:56px;border-top:1px solid var(--line);padding-top:20px;
+    font-family:var(--mono);font-size:12px;color:var(--faint)}
+  footer a{color:var(--coral2)}
+  .cap{font-size:12.5px;color:var(--faint);margin-top:10px;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Resonance · Builder's Path · 2026</p>
+  <h1>From the first line of code<br>to directing a fleet of agents.</h1>
+  <p class="lede">One repo, <b>607 commits</b>, and a quiet shift in what "design" means. This is the through-line: a designer who learned to build, shipped a product, then built the autonomous systems that build <i>with</i> him — and where that goes next.</p>
+</header>
+
+<section>
+  <h2>The ledger, in numbers</h2>
+  <div class="stats">
+    <div class="stat"><div class="n">607</div><div class="l">commits since Feb 15</div></div>
+    <div class="stat"><div class="n">267</div><div class="l">autonomous dream cycles</div></div>
+    <div class="stat"><div class="n">3<small> live</small></div><div class="l">remote agent routines</div></div>
+    <div class="stat"><div class="n">~15<small> wks</small></div><div class="l">first line → fleet</div></div>
+  </div>
+  <p class="cap">Real numbers pulled from the Resonance git history — not aspirational. The dream agent alone has run 267 self-directed build cycles.</p>
+</section>
+
+<section>
+  <h2>The timeline — first line to frontier</h2>
+  <div class="tl">
+    <div class="ev">
+      <div class="when">Feb 15, 2026</div>
+      <h3>The first commit <span class="badge">genesis</span></h3>
+      <p>"Initial commit from Create Next App." A blank Next.js page. No audio engine, no shaders, no agents — just a designer deciding to build the thing himself instead of speccing it for someone else.</p>
+    </div>
+    <div class="ev t">
+      <div class="when">Mar 31, 2026 · v1.0-the-room</div>
+      <h3>The Room ships</h3>
+      <p>A global audio-engine singleton, a Zustand playback store, and an immersive Three.js listening space that survives route changes. The leap from "pages" to a living, stateful product.</p>
+    </div>
+    <div class="ev t">
+      <div class="when">Apr 9 → Apr 14 · v1.1 / v1.2</div>
+      <h3>Stable shaders, paths & sharing</h3>
+      <p>Glitch-free shader crossfades. The Welcome Home album path. Shareable journeys, per-device quality tiers, batch analysis. Craft hardening — the product learns to behave on hardware it doesn't control.</p>
+    </div>
+    <div class="ev g">
+      <div class="when">May 5, 2026 · v1.3-installation-ready</div>
+      <h3>Installation-grade</h3>
+      <p>Tauri build, audio transcode, pre-buffering, WebGL recovery, sleep/wake handling, an operator panel. Production reliability for a real venue — the work stops being a demo and becomes infrastructure.</p>
+    </div>
+    <div class="ev">
+      <div class="when">May 2026 · the dream lab</div>
+      <h3>267 autonomous cycles</h3>
+      <p>Three coordinated remote routines on Opus 4.8: a dream agent building a fresh prototype every 2 hours, a concept jury critiquing it each morning, a separate dashboard agent. The repo starts building <i>itself</i> on a schedule.</p>
+    </div>
+    <div class="ev f">
+      <div class="when">Jun 1, 2026 · today</div>
+      <h3>Orchestration <span class="badge">live now</span></h3>
+      <p>The dream agent stops building solo. Each fire it becomes an <b>orchestrator</b> — spawning parallel builder subagents (WIDE divergence or DEEP on one ambitious concept), then curating one winner. Planner → fan-out → critic, as code.</p>
+    </div>
+    <div class="ev f">
+      <div class="when">the next quarter</div>
+      <h3>From lab to fleet</h3>
+      <p>A trust/eval layer, a self-improving meta-agent that rewrites the others' specs weekly, and an Agent-SDK orchestrator that escapes the 15-fire budget entirely. One person supervising dozens of agents — the rehearsal for directing agentic design at scale.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The frontier stack — what we're building toward</h2>
+  <div class="tablecard">
+    <table>
+      <thead><tr><th>Phase</th><th>The system</th><th>What it does</th><th>The interview story it earns</th></tr></thead>
+      <tbody>
+        <tr class="now">
+          <td><span class="ph">01</span><br><b>Orchestra</b><br><span class="badge">live</span></td>
+          <td>Planner → parallel builders → curator</td>
+          <td>Each dream fire spawns 2–3 isolated builder subagents — WIDE (divergent briefs) or DEEP (rival approaches to one ambitious concept) — then picks one winner and banks the rest as seeds.</td>
+          <td class="story">"I don't prompt one agent. I run a team and curate — divergence then selection, on every cycle."</td>
+        </tr>
+        <tr>
+          <td><span class="ph">02</span><br><b>Trust layer</b></td>
+          <td>Generalize the jury into eval + drift detection</td>
+          <td>The concept jury becomes a reusable evaluation harness: scored gates, diversity audits, drift alarms when output collapses toward sameness — quality as a measured signal, not a vibe.</td>
+          <td class="story">"Autonomy without evals is a liability. I built the controls layer that lets agents run unattended."</td>
+        </tr>
+        <tr>
+          <td><span class="ph">03</span><br><b>Meta-agent</b></td>
+          <td>Weekly overseer rewrites other agents' specs</td>
+          <td>An agent whose job is the other agents: it reads the week's output, finds where they've gone stale, and edits their operating manuals (AGENT.md) to course-correct. The system tunes itself.</td>
+          <td class="story">"My agents improve my agents. I design the loop, not every prompt."</td>
+        </tr>
+        <tr class="future">
+          <td><span class="ph">04</span><br><b>SDK scale</b></td>
+          <td>Agent SDK off the fire budget</td>
+          <td>Lift orchestration out of the 15-fire/day routine ceiling into the Agent SDK — programmatic fan-out, no schedule cap. The path from a 3-agent lab to a hundred-agent fleet.</td>
+          <td class="story">"The lab was the prototype. The SDK is how it becomes a hundred agents under one director."</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Why this <i>is</i> the oCFO job — Resonance → Workday</h2>
+  <p style="margin:-8px 0 18px;max-width:680px">Every piece of the dream lab is a working answer to "how do you lead agentic design for a finance co-pilot." The substrate is music; the discipline transfers directly.</p>
+  <div class="tablecard">
+    <table>
+      <thead><tr><th>In Resonance, I built…</th><th>Which is, for oCFO…</th><th>The transferable claim</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>AGENT.md</b> — the dream agent's operating manual, read fresh every fire</td>
+          <td>An <b>agent behavior spec</b> — the design surface for what an autonomous co-pilot may and may not do</td>
+          <td class="story">Designing agent behavior is a writing-and-spec discipline, and I already own that artifact.</td>
+        </tr>
+        <tr>
+          <td>The <b>concept jury</b> — a daily external critic that scores and gates output</td>
+          <td>The <b>trust & controls layer</b> — eval, guardrails, and approval gates for a finance agent</td>
+          <td class="story">I treat evaluation as a first-class design object, not an afterthought.</td>
+        </tr>
+        <tr>
+          <td><b>Ambition & diversity gates</b> — hard rules that force variance and block repetition</td>
+          <td><b>Quality & variance controls as code</b> — measurable standards an agent must clear</td>
+          <td class="story">I encode taste as enforceable constraints a machine can be held to.</td>
+        </tr>
+        <tr>
+          <td>The <b>morning rhythm</b> — three timed routines composing into one review surface</td>
+          <td><b>Fleet-oversight UX</b> — how a CFO supervises 50 agents without reading 50 logs</td>
+          <td class="story">The hard design problem at scale is the human's review surface, and I've been designing mine.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>The skills ledger — was · now · next</h2>
+  <div class="ledger">
+    <div class="col was">
+      <div class="h">Where I started</div>
+      <ul>
+        <li><b>Design director</b> — specs, vision, handoff to engineers</li>
+        <li>Figma / Paper as the final artifact</li>
+        <li>Influence through persuasion and review</li>
+        <li>Ideas measured in mockups</li>
+      </ul>
+    </div>
+    <div class="col now">
+      <div class="h">What I can do now</div>
+      <ul>
+        <li><b>Designer who ships</b> — Next.js, React, Three.js, Web Audio, shaders in production</li>
+        <li>State architecture: singletons, stores, device tiers, recovery</li>
+        <li><b>Agent author</b> — writing operating manuals, orchestration, eval gates</li>
+        <li>Multi-agent: parallel fan-out, curation, git-as-sync across laptop / phone / cloud</li>
+        <li>Ideas measured in <b>shipped, live URLs</b></li>
+      </ul>
+    </div>
+    <div class="col next">
+      <div class="h">Where we're going</div>
+      <ul>
+        <li><b>Fleet director</b> — supervising dozens of agents, not editing each prompt</li>
+        <li>Eval & trust layers as standard practice</li>
+        <li>Meta-agents that improve the system unattended</li>
+        <li>Agent SDK orchestration beyond schedule limits</li>
+        <li>Ideas measured in <b>agents deployed and outcomes</b></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>The growth thesis</h2>
+  <div class="thesis">
+    <p>The unit of design moved. It used to be the <b>artifact</b> — the screen, the flow, the mockup someone else would build. Then it became the <b>product</b> — I learned to build the thing myself, and Resonance shipped to a real installation. Now the unit is the <b>agent</b>: I design the behavior, the constraints, and the review surface, and the system does the building.</p>
+    <p>That's the rare profile. Most designers can't ship. Most engineers don't have the taste to set an agent's standards. The dream lab is proof I sit in the overlap — and that I can hold a fleet to a bar of quality without touching every output.</p>
+    <p class="arc">artifact → product → agent → fleet</p>
+  </div>
+</section>
+
+<footer>
+  <div>Resonance · getresonance.vercel.app · companion to <a href="https://idaho-fishing-dashboard.vercel.app/claude-workflow.html">the ops dashboard</a></div>
+  <div style="margin-top:6px">Numbers from live git history · 267 dream cycles · orchestration live since Jun 1, 2026</div>
+</footer>
+
+</div>
+</body>
+</html>
