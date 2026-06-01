@@ -10,10 +10,18 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 265 — adult build)
+## ⭐ Newest (Cycle 266 — kids build)
+
+- **[/dream/232-kids-rain-xylophone](/dream/232-kids-rain-xylophone)** — Rain Xylophone. `demoable`
+  **For kids 4+** — Five BANDIMAL xylophone bars sit at the bottom (C3/violet/tallest → C4/cyan/shortest). Coloured drops fall from above, one per column, with ~3–4s of fall time. **Tap a drop while it's falling** → loud bell note (triangle + ×2.756 partial) + 20-sparkle burst + bright bar flash. **Let it land** → quiet note + 10-sparkle splash. **Tap a bar directly** → note + sparkles, any time. Drops drift gently toward their column center as they fall — catch zone is predictable. Auto-spawn: 1 drop every 1.5s, 2 demo drops at load. Pentatonic C3–C4 only — no uncaught drop ever sounds wrong. **First kids prototype where the mechanic is catching a moving target** — 231 prior kids prototypes respond to WHERE you tap; this adds WHEN (timing + moving-target tracking). Three reward tiers (catch/land/bar-tap) are immediately perceptible without score counters. Zero permissions · Zero deps · 2.65 kB.
+  Design notes: `src/app/dream/232-kids-rain-xylophone/README.md`
+
+---
+
+## Previous (Cycle 265 — adult build)
 
 - **[/dream/231-mood-xy](/dream/231-mood-xy)** — Mood XY. `demoable`
-  Drag a dot through the **Russell circumplex emotion plane** (X = valence: sad ← → happy; Y = arousal: calm ↓ → excited). The Web Audio synthesizer follows in real time: arousal drives BPM (40–140), voice count (1–6), attack shape (pad → staccato), and oscillator type (sine → triangle); valence drives chord quality (major / minor / diminished), filter cutoff (warm → bright), and note duration (long → short). At **excited · happy**: bright major arpeggios, 6 voices, 45ms stagger, 120+ BPM. At **calm · sad**: sparse diminished chords, 1 voice, long sustain, 40 BPM. Background color bilinearly interpolates between 4 dark quadrant tones (deep amber / deep purple / deep teal / deep navy). Beat-synced glow pulse on the dot breathes with BPM. Trail of 72 fading circles follows movement. Dashed center-cross axis with corner labels. **First prototype where you set the emotional intent and the music follows** — 230 prior prototypes react to audio; this one inverts it. Zero deps · Zero permissions · 2.81 kB.
+  Drag a dot through the **Russell circumplex emotion plane** (X = valence: sad ← → happy; Y = arousal: calm ↓ → excited). The Web Audio synthesizer follows in real time: arousal drives BPM (40–140), voice count (1–6), attack shape (pad → staccato), and oscillator type (sine → triangle); valence drives chord quality (major / minor / diminished), filter cutoff (warm → bright), and note duration (long → short). At **excited · happy**: bright major arpeggios, 6 voices, 45ms stagger, 120+ BPM. At **calm · sad**: sparse diminished chords, 1 voice, long sustain, 40 BPM. Background color bilinearly interpolates between 4 dark quadrant tones (deep amber / deep purple / deep teal / deep navy). Beat-synced glow pulse on the dot breathes with BPM. Trail of 72 fading circles follows movement. **First prototype where you set emotional intent and music follows.** Zero deps · Zero permissions · 2.81 kB.
 
 ---
 

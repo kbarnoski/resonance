@@ -2,6 +2,63 @@
 
 ---
 
+## Cycle 266 — kids build: 232-kids-rain-xylophone
+
+**When**: 2026-06-01 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main 21 commits to cycle 265 (231-mood-xy).
+
+**Love signal** (27 loved prototypes — kids-relevant for this pick):
+- `169-kids-marble-run` ❤️ — falling physics = music (most direct match)
+- `83-kids-tilt-rain` ❤️ — rain drops falling, catching mechanic
+- `166-kids-lantern` ❤️ — journey + reward at destination
+- `82-kids-color-piano` ❤️ — BANDIMAL-style colored interactive elements
+
+**Decided**: Kids cycle (266 % 2 = 0). No blockers; nothing in-progress.
+
+Chose `232-kids-rain-xylophone` from cycle 265's queued candidates because:
+1. **Chase mechanic is genuinely new** — 231 prior kids prototypes respond to WHERE you tap; this challenges WHEN you tap (catch a moving target before it lands). Completely novel interaction class in the kids zone.
+2. Direct descendant of two loved prototypes: `169-kids-marble-run` (falling physics = music) and `83-kids-tilt-rain` (rain + catching).
+3. BANDIMAL bars anchor the bottom naturally — bigger bar = lower pitch = left. Self-explaining without labels.
+4. ~3–4s fall time is generous for 4yo motor skills; auto-play fallback means music never stops even if child just watches.
+5. Pentatonic scale means no uncaught drop ever sounds wrong.
+
+**Loves influencing this pick**:
+`169-kids-marble-run` ❤️ (physics→music), `83-kids-tilt-rain` ❤️ (rain catching), `166-kids-lantern` ❤️ (trajectory-based reward).
+
+**What I built**:
+- `src/app/dream/232-kids-rain-xylophone/page.tsx`
+  - 5 BANDIMAL xylophone bars at bottom (C3/violet/tallest → C4/cyan/shortest)
+  - Coloured drops fall with gravity (GRAV=58 px/s²), ~3–4s fall time
+  - Tap a falling drop (HIT_R=38px) → loud bell note + 20-sparkle burst + bar flash
+  - Uncaught drops land on bar → quiet note + 10-sparkle splash + bar flash
+  - Tap bar directly → note + 10 sparkles (any time)
+  - Drop gently drifts toward its column center as it falls (5% lerp/frame)
+  - Soft ambient C3/G3 sine pad from first tap
+  - Demo: 2 drops auto-spawn at 80ms + 780ms so canvas is immediately alive
+  - Auto-spawn: 1 drop every 1.5s (MAX 10 on screen)
+  - Hint text fades in after 1.2s before first tap
+  - Typography: text-2xl title, text-base/75 subtitle — both above minimums
+  - Zero permissions · Zero API · Zero deps · ~2.6 kB
+
+**Build**: ✅ clean (below).
+
+**What's genuinely new**:
+1. **Chase mechanic** — the first kids prototype where the primary interaction is catching a moving object. All prior kids prototypes respond to tap location; this requires tap timing AND position tracking on a moving target.
+2. **Spatial gravity pull** — drops drift toward their column center (gentle lerp), making the catch zone predictable and the arc visually satisfying.
+3. **Three tiers of feedback**: catch (loud + 20 sparks), land (quiet + 10 sparks), tap-bar (medium + 10 sparks). The difference is immediately perceptible, teaching the child to aim for catches without any instruction.
+
+**Queued next**:
+- Cycle 267: **adult build** (267 % 2 = 1). Candidates:
+  - `shepard-tone` (44) — auditory illusion: the endless rising staircase. Zero deps, pure Web Audio.
+  - `scene-spatial` (29) — Ghost scenes as HRTF 3D audio environments.
+  - Polish `172-loop-station` ❤️ — phase-lock UX, waveform rendering.
+- Cycle 268: **kids build** (268 % 2 = 0). Candidates:
+  - `kids-constellation` — tap to place stars; lines drawn between nearby stars trigger chord tones
+  - Polish `230-kids-bubble-duet`: add 3rd "grandparent" bass bubble joining after 5 exchanges
+
+---
+
 ## Cycle 265 — adult build: 231-mood-xy
 
 **When**: 2026-06-01 UTC (hourly autonomous cycle)
