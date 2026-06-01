@@ -4858,3 +4858,14 @@ Open `/dream/238-kids-tilt-world`. **For kids (4+).** Tap **Tilt to play**, then
 No reading, no tapping the screen, no score, no "wrong" note — the instrument is the child's own body leaning the tablet. Degrades gracefully: iOS motion permission is requested behind the Start button; on denial / no sensor / no tilt events within ~1.8s it auto-switches to a pointer-drag fallback (drag the marble) with a readable rose note, and there's an explicit "No tilt? Drag to play" button. First tilt-controlled 3D kids piece in the lab (all ~110 others are touch + 2D canvas); first kids piece with spatial panned audio tied to ball position. Reference: *Inertia* (kikkupico WebGL accelerometer marble, 2026) + LocoRoco/tilt-labyrinth lineage; embodied music cognition. Shipped as the winner of a WIDE 3-builder orchestration (siblings `kids-sing-garden` + `kids-wave-band` banked in IDEAS.md). Zero new deps · zero API · optional motion sensor.
 
 Design notes: `src/app/dream/238-kids-tilt-world/README.md`
+
+---
+
+### 243-spectral-cloud
+**Status**: `demoable` · **Cycle shipped**: 271 · **Last touched**: 2026-06-01
+
+Open `/dream/243-spectral-cloud`. Press **Start** (a generative C-major-pentatonic ambient pad plays immediately) or **Drop a track** — ideally one of your own piano recordings — and your music becomes a slowly-rotating **volumetric nebula of light you orbit**. Each frame of the spectrum is deposited into 3D space: angle/radius around a disk = frequency (bass in the core, highs at the rim), height = time (a stack of 96 ring-buffered disks = a rolling few-second memory), point size + brightness = energy, hue = frequency (violet→cyan→rose). Drag to orbit, scroll to dolly, auto-orbit resumes when you let go.
+
+Three subsystems beyond the deposition: an **energy-flux onset detector** fires an expanding spherical **shockwave shell** + a camera dolly-punch + a bloom pulse, with a live onset light + BPM estimate; the **spectral centroid** biases global hue and the cloud's dispersion (bright music blooms wider/sparklier, dark music condenses) so the *shape* tracks timbre, not just loudness; and a **dual audio source** (always-alive generative pad + `decodeAudioData` file loop through one analyser). Rendered as a single `THREE.Points` cloud with a custom GLSL `ShaderMaterial` (per-point size + additive bloom) — the lab's first volumetric orbital point-cloud of spectral history. References: Refik Anadol *Machine Hallucinations* data-sculptures + Ryoji Ikeda *data.scan*. Shipped as the winner of a **DEEP** 3-builder orchestration (one concept — "fly through YOUR music as a 3D world" — three render strategies; siblings `spectral-canyon` terrain + `spectral-tunnel` wormhole banked in IDEAS.md). Zero new deps · zero API.
+
+Design notes: `src/app/dream/243-spectral-cloud/README.md`

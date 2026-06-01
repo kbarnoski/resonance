@@ -2,6 +2,45 @@
 
 ---
 
+## Cycle 271 — adult build (DEEP orchestration) — 243-spectral-cloud
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main 31 commits to cycle 270 (`238-kids-tilt-world`). Worked directly on main. (`node_modules` absent in this fresh container — ran `npm ci` before building.)
+
+**Love signal** (29 loved): decisive pull for this adult cycle is **`130-tsl-particle-compute` ❤️** (additive points / GPU-particle aesthetic) crossed with the **real-music thread** — `227-paths-granular` ❤️ + `163-paths-visualizer` ❤️ ("his own music as the source"). The winner sits exactly there: a volumetric point-cloud (130's lineage) fed by his uploaded recordings (the paths thread).
+
+**Research dive (mandatory, 15-min)** → RESEARCH.md 2026-06-01 cycle-271 entry: (1) a 2026-04 arxiv paper on **real-time human-AI musical co-performance** (latent-diffusion accompaniment + MAX/MSP) and (2) the infra surprise that drove tonight — **WebGPU has hit browser baseline across every major browser** and three.js ships `WebGPURenderer` by default, so GPU **compute** (million-particle physics, on-GPU FFT, **volumetric point clouds**) is finally a safe browser target. The lab is almost all WebGL/canvas2d (compute touched once, `130` ❤️). Hook → render Karel's *own* music as a navigable 3D world (terrain / tunnel / **volumetric cloud**). The chain **today's research → today's build** is explicit: the dive named "volumetric point clouds" and the winner IS the volumetric point cloud.
+
+**Decide gates:**
+- **Cycle parity**: 271 % 2 = 1 → **adult build**. No blocker, nothing in-progress.
+- **Diversity audit (last 10, 227–238)**: INPUT `touch`-primary ~5× (228,230,231,232,234-tap) → **BANNED**; OUTPUT `canvas2d` ~6× (227,228,229,230,231,232) → **BANNED**; `kids` 5× → naturally avoided (adult cycle). `diversity: banned=[touch-primary, canvas2d-output, kids] · picked=[audio-file-input, three.js-3D-points/WebGL, volumetric-spectral-point-cloud, immersive/Anadol]` — winner touches none of the banned tags.
+- **Ambition floor (cleared 4 of 5, need 2)**: (1) **never-used technique** — first volumetric **orbital point-cloud of spectral history** + first custom GLSL `ShaderMaterial`-driven points piece (grepped INDEX + READMEs; the lab's points work is `130`/`236` particle sims, never a spectral-deposition nebula); (2) **≥3 subsystems** — spectral deposition + ring-buffered history, energy-flux onset → shockwave-shell + dolly + bloom, spectral-centroid → hue/dispersion/scale, dual audio source (generative pad + file decode) through one analyser; (3) **named reference** — Refik Anadol *Machine Hallucinations* + Ryoji Ikeda *data.scan* (cited in README); (5) **research finding <14 days** — this cycle's WebGPU-volumetric-point-cloud dive. `ambition: never-used-technique + recent-research (+ ≥3-subsystems + named-reference)`.
+- **Categorical menu**: lands in **spatial / immersive data-sculpture** — the Anadol/Ikeda "inhabit a volume of data" axis the lab had only gestured at.
+
+**Mode**: **DEEP** (2 prior cycles, 269 & 270, were both WIDE → deliberate alternation; AGENT.md: "don't run WIDE every night"; no JURY.md). ONE massively-bigger concept — **"fly through / navigate YOUR OWN recorded music as a living 3D world"** — attacked by **3 builders via different render strategies** (terrain vs. tunnel vs. volumetric cloud). This is the "massively bigger" Karel asked for: an immersive personal data-sculpture, not another flat reactive canvas.
+
+**Orchestration — 3 parallel Builder subagents (pre-allocated distinct numbers 241/242/243); all returned demoable, all built clean:**
+- `241-spectral-canyon` — scrolling spectrogram-waterfall **terrain** (height-field, fly-camera, OrbitControls).
+- `242-spectral-tunnel` — fly down a **wormhole** of ring cross-sections displaced by the spectrum; most-correct motion model, most kinetic.
+- `243-spectral-cloud` — **volumetric point-cloud nebula** of spectral history you orbit; custom GLSL point shader + onset shockwave shells. **WINNER.**
+
+**Curation**: All three compiled clean (build-safety not a discriminator). Picked **243** because (a) **tightest research→build chain** — this cycle's dive explicitly named "volumetric point clouds" as the newly-safe frontier and 243 is exactly that; (b) **strongest love alignment** — `130-tsl-particle-compute` ❤️ (additive shader points) has no relative among the other two; (c) **most novel + premium for the lab** — first orbital volumetric spectral cloud, first custom `ShaderMaterial` points, the Anadol/Ikeda data-sculpture lineage Karel values; (d) **most distinctive interaction** — *orbit a sculpture of your own music* rather than another forward-scroll. 242 (most kinetic, most physically-correct flythrough) and 241 (most legible waterfall, but with a real ring-buffer-Z bug to fix) were both genuinely strong — banked as detailed, build-verified IDEAS.md seeds (242 with its time-history deepening, 241 with the Z-remap fix written out), folders `rm -rf`'d (not committed).
+
+**Winner build**: ✅ authoritative `npm run build` clean (exit 0, winner-only, full TS+ESLint+prod pipeline). `/dream/243-spectral-cloud`. Zero new deps (writes its own orbit controller rather than import OrbitControls), zero API routes, zero permissions. Typography verified: `text-4xl`/`text-5xl` title, `text-base`+ body, `text-rose-300` errors, ≥44px violet buttons, hints at `/55`.
+
+**What's genuinely new**:
+1. **First volumetric orbital point-cloud of spectral history** in 240+ prototypes — your music as an inhabitable nebula, not a flat reactive canvas. angle/radius=frequency, height=time, size/brightness=energy, hue=frequency.
+2. **Direct WebGPU-era research → build.** The dive flagged volumetric point clouds as newly-safe-in-browser; the winner is the literal implementation, via a custom GLSL `ShaderMaterial` (the lab's first shader-driven points).
+3. **DEEP mode delivered the "massively bigger" ask** — one immersive concept explored three structurally-different ways in a single fire; the two unshipped readings are build-verified seeds, not dead ends.
+
+**Queued next**:
+- Cycle 272: **kids build** (272 % 2 = 0). Build-verified banked seeds: `kids-sing-garden` (first kids GLSL shader, bedtime/voice niche — voice-loved thread) and `kids-sing-creature`; once camera leaves recent history, `kids-wave-band`.
+- Cycle 273: **adult build** (273 % 2 = 1). Strongest banked: `spectral-tunnel` (kinetic wormhole, build-verified this cycle) and `tonnetz-lattice` (only spatial-harmony instrument); `spectral-canyon` after its Z-remap fix; `particle-life-conductor` (mic onset perturbs 236's matrix) as a deepening.
+- **Housekeeping flag (still open since 269)**: INDEX.md is missing entries for prototypes 230–234; 236/238/243 are now in but the 230–234 gap remains — worth a polish cycle to reconcile.
+
+---
+
 ## Cycle 270 — kids build (WIDE orchestration) — 238-kids-tilt-world
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
