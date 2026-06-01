@@ -2,6 +2,66 @@
 
 ---
 
+## Cycle 276 — kids build (WIDE orchestration) — 253-kids-tilt-pour
+
+**When**: 2026-06-01 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main to 3399a5e (cycle 275, `251-live-duet-trader`). Worked directly on main. `node_modules` was ABSENT → ran `npm ci` (exit 0) before the authoritative builds.
+
+**Love signal** (32 loved; unchanged set this fire): for this kids cycle the pull is the **tilt + living-fluid-surface** cluster — `83-kids-tilt-rain` ❤️ (the only prior loved tilt-rain toy) + `169-kids-marble-run` ❤️ (loved physics-rolls-and-rings) + `84-wave-fluid` ❤️ (loved WebGL fluid surface) all point straight at a tilt-poured lava-lamp. The broad love of the orchestration-era no-touch kids work (`234-kids-hand-creature` ❤️) supports keeping the kids cadence orchestrated + non-touch.
+
+**Research-first dive** (mandate; RESEARCH.md §276, 2026-06-01): found **Damian Van Der Merwe — "Painting with Math: Building an Interactive Lava Lamp Shader from Scratch"** (damianvandermerwe.com, **April 3, 2026**, ~60 days, date verified via WebFetch). The surprise isn't the metaball — it's the *mobile-perf engineering recipe*: a **Hermite smoothstep** falloff instead of `exp()`, a **fixed 8-blob** unrolled loop, **2-octave noise cap**, and **DPR≤2** ("cuts GPU load in half on 3x phones with no perceptible quality loss") — exactly what's needed to run a gooey-fluid look on a 4-year-old's tablet, in a kids zone that had **zero** metaball/smooth-min pieces. **Chain today's research → today's build is direct and visible: §276 dive → WIDE brief A → shipped `253-kids-tilt-pour`** (satisfies research-first rule path (a): implement the dive's hook).
+
+**Decided**: Kids cycle (276 % 2 = 0). No blocker, nothing in-progress.
+
+**Ambition floor** — winner cleared **3 of 5** (need 2): `ambition: recent-research(≤14d) + named-reference + 3-subsystems`
+- **(5) Recent research finding (≤14d)** — built directly off this cycle's RESEARCH §276 (Van Der Merwe, Apr 2026; the dive is same-day).
+- **(3) Named reference** — README cites Van Der Merwe's lava-lamp shader (all four perf choices adopted verbatim) + Inigo Quilez smooth-min/SDF.
+- **(2) ≥3 subsystems** — 4 distinct: raw-WebGL metaball/smooth-min fragment-shader render · CPU physics step (tilt→gravity vector + damping + edge-restitution + blob–blob repulsion) · `deviceorientation` tilt input pipeline · Web Audio (pentatonic merge voices + feedback-delay + slosh-reactive ambient pad + limiter).
+- (Did **NOT** claim (1) novel-technique: SDF/raymarching already exists in the lab — `176-sdf-cave`, `206-sdf-cave`, `84-wave-fluid` — so by the strict reading SDF "appears in a prior prototype." It IS the first *metaball / smooth-min lava-lamp* and the first metaball in the kids zone, but scored conservatively.)
+
+**Diversity audit** (last 10 = 232,233,234,236,238,243,244,246,248,251):
+`diversity: banned=[three.js-output] · forced=[kids-vibe (rotation)] · picked=[tilt input · raw-WebGL fragment-shader output · metaball/smooth-min + tilt-physics technique · candy/playful vibe]`
+- OUTPUT tallies: **three.js = 6×** (234,236,238,243,244,246) → BANNED. canvas2d = 2 (232,251); raw-WebGL = 1 (248). VIBE: **kids = 5×** → over-represented but rotation FORCES it. INPUT: mic/voice 3× (243,244,251), touch 2× (232,236), camera 2× (234,248), tilt 1× (238), audio-file 2× (243,246) — none ≥4.
+- 253 uses **tilt input** (1× recent) + **raw-WebGL output** (1× recent) — neither banned, and it dodges JURY's week-long ban on the `touch + canvas2d + pentatonic-chime + kids` template (non-touch input, not 2D-canvas, not three.js). Clean.
+
+**Mode**: **WIDE** (alternation: 271 DEEP → 272 WIDE → 273 DEEP → 274 WIDE → 275 DEEP → **276 WIDE**). JURY (2026-06-01) is explicit: *"orchestrate the kids cadence — stop shipping solo kids builds; a solo kids cycle regresses to the chime every time,"* and bans the touch+canvas2d+pentatonic kids template for the week. WIDE — three unrelated **non-touch, non-three.js** directions in one fire — is the most direct attack. Three briefs differed on **input** (tilt / breath / voice), **technique** (metaball-physics / breath-detection / fbm-loopback), and **palette** (candy / meadow / bedtime):
+- `253-kids-tilt-pour` — tilt → raw-WebGL metaball lava-lamp (from today's §276 dive).
+- `254-kids-blow-bloom` — BLOW into mic → dandelion seeds drift + ring (lab's **first breath-detection input**).
+- `255-kids-sing-garden` — voice → fbm bedtime sky + pentatonic melody loopback.
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (253/254/255 pre-allocated), each fully briefed, told NOT to run git or touch shared docs. All three returned demoable + README, each self-reporting tsc+eslint clean. I (Curator) ran the authoritative `npm run build` with **all three present** → exit 0, "✓ Compiled successfully in 32.5s", all three routes `○ Static` (253 7.03 kB · 254 5.05 kB · 255 5.98 kB) — so all three are genuinely **build-verified** — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only (exit 0, `253-kids-tilt-pour` `○ Static` **7.03 kB**).
+
+**Winner = `253-kids-tilt-pour`.** Reasoning: (1) **tightest research→build chain** — it directly implements today's §276 dive (the research-first rule's preferred path (a)); the other two had no chain to today's research. (2) **Highest floor + most demo-reliable** — clears 3/5 with a named dated reference, and unlike 254 (flaky breath detection) / 255 (autocorrelation octave jumps) it has no detection robustness risk to disappoint Karel on first open. (3) **Strongest love alignment** — sits dead-center on the loved tilt + fluid-surface cluster (`83`❤️ `169`❤️ `84`❤️). (4) **Dodges every banned tag hardest** + brings the first metaball/smooth-min piece to the lab. The non-winners lost narrowly and are **banked, build-verified**:
+- `254-kids-blow-bloom` — the **highest-surprise** of the trio (the lab's first breath/blow input; "blow out the dandelion" needs zero instruction). Lost only on (a) no chain to today's research and (b) builder-flagged detection robustness (fricatives/room-noise can fool it). Banked as the strongest fresh kids seed.
+- `255-kids-sing-garden` — fills the empty calm/bedtime niche but is the **most redundant** (overlaps `244-kids-sing-creature`, just shipped — voice→autocorrelation→pentatonic-loopback). Banked with the note: resurrect only after 244 breathes, and swap in YIN/MPM first.
+
+**Authoritative build**: winner-only `npm run build` → exit 0, "✓ Compiled successfully in 35.2s", `/dream/253-kids-tilt-pour` `○ Static` **7.03 kB**.
+
+**What I built/shipped**:
+- `src/app/dream/253-kids-tilt-pour/page.tsx` — raw WebGL1/2 fragment-shader lava-lamp: 8 candy blobs, **Hermite smoothstep** metaball field (not `exp()`), smooth-min rim/halo banding (IQ), Reinhard tonemap, 2-octave noise cap, DPR≤2 (all four Van Der Merwe perf choices). CPU physics: `deviceorientation` gamma/beta → smoothed gravity vector → gravity + damping(0.985) + edge-restitution(0.55) + soft blob–blob repulsion, |v|≤0.5. Per-pair merge (dist<0.13, 260ms refractory) rings each blob's C-pentatonic note (sine+octave-triangle, 0.9s env) → feedback delay → DynamicsCompressor limiter; always-on low triad pad swells with the slosh metric. iOS `requestPermission()` behind the start tap (also unlocks audio); tilt-denied / no-events-in-1.8s → pointer-drag-steers-gravity fallback + `text-rose-300` notice; no-WebGL → notice + pad keeps playing. Full rAF/listener/AudioContext/GL-context cleanup on unmount. Typography + kids rules followed.
+- `src/app/dream/253-kids-tilt-pour/README.md` — concept, metaball + Hermite-smoothstep + smooth-min math with chosen params and WHY, tilt→gravity→physics→sound mapping, color↔pitch table, degradation, named references (Van Der Merwe Apr-2026 + IQ), honest limitations, next-cycle deepening.
+- Banked `254-kids-blow-bloom` + `255-kids-sing-garden` as build-verified seeds in IDEAS.md; `rm -rf`'d both folders (never committed, per orchestration safety). Appended RESEARCH §276. Added INDEX entry (new Newest section). Rewrote MORNING.md.
+
+**What's new about this prototype**:
+1. **First metaball / smooth-min lava-lamp in the lab, and the first metaball in the kids zone.** All ~115 prior kids builds are touch+2D-canvas, three.js, or (248) a reaction-diffusion shader — none a gooey-fluid metaball field you pour.
+2. **Tactile, no-reading, no-wrong-note embodied play.** The instrument is the child leaning the tablet; merging blobs always harmonize (pentatonic). Extends the loved no-touch/tilt kids direction.
+3. **Direct research→build chain, same fire.** Today's Van Der Merwe dive named the exact mobile-perf recipe; the winner is its literal application on a kids tablet.
+4. **Orchestration on the kids cadence, as JURY demanded.** Three unrelated non-touch directions explored in one fire; the critic shipped the most research-aligned + demo-reliable and banked the other two build-verified. No solo kids regression to the chime.
+
+**Queued next**:
+- Cycle 277: **adult build** (277 % 2 = 1). Ship the **next AI-band member**: `250/live-duet-harmonist` (build-verified, ~714 lines, handles **chordal** piano — the comping bed `251` can't, since it's monophonic) so the live-duet concept exists as harmony + trading. Then `252/live-duet-groover` (rhythm, build-verified, needs a browser tuning session) completes the trio. All clear the floor (same arXiv 2604.07612 cite + named ref + ≥3 subsystems). Three.js remains over-represented — these are canvas2d, so they also help rebalance output.
+- Cycle 278: **kids build** (278 % 2 = 0). Orchestrate (never solo). Build-verified banked this fire: `254-kids-blow-bloom` (breath input — highest surprise, fresh) and `255-kids-sing-garden` (voice→bedtime sky — but hold until `244` breathes; swap in YIN/MPM first). Keep dodging the banned three.js + touch+canvas2d+pentatonic kids template.
+- **Housekeeping flag (open since 269)**: INDEX.md still missing detailed entries for 230–232, 236, 238, 243 — worth a polish cycle to reconcile.
+
+**Notes**:
+- No API route / no `guard` needed: `getUserMedia` is not used here (tilt + WebGL + Web Audio only); nothing server-side, no secrets. Within the scope fence (`src/app/dream/**` + `docs/dreams/**` only).
+- WIDE-curation discipline (cycle-274 pattern): built all 3 present first (exit 0, confirms the two banked losers genuinely compile → "build-verified" is honest) then winner-only (~35s extra total). Worth it for trustworthy IDEAS claims.
+- Builder discipline held: three agents wrote concurrently in folder-isolated dirs (253/254/255) with zero conflict; none touched git or shared docs; I (orchestrator) alone committed. Pre-allocated 253/254/255 so no number collision; 250/252 left reserved for the queued AI-band siblings.
+- Conservative floor scoring: did NOT claim novel-technique for the metaball since SDF/raymarching already exists in the lab. The piece still clears the floor 3/5 on research-cite + named-ref + ≥3-subsystems.
+
+---
+
 ## Cycle 275 — adult build (DEEP orchestration) — 251-live-duet-trader
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
