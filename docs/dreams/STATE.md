@@ -2,6 +2,63 @@
 
 ---
 
+## Cycle 265 — adult build: 231-mood-xy
+
+**When**: 2026-06-01 UTC (hourly autonomous cycle)
+
+**Git sync**: Fast-forwarded main 20 commits to cycle 264 (230-kids-bubble-duet).
+
+**Love signal** (27 loved prototypes — adult-relevant for this pick):
+- `172-loop-station` ❤️ — considered for polish but outweighed by unbuilt ideas
+- `163-paths-visualizer` ❤️ — Karel's own album as visual journey; confirms he cares about music+emotion mapping
+- `157-concept-steer` ❤️ — conceptual steering of generative output; mood-xy is the synthesis equivalent
+
+**Decided**: Adult cycle (265 % 2 = 1). No blockers; nothing in-progress.
+
+Chose `mood-xy` because:
+1. **First emotion-coordinate prototype.** 230 prior prototypes map audio → visuals or respond to input. None let you *navigate* an emotional space and hear the music follow. This is the first where the music IS derived from an emotional position, not the reverse.
+2. **Russell circumplex model** — the valence/arousal 2D model is the standard in music emotion research (AffectMachine-Pop, arxiv 2506.08200, Jun 2026). Fresh research basis.
+3. **Zero deps, zero permissions.** No mic, no camera, no API key. Pure Web Audio synthesis from dot position.
+4. **Maximum surprise.** Karel hasn't seen a draggable emotion-to-music synthesizer. The four quadrant aesthetics (bright arpeggios → sparse dim chords → lush major pads → staccato chromatic runs) cover a range that should feel genuinely surprising.
+5. **Complements recent adult builds.** `229-chord-canvas` surfaced music theory from signal; `225-aria-companion` made dialogue; `231-mood-xy` inverts the usual direction — you SET the emotional intent and let the music follow.
+
+**Loves influencing this pick**:
+`163-paths-visualizer` ❤️ (Karel+music+emotion territory), `157-concept-steer` ❤️ (conceptual control of generative output).
+
+**What I built**:
+- `src/app/dream/231-mood-xy/page.tsx` — Mood XY
+  - 2D canvas: valence (sad ← → happy) on X axis, arousal (calm ↓ → excited) on Y axis
+  - Drag the white dot → background color shifts bilinearly between 4 dark quadrant tones (deep amber / deep purple / deep teal / deep navy)
+  - Beat-synced glow pulse on dot (glow radius breathes with BPM)
+  - Trail of 72 fading ghost circles follows the dot
+  - Dashed center-cross axis with edge labels (EXCITED/CALM/SAD/HAPPY) and corner quadrant labels
+  - Web Audio look-ahead scheduler: schedules chords 150ms ahead, re-queries dot position every RAF tick
+  - Arousal → BPM (40–140), voice count (1–6), attack time (staccato→pad), oscillator type (sine→triangle)
+  - Valence → chord quality (major / minor / diminished), filter cutoff (bright→dark), note duration (short→long)
+  - Arpeggio stagger at high arousal (45ms between voices) → fast upward sweeps at excited·happy
+  - HUD strip at bottom: current quadrant · chord type · BPM (live-updating on canvas, no React re-render)
+  - Start overlay with description before AudioContext unlock
+  - Zero deps · Zero permissions · ~3.2 kB
+
+**Build**: ✅ clean. `231-mood-xy` compiled to 2.81 kB. Zero TypeScript or ESLint errors in dream zone.
+
+**What's genuinely new**:
+1. **Emotion as composition input, not output.** Every other Resonance prototype reacts to music (mic → viz) or generates music randomly. Here the musician sets an emotional intent on the XY plane and the synthesizer realizes it. The music IS the emotion, not a reaction to it.
+2. **Quadrant-specific aesthetics via continuous parameter curves.** Not discrete mode-switches — every parameter interpolates continuously so moving the dot across quadrant boundaries feels smooth, not stepped.
+3. **Beat-synced visual feedback.** The dot's glow breathes in sync with the current BPM. At 40 BPM it pulses slowly; at 140 BPM it flickers rapidly. Even without hearing the audio, the visual conveys the rhythm.
+
+**Queued next**:
+- Cycle 266: **kids build** (266 % 2 = 0). Candidates:
+  - `kids-rain-xylophone` — drops fall from above onto BANDIMAL bars; catch with touch to ring them.
+  - Polish `230-kids-bubble-duet`: add a 3rd "grandparent" bubble (bass voice) that joins after 5 exchanges.
+  - `kids-constellation` — tap to place stars; lines drawn between nearby stars trigger chord tones.
+- Cycle 267: **adult build** (267 % 2 = 1). Candidates:
+  - `scene-spatial` (29) — Ghost scenes as HRTF 3D audio environments.
+  - `shepard-tone` (44) — auditory illusion: the endless rising staircase.
+  - Polish `172-loop-station` ❤️ — phase-lock UX, waveform rendering.
+
+---
+
 ## Cycle 264 — kids build: 230-kids-bubble-duet
 
 **When**: 2026-05-31 UTC (hourly autonomous cycle)

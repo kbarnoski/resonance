@@ -10,7 +10,14 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 264 — kids build)
+## ⭐ Newest (Cycle 265 — adult build)
+
+- **[/dream/231-mood-xy](/dream/231-mood-xy)** — Mood XY. `demoable`
+  Drag a dot through the **Russell circumplex emotion plane** (X = valence: sad ← → happy; Y = arousal: calm ↓ → excited). The Web Audio synthesizer follows in real time: arousal drives BPM (40–140), voice count (1–6), attack shape (pad → staccato), and oscillator type (sine → triangle); valence drives chord quality (major / minor / diminished), filter cutoff (warm → bright), and note duration (long → short). At **excited · happy**: bright major arpeggios, 6 voices, 45ms stagger, 120+ BPM. At **calm · sad**: sparse diminished chords, 1 voice, long sustain, 40 BPM. Background color bilinearly interpolates between 4 dark quadrant tones (deep amber / deep purple / deep teal / deep navy). Beat-synced glow pulse on the dot breathes with BPM. Trail of 72 fading circles follows movement. Dashed center-cross axis with corner labels. **First prototype where you set the emotional intent and the music follows** — 230 prior prototypes react to audio; this one inverts it. Zero deps · Zero permissions · 2.81 kB.
+
+---
+
+## Previous (Cycle 264 — kids build)
 
 - **[/dream/230-kids-bubble-duet](/dream/230-kids-bubble-duet)** — Bubble Duet. `demoable`
   **For kids 3+** — Two soap bubbles float on a starry canvas: **YOU** (pink, smiley face) and **FRIEND** (cyan, ♪). Tap the pink bubble to play a random pentatonic note and bounce it; 1.2 seconds later FRIEND brightens, bounces, and plays a **consonant response** (C3→G3 P5, E3→A3 P4, G3→C4 P4, A3→C3 octave, C4→G3 P4). During the exchange, 16 cyan sparkles arc from FRIEND toward YOU and a dashed quadratic arc connects the two bubbles as a "conversation thread." After FRIEND sings: "your turn ♪" appears and the cycle repeats. **First kids prototype where the responder has a distinct character identity** — prior call-and-response prototypes (echo-drum, echo-canon) use a generic system; here FRIEND has a face, a color, and a musical voice. Every response is harmonically consonant — no music theory needed. Zero permissions · Zero deps · 2.99 kB.
