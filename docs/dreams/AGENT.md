@@ -242,8 +242,87 @@ Karel can love prototypes via the public votes API (downvoting was removed — o
 
 ---
 
+## AMBITION & DIVERSITY MANDATE — added 2026-05-31
+
+Karel reviewed the lab and called the recent output "too similar in design and theme" and asked for "massively bigger concepts." This section is now a **hard gate on the Decide step**. Before picking what to build each cycle, you MUST pass these checks. If you can't, do a research cycle instead — but stop shipping incremental variations.
+
+### The ambition floor
+
+Every BUILD cycle (not research, not polish) must satisfy **at least TWO** of the following. Document which two in STATE.md as `ambition: <X> + <Y>`:
+
+1. **Uses a technique never used in the lab.** Grep `docs/dreams/INDEX.md` and `src/app/dream/*/README.md` for the technique name. If it appears in any prior prototype, it doesn't count. Examples that DO count: first WebGPU compute shader, first MediaPipe body/face/hand tracking, first Tone.js modular DSP graph, first WebRTC multi-user, first depth-camera input, first MIDI/OSC integration, first long-form (>5min) stateful piece, first real external API sonification, first piece using TensorFlow.js for realtime inference.
+
+2. **Integrates ≥3 distinct subsystems.** A single audio source + a single canvas visualizer = 2 subsystems = does NOT count. Examples that count: mic + body tracking + WebGPU + AI-generated texture; piano file + score-following + shader response + AI-generated video chapter cards; physics sim + audio synthesis + camera input + AI image conditioning.
+
+3. **Borrows from a NAMED reference** you can cite in the prototype's README. Not "inspired by generative art" but "borrows the recursive feedback technique from Bileam Tschepe's *Volumetric Feedback Loop* (TouchDesigner, recent)" or "implements the latent-walk audio map from Memo Akten's *Learning to See*."
+
+4. **Multi-cycle commitment** — explicitly designed to take 2–3 cycles to reach demoable state. Cycle 1 ships skeleton + core technique; cycle 2 adds the interactive layer; cycle 3 polishes. State this in IDEAS.md when seeding the idea, and in STATE.md when claiming it.
+
+5. **References a research finding from RESEARCH.md added in the last 14 days.** Cite the date + entry in STATE.md.
+
+If your build idea satisfies fewer than 2 of these, **REJECT IT** and pick something else. A pentatonic-melody-plus-canvas-visualizer with no research backing, no novel subsystem, and no named reference is not a valid build target anymore — it's the local minimum we're climbing out of.
+
+### The diversity audit
+
+Before the Decide step picks what to build, run this audit on the **last 10 prototypes** (look at INDEX.md). For each, tag with:
+
+- **INPUT modality** — mic, audio-file, camera, touch, tilt, MIDI, keyboard, none-AI-only, body-tracking, etc.
+- **OUTPUT modality** — canvas-shader, three.js, WebGPU, audio-only, AI-image, AI-video, speech-synth, projection, etc.
+- **CORE TECHNIQUE** — FFT, particle system, Karplus-Strong, reaction-diffusion, latent walk, generative-model-call, raymarching, fluid sim, granular synth, score-following, etc.
+- **PALETTE / VIBE** — cosmic, ghost, kids, geometric/Ikeda, organic/Anadol, clinical/instructional, ritual, jazz, EDM, ambient, etc.
+
+Identify tag values that appear **≥4 times in the last 10**. **THOSE TAG VALUES ARE BANNED for this cycle.** Build something whose tags do NOT include any of the over-represented values.
+
+Example: if the last 10 prototypes show `mic` 7×, `canvas-shader` 6×, `kids` 4× — this cycle must NOT combine mic + canvas-shader + kids. Maybe it's MIDI-input + three.js + adult-meditative + score-following instead.
+
+Note the audit result in STATE.md as `diversity: banned=[<tags>] · picked=[<tags>]`.
+
+### The research-first rule
+
+The old "research cycles every 3–4 cycles" rule is **obsolete**. **Every cycle begins with a 15-minute research dive.** Use WebSearch and WebFetch to find ONE genuinely surprising piece of work shipped in the **last 30 days**. Sources, in priority order:
+
+1. `arxiv.org/list/cs.SD/recent` and `arxiv.org/list/cs.GR/recent` — last 7 days
+2. **TouchDesigner / Houdini** community feeds: Bileam Tschepe (Elekktronaut), Matthew Ragan, Markus Heckmann, Junichiro Horikawa, Entagma — their YouTube uploads and forum posts from the last 30 days
+3. **AV artists** — Refik Anadol, Memo Akten, Ryoji Ikeda, Marpi, Manolo Gamboa Naon, Daniel Rozin — recent show/install news
+4. `fal.ai` changelog, `replicate.com` new-model RSS, `huggingface.co/new` — anything that landed in the last 30 days
+5. **SIGGRAPH / Ars Electronica / MUTEK** — current-year program announcements
+6. **HN / lobste.rs** — last week's posts tagged `webgpu`, `audio`, `viz`, `creative-coding`, `generative`
+
+Output of the dive is **one dated paragraph in RESEARCH.md** with: source URL, why it's surprising, and a concrete "could become a prototype that does X" hook. **Verify dates** — reject anything older than 30 days unless you can argue it's foundational.
+
+The build cycle that follows must either:
+- (a) implement the prototype hook from this cycle's research, OR
+- (b) continue a multi-cycle ambitious build already underway, OR
+- (c) consume an existing IDEAS.md entry that ALSO came from a recent research dive (cite which one).
+
+The chain `today's research → today's build` should be visible in STATE.md.
+
+### Categorical diversity menu
+
+When you genuinely have a clean slate (no in-progress builds, no obvious research-driven build), pick from this menu. These are categories the lab is **thin** on:
+
+- **Spatial / installation** — depth camera + projection, multi-screen, ambient-room presence. Tauri-mode candidates.
+- **AI pipeline chains** — 2+ models in series. Audio → image → video. Music → narrative → TTS → score-follower. Lyric-text → cover-art → looping animation.
+- **Score-following / live performance** — onset detection, beat tracking, micro-latency MIDI/OSC out. Reactive accompaniment.
+- **Cross-modal translation** — touch maps to harmony, gait to tempo, simulated EEG to texture. Unexpected sensor → unexpected output.
+- **Long-form generative** — 5+ minute pieces with **state, memory, evolution**. Not loops. The piece is *different* at minute 5 than at minute 1.
+- **Multi-user / WebRTC** — collaborative composition, shared listening rooms, conducted ensembles.
+- **Embedded / non-screen** — audio-only, voice-only, haptic-only experiments. Test the screen bias.
+- **Real-world data sonification** — external APIs (weather, satellite passes, transit, finance, language-usage trends) as composition input. Music *about* something other than music.
+- **Conceptual / critical** — pieces that comment on the project itself. An emptiness room. A regret song. A recording you can't hear without doing something costly.
+
+If picking from the menu: pick a category that **hasn't appeared in the last 15 cycles**. Note the choice in STATE.md.
+
+### Bigger is fine
+
+The "ONE commit per cycle" rule is procedural, not a size limit. A single commit can include skeleton + working core + iteration. Multi-file features are fine. The constraint is `npm run build` passing, not "small diff." Karel would rather one ambitious commit every two cycles than two timid ones — that's why the cron is now every 2h instead of hourly.
+
+---
+
 ## When in doubt
 
 Lean toward **building** over **planning**. A rough working prototype is worth more than a polished design doc. Karel will tell you what to keep, what to throw away, what to deepen.
 
-Sleep well. Dream well. The next cycle fires in an hour.
+But: a rough working prototype of an **ambitious** concept beats a polished prototype of a redundant one. When choosing between "ship a sixth pentatonic synth" and "skeleton of a depth-camera spatial-audio room," ship the skeleton.
+
+Sleep well. Dream well. The next cycle fires in two hours.
