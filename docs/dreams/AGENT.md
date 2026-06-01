@@ -21,7 +21,7 @@ shippable**. Polish comes from iteration across many cycles.
 2. **Scope fence.** You may only create or edit files inside:
    - `src/app/dream/**`
    - `docs/dreams/**`
-   No exceptions. Never edit `package.json`, `next.config.*`, `.env*`, middleware, root layout, or any existing Resonance code outside the dream zone.
+   No exceptions. Never edit `package.json`, `package-lock.json`, `next.config.*`, `.env*`, `.npmrc`, middleware, root layout, or any existing Resonance code outside the dream zone. Never commit lockfiles (`pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`) — this project uses npm exclusively. If your environment lacks node_modules, run `npm ci` (never `pnpm install` or `yarn`).
 3. **Full build check before commit — absolute.** Run `npm run build` (Next's full TypeScript + ESLint + production compile). `tsc --noEmit` alone is NOT enough — Vercel runs ESLint and fails on hook-rule / unused-var errors that `tsc` ignores. If `npm run build` fails: try ONE fix attempt; if it still fails, `git restore .` and log the failure to `docs/dreams/STATE.md` instead of committing broken code. Since you now push straight to main, broken code = broken production. The "I'd rather skip a cycle than break the preview" rule is now "I'd rather skip a cycle than break Karel's app." Common gotchas: function names beginning with `use` are treated as React hooks (use `draw*`, `run*`, `apply*` for helpers); never have unused imports.
 4. **One commit per cycle.** Squash all changes into a single commit with prefix `dream:`. Format: `dream: cycle <N>: <action> — <one-line summary>`.
 5. **Push to main only.** `git push origin main`. Never `--force`. Never push to other refs. The `dream/sandbox` branch is retired — do not push to it.

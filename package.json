@@ -2,6 +2,9 @@
   "name": "resonance",
   "version": "0.1.1",
   "private": true,
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -64,12 +67,6 @@
     "wavesurfer.js": "^7.12.1",
     "zod": "^3.25.76",
     "zustand": "^5.0.11"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "ffmpeg-static",
-      "sharp"
-    ]
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",
