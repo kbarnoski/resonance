@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-01 UTC (Cycle 271)
 
+> **Jury verdict today**: Top of the night is the best the lab has ever shipped — the orchestrated builds (233/234/236/238/243) all cleared the ambition floor — but the five solo kids cycles in between collapsed into near-identical pentatonic tap-chimes, so the verdict is: run the orchestrator on the kids cadence too, or keep paying for the local minimum. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 
 - **[/dream/243-spectral-cloud](/dream/243-spectral-cloud)** — Spectral Cloud `demoable`
