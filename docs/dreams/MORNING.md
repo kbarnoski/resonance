@@ -1,17 +1,36 @@
-# Morning digest — last updated 2026-06-02 (cycle 286, kids · WIDE)
+# Morning digest — last updated 2026-06-02 (cycle 287, adult · DEEP)
 
-**Open this first:** [/dream/272-kids-tune-purr](https://getresonance.vercel.app/dream/272-kids-tune-purr)
+**Open this first:** [/dream/275-memory-loom](https://getresonance.vercel.app/dream/275-memory-loom)
 
 ## New since yesterday
-- **272-kids-tune-purr** — *Slide a wobbling creature until its shivering stops, and feel two notes lock into tune.* A calm kids toy (touch-only, no reading) where a warm drone hums and three matte creatures each sing a tone that's slightly **out of tune** — so you literally **hear and see the beating** (the creature trembles in sync). Drag it: the wobble slows, then **snaps into tune** — eyes open, a little smile, a soft purr. Get all three and they make a pure major chord. *Why open this:* it's the lab's first toy where **the tuning itself is the game** — and it's the answer to the jury's "ban the glow, ban the pentatonic, **audit the sound**" verdict on both axes at once: nothing glows (matte, no neon), and there's not a single pentatonic note — it's pure just-intonation beating resolving into consonance. The quiet, parent-tolerable option the kids market is missing.
+- **275-memory-loom — the listen-remember-rewrite piece you asked for.**
+  Play into your mic; it quietly *records your phrases* and weaves them back as an endless
+  Eno/Fripp tape-loop room built **entirely from your own sound** — audibly different at
+  minute 10 than at minute 1. Extends loved **259-paths-generative** (its exact
+  incommensurate-loop engine) but instead of playing a file, it **listens**: captures verbatim
+  phrases into a 7-loop bank, reweaves them with a 60–130 s movement state machine, lets the
+  oldest memories decay out. Never silent (D-dorian pad until captures arrive); feed it a real
+  Welcome Home track by ID. **First live audio-capture / Frippertronics piece in the lab.**
+  Try it: play/hum 3–4 phrases, then just listen for a couple of minutes.
+- **2 more explored this fire (DEEP, build-verified, banked in IDEAS.md):**
+  - `mosaic-listener` — your sound shattered into a grain corpus the machine *navigates*
+    (CataRT/MACataRT mosaicing). **Lab's first concatenative synthesis** — strongest novelty bank.
+  - `motif-memory` — it *transcribes your notes* and improvises on them (Markov + transforms,
+    Lewis *Voyager* lineage). Piano-roll shows you vs. the machine.
 
-## Explored but banked (2 more, both build-verified — see IDEAS.md)
-- **273-kids-raga-peacock** — tap a cut-paper peacock's feathers to play a **Hindustani raga (Yaman) over a living tanpura drone**, with a meend pitch-glide on drag. Deferred one cycle so it doesn't sit right next to last week's gamelan shadow-theater (too-similar aesthetic) — but it's a beautiful brand-new kids sound.
-- **274-kids-clay-clock** — wake matte **clay drums** into an interlocking **3-against-2 West-African polyrhythm** (gankogui bell, two-clock scheduler). The lab's first true cross-rhythm toy. Queued to ship next kids cycle.
+## In progress / partial
+- The long-form/memory vein (259 → 275) now has 2 pieces + 2 strong banked siblings — a real body
+  of work forming around "his own sound, remembered."
 
-## Research worth a look
-- Dove into the **psychoacoustics of consonance** (Helmholtz → McBride's 2025 roughness review): consonance has a *physical, pre-verbal* layer — beats at 5–8 Hz feel "rough," sliding to 0 Hz feels "pure." A 4-year-old can feel that in their body. That's exactly what 272 makes playable. (RESEARCH.md §286.)
+## Research findings worth a look
+- RESEARCH §287 — the self-listening musical-agent frontier (MACAT/MACataRT, CataRT, Apr-2026
+  real-time co-performance). Punchline: the heavyweight 2026 GPU approach isn't browser-feasible,
+  but the *memory architecture* under it runs zero-dep in Web Audio — and the cheapest version is
+  also the most personal (the instrument becomes made of your own sound).
 
 ## Open questions for Karel
-- The jury's two biggest "massively bigger" asks are still open for the next *adult* cycle: **deepen the AI-image-inside-an-AV piece** (271 opened it) — or **extend 259** into a 10-minute piece that *listens, remembers, and rewrites itself* from your real Welcome Home recordings. Which excites you more?
-- 272 is build-verified but I couldn't browser-test the live tuning feel — if the "snap into tune" moment doesn't land on real speakers, tell me and I'll tune the beat math by ear.
+- 275 captures the mic but doesn't monitor it dry — you hear only the woven loops. Want a
+  "hear yourself" toggle, or is the disembodied-memory feel the point?
+- Next adult cycle: ship banked `mosaic-listener` (newest technique) or keep deepening 275
+  (pitch-preserving transposition, persistent/exportable memory)?
+- Still-empty shelves: multi-user/WebRTC, MIDI/OSC, depth-camera. Worth a clean-slate fire?
