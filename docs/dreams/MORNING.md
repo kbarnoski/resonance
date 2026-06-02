@@ -1,17 +1,18 @@
-# Morning digest — last updated 2026-06-02T08:35Z (cycle 281, adult · DEEP orchestration)
+# Morning digest — last updated 2026-06-02 (cycle 282, kids · DEEP orchestration)
 
-**Open this first:** [/dream/262-aurora-particle](https://getresonance.vercel.app/dream/262-aurora-particle)
+**Open this first:** [/dream/264-kids-lenia-pond](https://getresonance.vercel.app/dream/264-kids-lenia-pond)
 
 ## New since yesterday
-- **262-aurora-particle** — *the Sun writes tonight's score.* Press Start: three **live NOAA space-weather feeds** (solar-wind speed/density, the magnetic-field Bz/Bt, the Kp storm index) stream in and drive **both** a generative drone **and** a flowing aurora made of ~9,800 glowing particle-curtains with bloom. Speed→pitch+hue, density→drone partials, **Bz→major/minor + curtain height**, Kp→calm-green↔storm-red. Open it on two different days and it's a different piece because the Sun was. The **2nd real-world-data sonification** in the lab (after 233-earth-pulse) — that category is now a category, not a fluke, like you asked. *Why open it:* it's the loved 130-tsl-particle glowing-points language aimed at the night sky, and it sounds different every time you load it.
-- **2 more aurora takes explored, banked in IDEAS.md** — this was a DEEP fire: one concept, three render strategies. `aurora-drone-field` (raw-GLSL sum-of-sines curtains) and `aurora-raymarch` (true volumetric march that colours by **real aurora physics** — oxygen-green low, oxygen-red high, nitrogen-violet top). The raymarch one is the bigger swing; held only because I couldn't eyeball its visual quality before shipping.
+- **264-kids-lenia-pond** — *touch a dark pond → a glowing nebula creature is born under your finger and swims away on its own, singing.* The creatures are **orbium gliders from Lenia** (Bert Chan's 2019 artificial-life cellular automaton): soft jellyfish-blobs of "matter" that self-organize into a stable, *self-propelling* shape. Tap to stamp a new one (each spins off in a different direction); it drifts across the water as a violet/cyan/rose nebula and adds its voice to a gentle pentatonic chord. *Why open it:* it's the **first Lenia piece in the lab** and the **2nd "emergent life that sings" kids toy** — with the slime-mold one (260) from two cycles ago, "make life that sings for a 4-year-old" is now a real body of work, not a one-off. No reading, no fail state, never silent.
+- **It's the banked Lenia idea from two cycles ago — finally resurrected and de-risked.** Last time it was benched because I couldn't be sure the creature would stay alive vs dissolve/explode. This cycle's research dive (Flow-Lenia / Particle-Lenia, the mass-conserving newer variants) plus an actual **400-step simulation run** confirmed the orbium holds together and glides — so I shipped it knowing the magic works, not hoping.
+- **2 more "living lifeform" takes explored, banked in IDEAS.md** — this was a DEEP fire: one concept, three Lenia formulations. `kids-glow-lifeforms` (energy-based **Particle-Lenia** glowing particle swarm — fresher render, literally unbreakable) and `kids-flow-pond` (mass-conserving **Flow-Lenia** finger-paint "goo" that never spills). Both build-verified; either is a strong next kids cycle.
 
 ## In progress / partial
-- None — clean ship. Aurora extensions queued (GOES X-ray flare feed → flare accents; finer 1-min Kp; resurrect the physics-accurate raymarch with a browser tuning pass).
+- None — clean ship. Winner-only `npm run build` green (`○ Static`, 4.85 kB).
 
 ## Research findings worth a look
-- **Web research tools were down all cycle** (529 overloaded, 10/10 attempts) — so per the rules I built off an existing recent-research seed (the 233 real-world-data thread that catalogued these NOAA feeds) rather than inventing a finding. Logged honestly in RESEARCH §281; a real fresh dive is queued for when tools recover.
+- **Web tools recovered** (the 529 outage from last cycle cleared). The dive: **Flow-Lenia** (*Artificial Life*, MIT Press 2025) and **Particle-Lenia** (Google Research) — both make Lenia *mass-conserving / failure-proof*, which is exactly what turned a risky kids toy into a spill-proof one. Full note in RESEARCH §282.
 
 ## Open questions for Karel
-- Aurora is now my 2nd "music about something other than music" piece. Push this into a real **category** next (live flights/transit → spatial arpeggio; weather → drone), or pivot back to the **"fly through YOUR piano"** spectral vein (243's banked tunnel/canyon siblings) the jury called the lab's richest?
-- Cycle 282 is a kids cycle — planning to extend the **emergent** set (Lenia "breed glowing life" or Verlet "strum a light-curtain") so slime+life+cloth becomes a body of work. Good?
+- "Emergent life that sings" is now two pieces (slime 260 + Lenia 264). Take it to **three** next kids cycle (Particle-Lenia swarm or Flow-Lenia goo, both banked), or call the body-of-work done and move kids somewhere new?
+- Next adult cycle (283): keep building the **real-world-data** category (live flights/weather → music), extend the **aurora**, or finally hit the **"fly through YOUR piano"** spectral vein (243's banked tunnel/canyon) the jury called the richest? Your call sets the direction.
