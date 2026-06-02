@@ -2,6 +2,65 @@
 
 ---
 
+## Cycle 279 — adult build (WIDE orchestration) — 259-paths-generative
+
+**When**: 2026-06-02 UTC (every-2h autonomous cycle).
+
+**Git sync**: Fast-forwarded main `ecdb887..4eee53d` (40 commits — through cycle 278 `258-kids-mirror-pets`). Worked directly on main. `node_modules` was ABSENT → ran `npm ci` (exit 0) before the authoritative builds. Last shipped folder = 258 → pre-allocated **259/260/261** for the three builders.
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): the decisive pull this fire is the **"his own piano / Paths"** cluster — `163-paths-visualizer` ❤️ (fetches his real Welcome Home recordings via `/api/audio/:id`), `227-paths-granular` ❤️ (granular of his own piano), `172-loop-station` ❤️ (loops), `107-ocean-presence` ❤️ + `84-wave-fluid` ❤️ (ambient/fluid). The orchestration-era love wave (`243`/`236`/`234` ❤️) continues. This cluster + Karel's standing "use his real Paths recordings as the audio source" directive (which the recent mic/camera run drifted away from) is what selected the winner.
+
+**Research-first dive** (mandate; RESEARCH.md §279, 2026-06-02): re-grounded the **Eno generative-ambient lineage** — *Music for Airports* / *Discreet Music* (incommensurate tape-loop lengths that never realign) + Reich phase music — against the current long-form-generation literature (arXiv 2404.10301 *Long-form music generation with latent diffusion*; "Musika!" infinite waveform gen). The surprise/hook: the **floor explicitly lists "first long-form (>5min) stateful piece" as a technique that's never been used in the lab** — and the cheapest way to get genuinely non-repeating long-form is *not* a diffusion model but Eno's 1978 trick of N incommensurate loops + a slow state machine, runnable entirely in Web Audio with zero deps. Also banked the concrete **NOAA SWPC JSON endpoints** (plasma/mag/Kp, no-auth, CORS-open) for the real-world-data sibling. Chain today's research → today's build is direct: §279 → WIDE brief A → shipped `259-paths-generative` (research-first rule path (a)).
+
+**Decided**: Adult cycle (279 % 2 = 1). No blocker, nothing in-progress. Clean slate → WIDE.
+
+**Ambition floor** — winner cleared **4 of 5** (need 2): `ambition: novel-technique + named-references + ≥3-subsystems + multi-cycle`
+- **(1) Novel technique** — grepped INDEX + READMEs: the lab had loops (`172`) and granular (`227`) but **never a long-form (>5min) *stateful* generative piece** (the floor lists this verbatim as a qualifying first). Six incommensurate buffer loops (11.3/14.7/18.1/23.9/29.3/37.7 s, ~29 h before any exact repeat) + a movement state machine = first of its kind here.
+- **(3) Named references** — README cites **Brian Eno** *Music for Airports* (1978) / *Discreet Music* (1975) + **Steve Reich** *Piano Phase* / *It's Gonna Rain*.
+- **(2) ≥3 subsystems** — 4 distinct: tri-modal source loader (file-drop · `/api/audio/:id` fetch-and-decode, the loved-`163` pattern · synthesized `OfflineAudioContext` demo) · 6-voice incommensurate loop engine (per-voice LFO gain + transposition + stereo + synthesized convolution reverb + shared lowpass) · multi-minute generative **state machine** (90–150 s movements walking active-voice subset, cutoff, reverb wetness, transposition set, palette, with memory) · Canvas-2D concentric phase-rings viz.
+- **(4) Multi-cycle commitment** — designed to deepen: cycle 1 ships the loop engine + state machine (this); next cycles add granular re-synthesis, key-aware transposition, localStorage persistence, WAV export (in README).
+
+**Diversity audit** (last 10 = 236,238,243,244,246,248,251,253,256,258):
+`diversity: banned=[three.js/WebGL-output · kids-vibe] · picked=[audio-file input · canvas2d output · incommensurate-phase-loops + generative-state-machine technique · ambient/long-form vibe]`
+- OUTPUT tally: **three.js/WebGL ×6** (236,238,243,244,246 + 248 raw-GLSL) → **BANNED**; canvas2d ×3 (251,256,258) — under the 4× line. All three of this cycle's briefs were forced to **canvas2d**, directly rebalancing the three.js glut JURY flagged.
+- VIBE: **kids ×5** (238,244,248,253,258) → over-represented; an adult cycle avoids it cleanly.
+- INPUT: mic ~4 (244,246,251,256), tilt ×2, camera ×2, audio-file ×2 (243,246). Winner uses **audio-file** (under-rep, and crucially *his own recordings*, not a generic upload). The mic brief (261) was deliberately the loser to avoid pushing mic to 5×.
+
+**Mode**: **WIDE** (alternation correction: 277 DEEP → 278 DEEP → **279 WIDE** — two DEEPs in a row, and the 05-31 mandate names WIDE as the direct attack on "too similar"). JURY had no "extend exactly X" directive for the adult cadence, so WIDE over DEEP. Three briefs, three *different* input × technique × vibe, none sharing a banned tag, all canvas2d:
+- `259-paths-generative` — audio-file(his Paths) → Eno incommensurate phase-loops + long-form state machine (ambient/long-form).
+- `260-aurora-drone` — live NOAA solar-wind external-API → data-sonification drone + aurora (cosmic).
+- `261-live-duet-groover` — mic → spectral-flux onset/tempo + two-clocks scheduler → generative drums (groove).
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (259/260/261 pre-allocated), each fully briefed with the constraints + typography rules + Canvas2D-only + the exact GitHub design-notes URL + the no-git/no-shared-docs limits. All three returned demoable + README, each self-reporting tsc+eslint clean. I (Curator) gotcha-scanned all three (no three.js, correct GitHub README link, no API route, `any` properly eslint-disabled), then ran the authoritative `npm run build` with **all three present** → exit 0, "✓ Compiled successfully in 32.9s", all three `○ Static` (259 5.13 kB · 260 4.81 kB · 261 5.67 kB) — so all three are genuinely **build-verified** — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only.
+
+**Winner = `259-paths-generative`.** Reasoning: (1) **Highest ambition floor** — 4/5 vs 260's 2/5 and 261's 3/5; it brings the lab's first long-form stateful piece. (2) **Strongest love + directive alignment** — sits dead-center on the loved `163`/`227`/`172` "his own piano" cluster and revives Karel's standing "use his real Paths recordings" directive that the recent mic/camera run drifted from; JURY also named "your own music" the lab's *richest vein*. (3) **Fills a thin category** — long-form generative (state/memory, "leave it running") is on the diversity menu as under-built. (4) **Demo-reliable** — the synthesized `OfflineAudioContext` Cmaj7→Fmaj7→Am7→G phrase plays with zero input, so it's never silent even before Karel drops a recording.
+
+**Authoritative build**: winner-only `npm run build` → exit 0, "✓ Compiled successfully in 37.3s", `/dream/259-paths-generative` `○ Static` **5.13 kB**.
+
+**What I built/shipped**:
+- `src/app/dream/259-paths-generative/page.tsx` — Eno/Reich generative ambient room: **6 incommensurate buffer loops** (11.3/14.7/18.1/23.9/29.3/37.7 s; product ≈ 29 h before exact repeat) each on a slow per-voice LFO-gain (0.023–0.071 Hz, incommensurate) + consonant transposition (octave/5th/4th/M3 via `playbackRate`) + stereo pan, summed through a synthesized-noise **convolution reverb** + shared lowpass. A **generative state machine** fires a new "movement" every 90–150 s (÷ drift slider) that random-walks the active-voice subset (3–5 of 6, 6-s fades), filter cutoff (200–4000 Hz), reverb wet (0.2–0.9), transposition set, palette, and density, keeping movement memory so it evolves (minute 1 ≠ 5 ≠ 10). Tri-modal source: file-drop · "load Resonance track by ID" → `/api/audio/:id` (handles direct-audio *and* JSON `{url}`, the loved-`163` pattern, so Karel can paste a real Welcome Home track) · synthesized demo fallback. Canvas-2D: 6 concentric rings rotating at `1/loopLength` rad/s (you *see* the phase drift) with per-voice glow + playhead + a movement-tinted radial field. Readout: elapsed / movement # / active voices. Full audio-graph + rAF teardown on unmount. Typography rules followed.
+- `src/app/dream/259-paths-generative/README.md` — concept; loop table (length/rate/pan/LFO) + WHY; signal chain; state-machine spec; source priority; visual mapping; degradation table; named refs (Eno + Reich); honest limitations (loop-boundary clicks, simple demo, `playbackRate` couples pitch+rhythm, 60 fps `setElapsedDisplay` React churn); next-cycle deepening (granular re-synth, key-aware tuning, localStorage persistence, WAV export).
+- Banked both build-verified non-winners as seeds in IDEAS.md and `rm -rf`'d their folders (never committed, per orchestration safety): **`260-aurora-drone`** (live NOAA solar-wind → drone+aurora — the JURY-requested **2nd real-world-data sonification** after `233`; build-verified, 705 lines, clean) and **`261-live-duet-groover`** (mic → spectral-flux/two-clocks generative drums — the **rhythm member that completes the AI-band trio** melody-251/harmony-256; build-verified, 1081 lines, clean). Appended RESEARCH §279. Added INDEX Newest section. Rewrote MORNING.md.
+
+**What's new about this prototype**:
+1. **First long-form (>5 min) stateful generative piece in the lab.** Loops (`172`) and granular (`227`) existed; a piece with movements + memory that's *different at minute 10* did not. It's the "leave it running" category the diversity menu flagged as empty.
+2. **Brings Karel's own recordings back as the instrument.** Honors the loved `163`/`227` thread and the standing Paths directive — the source is his Welcome Home piano (via `/api/audio/:id`), transformed into an endless Eno room, not synthesized-from-scratch audio.
+3. **Eno's 1978 trick beats a 2026 diffusion model for this job.** The research dive's payoff: incommensurate loops + a slow state machine get genuinely non-repeating long-form with zero deps and zero latency — documented as the deliberate choice over latent-diffusion long-form gen.
+4. **WIDE orchestration shipped the most love-aligned of three fresh directions**, banking a JURY-requested category opener (aurora) and a body-of-work completer (groover) both build-verified — the studio choreography Karel is building toward.
+
+**Queued next**:
+- Cycle 280: **kids build** (280 % 2 = 0). MUST be orchestrated (JURY: never solo). Build-verified banked candidates: `257-kids-face-band` (single-creature face toy, one-cycle ship — pairs with 258 as a two-take face set), or the older `254-kids-blow-bloom` (first breath input — highest surprise). Keep dodging the banned three.js + touch+canvas2d+pentatonic kids template.
+- Cycle 281: **adult build** — ship the banked **`260-aurora-drone`** to make real-world-data a *category* (233 + 260 = a body of work, an explicit JURY ask), OR the banked **`261-live-duet-groover`** to finally complete the AI-band trio. Both build-verified this fire, both canvas2d (continue rebalancing off three.js).
+- **DEEPEN 259 (multi-cycle)**: granular re-synthesis of the loaded buffer, key/pitch-aware transposition, localStorage session persistence, WAV export — its README lists the path. A loved-cluster piece worth 2–3 cycles.
+- **Housekeeping flag (open since 269, partially addressed cycle 278)**: INDEX.md "Newest" still showed cycle 277 at fire-start — `258-kids-mirror-pets` (cycle 278) never got an INDEX entry; reconcile in a polish cycle. STATE.md ordering is also inconsistent (278's entry is appended at the file's *end*, not prepended like the rest).
+
+**Notes**:
+- No API route / no `guard` needed: `259` only READS `/api/audio/:id` (an existing read-only Resonance endpoint, the loved-`163` pattern — no side effects, no secrets) + Web Audio + Canvas. Within the scope fence (`src/app/dream/**` + `docs/dreams/**`).
+- WIDE-curation discipline held: built **all 3 present first** (exit 0 — confirms both banked losers genuinely compile, so "build-verified" banking is honest) then winner-only. Three folder-isolated builders wrote concurrently with zero conflict; none touched git or shared docs; I (orchestrator) alone committed. Pre-allocated 259/260/261 → no number collision.
+- Curator caught nothing requiring a fix this fire (unlike 278's MediaPipe `any` patch) — the explicit per-brief constraints (GitHub README URL verbatim, Canvas2D-only, eslint-disable pattern for `as any`) front-loaded the gotchas into the builders. The all-present build passing first try validates that brief template.
+
+---
+
 ## Cycle 277 — adult build (DEEP orchestration) — 256-live-duet-harmonist
 
 **When**: 2026-06-02 UTC (every-2h autonomous cycle)
