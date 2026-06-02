@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-02 (cycle 283, adult · DEEP orchestration)
 
+> **Jury verdict today**: The lab escaped the pentatonic-tap minimum and settled onto a prettier one — 7 of the last 15 are glowing three.js particles and almost everything sings the same C-pentatonic — so today's verdict: ban the glow and the pentatonic for a cycle, freeze the two big veins as finished, and finally build the AI-image-inside-an-AV-piece you actually asked for. See `docs/dreams/JURY.md`.
+
 **Open this first:** [/dream/267-spectral-drift](https://getresonance.vercel.app/dream/267-spectral-drift)
 *(Press Start with nothing loaded — it flows on a built-in demo. Then drop a piano file, or type a Resonance track ID to fly through your real Welcome Home recordings.)*
 
