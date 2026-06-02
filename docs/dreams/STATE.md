@@ -2,6 +2,62 @@
 
 ---
 
+## Cycle 277 — adult build (DEEP orchestration) — 256-live-duet-harmonist
+
+**When**: 2026-06-02 UTC (every-2h autonomous cycle)
+
+**Git sync**: Fast-forwarded main to a9d779f (cycle 276, `253-kids-tilt-pour`; +38 commits). Worked directly on main. `node_modules` was ABSENT → ran `npm ci` (exit 0) before the authoritative builds.
+
+**Love signal** (32 loved; unchanged set this fire): the pull is the **chord/responsive-duet** cluster — `251-live-duet-trader` ❤️ (the melodic sibling, loved last review) + `229-chord-canvas` ❤️ (loved chroma→chord naming) + the broad orchestration-era love wave (`243`/`236`/`234` ❤️). Karel loving 251 directly is the green light to ship its harmony counterpart — the polyphonic half of the same "AI band."
+
+**Research-first dive** (mandate; RESEARCH.md §277, 2026-06-02): **ReaLchords** (Lee et al., arXiv 2506.14723, **v1 17 Jun 2025**, date verified via WebFetch) — an *online* model emitting chord accompaniment **simultaneously** with an unfolding monophonic melody, max-likelihood-pretrained then **RL-refined against a reward that scores harmonic AND temporal coherency separately** (+ teacher distillation from a future-aware model). The reusable insight: accompaniment quality is two independent axes (right notes / right time), which maps exactly onto a DSP accompanist's two failure modes. Slightly older than the 30-day window but **foundational** for the harmony-member design and a perfect named reference. Recent anchor remains arXiv 2604.07612 (Apr 2026) from the cycle-275 dive that seeded this whole family.
+
+**Decided**: Adult cycle (277 % 2 = 1). No blocker, nothing in-progress. **This is a multi-cycle continuation** (research-first rule path (b)/(c)): the "AI band you play with" arc — `251-live-duet-trader` shipped cycle 275; this cycle ships its **harmony member**, the banked build-verified `live-duet-harmonist`. Explicitly the queued-next from cycle 276 STATE and a JURY.md ask (extend the reactive-accompaniment thread, don't seed yet another idea).
+
+**Ambition floor** — winner cleared **4 of 5** (need 2): `ambition: recent-research-anchor + named-references + ≥3-subsystems + novel-technique`
+- **(5) Recent research** — built off the cycle-275 dive's arXiv 2604.07612 (Apr 2026) anchor that seeded the whole live-duet family + this cycle's §277 ReaLchords cite.
+- **(3) Named references** — README cites ReaLchords (2506.14723) + arXiv 2604.07612 + Chris Wilson *A Tale of Two Clocks* + Mark Levine *The Jazz Piano Book*.
+- **(2) ≥3 subsystems** — 4 distinct: chroma→36-template chord/quality detection · jazz voicing engine (rootless/drop-2 + nearest-pitch voice-leading) + walking bass · spectral-flux onset/tempo inference · Chris-Wilson two-clocks look-ahead scheduler (+ Web Audio synth bed w/ feedback-delay + limiter).
+- **(1) Novel technique** — **first spectral-flux onset/tempo inference + two-clocks look-ahead scheduler in the lab** (the banked groover seed proposed beat-tracking but was never built; this is the first realization), and the first to fuse it *with* live harmony.
+
+**Diversity audit** (last 10 = 234,236,238,243,244,246,248,251,253 + 233):
+`diversity: banned=[three.js-output · kids-vibe] · picked=[mic input · canvas2d output · chroma→chord + jazz-voicing/onset-sync technique · adult jazz/responsive vibe]`
+- OUTPUT tallies: **three.js ≥6** (234,236,238,243,244,246) → BANNED. raw-WebGL = 2 (248,253); canvas2d = 2 (233,251). VIBE: **kids = 5** (234,238,244,248,253) → BANNED for an adult cycle anyway. INPUT: mic/voice ~4 (243,244,251 + this) — note: mic is climbing; acceptable here because it's the necessary input for a live accompanist and the OUTPUT (canvas2d, under-represented) + technique are fresh.
+- 256 uses **canvas2d** (under-represented, helps rebalance away from the three.js glut JURY flagged) + **mic** + a technique stack the lab has never shipped. Dodges both banned tags cleanly.
+
+**Mode**: **DEEP** (alternation: 275 DEEP → 276 WIDE → **277 DEEP**). The target is a single named banked concept (the harmony member), so DEEP — one concept, two technical approaches in parallel — is correct over WIDE. Two briefs attacked the same "live comping harmonist" via different voicing/timing engines:
+- `250-live-duet-harmonist` — the canonical banked design: fixed-72-BPM eighth-note arpeggiated **triad** comping, nearest-octave voice leading, max demo-reliability.
+- `256-live-duet-harmonist` — a **jazz** variant: rootless/drop-2 voicings + walking bass + **onset-synced** comping on a two-clocks scheduler (folds the seed's own "next-cycle deepening" into the shipped piece).
+
+**Orchestration**: spawned 2 Builder subagents in parallel (single message), folder-isolated (250/256 pre-allocated), each fully briefed, told NOT to run git or touch shared docs. Both returned demoable + README, each self-reporting eslint+tsc clean. I (Curator) ran the authoritative `npm run build` with **both present** → exit 0, "✓ Compiled successfully", both routes `○ Static` (250 4.23 kB · 256 5.63 kB) — so both are genuinely **build-verified** — then picked the winner, `rm -rf`'d the loser, and rebuilt winner-only (exit 0, `256-live-duet-harmonist` `○ Static` **5.63 kB**).
+
+**Winner = `256-live-duet-harmonist`.** Reasoning: (1) **Higher ambition floor** — clears 4/5 vs 250's 3/5; it brings genuinely new DSP (spectral-flux onset/tempo + two-clocks scheduler) the lab has never had, fused with harmony. (2) **Bigger concept per the mandate** ("massively bigger concepts / bigger is fine") — it folds the seed's *own* deepening list (rootless/drop-2 voicings, walking bass, onset-synced comping) into the shipped piece instead of leaving them for "next cycle"; the result reads as a jazz trio, not a pad. (3) **More surprise** — "a comping bed that locks to the rhythm of your playing, not a metronome" is the line that makes Karel lean in. (4) **Degrades gracefully** — the onset-sync risk (spectral flux is weak on legato piano — the groover caveat) is contained: sparse onsets fall back to 80 BPM and the jazz voicings don't depend on tempo accuracy, and the demo path is a deterministic ii–V–I–vi at 88 BPM. The runner-up **`250` is banked build-verified** in IDEAS.md as `live-duet-harmonist-simple` — the more demo-reliable fixed-clock version; resurrect/ship it as a "safe mode" if 256's tempo-sync proves flaky in a real browser session.
+
+**Authoritative build**: winner-only `npm run build` → exit 0, "✓ Compiled successfully in 34.7s", `/dream/256-live-duet-harmonist` `○ Static` **5.63 kB**.
+
+**What I built/shipped**:
+- `src/app/dream/256-live-duet-harmonist/page.tsx` — mic → AnalyserNode(4096) → 12-bin chroma (60–2000 Hz, one-pole 0.8) → cosine-match 36 weighted templates (maj/min/dom7, shell-weighted) → 160 ms settle latch → **rootless/drop-2 jazz voicing engine** (3+7 shell + 9/13 color, nearest-pitch `setTargetAtTime` voice leading) + **walking bass** (root/5/3/chromatic-approach across the bar) → **spectral-flux onsets** (adaptive `mean+1.5·std`, 100 ms refractory) → median-IOI tempo (folded 60–180, 80 BPM fallback) → **Chris-Wilson two-clocks scheduler** (25 ms tick / 100 ms window, exact AudioContext times) placing bass + comp stabs on the inferred pulse. Bed breathes with input energy over a quiet floor; feedback delay + DynamicsCompressor limiter. Canvas-2D: chroma ring, root-hued chord name + quality, voicing node arc, walking-bass ladder, 4-beat pulse + onset-flash + BPM, duration-weighted chord-history trail. No-mic → Dm7→G7→Cmaj7→Am7 @88 BPM with full bass+comp + `text-rose-300` notice + retry. Full rAF/scheduler/mic/AudioContext cleanup on unmount. Typography rules followed.
+- `src/app/dream/256-live-duet-harmonist/README.md` — concept; full pipeline with chosen params + WHY; voicing table per quality; color↔root table; degradation; named references (ReaLchords + 2604.07612 + Chris Wilson + Levine); honest limitations (inversion/bass-blind chroma, loose pulse not a beat tracker, 3 qualities only); next-cycle deepening (bass-aware detection, richer template bank, true DP beat tracker, Hungarian voice-leading, trade hand-off with 251).
+- Banked `250-live-duet-harmonist` as build-verified fallback seed `live-duet-harmonist-simple` in IDEAS.md; `rm -rf`'d its folder (never committed, per orchestration safety). Marked the original `live-duet-harmonist` seed SHIPPED. Appended RESEARCH §277. Added INDEX Newest section. Rewrote MORNING.md.
+
+**What's new about this prototype**:
+1. **First reactive comping engine in the lab.** `229-chord-canvas` ❤️ *names* your chords; this one *plays under them* with voiced harmony — a living harmonic bed, not a label.
+2. **First spectral-flux onset/tempo inference + two-clocks look-ahead scheduler**, and the first to drive harmony off it — the bed locks to your pulse instead of a fixed clock.
+3. **Completes the duet's polyphonic half.** 251 (melodic, monophonic) + 256 (chordal, polyphonic) now cover both how a pianist plays — the "AI band" arc is two members deep (groover banked = the third).
+4. **Orchestration shipped the more ambitious of two parallel approaches**, banking the safer one build-verified — the critic chose ambition with a documented fallback, exactly the studio choreography Karel is building toward.
+
+**Queued next**:
+- Cycle 278: **kids build** (278 % 2 = 0). MUST be orchestrated (JURY: never solo — regresses to the tap-chime) and dodge the still-banned three.js + touch+canvas2d+pentatonic kids template via non-touch input. Build-verified banked candidates: `254-kids-blow-bloom` (breath/blow input — highest surprise, fresh) or `255-kids-sing-garden` (voice→bedtime sky — hold until `244` breathes; swap in YIN/MPM first). Run WIDE for fresh tags or DEEP-resurrect a banked one.
+- Cycle 279: **adult build** — ship the **third band member** `live-duet-groover` (drums/tempo, build-verified, ~728 lines) so the trio is complete (harmony 256 + melody 251 + rhythm). Caveat: needs a real-browser session to tune its flux floor; same applies to 256's tempo-sync — a one-off "tune the live-duet family by ear" polish cycle is worth scheduling once Karel can sit with them.
+- **Housekeeping flag (open since 269)**: INDEX.md still missing detailed entries for 230–232, 236, 238, 243 — worth a polish cycle to reconcile.
+
+**Notes**:
+- No API route / no `guard` needed: `getUserMedia` + Web Audio + Canvas only; nothing server-side, no secrets. Within the scope fence (`src/app/dream/**` + `docs/dreams/**`).
+- DEEP-curation discipline held: built **both present** first (exit 0 — confirms the banked loser genuinely compiles, so "build-verified" is honest) then winner-only. Two folder-isolated builders wrote concurrently with zero conflict; neither touched git or shared docs; I (orchestrator) alone committed. Pre-allocated 250/256 so no number collision (252 left reserved for the groover; 254/255 reserved as the kids seeds).
+- Honest carry-forward: 256's tempo-sync is spectral-flux-based and will be weakest on legato piano (Karel's instrument) — documented in the README, and 250 is banked as the fixed-clock safe-mode fallback if a browser session shows it's flaky.
+
+---
+
 ## Cycle 276 — kids build (WIDE orchestration) — 253-kids-tilt-pour
 
 **When**: 2026-06-01 UTC (every-2h autonomous cycle)
