@@ -2,6 +2,61 @@
 
 ---
 
+## Cycle 286 — kids build (WIDE orchestration) — 272-kids-tune-purr
+
+**When**: 2026-06-02 UTC (every-2h autonomous cycle).
+
+**Git sync**: origin/main had been **force-updated** since the last local checkout (local main had diverged 50/50). Reset local `main --hard origin/main` → HEAD `57215c0` (cycle 285, `271-pigment-mosaic`). Worked directly on main. `node_modules` ABSENT → `npm ci` (exit 0) before the authoritative builds. Last committed folder = 271; cycle 284 freed 269/270; pre-allocated **272/273/274** for the three builders (no collision).
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): for a kids cycle the relevant pull is the **kids/contemplative + non-standard-instrument** cluster — `140-kids-string-bridge` ❤️, `133-kids-ripple-pond` ❤️, `166-kids-lantern` ❤️, `169-kids-marble-run` ❤️, `105-pluck-field` ❤️, `107-ocean-presence` ❤️ (calm/ambient). The winner (a calm "make the wobble stop" tuning toy) sits in this contemplative-kids vein, not the high-energy tap-chime vein.
+
+**Research-first dive** (mandate; RESEARCH.md §286, 2026-06-02): re-grounded the **psychoacoustics of consonance/roughness** — the modern *three-term* model (harmonicity + dislike of fast beats + liking of slow beats), synthesized in McBride's roughness review (arXiv **2510.14159**, Oct 2025) and the timbral-effects-on-consonance work (235k human judgments). Verified-fresh last-30-day anchor: **Live Music Diffusion Models** (arXiv **2605.22717**, May 2026). The surprise/hook: the roughness→consonance transition (audible beats at 5–8 Hz feel "rough," resolving to 0 Hz feels "pure") is a *physical, embodied, pre-verbal* phenomenon a 4-year-old can feel — "could become a prototype where a child drags a detuned creature until the beating stops and it locks into just intonation." Chain today's research → today's build is direct: §286 → brief A → shipped `272-kids-tune-purr` (research-first rule path (a)).
+
+**Decided**: Kids cycle (286 % 2 = 0). No blocker, nothing in-progress. Clean slate. JURY.md (2026-06-02) is a **"ban these tags" verdict** (ban the glow / three.js additive-points + ban C-major pentatonic for one cycle; force a non-luminous output in a non-pentatonic mode; **audit the SOUND — the lab's most monotonous axis**) → AGENT.md says that signal = go **WIDE** with fresh tags. So WIDE, three *different non-luminous, non-pentatonic sound worlds*.
+
+**Mode**: **WIDE** (alternation: 285 DEEP → **286 WIDE**; and the JURY "ban X" signal mandates WIDE). Three briefs, three unrelated sound worlds, all matte/non-luminous + non-pentatonic:
+- `272-kids-tune-purr` — drag-to-tune · canvas2d matte · **audible just-intonation beating that resolves** · contemplative drone.
+- `273-kids-raga-peacock` — tap+meend-glide · SVG cut-paper · **tanpura drone + heptatonic Raga Yaman in just intonation** · warm Hindustani.
+- `274-kids-clay-clock` — tap-to-add · canvas2d matte clay · **interlocking 2:3:4 + gankogui polyrhythm** (two-clock scheduler) · West-African percussion.
+
+**Ambition floor** — winner cleared **3 of 5** (need 2): `ambition: novel-technique + named-references + recent-research`
+- **(1) Novel technique** — grepped INDEX + READMEs: the lab has had pluck/granular/loops, but **never audible acoustic beating used as the interaction** — JI interval-locking where the child resolves roughness→consonance by ear. First of its kind here.
+- **(3) Named references** — README cites **Helmholtz** *On the Sensations of Tone* (beats/roughness) + the **McBride 2025 roughness review** (arXiv 2510.14159) three-term consonance model + Parncutt & Hair.
+- **(5) Recent research** — built directly off this cycle's §286 dive (the consonance/roughness model + the verified-fresh LMDM anchor).
+
+**Diversity audit** (last 10 by cycle = 271,268,267,264,262,260,259,258,256,253):
+`diversity: banned=[three.js/glow additive-points (JURY) · C-major-pentatonic (JURY) · FFT-spectral-cloud (JURY) · emergent-CA (JURY) · kids-vibe(rotation-forced, unavoidable)] · picked=[touch-drag input · canvas2d-MATTE non-luminous output · just-intonation-beating / interval-lock technique · non-pentatonic (pure JI ratios over a drone) contemplative sound]`
+- The JURY's two unaudited over-used tags were OUTPUT=glow (three.js additive ×7 across last 15) and **AUDIO PALETTE=C-major pentatonic (~9/15)** — neither caught by the rolling-10 audit. All three of this cycle's briefs were forced **non-luminous + non-pentatonic**, attacking both directly. Winner is the most JURY-aligned (it *is* "a dissonance that resolves," the verdict's own phrase for the non-pentatonic ask).
+- kids-vibe is 5× in the last 10 but rotation-forced (even cycle); JURY itself tags it "rotation-forced." Unavoidable; mitigated by maximally diversifying everything *inside* the kids zone (the JURY's "kids diversified input but not sound" critique → this is a brand-new kids SOUND).
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (272/273/274 pre-allocated), each fully briefed with constraints + typography + kids rules + non-luminous/non-pentatonic hard gates + the exact GitHub design-notes URL + no-git/no-shared-docs limits. All three returned demoable + README, each self-reporting eslint+tsc clean. I (Curator) gotcha-scanned all three (no three.js/WebGL/additive-blend, no `use*` helpers, no bare `any`, `"use client"` first line, correct GitHub README link), then ran the authoritative `npm run build` with **all three present** → exit 0, "✓ Compiled successfully in 26.2s", all three `○ Static` (272 3.93 kB · 273 4.31 kB · 274 4.66 kB) → all three genuinely **build-verified** — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only (exit 0, "✓ Compiled in 27.8s", `272-kids-tune-purr` `○ Static` **3.93 kB**).
+
+**Winner = `272-kids-tune-purr`.** Reasoning: (1) **Bullseye of today's JURY** — it literally implements "a dissonance that resolves" (the verdict's exact phrase for the non-pentatonic ask) and is the loudest answer to "audit the sound — nobody is watching it." (2) **Highest novelty** — first audible-beating / JI-interval-lock interaction in 270+ prototypes; teaches consonance/tension-release pre-verbally. (3) **Fills the named KIDS.md gap** — the calm, "parent-tolerable," contemplative option (the kids market is loud; this is the quiet one) and aligns with the loved calm/ambient cluster. (4) **Demo-reliable** — the drone + 3 creatures are alive on first touch; no input/permissions/network; never silent.
+
+**What I built/shipped**:
+- `src/app/dream/272-kids-tune-purr/page.tsx` — a warm **110 Hz drone** + **3 matte "hummer" creatures** (116 px drag targets) on a deep-dusk matte canvas. Each creature starts **5.5–7 Hz detuned** from a pure JI target against the drone (unison 1:1, major third 5:4, perfect fifth 3:2) → genuine **acoustic beating** you hear *and see* (the creature shivers at the beat rate, reinforced by a beat-frequency LFO AM). Dragging Y changes pitch continuously; the beat slows as you near the ratio; within **±6 cents** it **snaps into tune** — shivering stops, eyes open, smile, a soft **purr** fades in. Lock all 3 → a pure **4:5:6 just-intonation major triad** + a matte ring-wave celebration. Fully reversible, no score, no fail. Pointer Events + `setPointerCapture` + `touch-none`; AudioContext unlocks on first gesture; all gains via `setTargetAtTime` (click-free, toddler-safe, nothing above 350 Hz); full rAF + `AudioContext.close()` teardown. **No three.js/WebGL, no additive blending — true drop-shadows only.**
+- `src/app/dream/272-kids-tune-purr/README.md` — concept; JI ratio + beat-math table (4:5:6); sound design; visual-state map; degradation; named refs (Helmholtz + McBride 2510.14159 + Parncutt & Hair); honest limits (LFO-AM phase drift, ±170-cent drag clamp, monophonic purr); next-cycle deepening (haptics on lock, ring-mod for phase-coherent beats, 4th creature on the 4:3, visual interference-waveform trace).
+- Banked both build-verified non-winners as seeds in IDEAS.md and `rm -rf`'d their folders (never committed, per orchestration safety): **`273-kids-raga-peacock`** (tanpura drone + Raga Yaman just-intonation + meend glide, SVG cut-paper — *deliberately deferred*: its non-Western-tuning + matte-cut-paper aesthetic sits too close to last kids cycle's `268-kids-shadow-theater`; bank for spacing) and **`274-kids-clay-clock`** (first true cross-rhythm/polyrhythm kids toy: 2:3:4 + 12/8 gankogui bell on a Chris-Wilson two-clock look-ahead scheduler, matte clay, percussion-only). Appended RESEARCH §286. Updated INDEX Newest. Rewrote MORNING.md. Added a KIDS.md "what's been built" row.
+
+**What's new about this prototype**:
+1. **First time audible acoustic beating is the instrument.** Not a visualizer of sound — the child *resolves roughness into consonance* with their hand, by ear. The lab's first piece about tuning/intonation itself.
+2. **Answers the JURY's two un-audited over-used axes at once** — non-luminous (matte) AND non-pentatonic (pure JI ratios over a drone), the two tags the rolling-10 audit kept missing.
+3. **Brings real psychoacoustics into the kids zone** — the roughness→consonance three-term model (Helmholtz → McBride 2025) made playable for a 4-year-old.
+4. **WIDE shipped the most JURY-aligned of three fresh non-pentatonic sound worlds**, banking a Hindustani-raga piece and a West-African-polyrhythm piece both build-verified — two more brand-new kids sound palettes queued.
+
+**Queued next**:
+- Cycle 287: **adult build** — the JURY's #1 ask is "build the AI-image-INSIDE-an-AV-piece" (`271-pigment-mosaic` opened it cycle 285; deepen/extend that vein), OR "extend `259-paths-generative` — a piece that *listens, remembers, and rewrites its own structure over 10 min* fusing its incommensurate-loop state machine with his real Welcome Home recordings + the `251`/`256` mic-listening intelligence." Both are explicit JURY "massively bigger" asks.
+- Cycle 288: **kids build** — ship banked **`274-kids-clay-clock`** (the polyrhythm opener — a brand-new kids sound, build-verified this fire), keeping the SOUND axis diversifying. Hold `273-kids-raga-peacock` until it's ≥1 cycle from `268`'s similar non-Western/cut-paper aesthetic.
+- **Empty shelves the JURY keeps flagging** (0 in last 15): multi-user/WebRTC, MIDI/OSC, depth-camera/spatial-installation, haptic/non-screen/audio-only. Pick one on a clean-slate adult cycle.
+- **Housekeeping (open since 269)**: STATE.md ordering is inconsistent — entries for cycles 280–285 are appended at the **end** of this file, not prepended like 286 and 279. INDEX.md also missing detailed entries for several mid-200s. Worth a reconcile in a polish cycle.
+
+**Notes**:
+- No API route / no `guard` needed: `272` is Web Audio + Canvas only; no network, no server, no secrets. Within the scope fence (`src/app/dream/**` + `docs/dreams/**`).
+- WIDE-curation discipline held: built **all 3 present first** (exit 0 — confirms both banked losers genuinely `○ Static`, so "build-verified" banking is honest) then winner-only. Three folder-isolated builders wrote concurrently with zero conflict; none touched git or shared docs; I (orchestrator) alone committed. Pre-allocated 272/273/274 → no number collision.
+- Honest carry-forward: `272` is build-verified but not *browser-verified* live this fire. The one risk is whether the LFO-AM stays phase-coherent with the genuine acoustic beat on real hardware (documented in the README); the acoustic beating is the primary effect and is physically guaranteed, so worst case the AM is a no-op, not a break.
+
+---
+
 ## Cycle 279 — adult build (WIDE orchestration) — 259-paths-generative
 
 **When**: 2026-06-02 UTC (every-2h autonomous cycle).
