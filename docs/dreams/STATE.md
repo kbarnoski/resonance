@@ -14441,3 +14441,58 @@ I **overrode** MORNING.md's stale cycle-267 candidate list (shepard-tone / scene
 - **No API route / no `guard` needed** — getUserMedia + MediaPipe (CDN) + Web Audio are all client-side; nothing server-side, no secrets. Within the scope fence.
 - The MediaPipe `any`-import gotcha is now bitten twice (234, 258): the builder subagent's isolated `tsc` does NOT catch `@typescript-eslint/no-explicit-any` or the CDN module-resolution error — the **full `npm run build` does**. Future briefs should hand builders the *full* house pattern (`@ts-expect-error` + `eslint-disable-line` on a single-line import) verbatim so the curator doesn't have to patch it. I've noted this for next cycle's brief template.
 - DEEP-mode curation cost paid off again: both candidates were build-checked together first, so the banked 257 is a *true* build-verified seed, not a guess.
+
+---
+
+## Cycle 280 — kids build (WIDE orchestration): 260-kids-slime-garden
+
+**When**: 2026-06-02 UTC (autonomous ~2h cadence).
+
+**Git sync**: Fast-forwarded main to origin (43 commits behind on entry; last shipped folder = 259-paths-generative, cycle 279). node_modules absent → `npm ci` (exit 0). Baseline build assumed clean (259 shipped green).
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): the decisive anchor is **`236-particle-life-song` ❤️** — the lab's emergent-simulation piece ("music FROM emergence"). Slime Garden is its kids-zone sibling (Physarum is the same self-organization vein). Also standing kids-tracking love `234-kids-hand-creature` ❤️ and the cosmic-spectacle loves `130-tsl-particle-compute` ❤️ / `243-spectral-cloud`-adjacent informed the Lenia sibling's palette.
+
+**Research-first dive** (mandate): RESEARCH §280 (2026-06-02). Swept cymatics/CymaVis + recent emergent-sim / artificial-life work. The surprising hook: the lab is 260+ prototypes deep, so the *obvious* "make sound visible" techniques are already taken (**Chladni/cymatics = `19`,`165`; fluid = `3`,`15`,`84`; magnet/field-lines = `192`,`222`** — all fail the novelty gate). The genuinely-unused frontier for a kids piece is **emergent self-organization**: agent-transport networks (Physarum), continuous CA (Lenia), and mass-spring physics (Verlet) — zero hits in INDEX+READMEs. Chain today's research → today's build: §280's emergence frontier → a WIDE kids fire of three novel emergent techniques.
+
+**Decided**: Kids cycle (280 % 2 = 0). No blocker, nothing in-progress.
+
+**Ambition floor** — winner cleared **3 of 5** (need 2): `ambition: novel-technique + named-reference + 3-subsystems`
+- (1) **Technique never used** — grepped INDEX + all READMEs for `physarum|slime mold`: **zero hits.** First Physarum / agent-transport-network piece in the lab.
+- (3) **Named reference** — README cites **Sage Jenson's *mold*** + **Jeff Jones, "Characteristics of Pattern Formation and Evolution in Approximations of Physarum Transport Networks" (2010)** — the canonical algorithm.
+- (2) **≥3 subsystems** — 4 distinct: CPU Physarum agent sim (3,500 typed-array agents, 3-sensor steer + deposit) · double-buffered Float32 trail field (diffuse + decay + food injection) · WebGL2 R8-texture + bioluminescent fragment-shader renderer · Web Audio engine (5 glow-driven pentatonic voices + always-on pad + limiter).
+- (Also brushes (5): built directly off this cycle's RESEARCH §280.)
+
+**Diversity audit** (last 10 = 238,243,244,246,248,251,253,256,258,259):
+`diversity: banned=[three.js(4×) · canvas2d(4×) · (kids over-rep, rotation-forced)] · picked=[touch-input · raw-WebGL output · physarum-agent-transport technique · bioluminescent-kids vibe]`
+- OUTPUT tally: `three.js` ×4 (238,243,244,246) → **BANNED**; `canvas2d` ×4 (251,253,256,258) → **BANNED**; raw-GLSL ×1 (248). → forced the winner to **raw-WebGL custom-shader** output (only reliable non-banned visual lane for kids; WebGPU too fragile, audio-only fails the visual bar).
+- INPUT tally: mic ×3 (244,251,256), audio-file ×3 (243,246,259), tilt ×2 (238,253), camera ×2 (248,258). → picked **touch** (0× in the last 10 — the freshest input; the JURY touch-ban is only for the touch+canvas2d+pentatonic-tap *combination*, which raw-WebGL + non-tap dodges).
+- VIBE: `kids` ×5 → over-represented, but the even-cycle rotation **forces** kids (cycle-268/278 precedent: satisfy the spirit by dodging the banned *combinations*). Slime Garden shares zero banned tags.
+
+**Mode**: **WIDE** (JURY: alternate; the last kids fire, 258, was DEEP → WIDE this time; "WIDE directly attacks 'too similar' — three unrelated directions in one fire"). One brief each on three **never-used emergent techniques**, all touch+raw-WebGL+kids but diverging on technique × palette:
+- `260-kids-slime-garden` — Physarum agent-transport network (bioluminescent gold/teal/magenta).
+- `261-kids-lenia-pond` — Bert Chan **Lenia** continuous cellular automata, orbium gliders (cosmic violet/cyan/rose).
+- `262-kids-light-cloth` — Jakobsen **Verlet** mass-spring cloth you strum (aurora-harp cyan/violet/rose).
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (260/261/262), each told NOT to run git or touch shared docs, each handed the full build-trap list (no `any`, no `use*`-named helpers, no unused vars, refs-not-state in the rAF loop), kids rules, typography rules, the design-notes GitHub URL, and "CPU-sim + GL-render is the robust path; raw-WebGL only, no canvas2d art." All three returned demoable + README. I (Curator) ran the authoritative `npm run build` with **all three present** (exit 0, all `○ Static`; winner 260 had **zero warnings**, 261 one harmless unused-eslint-disable) to verify every candidate compiles → honest build-verified seeds, then `rm -rf`'d the two losers and re-ran winner-only `npm run build` (exit 0).
+
+**Winner = 260-kids-slime-garden.** Reasoning: all three tied on the ambition floor (each = first-in-lab technique + named ref + ≥3 subsystems) and all dodged the banned tags, so the call was surprise × love-anchor × 4-yo legibility × reliability:
+- **Love anchor**: Physarum is the direct kids-zone extension of Karel's loved `236-particle-life-song` (emergence) — the strongest standing signal of the three.
+- **4-yo legibility / control**: "touch → thousands of creatures crawl to your finger and build singing veins between your touches" is a more *direct, controllable* cause-effect than Lenia (creatures wander off on their own agenda) — better against the kids immediate-response bar.
+- **Reliability for the 06:30 review**: no CA seed-stability cliff. Lenia's magic hinges on the orbium seed staying alive under dt/kernel/mu/sigma — which I can't browser-verify pre-ship (the builder flagged this exact unresolved risk); Physarum has no equivalent failure mode.
+- **Surprise**: slime-mold-solves-mazes is an iconic science-wonder hook, parent-delighting.
+- `261-kids-lenia-pond` (the bigger swing) and `262-kids-light-cloth` (most tactile/robust) banked below.
+
+**What's new about this prototype**:
+1. **First Physarum / agent-transport-network piece in the lab** (260+ prototypes; technique grepped clean).
+2. **First GPU-shader-rendered kids toy of its kind** — the kids zone has been escaping flat glass (234 hands/three.js → 238 tilt/three.js → 248 raw-GLSL → 258 face/canvas2d); this is the first *emergent-simulation* kids piece, rendered raw-WebGL.
+3. **Music FROM emergence, for a 4-year-old** — extends the loved 236 inversion (the self-organization IS the music) into the kids zone, where every prior piece was tap→chime.
+4. **WIDE orchestration on the kids cadence** (JURY's headline ask) — three unrelated novel techniques explored in one fire; the critic shipped the strongest and banked two build-verified seeds.
+
+**Queued next**:
+- Cycle 281: **adult build** (281 % 2 = 1). Standing banked options (cycle-279): ship the build-verified **aurora-drone** (live NOAA solar wind → drone+aurora; makes real-world-data a category after `233`) or **live-duet-groover** (drums completing the AI-band trio: melody `251` ❤️ + harmony `256` + rhythm). Both number-free banked specs in IDEAS.md.
+- Cycle 282: **kids build**. Resurrect a banked sibling from THIS fire — **kids-lenia-pond** (the bigger Lenia swing; do a real-browser seed-stability pass first) or **kids-light-cloth** (tactile Verlet, most robust). A two- or three-take "emergent kids" set would make this a body of work, not a one-off.
+
+**Notes**:
+- **No API route / no `guard` needed** — Physarum sim + WebGL2 + Web Audio are all client-side; nothing server-side, no secrets. Within the scope fence.
+- **Numbering note (housekeeping)**: cycle-279 banked two specs *labeled* `260-aurora-drone` / `261-live-duet-groover`, but those folders were `rm -rf`'d and never committed (codebase max on entry = 259). Cycle 280 consumed **260** (shipped slime-garden) and banks lenia/cloth. Going forward the clean rule: **numbers belong to committed folders only; banked specs are number-free and take the next free number when resurrected.** I relabeled the aurora/groover seeds accordingly below.
+- **Novelty-gate lesson**: at 260+ prototypes, the obvious "sound made visible" techniques (cymatics, fluid, magnet) are all spent — the first grep of every build idea against INDEX+READMEs is now the single most important Decide-step gate. The emergence frontier (Physarum/Lenia/Verlet/DLA/Voronoi/curl-noise — all grepped clean this cycle) is the lab's richest unused vein.
