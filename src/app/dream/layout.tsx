@@ -38,7 +38,7 @@ export default async function DreamLayout({
   return (
     <DreamVotesProvider>
       <AudioCleanup />
-      <div className="min-h-screen bg-black text-white font-mono">
+      <div className="min-h-screen bg-black text-white font-sans">
         <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 border-b border-white/10 bg-black/70 backdrop-blur-sm">
           <Link
             href="/dream"

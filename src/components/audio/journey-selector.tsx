@@ -59,8 +59,21 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
   const [sharingId, setSharingId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [shareSheet, setShareSheet] = useState<{ url: string; title: string } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{ id: string; name: string } | null>(null);
   const [expandedPath, setExpandedPath] = useState<string | null>(null);
-  const [view, setView] = useState<"journeys" | "paths">("journeys");
+  // Persist the active tab so returning from a path (which navigates away and
+  // remounts this overlay) lands the user back on the tab they were using.
+  const [view, setViewState] = useState<"journeys" | "paths">("journeys");
+  const setView = useCallback((next: "journeys" | "paths") => {
+    setViewState(next);
+    try { sessionStorage.setItem("resonance-selector-view", next); } catch { /* ok */ }
+  }, []);
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem("resonance-selector-view");
+      if (saved === "paths" || saved === "journeys") setViewState(saved);
+    } catch { /* ok */ }
+  }, []);
   const completedJourneyIds = usePathProgressStore((s) => s.completedJourneyIds);
   const completedCulminationIds = usePathProgressStore((s) => s.completedCulminationIds);
   const grandCulminationUnlocked = usePathProgressStore((s) => s.grandCulminationUnlocked);
@@ -233,12 +246,17 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     }
   }, []);
 
-  // Delete a custom journey (with confirmation)
-  const handleDelete = useCallback(async (journeyId: string, e: React.MouseEvent) => {
+  // Delete a custom journey — opens an in-app confirmation modal.
+  const handleDelete = useCallback((journeyId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     const journey = customJourneys.find((j) => j.id === journeyId);
-    const name = journey?.name ?? "this journey";
-    if (!window.confirm(`Delete "${name}"? This cannot be undone.`)) return;
+    setConfirmDelete({ id: journeyId, name: journey?.name ?? "this journey" });
+  }, [customJourneys]);
+
+  const performDelete = useCallback(async () => {
+    if (!confirmDelete) return;
+    const journeyId = confirmDelete.id;
+    setConfirmDelete(null);
     setDeletingId(journeyId);
     try {
       const res = await fetch(`/api/journeys/${journeyId}`, { method: "DELETE" });
@@ -251,7 +269,7 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
     } finally {
       setDeletingId(null);
     }
-  }, [activeJourney, stopJourney, customJourneys]);
+  }, [confirmDelete, activeJourney, stopJourney]);
 
   // Auto-generate journey from current track's analysis
   const handleAutoGenerate = useCallback(async () => {
@@ -1975,6 +1993,77 @@ export function JourneySelector({ open, onClose }: JourneySelectorProps) {
         title={shareSheet?.title ?? ""}
         text="Check out this journey on Resonance"
       />
+
+      {/* Delete confirmation — in-app modal (replaces the browser confirm dialog) */}
+      {confirmDelete && (
+        <>
+          <div
+            role="button"
+            tabIndex={-1}
+            aria-label="Cancel delete"
+            className="fixed inset-0 z-[70]"
+            style={{
+              backdropFilter: "blur(12px) saturate(1.1)",
+              WebkitBackdropFilter: "blur(12px) saturate(1.1)",
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+            }}
+            onClick={() => setConfirmDelete(null)}
+            onKeyDown={(e) => {
+              if (e.key === "Escape") {
+                e.preventDefault();
+                setConfirmDelete(null);
+              }
+            }}
+          />
+          <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center pointer-events-none">
+            <div
+              role="alertdialog"
+              aria-modal="true"
+              className="pointer-events-auto w-full max-w-sm mx-4 mb-4 sm:mb-0 rounded-2xl p-6"
+              style={{
+                backgroundColor: "rgba(18,18,20,0.96)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3
+                className="text-white/85 text-lg mb-2"
+                style={{ fontFamily: "var(--font-geist-sans)", fontWeight: 400 }}
+              >
+                Delete “{confirmDelete.name}”?
+              </h3>
+              <p
+                className="text-white/45 text-sm mb-6"
+                style={{ fontFamily: "var(--font-geist-sans)" }}
+              >
+                This can’t be undone.
+              </p>
+              <div className="flex gap-3 justify-end">
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(null)}
+                  className="px-4 py-2 rounded-lg text-sm text-white/60 hover:text-white/90 transition-colors"
+                  style={{ border: "1px solid rgba(255,255,255,0.12)" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={performDelete}
+                  className="px-4 py-2 rounded-lg text-sm transition-colors"
+                  style={{
+                    color: "#ff8a8a",
+                    border: "1px solid rgba(255,138,138,0.3)",
+                    backgroundColor: "rgba(255,138,138,0.08)",
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }

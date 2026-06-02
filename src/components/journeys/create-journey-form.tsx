@@ -2,6 +2,17 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Loader2, Music, Image as ImageIcon, Upload, ChevronDown, ChevronRight, Sparkles, ArrowLeft } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
 import { getMp4CreationDate } from "@/lib/audio/mp4-creation-date";
@@ -322,10 +333,10 @@ export function CreateJourneyForm({
     }
   };
 
-  // Edit-mode delete. Confirm, then DELETE. Caller handles routing away.
+  // Edit-mode delete. Confirmed via the in-app AlertDialog, then DELETE.
+  // Caller handles routing away.
   const handleDelete = async () => {
     if (!isEdit || !initialJourney) return;
-    if (!confirm(`Delete "${initialJourney.name}"? This cannot be undone.`)) return;
     setDeleting(true);
     try {
       const res = await fetch(`/api/journeys/${initialJourney.id}`, { method: "DELETE" });
@@ -680,22 +691,37 @@ export function CreateJourneyForm({
         )}
 
         {isEdit && (
-          <button
-            type="button"
-            onClick={handleDelete}
-            disabled={saving || deleting}
-            className="w-full mt-2 px-4 py-2 text-red-400/70 hover:text-red-400 transition-colors disabled:opacity-40"
-            style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
-          >
-            {deleting ? (
-              <span className="inline-flex items-center gap-1.5">
-                <Loader2 className="h-3 w-3 animate-spin" />
-                Deleting…
-              </span>
-            ) : (
-              "Delete journey"
-            )}
-          </button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <button
+                type="button"
+                disabled={saving || deleting}
+                className="w-full mt-2 px-4 py-2 text-red-400/70 hover:text-red-400 transition-colors disabled:opacity-40"
+                style={{ fontSize: "0.75rem", fontFamily: "var(--font-geist-mono)" }}
+              >
+                {deleting ? (
+                  <span className="inline-flex items-center gap-1.5">
+                    <Loader2 className="h-3 w-3 animate-spin" />
+                    Deleting…
+                  </span>
+                ) : (
+                  "Delete journey"
+                )}
+              </button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete “{initialJourney!.name}”?</AlertDialogTitle>
+                <AlertDialogDescription>This can’t be undone.</AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction variant="destructive" onClick={handleDelete}>
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         )}
 
         {onCancel && (

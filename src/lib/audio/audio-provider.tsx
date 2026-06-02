@@ -187,6 +187,13 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         lastSrcRef.current = newSrc;
 
         resolveAudioUrl(newSrc, currentTrack.id).then((resolvedUrl) => {
+          // A newer track load may have started while this URL was resolving
+          // (fast path switching, e.g. close one path → open another). If so,
+          // this resolution is stale: applying it would set the wrong/closed
+          // track's src AND consume the loadingNewSrc flag, so the newer
+          // track's canplay handler bails and never plays — the intermittent
+          // "switch paths, no sound, works on retry" bug. Drop stale loads.
+          if (lastSrcRef.current !== newSrc) return;
           audioElement.src = resolvedUrl;
           audioElement.load();
         });
