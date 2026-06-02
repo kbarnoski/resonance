@@ -146,7 +146,7 @@ export function JourneyPhaseIndicator({
   const currentPhaseData = currentPhase
     ? journey.phases.find((p) => p.id === currentPhase)
     : journey.phases[0];
-  const accent = currentPhaseData?.palette.accent ?? "#fff";
+  const accent = currentPhaseData?.palette?.accent ?? "#fff";
 
   return (
     <div

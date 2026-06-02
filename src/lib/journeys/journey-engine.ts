@@ -591,15 +591,18 @@ class JourneyEngine {
     const iv = (getter: (p: JourneyPhase) => number) =>
       interpolateValue(phases, phaseIndex, nextPhaseIndex, blend, getter);
 
-    // Interpolate palette
+    // Interpolate palette. Custom/legacy journeys can have phases without a
+    // palette; fall back so frame.palette is always a full object (downstream
+    // consumers read palette.accent/glow without guarding).
+    const FALLBACK_PALETTE = { primary: "#1a1a2e", secondary: "#16213e", accent: "#d0a070", glow: "#e0b890" };
     const palette =
-      nextPhaseIndex !== null && blend > 0
+      nextPhaseIndex !== null && blend > 0 && currentPhase.palette && phases[nextPhaseIndex].palette
         ? interpolatePalette(
             currentPhase.palette,
             phases[nextPhaseIndex].palette,
             blend
           )
-        : currentPhase.palette;
+        : currentPhase.palette ?? FALLBACK_PALETTE;
 
     // Interpolate ambient layers
     const ambientLayers: AmbientLayers = {

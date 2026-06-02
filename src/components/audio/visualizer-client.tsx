@@ -1771,7 +1771,7 @@ export function VisualizerClient({
           isFullscreen={isFullscreen}
           onFullscreenToggle={handleFullscreenToggle}
           onSwitchToVisualize={handleSwitchToVisualize}
-          journeyAccent={activeTheme?.palette.accent ?? activeRealm?.palette.accent ?? null}
+          journeyAccent={activeTheme?.palette?.accent ?? activeRealm?.palette?.accent ?? null}
           smoothMotion={activeJourney ? !activeJourney.audioReactive : false}
           onSignOut={handleSignOut}
           onPrevShader={() => useAudioStore.getState().cycleVizModePrev()}
