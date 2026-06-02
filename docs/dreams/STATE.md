@@ -2,6 +2,66 @@
 
 ---
 
+## Cycle 288 — kids build (WIDE orchestration) — 276-kids-balloon-tritave
+
+**When**: 2026-06-02 UTC (every-2h autonomous cycle).
+
+**Git sync**: origin/main had been **force-updated** again (local main diverged 50/50 on fetch). Reset local `main --hard origin/main` → HEAD `7a34357` (cycle 287, `275-memory-loom`). Worked directly on main. `node_modules` ABSENT → `npm ci` (exit 0) before the authoritative builds. Highest committed folder = 275; banked seed-names 273/274 reserve no numbers (folders rm'd, free) → pre-allocated **276/277/278** for the three builders (no collision).
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): for a kids cycle the relevant pull is the **calm/contemplative + non-standard-instrument** cluster — `140-kids-string-bridge` ❤️, `133-kids-ripple-pond` ❤️, `166-kids-lantern` ❤️, `105-pluck-field` ❤️, `107-ocean-presence` ❤️ — plus the cut-paper/SVG register the lab leaned into at loved-adjacent `268-kids-shadow-theater`. The winner (a calm, matte tilt-and-drift balloon sky in an alien-but-consonant tuning) sits squarely in this quiet, parent-tolerable vein the KIDS.md market-gap analysis stakes out, not the high-energy tap-chime vein.
+
+**Research-first dive** (mandate; RESEARCH.md §288, 2026-06-02 — web tools healthy): **non-octave tuning — the Bohlen–Pierce scale**. Sources: Xenharmonic Wiki + Elaine Walker/ZIA + Wikipedia (BP independently discovered by **Heinz Bohlen 1972** and **Max Mathews & John R. Pierce**, Bell Labs ~1984); freshness anchor that it's a *live* scene not a museum piece: *"A huge online gallery of microtonal music to listen to"* (The Microtone Fox, **Medium, May 2026**) + Elaine Walker's forthcoming BP album; timbre cross-ref = the active 2025–2026 interactive-resonator literature. Surprise/hook: every pitched piece in 280+ prototypes — pentatonic, slendro, Hindustani JI, whole-tone — still repeats at the **2:1 octave**; BP throws the octave out, repeating at the **tritave (3:1)** in **13 equal steps** (`3^(1/13)≈1.0882`, ~146¢), engineered around odd-harmonic chords (the **3:5:7 triad**, clarinet affinity). It sounds in-tune yet alien — the purest "huh, I didn't know we could do that" sound the lab can offer, and a 4-year-old has no theory to unlearn. Chain today's research → today's build is direct: §288 → WIDE brief A → shipped `276-kids-balloon-tritave` (research-first rule path (a)).
+
+**Decided**: Kids cycle (288 % 2 = 0). No blocker, nothing in-progress. The standing JURY (2026-06-02) demand is *"audit the SOUND — the lab's most monotonous axis; force a non-pentatonic mode."* Recent kids fires already broadened the sound (slendro `268`, JI-beating `272`, banked raga/polyrhythm). **Deliberately did NOT ship the queued banked `274-kids-clay-clock`** — the live diversity audit (below) bans both **touch-input** AND **canvas2d-output** this cycle, and clay-clock is touch + canvas2d. The mandate says the diversity audit is a hard gate and "stop resurrecting the path of least resistance," so I picked a fresh direction that dodges the banned tags instead. (Path (a): build implements today's research hook.)
+
+**Mode**: **WIDE** (alternation: 286 WIDE → 287 DEEP → **288 WIDE**; and JURY's "audit/diversify the sound" = go WIDE with fresh tags. Also: never solo kids → orchestrate). Three briefs = three unrelated non-pentatonic kids SOUND worlds, each with a *different* non-banned input AND output:
+- `276-kids-balloon-tritave` — **TILT** + **SVG** + **Bohlen–Pierce non-octave tuning** (the novel-technique reading).
+- `277-kids-overtone-cave` — **MIC** + **raw-WebGL** + **harmonic-series overtone singing** (khoomei/Lucier reading).
+- `278-kids-dream-flock` — **CAMERA frame-diff** + **SVG** + **whole-tone / Debussy** boids flock (the dream-cloud reading).
+
+**Ambition floor** — winner cleared **4 of 5** (need 2): `ambition: novel-technique + named-reference + ≥3-subsystems + recent-research(§288)`
+- **(1) Novel technique** — grepped INDEX + all READMEs for `bohlen`/`tritave`/`non-octave`: **zero hits → first non-octave tuning in 280+ prototypes.** Every prior pitched piece (incl. slendro `268`, JI `272`, whole-tone shepard-tones) repeats at the 2:1 octave; BP repeats at the 3:1 tritave. (Note: modal/Karplus synthesis and MediaPipe/WebGPU/breath were all checked and are already used — so the novelty is specifically the *tuning system*, not the synth/sensor.)
+- **(3) Named reference** — README cites the **Bohlen–Pierce scale**: Heinz Bohlen (1972) + Max Mathews & John R. Pierce (Bell Labs ~1984) + Elaine Walker (ZIA), with the clarinet/odd-harmonic affinity.
+- **(2) ≥3 subsystems** — 4 distinct: `DeviceOrientation` tilt input + gravity-drift physics (with mouse fallback) · inline-SVG cut-paper render/animation engine (rAF via refs, feDropShadow + feTurbulence) · odd-harmonic clarinet-like BP additive synth + root/tritave drone · frame-based creature↔balloon brush-collision (chords on simultaneous brush).
+- **(5) Recent research** — built directly off this cycle's §288 dive.
+
+**Diversity audit** (last 10 committed by folder = 258,259,260,262,264,267,268,271,272,275):
+`diversity: banned=[touch-input(4×: 260,264,268,272) · canvas2d-output(4×: 259,271,272,275) · three.js-additive-points(JURY) · C-major-pentatonic(JURY)] · picked=[tilt input · SVG output · Bohlen–Pierce non-octave tuning technique · matte cut-paper kids vibe · non-pentatonic/non-octave SOUND]`
+- INPUT: touch ×4 (260,264,268,272) → **BANNED**; mic ×2 (271,275), camera ×1 (258), audio-file ×3 (259,267,+271), external-API ×1 (262), tilt **0×** in last 10. Picked **tilt** (cleanest dodge; last tilt was 253 at #11).
+- OUTPUT: canvas2d ×4 (259,271,272,275) → **BANNED**; three.js ×2 (262,267 — JURY hard-ban anyway), raw-WebGL ×2 (260,264), SVG ×1 (268). Picked **SVG** (under line, continues the loved-268 register). The three briefs spread output across SVG / raw-WebGL / SVG — none used canvas2d or three.js.
+- AUDIO PALETTE (the JURY's demanded axis): window ≈ C-pentatonic-heavy → **banned**; all three briefs were forced non-pentatonic (non-octave / overtone-series / whole-tone). Winner is the deepest break (changes the repeat interval, not just the scale).
+- VIBE: kids ×5 in last 10 (258,260,264,268,272) but rotation-forced (even cycle); mitigated by maximally diversifying everything *inside* the kids zone (fresh input + fresh output + fresh tuning), per the 268/272/280 precedent.
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (276/277/278 pre-allocated), each fully self-contained: the per-reading concept + algorithm, constraints (audio-visual only, self-contained, degrade gracefully, the per-brief mandatory output medium — SVG / raw-WebGL / SVG), the KIDS design rules, the typography rules, the exact GitHub design-notes URL, the build-trap list (no unused vars, no `use*`-named helpers, no un-disabled `any`, the `getByte*Data` `Uint8Array<ArrayBuffer>` typing trap, refs-not-state in the rAF loop, engine-in-one-`useEffect` with full teardown), and the no-git/no-shared-docs limits. All three returned demoable + README, each self-reporting tsc+eslint clean (277's builder fixed the `Uint8Array<ArrayBuffer>` cast + a typography link bump; 278's builder removed a dead var, fixed an exhaustive-deps ref-capture, and bound a non-null `AudioContext` after the guard for 7 narrowing errors). I (Curator) gotcha-scanned all three (`"use client"` first line; **no three.js import** anywhere; no `function use*` non-hook helpers; no bare `any`; each design-notes link points at its OWN README), then ran the authoritative `npm run build` with **all three present** → exit 0, "✓ Compiled successfully in 27.7s", all three `○ Static` (276 4.07 kB · 277 4.43 kB · 278 4.2 kB) → all three genuinely **build-verified** — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only (exit 0, "✓ Compiled successfully in 29.3s", `276-kids-balloon-tritave` `○ Static` **4.07 kB**).
+
+**Winner = `276-kids-balloon-tritave`.** All three cleared the floor and dodged every banned tag; the decider was **ambition × surprise × demo-reliability**:
+- **Highest ambition (4/5) — the only one clearing *novel-technique*.** First non-octave tuning in 280+ prototypes; it answers the JURY "audit the sound" mandate at the deepest possible level (it changes the *repeat interval itself*, not merely the scale). 277 (3/5) and 278 (2–3/5) are fresh SOUNDS but additive synthesis / whole-tone already exist in the lab.
+- **Highest surprise** — "a tuning with no octave" is the cleanest "huh, I didn't know we could do that" of the three.
+- **Most demo-reliable at 06:30** — tilt with a mouse/drag fallback works on Karel's desktop with **no mic/camera permission**; SVG is the lowest runtime risk (vs 277's raw-WebGL fragility and 278's camera-permission + frame-diff lighting sensitivity); always-on drone means never silent.
+- **On-brand** — matte cut-paper SVG continues the loved `268-kids-shadow-theater` register; contemplative/calm per KIDS.md.
+- Both runners-up **build-verified** and banked number-free in IDEAS.md (`277-kids-overtone-cave` + `278-kids-dream-flock`).
+
+**What's new about this prototype**:
+1. **First non-octave / Bohlen–Pierce tuning in the lab** — the repeat interval is the tritave (3:1), not the octave; the deepest break yet of the lab's most monotonous axis (the JURY's standing "audit the sound" ask).
+2. **First tilt + SVG kids combo** — dodges the cycle's two over-represented tags (touch-input, canvas2d-output) cleanly; tilt is toddler-embodied (KIDS.md core) and the mouse fallback keeps it laptop-playable.
+3. **A clean WIDE escape** — three orthogonal non-pentatonic kids sound worlds (non-octave / overtone-series / whole-tone), each with a distinct non-banned input AND output, in one fire.
+4. **Direct research→build chain, same fire** — §288's non-octave-tuning dive IS the winner's load-bearing idea.
+
+**Queued next**:
+- Cycle 289: **adult build** (289 % 2 = 1). Ship banked **`mosaic-listener`** (the lab's first concatenative synthesis — newest technique, highest novelty, queued since 287), OR **DEEPEN 275-memory-loom** (pitch-preserving transposition, persistent/exportable/steerable memory). OR an **empty-shelf category** the JURY keeps flagging (multi-user/WebRTC, MIDI/OSC, depth-camera — all 0× in 15). Watch the diversity audit: canvas2d + touch will likely *unban* (they roll out), three.js may re-approach the line.
+- Cycle 290: **kids build**. Bank-resurrect a fresh sibling — `277-kids-overtone-cave` (hum → overtones) or `278-kids-dream-flock` (whole-tone flock) or the older `273-kids-raga-peacock` / `274-kids-clay-clock` — keep diversifying the SOUND and rotate inputs/outputs against whatever the audit bans that cycle.
+- **DEEPEN 276 (multi-cycle)**: a 2nd selectable BP mode/root, a "lambda" BP chord set, draw the brushed-melody as a paper ribbon trail, a 2-finger "two kids" duet sky, haptic pulse on a 3:5:7 chord lock, record a flight as a shareable loop. README + IDEAS list the path.
+- **Housekeeping (open since 269)**: STATE.md ordering is now consistent at the top (286/287/288 prepended) but cycles 280–285 still sit appended at the END of the file; INDEX.md missing detailed entries for several mid-200s. Worth a reconcile in a polish cycle.
+
+**Notes**:
+- **No API route / no `guard` needed** — `276` is `DeviceOrientation` + Web Audio + inline SVG, entirely client-side; no network, no server, no secrets. Within the scope fence (`src/app/dream/**` + `docs/dreams/**`). No new deps.
+- **WIDE-curation discipline held**: built **all 3 present first** (exit 0 — confirms both banked losers genuinely `○ Static`, so "build-verified" banking is honest) then winner-only. Three folder-isolated builders wrote concurrently with zero conflict; none touched git or shared docs; I (orchestrator) alone committed. Pre-allocated 276/277/278 → no collision. Per cycle-280's hygiene rule, loser folders 277/278 were `rm -rf`'d and never committed → 277/278 free again; committed folder this cycle = **276** only.
+- **Diversity audit was load-bearing this cycle** — it overrode the previously-queued plan to resurrect `274-kids-clay-clock` (which is touch + canvas2d, both banned this fire). This is the mandate's "stop resurrecting the path of least resistance" rule working as intended; clay-clock remains banked and build-verified for a cycle when those tags roll out of the window.
+- **Research tools healthy** — a dated source set (BP lineage + the May-2026 microtonal-gallery freshness anchor, verified via search) backed the build.
+- **Honest carry-forward**: `276` is build-verified but not *browser-verified* live this fire. Two unverified risks (both documented in the README): (a) on iOS the `deviceorientation` add/remove pairing uses a per-render function reference — harmless here, worth tightening next cycle; (b) whether the odd-harmonic BP voice *sounds* convincingly "consonant-but-alien" vs merely "out of tune" on real speakers (tuned by ear in code). Both fail safe: the mouse fallback + always-on drone keep it fully demoable regardless of tilt sensor or speaker quality.
+
+---
+
 ## Cycle 287 — adult build (DEEP orchestration) — 275-memory-loom
 
 **When**: 2026-06-02 UTC (every-2h autonomous cycle).

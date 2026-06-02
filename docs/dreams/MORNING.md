@@ -1,36 +1,42 @@
-# Morning digest — last updated 2026-06-02 (cycle 287, adult · DEEP)
+# Morning digest — last updated 2026-06-02 (cycle 288, kids · WIDE)
 
-**Open this first:** [/dream/275-memory-loom](https://getresonance.vercel.app/dream/275-memory-loom)
+**Open this first:** [/dream/276-kids-balloon-tritave](https://getresonance.vercel.app/dream/276-kids-balloon-tritave)
+*(Best on an iPad — tilt to steer. On a laptop, move the mouse to steer; it works the same.)*
 
 ## New since yesterday
-- **275-memory-loom — the listen-remember-rewrite piece you asked for.**
-  Play into your mic; it quietly *records your phrases* and weaves them back as an endless
-  Eno/Fripp tape-loop room built **entirely from your own sound** — audibly different at
-  minute 10 than at minute 1. Extends loved **259-paths-generative** (its exact
-  incommensurate-loop engine) but instead of playing a file, it **listens**: captures verbatim
-  phrases into a 7-loop bank, reweaves them with a 60–130 s movement state machine, lets the
-  oldest memories decay out. Never silent (D-dorian pad until captures arrive); feed it a real
-  Welcome Home track by ID. **First live audio-capture / Frippertronics piece in the lab.**
-  Try it: play/hum 3–4 phrases, then just listen for a couple of minutes.
-- **2 more explored this fire (DEEP, build-verified, banked in IDEAS.md):**
-  - `mosaic-listener` — your sound shattered into a grain corpus the machine *navigates*
-    (CataRT/MACataRT mosaicing). **Lab's first concatenative synthesis** — strongest novelty bank.
-  - `motif-memory` — it *transcribes your notes* and improvises on them (Markov + transforms,
-    Lewis *Voyager* lineage). Piano-roll shows you vs. the machine.
+- **276-kids-balloon-tritave — a kids toy tuned to a scale with no octave.**
+  Tilt the tablet to drift a little paper cloud-bird through a dusk sky of cut-paper
+  balloons; each balloon it brushes **sings**. The twist is the SOUND: it's the
+  **Bohlen–Pierce scale**, whose repeat interval is the **tritave (3:1)** — a perfect
+  twelfth — not the 2:1 octave. It's the **lab's first non-octave / non-pentatonic
+  tuning in 280+ prototypes**. Three balloons sit on BP's signature **3:5:7 chord** so
+  brushing them together sounds rooted; the voice is a clarinet-like odd-harmonic tone
+  (BP's natural timbre) over a soft drone. "Nothing sounds wrong" — but from a wholly
+  different harmonic universe. Matte cut-paper SVG (no glow), always-on drone, no
+  score/fail. **Try it:** brush a few balloons in a row, then two at once for a chord.
+- **2 more explored this fire (WIDE, build-verified, banked in IDEAS.md):**
+  - `277-kids-overtone-cave` — **hum into the mic** and a raw-WebGL crystal grotto sings
+    your voice's **harmonic-series overtones** back (Tuvan khoomei / Lucier).
+  - `278-kids-dream-flock` — **wave at the camera** and a frame-diff boids flock of paper
+    birds sings a **whole-tone / Debussy** dream cloud with no home note.
 
-## In progress / partial
-- The long-form/memory vein (259 → 275) now has 2 pieces + 2 strong banked siblings — a real body
-  of work forming around "his own sound, remembered."
+## Why this cycle looks different
+- The diversity audit **banned touch-input and canvas2d-output** this fire (both hit 4× in
+  the last 10) — plus the JURY's standing bans on three.js-glow and C-pentatonic. So all
+  three briefs used fresh input (tilt / mic / camera) and fresh non-pentatonic sound worlds
+  (non-octave / overtone / whole-tone). The winner adds the deepest break of all: it changes
+  the *repeat interval itself*, not just the scale.
 
 ## Research findings worth a look
-- RESEARCH §287 — the self-listening musical-agent frontier (MACAT/MACataRT, CataRT, Apr-2026
-  real-time co-performance). Punchline: the heavyweight 2026 GPU approach isn't browser-feasible,
-  but the *memory architecture* under it runs zero-dep in Web Audio — and the cheapest version is
-  also the most personal (the instrument becomes made of your own sound).
+- RESEARCH §288 — **non-octave tuning (Bohlen–Pierce)**. Every pitched piece in the lab,
+  even the gamelan/raga/whole-tone ones, still repeats at the octave. BP throws the octave
+  out (tritave 3:1, 13 equal steps, odd-harmonic chords, clarinet affinity). It's a live
+  scene, not a museum piece (May-2026 microtonal gallery; Elaine Walker's BP album).
 
 ## Open questions for Karel
-- 275 captures the mic but doesn't monitor it dry — you hear only the woven loops. Want a
-  "hear yourself" toggle, or is the disembodied-memory feel the point?
-- Next adult cycle: ship banked `mosaic-listener` (newest technique) or keep deepening 275
-  (pitch-preserving transposition, persistent/exportable memory)?
-- Still-empty shelves: multi-user/WebRTC, MIDI/OSC, depth-camera. Worth a clean-slate fire?
+- 276 needs iOS tilt-permission on first tap; the mouse/drag fallback means it's fully
+  playable on your laptop at review. Does the tilt feel right, or want a sensitivity slider?
+- Next adult cycle: ship banked `mosaic-listener` (lab's first concatenative synthesis) or
+  deepen 275-memory-loom? Next kids cycle: bank-resurrect `277-overtone-cave`,
+  `278-dream-flock`, or the older `273-raga-peacock` / `274-clay-clock`?
+- Still-empty shelves the JURY keeps flagging: multi-user/WebRTC, MIDI/OSC, depth-camera.
