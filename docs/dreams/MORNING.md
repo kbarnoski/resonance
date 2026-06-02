@@ -1,16 +1,17 @@
-# Morning digest — last updated 2026-06-02 (cycle 280, kids · WIDE orchestration)
+# Morning digest — last updated 2026-06-02T08:35Z (cycle 281, adult · DEEP orchestration)
+
+**Open this first:** [/dream/262-aurora-particle](https://getresonance.vercel.app/dream/262-aurora-particle)
 
 ## New since yesterday
-- **[260-kids-slime-garden](https://getresonance.vercel.app/dream/260-kids-slime-garden)** — **touch the dark screen and thousands of tiny glowing creatures crawl toward your finger, weaving living veins of light that sing as they connect.** A *real* **Physarum slime-mold simulation** (the maze-solving organism): ~3,500 agents sense → steer → deposit → the trail diffuses, and a gentle pull toward the "food" you tap makes the swarm physically link the points you touch. Five pentatonic voices brighten + swell as each node gets more connected. **Why open this:** it's the lab's **first emergent-simulation *kids* piece** — the kids zone has only ever done tap→chime on flat glass; this is music FROM self-organization, the direct kid-zone sibling of your loved `236-particle-life-song` ❤️. Rendered entirely through a WebGL2 fragment shader (bioluminescent gold→teal→magenta), deliberately *not* three.js/canvas2d. For a 4-year-old: no reading, touch anywhere, never silent, no wrong notes.
+- **262-aurora-particle** — *the Sun writes tonight's score.* Press Start: three **live NOAA space-weather feeds** (solar-wind speed/density, the magnetic-field Bz/Bt, the Kp storm index) stream in and drive **both** a generative drone **and** a flowing aurora made of ~9,800 glowing particle-curtains with bloom. Speed→pitch+hue, density→drone partials, **Bz→major/minor + curtain height**, Kp→calm-green↔storm-red. Open it on two different days and it's a different piece because the Sun was. The **2nd real-world-data sonification** in the lab (after 233-earth-pulse) — that category is now a category, not a fluke, like you asked. *Why open it:* it's the loved 130-tsl-particle glowing-points language aimed at the night sky, and it sounds different every time you load it.
+- **2 more aurora takes explored, banked in IDEAS.md** — this was a DEEP fire: one concept, three render strategies. `aurora-drone-field` (raw-GLSL sum-of-sines curtains) and `aurora-raymarch` (true volumetric march that colours by **real aurora physics** — oxygen-green low, oxygen-red high, nitrogen-violet top). The raymarch one is the bigger swing; held only because I couldn't eyeball its visual quality before shipping.
 
-## Also explored this fire (WIDE — 3 builders, both banked build-verified)
-- **`kids-lenia-pond`** — a 4-year-old **breeds glowing lifeforms that glide and sing** (Bert Chan's **Lenia** continuous cellular automata, real orbium gliders). The biggest swing of the three; banked because its magic hinges on CA seed-stability I couldn't browser-verify before shipping. **One real-browser pass and it's ready.**
-- **`kids-light-cloth`** — **strum a hanging curtain of light** that twangs back (Jakobsen **Verlet** mass-spring cloth, glowing additive lines). The most tactile + most robust of the three. **Build-verified, demo-reliable, ready to ship.**
+## In progress / partial
+- None — clean ship. Aurora extensions queued (GOES X-ray flare feed → flare accents; finer 1-min Kp; resurrect the physics-accurate raymarch with a browser tuning pass).
 
-## Research finding worth a look
-- **At 260+ prototypes, "novel" now means "the lab has never touched it."** The obvious "make sound visible" ideas — cymatics, fluid, magnet — are all already built, so the real frontier is **emergent self-organization** (Physarum / Lenia / Verlet / DLA / Voronoi / curl-noise — all grepped clean). This vein deepens your loved `236` and had never reached kids. Full note: RESEARCH §280.
+## Research findings worth a look
+- **Web research tools were down all cycle** (529 overloaded, 10/10 attempts) — so per the rules I built off an existing recent-research seed (the 233 real-world-data thread that catalogued these NOAA feeds) rather than inventing a finding. Logged honestly in RESEARCH §281; a real fresh dive is queued for when tools recover.
 
 ## Open questions for Karel
-- **Make "emergent kids" a category?** Slime (shipped) + Lenia + cloth are a natural 3-take set, the way `233`+aurora is becoming the real-world-data category. Say the word and the next kids cycle resurrects Lenia or cloth.
-- **Cycle 281 is adult.** Still holding two build-verified seeds from cycle 279: **aurora-drone** (live solar wind → drone+aurora, makes real-world-data a category) or **live-duet-groover** (drums, completes the AI-band trio melody `251` ❤️ + harmony `256`). Which?
-- **Housekeeping done:** reconciled stale numbering — banked specs are now number-free; numbers belong to committed folders only. No action needed.
+- Aurora is now my 2nd "music about something other than music" piece. Push this into a real **category** next (live flights/transit → spatial arpeggio; weather → drone), or pivot back to the **"fly through YOUR piano"** spectral vein (243's banked tunnel/canyon siblings) the jury called the lab's richest?
+- Cycle 282 is a kids cycle — planning to extend the **emergent** set (Lenia "breed glowing life" or Verlet "strum a light-curtain") so slime+life+cloth becomes a body of work. Good?

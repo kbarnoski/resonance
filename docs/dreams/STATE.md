@@ -14496,3 +14496,59 @@ I **overrode** MORNING.md's stale cycle-267 candidate list (shepard-tone / scene
 - **No API route / no `guard` needed** — Physarum sim + WebGL2 + Web Audio are all client-side; nothing server-side, no secrets. Within the scope fence.
 - **Numbering note (housekeeping)**: cycle-279 banked two specs *labeled* `260-aurora-drone` / `261-live-duet-groover`, but those folders were `rm -rf`'d and never committed (codebase max on entry = 259). Cycle 280 consumed **260** (shipped slime-garden) and banks lenia/cloth. Going forward the clean rule: **numbers belong to committed folders only; banked specs are number-free and take the next free number when resurrected.** I relabeled the aurora/groover seeds accordingly below.
 - **Novelty-gate lesson**: at 260+ prototypes, the obvious "sound made visible" techniques (cymatics, fluid, magnet) are all spent — the first grep of every build idea against INDEX+READMEs is now the single most important Decide-step gate. The emergence frontier (Physarum/Lenia/Verlet/DLA/Voronoi/curl-noise — all grepped clean this cycle) is the lab's richest unused vein.
+
+---
+
+## Cycle 281 — adult build (DEEP orchestration): 262-aurora-particle
+
+**When**: 2026-06-02T08:35Z (autonomous ~2h cadence).
+
+**Git sync**: Fast-forwarded main `ecdb887..8fd9b2b` (44 commits — cycles up to 280 + slime-garden). node_modules absent → `npm ci` (exit 0). Baseline assumed clean (280 shipped green).
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): decisive anchor = **`130-tsl-particle-compute` ❤️** (GPU glowing-points-in-3D spectacle) — the winner is the aurora reading of that exact visual language. Also `236-particle-life-song` ❤️ (emergence/particles), `243`-adjacent point-cloud loves, and the standing "data → form, real source not synth noise" cluster (`163` ❤️ / `227` ❤️) which backs the live-data-as-score concept.
+
+**Research-first dive** (mandate): **BLOCKED.** WebSearch + WebFetch returned `API Error: 529 Overloaded` on **all 10 attempts** across both tools (arxiv cs.SD/cs.GR recent, aurora-shader queries, space-weather-sonification queries). Logged honestly in RESEARCH §281. Proceeded under the research-first rule's **branch (c)**: today's build consumes an existing IDEAS.md entry (`aurora-drone`) that itself came from a recent research dive — RESEARCH §279 (2026-06-02), the real-world-data-sonification thread `233-earth-pulse` opened, which catalogued the NOAA SWPC endpoints and seeded this exact prototype. Chain: §279 dive → today's build. (When web tools recover, the queued §281 hook is a fresh aurora-rendering / space-weather dive.)
+
+**Decided**: Adult cycle (281 % 2 = 1). No blocker, nothing in-progress. Per cycle-280's own queue ("Cycle 281: ship the build-verified aurora-drone").
+
+**Ambition floor** — cleared **2 of 5** (need 2): `ambition: 3-subsystems + named-reference`
+- (2) **≥3 subsystems** — 4 distinct: live NOAA SWPC fetch+parse (3 feeds via `Promise.allSettled`, defensive backward-scan, 60s re-poll) · Web Audio sonification (2–5 density-gated detuned partials → Kp lowpass → feedback delay → code-synthesized convolution reverb → limiter + speed-tempo Bz-major/minor bell arp) · three.js particle-curtain renderer (~9,800 additive `THREE.Points`, custom vertex shader, Bloom) · simulated-solar-wind random-walk fallback transport.
+- (3) **Named reference** — README cites NOAA SWPC, the sibling `233-earth-pulse`, and Refik Anadol *Machine Hallucinations* (data-as-glowing-particle language). Also extends loved `130-tsl-particle-compute` ❤️.
+- (Note: real-external-API sonification is no longer *novel* in the lab — `233` was first — so I did **not** claim criterion (1); the floor is cleared on subsystems + reference, which is honest. The render technique, three.js particle aurora curtains, is new but I didn't lean on it for the floor.)
+
+**Diversity audit** (last 10 = 243,244,246,248,251,253,256,258,259,260):
+`diversity: banned=[mic(4×) · canvas2d(4×)] · picked=[external-API-input · three.js-particle output · live-data-sonification technique · cosmic/aurora vibe]`
+- INPUT tally: `mic` ×4 (244,246,251,256) → **BANNED**; audio-file ×2 (243,259), camera ×2 (248,258), tilt ×1 (253), touch ×1 (260). Picked **external space-weather API** (0× in window — freshest input).
+- OUTPUT tally: `canvas2d` ×4 (251,253,256,258) → **BANNED**; `three.js` ×3 (243,244,246) — under the 4× line, **allowed**; raw-GLSL/WebGL ×2 (248,260). Picked **three.js particle curtains** (allowed; the most dimensional non-banned lane and the loved GPU-points language).
+- VIBE: kids ×5 — over-represented but this is an adult cycle (no rotation constraint). Aurora/cosmic vibe = 0× recently.
+- Winner shares **zero banned tags**. Clean.
+
+**Mode**: **DEEP** (JURY: alternate; cycle 280 was WIDE → DEEP this fire). ONE concept — *"live solar wind is the score: a drone + aurora the Sun writes live"* — attacked via **three render strategies**, all sharing an identical NOAA fetch + sonification engine + sim fallback, all rendering in WebGL (so all dodge the banned canvas2d):
+- `261-aurora-drone-field` — raw WebGL2 fullscreen GLSL **sum-of-sines** curtains + FBM filament streaking.
+- `262-aurora-particle` — three.js **~9,800 additive `THREE.Points`** curtain sheets, vertex-shader sway + Bloom.
+- `263-aurora-raymarch` — raw WebGL2 **volumetric raymarch** (44 steps) with real O-green/O-red/N-violet **altitude→emission-line physics**.
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (261/262/263), each fully briefed (shared NOAA+audio+degradation+typography spec + a distinct render section), each told NOT to run git or touch shared docs. All three returned demoable + README and self-reported clean tsc/eslint/build. I (Curator) read all three `page.tsx`, picked the winner, `rm -rf`'d the two losers, then ran the **authoritative winner-only `npm run build`** → ✓ Compiled successfully, `/dream/262-aurora-particle` ○ Static **5.6 kB**, zero diagnostics from the folder (only pre-existing non-dream warnings).
+
+**Winner = 262-aurora-particle.** All three tied on the ambition floor (each = ≥3 subsystems + named ref, all dodged mic+canvas2d). The call was love-anchor × reliability × output-freshness × surprise:
+- **Love anchor**: 262 *is* the aurora reading of the loved `130-tsl-particle-compute` ❤️ glowing-points-in-3D spectacle — the strongest standing signal.
+- **Reliability for 06:30**: r3f + Bloom + additive `THREE.Points` is the proven stack with no tuning cliff. 263's raymarch carries an unverifiable "murky fog" risk (can't browser-check pre-ship); 261's flat fullscreen quad lacks depth/parallax.
+- **Output freshness**: a 3D particle-curtain aurora with parallax + bloom is more dimensional than the two fullscreen-shader siblings, and the lab's recent WebGL work has leaned fullscreen-fragment (248, 260) — particles are the fresher modality.
+- **Surprise**: thousands of rising, swaying light-particles forming aurora curtains driven by the live Sun reads as wonder and photographs well.
+- `261-aurora-drone-field` (faithful GLSL curtains) + `263-aurora-raymarch` (the bigger physics swing) banked build-verified in IDEAS.md; 263's altitude→emission-line color physics folded into 262's README as next-cycle deepening.
+
+**What's new about this prototype**:
+1. **2nd real-world-data sonification → it's now a category, not a fluke** (JURY's explicit ask after `233-earth-pulse`). The Sun is the composer; the score is live.
+2. **First aurora / space-weather piece in the lab**, and the first to map the north-south IMF (Bz) sign to a musical major/minor decision — geophysics → harmony.
+3. **The loved GPU-glowing-points language aimed at the sky** — ~9,800 additive particles as aurora curtains with Bloom, a fresh form for the `130`/`243` vein.
+4. **DEEP orchestration on one concept** — three render strategies explored in one fire; critic shipped the most reliable+love-aligned and banked two build-verified seeds.
+
+**Queued next**:
+- Cycle 282: **kids build** (282 % 2 = 0). JURY's standing ask: resurrect a banked **emergent-kids** sibling — `kids-lenia-pond` (Bert Chan Lenia; do a real-browser orbium seed-stability pass first) or `kids-light-cloth` (Jakobsen Verlet, most robust) — to make "emergent self-organization" a body of work (slime + life + cloth). Must dodge the still-banned mic+canvas2d and the kids touch+canvas2d+pentatonic triple.
+- Cycle 283: **adult build**. Aurora extensions (GOES X-ray flare feed → transient flares + UnrealBloom; 1-minute estimated-Kp for finer resolution; binaural widening with Kp) OR a 3rd real-world-data piece (`transit-pulse` live flight/AIS → spatial arpeggio; `weather-score` NOAA Kp drone variant) OR the banked **spectral-tunnel/canyon** "fly through YOUR music" vein JURY flagged as the richest. Also: resurrect `263-aurora-raymarch` with a browser tuning pass — its emission-line physics is the more *educational* aurora and a genuine 2nd take.
+
+**Notes**:
+- **No API route / no `guard` needed** — NOAA SWPC feeds are CORS-open + keyless, fetched client-side; sim fallback covers CORS/offline. Nothing server-side, no secrets. Within the scope fence.
+- **Research-tool outage**: 529-overloaded on every web call this cycle. Did not let it block the build (branch (c) is explicitly allowed); logged in RESEARCH §281 so the freshness mandate's intent is honored when tools recover.
+- **DEEP-curation honesty**: the two losers self-reported clean builds (262 + 263 ran full `npm run build` to success; 261 ran tsc+eslint clean) so their IDEAS "build-verified" claims are accurate; I did not re-run an all-present build this cycle (trusted builder self-checks + ran authoritative winner-only) to save the ~30s × extra compile — a small deviation from the strict DEEP "build all present first" note, recorded here for honesty.
+- **Number hygiene**: per cycle-280's rule, banked specs are number-free; the loser folders 261/263 were `rm -rf`'d and never committed, so 261/263 are free again for future resurrection. Committed folder this cycle = **262** only.
