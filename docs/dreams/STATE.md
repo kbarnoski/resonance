@@ -14329,3 +14329,56 @@ I **overrode** MORNING.md's stale cycle-267 candidate list (shepard-tone / scene
 - DEEP-mode curation cost: building with BOTH candidates present first (then winner-only) is worth the extra ~18s — it confirms the loser also compiles before I bank it as a "build-verified" seed (so the IDEAS claim is true), and de-risks the winner pick.
 - No API route / no `guard` needed: getUserMedia + MediaPipe + Web Audio are all client-side; nothing server-side, no secrets.
 - Builder discipline held: folder isolation meant two agents wrote concurrently with zero conflict; neither touched git or shared docs; I (orchestrator) alone committed. One builder noted RESEARCH.md was already modified + the sibling folder already present — correctly left both alone.
+
+---
+
+## Cycle 278 — kids build (DEEP orchestration): 258-kids-mirror-pets
+
+**When**: 2026-06-02 UTC (autonomous ~2h cadence).
+
+**Git sync**: Fast-forwarded main `ecdb887..5bcc7ab` (39 commits — cycles 269–277 + jury verdict + the builder's-path journey page). node_modules absent → ran `npm ci` (exit 0). Baseline `npm run build` clean before building.
+
+**Process note (for Karel/future me)**: STATE.md and INDEX.md were last updated at cycle 268; cycles 269–277 shipped code + MORNING.md but **skipped the STATE/INDEX log** (visible in `git log` vs `grep "^## Cycle" STATE.md`). I picked up the numbering from `git log` (last shipped 256-live-duet-harmonist = cycle 277) and the folder list (last folder 256). This cycle restores the STATE+INDEX discipline. The 269–277 reasoning lives in their commit messages + JURY.md if you need to reconstruct it.
+
+**Love signal** (`curl …/api/dream/votes`, 32 loved): newly relevant — `234-kids-hand-creature` ❤️ (the lab's first MediaPipe piece, loved → "do more body/face tracking"), plus standing kids-mirror loves `104-kids-mirror-draw` ❤️ and swarm-spectacle `130-tsl-particle-compute` ❤️. These three directly biased the winner pick (a face-tracking *mirror* rendered as a *swarm*).
+
+**Research-first dive** (mandate): RESEARCH.md §278 (2026-06-02). MediaPipe **FaceLandmarker** emits **52 ARKit-style blendshapes** (jawOpen, mouthSmile*, browInnerUp, eyeBlink*) as clean 0..1 signals in the browser — a free, calibration-free continuous *expression bus* — and the lab had shipped MediaPipe *Hands* (234) but never *Face*. designerzen's **InterFACE** proves "your face is the instrument" is musical; nobody aimed it at a 4-year-old who can't read or reach a keyboard. Chain today's research → today's build: §278 → face-music kids fire.
+
+**Decided**: Kids cycle (278 % 2 = 0). No blocker, nothing in-progress.
+
+**Ambition floor** — cleared **3 of 5** (need 2): `ambition: novel-technique + 3-subsystems + named-reference`
+- (1) **Technique never used** — grepped INDEX + READMEs for `FaceLandmarker|face mesh|blendshape`: zero hits. **First face-tracking prototype in the lab** (234 used HandLandmarker; face was only ever queued — `147-face-synth`).
+- (2) **≥3 subsystems** — 4 distinct: webcam capture + MediaPipe FaceLandmarker (478 mesh + 52 blendshapes) · per-frame face→mosaic painter (bbox + landmark sampling → tile activation) · Canvas2D pet-mosaic renderer with eased brightness/blink/sparkle · Web Audio music box (voice pool + column-sweep arpeggio scheduler + always-on pad + limiter).
+- (3) **Named reference** — README cites **Daniel Rozin** *Wooden/PomPom Mirror* (an AGENT.md-listed target artist) + MediaPipe FaceLandmarker.
+- (Also brushes (5): built directly off this cycle's RESEARCH §278.)
+
+**Diversity audit** (last 10 = 234,236,238,243,244,246,248,251,253,256):
+`diversity: banned=[mic · three.js/WebGL] (+ kids over-rep, but rotation-forced) · picked=[camera/face-input · canvas2d-output · face-landmark-mosaic-technique · kids-vibe]`
+- INPUT tally: `mic` ×5 (243,244,246,251,256) → **BANNED**; tilt ×2, camera ×1, pointer/drag ×2.
+- OUTPUT tally: `three.js/WebGL` ×6 (234,236,238,243,244,246) + raw GLSL (248) → **BANNED**; canvas2d ×3 (251,253,256) — under the 4× line, allowed.
+- VIBE: `kids` ×5 → over-represented, but the even-cycle rotation **forces** kids (per the cycle-268 precedent, satisfy the spirit by dodging the banned *combinations*). Mirror Pets uses **camera/face input** (not mic) + **Canvas2D output** (not three.js) + the banned kids template (touch+canvas2d+pentatonic-tap) is dodged because the *input is the face*, not a tap. Shares zero banned tags.
+
+**Mode**: **DEEP** (JURY directive: "stop shipping solo kids builds — orchestrate the kids cadence"; and "go for the bigger swing"). One ambitious concept — *"a 4-year-old plays music with their face"* — attacked via two aesthetics/mappings in parallel:
+- `258-kids-mirror-pets` — Daniel-Rozin mosaic of singing "pets" that form the face (swarm portrait + sweep-arpeggio).
+- `257-kids-face-band` — a single glowing creature that mirrors the child's expressions (jawOpen→sung-voice volume, brow→pitch).
+
+**Orchestration**: spawned 2 Builder subagents in parallel (single message), folder-isolated (257 vs 258), each told NOT to run git or touch shared docs, given the exact `webpackIgnore` MediaPipe CDN pattern + kids rules + typography rules + Canvas2D-only (no three.js). Both returned demoable + README. I (Curator) judged, picked the winner, banked the loser, and ran the authoritative build with winner-only.
+
+**Winner = 258-kids-mirror-pets.** Reasoning: equal ambition floor (both = first FaceLandmarker + ≥3 subsystems + named ref), but 258 is the **bigger swing + stronger reference** — a genuine Daniel-Rozin homage (Rozin is named in AGENT.md as a target artist), the swarm-portrait-that-sings is more "huh, didn't know we could do that" than a face that copies your face, and it aligns with three of Karel's loves (`104-kids-mirror-draw` mirror, `130-tsl-particle-compute` swarm, `234-kids-hand-creature` face/body tracking). 257 (the more *legible* single-creature take — its clearest-for-a-4yo cause/effect is real) is build-verified and banked as the demo-reliable fallback.
+
+**Curation fix before shipping** (counts as the one allowed fix): the winner had (a) a broken "design notes" link pointing at a `.md` Next route (404) → repointed to the GitHub README URL + bumped its text to `text-white/75`; and (b) the full-build ESLint/TS rejected the MediaPipe `any` import that the builder's isolated typecheck let pass → applied the documented house pattern from 234 (`// @ts-expect-error - runtime ESM import, no local types` + `// eslint-disable-line @typescript-eslint/no-explicit-any` on the single-line import, plus an eslint-disable on the `detectForVideo` result). Authoritative `npm run build` then **exit 0** — `258-kids-mirror-pets` `○ Static`, 4.27 kB, 313/313 static pages.
+
+**What's new about this prototype**:
+1. **First face-tracking piece in the lab.** MediaPipe Hands landed 10 cycles ago (234); Face is a categorically richer control surface (52 blendshapes) and this is the first to use it.
+2. **A Rozin soft-mirror that *sings*.** Rozin's mirrors are silent sculptures; this makes the mosaic units into a pentatonic music box conducted by your face — joins the interactive-mirror lineage with audio.
+3. **Kids zone keeps escaping flat glass.** 234 (hands) → 238 (tilt) → 258 (face): a third embodied, no-touch kids input, exactly the direction JURY said the five floor-0 tap-chime builds should have taken.
+4. **Orchestration on the kids cadence** — JURY's headline fix ("run the WIDE/DEEP fan-out on kids, don't ship solo kids builds"). Two face-music aesthetics explored in one fire; critic shipped the stronger, banked the other build-verified.
+
+**Queued next**:
+- Cycle 279: **adult build** (279 % 2 = 1). Must clear the floor. Strong candidate per MORNING/JURY: complete the **"AI band" trio** — ship the build-verified **Groover** (drums/tempo, ~728 lines) so melody (`251-trader` ❤️) + harmony (`256-harmonist`) + rhythm exist as a reactive ensemble. Alternatively an **adult face-instrument** sibling (blendshapes → expressive synth params: vibrato from brow micro-movement — the InterFACE "expressive mode" for grown-ups), or a second **real-world-data sonification** (`weather-score`/`transit-pulse`) so 233's category becomes a body of work.
+- Cycle 280: **kids build**. Resurrect the banked `257-kids-face-band` (single-creature face toy, build-verified, one cycle) so the face-music concept exists in both *mosaic-mirror* and *single-creature* form — a two-take set; OR a two-face duet extension of 258 (`numFaces: 2`).
+
+**Notes**:
+- **No API route / no `guard` needed** — getUserMedia + MediaPipe (CDN) + Web Audio are all client-side; nothing server-side, no secrets. Within the scope fence.
+- The MediaPipe `any`-import gotcha is now bitten twice (234, 258): the builder subagent's isolated `tsc` does NOT catch `@typescript-eslint/no-explicit-any` or the CDN module-resolution error — the **full `npm run build` does**. Future briefs should hand builders the *full* house pattern (`@ts-expect-error` + `eslint-disable-line` on a single-line import) verbatim so the curator doesn't have to patch it. I've noted this for next cycle's brief template.
+- DEEP-mode curation cost paid off again: both candidates were build-checked together first, so the banked 257 is a *true* build-verified seed, not a guess.
