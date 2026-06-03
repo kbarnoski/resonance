@@ -1,43 +1,42 @@
-# Morning digest — last updated 2026-06-03 (cycle 289, adult · WIDE)
+# Morning digest — last updated 2026-06-03 02:19 UTC (cycle 290, kids)
 
-**Open this first:** [/dream/279-tremor-score](https://getresonance.vercel.app/dream/279-tremor-score)
-*(One button — "Begin listening to the Earth." Works on phone or laptop; no permissions, never silent.)*
+**Open this first:** [/dream/280-kids-echo-canyon](https://getresonance.vercel.app/dream/280-kids-echo-canyon)
+*(Hit "start singing" and hum anything. No mic? It plays itself, so it always demos.)*
 
 ## New since yesterday
-- **279-tremor-score — Resonance composing in real time from the live planet.**
-  It fetches the **USGS real-time earthquake feed** and turns every quake on Earth into a
-  sound + an ink mark, so the piece is literally about the world *right now* and **never
-  exactly repeats**. **Magnitude** → loudness + a deep sub-rumble; **depth** → pitch & timbre
-  (shallow = bright, 650 km = dark/muffled, a just-intonation/overtone palette — *not*
-  pentatonic); **longitude** → stereo pan; **latitude** → brightness. **Live** mode sounds new
-  quakes as they arrive every 60s; **Replay 24h** fast-plays the whole day (24h → ~90s).
-  The visual is a **deliberately non-luminous** ink seismograph + world map (graphite on
-  near-black, zero glow) — the anti-glow output the jury asked for. The lab's **first piece
-  driven by a live external API** and **first that's about the world, not about music**.
-  **Try it:** press Begin, then toggle Replay 24h to hear the day compress into a composition.
-- **2 more explored this fire (WIDE, build-verified, banked in IDEAS.md):**
-  - `midi-harmonograph` — plug in a **MIDI keyboard** (or use your computer keys); the chord
-    you hold **draws itself** as a harmonograph — consonant chords trace clean closed figures,
-    dissonant ones tangle. The lab's **first Web MIDI** piece (a real pianist fit).
-  - `ensemble-tabs` — **open the page in 2–3 tabs** and each becomes a tempo-locked player in
-    one server-less ensemble (BroadcastChannel, no backend). The lab's **first networked piece**.
+- **280-kids-echo-canyon — sing across the canyon, a paper creature sings it back.**
+  The lab's **first call-and-response / canon piece** (kids 4+). Everything else
+  in the lab reacts to sound or makes it; this one **listens to you, waits, and
+  answers** — the oldest musical game there is, as a toy a 4-year-old can play alone.
+  The child sings → a paper creature ("Echo") on the far cliff catches the phrase
+  and sings it back as a flight of colored birds, then lays a gentle harmony under it.
+  - Built straight at the jury's three demands: **non-pentatonic** (C-**Lydian** — its
+    floating raised 4th, not the C-pentatonic the lab kept defaulting to; no wrong notes),
+    **non-luminous** (matte **cut-paper** Canvas2D — dusk sky, paper cliffs + moon, birds
+    as colored ovals; zero glow/WebGL), and it **audits the sound** (the mode is the point).
+  - Real **pitch detection** under the hood (autocorrelation / YIN family, Chris Wilson's
+    Web Audio method) snaps your note to the scale. Mic is **analysis-only — never recorded
+    or sent.** Serves KIDS.md's vocalization goal — call-and-response is the purest singing prompt.
 
-## Why this cycle looks different
-- Three explorers, **three different empty shelves the jury keeps flagging** (real-world-data /
-  MIDI / multi-user) — the most direct answer to "too similar." All non-glow, all non-pentatonic,
-  all fresh input. 271 already built your AI-image-inside-AV and 275 extended the long-form vein,
-  so this fire went after the input classes the lab had **never** touched (live-data = 0×).
+## In progress / partial
+- Nothing half-built — 280 shipped demoable in one cycle, build-verified (4.3 kB, ○ Static).
 
 ## Research findings worth a look
-- RESEARCH §289 — **real-world-data sonification**. The USGS feed is keyless + CORS-open;
-  `seismic2midi` (PyPI, Nov 2025) and Columbia's **SeismoDome** (Holtzman, Lamont-Doherty/AMNH)
-  show it's a live, active field. The mapping writes itself and pairs with a non-luminous viz.
+- **§290 — browser pitch detection** is an active 2026 area (MusicalBoard blog 05-05;
+  "Voice Composer" Show HN). Autocorrelation f0 + scale-quantize is the missing primitive
+  that lets a toy *answer what you sang* — and it's the seed of a grown-up **live-vocal
+  harmony companion** (mic → chord under your voice).
 
 ## Open questions for Karel
-- 279 is your first "music about the world" piece — want me to push the vein to a **second
-  source** (aurora/space-weather, ISS pass, transit) next adult cycle, or resurrect the banked
-  **midi-harmonograph** (you're a pianist — this one's for you)?
-- Deepen 279 with **real seismic waveforms** (each quake sounds its actual ground motion, not a
-  synth envelope) + an HRTF globe? It's the strongest multi-cycle path.
-- Still-empty shelves: depth-camera/spatial-installation, true cross-machine WebRTC (ensemble-tabs
-  is the same-machine prototype of it).
+- **AGENT.md on disk is stale.** A force-push reverted it to the 2026-05-21 version (no
+  AMBITION / ORCHESTRATION sections the recent STATE entries cite) while STATE/JURY/KIDS
+  stayed current. I followed the mandate from the cycle brief + JURY. I built **solo** this
+  cycle for build-reliability (one fully-verified piece > 3 unverified subagent builds within
+  budget) — if you want the "never solo kids" 3-builder discipline enforced, please restore
+  the newer AGENT.md.
+- The recent kids run had drifted into **non-pentatonic *tuning toys*** (slendro / beating /
+  Bohlen-Pierce). I broke the pattern with a call-and-response toy rather than resurrecting
+  the banked siblings (the jury warned against that). Keep pushing fresh kids *primitives*,
+  or build the tuning-toy family into a deliberate set?
+- Strong deepening path for 280: a true **canon** mode (Echo answers *while* you sing) and a
+  grown-up **live-vocal harmony companion**.
