@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-06-03 ~12:20 UTC (cycle 295)
+# Morning digest — last updated 2026-06-03 ~14:20 UTC (cycle 296)
 
-> **Jury verdict today**: The floor is being cleared but gamed — same "poke-a-thing-that-sings" form, touch input at 5×, zero multi-cycle builds, and three spatial pieces banked-but-never-shipped; today, ship the breadth you've already paid for instead of citing new breadth. See `docs/dreams/JURY.md`.
+> **Did the jury's homework today.** Yesterday's verdict: "ship the spatial breadth you've already paid for instead of citing new breadth; for kids, break the *form* — make the child move their body, not poke." This kids cycle does exactly that. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **[/dream/287-mirror-choir](https://getresonance.vercel.app/dream/287-mirror-choir)** — open this first. **Your whole body becomes a choir.** The lab's *first* body-tracking piece: the camera tracks your 33 body landmarks, your hands become two sung voices (pitch = how high you raise them), arms-wide opens the vowel oo→ah, and you're drawn back as a matte **wooden mirror** (Daniel Rozin) — warm tiles, no glow. Two firsts in one build: **MediaPipe pose ML** + **vocal-formant synthesis**. No camera / denied? It drops to a self-playing "ghost dancer" so it still demos on your phone with nothing allowed. *Why open it: the most "huh, I didn't know we could do that" build in weeks — your body, sung back at you.*
+- **[/dream/290-kids-sound-safari](https://getresonance.vercel.app/dream/290-kids-sound-safari)** — open this first, **with headphones if you can**. For kids (4+). Six animals are hidden in the air *around* you, each singing softly. Your child **turns their whole body in a circle** to find each one by ear — face an animal and it swells to front-and-center, the phone buzzes, it blooms onto the screen and sings "found!" Find all six → they sing a chord together. *Why open it: the lab's **first audio-FIRST / near-screenless** piece — the screen is just a faint compass; the game lives in spatial sound moving around your head. And it's the opposite of yesterday's 287 (body→picture): this is body→**sound in space**.*
+- It uses real **HRTF binaural panning** + the phone's **tilt/heading sensor** as the controller (the head-tracked-spatial-audio idea from CES 2026, no special hardware). This is the banked `still-room` concept finally shipped — recast for a four-year-old.
 
 ## How it was made (the orchestration)
-- Ran **WIDE**: 3 parallel builder agents, 3 divergent adult concepts on 3 empty shelves, shipped the strongest. The other two are **build-verified and banked** in IDEAS.md:
-  - **aurora-wire** — live NOAA space-weather (solar wind / Bz / Kp) → a cosmic drone + matte aurora. The lab's 2nd real-world-data source (after 279's earthquakes).
-  - **still-room** — eyes-closed HRTF spatial audio you navigate by **tilting your phone**; the tone you face swells, the ones behind go quiet. First non-screen / tilt-controller piece. *(Strong, build-safe standalone — I'd ship this next.)*
+- Ran **WIDE** again: 3 parallel builder agents, 3 divergent *kids* concepts, each breaking the "poke-a-thing" rut a different way. Shipped the strongest; the other two are banked in IDEAS.md:
+  - **kids-shadow-dance** — turn on the camera and *dance*; a meadow blooms and sings from your movement (frame-difference motion, no precise control needed).
+  - **kids-sky-band** — today's **real weather** (live Open-Meteo) becomes a little band; different every day because the sky is real.
 
-## Research findings worth a look
-- RESEARCH §295: MediaPipe Pose is now a real browser primitive (33 landmarks, CDN, no install) and head-tracked spatial audio went mainstream at CES 2026 — the phone's own tilt sensor can be the head-tracker, no VR hardware. Both shelves the lab had never touched; this fire opened the first and banked the second.
+## If there's no motion sensor (e.g. your laptop)
+- It detects that within ~2s and **tours itself hands-free** (or drag / use ← →), so it always demos — even on desktop with nothing allowed.
 
 ## Open questions for Karel
-- **Doc-drift to know about**: a force-push **rewound STATE.md to cycle 290 and RESEARCH.md to §293**, even though folders/INDEX/git advanced through cycle 294 (folder 286). Prototypes 283–286 shipped fine and INDEX still describes them, but their STATE/RESEARCH write-ups were lost in the rewind. Nothing of yours is broken — flagging so the narrative gap isn't a surprise. (AGENT.md is back to the *current* version with the ambition + orchestration mandates.)
-- 287 is **build-verified, not browser-verified** — if MediaPipe doesn't load live, the ghost-dancer fallback already covers it. Worth a 10-sec camera test on the deploy.
-- Next (cycle 296) is a kids cycle — leaning toward a kids body-tracking "move-and-it-sings" toy now that 287 de-risked the MediaPipe path.
+- 290 is **build-verified, not browser-verified**: the spatial "you're facing it" cue is strongest on **headphones** — on a phone speaker the swell + bloom + buzz carry it, but a 10-sec headphone test on the deploy would tell us if it reads. If weak, it's a one-line widen.
+- **Jury provocation #1 is still open**: zero multi-cycle builds in 15+ cycles. I've queued **cycle 297 to DEEPEN 287-mirror-choir** (multi-person choir / record-a-canon-with-past-you) instead of starting yet another new technique — say the word if you'd rather I keep going wide.
+- Force-push doc-drift persists (STATE/RESEARCH narrative has gaps from a rewind), but all prototypes + INDEX are intact.
