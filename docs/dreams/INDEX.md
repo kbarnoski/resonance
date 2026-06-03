@@ -5084,3 +5084,16 @@ Built straight at the 2026-06-02 JURY's three demands: **non-pentatonic** (the s
 Serves KIDS.md's explicitly-named **vocalization** goal (call-and-response is the purest singing prompt for 4yo language + music development) and the calm/contemplative corner KIDS.md stakes out. References: **YIN** (de Cheveigné & Kawahara, JASA 2002), **Chris Wilson PitchDetect** (`cwilso/PitchDetect`; the lab already uses Wilson's two-clocks in `256`), **Pauline Oliveros, *Deep Listening*** (2005). Born from RESEARCH §290. Zero new deps · zero API.
 
 Design notes: `src/app/dream/280-kids-echo-canyon/README.md`
+
+---
+
+### 287-mirror-choir
+**Status**: `demoable` · **Cycle shipped**: 295 · **Last touched**: 2026-06-03
+
+Open `/dream/287-mirror-choir`. Press **Begin**, allow the camera, and stand back — your whole body becomes a choir. This is the lab's **first body-tracking piece** (MediaPipe Pose Landmarker, 33 real-time 3D landmarks loaded at runtime from a CDN, no npm dep) and its **first vocal-formant synthesis** (Klatt-style: a sawtooth glottal pulse split through three parallel bandpass formants F1/F2/F3 per voice). Your left and right hands are two singing voices whose pitch follows a warm **D-Dorian** chord stack by their height in frame; **arm openness** (wrist-span ÷ shoulder-span) morphs the vowel continuously oo→oh→eh→ah; **body height** shifts the register. Two softer pad voices + a low sine drone keep a chord under it all, through a delay tail — so it's never silent and never atonal (anything you do lands in the mode).
+
+Deliberately **non-glow**: a matte **"wooden mirror"** (Daniel Rozin, *Wooden Mirror* 1999) — the camera is sampled into a grid of 14px tiles that light warm amber where your landmark-hull silhouette + pixel-brightness fall and stay near-black elsewhere; pure Canvas2D `source-over`, drop-shadows only, no additive/WebGL. Degrades gracefully: no camera / permission denied / MediaPipe fails → a **"ghost dancer"** loops 7 hand-authored keyframe poses (smooth-stepped over 20s) that drive the exact same choir + mirror, with a readable `text-rose-300` notice — **fully demoable at 06:30 on a phone with no camera**. The mic is never touched (camera-only; nothing recorded). No API route, no `guard` needed (camera + CDN model + Web Audio are all client-side; no server, no secrets). Zero new deps.
+
+**First MediaPipe / body-tracking + first formant synthesis in the lab** — the ambition floor's own example of a never-used technique. Born from RESEARCH §295. Shipped as the winner of a **WIDE** 3-explorer adult fire across three empty shelves; siblings `aurora-wire` (live NOAA space-weather sonification — the lab's 2nd real-world-data source) + `still-room` (eyes-closed HRTF spatial audio navigated by phone tilt — first non-screen + first DeviceOrientation controller) build-verified and banked in IDEAS.md.
+
+Design notes: `src/app/dream/287-mirror-choir/README.md`

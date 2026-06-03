@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-06-03 ~10:20 UTC (cycle 294)
+# Morning digest — last updated 2026-06-03 ~12:20 UTC (cycle 295)
 
 ## New since yesterday
-- **[/dream/286-kids-jelly-choir](https://getresonance.vercel.app/dream/286-kids-jelly-choir)** — Jelly Choir (kids 4+).
-  *Open this on a touchscreen:* **poke a wobbly jelly and it sings its own wobble.** Five candy-colored googly-eyed jellies; flick one and real soft-body physics makes it overshoot and jiggle, and the *amount it's jiggling* literally drives the voice — silent at rest, louder/brighter the harder you squish, shimmering vibrato as it wobbles. Poke two at once → they harmonize (pure just-intonation interval + a glowing thread between them). The lab's **first mass-spring / Verlet soft-body → audio** instrument.
+- **[/dream/287-mirror-choir](https://getresonance.vercel.app/dream/287-mirror-choir)** — open this first. **Your whole body becomes a choir.** The lab's *first* body-tracking piece: the camera tracks your 33 body landmarks, your hands become two sung voices (pitch = how high you raise them), arms-wide opens the vowel oo→ah, and you're drawn back as a matte **wooden mirror** (Daniel Rozin) — warm tiles, no glow. Two firsts in one build: **MediaPipe pose ML** + **vocal-formant synthesis**. No camera / denied? It drops to a self-playing "ghost dancer" so it still demos on your phone with nothing allowed. *Why open it: the most "huh, I didn't know we could do that" build in weeks — your body, sung back at you.*
 
-## How it clears the gates
-- **Ambition 4/5**: novel technique (mass-spring/Verlet soft-body → audio, 0× ever) + named refs (nlm arXiv 2603.10240 · Provot 1995 · Müller PBD 2007) + 4 subsystems (Verlet physics · deformation-energy→synth mapping · inline-SVG render · multi-touch) + same-research-chain (§292 physical-modeling dive).
-- **Diversity**: **inline-SVG** output (dodges the canvas2d 5× ban) · **just-intonation** tuning (non-pentatonic, the JURY's "audit the sound" mandate) · soft-body technique (0× ever) · touch-poke input (3× → under the line).
-- It's a kids cycle (294 even), and the queue explicitly flagged resurrecting a physical-modeling sibling from the cycle-292 WIDE fire — this is that piece, build-verified once already.
+## How it was made (the orchestration)
+- Ran **WIDE**: 3 parallel builder agents, 3 divergent adult concepts on 3 empty shelves, shipped the strongest. The other two are **build-verified and banked** in IDEAS.md:
+  - **aurora-wire** — live NOAA space-weather (solar wind / Bz / Kp) → a cosmic drone + matte aurora. The lab's 2nd real-world-data source (after 279's earthquakes).
+  - **still-room** — eyes-closed HRTF spatial audio you navigate by **tilting your phone**; the tone you face swells, the ones behind go quiet. First non-screen / tilt-controller piece. *(Strong, build-safe standalone — I'd ship this next.)*
 
-## In progress / partial
-- **DEEPEN 286**: true eigenmode partials (timbre = the shape's real resonance) · real inter-blob collision so you can shove two jellies together · device-tilt gravity so they all sag and bounce. README lists the path.
-- **DEEPEN 285** (mosaic-listener): factor-oracle so it continues a phrase on its own; YIN pitch + MFCC descriptors; KD-tree for thousands of grains.
+## Research findings worth a look
+- RESEARCH §295: MediaPipe Pose is now a real browser primitive (33 landmarks, CDN, no install) and head-tracked spatial audio went mainstream at CES 2026 — the phone's own tilt sensor can be the head-tracker, no VR hardware. Both shelves the lab had never touched; this fire opened the first and banked the second.
 
 ## Open questions for Karel
-- **AGENT.md still keeps reverting** to the stale 2026-05-21 version on every force-push (no ambition/diversity/orchestration sections). I'm following the mandate from the cycle brief — worth pinning the canonical AGENT.md so the drift stops.
-- `286` is **build-verified, not browser-verified** this fire — if a poke feels unresponsive or a jelly looks wrong when you open it, tell me and I'll tune the spring constants / grab radius next cycle.
+- **Doc-drift to know about**: a force-push **rewound STATE.md to cycle 290 and RESEARCH.md to §293**, even though folders/INDEX/git advanced through cycle 294 (folder 286). Prototypes 283–286 shipped fine and INDEX still describes them, but their STATE/RESEARCH write-ups were lost in the rewind. Nothing of yours is broken — flagging so the narrative gap isn't a surprise. (AGENT.md is back to the *current* version with the ambition + orchestration mandates.)
+- 287 is **build-verified, not browser-verified** — if MediaPipe doesn't load live, the ghost-dancer fallback already covers it. Worth a 10-sec camera test on the deploy.
+- Next (cycle 296) is a kids cycle — leaning toward a kids body-tracking "move-and-it-sings" toy now that 287 de-risked the MediaPipe path.
