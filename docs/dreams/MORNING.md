@@ -1,42 +1,43 @@
-# Morning digest — last updated 2026-06-02 (cycle 288, kids · WIDE)
+# Morning digest — last updated 2026-06-03 (cycle 289, adult · WIDE)
 
-**Open this first:** [/dream/276-kids-balloon-tritave](https://getresonance.vercel.app/dream/276-kids-balloon-tritave)
-*(Best on an iPad — tilt to steer. On a laptop, move the mouse to steer; it works the same.)*
+**Open this first:** [/dream/279-tremor-score](https://getresonance.vercel.app/dream/279-tremor-score)
+*(One button — "Begin listening to the Earth." Works on phone or laptop; no permissions, never silent.)*
 
 ## New since yesterday
-- **276-kids-balloon-tritave — a kids toy tuned to a scale with no octave.**
-  Tilt the tablet to drift a little paper cloud-bird through a dusk sky of cut-paper
-  balloons; each balloon it brushes **sings**. The twist is the SOUND: it's the
-  **Bohlen–Pierce scale**, whose repeat interval is the **tritave (3:1)** — a perfect
-  twelfth — not the 2:1 octave. It's the **lab's first non-octave / non-pentatonic
-  tuning in 280+ prototypes**. Three balloons sit on BP's signature **3:5:7 chord** so
-  brushing them together sounds rooted; the voice is a clarinet-like odd-harmonic tone
-  (BP's natural timbre) over a soft drone. "Nothing sounds wrong" — but from a wholly
-  different harmonic universe. Matte cut-paper SVG (no glow), always-on drone, no
-  score/fail. **Try it:** brush a few balloons in a row, then two at once for a chord.
+- **279-tremor-score — Resonance composing in real time from the live planet.**
+  It fetches the **USGS real-time earthquake feed** and turns every quake on Earth into a
+  sound + an ink mark, so the piece is literally about the world *right now* and **never
+  exactly repeats**. **Magnitude** → loudness + a deep sub-rumble; **depth** → pitch & timbre
+  (shallow = bright, 650 km = dark/muffled, a just-intonation/overtone palette — *not*
+  pentatonic); **longitude** → stereo pan; **latitude** → brightness. **Live** mode sounds new
+  quakes as they arrive every 60s; **Replay 24h** fast-plays the whole day (24h → ~90s).
+  The visual is a **deliberately non-luminous** ink seismograph + world map (graphite on
+  near-black, zero glow) — the anti-glow output the jury asked for. The lab's **first piece
+  driven by a live external API** and **first that's about the world, not about music**.
+  **Try it:** press Begin, then toggle Replay 24h to hear the day compress into a composition.
 - **2 more explored this fire (WIDE, build-verified, banked in IDEAS.md):**
-  - `277-kids-overtone-cave` — **hum into the mic** and a raw-WebGL crystal grotto sings
-    your voice's **harmonic-series overtones** back (Tuvan khoomei / Lucier).
-  - `278-kids-dream-flock` — **wave at the camera** and a frame-diff boids flock of paper
-    birds sings a **whole-tone / Debussy** dream cloud with no home note.
+  - `midi-harmonograph` — plug in a **MIDI keyboard** (or use your computer keys); the chord
+    you hold **draws itself** as a harmonograph — consonant chords trace clean closed figures,
+    dissonant ones tangle. The lab's **first Web MIDI** piece (a real pianist fit).
+  - `ensemble-tabs` — **open the page in 2–3 tabs** and each becomes a tempo-locked player in
+    one server-less ensemble (BroadcastChannel, no backend). The lab's **first networked piece**.
 
 ## Why this cycle looks different
-- The diversity audit **banned touch-input and canvas2d-output** this fire (both hit 4× in
-  the last 10) — plus the JURY's standing bans on three.js-glow and C-pentatonic. So all
-  three briefs used fresh input (tilt / mic / camera) and fresh non-pentatonic sound worlds
-  (non-octave / overtone / whole-tone). The winner adds the deepest break of all: it changes
-  the *repeat interval itself*, not just the scale.
+- Three explorers, **three different empty shelves the jury keeps flagging** (real-world-data /
+  MIDI / multi-user) — the most direct answer to "too similar." All non-glow, all non-pentatonic,
+  all fresh input. 271 already built your AI-image-inside-AV and 275 extended the long-form vein,
+  so this fire went after the input classes the lab had **never** touched (live-data = 0×).
 
 ## Research findings worth a look
-- RESEARCH §288 — **non-octave tuning (Bohlen–Pierce)**. Every pitched piece in the lab,
-  even the gamelan/raga/whole-tone ones, still repeats at the octave. BP throws the octave
-  out (tritave 3:1, 13 equal steps, odd-harmonic chords, clarinet affinity). It's a live
-  scene, not a museum piece (May-2026 microtonal gallery; Elaine Walker's BP album).
+- RESEARCH §289 — **real-world-data sonification**. The USGS feed is keyless + CORS-open;
+  `seismic2midi` (PyPI, Nov 2025) and Columbia's **SeismoDome** (Holtzman, Lamont-Doherty/AMNH)
+  show it's a live, active field. The mapping writes itself and pairs with a non-luminous viz.
 
 ## Open questions for Karel
-- 276 needs iOS tilt-permission on first tap; the mouse/drag fallback means it's fully
-  playable on your laptop at review. Does the tilt feel right, or want a sensitivity slider?
-- Next adult cycle: ship banked `mosaic-listener` (lab's first concatenative synthesis) or
-  deepen 275-memory-loom? Next kids cycle: bank-resurrect `277-overtone-cave`,
-  `278-dream-flock`, or the older `273-raga-peacock` / `274-clay-clock`?
-- Still-empty shelves the JURY keeps flagging: multi-user/WebRTC, MIDI/OSC, depth-camera.
+- 279 is your first "music about the world" piece — want me to push the vein to a **second
+  source** (aurora/space-weather, ISS pass, transit) next adult cycle, or resurrect the banked
+  **midi-harmonograph** (you're a pianist — this one's for you)?
+- Deepen 279 with **real seismic waveforms** (each quake sounds its actual ground motion, not a
+  synth envelope) + an HRTF globe? It's the strongest multi-cycle path.
+- Still-empty shelves: depth-camera/spatial-installation, true cross-machine WebRTC (ensemble-tabs
+  is the same-machine prototype of it).
