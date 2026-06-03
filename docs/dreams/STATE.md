@@ -2,6 +2,65 @@
 
 ---
 
+## Cycle 291 — adult build (WIDE orchestration, 3 explored) — 283-piano-isosurface
+
+**When**: 2026-06-03 ~04:20 UTC (every-2h autonomous cycle).
+
+**Git sync**: origin/main had diverged 50/50 again (shallow clone, no merge-base → `--ff-only` aborted). Reset local `main --hard origin/main` → HEAD `32ca3a4` (cycle 290, `280-kids-echo-canyon`). Worked directly on main. `node_modules` ABSENT → `npm ci` (exit 0). Max committed folder = 280 → pre-allocated **281/282/283** for the three builders (no collision). **AGENT.md note (resolves cycle 290's open question)**: the on-disk AGENT.md on origin/main is now the **current** version — it DOES contain the AMBITION & DIVERSITY MANDATE + MULTI-AGENT ORCHESTRATION sections (read in full this cycle). Cycle 290 read a stale pre-reset copy; no drift remains. Orchestrated per the mandate.
+
+**Love signal** (`/api/dream/votes`, 32 loved): pulled by the **data-sculpture / his-own-music cluster** — `243-spectral-cloud`❤️, `227-paths-granular`❤️, `163-paths-visualizer`❤️ (the track-id `/api/audio` pattern the winner reuses), `153-paint-compose`❤️, `86-sound-to-video`❤️, `84-wave-fluid`❤️. The winner (a sound-sculpted volumetric form fed by his real Welcome Home recordings) sits dead-center on this cluster + Karel's standing "use his real piano" directive.
+
+**Research-first dive** (mandate; RESEARCH §291, 2026-06-03 — web tools healthy): **GPU isosurface extraction is now real-time in the browser.** Anchors: **Will Usher, "WebGPU Marching Cubes" (2024)** + Twinklebear's GPU-parallel marching-cubes (near-native Vulkan perf in-browser; WebASM version 10–50× over pure JS), foundational algorithm = **Lorensen & Cline, SIGGRAPH 1987**. Also logged the NMP latency finding (Ensemble Performance Threshold <25 ms) that motivates the serverless tab-ensemble. Surprise/hook: every prior lab visual is meshes / particles / shaders / 2D — **none reconstructs a surface from a scalar field**; a sound-driven marching-cubes isosurface is feasible live *because* GPU isosurface is now browser-real-time. Chain dive → build is direct: §291 → WIDE brief C → shipped `283-piano-isosurface` (research-first rule path (a)).
+
+**Decided**: Adult cycle (291 % 2 = 1). No blocker, nothing in-progress. The queue suggested resurrecting banked `midi-harmonograph` / `ensemble-tabs` / `mosaic-listener` — but the live **diversity audit BANS canvas2d-output (5× this window)**, and ALL of those bankable adult candidates are build-verified as canvas2d. The mandate is explicit that the audit is a hard gate ("stop resurrecting the path of least resistance"), so I picked **three fresh directions whose output is NOT canvas2d**, each on a genuinely-novel-to-the-lab technique.
+
+**Mode**: **WIDE** (the audit produced a hard ban → AGENT.md says "ban X combo → go WIDE with fresh tags"). Three orthogonal adult explorers, each a different INPUT × OUTPUT × TECHNIQUE × shelf, none using the banned canvas2d output:
+- `281-midi-harmonograph` — **MIDI/QWERTY/on-screen** input · **raw WebGL2** · harmonograph geometry + JI-lock synth (Victorian-pendulum reading; live-performance/pianist shelf).
+- `282-ensemble-tabs` — **multi-tab BroadcastChannel** network input · **raw WebGL2** graphic score · serverless wall-clock-shared ensemble (multi-user shelf).
+- `283-piano-isosurface` — **his real Welcome Home piano / mic / file** input · **three.js Marching Cubes** · sound-driven volumetric isosurface (3D-volume shelf; the research-hook reading). **← WINNER.**
+
+**Ambition floor** — winner cleared **4 of 5** (need 2): `ambition: novel-technique + named-reference + ≥3-subsystems + recent-research(§291)`
+- **(1) Technique never used** — grepped INDEX + READMEs for `marchingcubes`/`MarchingCubes`/isosurface: **zero hits → first marching-cubes / volumetric isosurface in 280+ prototypes.** (Note: MIDI, Tonnetz, MediaPipe, PannerNode/HRTF spatial-audio were all grepped and already exist — so for 281 the novelty claim is the *harmonograph geometry* (0 prior), not MIDI; for 283 it is the marching-cubes rendering.)
+- **(3) Named reference** — README cites **Lorensen & Cline, "Marching Cubes," SIGGRAPH 1987** + the 2024 WebGPU-marching-cubes freshness anchor + **Refik Anadol** (vibe).
+- **(2) ≥3 subsystems** — 4: multi-source audio input (file-drop · mic · track-id `/api/audio` read · always-on D-dorian synth pad) · FFT 5-band + RMS + spectral-centroid analysis · marching-cubes metaball field (8 band-driven balls) · three.js render (emissive standard material, lights, fog, drag-orbit).
+- **(5) Recent research** — built directly off this cycle's §291 dive.
+
+**Diversity audit** (last 10 committed = 262,264,267,268,271,272,275,276,279,280):
+`diversity: banned=[canvas2d-output(5×: 271,272,275,279,280) · kids-vibe(5×: 264,268,272,276,280 — adult cycle avoids cleanly) · C-major-pentatonic(JURY)] · picked=[audio-file/mic/track-id INPUT · three.js Marching Cubes OUTPUT · volumetric-isosurface TECHNIQUE(0× ever) · D-dorian non-pentatonic SOUND · organic/Anadol VIBE]`
+- **OUTPUT = three.js**: canvas2d hit **5×** (271,272,275,279,280) → **BANNED**; three.js was only 2× (262,267), raw-WebGL 2× (260,264), SVG 2× (268,276) — all under the line. All three briefs deliberately avoided canvas2d (281/282 raw-WebGL2, 283 three.js).
+- **INPUT**: no modality ≥4 (external-API 2×, touch 3×, mic 2×, audio-file 2×, tilt 1×) → free. Winner uses audio-file/mic/track-id (the loved-163 lane).
+- **TECHNIQUE**: marching-cubes — 0× ever, cleanest possible dodge.
+- **VIBE**: kids 5× → banned, but this is an adult cycle; winner is adult/organic.
+
+**Orchestration**: spawned 3 Builder subagents in parallel (single message), folder-isolated (281/282/283 pre-allocated), each fully self-contained (brief + the non-canvas2d output mandate + typography rules + the build-trap list incl. the `Uint8Array<ArrayBuffer>` typing trap + refs-not-state rAF + one-`useEffect` teardown + exact GitHub design-notes URL + no-git/no-shared-docs limits). All three returned demoable + README, each self-reporting tsc+eslint clean. I (Curator) gotcha-scanned all three (`"use client"` first line · **no `getContext("2d")` for any visual** · 281/282 confirmed `getContext("webgl2")`, 283 three.js MarchingCubes · no `function use*` non-hook helpers · the `as any` casts are inline-disabled or unknown-narrowed like the committed 275 precedent · each design-notes link points at its OWN README · no API route created), then ran the authoritative `npm run build` with **all three present** → exit 0, "✓ Compiled successfully in 28.2s", all three `○ Static` (281 5.82 kB · 282 5.91 kB · 283 9.97 kB) → all three genuinely **build-verified** (honest banking) — then picked the winner, `rm -rf`'d the two losers, and rebuilt winner-only (exit 0, "✓ Compiled successfully in 32.8s", `283-piano-isosurface ○ Static 9.97 kB`).
+
+**Winner = `283-piano-isosurface`.** Decider = ambition × surprise × demo-reliability × directive-fit:
+- **Highest ambition (4/5)** — the only one clearing *recent-research* AND a brand-new rendering paradigm (marching cubes; 281/282 are 3/5).
+- **Highest visual surprise** — a breathing 3D volumetric form sculpted by sound is the cleanest "huh, I didn't know we could do that" of the three.
+- **Most demo-reliable at 06:30** — always-on D-dorian synth pad means the surface is never silent/empty even with no file or mic; three.js MarchingCubes is visually robust (vs 282's wow requiring multiple tabs — the exact reason it lost as a sibling in cycle 289).
+- **Bullseye on Karel's directive + love cluster** — feeds his real Welcome Home piano via the loved `163` track-id pattern; sits on loved `243`/`227`/`163` (data→form).
+- Both runners-up **build-verified** and banked number-free in IDEAS.md.
+
+**What's new about this prototype**:
+1. **First marching-cubes / volumetric isosurface in 280+ prototypes** — the first time the lab reconstructs a *surface from a scalar field* rather than drawing meshes/particles/shaders/2D.
+2. **A clean canvas2d-ban escape** — three.js output dodges the cycle's over-represented tag; the WIDE fire spread output across raw-WebGL2 / raw-WebGL2 / three.js, none canvas2d.
+3. **Direct research→build chain, same fire** — §291's "GPU isosurface is now browser-real-time" IS the load-bearing feasibility argument.
+4. **His real music as the sculptor** — track-id `/api/audio` read lets Karel feed his Welcome Home piano into a living 3D form.
+
+**Queued next**:
+- Cycle 292: **kids build** (292 % 2 = 0). DEEPEN 280 (true canon overlap / paper choir) OR a fresh kids primitive that isn't a tuning toy and isn't touch-input. Watch the audit: canvas2d will likely **unban** (it rolls out as 271/272/275 age out), three.js/SVG fine.
+- Cycle 293: **adult build**. Resurrect a banked non-winner now that the canvas2d ban should lift: **`281-midi-harmonograph`** (harmonograph + JI, pianist fit, raw-WebGL2 — actually canvas-free so shippable any cycle) or **`282-ensemble-tabs`** (first networked piece, raw-WebGL2) or **`mosaic-listener`** (first concatenative synthesis, canvas2d — wait for unban). Avoid a 4th "fly through your music" and 5th emergent-CA (JURY-frozen).
+- **DEEPEN 283 (multi-cycle)**: WebGPU compute isosurface (much higher res at framerate — the freshness-anchor path); per-note metaball spawning from onset detection (individual piano notes bud off the surface); save-a-still PNG. README lists the path.
+- **Housekeeping (open since 269)**: STATE.md ordering still inconsistent — cycles 280–285 + 289/290 entries are appended at the END, not prepended; INDEX.md "Newest/Previous" chain skips 279 (cycle 289) and 280 (cycle 290) — both worth a reconcile in a polish cycle.
+
+**Notes**:
+- **No API route / no `guard` needed** — `283` only READS the existing `/api/audio/:id` (no side effects, the loved-`163` pattern) + Web Audio + three.js, otherwise client-side. Mic is analysis-only (never routed to destination, never recorded). Within the scope fence (`src/app/dream/**` + `docs/dreams/**`). No new deps (three.js ^0.182 already installed).
+- **WIDE-curation discipline held** — built all 3 present first (exit 0, confirms both banked losers genuinely `○ Static`, so banking is honest), then winner-only. Three folder-isolated builders wrote concurrently with zero conflict; none touched git or shared docs; I alone committed. Loser folders 281/282 `rm -rf`'d, never committed → free again; committed folder this cycle = **283** only.
+- **Diversity audit was load-bearing** — it overrode the queued plan to resurrect the canvas2d-banked `midi-harmonograph`/`ensemble-tabs`/`mosaic-listener`; instead the WIDE fire re-built midi-harmonograph + ensemble-tabs in their **non-canvas2d** form (raw-WebGL2) so they cleared the ban, and shipped the marching-cubes piece. Mandate working as intended.
+- **Honest carry-forward**: `283` is build-verified but not *browser-verified* live this fire. Risks (documented in README): (a) marching-cubes resolution 48 polygonizes on the CPU each frame — fluid on a laptop, a very busy mix could dip on a weak phone GPU (one-line res drop fixes it); (b) the band→metaball + centroid→hue mappings are hand-tuned, so a dense orchestral mix may want different gains than solo piano. Both fail safe: the always-on synth pad keeps the form alive regardless of source.
+
+---
+
 ## Cycle 288 — kids build (WIDE orchestration) — 276-kids-balloon-tritave
 
 **When**: 2026-06-02 UTC (every-2h autonomous cycle).
