@@ -2,6 +2,55 @@
 
 ---
 
+## Cycle 294 — kids build (solo, resurrected bank) — 286-kids-jelly-choir
+
+**When**: 2026-06-03 ~10:20 UTC (every-2h autonomous cycle).
+
+**Git sync**: origin/main had been **force-updated** again (local main diverged 50/50 on fetch → `--ff-only` aborts). Reset local `main --hard origin/main` → HEAD `06e41c1` (cycle 293, `285-mosaic-listener`). Worked directly on main. `node_modules` ABSENT → `npm ci` (exit 0) before the authoritative build. Highest committed folder = **285** → allocated **286** (no collision; 286 was the cycle-292 jelly-choir loser folder, `rm -rf`'d then, so it's free). **AGENT.md drift note (recurring)**: the on-disk AGENT.md is *again* the stale **2026-05-21** version (no AMBITION & DIVERSITY / orchestration sections — the force-push reverted it). Followed the mandate as carried in the cycle brief. Flagged again in MORNING for Karel — worth pinning AGENT.md.
+
+**Love signal** (`/api/dream/votes`, 32 loved): for a kids cycle the relevant pull is the **embodied / squishy-tactile + non-standard-instrument** cluster — `83-kids-tilt-rain`❤️, `133-kids-ripple-pond`❤️, `140-kids-string-bridge`❤️, `105-pluck-field`❤️ (its physical-pluck timbre), `169-kids-marble-run`❤️, `84-wave-fluid`❤️. Jelly Choir sits in this "the instrument is a soft physical thing you deform, not a button" vein, and (like the cycle-292 drum winner) answers the standing JURY "audit the SOUND" mandate at the synthesis level — the sound is literally the wobble.
+
+**Research-first**: this build chains directly off **RESEARCH §292** (real-time physical-modeling / modal synthesis — *nlm*, arXiv 2603.10240 (2026)), the same dive that produced cycle 292's drum. Jelly Choir is the **mass-spring / Verlet soft-body → audio** branch of that dive (Provot 1995, Müller PBD 2007). No new research dive this fire — §292 is < 2 cycles old and still load-bearing; the queue explicitly scheduled this resurrection (research-first rule path (a): a recent dive is the load-bearing idea).
+
+**Decided**: Kids cycle (294 % 2 = 0). No blocker, nothing in-progress. The cycle-293 STATE queued cycle 294 as *"bank-resurrect a fresh physical-modeling sibling — `kids-singing-bowl` (friction/stick-slip, three.js) or `kids-jelly-choir` (mass-spring soft-body, SVG)."* Picked **jelly-choir over singing-bowl** on **demo-reliability**: the bowl's signature *requires discovering the circular-rub* (a plain tap gives only a small strike — the flagged "wow needs a learned gesture" risk that sank siblings at 282/289); jelly-choir is **immediate** — poke → wobble → sing, zero gesture to learn, exactly the KIDS "immediate response every time" rule. Both are build-verified, non-canvas2d, non-pentatonic.
+
+**Mode**: **solo** (not WIDE/DEEP). Deliberate: resurrecting an already-build-verified banked piece is a known-green path; the cycle's absolute is *don't break Karel's app*, and a single fully-controlled build is the most reliable green-deploy. (Cycle 293 set this solo-when-safer precedent.)
+
+**Ambition floor** — cleared **4 of 5** (need 2): `ambition: novel-technique + named-references(verified) + ≥3-subsystems + recent-research(§292)`
+- **(1) Novel technique** — grepped INDEX + READMEs: cymatics only *draw* membranes; Karplus is strings; `284` is a *membrane* modal synth. **First mass-spring / Verlet soft-body → audio instrument in 280+ prototypes** (the deformation energy of a sprung point-mass ring drives the voice).
+- **(3) Named references (verified)** — README cites nlm (arXiv 2603.10240, 2026), Provot 1995, Müller et al. PBD 2007 — all real & checkable.
+- **(2) ≥3 subsystems** — 4: Verlet soft-body physics (radial + structural springs, 2 substeps × 3 constraint iters, multi-touch pinning) · deformation-energy → synth mapping (e²→gain, e→lowpass, e→vibrato depth/rate) · per-voice Web Audio (sine + triangle octave + LFO vibrato → energy-gated gain → lowpass → limiter, always-on drone) · inline-SVG render (Catmull-Rom→Bézier blob bodies, Gaussian-blur glow, energy-driven mouths, harmony glow lines).
+- **(5) Recent research** — built off §292's physical-modeling dive (< 2 cycles old).
+- (4) Multi-cycle — not claimed; shipped demoable in one fire (deepen path in README: true eigenmode partials, real inter-blob collision, tilt gravity).
+
+**Diversity audit** (last 10 committed by folder = 271,272,275,276,279,280,283,284,285):
+`diversity: banned=[canvas2d-output(5×: 271,272,275,279,280) · three.js-additive-points/glow(JURY hard-ban) · C-major-pentatonic(JURY)] · picked=[touch poke/drag INPUT · inline-SVG OUTPUT · mass-spring/Verlet soft-body→audio TECHNIQUE(0× ever) · squishy candy/kids VIBE · just-intonation SOUND (non-pentatonic)]`
+- **OUTPUT = inline SVG**: canvas2d hit **5×** (271,272,275,279,280) → **BANNED**; SVG only 2× in window (268 not in last-10, 276) → **under the line, clean dodge**; SVG also needs no GPU (lowest render risk). three.js was 2× (283,284) — also legal, but the bowl sibling (three.js) would push it to 3× and carries the demo risk above.
+- **INPUT = touch poke/drag**: touch in last-10 = 272,284 (+268 just outside) → ~2–3×, under the ban line. Core 4-yo modality; the real diversification this cycle is again the SOUND.
+- **TECHNIQUE = mass-spring/Verlet soft-body → audio**: **0× ever** → cleanest possible dodge.
+- **SOUND = just intonation** (1/1·9/8·5/4·3/2·2/1 over 196 Hz): C-pentatonic **banned** → JI is consonant but categorically non-pentatonic.
+
+**What's new about this prototype**:
+1. **First mass-spring / Verlet soft-body → audio instrument in 280+ prototypes** — the voice is driven by the *deformation energy* of a physically-sprung blob, not a tap trigger.
+2. **"The sound is the wobble"** — energy²→loudness means a jelly is silent at rest and shimmers exactly as much as it's jiggling; a brand-new control intimacy for the kids zone.
+3. **Two-finger / two-kid harmony** — poke two jellies → a pure JI interval rings out with a glowing thread between them (KIDS.md social-bonding value).
+4. **Pure inline-SVG** — dodges the canvas2d 5× ban *and* is the lowest-risk render path (no GPU, always renders) for a 06:30 demo on any device.
+
+**Validate**: `npm ci` (exit 0) → `npm run build`: first pass failed on a TypeScript error — React's `feGaussianBlur` JSX prop is **`stdDeviation`**, not the raw SVG attribute `stdDev`. ONE fix = rename the attribute. Rebuild → **exit 0**, "✓ Compiled successfully in 26.4s", `/dream/286-kids-jelly-choir ○ Static **3.57 kB**`, no errors (only pre-existing warnings in non-dream `src/lib/*`). Pre-empted the usual traps before the first build: no `function use*` non-hook helpers (`blobPath` / `Eyes` named safely), no bare `any` (the `webkitAudioContext` access is a scoped `as unknown as {…}` cast), no non-null assertions in the audio graph (captured `masterNode`/`limiterNode` locals), refs-not-state in the rAF loop, single `useEffect` with full teardown (oscillators stopped+disconnected, AudioContext closed, listeners + rAF removed). Build-verified, **not** browser-verified live this fire.
+
+**Queued next**:
+- Cycle 295: **adult build** (295 % 2 = 1). Strong leftover banks: **`281-midi-harmonograph`** (Web MIDI, pianist fit, raw-WebGL2 — canvas-free, shippable any cycle), **`282-ensemble-tabs`** (first networked piece, BroadcastChannel), **`motif-memory`** (symbolic transcription → re-performance — upgrade to YIN first per its README), or the JURY's standing ask **AI-image-INSIDE-an-AV-piece** (his #1; `271` is the only one). Avoid another arc engine (5-arcs/48 cover it) + a 4th "fly through your music" + 5th emergent-CA (JURY-frozen).
+- Cycle 296: **kids build**. The last physical-modeling sibling **`kids-singing-bowl`** (friction/stick-slip, three.js) is still banked + build-verified — ship it with a self-teaching circular-rub finger-hint ghost (fixes its only weakness); or push physical modeling further (a *playable* plate/Chladni, a struck metal tongue-drum).
+- **DEEPEN 286 (multi-cycle)**: true eigenmode partials (timbre = the blob's real resonance) · real inter-blob collision so you can shove two jellies together (today's harmony glow is energy/proximity, the jellies hold their seats) · device-tilt gravity so they sag + bounce. README lists the path.
+- **Housekeeping (open since 269)**: STATE.md top is now consistently prepended (286…293, this entry) but cycles 280–285 + 289/290 still sit appended at the END; INDEX "Newest/Previous" chain skips some mid-200s + 279/280. Worth a reconcile in a polish cycle.
+
+**Notes**:
+- **No API route / no `guard` needed** — `286` is pure Web Audio + inline SVG, entirely client-side: no network, no mic, no camera, no server, no secrets, nothing recorded/persisted/transmitted. Within the scope fence (`src/app/dream/**` + `docs/dreams/**`). No new deps (no three.js needed — SVG).
+- **Honesty carry-forward**: `286` is build-verified but **not browser-verified live** this fire (no browser in the cycle; solo). Unverified risks: (a) **spring tuning** — the constraint factors (K_RADIAL 0.16 / K_STRUCT 0.14 / DAMPING 0.93, 2 substeps × 3 iters) are hand-set, untested for feel; worst case the wobble is too stiff or too floppy (a one-number tweak next fire), never an error. (b) **grab radius** — pointer pins the nearest perimeter mass of the nearest jelly within `r·1.7`; on a very dense/small layout a poke could grab a neighbor jelly — still musical, just maybe the wrong color. (c) **mouth path** — the smiling-open-mouth quadratic is geometry I couldn't eyeball; if it reads oddly it's a 2-line fix. All fail safe: the always-on drone keeps it alive, SVG always renders (no GPU), and any poke produces an immediate wobble even if audio failed to start.
+- **Env note**: container shipped without `node_modules` and origin/main was force-updated; ran `npm ci` and reset `--hard origin/main` before working.
+
+---
+
 ## Cycle 293 — adult build (solo) — 285-mosaic-listener
 
 **When**: 2026-06-03 ~08:15 UTC (every-2h autonomous cycle).

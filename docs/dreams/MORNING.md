@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-03 ~08:15 UTC (cycle 293)
+# Morning digest — last updated 2026-06-03 ~10:20 UTC (cycle 294)
 
 ## New since yesterday
-- **[/dream/285-mosaic-listener](https://getresonance.vercel.app/dream/285-mosaic-listener)** — Mosaic Listener.
-  *Open this:* press Begin, then **drag your finger across the glowing cloud of dots** — each dot is a tiny shard of a recording, mapped by brightness (→) and loudness (↑), and the piece is re-assembled live out of whichever shards sit nearest your finger. The lab's **first concatenative-synthesis / audio-mosaicing piece** in 280+ prototypes — a genuinely new synthesis paradigm, not a new palette on an old one. Type a **Welcome Home track ID** + "Use Karel's piano as the corpus" and you're literally **playing your own recording back as a mosaic of its own grains** (never the literal playback). Also: leave it alone and it auto-drifts (self-plays); or hum into the mic to steer it.
+- **[/dream/286-kids-jelly-choir](https://getresonance.vercel.app/dream/286-kids-jelly-choir)** — Jelly Choir (kids 4+).
+  *Open this on a touchscreen:* **poke a wobbly jelly and it sings its own wobble.** Five candy-colored googly-eyed jellies; flick one and real soft-body physics makes it overshoot and jiggle, and the *amount it's jiggling* literally drives the voice — silent at rest, louder/brighter the harder you squish, shimmering vibrato as it wobbles. Poke two at once → they harmonize (pure just-intonation interval + a glowing thread between them). The lab's **first mass-spring / Verlet soft-body → audio** instrument.
 
 ## How it clears the gates
-- **Ambition 4/5**: novel technique (concatenative synth, 0× ever) + verified named refs (CataRT/Schwarz · The Concatenator arXiv 2411.04366 · MACataRT arXiv 2502.00023 · FluCoMa) + 4 subsystems + same-day research (§293).
-- **Diversity**: matte **raw-WebGL2** output (dodges both the canvas2d 5× ban *and* the jury's glowing-points ban) · pointer-drag input · concatenative technique (0×) · his-real-piano sound (non-pentatonic by source).
-- Picked over the queued arc/AI-image candidates because a grep showed `5-arcs`/`48` already do an EDM/cinematic arc and `271` already did AI-image-inside-AV — this is the clean clear-slate "strongest single bank" the queue flagged.
+- **Ambition 4/5**: novel technique (mass-spring/Verlet soft-body → audio, 0× ever) + named refs (nlm arXiv 2603.10240 · Provot 1995 · Müller PBD 2007) + 4 subsystems (Verlet physics · deformation-energy→synth mapping · inline-SVG render · multi-touch) + same-research-chain (§292 physical-modeling dive).
+- **Diversity**: **inline-SVG** output (dodges the canvas2d 5× ban) · **just-intonation** tuning (non-pentatonic, the JURY's "audit the sound" mandate) · soft-body technique (0× ever) · touch-poke input (3× → under the line).
+- It's a kids cycle (294 even), and the queue explicitly flagged resurrecting a physical-modeling sibling from the cycle-292 WIDE fire — this is that piece, build-verified once already.
 
-## Research findings worth a look (RESEARCH §293)
-- Browser-side **audio mosaicing** is feasible *now* (FluCoMa web thread; The Concatenator 2024; MACataRT 2025). The deepen path is a **factor-oracle** so the piece continues a phrase on its own instead of only chasing the cursor.
+## In progress / partial
+- **DEEPEN 286**: true eigenmode partials (timbre = the shape's real resonance) · real inter-blob collision so you can shove two jellies together · device-tilt gravity so they all sag and bounce. README lists the path.
+- **DEEPEN 285** (mosaic-listener): factor-oracle so it continues a phrase on its own; YIN pitch + MFCC descriptors; KD-tree for thousands of grains.
 
 ## Open questions for Karel
-- **AGENT.md keeps reverting** to the stale 2026-05-21 version on every force-push (no ambition/diversity/orchestration sections). I'm following the mandate from the cycle brief — but worth pinning the canonical AGENT.md so the drift stops.
-- This was a **solo** build (not WIDE/DEEP orchestration) for green-deploy reliability with unverifiable raw-WebGL2. Want me to go strict-orchestration every cycle, or is solo-when-it's-the-safer-bet fine?
-- `285` is build-verified but **not browser-verified** — if the atlas looks off when you open it (cursor offset / shader), say so and I'll fix next fire.
+- **AGENT.md still keeps reverting** to the stale 2026-05-21 version on every force-push (no ambition/diversity/orchestration sections). I'm following the mandate from the cycle brief — worth pinning the canonical AGENT.md so the drift stops.
+- `286` is **build-verified, not browser-verified** this fire — if a poke feels unresponsive or a jelly looks wrong when you open it, tell me and I'll tune the spring constants / grab radius next cycle.
