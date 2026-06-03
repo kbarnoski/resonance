@@ -1,41 +1,40 @@
-# Morning digest — last updated 2026-06-03 ~04:20 UTC (cycle 291, adult · WIDE, 3 explored)
+# Morning digest — last updated 2026-06-03 ~06:15 UTC (cycle 292, kids · WIDE, 3 explored)
 
-**Open this first:** [/dream/283-piano-isosurface](https://getresonance.vercel.app/dream/283-piano-isosurface)
-*(Tap Start — a glowing 3D blob starts breathing to a soft pad. Drop an audio file, or paste a Welcome Home track id, to sculpt it with your real piano. Drag to orbit. No mic/file needed — it's never silent.)*
+**Open this first:** [/dream/284-kids-thunder-drum](https://getresonance.vercel.app/dream/284-kids-thunder-drum)
+*(Tap the drum skin anywhere — center for a deep round boom, the rim for a bright slap. Hit it hard or roll fast and the head's tension bends the pitch up before it settles. Multi-touch. Never silent.)*
 
 ## New since yesterday
-- **283-piano-isosurface — your piano sculpts a living 3D volume.**
-  The lab's **first marching-cubes / volumetric isosurface** in 280+ prototypes.
-  Every prior visual drew meshes, particles, shaders, or 2D — this one
-  **reconstructs a surface from a scalar field**: a field of metaballs driven by
-  the music's frequency bands, polygonized into one breathing connected form
-  every frame. Bass swells a central core, mids orbit it, highs flick flecks at
-  the edges; loudness makes it breathe; brightness shifts its hue cool→warm.
-  - Feeds **your real Welcome Home recordings** via the loved `163` track-id
-    pattern (`/api/audio`) — drop a file, paste a track id, use the mic, or just
-    let the built-in D-dorian pad sculpt it. Always alive.
-  - Refs: **Lorensen & Cline, "Marching Cubes," SIGGRAPH 1987**; Refik Anadol.
-    Built off this cycle's research that **GPU isosurface is now browser-real-time**.
-  - Winner of a **WIDE** 3-builder fire — see "also explored" below.
+- **284-kids-thunder-drum — the lab's first *playable physical-modeling* instrument.**
+  Every other kids toy plays a Karplus pluck / triangle bell locked to **C-major
+  pentatonic**. This one is different at the root: it's a tiny **non-linear modal
+  synthesis** of a circular drum head — the pitches are real **membrane eigenmodes**
+  (Bessel-zero ratios), inharmonic and **non-pentatonic by physics**.
+  - **The signature: a tension pitch-glide.** Hit it hard and all partials start
+    sharp then relax to rest pitch — the "bwooOOWww" of a thunder-drum / tympani,
+    wired directly to how hard you strike.
+  - **Strike position = timbre** (center = round/dark, rim = bright/slappy), mirrored
+    by a three.js membrane that ripples outward from exactly where you touch.
+  - The **deepest answer yet to your "audit the SOUND" note** — it diversifies the
+    *synthesis method*, not just the scale (beyond the recent tuning-only breaks at
+    272/276/280). Refs: nlm (arXiv 2603.10240, 2026); Rayleigh 1877. Kids 4+, 3.69 kB.
 
 ## Also explored this fire (build-verified, banked in IDEAS.md)
-- **midi-harmonograph** — play a chord (MIDI / QWERTY / on-screen) and it **draws
-  itself as a Victorian harmonograph** in raw WebGL2; flip JI-lock and the figure
-  cleans up + the beating resolves. Consonance = a clean closed curve. *(Pianist fit.)*
-- **ensemble-tabs** — open 2–3 tabs and they lock into ONE serverless, tempo-locked
-  ensemble on a `Date.now()` shared clock — the **lab's first networked piece**.
+- **kids-singing-bowl** — drag a finger round the rim and a shimmer **grows out of the
+  rubbing** (friction/stick-slip), rings on when you lift; three.js metal bowl + cymatic
+  water. The lab's first sustain-by-gesture / stick-slip excitation.
+- **kids-jelly-choir** — squish a wobbly soft-body blob and it **sings its own wobble**
+  (mass-spring/Verlet), squish two for a just-intonation harmony; inline SVG, cute faces.
 
 ## Research worth a look
-- **§291 — GPU marching cubes is now near-native in the browser** (Will Usher 2024;
-  Twinklebear). That's what makes a *sound-driven* isosurface feasible live. Next
-  step for 283 is a **WebGPU compute** isosurface for much higher resolution.
+- **§292 — real-time physical modeling is a whole untouched sound family for the lab.**
+  *nlm — Non-linear Modal Synthesis* (arXiv 2603.10240, Mar 2026) + Bessel membranes
+  (Rayleigh 1877). Pick a *physical object* (drum/bell/plate/jelly) and its eigenmodes
+  hand you inharmonic, non-pentatonic pitches for free. The drum is the first; bowl +
+  jelly are queued; a *playable* Chladni plate is the obvious next.
 
 ## Open questions for Karel
-- The **AGENT.md drift is resolved** — on-disk origin/main is now the current version
-  (AMBITION + ORCHESTRATION sections present). Cycle 290 had read a stale copy.
-- The diversity audit **banned canvas2d this cycle** (5/10 recent), which blocked the
-  obvious resurrections (midi-harmonograph/ensemble-tabs/mosaic-listener were all
-  built as canvas2d). I rebuilt the first two in raw-WebGL2 to clear the ban and
-  shipped the 3D one. Working as intended — flag if you'd rather I override the audit.
-- Strong deepening path for 283: **per-note metaballs from onset detection** (each
-  piano note buds off the surface) + a WebGPU-compute high-res version.
+- The kids zone's monotony is the **sound**, not the input — recent fires broke the
+  tuning, now the synthesis method. Keep pushing this axis, or pivot the next kids cycle
+  to a fresh *interaction* (multi-user, camera/body, haptic)?
+- Adult side: your stated #1 — **AI-image-INSIDE-an-AV-piece** — is still 0× in the last
+  15. Want cycle 293 to finally spend a DEEP fire on it?
