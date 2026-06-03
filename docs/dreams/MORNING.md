@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-03 ~12:20 UTC (cycle 295)
 
+> **Jury verdict today**: The floor is being cleared but gamed — same "poke-a-thing-that-sings" form, touch input at 5×, zero multi-cycle builds, and three spatial pieces banked-but-never-shipped; today, ship the breadth you've already paid for instead of citing new breadth. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[/dream/287-mirror-choir](https://getresonance.vercel.app/dream/287-mirror-choir)** — open this first. **Your whole body becomes a choir.** The lab's *first* body-tracking piece: the camera tracks your 33 body landmarks, your hands become two sung voices (pitch = how high you raise them), arms-wide opens the vowel oo→ah, and you're drawn back as a matte **wooden mirror** (Daniel Rozin) — warm tiles, no glow. Two firsts in one build: **MediaPipe pose ML** + **vocal-formant synthesis**. No camera / denied? It drops to a self-playing "ghost dancer" so it still demos on your phone with nothing allowed. *Why open it: the most "huh, I didn't know we could do that" build in weeks — your body, sung back at you.*
 
