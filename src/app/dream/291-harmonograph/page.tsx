@@ -13,6 +13,7 @@ import {
   buildPendulums,
   seedPendulums,
   sampleCurve,
+  inkIntensity,
   makeRenderer,
   type GLRenderer,
   type NoteInput,
@@ -80,6 +81,12 @@ export default function HarmonographPage() {
   const [started, setStarted] = useState(false);
   const [justIntonation, setJustIntonation] = useState(true);
   const [held, setHeld] = useState<NoteInput[]>([]);
+  // notes whose key is up but kept alive by the sustain pedal — they keep
+  // contributing to the drawn figure (accreting) until the pedal lifts.
+  const [pedaledNotes, setPedaledNotes] = useState<NoteInput[]>([]);
+  const [pedal, setPedal] = useState(false);
+  // global pendulum damping 0..1 (mod-wheel CC1 / arrow keys / slider)
+  const [damping, setDamping] = useState(0.25);
   const [octave, setOctave] = useState(4);
   const [midiStatus, setMidiStatus] = useState<
     | { kind: "unsupported" }
@@ -96,16 +103,28 @@ export default function HarmonographPage() {
   // refs that the audio + render loops read without re-subscribing
   const synthRef = useRef<HarmonographSynth | null>(null);
   const heldRef = useRef<NoteInput[]>([]);
+  const pedaledRef = useRef<NoteInput[]>([]);
+  const pedalRef = useRef(false);
+  const dampingRef = useRef(damping);
   const jiRef = useRef(justIntonation);
   const echoRef = useRef(echoMidiOut);
   const midiOutRef = useRef<MIDIOutput | null>(null);
   const pressedKeys = useRef<Set<string>>(new Set());
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const captureRef = useRef<(() => void) | null>(null);
+  const lastChordRef = useRef("idle");
+  const lastCountRef = useRef(0);
   const octaveRef = useRef(octave);
 
   useEffect(() => {
     heldRef.current = held;
   }, [held]);
+  useEffect(() => {
+    pedaledRef.current = pedaledNotes;
+  }, [pedaledNotes]);
+  useEffect(() => {
+    dampingRef.current = damping;
+  }, [damping]);
   useEffect(() => {
     jiRef.current = justIntonation;
     octaveRef.current = octave;
@@ -116,7 +135,7 @@ export default function HarmonographPage() {
 
   // ── note on/off (single path) ──────────────────────────────────────────────
   const lowestMidi = useCallback(() => {
-    const cur = heldRef.current;
+    const cur = [...heldRef.current, ...pedaledRef.current];
     if (cur.length === 0) return 60;
     return cur.reduce((m, n) => Math.min(m, n.midi), Infinity);
   }, []);
@@ -135,13 +154,21 @@ export default function HarmonographPage() {
   const noteOn = useCallback(
     (midi: number, velocity: number) => {
       if (midi < 0 || midi > 127) return;
+      // if this note was parked by the pedal, reclaim it as truly-held
+      setPedaledNotes((prev) => {
+        if (!prev.some((n) => n.midi === midi)) return prev;
+        const next = prev.filter((n) => n.midi !== midi);
+        pedaledRef.current = next;
+        return next;
+      });
       setHeld((prev) => {
         if (prev.some((n) => n.midi === midi)) return prev;
         const next = [...prev, { midi, velocity }];
         heldRef.current = next;
         const synth = synthRef.current;
         if (synth) {
-          const low = next.reduce((m, n) => Math.min(m, n.midi), Infinity);
+          const all = [...next, ...pedaledRef.current];
+          const low = all.reduce((m, n) => Math.min(m, n.midi), Infinity);
           synth.noteOn(midi, velocity, low);
           synth.retune(low);
         }
@@ -154,24 +181,78 @@ export default function HarmonographPage() {
 
   const noteOff = useCallback(
     (midi: number) => {
+      let parked: NoteInput | null = null;
       setHeld((prev) => {
-        if (!prev.some((n) => n.midi === midi)) return prev;
+        const found = prev.find((n) => n.midi === midi);
+        if (!found) return prev;
         const next = prev.filter((n) => n.midi !== midi);
         heldRef.current = next;
+        // while the pedal is down, the note keeps contributing to the figure
+        if (pedalRef.current) parked = found;
         const synth = synthRef.current;
         if (synth) {
+          // synth.noteOff parks the voice itself when the pedal is down
           synth.noteOff(midi);
-          if (next.length > 0) {
-            const low = next.reduce((m, n) => Math.min(m, n.midi), Infinity);
-            synth.retune(low);
-          }
         }
         return next;
       });
+      if (parked) {
+        setPedaledNotes((prev) => {
+          if (prev.some((n) => n.midi === midi)) return prev;
+          const next = [...prev, parked as NoteInput];
+          pedaledRef.current = next;
+          return next;
+        });
+      }
+      // retune to whatever is still sounding (held + pedaled)
+      const synth = synthRef.current;
+      if (synth) {
+        const all = [...heldRef.current, ...pedaledRef.current];
+        if (all.length > 0) {
+          const low = all.reduce((m, n) => Math.min(m, n.midi), Infinity);
+          synth.retune(low);
+        }
+      }
       sendMidiOut(0x80, midi, 0);
     },
     [sendMidiOut]
   );
+
+  // ── sustain pedal: hold / accrete released notes ────────────────────────────
+  // When the pedal goes down we just flip a flag (synth keeps released voices
+  // ringing, figure keeps drawing them). When it lifts, any note whose key is
+  // already up is dropped from both the synth and the drawn figure.
+  const applyPedal = useCallback((down: boolean) => {
+    if (down === pedalRef.current) return;
+    pedalRef.current = down;
+    setPedal(down);
+    const synth = synthRef.current;
+    if (!down && synth) {
+      // dropped = notes that were parked by the pedal (key already up)
+      const dropped = synth.setPedal(false);
+      if (dropped.length > 0) {
+        setPedaledNotes((prev) => {
+          const next = prev.filter((n) => !dropped.includes(n.midi));
+          pedaledRef.current = next;
+          return next;
+        });
+        const low = heldRef.current.reduce(
+          (m, n) => Math.min(m, n.midi),
+          Infinity
+        );
+        if (heldRef.current.length > 0) synth.retune(low);
+      }
+    } else if (synth) {
+      synth.setPedal(true);
+    }
+  }, []);
+
+  // global pendulum damping setter shared by CC1, arrow keys, slider
+  const applyDamping = useCallback((v: number) => {
+    const clamped = Math.max(0, Math.min(1, v));
+    dampingRef.current = clamped;
+    setDamping(clamped);
+  }, []);
 
   // ── start audio (first gesture) ─────────────────────────────────────────────
   const startAudio = useCallback(async () => {
@@ -215,12 +296,21 @@ export default function HarmonographPage() {
       const data = ev.data;
       if (!data || data.length < 3) return;
       const status = data[0] & 0xf0;
-      const note = data[1];
-      const vel = data[2];
-      if (status === 0x90 && vel > 0) {
-        noteOn(note, vel / 127);
-      } else if (status === 0x80 || (status === 0x90 && vel === 0)) {
-        noteOff(note);
+      const d1 = data[1];
+      const d2 = data[2];
+      if (status === 0x90 && d2 > 0) {
+        noteOn(d1, d2 / 127);
+      } else if (status === 0x80 || (status === 0x90 && d2 === 0)) {
+        noteOff(d1);
+      } else if (status === 0xb0) {
+        // control change
+        if (d1 === 64) {
+          // sustain pedal: ≥64 = down
+          applyPedal(d2 >= 64);
+        } else if (d1 === 1) {
+          // mod-wheel → global pendulum damping
+          applyDamping(d2 / 127);
+        }
       }
     };
 
@@ -259,7 +349,7 @@ export default function HarmonographPage() {
         access.onstatechange = null;
       }
     };
-  }, [noteOn, noteOff]);
+  }, [noteOn, noteOff, applyPedal, applyDamping]);
 
   // ── QWERTY input ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -276,6 +366,24 @@ export default function HarmonographPage() {
 
     const onKeyDown = (e: KeyboardEvent) => {
       if (isTyping() || e.metaKey || e.ctrlKey || e.altKey) return;
+      // Space bar = sustain pedal (hold). Hardware-free fallback for CC64.
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        if (!synthRef.current) startAudio();
+        applyPedal(true);
+        return;
+      }
+      // ↑ / ↓ sweep the global pendulum damping (hardware-free CC1 fallback)
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        applyDamping(dampingRef.current + 0.05);
+        return;
+      }
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        applyDamping(dampingRef.current - 0.05);
+        return;
+      }
       const k = e.key.toLowerCase();
       if (k === "z") {
         setOctave((o) => Math.max(1, o - 1));
@@ -295,6 +403,10 @@ export default function HarmonographPage() {
     };
 
     const onKeyUp = (e: KeyboardEvent) => {
+      if (e.key === " " || e.code === "Space") {
+        applyPedal(false);
+        return;
+      }
       const k = e.key.toLowerCase();
       if (!(k in KEY_MAP)) return;
       if (!pressedKeys.current.has(k)) return;
@@ -309,7 +421,7 @@ export default function HarmonographPage() {
       window.removeEventListener("keydown", onKeyDown);
       window.removeEventListener("keyup", onKeyUp);
     };
-  }, [noteOn, noteOff, startAudio]);
+  }, [noteOn, noteOff, startAudio, applyPedal, applyDamping]);
 
   // ── WebGL2 render loop ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -320,6 +432,8 @@ export default function HarmonographPage() {
       alpha: false,
       antialias: true,
       premultipliedAlpha: false,
+      // keep the drawn frame readable for canvas.toBlob() PNG export
+      preserveDrawingBuffer: true,
     });
     if (!gl) {
       setGlError("WebGL2 is unavailable in this browser.");
@@ -351,8 +465,13 @@ export default function HarmonographPage() {
 
     const frame = () => {
       const now = (performance.now() - start) / 1000;
-      const cur = heldRef.current;
+      // held notes plus any notes parked by the sustain pedal (marked so the
+      // geometry can decay them a little faster as the figure accretes).
+      const heldNotes = heldRef.current;
+      const pedaled = pedaledRef.current.map((n) => ({ ...n, pedaled: true }));
+      const cur: NoteInput[] = [...heldNotes, ...pedaled];
       const ji = jiRef.current;
+      const damp = dampingRef.current;
 
       if (!cleared) {
         renderer.clear();
@@ -366,27 +485,54 @@ export default function HarmonographPage() {
 
       let pends;
       let color: [number, number, number];
+      let ink: number;
       if (cur.length === 0) {
         pends = seedPendulums(now);
         color = [0.42, 0.4, 0.7]; // dim violet idle
+        ink = 1;
         rotate += 0.0015;
       } else {
-        pends = buildPendulums(cur, ji);
+        pends = buildPendulums(cur, ji, damp);
         // JI → cooler, calmer; 12-TET → warmer ink
         color = ji ? [0.55, 0.78, 0.95] : [0.95, 0.62, 0.42];
+        // velocity → ink brightness so dynamics are visible
+        ink = inkIntensity(cur);
         rotate += 0.004 + cur.length * 0.0006;
       }
 
       const count = sampleCurve(buf, CURVE_POINTS, pends, rotate, T_MAX);
-      renderer.drawCurve(buf, count, color, aspect);
+      renderer.drawCurve(buf, count, color, aspect, ink);
+      lastCountRef.current = count;
 
       raf = window.requestAnimationFrame(frame);
     };
     raf = window.requestAnimationFrame(frame);
 
+    // expose a snapshot capture closure for the PNG-export button. We use
+    // preserveDrawingBuffer:true on the context so the readback is valid even
+    // outside the rAF tick.
+    captureRef.current = () => {
+      const chord = lastChordRef.current
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `harmonograph-${chord || "idle"}.png`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }, "image/png");
+    };
+
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      captureRef.current = null;
       renderer.dispose();
     };
   }, []);
@@ -405,7 +551,11 @@ export default function HarmonographPage() {
 
   // ── derived HUD values ──────────────────────────────────────────────────────
   const heldMidis = held.map((n) => n.midi);
+  const pedaledMidis = pedaledNotes.map((n) => n.midi);
+  const figureMidis = [...heldMidis, ...pedaledMidis];
   const sortedMidis = [...heldMidis].sort((a, b) => a - b);
+  const figureChord = guessChord(figureMidis);
+  lastChordRef.current = figureChord;
   const baseMidi = sortedMidis[0];
   const ratioSet =
     sortedMidis.length > 0
@@ -464,12 +614,16 @@ export default function HarmonographPage() {
       <div className="relative z-10 pointer-events-none flex flex-col min-h-screen">
         <header className="px-6 pt-20 max-w-2xl pointer-events-none">
           <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-            Harmonograph
+            Harmonograph — Expressive
           </h1>
           <p className="mt-2 text-base text-white/75 max-w-xl">
             Play a chord — MIDI, computer keys, or the on-screen piano — and watch
-            the harmony draw itself as a Victorian pendulum figure. Toggle pure
-            tuning to see and hear the geometry lock into place.
+            the harmony draw itself as a Victorian pendulum figure. Now sculpt it
+            live: the <span className="text-violet-300">sustain pedal</span>{" "}
+            (Space / CC64) accretes layered chords, the{" "}
+            <span className="text-violet-300">mod-wheel</span> (CC1 / ↑↓) sweeps
+            pendulum damping from loose sprawl to tight spiral, and harder strikes
+            draw brighter ink. Export the figure as a PNG.
           </p>
 
           {!started && (
@@ -551,6 +705,65 @@ export default function HarmonographPage() {
                 +
               </button>
             </div>
+
+            {/* sustain pedal — press-and-hold (or Space / CC64) */}
+            <button
+              onPointerDown={(e) => {
+                e.preventDefault();
+                if (!synthRef.current) startAudio();
+                applyPedal(true);
+              }}
+              onPointerUp={() => applyPedal(false)}
+              onPointerLeave={() => pedal && applyPedal(false)}
+              onPointerCancel={() => applyPedal(false)}
+              className={`text-base font-medium px-4 py-2.5 rounded-xl border transition-colors min-h-[44px] select-none ${
+                pedal
+                  ? "bg-violet-500/35 border-violet-400/60 text-violet-100"
+                  : "bg-white/5 border-white/15 text-white/75 hover:bg-white/10"
+              }`}
+              style={{ touchAction: "none" }}
+            >
+              Sustain pedal: {pedal ? "DOWN" : "up"} (hold / Space / CC64)
+            </button>
+
+            {/* PNG snapshot export */}
+            <button
+              onClick={() => captureRef.current?.()}
+              disabled={!!glError}
+              className="text-base font-medium px-4 py-2.5 rounded-xl border border-violet-400/40 bg-violet-500/20 text-violet-200 hover:bg-violet-500/35 transition-colors min-h-[44px] disabled:opacity-40"
+            >
+              ⤓ Export PNG
+            </button>
+          </div>
+
+          {/* damping (mod-wheel CC1 / ↑↓ / slider) */}
+          <div className="flex flex-wrap items-center gap-3 mb-3">
+            <label className="flex items-center gap-3 text-base text-white/75">
+              <span className="text-white/75">Pendulum damping</span>
+              <input
+                type="range"
+                min={0}
+                max={1}
+                step={0.01}
+                value={damping}
+                onChange={(e) => applyDamping(parseFloat(e.target.value))}
+                className="w-44 accent-violet-400"
+                aria-label="Pendulum damping"
+              />
+              <span className="font-mono text-base text-violet-300 tabular-nums w-14">
+                {(damping * 100).toFixed(0)}%
+              </span>
+              <span className="text-base text-white/75">
+                {damping < 0.33
+                  ? "loose / sprawling"
+                  : damping < 0.66
+                  ? "balanced"
+                  : "tight spiral"}
+              </span>
+            </label>
+            <span className="text-base text-white/55">
+              mod-wheel CC1 · ↑ / ↓ keys
+            </span>
           </div>
 
           {/* readout */}
@@ -564,8 +777,19 @@ export default function HarmonographPage() {
               </span>
             </span>
             <span className="text-white/75">
+              pedaled:{" "}
+              <span className="text-violet-300">
+                {pedaledMidis.length > 0
+                  ? [...pedaledMidis]
+                      .sort((a, b) => a - b)
+                      .map((m) => noteName(m))
+                      .join(" ")
+                  : "—"}
+              </span>
+            </span>
+            <span className="text-white/75">
               chord:{" "}
-              <span className="text-violet-300">{guessChord(heldMidis)}</span>
+              <span className="text-violet-300">{figureChord}</span>
             </span>
             <span className="text-white/75">
               ratios:{" "}
@@ -588,6 +812,7 @@ export default function HarmonographPage() {
               {WHITE_OFFSETS.map((off) => {
                 const midi = screenBase + off;
                 const isHeld = heldMidis.includes(midi);
+                const isPedaled = pedaledMidis.includes(midi);
                 return (
                   <button
                     key={off}
@@ -598,6 +823,8 @@ export default function HarmonographPage() {
                     className={`flex-1 rounded-b-md border border-black/40 flex items-end justify-center pb-2 text-xs transition-colors ${
                       isHeld
                         ? "bg-violet-300 text-black"
+                        : isPedaled
+                        ? "bg-violet-300/40 text-black/70"
                         : "bg-white/90 text-black/60 hover:bg-white"
                     }`}
                     style={{ minWidth: 44, touchAction: "none" }}
@@ -612,6 +839,7 @@ export default function HarmonographPage() {
               {BLACK_SPEC.map((b) => {
                 const midi = screenBase + b.offset;
                 const isHeld = heldMidis.includes(midi);
+                const isPedaled = pedaledMidis.includes(midi);
                 const leftPct =
                   ((b.afterWhite + 1) / WHITE_OFFSETS.length) * 100;
                 return (
@@ -622,7 +850,11 @@ export default function HarmonographPage() {
                     onPointerLeave={onKeyUpScreen(midi)}
                     onPointerCancel={onKeyUpScreen(midi)}
                     className={`absolute top-0 h-24 rounded-b-md border border-black/60 pointer-events-auto transition-colors ${
-                      isHeld ? "bg-violet-400" : "bg-black hover:bg-zinc-800"
+                      isHeld
+                        ? "bg-violet-400"
+                        : isPedaled
+                        ? "bg-violet-500/50"
+                        : "bg-black hover:bg-zinc-800"
                     }`}
                     style={{
                       left: `calc(${leftPct}% - 14px)`,
@@ -635,8 +867,9 @@ export default function HarmonographPage() {
               })}
             </div>
           </div>
-          <p className="text-center text-xs text-white/55 mt-2">
-            QWERTY: a w s e d f t g y h u j k o l p ;  ·  z / x = octave
+          <p className="text-center text-base text-white/55 mt-2">
+            QWERTY: a w s e d f t g y h u j k o l p ;  ·  z / x = octave  ·{" "}
+            Space = sustain pedal  ·  ↑ / ↓ = damping
           </p>
         </section>
       </div>
@@ -669,11 +902,39 @@ export default function HarmonographPage() {
               geometry — so the beating audibly settles as the figure visibly
               tidies, at the same instant.
             </p>
-            <p className="text-white/65">
+            <p>
+              <strong>Cycle 2 — the expressive live instrument.</strong> Four
+              performance layers now sculpt the figure as it draws:
+            </p>
+            <ul className="list-disc pl-5 space-y-2 text-white/85">
+              <li>
+                <strong>Sustain pedal</strong> (MIDI CC64, Space bar, or the
+                on-screen pad): while down, released notes are not removed — they
+                keep contributing their decaying pendulum so the figure{" "}
+                <em>accretes</em> as you layer chords. The HUD shows held vs
+                pedaled notes; release drops the parked ones, audio and figure
+                together.
+              </li>
+              <li>
+                <strong>Mod-wheel → damping</strong> (MIDI CC1, ↑ / ↓ keys, or the
+                slider): scales every pendulum&apos;s decay. Low = long-lived,
+                sprawling figure; high = fast inward spiral.
+              </li>
+              <li>
+                <strong>Velocity → ink intensity</strong>: harder-struck chords
+                draw a brighter, bolder curve, so dynamics are visible.
+              </li>
+              <li>
+                <strong>PNG export</strong>: captures the current figure
+                (preserveDrawingBuffer + <code>canvas.toBlob</code>) as a
+                downloadable image named for the chord.
+              </li>
+            </ul>
+            <p className="text-white/75">
               Input: Web MIDI / computer keyboard / on-screen piano. Output: a raw
               WebGL2 line-strip ink trail. Web MIDI exists elsewhere in this lab;
-              the novel idea here is harmony-as-visible-geometry. See the folder
-              README.md for full notes and future directions.
+              the novel idea here is harmony-as-visible-geometry, sculpted in real
+              time. See the folder README.md for full notes and future directions.
             </p>
           </div>
         </div>

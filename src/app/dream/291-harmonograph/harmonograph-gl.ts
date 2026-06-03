@@ -13,29 +13,55 @@ export type Pendulum = {
   decay: number; // dᵢ
 };
 
-export type NoteInput = { midi: number; velocity: number };
+export type NoteInput = {
+  midi: number;
+  velocity: number;
+  // true when the key is up but the note is held by the sustain pedal — it
+  // keeps contributing to the figure (accreting) until the pedal lifts.
+  pedaled?: boolean;
+};
 
-/** Build the pendulum set from held notes + tuning mode. */
+/**
+ * Build the pendulum set from held notes + tuning mode.
+ * `damping` (0..1, from the mod-wheel / arrow keys) scales every pendulum's
+ * decay: low = loose sprawling figure, high = tight inward spiral.
+ */
 export function buildPendulums(
   notes: NoteInput[],
-  justIntonation: boolean
+  justIntonation: boolean,
+  damping = 0.25
 ): Pendulum[] {
   if (notes.length === 0) return [];
   const sorted = [...notes].sort((a, b) => a.midi - b.midi);
   const baseMidi = sorted[0].midi;
   const baseFreq = midiToFreq(baseMidi);
+  // map damping 0..1 → a decay multiplier ~0.35..6 (exponential feel)
+  const dampMul = 0.35 * Math.pow(17, damping);
   return sorted.map((n, i) => {
     const rawRatio = midiToFreq(n.midi) / baseFreq;
     const ratio = justIntonation ? snapToJustRatio(rawRatio) : rawRatio;
+    // pedaled-but-released notes decay a touch faster, fading as they accrete
+    const baseDecay = (0.012 + i * 0.004) * dampMul;
     return {
       ratio,
       amp: 0.45 + n.velocity * 0.55,
       phaseX: (i * Math.PI) / 3,
       phaseY: (i * Math.PI) / 5 + Math.PI / 7,
-      // small per-note decay so the figure spirals inward
-      decay: 0.012 + i * 0.004,
+      decay: n.pedaled ? baseDecay * 1.6 : baseDecay,
     };
   });
+}
+
+/**
+ * Average velocity of the held notes → drives ink brightness so that
+ * harder-struck chords draw a bolder curve. Returns a multiplier ~0.6..1.5.
+ */
+export function inkIntensity(notes: NoteInput[]): number {
+  if (notes.length === 0) return 1;
+  let sum = 0;
+  for (const n of notes) sum += n.velocity;
+  const avg = sum / notes.length;
+  return 0.6 + avg * 0.9;
 }
 
 /** Idle "seed" pendulums shown when nothing is held — a gentle Lissajous. */
@@ -105,11 +131,12 @@ precision highp float;
 in float vT;
 uniform float uCount;
 uniform vec3 uColor;
+uniform float uInk; // velocity-driven brightness multiplier
 out vec4 frag;
 void main(){
   // brighter at the leading end of the trail
   float head = vT / max(uCount, 1.0);
-  float a = mix(0.10, 0.85, head);
+  float a = mix(0.10, 0.85, head) * uInk;
   frag = vec4(uColor * a, a);
 }`;
 
@@ -158,7 +185,13 @@ function link(gl: WebGL2RenderingContext, vs: string, fs: string) {
 export type GLRenderer = {
   resize: (w: number, h: number, dpr: number) => void;
   fade: (amount: number) => void;
-  drawCurve: (data: Float32Array, count: number, color: [number, number, number], aspect: number) => void;
+  drawCurve: (
+    data: Float32Array,
+    count: number,
+    color: [number, number, number],
+    aspect: number,
+    ink?: number
+  ) => void;
   clear: () => void;
   dispose: () => void;
 };
@@ -174,6 +207,7 @@ export function makeRenderer(
   const uAspect = gl.getUniformLocation(lineProg, "uAspect");
   const uCount = gl.getUniformLocation(lineProg, "uCount");
   const uColor = gl.getUniformLocation(lineProg, "uColor");
+  const uInk = gl.getUniformLocation(lineProg, "uInk");
   const uFade = gl.getUniformLocation(fadeProg, "uFade");
 
   const vao = gl.createVertexArray();
@@ -208,13 +242,14 @@ export function makeRenderer(
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       gl.bindVertexArray(null);
     },
-    drawCurve(data, count, color, aspect) {
+    drawCurve(data, count, color, aspect, ink = 1) {
       if (count < 2) return;
       // additive glow for the ink
       gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
       gl.useProgram(lineProg);
       gl.uniform1f(uAspect, aspect);
       gl.uniform1f(uCount, count);
+      gl.uniform1f(uInk, ink);
       gl.uniform3f(uColor, color[0], color[1], color[2]);
       gl.bindVertexArray(vao);
       gl.bindBuffer(gl.ARRAY_BUFFER, vbo);

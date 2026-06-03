@@ -1,9 +1,17 @@
-# 291 · Harmonograph
+# 291 · Harmonograph — Expressive (multi-cycle)
 
 > **The question:** What if the chord you play — on a MIDI keyboard, your
 > computer keyboard, or an on-screen keyboard — *drew itself* as a Victorian
 > harmonograph, so you can literally **see** the geometry of the harmony, while
-> it sounds through a synth you can re-tune to pure just intonation?
+> it sounds through a synth you can re-tune to pure just intonation — and then
+> you could **sculpt that figure live**, the way a pianist sculpts with the
+> pedal and dynamics?
+
+This is the dream lab's **first multi-cycle commitment** (the 2026-06-03 jury's
+#1 provocation: "stop shipping orphans — pick ONE thing and deepen it over 2–3
+cycles"). Cycle 1 shipped the core instrument; **cycle 2 (this one) makes it
+expressive**; cycle 3 will make the figure polychrome and exportable as a vector
+specimen (see "What cycle 3 adds").
 
 ## What it is
 
@@ -27,8 +35,9 @@ y(t) = Σ aᵢ·cos(rᵢ·t + φᵢ + kᵢ)·e^(−dᵢ·t)
 
 - `aᵢ` (amplitude) scales with note velocity.
 - `φᵢ`, `kᵢ` are per-note phase offsets so chords don't collapse onto one axis.
-- `dᵢ` is a tiny per-note decay, so the figure spirals gently inward like a real
-  decaying pendulum.
+- `dᵢ` is a per-note decay, so the figure spirals gently inward like a real
+  decaying pendulum — and in cycle 2 `dᵢ` is now globally scaled by the
+  mod-wheel (see below).
 
 **Why JI cleans it up:** when the `rᵢ` are small-integer ratios (a consonant,
 justly-tuned chord) the curve is periodic and near-closed. Under 12-TET the
@@ -38,49 +47,65 @@ ratio to the nearest small-integer just interval (`1/1, 16/15, 9/8, 6/5, 5/4,
 4/3, 45/32, 3/2, 8/5, 5/3, 9/5, 15/8, 2/1`, octave-extended) for **both** the
 oscillator pitch and the `rᵢ` used to draw.
 
+## Cycle 2 — the expressive live instrument (this cycle)
+
+Four performance layers now sculpt the figure as it draws, each with a MIDI
+control AND a no-hardware fallback so it's fully demoable on a laptop:
+
+1. **Sustain pedal → figure-HOLD / accrete.** MIDI **CC64** (≥64 = down), the
+   **Space bar**, or an on-screen press-and-hold pad. While the pedal is down a
+   key-up does *not* remove the note — the synth keeps the voice ringing and the
+   note keeps contributing its (now slightly faster-decaying) pendulum, so the
+   figure **accretes** as you layer chords over a held bass. The HUD shows
+   *held* vs *pedaled* notes separately and tints pedaled keys on the on-screen
+   piano. Lifting the pedal drops every parked note from both the audio and the
+   drawn figure, together. (Engine: `HarmonographSynth.setPedal()` parks
+   key-released voices in a `sustained` set and returns the dropped midis on
+   release.)
+2. **Mod-wheel → pendulum damping.** MIDI **CC1**, the **↑/↓ arrow keys**, or a
+   slider, mapped 0..1 → an exponential decay multiplier (`0.35·17^d`) applied
+   to every pendulum's `dᵢ`. Low = long-lived, loose, sprawling figure; high =
+   fast inward spiral. A readable `NN%` + word label ("loose / balanced / tight
+   spiral") is shown — no sub-70%-opacity hint text.
+3. **Velocity → ink intensity.** Average held velocity drives a `uInk` uniform
+   in the line fragment shader (`mix(0.10, 0.85, head) * uInk`), so a hard-struck
+   chord draws a brighter, bolder curve — dynamics become visible.
+4. **PNG export.** The WebGL2 context is created with
+   `preserveDrawingBuffer: true`; an **Export PNG** button calls
+   `canvas.toBlob` and downloads `harmonograph-<chord>.png`. A chord becomes a
+   takeaway image.
+
 ## Subsystems
 
-1. **Three-way note input → one note-on/note-off path.**
-   - **Web MIDI** (`navigator.requestMIDIAccess({ sysex:false })`): binds
-     `onmidimessage` to every input, handles note-on (`0x90`, vel > 0) and
-     note-off (`0x80` or `0x90` vel 0), re-binds on `onstatechange` (hotplug),
-     shows the device name. Feature-detected + try/catch → degrades gracefully.
-   - **QWERTY**: `a w s e d f t g y h u j k o l p ;` = chromatic semitones up
-     from C of the current octave; `z`/`x` shift octave; auto-repeat is guarded
-     with a held-key set; ignored while typing in inputs.
-   - **On-screen keyboard**: two octaves of DOM piano keys, ≥44px targets,
-     pointer events for multi-touch (pointerdown = on, up/leave/cancel = off).
-2. **Warm polyphonic Web Audio synth** (12-voice allocator with voice-stealing):
-   per voice = sine osc + detuned (+7¢) triangle osc → lowpass `BiquadFilter`
-   (velocity → brighter) → gain with ADSR (A 12ms, D 150ms, S 0.6, R 250ms).
-   All voices → shared feedback `DelayNode` (~0.28s, fb 0.35, wet/dry) → master
-   gain → `DynamicsCompressor` (limiter) → destination. A very-soft always-on
-   low drone keeps the room from being silent. AudioContext is created and
-   resumed only on the first user gesture.
-3. **JI-lock + chord/ratio analysis**: the toggle re-tunes live voices via
-   `setTargetAtTime` and re-draws the figure. A live HUD shows held note names,
-   a best-guess chord name, and the active ratio set (e.g. `1/1 : 5/4 : 3/2`).
-4. **Raw WebGL2 renderer** (no three.js, no Canvas2D for the figure):
-   hand-written GLSL ES 3.00 vertex + fragment shaders, a VAO + VBO. Each frame
-   the curve is resampled into ~3000 (x,y) points in JS and `bufferSubData`'d
-   into the VBO, drawn as `gl.LINE_STRIP` with additive blending for glow. A
-   translucent near-black fullscreen quad fades the previous frame each tick,
-   leaving a decaying ink trail. The figure slowly rotates while notes are held
-   and shows a gentle idle Lissajous "seed" when nothing is held. DPR-aware and
-   resize-aware. If `webgl2` is null → a rose notice and the GL path is skipped.
+1. **Three-way note input → one note-on/note-off path** — Web MIDI
+   (`requestMIDIAccess({ sysex:false })`, hotplug via `onstatechange`, device-name
+   readout; now also parses **CC** messages for sustain CC64 + mod-wheel CC1),
+   auto-repeat-guarded QWERTY (chromatic `a w s e d f t g y h u j k o l p ;`,
+   `z`/`x` = octave, Space = pedal, ↑/↓ = damping), and a 2-octave on-screen
+   piano (≥44px, multi-touch pointer events).
+2. **Warm 12-voice Web Audio synth** (voice-stealing allocator): per voice =
+   sine + +7¢ detuned triangle → lowpass (velocity → brighter) → ADSR gain →
+   shared feedback delay → master → `DynamicsCompressor` limiter → destination;
+   soft always-on low drone; **sustain-pedal voice-parking**. AudioContext
+   created/resumed only on first gesture.
+3. **JI-lock + chord/ratio analysis** — live HUD: held + pedaled note names,
+   best-guess chord name (computed over the full drawn figure), active ratio set.
+4. **Raw WebGL2 renderer** (NOT three.js, NOT Canvas2D) — hand-written GLSL ES
+   3.00, VAO/VBO, ~3000-point `LINE_STRIP` `bufferSubData`'d each frame, additive
+   glow with the new `uInk` brightness, translucent fade-quad ink trail, idle
+   Lissajous seed, DPR/resize-aware.
 
 ## MIDI-out (optional, off by default)
 
-If any MIDI output port exists, an **Echo to MIDI out** toggle appears
-(default OFF). While ON it forwards held note-on/note-off to the first output
-port. Nothing is sent while it's off.
+If any MIDI output port exists, an **Echo to MIDI out** toggle appears (default
+OFF). While ON it forwards held note-on/note-off to the first output port.
 
 ## How it degrades
 
-- **No Web MIDI** (e.g. Safari): amber notice; QWERTY + on-screen keyboard work
-  fully.
+- **No Web MIDI** (e.g. Safari): amber notice; QWERTY + on-screen keyboard +
+  Space-pedal + slider/arrow-damping all work fully.
 - **MIDI present, no device**: amber notice prompting use of the keyboard.
-- **No WebGL2**: rose notice; audio + keyboards still work.
+- **No WebGL2**: rose notice; audio + keyboards still work; PNG export disabled.
 - All `window` / `navigator` / WebGL / AudioContext access is guarded so SSR and
   unsupported browsers never throw.
 
@@ -88,26 +113,43 @@ port. Nothing is sent while it's off.
 
 - The **harmonograph** — Hugh Blackburn's pendulum apparatus, ~1840s.
 - **Lissajous figures** — Jules Antoine Lissajous, 1857.
+- Sustain/expression as a sculpting gesture follows the long pianistic tradition
+  of the damper pedal as a continuous instrument, not an on/off switch.
 
-Honesty note: Web MIDI already appears elsewhere in this lab. The *novel*
-technique here is the **harmonograph geometry — harmony rendered as visible
-geometry** — and its tight coupling to just-intonation retuning, not MIDI input.
+Honesty note: Web MIDI already appears elsewhere in this lab. The *novel* idea
+is the **harmonograph geometry — harmony rendered as visible geometry**, and now
+its real-time expressive control. The cycle-2 build is **build-verified, not
+browser-verified** (see STATE.md for the unverified surface — pedal accrete edge
+cases, PNG readback on Safari).
 
 ## Tags
 
-- **INPUT**: MIDI / QWERTY / on-screen-keyboard
-- **OUTPUT**: raw WebGL2 line geometry
-- **TECHNIQUE**: harmonograph parametric geometry + JI retuning
+- **INPUT**: MIDI (notes + CC64/CC1) / QWERTY / on-screen-keyboard
+- **OUTPUT**: raw WebGL2 line geometry + PNG export
+- **TECHNIQUE**: harmonograph parametric geometry + JI retuning + pedal/damping
+  expression control
 - **VIBE**: theory-literate live instrument, ink-on-dark, restrained
 
-## What a future cycle should deepen
+## What cycle 3 adds (banked from the parallel explorer `harmonograph-spectrum`)
 
-- **Sustain pedal → figure-hold**: freeze the current figure / let it accrete.
-- **Mod wheel → pendulum damping** (`dᵢ`): morph from tight closed figures to
-  long inward spirals.
-- **Per-note color** from a spectral centroid or pitch class, so each pendulum's
-  contribution is legible in the trail.
-- **SVG / PNG export** of the current figure, so a chord becomes a printable
-  artifact.
-- A richer chord namer (inversions, extensions) and a microtonal/EDO selector
-  beyond 12-TET vs JI.
+A second builder explored the *polychrome specimen* direction in parallel this
+cycle; its ideas are the cycle-3 plan:
+
+- **Per-note color — Newton color wheel.** Map each note's pitch class around a
+  hue wheel via the **circle of fifths** (a fifth = a constant hue step, so a
+  triad reads as three distinct-but-kindred hues), in the lineage of the **Chord
+  Colourizer** (arXiv 2510.10173 — near-real-time CQT chord detection → Isaac
+  Newton's 7-color wheel). Draw each pendulum's running-composite contribution
+  as its own colored `LINE_STRIP` so the chord weaves visibly from its parts.
+- **SVG vector export — the takeaway specimen.** Emit one `<polyline>` per
+  colored thread from the exact sampled curve points, wrapped in an SVG doc with
+  the dark ground, downloaded as `harmonograph-<chord>.svg`. A true printable
+  vector artifact, not a raster snapshot.
+- **Specimen legend** — swatch + note name + ratio per thread.
+
+(The renderer already supports a per-`drawCurve` color; cycle 3 extends it to
+per-pendulum color + multi-strip draw, and adds `sampleCompositeUpTo`.)
+
+Further out: richer chord namer (inversions/extensions), microtonal/EDO selector
+beyond 12-TET vs JI, and folding in the banked `phase-scope` sibling as a
+"scope mode."

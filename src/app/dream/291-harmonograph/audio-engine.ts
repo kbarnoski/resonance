@@ -132,6 +132,10 @@ export class HarmonographSynth {
   private voices: Map<number, Voice> = new Map();
   private maxVoices = 12;
   justIntonation = false;
+  // Sustain pedal: while down, key-up does not release the voice — it is parked
+  // here and only released when the pedal lifts.
+  private pedalDown = false;
+  private sustained: Set<number> = new Set();
 
   constructor(ctx: AudioContext) {
     this.ctx = ctx;
@@ -207,8 +211,10 @@ export class HarmonographSynth {
   }
 
   noteOn(midi: number, velocity: number, lowestMidi: number) {
+    // re-striking a note removes it from the sustained set
+    this.sustained.delete(midi);
     if (this.voices.has(midi)) {
-      this.noteOff(midi);
+      this.noteOff(midi, true);
     }
     if (this.voices.size >= this.maxVoices) {
       // steal the oldest voice
@@ -267,6 +273,13 @@ export class HarmonographSynth {
   }
 
   noteOff(midi: number, immediate = false) {
+    // While the pedal is down, a key release parks the note rather than
+    // silencing it; the voice keeps ringing until the pedal lifts.
+    if (this.pedalDown && !immediate) {
+      if (this.voices.has(midi)) this.sustained.add(midi);
+      return;
+    }
+    this.sustained.delete(midi);
     const v = this.voices.get(midi);
     if (!v || v.releasing) return;
     v.releasing = true;
@@ -299,6 +312,23 @@ export class HarmonographSynth {
       v.osc1.frequency.setTargetAtTime(freq, now, 0.04);
       v.osc2.frequency.setTargetAtTime(freq, now, 0.04);
     });
+  }
+
+  /**
+   * Set the sustain pedal state. On release, every note that was parked
+   * (sustained-but-key-released) is actually released. Returns the list of
+   * midis that were dropped so the caller can update the drawn figure.
+   */
+  setPedal(down: boolean): number[] {
+    if (down === this.pedalDown) return [];
+    this.pedalDown = down;
+    if (down) return [];
+    const dropped = Array.from(this.sustained);
+    this.sustained.clear();
+    for (const midi of dropped) {
+      this.noteOff(midi);
+    }
+    return dropped;
   }
 
   dispose() {
