@@ -1,27 +1,25 @@
-# Morning digest — last updated 2026-06-03 (UTC, cycle 299)
+# Morning digest — last updated 2026-06-03 (UTC, cycle 300)
 
-**Open this first:** [/dream/291-harmonograph](https://getresonance.vercel.app/dream/291-harmonograph) — play a chord, then **hold the Space bar** (sustain) and layer another chord on top.
+**Open this first:** [/dream/295-kids-shadow-dance](https://getresonance.vercel.app/dream/295-kids-shadow-dance) — hit **Start dancing**, stand back, and **move your whole body**. The dusk meadow blooms and sings wherever you go. (No camera handy? A ghost dancer demos the whole thing for you.)
 
 ## New since yesterday
-- **Harmonograph just became an instrument you *play*** (`291-harmonograph`, **cycle 2**). The chord-draws-itself figure is the same — but now you sculpt it live, the way a pianist uses pedal + dynamics:
-  - **Sustain pedal** (MIDI CC64 / **Space bar** / on-screen pad): released notes keep ringing *and* keep drawing — so the figure **accretes** as you layer chords over a held bass.
-  - **Mod-wheel → damping** (CC1 / ↑↓ keys / slider): sweep from a loose, sprawling figure to a tight inward spiral.
-  - **Harder strikes draw brighter ink**; **Export PNG** saves the figure as an image named for the chord.
-- **Why open it:** it's the first time the lab has *deepened* a piece instead of shipping a new orphan — this is the jury's #1 ask, honored. Try a held bass note + pedal, then walk a chord progression on top and watch the figure thicken.
+- **Shadow Dance** (`295-kids-shadow-dance`, kids) — the lab's **first whole-body / camera kids piece**. A 4-year-old just *dances* and a Lydian meadow blooms, leaves glowing light-trails, and sings under them — **nothing to tap, no way to be wrong**.
+  - **Why open it:** it answers the jury's #1 kids ask ("ban touch — make the child *move*, not poke") and your "stop shipping mic+pentatonic" note in one shot — it's tuned to **G-Lydian**, not pentatonic, and it's the most technically ambitious of the three (camera **frame-difference motion** → a raw-WebGL2 meadow with light-trail accumulation + a faint shadow of *you* in the grass).
+  - **Privacy:** the camera is analysis-only — frames become motion numbers and are thrown away. Nothing recorded, nothing sent, no API.
 
 ## How it was made (the orchestration is the point)
-- **DEEP fire — 2 parallel builders attacked the SAME piece from two angles**, both starting from cycle-1's working code:
-  - 🏆 `harmonograph-expr` — the **expressive** layer (pedal / damping / ink / PNG). **Won** — covers 3 of the 4 planned cycle-2 features and changes how you *play*. Promoted into `291-harmonograph`.
-  - 🌱 `harmonograph-spectrum` — **per-note color threads** (each note its own hue, circle-of-fifths) + **SVG vector export**. Build-verified, banked as **cycle 3**.
+- **WIDE fire — 3 parallel builders, three different hands-free directions**, ship the strongest:
+  - 🏆 `shadow-dance` — **dance** (camera, whole-body, Lydian). **Won.**
+  - 🌱 `voice-garden` — **sing** a garden into bloom, it sings back (pitch detection + memory). Banked — it's lovely, but mic+pentatonic is the rut you flagged, so I held it to *reframe* first.
+  - 🌱 `firefly-tilt` — tilt a firefly to wake stars; **the sky remembers your path and replays it as a lullaby**. Banked — the "remembers your journey" concept is the keeper; I'll lift it onto a fresher input.
 
-## Research worth a look (RESEARCH §299)
-- **Chord→color is an active vein**: *Chord Colourizer* (arXiv 2510.10173, 2025) maps CQT chord detection onto **Newton's color wheel** — the seed for cycle 3's colored threads.
-- Honest note: this week's arxiv cs.SD is all *generative* audio-video (Foley-Omni, JenBridge), **nothing** on interactive instruments — so continuing the multi-cycle build (not chasing a fresh paper) was the right call.
+## Research worth a look (RESEARCH §300)
+- **Both kids forms are current, not nostalgic:** browser pitch-detection shipped a how-to **this month** (MusicalBoard, 2026-05-05) and movement-sonification has a **CHI 2026** workshop. The winner chains straight from the movement finding.
 
 ## Next
-- **Cycle 300 (kids)**: banked candidates `294-kids-voice-garden` (sing→bloom) or `295-kids-shadow-dance` (dance→bloom).
-- **Cycle 301+ (adult)**: 291 **cycle 3** — the polychrome specimen (colored threads + SVG export), already build-verified and banked.
+- **Cycle 301 (adult):** 291-harmonograph **cycle 3** — the polychrome colored-thread specimen + SVG export (already banked, continues the multi-cycle thread).
+- **Cycle 302 (kids):** reframe voice-garden *out of* pentatonic, or move firefly's remember-and-replay onto a fresher input.
 
 ## Open questions for Karel
-- 291 cycle 2 is **build-verified, not browser-verified**. The one thing a 2-min play would confirm: does the **pedal-accrete** read as intended (layered figure thickening) without the older parked notes muddying it? And does **Export PNG** capture the figure cleanly on your browser?
-- **Force-push doc-drift** on `main` recurred again (local diverged 50/50; I `git reset --hard origin/main`). Harmless to the loop, but worth a glance if it's coming from your side.
+- 295 is **build-verified, not browser-verified**. A 1-min play would confirm: does the **motion field feel responsive** under your room's lighting, and does the faint **shadow-of-you** in the meadow read as charming (not noisy)? On a laptop with no camera, the ghost dancer should still demo everything.
+- **Force-push doc-drift** recurred again (origin/main force-updated; local diverged 50/50 → `git reset --hard origin/main`; it even left a stale AGENT.md in my first read). Harmless to the loop, but worth a glance if it's from your side.
