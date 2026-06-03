@@ -2,6 +2,55 @@
 
 ---
 
+## Cycle 293 — adult build (solo) — 285-mosaic-listener
+
+**When**: 2026-06-03 ~08:15 UTC (every-2h autonomous cycle).
+
+**Git sync**: origin/main had been **force-updated** again (`ecdb887…37ed7f8`; local main diverged 50/50 on fetch → `--ff-only` aborts). Reset local `main --hard origin/main` → HEAD `37ed7f8` (cycle 292, `284-kids-thunder-drum`). Worked directly on main. `node_modules` ABSENT → `npm ci` (exit 0) before the authoritative build. Highest committed folder = **284** → allocated **285** for this build (no collision). **AGENT.md drift note**: the on-disk AGENT.md is again the stale **2026-05-21** version (no AMBITION & DIVERSITY MANDATE / orchestration sections) — the force-push reverted it. Followed the mandate as carried in the cycle brief (ambition floor ≥2/5 · diversity audit bans tags ≥4× in last 10 · research-first 15-min dive). Flagging for Karel — this drift recurs every force-push; worth pinning AGENT.md.
+
+**Love signal** (`/api/dream/votes`, 32 loved): pulled by the **his-own-music / data-sculpture cluster** — `163-paths-visualizer`❤️ (the `/api/audio/:id` track-id read this piece reuses for the corpus), `227-paths-granular`❤️ (grain-based playback of his piano — the nearest cousin), `243-spectral-cloud`❤️, `153-paint-compose`❤️, `86-sound-to-video`❤️. Mosaic Listener sits dead-center: it slices his real Welcome Home recording into a navigable grain corpus, deepening the loved granular/paths vein toward a genuinely new synthesis paradigm (concatenative, not granular-of-live-input).
+
+**Research-first dive** (mandate; RESEARCH §293, 2026-06-03 — web tools healthy): **corpus-based concatenative synthesis / audio mosaicing**, chosen to load-bear the build. Anchors: **CataRT** (Diemo Schwarz, IRCAM — descriptor-space + KNN "play the cloud", foundational); **"The Concatenator," arXiv 2411.04366 (Nov 2024)** (real-time Bayesian musaicing); **Lee & Pasquier, "MACAT/MACataRT," arXiv 2502.00023 (Feb 2025)** (factor-oracle self-listening agent — the deepen path); **FluCoMa "live audio mosaicing on the web"** (browser-feasibility freshness anchor). Chain dive → build is direct (research-first path (a)): §293 → `285-mosaic-listener`.
+
+**Decided**: Adult cycle (293 % 2 = 1). No blocker, nothing in-progress. The queue named `mosaic-listener` as **"the strongest single bank in the queue — schedule it on the next clean-slate adult cycle,"** and this is that cycle. **Rejected the other queued candidates after a prior-art grep**: `5-arcs` ("Journey Arc Engine v2") + `48-arc-compose` **already implement an "EDM Build-and-Drop" / cinematic / ritual arc**, so the journey-engine-alternative direction would be a near-duplicate (the exact "too similar" trap the mandate bans); `271-pigment-mosaic` already shipped the **AI-image-inside-AV** piece (Karel's #1, no longer a 0× gap, and the FAL_KEY/no-browser-verify risk is real for an autonomous cycle). `mosaic-listener` is the clean clear-slate pick: a genuinely new synthesis paradigm + bullseye on the "use his real piano" directive.
+
+**Mode**: **solo** (not WIDE/DEEP orchestration). Deliberate: the absolute rule is *the build must pass / don't break Karel's app*, and a single fully-controlled, fully-build-verified piece is the most reliable green-deploy path in budget — especially with **raw WebGL2** shaders I can't browser-verify this cycle. Made the piece rich (4 subsystems) to honor the "not a thin solo toy" spirit. (Cycle 290 set this solo precedent and it held.)
+
+**Ambition floor** — cleared **4 of 5** (need 2): `ambition: novel-technique + named-references(verified) + ≥3-subsystems + recent-research(§293)`
+- **(1) Novel technique** — grepped INDEX + all dream READMEs for `concatenative`/`corpus-based`/`catart`/`audio mosaic`/`timbre-space`: **zero hits → first concatenative-synthesis / audio-mosaicing piece in 280+ prototypes.** (`227-paths-granular` is *granular* playback of a single source position; this is *descriptor-matched KNN concatenation* across a tagged corpus — a different paradigm.)
+- **(3) Named references (verified)** — README cites CataRT/Diemo Schwarz, The Concatenator (arXiv 2411.04366, 2024), MACAT/MACataRT (arXiv 2502.00023, 2025), FluCoMa — all real & checkable.
+- **(2) ≥3 subsystems** — 4: corpus analysis (grain segmentation + RMS + 256-pt Hann-DFT spectral centroid + ZCR pitch, with synth-corpus *and* real-track-decode paths sharing one buffer-index playback) · descriptor-space KNN matcher + Chris-Wilson look-ahead grain scheduler (overlap-add windowed BufferSources → lowpass → feedback-delay wash → limiter) · matte WebGL2 atlas render (GL_POINTS, per-grain activation, cursor + trail) · target navigation (pointer-drag / auto-drift Lissajous / mic centroid+RMS).
+- **(5) Recent research** — built directly off this cycle's §293 dive.
+- (4) Multi-cycle — not claimed; shipped demoable in one fire (deepen path in README: YIN+MFCC, PCA/UMAP layout, KD-tree, onset-aligned grains, MACataRT factor-oracle).
+
+**Diversity audit** (last 10 committed by folder = 267,268,271,272,275,276,279,280,283,284):
+`diversity: banned=[canvas2d-output(5×: 271,272,275,279,280) · three.js-additive-points/glow(JURY hard-ban) · C-major-pentatonic(JURY)] · picked=[pointer-drag INPUT (mic optional) · matte raw-WebGL2 OUTPUT · concatenative-synthesis TECHNIQUE(0× ever) · data-sculpture/his-piano VIBE · his-real-piano-grains SOUND (non-pentatonic by source)]`
+- **OUTPUT = raw WebGL2 (matte)**: canvas2d hit **5×** → **BANNED**; three.js 3× (267,283,284 — under the line but the JURY *additionally* hard-bans glowing three.js point clouds, which a descriptor scatter would read as); SVG 2× (268,276); **raw-WebGL2 0× in window** → cleanest dodge on *both* axes. Used normal premultiplied-alpha blending (matte, no additive) to also satisfy the anti-glow mandate.
+- **INPUT = pointer-drag** (primary; mic optional): mic is borderline (3–4× depending on how the multi-source 271/283 are classified) so I kept it optional and made drag-the-cloud the core embodied interaction — the CataRT signature gesture and the most demo-reliable (works on Karel's desktop with no permission). Touch-tap was 3× (268,272,284), under the line.
+- **TECHNIQUE = concatenative synthesis**: 0× ever → cleanest possible dodge.
+- **SOUND**: when the corpus is his real piano the pitches are literally his playing → non-pentatonic by source, dodging the C-pentatonic ban without choosing any scale.
+
+**What's new about this prototype**:
+1. **First concatenative-synthesis / audio-mosaicing piece in 280+ prototypes** — a new synthesis paradigm for the lab (descriptor-space KNN grain concatenation), not a new palette on an old technique.
+2. **You "play his recording with your finger"** — dragging through the timbre atlas re-assembles his Welcome Home piano out of shards; it's never a literal playback.
+3. **A clean dodge of both bans at once** — matte raw-WebGL2 escapes the canvas2d ban *and* the JURY glowing-points ban (normal-blend matte dots).
+4. **Direct research→build chain, same fire** — §293's "browser mosaicing is feasible now" IS the load-bearing feasibility argument; the build follows CataRT's exact paradigm.
+
+**Validate**: `npm ci` (exit 0) → `npm run build`: first pass compiled (TypeScript ✓) but ESLint failed on `prefer-const` for two KNN accumulator arrays I mutate-but-never-reassign (`best`/`bestD`). ONE fix = `let`→`const`. Rebuild → **exit 0**, "✓ Compiled successfully in 29.1s", `/dream/285-mosaic-listener ○ Static **6.28 kB**`, no errors (only pre-existing warnings in non-dream `src/lib/*`). Also pre-empted two known traps before the first build: removed an unused CPU `hsv` helper (color is done in GLSL), and swapped an O(N·lag) autocorrelation pitch detector for a cheap O(N) zero-crossing estimate + a dynamic analysis hop, so slicing a multi-minute real track stays sub-second. Build-verified (not browser-verified live — see honesty note).
+
+**Queued next**:
+- Cycle 294: **kids build** (294 % 2 = 0). Bank-resurrect a fresh physical-modeling sibling from cycle 292 — **`kids-singing-bowl`** (friction/stick-slip, three.js) or **`kids-jelly-choir`** (mass-spring soft-body, SVG) — both build-verified; or push physical modeling further (a *playable* plate/Chladni, a struck metal tongue-drum). Keep diversifying the SOUND; watch the audit (canvas2d should finally start to unban as 271/272/275 age out; three.js will hit ~3× → fine; the glow ban stands).
+- Cycle 295: **adult build**. Strong leftover banks: **`motif-memory`** (symbolic transcription → re-performance — upgrade to YIN first, per its README) or **`281-midi-harmonograph`** (Web MIDI, pianist fit, raw-WebGL2). Avoid another arc engine (5-arcs/48 cover it), another AI-image piece (271), 4th "fly through your music" + 5th emergent-CA (JURY-frozen).
+- **DEEPEN 285 (multi-cycle)**: real YIN pitch + MFCC timbre descriptors; PCA/UMAP 2-D layout so the atlas clusters by character; a KD-tree for thousands of grains at framerate; onset-aligned grains (AudioWorklet); a **MACataRT factor-oracle** so it continues a phrase rather than only chasing the cursor; drag *two* targets to morph regions; record a target gesture and loop it. README lists the path.
+- **Housekeeping (open since 269)**: STATE.md top is now consistently prepended (286/287/288/291/292/293) but cycles 280–285 + 289/290 still sit appended at the END; INDEX "Newest/Previous" chain skips some mid-200s + 279/280. Worth a reconcile in a polish cycle.
+
+**Notes**:
+- **No API route / no `guard` needed** — `285` only READS the existing `/api/audio/:id` (no side effects, the loved-`163` pattern) + Web Audio + WebGL2, otherwise fully client-side. Mic is analysis-only (`AnalyserNode`, never connected to destination, never recorded/persisted/transmitted). Within the scope fence (`src/app/dream/**` + `docs/dreams/**`). No new deps (raw WebGL2, no three.js needed).
+- **Honesty carry-forward**: `285` is build-verified but **not browser-verified live** this fire (no browser in the cycle; solo, raw WebGL2). Unverified risks: (a) the raw-WebGL2 shader path — mitigated by a no-WebGL rose-notice fallback that keeps the audio mosaic playing, and a dead-simple single-program points pipeline (default VAO, premultiplied-alpha blend); (b) whether the pointer→atlas inverse mapping lands exactly under the cursor (it inverts the vertex shader's `pos*1.78-0.89` + aspect scale analytically, but is unverified visually) — worst case the dragged target is slightly offset, still musical; (c) decode/analyze time on a long real track — bounded by the dynamic hop (≤~1240 windows) so analysis stays sub-second. The procedural-corpus default + auto-drift guarantee a working, self-playing 06:30 review with zero network and zero permissions.
+- **Env note**: container shipped without `node_modules` and origin/main was force-updated; ran `npm ci` and reset to origin/main before working.
+
+---
+
 ## Cycle 292 — kids build (WIDE orchestration, 3 explored) — 284-kids-thunder-drum
 
 **When**: 2026-06-03 ~06:15 UTC (every-2h autonomous cycle).

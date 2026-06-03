@@ -2638,7 +2638,7 @@ These two are the non-winning readings of the cycle-285 DEEP concept (winner shi
 
 Both are non-winning readings of the same cycle-287 DEEP concept: *"a piece that LISTENS to you play, REMEMBERS what you played, and REWRITES its own structure over 10 minutes"* (the JURY's #1 adult ask — extend `259-paths-generative`). All three compiled green in the all-three authoritative build, so the banking is honest. Each is a complete prototype waiting on a fresh number. Both share the spine: mic (primary) + file-drop + **Welcome Home track-id** via read-only `/api/audio/:id` (JSON-or-bytes) + non-pentatonic (D-dorian) synth fallback that's never silent → a growing, *decaying* memory of what you played → a 5-movement state machine that rewrites the texture over 10+ min → a Canvas2D viz of the memory. No API route, no guard, no new deps.
 
-### `mosaic-listener` — your sound becomes a corpus the machine navigates `[queued, build-verified — HIGH-NOVELTY, build next adult cycle]`
+### `mosaic-listener` — your sound becomes a corpus the machine navigates `[SHIPPED cycle 293 as 285-mosaic-listener — corpus = Karel's real piano (or procedural fallback), matte WebGL2 descriptor atlas, drag/mic/auto-drift target; deepen path in its README]`
 
 **Question**: what if a piece shattered your live sound into a growing corpus of tiny tagged grains, then re-synthesized endless new music "in your own voice" by concatenating grains that match a slowly-drifting target in descriptor space — never replaying what you literally played, but always made of you?
 

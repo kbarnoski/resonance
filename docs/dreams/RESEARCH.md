@@ -3223,3 +3223,19 @@ What's surprising: most generative-music systems are *offline turn-takers* — y
 - **`286-kids-jelly-choir`** — wobbly translucent **soft-body jelly** creatures (mass-spring/Verlet mesh, raw WebGL2 or SVG): poke/squish to deform; deformation energy drives a modal "wobble" voice; squish two together → they harmonize in just intonation. First **mass-spring soft-body → audio** in the lab.
 
 Chain today's research → today's build is direct: §292 → WIDE briefs A/B/C → ship the strongest.
+
+---
+
+## §293 — Corpus-based concatenative synthesis / audio mosaicing is browser-feasible now — 2026-06-03
+
+**Research-first dive (mandate), cycle 293, web tools healthy.** Topic chosen to load-bear the cycle's build (the queue's #1 bank, `mosaic-listener`): can the lab do real-time **concatenative synthesis** (a.k.a. audio mosaicing) in a browser?
+
+**Findings (dated, verified):**
+- **CataRT** (Diemo Schwarz, IRCAM) — the canonical interactive corpus-based concatenative synthesis system: slice a corpus into grains, tag each with audio **descriptors**, lay them out in a 2-D descriptor space, and **re-synthesize a target by KNN-matching grains** to a moving target — interactively ("play the cloud by hand") or from a target score/live input. This is the exact paradigm the build follows. `[foundational]`
+- **"The Concatenator: A Bayesian Approach to Real-Time Concatenative Musaicing"** — arXiv **2411.04366** (Nov 2024). A real-time, audio-guided system that concatenates corpus windows to re-create the harmonic + percussive aspects of a target stream. Confirms real-time musaicing is a live, current research area, not a museum technique.
+- **Lee & Pasquier — "Musical Agent Systems: MACAT and MACataRT"** — arXiv **2502.00023** (Feb 2025). MACataRT extends CataRT with a **factor-oracle** temporal model + a self-listening "congruence" parameter for generative live performance. The clearest "where mosaicing is going" pointer (the build's deepen-path: add a factor oracle so it continues a phrase rather than only chasing the cursor).
+- **FluCoMa** (Fluid Corpus Manipulation) — discourse thread **"Live audio mosaicing on the web"** + `fluid.bufnmfcross~` (NMF-inspired mosaicing, used in album productions since 2021). Freshness anchor that **browser-side** mosaicing is being actively built today.
+
+**Why it fits Resonance**: it is the lab's first *new synthesis paradigm* in a while (the JURY keeps asking the lab to escape its templates with new **techniques**, not new palettes), it is bullseye on Karel's "**use his real Welcome Home piano**" directive (the corpus *is* his recording; you re-compose with shards of it), and the descriptor-space atlas is a legible, novel visual. Browser-feasible: ~600 grains × a 256-pt centroid DFT analyzes in <1 s; KNN over ≤600 grains is a trivial per-trigger linear scan; grain playback is just windowed `BufferSourceNode`s indexing one decoded buffer (no per-grain copies).
+
+**Became a prototype this cycle (research-first rule path (a))**: `285-mosaic-listener` — drag a cursor through an atlas of grains (his piano, or a procedural fallback) and the piece is endlessly re-assembled from the nearest grains. Deepen path: real YIN+MFCC descriptors, PCA/UMAP 2-D layout, a KD-tree for thousands of grains, onset-aligned grains, and a MACataRT factor-oracle so it plays on its own.
