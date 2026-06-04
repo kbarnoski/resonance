@@ -1,21 +1,22 @@
-# Morning digest — last updated 2026-06-04 (cycle 307) UTC
+# Morning digest — last updated 2026-06-04 (UTC)
 
-> **Jury verdict today**: Strong at the edges — `308-orbit-choir` finally breaks the screen and the multi-cycle threads are holding — but the kids lane has shipped the same no-fail modal noodle through five different sensors; tomorrow, deepen the spatial piece with your real piano, don't build a sixth shaker. See `docs/dreams/JURY.md`.
+## ⭐ Open this first
+- **[/dream/311-kids-music-box](https://getresonance.vercel.app/dream/311-kids-music-box)** — Kids Music Box. **The first kids piece in the lab that REMEMBERS across sessions.** A slowly-spinning 3D music-box cylinder a 4-year-old studs with pins to *compose* a looping tune; a glowing comb plucks each pin as it rolls past. The pattern saves to the device, so the loop keeps playing while they rearrange it and **the box remembers the tune even after you close and reopen it** — a little machine they build, not a forgettable wash. This is your JURY ask answered: *"break the kids recipe — ship a piece where what they did persists and grows."* Karplus-Strong pluck timbre, D-Lydian (no pentatonic), three.js 3D. Wooden-toy warm. **Wear sound on.**
 
-**Cycle 307 · adult · DEEP (2 approaches) → ships `308-orbit-choir`.** I pivoted off the Mirror-Canon polish and finally shipped the spatial-audio breadth the Concept Jury has been asking for three provocations running: **the lab's first non-screen, audio-FIRST piece.** Best opened **on your phone, with headphones.**
+## How this fire ran (the studio choreography)
+- **Kids cycle, WIDE mode** — 3 parallel builders, 3 *different* memory/consequence forms, shipped the strongest:
+  - **311 music-box** (persists & grows) — **WINNER**, the only one that broke the "cute creature + pads" pattern.
+  - **309 echo-duet** (banked) — a creature that listens, remembers your notes, and answers in your own style (Pachet's *Continuator*).
+  - **310 sing-back** (banked) — a Simon-style memory game with real-but-kind right/wrong (you *can* be wrong, it gently re-teaches). The cleanest "make something wrong, fix it."
+- Both losers are build-verified, banked in IDEAS, ready to ship next kids cycle.
 
-## New since yesterday
-- **▶ [/dream/308-orbit-choir](https://getresonance.vercel.app/dream/308-orbit-choir)** — **A choir scattered around your head that gathers itself home over 6 minutes.** Headphones on, tap *Begin the orbit*. Seven sustained voices start scattered and detuned all around you; over ~6 minutes they **orbit inward and resolve into a warm A-minor chord** — the room is genuinely different at minute 6 than minute 0. **Turn your phone (or your head)** and the voice you face swells *and* resolves a little faster — you shepherd them home. The screen is almost black on purpose; the piece is in your ears.
-  - **Why this is a real first:** in 300+ prototypes the lab had **never shipped a spatial-audio piece** (3 were banked, 0 shipped) and **never** built one whose *output isn't a screen visualizer*. This is both.
-  - **The science behind the gesture:** browser HRTF (3D audio) is famously front/back-ambiguous — but **head movement is the known fix** (arXiv:2510.09161). Turning isn't a gimmick; it's literally what makes the 3D sound legible.
+## In progress / threads
+- **Spatial thread (308-orbit-choir)** is queued for the next *adult* cycle: deepen it with **your real Welcome Home piano stems** + haptics + persistence (JURY #1). The "use your actual music" directive has never reached the spatial layer yet — that's next.
 
-## Also explored this fire (build-verified, banked)
-- **`307-still-room`** — the calmer sibling: 7 voices at *fixed* bearings, no clock, no arc — pure *Deep Listening* (Pauline Oliveros). Lost curation to the bigger 308 but built clean; re-banked as a ready companion to ship next.
-
-## Heads-up / honest caveats
-- **The whole bet rides on one thing I can't test here:** whether generic Web-Audio HRTF actually *externalizes* (sounds outside your head) on your real phone + headphones. **Please try it with headphones and tell me if it feels 3D or flat.**
-- Does the 6-min arc read as an *arrival*, or as a slow wash? That's the one judgment call I'd most want your ear on.
+## Research worth a look
+- **RESEARCH §308** — *reflexive interaction* (Pachet's Continuator, Addessi's MIROR): kids stay engaged when the machine **remembers and varies their own input**, not when it just makes nice sound. The theory behind all three of today's pieces.
 
 ## Open questions for Karel
-- **Deepen this into a thread?** Next adult cycle I'd love to swap the synth voices for your real *Welcome Home* piano stems (your music, spatialized around you), add a haptic buzz when a voice resolves, and persist where you left the room. Worth a multi-cycle commitment, or one-and-done?
-- Clean sync again this fire — no force-push drift, AGENT.md current. Second clean fire running.
+- The music box bets on **localStorage persistence** feeling like "my box remembers me." Worth it, or does it need a visible "my tunes" shelf to land?
+- Five kids fires were sensor-noodles; this one breaks the form. Does the music box feel like the *kind* of bigger you meant — or still too toy-like?
+- All three are build-verified, **not browser-verified** (no GPU/touch here): KS timbre + tap feel on the music box need your ear/finger.
