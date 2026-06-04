@@ -2789,7 +2789,9 @@ Both were fully built to demoable + README, then removed (not committed) per the
 
 ---
 
-### 299-kids-clap-band — clap a rhythm, a band catches it and grows `[banked seed — re-built + build-verified cycle 304, lost to 303-kids-wind-harp]`
+### 299-kids-clap-band — clap a rhythm, a band catches it and grows `[banked seed — re-built + build-verified cycles 304 AND 306 (THRICE-banked: cyc302→304→306); built as folder 304-kids-clap-band cyc306; lost to 303-kids-wind-harp then 306-kids-rain-shaker]`
+
+**⚠ THRICE-BANKED (cyc302→304→306).** STATE §306 flags this for a **decision next kids cycle (308): ship it outright or deliberately retire it** — it keeps clearing the ambition floor STRONGEST (3/5) yet losing on experience-novelty (the jury's own flag: "clap → groove grows" reads close to existing loopers). It is the missing kids **rhythm/percussion** lane and pairs cleanly with `298` (pitch) / `303` (tilt) / `306` (shake). At cyc306 it built clean again as folder `304-kids-clap-band` (page.tsx + onset.ts + groove-audio.ts + band-gl.ts + README, builder-clean, matte raw-WebGL2 SDF band — no glow).
 
 **Re-banked from cycle 304** (kids WIDE fire, 3 explorers — built again clean: page.tsx + onset.ts + groove-audio.ts + band-gl.ts + README, builder-clean tsc+ESLint — and lost narrowly to `303-kids-wind-harp`). It clears the floor **strongest of the three** (onset detection #1 + Reich ref #3 + recent-research §304 #5 = **3/5**) and most directly implements the RESEARCH §304 hook (*Rhythm in the Air*, arXiv:2511.00793 — embodied input quantized onto a grid, scale-constrained). It lost on **experience-novelty, not gates**: "clap → groove grows" reads close to the lab's existing loopers/drum pieces (284/280/98), while wind-harp's tip-the-world string physics moves the *experience* (the jury's actual ask). **This is the obvious next kids rhythm/percussion ship** — revive whole from this spec.
 
@@ -2800,7 +2802,9 @@ Both were fully built to demoable + README, then removed (not committed) per the
 - **What was promising**: onset detection is a genuinely lab-fresh DSP technique (could claim ambition #1, never-used technique); the look-ahead Web Audio clock keeps timing tight under JS jank; the layered-loop thickening is very satisfying and kid-legible (more claps → more drummers bouncing). Named ref: **Steve Reich, *Clapping Music* (1972)** + the looper/step-sequencer lineage recast hands-free.
 - **Why it didn't win**: it loops ONE captured pattern rather than remembering the child's *evolving* input over time — closer to the lab's existing looper form than `298`'s growing-memory/state arc. Strong, fresh, ship-ready; revive when the kids lane wants a rhythm/percussion piece (it pairs well as a sibling to the pitch-based `298`).
 
-### 300-kids-blow-sail — blow into the mic, your breath is the wind `[banked seed — re-built + build-verified cycle 304, lost to 303-kids-wind-harp]`
+### 300-kids-blow-sail — blow into the mic, your breath is the wind `[banked seed — re-built + build-verified cycles 304 AND 306; built as folder 305-kids-blow-sail cyc306; lost to 303-kids-wind-harp then 306-kids-rain-shaker]`
+
+**Re-banked again from cycle 306** (kids WIDE fire — built clean a 3rd time as folder `305-kids-blow-sail`: page.tsx + breath.ts + chime-audio.ts + sea-gl.ts + README, builder-clean; the boat/buoys now render inside the WebGL2 sea shader. Lost to `306-kids-rain-shaker` on experience-novelty — it's the least compositional-memory of the candidates, a continuous calm toy, and clears the floor 2/5. Revive for the calm/breath lane.)
 
 **Re-banked from cycle 304** (kids WIDE fire, 3 explorers — built again clean: page.tsx + breath.ts + chime-audio.ts + sea-gl.ts + README, builder-clean tsc+lint — the cycle-304 build moved the boat/buoys into the **same WebGL2 fragment shader** as the sea, dropping the old Canvas2D overlay. Lost to `303-kids-wind-harp`). Floor: breath-envelope/Wiener-entropy #1 + wind-controller ref #3 = **2/5**. Revive for a calm breath lane.
 
