@@ -1,21 +1,19 @@
-# Morning digest — last updated 2026-06-04 (cycle 306) UTC
+# Morning digest — last updated 2026-06-04 (cycle 307) UTC
 
-**Cycle 306 · kids · WIDE (3 explorers) → ships `306-kids-rain-shaker`.** Three hands-free kid instruments built in parallel; shipped the one with the best phone-review fit and a brand-new input axis.
+**Cycle 307 · adult · DEEP (2 approaches) → ships `308-orbit-choir`.** I pivoted off the Mirror-Canon polish and finally shipped the spatial-audio breadth the Concept Jury has been asking for three provocations running: **the lab's first non-screen, audio-FIRST piece.** Best opened **on your phone, with headphones.**
 
 ## New since yesterday
-- **▶ [/dream/306-kids-rain-shaker](https://getresonance.vercel.app/dream/306-kids-rain-shaker)** — **Shake the phone like a rainstick.** Gentle shakes = a soft trickle of beads; bigger shakes tumble a warm rain down the screen and ring **D-Dorian** bells. The lab's **first accelerometer (`devicemotion`) instrument** — shake-ENERGY, not tilt. **Open it on your phone and just shake it** (no mic, no camera; if you don't shake, it rains by itself). A hard limiter means it can never blast no matter how vigorously a kid shakes.
+- **▶ [/dream/308-orbit-choir](https://getresonance.vercel.app/dream/308-orbit-choir)** — **A choir scattered around your head that gathers itself home over 6 minutes.** Headphones on, tap *Begin the orbit*. Seven sustained voices start scattered and detuned all around you; over ~6 minutes they **orbit inward and resolve into a warm A-minor chord** — the room is genuinely different at minute 6 than minute 0. **Turn your phone (or your head)** and the voice you face swells *and* resolves a little faster — you shepherd them home. The screen is almost black on purpose; the piece is in your ears.
+  - **Why this is a real first:** in 300+ prototypes the lab had **never shipped a spatial-audio piece** (3 were banked, 0 shipped) and **never** built one whose *output isn't a screen visualizer*. This is both.
+  - **The science behind the gesture:** browser HRTF (3D audio) is famously front/back-ambiguous — but **head movement is the known fix** (arXiv:2510.09161). Turning isn't a gimmick; it's literally what makes the 3D sound legible.
 
-## Also explored this fire (build-verified, re-banked — ready to ship)
-- **`304-kids-clap-band`** — clap → onset detection → a 16-step groove that layers woodblock/kick/shaker/bell (Steve Reich *Clapping Music*, D-Mixolydian). Cleared the ambition floor **strongest of the three (3/5)** and is the missing kids rhythm lane — but it's **now banked a 3rd time**, so I'm flagging it for a definite ship-or-retire next kids cycle.
-- **`305-kids-blow-sail`** — blow into the mic, your breath sails a glowing boat past singing C-Lydian buoys (Wiener-entropy breath detector). Calm/dreamy lane.
+## Also explored this fire (build-verified, banked)
+- **`307-still-room`** — the calmer sibling: 7 voices at *fixed* bearings, no clock, no arc — pure *Deep Listening* (Pauline Oliveros). Lost curation to the bigger 308 but built clean; re-banked as a ready companion to ship next.
 
-## Why rain-shaker won
-Best 06:30 phone fit — you shake the phone you're already holding, zero permission friction. A genuinely never-used input axis (accelerometer *shake-energy*, distinct from the tilt in `303` and heading in `290`). And it moves the *experience*: shaking is a new kid gesture, not another poke or sing. Ambition 3/5; dodges every banned tag. (Curation note: the builder used an additive/glow render against the lab's matte house style — I switched it to matte alpha-over before shipping.)
-
-## Research worth a look
-- **RESEARCH §306** — CHI **2026** *Designing Interactive Movement Sonification* (+ a CHI'26 movement↔sound workshop). The live research interest is the motion→sound *mapping*, which is sensor-agnostic — so the cheapest, most private, zero-AI body sensor (the phone's own accelerometer) is fair game. That's the rain-shaker hook, and it steers off the camera the last 3 adult fires over-used.
+## Heads-up / honest caveats
+- **The whole bet rides on one thing I can't test here:** whether generic Web-Audio HRTF actually *externalizes* (sounds outside your head) on your real phone + headphones. **Please try it with headphones and tell me if it feels 3D or flat.**
+- Does the 6-min arc read as an *arrival*, or as a slow wash? That's the one judgment call I'd most want your ear on.
 
 ## Open questions for Karel
-- **Does the shake feel right?** Threshold/scale are tuned by reasoning, not a real phone — tell me if it's too touchy or too stiff (a one-number fix).
-- **`304-kids-clap-band` is now thrice-banked.** Want me to commit to shipping it next kids cycle, or retire it? It keeps winning on gates but losing on experience-novelty.
-- **Good news for once:** this fire synced **clean** — no force-push divergence, and the on-disk `AGENT.md` was the current full version (the recurring drift did NOT recur). If that drift was something happening manually, it looks resolved this fire.
+- **Deepen this into a thread?** Next adult cycle I'd love to swap the synth voices for your real *Welcome Home* piano stems (your music, spatialized around you), add a haptic buzz when a voice resolves, and persist where you left the room. Worth a multi-cycle commitment, or one-and-done?
+- Clean sync again this fire — no force-push drift, AGENT.md current. Second clean fire running.
