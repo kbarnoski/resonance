@@ -39,10 +39,17 @@ a **stacked-round canon-memory engine**.
   `FRAMES_PER_BAR = 96` snapshots) for exactly one bar, then commits it as a
   **canon voice**. Recording the parameter stream (not audio) is lighter and
   cleaner: it is replayed through a fresh formant voice.
-- **Canon entry:** each committed voice enters offset by a fixed number of beats
-  from the previous one (`CANON_OFFSET_BEATS = 1`, i.e. voice _n_ enters _n_
-  beats late). All voices share **one locked bar grid** — no drift. This is a
-  true round / canon, the deliberate contrast to a phasing version.
+- **Canon entry (Round mode):** each committed voice enters offset by a fixed
+  number of beats from the previous one (`CANON_OFFSET_BEATS = 1`, i.e. voice _n_
+  enters _n_ beats late). All voices share **one locked bar grid** — no drift.
+  This is a true round / canon.
+- **Phase mode (cycle 2):** flip the **Round ⇄ Phase** toggle and each voice's
+  loop is stretched by `(1 + n·PHASE_DRIFT)` (`PHASE_DRIFT = 0.012`) and clocked
+  from its own commit time — so the past-yous gradually slip in and out of phase
+  with one another, Steve Reich's _Piano Phase_. Voice 0 stays locked; later
+  voices drift more. A live **drift HUD** shows each voice's loop position (0..1)
+  as a tinted marker: in Round they hold their offsets, in Phase they slide apart.
+  The piece literally never repeats.
 - **Conduct controls:** per-voice **mute** and **solo** (faders glide, no
   clicks), plus voice count and a **Clear round** control. Cap of **4 voices**.
 - The piece **accumulates**: it is genuinely different and fuller at minute two
@@ -100,22 +107,21 @@ a **stacked-round canon-memory engine**.
 
 ---
 
-## Multi-cycle commitment — this is cycle 1 of a thread
+## Multi-cycle commitment — cycles 1–2 of a thread
 
-This piece is **cycle 1** of the "Mirror Canon" thread (itself a deepening of
-287-mirror-choir). It was the winner of a DEEP fire whose parallel sibling —
-**Mirror Canon (Phasing)** — is already built and banked as the planned
-**cycle-2 deepening**:
+This piece belongs to the "Mirror Canon" thread (itself a deepening of
+287-mirror-choir), the lab's 2nd genuine multi-cycle build.
 
-- **Cycle 2 — Phasing mode.** Add a Steve Reich *Piano Phase* mode: instead of
-  the locked bar grid, each committed voice plays at a *slightly* different loop
-  rate (`length × (1 + N·0.012)`) so the past-yous gradually drift in and out of
-  phase with one another and the live performer — the piece never repeats and is
-  genuinely different at minute 2 than at second 5. A mode toggle (Round ⇄ Phase)
-  lets the conductor choose a locked round or an evolving phase-cloud. The sibling
-  prototype implemented the full phasing engine + a phase-spread HUD; fold it in
-  here as a second mode rather than a separate piece.
-- **Cycle 3 — polish.** On-hardware tuning of loudness balance / formant
-  intelligibility, downbeat-snapped recording, and the ghost fan-spread.
+- **Cycle 1 (shipped).** The stacked-round canon-memory engine: record a one-bar
+  body-phrase, commit it, and each past-you enters offset on one locked grid.
+- **Cycle 2 — Phasing mode (shipped, cycle 305).** The banked sibling's Steve
+  Reich *Piano Phase* engine folded in as a **Round ⇄ Phase** toggle (not a
+  separate piece). In Phase mode each voice loops at `(1 + n·0.012)`× the bar so
+  the past-yous drift apart — the piece never repeats. Added a live phase-drift
+  HUD (one tinted marker per voice). Both modes share the same record/commit,
+  conduct (mute/solo), ghost-fallback, and wooden-mirror render.
+- **Cycle 3 — polish (next).** On-hardware tuning of loudness balance / formant
+  intelligibility, downbeat-snapped recording, the ghost fan-spread, and a
+  per-voice drift-rate control so you can sculpt the phase cloud.
 
 Banked in `docs/dreams/IDEAS.md` (cycle 303 entry).

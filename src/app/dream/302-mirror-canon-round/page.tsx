@@ -16,6 +16,11 @@
  * round, locked to one bar grid, no drift). Up to 4 voices; mute/solo/conduct
  * the stack live; clear the round.
  *
+ * CYCLE 2 of the Mirror-Canon thread adds a ROUND ⇄ PHASE mode toggle: in PHASE
+ * mode each voice loops at a slightly different rate (Steve Reich, Piano Phase)
+ * so the past-yous gradually slip in and out of phase — the round never repeats
+ * — with a live drift HUD showing each voice's loop position.
+ *
  * INPUT   camera/body via MediaPipe Pose Landmarker (CDN, no npm dep), with a
  *         hands-free ghost-performer fallback that builds the round itself.
  * OUTPUT  matte wooden mirror — tessellated amber tiles, Canvas2D source-over
@@ -105,13 +110,21 @@ const BAR_SEC = BEATS_PER_BAR * SEC_PER_BEAT; // one loop = one bar
 const FRAMES_PER_BAR = 96; // recorded param resolution per bar (~28 fps capture)
 // Each successive canon voice enters offset by this many beats (a true round).
 const CANON_OFFSET_BEATS = 1;
+// PHASE mode (Steve Reich, Piano Phase): each voice loops at a slightly
+// different rate — voice n's bar is stretched by (1 + n·PHASE_DRIFT) — so the
+// past-yous gradually drift in and out of phase. Voice 0 stays locked to the
+// grid; later voices drift more. Tiny so the slip is musical, not chaotic.
+const PHASE_DRIFT = 0.012;
 
 const TILE = 14; // px per mirror tile
+
+type CanonMode = "round" | "phase";
 
 // ── A committed canon voice: a recorded one-bar param loop + canon offset ─────
 interface CanonVoice {
   frames: ParamFrame[]; // FRAMES_PER_BAR snapshots
-  offsetBeats: number; // canon entry offset (beats)
+  offsetBeats: number; // canon entry offset (beats) — used in ROUND mode
+  committedAtS: number; // wall-clock commit time — drift origin for PHASE mode
   muted: boolean;
   tintIdx: number;
 }
@@ -279,6 +292,9 @@ export default function MirrorCanonRoundPage() {
   const [muted, setMuted] = useState<boolean[]>([false, false, false, false]);
   const [soloIdx, setSoloIdx] = useState<number | null>(null);
   const [beatPulse, setBeatPulse] = useState(0);
+  const [mode, setMode] = useState<CanonMode>("round");
+  // current loop phase (0..1) of each canon voice — drives the drift HUD
+  const [phases, setPhases] = useState<number[]>([0, 0, 0, 0]);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -300,6 +316,8 @@ export default function MirrorCanonRoundPage() {
   const canonRef = useRef<CanonVoice[]>([]);
   const mutedRef = useRef<boolean[]>([false, false, false, false]);
   const soloRef = useRef<number | null>(null);
+  const modeRef = useRef<CanonMode>("round");
+  const frameCountRef = useRef(0);
 
   // recording buffer
   const recordingRef = useRef(false);
@@ -312,6 +330,7 @@ export default function MirrorCanonRoundPage() {
   // keep refs in sync with state setters
   mutedRef.current = muted;
   soloRef.current = soloIdx;
+  modeRef.current = mode;
 
   // ── Commit current performance as a canon voice ──────────────────────────
   const commitVoice = useCallback(() => {
@@ -346,6 +365,10 @@ export default function MirrorCanonRoundPage() {
 
   const toggleSolo = useCallback((i: number) => {
     setSoloIdx((s) => (s === i ? null : i));
+  }, []);
+
+  const toggleMode = useCallback(() => {
+    setMode((m) => (m === "round" ? "phase" : "round"));
   }, []);
 
   // ── Main start: audio + camera/ghost, all inside the click handler ────────
@@ -524,6 +547,7 @@ export default function MirrorCanonRoundPage() {
               canonRef.current.push({
                 frames: recBufRef.current.slice(0, FRAMES_PER_BAR),
                 offsetBeats,
+                committedAtS: nowS,
                 muted: false,
                 tintIdx: slot + 1,
               });
@@ -537,14 +561,30 @@ export default function MirrorCanonRoundPage() {
 
       // 5. play canon voices (the stacked round), apply conduct (mute/solo)
       const soloed = soloRef.current;
-      const canonGhosts: { pose: GhostPose; tintIdx: number; energy: number }[] =
-        [];
+      const playMode = modeRef.current;
+      const canonGhosts: {
+        pose: GhostPose;
+        tintIdx: number;
+        energy: number;
+      }[] = [];
+      const phasesNow = [0, 0, 0, 0];
       canonRef.current.forEach((cv, i) => {
         const voice = audioEng.canon[i];
-        // canon entry: this voice's phase is the bar phase shifted back by its
-        // offset (in beats). All share the same locked bar grid (no drift).
-        const offsetBars = cv.offsetBeats / BEATS_PER_BAR;
-        const f = sampleLoop(cv.frames, barPhase - offsetBars);
+        // Each voice's loop phase depends on the mode:
+        //  ROUND — bar phase shifted back by its canon offset; all voices share
+        //          one locked bar grid (a true round, no drift).
+        //  PHASE — Steve Reich Piano Phase: this voice's loop is stretched by
+        //          (1 + i·PHASE_DRIFT) and clocked from its own commit time, so
+        //          it slowly slips against the grid and the other voices.
+        let loopPhase: number;
+        if (playMode === "phase") {
+          const period = BAR_SEC * (1 + i * PHASE_DRIFT);
+          loopPhase = (nowS - cv.committedAtS) / period;
+        } else {
+          loopPhase = barPhase - cv.offsetBeats / BEATS_PER_BAR;
+        }
+        phasesNow[i] = ((loopPhase % 1) + 1) % 1;
+        const f = sampleLoop(cv.frames, loopPhase);
         const formants = computeFormants(f.openness);
         applyVoiceParams(
           audioEng.ctx,
@@ -566,6 +606,19 @@ export default function MirrorCanonRoundPage() {
           });
         }
       });
+
+      // surface the drift HUD at ~10 fps (cheap; canvas keeps its own rAF)
+      frameCountRef.current += 1;
+      if (frameCountRef.current % 6 === 0) {
+        setPhases((prev) =>
+          prev[0] === phasesNow[0] &&
+          prev[1] === phasesNow[1] &&
+          prev[2] === phasesNow[2] &&
+          prev[3] === phasesNow[3]
+            ? prev
+            : phasesNow,
+        );
+      }
 
       // 6. render wooden mirror
       const canvas = canvasRef.current;
@@ -702,11 +755,74 @@ export default function MirrorCanonRoundPage() {
             >
               Clear round
             </button>
+            {/* Round ⇄ Phase mode toggle (the cycle-2 deepening) */}
+            <div className="flex items-center rounded-lg border border-white/15 overflow-hidden">
+              {(["round", "phase"] as CanonMode[]).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => {
+                    if (mode !== m) toggleMode();
+                  }}
+                  className={`min-h-[44px] px-4 py-2.5 text-base transition-colors ${
+                    mode === m
+                      ? "bg-violet-600 text-white font-semibold"
+                      : "bg-transparent text-white/70 hover:text-white/95"
+                  }`}
+                >
+                  {m === "round" ? "Round" : "Phase"}
+                </button>
+              ))}
+            </div>
             <p className="text-white/55 text-sm">
-              each voice enters {CANON_OFFSET_BEATS} beat
-              {CANON_OFFSET_BEATS === 1 ? "" : "s"} later, in canon
+              {mode === "round"
+                ? `each voice enters ${CANON_OFFSET_BEATS} beat${
+                    CANON_OFFSET_BEATS === 1 ? "" : "s"
+                  } later, locked in canon`
+                : "voices loop at slightly different rates — they drift in and out of phase (Steve Reich)"}
             </p>
           </div>
+
+          {/* phase-drift HUD — each voice's loop position, tinted; in Phase
+              mode the markers slip apart, in Round mode they hold their offsets */}
+          {voiceCount > 0 && (
+            <div className="flex flex-col gap-1.5">
+              <p className="text-white/55 text-sm">
+                {mode === "phase" ? "Phase drift" : "Round positions"}
+              </p>
+              <div className="flex flex-col gap-1.5">
+                {Array.from({ length: voiceCount }).map((_, i) => {
+                  const tint = VOICE_TINTS[(i + 1) % VOICE_TINTS.length];
+                  const rgb =
+                    tint.name === "violet"
+                      ? "rgb(167,139,250)"
+                      : tint.name === "emerald"
+                        ? "rgb(110,231,183)"
+                        : tint.name === "rose"
+                          ? "rgb(253,164,175)"
+                          : "rgb(252,211,77)";
+                  const audible =
+                    soloIdx !== null ? soloIdx === i : !muted[i];
+                  return (
+                    <div key={i} className="flex items-center gap-2">
+                      <span className="text-white/55 text-xs w-16 shrink-0">
+                        past-you {i + 1}
+                      </span>
+                      <div className="relative flex-1 h-2 rounded-full bg-white/10 overflow-hidden">
+                        <span
+                          className="absolute top-0 bottom-0 w-1.5 rounded-full"
+                          style={{
+                            left: `calc(${(phases[i] ?? 0) * 100}% - 3px)`,
+                            background: rgb,
+                            opacity: audible ? 0.95 : 0.3,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
           {/* conduct: per-voice mute / solo */}
           <div className="flex flex-col gap-2">
@@ -780,11 +896,14 @@ export default function MirrorCanonRoundPage() {
                 your openness shapes the vowel. Perform a phrase, tap{" "}
                 <span className="text-violet-300">Add a voice</span>, and a past
                 version of you joins the round a beat later, in canon. Stack up
-                to four and conduct them — mute, solo, shape the round live.
+                to four and conduct them — mute, solo, and switch the whole
+                stack between a locked <span className="text-violet-300">Round</span>{" "}
+                and a drifting <span className="text-violet-300">Phase</span>{" "}
+                (Steve Reich) cloud.
               </p>
             </div>
             <div className="text-white/55 text-sm leading-relaxed space-y-1">
-              <p>D-Dorian formant choir · stacked-round canon memory</p>
+              <p>D-Dorian formant choir · round ⇄ phase canon memory</p>
               <p>matte wooden-mirror render · 33-point pose tracking</p>
             </div>
 
@@ -810,7 +929,8 @@ export default function MirrorCanonRoundPage() {
       <footer className="px-6 py-4 border-t border-white/10 text-white/55 text-xs flex flex-wrap gap-x-3 gap-y-1 justify-between items-center">
         <span>
           ref: Rozin <em>Wooden Mirror</em> (1999) · the musical round / canon ·
-          Frippertronics · Oliveros <em>Deep Listening</em>
+          Reich <em>Piano Phase</em> · Frippertronics · Oliveros{" "}
+          <em>Deep Listening</em>
         </span>
         <span>resonance lab</span>
       </footer>
