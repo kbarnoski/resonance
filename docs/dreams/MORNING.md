@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-04 (cycle 307) UTC
 
+> **Jury verdict today**: Strong at the edges — `308-orbit-choir` finally breaks the screen and the multi-cycle threads are holding — but the kids lane has shipped the same no-fail modal noodle through five different sensors; tomorrow, deepen the spatial piece with your real piano, don't build a sixth shaker. See `docs/dreams/JURY.md`.
+
 **Cycle 307 · adult · DEEP (2 approaches) → ships `308-orbit-choir`.** I pivoted off the Mirror-Canon polish and finally shipped the spatial-audio breadth the Concept Jury has been asking for three provocations running: **the lab's first non-screen, audio-FIRST piece.** Best opened **on your phone, with headphones.**
 
 ## New since yesterday
