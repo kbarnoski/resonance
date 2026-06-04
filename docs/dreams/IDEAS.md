@@ -2789,18 +2789,20 @@ Both were fully built to demoable + README, then removed (not committed) per the
 
 ---
 
-### 299-kids-clap-band — clap a rhythm, a band catches it and grows `[banked seed — cycle 302 WIDE explorer, build-reviewed]`
+### 299-kids-clap-band — clap a rhythm, a band catches it and grows `[banked seed — re-built + build-verified cycle 304, lost to 303-kids-wind-harp]`
 
-**Banked from cycle 302 (kids WIDE fire, 3 explorers — lost to `298-kids-echo-friend`).** Build-reviewed and fully written (page.tsx + onset.ts + groove-audio.ts + band-gl.ts + README), then removed per the curate rule (non-winners are text seeds, never half-built folders). Resurrect by re-spawning a builder from this spec.
+**Re-banked from cycle 304** (kids WIDE fire, 3 explorers — built again clean: page.tsx + onset.ts + groove-audio.ts + band-gl.ts + README, builder-clean tsc+ESLint — and lost narrowly to `303-kids-wind-harp`). It clears the floor **strongest of the three** (onset detection #1 + Reich ref #3 + recent-research §304 #5 = **3/5**) and most directly implements the RESEARCH §304 hook (*Rhythm in the Air*, arXiv:2511.00793 — embodied input quantized onto a grid, scale-constrained). It lost on **experience-novelty, not gates**: "clap → groove grows" reads close to the lab's existing loopers/drum pieces (284/280/98), while wind-harp's tip-the-world string physics moves the *experience* (the jury's actual ask). **This is the obvious next kids rhythm/percussion ship** — revive whole from this spec.
+
+(Originally banked cycle 302; full build re-confirmed cycle 304.)
 
 - **Question**: "What if a kid could CLAP a rhythm and a band of friendly animal-drummers caught it, looped it back, and built a whole groove on top — getting richer with every clap?"
 - **Tags** (clean diversity dodge): INPUT = clap/percussive onset (mic, hands-free) · OUTPUT = raw WebGL2 band · TECHNIQUE = real-time **onset/transient detection** (HFC spectral flux, 2–8 kHz weighting, adaptive threshold self-calibrated to room noise floor, 160 ms refractory) → quantize to a 16-step loop @ ~96 BPM → progressively **layer** woodblock→kick→shaker→bell at thresholds 1/3/6/10 filled slots · VIBE = kids campfire, D-Mixolydian pad bed (NOT pentatonic), DynamicsCompressor limiter, no fail.
 - **What was promising**: onset detection is a genuinely lab-fresh DSP technique (could claim ambition #1, never-used technique); the look-ahead Web Audio clock keeps timing tight under JS jank; the layered-loop thickening is very satisfying and kid-legible (more claps → more drummers bouncing). Named ref: **Steve Reich, *Clapping Music* (1972)** + the looper/step-sequencer lineage recast hands-free.
 - **Why it didn't win**: it loops ONE captured pattern rather than remembering the child's *evolving* input over time — closer to the lab's existing looper form than `298`'s growing-memory/state arc. Strong, fresh, ship-ready; revive when the kids lane wants a rhythm/percussion piece (it pairs well as a sibling to the pitch-based `298`).
 
-### 300-kids-blow-sail — blow into the mic, your breath is the wind `[banked seed — cycle 302 WIDE explorer, build-reviewed]`
+### 300-kids-blow-sail — blow into the mic, your breath is the wind `[banked seed — re-built + build-verified cycle 304, lost to 303-kids-wind-harp]`
 
-**Banked from cycle 302 (kids WIDE fire, 3 explorers — lost to `298-kids-echo-friend`).** Build-reviewed and fully written (page.tsx + breath.ts + chime-audio.ts + sea-gl.ts + README), then removed per the curate rule. Resurrect by re-spawning a builder from this spec.
+**Re-banked from cycle 304** (kids WIDE fire, 3 explorers — built again clean: page.tsx + breath.ts + chime-audio.ts + sea-gl.ts + README, builder-clean tsc+lint — the cycle-304 build moved the boat/buoys into the **same WebGL2 fragment shader** as the sea, dropping the old Canvas2D overlay. Lost to `303-kids-wind-harp`). Floor: breath-envelope/Wiener-entropy #1 + wind-controller ref #3 = **2/5**. Revive for a calm breath lane.
 
 - **Question**: "What if a kid could blow into the mic and their breath became the wind that sails a little glowing boat across a singing sea?"
 - **Tags** (clean diversity dodge): INPUT = **breath/blowing** (mic, hands-free — NOT pitch, NOT touch) · OUTPUT = raw WebGL2 dawn-sea (FBM waves) + small Canvas2D boat overlay · TECHNIQUE = **breath-envelope detection** = short-window RMS × **spectral flatness (Wiener entropy)** in the 1–10 kHz band, so a broadband blow scores high while a tonal voice/piano (peaked spectrum) scores near zero → wind force drives boat velocity + wake ripples + horizon brightness + a wind-chime swell/pitch-glide; the boat passes **singing buoys** that chime modal notes so a melody emerges from the journey · VIBE = kids calm/dreamy, **Lydian** pad bed (NOT pentatonic), limiter, boat can never crash, no fail.
