@@ -13,7 +13,9 @@ import {
   buildPendulums,
   seedPendulums,
   sampleCurve,
+  sampleCompositeUpTo,
   inkIntensity,
+  pitchClassToColor,
   makeRenderer,
   type GLRenderer,
   type NoteInput,
@@ -112,6 +114,7 @@ export default function HarmonographPage() {
   const pressedKeys = useRef<Set<string>>(new Set());
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const captureRef = useRef<(() => void) | null>(null);
+  const captureSvgRef = useRef<(() => void) | null>(null);
   const lastChordRef = useRef("idle");
   const lastCountRef = useRef(0);
   const octaveRef = useRef(octave);
@@ -449,6 +452,14 @@ export default function HarmonographPage() {
     }
 
     const buf = new Float32Array(CURVE_POINTS * 2);
+    // latest per-thread geometry, captured each frame for SVG export. Each entry
+    // is a copy of the sampled (x,y) clip-space points + its pitch-class color.
+    let lastThreads: Array<{
+      points: Float32Array;
+      count: number;
+      color: [number, number, number];
+    }> = [];
+    let lastAspect = 1;
     let raf = 0;
     let rotate = 0;
     let cleared = false;
@@ -482,27 +493,49 @@ export default function HarmonographPage() {
 
       const aspect =
         gl.canvas.width / Math.max(1, gl.canvas.height);
+      lastAspect = aspect;
 
-      let pends;
-      let color: [number, number, number];
-      let ink: number;
       if (cur.length === 0) {
-        pends = seedPendulums(now);
-        color = [0.42, 0.4, 0.7]; // dim violet idle
-        ink = 1;
+        // idle: a single dim violet Lissajous seed
+        const pends = seedPendulums(now);
         rotate += 0.0015;
+        const count = sampleCurve(buf, CURVE_POINTS, pends, rotate, T_MAX);
+        renderer.drawCurve(buf, count, [0.42, 0.4, 0.7], aspect, 1);
+        lastCountRef.current = count;
+        lastThreads = [];
       } else {
-        pends = buildPendulums(cur, ji, damp);
-        // JI → cooler, calmer; 12-TET → warmer ink
-        color = ji ? [0.55, 0.78, 0.95] : [0.95, 0.62, 0.42];
-        // velocity → ink brightness so dynamics are visible
-        ink = inkIntensity(cur);
+        // POLYCHROME: each held note i draws the running composite of pendulums
+        // 0..i in note i's circle-of-fifths hue, so a triad weaves from its
+        // parts. buildPendulums sorts ascending, so index i matches the i-th
+        // lowest of (held + pedaled) notes.
+        const pends = buildPendulums(cur, ji, damp);
+        const ink = inkIntensity(cur);
         rotate += 0.004 + cur.length * 0.0006;
+        const sortedMidi = cur.map((n) => n.midi).sort((a, b) => a - b);
+        const threads: typeof lastThreads = [];
+        let totalCount = 0;
+        for (let i = 0; i < pends.length; i++) {
+          const color = pitchClassToColor(sortedMidi[i] ?? sortedMidi[0]);
+          const count = sampleCompositeUpTo(
+            buf,
+            CURVE_POINTS,
+            pends,
+            i,
+            rotate,
+            T_MAX
+          );
+          renderer.drawCurve(buf, count, color, aspect, ink);
+          totalCount = count;
+          // copy points for SVG export (buf is reused next iteration)
+          threads.push({
+            points: buf.slice(0, count * 2),
+            count,
+            color,
+          });
+        }
+        lastThreads = threads;
+        lastCountRef.current = totalCount;
       }
-
-      const count = sampleCurve(buf, CURVE_POINTS, pends, rotate, T_MAX);
-      renderer.drawCurve(buf, count, color, aspect, ink);
-      lastCountRef.current = count;
 
       raf = window.requestAnimationFrame(frame);
     };
@@ -529,10 +562,76 @@ export default function HarmonographPage() {
       }, "image/png");
     };
 
+    // SVG vector export: emit one <polyline> per colored thread from the EXACT
+    // sampled clip-space points, mapping [-1,1] → a viewBox and applying the
+    // same aspect correction the vertex shader does. A true printable vector
+    // specimen (vs the PNG raster).
+    captureSvgRef.current = () => {
+      const threads = lastThreads;
+      if (threads.length === 0) return;
+      const W = 1000;
+      const H = 1000;
+      const aspect = lastAspect;
+      // clip-space (x,y) in [-1,1] → SVG px, matching the shader's aspect fix
+      const project = (x: number, y: number): [number, number] => {
+        let px = x;
+        let py = y;
+        if (aspect > 1) px /= aspect;
+        else py *= aspect;
+        // clip y is up-positive; SVG y is down-positive → flip
+        const sx = (px * 0.5 + 0.5) * W;
+        const sy = (1 - (py * 0.5 + 0.5)) * H;
+        return [sx, sy];
+      };
+      const toHex = (c: [number, number, number]) => {
+        const h = (v: number) =>
+          Math.round(Math.max(0, Math.min(1, v)) * 255)
+            .toString(16)
+            .padStart(2, "0");
+        return `#${h(c[0])}${h(c[1])}${h(c[2])}`;
+      };
+      const lines: string[] = [];
+      lines.push(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`
+      );
+      lines.push(`<rect width="${W}" height="${H}" fill="#06080d"/>`);
+      for (const th of threads) {
+        const coords: string[] = [];
+        for (let i = 0; i < th.count; i++) {
+          const [sx, sy] = project(th.points[i * 2], th.points[i * 2 + 1]);
+          coords.push(`${sx.toFixed(2)},${sy.toFixed(2)}`);
+        }
+        lines.push(
+          `<polyline fill="none" stroke="${toHex(
+            th.color
+          )}" stroke-width="1.4" stroke-opacity="0.85" stroke-linejoin="round" stroke-linecap="round" points="${coords.join(
+            " "
+          )}"/>`
+        );
+      }
+      lines.push(`</svg>`);
+      const chord = lastChordRef.current
+        .replace(/[^a-z0-9]+/gi, "-")
+        .replace(/^-+|-+$/g, "")
+        .toLowerCase();
+      const blob = new Blob([lines.join("\n")], {
+        type: "image/svg+xml;charset=utf-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `harmonograph-${chord || "idle"}.svg`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+    };
+
     return () => {
       window.cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
       captureRef.current = null;
+      captureSvgRef.current = null;
       renderer.dispose();
     };
   }, []);
@@ -567,6 +666,14 @@ export default function HarmonographPage() {
           })
           .join(" : ")
       : "—";
+
+  // legend: one swatch per drawn thread (full figure = held + pedaled, sorted
+  // ascending — matches the polychrome render's per-note threads).
+  const legendMidis = [...figureMidis].sort((a, b) => a - b);
+  const rgbToCss = (c: [number, number, number]) =>
+    `rgb(${Math.round(c[0] * 255)}, ${Math.round(c[1] * 255)}, ${Math.round(
+      c[2] * 255
+    )})`;
 
   // ── on-screen keyboard handlers ─────────────────────────────────────────────
   const screenBase = octave * 12 + 12;
@@ -614,16 +721,20 @@ export default function HarmonographPage() {
       <div className="relative z-10 pointer-events-none flex flex-col min-h-screen">
         <header className="px-6 pt-20 max-w-2xl pointer-events-none">
           <h1 className="text-2xl md:text-3xl font-semibold text-white tracking-tight">
-            Harmonograph — Expressive
+            Harmonograph — Spectrum
           </h1>
           <p className="mt-2 text-base text-white/75 max-w-xl">
             Play a chord — MIDI, computer keys, or the on-screen piano — and watch
-            the harmony draw itself as a Victorian pendulum figure. Now sculpt it
-            live: the <span className="text-violet-300">sustain pedal</span>{" "}
-            (Space / CC64) accretes layered chords, the{" "}
+            the harmony draw itself as a Victorian pendulum figure where{" "}
+            <span className="text-violet-300">every note draws its own colored
+            thread</span>: hues step by the circle of fifths, so a triad weaves
+            from three kindred colors. Sculpt it live — the{" "}
+            <span className="text-violet-300">sustain pedal</span> (Space / CC64)
+            accretes layered chords, the{" "}
             <span className="text-violet-300">mod-wheel</span> (CC1 / ↑↓) sweeps
-            pendulum damping from loose sprawl to tight spiral, and harder strikes
-            draw brighter ink. Export the figure as a PNG.
+            pendulum damping from loose sprawl to tight spiral, harder strikes
+            draw brighter ink. Export the figure as a PNG or a printable{" "}
+            <span className="text-emerald-300/95">vector SVG specimen</span>.
           </p>
 
           {!started && (
@@ -734,6 +845,15 @@ export default function HarmonographPage() {
             >
               ⤓ Export PNG
             </button>
+
+            {/* SVG vector export — one polyline per colored thread */}
+            <button
+              onClick={() => captureSvgRef.current?.()}
+              disabled={!!glError || figureMidis.length === 0}
+              className="text-base font-medium px-4 py-2.5 rounded-xl border border-emerald-400/40 bg-emerald-500/20 text-emerald-200 hover:bg-emerald-500/35 transition-colors min-h-[44px] disabled:opacity-40"
+            >
+              ⤓ Export SVG
+            </button>
           </div>
 
           {/* damping (mod-wheel CC1 / ↑↓ / slider) */}
@@ -802,6 +922,30 @@ export default function HarmonographPage() {
               </span>
             </span>
           </div>
+
+          {/* color legend — swatch per thread, circle-of-fifths hue */}
+          {legendMidis.length > 0 && (
+            <div className="flex flex-wrap items-center gap-3 mb-1">
+              <span className="text-base text-white/75">threads:</span>
+              {legendMidis.map((m, i) => (
+                <span
+                  key={`${m}-${i}`}
+                  className="inline-flex items-center gap-2 font-mono text-base text-white/95"
+                >
+                  <span
+                    className="inline-block rounded-sm border border-white/25"
+                    style={{
+                      width: 16,
+                      height: 16,
+                      backgroundColor: rgbToCss(pitchClassToColor(m)),
+                    }}
+                    aria-hidden
+                  />
+                  {noteName(m)}
+                </span>
+              ))}
+            </div>
+          )}
         </section>
 
         {/* on-screen keyboard */}

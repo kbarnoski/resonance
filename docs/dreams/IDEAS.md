@@ -2751,7 +2751,9 @@ Both were fully built to demoable + README, then removed (not committed) per the
 
 ---
 
-### 291-harmonograph CYCLE 3 — polychrome specimen `[queued · banked from cycle-299 WIDE-of-DEEP explorer `harmonograph-spectrum`]`
+### 291-harmonograph CYCLE 3 — polychrome specimen `[✅ SHIPPED cycle 301 into /dream/291-harmonograph — DEEP winner]`
+
+**Shipped (cycle 301)**: implemented exactly as specced below — `pitchClassToColor(midi)` (circle-of-fifths `hue=((pc*7)%12)/12`, s 0.78 v 1.0) + `hsvToRgb`; `sampleCompositeUpTo` (sums pendulums 0..i, normalized by the FULL set so partial threads stay registered); render loop draws one colored running-composite `LINE_STRIP` per held note (a triad weaves from three kindred hues); **SVG vector export** (one aspect-corrected `<polyline>` per thread over a dark rect → `harmonograph-<chord>.svg`, the lab's first vector artifact) alongside the kept PNG export; color legend (swatch + note name per thread). Cited Chord Colourizer (arXiv 2510.10173) + Jack Ox + maddie lim's "12 Tone Color Theory" (RESEARCH §301 chose circle-of-fifths over chromatic mapping). Build 9.29→10.4 kB. Won a DEEP-2 fire over the scope-mode sibling (banked below). Build-verified, not browser-verified — unverified: the multi-strip draw legibility on a dense chord, the SVG aspect projection, PNG readback on Safari.
 
 **Question**: what if every note in the chord wrote its OWN colored thread, and the finished figure could be taken home as a printable **vector** specimen?
 
@@ -2766,3 +2768,21 @@ Both were fully built to demoable + README, then removed (not committed) per the
 **Why it's strong**: cites the freshest research reference in the lab (Chord Colourizer, 2025); gives a *vector* takeaway (no other prototype exports SVG); and is a clean continuation of the lab's only multi-cycle thread. Builder already wrote working `pitchClassToColor`, `sampleCompositeUpTo`, `runSvgExport`, and the legend — resurrect from cycle-299 history (`git log` around the cycle-299 commit) or rebuild from this spec.
 
 **Ambition**: named-reference (Chord Colourizer/Newton) + multi-cycle-commitment (cycle 3 of 291) + recent-research (§299) = 3 of 5.
+
+---
+
+### 291-harmonograph CYCLE 4 — SCOPE MODE fold-in `[queued · banked from cycle-301 DEEP loser `harmonograph-scope`]`
+
+**Question**: what if the harmonograph instrument had a second render mode — a CRT-green XY phosphor **vector-scope** where a continuous **Pure ⇄ Equal** slider lets you *watch* an interval lock (the figure goes still) while you *hear* the beating slow to silence?
+
+**Provenance**: cycle 301 ran DEEP on 291 (2 parallel approaches). Winner = the polychrome specimen (shipped, above). This is the **loser, banked** — its builder reported a clean `npm run build` + ESLint + tsc, `rm -rf`'d per the orchestration rule. It is the natural **cycle 4** and folds in the long-banked standalone `phase-scope` concept.
+
+**Spec (extend the shipped `291-harmonograph` — keep the multi-cycle thread, add a render-MODE toggle):**
+- **Mode toggle** at the top: **"Harmonograph"** (existing figure, unchanged byte-for-byte) vs **"Scope"** (new XY phase-scope of the SAME held notes). Both share input layer / synth / WebGL2 canvas. Switching hands tuning ownership to the right system (JI toggle owns Harmonograph mode; the morph slider owns Scope mode).
+- **Continuous Pure⇄Equal morph slider** (value `m` 0..1, distinct from the binary JI toggle): `morphRatio(equalRatio, m) = exp((1-m)·ln(equalRatio) + m·ln(snapToJustRatio(equalRatio)))`, applied to BOTH the scope figure AND the synth (`synth.retuneMorph(low, m)` via `setTargetAtTime` de-zipper) so dragging toward Pure audibly slows the beats to silence.
+- **XY phosphor vector-scope render** (raw WebGL2, reuse `makeRenderer`/`drawCurve`, CRT-green `[0.3,1.0,0.45]`, fade-quad phosphor trail): per base+upper pair, `x=sin(rA·t), y=sin(rB·t+φ)`; locked just ratio → still closed Lissajous; mistuned → slow precession ∝ cents-from-just. 1–3 channels for a chord. New helpers already written: `morphRatio`, `centsFromJust`, `beatHz` (dominant beat-rate Hz → 0 on lock), `scopeTMax`/`justClosePeriods` (per-channel t-span so a locked loop CLOSES), `sampleScope`, `ScopeChannel`, and engine `retuneMorph`.
+- **Readouts (emerald)**: live **beat-Hz meter** → "LOCKED ≈ 0 Hz" on lock + per-interval **cents-from-just**; **7 one-tap presets** (1:1, 2:1, 3:2, 4:3, 5:4, 6:5, 5:3) that play a clean interval and auto-switch to Scope mode → demoable with zero hardware.
+
+**Why it didn't win (vs polychrome)**: its core "see+hear consonance lock" *re-presents* 291's existing JI-toggle mechanic (a different VIEW of the same idea) rather than adding a NEW capability — the polychrome added per-voice color + the lab's first vector export. But it's an elegant, pedagogically strong tuning instrument and a clean cycle 4. Refs: Lissajous (1857), oscilloscope music / **Jerobeam Fenderson**, **Ryoji Ikeda** clinical XY-phosphor. Caveat noted by builder: the 45/32 tritone is treated as high-q "barely-rational" so it won't perfectly close even at Pure (expected).
+
+**To resurrect**: rebuild from this spec, or recover from cycle-301 history (the `297-harmonograph-scope` scratch folder, `git log` around the cycle-301 commit). **Ambition**: named-reference (Lissajous/Fenderson/Ikeda) + multi-cycle-commitment (cycle 4 of 291) = 2 of 5.

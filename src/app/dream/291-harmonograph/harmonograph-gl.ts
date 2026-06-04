@@ -112,6 +112,89 @@ export function sampleCurve(
   return pts;
 }
 
+/**
+ * Sample the *running composite* of pendulums `[0..upTo]` (inclusive), but
+ * normalize by the amplitude of the FULL pendulum set. This keeps each partial
+ * thread spatially registered with the complete figure (it isn't rescaled to
+ * fill the frame on its own), so layering note 0, then 0+1, then 0+1+2 visibly
+ * weaves the full figure out of its parts. Used for the polychrome multi-strip
+ * render: thread `i` = composite of pendulums 0..i in note i's hue.
+ */
+export function sampleCompositeUpTo(
+  out: Float32Array,
+  pts: number,
+  pends: Pendulum[],
+  upTo: number,
+  rotate: number,
+  tMax: number
+): number {
+  if (pends.length === 0) return 0;
+  const last = Math.min(upTo, pends.length - 1);
+  const cosR = Math.cos(rotate);
+  const sinR = Math.sin(rotate);
+  // normalize by the FULL set's amplitude, not just the partial sum
+  let norm = 0;
+  for (const p of pends) norm += p.amp;
+  norm = norm > 0 ? 1 / norm : 1;
+
+  for (let i = 0; i < pts; i++) {
+    const t = (i / (pts - 1)) * tMax;
+    let x = 0;
+    let y = 0;
+    for (let j = 0; j <= last; j++) {
+      const p = pends[j];
+      const env = Math.exp(-p.decay * t);
+      x += p.amp * Math.sin(p.ratio * t + p.phaseX) * env;
+      y += p.amp * Math.cos(p.ratio * t + p.phaseY) * env;
+    }
+    x *= norm;
+    y *= norm;
+    const rx = (x * cosR - y * sinR) * 0.82;
+    const ry = (x * sinR + y * cosR) * 0.82;
+    out[i * 2] = rx;
+    out[i * 2 + 1] = ry;
+  }
+  return pts;
+}
+
+// ── Color: pitch class → hue via the circle of fifths (Newton wheel) ─────────
+
+/** HSV (all 0..1) → RGB (0..1). */
+export function hsvToRgb(h: number, s: number, v: number): [number, number, number] {
+  const i = Math.floor(h * 6);
+  const f = h * 6 - i;
+  const p = v * (1 - s);
+  const q = v * (1 - f * s);
+  const t = v * (1 - (1 - f) * s);
+  switch (((i % 6) + 6) % 6) {
+    case 0:
+      return [v, t, p];
+    case 1:
+      return [q, v, p];
+    case 2:
+      return [p, v, t];
+    case 3:
+      return [p, q, v];
+    case 4:
+      return [t, p, v];
+    default:
+      return [v, p, q];
+  }
+}
+
+/**
+ * Pitch class → RGB color around a hue wheel ordered by the CIRCLE OF FIFTHS:
+ * `hue = ((pc * 7) % 12) / 12`. A perfect fifth is a single constant hue step,
+ * so a triad (root + third + fifth) reads as three distinct-but-kindred hues.
+ * (Validated mapping per Jack Ox's color/harmony wheel and maddie lim's
+ * "12 Tone Color Theory"; cf. the Chord Colourizer, arXiv 2510.10173.)
+ */
+export function pitchClassToColor(midi: number): [number, number, number] {
+  const pc = ((midi % 12) + 12) % 12;
+  const hue = ((pc * 7) % 12) / 12;
+  return hsvToRgb(hue, 0.78, 1.0);
+}
+
 // ── GLSL ─────────────────────────────────────────────────────────────────────
 
 const LINE_VS = `#version 300 es
