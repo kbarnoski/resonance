@@ -1,25 +1,24 @@
-# Morning digest — last updated 2026-06-04 (UTC, cycle 302)
+# Morning digest — last updated 2026-06-04 (UTC, cycle 303)
 
-**Open this first:** [/dream/298-kids-echo-friend](https://getresonance.vercel.app/dream/298-kids-echo-friend) — for the kids (4+). Tap **"Sing to me ✨"** and **sing a little phrase**. A glowing creature listens, **sings it back**, and **remembers** every phrase — every few rounds it plays a growing song made of everything you've sung together. (No mic? It demos itself — a hands-free auto-singer drives the whole loop.)
+**Open this first:** [/dream/302-mirror-canon-round](https://getresonance.vercel.app/dream/302-mirror-canon-round) — stand in front of the camera and **conduct a four-voice round sung entirely by past versions of yourself.** Perform a body-phrase, tap **"Add a voice to the round,"** and a *past-you* enters a beat later singing the same material in canon — stack up to four selves in a matte wooden mirror, mute/solo to conduct. (No camera? A ghost performer builds the round for you, hands-free.)
 
 ## New since yesterday
-- **`298-kids-echo-friend` — call-and-response WITH MEMORY.** The kids lane's antidote to "poke a cute thing → it drones." The child sings → the creature detects the pitch, **answers in its own voice**, and **accumulates** the phrases into a little song that grows the longer you play. It's *different at round 5 than round 1*.
-  - **Why open it:** it does the two things you queued for the kids lane in one piece — it reframes the banked voice-garden **out of the C-pentatonic rut** (it's in **D-Dorian** now) and moves the firefly's *remember-and-replay* idea onto a **fresher input** (voice, not tilt). Born from a fresh paper (below).
+- **`302-mirror-canon-round` — a canon of your own selves.** This is the **deepening of `287-mirror-choir` you (and the jury) asked for** — the README's promised *"record-a-canon-with-past-you,"* finally built. Your body drives a formant choir; each committed loop becomes a tinted past-you woven into the same Rozin wooden mirror, entering in canon on a locked bar grid. It **accumulates** — fuller at minute 2 than at second 5.
+  - **Why open it:** it's the lab's **2nd real multi-cycle thread** (after harmonograph), it answers your "stop shipping orphans / massively bigger" mandate, and the output is an instrument you *conduct*, not another sound→picture viz.
 
 ## How it was made (the orchestration is the point)
-- **WIDE fire — 3 parallel builders, three ways to break the kids "poke" form** (all hands-free — sing / clap / blow), ship the strongest:
-  - 🏆 **echo-friend** — SING → sing-back **with growing memory**. **Won** (the only one with a real compositional arc; matches your loved sing + loop pieces).
-  - 🌱 **clap-band** — CLAP → a band catches your rhythm and layers a groove (Steve Reich *Clapping Music*). Banked — fresh onset-detection DSP, but loops one pattern rather than *remembering* you.
-  - 🌱 **blow-sail** — BLOW → your breath is the wind sailing a boat past singing buoys. Banked — lovely + a clever breath-vs-voice detector, but the calmest/least "memory" of the three.
-  - Both banked siblings are build-reviewed with full specs in IDEAS.md — ready to revive.
+- **DEEP fire — ONE big concept (Mirror Canon), 2 builders attacking the canon model two ways**, ship the stronger:
+  - 🏆 **round** (302) — past-yous enter in **canon** on a locked grid; conductable (mute/solo). **Won** — most legible, adds live performance control, cleanest build.
+  - 🌱 **phase** (301) — same engine, **Steve Reich *Piano Phase*** drift: loops fall out of sync so it never repeats. Build-reviewed, banked as the **designated cycle-2 deepening** (fold in as a Round⇄Phase toggle). The thread's next cycle is already built.
 
-## Research worth a look (RESEARCH §302)
-- **SingingSDS** (arXiv:2511.20972, Nov 2025) — a dialogue agent that **responds by *singing*** instead of speaking, arguing melody makes a reply more *memorable*. `298` is its fully-client, no-AI, kid-sized embodiment: no model, no server, the mic never leaves the tab.
+## Research worth a look (RESEARCH §303)
+- **The loop pedal as a mirror** — anchored on **LUMIA** (arXiv:2512.17228, Dec 2025, embodied compose-by-looping) + the one-person-choir tradition (Jacob Collier / RC-505) + Reich's phasing + Rozin's *Wooden Mirror*. The reframe: you're not making a picture, you're building and conducting a choir of your past selves. Memory + state + live agency — the qualities the jury praised in `275-memory-loom`.
 
 ## Next
-- **Cycle 303 (adult):** 291 **cycle 4** = the banked scope mode — *only if the harmonograph thread still feels alive after 3 cycles*; else pivot to banked breadth (`289-still-room`, `282-ensemble-tabs`).
-- **Cycle 304 (kids):** revive **clap-band** (rhythm sibling to 298's pitch) or **blow-sail** (calm breath).
+- **Cycle 304 (kids):** revive **clap-band** (rhythm) or **blow-sail** (breath) — both build-reviewed, in IDEAS.
+- **Cycle 305 (adult):** **Mirror-Canon cycle 2** = fold the phasing engine into 302 as a Round⇄Phase toggle.
 
 ## Open questions for Karel
-- `298` is **build-verified, not browser-verified**. A 1-min sing would confirm: does the pitch-tracking land cleanly on a real kid's **wobbly voice**, and does the sing-back feel like **a song we're building** vs. a list of echoes?
-- **Force-push doc-drift** recurred *again* (origin/main force-updated; local diverged 50/50 → `git reset --hard origin/main`; a stale AGENT.md tripped my first read). Harmless to the loop, but it happens every fire now — worth a glance if it's from your side.
+- `302` is **build-verified, not browser-verified**. A 1-min performance on a real webcam would confirm: does **MediaPipe** track you reliably, do 4 stacked formant voices stay intelligible, and does the staggered round read as *"a choir of me"* vs. a wash?
+- I **pivoted off the queued 291 harmonograph cycle-4** to deepen `287` instead — a 4th harmonograph felt like the "too similar" rut, and the jury explicitly named 287 as the thing to deepen. Push back if you'd rather I'd finished the harmonograph scope mode first.
+- **Force-push doc-drift** recurred *again* (origin/main force-updated; `git reset --hard origin/main`). Harmless, but every fire now — worth a glance if it's from your side.
