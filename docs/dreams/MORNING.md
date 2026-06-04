@@ -1,24 +1,25 @@
-# Morning digest — last updated 2026-06-04 (UTC, cycle 301)
+# Morning digest — last updated 2026-06-04 (UTC, cycle 302)
 
-**Open this first:** [/dream/291-harmonograph](https://getresonance.vercel.app/dream/291-harmonograph) — press **Start sound**, play a chord (MIDI keyboard, your computer keys `a w s e d f t g y h u j k o l p ;`, or the on-screen piano), and watch each note draw its **own colored thread**. A major triad now weaves from **three kindred hues**. Then hit **Export SVG** to take the figure home as a printable vector.
+**Open this first:** [/dream/298-kids-echo-friend](https://getresonance.vercel.app/dream/298-kids-echo-friend) — for the kids (4+). Tap **"Sing to me ✨"** and **sing a little phrase**. A glowing creature listens, **sings it back**, and **remembers** every phrase — every few rounds it plays a growing song made of everything you've sung together. (No mic? It demos itself — a hands-free auto-singer drives the whole loop.)
 
 ## New since yesterday
-- **Harmonograph cycle 3 — the polychrome specimen.** The figure is no longer one color: **every note draws its own thread in its circle-of-fifths color**, so a chord reads as a single family of related hues instead of one tangled line. Plus the lab's **first vector export** — **Export SVG** gives you a clean `<polyline>`-per-thread artifact you could actually print or frame (the PNG export stays too).
-  - **Why open it:** this is the lab's **only multi-cycle thread reaching its planned 3rd cycle** (born cyc297 → expressive pedal/damping cyc299 → color + vector now). It's the proof the lab can *deepen one good idea* instead of shipping a new orphan every night — exactly the jury's #1 ask.
-  - **Try:** play a C-major triad, toggle **Pure tuning** — the colored threads still clean up into a near-closed figure while the beating settles. The color now tells you *which voice* each thread is.
+- **`298-kids-echo-friend` — call-and-response WITH MEMORY.** The kids lane's antidote to "poke a cute thing → it drones." The child sings → the creature detects the pitch, **answers in its own voice**, and **accumulates** the phrases into a little song that grows the longer you play. It's *different at round 5 than round 1*.
+  - **Why open it:** it does the two things you queued for the kids lane in one piece — it reframes the banked voice-garden **out of the C-pentatonic rut** (it's in **D-Dorian** now) and moves the firefly's *remember-and-replay* idea onto a **fresher input** (voice, not tilt). Born from a fresh paper (below).
 
 ## How it was made (the orchestration is the point)
-- **DEEP fire — 2 parallel builders, two ways to deepen the same instrument**, ship the strongest:
-  - 🏆 **polychrome specimen** — per-note color + SVG vector export. **Won** (a new dimension + a new artifact, and it matches your loved paint/color pieces).
-  - 🌱 **scope mode** — a CRT-green XY oscilloscope view with a continuous *Pure⇄Equal* slider: drag it and watch an interval *lock* (the figure goes still, the beating goes silent). Banked as **cycle 4** — elegant, but it mostly re-shows the tuning-lock idea 291 already has, so it waits.
+- **WIDE fire — 3 parallel builders, three ways to break the kids "poke" form** (all hands-free — sing / clap / blow), ship the strongest:
+  - 🏆 **echo-friend** — SING → sing-back **with growing memory**. **Won** (the only one with a real compositional arc; matches your loved sing + loop pieces).
+  - 🌱 **clap-band** — CLAP → a band catches your rhythm and layers a groove (Steve Reich *Clapping Music*). Banked — fresh onset-detection DSP, but loops one pattern rather than *remembering* you.
+  - 🌱 **blow-sail** — BLOW → your breath is the wind sailing a boat past singing buoys. Banked — lovely + a clever breath-vs-voice detector, but the calmest/least "memory" of the three.
+  - Both banked siblings are build-reviewed with full specs in IDEAS.md — ready to revive.
 
-## Research worth a look (RESEARCH §301)
-- **The "obvious" rainbow-by-semitone coloring is the wrong choice for harmony** — it makes consonant chords look like noise. The dive settled on **circle-of-fifths** hue (Jack Ox; maddie lim's "12 Tone Color Theory"; Chord Colourizer), which is what makes a triad read as kindred colors. Small decision, big legibility difference.
+## Research worth a look (RESEARCH §302)
+- **SingingSDS** (arXiv:2511.20972, Nov 2025) — a dialogue agent that **responds by *singing*** instead of speaking, arguing melody makes a reply more *memorable*. `298` is its fully-client, no-AI, kid-sized embodiment: no model, no server, the mic never leaves the tab.
 
 ## Next
-- **Cycle 302 (kids):** reframe `voice-garden` out of the pentatonic rut, or move `firefly`'s remember-and-replay onto a fresher input.
-- **Cycle 303+ (adult):** 291 **cycle 4** = the banked scope mode — only if the thread still feels alive after 3 cycles.
+- **Cycle 303 (adult):** 291 **cycle 4** = the banked scope mode — *only if the harmonograph thread still feels alive after 3 cycles*; else pivot to banked breadth (`289-still-room`, `282-ensemble-tabs`).
+- **Cycle 304 (kids):** revive **clap-band** (rhythm sibling to 298's pitch) or **blow-sail** (calm breath).
 
 ## Open questions for Karel
-- 291-cyc3 is **build-verified, not browser-verified**. A 1-min play would confirm: on a **dense 4+ note chord**, do the colored threads stay legible (or muddy)? And does the **downloaded SVG** open with the right proportions?
-- **Force-push doc-drift** recurred again (origin/main force-updated; local diverged 50/50 → `git reset --hard origin/main`). Harmless to the loop, but worth a glance if it's from your side.
+- `298` is **build-verified, not browser-verified**. A 1-min sing would confirm: does the pitch-tracking land cleanly on a real kid's **wobbly voice**, and does the sing-back feel like **a song we're building** vs. a list of echoes?
+- **Force-push doc-drift** recurred *again* (origin/main force-updated; local diverged 50/50 → `git reset --hard origin/main`; a stale AGENT.md tripped my first read). Harmless to the loop, but it happens every fire now — worth a glance if it's from your side.
