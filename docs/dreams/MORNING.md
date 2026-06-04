@@ -1,18 +1,22 @@
 # Morning digest — last updated 2026-06-04 (UTC)
 
-## ⭐ Open this first (wear headphones)
-- **[/dream/308-orbit-choir](https://getresonance.vercel.app/dream/308-orbit-choir)** — Orbit Choir, **now sung by your own album.** This is the deepening you asked for (JURY #1): the spatial choir's seven synth voices are **replaced by your real *Welcome Home* piano recordings**, pulled live from `/api/featured` → `/api/audio`. Each track starts scattered around your head, blurred and slightly out of tune; over ~6 minutes they orbit inward, **sharpen, and settle to true pitch** — you gather your whole album into a clear room around you, a head-tracked *Forty Part Motet* of your own music. **Turn your phone to face a voice** and it sharpens + comes home faster; the phone **buzzes** the instant one locks home (the lab's first haptic output). Leave and come back and it says *"Return to the room — your room was N% gathered"* and **resumes where you left off**. First time the "use your actual music" directive has ever reached the spatial layer.
+## ⭐ Open this first (try it on the iPad / phone)
+- **[/dream/313-kids-tone-tower](https://getresonance.vercel.app/dream/313-kids-tone-tower)** — **Tone Tower.** A 4-year-old listens to a little tower sing a melody, then taps it back on 4 big colored tiles. **Every note they remember stacks a glowing block — the tower grows taller and *stays*.** Miss a note and the top block **wobbles and topples off** (a gentle "aw", never a buzzer, never game-over); the song shrinks by one and re-sings — slower after two misses — so they never get stuck. The tower at minute 3 is a visible record of how far their memory reached.
 
-## Why this is bigger than a timbre swap
-- It reframes the piece from "a synthesised resolving chord" into **"your album, spatially exploded into a room you gather with your head"** — Janet Cardiff's *The Forty Part Motet* (on tour again, MIMOCA + National Gallery of Canada 2026), built from your seven recordings instead of forty singers.
-- **Three lab-firsts in one fire:** real recordings driving the HRTF layer · `navigator.vibrate` haptics · `localStorage` that remembers how far you'd gathered the room across sessions.
-- Multi-cycle thread #3 → cycle 2. If `/api/featured` is ever offline it cleanly falls back to the cycle-1 synth choir, so it always plays — the top label tells you which source you're hearing.
+## Why this one
+- This is the **"break the kids recipe"** ask (JURY #2): a kids piece with **real but kind consequence** — the child can be *wrong and fix it* — instead of the no-fail sensor-noodle we'd shipped five times running. Last kids fire's Music Box took the *persistence* half; this takes the **right/wrong** half.
+- It's the **only one of three explorers that breaks the "creature + colored pads" look** the lab keeps repeating — here the consequence is **architectural**: memory literally builds a structure. That directly answers the verdict's "everything outputs to a screen the same way" flag.
+- Warm mallet voices, a hard limiter so dense stacking never blasts, G-major (not pentatonic). Self-demos on Start.
+
+## Also explored this fire (2 more — see IDEAS.md)
+- **312-kids-sing-back** — literal Simon-grows echo-singing with a creature "Pip" (right grows the song, wrong is kindly re-sung). Lost on a build bug + it's the over-represented creature-pads form. Strong backup once the bug's fixed.
+- **314-kids-echo-duet** — a creature that **remembers and answers in your own style** (Continuator/MIROR), with an "it remembered!" moment when it weaves an *earlier* phrase back in. Build-clean, banked for the duet lane.
 
 ## Threads / what's next
-- **Orbit Choir cycle 3** (candidate): read each track's key from `/api/featured` and tune the gathered room **in key with itself** — your album tuned to itself in space. Plus per-arrival cross-fades so a voice coming home is *heard*, not just felt.
-- **Next kids cycle (310):** ship a banked memory/consequence sibling — `sing-back` (Simon-grows, kind right/wrong) or `echo-duet` (Continuator). Keep breaking the sensor-noodle recipe.
+- **Adult (311+):** Orbit Choir **cycle 3** — tune the gathered room *in key with itself* (read each track's key) + per-arrival cross-fades so a voice coming home is *heard*.
+- **Kids (312):** ship 312 or 314 to complete the memory/consequence trio (persistence + consequence + duet).
+- **Still-empty shelves (your standing asks):** real-world-data sonification; **AI-image-gen embedded in an AV piece** (zero in the last 15 — the most-wanted, least-served).
 
 ## Open questions for you
-- The bet: **7 of your piano tracks playing at once**, spatially separated with only the faced one bright — does it read as a coherent *listening room* or as mush? (Distant voices are dark + quiet to protect against this — tell me if it needs to be even sparser.)
-- Does **gathering your own album with your head** land the way the synth chord did, or better — is *your music as the voices* the unlock?
-- Build-verified, **not browser-verified** (no phone/headphones/sensor here): the spatial externalization, the haptic buzz, and the resume all need your ears + a real device.
+- Does the **toppling block** read as kind-but-real consequence to a 4yo, or does any block falling feel like "losing"? (It always rebuilds — tell me if it needs to be even gentler.)
+- Build-verified, **not browser-verified**: tap latency, the settle/topple *feel*, and AudioContext resume all need your hands on a real device.
