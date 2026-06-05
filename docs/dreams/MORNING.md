@@ -1,27 +1,26 @@
-# Morning digest — last updated 2026-06-05 (UTC), cycle 321
+# Morning digest — last updated 2026-06-05 (UTC), cycle 322
 
-> **I shipped the second non-screen piece you asked for.** The jury's #2 provocation was "build the SECOND non-screen piece — `308-orbit-choir` found the freshest axis the lab owns and nothing followed it." So I went DEEP on that one concept (three technical approaches in parallel) and shipped a live-voice → HRTF spatial choir that **names the notes you sang** (your "make it legible, not a nebula" ask, #1).
+> **The kids lab can now be played by TWO children at once.** Your jury's #3 ask was "turn-taking / multi-user for two kids — *not* another it-grows-while-you're-away." So I built the lab's **first multi-user piece** (the only collaborative thing we had, `319-hub-score`, was adult). Multi-user was the single most-unserved axis in 300+ prototypes — now it's open for kids.
 
 Open the lab: https://getresonance.vercel.app/dream
-**Put on headphones** — the whole point is the sound *around* you.
 
-## ⭐ Open this first (adult — build a choir around your head with your voice)
-- **[331-voice-cathedral](https://getresonance.vercel.app/dream/331-voice-cathedral)** — **sing one steady note and it blooms into a sustained voice placed somewhere on an orbiting ring around your head.** Sing again and again and you **stack a one-person overtone cathedral** — up to nine voices circling you over a just-intonation drone. *Why open it:* the chord you build is **printed by name** (`D · A · F♯ · C♯`) — you recognize what you sang, it isn't an anonymous cloud. The screen is just a dim radar; the piece lives in the air. (No mic / not alone? Hit **Auto-demo** and it sings a rising arpeggio into the space itself.)
+## ⭐ Open this first (kids — two friends build one song together)
+- **[334-kids-pass-the-song](https://getresonance.vercel.app/dream/334-kids-pass-the-song)** — **two children, two tablets in the same room, pass a glowing creature back and forth and take turns adding notes to ONE shared song.** Hum or tap to give the creature a note, hit **✨ send to friend**, and it flies across to your buddy's screen; the song-ribbon grows identically on both and plays back. *Why open it:* you're alone on a phone at 6:30am, so a **robot friend** automatically takes the other side — tap Start and watch the whole pass-back-and-forth loop run by itself. Try opening it in **two browser tabs** to see the real two-kid version.
 
-## Why this one won (DEEP — 1 concept, 3 approaches, 1 shipped)
-- **It's the literal answer to two of your jury provocations at once:** #2 (the second non-screen piece, in `308`'s HRTF-orbit lineage — voices that actually orbit your head) and #1 (legible — it *names the notes*, doesn't render a nebula).
-- **It's the piece we kept promising.** `voice-cathedral` has been the flagged "next adult build" since cycle 320; it shipped clean, built in SVG from the start (no Canvas2D — the renderer you banned) with a brick-wall limiter so nine voices never clip.
-- **Most verifiable of the three.** Pure Web Audio + SVG — no GPU/WGSL blind spot, paying down the jury's note that `323`/`327` never ran on real hardware.
+## Why this one won (DEEP — 1 concept, 3 interaction models, 1 shipped)
+- **It's the literal answer to jury #3:** "319's BroadcastChannel idea, but for two children," off touch, with real turn-taking — not another localStorage toy.
+- **Most verifiable + cleanest for a 4yo.** Discrete "your turn → give a note → send" reads instantly and the robot loop is fully self-running; no GPU/perceptual blind spot.
+- **Honest scoping:** I grepped first and found real-world-weather (`293`) and camera (`295`) were *already* done for kids — so the genuinely new path was multi-user, and that's lab-first.
 
 ## Also explored this fire (built, banked in IDEAS.md)
-- **332-overtone-mirror** — the bolder, stranger one: sing **one** note and the app pulls apart its **harmonic series**, placing each overtone as a separate voice around you — your own timbre exploded into a sphere. The biggest "huh, didn't know we could do that"; it lost only because the effect is hard to verify by ear without real headphones. **Flagged as the next adult build, paired with a real-device listen.**
-- **333-antiphon** — sing a *phrase* and a stone cathedral answers it back as a **spatial canon**, copies returning from rotating positions until you've built a round alone.
+- **335-kids-duet-bridge** — the bolder, stranger one: two kids each hold one end of a glowing rope across their screens and **tune to each other by ear** until it glows gold ("in tune!"). The biggest "huh" — it lost only because the gold-lock reward is perceptual and I couldn't ear-check it in the sandbox. **Flagged as the next kids build, paired with a real-device listen.**
+- **336-kids-echo-relay** — sing a phrase, it flies to a friend's tablet, *their* creature echoes it back and adds — a kid-to-kid canon. Banked, but it rhymes with our many existing echo toys; resurrect only if differentiated.
 
 ## Threads / what's next
-- **Kids (322):** the jury's #3 ask — **turn-taking / two-child** (the `319` wall-clock-sync idea) or **real-world-data for kids**, *not* another "it grows while you're away." Off touch.
-- **Adult (323):** ship **332-overtone-mirror** (with a real-headphones verify pass) or `333-antiphon`.
-- **Verification debt:** `323` + `327` have still never run on a real GPU — worth one cycle on real hardware before the next big WebGPU build.
+- **Adult (323):** ship **332-overtone-mirror** (your voice exploded into its harmonic series in space — with a real-headphones verify) or `333-antiphon`.
+- **Kids (324):** ship **335-kids-duet-bridge** with a device check — keep deepening the new multi-user axis, don't fall back to single-child toys.
+- **Verification debt:** `323` + `327` still never ran on a real GPU — worth one cycle on real hardware before the next big WebGPU build. (331 + 334 are pure Web Audio + SVG — no new debt.)
 
 ## Open questions for you
-- **AI-pipeline-chain** (image gen *inside* an AV piece) is still your most-wanted, never-built direction — blocked on a paid FAL budget. It's a one-word call: **grant a per-cycle budget and I build it next adult fire.**
-- **331 is build-verified, not browser-verified** — the unknowns are perceptual (HRTF feel on headphones; the "one breath = one voice" pitch-gating timings). The Auto-demo exercises the full chain mic-free if you want to hear it without singing.
+- **AI-pipeline-chain** (image gen *inside* an AV piece) remains your most-wanted, never-built direction — blocked on a paid FAL budget. One-word call: **grant a per-cycle budget and I build it next adult fire.**
+- **334 is build-verified, not browser-verified** — the unknowns are the two-live-tablet sync and mic pitch on a real child's hum. The robot-friend demo exercises the full loop solo if you want to see it without a second device.

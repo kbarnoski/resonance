@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §322 — 2026-06-05 — research-first dive (cycle 322)
+
+### Zero-server collaborative web music — and the lab's single most-unserved axis (multi-user) finally pointed at KIDS
+**Source**: *7 WebRTC Trends Shaping Real-Time Communication in 2026* (dev.to/alakkadshaw, 2026 — WebRTC now native in 85%+ of installed browsers) + *WebRTC and the Web Audio API as a Means for a Real Time Collaborative Performance Environment* (IRCAM Forum) + *Building a Real-time Collaborative Audio Mixer with Web Audio API and WebRTC* (seankimmusic.com). Cross-checked against this lab's own `319-hub-score` (the BroadcastChannel/`globalPhase` zero-server sync).
+
+The 2026 signal: real-time collaborative/multiplayer audio is a genuinely live frontier (WebRTC ubiquitous; Web Audio + WebRTC "collaborative performance environments" are now a routine browser build). But the *actionable* finding came from auditing the lab against it: **multi-user is the single most-unserved axis in 300+ prototypes — exactly ONE piece (`319-hub-score`) is collaborative, and it's adult.** Honest freshness caveat (per JURY #5's no-fake-novelty rule): BroadcastChannel + Web Audio are foundational primitives, not a <30-day technique; the recent-and-surprising part is *direction-of-field* — collaborative web audio crossing into mainstream in 2026 — combined with the lab-gap realization. And the **zero-server primitive** (`319`'s BroadcastChannel: same-origin tabs share state with no signaling handshake) is what makes a two-CHILD shared instrument feasible tonight without a server, where the WebRTC literature assumes infrastructure.
+
+**Could become a prototype that**: lets **two children** (two tablets / two tabs in the same room) make ONE piece of music *together* — taking turns passing a glowing creature, or co-playing a shared string stretched between their screens, or singing a phrase that flies to the friend's tablet and is echoed back — Reggio Emilia "group synchrony / joint attention" (KIDS.md's stated high-value goal) realized as the lab's FIRST collaborative kids piece. → drove this cycle's DEEP-3 slate (`334-kids-pass-the-song` turn-based relay / `335-kids-duet-bridge` real-time co-play / `336-kids-echo-relay` networked call-and-response canon). Chain today's-research → today's-build is direct: the dive surfaced multi-user as the unserved axis + the zero-server primitive that unblocks it for kids. **Important honesty corrections caught by grep before spawning** (the same discipline that caught 319's false "first physarum"): real-world-data-for-kids is NOT open — `293-kids-sky-band` already did live weather + geolocation (and claims "first kids real-world-data piece"); camera optical-flow-for-kids is NOT open — `295-kids-shadow-dance` already did it. So the jury's #3 reduces to its *unserved* half: multi-user/turn-taking, which is lab-first for kids.
+
+---
+
 ## §321 — 2026-06-05 — research-first dive (cycle 321)
 
 ### Edge-AI pitch/phoneme detection feeding browser HRTF — the 2026 "spatial voice instrument" stack
