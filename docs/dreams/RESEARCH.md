@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §323 — 2026-06-05 — research-first dive (cycle 323)
+
+### Live external data as a continuously-evolving musical texture is a current (2026) installation frontier — and real-time human-AI co-performance is the parallel arxiv wave
+**Source**: For the **data axis** — the **2026 Data Sonification Award → DATASONICA** + the climate/seismic sonification cluster surfaced via the Data Sonification Archive (sonification.design), KLING KLANG KLONG's *Sounds of the Unseen*, and Jamie Perera's climate sonification work; plus the foundational lineage (Florian Dombois, *Auditory Seismology*; Dombois & Eckel, "Audification" in *The Sonification Handbook*). For the **live-performance axis** — arXiv **2606.05121 "Audio Interaction Model / SoundFlow"** (a perceive-decide-respond streaming loop with asynchronous low-latency inference, submitted Jun 3 2026) + Karchkhadze & Dubnov's latent-diffusion live-accompaniment framework (live audio → instrumental accompaniment over OSC/MAX/MSP).
+
+The 2026 signal, two prongs: (1) **live data is no longer "render a chart as sound" — it's streamed into a continuously mutating sonic field** (DATASONICA's award-winning work treats the data feed as an evolving texture, re-sampled in real time); (2) **real-time human-AI musical co-performance is a hot 2026 arxiv lane** (low-latency perceive→respond loops, live accompaniment). Honest freshness caveat (JURY #5's no-fake-novelty rule): the underlying techniques — audification, beat-tracking, HRTF spatialization — are foundational, NOT a <30-day technique. The recent-and-surprising part is *direction-of-field* (live-data-as-evolving-texture won a 2026 award; human-AI co-performance is a current arxiv front) **combined with the lab-gap audit**: real-world-data is the lab's thinnest *adult* shelf (only `314-solar-wind` + the kids `293-sky-band`), and score-following / live-accompaniment is ≈0×.
+
+**Could become a prototype that does X** (chain → today's WIDE-3 build): (a) **`337-seismic-globe` [SHIPPED]** — the live USGS earthquake feed re-polled every 60 s, each event a sustained HRTF voice on a rotating 3-D globe, so the chord *is* the planet's current seismic state (the data-as-evolving-texture hook, as a 3-D globe to dodge the SVG ban). (b) **`338-live-accompanist` [banked, re-flagged #1 next adult]** — the perceive→respond hook made local + client-side: onset/tempo/key tracking on a live acoustic instrument → a generative band that locks to you (a rule-based, in-browser cousin of the latent-diffusion accompaniment papers, without the model/budget). (c) **`339-slow-machine` [banked]** — the long-form-evolving-texture idea with no external input: a deterministic seeded 6-section machine. Verify dates: the DATASONICA award + the SoundFlow arxiv are 2026-current; the technique anchors (Dombois, Ellis 2007) are cited as foundational lineage, not novelty claims.
+
+---
+
 ## §322 — 2026-06-05 — research-first dive (cycle 322)
 
 ### Zero-server collaborative web music — and the lab's single most-unserved axis (multi-user) finally pointed at KIDS
