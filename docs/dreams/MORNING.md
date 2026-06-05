@@ -1,23 +1,25 @@
-# Morning digest — last updated 2026-06-05 (UTC), cycle 317
+# Morning digest — last updated 2026-06-05 (UTC), cycle 318
 
 Open the lab: https://getresonance.vercel.app/dream
 
-## ⭐ Open this first (adult — your own piano, on the GPU)
-- **[323-latent-condensation](https://getresonance.vercel.app/dream/323-latent-condensation)** — **your *Welcome Home* piano, made of 120,000 GPU particles.** Tap **Play Karel's piano**: a cloud of particles churns in turbulent chaos, then on each musical phrase it **condenses into a flowing form** (sphere → torus → ribbon) and dissolves back into noise in the rests. *Why open it:* the whole simulation runs in a **WebGPU compute shader** — the chaos↔form breathing is driven, phrase by phrase, by the live spectrum of your real recording. Best in Chrome/Edge/Safari with WebGPU; if your browser lacks it you get a clear notice and the audio still plays.
+## ⭐ Open this first (kids — a journey, not a toy)
+- **[325-kids-paper-boat](https://getresonance.vercel.app/dream/325-kids-paper-boat)** — **the lab's first long-form, REMEMBERED kids journey.** Tap **▶ Begin the voyage**: a glowing paper boat drifts down an auto-scrolling night river — stars, hills and reeds sliding past at three depths — from dusk through deep night to dawn. Drag the boat into the glowing lily-pads to make them sing; up/down picks the register, and the music slowly evolves through a real **D-rooted modal arc** so minute 6 sounds different from minute 1. *Why open it:* at the river's mouth it **sings your whole remembered path back** as a lullaby — and it resumes where you left off when you reopen it. Every kids piece before this was a short loop toy; this one *travels and remembers*.
 
-## Why this one won (3 explored, 1 shipped — WIDE)
-- **A new renderer for the recent window.** Touch input (4×) and Canvas2D output (4×) are *banned* this fire, and three.js had crept to 3× — so I shipped the one piece that's none of those: **WebGPU compute** (light, 8.6 kB, no three.js bundle), driven by an **audio-file** input.
-- **Your actual music, in a form the lab had never reached.** The standing "use his real piano" directive keeps coming back — this puts it inside a GPU particle dramaturgy (condense on phrases, dissolve on rests). Pulls from your loved cluster: real music (227/163) + particle/systems (130❤️, 236❤️, 243❤️, 262❤️).
-- **Honest ambition 3/5:** 4 subsystems + named ref (nibi, a 2026 WebGPU compute particle engine; + Anadol) + this fire's research. I did **not** claim "first WebGPU" — we've used compute shaders before (130/16/55/75); the novelty is the application, not the technique.
+## Why this one won (3 explored, 1 shipped — DEEP)
+- **One big concept, three controls.** I built the same journey three ways — **tap-to-drift** (firefly), **drag-to-steer** (this river), and **hum-to-travel** (sing a star home) — and shipped the strongest.
+- **The river *travels*.** Its auto-scroll + 3-layer parallax reads instantly as a long voyage; the firefly version drifts in one square sky (less of a visible journey).
+- **A clean break from last night.** The voice version was the most ambitious, but voice+SVG+dusk *rhymes hard* with the just-shipped 322-voice-garden — shipping it would've been "too similar" two nights running. The moving river is the cleaner break.
+- **Ambition 3/5, honest:** 4 subsystems + named ref (Campbell's monomyth + your own journey engine, for kids + the 2026 generative-game-music frontier) + genuinely long-form/stateful. SVG, light, no three.js. Dodges the Canvas2D + three.js renderer ruts.
 
 ## Also explored this fire (banked in IDEAS.md)
-- **324-stillness** — the Cage "blooms only when you're QUIET" anti-instrument (silence → bloom, any sound → collapse), rendered in SVG with cross-session persistence. Ship-ready; **re-flagged as the next adult build** — it's still the boldest answer to "too similar."
-- **325-seismic-choir** — every earthquake on Earth in the last day, sung as a **sustained voice placed in 3D space around your head** (HRTF) via the live USGS feed; the chord you hear is the planet's seismic state right now.
+- **324-kids-firefly-journey** — the same journey via the *simplest* control: tap the sky and a firefly drifts there; lingering deepens the harmony. Strong, ready to ship.
+- **326-kids-sing-home** — *sing* a lost star home: hum to fly forward, sing higher/lower to steer through star-gates (full touch fallback + auto-demo). The most ambitious version — **resurrect once "voice" cools** (~2 kids cycles out).
 
 ## Threads / what's next
-- **Adult (319):** ship banked **324-stillness** (now the standing pick), or **322-strange-attractor** (your wishlist), or **deepen 323** (onset-triggered bursts so individual notes fire shockwaves; a readable authored-camera form like an album silhouette).
-- **Kids (318):** resurrect **323-kids-coral-bloom** (the voice-grown reef), or deepen **322-kids-voice-garden** (two-voice duet, seasons over multi-day age).
+- **Adult (319):** ship banked **324-stillness** (the Cage "blooms only when you're quiet" piece — still the standing pick), or **322-strange-attractor**, or **deepen 323-latent-condensation**. (Note: touch + three.js are both renderer/input ruts now — leaning WebGPU / audio-only / non-touch next.)
+- **Kids (320):** deepen **325** (branching tributaries you choose, a two-boat duet, tides by real clock), or ship banked **324-firefly** / **326-sing-home**.
+- **New adult research seed:** **327-physarum-choir** — plant tones as "food" and a living slime-mold network routes between them; the chord is whatever it's currently connected. A genuinely never-used technique (RESEARCH §318).
 
 ## Open questions for you
 - **AI-pipeline-chain** (image gen *inside* an AV piece) is still your most-wanted, never-built direction; it needs paid FAL generation and I won't spend autonomously. **Grant a per-prototype budget (e.g. $X/cycle) and I'll build it next adult fire.**
-- **323 is build-verified, not browser-verified** — the one real risk is whether the WGSL runs on your review device's GPU (I couldn't execute it on hardware in the sandbox). 20 seconds at the URL settles it; if WebGPU is off you'll see the labeled fallback rather than a crash.
+- **325 is build-verified, not browser-verified** — the real unknown is whether the 6–12 min *pacing* holds a 4-year-old; a minute at the URL will tell you more than I can from here.
