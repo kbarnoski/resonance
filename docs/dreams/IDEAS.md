@@ -10,6 +10,24 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## Banked from Cycle 315 (WIDE adult fire — 3 explorers; winner was `321-spectral-flight`)
+
+Built to demoable + README by parallel folder-isolated builders, then moved to `/tmp/dream-losers/` per the WIDE-curation rule (only the winner is committed). Both are **adult**, render in **three.js** (dodging the cycle-315 Canvas2D-at-4× ban), are non-C-major-pentatonic, and clear the ambition floor. Born from RESEARCH §315. Resurrect on a future adult cycle with a fresh number. **`323-stillness` is flagged as the next adult build — it's the boldest answer to the jury's "too similar" critique (it *inverts* the reactive form).**
+
+### `322-strange-attractor` — a chaotic system that is BOTH the sound and the picture: a Lorenz attractor synthesized at audio rate in a custom AudioWorklet, its trajectory the waveform you hear and the glowing 3D sculpture you see `[queued, build-verified]`
+
+**Question**: what if you could *hear* a strange attractor — the same trajectory that draws the famous butterfly is the waveform — and steer it from periodic into chaos with your hands?
+
+**Why it's strong**: on Karel's *explicit* wishlist ("a strange-attractor visualization", AGENT.md priorities). The "sound IS the picture" identity is elegant and surprising. INPUT=touch/drag + sliders (parameter-space steering) · OUTPUT=three.js phase-space ribbon · TECHNIQUE=audio-rate chaotic synthesis in a custom `AudioWorkletProcessor` (Lorenz, RK4, DC-block + tanh soft-clip + brick-wall limiter for safety) · VIBE=mathematical/clinical-sublime. Refs: **Lorenz (1963)**, **Chua's circuit**, the chaotic-synthesis lineage (Spasov; *Musical Attractors*). **Honest ambition note**: AudioWorklet is NOT new to the lab (`34-spectral-morph`, `23-pitch-harmonize` already use it), so claim #1 downgrades to "first audio-rate strange-attractor synth voice"; the floor is still cleared at **2–3/5** (≥3 subsystems + named ref). Build (worklet via Blob URL, fallback main-thread integrator → oscillator) verified clean. **Resurrect**: it's complete and ship-ready as-is — a strong pick for an adult cycle that wants a fresh *mathematical/clinical* vibe (the lab leans warm/immersive).
+
+### `323-stillness` — an anti-instrument that sings only when you are QUIET: sustained mic-silence blooms a drone + a three.js light field; any loud sound collapses it; longest stillness persists across sessions `[queued, build-verified — FLAGGED as the next adult build]`
+
+**Question**: what if the instrument rewarded silence and attention instead of noise — a room that blooms in your stillness and scatters at the first sound you make?
+
+**Why it's the flagged pick**: it is the **most direct answer to the jury's standing "too similar / no-fail-noodle" critique** — it doesn't swap a sensor, it *inverts the entire reactive paradigm* (below-threshold mic RMS → bloom; a clap/word edge-triggers a lowpass-down collapse + reset). A genuine conceptual/critical piece, a shelf the lab is thin on. INPUT=microphone level INVERTED (+ press-&-hold touch fallback, mic-free) · OUTPUT=three.js additive light-bloom in a dark wireframe room · TECHNIQUE=silence-detection inverted interaction + cross-session `localStorage` persistence · VIBE=contemplative/critical/Cage–Oliveros–Radigue. Just-intonation over low E (Aeolian/Phrygian, NOT C-pentatonic). Ambition **2/5** (4 subsystems + named refs). Build verified clean, full teardown (mic tracks stopped, ctx closed, three.js disposed). **Resurrect first** next adult cycle; only tuning risk is the RMS thresholds (`QUIET=0.045`, `NOISE=0.12`) vs a noisy review environment — isolated constants at the top of `page.tsx`.
+
+---
+
 ## Banked from Cycle 314 (WIDE kids fire — 3 explorers; winner was `320-kids-light-loom`)
 
 Built to demoable + README by parallel folder-isolated builders, then moved to `/tmp/dream-losers/` per the WIDE-curation rule (only the winner is committed). Resurrect on a future kids cycle with a fresh number. Born from RESEARCH §314. Both dodge the cycle-314 Canvas2D-at-4× ban (both render in **SVG**), are non-C-major-pentatonic, and break the no-fail-noodle form (one via persistence/evolution, one via a kind pitch-match consequence).

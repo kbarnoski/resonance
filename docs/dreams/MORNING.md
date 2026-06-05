@@ -1,24 +1,23 @@
-# Morning digest — last updated 2026-06-05 (UTC), cycle 314
+# Morning digest — last updated 2026-06-05 (UTC), cycle 315
 
 Open the lab: https://getresonance.vercel.app/dream
 
-## ⭐ Open this first (kids — best on an iPad)
-- **[320-kids-light-loom](https://getresonance.vercel.app/dream/320-kids-light-loom)** — **the lab's FIRST *bowed* string.** Six glowing strings of light; press **Start**, then **drag a finger along a string** — it lights up, ripples, and *sings a sustained tone* that swells while you move and fades when you stop. Every prior string in 300+ prototypes was a one-shot *pluck*; this one you **bow** — drag slowly for a soft dark sound, fast for a bright loud one (the real stick-slip / Helmholtz feel). Two fingers = two kids bowing harmonies. *Why open it:* it's a genuinely **new sound** for the lab, not a new sensor on an old one — a 4-year-old discovers a violin's gesture with one drag.
+## ⭐ Open this first (adult — best with headphones)
+- **[321-spectral-flight](https://getresonance.vercel.app/dream/321-spectral-flight)** — **fly through the inside of your own recording.** Press **Fly through his recording**: the app pulls one of your real *Welcome Home* piano tracks, runs the whole thing through an offline spectrogram, and turns it into a glowing 3D landscape — time stretching ahead of you, frequency rising, brightness = loudness — and the camera flies forward *locked to playback*. Drag or use arrow keys to steer; space to play/pause. *Why open it:* the "use my actual music" direction finally reaches the immersive layer — where 308 put your recording in spatial *audio*, this puts you **inside its spectrogram as a place** you pilot.
 
-## Why this one
-- **A new instrument, not a variation.** This clears the ambition floor on the hard criterion — a **never-used technique** (continuous-excitation bowed-string physical model). The lab only ever owned *plucked* Karplus-Strong; bowing keeps feeding energy in, so the string sustains. Refs cited: **Serafin & Vergez**'s real-time violin friction model + **J.O. Smith**'s digital-waveguide bowed strings (CCRMA).
-- **Diversity-clean under a tight constraint.** Canvas2D had hit 4× in the last 10 ships, so it was *banned* this cycle — 320 renders in **three.js** (glowing strings with a live standing wave), dodges it cleanly. D-Dorian, not pentatonic.
-- **Pulls from a love:** the plucked-string playground **140-kids-string-bridge ❤️** — this is the "what if it bowed instead?" answer.
+## Why this one won (3 explored, 1 shipped)
+- **Your real music, the loved territory.** It pulls straight from your most-loved cluster — your real recordings (**227-paths-granular ❤️**, **163-paths-visualizer ❤️**) + immersive/spectral (**243-spectral-cloud ❤️**, **267-spectral-drift ❤️**). If `/api/featured` is unreachable at review it falls back to a synth bed and *says so* (rose label), so it always runs.
+- **Diversity-clean under a tight constraint.** Canvas2D had hit 4× in the last 10 ships and was *banned* this cycle — 321 renders in **three.js** (a point-cloud you fly through). Fallback is A-natural-minor, not pentatonic.
+- **Ambition 3/5:** 4 subsystems (real-stem fetch+decode · from-scratch offline STFT · three.js flythrough · transport-sync) + named refs (**Anadol *Latent City* 2026**, **Ikeda *data-verse***) + a specced cycle-2.
 
 ## Also explored this fire (WIDE — 2 more, banked in IDEAS.md)
-- **321-kids-seed-garden** — a long-form garden that **grows + persists with real wall-clock age**: plant seeds, come back hours later and it's taller and has self-seeded. Near-ship; the strongest **long-form** promotion candidate (a future DEEP cycle).
-- **322-kids-sing-up** — sing higher and a paper bird climbs the sky (voice/pitch-match, SVG). The freshest input modality — bank it for the next kids cycle's vocalization slot.
+- **322-strange-attractor** — a **Lorenz attractor synthesized at audio rate** in a custom AudioWorklet: the waveform you hear *is* the glowing butterfly you see; drag to push it from periodic into chaos. On your explicit "strange-attractor" wishlist — complete and ship-ready.
+- **323-stillness** — a **Cage-style anti-instrument**: it blooms only when you're *quiet* and collapses at the first sound you make; it remembers your longest silence. **I've flagged this as the next adult build** — it's the boldest answer to the "too similar" note, because it *inverts* the always-on reactive form rather than swapping a sensor.
 
 ## Threads / what's next
-- **Adult (315):** the one categorical gap still empty is **AI-pipeline-chain** (image gen *inside* an AV piece) — see the open question. Else: deepen the networked **319-hub-score** (spatial pan / self-evolving progression) or push **318-ensemble-room** toward true cross-device WebRTC.
-- **Kids (316):** ship banked **321-seed-garden** (long-form) or **322-sing-up** (voice).
-- **320 deepening:** an *adult* expressive bow — bow pressure + position along the string (sul tasto ↔ ponticello), coupled to a violin-body resonance.
+- **Adult (317):** ship banked **323-stillness** (the conceptual inversion) — or **322-strange-attractor** (your wishlist). Or deepen **321**: spatialize the audio (fly *toward* a sound and it gets louder), branch the flight path, chain multiple tracks into worlds you fly between.
+- **Kids (316):** ship banked **321-kids-seed-garden** (long-form, grows while away) or **322-kids-sing-up** (voice). *(Those kids slugs are banked labels — they renumber on ship; today's adult 321/322 are the committed ones.)*
 
 ## Open questions for you
-- **AI-pipeline-chain** remains your explicit, most-wanted, never-built direction; it needs paid FAL generation and I won't spend autonomously. **Grant a per-prototype budget (e.g. $X/cycle) and I'll build it next adult fire.**
-- **320 is build-verified, not browser-verified** — the open risk is by-ear: does the bowed tone *sing* (vs. buzz), and does bow-speed→brightness feel expressive on a real iPad? Worth a 30-second play at review.
+- **AI-pipeline-chain** (image gen *inside* an AV piece) is still your most-wanted, never-built direction; it needs paid FAL generation and I won't spend autonomously. **Grant a per-prototype budget (e.g. $X/cycle) and I'll build it next adult fire.**
+- **321 is build-verified, not browser-verified** — the open risks are by-eye: does `/api/featured` serve a Welcome Home track from prod (fallback covers the no), and does flying through the points read as a *place* vs. a fog? Worth a 30-second flight at review.
