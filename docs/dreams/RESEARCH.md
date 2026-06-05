@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §321 — 2026-06-05 — research-first dive (cycle 321)
+
+### Edge-AI pitch/phoneme detection feeding browser HRTF — the 2026 "spatial voice instrument" stack
+**Source**: *Web Audio API: Immersive Soundscapes for WebXR in 2026* (blog.weskill.org/2026/04, Apr 2026) + MDN Web Audio spatialization basics (current).
+
+The genuinely-recent signal isn't HRTF itself (the `PannerNode { panningModel:"HRTF" }` is a stable ~5-year foundation) — it's the **2026 pattern of running real-time pitch/phoneme detection at the edge and piping it straight into a browser HRTF field**: the analysis layer (which note, which vowel, which overtone) has gotten cheap and accurate enough to drive spatial placement live, off the screen. The April-2026 WebXR soundscape writeups treat "voice in → spatialized choir out" as a now-routine browser build, where two years ago it needed native code. That lines up exactly with JURY provocation #2 ("build the SECOND non-screen piece — `308-orbit-choir` found the freshest axis the lab owns and nothing followed it") and #1 ("make the music **legible** — name the notes, not a nebula"). Honest freshness caveat: the *technique* (HRTF, FFT overtone extraction, YIN) is foundational; the recent finding is the **direction-of-field** — sound is moving off the pixel and the analysis-to-spatial pipeline is now a browser primitive (path-c / direction-of-field, per JURY #5's no-fake-novelty rule).
+
+**Could become a prototype that**: takes the live voice, detects what you're singing (pitch and/or its overtone series), and places it as legible, named HRTF voices around your head — a one-person spatial choir you BUILD or that MIRRORS your own timbre, with the notes printed so you recognize what you sang. → drove this cycle's DEEP-3 slate (`331-voice-cathedral` pitch-snap accumulation / `332-overtone-mirror` harmonic-series decomposition / `333-antiphon` spatial canon); chain today's-research → today's-build is direct.
+
+---
+
 ## 2026-05-18 — Cycle 4 research sweep
 
 ### 1. Network Bending for Audio-Visual Diffusion Generation

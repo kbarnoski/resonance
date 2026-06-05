@@ -1,26 +1,27 @@
-# Morning digest — last updated 2026-06-05 (UTC), cycle 320
+# Morning digest — last updated 2026-06-05 (UTC), cycle 321
 
-> **I acted on yesterday's jury.** It banned *touch · your-recording · Canvas2D · kids · "your piano → a glowing cloud"* and asked for the **second non-screen piece**. So I overrode the kids rotation, went WIDE with three *non-screen* adult ideas, and shipped the one that dodges every banned tag — and that the lab has been deferring for five cycles.
+> **I shipped the second non-screen piece you asked for.** The jury's #2 provocation was "build the SECOND non-screen piece — `308-orbit-choir` found the freshest axis the lab owns and nothing followed it." So I went DEEP on that one concept (three technical approaches in parallel) and shipped a live-voice → HRTF spatial choir that **names the notes you sang** (your "make it legible, not a nebula" ask, #1).
 
 Open the lab: https://getresonance.vercel.app/dream
+**Put on headphones** — the whole point is the sound *around* you.
 
-## ⭐ Open this first (adult — the instrument that rewards silence)
-- **[330-stillness](https://getresonance.vercel.app/dream/330-stillness)** — **an anti-instrument: it sings only when you're QUIET.** Tap **Begin — then be still**. Stay silent and a low just-intonation drone deepens, a field of light blooms, and a "stillness streak" counts up; the first clap or word **scatters it all**. *Why open it:* it's the opposite of everything else in the lab — instead of rewarding noise, it rewards attention. John Cage's *4′33″* turned inside out. (No quiet room? Press & hold **Be quiet**, or just watch the breathing auto-demo.)
+## ⭐ Open this first (adult — build a choir around your head with your voice)
+- **[331-voice-cathedral](https://getresonance.vercel.app/dream/331-voice-cathedral)** — **sing one steady note and it blooms into a sustained voice placed somewhere on an orbiting ring around your head.** Sing again and again and you **stack a one-person overtone cathedral** — up to nine voices circling you over a just-intonation drone. *Why open it:* the chord you build is **printed by name** (`D · A · F♯ · C♯`) — you recognize what you sang, it isn't an anonymous cloud. The screen is just a dim radar; the piece lives in the air. (No mic / not alone? Hit **Auto-demo** and it sings a rising arpeggio into the space itself.)
 
-## Why this one won (3 non-screen ideas explored, 1 shipped — WIDE)
-- **This is the `stillness` piece we kept deferring** — flagged as the "next adult build" for five straight cycles, always losing to a bigger systems piece. You asked (open question, cycle 319) whether to force-schedule it. I did. The deferral is resolved.
-- **Cleanest answer to the jury's bans:** SVG (not Canvas2D), silence (not touch, not your recording), Cage drone (not a nebula). Zero compromise on the five banned tags.
-- **It's the boldest concept, not the biggest build.** It doesn't swap a sensor — it inverts the instrument. The most direct reply to "too similar."
-- **Fully verifiable** (no GPU/WGSL blind spot) — paying down the jury's note that the last two ships had never run on real hardware.
+## Why this one won (DEEP — 1 concept, 3 approaches, 1 shipped)
+- **It's the literal answer to two of your jury provocations at once:** #2 (the second non-screen piece, in `308`'s HRTF-orbit lineage — voices that actually orbit your head) and #1 (legible — it *names the notes*, doesn't render a nebula).
+- **It's the piece we kept promising.** `voice-cathedral` has been the flagged "next adult build" since cycle 320; it shipped clean, built in SVG from the start (no Canvas2D — the renderer you banned) with a brick-wall limiter so nine voices never clip.
+- **Most verifiable of the three.** Pure Web Audio + SVG — no GPU/WGSL blind spot, paying down the jury's note that `323`/`327` never ran on real hardware.
 
 ## Also explored this fire (built, banked in IDEAS.md)
-- **329-voice-cathedral** — sing one note and it blooms into an HRTF choir that **orbits your head**; sing more and a spatial chord assembles around you, **with the notes named** (your "make it legible" ask). The truer *second non-screen piece* (after `308`) — it lost only because its compass is Canvas2D this banned week. **Flagged as the very next adult build** (one-file fix: compass → SVG).
-- **331-palm-pulse** — a song you *feel*, not watch: the phone's vibration motor is the lead voice. Banked because iPhones have no web vibration API — needs an Android review or a reframe.
+- **332-overtone-mirror** — the bolder, stranger one: sing **one** note and the app pulls apart its **harmonic series**, placing each overtone as a separate voice around you — your own timbre exploded into a sphere. The biggest "huh, didn't know we could do that"; it lost only because the effect is hard to verify by ear without real headphones. **Flagged as the next adult build, paired with a real-device listen.**
+- **333-antiphon** — sing a *phrase* and a stone cathedral answers it back as a **spatial canon**, copies returning from rotating positions until you've built a round alone.
 
 ## Threads / what's next
-- **Adult (321):** ship **329-voice-cathedral** — the lab's second non-screen piece, legible, in `308`'s lineage.
-- **Kids (322):** the jury's ask — **turn-taking / two-child** (the `319` wall-clock-sync idea) or **real-world-data for kids**, *not* another "it grows while you're away." Off touch.
+- **Kids (322):** the jury's #3 ask — **turn-taking / two-child** (the `319` wall-clock-sync idea) or **real-world-data for kids**, *not* another "it grows while you're away." Off touch.
+- **Adult (323):** ship **332-overtone-mirror** (with a real-headphones verify pass) or `333-antiphon`.
+- **Verification debt:** `323` + `327` have still never run on a real GPU — worth one cycle on real hardware before the next big WebGPU build.
 
 ## Open questions for you
-- **AI-pipeline-chain** (image gen *inside* an AV piece) is still your most-wanted, never-built direction — blocked on a paid FAL budget. Per the jury I've stopped re-listing it as a build target; it's a one-word call from you: **grant a per-cycle budget and I build it next adult fire.**
-- **330 is build-verified, not browser-verified** — the one unknown is mic calibration in a noisy room (the press-&-hold control covers it; the threshold meter shows you why it blooms or breaks).
+- **AI-pipeline-chain** (image gen *inside* an AV piece) is still your most-wanted, never-built direction — blocked on a paid FAL budget. It's a one-word call: **grant a per-cycle budget and I build it next adult fire.**
+- **331 is build-verified, not browser-verified** — the unknowns are perceptual (HRTF feel on headphones; the "one breath = one voice" pitch-gating timings). The Auto-demo exercises the full chain mic-free if you want to hear it without singing.
