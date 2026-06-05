@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-05 (UTC), cycle 319
 
+> **Jury verdict today**: The kids lane finally broke its no-fail-noodle habit — memory and consequence are the new normal (`313`, `322` lead) — but a fresh *adult* rut is forming: three builds this week are "your piano → a glowing cloud"; make your music **legible** next, not another nebula. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## ⭐ Open this first (adult — the slime composes the chord)

@@ -1,47 +1,121 @@
-# Concept Jury Verdict — 2026-06-04 (UTC)
+# Concept Jury Verdict — 2026-06-05 (UTC)
 
 ## Summary
-Yesterday's verdict asked for two things — *ship the spatial/non-screen breadth you've
-banked* and *stop shipping orphans* — and the lab delivered both: `308-orbit-choir` is the
-first build in 300+ whose output is **not a screen**, and the multi-cycle threads
-(`291-harmonograph` cycle 3, `302-mirror-canon-round` cycle 2) finally make criterion #4 real
-after it had never once been claimed. That's genuine progress. But the **kids lane has
-collapsed into a single recipe** — a fresh phone sensor wired to a no-fail modal soundscape,
-shipped five fires running (293 → 295 → 298 → 303 → 306) — and last week's ban on three.js
-didn't diversify the output, it **relocated the monoculture to raw-WebGL2 fragment shaders
-(7 of 15).** The floor is still cleared by swapping the *sensor* and the *technique label*
-while the *experience* barely moves.
+The lab answered almost every standing provocation this fortnight, and it shows:
+the kids recipe the last three juries kept flagging — *new sensor → no-fail modal
+noodle that remembers nothing* — has **genuinely broken**. Persistence, memory and
+real consequence are now the kids default (`313-tone-tower`, `322-voice-garden`,
+`325-paper-boat`, `311-music-box`), the real-world-data shelf finally got an *adult*
+entry (`314-solar-wind`), and `308-orbit-choir` deepened into the lab's first true
+5/5. But a **new adult monoculture is forming in the exact shape the old one had**:
+three of the four adult builds are "fetch Karel's *Welcome Home* piano → render a
+luminous abstract Anadol cloud" (`321`/`323`/`327`), and the screen-viz habit didn't
+die — it just migrated again, from last week's banned raw-WebGL2 to **Canvas2D
+(5×)**. 14 of 15 still output to a screen; `308` is still the only piece that doesn't.
 
 ## Diversity audit
-- **Over-represented input:** phone motion/orientation sensor — **4×** (290 heading · 303 tilt · 306 shake · 308 heading). Touch (3×) and camera/body (3×) sit just under the line.
-- **Over-represented output:** raw WebGL/WebGL2 fragment-shader screen viz — **7×** (284, 285, 293, 295, 298, 303, 306). Matte Canvas2D adds 3× (280, 287, 302). **Net: 13 of 15 output to a screen.** Banning three.js last week didn't break the screen-viz habit — it just moved it to hand-rolled shaders.
-- **Over-represented technique:** **none ≥4** — this is the genuinely healthy axis. Physical-modeling (284 membrane · 286 soft-body · 303 Verlet = 3×) is the closest cluster. Technique-shopping is working; the problem is everything downstream of it converging.
-- **Over-represented vibe:** **kids — 9×** (280, 284, 286, 290, 293, 295, 298, 303, 306). Structural via the every-other rotation, but 60% is high, and the *form inside it* has flattened (see pruning).
-- **BANNED for next cycle:** **raw-WebGL2-fragment-shader OUTPUT · phone-motion/orientation INPUT · the "new-sensor → always-musical modal noodle" KIDS FORM · C-major-pentatonic.** Whatever ships next must not be a sensor-driven, no-fail modal soundscape painted by a single full-screen shader.
+- **Over-represented input:** **touch — 5×** (311, 313, 319, 320, 325). Just behind it,
+  and the more interesting tell: **Karel's-own-recording-as-source — 4×** (308, 321,
+  323, 327) is now the default *adult* input.
+- **Over-represented output:** **Canvas2D — 5×** (302, 313, 314, 317, 319). The
+  raw-WebGL2 ban from last jury worked (7× → **2×**) and three.js stayed contained
+  (3×) — but the "full-screen reactive viz" habit simply relocated to Canvas2D. **Net:
+  14 of 15 output to a screen; only 308 does not.** The renderer keeps moving; the
+  screen-bias doesn't.
+- **Over-represented technique:** **none on the discriminating axis — this is the
+  healthy one again.** The techniques are genuinely unlike each other: HRTF spatial,
+  space-colonization, bowed-string stick-slip, networked wall-clock ensemble, offline
+  STFT terrain, physarum compute, live space-weather sonification. The only things ≥4
+  are *structural*: the **always-on modal-drone + brick-wall-limiter no-fail safety
+  bed** (≥10×, house style) and the **long-form / localStorage-persistent state
+  machine** (4×: 308, 314, 322, 325) — and the latter is a *win*, not a rut.
+- **Over-represented vibe:** **kids — 8×** (303, 306, 311, 313, 317, 320, 322, 325).
+  And within the adult half, **cosmic / Anadol-luminous-cloud — 4×** (314, 321, 323,
+  327) is its own emerging convergence.
+- **BANNED for next cycle:** **touch INPUT · Karel's-recording-as-source INPUT ·
+  Canvas2D OUTPUT · kids VIBE · Anadol-luminous-cloud adult VIBE.** Whatever ships next
+  must not be a touch-driven Canvas2D piece, and the next adult build must not be
+  "his piano → an abstract glowing nebula."
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 2** — `284-kids-thunder-drum`, `303-kids-wind-harp`. Both are single-instrument touch/tilt toys: one real novelty (membrane modal synth / Verlet rope) bolted to a thin "instrument-type" reference (a drum's Bessel modes; an Aeolian harp). These are the local-minimum builds.
-- **Hit 2–3 criteria: 7** — 280, 290, 293, 295, 298, 302, 306. The lab's center of mass: a real subsystem count + a citable reference, but rarely the novel-technique-AND-depth combination.
-- **Hit 4–5 criteria: 6** — 283, 285, 286, 287, 291, 308. These are the ones to extend, not re-spawn.
-- **Still zero 5/5 builds.** But criterion #4 (multi-cycle) was finally claimed for real this fortnight (291 reached cycle 3; 302 reached cycle 2) — the single biggest improvement over last jury, where it had never been claimed in 15.
+- **Hit 0–1 criteria: 0** — for the first time in this jury's memory, **nothing is a
+  pure local-minimum build.** Last jury had two (284, 303); the floor is now actually
+  being cleared. The weakest are `303-wind-harp` and `311-music-box` at exactly 2.
+- **Hit 2–3 criteria: 8** — 303, 306, 311, 313, 317, 321, 323, 327. The lab's center
+  of mass. **Honest caveat:** "hits 3" is partly inflation now. Because every cycle
+  does a dated research dive (#5) and every README cites a named reference (#3),
+  **#3+#5 is auto-satisfied on nearly every build** — clearing 3 criteria no longer
+  proves ambition. The criteria that actually force new ground are #1 (novel technique)
+  and #4 (multi-cycle), and those stay rare.
+- **Hit 4–5 criteria: 7** — 302, 308, 314, 319, 320, 322, 325. Up from 6 last jury,
+  and **two genuine 5/5s** (308, 322) vs one. Novel-technique (#1) was claimed by 6
+  builds (308, 314, 317, 319, 320, 322); multi-cycle (#4) by 3 (302, 322, 325) — real
+  now, where two juries ago it had *never* been claimed.
 
 ## Standouts (positive)
-- **308-orbit-choir**: the verdict's headline. First HRTF spatial output, first DeviceOrientation-as-*listener-rotation*, and the first build in 300+ whose output is **not a screen**. It also fills the long-form/stateful gap (different at minute 6 than minute 0). This is what "massively bigger" looks like — discharges three standing provocations at once.
-- **287-mirror-choir**: still the reference standout — body-as-instrument that earns "I didn't know we could do that," and it seeded the lab's *second* real multi-cycle thread (302).
-- **291-harmonograph**: the proof the lab can deepen. Three cycles (birth → expressive → polychrome + SVG export) on one playable instrument; the only piece you genuinely *play* rather than watch react.
-- **285-mosaic-listener**: conceptually the sharpest adult piece — concatenative re-assembly of a recording you navigate by hand. "Made of the original but never is the original" is a real idea, not a label.
+- **308-orbit-choir**: the verdict's headline again, and it earned the repeat — last
+  jury said "deepen it with his real stems," and cycle 2 did exactly that. It's now
+  the lab's first **5/5**: Karel's *Welcome Home* recordings scattered then gathered
+  in HRTF space, haptic arrival, localStorage room-memory. Still the only non-screen
+  piece in 300+. This is what "massively bigger" looks like, executed on a verdict.
+- **322-kids-voice-garden**: the kids standout and the cleanest proof the recipe
+  broke — **voice** (not a sensor swap), **space-colonization** (Runions 2007, a first
+  for the lab), and a garden that ages on the real wall clock so it's fuller the next
+  morning. Long-form, persistent, non-touch, harmonically drifting. The anti-noodle.
+- **319-hub-score**: the sharpest *idea* this fortnight. `globalPhase(Date.now())` as
+  a pure function means every tab breathes in sync **with zero networking for timing** —
+  the wall clock is the conductor's baton. First networked/multi-instance piece, Ikeda
+  restraint. A real concept, not a label.
+- **313-kids-tone-tower**: the most direct answer to a prior provocation — "build a
+  kids piece with memory or consequence." A wrong note *costs a block* but never ends
+  the game; the tower **is** the song the child remembered. Consequence made spatial.
+- **314-solar-wind**: filled the real-world-data shelf the lab kept walking past — and
+  did it as an *adult* JI drone (not 293's kids-pentatonic), scored live by NOAA space
+  weather. The Sun plays through the window. Terry Riley's *Sun Rings*, live-data cousin.
 
-## Pruning candidates (concept-level — immutability rule still holds, nothing is deleted)
-- **303-kids-wind-harp** & **306-kids-rain-shaker**: textbook examples of the local minimum. Each claims a fresh sensor (tilt, accelerometer) and a fresh DSP label (Verlet, shake-energy) but delivers the *same* experience — wave a phone, hear a forgiving D-Dorian/pentatonic wash that can't be played wrong and remembers nothing. The sensor changed; the piece didn't.
-- **293-kids-sky-band**: strong idea (the real sky scores it) undercut by **reverting to C-major pentatonic** — the exact rut the prior jury banned. The novelty is the input; the sound is the default.
-- **284-kids-thunder-drum**: a genuine first (membrane modal synth) trapped in a 2-subsystem touch toy. The physics deserved a bigger frame than "tap the screen."
+## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
+- **303-kids-wind-harp** & **306-kids-rain-shaker**: the last gasps of the old recipe,
+  caught in this window. Tilt / shake → a forgiving D-Dorian wash that can't be played
+  wrong and remembers nothing. `306`'s own README says "Hits the floor." The lane moved
+  past these by 311; they're the before-photo.
+- **320-kids-light-loom**: a genuine first (continuous-excitation bowed string vs the
+  lab's eternal Karplus-Strong) **trapped in the no-fail touch-string-toy frame again** —
+  same critique as 284-thunder-drum last jury. The synthesis is new; the experience
+  (wave a finger, hear a pretty modal tone, no memory, no consequence) is the recipe the
+  kids lane otherwise just escaped. Hits 4 criteria *on paper* and is still a local
+  minimum *in the hand* — the exhibit for why criterion-counting can mislead.
+- **321-spectral-flight** & **323-latent-condensation**: competent, but together with
+  327 they're the **new adult rut** — "fetch his piano → abstract luminous cloud you
+  watch react." 321 (STFT point-cloud) and 323 (GPU particle condensation) rhyme with
+  each other and with 327, all Anadol-tinted, all his-recording-driven. The convergence
+  the mandate exists to prevent is reassembling on the adult side.
 
 ## Provocations for tomorrow's dream cycle
-1. **Deepen 308 with Karel's real *Welcome Home* piano stems — do NOT ship a sixth sensor-noodle.** The non-screen spatial thread is the freshest thing the lab owns and the README already specs it (real stems + haptics + localStorage persistence). The standing "use his actual music" directive has *never* reached the spatial layer. That's the next adult build.
-2. **Break the kids recipe.** Five straight kids fires are "new sensor → no-fail modal bed." Ban that form for one kids cycle: build a kids piece with **memory or consequence** — the child can make something *wrong* and fix it, or what they did persists and grows (298-echo-friend already pointed this way; nothing followed it). Stop shipping sensor swaps.
-3. **Real-world-data sonification has exactly one entry (293) and it's kids+pentatonic.** RESEARCH §289 logged a live earthquake/seismic sonification finding that nothing has built on. Spend an adult cycle composing from the live planet — the empty shelf the lab keeps walking past.
-4. **Zero AI-pipeline-chain prototypes in the last 15, despite it being Karel's explicit standing directive (AI image gen *embedded* in an AV piece).** RESEARCH §285 logged real-time audio-conditioned image generation on 2026-06-02 and nothing touched it. This is the most-wanted, least-served axis.
-5. **The research dives have gone honest-but-hollow.** Six of the last ~ten dives concluded "this week's cs.SD is all generative audio, not interaction" and fell back on foundational refs (§297, §299, §301, §302, §303, §304). Either *build on* the generative-audio frontier you keep finding (audio-conditioned diffusion, LiveBand) — which would also satisfy #4 — or stop forcing a daily <30-day novelty claim and just call it a path-(b) dive. The freshness mandate is manufacturing ritual, not surprise.
+1. **Kill the new adult nebula before it sets.** `321`/`323`/`327` are all "Karel's
+   piano → a glowing abstract cloud." Ban *his-recording → Anadol-particle-cloud* for a
+   week. If you use his music again, make it **legible** — name the notes, show the
+   phrase structure, let him *recognize* what he played — not another nebula he watches.
+2. **Build the SECOND non-screen piece.** `308` found the freshest axis the lab owns
+   (audio-only / spatial / haptic) and then *nothing followed it* — it's still 1 of 15.
+   Spend an adult cycle on another embodied/non-screen build: voice-only, haptic-only,
+   or a depth-camera spatial room. Do not ship a 6th Canvas2D viz.
+3. **Protect the kids win, but don't make persistence the only trick.** Three of the
+   four "broken-recipe" kids pieces (311, 322, 325) lean on *localStorage-remembers-you*
+   as the novelty. That worked — now vary it. Next kids cycle: **turn-taking / multi-user**
+   (319's BroadcastChannel idea, but for two children) or **real-world-data for kids**,
+   not another "it grows while you're away."
+4. **Stop re-listing AI-pipeline-chain as a dream-agent provocation — it's a Karel
+   decision.** It's been the #1 ask for weeks and it's *blocked on a budget grant Karel
+   hasn't answered* (see MORNING's open question). The dream agent cannot unblock it.
+   Escalate it to Karel, not to tomorrow's fan-out.
+5. **Pay down verification debt before the next big WebGPU build.** Nearly every piece
+   this fortnight ships "build-verified, not browser-verified," and `323` + `327` have
+   **never run on a real GPU** — both say so honestly. Two unrun compute-shader pieces
+   in one window is accumulating risk. Spend one cycle browser-verifying 327/323 on real
+   hardware instead of authoring a third unrun WGSL pipeline.
 
 ## Karel-facing line
-Strong at the edges — `308-orbit-choir` finally breaks the screen and the multi-cycle threads are holding — but the kids lane has shipped the same no-fail modal noodle through five different sensors; tomorrow, deepen the spatial piece with your real piano, don't build a sixth shaker.
+The kids lane finally broke its no-fail-noodle habit — memory and consequence are the
+new normal (`313`, `322` lead) — but a fresh *adult* rut is forming: three builds this
+week are "your piano → a glowing cloud"; make your music **legible** next, not another
+nebula.
