@@ -4,6 +4,15 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §324 — 2026-06-05 — research-first dive (cycle 324)
+
+### Zero-server collaborative web audio is mainstreaming in 2026 — and the unbuilt corner is *real-time interpersonal consonance*: two players who must tune to each other by ear
+**Source**: For the **collaborative-web-audio direction-of-field** — the 2026 collaborative-music tooling wave (Soundation real-time co-production, the *Multi Web Audio Sequencer* remote-collaboration line) plus this lab's own zero-server `319-hub-score` / `334-kids-pass-the-song` (`BroadcastChannel` as conductor). For the **perceptual foundation** — Hermann von Helmholtz, *On the Sensations of Tone* (consonance = the absence of beating/roughness between partials), cross-checked against the consonance-and-beating-cues literature (harmonicity vs. beating as distinct cues). Searched arXiv `cs.SD/recent` (last 7 days: 2606.06357, …05852 — all speech/TTS/enhancement; nothing on collaborative/co-performance/tuning) and collaborative-kids-music queries; **no <30-day on-point paper exists**.
+
+Honest freshness (JURY #5 no-fake-novelty): the *techniques* — `BroadcastChannel`, autocorrelation pitch, Helmholtz beating — are foundational, NOT a <30-day novelty. The recent-and-surprising signal is **direction-of-field** (collaborative web audio went mainstream in 2026 — real-time co-creation is now an expected feature, not research) **combined with a lab-gap audit**: the lab has a *solo* tuning toy (`272-kids-tune-purr` — one child tunes creatures against a *fixed drone*) and turn-taking multi-user (`334`), but **zero real-time SIMULTANEOUS co-play** where two humans each hold one live voice and the target is the interval *between them*. **Could become a prototype that**: puts two children on two screens, each controlling one voice of a shared interval over a drone, where consonance is a *jointly-achieved* event — the beating they hear is between THEIR two notes, and it vanishes only when they tune to each other. Chain → today's build: this dive + the queued §322 `335-kids-duet-bridge` seed → the DEEP-3 kids slate (rope / star-beam / whale), shipped `341-kids-star-pair`.
+
+---
+
 ## §323 — 2026-06-05 — research-first dive (cycle 323)
 
 ### Live external data as a continuously-evolving musical texture is a current (2026) installation frontier — and real-time human-AI co-performance is the parallel arxiv wave
