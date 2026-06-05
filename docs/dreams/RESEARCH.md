@@ -3495,3 +3495,21 @@ Research dive for the cycle-303 build (extending 287-mirror-choir toward its REA
 **Chain today's-research → today's-build = path (a)**: §315 → WIDE-3 adult fire (inhabit-the-recording / chaotic-attractor / stillness) → ship the strongest directive-and-love-aligned winner (`321-spectral-flight`), bank the other two.
 
 **Future dive worth taking**: `321` wants a **cycle-2 deepening** — spatialize the audio (pan partials by their position in the flown landscape so what you *fly toward* gets louder), branch the flight path (steer into the bass terrain vs the treble canopy), and pre-analyze multiple album tracks into a *chain* of worlds you fly between. That is the multi-cycle path noted in its README.
+
+---
+
+## 2026-06-05 — Cycle 316 research dive (§316) — generative GROWTH algorithms as the body of a long-form piece
+
+**Source(s):**
+- Runions, Lane & Prusinkiewicz (2007), *"Modeling Trees with a Space Colonization Algorithm"* — https://algorithmicbotany.org/papers/colonization.egwnp2007.large.pdf
+- Jason Webb, *morphogenesis-resources* (differential growth, space colonization, reaction-diffusion corpus) — https://github.com/jasonwebb/morphogenesis-resources ; the `morphogenesis` / `space-colonization-algorithm` GitHub topics (live, actively-pushed creative-coding repos as of mid-2026)
+- Anders Hoff (*inconvergent*) — differential / hyphae line growth studies
+- Frontiers research topic *"Advances in Generative Models for Morphogenesis in Developmental Biology"* (submission deadline **30 June 2026**) — confirms the topic is a current live front, not stale.
+
+**Why it's the hook (honest framing per JURY #5):** this is a **path-(b)/(c) dive**, not a manufactured <30-day arXiv novelty — space colonization (2007) and differential growth are *foundational* algorithms. But the dive exposed a genuine **gap in our lab**: across 320+ prototypes the only botanical growth we ever banked was a **recursive L-system** (the `321-kids-seed-garden` seed, INDEX line ~880). We have **never** built **space colonization** (branch tips competing for and consuming attractor points → venation/tree growth) or **differential growth** (a self-avoiding chain that inserts nodes and *buckles* into coral/brain folds). Both produce growth that looks *alive* and *path-dependent* in a way an L-system's deterministic recursion never does — which is exactly the substrate a **long-form, stateful** piece needs (the category the diversity menu flags the lab thinnest on: "different at minute 5 than minute 1, with memory and evolution").
+
+**Could become a prototype that does X:** a child's **living musical garden grown by their VOICE** — sing/hum → loudness drives growth speed, pitch places the "light" (attractor) → branches *race toward the sound* and bloom notes; the garden **persists with real wall-clock age** (fuller every morning) and **journeys harmonically** over the session, so it is genuinely a different garden — and a different *key of music* — at minute 5. The growth algorithm itself is the body of the piece, not decoration.
+
+**Chain today's-research → today's-build = path (a)**: §316 → DEEP-2 kids fire on ONE concept (a long-form, voice-grown, persistent, harmonically-evolving musical garden) via two **never-used-in-the-lab** growth algorithms — (322) **space colonization** in SVG, (323) **differential growth** in three.js → ship the strongest, bank the other.
+
+- **`323-kids-coral-bloom`** *(BANKED → IDEAS)* — the differential-growth sibling: a bioluminescent reef (self-avoiding ring, spatial-bucket-grid repulsion, node insertion → coral folds) in three.js, voice-grown, persistent, D-Lydian harmonic journey. Build-verified (tsc+eslint clean); didn't win on the **renderer-diversity** axis (three.js was already 3× in the last 10 ships; shipping it would seed the next monoculture) — resurrect on an adult cycle, or once the Canvas2D/three.js cluster cools.
