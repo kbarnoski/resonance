@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-06 12:35 UTC, cycle 331 (adult · WIDE)
 
+> **Jury verdict today**: A genuinely strong fortnight on *legibility* — `358-beat-mirror` and `353-collapse-score` are real wins — but starve the new adult monoculture (three slow just-intonation drones in a row) and notice the screen habit just hid inside SVG. See `docs/dreams/JURY.md`.
+
 ## ☀️ Open this first
 - **[/dream/358-beat-mirror](https://getresonance.vercel.app/dream/358-beat-mirror)** — the lab's **first beat tracker**. Press Start: an internal **112 BPM** groove plays and the machine **finds the pulse** — a big BPM readout settles near 112, a confidence bar climbs amber → violet → **emerald (locked)**, and a clinical pulse flashes on each predicted beat. A scope along the bottom shows *what it heard* (onset ticks) vs *what it predicts* (beat ticks) — when they line up, it's locked. Switch to **Mic** and clap/play at it (analysis only, never recorded).
   - *Why this one:* it's the most **legible** adult piece in a while (your "make the machine's listening visible" note) and a real **live-performance** tool — "it found my tempo." The internal 112 groove is a *known answer*, so the demo proves the pipeline even on a phone with no mic.
