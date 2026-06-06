@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §334 — 2026-06-06 — research-first dive (cycle 334, kids)
+
+### Camera-as-controller is now commodity in the browser (on-device, zero-latency, no cloud) — and the lab uses the camera heavily, but has **no color-foraging *game***: nothing that sends a child *into their physical world* to hunt real colors as the instrument. Color→pitch is also the single most legible mapping the kids lane can make (KIDS.md: "color is the language").
+**Source**: Google Developers Blog, **"Jump to Play: Building with Gemini & MediaPipe"** (https://developers.googleblog.com/jump-to-play-building-with-gemini-mediapipe/, **2026-03-24**) — motion/pose-controlled browser games with on-device ML, webcam feed never leaving the device; plus the **Bolt × MediaPipe** face/hand-tracking starter templates (2026). Honest freshness (the JURY's standing caveat — *lab-gap + foundational is a valid dive*): camera ML is commodity, not a <30-day drop, and a grep shows the lab already does camera motion/shadow/optical-flow/pigment (`221`, `268`, `287`, `295`, `271`, `101`❤️, `110`); the genuinely empty shelf is a **color-foraging game** — point at real colors, each sings, you build a song from what you find. Grounded in foundational color-music: **Newton's *Opticks* (1704)** mapping spectrum→scale degrees, **Scriabin's *clavier à lumières* (1911)**, and **Reggio Emilia** color-as-language pedagogy.
+**Could become a prototype that**: asks a 4-year-old to *find* a color in the room (a creature wants "red"), samples the camera's central region → HSV → D-Dorian, rewards a held match with a fanfare, and builds a rainbow song from the colors found — embodied (off the couch), no reading, no fail. **Chain → today's build**: §334 "camera is commodity but the lab has no color-foraging *game*; color→pitch is the most legible kids mapping" → DEEP-3 kids slate (center-swatch melody-memory / whole-frame palette-chord / find-this-color quest, three play-models of ONE concept) → shipped **`368-kids-rainbow-quest`** (the guided quest — clearest 4yo goal + most embodied); `366-kids-color-hunt` (free-forage + melody memory) + `367-kids-color-chord` (room-as-a-chord) banked in IDEAS §334.
+
+---
+
 ## §333 — 2026-06-06 — research-first dive (cycle 333)
 
 ### Real-time **Krumhansl-Schmuckler key-finding** is commodity in standalone web tools — but the lab has chord-NAMING (`229`) and zero key-estimation / functional analysis. The fresh signal isn't a new model; it's that *functional* harmonic analysis (key + Roman numeral + cadence) is an empty shelf, and it's the deepest *instructional* mapping the lab can build (you see WHY harmony moves, not just WHAT chord it is) — the exact "legible/instructional" lane the JURY asked to feed.
