@@ -10,7 +10,13 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 332 — kids build · WIDE, 3 unrelated lab-first simulation toys)
+## ⭐ Newest (Cycle 333 — adult build · DEEP, 3 approaches to "name the key + function you play, live")
+
+- **[/dream/365-cadence-ladder](/dream/365-cadence-ladder)** — Cadence Ladder. `demoable` · Cycle 333.
+
+  Open `/dream/365-cadence-ladder`. A real-time **tonal/functional harmonic analyst**: press **▶ Begin** and a known progression plays while the analyzer names the **KEY** you're in (Krumhansl-Schmuckler key-finding), the **Roman-numeral function** of every chord, and renders harmony's pull-and-resolve as a three.js **tension ladder** — Tonic (rest, bottom) / Subdominant (departure, middle) / Dominant (tension, top). Each chord drops into its functional zone; **cadences flash named resolving arcs** — V→I *authentic* (emerald), IV→I *plagal/"amen"* (violet), V→vi *deceptive* (amber); when the music **modulates** a ripple sweeps and every Roman numeral re-contextualises (the same chord changes function as the key shifts). Connect a **MIDI keyboard** to play your own chords into the identical pipeline.
+
+  The lab's **first key-estimation + functional/cadence analysis** — `229-chord-canvas` names chords but does NO key, NO Roman numerals, NO cadence/function. Proves itself 358-style: an internally-authored progression (C major with authentic/deceptive/plagal cadences → modulates to G major) is **known ground truth**, so it's watched proving itself on a phone with no hardware. The most faithful answer to the JURY's #1 adult provocation — *feed the legible/instructional lane* (its named wins were 358/353/345) and *starve the JI-drone monoculture*. **Ambition 4/5** (#1 lab-first technique · #2 ≥3 subsystems · #3 Krumhansl & Kessler 1982 / Temperley 2001 / Riemann functional harmony / Aldwell & Schachter cadence tradition · #5 RESEARCH §333). Input=internal-demo+MIDI · Output=three.js · Vibe=instructional. *Two siblings explored this DEEP fire — `364-tonal-orbit` (Chew Spiral Array, 3D tonal space) + `363-key-compass` (circle-of-fifths wheel) — banked in IDEAS §333.* **Build-verified, not browser-verified.** Design notes: `src/app/dream/365-cadence-ladder/README.md`
 
 - **[/dream/360-kids-sand-choir](/dream/360-kids-sand-choir)** — Kids Sand Choir. `demoable`
 
