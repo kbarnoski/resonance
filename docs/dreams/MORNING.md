@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-06 10:30 UTC, cycle 330 (kids · DEEP)
+# Morning digest — last updated 2026-06-06 12:35 UTC, cycle 331 (adult · WIDE)
 
 ## ☀️ Open this first
-- **[/dream/355-kids-glass-armonica](https://getresonance.vercel.app/dream/355-kids-glass-armonica)** — a kids **glass armonica** (Benjamin Franklin, 1761). **Drag a glass to fill it with water — more water = lower pitch, so the water level you SEE *is* the pitch you hear** — then **swipe a finger across the rims** and the glasses *sing* a sustained, overlapping wash (the famous "otherworldly" armonica sound, not a struck bell). A ghost finger plays it for you on load, so it's alive in ~10 seconds.
-  - *Why this one:* the most **legible** mapping the lab has made — water height = pitch, the most direct answer to your "make it legible" note — plus a genuinely **new sound** (continuous rubbed-glass, not another struck bell). The lab's first **fill-to-tune** instrument.
+- **[/dream/358-beat-mirror](https://getresonance.vercel.app/dream/358-beat-mirror)** — the lab's **first beat tracker**. Press Start: an internal **112 BPM** groove plays and the machine **finds the pulse** — a big BPM readout settles near 112, a confidence bar climbs amber → violet → **emerald (locked)**, and a clinical pulse flashes on each predicted beat. A scope along the bottom shows *what it heard* (onset ticks) vs *what it predicts* (beat ticks) — when they line up, it's locked. Switch to **Mic** and clap/play at it (analysis only, never recorded).
+  - *Why this one:* it's the most **legible** adult piece in a while (your "make the machine's listening visible" note) and a real **live-performance** tool — "it found my tempo." The internal 112 groove is a *known answer*, so the demo proves the pipeline even on a phone with no mic.
 
-## Also explored this fire (2 more — banked in IDEAS, not shipped)
-- **356-pour-organ** — **pour water *between* bottles** to tune them: filling one empties another (conservation puzzle, "if I pour here, that one goes low"). The richest concept of the three — **queued as the strong next kids build** (just needs a simpler one-finger pour gesture for 4-year-olds).
-- **354-water-glasses** — the pure struck glass-harp: fill to tune, *tap* to play. Cleanest and simplest; banked.
+## Also explored this fire (2 more — banked in IDEAS, both build-clean, near-ship)
+- **357-euclidean-orrery** — a self-playing **polyrhythmic clockwork**: five coprime rings of Euclidean rhythms (Bossa clave E(5,16), tresillo-family…) phasing in and out of alignment over minutes (Reich *Piano Phase*). The lab's first Euclidean-rhythm piece. **Strong next-adult build.**
+- **359-tonnetz-walk** — **walk through harmonic space** on Euler's Tonnetz: a self-touring lattice where neo-Riemannian P/L/R moves glide between triads in just intonation, every chord named. The closest runner-up — the lab's most legible *harmony* piece (the perfect complement to 358's *rhythm* legibility).
 
 ## How this was made (the studio choreography)
-- **DEEP fan-out** (alternating off last fire's WIDE): ONE concept — a *tuned water-glass instrument* — built **three different ways** by three parallel builders (strike / rub-armonica / pour-puzzle), shipped the most surprising + most legible + best-first-open, banked the other two. One commit.
-- The research dive was honest: the kids lane is **saturated** (110 pieces). Three fresh ideas were grep-killed against existing/loved pieces (wave-interference is already your loved `133-ripple-pond`; sequencers + soft-body covered; camera/hand-tracking already 5×+). Glass-harp / fill-to-tune was the genuine empty shelf. All three explorers were DOM/CSS, **cooling** the over-used WebGL renderer.
+- **WIDE fan-out** (alternating off last fire's DEEP): three *unrelated* adult directions — rhythm-analysis (358), generative-rhythm (357), harmony-navigation (359) — built by three parallel builders, each clearing the ambition floor via different input × output × technique. Shipped the most legible + most self-verifying; banked the other two. One commit.
+- Diversity audit banned **touch INPUT (4×)** and **kids VIBE (5×)** from the last 10; 358 dodges both (mic + internal groove · three.js · clinical). All three explorers avoided Canvas2D, HRTF, and the his-piano→nebula rut.
 
-## Open question for you
-- **`351-erosion` is triple-banked and ready, but keeps losing curation** for one reason: its whole hook (a tape more ruined *each morning*) is **invisible on a first open** — you'd see a pristine tape today; the magic only shows if you return tomorrow. **(a)** ship it next adult unconditionally, **(b)** reframe it to open already-half-eroded with a "rewind to new" control, or **(c)** leave it banked? Your call unblocks it.
-- (Carried) **AI-pipeline-chain in an AV piece** is still blocked on a small paid FAL budget grant — one word and I build it.
+## Open questions for you (carried — your call unblocks these)
+- **`351-erosion`** (a tape that's more ruined each morning) is triple-banked and ready but keeps losing curation because its hook is **invisible on a first open**. Ship it unconditionally next adult? Reframe it to open already-half-eroded? Or leave banked?
+- **AI-pipeline-chain in an AV piece** is still blocked on a small paid FAL budget grant — one word and I build it.
 
 ## Caveats
-- `355` is **build-verified, not browser-verified** — the tune-vs-swipe gesture feel for a 4-year-old, the armonica wash on a phone speaker, and iOS AudioContext unlock are unconfirmed without a real device.
-- **GPU verification debt:** `323-latent-condensation` + `327-physarum-choir` have never run on real hardware — worth a pass before the next big WebGPU build.
+- `358` is **build-verified, not browser-verified** — the internal-groove lock is engineered-reliable, but **mic-path tempo lock and audio latency are unmeasured** (the visual pulse phase vs room sound on the mic source is approximate). three.js visual fit + iOS unlock unconfirmed without a device.
+- **GPU verification debt (still open):** `323-latent-condensation` + `327-physarum-choir` have never run on real hardware — worth a browser-verify pass before the next big WebGPU build.
