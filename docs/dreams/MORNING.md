@@ -1,23 +1,24 @@
-# Morning digest — last updated 2026-06-06 12:35 UTC, cycle 331 (adult · WIDE)
+# Morning digest — last updated 2026-06-06 14:26 UTC, cycle 332 (kids · WIDE)
 
-> **Jury verdict today**: A genuinely strong fortnight on *legibility* — `358-beat-mirror` and `353-collapse-score` are real wins — but starve the new adult monoculture (three slow just-intonation drones in a row) and notice the screen habit just hid inside SVG. See `docs/dreams/JURY.md`.
+> Yesterday's **jury verdict** still stands (see `docs/dreams/JURY.md`): a strong fortnight on *legibility* (`358-beat-mirror`, `353-collapse-score`) — but starve the adult JI-drone monoculture and stop letting the screen habit hide inside SVG. Today is the even-cycle **kids** slot, so I went after a different gap entirely.
 
 ## ☀️ Open this first
-- **[/dream/358-beat-mirror](https://getresonance.vercel.app/dream/358-beat-mirror)** — the lab's **first beat tracker**. Press Start: an internal **112 BPM** groove plays and the machine **finds the pulse** — a big BPM readout settles near 112, a confidence bar climbs amber → violet → **emerald (locked)**, and a clinical pulse flashes on each predicted beat. A scope along the bottom shows *what it heard* (onset ticks) vs *what it predicts* (beat ticks) — when they line up, it's locked. Switch to **Mic** and clap/play at it (analysis only, never recorded).
-  - *Why this one:* it's the most **legible** adult piece in a while (your "make the machine's listening visible" note) and a real **live-performance** tool — "it found my tempo." The internal 112 groove is a *known answer*, so the demo proves the pipeline even on a phone with no mic.
+- **[/dream/360-kids-sand-choir](https://getresonance.vercel.app/dream/360-kids-sand-choir)** — **for kids (4+).** Press ▶, then **tilt the iPad**: a spout pours glowing warm sand into dunes, and tipping the tablet swings gravity so the sand flows and reshapes. Seven harp strings cross the field — **every grain that lands on a string sings** (D-Dorian). Build a tall dune on a low string → a low drone; spill sand across all seven → a rippling arpeggio. **The shape you build *is* the song.** Sways and plays itself hands-free if no one touches it.
+  - *Why this one:* it's the lab's **first falling-sand cellular automaton** — we had Lenia, Game-of-Life, reaction-diffusion, fluid, particle-life… but never *the* famous one. And it's the kids lane's **most legible** piece yet — a 4-year-old sees cause→effect (sand → string → note), not an abstract glow. That's your standing "make it legible" ask, in the kids lane.
 
-## Also explored this fire (2 more — banked in IDEAS, both build-clean, near-ship)
-- **357-euclidean-orrery** — a self-playing **polyrhythmic clockwork**: five coprime rings of Euclidean rhythms (Bossa clave E(5,16), tresillo-family…) phasing in and out of alignment over minutes (Reich *Piano Phase*). The lab's first Euclidean-rhythm piece. **Strong next-adult build.**
-- **359-tonnetz-walk** — **walk through harmonic space** on Euler's Tonnetz: a self-touring lattice where neo-Riemannian P/L/R moves glide between triads in just intonation, every chord named. The closest runner-up — the lab's most legible *harmony* piece (the perfect complement to 358's *rhythm* legibility).
+## Also explored this fire (2 more — banked in IDEAS §332, both build-reviewed)
+- **361-kids-coral-bloom** — **shake** the iPad to release sparkles that drift, stick, and grow a glowing **coral reef** by *Diffusion-Limited Aggregation* (the physics of real coral/frost/lightning) — each new branch sings a rising note. Lab-first DLA. Lost only on legibility (growth is random) + perf weight. **Strong next-kids build.**
+- **362-kids-tumble-bells** — drip grains on a magic pile (**tilt** to aim); usually nothing, but sometimes one grain triggers a huge **avalanche** that ripples out as a fractal star and plays a cascade of bells. Lab-first *Abelian sandpile* (power-law surprise). Closest sibling to the recent chain-reaction `350`, so it lost — but it'd shine **as an adult piece**.
 
 ## How this was made (the studio choreography)
-- **WIDE fan-out** (alternating off last fire's DEEP): three *unrelated* adult directions — rhythm-analysis (358), generative-rhythm (357), harmony-navigation (359) — built by three parallel builders, each clearing the ambition floor via different input × output × technique. Shipped the most legible + most self-verifying; banked the other two. One commit.
-- Diversity audit banned **touch INPUT (4×)** and **kids VIBE (5×)** from the last 10; 358 dodges both (mic + internal groove · three.js · clinical). All three explorers avoided Canvas2D, HRTF, and the his-piano→nebula rut.
+- **WIDE fan-out** (alternating off last kids fire's DEEP): three *unrelated* simulation families — falling-sand / DLA / Abelian-sandpile, each a **grep-verified lab-first CA** — built by three parallel builders, curated to the most legible + most robust + warmest-palette. Shipped one, banked two. One commit.
+- Dodged every jury ban: **tilt** (not touch), **WebGL2** (not SVG), no mic, kids (not the adult drone). CA/granular appears nowhere in the last 10.
 
 ## Open questions for you (carried — your call unblocks these)
-- **`351-erosion`** (a tape that's more ruined each morning) is triple-banked and ready but keeps losing curation because its hook is **invisible on a first open**. Ship it unconditionally next adult? Reframe it to open already-half-eroded? Or leave banked?
+- **`351-erosion`** (a tape more ruined each morning) is triple-banked and ready but keeps losing because its hook is **invisible on a first open**. Ship it unconditionally next adult? Reframe to open already-half-eroded? Or leave banked?
 - **AI-pipeline-chain in an AV piece** is still blocked on a small paid FAL budget grant — one word and I build it.
+- The jury wants a **multi-cycle thread actually deepened** (Mirror-Canon cycle-2 is cleanest). Next adult cycle (333) I'll ship depth instead of a fourth fresh explorer — flag if you'd rather I keep going wide.
 
 ## Caveats
-- `358` is **build-verified, not browser-verified** — the internal-groove lock is engineered-reliable, but **mic-path tempo lock and audio latency are unmeasured** (the visual pulse phase vs room sound on the mic source is approximate). three.js visual fit + iOS unlock unconfirmed without a device.
+- `360` is **build-verified, not browser-verified** — the CA + audio + fallbacks are written correct and `npm run build` passes, but **real tilt feel, the iOS permission gesture, the 180×120 CA's 60fps budget on a phone GPU, and exact shader colors are unverified** (no sensor / GPU in this sandbox). All likely one-number tunes if off.
 - **GPU verification debt (still open):** `323-latent-condensation` + `327-physarum-choir` have never run on real hardware — worth a browser-verify pass before the next big WebGPU build.

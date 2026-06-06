@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §332 — 2026-06-06 — research-first dive (cycle 332)
+
+### The lab has 350+ prototypes and ZERO granular cellular automata — the "falling-sand" family (Sandspiel / Noita / Sand Game JS) is the single most-recognizable creative-coding sim of the last decade and the lab never touched it. The fresh signal isn't a new model; it's that this whole class is an empty shelf, and it's the most *legible* cross-modal mapping a kid can have (the dune you build IS the song)
+**Source**: WebSearch `falling sand cellular automaton creative coding 2026 webgl granular` surfaced the living ecosystem — **Max Bittker's *Sandspiel*** (Rust/WASM+WebGL CA sandbox, still the reference), **GelamiSalami/GPU-Falling-Sand-CA** (block/Margolus-neighbourhood CA on GPU), **Sand Game JS** (fast mobile-browser falling-sand engine), and the Noita "everything-is-pixels" GDC lineage. None is a <30-day drop — the falling-sand CA is a *foundational, stable* technique (the freshness-mandate caveat the JURY already named: "lab-gap + foundational is a valid dive"). The genuinely surprising thing was the **grep result on our own repo**: `falling.?sand|powder.?game|granular.?cellular` returns **0** across 350+ prototypes, while Lenia (`264`), Game-of-Life (`25`), reaction-diffusion (`9`), particle-life (`8`/`16`/`236`), Navier-Stokes fluid (`3`/`84`), n-body and physarum (`327`) are all present — i.e. the lab has nearly every CA/sim *except* the most famous one. Cross-checked two siblings the same dive: **DLA** (Witten–Sander 1981) and **Abelian sandpile / SOC** (Bak–Tang–Wiesenfeld 1987) are *also* grep-clean lab-firsts → became the two WIDE explorers banked in IDEAS §332.
+**Could become a prototype that**: a kid pours streams of colored sand that pile into dunes by tilting the iPad, and harp strings strung across the field pluck when a grain settles on them — so the *shape of the sculpture and the song are the same object* (the most legible cross-modal mapping the lab can make, the kids-lane answer to the jury's standing #1 "make it legible" ask). **Chain → today's build**: §332's "granular-CA is the lab's biggest empty shelf + most legible mapping" → WIDE-3 kids slate (falling-sand / DLA / Abelian-sandpile, three grep-verified lab-first CAs) → shipped **`360-kids-sand-choir`** (implements this dive's falling-sand hook directly; DLA + sandpile banked).
+
+---
+
 ## §329 — 2026-06-06 — research-first dive (cycle 329)
 
 ### 2026 generative-music research went hard server/GPU-frontier (LiveBand, SketchSong, SegTune all land in the same June week) — which RE-confirms the lab's escape lane: deterministic, client-verifiable, SELF-COMPOSING sources, not another un-buildable model. The genuinely fresh browser-buildable corner this surfaced is constraint-propagation composition (Wave Function Collapse), which the lab has never done
