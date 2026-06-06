@@ -4,6 +4,15 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §325 — 2026-06-06 — research-first dive (cycle 325)
+
+### Real-time joint audio-visual generation went frontier in 2026 (OmniForcing) and WebGPU hit Baseline (Jan 2026) — but the genuinely *under-built* browser corner is cross-modal TRANSLATION between modalities the lab has never bridged (text ↔ music), not another heavy generative model
+**Source**: For the **direction-of-field** — the WebGPU-Baseline milestone (utsubo.com, *Frontier Web APIs 2026: WebGPU, WebTransport & What's Production-Ready*; WebGPU reached Baseline Jan 2026, ~87% desktop / ~71% mobile) + *OmniForcing: Unleashing Real-time Joint Audio-Visual Generation* (arXiv 2603.11647, Mar 2026 — a real-time streaming A/V generation model; powerful but **server/GPU-heavy, not client-buildable**). For the **actionable cross-modal anchor** — *Rhythm in the Air: Vision-based Real-Time Music Generation through Gestures* (arXiv 2511.00793, Nov 2025) as the foundational gesture→music lane. Searched arXiv `cs.SD`/`cs.GR` recent + creative-coding/webgpu queries.
+
+Honest freshness (JURY #5 no-fake-novelty): grapheme→phoneme heuristics + Web Audio are foundational, NOT a <30-day technique. The recent-and-surprising signal is **direction-of-field** (real-time cross-modal A/V is the 2026 frontier; WebGPU is now Baseline so heavier client compute is increasingly viable) **combined with a lab-gap audit**: the lab is thin on cross-modal *translation* and has **zero** natural-language → music piece — the only text input, `22-code-score`, is a note-DSL where you literally write pitch names (grep-verified), NOT language sonification. **Could become a prototype that**: takes typed natural language and compiles its *speech* into music — vowels → pitch (vowel height → pitch height, Janáček "speech melody"), consonants → percussion, prosody → phrasing — and shows the words lighting up as they sound, so the music is *legible* (directly answering the jury's #1 provocation). Chain → today's build: §325's cross-modal framing → the WIDE-3 adult slate (score-following / long-form / **text→music**), shipped `345-speech-melody`. Deliberately did NOT chase OmniForcing (un-buildable client-side, and the lab carries WebGPU verification debt already).
+
+---
+
 ## §324 — 2026-06-05 — research-first dive (cycle 324)
 
 ### Zero-server collaborative web audio is mainstreaming in 2026 — and the unbuilt corner is *real-time interpersonal consonance*: two players who must tune to each other by ear
