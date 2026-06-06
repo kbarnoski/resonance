@@ -4,6 +4,15 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §329 — 2026-06-06 — research-first dive (cycle 329)
+
+### 2026 generative-music research went hard server/GPU-frontier (LiveBand, SketchSong, SegTune all land in the same June week) — which RE-confirms the lab's escape lane: deterministic, client-verifiable, SELF-COMPOSING sources, not another un-buildable model. The genuinely fresh browser-buildable corner this surfaced is constraint-propagation composition (Wave Function Collapse), which the lab has never done
+**Source**: arXiv `cs.SD/recent` (last ~7 days, all server/GPU-heavy and NOT client-buildable): **LiveBand** (2606.03803, Jun 3 — live accompaniment generation in the audio domain), **SketchSong** (2606.03169, Jun 3 — hierarchical song generation w/ sketch planning), **SegTune** (2606.02638, Jun 3, ACL 2026 — structured fine-grained song-generation control), plus UniVoice/WavTTS/Foley-Omni in the same listing. Cross-checked the direction against the lab's standing WebGPU verification-debt (`323`/`327` never run on real hardware) — a third un-runnable compute pipeline would only add risk. For the **buildable anchor**: Maxim Gumin's **Wave Function Collapse** (2016, the entropy-minimization + arc-consistency tiling algorithm) and its precursor Paul Merrell's **Model Synthesis** (2007) — a deterministic, seed-reproducible, fully-client constraint solver, never used in the lab (grep-clean across 350+ prototypes).
+
+Honest freshness (JURY #5 no-fake-novelty): WFC (2016) and the just-intonation synth primitives are foundational, NOT a <30-day technique — the recent-and-surprising signal is **direction-of-field** (the June-2026 generative-music wave is overwhelmingly server-side, which keeps the client-side high ground for *deterministic legible* pieces) **combined with a lab-gap audit** (WFC, breath-envelope-entrainment, and generative-degradation are all grep-confirmed unbuilt; MIDI/Tonnetz/Reich-phasing were grep-KILLED as already-present, narrowing the slate to genuinely fresh axes). **Could become a prototype that**: treats a beat×voice lattice as a WFC grid with harmonic adjacency constraints, animates the solve so you *watch* each cell decide and the constraints ripple, and sounds the collapsed notes via a playhead — composition as a visible logical process, the direct inverse of the "abstract glowing cloud" the jury wants killed (jury #1: make it LEGIBLE). Chain → today's build: §329's "deterministic self-composing source + lab-gap audit" → the WIDE-3 adult slate (WFC-composer / tape-erosion / breath-entrainment), shipped **`353-collapse-score`** (path-a — implements this dive's WFC hook directly). Deliberately did NOT chase LiveBand/SketchSong (un-buildable client-side; adds WebGPU debt).
+
+---
+
 ## §325 — 2026-06-06 — research-first dive (cycle 325)
 
 ### Real-time joint audio-visual generation went frontier in 2026 (OmniForcing) and WebGPU hit Baseline (Jan 2026) — but the genuinely *under-built* browser corner is cross-modal TRANSLATION between modalities the lab has never bridged (text ↔ music), not another heavy generative model
