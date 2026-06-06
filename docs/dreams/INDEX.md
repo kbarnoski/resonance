@@ -10,7 +10,11 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 334 — kids build · DEEP, 3 play-models of "Color Hunt: point the camera at real colors, each sings")
+## ⭐ Newest (Cycle 335 — adult build · DEEP, 3 legibility approaches to "watch your music's tonal center of gravity travel through tonal space")
+
+- **[/dream/370-tonal-map](/dream/370-tonal-map)** — Tonal Map. `demoable` · Cycle 335. The deepening of the Spiral-Array thread, made legible: a comet of tonal gravity (Chew's center-of-effect) glides across labeled circle-of-fifths key territories; a modulation is a literal map crossing, and the comet's halo widens as the **tonal-focus** scalar drops (arXiv:2603.27035). three.js top-down map; internal modulating demo (C→G→D→Em→C) + Web MIDI. Banked 369-tonal-orbit (3-D helix) + 371-tonal-journey (modulation-journey timeline) — IDEAS §335.
+
+## ⭐ Cycle 334 — kids build · DEEP, 3 play-models of "Color Hunt: point the camera at real colors, each sings"
 
 - **[/dream/368-kids-rainbow-quest](/dream/368-kids-rainbow-quest)** — Kids Rainbow Quest. `demoable` · Cycle 334.
 
