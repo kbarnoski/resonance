@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-07 (cycle 342, UTC)
 
+> **Jury verdict today**: Breadth is a costume this fortnight — 7 of 15 ship to raw WebGL2 and 9 of 15 live in D-Dorian, so the lab swapped one monoculture for two; the real standout is 380, the one piece that actually deepened instead of deferring. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **/dream/390-kids-coral-tide** 🪸 — *grow a singing coral reef by shaking the
   tablet, and HEAR it get bigger.* Plankton settle and stick into a reef that
