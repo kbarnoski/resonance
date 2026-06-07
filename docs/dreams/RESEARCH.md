@@ -3840,3 +3840,20 @@ Research dive for the cycle-303 build (extending 287-mirror-choir toward its REA
 - **392-kids-voice-mirror** — PITCH: sing → a living SVG ribbon-creature draws your melody contour → a soft just-intoned choir sings it back. Ref: Visible Speech (1947).
 - **393-kids-vowel-color** — VOWEL/FORMANT (lab-first): say "aah/eee/ooo" → a DOM/CSS color field morphs per vowel → echoes the vowel back. Ref: AURORA (2026) + Peterson–Barney (1952).
 - **394-kids-sound-monster** — DYNAMICS/TIMBRE: loud↔soft + bright↔dark voice → an SVG blob-monster swells & spikes round↔jagged → purrs/roars back. Ref: Bouba/Kiki (Köhler 1929; Ramachandran 2001).
+
+---
+
+## §345 — 2026-06-07 (UTC) · real-time spatial audio / ambisonics on the web (research-first dive for cycle 345 adult DEEP)
+
+**Sources (web tools healthy):** arxiv cs.SD recent listing + targeted web search on browser ambisonics / head-tracked binaural.
+
+**Genuinely-recent hits — dated June 4, 2026 (~3 days old at dive time):**
+- **SHB-AE** — "Spherical harmonic beamforming based Ambisonics encoding and upscaling method for smartphone microphone array" (arXiv:2606.04584, Thu 4 Jun 2026). Ambisonics *encoding* on phones — exactly the device class this cycle's prototype runs on.
+- **Flow-HOA** — "Generative Joint Optimization for Ambisonics Encoding via Flow Matching" (arXiv:2606.04570, Thu 4 Jun 2026). Higher-order ambisonics encoding via flow matching — the generative front of the same field.
+- (Adjacent neural-spatial front, Oct–Nov 2025, for context: HRTFformer transformer HRTF upsampling arXiv:2510.01891; Graph-Neural-Field HRTF personalization arXiv:2511.10697.)
+
+**Foundational implementation spine (named refs used in the build):** **JSAmbisonics** (Politis/polarch) + **Google Omnitone** — the canonical Web-Audio FOA/HOA encode→rotate→decode pipelines (virtual-loudspeaker HRTF decode). **Zotter & Frank, _Ambisonics_, Springer 2019** — max-rE decode weights. Also surfaced: **WHAM (Webcam Head-Tracked Ambisonics)**, JSAmbisonics' soundfield-rotation primitive, "Spatial Audio Online" (HOA streamed + binaurally decoded + head-tracked in-browser).
+
+**Why it's surprising / the opening (and why it pays the #5 debt):** the JURY's standing complaint is that the lab keeps *researching* the 2026 ambisonics wave and never building it — and that the freshness mandate (#5) has failed ~7–8 dives. Both are addressed at once: SHB-AE/Flow-HOA are the freshest dated anchors the lab has cited in ~8 dives AND are *directly on-technique*; and the build finally implements a true B-format soundfield (encode → SO(3) head-tracked rotation → max-rE HRTF decode), the genuine leap past the lab's existing per-source-panning binaural pieces (7-spatial, 29-scene-spatial).
+
+**Became a prototype (today's DEEP build, cycle 345):** `394-soundfield-room` (shipped) — six JI drone voices as a coherent rotatable ambisonic field, head-tracked, eyes-closed. Two banked siblings (IDEAS §345): `396-soundwalk` (locomotion + Vibration-API haptics — Janet Cardiff lineage; the cycle-2 deepening) + `395-listener-orbit` (rotate the AudioListener — the lightweight baseline).
