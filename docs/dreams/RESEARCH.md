@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §348 — 2026-06-07 (UTC) · cycle 348 dive (15-min, mandatory) — kids listening/analysis toys on real-time mic descriptors; honest #5 miss, strong lineage anchor
+
+**The honest result.** No genuinely <30-day, client-buildable hit surfaced for "real-time audio descriptor / children's singing interaction" — consistent with the JURY's standing note that the freshness mandate (#5) has failed ~7 dives running. Searches returned mostly foundational/older material (arXiv search for cs.SD May-2026 children-singing returned only 2022–2024 PubMed work). So this cycle's build does **not** claim #5; it clears the ambition floor via #1 (lab-first technique) + #2 (≥3 subsystems) + #3 (named reference) instead, and I'm logging the miss rather than dressing up an old result as new.
+
+**Strongest current-lineage finding (backs the build, not dated <30d):**
+- **SP-Tools (Rodrigo Constanzo) + FluCoMa**, and **"Real-time Timbre Remapping with Differentiable DSP"** (arXiv:2407.04547). The live state-of-practice for real-time spectral-descriptor extraction in creative coding: per-onset **spectral flatness / centroid / loudness** descriptors driving instrument augmentation (Max/MSP, TouchDesigner, FluCoMa). This is exactly the descriptor family the three cycle-348 explorers stand on — **onset/IOI** (402, the winner), **spectral flatness / Wiener entropy** (401), **RMS breath envelope** (403) — implemented from scratch in Web Audio with no ML libs. Source for the winner's named anchor instead came from the synchronization literature: **Repp, "Sensorimotor synchronization: A review of the tapping literature," Psychon. Bull. Rev. 12(6), 2005** — the canonical review establishing the ~120 ms refractory window and the steadiness-of-self-generated-pulse framing the toy scores.
+- **Tchernichovski et al., *Sound Analysis Pro*** ("A procedure for an automated measurement of song similarity," Animal Behaviour 59, 2000) — Wiener entropy (= spectral flatness) as the noisy↔tonal axis for quantifying birdsong; the named reference behind banked `401-kids-sound-zoo`.
+
+**Could become a prototype that does X:** the lineage points at a real un-built lab piece — a **kids "show me the song I just sang" notation/transcription** toy (mic → monophonic pitch transcription → a replayable little tune the child *sees*) using a YIN-lite descriptor; deferred this cycle because the kids-voice/pitch lane is heavily mined (244/298/168/341) and needed a genuinely fresh angle. The freshness-debt fix the JURY keeps asking for is to actually scan **fal.ai / replicate / HuggingFace changelogs + the Tschepe/Entagma/Heckmann TouchDesigner feeds** next dive rather than arXiv keyword search — flagged again here.
+
+---
+
 ## §347 — 2026-06-07 (UTC) · cycle 347 dive (15-min, mandatory) — the spatial-audio thread's cycle 2: 6DoF soundfield NAVIGATION + audio-driven HAPTICS both have fresh, directly-buildable anchors
 
 **The chain.** 394 (cycle 1) built a rotatable FOA B-format field — you turn your head, the field counter-rotates — but it has no notion of listener *position*: every source stays at a fixed distance. The two missing dimensions for "walk through a sound room and feel it" are TRANSLATION (6DoF) and HAPTICS. This dive anchored both.
