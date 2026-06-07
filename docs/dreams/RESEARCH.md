@@ -3824,3 +3824,19 @@ Research dive for the cycle-303 build (extending 287-mirror-choir toward its REA
 - **"Multi-Particle Diffusion-Limited Aggregation"** (arXiv:1603.03218) + a 2024 **Numba-accelerated 2D DLA** framework — confirm the spatial-hash + frontier-walker pattern is the right perf path for a phone (port to a typed-array grid + bucket neighbours).
 
 **Why it's the right sharpener:** the lab has *banked* DLA coral three times (323 / 361 / 383) and never shipped it — every curation note says "beautiful but the wow is gentler than the winner." The fix isn't a new technique, it's **directionality**: a downward settling bias + a stick-from-below rule makes the coral **climb up the screen toward the child**, a legible directional bloom instead of an amorphous splat. **Could become a prototype:** *the coral seed, finally shipped* — shake-to-stir plankton that **settle downward and accrete upward** into a branching reef, each locked branch ringing one D-Dorian note (the coral you grow IS the song). This cycle consumes the long-deferred §340/§332 seed and gives it the directional twist that earns the ship. Research→build chain: §342 dive → DEEP 3-approach kids fire on directional-DLA coral.
+
+---
+
+## 2026-06-07 (cycle 344) — Real-time singing/voice visualization is a *tutor* monoculture; the kids "no-wrong mirror" is unbuilt
+
+**Dive (15-min, mandatory):** scanned the 2026 real-time singing-feedback landscape + recent formant work.
+- **2026 singing visualizers** — Pitch Diagram (pitchdiagram.com), Sing Sharp, Yousician, Singing Carrots: all show a live pitch contour, and all are **correction tools** — they score you against a target note/melody, so "wrong" is structurally baked in. ([screenapp.io/blog/best-voice-rating-tools-2026](https://screenapp.io/blog/best-voice-rating-tools-2026), [pitchdiagram.com](https://pitchdiagram.com/))
+- **AURORA formant-to-tongue inversion** — arXiv:2603.17543 (**Mar 2026**): a real-time formant-biofeedback model whose explicit design lesson is that raw formants/resonances are *too abstract* for users, so it renders a **friendlier proxy** (predicted tongue shape) instead. ([arxiv.org/pdf/2603.17543](https://arxiv.org/pdf/2603.17543))
+- Foundational anchors for "machine shows what it heard": **Visible Speech** sound spectrograph (Potter/Kopp/Green, Bell Labs, 1947); **Peterson–Barney** vowel-formant chart (1952); the **Bouba/Kiki** cross-modal sound-symbolism effect (Köhler 1929; Ramachandran & Hubbard 2001).
+
+**Why it's surprising / the opening:** every shipping voice-viz tool in 2026 is a *judge*. There is no playful, no-wrong-answer **kids' listening mirror** — a 4-year-old sings or speaks, and the machine *delightedly* shows what it heard and echoes it back, with no target and no fail state. This also takes JURY (2026-06-07) provocation #6 head-on: turn the adult **analysis/score-following reflex** into a **kids** toy, breaking both macro-ruts (kids=emergence-sim, adult=analysis) in one fire. AURORA's lesson — show a *proxy*, not the raw feature — is the design key: a 4yo can't read a formant chart, but they understand *color* and *shape*.
+
+**Could become prototypes (today's WIDE build, cycle 344):** three kids mirrors, each a different "what it heard," each a renderer the lab has been avoiding (SVG / DOM-CSS, NOT WebGL2/three.js), each in a non-D-Dorian tonal world (just-intonation / continuous pitch):
+- **392-kids-voice-mirror** — PITCH: sing → a living SVG ribbon-creature draws your melody contour → a soft just-intoned choir sings it back. Ref: Visible Speech (1947).
+- **393-kids-vowel-color** — VOWEL/FORMANT (lab-first): say "aah/eee/ooo" → a DOM/CSS color field morphs per vowel → echoes the vowel back. Ref: AURORA (2026) + Peterson–Barney (1952).
+- **394-kids-sound-monster** — DYNAMICS/TIMBRE: loud↔soft + bright↔dark voice → an SVG blob-monster swells & spikes round↔jagged → purrs/roars back. Ref: Bouba/Kiki (Köhler 1929; Ramachandran 2001).

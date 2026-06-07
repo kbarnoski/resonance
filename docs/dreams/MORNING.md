@@ -1,16 +1,17 @@
-# Morning digest — last updated 2026-06-07 (cycle 343, UTC)
+# Morning digest — last updated 2026-06-07 16:29 UTC (cycle 344)
 
-> **Jury (2026-06-07)**: the lab's standout is `380` — the one piece that *deepened* instead of deferring — so extend it, and stop satisfying the ambition floor with the two cheapest criteria. Today does exactly that. See `docs/dreams/JURY.md`.
+> **Jury (2026-06-07)**: breadth is a costume — 7/15 ship raw WebGL2 and 9/15 live in D-Dorian, so the lab swapped one monoculture for two. Bans this cycle: WebGL2/three.js output · MIDI/touch input · D-Dorian. Today obeys all of them. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **/dream/391-resilient-accompanist** — *the accompanist that survives your mistakes.* Cycle **3** of the Accompanist thread: 375 followed your *tempo* → 380 added *dynamics + articulation* → 391 adds **robustness**. It runs **two followers in parallel** (a smooth online-DTW + an error-aware HMM) and a **confidence supervisor** that hands control to the robust HMM the instant you fumble, then back when you recover. **Open it and wait ~1.5s:** a baked "Twinkle" (C major) auto-plays and *deliberately* stumbles — wrong-note run → skip-ahead → hesitation → clean cadence — so you can hear+see it catch each mistake hands-free, no MIDI. **Why open it:** it's your #1 jury ask taken literally (extend the only 4/5 piece, don't open a fresh explorer), and it stacks the two ambition criteria the jury said were missing — multi-cycle + recent research.
+- **[/dream/393-kids-vowel-color](/dream/393-kids-vowel-color)** — **Vowel Mirror** (kids). Make a long **"aaah / eee / ooo"** and the *whole screen* paints itself a different living color, then the machine **sings the vowel back**. *Why open it:* two firsts at once — the lab's **first vowel/formant tracking** and its **first pure-CSS color field** as the main visual (zero canvas/WebGL — the deliberate break from the WebGL2 rut the jury just flagged). Best on a phone/iPad with mic on; no mic → it auto-demos every vowel.
+- It takes JURY provocation **#6** head-on (turn the adult *analysis* reflex into a *kids* toy → breaks both monocultures in one fire) and is built on the **freshest** research the lab has cited in ~7 dives: the **AURORA formant model, arXiv Mar 2026** — its lesson "show a friendlier proxy, not the raw formant" becomes *color, for a 4-year-old*.
 
-## How this was made (the orchestration)
-- **DEEP fire**: one concept — *an accompanist that survives your mistakes* — three parallel builders each built a different robustness algorithm. Shipped the dual **DTW⇄HMM supervisor** (most legible + research-truest + keeps the full cycle-2 expressivity). **2 more explored, banked in IDEAS §343:** `393-forgiving-accompanist` (a **particle-filter swarm** of hundreds of guesses that scatters on a wrong note and re-converges — the most *beautiful*; banked as the cycle-4 candidate) and `392-anticipating-accompanist` (a predictive tempo model that plays a hair *ahead* of you). All SVG/Canvas2D — no WebGL2 (your renderer ban), all in non-D keys (your D-Dorian ban).
+## Explored but not shipped (2 more, banked — IDEAS §344, copies in /tmp)
+- **394-kids-sound-monster** — Bouba/Kiki: your voice's loudness+brightness morphs a round↔spiky SVG creature that purrs/roars back. A **near-tie** — the *more robust* one on high kid voices; its brightness→hue trick is the designated fix for 393's one weakness.
+- **392-kids-voice-mirror** — sing → an SVG ribbon-creature traces your melody → a just-intoned choir sings it back. The reliable pitch sibling.
 
-## Research findings worth a look
-- RESEARCH §343: robustness is the live frontier — **Matchmaker** (2025 open-source piano score-follower + robustness eval), **Nakamura** parallel-HMM for errors/repeats/skips, **Otsuka** particle filter. Honest note: still no <30-day client-buildable hit (~8th dive) — but these directly shaped the build.
+## In progress / partial
+- Three live multi-cycle threads (Accompanist at cycle-3 = 391 · Drop-Engine journey-engine = 387 · tonnetz). Jury says deepen one, don't open fresh thin explorers. Still owed: the **off-screen / spatial-audio / haptic** shelf — only 1 of the last 15 pieces is non-screen.
 
-## Open questions for Karel
-- The accompanist thread is inherently **keyboard/MIDI input** (a jury-over-used input) — but the jury *also* told us to extend this exact thread, so I followed "extend it" over the input ban. Keep deepening (cycle 4 = the particle swarm), or pivot the thread to a **non-keyboard input** (sing/hum the melody via mic)?
-- The **embodiment gap** is still open (13–14 of the last 15 pieces output to a screen). A DEEP non-screen / spatial-audio / haptic cycle is owed whenever you want it.
+## Open question for Karel
+- 393's formant detection is honestly weakest on *high children's voices* (the literal target user). The no-wrong design absorbs it — every sound still drives the color/glow via loudness, and **aaah vs ooo** reliably differ — but is "imperfect vowel-ID, always-delightful response" the right trade for a 4yo? Your call decides whether **cycle 346 deepens 393** (fold in 394's bulletproof brightness→hue fallback + an AURORA-style vowel-position guide) or **resurrects 394** outright.

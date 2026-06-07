@@ -10,7 +10,12 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 338 — kids build · DEEP, 3 self-organized-criticality cascade-models of "tap a little, watch the whole world tumble — the avalanche IS the song")
+## ⭐ Newest (Cycle 344 — kids build · WIDE, 3 "listening-mirror" toys of "a child sings, the machine joyfully shows what it heard — no targets, no wrong")
+
+- **[/dream/393-kids-vowel-color](/dream/393-kids-vowel-color)** — Vowel Mirror. `demoable` · Cycle 344. The lab's **first formant / vowel-tracking** piece and its **first pure-DOM/CSS color field** as the main visual. A 4-year-old makes a long vowel — **aaah / eee / iii / ooo / uuu** — and a real-time formant detector (2048-pt FFT, F1/F2 peak-pick, Bark-scale classification vs Peterson–Barney centroids) paints the **whole screen** a different bold living color per vowel, then **sings the vowel back** through two bandpass filters tuned to the detected formants over a **just-intonation A3** triad. No reading, no targets, no "wrong" — your mouth is a color knob. Renderer is animated CSS gradients on real DOM (zero canvas/WebGL — the deliberate break from the lab's 7/15 raw-WebGL2 rut); graceful attract-mode demo cycles all vowels with no mic. Research→build from the **AURORA formant-biofeedback model (arXiv:2603.17543, Mar 2026)** — whose lesson "show a friendlier proxy, not the raw formant" becomes *color for a 4yo*. Banked 394-kids-sound-monster (Bouba/Kiki timbre→morphing-SVG-blob) + 392-kids-voice-mirror (pitch→SVG-ribbon-choir) — IDEAS §344.
+  Design notes: `src/app/dream/393-kids-vowel-color/README.md`
+
+## ⭐ Cycle 338 — kids build · DEEP, 3 self-organized-criticality cascade-models of "tap a little, watch the whole world tumble — the avalanche IS the song"
 
 - **[/dream/377-kids-cascade-bloom](/dream/377-kids-cascade-bloom)** — Cascade Bloom. `demoable` · Cycle 338. The lab's **first self-organized-criticality** piece, made for 4-year-olds: a bioluminescent garden of glowing seed-pods running the canonical **Abelian sandpile** (Bak–Tang–Wiesenfeld 1987). Tap a pod to add light; at 4 grains it **bursts**, flinging one grain to each neighbour — which can burst in turn, so a single tap sometimes triggers a screen-spanning **bloom** that rings out as a D-Dorian cascade. Most taps shimmer; rarely one avalanches — that power-law surprise *is* the toy. Raw WebGL2 (SDF pods + ring bursts), bell synth + drone through a limiter, auto-demo attract mode, every tap maps directly to a cell. Research→build from arXiv:2507.14947 ("Echoes of the Land", 2025). Banked 378-kids-quake-meadow (OFC 3-D heightfield quakes) + 379-kids-domino-forest (toppling dominoes) — IDEAS §338.
   Design notes: `src/app/dream/377-kids-cascade-bloom/README.md`
