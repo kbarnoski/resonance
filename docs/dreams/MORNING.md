@@ -1,22 +1,33 @@
-# Morning digest — last updated 2026-06-07 (UTC), cycle 341 (adult · WIDE)
+# Morning digest — last updated 2026-06-07 (cycle 342, UTC)
 
-> Odd cycle → **adult**. Our adult lane had quietly become one note: five of the last analysis pieces (beat-tracker, key-finder, tonal-map, two accompanists) plus the slow just-intonation drones the jury told me to starve. So this fire deliberately walked away from analysis-and-ambient and built the thing you've asked for since priority #4 and we'd never shipped: **an alternate journey engine.** Three unrelated adult directions in parallel; shipped the biggest one.
+## New since yesterday
+- **/dream/390-kids-coral-tide** 🪸 — *grow a singing coral reef by shaking the
+  tablet, and HEAR it get bigger.* Plankton settle and stick into a reef that
+  climbs up from the seabed (real **Diffusion-Limited Aggregation**); each depth
+  band it reaches adds **one held voice of a D-Dorian chord**, so a short reef is
+  a bare root+fifth and a tall one is a shimmering Dm11. A "N of 6 voices" pip
+  meter makes the growth legible. **Why open it:** it finally ships the DLA-coral
+  idea the lab banked 3× and never built — the fix that earns the ship is the
+  *audible* payoff (you hear the reef grow), the legible lane you keep asking for.
+  Shake, drag, or just watch — it self-grows hands-free ~2s after Start.
 
-## ☀️ Open this first
-- **[/dream/387-drop-engine](https://getresonance.vercel.app/dream/387-drop-engine)** — the lab's **first EDM / club journey engine.** Tap **START** and a club track composes itself through the real build-and-drop arc: **GROOVE → BUILD** (a riser climbs, a filter opens, the snare-roll accelerates, a high-pass "suck-out" right before the hit) **→ DROP** (a beat of silence, then the full kick + sub + supersaw at peak) **→ RELEASE → loop**, re-seeding its variation each time so no two drops are identical. **Hold → CHARGE** biases the next drop; **DROP NOW** triggers it early. It runs the whole arc hands-free, so you'll hear a full build-and-drop without touching anything.
-  - *Why this one:* it's your **priority #4 — journey-engine alternatives ("EDM build-and-drop, ritual, jazz, cinematic")** — finally taken. Everything else in the adult lab is either ambient pads/drones or harmonic analysis; this is the **first energetic/club piece**, the cleanest break from the "too similar" the jury flagged. The trick under it is one **tension knob [0→1]** (the procedural-music pattern) that drives the riser, filter, snare-roll *and* every visual at once — so you can **watch** the tension climb on the meter and feel it release on the drop. Built-in limiter on the master, soft glow instead of harsh strobes — punchy but safe.
+## How this was made (the orchestration)
+- **DEEP fire**: one concept — *a singing DLA coral grown by shaking* — three
+  parallel builders attacked it differently. Shipped the one with the legible
+  hook; the other two are banked (IDEAS §342): **coral-garden** (the calm
+  immersive full-screen take) + **reef-glow** (bioluminescent night swarm,
+  size-dependent diffusivity). Both build-reviewed and ready to resurrect.
 
-## Also explored this fire (2 more — banked in IDEAS §341, both build-clean)
-- **386-aeolian-atlas** — a **global aeolian harp**: it pulls the **live wind** at ~14 world cities (Open-Meteo) and sings each one as a **Strouhal wind-tone** (faster wind = higher pitch), D-Dorian, gusts breathing so it never repeats — a real-world-data ambient piece. Lost only because it leans into the very ambient lane the jury said to *starve*. The obvious next data-sonification ship.
-- **388-flow-grains** — wave at the **webcam** and the room's **motion** scatters into a **granular cloud** (self-computed optical flow → grain density/pitch/pan; camera analysis-only, never recorded; full no-camera auto-demo). Lost because camera *and* granular already exist in the lab — a fresh combination, not a wholly new lane. Strong "off-the-couch" revive.
+## Research findings worth a look
+- RESEARCH §342: no fresh <30-day client-buildable hit again (the honest 7th
+  dive running), but the dive sharpened the build — a **settling bias** turns
+  isotropic DLA into directional *grow-upward-from-a-seabed* coral, the twist
+  that makes it a legible moment instead of a blob.
 
-## How this was made (the studio choreography)
-- **WIDE fan-out:** three *unrelated* adult briefs — generative EDM arc / live-wind sonification / optical-flow granular — each a different input × technique × vibe, **none using a tag the jury banned** (touch, mic/voice, SVG, JI-drone) and none touching the adult analysis rut. Three parallel makers; I read the actual winner code, picked on *biggest-concept + your priority #4*, ran the authoritative winner-only build (**exit 0, 38.9s**), banked the other two. One commit.
-- Research → build: dive surfaced Procedural Music Generation's "tension knob" + the EDM build/drop arrangement canon → straight onto your unbuilt journey-engine-alternatives ask. (RESEARCH §341.)
-
-## Open questions for you
-- **Drop Engine, where next?** Two natural deepenings: (a) **more arc presets** — a *ritual* arc, a *cinematic* arc, a *jazz-responsive* arc (turn the one engine into the alternate-journeys library you described); or (b) **feed it your own music** — make the lead/motif source your *Welcome Home* material so the drop is built from your piano, not a synth. Say which excites you.
-- **Three live threads now** — Accompanist (cycle-3 still queued), Drop-Engine (new), Tonnetz (359). I'll advance one per adult cycle rather than open a fourth — tell me your priority order.
-
-## Caveats
-- `387` is **build-verified, not browser-verified** (no audio/GPU here). Unverified: whether the build→drop *feels* like real tension/release (the whole point — subjective), scheduler timing on mobile, the limiter's punch on the drop transient, iOS autoplay. All likely small tunes. Clean fast-forward sync (no force-push), scope clean (only `387` + docs), zero new deps.
+## Open questions for Karel
+- The central bet on 390 is **perceptual**: does the chord audibly "get bigger"
+  as the reef climbs, or just "more notes"? Needs your ears on a real device —
+  voice levels / ramp times / bell loudness are first-guess.
+- Still owed (jury): an adult **score-follower / live-accompanist cycle-3** (fold
+  381's robustness + 382's anticipation into 380) and a *second* genuinely
+  off-screen piece. Both queued for the next adult (odd) cycle.
