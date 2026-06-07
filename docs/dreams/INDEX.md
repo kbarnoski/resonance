@@ -10,7 +10,12 @@ Status legend: `skeleton` (route exists, not yet interactive) ·
 
 ---
 
-## ⭐ Newest (Cycle 335 — adult build · DEEP, 3 legibility approaches to "watch your music's tonal center of gravity travel through tonal space")
+## ⭐ Newest (Cycle 338 — kids build · DEEP, 3 self-organized-criticality cascade-models of "tap a little, watch the whole world tumble — the avalanche IS the song")
+
+- **[/dream/377-kids-cascade-bloom](/dream/377-kids-cascade-bloom)** — Cascade Bloom. `demoable` · Cycle 338. The lab's **first self-organized-criticality** piece, made for 4-year-olds: a bioluminescent garden of glowing seed-pods running the canonical **Abelian sandpile** (Bak–Tang–Wiesenfeld 1987). Tap a pod to add light; at 4 grains it **bursts**, flinging one grain to each neighbour — which can burst in turn, so a single tap sometimes triggers a screen-spanning **bloom** that rings out as a D-Dorian cascade. Most taps shimmer; rarely one avalanches — that power-law surprise *is* the toy. Raw WebGL2 (SDF pods + ring bursts), bell synth + drone through a limiter, auto-demo attract mode, every tap maps directly to a cell. Research→build from arXiv:2507.14947 ("Echoes of the Land", 2025). Banked 378-kids-quake-meadow (OFC 3-D heightfield quakes) + 379-kids-domino-forest (toppling dominoes) — IDEAS §338.
+  Design notes: `src/app/dream/377-kids-cascade-bloom/README.md`
+
+## ⭐ Cycle 335 — adult build · DEEP, 3 legibility approaches to "watch your music's tonal center of gravity travel through tonal space"
 
 - **[/dream/370-tonal-map](/dream/370-tonal-map)** — Tonal Map. `demoable` · Cycle 335. The deepening of the Spiral-Array thread, made legible: a comet of tonal gravity (Chew's center-of-effect) glides across labeled circle-of-fifths key territories; a modulation is a literal map crossing, and the comet's halo widens as the **tonal-focus** scalar drops (arXiv:2603.27035). three.js top-down map; internal modulating demo (C→G→D→Em→C) + Web MIDI. Banked 369-tonal-orbit (3-D helix) + 371-tonal-journey (modulation-journey timeline) — IDEAS §335.
 

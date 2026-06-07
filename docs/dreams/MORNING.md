@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-06-07 (UTC), cycle 337 (adult · DEEP)
+# Morning digest — last updated 2026-06-07 (UTC), cycle 338 (kids · DEEP)
 
-> Odd cycle → **adult**. I took the thing you (via the jury) have asked for and I've dodged **three times**: a live **accompanist that follows YOU**. Not a cursor — it plays the left hand in sync with your rubato. And I drew the one picture that makes it obvious it's working: the alignment **warping path**, a diagonal that *bends* when you rush or drag.
+> Even cycle → **kids**. I built the lab's **first self-organized-criticality** toy. It's the "chain reaction" idea done with real physics: tap a glowing pod, it fills, and at the brim it **bursts** — flinging light to its neighbours, which can burst too. Most taps shimmer. Once in a while, one tap sets off a **whole-screen avalanche** — and that unpredictable cascade *is* the melody. The surprise is the toy.
 
 ## ☀️ Open this first
-- **[/dream/375-tempo-canon](https://getresonance.vercel.app/dream/375-tempo-canon)** — press **Play demo ▸** (or play it yourself on the home-row keys / a MIDI keyboard). You play **Ode to Joy**'s melody; the system aligns you to the score in real time and plays the **bass + chords locked to your tempo** — rushing speeds it up, ritarding slows it down. Watch the **warping path** steepen in the accelerando and flatten in the ritard. That bend *is* the machine following you.
-  - *Why this one:* it's your standing **#1 adult ask**, and it answers the exact three reasons it died before — (1) it's the **accompanist**, not `26-score-follow`'s bare cursor; (2) it's **MIDI/keyboard-driven, no mic** (so it dodges the mic ban); (3) it **self-verifies with the baked demo**, the way `358-beat-mirror` solved verifiability. Online DTW (Dixon's MATCH), freshest named ref **Matchmaker (arXiv, Oct 2025)**.
+- **[/dream/377-kids-cascade-bloom](https://getresonance.vercel.app/dream/377-kids-cascade-bloom)** — press the big glowing ▶, then **tap anywhere**. Pods fill amber→gold; a full pod bursts and rings a D-Dorian note, sometimes triggering a bloom that sweeps the screen. No reading, no fail, big tap targets — and it **blooms by itself** if a 4-year-old just watches (attract mode after 4s).
+  - *Why this one:* it's the **Abelian sandpile** (Bak–Tang–Wiesenfeld 1987) — the canonical model of *self-organized criticality*, where tiny inputs occasionally produce huge cascades on a power law. New technique class for the lab, and it feeds the **legible/instructional** lane you've liked (358, 353): you literally *watch the avalanche propagate*. Raw WebGL2, built from scratch.
 
-## Also explored this fire (2 more — banked in IDEAS §337, both build-clean, both flagged as the winner's next-cycle deepenings)
-- **374-the-accompanist** — same idea via an **HMM/forward** follower with a **confidence meter** (belief over score positions; wrong notes never collapse it). Lost on visual familiarity (a piano-roll), but it's the **designated cycle-2**: the right substrate for expressive dynamics-following.
-- **376-the-prompter** — a **cue/anchor state machine** that *forgives wrong notes* (commits only at musical cues). Its demo bakes in deliberate wrong notes and a **build-time proof shows 8/8 cues still fire**. The future "live-performance reliability" mode.
+## Also explored this fire (2 more — banked in IDEAS §338, both build-clean, both folded into 377's next cycle)
+- **378-kids-quake-meadow** — the same idea as a **three.js 3-D meadow that bulges and quakes** (Olami–Feder–Christensen earthquake model — the *truest* descendant of the research paper). The most beautiful one; lost only because edge-taps can miss on the tilted terrain (breaks the 4yo "every tap responds" rule).
+- **379-kids-domino-forest** — glowing stalks you grow until they **topple like dominoes** across a twilight forest, the cascade panning left→right in stereo. The most physically-intuitive; same tap-target caveat.
 
 ## How this was made (the studio choreography)
-- **DEEP fan-out:** one concept, **three follower algorithms** (DTW / HMM / cue-FSM), each built by a parallel maker. Critic read the actual `dtw.ts` + `page.tsx`, ran a 3-up diagnostic build, then the authoritative winner-only build (**exit 0**), curated to the most *legible* + most *self-verifying*. One commit.
-- Research → build: the dive (Matchmaker Oct 2025 + The ACCompanion) → reframe to dodge the 3× rejection → ship. (RESEARCH §337.)
+- **DEEP fan-out:** one ambitious concept (SOC cascades as a kids instrument), **three different avalanche models** (sandpile / earthquake / dominoes), each built by a parallel maker. I read the actual code, ran a 3-up diagnostic build, picked the winner on the **kids reliability bar** (flat grid = every tap lands), fixed a lint error + a hallucinated paper-author, then ran the authoritative winner-only build (**exit 0**). One commit.
+- Research → build: the dive (*Echoes of the Land*, arXiv:2507.14947) → port SOC to a kids toy → ship. (RESEARCH §338.)
 
-## Open questions for you (your call unblocks these)
-- **The Accompanist is now a multi-cycle thread.** Cycle-2 = fold `374`'s HMM follower in behind a **DTW/HMM toggle** (Matchmaker's exact comparison) + dynamics-following — or would you rather I **map your *Welcome Home* melody** in as the score so you're accompanying your own piece? Pick and I ship it.
-- Two live threads now (Accompanist + `359-tonnetz-walk`). I'll advance one next adult cycle, not open a third — which?
+## Open questions for you
+- **Deepen 377 or leave it?** I have a clean path to fold the losers' best bits in: an alternate **3-D terrain mode** (from 378), a **ground-thump + aftershock phrasing** so a big bloom sounds like a phrase not a wash (378), and **stereo pan** so a cascade audibly travels (379). Want that, or move on?
+- **Next adult (odd) cycle:** the jury keeps asking me to actually *deepen* a thread instead of opening new ones — I'll ship **Mirror-Canon cycle-2** unless you'd rather I advance the Accompanist (375) or Tonnetz (359). Pick one.
 
 ## Caveats
-- `375` is **build-verified, not browser-verified** (no MIDI/GPU/audio here). The follower is forward-only with a window-5 search, so a *long* run of wrong notes could outrun the lock before re-catching (`376`'s cue-FSM is the robustness answer when we want it). The slope→tempo feel and the warping-path legibility at a phone glance are reasoned, not measured — likely small tunes. Clean fast-forward sync this fire, no doc-drift force-push.
+- `377` is **build-verified, not browser-verified** (no GPU/audio here). The avalanche pacing (`TOPPLES_PER_FRAME=12`) and the R32F flash-texture path are reasoned, not measured on a real tablet — likely small tunes. Clean fast-forward sync this fire, no force-push, scope clean (only `377` + docs).

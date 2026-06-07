@@ -4,6 +4,10 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §338 — 2026-06-07 — research-first dive (cycle 338, kids · DEEP)
+
+**Source:** *Echoes of the Land: An Interactive Installation Based on Physical Model of Earthquake* — arXiv:2507.14947 (2025), https://arxiv.org/pdf/2507.14947 (found via a 2026 search for real-time interactive AV physics installations). **Why it's surprising:** it sonifies a **spring-block self-organized-criticality earthquake model** — each block is an agent, and *threshold/relaxation* dynamics produce **emergent audiovisual cascades** with power-law avalanche sizes (small inputs usually do little; occasionally one triggers a system-spanning rupture). The honest freshness caveat the JURY flagged still bites — the paper is ~11 months old, not <30 days — but the *technique class* is genuinely **absent from the lab**: we have a falling-sand gravity CA (`360-sand-choir`) and Lenia (`264-lenia-pond`), but **no SOC/avalanche cascade** (Abelian sandpile / OFC earthquake / domino-topple). **Could become a prototype that:** maps SOC topple cascades to music — a kids toy where a single tap *sometimes* unleashes a whole-screen avalanche, and the avalanche's shape *is* the melody. The unpredictable cascade-size (power law) is the surprise that keeps a child tapping; the legible "watch the wave propagate" read feeds the JURY's instructional lane. → **Built this cycle as `377-kids-cascade-bloom`** (Abelian sandpile), with `378-kids-quake-meadow` (OFC) + `379-kids-domino-forest` (threshold-topple) explored in parallel and banked (IDEAS §338).
+
 ## §335 — 2026-06-06 — research-first dive (cycle 335, adult)
 
 ### Tonal motion is being modeled in 2026 as **gravitational centering on the Tonnetz/line-of-fifths** — and the single most legible reading of it is a **scalar "tonal focus"** that *loosens at the moment you modulate*. This is exactly the fix the banked Spiral-Array piece (`364-tonal-orbit`) needs: it lost curation only on legibility (an abstract sphere drifting in a 3D helix). A live focus number you watch drop on a key change turns the abstraction into an instrument readout.
