@@ -1,18 +1,22 @@
-# Morning digest — last updated 2026-06-08 (UTC) (cycle 358)
+# Morning digest — last updated 2026-06-08 (UTC) · cycle 359
 
-> **Two jury provocations, one fire.** This kids cycle answers **#1** ("subject = rhythm/timbre/noise, NOT tuning — the lab fled D-Dorian into a just-intonation monastery") *and* **#6** ("there's still no MediaPipe face-tracking piece") at once. Went **DEEP** (one big concept — *make a BEAT with your face, not a tune* — three technical attacks) and shipped the most kid-legible one. See `docs/dreams/JURY.md`.
+> **WIDE adult fire — three ways to leave the consonant monastery.** Spawned 3 builders in parallel (intimate / clinical / percussive registers), shipped the one that best clears every gate. The jury keeps asking the lab to "go weird" and break the tuning fixation; this fire's winner makes the subject **rhythm, not pitch** — for adults this time. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **`/dream/423-kids-face-beat` — Face Beat 🥁** (kids 4+). *Press Start and make faces at the camera.* **Open your mouth 😮 = a kick boom · eyebrows up 🤨 = a hi-hat · big smile 😁 = a shaker · puffed cheeks 😗 = a tom · wink 😉 = a rim.** It's the lab's **first face→PERCUSSION** piece — every prior face/voice toy made *pitch*; this one makes a **drum kit**, so the subject is **rhythm, not tuning** (no scale, no chord). Every face is quantized to a steady 100 BPM groove, so even a flailing toddler locks into a real beat. Rendered in raw **WebGL2** (Canvas2D & SVG were both over-used, so I banned them this cycle). No camera? It plays itself in ~2s via a ghost face.
+- **[/dream/426-euclid-engine](https://getresonance.vercel.app/dream/426-euclid-engine)** — an **adult, interactive polyrhythm machine**: four rings of drums whose hits are placed by the **Euclidean algorithm** (E(3,8) tresillo, E(5,8) cinquillo…) and which slowly **phase against each other** like Steve Reich's *Piano Phase*. Pure percussion, **zero tuning**. Self-starts in ~2s — *why open it:* it's hypnotic, and it's the first **adult** answer to the jury's "rhythm, not tuning" demand (so far only kids got that). Tap rings to sculpt the groove.
+- **2 more were explored this fire** (3 builders in parallel) and banked in IDEAS §359 — see below.
 
-## Also explored (DEEP fire — 3 builds, 2 banked in IDEAS §358)
-- **`424-kids-face-jam`** — face → continuous **noise/foley texture** (mouth = whoosh, brows = fizz, scrunch = crunch), three.js point-cloud. The **"go weird"** sibling — pure timbre, no beat, no tune; honestly the strongest answer to your deeper "everything resolves to consonance" note, and it doubles as an *adult* Ikeda-ish texture instrument.
-- **`425-kids-face-loop`** — face → a **looping beat that grows** (make a face to record a drum into an 8-step loop, add layers, it repeats forever). The one with **memory** — "I made this and it keeps going."
+## In progress / partial
+- Nothing mid-build. `426` shipped clean (one trivial ESLint escape-fix, then build exit 0).
 
-## Research finding worth a look
-- The 2026 face↔audio research front is almost all going the **wrong way for us**: audio→*talking-face* avatars (lip-sync). Letting a face *make* sound live, in the browser, at play-latency is a quiet gap — that's the opening `423` walks into. Named anchor: **Expotion** (arXiv:2507.04955, 2025). (RESEARCH §358.)
+## Banked this fire (in IDEAS.md — build-reviewed, ready to ship)
+- **`424-welcome-erosion`** — your REAL *Welcome Home* piano (paste a recording ID), slowly **eroded over 5 minutes** until it can't return home — a piece about forgetting (Basinski *Disintegration Loops* / Lucier). The vehicle to finally put your actual music on screen.
+- **`425-test-signal`** — a clinical **Ikeda / Alva Noto glitch-wall** (sine-grids, clicks, band-noise, never consonant). The purest "refuse to resolve." Held back because a wall of 6–14 kHz pings is a gamble on phone speakers — better on headphones/desktop.
+
+## Research findings worth a look (RESEARCH §359)
+- **Two corrections that killed the "obvious" queued moves:** (1) real-world-data sonification is **NOT a lab-first** — `314-solar-wind` already fetches live NOAA data, so the banked solar-drone would just duplicate it; the lane is saturated (233/279/337/293/314/418). (2) reaction-diffusion already exists (`9`). Both logged so we stop chasing false "firsts" — same discipline that retired the WebGPU "first" last week.
+- Fresh anchor held for later: **arXiv:2605.13630** (May 2026) — neural cellular automata that *self-heal damaged regions* → a future "scrub/wound a sonified organism and hear it knit back together."
 
 ## Open questions for Karel
-- **Is the "rhythm/timbre not tuning" pivot what you wanted?** I read the jury as: stop making everything resolve to a pretty chord. `423` is pure percussion; `424` is pure texture. Tell me if this is the break you meant, or if I've swung too far from melody.
-- **Which face sibling should I deepen next cycle?** I'd fold `425`'s **record/loop memory into `423`** (a "record mode" so the face-beat you make keeps playing) — or ship the weirder `424` foley texture. Your call.
-- **Camera back-to-back, on purpose.** `419` (body) and now `423` (face) are two camera kids pieces in a row — because the jury named face-tracking the biggest untouched first. Say the word if you want me to swing away from the camera for a few.
+- **`424` needs a real track ID** to actually showcase your piano (it defaults to a synth phrase). Give me one Welcome-Home recording ID and I'll ship the real-music version next adult cycle.
+- Renderer balance is healthy (three.js used today — the freshest lane; SVG + mic stay jury-banned). Want me to pull the Ikeda abrasive piece forward, or deepen the rhythm thread?
