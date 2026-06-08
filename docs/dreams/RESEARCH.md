@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §356 — 2026-06-08 (UTC) · cycle 356 dive (15-min, mandatory) — kids, the CAMERA-embodiment + rhythm shelf: make the body generate a BEAT, not a chord
+
+**The chain (dive → build).** Two jury 2026-06-08 mandates point the same way: **#1 "build pieces whose subject is rhythm, timbre, or noise — not tuning"** (the lab fled D-Dorian into a just-intonation monastery; ~13 of 15 converge to calm consonance) and **#6 "there is still no MediaPipe / body- or face-tracking piece in the window … the depth-camera/body spatial room is the lab's single biggest untouched 'first.'"** This cycle (356 % 2 = 0 → kids) attacks both at once with a camera-body piece whose output is **pure percussion** — no scale, no chord, no tuning.
+
+**Sources (verified dates).**
+- **Anchor (fresh, <30d): "Dance Motion-Guided Music Generation via Residual Vector Quantization,"** *Electronics* 15(10):2098 (MDPI, May 2026; doi.org/10.3390/electronics15102098). A cross-modal model that **generates music FROM human dance motion** — the inverse of the usual music→dance pipeline — using an LSTM+attention encoder over body-landmark motion to emit RVQ codebook indices for the audio. The surprise: the academic frontier is now treating *the moving body as the score's source*, not its follower.
+- **Supporting/foundational:** Lee et al., *"Dancing to Music"* (NeurIPS 2019); Bazarevsky et al., **BlazePose** (33-landmark on-device pose, 2020, the model MediaPipe Pose ships); `mediapipe2osc` (skeletal-tracking→OSC for music, community). Also surfaced: **GACA-DiT** (arXiv:2510.26818, diffusion dance↔music with genre-adaptive rhythm extraction) — same "fine-grained rhythmic pattern from motion" thesis.
+
+**The surprising reframe (this cycle's build hook → shipped this fire).** Every body-tracking piece the lab has ever shipped maps poses to **harmony**: `287-mirror-choir` (pose → choral voices), `302-mirror-canon-round` (pose → canon round), `234-kids-hand-creature`❤️ (hand → sung creature). **Nobody has made the body generate a BEAT.** The RVQ paper makes the case literal: motion → rhythmic structure. The lab-fresh move is a **kids dance-DRUM**: stand in front of the camera and your motion *is* the groove — limbs trigger a drum kit / drive percussion-layer density, quantized onto a steady tempo grid so even a 4-year-old's flailing locks into a beat. Pure noise/percussion = the explicit answer to jury #1 (rhythm not tuning); camera input = jury #6 + dodges the over-represented mic; and it's squarely in Karel's **loved camera-body-kids lineage** (`101-camera-song`❤️, `104-kids-mirror-draw`❤️, `217-dance-avatar`❤️, `234-kids-hand-creature`❤️). **Could become a prototype that does X:** *a child dances and the room turns their movement into a live drum groove — no melody, no tuning, just the beat their body is making.* → shipped this fire as a DEEP-3 kids fire (MediaPipe-Pose zone-drumkit / webcam optical-flow motion-energy groove / MediaPipe-Pose continuous polyrhythm-puppet) → §356 banked seeds.
+
+---
+
 ## §354 — 2026-06-08 (UTC) · cycle 354 dive (15-min, mandatory) — kids, the OFF-SCREEN / embodiment shelf: music that *leads you*
 
 **The chain (dive → build).** The JURY 2026-06-07's most-unmoved structural critique (#5) is the **embodiment gap**: "still only ONE truly off-screen piece (`346-sound-hunt`) … 13–14 of 15 output to a screen … spend a DEEP cycle on the categorical menu's untouched shelf — non-screen / spatial-audio / haptic," noting the lab "keeps *researching* the 2026 ambisonics wave and never building it." This cycle (354 % 2 = 0 → kids) is that DEEP cycle. The dive looked for a *technique* the lab hasn't done that lives in the body, not on the screen.
