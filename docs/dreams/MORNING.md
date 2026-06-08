@@ -1,17 +1,20 @@
-# Morning digest — last updated 2026-06-07 (UTC) (cycle 348)
+# Morning digest — last updated 2026-06-08 (UTC) (cycle 349)
 
-> **Jury (2026-06-07)**: breadth is a costume — 7/15 ship raw WebGL2, 9/15 live in D-Dorian. Its ban list for this cycle: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed. And provocation #6: break the two monocultures (kids *emergence-sim* reflex, adult *analysis-engine* reflex) in a single fire. Today's kids WIDE fire answers all of it. See `docs/dreams/JURY.md`.
+> **Jury (2026-06-07)** banned: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed; and asked for a foreign tonal world, a non-GPU renderer, and to break the adult *analysis-engine* reflex. Today's adult DEEP fire answers all of it. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **[/dream/402-kids-steady-walk](/dream/402-kids-steady-walk)** — **Steady Walk.** The lab's **first pulse-steadiness / entrainment toy.** A little creature walks **smoothly only while you keep a steady beat** (clap, or say "bup bup bup") and **stumbles the moment your beat wobbles** — its legs lurch, its body tilts, its face goes worried. Hold steady 8 steps and it **hops** and a flower blooms ahead on the path. *Why open it:* it's the single-fire **double-rut break** the jury asked for — it takes the lab's *adult* analysis reflex (onset/IOI/tempo tracking, the 358/365/375/380 family) and makes it a *kids* toy, scoring your **internal pulse steadiness** (not pattern recall, so it's new vs the clap-echo toys). Tap **Start**, or **Watch it play** for the no-mic demo that scripts steady→wobbly→steady so you see the whole mechanic in ~15s.
-- It clears the jury's bans cleanly: **inline-SVG** renderer (no WebGL — jury #1) · **mic-onset** input (no MIDI/touch) · footsteps in **slendro** (Indonesian gamelan — a foreign tonal world, jury #2). Ambition 3/5 (lab-first entrainment-scoring #1 + ≥3 subsystems #2 + Repp-2005 #3).
+- **[/dream/404-comma-pump](https://getresonance.vercel.app/dream/404-comma-pump)** — *Comma Pump.* The lab's **first adaptive (dynamic) just-intonation** piece — and a piece of music that **can never come home.** Press Start: a slow, soft pad progression where every chord is voiced in *pure* 5-limit ratios, so the loop drifts down a **syntonic comma (≈ −21.5¢) every cycle, forever** — watch the "home" line sink away from the music on the pitch-river, and the cents-from-home counter creep negative. **Why open it:** tap **JI ⇄ 12-TET** — pure chords lock beat-free, equal temperament snaps the beating back in. You *hear and see* why pure harmony and "coming home" are mathematically incompatible.
+- *2 more explored this fire* (DEEP, 3 approaches to adaptive JI) — banked in IDEAS §349: **405-pure-lock** (a Plomp–Levelt roughness meter falling to zero as a chord glides into pure tuning) and **406-drifting-choir** (sustained voices that glissando-retune to purity as a wandering pivot moves).
 
-## Explored but not shipped (2 more, banked — IDEAS §348)
-- **403-kids-breath-garden** — slow breathing grows a glowing night-garden that **evolves over minutes and remembers every breath** (grass → flowers → fireflies → moonlit sky); pelog-inharmonic drone. The **strongest bank** — it stacks the *expensive* multi-cycle/long-form criterion the jury said is nearly absent, and fills the thin "long-form generative with memory" shelf. Queued as the **next kids fire's DEEP target.**
-- **401-kids-sound-zoo** — make a *texture* with your voice (hiss/hum/growl/bright-"eee") and the matching animal wakes; a live "you are here" map shows your timbre via spectral flatness (Wiener entropy). Clean, but the timbre lane was touched at cycle 344 — resurrect as a *continuous* timbre-morph.
+## In progress / partial
+- Adaptive-JI is now a fresh thread. **Cycle-2 candidate:** a long-form adult JI drone (revive 406) — ideally with your **Welcome Home** piano as the voices that drift into purity.
+- Spatial thread (394→400) cycle 3 still queued: your Welcome Home tracks as the sources you walk through.
 
-## Research finding worth a look (honest miss)
-- **#5 freshness debt, logged not faked (RESEARCH §348):** no <30-day client-buildable hit this dive (the ~7-dive failing streak continues). The build leans on lab-first technique + named refs (Repp 2005; Tchernichovski/Wiener-entropy) instead of pretending an old result is new. **The fix I keep flagging:** next dive should scan fal.ai / replicate / HuggingFace changelogs + the TouchDesigner artist feeds (Tschepe/Entagma/Heckmann), not arXiv keyword search.
+## Research findings worth a look
+- **Adaptive / dynamic just intonation** (Pivotuner, arXiv:2306.03873; the syntonic comma pump; La Monte Young's *Well-Tuned Piano*) — retuning to pure ratios *in real time* as harmony moves. The lab had only fixed-ratio JI before; 404 is the first to retune live.
+- Honest note: the "<30-day research" mandate missed again (~8 dives) even after widening sources to AI-music/hardware changelogs. The jury flagged this — may be worth rewording the mandate.
 
-## Open question for Karel
-- Does **"keep a steady beat or the creature stumbles"** land as a *game* for a 4-year-old — i.e. is the steadiness→gait mapping legible enough by eye, and do claps reliably register on a phone mic over room noise? If yes, the natural cycle-2 is a **two-kid "walk in step together"** version (shared tempo = the creatures sync). And: ship **403-breath-garden** next as the calm counterpart, or push the **soundwalk room → your *Welcome Home* tracks** first?
+## Open questions for Karel
+- The comma drift is *slow* by design (~15 min for a whole tone). Want an exaggerated "drift mode" so the never-comes-home effect lands in 30 seconds?
+- Next adult JI cycle: pull in your real piano (Welcome Home), or stay synthetic?
+- Foreign-tonal worlds still untried: octatonic, raga, spectral/inharmonic. Any you'd most like to hear?

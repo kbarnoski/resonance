@@ -4,6 +4,20 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §349 — 2026-06-08 (UTC) · cycle 349 dive (15-min, mandatory) — adult, foreign-tonal: ADAPTIVE / DYNAMIC just intonation (the lab has fixed-ratio JI, never *real-time retuning*)
+
+**The chain (dive → build).** The JURY (2026-06-07) banned the D-Dorian bed and asked for "a genuinely foreign tonal world: just intonation / microtonal." The lab already has *fixed-ratio* JI (394/397/400 use static overtone ratios; 37-ratio-lab is a *static* click-to-hear Tonnetz). The genuinely un-built seam this dive found is **adaptive/dynamic just intonation** — retuning every note to *pure* ratios relative to the moving harmonic root in real time, so each chord beats at zero, and the system pays for that purity with the **syntonic comma** (a I–vi–IV–ii–V–I loop in strict 5-limit JI cannot return to its starting pitch — it drifts down ~21.5 cents per cycle, the "comma pump"). Grep-clean across all READMEs (`adaptive/dynamic intonation` → 0 hits).
+
+**Sources (verified; honest #5 status).**
+- **Pivotuner — "automatic real-time pure intonation and microtonal modulation"** (arXiv:2306.03873). The canonical recent implementation of *adaptive* JI: re-pitch held notes to pure ratios against a chosen pivot as the harmony moves. Foundational/2023, **not <30 days** — so the build does NOT claim #5; it clears the floor via #1 (lab-first technique) + #2 (≥3 subsystems) + #3 (named reference) and is honest about the freshness miss, again.
+- **Tune.js + the Scala archive** (github.com/abbernie/tune) — confirms the client-side primitives (ratio → cents → Hz) are trivial in Web Audio; no library needed, we compute 5-limit lattice ratios from scratch.
+- **2026 microtonal signal** (soundverse.ai "Can AI create microtonal music?" 2026; SONICWARE LIVEN Ambient Ø **1.5 update**, 2026 — per-pattern microtonal tuning shipped on a hardware synth) — a real current-quarter uptick in *adaptive/per-context* tuning as a creative control, the cultural backdrop for the pick even though no single item is a <30-day client-buildable hit. **Sourcing note (JURY #4 fix):** I deliberately widened beyond arXiv keyword search to the hardware/AI-music changelog space this dive; still no <30-day code-droppable hit, but the lineage is live, not recycled-2022.
+- **Named tonal-theory references for the README:** the **syntonic comma / comma pump**; **Harry Partch** & **Ben Johnston** (adaptive-JI notation); **La Monte Young, *The Well-Tuned Piano*** (a 5-limit-JI long-form drift piece — the spiritual ancestor of a comma-drift drone); **Plomp & Levelt (1965)** sensory-dissonance/roughness curve (for the "beating meter" approach).
+
+**Could become a prototype that does X (this cycle's build hook).** An **adult long-form generative piece in adaptive 5-limit JI** that makes the purity/comma trade *audible and visible*: a slow progression whose every chord locks beat-free, while the music slowly *migrates in pitch* and can never come home — Canvas2D pitch-ribbon/lattice (non-GPU per JURY #1), foreign tonal world (JURY #2), generative not analysis (crosses the adult-analysis rut, JURY #6), long-form/stateful (the under-served menu shelf). DEEP fire, 3 approaches → §349 banked seeds.
+
+---
+
 ## §348 — 2026-06-07 (UTC) · cycle 348 dive (15-min, mandatory) — kids listening/analysis toys on real-time mic descriptors; honest #5 miss, strong lineage anchor
 
 **The honest result.** No genuinely <30-day, client-buildable hit surfaced for "real-time audio descriptor / children's singing interaction" — consistent with the JURY's standing note that the freshness mandate (#5) has failed ~7 dives running. Searches returned mostly foundational/older material (arXiv search for cs.SD May-2026 children-singing returned only 2022–2024 PubMed work). So this cycle's build does **not** claim #5; it clears the ambition floor via #1 (lab-first technique) + #2 (≥3 subsystems) + #3 (named reference) instead, and I'm logging the miss rather than dressing up an old result as new.
