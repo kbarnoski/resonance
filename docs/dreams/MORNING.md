@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-06-08 (UTC) (cycle 357)
+# Morning digest — last updated 2026-06-08 (UTC) (cycle 358)
 
-> **Still on the jury verdict** ("build something that *refuses* to harmonize"). This adult fire is the most pointed answer yet: I took the lab's own warm, consonant register and **denied it any resolution.** Went **WIDE** (3 unrelated abrasive directions, one per clean renderer) and shipped the one that lands hardest. See `docs/dreams/JURY.md`.
+> **Two jury provocations, one fire.** This kids cycle answers **#1** ("subject = rhythm/timbre/noise, NOT tuning — the lab fled D-Dorian into a just-intonation monastery") *and* **#6** ("there's still no MediaPipe face-tracking piece") at once. Went **DEEP** (one big concept — *make a BEAT with your face, not a tune* — three technical attacks) and shipped the most kid-legible one. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **`/dream/422-shatter-piano` — Shatter 🩻** (adult). *Tap **Shatter it** and listen for ~10 seconds.* A gentle piano phrase plays once clean — voiced to *want* to land on C4 — and then a **granular spectral-freeze** engine shreds it: grains scatter, detune, reverse, and **freeze on the almost-cadence so it hangs forever without arriving.** It's the lab's deliberate Ikeda/Akten counter-piece — where Conchordal blooms into consonance and the cradle hums you to sleep, this keeps the warm material and *refuses to let it close.* Rendered as a pure **DOM/CSS** spectral grid (no canvas/SVG — both were over-used, so I banned them this cycle). **You can feed it your own piano:** paste a Welcome-Home recording ID or drop an audio file and it shatters *that* instead.
+- **`/dream/423-kids-face-beat` — Face Beat 🥁** (kids 4+). *Press Start and make faces at the camera.* **Open your mouth 😮 = a kick boom · eyebrows up 🤨 = a hi-hat · big smile 😁 = a shaker · puffed cheeks 😗 = a tom · wink 😉 = a rim.** It's the lab's **first face→PERCUSSION** piece — every prior face/voice toy made *pitch*; this one makes a **drum kit**, so the subject is **rhythm, not tuning** (no scale, no chord). Every face is quantized to a steady 100 BPM groove, so even a flailing toddler locks into a real beat. Rendered in raw **WebGL2** (Canvas2D & SVG were both over-used, so I banned them this cycle). No camera? It plays itself in ~2s via a ghost face.
 
-## Also explored (WIDE fire — 3 builds, 2 banked in IDEAS §357)
-- **`420-slime-static`** — a WebGPU compute slime-mold (262k GPU agents) sonified as a roaring, never-settling wall of noise. The biggest technical swing.
-- **`421-solar-drone`** — the **live solar wind** hitting Earth's magnetosphere (real NOAA data) as an eyes-closed drone that, because the data never repeats, can't resolve. The natural cycle-2 to `418-seismic-pulse` (earth tremor + sky weather).
+## Also explored (DEEP fire — 3 builds, 2 banked in IDEAS §358)
+- **`424-kids-face-jam`** — face → continuous **noise/foley texture** (mouth = whoosh, brows = fizz, scrunch = crunch), three.js point-cloud. The **"go weird"** sibling — pure timbre, no beat, no tune; honestly the strongest answer to your deeper "everything resolves to consonance" note, and it doubles as an *adult* Ikeda-ish texture instrument.
+- **`425-kids-face-loop`** — face → a **looping beat that grows** (make a face to record a drum into an 8-step loop, add layers, it repeats forever). The one with **memory** — "I made this and it keeps going."
 
-## Research finding / correction worth a look
-- **I corrected a false "first."** The jury and my own notes kept calling **WebGPU compute "the biggest unclaimed first" — it isn't.** It already shipped in `16-particle-life-gpu`, `55-webgpu-audio-fx`, and `130-tsl-particle-compute`❤️ (the jury only audited the last 15 cycles). Logged in RESEARCH §357 so we stop deferring a first that was claimed ~300 cycles ago.
-- Fresh anchor: **NOAA's real-time solar-wind feed is swapping satellites this month** (legacy retiring ~30 June, moving to NASA's IMAP I-ALiRT) — that's what fed the solar-drone sibling.
+## Research finding worth a look
+- The 2026 face↔audio research front is almost all going the **wrong way for us**: audio→*talking-face* avatars (lip-sync). Letting a face *make* sound live, in the browser, at play-latency is a quiet gap — that's the opening `423` walks into. Named anchor: **Expotion** (arXiv:2507.04955, 2025). (RESEARCH §358.)
 
 ## Open questions for Karel
-- **Is "refuses to resolve" landing, or too far?** 422 is intentionally unresolved/abrasive-but-poetic. Tell me if this is the counter-register you wanted, or if I've over-corrected away from the warmth.
-- **Want me to shatter your actual *Welcome Home* piano?** The door's already there (paste an ID / drop a file) — give me a known-good recording ID and the default becomes your music being denied its cadence.
-- **Still need your review-browser answer** (phone or desktop): it gates whether the banked WebGPU slime piece (`420`) is worth shipping, since its GPU path only shines on a WebGPU-capable browser.
+- **Is the "rhythm/timbre not tuning" pivot what you wanted?** I read the jury as: stop making everything resolve to a pretty chord. `423` is pure percussion; `424` is pure texture. Tell me if this is the break you meant, or if I've swung too far from melody.
+- **Which face sibling should I deepen next cycle?** I'd fold `425`'s **record/loop memory into `423`** (a "record mode" so the face-beat you make keeps playing) — or ship the weirder `424` foley texture. Your call.
+- **Camera back-to-back, on purpose.** `419` (body) and now `423` (face) are two camera kids pieces in a row — because the jury named face-tracking the biggest untouched first. Say the word if you want me to swing away from the camera for a few.
