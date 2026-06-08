@@ -3936,3 +3936,23 @@ Research dive for the cycle-303 build (extending 287-mirror-choir toward its REA
 Sources: soundverse.ai/blog "AI Music Videos for Meditation and Ambient Music" (2026); isotonikstudios.com "Building an Evolving Ambient World in Live with Manifest Audio Tools."
 
 **Could become a prototype:** an *adult* long-form generative companion to 408 — your **Welcome Home** piano fed through a breath-paced granular bed that slowly transposes/morphs over 10+ minutes and never returns to its opening state (the Eno generative-worldscape lineage, adult version of the breath-garden's accretive memory).
+
+---
+
+## §352 — 2026-06-08 (UTC) · kids DEEP fire (the articulatory copycat-mouth)
+
+**Dive (mandatory 15-min, web tools healthy).** Targeted JURY 2026-06-07 provocation **#6** ("a *kids* listening/analysis toy — a child sings, the machine shows what it heard — would break both macro-ruts in one fire") crossed with #1 (force off the WebGL2 rut → SVG) and #2 (foreign tonal, not D-Dorian).
+
+**Genuinely-on-technique hits:**
+- **AURORA — Formant-to-Tongue Inversion** (arXiv:2603.17543, **March 2026**): a real-time biofeedback model that maps a sung vowel's formants to a *predicted tongue/articulator shape*, plus the stylized spectrum. The paper's design lesson: raw formant numbers are too abstract — show a friendly **proxy** of the articulation. The lab's `393-kids-vowel-color` (very recent) cited this but took the proxy to be a flat **screen color**, and — critically — used crude **FFT peak-picking**, whose own README concedes it is *unreliable for children's high voices* (wide harmonic spacing makes the "formant" peak land on whichever harmonic happens to fall in-band) and that **LPC or the cepstral/HPS method** is the real fix.
+- **V(is)owel / vowel-chart visual-pronunciation tooling** (arXiv:2507.06202) + the open-source *formant_app* LPC-analysis web app + sung-vowel **FOF (formant-wave-function) synthesis** (Faust-style, real-time): confirm a live 2025–26 ecosystem around *real-time formant biofeedback that shows the mouth, not a number*.
+
+**Why it's surprising / the opening:** the lab has a vowel toy already (393) — but nobody built the AURORA idea *literally*: a creature that **physically copies your mouth/tongue shape** (articulatory inversion), and nobody used **real LPC or cepstral formant tracking** (the exact upgrade 393 said it lacked, and needs *precisely for the 4-year-olds this lab targets*). "Show what it heard" becomes a moving mouth, not a color wash — far more legible for a child (copycat is a game they already know). This is a kids *listening/analysis* toy (breaks the kids emergence-sim reflex), on **mic-voice** input (breaks the touch reflex), **SVG/Canvas2D** output (off the banned WebGL2/three.js rut), in **foreign tonal** sing-back (JI / slendro / whole-tone, not D-Dorian).
+
+**Honest freshness note (#5):** AURORA is **~3 months** old (March 2026), not <30-day, and 393 already name-dropped it — so I am **not** claiming #5. The dive's value is that it *sharpened* an existing reference into a genuinely different, lab-first build (LPC/cepstral formant tracking + articulatory-inversion rendering) rather than re-discovering it. Floor is cleared by **#1 + #2 + #3** (see STATE §352).
+
+**Chain research → build = path (a):** the dive's "AURORA tongue-inversion, done literally, with real LPC" hook → a DEEP 3-approach fire (`411-kids-copycat-mouth` SVG/LPC/JI · `412-kids-vowel-puppet` Canvas2D/cepstral/slendro · `413-kids-mouth-mirror` SVG side-view tongue/LPC/whole-tone).
+
+Sources: arxiv.org/abs/2603.17543 (AURORA, Mar 2026); arxiv.org/abs/2507.06202 (V(is)owel); musicalboard.com/blog/2026-05-05-pitch-detection (browser pitch/formant DSP, May 2026).
+
+**Could become a prototype:** the *adult* counterpart — a real-time **FOF sung-vowel synthesizer** driven by Karel's *Welcome Home* vocal/piano partials, or a singer's-formant biofeedback piece for an adult vocalist (the clinical/instructional lane the jury keeps asking the lab to feed).
