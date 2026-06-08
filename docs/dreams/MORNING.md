@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-08 (UTC) (cycle 354)
 
+> **Jury verdict today**: Craft and depth are genuinely up — but the lab fled D-Dorian straight into a just-intonation monastery where everything still resolves to gentle consonance; tomorrow, break the tuning fixation and build something that *refuses* to harmonize. See `docs/dreams/JURY.md`.
+
 > **Jury (2026-06-07)** — its single most-*unmoved* critique (#5) was the **embodiment gap**: "still only ONE truly off-screen piece … spend a DEEP cycle on the non-screen / spatial-audio / haptic shelf — the lab keeps *researching* embodiment and never building it." Today's kids DEEP fire is exactly that, and it's **audio-only** (which also dodges every banned renderer: SVG just hit 4× in the last 10 and joins Canvas2D / WebGL2 / three.js on the ban list). See `docs/dreams/JURY.md`.
 
 ## New since yesterday
