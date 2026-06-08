@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-06-08 (UTC) (cycle 356)
+# Morning digest — last updated 2026-06-08 (UTC) (cycle 357)
 
-> **Still acting on the jury verdict** ("break the tuning fixation; build something that *refuses* to harmonize"). This kids fire answers two mandates at once — **#1 "rhythm/noise, not tuning"** and **#6 "the camera/MediaPipe body room is the biggest untouched first."** I went **DEEP** (3 approaches to one concept) and shipped the most kid-legible. See `docs/dreams/JURY.md`.
+> **Still on the jury verdict** ("build something that *refuses* to harmonize"). This adult fire is the most pointed answer yet: I took the lab's own warm, consonant register and **denied it any resolution.** Went **WIDE** (3 unrelated abrasive directions, one per clean renderer) and shipped the one that lands hardest. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **`/dream/419-kids-body-band` — Body Band 🥁** (kids 4+). *Open it, tap **Start the band**, and dance — or just watch.* **Your whole body plays a live drum kit through the camera:** hand up → tom, other hand up → snare, both arms thrown wide → crash, knee-lift/drop → kick, head-bob → hi-hat. A groove engine **quantizes every move onto a steady beat**, so even a flailing toddler sounds musical. It's **pure percussion — no melody, no tuning, just rhythm** (the jury's "refuse to harmonize," for kids), and it's the lab's **first body-tracking piece that makes a BEAT instead of a chord** (every prior pose piece made harmony). If the camera's denied, a friendly **ghost dancer** plays the kit hands-free in ~2s, so it demos on your phone untouched. Sits right in your **loved camera-kids lineage** (`101`❤️ `104`❤️ `217`❤️ `234`❤️).
+- **`/dream/422-shatter-piano` — Shatter 🩻** (adult). *Tap **Shatter it** and listen for ~10 seconds.* A gentle piano phrase plays once clean — voiced to *want* to land on C4 — and then a **granular spectral-freeze** engine shreds it: grains scatter, detune, reverse, and **freeze on the almost-cadence so it hangs forever without arriving.** It's the lab's deliberate Ikeda/Akten counter-piece — where Conchordal blooms into consonance and the cradle hums you to sleep, this keeps the warm material and *refuses to let it close.* Rendered as a pure **DOM/CSS** spectral grid (no canvas/SVG — both were over-used, so I banned them this cycle). **You can feed it your own piano:** paste a Welcome-Home recording ID or drop an audio file and it shatters *that* instead.
 
-## Also explored (DEEP fire — 3 approaches, 2 banked in IDEAS §356)
-- **`420-kids-motion-storm`** — same idea with **no ML at all**: raw webcam frame-differencing → motion energy drives the groove. The dependency-free version that builds even if the MediaPipe CDN is down. Banked as the runs-anywhere sibling.
-- **`421-kids-beat-puppet`** — each **limb drives its own continuous percussion layer** (arm = shaker, other arm = conga, legs = kick/hat) — you sculpt an evolving polyrhythm by which parts you move. Banked as the cycle-2 deepening (hits → layers).
+## Also explored (WIDE fire — 3 builds, 2 banked in IDEAS §357)
+- **`420-slime-static`** — a WebGPU compute slime-mold (262k GPU agents) sonified as a roaring, never-settling wall of noise. The biggest technical swing.
+- **`421-solar-drone`** — the **live solar wind** hitting Earth's magnetosphere (real NOAA data) as an eyes-closed drone that, because the data never repeats, can't resolve. The natural cycle-2 to `418-seismic-pulse` (earth tremor + sky weather).
 
-## Research finding worth a look
-- Anchor: **"Dance Motion-Guided Music Generation via RVQ,"** *Electronics* May 2026 — academics now generate music *from* dance motion (the inverse of the usual pipeline). That's what flipped the concept: the lab had mapped the body to harmony five times and never to **rhythm**. RESEARCH §356.
+## Research finding / correction worth a look
+- **I corrected a false "first."** The jury and my own notes kept calling **WebGPU compute "the biggest unclaimed first" — it isn't.** It already shipped in `16-particle-life-gpu`, `55-webgpu-audio-fx`, and `130-tsl-particle-compute`❤️ (the jury only audited the last 15 cycles). Logged in RESEARCH §357 so we stop deferring a first that was claimed ~300 cycles ago.
+- Fresh anchor: **NOAA's real-time solar-wind feed is swapping satellites this month** (legacy retiring ~30 June, moving to NASA's IMAP I-ALiRT) — that's what fed the solar-drone sibling.
 
 ## Open questions for Karel
-- **Does a 4-year-old read "dance → drums"?** The gesture thresholds are first-guess (build-verified, not browser-verified) — worth 20 sec of flailing in front of the camera to tell me if "hand up = drum" lands or needs loosening.
-- **Still need your review-browser answer** (phone or desktop) — it gates whether I finally ship the **WebGPU storm** next adult cycle (it's the biggest unclaimed technical "first" but only shines on desktop WebGPU).
-- **Pure-percussion register for kids** — is energetic/noisy the right counter to the calm-consonant rut, or do you want the kids lane kept gentle and the "weird" reserved for the adult cycles?
+- **Is "refuses to resolve" landing, or too far?** 422 is intentionally unresolved/abrasive-but-poetic. Tell me if this is the counter-register you wanted, or if I've over-corrected away from the warmth.
+- **Want me to shatter your actual *Welcome Home* piano?** The door's already there (paste an ID / drop a file) — give me a known-good recording ID and the default becomes your music being denied its cadence.
+- **Still need your review-browser answer** (phone or desktop): it gates whether the banked WebGPU slime piece (`420`) is worth shipping, since its GPU path only shines on a WebGPU-capable browser.
