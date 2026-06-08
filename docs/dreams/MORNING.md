@@ -1,21 +1,20 @@
-# Morning digest — last updated 2026-06-08 (UTC) (cycle 350)
+# Morning digest — last updated 2026-06-08 (UTC) (cycle 351)
 
-> **Jury (2026-06-07)** banned: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed; and pushed hardest on its #3: **"stop satisfying the floor with the two cheapest criteria — stack #4 multi-cycle / long-form."** Today's kids DEEP fire is built to answer that. See `docs/dreams/JURY.md`.
+> **Jury (2026-06-07)** banned: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed; pushed hardest on #3: **"deepen, don't defer — stack #4 multi-cycle + #5 recent research."** Today's adult DEEP fire answers that, and this cycle's diversity audit also flagged **Canvas2D as newly over-represented (≥4× in the last 10)** — so it shipped to **SVG**. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **[/dream/408-kids-breath-grove](https://getresonance.vercel.app/dream/408-kids-breath-grove)** — *Breath Grove.* The lab's **first long-form, stateful kids piece**: breathe slowly and a glowing tree grows branch-by-branch over a few minutes. It **remembers every breath** — so when the grove is full you can tap **replay** and watch its whole growth history race by in seconds. **Why open it:** just wait — it auto-demos hands-free and reaches the full violet-moon-and-fireflies grove in ~48s, then the timelapse unlocks. The drone is a **pelog** inharmonic bed that thickens voice-by-voice as the grove grows (deliberately *not* D-Dorian).
-- *2 more explored this fire* (DEEP — one concept, *breathing grows a night-garden that remembers every breath*, via 3 different renderers) — banked in IDEAS §350: **407-kids-breath-garden** (the canonical inline-**SVG** meadow: grass → flowers → fireflies → moon, the most legible bedtime imagery) and **409-kids-breath-tidepool** (a pure **DOM/CSS** bioluminescent reef — extreme renderer diversity).
+- **[/dream/410-conchordal-garden](https://getresonance.vercel.app/dream/410-conchordal-garden)** — *Conchordal Garden.* The lab's **first artificial-life audio piece** — a chord that's *alive*. ~24 sound-organisms drift through pitch space hunting consonance: the ones that find it **bloom and grow loud**, the ones that clash **wilt and die**, and a self-composing just-intonation-like harmony **emerges with no scale ever specified** — genuinely different at minute 5 than minute 0. **Why open it:** tap **Start Garden** and just watch/listen — it plays itself; scattered dissonant chaos slowly settles into a breathing, beating-free chord (the mean-consonance bar climbs as it self-organizes). Built on a real **Plomp–Levelt roughness** fitness landscape + **Kuramoto** phase coupling, straight from a March-2026 paper.
+- *2 more explored this fire* (DEEP — one concept, *a chord that is alive foraging a psychoacoustic landscape*, via 3 renderers) — banked in IDEAS §351: **409-conchordal-field** (the same engine as a **Canvas2D dissonance heatmap** — agents settle into glowing consonance *valleys*; the most faithful to the paper, runner-up) and **411-conchordal-spiral** (a **log-spiral** where emergent pure fifths/thirds snap into color-coded geometric constellations).
 
 ## In progress / partial
-- **Long-form-stateful is now a live kids thread.** 408 finally ships the breath-garden idea banked since cycle 348. Next kids cycle: ship 407 (the calm SVG companion) or fold the timelapse into it.
-- Adaptive-JI thread (404) cycle-2 still queued — a long-form adult JI drone, ideally with your **Welcome Home** piano.
+- **The JI/roughness thread is now 2 cycles deep:** 404 (adaptive JI / comma-pump) → today's emergent a-life harmony. Cycle 3 hook: make the organisms sing **your Welcome Home piano** — seed the population from a real track's partials and let them forage into emergent consonance around your harmony.
 - Spatial thread (394→400) cycle 3 still queued: your Welcome Home tracks as the sources you walk through.
+- Accompanist thread (380/391, the lab's only 4/5) stays parked until a fire where WebGL2/MIDI/D-Dorian aren't jury-banned.
 
 ## Research findings worth a look
-- The build leans on **L-systems** (Lindenmayer recursive branching) for the grove and **pelog** gamelan tuning for the inharmonic bed — and the "state, memory, evolution, not loops" form the menu was thin on.
-- Honest note: the "<30-day research" mandate missed again (the dive found the live 2026 generative-ambient + guided-breathing wave as context, but no dated buildable technique anchor). The jury flagged this repeatedly — its #4 reword may be worth doing.
+- **Conchordal (arXiv:2603.25637, 26 Mar 2026)** — artificial-life agents foraging a roughness+harmonicity "consonance field" with no scale presupposed. The freshest, most on-technique research anchor in ~9 dives (honest caveat: ~74 days, so *borderline* on the strict <30-day rule, not a clean pass). It's also the cleanest **adult emergence-sim** — the lab's emergence sims had all been *kids* toys until now.
 
 ## Open questions for Karel
-- 408's payoff is the **timelapse replay**. Want it to auto-fire once at Stage 4, or stay a button the child taps?
-- Three breath-garden renderers now exist as builds (Canvas2D grove shipped, SVG meadow + CSS reef banked). Want all three live as a "same idea, three skins" set, or keep one canonical?
-- Foreign-tonal worlds still untried for kids: raga, octatonic, spectral. Any you'd most like to hear next?
+- Should the next a-life cycle pull in your **Welcome Home** piano as the organisms' seed pitches? (That's the standing "use your real music" directive + the cycle-3 deepening in one.)
+- The two banked siblings suggest a "best-of-both": fold 409's dissonance-**heatmap background** into the garden as an optional "show the landscape" overlay. Worth it, or keep the garden clean?
+- **Canvas2D is now the over-represented renderer** (the new WebGL2). Next few pieces will favor SVG / DOM-CSS / audio-only / WebGPU — any renderer you especially want to see?
