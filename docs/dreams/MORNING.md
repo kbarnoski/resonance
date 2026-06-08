@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-08 (UTC) (cycle 352)
+# Morning digest — last updated 2026-06-08 (UTC) (cycle 353)
 
-> **Jury (2026-06-07)** banned: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed; pushed **#6: "a kids listening/analysis toy — a child sings, the machine shows what it heard — breaks both macro-ruts."** Today's kids DEEP fire is exactly that, on **SVG** (also dodging the newly over-represented Canvas2D). See `docs/dreams/JURY.md`.
+> **Jury (2026-06-07)** banned: raw-WebGL2 + three.js OUTPUT · MIDI/keyboard + touch/tap INPUT · the D-Dorian bed. Its loudest call (#3): *"deepen, don't defer — stack the EXPENSIVE criteria #4 multi-cycle + #5 recent research; extend a thread, not a fresh explorer."* Today's adult DEEP fire does exactly that — **cycle 3** of the a-life/JI thread, on **SVG** (dodges the banned GPU renderers *and* the now-over-represented Canvas2D). See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **`/dream/413-kids-mouth-mirror` — The Magic X-Ray Mouth Mirror 👄** (kids 4+). *Open this:* sing a vowel and **see inside the mouth** — a side-view cartoon head whose tongue, jaw, and lips physically move to the shape your voice implies (`aaah` drops the jaw + flattens the tongue; `eee` raises + fronts it; `ooo` purses the lips), then it sings your vowel back in a dreamy **whole-tone** voice. The lab's **first articulatory-inversion toy** and **first real LPC formant tracking** — it answers jury #6 ("a kid sings, the machine shows what it heard") and fixes the exact gap `393-kids-vowel-color` flagged (FFT peak-picking is unreliable for children's high voices; LPC isn't). No mic? A hands-free demo cycles all five vowels in ~3s.
+- **`/dream/414-conchordal-listen` — Conchordal Listen 🎼** (adult). *Open this:* tap **▶ Self-play demo** and watch a **living chord LISTEN** — a gentle piano phrase plays, amber "sunlight wells" bloom at the pitches it hears, and 30-odd microtonal flower-organisms drift toward them, assembling a **pure-intonation harmony around what it heard** — no scale ever specified. It plays itself hands-free, so you can just watch it self-organize. Then tap **🎹 Play piano** to feed your live mic, or **paste a Welcome Home recording ID** to grow the harmony around your *own* piano. This is **cycle 3** of the thread that runs 404 (adaptive JI) → 410 (emergent JI in a vacuum) → **414 (emergent JI that listens)** — and it finally wires in your **real-music directive**.
 
-## Also explored (DEEP fire — one concept, 3 attacks; 2 banked in IDEAS §352)
-- `411-kids-copycat-mouth` — front-facing SVG clay creature that copies your face, just-intonation. The **warmest/most kid-delightful** sibling.
-- `412-kids-vowel-puppet` — Canvas2D gooey clay puppet, **cepstral** formants (a different DSP path than LPC), gamelan slendro. The technique A/B.
+## Also explored (DEEP fire — one concept, 3 renderer attacks; 2 banked in IDEAS §353)
+- `415-conchordal-orbit` — the same listening engine on an **SVG log-spiral** (one turn = an octave) so emergent pure intervals snap into recurring **geometric constellations**. The most *surprising* viz; strong cycle-4 candidate.
+- `416-conchordal-aura` — the same engine in **pure DOM/CSS** glow-blobs (no canvas, no SVG) — the renderer-diversity wildcard. The lab's flagship CSS-only piece if revived.
 
 ## Research finding worth a look
-- **AURORA formant-to-tongue inversion** (arXiv:2603.17543, Mar 2026): map a sung vowel's formants → a predicted tongue shape. This cycle does it *literally* — you see the tongue, not a color. Full note in RESEARCH §352.
+- **Browser pitch detection in 2026** (musicalboard.com, 2026-05-05): MPM/YIN over raw autocorrelation, on an AudioWorklet/WASM thread — but it's honest that *polyphonic piano transcription is unsolved in-browser*. That reshaped 414: don't transcribe, just forage around **FFT spectral peaks + one MPM fundamental**. Full note in RESEARCH §353.
 
 ## Open questions for Karel
-- **413 is build-verified, not browser-verified** — the central bet is whether LPC tracks a *real* 4-year-old's voice on the F1/F2 bands. Worth a 30-sec mic test on your phone. Does the moving tongue read as **delightful or clinical** to you?
-- **Freshness mandate (#5) honestly not claimed for ~9 dives** — AURORA was the closest anchor but is ~3 months old + already cited by 393. The jury said re-source or reword #5; want me to pick one?
-- Next adult cycle (353) is queued to **deepen 410 with your *Welcome Home* piano as the living organisms' source** — green light?
+- **414 is build-verified, not browser-verified.** The central bet: do the heard-pitch wells *perceptibly* pull the chord into "harmony around your playing" within the first minute? Worth a 30-sec mic test on your phone.
+- **The `/api/audio/{id}` door is unverified here** (no audio in the sandbox). If you paste a real Welcome Home recording ID, does it load + grow the garden? If you tell me a known-good ID I can harden that path next cycle.
+- **Freshness #5 borderline again** (~10 dives). The jury asked me to either re-source #5 (fal.ai / replicate / TouchDesigner feeds) or formally reword it. Want me to pick one?
