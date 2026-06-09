@@ -1,22 +1,18 @@
-# Morning digest — last updated 2026-06-09 (UTC) · cycle 369
+# Morning digest — last updated 2026-06-09 (UTC) · cycle 370
 
-> **Kept the spine alive — and climbed back to 4/5.** The jury said ambition collapsed (zero pieces at 4–5/5, down from seven) and that every spine the lab started died fast. This cycle takes the Latent Piano Room spine to **cycle 2** and ships a piece that clears **4/5** — the regression fix, executed.
+> **The lab's first ferrofluid — a magnet that makes the pool sing.** After three deep cycles on the piano spine, this one goes *wide and weird* (the jury's standing ask): three unrelated fresh kids registers in one fire, none a re-tread. The winner is a grep-clean lab-first.
 
 ## New since yesterday
-- **`454-piano-caption-loom`** ([open](https://getresonance.vercel.app/dream/454-piano-caption-loom)) — *Watch a council of agents **critique and rewrite**, in real time, the caption a latent image is dreamed from — driven by your actual recorded piano.* **Why open it:** it's the spine's cycle 2. Cycle 1 (`448`) wrote the image prompt in one shot; this one runs a **3-round refinement loom** — proposers draft a caption, a **Critic** scores it against the music's emotion (valence × arousal) and pushes back ("palette too cool for this warm phrase"), the agents revise, and you **see the words change and the confidence rise** before the image regenerates. Warm, expressive, resolves on purpose — the "missing middle" you asked for. Loads your Ghost recording by default (or drop a *Welcome Home* track; warm synth fallback if it can't load — never silent). No FAL key here → a synthesized plasma field stands in and the loom still runs in full.
+- **`456-kids-ferro-magnet`** ([open](https://getresonance.vercel.app/dream/456-kids-ferro-magnet)) — *Tilt the tablet to drag a glowing magnet under a pool of black ferrofluid — and it rises into living **spikes** that reach toward the magnet and chime when they brush the rim-bells.* **Why open it:** it's the lab's **first ferrofluid** in 350+ prototypes — the iconic spiky Rosensweig look, turned into a gentle singing toy a 4-year-old runs by tilting. WebGL2 SDF + smooth-min metaballs for the gooey membrane, a hex ripple for the spike array, warm just-intonation bells. Leave it alone and the magnet drifts a figure-8 so it's alive hands-free. **It climbs off the floor the jury flagged** — ambition 3/5 on a real lab-first technique, not the "clear the two cheapest criteria and stop" pattern.
 
-## Why it clears 4/5 (the regression fix the jury demanded)
-- **#1** lab-first technique (first iterative **self-critiquing prompt refinement** — a Critic agent that triggers a revise loop) · **#2** 6 subsystems · **#3** named refs (T2I-Copilot / ImAgent / arXiv 2512.23320 / Russell 1980 / Anadol / Akten) · **#4** **cycle 2 of the Latent Piano Room spine** — the multi-cycle axis the jury said died at 414, now past the cycle-1 death that killed the last one.
-- Dodges all four new bans: AI-image (canvas only composites, not Canvas2D-as-piece — the lineage you named the bright spot) · no drum-machine · warm/resolving (not refuse-to-resolve) · not the kids template. Rides loved `441` + `323-latent-condensation`❤️.
+## Explored but not shipped (IDEAS §370) — both strong, near-ship
+- **`455-kids-sing-cymatics`** — *Sing a note and watch ~12k glowing grains migrate into that pitch's **Chladni figure**, then the plate sings back.* The app's namesake, made playable by a child's voice — the most "Resonance-shaped" idea here. Lost only because cymatics already exists at `165` (so it's 2/5) and child-voice + 12k CPU grains is the least-certain bet. The prime embodied-voice resurrect.
+- **`457-kids-pendulum-wave`** — *Pull back 15 glowing pendulums and let go → a hypnotic traveling wave that re-converges into a resolving arpeggio.* Grep-clean lab-first, the safest fully-autonomous read. Lost only because a pendulum wave is a *known classic* (less "huh, didn't know we could do that" than a singing ferrofluid).
 
-## Explored but not shipped (IDEAS §369)
-- `452-piano-agent-council` — the **visible one-shot council** + a Russell circumplex dial. The most legible read and the most on-brand for your agentic-design work; the prime **cycle-3 viz layer** to fold onto the loom.
-- `453-piano-affect-atlas` — the music's emotion as a glowing **comet** tracing the valence-arousal plane; image = the "view from" that coordinate. (Its builder left the README empty — fix-first on revival.)
-
-## Research worth a look (RESEARCH §369)
-- Agentic text-to-image is converging on **propose→critique→refine** loops (T2I-Copilot, ImAgent), not one-shot prompting — exactly the mechanic `454` makes visible. The reverse direction (*Art2Mus*, image→music) is the spine's cycle-3 candidate: let the dreamed image **re-compose** the piano, not just filter it.
+## Why WIDE this cycle (the jury's "go weird")
+- 367/368/369 were all DEEP on the piano spine. The 2026-06-09 jury said the lab "learned to go deep and forgot how to go *weird*" and split into monocultures. So: three genuinely-unrelated fresh registers, each dodging all four new bans (Canvas2D · drum-machine · refuse-to-resolve · pentatonic-lullaby) **and** the over-leaned touch input. The dive (GPU "material" sims) mostly *killed* re-treads via grep — fluid, falling-sand, Lenia, soft-body, even cymatics all already exist — and surfaced ferrofluid + pendulum-wave as clean firsts.
 
 ## Open questions for Karel
-- Build-verified, not browser-verified (no FAL key / audio / GPU here). On your machine: does the **Critic actually fire** on real expressive piano so the caption visibly improves — or does the draft trivially pass round 0? And does ~1 image per phrase read as "painting the music"?
-- The spine still wants a real **Welcome Home** track ID — paste one and `448`/`454` run on the album instead of the Ghost recording.
-- Keep going? Cycle-3 plan: close the loop (image re-composes the piano) and/or fold the `452` agent-council HUD onto the loom. **Don't let this spine die at cycle 2 like the last one died at 1.**
+- Build-verified, not browser-verified (no GPU/sensor here). On your tablet: does the ferrofluid read as a convincing **spiking fluid** vs. generic blobs (the Rosensweig is an honest *approximation*, not a full energy-minimization), and does tilt-steering *feel* good?
+- Which banked sibling next (cycle 372)? **Sing-cymatics** (the namesake, embodied voice) or **pendulum-wave** (the safe lab-first)?
+- Cycle 371 is adult — I'll keep the **piano spine alive at cycle 3** (let the dreamed image re-compose the piano, not just filter it). Still want a real **Welcome Home** track ID whenever you have one.
