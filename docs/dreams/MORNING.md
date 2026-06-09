@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-09 06:35 UTC
+# Morning digest — last updated 2026-06-09 08:35 UTC
 
 ## New since yesterday
-- **`437-wiki-pulse`** ([/dream/437-wiki-pulse](https://getresonance.vercel.app/dream/437-wiki-pulse)) — **what the whole planet's live editing of human knowledge sounds like, right now.** Tap once: it connects to the **live Wikimedia edit firehose** (SSE) and sonifies every real edit as it happens — **bots = cold dry clicks, humans = warm plucks** (additions glide up, removals fall), over a clinical three.js glowing-point field (X = language, Y = byte delta). An aperiodic human tide with no chord, no arc — it **refuses to resolve**. Why open it: it's the lab's **first live human-activity sonification**, and the bot/human layer is audible. *(If your network blocks the feed it auto-falls-back to a realistic demo stream — the status line, bottom-left, tells you honestly which you're hearing.)*
-- This was a **WIDE** adult fire — **3 explorers built, strongest shipped.** All three deliberately *refuse to resolve* via three different inputs (live-data / camera-motion / no-input feedback) — the direct answer to the jury's "the lab forgot how to go weird."
+- **`440-kids-comet-gather`** ([/dream/440-kids-comet-gather](https://getresonance.vercel.app/dream/440-kids-comet-gather)) — **hold your phone up like a window and turn/sweep it to look around a 3D night sky.** Sweep the soft reticle over a drifting glowing mote and you *scoop it up* into your own growing **constellation** — and each mote you gather adds a voice to a **lullaby that slowly evolves** (the root drifts, a filter breathes, voices get busier; it's different at minute 5 than minute 0, then fades to "goodnight" around minute 12). **For kids 4+, no tapping, no reading** — the instrument is *moving the phone through space*. Why open it: it's the lab's **first gyro "magic-window" first-person kids piece** and its **first long-form evolving kids lullaby** — turn your phone in bed and it just works (or watch the hands-free auto-demo build the constellation itself).
+- This was a **DEEP** kids fire — **3 explorers built one concept three ways, strongest shipped.** Deliberately rests **touch** (over-used lately) and the camera-body kids lane, using the **gyroscope** instead — embodied, and reads instantly on a phone.
 
 ## In progress / partial
 - Nothing mid-thread. Two strong banked siblings from tonight (below).
 
 ## Research findings worth a look
-- **RESEARCH §363**: anchored on **Ryoji Ikeda *data-cosm [n°1]*** (180 Studios, on view through Feb 2026 — "data from nature, particle physics to astrophysics") + the never-touched **Wikimedia `recentchange` SSE** firehose (key-less, CORS-open, bots-vs-humans audibly distinct). The chain research→build is visible: that dive became tonight's `437`.
+- **RESEARCH §364**: the "magic-window" gyro-stargazer interaction is freshly first-class again (W3C **Gyroscope spec** Candidate Recommendation Draft, Feb 2026; 3-DoF head-tracked spatial audio now mainstream). Honest: that anchor is ~4 months old, not <14 days — so it grounded the *interaction* but didn't drive a new technique. The grep audit also killed a "musical sand" idea pre-build (`360-kids-sand-choir` already does it).
 
-## Banked tonight (IDEAS §363 — worth a look / resurrect)
-- **`436-flow-static`** — point the camera at anything; raw **motion energy** (frame-difference, *not* a body/face model) → abrasive Ikeda data-noise + WebGL2. A genuinely different camera lane from our MediaPipe pieces.
-- **`438-no-input`** — a **no-input feedback instrument** (Nakamura/Tudor lineage): zero source audio, a feedback loop self-oscillates on the edge of howl, you sculpt it. A brand-new input category for the lab — needs an AudioWorklet port before it ships.
+## Banked tonight (IDEAS §364 — worth a look / resurrect)
+- **`438-kids-star-window`** — the *immediate* version: turn the phone, **sweep past a star and it sings** (no scoop, no dwell — pure instant cause-effect, best for the youngest). three.js, quaternion-smooth gyro.
+- **`439-kids-star-night`** — the same idea on a **raw-WebGL2** glowing point-field — a moodier, more atmospheric night.
 
 ## Open questions for Karel
-1. Does the **live** Wikimedia feed actually connect for you, or do you only see the **demo** stream? (Status line, bottom-left — "live" vs "demo." Genuinely want to know which you get.)
-2. The jury says the deep rut is *consonant/resolving* — `437` answers that for the adult side. Want the **kids** side pushed the same way (more rhythm/noise, less calm tuning)?
-3. Two banked abrasive directions (camera-motion-noise, no-input feedback) — worth a build cycle, or keep mining live-data?
+1. On your phone, does the **gyro look-around** feel good (smooth, correct direction), or fiddly? The 0.9s "hold to scoop" dwell — too slow or just right for a 4-year-old?
+2. Headphones not required (I used stereo panning, not HRTF, so it works on phone speakers) — does the spatial "sound comes from where the star sits" effect land for you?
+3. You asked for **massively bigger concepts** — `440` reaches for that (3D + look-around + a piece that *evolves over minutes*). Right direction for kids, or do you want the simpler immediate `438` shipped too?

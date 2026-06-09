@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §364 — 2026-06-09 (UTC) · cycle 364 dive (15-min, mandatory) — kids, DEEP; the dive grounded a fresh-for-the-lab INTERACTION (gyro "magic window") + confirmed the diversity escape route (touch is over-represented → go device-orientation)
+
+**Method:** WebSearch across device-orientation/gyro web interaction + recent spatial-audio/head-tracking work, plus the standing grep discipline against INDEX/README to verify lab-firsts before spending builders.
+
+1. **Surprising-enough current anchor: the "magic window" gyro-stargazer interaction is freshly first-class on the web again.** The **W3C Gyroscope spec reached Candidate Recommendation Draft on 2026-02-02**, and **3-DoF head-tracked spatial audio** (gyroscope-equipped earbuds) has gone fully mainstream — the established stargazer pattern is "hold the device up / tilt it toward the ceiling and look around a 3D sky." Honest dating: the hard spec anchor is **Feb 2026 (~4 months)**, NOT <14 days, so this dive does **not** earn ambition #5 — its value is design-grounding, not a buildable <30d paper (the recurring §327/§361/§363 reality: the freshest hard finds are hosted-model/heavy and not client-buildable in-sandbox).
+2. **The grep audit (the real gate) reshaped the cycle's diversity escape.** The last-10 audit showed **touch INPUT at 4× (433/432/429/426) → count-banned**, on top of the jury's standing **mic** ban; and the **camera-body kids lane is becoming its own rut** (`419` pose / `423` face / `234` hand). That forces a non-touch, non-mic, non-camera-body input — and **device-orientation** (gyro) is exactly that: clean (1× recent, `417`), embodied (KIDS.md's core sensorimotor principle), and reads instantly on Karel's 06:30 phone. Grep also **killed the sand idea before any builder spent a token** — `360-kids-sand-choir` already does falling-sand CA + tilt + sonification (the §357/§359/§362 discipline holds: at 437 prototypes a genuine technique-#1 is rare).
+3. **The fresh moves that survived grep:** the lab has gyro (`238`/`417`/`83`), 3D (`238` tilt-roll marble), and stereo-pan spatial audio (`99`/`238`) — but **no first-person look-around "magic window"** and **no long-form *evolving* generative kids lullaby**. Those two are the honest novelty (application + register, not a new primitive → ambition 2/5, not 3).
+
+**The chain (dive → build).** Dive → "touch is banned, camera-body is a rut, mic is jury-banned → go device-orientation; the magic-window stargazer is a fresh-for-the-lab interaction and reads hands-free on a phone." DEEP fire (alternating off three consecutive WIDE, 361/362/363), one concept — *turn the phone to physically look around a 3D singing night sky* — three technical attacks: `438` three.js aim-to-wake (most kid-legible), `439` raw-WebGL2 atmospheric point-field (renderer attack), `440` three.js sweep-to-**gather** a personal constellation feeding a **long-form evolving lullaby** (the competing-interaction + long-form-generative attack, the explicitly-thin menu slot). Shipped `440` — the biggest concept, the surprise/"go-weird" the jury keeps asking for. `today's research → today's build` is visible.
+
+---
+
 ## §362 — 2026-06-09 (UTC) · cycle 362 dive (15-min, mandatory) — kids, WIDE; the dive's value was a grep audit that killed THREE headline #1 claims and reframed the cycle around REGISTER breadth (the jury's actual ask) rather than a new primitive
 
 **Method:** WebSearch across cs.SD-recent + WebRTC/collaborative-audio + creative-coding, then a grep pass over `src/app/dream/**` to verify lab-firsts before spending builders.
