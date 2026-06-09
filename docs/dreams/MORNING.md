@@ -1,20 +1,22 @@
-# Morning digest — last updated 2026-06-09 (UTC, cycle 367)
+# Morning digest — last updated 2026-06-09 (UTC) · cycle 368
 
-> **Did the jury's #1 ask tonight.** You asked (provocation #2) to make loved `441` a multi-cycle spine running its audio→image→audio loop on your **real piano** — and to build the **warm, structured, resolves-on-purpose** middle (#1) on **real music** after 15 synth/mic/data cycles (#5). This cycle does all three in one ship.
+> **Built the kids half of the jury's #1 ask.** The jury said the bans split the lab into a **cold-adult / sweet-kids binary** and that ambition collapsed (zero pieces at 4–5/5). This kids cycle ships the **loud, fast, playfully chaotic** piece the kids lane was missing — and clears **4/5** by restarting a multi-cycle spine (#4) and binding today's research (#5).
 
 ## New since yesterday
-- **`448-piano-phrase-painter`** ([open](https://getresonance.vercel.app/dream/448-piano-phrase-painter)) — **your actual recorded piano paints itself — and it listens like a musician, not a spectrum analyzer.** Press Begin: your **Ghost-journey recording** loads (or **drop any Welcome Home track**). As it plays, it finds the **note attacks** (spectral-flux onset detection), the **breaths between phrases**, the **harmony** (chromagram → major/minor/consonance) and the **dynamics** — and dreams a new image **at the musical moments** (phrase ends, onset clusters), not on a timer. The prompt comes from the *music*: bright major → warm gold, deep minor → indigo, loud → turbulence. The returning image's color then **bends your piano back** — brighter opens the filter + shimmer, warmer lengthens the reverb — and each onset blooms in sync. **Why open it:** it's the **warm, resolving, real-music middle** you asked for, it runs on *your* playing, and it rides loved `441` + `323-latent-condensation`❤️. *(Logged-in + the FAL key = your piano dreaming live. No login/key = a warm synth stand-in that resolves on purpose + a synthesized latent field, so it's never blank.)*
-- This was a **DEEP** adult fire — **one concept** (*a latent room that dreams your real piano*) attacked **3 ways**; the **musically-aware** one shipped. Cleared the floor at **3/5** — including **#4 multi-cycle commitment**, the axis that had been **dead since cycle 414** (the jury's biggest flag). **2 more explored — see IDEAS §367.**
+- **`451-kids-jelly-storm`** ([open](https://getresonance.vercel.app/dream/451-kids-jelly-storm)) — *Tap, drag, and **SHAKE** to make squishy jelly creatures RAIN — the more chaos, the louder and more triumphant the music climbs, then it lands on a big happy chord when it settles.* **Why open it:** it's the **missing kids middle** — not a 5th calm-pentatonic lullaby but energetic, joyful, and it **resolves on purpose**. Real **soft-body physics** (Position-Based Dynamics): the jelly genuinely squishes, and that squish drives both the glow and the sound. A bright "MORE!" energy bar makes the build-and-resolve arc legible to a 4-year-old. Best on a phone/tablet (shake-to-rain); plays itself hands-free after ~3s.
+- This was a **DEEP** kids fire — **one concept** (*a soft-body jelly playground that escalates and resolves*) attacked **3 ways** (PBD / Verlet mass-spring / metaball-SDF goo); the PBD one shipped.
 
-## The spine (this is now a multi-cycle thread — IDEAS.md "SPINE: The Latent Piano Room")
-- **Cycle 1 (tonight):** `448` — music drives the image, image bends the music.
-- **Cycle 2 (next adult cycle):** a small **multi-agent music→caption refinement** (scene + color + style agents cooperate on the prompt — from tonight's research, arXiv 2512.23320; it mirrors how this lab itself runs).
-- **Cycle 3:** let the dreamed image **re-compose** the piano, not just filter it (the banked `449` granular take below).
+## Why it clears 4/5 (the regression fix the jury demanded)
+- **#2** ≥3 subsystems (PBD solver · energy-driven music engine · WebGL render · multi-touch · shake) · **#3** named ref (Müller *Position Based Dynamics* 2007) · **#4** cycle 1 of a new multi-cycle **"Squish" spine** (the axis dead since 414) · **#5** today's research *binds* the build.
+- Dodges all four new bans: WebGL (not Canvas2D) · pitched melodic G-major (not drum-machine) · joyful/resolving (not refuse-to-resolve, not pentatonic-lullaby). Pulled by your loves of `169-kids-marble-run`❤️ + `234-kids-hand-creature`❤️.
 
-## Banked tonight (IDEAS §367 — both build-reviewed, ~ready)
-- **`447-piano-latent-room`** — the **faithful** `441`-loop on your real recording; the safest, most reliable read and the cleanest spine base.
-- **`449-piano-latent-grains`** — the **aggressive** take: the dreamed image **re-composes your piano as granular re-synthesis** (bright/busy image → shimmering detuned cloud; dark/calm → settles back). The strongest cycle-3 candidate.
+## Explored but not shipped (IDEAS §368)
+- `449-kids-squish-jam` — Verlet mass-spring jelly (cleanest, safest).
+- `450-kids-goo-band` — WebGL2 **metaball-SDF merging goo** (most visually surprising — gooey blobs fuse into chords; strong cycle-2 fold-in candidate).
 
-## Open question for Karel (this unblocks the spine + `424-welcome-erosion`)
-1. **A real Welcome Home track ID.** Tonight defaults to your **Ghost** recording (`549fc519…`, the only concrete ID in the repo); the 13 Welcome Home tracks live in the runtime `journey_paths` table, IDs not in the codebase. **Paste one WH recording ID** and the whole spine runs on the album. (You can also just drag-drop a track file into `448` to try it right now.)
-2. On your machine: does `/api/audio/549fc519…` load your piano into `448` (you're logged in), and does dreaming-on-phrase-boundaries feel like it's *painting the music* — or too eager / too sparse?
+## Research worth a look (RESEARCH §368)
+- Browser **soft-body physics** is a live 2025–26 vein (WebGPU **AVBD** solver / jure/webphysics; Medusae re-featured) — the lab had never shipped a true deformable. 451 realizes it at kids fidelity via PBD.
+
+## Open questions for Karel
+- Build-verified, not browser-verified (no GPU/audio/touch sensor here). On a real tablet: does the squish read as *bouncy* (not jittery) at 36 creatures, and does the energy→arpeggio escalation feel *musical* (not frantic) on phone speakers?
+- Make "Squish" a real spine? Strongest cycle-2: fold 450's gooey **merge→chord** mechanic into 451 (two jellies touching fuse into a louder chord).

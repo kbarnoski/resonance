@@ -4155,3 +4155,18 @@ Sources: arxiv.org/abs/2603.17543 (AURORA, Mar 2026); arxiv.org/abs/2507.06202 (
 - `446-kids-star-swarm` (banked) — **PoseLandmarker** whole-body → ~29k **three.js** singing stars.
 
 **Chain visible:** §366 dive ("MediaPipe→GPU-particle is the live vein; WebGPU & optical-flow are NOT lab-firsts; touch is count-banned so go camera-motion") → DEEP kids fire, 3 camera-motion→GPU-particle attacks → shipped the biggest/most-diverse-renderer/most-surprising (`444`, WebGPU 0× in last-10).
+
+---
+
+## §368 — 2026-06-09 — Browser soft-body physics is having a 2025–26 moment (binds the cycle-368 build)
+
+**Sources:** *Best WebGPU Physics Engines for Developers in 2026* (toolhunter.cc/tools/webphysics) + **jure/webphysics** (github.com/jure/webphysics) — an experimental WebGPU rigid+soft-body engine implementing the **2025 AVBD** (Augmented Vertex Block Descent) solver as a 10-stage GPU pipeline (broad-phase → velocity reconstruction), structured around GPU workloads instead of CPU stepping loops. Cross-checked against **Medusae** (jayweeks.com/medusae) — Ash/Jay Weeks' Three.js+GLSL soft-body jellyfish (particulate.js, ~15k particles / ~18k constraints, fixed-timestep physics + GPU interpolation + audio-reactive shaders), recently re-featured on webgpu.com/showcase/medusae.
+
+**Why it's surprising / why it matters:** the lab has done fluid sims (`84`/`433` Stam), particle life (`236`), and rigid balls (`169-marble-run`❤️) — but **never a true soft-body deformable** where the *squish itself* is the interaction and the sound source. The 2025 AVBD work shows real-time deformables are now a frontier *on the web specifically* (WebGPU), and Medusae proves audio-reactive soft bodies render beautifully in-browser at 60fps. The honest freshness read: AVBD is a 2025 SIGGRAPH-family solver (~within a year, not <14 days), webphysics is listed 2026, Medusae's technique is foundational — so the *bind* is the live 2025–26 trend toward browser deformables, realized at a kids-appropriate fidelity via **Position-Based Dynamics** (Müller 2007, the robust runs-everywhere ancestor of the AVBD family) rather than a full GPU AVBD port.
+
+**Could become a prototype that does X (the hook):** *a soft-body creature playground where flinging and squishing jiggly blobs IS the instrument — physics events drive joyful, resolving music.* Realized this fire as a DEEP 3-engine fan-out:
+- `451-kids-jelly-storm` (SHIPPED) — **PBD** soft bodies + a chaos→escalation→**resolve** music engine (I–IV–V–I in G major), shake-to-rain; the most literal answer to the jury's "loud/fast/chaotic, resolves on purpose" kids ask + the only one binding this research.
+- `449-kids-squish-jam` (banked) — **Verlet mass-spring** rings with a pressure/area squish constraint (Jakobsen GDC 2001), C-major mallets.
+- `450-kids-goo-band` (banked) — **WebGL2 metaball SDF** merging goo (iq `smin`), F-major bells; the gooey-merge visual is the strongest sibling.
+
+**Chain visible:** §368 dive ("browser soft-body is a live 2025–26 vein the lab has never touched; PBD is the kids-appropriate, runs-everywhere realization") → DEEP kids fire, 3 soft-body engines → shipped the one that binds the research AND best answers the jury's missing-kids-middle (`451`, PBD + escalate→resolve, ambition 4/5).
