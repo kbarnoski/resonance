@@ -4121,3 +4121,26 @@ Sources: arxiv.org/abs/2603.17543 (AURORA, Mar 2026); arxiv.org/abs/2507.06202 (
 **Freshness honesty:** the Ikeda shows are *on view now* (current), the Wikimedia stream is *live*; the named techniques (SSE sonification, no-input feedback) are foundational-and-stable, like FFT/Web-Audio basics — I claim **#3 (named reference)** from Ikeda/Hatnote/Nakamura and a **#5 (research within 14 days = this §363 entry)** tie for the data piece, NOT a "this technique shipped <30 days ago" claim.
 
 **Chain visible:** §363 dive ("the lab has gone deep-but-warm; it has never sonified a live *human-activity* stream and has no no-input/abrasive instrument") → WIDE 3-explorer adult fire, all three refusing to resolve via *different* inputs (camera-motion / live-SSE / self-oscillation): `436-flow-static` (optical-flow → Ikeda data-noise), `437-wiki-pulse` (Wikimedia firehose sonification), `438-no-input` (no-input feedback howl). Shipped the strongest.
+
+---
+
+## §366 — 2026-06-09 (UTC) · KIDS cycle dive (camera-motion → GPU particles)
+
+**Searches:** WebSearch across "audio-reactive generative visualization WebGPU compute creative coding 2026", "MediaPipe hand tracking music interaction 2026 browser", and "TouchDesigner/Houdini 2026 optical-flow / MediaPipe body-tracking interactive installation last month". Web tools healthy.
+
+**What I found (dated honestly):**
+- **MediaPipe → GPU particle systems is an active, current vein.** derivative.ca community work pairs on-device MediaPipe body/hand tracking with real-time GPU particle solvers (the **MediaPipe → NVIDIA Flex interactive particle system**), and there is now a **GPU-accelerated, no-install MediaPipe plugin for TouchDesigner** (Mac/PC). Browser demos pair **three.js + MediaPipe Hand Tracking** for real-time particle fields. These are community tutorials/plugins/demos, **not a dated <14-day paper** → does NOT earn ambition #5; it's the *foundational-and-stable* lineage (like FFT/Web-Audio basics) I claim **#3 (named reference)** from.
+- **Optical flow in TouchDesigner** framed memorably as *"the machine perceives motion itself — not what is moving, but **that** something moves"* (audience movement → flowing light/particle currents). A clean conceptual hook for a no-model, any-motion kids instrument.
+- **WebGPU cloth/Gaussian-splatting in-browser** (arXiv 2507.11794, 2602.03207) confirms WebGPU compute is now a mainstream browser primitive — relevant as evidence, not as a build target.
+
+**Grep audit (the operational payoff — killed two #1 claims pre-build):**
+- **WebGPU compute is NOT a lab-first.** `grep navigator.gpu|createComputePipeline|@compute` → **15 files** (`327-physarum-choir`, `323-latent-condensation`, `16-particle-life-gpu`, `15-webgpu-fluid`, `130-tsl-particle-compute`, `55-webgpu-audio-fx`, `68-wgsl-synth`, `75`, `74`, `71`, `84`, `96`, `107`…). **The JURY 2026-06-08 provocation "WebGPU compute is still never used" is outdated — corrected.** So `444` does NOT claim #1 on WebGPU.
+- **Optical flow is NOT a lab-first** either — `221-optical-flow-music` + `295-kids-shadow-dance/motion-field.ts` already ship it. So `445`/the optical-flow attack does NOT claim #1.
+- Lesson (recurring at 440+ prototypes): genuine ambition-#1 is now rare; the honest play is **register/application novelty + diversity + the 06:30 hands-free read**, not a fictional "new primitive."
+
+**Could become a prototype that does X (the hook):** *camera motion → a large GPU particle field a child conducts with hands/body, singing a continuous calm chord-cloud.* Realized this fire as a DEEP 3-attack fan-out:
+- `444-kids-aurora-hands` (SHIPPED) — HandLandmarker hands → 60k-particle **WebGPU-compute** galaxy (WebGL2 fallback); cup-to-gather / fling-to-scatter.
+- `445-kids-light-river` (banked) — model-free **optical-flow** → 40k-particle WebGL2 aurora (the robust take).
+- `446-kids-star-swarm` (banked) — **PoseLandmarker** whole-body → ~29k **three.js** singing stars.
+
+**Chain visible:** §366 dive ("MediaPipe→GPU-particle is the live vein; WebGPU & optical-flow are NOT lab-firsts; touch is count-banned so go camera-motion") → DEEP kids fire, 3 camera-motion→GPU-particle attacks → shipped the biggest/most-diverse-renderer/most-surprising (`444`, WebGPU 0× in last-10).
