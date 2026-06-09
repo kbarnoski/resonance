@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §360 — 2026-06-09 (UTC) · cycle 360 dive (15-min, mandatory) — kids, DEEP; the dive's value was prior-art KILLS that forced the pivot to the jury's one unbuilt branch
+
+**Method:** WebSearch + WebFetch across cs.GR/cs.SD-adjacent, creative-coding, kids-HCI, and procedural-audio. The mandate's real output this fire was *negative knowledge* (the §357/§359 grep discipline applied to my own candidate concepts before spending builders on them):
+
+1. **Soft-body / squishy-physics is SATURATED.** WebSearch surfaced browser XPBD soft-body as now-realtime (three.js + Extended Position-Based Dynamics; Macklin et al. XPBD 2016; "Towards Generalized Position-Based Dynamics," arXiv:2511.23131, Nov 2025) and a 2010 modal-membrane percussion paper (Avanzini & Marogna). A "squish-a-jelly-it-drums" DEEP concept looked great — until grep killed it: **`286-kids-jelly-choir`** is literally a mass-spring/Verlet soft-body blob that sings its own wobble; **`284-kids-thunder-drum`** + **`202-membrane-drum`** are modal-membrane physical models; **`303-kids-wind-harp`** is Verlet + Karplus. Building it would be a banned variant.
+2. **Markov/generative-rhythm-for-kids is SATURATED** too — `209-kids-drum-tap` is a 1st-order Markov drum toy; `213-kids-echo-drum` / `154-kids-clap-back` are call-and-response.
+3. **The genuine gap:** every kids sound toy — including the weather ones (`293-kids-sky-band`, `115-kids-weather-music`, `306-kids-rain-shaker`) and the heavily-loved paint lineage — maps to **PENTATONIC PITCH**. **Not one is pure NOISE/foley.** The adult jury's loudest standing mandate (#1: "rhythm/timbre/**NOISE**, not tuning") has been answered for kids only via **camera** (`419` pose→beat, `423` face→beat).
+
+**Web anchors (current, supporting context — not the technique driver):** real-time browser procedural-foley is converging on **Perlin-noise + granular** for rain/wind/fire textures (PANO multichannel foley synthesizer; UE5 MetaSounds 2026); arXiv:2606.00629 *"Quality Audio Prototyping"* (June 2026, <30d — unified sound retrieval + procedural generation). For kids-HCI the framing reference is the CHI piece **"Swoosh, Pop, and Kerplunk: Toys for Tangible Listening in Children"** (ACM 2023 — poke/swish/capture as the play metaphor for *listening*).
+
+**Prototype hook (→ today's build):** *a finger-paint where each brush's TEXTURE is its SOUND, rendered as pure procedural NOISE/foley — zero pitch, zero scale.* Cross-modal sound-symbolism (Köhler bouba/kiki, 1929): rough look ↔ rough sound. This answers jury #1's literal **NOISE** branch for **kids**, by **touch** (resting the over-used camera + the banned mic), and rides Karel's most-loved lineage (paint ❤️). DEEP-3 fire → shipped `429-kids-texture-paint-tap` (impulse+resonator foley); banked `428` (WebGL2 noise-morph) + `427` (granular). **#5 NOT claimed** — the June-2026 anchor is real but doesn't drive the build; the build's novelty is framing, not a new primitive.
+
 ## §359 — 2026-06-08 (UTC) · cycle 359 dive (15-min, mandatory) — adult, WIDE; two prior-art corrections that reshaped the whole fire
 
 **Anchor (genuinely current, <30d): arXiv:2605.13630 "Texture Regenerating and Grafting Using Genome-Driven Neural Cellular Automata" (May 2026).** NCA that self-regenerates a texture in *damaged* regions and *grafts* two textures at inference time without retraining. Surprising because it makes the cellular-automata substrate **wound-healing and editable live** — could become *a sonified organism you can scrub/wound and hear knit itself back together.* (Held as a future seed; see corrections below for why it didn't anchor THIS build.)
