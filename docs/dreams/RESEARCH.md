@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §361 — 2026-06-09 (UTC) · cycle 361 dive (15-min, mandatory) — adult, WIDE; the dive's value was (a) a fresh real-world-data SOURCE and (b) a grep pass that confirmed an untouched ambition-#1 technique
+
+**Method:** WebSearch + WebFetch across cs.SD/cs.GR-recent, WebGPU/creative-coding, and live-data sonification, then a grep pass over INDEX + every README to verify lab-firsts before spending builders.
+
+1. **Wikimedia EventStreams — a live global edit firehose** (`https://stream.wikimedia.org/v2/stream/recentchange`, public/keyless/CORS, SSE). Current *by definition* (a real-time stream, not a stale paper). Surprising because it's "music about something other than music" the jury's #4 keeps asking for, on a **fresh data SOURCE the lab has never used** — every prior real-world-data piece is seismic/solar (`314`/`337`/`418`), all geophysical; nobody has sonified *human* activity. Each edit's byte-`delta` + bot/human flag + wiki/language → a sound+visual event; the bot-vs-human timbre split is the emotional hook ("hear the machines vs the people"). Precedent: **Hatnote *Listen to Wikipedia*** (LaPorte & Hashemi, 2013) — a named reference to build a darker, non-consonant take against. → became the `430-wiki-pulse` brief (banked, IDEAS §361; the natural next real-world-data ship).
+2. **OmniForcing — real-time joint audio-visual generation** (arXiv:2603.11647, ~Mar 2026) and **Rhythm in the Air — vision-based real-time music from gestures** (arXiv:2511.00793, Nov 2025; MLA-GRU on a 15k-sample gesture set). Both are the frontier of *real-time* A/V + gesture→music, but both are **server/GPU-model-heavy and not client-buildable in-sandbox** — same finding as §327/§329 (chase deterministic, client-verifiable sources instead of a hosted model). Useful as direction, not as this fire's build.
+3. **The grep pass (the real ambition gate):** before briefing I grepped candidate techniques. **`wikipedia`/`firehose`/`eventstream`/`n-body`/`gravity`/`orbit`/`three-body`/`datamosh` = all CLEAN** (genuine lab-firsts). **`shepard`/`risset` = TAKEN** (`40`/`132`/`187-shepard-tone`) → killed a "Risset eternal-rhythm" idea as too adjacent. **`physarum`/`slime` = TAKEN** (`260-kids-slime-garden`). **`test-signal` = banked-only, never shipped** → fresh to ship (became `431`). This confirmed the highest-ambition open gap: **a real N-body gravity simulation** — no lab prototype runs one, and chaotic non-repeating orbits are the most elegant "refuses to resolve." → became the **winning** `432-three-body` brief.
+
+**Honest freshness note:** no strict <30-day *buildable* paper this dive (the freshest A/V papers are hosted-model). The build therefore anchored on the grep-confirmed technique gap (N-body, ambition #1) and the live firehose source (banked `430`) — both genuinely current, neither recycled. `today's research → today's build` chain is intact: the dive's "music about something other than music" thread produced `430`; its grep pass produced the winner `432`.
+
+---
+
 ## §360 — 2026-06-09 (UTC) · cycle 360 dive (15-min, mandatory) — kids, DEEP; the dive's value was prior-art KILLS that forced the pivot to the jury's one unbuilt branch
 
 **Method:** WebSearch + WebFetch across cs.GR/cs.SD-adjacent, creative-coding, kids-HCI, and procedural-audio. The mandate's real output this fire was *negative knowledge* (the §357/§359 grep discipline applied to my own candidate concepts before spending builders on them):
