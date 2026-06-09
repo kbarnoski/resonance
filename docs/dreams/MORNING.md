@@ -1,18 +1,22 @@
-# Morning digest — last updated 2026-06-09 (UTC) · cycle 370
+# Morning digest — last updated 2026-06-09 (UTC) · cycle 371
 
-> **The lab's first ferrofluid — a magnet that makes the pool sing.** After three deep cycles on the piano spine, this one goes *wide and weird* (the jury's standing ask): three unrelated fresh kids registers in one fire, none a re-tread. The winner is a grep-clean lab-first.
+## ⭐ Open this first
+**[/dream/457-piano-image-duet](https://getresonance.vercel.app/dream/457-piano-image-duet)** — **Latent Piano Room, cycle 3.** The dreamed image stops just *filtering* your piano and starts *re-composing* it. A glowing scan-line sweeps the AI image left→right reading it as a spectral score; a 24-partial additive bank — **locked to the detected key, so it always resolves, never atonal** — *sings the picture* as a warm shimmer duet over your real Ghost recording. You can see which part of the image makes which pitch. *Why open it:* it's the warm-and-resolves middle the jury asked for, and it closes the loop's other half — image→music, not just music→image.
+
+(No FAL_KEY in the build sandbox, so it'll likely show the **synthesized plasma field** path on first open — that field is itself scanned and sung, so it's a complete piece; if a key is live you'll see real dreamed images instead. 10s auto-demo if you just leave it sitting.)
 
 ## New since yesterday
-- **`456-kids-ferro-magnet`** ([open](https://getresonance.vercel.app/dream/456-kids-ferro-magnet)) — *Tilt the tablet to drag a glowing magnet under a pool of black ferrofluid — and it rises into living **spikes** that reach toward the magnet and chime when they brush the rim-bells.* **Why open it:** it's the lab's **first ferrofluid** in 350+ prototypes — the iconic spiky Rosensweig look, turned into a gentle singing toy a 4-year-old runs by tilting. WebGL2 SDF + smooth-min metaballs for the gooey membrane, a hex ripple for the spike array, warm just-intonation bells. Leave it alone and the magnet drifts a figure-8 so it's alive hands-free. **It climbs off the floor the jury flagged** — ambition 3/5 on a real lab-first technique, not the "clear the two cheapest criteria and stop" pattern.
+- `457-piano-image-duet` shipped (above). DEEP fire: one concept, **3 image→music engines** built in parallel, strongest shipped — the other two banked (below).
+- Runs on **your real recorded piano** (Ghost recording default) — the jury's "use his actual music" ask, picked up.
 
-## Explored but not shipped (IDEAS §370) — both strong, near-ship
-- **`455-kids-sing-cymatics`** — *Sing a note and watch ~12k glowing grains migrate into that pitch's **Chladni figure**, then the plate sings back.* The app's namesake, made playable by a child's voice — the most "Resonance-shaped" idea here. Lost only because cymatics already exists at `165` (so it's 2/5) and child-voice + 12k CPU grains is the least-certain bet. The prime embodied-voice resurrect.
-- **`457-kids-pendulum-wave`** — *Pull back 15 glowing pendulums and let go → a hypnotic traveling wave that re-converges into a resolving arpeggio.* Grep-clean lab-first, the safest fully-autonomous read. Lost only because a pendulum wave is a *known classic* (less "huh, didn't know we could do that" than a singing ferrofluid).
+## Banked for cycle 4 (the other two explorations — IDEAS §371)
+- **piano-image-improviser** — the image *improvises an in-key counter-melody* (hue→scale degrees, brightness→contour, edge→rhythm; always resolves to tonic). The most "agentic" take.
+- **piano-image-grains** — the image becomes a *granular cloud* (every pixel a grain: x→pan, y→pitch, hue→timbre). The most texturally beautiful take.
+- Strongest next move: **fold all three into one** so the duet has spectral + melodic + textural layers — keeps the spine alive (the jury's "don't close it after one cycle").
 
-## Why WIDE this cycle (the jury's "go weird")
-- 367/368/369 were all DEEP on the piano spine. The 2026-06-09 jury said the lab "learned to go deep and forgot how to go *weird*" and split into monocultures. So: three genuinely-unrelated fresh registers, each dodging all four new bans (Canvas2D · drum-machine · refuse-to-resolve · pentatonic-lullaby) **and** the over-leaned touch input. The dive (GPU "material" sims) mostly *killed* re-treads via grep — fluid, falling-sand, Lenia, soft-body, even cymatics all already exist — and surfaced ferrofluid + pendulum-wave as clean firsts.
+## Open question for you
+- **Paste a *Welcome Home* track ID** and the whole Latent Piano Room spine (448 / 454 / 457) runs on the album instead of the Ghost recording — the runtime `journey_paths` IDs aren't in the static repo, so everything defaults to `549fc519…`. This is the one dependency blocking the album-on-the-spine vision.
 
-## Open questions for Karel
-- Build-verified, not browser-verified (no GPU/sensor here). On your tablet: does the ferrofluid read as a convincing **spiking fluid** vs. generic blobs (the Rosensweig is an honest *approximation*, not a full energy-minimization), and does tilt-steering *feel* good?
-- Which banked sibling next (cycle 372)? **Sing-cymatics** (the namesake, embodied voice) or **pendulum-wave** (the safe lab-first)?
-- Cycle 371 is adult — I'll keep the **piano spine alive at cycle 3** (let the dreamed image re-compose the piano, not just filter it). Still want a real **Welcome Home** track ID whenever you have one.
+## Honest caveats
+- Build-verified (exit 0), **not** browser-verified — no audio/GPU/FAL key in the sandbox. Unverified: whether the shimmer reads as "the image singing" vs. a generic pad on real piano + phone speakers, and 24-oscillator perf on a low-end phone.
+- AI-image output is now 4× in the trailing window — flagged for the next diversity audit. This cycle it's the jury-mandated spine extension, not unasked-for over-rep.
