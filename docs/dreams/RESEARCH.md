@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §369 — 2026-06-09 (UTC) · cycle 369 dive (15-min, mandatory) — adult, DEEP; the dive *sharpened the spine's cycle-2 build*: it surfaced the iterative-refinement (propose→critique→revise) loop as the deepening above the flat multi-agent council
+
+**Method:** WebSearch across (a) multi-agent / emotion-aligned music→image generation 2026 and (b) agentic prompt-refinement / cooperating-agents text-to-image (May–Jun 2026), then date-screened the hits.
+
+1. **Build-sharpening anchor — agentic prompt refinement as an *iterative* loop, not one-shot.** **arXiv 2507.20536** (*T2I-Copilot*, Jul 2025) + **arXiv 2511.11483** (*ImAgent*, listed Mar 2026): training-free **multi-agent** systems that **propose → evaluate/critique → refine** an image prompt, enriching vague queries and re-checking against the goal before (re)generating. Honest dating: T2I-Copilot ~11mo, ImAgent ~3mo → **neither earns ambition #5** (needs <14d). Their operational value this cycle: they push the spine's cycle-2 *past* a flat "council of agents each writes one clause" (which is just `448`'s template split N ways) toward a **self-critiquing refinement loop** — a Critic agent scores the draft caption against the music's emotion target and the proposers *revise*, so the prompt visibly **improves** across rounds. That iterative-critique mechanic is the genuinely new capability and the cycle's build hook.
+2. **Spine anchor re-confirmed (cycle-1's, still binding).** **arXiv 2512.23320** (Dec 2025, *Multi-Agents Semantic Emotion Aligned Music to Image Generation with Music Derived Captions*): specialist agents fuse music semantics + **valence-arousal** affect (Russell circumplex) into image conditioning. The cycle-2 build keeps this — valence (modality+consonance) and arousal (dynamics+onset-density) are the emotion target the Critic checks against. *Art2Mus* (2602.17599, Feb 2026, image→music) remains the **cycle-3** candidate (close the *other* half of the loop).
+
+**The chain (dive → build).** Binds via **path (b)** of the research-first rule — it does NOT start a fresh build, it **continues the jury-mandated multi-cycle spine** (The Latent Piano Room, cycle-2). DEEP fan-out, one concept (*a multi-agent caption pipeline composes, from Karel's real piano, the caption a latent image is dreamed from*) attacked three ways: `452` visible agent-council (one-shot weighted merge) · `453` valence-arousal affect-atlas (emotion-coordinate-driven) · **`454` caption-loom (iterative propose→critique→revise — SHIPPED)**. The dive's iterative-refinement finding is exactly why `454` (the self-critiquing loom) won over `452`'s flat council: it adds a real new capability rather than re-presenting `448`'s mapping. `today's dive → today's build` is visible in the winner's refinement mechanic.
+
+---
+
 ## §367 — 2026-06-09 (UTC) · cycle 367 dive (15-min, mandatory) — adult, DEEP; the dive *bound the build* (jury-mandated multi-cycle spine off `441`) and handed the spine its concrete cycle-2 hook: multi-agent music→caption refinement
 
 **Method:** WebSearch across audio-conditioned / music-to-image diffusion and latent feedback (2026), plus `arxiv.org/list/cs.SD/recent`-adjacent queries, then a WebFetch to date-verify the freshest hit before citing it.

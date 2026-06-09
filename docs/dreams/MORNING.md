@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-06-09 (UTC) · cycle 368
+# Morning digest — last updated 2026-06-09 (UTC) · cycle 369
 
-> **Built the kids half of the jury's #1 ask.** The jury said the bans split the lab into a **cold-adult / sweet-kids binary** and that ambition collapsed (zero pieces at 4–5/5). This kids cycle ships the **loud, fast, playfully chaotic** piece the kids lane was missing — and clears **4/5** by restarting a multi-cycle spine (#4) and binding today's research (#5).
+> **Kept the spine alive — and climbed back to 4/5.** The jury said ambition collapsed (zero pieces at 4–5/5, down from seven) and that every spine the lab started died fast. This cycle takes the Latent Piano Room spine to **cycle 2** and ships a piece that clears **4/5** — the regression fix, executed.
 
 ## New since yesterday
-- **`451-kids-jelly-storm`** ([open](https://getresonance.vercel.app/dream/451-kids-jelly-storm)) — *Tap, drag, and **SHAKE** to make squishy jelly creatures RAIN — the more chaos, the louder and more triumphant the music climbs, then it lands on a big happy chord when it settles.* **Why open it:** it's the **missing kids middle** — not a 5th calm-pentatonic lullaby but energetic, joyful, and it **resolves on purpose**. Real **soft-body physics** (Position-Based Dynamics): the jelly genuinely squishes, and that squish drives both the glow and the sound. A bright "MORE!" energy bar makes the build-and-resolve arc legible to a 4-year-old. Best on a phone/tablet (shake-to-rain); plays itself hands-free after ~3s.
-- This was a **DEEP** kids fire — **one concept** (*a soft-body jelly playground that escalates and resolves*) attacked **3 ways** (PBD / Verlet mass-spring / metaball-SDF goo); the PBD one shipped.
+- **`454-piano-caption-loom`** ([open](https://getresonance.vercel.app/dream/454-piano-caption-loom)) — *Watch a council of agents **critique and rewrite**, in real time, the caption a latent image is dreamed from — driven by your actual recorded piano.* **Why open it:** it's the spine's cycle 2. Cycle 1 (`448`) wrote the image prompt in one shot; this one runs a **3-round refinement loom** — proposers draft a caption, a **Critic** scores it against the music's emotion (valence × arousal) and pushes back ("palette too cool for this warm phrase"), the agents revise, and you **see the words change and the confidence rise** before the image regenerates. Warm, expressive, resolves on purpose — the "missing middle" you asked for. Loads your Ghost recording by default (or drop a *Welcome Home* track; warm synth fallback if it can't load — never silent). No FAL key here → a synthesized plasma field stands in and the loom still runs in full.
 
 ## Why it clears 4/5 (the regression fix the jury demanded)
-- **#2** ≥3 subsystems (PBD solver · energy-driven music engine · WebGL render · multi-touch · shake) · **#3** named ref (Müller *Position Based Dynamics* 2007) · **#4** cycle 1 of a new multi-cycle **"Squish" spine** (the axis dead since 414) · **#5** today's research *binds* the build.
-- Dodges all four new bans: WebGL (not Canvas2D) · pitched melodic G-major (not drum-machine) · joyful/resolving (not refuse-to-resolve, not pentatonic-lullaby). Pulled by your loves of `169-kids-marble-run`❤️ + `234-kids-hand-creature`❤️.
+- **#1** lab-first technique (first iterative **self-critiquing prompt refinement** — a Critic agent that triggers a revise loop) · **#2** 6 subsystems · **#3** named refs (T2I-Copilot / ImAgent / arXiv 2512.23320 / Russell 1980 / Anadol / Akten) · **#4** **cycle 2 of the Latent Piano Room spine** — the multi-cycle axis the jury said died at 414, now past the cycle-1 death that killed the last one.
+- Dodges all four new bans: AI-image (canvas only composites, not Canvas2D-as-piece — the lineage you named the bright spot) · no drum-machine · warm/resolving (not refuse-to-resolve) · not the kids template. Rides loved `441` + `323-latent-condensation`❤️.
 
-## Explored but not shipped (IDEAS §368)
-- `449-kids-squish-jam` — Verlet mass-spring jelly (cleanest, safest).
-- `450-kids-goo-band` — WebGL2 **metaball-SDF merging goo** (most visually surprising — gooey blobs fuse into chords; strong cycle-2 fold-in candidate).
+## Explored but not shipped (IDEAS §369)
+- `452-piano-agent-council` — the **visible one-shot council** + a Russell circumplex dial. The most legible read and the most on-brand for your agentic-design work; the prime **cycle-3 viz layer** to fold onto the loom.
+- `453-piano-affect-atlas` — the music's emotion as a glowing **comet** tracing the valence-arousal plane; image = the "view from" that coordinate. (Its builder left the README empty — fix-first on revival.)
 
-## Research worth a look (RESEARCH §368)
-- Browser **soft-body physics** is a live 2025–26 vein (WebGPU **AVBD** solver / jure/webphysics; Medusae re-featured) — the lab had never shipped a true deformable. 451 realizes it at kids fidelity via PBD.
+## Research worth a look (RESEARCH §369)
+- Agentic text-to-image is converging on **propose→critique→refine** loops (T2I-Copilot, ImAgent), not one-shot prompting — exactly the mechanic `454` makes visible. The reverse direction (*Art2Mus*, image→music) is the spine's cycle-3 candidate: let the dreamed image **re-compose** the piano, not just filter it.
 
 ## Open questions for Karel
-- Build-verified, not browser-verified (no GPU/audio/touch sensor here). On a real tablet: does the squish read as *bouncy* (not jittery) at 36 creatures, and does the energy→arpeggio escalation feel *musical* (not frantic) on phone speakers?
-- Make "Squish" a real spine? Strongest cycle-2: fold 450's gooey **merge→chord** mechanic into 451 (two jellies touching fuse into a louder chord).
+- Build-verified, not browser-verified (no FAL key / audio / GPU here). On your machine: does the **Critic actually fire** on real expressive piano so the caption visibly improves — or does the draft trivially pass round 0? And does ~1 image per phrase read as "painting the music"?
+- The spine still wants a real **Welcome Home** track ID — paste one and `448`/`454` run on the album instead of the Ghost recording.
+- Keep going? Cycle-3 plan: close the loop (image re-composes the piano) and/or fold the `452` agent-council HUD onto the loom. **Don't let this spine die at cycle 2 like the last one died at 1.**
