@@ -1,99 +1,102 @@
-# Concept Jury Verdict — 2026-06-08 (UTC)
+# Concept Jury Verdict — 2026-06-09 (UTC)
 
 ## Summary
-The lab did its homework and then over-corrected. Last jury (2026-06-07) banned
-raw-WebGL2 and the D-Dorian bed; the fifteen pieces since obeyed both bans — and
-fled straight into **two fresh monocultures**: **6 of 15 ship to SVG** and **~7 of
-15 build their entire identity on just-intonation / "beating-free" pure-ratio
-tuning** (pelog, slendro and whole-tone push the non-12-TET count to ~10). This is
-the same whack-a-mole the last jury itself named — *"traded one monoculture for
-two."* The genuine, creditable win underneath it: ambition is up sharply. Where
-last jury found a single 4/5 piece, this window has **seven at 4–5/5**, carried by
-three real multi-cycle spines (Conchordal 410→414, spatial-audio 394→400,
-accompanist →391). The catch is that those same threads are *why* the tonal world
-collapsed to consonance — the depth and the sameness come from the same place.
+The bans worked too well and backfired. Last jury (2026-06-08) outlawed
+just-intonation-as-subject and demanded "build something that refuses to resolve" —
+and the lab obeyed so literally that it split into **two fresh monocultures**: an
+**adult half that is uniformly cold / clinical / refuse-to-resolve** (418, 422, 432,
+437 — four of them) and a **kids half that is uniformly calm cosmic pentatonic
+lullaby** (417, 433, 440, 444 — four of them). There is no warm-and-structured
+middle, no playful-abrasive kids piece, nothing that resolves *on purpose*. Worse,
+the ambition stacking the last jury celebrated has collapsed: this window is **15
+floor-clearers but zero at 4–5/5**, and **12 of 15 hit the two cheapest criteria
+(#2 ≥3-subsystems + #3 named-ref) and stop** — exactly the local minimum the last
+jury said to climb out of. The genuine bright spots — 441's closed audio→image→audio
+loop and 437's live human-activity stream — are one-offs that nobody is extending.
 
 ## Diversity audit
-- **Over-represented input:** **mic — 6×** (393, 397, 402, 408, 413, 414) — tied as
-  the dominant pair with **device-motion / orientation — 5×** (384, 390, 394, 400, 417).
-- **Over-represented output:** **SVG — 6×** (391, 397, 402, 410, 413, 414). This is the
-  new WebGL2. The screen-renderer habit didn't die last jury; it migrated to vectors.
-- **Over-represented technique:** **Kuramoto phase-coupling — 4×** (384, 410, 414, 417);
-  but the *real* tell is the tonal meta-technique: **just-intonation / microtonal
-  consonance as the literal subject — ~7×** (393, 394, 397, 404, 410, 414, 417), ~10 if
-  pelog/slendro/whole-tone are folded in. The lab disavowed D-Dorian and replaced it with
-  an equally uniform "pure ratios" cliché.
-- **Over-represented vibe:** **kids — 8×** (parity-by-design, exempt). The real vibe rut is
-  emotional register: **calm / consonant / resolving — ~13 of 15.** Nothing is fast, loud,
-  abrasive, or unresolved except `387-drop-engine`, which sits alone.
-- **BANNED for next cycle:** mic INPUT · SVG OUTPUT · Kuramoto-coupling TECHNIQUE ·
-  just-intonation/microtonal-tuning-as-the-subject TONAL-WORLD. (Kids VIBE stays exempt —
-  it's the even/odd parity — but the *consonant-resolving register* is the deeper rut to break.)
+- **Over-represented input:** none cleared the ≥4 ban line — **input is the healthiest
+  axis this window.** Leading value is **camera computer-vision (body/face/hand) — 3×**
+  (419/423/444); mic, live-API, and device-motion each only 2×. Credit where due.
+- **Over-represented output:** **Canvas2D — 4×** (418, 419, 429, 432). This is the new
+  WebGL2/SVG — the screen-renderer habit migrated again, this time to 2D canvas.
+- **Over-represented technique:** **synthesized percussion / drum-machine, no tuning — 4×**
+  (419, 423, 426, 429). The lab fled the just-intonation ban straight into a drum-synth
+  cluster — same whack-a-mole, new corner. (Kuramoto is correctly down to 2× — that ban held.)
+- **Over-represented vibe:** **adult refuse-to-resolve / clinical-Ikeda — 4×** (418, 422, 432,
+  437) and **kids calm-pentatonic lullaby — 4×** (417, 433, 440, 444). Kids parity (8×) is
+  exempt by design; the real rut is the **cold/sweet binary** with nothing in between.
+- **BANNED for next cycle:** Canvas2D OUTPUT · synthesized-percussion-drum-machine TECHNIQUE ·
+  refuse-to-resolve/clinical-Ikeda VIBE (the adult monoculture) · the calm-cosmic-pentatonic
+  kids template (417/433/440/444 — D-pentatonic + ambient pad + slow drift).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — nobody is below the floor. The mandate is holding (third jury running).
-- **Hit 2–3 criteria: 8** — 387 (EDM-first + 4 subsystems, but no named *work* and no recent
-  research), 384, 393, 394, 397, 404 (the 3/5 clusterers), and the two thinnest: **402** (onset/IOI
-  on a foundational-only Repp ref) and **417** (the lab's *4th* Kuramoto, a single oscillator, refs
-  all 1975–2014 — all the ambition is in the framing, none in the build).
-- **Hit 4–5 criteria: 7** — 391 (5/5), 410 (5/5), 400 (5/5), 408, 413, 414, 390. **This is the real
-  progress.** Last jury reported #4 (multi-cycle) and #5 (recent research) as "nearly absent —
-  appearing once." This window stacks both repeatedly: 391 and 414 are explicit cycle-3
-  commitments; 390/393/400/410/413 each cite current-quarter (Mar–May 2026) arXiv work. The lab
-  heard "stop satisfying the floor with the two cheapest criteria" and acted on it.
+- **Hit 0–1 criteria: 0** — the floor itself is holding; nobody is below it (4 juries running).
+- **Hit 2–3 criteria: 15** — *all of them.* Of these, **12 hit exactly 2** (417, 418, 419, 422,
+  423, 426, 429, 432, 433, 440, 441, 444 — pure #2 ≥3-subsystems + #3 named-ref), and only **3
+  stack a third**: 413 (#1 LPC lab-first + #2 + #3), 414 (#2 + #3 + #4 cycle-3 of Conchordal),
+  437 (#2 + #3 + #5 RESEARCH §363 within 14 days).
+- **Hit 4–5 criteria: 0** — **this is the regression.** The last jury reported *seven* at 4–5/5,
+  carried by three live multi-cycle spines (Conchordal 410→414, spatial 394→400, accompanist →391).
+  All three closed at or before 414. Nothing since has restarted a multi-cycle commitment, stacked
+  recent research on more than one piece, or claimed a credible novel technique. The lab learned to
+  go deep, was told it had, and then quietly stopped — sliding back to the two-cheapest-criteria
+  floor the moment the celebrated threads ended.
 
-**The sharp read:** ambition compliance is no longer the problem — *taste breadth* is. The floor
-is being cleared honestly and often impressively; but every honest 4/5 is being spent inside the
-same warm, consonant, self-resolving world. The lab has learned to go deep and forgotten how to
-go *weird*.
+**The sharp read:** craft is fine and the floor is honest, but the lab is now running on
+autopilot — clear #2+#3, dodge the literal banned tags, ship. It is enforcing the bans
+*mechanically* (so the tonal world bifurcated instead of broadening) and clearing the floor
+*minimally* (so ambition flattened). Both are the letter of the mandate without the spirit.
 
 ## Standouts (positive)
-- **`391-resilient-accompanist`** — the window's only clean **5/5** on merit *and* its best idea:
-  a dual **DTW⇄HMM supervisor** that hands control over when the soloist fumbles, with a legible
-  "watch the confidence band plunge and the violet HMM cursor take over" recovery story. Genuine
-  cycle-3 depth, a genuine algorithm, the instructional lane done right.
-- **`410-conchordal-garden`** — emergent harmony with **no predefined scale**: a real Plomp–Levelt
-  roughness landscape that is honestly *different at minute 3 than minute 0*. An a-life *idea*, not
-  a synth-plus-visualizer.
-- **`400-soundwalk-room`** — the lab's **first haptics** and first 6DoF parallax: a voice swings
-  front→side→behind as you walk past it. The kind of embodied surprise Karel keeps asking for.
-- **`413-kids-mouth-mirror`** — a *kids* piece doing **real LPC formant tracking + articulatory
-  inversion** (see inside your own mouth), technically harder than most adult builds, and it
-  explicitly fixes the weakness 393 admitted in its own README.
+- **`441-latent-listening-room`** — the window's most *Karel-shaped* idea: a genuinely **closed
+  audio→image→audio loop** (synth → spectral prompt → FAL flux/schnell → returning image's color
+  bends the master filter/reverb back). This is the standing AI-image-inside-AV directive realized
+  for the first time as a *loop*, not a one-way effect. Scored 2/5 on the strict floor but it's the
+  richest 2/5 here — four real subsystems and the only piece pointing at where Karel keeps asking
+  the lab to go.
+- **`437-wiki-pulse`** — the only piece that stacks **#5 (recent research)** honestly, and the
+  freshest *concept*: the first live **human-activity** stream (Wikimedia firehose), with an audible
+  **bot-vs-human timbral split** that no prior data piece attempted. A real answer to "music about
+  something other than music."
+- **`413-kids-mouth-mirror`** — the hardest *build* in the window: real **LPC formant tracking +
+  articulatory inversion** (see your own tongue move) in a 4-year-old's toy, and a credible lab-first
+  technique claim (#1). Fixed exactly the weakness 393 admitted in its own notes.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`393-kids-vowel-color`** — the lab superseded it itself: `413`, twenty cycles later, did exactly
-  the LPC upgrade 393's own notes said it needed. Its FFT peak-picking is, by its own admission,
-  unreliable for the 4-year-old voices it targets. The rough first draft, kept as the "before."
-- **`397-kids-crystal-bloom`** — the Nth pure-ratio shimmer-bell tower, on **mic-loudness-only**
-  input (not even pitch). Beautiful, but the comfortable dead-center of the JI rut: no novel
-  technique, nothing the tuning lane hasn't already said.
-- **`402-kids-steady-walk`** — competent onset/IOI mic+SVG, foundational ref only, no recent
-  research. The textbook "clears the bar at 2/5 and stops" build.
-- **`417-cradle-song`** — credit the *concept* (off-screen, embodied — it answers the standing
-  embodiment-gap complaint), but the *build* is the lab's 4th Kuramoto and a single oscillator with
-  refs spanning 1975–2014. A 2/5 wearing a 5/5's poetry. Ship the framing again with a real
-  technique under it.
+- **`417-kids-cradle-song`** — flagged by the last jury and **still unaddressed**: the lab's 4th
+  Kuramoto, a *single* oscillator, refs spanning 1975–2014. A 2/5 build wearing 5/5 poetry. The
+  framing (off-screen, embodied, eyes-closed) is genuinely good — but it keeps shipping the framing
+  without a real technique under it.
+- **`426-euclid-engine`** — competent and legible, but the textbook "clears the bar and stops":
+  Bjorklund + Reich + Chris Wilson, all foundational refs, no recent research, no novel subsystem.
+  Pretty phasing, nothing the minimal-music canon hasn't already said.
+- **`432-three-body`** — a gorgeous *concept* (gravity writes the music) executed as another
+  sim→drone with scale-free mapping; refs are Poincaré and Chenciner 2000. No contemporary anchor,
+  no recent research — the abrasive-cosmic local minimum.
+- **`440-kids-comet-gather`** — pleasant, but it's the **4th calm-pentatonic cosmic kids lullaby**
+  (cf. 433, 444, and 417's tonal world): D-major pentatonic + ambient pad + slow multi-minute drift.
+  The template is now a rut; this entry doesn't move it.
 
 ## Provocations for tomorrow's dream cycle
-1. **Just-intonation is the new D-Dorian — ban it.** ~7 of the last 15 are *about* pure-ratio
-   consonance; the lab fled the D-Dorian ban into a tuning monastery. For a week, build pieces
-   whose subject is **rhythm, timbre, or noise — not tuning.** Equal temperament used expressively
-   is fine; "pure ratios, beating-free" is not.
-2. **Build something that refuses to resolve.** Conchordal blooms into consonance, the meadow snaps
-   to unison, the reef stacks a chord, the cradle hums you to sleep. ~13 of 15 converge to calm.
-   There is no Ikeda/Akten counter-piece — nothing abrasive, glitched, or left unresolved. Make the
-   one that *doesn't* harmonize.
-3. **WebGPU compute is still never used.** SVG (6×) and mic (6×) are now the over-represented pair.
-   The standing "first" the lab keeps deferring is a real WebGPU compute shader — claim it, on a
-   non-mic input.
-4. **Zero real-world data sonification in 15 cycles.** The menu's "music about something other than
-   music" is untouched. Sonify an external API (seismic, weather, transit, language trends) — it
-   breaks the mic rut *and* the consonance rut in one fire.
-5. **Retire Kuramoto for a cycle** (4× now: 384/410/414/417). The sync-to-order reflex has become a tic.
-6. **Embodiment moved — keep going, but with a camera.** 400 (haptics) and 417 (off-screen) are real
-   progress; credit it. But there is still **no MediaPipe / body- or face-tracking** piece in the
-   window. The depth-camera/body spatial room is now the lab's single biggest untouched "first."
+1. **The bans bifurcated you — build the missing middle.** Adults are uniformly cold/unresolved
+   (4×), kids uniformly sweet/consonant (4×). For one cycle build a piece that is **warm AND
+   structured AND resolves on purpose** (expressive tonal music is not banned — only "pure ratios as
+   the subject" was), OR a **kids piece that is loud, fast, playfully chaotic** instead of a lullaby.
+   "Refuse to resolve" is becoming the new D-Dorian — a reflex, not a choice.
+2. **Restart a multi-cycle spine — #4 has been dead since 414.** No prototype since the Conchordal
+   thread closed has been an explicit cycle-1-of-3 commitment. The single most Karel-aligned move is
+   to **make `441` a multi-cycle spine: re-run its closed audio→image→audio loop on his actual
+   *Welcome Home* piano** (via `/api/audio/[id]`) instead of a synth pad. That stacks #4 + the
+   standing real-music directive + the AI-image directive in one fire.
+3. **Two new over-represented tags to retire:** **Canvas2D output (4×)** and **drum-machine
+   percussion-synth (4×)**. Ban both next cycle.
+4. **The freshness mandate (#5) is failing again — 1 of 15.** Only 437 cites research from the last
+   14 days. Most refs are 1929–2013. A nightly dive that doesn't change the build is the "nightly
+   apology" the lab keeps writing about itself. Make the next dive *bind* the build.
+5. **Karel's real music has been ignored for 15 straight cycles.** Not one of these 15 uses a
+   *Welcome Home* track as the source — every audio source is synthesized, mic, or external data.
+   The "use his actual piano from the Paths" directive is sitting cold. Pick it up (see #2).
 
 ## Karel-facing line
-Craft and depth are genuinely up — but the lab fled D-Dorian straight into a just-intonation monastery where everything still resolves to gentle consonance; tomorrow, break the tuning fixation and build something that *refuses* to harmonize.
+Solid craft, but the bans backfired — the lab split into a cold-adult / sweet-kids binary and ambition slid back to the two-cheapest-criteria floor (zero pieces at 4–5/5, down from seven); tomorrow, build the warm structured middle and restart a real multi-cycle spine — ideally 441's audio→image loop running on your actual Welcome Home piano.
