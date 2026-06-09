@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-09 08:35 UTC
+# Morning digest — last updated 2026-06-09 (UTC, cycle 365)
 
 ## New since yesterday
-- **`440-kids-comet-gather`** ([/dream/440-kids-comet-gather](https://getresonance.vercel.app/dream/440-kids-comet-gather)) — **hold your phone up like a window and turn/sweep it to look around a 3D night sky.** Sweep the soft reticle over a drifting glowing mote and you *scoop it up* into your own growing **constellation** — and each mote you gather adds a voice to a **lullaby that slowly evolves** (the root drifts, a filter breathes, voices get busier; it's different at minute 5 than minute 0, then fades to "goodnight" around minute 12). **For kids 4+, no tapping, no reading** — the instrument is *moving the phone through space*. Why open it: it's the lab's **first gyro "magic-window" first-person kids piece** and its **first long-form evolving kids lullaby** — turn your phone in bed and it just works (or watch the hands-free auto-demo build the constellation itself).
-- This was a **DEEP** kids fire — **3 explorers built one concept three ways, strongest shipped.** Deliberately rests **touch** (over-used lately) and the camera-body kids lane, using the **gyroscope** instead — embodied, and reads instantly on a phone.
+- **`441-latent-listening-room`** ([open](https://getresonance.vercel.app/dream/441-latent-listening-room)) — **a generative ambient piece that continuously *dreams a picture of itself*, and the picture bends the music back.** Press Begin: a slow pad+arpeggio plays, and every ~6s its live spectral character (brightness / energy / dominant note) writes a prompt → an AI image is regenerated and **cross-fades** over the last one with a slow drift → the returning image's color **bends the audio** (brighter → opens the filter + shimmer, warmer → longer reverb). Audio → image → audio, a closed loop. **Why open it:** this is exactly the lane you said interests you most right now — **AI image generation *inside* an audio-visual piece, where the image responds to and shapes the sound** — and it rides your loved `323-latent-condensation`. *(Live, it dreams real FAL images; if the key/network isn't reachable it falls to a synthesized plasma+particle field driven by the same spectrum, so it's never blank — watch the status line: "dreaming live" vs "synthesized field.")*
+- This was a **WIDE** adult fire — **3 explorers, 3 frontier-different directions, strongest shipped.** Cleared the ambition floor at 2/5 (≥3 subsystems + Anadol/Akten/arXiv refs); dodged every jury ban (mic / SVG / Kuramoto / just-intonation).
 
 ## In progress / partial
-- Nothing mid-thread. Two strong banked siblings from tonight (below).
+- Nothing mid-thread. Two strong, near-ship-ready banked siblings from tonight (below).
+
+## Banked tonight (IDEAS §365 — both build-reviewed, ~ready to ship)
+- **`442-body-orchestra`** — the lab's **first adult full-body spatial 'room'**: step back from the webcam and **conduct** a spatial ensemble — raise a hand → a voice swells and pans to your wrist; spread your arms → pads bloom. (MediaPipe Pose + StereoPanner + ghost-conductor fallback.) The literal answer to the jury's "the body spatial room is the single biggest untouched first." *One fix before it ships: I built it on D-Dorian (the retired bed) — needs re-voicing.*
+- **`443-the-vanishing`** — the "go weird" piece: a 10-voice ensemble that **permanently loses a voice every time you look away** (switch tabs / leave the window / sit idle), moving only toward silence — irreversible, no replay. A genuinely new input (your *attention*) and the purest refuse-to-resolve answer. Essentially ready as-is.
 
 ## Research findings worth a look
-- **RESEARCH §364**: the "magic-window" gyro-stargazer interaction is freshly first-class again (W3C **Gyroscope spec** Candidate Recommendation Draft, Feb 2026; 3-DoF head-tracked spatial audio now mainstream). Honest: that anchor is ~4 months old, not <14 days — so it grounded the *interaction* but didn't drive a new technique. The grep audit also killed a "musical sand" idea pre-build (`360-kids-sand-choir` already does it).
-
-## Banked tonight (IDEAS §364 — worth a look / resurrect)
-- **`438-kids-star-window`** — the *immediate* version: turn the phone, **sweep past a star and it sings** (no scoop, no dwell — pure instant cause-effect, best for the youngest). three.js, quaternion-smooth gyro.
-- **`439-kids-star-night`** — the same idea on a **raw-WebGL2** glowing point-field — a moodier, more atmospheric night.
+- **RESEARCH §365**: arXiv 2604.07612 (Apr 2026) — latent-diffusion as a real-time musical **co-performer** (conditioned on live audio, feeding back). `441` is a browser-native, image-domain instantiation of that feedback framing.
 
 ## Open questions for Karel
-1. On your phone, does the **gyro look-around** feel good (smooth, correct direction), or fiddly? The 0.9s "hold to scoop" dwell — too slow or just right for a 4-year-old?
-2. Headphones not required (I used stereo panning, not HRTF, so it works on phone speakers) — does the spatial "sound comes from where the star sits" effect land for you?
-3. You asked for **massively bigger concepts** — `440` reaches for that (3D + look-around + a piece that *evolves over minutes*). Right direction for kids, or do you want the simpler immediate `438` shipped too?
+1. **`441`**: does the live FAL image path connect+look good from your network, and does ~1 new image / 7s read as "breathing with the music" — or too slow/too fast? (The synthesized fallback is what runs without a key.)
+2. You wanted AI-image-**inside**-AV. Is `441`'s closed audio↔image↔audio loop the right shape, or would you rather the image drive *more* of the sound (or vice-versa)?
+3. Which banked sibling next — **`443`** (the attention/loss piece, ready now) or **`442`** (the body conductor's room, after I swap it off D-Dorian)?
