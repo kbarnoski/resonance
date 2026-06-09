@@ -4,6 +4,21 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §362 — 2026-06-09 (UTC) · cycle 362 dive (15-min, mandatory) — kids, WIDE; the dive's value was a grep audit that killed THREE headline #1 claims and reframed the cycle around REGISTER breadth (the jury's actual ask) rather than a new primitive
+
+**Method:** WebSearch across cs.SD-recent + WebRTC/collaborative-audio + creative-coding, then a grep pass over `src/app/dream/**` to verify lab-firsts before spending builders.
+
+1. **Surprising recent find: "Live Music Diffusion Models: Efficient Fine-Tuning and Post-Training of Interactive Diffusion Music Generators" (arXiv:2605.22717, May 2026, <30d).** LMDMs run an *interactive* streaming diffusion music generator locally on a consumer gaming laptop as a "generative delay" — a musician improvises and the model transforms it live, enabling real artist↔AI jamming. Surprising because real-time (not batch) diffusion music is now consumer-local. **Not client-buildable in-sandbox** (server/GPU-model-heavy — the recurring §327/§329/§361 finding: hosted-model A/V is direction, not this fire's build), so it informs rather than drives. Held as a seed: *a kids "echo creature" that improvises a counter-melody to a child — but via lightweight in-browser DSP, not a diffusion model.*
+2. **WebRTC multi-user music is genuinely UNUSED in the lab** (grep-clean) and would be a true ambition-#1 — but it needs a signaling server / second device / cannot come alive hands-free at 06:30, and raises kids-privacy concerns (KIDS.md: no social features). Logged as a real future-first for an *adult* fire with a deterministic offline-demo path, **not** a kids cycle.
+3. **The grep audit (the real gate) killed THREE candidate #1 claims before any builder spent a token** — the §357/§359/§360 discipline:
+   - **Navier-Stokes fluid is SATURATED** — `3-fluid` (WebGL2 128²), `15-webgpu-fluid` (WebGPU 512²), `84-wave-fluid`❤️ (MLS-MPM ocean), `119-poem-fluid`. Fluid sim is **not** a lab-first; a kids fluid-paint is an honest *new application*, not a new technique (→ ambition 2/5, not 3).
+   - **Camera segmentation / shadow-silhouette is TAKEN** — `268-kids-shadow-theater`, `295-kids-shadow-dance`. A "shadow play" concept would re-tread.
+   - **Hand-tracking is TAKEN** — `234-kids-hand-creature`❤️ already uses MediaPipe **HandLandmarker**. An air-instrument is an honest *new interaction on existing tech*, not a technique-first.
+
+**The chain (dive → build).** The audit's lesson: at 432 prototypes the lab is **technique-saturated** — genuine #1 "never-used technique" is now rare, and the jury (2026-06-08) explicitly says *floor-compliance is fine; the gap is taste-breadth / "forgot how to go weird."* So cycle 362 optimizes for **REGISTER breadth, not a new primitive** — and crucially **breaks the recent kids-percussion rut** (419 pose-beat, 423 face-beat, 426 euclid, 429 noise-foley are all rhythm/percussion). WIDE fire, three genuinely different NON-percussion kids registers, each clearing the floor honestly at 2/5 (#2 ≥3-subsystems + #3 named-ref), each a different input × output × technique, none touching a banned tag: **`433-kids-fluid-paint`** (liquid-dreamy — touch · WebGL2 · Stam stable-fluids · rides loved `84-wave-fluid`❤️ + paint❤️), **`434-kids-lantern-sky`** (cosmic-wonder — touch+gyro · three.js · true 3D HRTF spatial audio · extends loved lantern lineage into 3D), **`435-kids-air-ribbon`** (magical-flowing — camera/HandLandmarker · Canvas2D · sustained air-theremin, the melodic inverse of the recent face/pose BEATS). `today's research → today's build` is visible: the grep audit directly produced all three honest 2/5 briefs and the decision to go WIDE-for-breadth.
+
+---
+
 ## §361 — 2026-06-09 (UTC) · cycle 361 dive (15-min, mandatory) — adult, WIDE; the dive's value was (a) a fresh real-world-data SOURCE and (b) a grep pass that confirmed an untouched ambition-#1 technique
 
 **Method:** WebSearch + WebFetch across cs.SD/cs.GR-recent, WebGPU/creative-coding, and live-data sonification, then a grep pass over INDEX + every README to verify lab-firsts before spending builders.
