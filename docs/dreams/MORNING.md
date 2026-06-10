@@ -1,17 +1,16 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 377
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 378
 
 ## New since yesterday
-- **`475-resonant-room`** 🏛️ — *open this first.* Your **actual recorded piano** played into a room that **rings back in the same key**: hold "Swell" and the space fills with a warm in-key halo; release and it **resolves to the tonic and fades to silence**. The lab's **first Feedback Delay Network** (Jot/Stautner–Puckette reverb), N=8 Householder matrix tuned to the harmonic series of the key you pick. **Why it matters:** it's the warm-AND-structured-AND-resolves-on-purpose **adult middle** the jury asked for, on your **real piano** (cold 15+ cycles), and it **restarts a multi-cycle spine** (#4, dead since 414). Ambition **4/5** — the jury's named regression fix (it reported zero at 4–5/5).
-  → https://getresonance.vercel.app/dream/475-resonant-room
-  *(3-second hands-free auto-start; 6 keys; hold Space or the button to Swell.)*
+- **`478-kids-wave-pond` 🌊 (kids, shipped)** — tap a glowing top-down pond and watch **real waves** spread, bounce off the rim, and cross through each other — and **hear that field as sound**. Why open it: it's the lab's **first time-domain wave-field** — a genuine 64×64 FDTD 2-D wave-equation mesh (Van Duyne–Smith 1993) running in an AudioWorklet, where the audio and the visual are *the same solved field* (not a sim layered on a synth). Our membranes `202`/`284` were modal mode-banks; this one actually propagates, reflects, and interferes. **Ambition 4/5.** Declares a new **"Wave Field" kids spine**.
+- **2 more explored, banked (see IDEAS §378):** `479-kids-duet-bloom` — the lab's **first cooperative two-player** instrument (the chord only blooms when *both* kids play together; a rainbow bridge grows between them — KIDS.md's flagged social gap, the fire's highest-surprise concept); and `480-kids-sing-bird` — **sing** and your pitch (YIN) flies a bird along a melody contour.
 
-## How this cycle ran (the studio)
-- **DEEP fire, 3 parallel builders, 1 concept:** *real piano → an in-key sympathetic room that resolves*, attacked via three resonance architectures — **FDN/WebGL2 (shipped)** vs. biquad sympathetic-string bank/three.js vs. tuned-comb-waveguide/WebGL2. Shipped the FDN (cleanest genuinely-new technique + dodges the over-used three.js renderer). **2 more explored — banked in IDEAS §377** as this spine's cycle-2/3 (the tarab light-strings + the caustic interference field are both gorgeous).
+## How this cycle stayed off the rut
+- Today's research dive was mostly **subtraction**: a grep-audit killed **three** would-be re-treads before any builder spawned — the queued "bowed-string" already exists (`320-kids-light-loom`), kids-weather already exists (`293-kids-sky-band`), the membrane drum already exists (`202`/`284`). That's the "too similar" guard working — it steered the fire onto genuinely-open ground.
+- Diversity: this cycle's **WebGL2 output was count-banned (5× in the last 10)** — `478` dodges it (three.js vertex-colors) and dodges the recent kids GPU-physics rut (it's a *solved acoustic field you hear*, not a physics toy you watch).
 
 ## In progress / partial
-- **"Resonant Room" spine** (new, adult) — cycle 2 candidates: layer the banked **caustic field** onto the FDN, add a **sing/play-into-the-room live-mic** mode, or add the **tarab-strings** resonance model as a second selectable engine.
-- **"Living Wavetable" spine** (kids, from 474) — cycle 2: the banked SVG harp (472) or toroidal halo (473).
+- Three multi-cycle spines now stand: **Wave Field** (kids, cycle 1 = `478`), **Resonant Room** (adult, `475`), **Living Earth** (`463`→`471`). Next adult cycle continues Resonant Room cycle 2; next kids cycle deepens `478` (stereo standing-wave room / coupled ponds).
 
 ## Open questions for Karel
-- **The big one, your call:** the other top ask — **441's audio→image→audio loop on your real *Welcome Home* piano** — needs (a) a specific WH **track ID** and (b) a **FAL image-gen budget sign-off** before an autonomous unattended cycle should fire paid generation. Give me both and I'll build it next adult cycle.
-- **475 is build-verified, not device-verified** (no audio/GPU here): does the FDN read as a *warm sympathetic room* (vs. metallic) on your speakers, and does Swell-release audibly **resolve to the tonic**? And does `/api/audio/549fc519…` actually stream in the live prototype, or is it falling back to the synth stand-in?
+- **Still want a real *Welcome Home* track ID** — the Resonant Room + piano pieces default to the Ghost recording. A real track ID unblocks the "play your actual album" direction.
+- The FDTD pond is **build-verified, not browser-verified** — worth a tap on your phone to feel whether a 64×64 grid at 44.1 kHz holds real-time (and whether the water pickup sounds warm behind the limiter). All three spines carry GPU/audio verification debt.
