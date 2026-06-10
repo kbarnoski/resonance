@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 373
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 374
 
 ## New since yesterday
-- **`463-terra-gamelan`** → https://getresonance.vercel.app/dream/463-terra-gamelan
-  **Every earthquake on Earth, right now, ringing a bell tuned to a Javanese gamelan scale — on a slowly turning globe of light.** It pulls the **live USGS real-time feed** and plays the planet: depth→pitch (slendro/pelog), magnitude→loudness, longitude→pan + position on the globe. 24h of quakes glow as depth-colored embers; a drone bed brightens as the Earth gets seismically busier. (No live network in the build sandbox, so it ships with a full synthetic-seismicity fallback that looks/sounds like the real thing — but on your phone it should pull the real feed.)
-  **Why open this:** it's the lab's first piece that plays a *planetary* data stream, it's tuned to a **non-Western scale** (your "surprise me" axis), and it's the start of a brand-new multi-cycle thread. Open it, let a few quakes ring, drag to spin the globe, toggle slendro↔pelog.
+- **`468-kids-bottle-flute`** → https://getresonance.vercel.app/dream/468-kids-bottle-flute
+  **A row of glowing glass bottles a kid BLOWS into — and they're *real* physically-modeled flutes.** They breathe, resonate, and **overblow to the octave** when you blow hard — the same physics as a real flute, not a sample. Tap a bottle to pick its note, blow into the mic (loudness = how hard you blow), or just tap for a breath-puff with no mic. Big bottle = low, small = high; the scale (C D E G A) means every combination sounds good.
+  **Why open this:** it's **the lab's first physically-modeled WIND instrument** — a brand-new audio primitive (a breath-excited digital-waveguide bore, distinct from the Karplus–Strong plucked strings we already had). Blow soft for a pure low tone, then blow *hard* and feel it jump the octave. (No mic in the build sandbox — on your phone it should track your breath; the auto-demo blows a little tune hands-free.)
 
-## In progress / partial
-- **NEW spine — "The Living Earth"** (cycle 1 = `463`). The jury asked us to *restart a multi-cycle commitment* (nothing had since 414) and to *extend `437-wiki-pulse`'s live-data idea* — this does both, in the geophysical direction. **Cycle 2** (next adult cycle) folds an **EDM build-and-drop arc** onto the globe — your stated "EDM journey alternative." Two complete siblings are banked for it (IDEAS §373): **`464-helios-aurora`** (NOAA space-weather → aurora that storms; Kp≥5 = the drop) and **`465-terra-pulse`** (seismic energy → a festival build-and-drop journey).
-- **Latent Piano Room spine** (`448`→`454`→`457`) is paused one cycle — AI-image output was over-represented (4×), so I broke the rut deliberately rather than ship a 5th latent-image piece. It resumes when the rotation allows; still needs a real *Welcome Home* track ID to run on the album.
+## How this cycle was decided
+- It's a kids cycle, and I noticed our **last three kids builds were all the same shape** — GPU physics sims with chiming bells (jelly soft-body, ferrofluid, ball-pit). So I fired **three deliberately *embodied* explorers** instead — sing, wave-your-body, blow — and shipped the one with a genuine new technique. The other two are banked (below).
 
-## Research findings worth a look
-- RESEARCH §373: two fresh papers bound today's build — **arXiv 2605.21874** (*real-time, EDM-framed, fatigue-resistant* data sonification, May 21 2026) and **arXiv 2602.14560** (*gamelan slendro/pelog* climate sonification, Feb 2026). Together: stream-sonification is going *infinite + non-Western-tuned* — exactly the two levers `463` pulls.
-- Honesty note: I did NOT claim a "lab-first technique" — a grep caught that we'd used slendro (`402`) and pelog (`408`) before, and `437` was already a live feed. Ambition is an honest **3/5** (#2+#3+#4), not an inflated 4/5. The jury asked us to stop gaming the floor; this is that.
+## In progress / partial — 2 more explored (see IDEAS §374)
+- **`466-kids-sing-kite`** — SING and your pitch flies a paper kite along a scrolling melody line; it sings your song back each loop. Lost on a well-trodden "sing-to-the-line" mechanic, but it's our purest embodied-voice kids toy — banked to de-risk child-voice tracking.
+- **`467-kids-shadow-band`** — WAVE your whole body and a camera turns your motion into a glowing particle band (get-off-the-couch). Lost only because its renderer (three.js) is the very screen-render habit this fire set out to break — banked for when camera input is the diversity pick.
+- **Living Earth spine** (cycle 1 = `463-terra-gamelan`) resumes next adult cycle with the banked EDM build-and-drop siblings (`464`/`465`).
 
 ## Open questions for Karel
-- A real **Welcome Home** recording ID would unblock the piano spine + `424-welcome-erosion` (runtime `journey_paths` IDs aren't in the static repo).
-- For the Living Earth cycle 2: prefer the **seismic** EDM journey (`465`) or the **space-weather** aurora (`464`) folded onto the globe? Or both as two layers on one Earth?
-- Heads-up (ongoing): local `main` keeps force-diverging from origin every fire (orphan history, no merge-base) — I hard-reset to origin each cycle; harmless so far, but worth a glance.
+- A real **Welcome Home** recording ID still unblocks the piano spine + `424-welcome-erosion`.
+- Physical modeling is now a live primitive — want me to extend it to a **bowed string** or **struck-bar/mallet** kids instrument next kids cycle?
+- Heads-up (ongoing): local `main` keeps force-diverging from origin each fire (orphan history, no merge-base) — I hard-reset to origin every cycle; harmless so far, worth a glance.
