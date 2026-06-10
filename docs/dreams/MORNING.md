@@ -1,22 +1,18 @@
-# Morning digest — last updated 2026-06-09 (UTC) · cycle 371
-
-## ⭐ Open this first
-**[/dream/457-piano-image-duet](https://getresonance.vercel.app/dream/457-piano-image-duet)** — **Latent Piano Room, cycle 3.** The dreamed image stops just *filtering* your piano and starts *re-composing* it. A glowing scan-line sweeps the AI image left→right reading it as a spectral score; a 24-partial additive bank — **locked to the detected key, so it always resolves, never atonal** — *sings the picture* as a warm shimmer duet over your real Ghost recording. You can see which part of the image makes which pitch. *Why open it:* it's the warm-and-resolves middle the jury asked for, and it closes the loop's other half — image→music, not just music→image.
-
-(No FAL_KEY in the build sandbox, so it'll likely show the **synthesized plasma field** path on first open — that field is itself scanned and sung, so it's a complete piece; if a key is live you'll see real dreamed images instead. 10s auto-demo if you just leave it sitting.)
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 372
 
 ## New since yesterday
-- `457-piano-image-duet` shipped (above). DEEP fire: one concept, **3 image→music engines** built in parallel, strongest shipped — the other two banked (below).
-- Runs on **your real recorded piano** (Ghost recording default) — the jury's "use his actual music" ask, picked up.
+- **`460-kids-ball-pit`** → https://getresonance.vercel.app/dream/460-kids-ball-pit
+  **Tip the phone and pour ~900 glowing marbles that pile, slosh, and CHIME as they collide.** Gravity follows your tilt; every ball-on-ball impact rings a soft just-intonation bell pitched by the ball's color, so a cascade into a corner is a sparkling arpeggio. Tap to pour more; two-finger swipe to scramble into a glittery run.
+  **Why open this:** it's the **lab's first real collision physics** — we had fluid, particle-life, falling-sand, ferrofluid, soft-body, but never a *contact solver* where a thousand discrete bodies bump, stack, and settle. A genuine grep-verified lab-first, and a loud/playful answer to the jury's "go weird." Best felt on a phone you can tilt.
+- *2 more kids directions explored this fire (WIDE) — banked in IDEAS §372:* **storm-conductor** (tap the sky → branching lightning that sings) and **gear-garden** (spin cogs where the tooth-ratios literally ARE the chord — Partch/Antikythera).
 
-## Banked for cycle 4 (the other two explorations — IDEAS §371)
-- **piano-image-improviser** — the image *improvises an in-key counter-melody* (hue→scale degrees, brightness→contour, edge→rhythm; always resolves to tonic). The most "agentic" take.
-- **piano-image-grains** — the image becomes a *granular cloud* (every pixel a grain: x→pan, y→pitch, hue→timbre). The most texturally beautiful take.
-- Strongest next move: **fold all three into one** so the duet has spectral + melodic + textural layers — keeps the spine alive (the jury's "don't close it after one cycle").
+## In progress / partial
+- **Latent Piano Room spine** is alive at **cycle 3** (`448`→`454`→`457`). Next adult cycle (373) is cycle 4 — fold in the melodic/granular image→music layers, or keep extending. Still defaulting to your **Ghost** recording; paste a real *Welcome Home* track ID and the whole spine runs on the album.
 
-## Open question for you
-- **Paste a *Welcome Home* track ID** and the whole Latent Piano Room spine (448 / 454 / 457) runs on the album instead of the Ghost recording — the runtime `journey_paths` IDs aren't in the static repo, so everything defaults to `549fc519…`. This is the one dependency blocking the album-on-the-spine vision.
+## Research findings worth a look
+- RESEARCH §372: **"Party" WebGPU particle-physics playground** (webgpu.com, Jan 23 2026) — collision-as-instrument; it bound today's build. The dive's grep-audit also caught two would-be-redundant ideas (voice→creature, fireworks) that already exist — the "too similar" trap, avoided.
 
-## Honest caveats
-- Build-verified (exit 0), **not** browser-verified — no audio/GPU/FAL key in the sandbox. Unverified: whether the shimmer reads as "the image singing" vs. a generic pad on real piano + phone speakers, and 24-oscillator perf on a low-end phone.
-- AI-image output is now 4× in the trailing window — flagged for the next diversity audit. This cycle it's the jury-mandated spine extension, not unasked-for over-rep.
+## Open questions for Karel
+- A real **Welcome Home** recording ID would unblock the piano spine + `424-welcome-erosion` (runtime `journey_paths` IDs aren't in the static repo).
+- Loving prototypes still steers the lab — the loved physics/tilt set (`169`/`83`/`84`) is exactly what `460` rides.
+- Heads-up: the local `main` keeps force-diverging from origin every fire (orphan history, no merge-base) — I hard-reset to origin each cycle and it's been harmless, but worth a glance if it surprises you.
