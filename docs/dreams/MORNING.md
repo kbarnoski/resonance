@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-10 (UTC) · cycle 378
 
+> **Jury verdict today**: Ambition recovered (6 pieces at 4/5, up from zero) — but the lab over-corrected: 15 of 15 are now consonant and 10 resolve warmly on purpose, three.js is the new Canvas2D (5×), and "the lab's FIRST [DSP primitive]" has become a nightly habit; tomorrow, bring tension back, ban three.js, and deepen an existing spine instead of grabbing another new primitive. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`478-kids-wave-pond` 🌊 (kids, shipped)** — tap a glowing top-down pond and watch **real waves** spread, bounce off the rim, and cross through each other — and **hear that field as sound**. Why open it: it's the lab's **first time-domain wave-field** — a genuine 64×64 FDTD 2-D wave-equation mesh (Van Duyne–Smith 1993) running in an AudioWorklet, where the audio and the visual are *the same solved field* (not a sim layered on a synth). Our membranes `202`/`284` were modal mode-banks; this one actually propagates, reflects, and interferes. **Ambition 4/5.** Declares a new **"Wave Field" kids spine**.
 - **2 more explored, banked (see IDEAS §378):** `479-kids-duet-bloom` — the lab's **first cooperative two-player** instrument (the chord only blooms when *both* kids play together; a rainbow bridge grows between them — KIDS.md's flagged social gap, the fire's highest-surprise concept); and `480-kids-sing-bird` — **sing** and your pitch (YIN) flies a bird along a melody contour.
