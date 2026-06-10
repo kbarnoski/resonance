@@ -1,15 +1,16 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 380
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 381
 
 ## New since yesterday
-- **[484-kids-two-suns](https://getresonance.vercel.app/dream/484-kids-two-suns)** — the lab's **first polytonality toy** (and its **first genuinely UNRESOLVED piece**). Two glowing suns each sing their *own* key (C major + A major) at the same time. Drag them apart → two clear worlds, panned L/R. Drag them together → one shimmering, never-resolving bittersweet bloom. **Why open it:** it's the direct answer to your jury's #1 ask — bring real harmonic *tension* back, not a pre-baked cadence. The kid resolves nothing; the ambiguity *is* the toy. WebGL2 corona glow (Canvas2D fallback), true two-hand multi-touch for parent+child play.
-- **2 more explored this cycle** (DEEP mode, 3 builders) — banked to IDEAS §380: a **tritone "mood prism"** (twist to split one key into the *real* Petrushka C+F♯ — the harsher-tension variant) and a **two-rivers braid**.
+- **[/dream/486-third-room](/dream/486-third-room)** 🏛️ — **Resonant Room spine, cycle 3.** The tritone clash from `483` now has a *way home*: a THIRD room tuned a **just-fifth** above the reference shares its harmonics, so you don't just collapse the dissonance — you **negotiate** it. Blend the consonant bridge in, let the keyboard glow the **pivot notes** where all three rooms agree, play one, then close the detune. Why open it: it's the first piece where harmonic tension has a *door*, and the door is yours to find — resolution through action, never auto-resolved.
+  - Rendered as the lab's **first WebGPU compute vorticity field** (4000 particles; roughness → turbulence that calms to laminar emerald as you find the fifth) — the starved renderer the jury asked for; Canvas2D fallback if your phone lacks WebGPU.
+  - Live MIDI + on-screen + QWERTY; ~3 s hands-free auto-demo (plays the clash, then blends the bridge in). 2 more approaches explored — see IDEAS.
 
 ## In progress / partial
-- Polytonality is now a live thread. Natural cycle-2: the tritone prism (486) as the harsher variant, or fold a "fan apart into the tritone" intensity mode into Two Suns.
+- **Resonant Room spine** now at cycle 3 (`475` warm → `483` cold/two-rooms → `486` three-rooms/negotiated). Cycle 4 pre-scoped: a "Notes that ease the tension →" whisper panel + an opt-in roughness-landscape autopilot (both banked from this fire's non-winners).
 
 ## Research findings worth a look
-- Dive confirmed the beating/just-intonation lane is exhausted in-lab (272 already does drag-to-unison). No bindable <30-day finding surfaced — steered honestly onto the untouched **polytonality** primitive instead (see RESEARCH 2026-06-10). I did **not** fake a recent-research claim this cycle.
+- No fresh (<14-day) sensory-dissonance paper exists — the 2008 MacCallum–Einbond real-time roughness model stays the right tool (it's the engine here). The dive instead bound the renderer: **WGSL compute shaders with ping-pong buffers** are the live 2026 GPU-particle idiom (ShaderVine, nibi). RESEARCH §381.
 
 ## Open questions for Karel
-- C+A (gentle, shared E) vs. the C+F♯ tritone (genuinely tense) for kids — Two Suns chose the gentler pairing for a 4yo; the prism sibling holds the tritone. Want the harsher one shipped too, or is C+A the right kid-safe tension?
-- The lab has been 15/15 consonant for two weeks. Two Suns breaks that. Want me to keep pushing unresolved/ambiguous pieces, or was one enough to reset the balance?
+- On your review phone: does WebGPU initialize, or do you see the Canvas2D fallback? (Either is fine — I'd just like to know which.)
+- Do the predicted **pivot notes** actually *sound* resolved to your ear, or does the Plomp–Levelt model surface notes that are "locally smooth" but don't ring? The one thing I can't verify without a real device + speakers.

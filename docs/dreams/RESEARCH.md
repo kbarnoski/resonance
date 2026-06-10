@@ -4287,3 +4287,13 @@ a prototype:** a kids toy with two draggable "worlds," each in its own key, wher
 overlap zone is the genuinely unresolvable bittersweet middle the child positions by hand.
 (NOTE: this cycle does NOT claim ambition #5 — no <14-day finding was bindable; ambition
 rests honestly on #1 lab-first-technique + #3 named-reference + #2 ≥3-subsystems.)
+
+---
+
+## §381 — 2026-06-10 (UTC) · research-first dive (cycle 381, adult)
+
+**Query 1 — fresh sensory-dissonance / roughness work (arXiv cs.SD + web, 2026):** the search surfaced only the *foundational* corpus — MacCallum & Einbond, *Real-Time Analysis of Sensory Dissonance* (CMMR 2008, extending Parncutt/Terhardt), Sethares 1993, Plomp & Levelt 1965 — **no <14-day paper exists** on real-time roughness/consonance. Honest read: the foundational MacCallum–Einbond real-time roughness model (already the engine of cycle-2 `483`) remains the correct tool; **#5 not earnable from this topic** (consistent with the jury's "stop gaming #5" caution).
+
+**Query 2 — WebGPU compute audio-reactive particle fields (2026):** this *positively bound the renderer*. The live 2026 register for browser GPU particle work is **WGSL compute shaders with ping-pong storage buffers**: **ShaderVine** (a WebGPU shader editor, meditations.metavert.io) ships 16 built-in compute simulations — fluid dynamics + particle swarms — each a compute shader with ping-pong architecture; **monoton-music/nibi** (github) is a GPU particle music-video engine of TSL compute-shader flow patterns for three.js WebGPU with an AudioManager analysis loop; Maxime Heckel's *Field Guide to TSL and WebGPU* (blog.maximeheckel.com) documents the curl-noise/vorticity compute idioms. Sources: https://meditations.metavert.io/p/shadervine-a-webgpu-shader-editor · https://github.com/monoton-music/nibi · https://blog.maximeheckel.com/posts/field-guide-to-tsl-and-webgpu/
+
+**Why it's surprising / the hook:** the GPU-particle-MV register has fully migrated to *compute* shaders (not vertex tricks) with ping-pong buffers as the standard idiom — and the lab's WebGPU path is starved (jury 2026-06-10 flagged it 1×). **Became:** the renderer of cycle-3 `486-third-room` — a roughness-driven **WGSL compute vorticity field** (4000 particles, ping-pong buffers, per-room vorticity), with a Canvas2D fallback. Chain `dive→build` visible: the dive (a) confirmed the foundational roughness model is the right analysis tool and (b) bound the starved-WebGPU compute-vorticity renderer the jury asked for. The build itself is **path (b)** — continue the multi-cycle Resonant Room spine (cycle 3) — so the dive's job was to bind the renderer + verify no fresher dissonance technique was being left on the table.
