@@ -1,16 +1,17 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 381
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 382
 
 ## New since yesterday
-- **[/dream/486-third-room](/dream/486-third-room)** 🏛️ — **Resonant Room spine, cycle 3.** The tritone clash from `483` now has a *way home*: a THIRD room tuned a **just-fifth** above the reference shares its harmonics, so you don't just collapse the dissonance — you **negotiate** it. Blend the consonant bridge in, let the keyboard glow the **pivot notes** where all three rooms agree, play one, then close the detune. Why open it: it's the first piece where harmonic tension has a *door*, and the door is yours to find — resolution through action, never auto-resolved.
-  - Rendered as the lab's **first WebGPU compute vorticity field** (4000 particles; roughness → turbulence that calms to laminar emerald as you find the fifth) — the starved renderer the jury asked for; Canvas2D fallback if your phone lacks WebGPU.
-  - Live MIDI + on-screen + QWERTY; ~3 s hands-free auto-demo (plays the clash, then blends the bridge in). 2 more approaches explored — see IDEAS.
+- **[/dream/489-kids-pond-pair](/dream/489-kids-pond-pair)** 🪷 — **Wave Field kids spine, cycle 2 (kids 4+).** `478`'s one pond becomes **two glowing ponds that secretly talk.** Splash one and a little **lily pad** rides the ripples, drifts across the channel, and *drops your sound into the other pond so it sings* — a visible sound-messenger a 4-year-old gets instantly. Two real coupled 2-D wave fields (one low pentatonic, one high → always harmonize), an always-on sympathetic whisper between them, multi-touch so two kids can each take a pond. Why open it: it's the jury's "deepen a spine by extension, don't grab a new primitive" ask, made into something a toddler can play.
+  - 2 more approaches explored this fire — a child-draggable coupling *vine* (+ WebGPU) and a clean cooperative two-kids core — banked to IDEAS §382 for cycle 3.
 
 ## In progress / partial
-- **Resonant Room spine** now at cycle 3 (`475` warm → `483` cold/two-rooms → `486` three-rooms/negotiated). Cycle 4 pre-scoped: a "Notes that ease the tension →" whisper panel + an opt-in roughness-landscape autopilot (both banked from this fire's non-winners).
+- **Wave Field kids spine** now at cycle 2 (`478` one pond → `489` two coupled ponds + carrier). Cycle 3 pre-scoped: a draggable coupling control, a WebGPU-compute renderer, or a *chain* of N>2 ponds (a whispering archipelago).
+- **Resonant Room adult spine** stands at cycle 3 (`475`→`483`→`486`); next adult cycle (383) is its cycle 4 (whisper panel + roughness-landscape fold-ins).
 
 ## Research findings worth a look
-- No fresh (<14-day) sensory-dissonance paper exists — the 2008 MacCallum–Einbond real-time roughness model stays the right tool (it's the engine here). The dive instead bound the renderer: **WGSL compute shaders with ping-pong buffers** are the live 2026 GPU-particle idiom (ShaderVine, nibi). RESEARCH §381.
+- No fresh (<14-day) coupled-membrane/wave paper exists; the dive instead confirmed the **coupling primitive** — Sympathetic Resonance v1.0 (2026): coupled second-order resonators with energy spreading between them, exactly how the two ponds' edges talk here. Van Duyne–Smith 1993 mesh stays the load-bearing reference. RESEARCH §382.
 
 ## Open questions for Karel
-- On your review phone: does WebGPU initialize, or do you see the Canvas2D fallback? (Either is fine — I'd just like to know which.)
-- Do the predicted **pivot notes** actually *sound* resolved to your ear, or does the Plomp–Levelt model surface notes that are "locally smooth" but don't ring? The one thing I can't verify without a real device + speakers.
+- On a phone/iPad: does the **lily pad** read as a deliberate "messenger carrying sound across," or as random wander? It's the whole concept and the one thing I can't verify without a real touchscreen.
+- Is the always-on cross-pond **whisper** (`K=0.08`) audible to you, or masked behind the safety limiter? I can push the coupling up if it's too subtle.
+- Renderer is plain Canvas2D here (reliable everywhere) — the WebGPU-compute version is banked. Want me to bring it forward, or keep kids pieces on the safe path?
