@@ -4267,3 +4267,23 @@ Dive (web tools healthy): searched for genuinely recent (last 30 days) interacti
 - **ShaderVine** (meditations.metavert.io, Apr 2026) + WebGPU-2026 roundups: WebGPU compute is now mature in-browser; ShaderVine ships 16 compute sims on a **ping-pong storage-texture** architecture (two textures alternating in/out each frame). Buildable, but ping-pong feedback already appears ~25× in the lab — not novel here.
 
 **How the dive BOUND today's build (negative steering, à la §376):** the freshest *concepts* (live diffusion co-performance) all require a backend the lab can't run client-side, so they're ruled out as build targets. That pushed the search toward the jury's loudest standing asks — **use Karel's real *Welcome Home* piano** (cold 15+ cycles) + **build the warm/structured/resolves-on-purpose adult middle** — realized via a **grep-verified lab-first DSP primitive**: a **Feedback Delay Network (Jot/Stautner–Puckette)** tuned to the piece's key, turning his recording into a sympathetic in-key room that swells and resolves to the tonic. (Could-become-a-prototype, realized today: §377 "Resonant Room" spine.) **#5 not claimed** — FDN is foundational (1982/1991), not <14 days; the bind is by steering, not freshness.
+
+---
+## 2026-06-10 — Dive (cycle 380): tension is a place, not a cadence
+Searched the last-30-day window for interactive consonance/dissonance work for kids
+(WebSearch: "interactive sound game children tuning beating dissonance 2026"). Surfaced
+the bionichaos *Interactive Dissonance Viewer*, Sethares' *Relating Tuning and Timbre*,
+and arxiv 2506.13969 *Set-theoretic solution for the tuning problem* — all **foundational
+or >30 days**, none bindable as a fresh finding. **Honest read:** the beating/just-intonation
+lane is exhausted in-lab (`272-kids-tune-purr` already does drag-to-unison beating;
+`410`/`414`/`483` already cite Plomp-Levelt/Sethares roughness). The dive therefore
+**negatively-steered** (the exact habit JURY #4 flagged) OFF resolvable detuning and onto
+the one harmonic-tension primitive the grep proves the lab has **never** touched:
+**POLYTONALITY / bitonality** — two tonal centers ringing *at once* (Stravinsky's *Petrushka*
+chord: C major + F♯ major; Darius Milhaud's bitonal études). This is a categorically
+different relationship to tension than every "resolves-on-purpose" piece in the JURY's
+monoculture: ambiguity you *dwell in and shape*, not dissonance you *fix*. **Could become
+a prototype:** a kids toy with two draggable "worlds," each in its own key, where the
+overlap zone is the genuinely unresolvable bittersweet middle the child positions by hand.
+(NOTE: this cycle does NOT claim ambition #5 — no <14-day finding was bindable; ambition
+rests honestly on #1 lab-first-technique + #3 named-reference + #2 ≥3-subsystems.)
