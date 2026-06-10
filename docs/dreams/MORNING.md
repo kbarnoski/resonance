@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 376
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 377
 
 ## New since yesterday
-- **`474-kids-scan-bloom` 🌸** → https://getresonance.vercel.app/dream/474-kids-scan-bloom
-  **Squeeze a glowing flower and HEAR its outline sing — the shape you see IS the waveform.** Tap a petal: it rings a warm note (all consonant) and the bloom wobbles, then slowly relaxes back to a calm round hum. This is the lab's **first Scanned Synthesis** instrument (Mathews/Verplank/Shaw, ICMC 2000) — the oscillator literally reads a slow vibrating ring of 128 masses, so the deforming outline on screen is the live sound. A squeeze brightens the timbre, then it **resolves on its own.**
-  **Why open this:** for a 4yo it's pure cause→effect (poke → it sings), but underneath it's a real, never-before-used audio primitive in the lab. It's **warm + structured + resolves on purpose** (the kids side of the jury's "missing middle"), demos hands-free (auto-plays a little tune ~3s in), and is never silent / never clips.
+- **`475-resonant-room`** 🏛️ — *open this first.* Your **actual recorded piano** played into a room that **rings back in the same key**: hold "Swell" and the space fills with a warm in-key halo; release and it **resolves to the tonic and fades to silence**. The lab's **first Feedback Delay Network** (Jot/Stautner–Puckette reverb), N=8 Householder matrix tuned to the harmonic series of the key you pick. **Why it matters:** it's the warm-AND-structured-AND-resolves-on-purpose **adult middle** the jury asked for, on your **real piano** (cold 15+ cycles), and it **restarts a multi-cycle spine** (#4, dead since 414). Ambition **4/5** — the jury's named regression fix (it reported zero at 4–5/5).
+  → https://getresonance.vercel.app/dream/475-resonant-room
+  *(3-second hands-free auto-start; 6 keys; hold Space or the button to Swell.)*
 
-## How this cycle was decided
-- Kids cycle → went **DEEP**: one concept (*poke a glowing object and it sings its own shape*), **3 topologies built in parallel** — open string (SVG harp), toroidal ring (three.js halo), radial bloom (WebGL2 flower). Shipped the **bloom** (clearest 4yo control, cleanest renderer choice).
-- **Today's research dive steered by ruling things OUT:** the obvious idea (an app that "answers a child in their own style") turned out already-done — we have `251-live-duet-trader` (live Markov) + a whole echo cluster. So I pushed onto **scanned synthesis**, which a grep confirmed the 470-deep lab has *never* touched. That's how this hit **4/5 on ambition** (a genuine lab-first technique) — the score the jury said had collapsed to zero.
+## How this cycle ran (the studio)
+- **DEEP fire, 3 parallel builders, 1 concept:** *real piano → an in-key sympathetic room that resolves*, attacked via three resonance architectures — **FDN/WebGL2 (shipped)** vs. biquad sympathetic-string bank/three.js vs. tuned-comb-waveguide/WebGL2. Shipped the FDN (cleanest genuinely-new technique + dodges the over-used three.js renderer). **2 more explored — banked in IDEAS §377** as this spine's cycle-2/3 (the tarab light-strings + the caustic interference field are both gorgeous).
 
 ## In progress / partial
-- **New "Living Wavetable" kids spine** starts here (`474` = cycle 1). Banked siblings ready for cycle 2: the **SVG harp-string** (`472`, the most legible "see the wave") and the **toroidal halo** (`473`, the dent travels around the ring).
+- **"Resonant Room" spine** (new, adult) — cycle 2 candidates: layer the banked **caustic field** onto the FDN, add a **sing/play-into-the-room live-mic** mode, or add the **tarab-strings** resonance model as a second selectable engine.
+- **"Living Wavetable" spine** (kids, from 474) — cycle 2: the banked SVG harp (472) or toroidal halo (473).
 
 ## Open questions for Karel
-- **The Welcome Home piano is still the biggest open lane** — next adult cycle I want to run the closed audio→image→audio loop (`441`/`457` spine) on your *actual* album recordings. Drop a track ID and it gets picked up.
-- For the kids spine: prefer I **deepen the bloom** (two-bloom duet, chords, pluck-glissando) or **ship the harp-string** next — which reads better to you?
-- Heads-up (ongoing): local `main` keeps force-diverging from origin each fire — I hard-reset to origin every cycle; harmless so far, worth a glance.
+- **The big one, your call:** the other top ask — **441's audio→image→audio loop on your real *Welcome Home* piano** — needs (a) a specific WH **track ID** and (b) a **FAL image-gen budget sign-off** before an autonomous unattended cycle should fire paid generation. Give me both and I'll build it next adult cycle.
+- **475 is build-verified, not device-verified** (no audio/GPU here): does the FDN read as a *warm sympathetic room* (vs. metallic) on your speakers, and does Swell-release audibly **resolve to the tonic**? And does `/api/audio/549fc519…` actually stream in the live prototype, or is it falling back to the synth stand-in?
