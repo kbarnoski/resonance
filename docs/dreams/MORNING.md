@@ -1,17 +1,18 @@
-# Morning digest — last updated 2026-06-10 (UTC) · cycle 382
+# Morning digest — last updated 2026-06-10 (UTC) · cycle 383
 
 ## New since yesterday
-- **[/dream/489-kids-pond-pair](/dream/489-kids-pond-pair)** 🪷 — **Wave Field kids spine, cycle 2 (kids 4+).** `478`'s one pond becomes **two glowing ponds that secretly talk.** Splash one and a little **lily pad** rides the ripples, drifts across the channel, and *drops your sound into the other pond so it sings* — a visible sound-messenger a 4-year-old gets instantly. Two real coupled 2-D wave fields (one low pentatonic, one high → always harmonize), an always-on sympathetic whisper between them, multi-touch so two kids can each take a pond. Why open it: it's the jury's "deepen a spine by extension, don't grab a new primitive" ask, made into something a toddler can play.
-  - 2 more approaches explored this fire — a child-draggable coupling *vine* (+ WebGPU) and a clean cooperative two-kids core — banked to IDEAS §382 for cycle 3.
+- **[/dream/490-disintegration](/dream/490-disintegration)** 🜄 — **a warm loop that physically falls apart as you listen (adults).** After 15 straight consonant pieces (10 resolving warmly on purpose), the jury asked for ONE piece with genuine tension the listener can't pre-resolve. This is it: a melancholy A-minor bell loop held on a "tape" that **irreversibly erodes every pass** — highs die first, gaps tear open, it crumbles toward silence over ~5 minutes. You can only shape *how* it dies, never whether: **hold to remember** (slows decay), or **tap the ring** to flicker a faded region back as a ghost — which taxes everything else. An homage to **William Basinski, *The Disintegration Loops* (2002)**. Why open it: it's the most un-Resonance thing in the lab — no resolution at all, only entropy — and the whole point is to break the warm-consonant monoculture.
+  - 2 more explored this fire (banked IDEAS §383): **491-room-resonance** (Alvin Lucier *I Am Sitting in a Room* — speak a phrase, watch it dissolve into pure room resonance on a live spectrogram) + **492-automata** (a piece composed live by a **Wolfram cellular automaton** — never repeats, genuinely different at minute 5). Both build-clean; either is a strong next adult ship.
 
 ## In progress / partial
-- **Wave Field kids spine** now at cycle 2 (`478` one pond → `489` two coupled ponds + carrier). Cycle 3 pre-scoped: a draggable coupling control, a WebGPU-compute renderer, or a *chain* of N>2 ponds (a whispering archipelago).
-- **Resonant Room adult spine** stands at cycle 3 (`475`→`483`→`486`); next adult cycle (383) is its cycle 4 (whisper panel + roughness-landscape fold-ins).
+- **Resonant Room adult spine** stands at cycle 3 (`475`→`483`→`486`); its cycle 4 (whisper-panel + roughness-landscape fold-ins) is still pre-scoped in IDEAS §381 — I stepped off it this cycle to break the DEEP streak and answer the tension provocation directly.
+- **Wave Field kids spine** at cycle 2 (`478`→`489`); cycle 3 pre-scoped (draggable coupling / WebGPU / N>2 ponds).
 
 ## Research findings worth a look
-- No fresh (<14-day) coupled-membrane/wave paper exists; the dive instead confirmed the **coupling primitive** — Sympathetic Resonance v1.0 (2026): coupled second-order resonators with energy spreading between them, exactly how the two ponds' edges talk here. Van Duyne–Smith 1993 mesh stays the load-bearing reference. RESEARCH §382.
+- The jury's "starved real-world-data sonification" menu item is actually a **saturated rut** — a grep found seismic done 3× (233/279/337) and sky/space-weather 2× (314/347). Logged so we stop re-walking it. The genuinely-untouched territory was conceptual/critical + tension → Basinski/Lucier/Wolfram. (RESEARCH §383.)
+- No bindable <14-day finding this cycle (fresh arXiv audio is all server-side diffusion; fresh WebGPU work is an already-used register) — so #5 honestly not claimed. Being straight about it per your last jury note.
 
 ## Open questions for Karel
-- On a phone/iPad: does the **lily pad** read as a deliberate "messenger carrying sound across," or as random wander? It's the whole concept and the one thing I can't verify without a real touchscreen.
-- Is the always-on cross-pond **whisper** (`K=0.08`) audible to you, or masked behind the safety limiter? I can push the coupling up if it's too subtle.
-- Renderer is plain Canvas2D here (reliable everywhere) — the WebGPU-compute version is banked. Want me to bring it forward, or keep kids pieces on the safe path?
+- **490's whole bet is that the decay *sounds* haunted, not just muted.** On your phone: does it bloom like Basinski (ghostly, beautiful-in-ruin), or just fade thinly behind the limiter? That's the one thing I can't hear in the sandbox.
+- This was a **WIDE** cycle (3 unrelated concepts) on purpose, to break the 4-night DEEP streak. Want more of that divergence, or back to deepening one big spine?
+- I shipped a piece with **zero warm resolution** — is the no-resolution / conceptual register something you want more of, or was the consonant warmth actually working for you?
