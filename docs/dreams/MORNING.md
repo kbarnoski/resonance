@@ -1,19 +1,18 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 384
+# Morning digest — last updated 2026-06-11 (UTC) · cycle 385
 
 ## New since yesterday
-- **[/dream/493-kids-feeling-forest](/dream/493-kids-feeling-forest)** 🜂 — **a child crosses a glowing "feeling forest" with their BODY, and every place sounds like a different feeling (kids).** Move into the prickly top-left corner and the music genuinely clashes; drift toward the bottom-right and it opens into calm — a smooth dissonance→consonance gradient you *walk* through. There's no "resolve" button: the child finds calm (or dwells in the bittersweet middle) by **moving**. Navigate by **body/camera** (MediaPipe pose), drag, or just watch the always-on auto-demo. Why open it: it's the lab's **first 5/5** ambition piece — and the first time the nightly research dive *implemented* a brand-new paper (**FXplorer**, NIME 2026, listed June 9 — "navigate a sound-map, don't dial menus") instead of just citing an old one.
-  - 2 more explored this fire (banked IDEAS §384): **494-weather-walk** (the drag version — lost only because *touch* is the over-used input right now) + **495-singing-valley** (steer the map with your **voice** — pitch = up/down, loudness = left/right; strong, banked for a kids voice cycle). Same harmony-map concept, three different controllers.
+- **[/dream/496-voyager-room](/dream/496-voyager-room)** 🎛️ — **you don't play notes; you CONDUCT a room of five autonomous machine musicians who listen to each other and to you.** Tap Start and the room is already improvising — VEGA leads a motif, LYRA keeps the peace, DRACO stirs up tension, ECHO imitates whoever's loudest, NEBULA drifts a pad underneath. You shape them with one **TENSION dial** (consonance ⇄ dissonance), TEMPO, and tap an orb to **spotlight** it. Lean the dial up and the room genuinely clashes; pull it back and it resolves — driven by a real psychoacoustic roughness meter, not a pre-baked cadence. Why open it: it's the lab's **first ensemble of machine musicians with their own will** (every prior "AI partner" just *follows* you) — George Lewis's *Voyager* made playable — and the window's **2nd 5/5**, binding a 2-day-old paper (StreamMUSE, arXiv 2606.11886, June 10) as the lock-step generation loop.
+  - 2 more explored this fire (banked IDEAS §385): **497-call-ring** (a ring-canon where each agent answers its neighbour with a *transform* — open/close one SPREAD knob to go from tight round to fragmenting clash) + **498-swarm-score** (48 agents *gossip* toward an emergent chord while tritone **dissidents** keep tension alive — drag to nudge where they gather; WebGL2). Same concept, three machine brains.
 
 ## Why this one (answering Tuesday's jury)
-- You flagged a **warm-consonant monoculture** (15/15 consonant, 10 resolve warmly) — this carries **genuine tension you resolve by moving**, not a pre-baked cadence.
-- You flagged **three.js as the new Canvas2D** and **touch overused** — this is body/camera + plain Canvas2D, dodging both.
-- You flagged **"no piece hits 5/5 because the dive never binds"** — this one binds a <14-day finding for real. First 5/5.
+- **Bring tension back** → you *conduct* tension and resolve it by hand; the room can sit in deliberate dissonance.
+- **Ban three.js / deepen, don't farm primitives** → plain Canvas2D, and it opens a fresh **Machine Ensemble** spine.
+- **Pick a starved lane, bind a recent finding** → the WebRTC-multi-user lane you flagged turned out *already built* (319/334/341), and "an accompanist that follows you" is saturated — so I went for the real gap (a conducted *ensemble*) and bound a 2-day-old paper for real.
 
 ## In progress / partial
-- **New Sound-Map kids spine** starts here (cycle 1); cycle 2 is pre-scoped — ship the voice version (495) or deepen 493 (two children harmonizing by position, haptics, record-a-path-as-a-melody).
-- Resonant Room (475→483→486) and Wave Field (478→489) spines are **paused** — their three.js / WebGL2 / physical-modeling tags are all jury-banned this window.
+- **Machine Ensemble / Voyager spine** starts here (cycle 1). Cycle 2 is pre-scoped: real **cross-device WebRTC** so two people conduct one ensemble together, OR fold 497's motif-transforms / 498's swarm-emergence into 496.
 
 ## Open questions for Karel
-- **The whole bet is that the dissonant corner *reads* as tense and the calm corner as relief on a phone speaker.** Does the gradient feel like a journey, or like mush behind the limiter? Can't hear it in the sandbox.
-- **Camera for a 4-year-old:** I used full-body pose. A hand-tracking swap might track a small child held close to an iPad better — worth trying next cycle?
-- I deliberately brought **tension** back into a *kids* toy (a corner that genuinely clashes). Too much for the little ones, or the right kind of "safe scary"?
+- **The whole bet is the TENSION dial *audibly* swinging consonance↔dissonance on a phone speaker.** Does it read as a real arc from calm to clash, or mush behind the limiter? Can't hear it in the sandbox — the roughness constants may need a by-ear tweak.
+- Five voices is a guess at "an ensemble you can follow." Too busy, or about right? Should DRACO (the provocateur) be tamer by default?
+- Want the next step to be **two devices conducting one room together** (real WebRTC, genuinely lab-first), or to deepen 496 solo first?
