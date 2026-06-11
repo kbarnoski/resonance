@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 385
+# Morning digest — last updated 2026-06-11 (UTC) · cycle 386
 
 ## New since yesterday
-- **[/dream/496-voyager-room](/dream/496-voyager-room)** 🎛️ — **you don't play notes; you CONDUCT a room of five autonomous machine musicians who listen to each other and to you.** Tap Start and the room is already improvising — VEGA leads a motif, LYRA keeps the peace, DRACO stirs up tension, ECHO imitates whoever's loudest, NEBULA drifts a pad underneath. You shape them with one **TENSION dial** (consonance ⇄ dissonance), TEMPO, and tap an orb to **spotlight** it. Lean the dial up and the room genuinely clashes; pull it back and it resolves — driven by a real psychoacoustic roughness meter, not a pre-baked cadence. Why open it: it's the lab's **first ensemble of machine musicians with their own will** (every prior "AI partner" just *follows* you) — George Lewis's *Voyager* made playable — and the window's **2nd 5/5**, binding a 2-day-old paper (StreamMUSE, arXiv 2606.11886, June 10) as the lock-step generation loop.
-  - 2 more explored this fire (banked IDEAS §385): **497-call-ring** (a ring-canon where each agent answers its neighbour with a *transform* — open/close one SPREAD knob to go from tight round to fragmenting clash) + **498-swarm-score** (48 agents *gossip* toward an emergent chord while tritone **dissidents** keep tension alive — drag to nudge where they gather; WebGL2). Same concept, three machine brains.
+- **[/dream/500-kids-aurora-tilt](/dream/500-kids-aurora-tilt)** 🌌 — **tilt a tablet to bend a glowing aurora.** Tilt it far and the northern lights go tense, shimmery and electric-violet; hold it flat and still and the curtains widen, warm green, and the music resolves home. The child holds all the tension *in their hands* and chooses, at any moment, to let it go. Why open it: it's the jury's exact ask — **tension you resolve through action** — made as simple as *leveling the device*, and it's the most robust thing in the lab for a phone glance: it **auto-demos on load with zero permissions** (no mic, no location), so it's already singing and moving before you touch it. Beautiful, calming, instantly usable by a 4-year-old. (Tilt → an Iñigo-Quilez domain-warp aurora shader + a 4-voice pad that voice-leads home↔tense as one.)
+  - **2 more explored this fire** (banked IDEAS §386): **499-kids-sky-bells** — the **real live sky singing** (it fetches the actual current weather where you are and turns temperature/wind/clouds/rain into a soundscape; highest-surprise of the three — I think it's a great *adult/all-ages* piece, flagged for that). **501-kids-hum-garden** — bloom a flower by humming **steadily**, not by hitting a right note (calm presence = the flower opens). Three orthogonal kids directions in one fire.
 
-## Why this one (answering Tuesday's jury)
-- **Bring tension back** → you *conduct* tension and resolve it by hand; the room can sit in deliberate dissonance.
-- **Ban three.js / deepen, don't farm primitives** → plain Canvas2D, and it opens a fresh **Machine Ensemble** spine.
-- **Pick a starved lane, bind a recent finding** → the WebRTC-multi-user lane you flagged turned out *already built* (319/334/341), and "an accompanist that follows you" is saturated — so I went for the real gap (a conducted *ensemble*) and bound a 2-day-old paper for real.
+## Why WIDE this cycle (answering "too similar in design and theme")
+- Last two cycles were both DEEP — so I went **WIDE**: three *unrelated* kids directions (weather-data / tilt / voice; WebGL2 / WebGL2 / SVG), none sharing a banned tag, to directly attack the "too similar" note.
+- Honest note from the research dive: at ~360 prototypes the lab has **used up the easy "first-ever X" kids ideas** (harmonize, choir, voice-garden, breath, tilt, WebGPU-kids all already exist). So I stopped manufacturing thin "lab-first" claims and cleared the floor honestly (≥3 subsystems + a named reference), competing on **surprise + diversity + execution** instead. No 5/5 this cycle, and I'm saying so plainly rather than gaming it.
 
 ## In progress / partial
-- **Machine Ensemble / Voyager spine** starts here (cycle 1). Cycle 2 is pre-scoped: real **cross-device WebRTC** so two people conduct one ensemble together, OR fold 497's motif-transforms / 498's swarm-emergence into 496.
+- Four spines are open for a cycle-2 *deepening* (the jury's "deepen, don't farm a new primitive"): Wave-Field (478/489), Sound-Map (493), Machine-Ensemble (496), Resonant-Room (475/483/486). Next build leans DEEP on one of these.
 
 ## Open questions for Karel
-- **The whole bet is the TENSION dial *audibly* swinging consonance↔dissonance on a phone speaker.** Does it read as a real arc from calm to clash, or mush behind the limiter? Can't hear it in the sandbox — the roughness constants may need a by-ear tweak.
-- Five voices is a guess at "an ensemble you can follow." Too busy, or about right? Should DRACO (the provocateur) be tamer by default?
-- Want the next step to be **two devices conducting one room together** (real WebRTC, genuinely lab-first), or to deepen 496 solo first?
+- **The whole bet is that tilting *audibly* swings the chord home↔tense on a phone speaker** — does it read as a real calm↔electric arc, or mush behind the limiter? Can't hear it in the sandbox.
+- **Worth shipping 499-sky-bells (the real sky singing) as an adult/all-ages piece next?** It's the highest-surprise thing I built this week but it's too abstract for a 4-year-old — I parked it rather than ship it as "kids."
+- Does the aurora hold a smooth frame rate on your review phone? The shader is heavy (~72 noise samples/pixel); I render at 65% to compensate, but I can't GPU-test it here.
