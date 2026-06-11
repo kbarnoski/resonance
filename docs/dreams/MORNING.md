@@ -1,22 +1,23 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 393
+# Morning digest — last updated 2026-06-11 (UTC) · cycle 394
 
 ## ▶ Open this first
-**[/dream/520-singing-dune](https://getresonance.vercel.app/dream/520-singing-dune)** — **Singing Dune** ⛰ (adult / meditative)
-One living dune of sand, under its own gravity. Tap **wake the dune**, then **tilt your phone** (or drag / arrow-keys) — the sand slumps, avalanches, and finds a new angle of repose, *forever, never the same*. There's no goal and no resolve button; the whole piece is one presence settling. And the sound **is** the sand: the drone's pitch rides the grains' shear (it bends up in an avalanche, sinks back at rest), density tracks how much is moving, and each slip throws a soft grain-burst. It's the real *"song of dunes"* acoustics over a real physics sim.
+**[/dream/524-kids-hand-firebird](https://getresonance.vercel.app/dream/524-kids-hand-firebird)** — **Hand Firebird** 🔥🕊 (kids 4+)
+Hold up your hand to the camera and it becomes a **glowing firebird of light** — about 2000 GPU particles gather around your fingers. **Open your hand and it blooms wide and sings; close it and it gathers into a quiet ember.** Raise your hand for a higher note. It's pure cause-and-effect a 4-year-old finds in one second — a creature that's *theirs*, with agency and delight.
 
-This is the lab's **first actual continuum simulation** — a **WebGPU MLS-MPM** granular solid (the Houdini/TouchDesigner sand-sim paradigm, finally ported to a browser compute shader; APIC + Drucker-Prager so it *piles* instead of splashing). It answers three of yesterday's jury asks at once: **refuses to resolve** (#2), **extends the WebGPU lane** instead of migrating renderers again (#3), and is about **one presence** (#5). It also finishes the MLS-MPM upgrade that your loved **84-wave-fluid** explicitly deferred.
-*(Settles + sounds on load even before you touch it; if your phone has no WebGPU — iOS still doesn't mid-2026 — a CPU sand-sim runs the same dune, just fewer grains.)*
+This is the lab's **first MediaPipe Hands** (real 21-point hand-tracking in the browser — we'd used body *Pose* once at 493, but never the hands model), driving a **raw WebGL2** particle creature. I picked the firebird over its two siblings because it's the **biggest swing** (a real GPU particle being, not a flat drawing), it extends your **loved particle pieces** (130 / 236 / 262 ❤️), and WebGL2 was the *scarcest* renderer in the recent window — so it diversifies instead of repeating.
+*(A scripted virtual hand makes it bloom and sing on load before you grant the camera, and a Canvas2D glow fallback covers phones with no WebGL2 — so even a hands-free glance shows a singing creature. iPads have WebGL2, so the full firebird should run there.)*
 
-## 2 more explored this fire (banked — see IDEAS §393)
-- **521-overpass** — hear ONE real satellite (the ISS, live) pass overhead: a lone voice rising from the horizon, peaking at zenith, fading as it sets, silent between passes, on a three.js star-dome. Real-world-data, genuinely fresh, the **cleanest resurrect** — lost only on lower ambition + live-API risk. I'd happily ship this next.
-- **522-chladni-voice** — hum and your voice becomes a 60k-grain Chladni sand figure. Built clean, but a curation grep caught that **19-cymatics / 165-cymatics already did this** — a hidden repeat. Out on the "too similar" rule. (The WIDE fan-out earning its keep: it surfaced the duplicate before it shipped.)
+## Why this swung joyful (a diversity call worth seeing)
+The last two **kids** cycles (513 shadow-still, 518 living-ember) were both *hushed, contemplative single-presences that never resolve* — and across the whole lab that "one lonely presence, never resolves" vibe just hit **4× in the last 10** (520/518/514/513). Beautiful, but a third in a row would be the exact monoculture the jury keeps warning about. So this kids cycle deliberately went the **opposite temperature**: loud, joyful, embodied, immediate — a creature you bring to life with your fingers. A 4-year-old wants agency, not a meditation.
 
-## Why WIDE, not the DEEP-on-516 I floated yesterday
-I asked yesterday about taking **516-slow-presence** DEEP this cycle — I deliberately **didn't**. 516 is another WebGPU Gray-Scott reaction-diffusion piece, and shipping it the night after 518 (also Gray-Scott RD) would be exactly the "too similar" autopilot the jury keeps flagging. Alternation also said WIDE after a DEEP. So I went three divergent directions instead. 516 is still banked for when it won't read as a twin.
+## 2 more explored this fire (banked — see IDEAS §394)
+Same "your hand becomes a singing creature" concept, three renderers:
+- **523-kids-hand-puppet** (Canvas2D) — your hand is a warm **shadow-puppet dog**; thumb = jaw, open mouth = sings. The **most legibly-a-creature for a literal 4yo** ("it's a puppy!") and the most robust on any device. Lost only because Canvas2D was already over-used this window.
+- **525-kids-hand-choir** (SVG) — each **fingertip is its own tiny singer**; spread your fingers into a 5-part chord, close them into a unison hug. The cleverest idea (open-chord ↔ unison is a real harmony lesson in the hand). Lost on renderer-diversity + a minor 60fps perf flag.
 
 ## Honest caveats
-- Build-verified (compiles clean, 9.6 kB static), **not browser-verified.** The WebGPU pipelines have **never run on a real device** — first-run shader/bind-group errors are possible (the CPU sand-sim fully covers that, including iOS). The GPU scatter has racy writes (no f32 atomics) and the plasticity is approximate, so the angle of repose may drift. Whether the drone reads as "booming" behind the limiter is unverified.
-- **#5 not claimed** again — this week's cs.SD is all server-side diffusion, nothing client-portable (a stable, repeated read now). The freshness here is the WebGPU-MPM paradigm port, not a bound paper.
+- Build-verified (compiles clean, 6.09 kB static), **not browser-verified.** The MediaPipe-Hands + WebGL2 pipeline has **never run on a real device** — first-run model-load / WebGL2 quirks are possible (the Canvas2D fallback + on-load virtual-hand demo fully cover that). The openness heuristic is tuned for an adult hand; a small child's hand may need a threshold tweak.
+- **#5 not claimed** again — this week's cs.SD is all server-side ML, nothing client-portable (a stable, repeated read). The freshness here is "MediaPipe Hands is now genuinely browser-ready," not a bound <14-day paper.
 
 ## Open question for you
-Two things I'd value a steer on: (1) **521-overpass** feels like the strongest bank in a while — want it shipped next, or folded into the Living Earth spine as its "look up / orbital" chapter? (2) For **520's** cycle-2, more interesting to you: a true 2-material sim (sand + water), a **kids** "pile-it-and-crumble" version, or persisting the dune you shape?
+For **524's** cycle-2, what's most interesting: (a) **two-hand mode** — two firebirds duetting, one per child; (b) **pinch gestures** as a distinct "spark/pluck" verb on top of open/close; or (c) push the particle count to 10k+ via GPU transform-feedback for a denser, more painterly creature? And separately — was swinging the kids lane back to *joyful/embodied* the right call after two contemplative ones, or do you want more of the quiet 513/518 register?
