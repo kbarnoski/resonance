@@ -1,110 +1,49 @@
-# Concept Jury Verdict — 2026-06-10 (UTC)
+# Concept Jury Verdict — 2026-06-11 (UTC)
 
 ## Summary
-Ambition recovered — and then the lab over-corrected on taste. The 2026-06-09
-jury reported **zero pieces at 4–5/5**; this window has **six** (451, 454, 471,
-474, 475, 478), a real climb back to multi-cycle spines and credible technique
-claims. Credit where due. But the *other* half of that jury's note — "build the
-warm middle" — was obeyed so completely that the lab swung past the middle and
-out the far side: **all 15 of these prototypes are consonant, and 10 resolve
-warmly on purpose.** There is not one cold, abrasive, ambiguous, dissonant, or
-unresolved piece in fourteen days. The cold/refuse-to-resolve monoculture the
-last jury killed has been replaced by a warm/consonant monoculture — same rut,
-opposite temperature. Two new mechanical habits have hardened underneath it: a
-**"the lab's FIRST [DSP primitive]" treadmill** (4 of the last 5 builds) and
-**three.js as the new Canvas2D** (5×).
+The lab *heard the last jury* — and that's the real story this window. Tension is
+back hard: 9 of the last 15 carry genuine harmonic ambiguity or dissonance (up
+from 0 last jury), three.js collapsed from 5× to 2×, and the nightly dive is
+finally *binding* fresh research instead of just negatively-steering — **493**
+implements a NIME paper listed June 9 and **496** implements StreamMUSE submitted
+June 10, both <14 days old. That is three provocations obeyed in one cycle. But
+the lab over-corrected in its signature way: it found a new autopilot. The
+Plomp–Levelt/Sethares **roughness engine is the new FDN** (4×, the default way to
+"do tension"), **Canvas2D is the new three.js** (6×, the screen-renderer just
+migrated again), and **"resolve the tension through a deliberate action"** has
+become the reflexive dramatic arc on ~9 of 15. The window swung from a warm
+monoculture to a tension monoculture — different temperature, same reflex.
 
 ## Diversity audit
-- **Over-represented input:** **audio-file / real *Welcome Home* piano — 4×** (448,
-  454, 457, 475). Note the whiplash: last jury's #5 plea was "real piano ignored
-  15 cycles"; the lab picked it up and is now *leaning on it*. Tied: **device
-  tilt/motion — 4×** (440, 451, 456, 460).
-- **Over-represented output:** **three.js — 5×** (440, 451, 463, 471, 478) — the
-  screen-renderer habit migrated again (Canvas2D → three.js). Also **AI-image — 4×**
-  (441, 448, 454, 457) and **raw-WebGL2 — 4×** (456, 460, 474, 475). Ten of fifteen
-  outputs are a GPU screen surface; WebGPU (1×, 444) and non-screen (0×) are starved.
-- **Over-represented technique:** **FAL latent-image pipeline — 4×** (441, 448, 454,
-  457, the Latent Piano Room lane). Tied at 4×: **physics-sim** (444, 451, 456, 460)
-  and **DSP-physical-modeling-lab-first** (468 waveguide, 474 scanned-synth, 475 FDN,
-  478 FDTD — the "grab an untouched textbook primitive" treadmill).
-- **Over-represented vibe:** **warm-consonant-resolves-on-purpose — 10× explicit, 15×
-  if you count all consonant/no-wrong-notes pieces.** This is the monoculture this
-  window. Zero tension-as-subject, zero dissonance, zero unresolved.
-- **BANNED for next cycle:** three.js OUTPUT · AI-image/FAL-latent-pipeline TECHNIQUE ·
-  real-piano-as-input (rest it — it's overused now) · DSP-physical-modeling-lab-first
-  AND physics-sim TECHNIQUE (the "first X primitive" treadmill) · warm-consonant-
-  resolves-on-purpose VIBE (the new monoculture — next piece must carry genuine
-  harmonic tension/ambiguity/dissonance, not a pre-baked V–I).
+- **Over-represented input:** **touch / multi-touch — ~6×** (474, 478, 484, 489, 493, 505). The lab's comfort input. Genuinely fresh inputs *did* appear — first Web MIDI (483/486), first WebRTC peer (508), first body/pose (493) — but touch is still the default reach.
+- **Over-represented output:** **Canvas2D — 6×** (483, 489, 490, 493, 496, 505) and **WebGL2 shader — 4×** (474, 475, 484, 500). The exact migration the last jury predicted: it banned three.js (then 5×), the lab obeyed (now 2×), and Canvas2D inflated to 6×. The renderer keeps moving instead of disappearing. Bright spots: WebGPU compute reached 2× (486, 502) and SVG appeared (508).
+- **Over-represented technique:** **Plomp–Levelt / Sethares sensory-roughness — 4×** (483, 486, 496, 508). This is the new "the lab's FIRST [DSP primitive]" — except it isn't even new anymore (it dates to 410/414). It has become the canned tension primitive, bolted onto four otherwise-unrelated pieces.
+- **Over-represented vibe:** **"tension-resolved-through-deliberate-action" — ~9×** (483, 486, 493, 496, 500, 502, 505, 508, +484 leans). The new monoculture. Almost every piece offers the same deal: here is dissonance, here is the lever (slider / drag / sync / conduct / cooperate) that earns the warm bloom. Variety in *mechanism*, sameness in *arc*. The lone refusenik — **490**, which never resolves — is the most haunting piece in the window and had no successors.
+- **Sub-pattern worth naming:** **7 of 15 are "two-or-more parties in tension/cooperation"** (483 two rooms, 484 two suns, 489 two ponds, 505 two children, 508 two people, 486 three rooms, 496 five agents). Duality/multiplicity has quietly become the dominant *concept*, the way warm-resolve was the dominant *vibe* last window.
+- **BANNED for next cycle:** Canvas2D OUTPUT (6×) · WebGL2-shader OUTPUT (4×) · Plomp–Levelt/Sethares-roughness TECHNIQUE (4×) · touch/multi-touch INPUT (6×) · "tension-you-resolve-through-action" VIBE (~9×) · the "two-parties-negotiate" CONCEPT (build something about *one* thing).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — the floor is holding (5 juries running).
-- **Hit 2–3 criteria: 9** — 440/441/444 at exactly 2 (the cheapest #2+#3), and
-  448/456/457/460/463/468 at 3.
-- **Hit 4–5 criteria: 6** — **451, 454, 471, 474, 475, 478.** This is the regression
-  fix the last jury demanded (it reported zero). BUT: **every one is a 4, none is a
-  5.** The missing fifth criterion is always the same — **#5, binding a <14-day
-  research finding** — claimed by only 2 of 15 (451, 471). The nightly dive still
-  mostly *negatively steers* ("ruled out the diffusion-server lane") rather than
-  *implementing* something recent.
-
-**The sharp read:** the lab fixed the ambition number and missed the ambition
-*spirit*. It learned that a clean 4/5 is reliably available by (a) picking an
-untouched DSP primitive for #1, (b) stacking 4 subsystems for #2, (c) citing a
-1980s–90s paper for #3, and (d) declaring "cycle 1 of a spine" for #4 — then
-shipping a warm, resolving, three.js piece. That is the new autopilot. It clears
-the floor at 4 and stops, exactly the way the previous regime cleared it at 2.
+- **Hit 0–1 criteria: 0** — the floor is holding (6 juries running).
+- **Hit 2–3 criteria: 7** — 484 (2: #1+#3), 490 (2: #1+#3), 500 (2: #2+#3), 486 (3), 489 (3), 502 (3), 508 (3, by its own honest self-claim).
+- **Hit 4–5 criteria: 8** — 471, 474, 475, 478, 483, 493, 496, 505. **Still zero 5/5**, but #5 (binding a <14-day finding) climbed from 2-of-15 to **3-of-15 honestly** (471 §373, 493 FXplorer, 496 StreamMUSE). The wall: the missing combo is always **#4 + #5 together** — a multi-cycle spine that *also* binds fresh research. 493 and 496 are both one-offs; 471 binds research but is a spine continuation that doesn't claim #1. Nothing yet stacks "spine cycle 2 + fresh paper."
 
 ## Standouts (positive)
-- **`478-kids-wave-pond`** — the realest idea in the window: a genuine time-domain
-  **FDTD 2-D wave field** where the audio and the visual are *the same solved field*,
-  not a synth with a visualizer bolted on. "See the wave you hear" is literally true
-  here. The cleanest unification of the two modalities the lab has shipped.
-- **`454-piano-caption-loom`** — the only **#1 claim that's a real software primitive**
-  rather than a textbook DSP block: a visible propose→critique→revise caption loop
-  (6 subsystems, cycle 2 of a spine). The most conceptually ambitious adult piece —
-  you *watch the prompt sharpen*. This is the agentic-studio idea AGENT.md keeps
-  pointing at, made legible on screen.
-- **`471-helios-orbit`** — the only piece that stacks **#5 honestly** (live NOAA feeds,
-  §373 research within window) AND delivers a real **journey-engine alternative** (EDM
-  build-and-drop) AND keeps a spine alive into cycle 2. The `Kp≥5` one-shot drop is a
-  genuine dramaturgical device, not a mapping.
+- **493-kids-feeling-forest** — the most complete answer to the last jury in one piece: it makes tension a *place you walk to with your body* (MediaPipe pose, the starved 0× input lane), morphs harmony continuously across a 2-D feeling-map with no cadence, AND binds FXplorer (arXiv 2606.08286, listed *two days* before it shipped). Tension-through-navigation, not a lever. This is what "the dive implements something recent" is supposed to look like.
+- **496-voyager-room** — the boldest concept of the window: you don't play notes, you *conduct* five autonomous machine improvisers by steering their collective roughness, with frame-synchronous generation lifted straight from StreamMUSE (<14 days). A genuinely new control surface, and the closest the lab has come to making AGENT.md's "managed-agent creative studio" idea into a playable instrument.
+- **508-accord-call** — the lab's first true `RTCPeerConnection` P2P piece (the old "collab" pieces were same-origin BroadcastChannel). It picks the exact 0× input the last jury named, ships on SVG (dodging every banned GPU renderer), and the cooperation gate is *literally* impossible solo. Real distributed-systems ambition in a music toy.
+- **490-disintegration** (honorable, at 2/5) — the only piece with the nerve to refuse resolution: a Basinski tape that permanently destroys itself as you listen, different at minute 5 than minute 1. Low on the ambition rubric, highest on courage. It should have had children.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`440-kids-comet-gather`** — 2/5, the **4th calm-pentatonic cosmic kids lullaby**,
-  flagged by the last *two* juries and shipped anyway. Lovely framing (gyro magic-
-  window), but the tonal world is the rut the lab keeps writing about itself.
-- **`441-latent-listening-room`** — 2/5. Clever as a *closed* audio↔image↔audio loop,
-  but it spawned a 4-cycle AI-image monoculture (→448→454→457) that then closed. The
-  seed of a rut more than an escape from one.
-- **`444-kids-aurora-hands`** — 2/5 wearing "biggest GPU concept" framing. Hand-tracking
-  + 60k particles + cosmic pad = the GPU-spectacle floor; hits only the two cheapest
-  criteria. Spectacle is not ambition.
-- **`457-piano-image-duet`** — the **4th piano→AI-image in a row**. Diminishing returns
-  on the same loop; the additive-resynthesis twist is real but the lane was exhausted.
+- **500-kids-aurora-tilt** — the local-minimum build of the window. Tilt + domain-warp fBm shader + modal pad is a comfortable, known combo (tilt at 083/238/253; domain-warp is textbook IQ; aurora already done at 471). "Level to resolve, tilt to tense" is the lightest possible tension mechanic. Clears the floor at exactly #2+#3 and stops — no lab-first, no bound finding, no spine. A polished re-skin where an ambitious build should have been.
+- **484-kids-two-suns** — a case where the *concept* (polytonality, a genuine bittersweet that never resolves) outran the *build* (2 subsystems: two voices + a shader, no spine, no bound research). The most interesting harmonic idea in the kids set deserved a 3-subsystem, multi-cycle treatment; it got a single-fire 2/5. Missing: depth.
+- **489-kids-pond-pair** — honest 3/5, but it's a cycle-2 extension that mostly bolts a carrier object onto 478's FDTD solver. The "two ponds talk" idea is incremental on a reused primitive. Fine as continuation; not where the surprise budget should go.
 
 ## Provocations for tomorrow's dream cycle
-1. **Bring tension back — the warm middle became a sweet monoculture.** 10 of 15 resolve
-   on purpose; 15 of 15 are consonant. Build ONE piece with genuine harmonic ambiguity,
-   sustained suspension, or controlled dissonance the *listener* must resolve through
-   action — not a pre-baked cadence. "Resolves on purpose" is the new "refuse to resolve":
-   a reflex, not a choice.
-2. **Kill the "the lab's FIRST [DSP primitive]" treadmill.** 468 waveguide → 474 scanned-
-   synth → 475 FDN → 478 FDTD: four straight builds farming #1 by grabbing an untouched
-   textbook primitive. That's #1 on autopilot. Instead **deepen an existing lab-first into
-   cycle 2/3** — e.g. live-mic excitation INTO 475's FDN room, or couple 478's wave field
-   to a second pond (interference between rooms). Extension is harder and worth more than
-   a fifth primitive.
-3. **three.js is the new Canvas2D — ban it (5×).** And rest the FAL latent pipeline (4×,
-   spine now closed) AND real-piano input (4×, went from starved to overused in one jury
-   cycle). Pick an input the window is *starved* of: **MIDI/OSC (0×), WebRTC multi-user
-   (0×), depth-camera (0×).**
-4. **No piece hit 5/5 because the dive never binds.** #5 is 2 of 15. Make tomorrow's dive
-   *implement* a <14-day finding, even a tiny one — not "rule out the un-buildable lane and
-   land on a foundational primitive." The negative-steering move has itself become a habit.
-5. **The starved menu, untouched all window:** no multi-user, no MIDI/OSC, no long-form
-   *evolving adult* piece, no conceptual/critical piece. Pick one. A 5-minute adult piece
-   that is *different at minute 5 than minute 1* would break three ruts at once (not three.js,
-   not warm-resolve-template, not a new-primitive farm).
+1. **Ban the roughness engine — it's the new FDN.** Plomp–Levelt/Sethares now drives 4 of 15 and has become the canned way to manufacture tension. There are tension primitives the lab has *never* touched: **metric/rhythmic dissonance** (polymeter, tempo canons — tension you *count*, not tension you hear beating), **phase-cancellation / comb-notch** tension, and **xenharmonic scales** (Bohlen–Pierce, 19-TET). Make a piece whose tension lives in TIME or in TUNING, not in beating partials.
+2. **Build one piece that does NOT offer resolution.** 9 of 15 hand the listener a lever to earn the warm bloom; the prior jury's "resolve through action" became this jury's reflex. 490 proved the lab can sustain unresolved tension and it's the most memorable thing here — yet nothing followed it. Tension as a *state to inhabit*, not a puzzle with a solve button.
+3. **Canvas2D is the new three.js (6×) — stop the renderer migration.** The screen surface keeps moving (Canvas2D→three.js→back to Canvas2D) instead of vanishing. Two pieces reached WebGPU compute (486, 502) and one shipped SVG (508) — extend those, or take the genuinely 0× lane: an **audio-only / haptic-only** piece. Test the screen bias the menu keeps daring you to test.
+4. **You're 3-of-15 binding fresh research now — convert one into the first 5/5.** The only missing stack is #4+#5 together. Take 493 or 496 to **cycle 2** and bind *another* <14-day finding in the same fire: a "Voyager Room" where the five agents accrue memory of your motifs over a 5-minute arc, or "Feeling Forest" with **two children's bodies** (its own README's next-cycle note). A multi-cycle spine that also implements a recent paper is the 5/5 the lab keeps missing by one.
+5. **Stop reaching for "two parties negotiating" (7×).** Duality is now the autopilot concept. Build a piece about *one* presence — solitude, an interior, a single sustained thing that changes only with attention. Prove the lab's instinct for tension isn't permanently wired to "two things in disagreement."
 
 ## Karel-facing line
-Ambition recovered (6 pieces at 4/5, up from zero) — but the lab over-corrected: 15 of 15 are now consonant and 10 resolve warmly on purpose, three.js is the new Canvas2D (5×), and "the lab's FIRST [DSP primitive]" has become a nightly habit; tomorrow, bring tension back, ban three.js, and deepen an existing spine instead of grabbing another new primitive.
+Tension is back hard (9 of 15) and the dive finally binds fresh research again (493 implements a NIME paper from two days prior, 496 StreamMUSE) — but the lab over-corrected on autopilot the way it always does: the Plomp–Levelt roughness engine is the new FDN (4×), Canvas2D is the new three.js (6×), and "resolve the tension through action" is now the reflex arc; tomorrow, build one piece that *refuses* to resolve, and not on Canvas2D.
