@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 390
+# Morning digest — last updated 2026-06-11 (UTC) · cycle 391
 
-> **Heard yesterday's jury.** It said: stop the new autopilot — the Plomp–Levelt roughness engine became the new FDN (4×), Canvas2D the new three.js (6×), and "resolve the tension through an action" the reflex arc; build one piece that *refuses* to resolve, not on Canvas2D, in a tension primitive you've never touched. Today's build does exactly that. See `docs/dreams/JURY.md`.
+## ▶ Open this first
+**[/dream/514-polytempo-loom](https://getresonance.vercel.app/dream/514-polytempo-loom)** — **Polytempo Loom** ⧗ (adult)
+Five voices, identical consonant pitches, **irrational tempo ratios** (1, √2, φ, e/2, π/2). They drift across each other forever and **never land a shared downbeat** — the only tension is in TIME, not in any clashing pitch. Hit **Begin**, then just watch the SVG loom: faster voices show denser marks, the lanes slide into brief moiré near-alignments that always disperse. There is no resolve button — it's a state to sit inside. The lab's **first Nancarrow-style polytempo / metric-dissonance** piece (grep-verified lab-first). *(The loom drifts silently on load, so even before you tap Begin it's alive.)*
 
-## New since yesterday
-- **[/dream/513-kids-shadow-still](/dream/513-kids-shadow-still)** 🌑 — **a calm kids piece where you *move to wake a sound and go still to make it vanish.*** A continuous tone is mixed with a sub-millisecond echo of itself (a **comb filter**); your body-motion (read by simple camera frame-difference — no ML, no visible canvas) drives the delay. Wiggle → the tone fills with a flanging swoosh and your shadow splits from its echo. Go **still** → the two copies line up exactly out of phase, the comb bites the sound into deep notches, and it **hollows to a hush**. **Why open this:** it's the lab's **first comb-filter / phase-cancellation** piece — the jury's #1 "tension you can't hear beating" primitive, and the one of its three named primitives the lab had genuinely never used (phasing, xenharmonic, polyrhythm all already exist). It **refuses the warm bloom** — it resolves to *absence* — making it the kids-lane successor to `490-disintegration`, the bravest piece in the last jury. And it inverts every loud tap-toy: here, **stillness makes silence.** Runs hands-free — a no-camera auto-demo plays the full move→hush arc on load.
-  - **2 more explored this fire** (banked IDEAS §390): **511-kids-ghost-bell** (tilt a bell's ghost-twin over it — richest visuals, but its overlap→cancel mapping needs a physics fix) + **512-kids-echo-shadow** (hum and your *own voice* erases itself — the most magical premise, but headphone-only). One DEEP fire, one concept ("vanish into your shadow"), three inputs.
+This answers all four of yesterday's jury asks in one piece: tension in a **never-touched primitive** (TIME — after 513 took comb-notch), it **refuses to resolve**, it ships on **SVG not Canvas2D**, and it's about **one presence**, not two parties negotiating.
 
-## Why DEEP + why 513 won
-- Kids cycle (390 % 2 == 0). Ran **DEEP** on one concept because the jury named a *specific* untouched primitive to go deep on, and asked (provocation #5) for "a single sustained thing that changes only with attention" — three inputs into the same comb-filter idea.
-- **513 won on physics + jury-fit:** its mapping puts *stillness* exactly on the 110 Hz cancellation null, so the headline illusion is honest (511's overlap→cancel actually *reinforces* the fundamental; 512 howls on open speakers). It also lands the jury's three loudest asks at once — untouched primitive (#1), refuse-to-resolve (#2), and the calm/anti-screen lane (#3).
-- **Ambition 3/5** (#1 comb-filter lab-first + #2 four subsystems + #3 Lucier / Oliveros / Krueger). #5 honestly **not** claimed — the interference lineage is foundational, not a fresh paper; said plainly.
+## 2 more explored this fire (banked — see IDEAS §391)
+- **516-slow-presence** *(strongest seed)* — a real **WebGPU compute** Gray-Scott field that evolves for 5+ min with memory, never looping, a Lydian drone as its second face. This is the deliberate **`490-disintegration` successor** you've been missing, on the WebGPU lane the jury asked us to extend — and the lab's best shot at the elusive 5/5. I want to take it DEEP next.
+- **515-two-tempos-one-body** — a near-screenless piece: one tempo in your **ears**, a different (irrational-ratio) tempo in your **hand** via phone vibration; they drift forever. The genuine audio/haptic-only lane. Richest on Android.
 
-## Research finding worth a look
-- **The lab's "fresh tuning/tension" lanes are mostly already occupied** — phasing (302), Bohlen-Pierce (276), polyrhythm (426 +12). The xenharmonic world outside is also mature (Scale Workshop, Microtonal Fabric, Striso), so chasing it would be a "too similar" trap. The one provocation-#1 primitive at **0×**: comb-filter / phase-cancellation — interference as tension. (RESEARCH §390.)
+## Why WIDE, not DEEP
+390 was DEEP and the jury's core complaint is monoculture, so I ran 3 orthogonal explorers — each refusing resolution about one presence, but via a different renderer×technique (SVG/time · WebGPU/entropy · audio-haptic/cross-modal). Shipped the tightest fit to the jury's loudest ask; banked the other two.
 
-## In progress / open questions for Karel
-- **Try 513 in a quiet room.** Does *stillness* read as a real hush, or does the −6 dB limiter + feedback floor keep it too present? (A comb null is partial, not total silence — I can duck the wet mix at stillness if you want the vanish more dramatic.) Does the camera frame-diff pick up a small child's motion, or does it sit in auto-demo? These are the two first-guess knobs.
-- **Worth opening an "Interference / Stillness" spine?** 513 (kids, comb-notch) could share an engine with the still-banked adult **510-the-withholding** (a conceptual piece that resolves only when you set the phone down and go still). Two cycles of "tension that lives in absence" would directly answer the jury's "build one piece that refuses to resolve — and have it have children."
-- **511 (ghost-bell) is the playful one I *didn't* ship** — richest visuals, just needs the delay-null moved off "overlap." Want it next as a tilt sibling?
+## Honest caveats
+- Build-verified (compiles clean, 4.4 kB static), **not browser-verified** — unknown until you play it: whether 5 irrational tempi read as distinct drifting streams vs. mush behind the bell decay, and whether the moiré near-alignments land as the visual payoff.
+- **#5 not claimed** again (no <14-day paper on metric dissonance — the literature's mature, not fresh; said plainly). The dive's anchor (Amanous, Feb 2026) is real but ~3.5 months old.
+
+## Open question for you
+The jury named the missing 5/5 = a multi-cycle spine that *also* binds a fresh paper. **516-slow-presence** is purpose-built for that. Want me to commit the next adult cycle to taking 516 DEEP + binding a <14-day reaction-diffusion/generative finding?
