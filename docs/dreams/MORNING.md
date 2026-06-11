@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 387
+# Morning digest — last updated 2026-06-11 (UTC) · cycle 388
 
 ## New since yesterday
-- **[/dream/502-atmosphere-veil](/dream/502-atmosphere-veil)** 🌍 — **the entire planet's *live* weather, breathing as one sustained, unresolved chord.** Press Start once and leave it: a slow spectral drone breathes under ~60,000 WebGPU particles riding a global wind field, and the dissonance only relaxes **when the real sky calms** — never on a timer, never on a tap. Why open it: it's the jury's exact #1 ask (*bring genuine tension back*) for the adult lane, and it **deepens an existing spine** (Living Earth: earthquakes → space-weather → **atmosphere**) instead of farming a new primitive. It runs hands-free — a synthetic drifting-storm auto-demo plays from frame zero, then flips to LIVE when 12 cities' Open-Meteo data lands. Long-form: minute 8 sounds different from minute 1.
-  - **2 more explored this fire** (banked IDEAS §387): **503-atmosphere-front** (WebGL2 raymarched **volumetric storm-clouds** + lightning on sharp tension rises) and **504-atmosphere-isobar** (a precise **isobar/pressure-gradient instrument** — tight isobars = storm = dissonance). One concept, three renderers; shipped the WebGPU one.
+- **[/dream/505-kids-pulse-bridge](/dream/505-kids-pulse-bridge)** 🤝 — **the music only resolves home when two children tap *together*.** Split screen, two giant tap-pads (gold + teal), one kid per side. Out of sync = a yearning, unresolved chord + a broken bridge of light between them; lock into the same rhythm = the chord blooms to a warm open fifth, the bridge completes, fireflies stream across. **Why open it:** it's the jury's exact #1 ask (*tension resolved through action*) made literal — the "action" is **playing in time with another person**, and the resolution is *withheld until you sync*, so it carries real tension instead of a pre-baked cadence. A new lab-first: the first piece that measures synchrony *between two humans* (Kuramoto phase-lock) to gate the harmony. Runs hands-free — a 26 s auto-demo of two tappers drifting in and out of sync plays on load.
+  - **2 more explored this fire** (banked IDEAS §388): **506-kids-orbit-meet** (two kids spin moons into the same orbit → braided mandala) + **507-kids-hum-meet** (hum to lock onto a partner-tone, child-tuned YIN, in SVG). One concept — "Together" — three synchrony inputs; shipped the tap one.
 
-## Why DEEP + why 502 won
-- Last cycle was WIDE → went **DEEP** on the jury's biggest structural ask: *deepen a spine, don't grab a new DSP primitive.* So this is Living Earth cycle 3 (after 463 & 471).
-- The **diversity audit decided the winner**: the jury banned three.js, flagged raw-WebGL2 (4×) and Canvas2D (4×) as over-used, and named **WebGPU as starved**. Only 502's WebGPU-compute path clears that — so the volumetric (WebGL2) and isobar (Canvas2D) siblings were banked, not shipped.
-- Honest ambition: **2/5** (≥3 subsystems + spine cycle-3). I did **not** claim #1 (WebGPU / long-form / API-sonification all already exist) or #5 (this week's arxiv is server-side ML only) — said plainly rather than gamed.
+## Why DEEP + why 505 won
+- Kid-cycle (388 % 2 == 0). Went **DEEP** on one concept — *synchrony between two children gates the resolution* — straight from this cycle's research dive (a convergent 2025–26 finding: rhythmic music as a "temporal scaffold" that makes kids sync up and feel closer; Moving Mandala + TEI 2026). The §386 hum-garden bank already pointed here.
+- **Tap won over drag + voice:** for a real 4-year-old, tapping a shared beat is the most natural, motor-reliable sync act — circular drag (506) is fine-motor-hard, and 507's partner is a *virtual ghost* (weakest fit to the genuine two-kids-together idea) with unverified child-voice pitch detection.
+- **Ambition 4/5** (#1 lab-first synchrony-gating + #2 5 subsystems + #3 named refs + #4 "Together" spine cycle 1). #5 honestly **not** claimed (the papers are weeks old, not <14 days).
 
 ## In progress / partial
-- Open spines for a cycle-2/3 *deepening*: Living Earth (now 463/471/502 — 503 & 504 banked as cycle-4), Wave-Field (478/489), Sound-Map (493), Machine-Ensemble (496/497/498). Next build leans **WIDE** again (fresh tags) per your "too similar" note.
+- Open spines for a cycle-2 deepening: **"Together"** (505 — resurrect 506 with a simpler back-and-forth drag, or crack the two-kids-one-mic voice problem for 507), Living Earth (463/471/502), Wave-Field (478/489), Sound-Map (493), Machine-Ensemble (496).
 
 ## Open questions for Karel
-- **Does the drone *audibly* swing consonance→dissonance** as the real planet destabilizes, or does the limiter flatten it? Can't hear it in the sandbox.
-- **WebGPU on your review device** — does the 60k-particle compute field run, or do you get the Canvas2D fallback? (The audio + data still work either way.)
-- This consumes the **499-sky-bells** "real sky singing" seed you flagged — as an *adult* piece with genuine resolvable tension rather than a kids one. Right call?
+- **Can a real 4-year-old reach the lock?** The sync threshold may be too strict for loose kid timing (±300 ms jitter) — I tuned a forgiving curve, but it wants real-kid testing. Too hard / too easy?
+- **Two kids on one screen** — does this feel right on your iPad, or is it cramped? (Built for tablet; a phone splits to ~45 mm halves.)
+- **Is "Together" worth a spine?** I think two-children-in-sync is a genuinely fresh, prosocial direction the kids lab hasn't touched. Worth 2–3 more cycles (motion + real two-voice)?
