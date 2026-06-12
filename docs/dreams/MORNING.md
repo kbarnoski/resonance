@@ -1,21 +1,22 @@
-# Morning digest — last updated 2026-06-12 04:30 UTC
+# Morning digest — last updated 2026-06-12 08:35 UTC
 
-**Cycle 397 · ADULT · WIDE (3 divergent explorers) → shipped `532-vocoder-veil`.**
-Open it: **https://getresonance.vercel.app/dream/532-vocoder-veil**
+**Cycle 398 · KIDS · DEEP (3 approaches, one concept) → shipped `537-kids-sky-murmuration`.**
+Open it: **https://getresonance.vercel.app/dream/537-kids-sky-murmuration**
 
 ## New since yesterday
-- **🎙️🎹 532-vocoder-veil** — *sing or speak, and your words come out played by your REAL Welcome Home piano.* The lab's **first channel vocoder** (grep-verified 0×): a 16-band Homer-Dudley filterbank where your live mic (the modulator) drives the per-band gains of your actual piano recording (the carrier, pulled read-only from `/api/audio/549fc519-…`). The piano *talks in your voice* — uncanny, intimate, musical.
-  - *Why open it:* it finally does the thing you've asked for repeatedly — **uses your real recordings as the material**, not synth — and it's a genuinely new technique for the lab. Try a long "aaaah", then a sibilant phrase ("she sells seashells").
-  - **Hands-free check:** with no mic permission, a built-in vowel auto-demo (ah→ee→oh→oo→mm) makes the piano sing and the WebGL2 ladder animate from frame one — so it's always alive when you glance.
+- **🐦✨ 537-kids-sky-murmuration** — *look up into a deep 3D dusk sky where thousands of glowing starlings swirl as one — and the murmuration SINGS.* Shepherd the flock with a finger; when the cloud splits into sub-flocks you **hear it split into harmony**, and it resolves to a chord when it re-merges. A living weather of birds you stand under. Built on **three.js** (a `THREE.Points` cloud, depth-coded near-warm/far-violet, fog, a drifting camera for real 3D depth) driven by an emergent **boids** flock (Reynolds rules), with the flock's collective state — cohesion, height, sub-flock count — *being* the music.
+  - *Why open it:* it's the "massively bigger" swing you asked for, on the one renderer the lab had gone cold on (three.js, 0× in the recent window) — and it deliberately steers off yesterday's drawing-ML so the kids set isn't two "draw → magic" pieces in a row. For a 4yo: no reading, no wrong move, just a beautiful flock that follows your finger.
+  - **Hands-free check:** with zero interaction a "ghost shepherd" wanders the sky, splitting and merging the flock + singing from frame one — so a glance always shows a swirling, singing, splitting murmuration. (No WebGL? It falls back to a Canvas2D dot-flock that still flocks + sings.)
 
-## Explored but not shipped (2 more — see IDEAS §397)
-- **533-hollow** — *tension as ABSENCE.* A drone you carve holes into with comb filters; a three.js shell hollows where the spectrum cancels. The most sculptural of the three; a real answer to the "tension in a never-touched primitive" note. I'd resurrect it as a tension spine.
-- **534-third-ear** — *a melody that exists only inside your ear* (Tartini difference tones). The highest-surprise idea, but audio-first (weak phone glance) and the effect needs headphones — so it lost to the vocoder's bigger swing + your-real-music fit.
+## Explored but not shipped (2 more — see IDEAS §398)
+- **535-kids-starling-choir** — the same flock on **raw WebGL2 transform feedback** (a true GPU boids sim, ~2.5k birds). The most technically ambitious, but its float-texture + GPU-readback path is fragile on iOS Safari (the iPad), so it lost to three.js. Resurrect when we want to scale to 5–10k birds.
+- **536-kids-lantern-shoal** — the same flock as friendly **Canvas2D lantern-fish** with eyes + tails — the *best* legibility for a literal 4yo (you see individual friends). It lost only on diversity: Canvas2D was already heavily used, so shipping it would have made the lab repetitive. Great candidate to fold its character-art into 537.
 
 ## Open questions for you
-- **Does the vocoder read loud/clear enough on a real mic?** The one thing I can't verify here: the envelope-follower values may sit low and need a scale bump to push the piano's bands to full. If it sounds thin when you sing, that's the knob — tell me and I'll scale it next cycle.
-- **Does your piano load as the carrier?** If `/api/audio/[id]` 404s or CORS-blocks, it silently drops to a synth carrier (amber note). Tell me if you hear the real piano or the synth.
-- Want 532's **cycle-2** to add a track picker (choose which WH path-track is the carrier) + a "freeze a held vowel into a sustained chord" mode?
+- **Does the split→merge read as harmony on your speaker?** The one thing I can't verify here: whether the 2–4 sub-flock voices are *audibly* distinct as the cloud divides and rejoins (the cluster threshold may need a tune). If a split sounds like one blur rather than two pitches, tell me and I'll sharpen it.
+- **Does 3D depth read on the phone, or only on the iPad?** The depth cue is the slow camera drift + fog + near/far colour. Curious whether it feels volumetric on a small screen.
+- Want 537's **cycle-2** to add a hawk-shadow the flock parts around (a gentle tension that resolves), or to let two kids each shepherd a harmonising sub-flock (the Together-spine crossover)?
 
 ## Heads-up
-- Build-verified (full `npm run build`, one TS fix), **not** browser-verified — no audio/mic/WebGL2 in the cloud sandbox. Auto-demo + synth-carrier + Canvas2D fallbacks are the safety nets.
+- Build-verified (full `npm run build`, exit 0, 434/434 pages), **not** browser-verified — no three.js/WebGL/audio in the cloud sandbox. Ghost-shepherd auto-demo + Canvas2D dot-flock fallback are the safety nets.
+- Process note for me: the two non-winner builders were still running when I removed their folders and re-created them, breaking the first build — I now stop a non-winner's agent before deleting its folder. Logged in STATE for the orchestration playbook.
