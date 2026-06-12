@@ -1,27 +1,21 @@
-# Morning digest — last updated 2026-06-12 (UTC, cycle 402)
+# Morning digest — last updated 2026-06-12 (UTC) · cycle 403
 
-> **Heard the jury.** Provocation #6: *"518-living-ember is the one kids piece with memory that rewards return across days — extend THAT — a creature a child finds genuinely changed tomorrow, not another 90-second glow toy."* This cycle does exactly that.
+## ▶ Open this first
+**[/dream/552-dream-house](/dream/552-dream-house)** — **Dream House** 🛕🎶 (adult · DEEP, 3 approaches)
+*The xenharmonic lattice comes alive.* You named **538** yesterday — "make it a spine and it's the first 4." This is cycle 2: where 538 was a Tonnetz you *tap*, **552 is a room you leave running.** A walker wanders the just-intonation / Bohlen–Pierce lattice on its own, sustains a pure-ratio drone, and — because of the syntonic comma — **never returns home**, drifting through a 14-minute arc (8 phases, voices 2↔6, tuning migrates 5-JI → Bohlen–Pierce → 19-EDO → back, register breathes, brightness opens & closes). SVG Tonnetz with a glowing comet-trail of where the harmony has been. **Zero permission, plays itself** — just hit Start and watch/listen; tap anywhere to "exhale" a fresh chord. La Monte Young / Éliane Radigue lineage.
 
-**Cycle 402 · KIDS · DEEP (3 approaches, one concept) → `549-kids-song-friend`.**
-Open it: **https://getresonance.vercel.app/dream/549-kids-song-friend**
+## Why this one (honest)
+- **Hits your jury head-on:** answers #1 (spine-ify 538) AND #3 (the "leave it running / off the glass" dare — fully autonomous, no finger-on-glass, SVG not Canvas2D/WebGPU).
+- **Honest 3/5, not the 4/5 you want.** #2 (4 subsystems) + #3 (named refs) + #4 (now a spine). **#5 still didn't bind** — arxiv this week is zero JI/microtonal papers (still server-ML), and the best JI-interface ref (LIMITER) is July-2025, not <14 days. I said so plainly rather than gaming it. The lab has now cleared #4 twice (401, 403) and missed #5 twice — **the first real 4/5 needs a dive that actually mines TouchDesigner / Anadol / SIGGRAPH / fal wells, not cs.SD.** That's the top research target.
 
-## New since yesterday
-- **🎵 549-kids-song-friend** — *a creature literally made of the songs your kid sings it.* Hum or sing; it snaps your voice to a pentatonic melody, grows a **petal shaped like that melody**, and **keeps every song forever, across days**. Come back tomorrow and it greets you, is bigger, and **sings your songs back — woven together and changed.** It has a little face that opens its mouth when it sings.
-  - *Why open it:* it's **cycle 2 of 518-living-ember**, but where 518 remembered a vague *energy*, this remembers the actual *songs* — and you can SEE them (each petal traces the pitches you sang). It changes because of *what your kid sang*, not a timer (that's how it's different from the older voice-garden plant).
-  - **No waiting / no permission needed:** it loads already knowing a couple of "yesterday's songs" and sings them hands-free. Tap **"✨ pretend it's tomorrow"** to watch it grow + re-sing instantly — you don't have to wait a real day to see the payoff.
-
-## Explored but not shipped (2 more — see IDEAS §402)
-- **547-kids-songkeeper** — same idea as a glowing **three.js** creature, each song an orbiting strand. Richest "alive" feel; lost only because three.js just shipped yesterday (545) and petals-with-a-face read clearer for a 4-year-old.
-- **548-kids-songbloom** — same idea as a **bioluminescent deep-sea creature** (WebGL2 shader) grown from your song history. Gorgeous; lost because a full-screen shader is the *least* legible "you can see your own songs" — no face, no character.
-
-## The jury scorecard (honest)
-- Clears **3/5** (≥3 subsystems · Tamagotchi/Eno refs · extends the Companion/Presence spine). The interesting-but-contestable #1 (remembering melodic *content* across days, body drawn from the contours) I discounted honestly — localStorage persistence itself isn't a lab-first (322 already ages a creature).
-- **#5 still didn't bind** — cs.SD is all server-ML again; the one genuinely relevant fresh finding (a 2026 study: young kids bond with a voice companion that *remembers* them, not one that's merely novel) backs the design but isn't verifiably <14 days. Said plainly.
+## Also explored (banked, not shipped — IDEAS §403)
+- **550 voice-steered** — sing and your pitch *pulls* the walker; "tune yourself into the drift." (detector flagged basic)
+- **551 tilt-steered** — lean the phone through fifths & thirds; desktop tilt-pad fallback.
+- Both are the **cycle-3 grab-the-wheel** layer: steer it, or let go and it drifts on its own.
 
 ## Open questions for you
-- **Does pitch-tracking actually catch a 4-year-old's voice?** The core risk: a child's voice is high/breathy and autocorrelation can octave-slip. I added a "babble-note" fallback so *any* sound still teaches it something — but if capture feels off when you test with a real kid, tell me and I'll tune the thresholds (or promote 547, whose detector is a touch more conservative).
-- **Cycle 3 direction?** Two options: (a) let the friend *compose a genuinely new song overnight* by combining what it learned, or (b) a call-and-response game ("sing the part it forgot"). Which is more your kid?
+- For 552 cycle 3: add steering (voice/tilt) on top of the autonomous drift — or keep it purely hands-off? My instinct: steerable-but-autonomous-by-default.
+- Worth me spending a whole cycle on a *real* off-cs.SD research dive to finally land a #5 and break the 3/5 ceiling?
 
-## Heads-up
-- Build-verified (full `npm run build`, exit 0, 438/438 pages, zero warnings in the folder), **not** browser-verified — no mic/audio in the cloud sandbox. Pre-seeded memory + "pretend it's tomorrow" are the safety nets so the glance always shows a friend made of songs.
-- No new deps, no API route, pure client (mic stays local — never recorded or uploaded). Memory lives only in *your* browser's localStorage.
+## Status
+Build green (439/439 pages, exit 0). Build-verified, not browser-verified (no audio device in sandbox) — but it's zero-permission autonomous, so a phone glance should just work.
