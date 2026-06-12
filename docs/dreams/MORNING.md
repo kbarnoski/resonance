@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-06-12 08:35 UTC
+# Morning digest — last updated 2026-06-12 10:26 UTC
 
-**Cycle 398 · KIDS · DEEP (3 approaches, one concept) → shipped `537-kids-sky-murmuration`.**
-Open it: **https://getresonance.vercel.app/dream/537-kids-sky-murmuration**
+**Cycle 399 · ADULT · WIDE (3 explorers, one shipped) → `538-xenharmonic-lattice`.**
+Open it: **https://getresonance.vercel.app/dream/538-xenharmonic-lattice**
 
 ## New since yesterday
-- **🐦✨ 537-kids-sky-murmuration** — *look up into a deep 3D dusk sky where thousands of glowing starlings swirl as one — and the murmuration SINGS.* Shepherd the flock with a finger; when the cloud splits into sub-flocks you **hear it split into harmony**, and it resolves to a chord when it re-merges. A living weather of birds you stand under. Built on **three.js** (a `THREE.Points` cloud, depth-coded near-warm/far-violet, fog, a drifting camera for real 3D depth) driven by an emergent **boids** flock (Reynolds rules), with the flock's collective state — cohesion, height, sub-flock count — *being* the music.
-  - *Why open it:* it's the "massively bigger" swing you asked for, on the one renderer the lab had gone cold on (three.js, 0× in the recent window) — and it deliberately steers off yesterday's drawing-ML so the kids set isn't two "draw → magic" pieces in a row. For a 4yo: no reading, no wrong move, just a beautiful flock that follows your finger.
-  - **Hands-free check:** with zero interaction a "ghost shepherd" wanders the sky, splitting and merging the flock + singing from frame one — so a glance always shows a swirling, singing, splitting murmuration. (No WebGL? It falls back to a Canvas2D dot-flock that still flocks + sings.)
+- **🎼 538-xenharmonic-lattice** — *wander a tuning system the piano can't play.* A navigable harmonic lattice (SVG Tonnetz) in **5-limit Just Intonation**, **Bohlen–Pierce** (a non-octave scale built on the 3:1 "tritave"), and **19-EDO**. Drag across the nodes; each one sounds an **exact rational-ratio** pitch — no 12-tone rounding. JI chords lock in eerily pure; the "comma pump" drifts the pitch as you loop around; **Bohlen–Pierce simply refuses to resolve** the way Western ears expect; 19-EDO sits in the uncanny valley.
+  - *Why open it:* this is the lab's **first xenharmonic piece in 538 prototypes** — a genuinely new lane, not another variation. It's also exactly what last night's jury asked for: *"a piece whose tension lives in TUNING, not in beating partials — Bohlen–Pierce, 19-TET."* Built straight off this morning's research dive (the 2026 microtonal-tooling wave).
+  - **Hands-free check:** a "ghost finger" walks the lattice and sounds it from first load with zero taps — and the 5-JI path is literally a comma loop, so a glance shows + hears the drift.
 
-## Explored but not shipped (2 more — see IDEAS §398)
-- **535-kids-starling-choir** — the same flock on **raw WebGL2 transform feedback** (a true GPU boids sim, ~2.5k birds). The most technically ambitious, but its float-texture + GPU-readback path is fragile on iOS Safari (the iPad), so it lost to three.js. Resurrect when we want to scale to 5–10k birds.
-- **536-kids-lantern-shoal** — the same flock as friendly **Canvas2D lantern-fish** with eyes + tails — the *best* legibility for a literal 4yo (you see individual friends). It lost only on diversity: Canvas2D was already heavily used, so shipping it would have made the lab repetitive. Great candidate to fold its character-art into 537.
+## Explored but not shipped (2 more — see IDEAS §399)
+- **539-tremor-globe** — live **USGS earthquakes** sonified as a never-resolving planetary drone over a rotating three.js globe. Competent and complete, but it *lost on honesty*: it claimed "first data-sonification" and the lab already has 5 (233-earth-pulse, 314-solar-wind, 437-wiki-pulse, 463-terra-gamelan, and a near-twin 337-seismic-globe). Redundant, not bad — resurrectable if it differentiates hard.
+- **540-slime-cantor** — a WebGPU **Physarum slime-mold** organism whose growing network *is* the voice. Lost twice over: the builder returned incomplete, and 327-physarum-choir already exists.
 
 ## Open questions for you
-- **Does the split→merge read as harmony on your speaker?** The one thing I can't verify here: whether the 2–4 sub-flock voices are *audibly* distinct as the cloud divides and rejoins (the cluster threshold may need a tune). If a split sounds like one blur rather than two pitches, tell me and I'll sharpen it.
-- **Does 3D depth read on the phone, or only on the iPad?** The depth cue is the slow camera drift + fog + near/far colour. Curious whether it feels volumetric on a small screen.
-- Want 537's **cycle-2** to add a hawk-shadow the flock parts around (a gentle tension that resolves), or to let two kids each shepherd a harmonising sub-flock (the Together-spine crossover)?
+- **Is the tuning *audible* on your phone?** The thing I can't verify here: whether the ~21.5¢ syntonic-comma drift and Bohlen–Pierce's "alien" quality actually read on a phone speaker, or only on headphones. If JI just sounds "in tune" and BP sounds "out of tune" rather than *intriguing*, tell me and I'll sharpen the contrast (e.g. an A/B against the 12-TET equivalent).
+- Want 538's **cycle-2** to add **Web MIDI** so your keyboard plays the lattice, sustained chords so the JI purity rings, and a visible "comma drift meter"?
 
 ## Heads-up
-- Build-verified (full `npm run build`, exit 0, 434/434 pages), **not** browser-verified — no three.js/WebGL/audio in the cloud sandbox. Ghost-shepherd auto-demo + Canvas2D dot-flock fallback are the safety nets.
-- Process note for me: the two non-winner builders were still running when I removed their folders and re-created them, breaking the first build — I now stop a non-winner's agent before deleting its folder. Logged in STATE for the orchestration playbook.
+- Build-verified (full `npm run build`, exit 0, 435/435 pages), **not** browser-verified — no audio in the cloud sandbox. Ghost-finger auto-demo is the safety net.
+- Process note: a non-winner's builder **again** re-created its folder after I deleted it and broke the first build (same race as cycle 398). I caught + re-removed it; next cycle I'll stop the agent *before* deleting. No new deps, no API route, pure client.
