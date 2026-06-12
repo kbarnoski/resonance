@@ -1,27 +1,27 @@
-# Morning digest — last updated 2026-06-12 (UTC, cycle 401)
+# Morning digest — last updated 2026-06-12 (UTC, cycle 402)
 
-> **Heard the jury.** Yesterday's verdict: *"the floor held but the ceiling fell — zero of the last 15 reached 4/5; take 514-polytempo-loom to cycle 2 and chase a 4/5; ban Canvas2D/WebGPU/GPU-physics-drone/finger-on-glass."* So this cycle does exactly that.
+> **Heard the jury.** Provocation #6: *"518-living-ember is the one kids piece with memory that rewards return across days — extend THAT — a creature a child finds genuinely changed tomorrow, not another 90-second glow toy."* This cycle does exactly that.
 
-**Cycle 401 · ADULT · DEEP (3 approaches, one concept) → `545-motion-loom`.**
-Open it: **https://getresonance.vercel.app/dream/545-motion-loom**
+**Cycle 402 · KIDS · DEEP (3 approaches, one concept) → `549-kids-song-friend`.**
+Open it: **https://getresonance.vercel.app/dream/549-kids-song-friend**
 
 ## New since yesterday
-- **🧵 545-motion-loom** — *the motion in your room conducts a Nancarrow polytempo canon.* The left and right halves of the camera each carry their own moving rhythm, pulled out with **NO machine learning** — just optical motion energy + autocorrelation — and because two real-world motions never lock to a clean tempo ratio, the five voices drift forever and you **cannot conduct them into agreement**. Tension that lives purely in TIME, now made by your body.
-  - *Why open it:* it's **cycle 2 of 514-polytempo-loom** (the piece the jury named), but the tempi are now *conducted by the room* instead of fixed by me. Renders as glowing woven **three.js** threads whose drift-apart IS the tempo drift.
-  - **Hands-free check:** "ghost motion" weaves + drifts the threads from the very first frame, before any camera grant — give it the camera and the room takes over.
+- **🎵 549-kids-song-friend** — *a creature literally made of the songs your kid sings it.* Hum or sing; it snaps your voice to a pentatonic melody, grows a **petal shaped like that melody**, and **keeps every song forever, across days**. Come back tomorrow and it greets you, is bigger, and **sings your songs back — woven together and changed.** It has a little face that opens its mouth when it sings.
+  - *Why open it:* it's **cycle 2 of 518-living-ember**, but where 518 remembered a vague *energy*, this remembers the actual *songs* — and you can SEE them (each petal traces the pitches you sang). It changes because of *what your kid sang*, not a timer (that's how it's different from the older voice-garden plant).
+  - **No waiting / no permission needed:** it loads already knowing a couple of "yesterday's songs" and sings them hands-free. Tap **"✨ pretend it's tomorrow"** to watch it grow + re-sing instantly — you don't have to wait a real day to see the payoff.
 
-## Chasing the 4/5 (your jury ask) — honest scorecard
-- Solidly clears **3/5** (≥3 subsystems · Nancarrow + spontaneous-motor-tempo refs · extends the 514 spine). **Arguable 4/5** via a cross-modal first — *tempo extracted from camera **motion*** (the lab has audio beat-detection, never beat-from-motion). I flagged it honestly rather than gaming it.
-- **#5 (bind a <14-day paper) still didn't bind** — I *did* mine beyond cs.SD like you asked and found the perfect anchor (spontaneous-motor-tempo science: two bodies' innate tempi rarely match → the drift is a *human condition*, not a trick), but it's ~9 months old, not <14 days. Said plainly.
+## Explored but not shipped (2 more — see IDEAS §402)
+- **547-kids-songkeeper** — same idea as a glowing **three.js** creature, each song an orbiting strand. Richest "alive" feel; lost only because three.js just shipped yesterday (545) and petals-with-a-face read clearer for a 4-year-old.
+- **548-kids-songbloom** — same idea as a **bioluminescent deep-sea creature** (WebGL2 shader) grown from your song history. Gorgeous; lost because a full-screen shader is the *least* legible "you can see your own songs" — no face, no character.
 
-## Explored but not shipped (2 more — see IDEAS §401)
-- **544-conductors-canon** — conduct the loom with your **two hands** (MediaPipe Hands → 514's exact SVG loom). Near-shippable; lost only because shipping another SVG piece would make SVG over-used (4×). **Resurrect-first** if you'd rather conduct with your hands than the room.
-- **546-clock-canon** — **full-body** conducting → orbiting **clock-hands that sweep and never realign** (a gorgeous single image of "incommensurable tempi"). Fresh visual idiom worth folding back in.
+## The jury scorecard (honest)
+- Clears **3/5** (≥3 subsystems · Tamagotchi/Eno refs · extends the Companion/Presence spine). The interesting-but-contestable #1 (remembering melodic *content* across days, body drawn from the contours) I discounted honestly — localStorage persistence itself isn't a lab-first (322 already ages a creature).
+- **#5 still didn't bind** — cs.SD is all server-ML again; the one genuinely relevant fresh finding (a 2026 study: young kids bond with a voice companion that *remembers* them, not one that's merely novel) backs the design but isn't verifiably <14 days. Said plainly.
 
 ## Open questions for you
-- **Does the room-motion → tempo actually feel like conducting?** The honest risk: autocorrelation finds *a* BPM even from messy motion, so a noisy room may read erratically. Cycle-3 fix is ready (only accept a tempo when the autocorr peak is sharp). If it feels vague, say so and I'll promote **544 (hand-conducting)** — its beat detection is crisper.
-- Want **cycle 3** to make this **two people** — left half = you, right half = a partner, literally two conductors who can't agree (the science, made interactive)?
+- **Does pitch-tracking actually catch a 4-year-old's voice?** The core risk: a child's voice is high/breathy and autocorrelation can octave-slip. I added a "babble-note" fallback so *any* sound still teaches it something — but if capture feels off when you test with a real kid, tell me and I'll tune the thresholds (or promote 547, whose detector is a touch more conservative).
+- **Cycle 3 direction?** Two options: (a) let the friend *compose a genuinely new song overnight* by combining what it learned, or (b) a call-and-response game ("sing the part it forgot"). Which is more your kid?
 
 ## Heads-up
-- Build-verified (full `npm run build`, exit 0, 437/437 pages), **not** browser-verified — no camera/WebGL/audio in the cloud sandbox. Ghost-motion auto-demo is the safety net.
-- No new deps, no API route, pure client (camera stays local — never recorded or uploaded). One delayed-write race between builder agents, caught and handled before commit.
+- Build-verified (full `npm run build`, exit 0, 438/438 pages, zero warnings in the folder), **not** browser-verified — no mic/audio in the cloud sandbox. Pre-seeded memory + "pretend it's tomorrow" are the safety nets so the glance always shows a friend made of songs.
+- No new deps, no API route, pure client (mic stays local — never recorded or uploaded). Memory lives only in *your* browser's localStorage.
