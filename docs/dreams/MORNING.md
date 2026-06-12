@@ -1,21 +1,16 @@
-# Morning digest — last updated 2026-06-12 (UTC) · cycle 403
+# Morning digest — last updated 2026-06-12 (UTC) · cycle 404
 
-## ▶ Open this first
-**[/dream/552-dream-house](/dream/552-dream-house)** — **Dream House** 🛕🎶 (adult · DEEP, 3 approaches)
-*The xenharmonic lattice comes alive.* You named **538** yesterday — "make it a spine and it's the first 4." This is cycle 2: where 538 was a Tonnetz you *tap*, **552 is a room you leave running.** A walker wanders the just-intonation / Bohlen–Pierce lattice on its own, sustains a pure-ratio drone, and — because of the syntonic comma — **never returns home**, drifting through a 14-minute arc (8 phases, voices 2↔6, tuning migrates 5-JI → Bohlen–Pierce → 19-EDO → back, register breathes, brightness opens & closes). SVG Tonnetz with a glowing comet-trail of where the harmony has been. **Zero permission, plays itself** — just hit Start and watch/listen; tap anywhere to "exhale" a fresh chord. La Monte Young / Éliane Radigue lineage.
+## New since yesterday
+- **[553-kids-tilt-fountain](https://getresonance.vercel.app/dream/553-kids-tilt-fountain)** 🌊🎐 — **TIP the whole tablet** to pour a stream of glowing orbs down through a 3D garden of chimes, bells, and strings; you compose a singing waterfall by where you AIM the flow. Active, constructive kids play — not another calm glow toy. Opens hands-free (a ghost-tilt auto-demo pours + sings from frame one; no permission, no taps). **Why open it:** it answers your "stop shipping similar glow toys" note head-on — a 4-year-old *builds* a tune by leaning the device.
 
-## Why this one (honest)
-- **Hits your jury head-on:** answers #1 (spine-ify 538) AND #3 (the "leave it running / off the glass" dare — fully autonomous, no finger-on-glass, SVG not Canvas2D/WebGPU).
-- **Honest 3/5, not the 4/5 you want.** #2 (4 subsystems) + #3 (named refs) + #4 (now a spine). **#5 still didn't bind** — arxiv this week is zero JI/microtonal papers (still server-ML), and the best JI-interface ref (LIMITER) is July-2025, not <14 days. I said so plainly rather than gaming it. The lab has now cleared #4 twice (401, 403) and missed #5 twice — **the first real 4/5 needs a dive that actually mines TouchDesigner / Anadol / SIGGRAPH / fal wells, not cs.SD.** That's the top research target.
+## How this cycle ran
+- **WIDE kids fire** — 3 orthogonal explorers off three off-glass inputs × three non-banned renderers; shipped the strongest, banked the other two.
+- **2 more explored (see IDEAS §404):** `554-kids-giant-shadow` (your whole body becomes a giant glowing creature that sings a choir — camera + WebGL2 metaballs; the biggest *wow*, but the riskiest on a real iPad) · `555-kids-echo-canyon` (sing a phrase, echo-creatures bounce it back as a self-harmonizing round — voice + SVG; the most refined *music*). Both are complete, build-reviewed, ready to resurrect.
 
-## Also explored (banked, not shipped — IDEAS §403)
-- **550 voice-steered** — sing and your pitch *pulls* the walker; "tune yourself into the drift." (detector flagged basic)
-- **551 tilt-steered** — lean the phone through fifths & thirds; desktop tilt-pad fallback.
-- Both are the **cycle-3 grab-the-wheel** layer: steer it, or let go and it drifts on its own.
+## Honest notes
+- **3/5 ambition, not 4/5** — same as the last several cycles. The jury's "chase a 4/5" needs a **<14-day research bind (#5)**, which honestly isn't available for a *kids* cycle (the audio-ML wells are server-side; the kids lab-firsts are spent). The 4/5 chase is an **adult research-led** target — flagged for cycle 405.
+- 553 is **build-verified** (clean `npm run build`, 440/440 routes, prerendered) but **not browser-verified** here. Worth a real check: does the AudioContext unlock on iOS after the tilt-permission prompt, and does aiming the flow feel like *composing* vs pretty randomness?
 
-## Open questions for you
-- For 552 cycle 3: add steering (voice/tilt) on top of the autonomous drift — or keep it purely hands-off? My instinct: steerable-but-autonomous-by-default.
-- Worth me spending a whole cycle on a *real* off-cs.SD research dive to finally land a #5 and break the 3/5 ceiling?
-
-## Status
-Build green (439/439 pages, exit 0). Build-verified, not browser-verified (no audio device in sandbox) — but it's zero-permission autonomous, so a phone glance should just work.
+## Open questions for Karel
+- Love `553`? If so, cycle-2 = build chords (not just melody) by pouring multiple "ingredients," + iOS tap-to-resume.
+- Want me to prioritize the **first honest 4/5** next (an adult fire that finally binds a fresh paper/tool onto a spine), or keep diversifying the kids set?
