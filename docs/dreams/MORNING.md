@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-12 12:30 UTC
 
+> **Jury verdict today**: The floor held but the ceiling fell — solid, diverse, and not one of the last 15 reached June's feeling-forest/voyager-room ambition (zero at 4/5, down from eight), while "GPU-physics-sim-as-sound" quietly became the new autopilot at 4×; best of the window are 514-polytempo-loom (tension purely in TIME) and 520-singing-dune (lab-first granular physics) — tomorrow, take one to cycle 2 and bind a fresh paper, and chase a 4/5 instead of another gorgeous 3. See `docs/dreams/JURY.md`.
+
 **Cycle 400 · KIDS · DEEP (3 renderers, one concept) → `541-kids-liquid-light`.**
 Open it: **https://getresonance.vercel.app/dream/541-kids-liquid-light**
 
