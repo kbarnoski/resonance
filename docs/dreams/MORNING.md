@@ -1,23 +1,21 @@
-# Morning digest — last updated 2026-06-11 (UTC) · cycle 394
+# Morning digest — last updated 2026-06-12 (UTC) · cycle 395
 
 ## ▶ Open this first
-**[/dream/524-kids-hand-firebird](https://getresonance.vercel.app/dream/524-kids-hand-firebird)** — **Hand Firebird** 🔥🕊 (kids 4+)
-Hold up your hand to the camera and it becomes a **glowing firebird of light** — about 2000 GPU particles gather around your fingers. **Open your hand and it blooms wide and sings; close it and it gathers into a quiet ember.** Raise your hand for a higher note. It's pure cause-and-effect a 4-year-old finds in one second — a creature that's *theirs*, with agency and delight.
+**[/dream/526-jazz-room](https://getresonance.vercel.app/dream/526-jazz-room)** — **Jazz Room** 🎷 (adult)
+Press Start and a **late-night jazz trio plays itself**: walking upright bass, warm Rhodes-ish piano comping, brushed drums — over an F blues, swinging through a real arc (**head → piano solo → bass solo → trading fours → head out**, ~5–7 min). The piano uses actual **Bill Evans rootless voicings** and the bass walks the changes with chromatic approach notes. You can **"sit in"** — tap the blues-scale keys and your melody floats on top — but it grooves with or without you. Smoky club visual: three glowing presences pulsing in an amber spotlight.
 
-This is the lab's **first MediaPipe Hands** (real 21-point hand-tracking in the browser — we'd used body *Pose* once at 493, but never the hands model), driving a **raw WebGL2** particle creature. I picked the firebird over its two siblings because it's the **biggest swing** (a real GPU particle being, not a flat drawing), it extends your **loved particle pieces** (130 / 236 / 262 ❤️), and WebGL2 was the *scarcest* renderer in the recent window — so it diversifies instead of repeating.
-*(A scripted virtual hand makes it bloom and sing on load before you grant the camera, and a Canvas2D glow fallback covers phones with no WebGL2 — so even a hands-free glance shows a singing creature. iPads have WebGL2, so the full firebird should run there.)*
+This is the lab's **first-ever jazz piece** (zero jazz in 350 prototypes) and a direct answer to your **priority #4** — alternate journey-engine arcs (you named "jazz responsive"). It's a different dramatic language than the psychedelic 6-phase engine: warm, intimate, swinging.
 
-## Why this swung joyful (a diversity call worth seeing)
-The last two **kids** cycles (513 shadow-still, 518 living-ember) were both *hushed, contemplative single-presences that never resolve* — and across the whole lab that "one lonely presence, never resolves" vibe just hit **4× in the last 10** (520/518/514/513). Beautiful, but a third in a row would be the exact monoculture the jury keeps warning about. So this kids cycle deliberately went the **opposite temperature**: loud, joyful, embodied, immediate — a creature you bring to life with your fingers. A 4-year-old wants agency, not a meditation.
+## Why this one won (a WIDE fire of 3)
+I ran three autonomous "genre arc" explorers and shipped the strongest. The diversity gate was unusually tight this window: **both** vibe poles were over-used in the last 10 — "lonely presence that never resolves" (4×) *and* "tension you resolve through an action" (4×) — so I had to build something that's **neither**. A jazz set simply *plays*: not an empty drone, not a puzzle. It also dodged WebGPU (already 3× — using it would've made a renderer monoculture).
 
-## 2 more explored this fire (banked — see IDEAS §394)
-Same "your hand becomes a singing creature" concept, three renderers:
-- **523-kids-hand-puppet** (Canvas2D) — your hand is a warm **shadow-puppet dog**; thumb = jaw, open mouth = sings. The **most legibly-a-creature for a literal 4yo** ("it's a puppy!") and the most robust on any device. Lost only because Canvas2D was already over-used this window.
-- **525-kids-hand-choir** (SVG) — each **fingertip is its own tiny singer**; spread your fingers into a 5-part chord, close them into a unison hug. The cleverest idea (open-chord ↔ unison is a real harmony lesson in the hand). Lost on renderer-diversity + a minor 60fps perf flag.
+## 2 more explored this fire (banked — see IDEAS §395)
+- **527-cipher-score** (SVG) — **type a sentence and watch it become a living score that performs itself**; every letter is a pitch + duration via a Messiaen-style alphabet, punctuation shapes the dynamics. The most *delightful* of the three; lost only on ambition (it's a smaller swing than a whole jazz combo). Easy to resurrect.
+- **528-market-veil** (WebGL2) — **live crypto markets as an evolving ambient drone** (greed = warm/bright, fear = a dissonant chord creeping in). Lost because its live-data-drone concept (and even the *"-veil"* name) overlaps **502-atmosphere-veil**, and Binance geo-blocks the US so it'd run in *simulated* mode for you anyway.
 
 ## Honest caveats
-- Build-verified (compiles clean, 6.09 kB static), **not browser-verified.** The MediaPipe-Hands + WebGL2 pipeline has **never run on a real device** — first-run model-load / WebGL2 quirks are possible (the Canvas2D fallback + on-load virtual-hand demo fully cover that). The openness heuristic is tuned for an adult hand; a small child's hand may need a threshold tweak.
-- **#5 not claimed** again — this week's cs.SD is all server-side ML, nothing client-portable (a stable, repeated read). The freshness here is "MediaPipe Hands is now genuinely browser-ready," not a bound <14-day paper.
+- Build-verified (compiles clean, 7.19 kB static), **not browser-verified** — no audio in this sandbox. Unheard: the exact swing *feel* at 132 BPM and the FM-piano timbre may want a micro-tune; voice-leading is *approximately* smooth (uses note-distance, not strict SATB). It's pure synthesis with no network/mic, so it **always plays on load**.
+- **#5 not claimed** again — the audio-ML frontier is still server-side; nothing client-portable to bind. The freshness this cycle is a *diversity* read: the frontier is all-WebGPU (which we just saturated), so I steered to the scarce renderers + your starved genre-arc lane.
 
 ## Open question for you
-For **524's** cycle-2, what's most interesting: (a) **two-hand mode** — two firebirds duetting, one per child; (b) **pinch gestures** as a distinct "spark/pluck" verb on top of open/close; or (c) push the particle count to 10k+ via GPU transform-feedback for a denser, more painterly creature? And separately — was swinging the kids lane back to *joyful/embodied* the right call after two contemplative ones, or do you want more of the quiet 513/518 register?
+For **526's** cycle-2 (a possible "Genre Journey-Arc" spine): which arc next — **bossa/latin**, **gospel**, a **ballad**, or a **cinematic-trailer** build? And should the sit-in be auto-harmonized so a non-player always sounds good, or kept raw so you can actually solo?
