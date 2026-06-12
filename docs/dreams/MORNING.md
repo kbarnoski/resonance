@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-06-12 02:26 UTC
+# Morning digest — last updated 2026-06-12 04:30 UTC
 
-**Cycle 396 · KIDS · DEEP (3 approaches, one concept) → shipped `529-kids-doodle-choir`.**
-Open it: **https://getresonance.vercel.app/dream/529-kids-doodle-choir**
+**Cycle 397 · ADULT · WIDE (3 divergent explorers) → shipped `532-vocoder-veil`.**
+Open it: **https://getresonance.vercel.app/dream/532-vocoder-veil**
 
 ## New since yesterday
-- **✏️🎶 529-kids-doodle-choir** — *a 4-year-old draws a doodle; a real in-browser neural net recognizes it; the drawing comes alive and SINGS, joining a growing choir.* **"Quick, Draw! that sings."** This is the lab's **first-ever use of TensorFlow.js / any ML recognition** (0× in ~360 prototypes) — the single biggest unused technique left — and it lands right on your **loved draw/paint lane** (100/104/152/153❤️). TF.js + **DoodleNet** (QuickDraw 345-class CNN, via CDN) maps the doodle to 8 storybook archetypes (sun/fish/bird/plant/cloud/star/critter/home), each animating + singing a C-pentatonic motif so nothing clashes.
-  - *Why open it:* it's the first time a Resonance toy **understands what you drew** — and it's pure joy, not another tense/unresolved drone.
-  - **Hands-free check:** a ghost-finger auto-demo draws + sings on load (it bypasses the model), and a no-ML geometric fallback keeps it playing even if the network's blocked — so it should always be alive when you glance.
+- **🎙️🎹 532-vocoder-veil** — *sing or speak, and your words come out played by your REAL Welcome Home piano.* The lab's **first channel vocoder** (grep-verified 0×): a 16-band Homer-Dudley filterbank where your live mic (the modulator) drives the per-band gains of your actual piano recording (the carrier, pulled read-only from `/api/audio/549fc519-…`). The piano *talks in your voice* — uncanny, intimate, musical.
+  - *Why open it:* it finally does the thing you've asked for repeatedly — **uses your real recordings as the material**, not synth — and it's a genuinely new technique for the lab. Try a long "aaaah", then a sibilant phrase ("she sells seashells").
+  - **Hands-free check:** with no mic permission, a built-in vowel auto-demo (ah→ee→oh→oo→mm) makes the piano sing and the WebGL2 ladder animate from frame one — so it's always alive when you glance.
 
-## Explored but not shipped (2 more — see IDEAS §396)
-- **530-kids-sketch-garden** — same magic, **no neural net at all** (geometric shape classifier) → **WebGL2 glowing particle creatures**. The bulletproof-offline version; its glow is gorgeous — I'd fold it into 529 next.
-- **531-kids-drawing-band** — same DoodleNet, but each doodle joins a **tempo-locked band/groove**. Tied on ambition, most *musical* of the three; lost because "build a band" is the lab's most over-used kids lane.
+## Explored but not shipped (2 more — see IDEAS §397)
+- **533-hollow** — *tension as ABSENCE.* A drone you carve holes into with comb filters; a three.js shell hollows where the spectrum cancels. The most sculptural of the three; a real answer to the "tension in a never-touched primitive" note. I'd resurrect it as a tension spine.
+- **534-third-ear** — *a melody that exists only inside your ear* (Tartini difference tones). The highest-surprise idea, but audio-first (weak phone glance) and the effect needs headphones — so it lost to the vocoder's bigger swing + your-real-music fit.
 
 ## Open questions for you
-- **Does DoodleNet actually recognize a small child's rough doodle on a real iPad?** That's the one thing I can't verify here. If the model URL 404s it silently drops to a "◈ shape matching" heuristic (still playable). Tell me if recognition feels *magic* or *random* — if random I'll merge 530's no-ML classifier as the trusted path and keep TF.js as a bonus.
-- Want 529's **cycle-2** to fold in 530's WebGL2 glow + 531's groove lock (storybook + glowing creatures + a gentle pulse)?
+- **Does the vocoder read loud/clear enough on a real mic?** The one thing I can't verify here: the envelope-follower values may sit low and need a scale bump to push the piano's bands to full. If it sounds thin when you sing, that's the knob — tell me and I'll scale it next cycle.
+- **Does your piano load as the carrier?** If `/api/audio/[id]` 404s or CORS-blocks, it silently drops to a synth carrier (amber note). Tell me if you hear the real piano or the synth.
+- Want 532's **cycle-2** to add a track picker (choose which WH path-track is the carrier) + a "freeze a held vowel into a sustained chord" mode?
 
 ## Heads-up
-- Build-verified (full `npm run build`), **not** browser-verified — no GPU/audio/camera in the cloud sandbox. Auto-demo + heuristic fallback are the safety nets.
+- Build-verified (full `npm run build`, one TS fix), **not** browser-verified — no audio/mic/WebGL2 in the cloud sandbox. Auto-demo + synth-carrier + Canvas2D fallbacks are the safety nets.
