@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 406
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 407
 
 ## New since yesterday
-- **`559-kids-clap-canon`** → https://getresonance.vercel.app/dream/559-kids-clap-canon
-  **Steve Reich's phasing, for a 4-year-old.** Clap a rhythm into the mic; two friendly blobs clap it back, then one drifts ~1.8% faster so the patterns slide unison → shimmering interlock → unison over ~30–40 s. A big **phase-wheel** with two chasing dots makes the drift *visible*, not just heard. Active rhythmic discovery — not a glow toy.
-  *Why open it:* this is the jury's #4 answered literally — it mourned that the time-tension vocabulary (tempo canons, Reich phase, Nancarrow) "had no children." This is that piece, for children. Opens with a zero-permission auto-demo: the wheel turns and the blobs bob from frame one, no clicks, no camera/sensor.
-- **2 more kids directions explored this fire** (WIDE, 3 parallel builders) — banked in IDEAS §406:
-  - `560-kids-shadow-band` — your **shadow** becomes a glowing creature (camera, no ML) and dancing through 3 zones plays a band (Krueger *Videoplace*). The big embodied "wow"; banked for being the most lighting-fragile + most-trodden camera lane.
-  - `561-kids-rainmaker` — **shake** the tablet like a rainstick to summon a storm (Xenakis stochastic grain clouds). Fresh off-glass input; banked as the least conceptually surprising.
+- **`564-piano-splat-cathedral`** → https://getresonance.vercel.app/dream/564-piano-splat-cathedral
+  **Your real Welcome Home piano doesn't just make a cloud — it BUILDS A CATHEDRAL.** A luminous Gothic nave of depth-sorted Gaussian splats — floor → columns → arches → vault → rose window — raised element-by-element by the music's onsets and lit by pitch, that you fly down the centre of. It's *stateful*: a bare floor + one column pair at 0:10; the full vault and a blooming rose window by 3:00 — different every minute, not a loop.
+  *Why open it:* cycle 2 of the splat spine that landed our first 4/5 (`557`). The leap this time is the honest renderer — **anisotropic, depth-SORTED, alpha-over** splats, so a near column genuinely *occludes* a far one (557 was flat additive glow). And it's the directest answer to "too similar / massively bigger": 557 was a cloud you orbit; this is a *building* your music raises. Zero-permission auto-demo builds itself from frame one — glance and it's already alive.
+- **2 more splat renderers explored this fire** (DEEP, 3 parallel builders) — banked in IDEAS §407:
+  - `563-piano-splat-ewa` — the **reconstruction-grade** renderer: full EWA covariance projection (the textbook 3DGS math). Cleanest technique; lost only because it's another orbitable cloud. **This is the cycle-3 upgrade for the cathedral.**
+  - `562-piano-splat-aurora` — splats stretched into flowing **aurora ribbons** along the music's flow. The silky-sheet look, banked for any future ribbon piece.
 
 ## In progress / partial
-- **Splat spine (`557` cycle-2)** is the strongest next 4/5: load a REAL captured `.splat`/4DGS scene + depth-sorted compositing → true anisotropic 3DGS driven by your piano. Queued for the next adult DEEP cycle (407).
-- **`559` cycle-2 ideas:** 3-voice phase; two kids / two devices each clap a voice (the multi-user lane the lab is thin on); tune onset thresholds on real-child claps.
+- **Splat spine (`557` → `564`)** is our strongest lineage. Cycle 3: drop `563`'s full covariance into the cathedral + load a REAL captured `.splat` scene to *be* the nave (the actual browser-splatting wave) → the clean 5/5.
+- **`559` cycle-2 (kids clap-canon):** 3-voice phase; two kids / two devices each clap a voice (the multi-user lane the lab is thin on).
 
 ## Research findings worth a look
-- No genuinely <14-day, kid-buildable technique this window (cs.SD still server-ML). The real fresh platform note: **WebGPU baseline now shipped cross-browser via Interop 2026** — an enabling layer, not a technique. The surprise came from the jury seam (time-tension "had no children"), not the feed. (RESEARCH §406.)
+- The 2026 in-browser splatting wave is real and current-month: **MOBILE-GS** runs sorted 3DGS at **116 FPS on a phone**; **SparseStreet** (arXiv June 2026) + **WebSplatter** confirm real-time sorted anisotropic splatting is now a browser commodity. That's what motivated leaping 557 from cheap isotropic blobs to the honest sorted renderer. (RESEARCH §407.)
 
 ## Open questions for Karel
-- **559:** does the ~1.8% drift read as Reich phasing to *you* on a real listen, or does the phase-wheel carry it? I can tune the drift rate if the slide feels too slow/fast.
-- Next: take the **splat spine to a real captured 4DGS scene** (the clean 5/5 path), or push the new **kids time-tension lane** (clap-canon → multi-kid phasing)?
+- **564:** does the cathedral *building itself* land as the bigger concept you've been asking for — or do you want the splats to be a real **captured scene** (a scanned space, a 4DGS performer) rather than procedural Gothic geometry?
+- Honest scoring: I called this **3/5** (the anisotropy is a two-axis approximation, not full covariance; no hard <14-day bind). The clean **5/5** is cycle 3 (full EWA + a captured scene). Worth chasing next adult cycle?
