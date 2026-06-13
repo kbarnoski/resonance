@@ -1,26 +1,27 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 411
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 412
 
-> **Jury verdict today**: Two real gems this fortnight (the splat galaxy and the ember keeper), but the lab fled WebGPU straight into a three.js-and-pentatonic comfort zone and shipped the same growing-creature twice — tomorrow: drop three.js, SVG and the mic, get off the glass, and chase warmth instead of another clever puzzle. See `docs/dreams/JURY.md`.
+> **Yesterday's jury** said: get off three.js/SVG/the mic, get **off the glass**, build the **real-world-data** piece (it's been 0× the whole window), **freeze the growing-creature spine** (549 ≈ 569 were twins), and **chase warmth, not another clever puzzle**. This cycle does the real-data + warmth move. See `docs/dreams/JURY.md`.
 
 ## ⭐ Open this first
-**[/dream/570-spoken-spell](https://getresonance.vercel.app/dream/570-spoken-spell)** — **Spoken Spell** 🗣️✨ (adult)
-**Speak — and your live words become a self-layering musical incantation.** Resonance hears your speech (real live recognition), turns each word into a pentatonic pitch, and freezes each finished phrase into a quiet looping ostinato — so the longer you speak, the denser the canon grows, and you can **hear your own sentence woven inside it**. The words flow across an SVG "river," each glowing the instant its note sounds.
-- **See it in 10 seconds:** open it and just wait — if you say nothing, an **auto-demo speaks a seeded incantation** so the accreting-canon effect plays itself. Then tap Start and say a sentence.
-- **Best in Chrome/Edge** (live speech recognition). On iPad Safari/Firefox it offers a **typed-text fallback** that runs the exact same mapping — type a line and watch it become music.
-- The directest answer to the **jury's #2** ("find sound in **language**, not another simulated physical field"). For a composer: your own words, as music.
+**[/dream/575-kids-sky-song](https://getresonance.vercel.app/dream/575-kids-sky-song)** — **Sky Song** 🌦️🎶 (kids 4+)
+**Today's REAL weather outside your window writes a little song — and your kid plays it.** The piece quietly fetches your **actual current local weather** (live, no setup) and lets the real sky **compose**: a sunny day → a bright major celesta; rain → gentle minor-pentatonic plucks; snow → glassy bells; fog → a low drone; night drops it an octave. Wind sets the tempo, clouds set how busy it is. A little generative song **plays itself and keeps evolving** (never a flat loop), and the child **touches a glowing aurora** to add their own voice — always in today's key, so nothing is ever wrong.
+- **See it in 10 seconds:** open it — the aurora drifts and notes bloom on their own from frame one, so a silent glance already shows a sky *making music*. Tap once to start the sound, then touch the sky to play along.
+- **The headline:** this is the lab's **first kids piece driven by real-world data** — your literal weather, not a synthetic toy. The directest answer to the jury's most-repeated ask ("music *about* something other than music").
+- **Grant location** when it asks and you'll hear *your* weather; deny it and it still plays a default-city sky. Works on iPad (WebGL2 aurora, Canvas2D fallback).
 
 ## How this cycle ran
-**ADULT · WIDE** (3 orthogonal explorers, one fire). The diversity audit **banned three.js** (it hit 4× in the last 10), so all three dodged it. Three unrelated directions built in parallel; shipped the most glance-legible + research-bound.
+**KIDS · DEEP** (one big concept, 3 parallel approaches). The diversity audit + jury **banned three.js, SVG, and the mic** all at once — so all three explored real-weather sonification on **WebGL2 / Canvas2D + live data + touch**, no mic. Shipped the most ambitious: the one where the weather *composes* an evolving song, not just tints a tap-toy.
 
-## 2 more explored — banked (IDEAS §411)
-- **571-the-withholding** — *music you can only hear by staying silent.* The mic is an **inverse gate**: the drone reveals more voices the longer you keep quiet, and withdraws the instant you make a sound. The strongest pure **concept** of the night and the missing conceptual/critical lane — lost only because its payoff needs a quiet room (less legible at a silent glance). Refs: Cage *4'33"*, Christine Sun Kim. **Worth reviving.**
-- **572-orrery-tunings** — hold your phone up and **turn/tilt to tune into a just-intonation harmonic sky** (gyro → WebGL2 aurora). Lost on lower ambition (adjacent to our many soundfield/tilt rooms) + a heavy shader that may stutter on iPad.
+## 2 more explored — banked (IDEAS §412)
+- **573-kids-sky-window** — a gorgeous **raw-WebGL2 GLSL living sky** (volumetric clouds, sun/moon, rain, lightning) you touch to play. The richest *atmosphere* of the three — lost only because 575's self-composing song is the bigger idea. **Worth reviving as the lush sky layer.**
+- **574-kids-weather-today** — the **warmest, coziest** take: a cut-paper diorama with a smiling sun and a friendly paper critter, tap-to-play. The most instantly readable for a 4-year-old and the most iPad-bulletproof (Canvas2D) — lost because its *shape* is closest to our older synthetic weather toys.
 
 ## Research finding worth a look
-**In-browser speech recognition is now a real primitive** — Hugging Face transformers.js runs ASR (Whisper / LiteASR / Cohere Transcribe) fully client-side, no server. 570 ships on the instant Web Speech API; the transformers.js path (offline, cross-browser) is the obvious cycle-2 upgrade. Honest note: the wave is ~3 months old, so I did **not** claim it as a fresh-bind score — said plainly.
+**Live local weather is now a zero-setup browser instrument** — Open-Meteo gives real current conditions for any location with **no API key, no server, no secret**, CORS-ready. That's what makes 575 possible. The same pipe opens up tide / air-quality / ISS-pass / seismic pieces — each "music about something real". (Honest note: the *sonification* lineage I leaned on is foundational, not a <14-day finding, so I did **not** claim a fresh-research score.)
 
 ## Open questions for Karel
-- **Love 570 → I take it to cycle 2:** tighten the word↔note sync so the *exact* spoken word lights, add the in-browser Whisper path (works on your iPad, offline), and let the loops resolve into a final cadence. Want that — or should the next adult fire instead ship **571-the-withholding** (the silence piece)?
-- Next is a **kids** cycle (412), leaning DEEP. The standing high-value kids move is **569-Ember-Keeper cycle 2** (make its *song* grow across days too, not just its body). Pursue that, or a fresh WIDE?
+- **Love 575 → cycle 2:** add a **forecast time-lapse** — scrub the next 16 hours of your real forecast and hear today's weather *arc* as a piece that changes (a genuine lab-first: long-form generative driven by a real forecast). Fold in 573's lush volumetric sky as the backdrop. Want that?
+- **One caveat:** on a clear review morning the piece will (correctly) sound bright and major — you won't *hear* the rainy/snowy variants without that weather. Want a tiny "try other skies" toggle so you can preview all the moods on demand?
+- Next is an **adult** cycle (413), leaning WIDE — and the jury explicitly **banned polytempo + the xenharmonic lattice** there and asked for **warmth**. Likely an *adult* real-data drone or an off-the-glass piece. Any steer?
 
-— Build-verified (`npm run build` ✓ 447/447 pages); not browser-verified (no mic/audio in the sandbox). The auto-demo + typed fallback mean the demo is rich with zero setup, even on Safari.
+— Build-verified (`npm run build` ✓ 448/448 pages); not browser-verified (no WebGL2/audio/network in the sandbox). The alive-from-frame-one visuals + baked-sky fallback mean it always shows a living sky even with no location and no network.
