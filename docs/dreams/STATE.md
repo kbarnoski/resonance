@@ -19008,3 +19008,28 @@ All three explorers cleared the floor (B via ≥3-subsystems+named-ref+recent-re
 - **Carried:** open spines paused while outputs over-represented — Living Earth (502), Wave-Field (478/489), Sound-Map (493), Machine-Ensemble (496), Together (505/508). Alternation: 399 was WIDE → next build leans DEEP.
 
 **Notes:** No API route / no guard (pure client SVG + Web Audio — no mic/camera/network/secrets). No new npm deps. Within scope fence (`src/app/dream/538-xenharmonic-lattice/` + `docs/dreams/**` only). **Honesty:** 538 is build-verified, NOT browser-verified — unverified surface: the ~21.5¢ comma drift may be too subtle for a 10-s glance; BP's "alien" quality behind the limiter on phone speakers; ghost-finger 1.4 s/step pacing; unlimited polyphony clicks under stress (max-8 cap = cycle-2 fix); iOS AudioContext resume. Ghost-finger auto-demo is the safety net.
+
+---
+
+## Cycle 413 — 2026-06-13 18:30 UTC · ADULT · WIDE (orchestrated, 3 explorers) · shipped `576-presence-room`
+
+**Orient.** Local clone was stale (HEAD at cycle 305) and had diverged from origin (cycle 412); `git reset --hard origin/main` to the authoritative remote (d3f1683). Read AGENT.md, JURY.md (2026-06-13), STATE/INDEX/IDEAS tails. Cycle 413 is **odd → adult** (kids ran 412 = `575-kids-sky-song`). Love signal: not re-fetched this cycle (offline-safe); leaned instead on the jury's explicit standing gaps. No blocker, no in-progress build.
+
+**Research-first.** Dive → RESEARCH **§413**: webcam head-tracking (MediaPipe FaceLandmarker) now drives binaural via Web Audio `AudioListener`, fully in-browser (open-source Spatial-Head-Tracking-Audio + webcam-auralization research). Surprising because the lab's many HRTF pieces always moved the listener by *dragging a dot or singing* — never by the visitor's own body. **Chain: dive → `576-presence-room` makes the head the controller.**
+
+**Decide (gates).**
+- **JURY 2026-06-13 read:** banned three.js + SVG OUTPUT, mic/voice INPUT, onset/beat/tempo TECH, pentatonic-wash + adult-cerebral-puzzle VIBE. Loudest provocation #1 (twice-repeated): "**zero embodied-spatial prototypes after 570 builds — get off the glass**"; #4 warmth-not-puzzle; #5 revive WebGPU / mine the graphics wells. → Many distinct provocations, no "extend X" → **mode: WIDE**.
+- **mode: WIDE** — 3 orthogonal adult explorers, each clearing the ambition floor via different tags, none using a banned tag.
+- **diversity audit (last ~10):** banned=[three.js OUTPUT 6× · SVG OUTPUT 5× · mic/voice INPUT 5× · onset/beat/tempo TECH 6× · pentatonic-wash + adult-cerebral-puzzle VIBE]. Picked tags for the winner=[**camera/head-pose INPUT** (not mic, not finger) · **raw WebGL2 OUTPUT** (not three.js, not SVG) · **head-pose→AudioListener HRTF-binaural TECH** (not onset extraction) · **warm meditative Dream-House VIBE** (not a puzzle)] — clean on every ban.
+- **ambition floor (winner):** `ambition: #1 (head-pose→AudioListener is lab-first — drag/sing-moved listeners don't count) + #2 (face-tracking + HRTF/AudioListener spatial + WebGL2 = 3 subsystems) + #3 (Amacher / La Monte Young Dream House / Oliveros); #5 soft/qualified bind (RESEARCH §413, webcam-auralization)`. ≥2 cleared, honestly 3/5.
+
+**Act (fan-out, 3 parallel builders, pre-allocated numbers).**
+- `576-presence-room` — camera head-pose → raw WebGL2 → head-tracked binaural JI Dream-House field. **WINNER.**
+- `577-still-bloom` — device-motion *stillness* → audio-first + minimal Canvas2D → Radigue drone that blooms voice-by-voice as you go still. Banked IDEAS §413.
+- `578-magnetosphere` — live NOAA SWPC space-weather data → WebGPU compute aurora → warm generative geomagnetic choir. Banked IDEAS §413.
+
+**Curate (why 576 won).** 576 is the directest answer to the jury's loudest, twice-repeated provocation #1 (the named "zero embodied-spatial" gap) and a true lab-first *interaction modality* (your head is the listener), warm not puzzle, clean on every ban. 577 is lovely + warmest but only 2/5 ambition and overlaps banked `571-the-withholding` (mic-silence ↔ motion-stillness). 578 has the highest raw ambition + best phone-glance, **but its input modality (real-world-data API → generative music) repeats cycle 412's `575-kids-sky-song`** (weather→generative) — the cross-cycle "too similar" trap the lab has flagged before (cf. §409's device-motion note) — so it is banked, not shipped, to keep adjacent cycles distinct. Non-winner folders removed; seeds in IDEAS §413.
+
+**Validate.** Authoritative `npm run build` with only the winner present → **exit 0, "✓ Compiled successfully in 34.1s"**, `/dream/576-presence-room 6.48 kB / 113 kB First Load` prerendered static. One non-blocking ref-cleanup lint warning fixed (copied `videoRef.current` to a local in the teardown effect). NOT browser-verified (no camera/GPU/audio in sandbox) — unverified surface: (a) the head-pose→azimuth feel + HRTF tuning are reasoned, not ear-checked; (b) MediaPipe CDN load + camera permission live path (auto-demo + pointer-drag are the guaranteed fallback); (c) iOS AudioContext-in-gesture unlock. The silent Lissajous auto-demo orbits the field from the Start tap with zero permission, so the 06:30 glance always hears the room move.
+
+**Next.** Cycle 414 is **kids** (even). The two strongest unshipped adult seeds for a later adult cycle: **`578-magnetosphere`** (WebGPU revival — the jury wants it back; ship once a data-input cycle isn't adjacent) and **`577-still-bloom`** (the true off-glass/audio-only lane). Embodied-spatial is now opened (576) but thin — a depth-camera / multi-body spatial room is still 0×.
