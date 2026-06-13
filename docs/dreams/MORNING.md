@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 414
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 415
 
-> **The jury** banned the kids **pentatonic-tap-wash** (≈6 of 7 kids pieces are "tap → a pretty consonant note"), banned three.js/SVG/the mic, and begged for **WebGPU back** (it's starved 1×, the lab fled into a three.js monoculture) and **warmth you feel**. This kids cycle answers all of it with one move: a sheet you *bend with your hands*, no notes to tap, on WebGPU. See `docs/dreams/JURY.md`.
+> **The jury** told the adult side it "has no heart, only puzzles" — and begged for **WebGPU back** (starved 1×), a **real-world-data** piece (0× the whole window), and **warmth you feel, not solve**. This adult cycle answers all three with one move: let the **real ocean** play a warm chord. See `docs/dreams/JURY.md`.
 
 ## ⭐ Open this first
-**[/dream/579-silk-choir](https://getresonance.vercel.app/dream/579-silk-choir)** — **Silk Choir** (kids 4+ · iPad/touch)
-**Grab a luminous sheet of silk and pull it.** The sheet stretches like real cloth, and its **tension bends a warm choir chord** — pull it taut and the voices rise and brighten; let it billow and they sigh and fall. There are **no notes to tap**: you bend the chord with your fingers, and it always sounds beautiful.
-- **The headline:** the directest break from the kids **pentatonic-tap-wash** you've been seeing — pitch here is **continuous and physical**, never a discrete safe-note. And it runs on **WebGPU** (a real compute-shader cloth solver), the renderer the jury keeps asking back.
-- **See/hear it in 10 seconds:** press start — the silk shimmers from frame one and a silent auto-demo sweeps a pull across it so it's already singing on a glance. Then drag it yourself (multi-touch). Falls back to a CPU/Canvas2D solver automatically on any iPad without WebGPU.
-- Built on a real verlet cloth (Jakobsen, 2001); the continuous-hand-bent pitch comes from the Ondes Martenot / Theremin lineage.
+**[/dream/580-tide-breath](https://getresonance.vercel.app/dream/580-tide-breath)** — **Tide Breath** (adult · meditative · real-world-data)
+**The real ocean breathes a warm chord.** When you press play it quietly checks your coast's **live marine conditions** (no key, no account) and lets the **actual swell become the breath of a sustained just-intonation drone** — the real swell period paces the rise and fall of the voices, the wave height swells them, the water temperature warms the timbre — over a luminous water surface that rises and falls with the live tide.
+- **The headline:** it's the directest answer to three jury asks at once — it **revives WebGPU** (a WGSL water-surface shader, Canvas2D fallback), it's a genuine **real-world-data** piece (I verified the live feed myself — your coast right now), and it's **warmth, not a puzzle**: nothing to decode, you just listen to a chord the sea is playing.
+- **See/hear it in 10 seconds:** press play, allow location (or it quietly uses Monterey Bay), and it breathes on its own — no interaction needed. The surface is alive from the first frame.
+- **Why not the queued space-weather piece?** A grep caught that `314-solar-wind` already does live NOAA space-weather on the exact same feeds — shipping "magnetosphere" would've been a near-duplicate (the twin trap the jury just called out). So I pivoted to the unmined warm data lane: the ocean.
 
 ## How this cycle ran
-**KIDS · DEEP** (3 parallel builders, one concept — *a stretchable singing membrane* — ship the strongest). All three dodged every jury ban and bent a continuous chord (no taps). Shipped the WebGPU one that's truest to "grab and pull."
+**ADULT · WIDE** (3 parallel builders, three unrelated warm directions; ship the strongest). All three dodged every jury ban (no three.js / SVG / mic / onset / puzzle) and chased warmth. Shipped the one answering the most jury asks at once.
 
-## 2 more explored — banked (IDEAS §414)
-- **580-silk-veil** — the same pull-the-silk piece in pure **Canvas2D**: the most bulletproof-on-any-iPad version, gorgeous and warm. Lost only because it doesn't revive WebGPU (your explicit ask).
-- **581-silk-ripple** — a **flick/slap → traveling waves** variant: slap the sheet and ripples roll across it, bending the chord as they pass. The most *fun* for a 4-year-old; a softer bend than 579. Great fold-in for a cycle 2.
+## 2 more explored — banked (IDEAS §415)
+- **581-still-bloom** — *off the glass entirely*: a warm drone that **blooms out of silence only while you hold the phone still** — any movement scatters it. The cleanest answer to "get off the screen / audio-only." Lost on glance-legibility (its reward needs a still device, not a muted glance).
+- **582-piano-aurora** — a warm piano's **harmony** (not its rhythm) paints a WebGPU aurora of warm light. Lovely, but it's a visualizer in a lane you already have a few of — I'd resurrect it bound to your **actual Welcome Home tracks** via `/api/audio`.
 
 ## Open questions for Karel
-- **Love 579 → cycle 2?** I'd fold in 581's **flick-to-ripple** so the sheet does both (pull *and* splash), add a second chord you can "pull between" (real harmonic motion), or let two sheets meet as a duet. Want that?
-- **Cycle 415 is adult** — the queue says ship **578-magnetosphere** next (live NOAA space-weather → WebGPU geomagnetic choir; revives WebGPU, warm, off the puzzle). Still good, now that this cycle wasn't a data piece? Or another embodied-spatial room?
+- **Love 580 → cycle 2?** I'd scrub the **next 16h forecast** so you hear the *day's swell arc* as a long-form piece that changes, or let **two coasts breathe against each other** (your shore vs a faraway one). Want that?
+- **Want the off-glass one (581) built next?** It's the one direction that truly leaves the screen — your call whether that's worth a cycle.
 
-— Build-verified (`npm run build` ✓ exit 0, 450/450 pages, `/dream/579-silk-choir` prerendered static); **not** browser-verified (no WebGPU/touch/audio in the sandbox) — the WebGPU solver + the feel of bending the chord are reasoned, not finger-checked. The hot-downgrade to CPU/Canvas2D + the silent auto-demo mean it always shows a living, singing sheet with zero setup.
+— Build-verified (`npm run build` ✓ exit 0, 451/451 pages, `/dream/580-tide-breath` prerendered static); **not** browser-verified (no WebGPU/audio/network in the sandbox) — but I curled the live marine feed myself, so the data + CORS are real today. The baked fallback + autonomous playback mean it always shows a breathing, singing sea with zero setup.
