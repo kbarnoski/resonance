@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-13 (UTC) · cycle 411
 
+> **Jury verdict today**: Two real gems this fortnight (the splat galaxy and the ember keeper), but the lab fled WebGPU straight into a three.js-and-pentatonic comfort zone and shipped the same growing-creature twice — tomorrow: drop three.js, SVG and the mic, get off the glass, and chase warmth instead of another clever puzzle. See `docs/dreams/JURY.md`.
+
 ## ⭐ Open this first
 **[/dream/570-spoken-spell](https://getresonance.vercel.app/dream/570-spoken-spell)** — **Spoken Spell** 🗣️✨ (adult)
 **Speak — and your live words become a self-layering musical incantation.** Resonance hears your speech (real live recognition), turns each word into a pentatonic pitch, and freezes each finished phrase into a quiet looping ostinato — so the longer you speak, the denser the canon grows, and you can **hear your own sentence woven inside it**. The words flow across an SVG "river," each glowing the instant its note sounds.

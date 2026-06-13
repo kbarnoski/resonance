@@ -1,48 +1,129 @@
-# Concept Jury Verdict — 2026-06-12 (UTC)
+# Concept Jury Verdict — 2026-06-13 (UTC)
 
 ## Summary
-The floor is holding but the ceiling fell out. Every one of the last 15 clears
-the ambition floor (zero pieces at 0–1, seven juries running) — but **not one
-reaches 4/5**, where last window had eight. That's not a coincidence of where the
-window happens to cut: the two pieces that earned 4–5 last jury (493-feeling-forest,
-496-voyager-room) slid out of frame, and what came after them — 513 through 541 —
-is competent, diverse, and capped at 3. The lab listened to the last verdict (it
-built tension in TIME, tension in TUNING, and "one presence" pieces that refuse
-to resolve) but it did so at cruising altitude. And it has already found its next
-autopilot: **GPU-physics-sim-as-sound-source** (4×). Beautiful, and the same move
-four times.
+The ceiling came back: after a window where nothing cleared 3/5, this fortnight
+ships **two honest 4/5 pieces** — `557-piano-splat-galaxy` and
+`569-kids-ember-keeper` — and they are the two genuinely fresh moves of the
+window (a real <14-day technique bind, and the lab's first true cross-session
+memory). But the floor is sagging under them. Yesterday's verdict banned
+WebGPU-compute and Canvas2D, and the lab obeyed by **fleeing the renderer rather
+than the reflex**: three.js roared back to **6 of 15** and SVG to **5 of 15** —
+between them they own 11 of the last 15 outputs. Same disease as last jury ("the
+screen surface keeps relocating instead of disappearing"), new host. And the lab
+has quietly shipped the **same growing-companion creature twice** (549 and 569)
+eight cycles apart, with 569 over-claiming a "first" that 549 already did.
 
 ## Diversity audit
-- **Over-represented input:** No single tag hits 4, but **finger-on-screen as a family — 7×** (touch 505/537/541, pointer-drag 508/520/538, finger-draw 529). The hand-on-glass reflex from the last two juries persists; genuinely off-screen inputs (mic 518/532, camera 513/524, tilt 500/520) appeared but stayed a minority. **none/autonomous** also ran 3× (502, 514, 526).
-- **Over-represented output:** **WebGPU-compute — 4×** (502, 518, 520, 541) AND **Canvas2D — 4×** (505, 513, 526, 529). The renderer migrated *again*: last jury banned Canvas2D at 6×, it only fell to 4× (still over), and the lab's energy moved into WebGPU compute, which inflated to 4×. WebGL2 sat at 3× (500, 524, 532), SVG at 3× (508, 514, 538), three.js collapsed to 1× (537). The screen surface keeps relocating instead of disappearing.
-- **Over-represented technique:** Per-piece the techniques are admirably distinct (15 different cores, no single one ≥4). But there is a clear **meta-technique family at 4×: "simulate a physical medium on the GPU, sonify its field statistics"** — particle/wind advection (502), Gray-Scott reaction-diffusion (518), MLS-MPM granular (520), stable-fluids (541). This is the new roughness-engine: a single reflex wearing four different physics hats.
-- **Over-represented vibe:** **kids — 8×** (driven by the kids/adult alternation, so partly structural), but within it **calm/sensory/one-presence kids — 4×** (500, 513, 518, 541) is a real cluster. On the adult side, **cerebral/meditative-single-presence — 4×** (502, 514, 520, 538). The genuinely good news folded inside this: "inhabit, don't solve" (513 hush, 514 never-lands, 518 becomes-something-new, 520 angle-of-repose) is the last jury's provocation #2 obeyed — the monoculture this time is at least the one we *asked* for.
-- **BANNED for next cycle:** WebGPU-compute OUTPUT (4×) · Canvas2D OUTPUT (4×) · the **GPU-physics-sim→drone** TECHNIQUE family (4×) · finger-on-screen INPUT as the default reach (7×) · calm-sensory-kids VIBE (4×). Build something whose sound source is **not** a simulated physical medium, that renders **off** Canvas2D and WebGPU, and that takes input from something other than a finger on glass.
+- **Over-represented input:** **microphone / voice — 5×** (532 sing, 549 sing,
+  559 clap, 569 hum, 570 speech). It's the only input family that broke 4. The
+  genuinely off-glass inputs the mandate keeps asking for showed up only as
+  singletons: tilt (553), shake-motion (566), camera (545, 568 = 2×). **Real-
+  world-data API input is 0× the entire window** (last seen 502, now out of frame).
+- **Over-represented output:** **three.js — 6×** (537, 545, 553, 566, 568, 569)
+  AND **SVG — 5×** (538, 549, 552, 559, 570). WebGL2 sat at 3× (532, 557, 564).
+  **WebGPU collapsed to 1×** (541 only) — last jury banned it at 4×, and the lab
+  overcorrected straight past "diverse" into a fresh three.js monoculture.
+- **Over-represented technique:** no single CORE hits 4 (15 distinct cores, to
+  the lab's credit), but the meta-family is **onset / beat / tempo extraction —
+  6×** (545 optical-flow tempo, 557 spectral-flux, 559 clap onset, 564 onset,
+  566 shake onset, 568 MediaPipe beat). And underneath nearly every kids piece
+  sits the **C-major-pentatonic "nothing-is-ever-wrong" wash** (537, 541, 549,
+  553, 566, 569) — the exact pentatonic-plus-visualizer local minimum the mandate
+  names by name. ~6 of the 7 kids pieces lean on it.
+- **Over-represented vibe:** the kids/adult alternation is structural, but inside
+  it: **adult = "cerebral puzzle you decode" — 5×** (538 tuning, 545 time, 552
+  tuning, 568 time, 570 language) and **kids = "playful/joyful sensory" — 4×**
+  (537, 553, 559, 566). The adult side has collapsed into two heady registers
+  (tuning puzzles + metric puzzles) with no warmth to hold onto.
+- **BANNED for next cycle:** three.js OUTPUT (6×) · SVG OUTPUT (5×) · microphone/
+  voice INPUT (5×) · onset/beat/tempo-extraction TECHNIQUE (6×) · pentatonic-safe-
+  wash + adult-cerebral-puzzle VIBE. Build something that renders **off** three.js
+  and SVG (WebGPU is starved at 1×; audio-only/projection are 0×), takes input
+  from something other than a microphone or a finger, and whose tension you
+  **feel** rather than **solve**.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — the floor holds. Seven juries deep, the local-minimum "pentatonic + canvas, no backing" build is genuinely extinct. Credit where due.
-- **Hit 2–3 criteria: 15** — *all of them.* Seven sit at exactly 2 (500, 513, 514, 524, 526, 529, 537), eight at exactly 3 (502, 505, 508, 518, 520, 532, 538, 541).
-- **Hit 4–5 criteria: 0** — **the headline, and the problem.** Down from 8 last window. The #4+#5 stack the last jury named as "the 5/5 the lab keeps missing by one" is not just still missing — even the standalone 4-hitters are gone. And **#5 (bind a <14-day finding) regressed from 3-of-15 to 1-of-15**: only 538 honestly binds fresh research (§399 microtonal wave). The research-first rule has quietly decayed into negative-steering ("cs.SD is server-ML, #5 unclaimable" — carried since §386) instead of producing binds.
+- **Hit 0–1 criteria: 1** — `553-kids-tilt-fountain` (tilt + three.js + zone
+  pentatonic; no named reference, no novel subsystem, no research bind — the
+  local-minimum build of the window).
+- **Hit 2–3 criteria: 12** — 532, 537, 538, 541, 545, 549, 552, 559, 564, 566,
+  568, 570. Competent, diversity-clean, capped at 3. This is the cruising
+  altitude.
+- **Hit 4–5 criteria: 2** — `557-piano-splat-galaxy` (#1 first Gaussian-splat
+  renderer + #2 + #3 Kerbl 3DGS/Anadol + #5 binds the <14-day splatting finding)
+  and `569-kids-ember-keeper` (#1 first cross-session persistence + #2 + #3
+  Tamagotchi/Grand/D'Arcy Thompson + #4 spine cycle 1). **Extend these two.**
 
 ## Standouts (positive)
-- **514-polytempo-loom** — the sharpest concept of the window and the cleanest possible answer to *two* of last jury's provocations at once: tension that lives purely in TIME (five voices on consonant pitches at irrational tempo ratios — √2, φ, e/2, π/2 — that can never share a downbeat) AND a piece that flatly refuses to resolve. Zero deps, SVG, Nancarrow/Ligeti lineage. Tension you *count*, not tension you hear beating. This is exactly the lane the roughness-engine ban was meant to open.
-- **520-singing-dune** — the engineering swing: the lab's first **MLS-MPM** (material-point-method granular physics, WebGPU), a single dune whose avalanche and angle-of-repose *are* the sound. One presence, no goal, genuinely new sim technique. Where 514 is the idea, 520 is the build.
-- **538-xenharmonic-lattice** (honorable) — answered last jury's provocation #1 verbatim (tension in TUNING, Bohlen–Pierce/19-EDO, not beating partials), the lab's first xenharmonic piece in 538 prototypes, and the **only** #5 of the window. Capped at 3 only because it's a one-off — make it a spine and it's the first 4.
-- **518-kids-living-ember** (honorable) — the one kids piece with real long-form memory: a hummed-to creature that is demonstrably different at minute 5 than second 30 and never loops home. The rare kids build that isn't a 90-second joyful-awe glow toy.
+- **`557-piano-splat-galaxy`**: the first piece in ~8 juries to actually
+  *implement* a <14-day finding (in-browser Gaussian splatting, RESEARCH §405)
+  instead of writing "#5 unclaimable" again. A genuinely new renderer in the lab,
+  and Karel's real piano as the seed of it — ambition and warmth in one. This is
+  the model: a fresh technique in service of his own music.
+- **`569-kids-ember-keeper`**: the lab's first state that survives the browser
+  closing. A creature that is *bigger tomorrow because you came back* — the
+  directest answer yet to the standing #6 ("a creature genuinely changed
+  tomorrow"). The append-only mulberry32-regrown genome is a real idea, not a
+  decoration.
+- **`538-xenharmonic-lattice`** (honorable): the first xenharmonic piece in 538
+  prototypes — a whole new harmonic lane, tension that lives in the tuning. Worth
+  a mention even at 3/5 because it opened territory, not just filled it.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **524-kids-hand-firebird** — the kids autopilot in full bloom: MediaPipe hands → WebGL2 additive particle creature → open-hand-blooms-and-sings-pentatonic → −6 dB limiter. Every component is a known, comfortable kids move; the named refs (Journey, Akten) decorate rather than drive. 2/5, no lab-first, no bound research, no spine. Gorgeous and forgettable.
-- **537-kids-sky-murmuration** — Boids (SIGGRAPH **1987**, the opposite of a fresh technique) + three.js + touch-to-shepherd + harmonizing flocks. A well-worn flocking toy with pentatonic sweetening. Pretty; not where the surprise budget should go.
-- **526-jazz-room** — the novelty is real but it's *genre*, not *technique*: "first jazz piece" (#1) bolted to a generative-arc sequencer + Canvas2D, no second subsystem, no research bind, no spine. A competent autopilot in a new costume. The journey-engine-alternative goal (Karel's priority #4) deserves a build that's also technically new.
-- **500-kids-aurora-tilt** — flagged by the last jury and still the clearest local-minimum example: tilt + domain-warp fBm shader + modal pad, all textbook, "level to resolve / tilt to tense" is the lightest tension mechanic available. Re-listing it because nothing learned from the last call-out.
+- **`553-kids-tilt-fountain`**: the cleanest local-minimum example of the window.
+  Tilt-to-pour orbs through pentatonic chime zones is a *visualizer with a tilt
+  knob* — no reference, no research, no novel subsystem, no tension (you can't get
+  it wrong, so there's nothing at stake). Polished, and exactly the build the
+  mandate says is no longer a valid target.
+- **`549-kids-song-friend` + `569-kids-ember-keeper` (the duplication)**: these
+  are near-twins — a kids creature whose body grows from accumulated voice input,
+  persisted across calendar days in localStorage, sung back changed. Shipped 8
+  cycles apart. 569 is the better build, but it claims "the lab's **FIRST**
+  cross-session persistent state" — which 549 already shipped (and 408/518 touched
+  before that). One growing-companion piece is a spine; two is an attractor, and
+  the over-claim means nobody grepped the lab before declaring the first.
+- **`541-kids-liquid-light`**: lovely, but its only ambition lever is "first
+  WebGPU in the kids set," and WebGPU fluid already exists at 520. Strip that and
+  it's fluid-sim + pentatonic wash — observational tension, nothing held or
+  resolved. A renderer flex in search of a concept.
 
 ## Provocations for tomorrow's dream cycle
-1. **Chase a 4/5 — the ceiling, not the floor, is the problem now.** Zero pieces hit 4 this window. The floor is solved; stop celebrating that and go up. Take **514-polytempo-loom** or **520-singing-dune** to cycle 2 AND bind a <14-day finding in the *same* fire — that exact #4+#5 stack has eluded the lab for seven juries. A polytempo piece for two conductors that implements a fresh beat-tracking paper would do it.
-2. **Ban the GPU-physics-sim→drone move (4×) — it's the new roughness engine.** Reaction-diffusion, MLS-MPM, stable-fluids, particle-advection all do the identical thing: simulate a medium, read its stats, make it hum. Find tension/sound somewhere that is NOT a simulated physical field — language, data, social coordination, silence.
-3. **Take the 0× non-screen lane the menu keeps daring you to test.** Canvas2D (4×) and WebGPU (4×) are both over; the renderer just keeps moving. 513 (hush) and 518 (near-silence) brushed it — go all the way: an **audio-only / voice-only / haptic-only** piece with no screen renderer at all. Prove the screen bias can break.
-4. **514 proved metric-dissonance works and had no children.** A whole tension vocabulary — tempo canons, polymeter, Reich phase, Nancarrow studies — got touched once and abandoned, exactly like 490 last window. Build the SECOND time-tension piece, ideally embodied or multi-user (a conducted tempo-canon where two people's gestures set incommensurable tempi).
-5. **The research-first rule has decayed — revive it.** #5 dropped to 1-of-15 and the dive has been writing "cs.SD is server-ML, #5 unclaimable" since §386. cs.SD is not the only well: the manual names TouchDesigner (Tschepe, Heckmann, Horikawa), Anadol/Akten/Marpi show news, fal/replicate/HF drops, SIGGRAPH/Ars/MUTEK programs. Mine a client-buildable finding from those and actually bind it.
-6. **The kids set is on calm-sensory/joyful-awe autopilot.** 518-living-ember is the one kids piece with memory that rewards return *across days*. Extend THAT — a creature a child finds genuinely changed tomorrow — instead of shipping another beautiful 90-second glow toy (524/537/541 all live here).
+1. **The renderer fled, it didn't diversify.** three.js (6×) + SVG (5×) = 11 of
+   15 outputs. Ban both for the next cycle. WebGPU is starved (1×) and audio-only
+   / projection / non-screen is **0× the entire window** — spend a cycle off the
+   glass entirely: a depth-camera spatial-audio room, or a pure audio/haptic
+   piece. The lab still has zero embodied-spatial prototypes after 570 builds.
+2. **Real-world-data sonification is 0× this whole window** (502 was the last,
+   now out of frame) despite being a named-starved menu category every jury.
+   Build the weather/seismic/transit/ISS piece — music *about* something other
+   than music — and make its tension live in the data, not a synth knob.
+3. **Freeze the growing-companion-creature spine.** 549 and 569 are the same
+   piece; the next kids cycle must NOT be a creature that remembers you and grows.
+   It's become this fortnight's autopilot the way GPU-physics was last fortnight's.
+4. **The adult side has no heart, only puzzles.** 5 of the 7 adult pieces are
+   "decode the tuning" (538/552) or "feel the time drift" (545/568) or "parse the
+   language" (570). Ban polytempo AND the xenharmonic lattice for the next adult
+   cycle and chase a piece with emotional warmth — something that moves you
+   without asking you to understand it first. The splat galaxy proved ambition and
+   warmth aren't opposites.
+5. **The research-first rule worked exactly twice** — §405 (splat → 557/564) and
+   §411 (ASR → 570) — and §405 produced both 4/5 adults. Everywhere else the dive
+   wrote "#5 unclaimable, cs.SD is server-ML" and fell back on #3/#4. Stop mining
+   the same dry well: §405 proved the graphics / WebGPU / AV-artist wells (the
+   ones the jury named) still hold fresh <14-day binds. Go back to them before
+   shipping another spine cycle-2.
 
 ## Karel-facing line
-The floor held but the ceiling fell — solid, diverse, and not one of the last 15 reached June's feeling-forest/voyager-room ambition (zero at 4/5, down from eight), while "GPU-physics-sim-as-sound" quietly became the new autopilot at 4×; best of the window are 514-polytempo-loom (tension purely in TIME) and 520-singing-dune (lab-first granular physics) — tomorrow, take one to cycle 2 and bind a fresh paper, and chase a 4/5 instead of another gorgeous 3.
+Two real gems this fortnight (the splat galaxy and the ember keeper), but the lab
+fled WebGPU straight into a three.js-and-pentatonic comfort zone and shipped the
+same growing-creature twice — tomorrow: drop three.js, SVG and the mic, get off
+the glass, and chase warmth instead of another clever puzzle.
+
+---
+
+_Meta note: STATE.md's chronological log ends at cycle 399 while shipped cycles
+run to 411 (`docs/dreams/STATE.md` not updated for 400–411 in this snapshot);
+INDEX.md retains only recent entries with older ones pruned. Doc drift, flagged
+not corrected — the jury is read-only on the lab. Audit was reconstructed from
+the prototype READMEs, RESEARCH.md (fresh through §411), and the cycle commit
+messages._
