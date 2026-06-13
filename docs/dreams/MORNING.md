@@ -1,39 +1,18 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 408
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 409
 
-## ⭐ New since yesterday — **`566-kids-shake-band`** (kids · WIDE, 3 explorers)
-**Shake your phone like a maraca → a whole Brazilian batucada band dances and plays back in time.**
-Gentle jiggle = chocalho shimmer; big arm-swing = surdo bass drum. Five glowing 3D
-characters (three.js) bounce + flash on a dark stage, one per instrument, over an
-always-on 92-BPM batucada groove so it always sounds musical.
-→ **Open it on your phone and actually shake it** — that's the whole instrument (you
-review on mobile, so this one's built for exactly that). No sensor / desktop? It
-auto-demos + you can drag fast to play.
-- **Why it's this and not the other two:** the diversity gate. The lab can't keep
-  shipping the same input — and the obvious "kid sings, a choir harmonizes" piece (`565`,
-  genuinely the biggest *concept*) uses **mic**, which is exactly what last kids cycle
-  (`559-clap-canon`) already did. Shake is off-glass AND distinct from both recent kids
-  inputs (mic, tilt). It's also the directest answer to the jury's "stop the calm-sensory
-  glow-toy autopilot" — this is a loud, joyful, whole-body band.
-- Honest scoring: **3/5** (≥3 subsystems + the batucada reference genuinely drives the
-  dynamics; no lab-first technique, no <14-day research bind for a kids cycle — said plainly).
-- `/dream/566-kids-shake-band` · build-verified (444/444 pages), not browser-verified.
+## New since yesterday
+- **`568-conductor-hands`** → [/dream/568-conductor-hands](https://getresonance.vercel.app/dream/568-conductor-hands) — **conduct two incommensurable tempi with your two hands.** Raise both hands to the camera: your left hand beats one voice, your right beats another. The system snaps the two tempi to the nearest irrational ratio (√2, φ, e/2, π/2), so the two consonant voices drift through every phase relationship and can **never** share a downbeat — metric dissonance you feel in your own arms. A never-closing Lissajous ribbon (the geometric signature of a Nancarrow tempo canon) is the visible proof they never realign.
+  *Why open this:* it's **cycle 2 of the 514-polytempo-loom spine, made embodied** — the jury's exact #1+#4 ask. Auto-demos silent + animating from frame one, so a glance shows the drift with no camera grant; degrades to two tap pads if the camera's denied.
 
-## 2 more explored, banked → IDEAS §408 (resurrect-ready)
-- **`565-kids-sing-choir`** — sing one note, four creatures join in **live harmony** (Jacob
-  Collier-style real-time harmonizer; you become the lead of a chord). The biggest concept of
-  the night; lost only because mic just got used. **Worth a look as the next mic cycle.**
-- **`567-kids-color-garden`** — point the rear camera at any color and it **grows a singing
-  plant** (Scriabin hue→pitch); the real world becomes a garden. Lost: too near `368-rainbow-quest`
-  + camera is the over-trodden lane.
+## Mode + the other two explored
+- **DEEP** fire (one big concept, 3 technical approaches). Shipped 1 of 3. The two siblings are banked in IDEAS.md §409:
+  - **`569-conductor-batons`** — two-thumb tap-tempo → a scrolling WebGL2 Nancarrow piano-roll whose two columns fan apart forever. The cleanest + most *legible* of the three — a strong cycle-3 viz to fold into 568.
+  - **`570-conductor-baton-motion`** — wave the phone like a baton → three.js. The most phone-native; lost only because device-motion was the *previous* cycle's input.
 
-## Research finding worth a look
-- A May-2026 in-browser "visual synthesizer" (MediaPipe silhouette + spring-physics
-  typography off live mic FFT, 60 fps). Surprising as an architecture — but it binds to the
-  camera-body lane the jury flagged, so I logged it as a future seed (*"your shadow is a
-  creature painted by your own voice"*) rather than force it into today's build. (RESEARCH §408)
+## Honest notes
+- **Build-verified, not browser-verified** (no camera/audio/GPU in the sandbox). Unverified: MediaPipe handedness→hand mapping (worst case the two voices swap hands — harmless), beat-apex velocity tuning, iOS audio unlock.
+- **Ambition floor: honest 3/5** (#2 ≥3 subsystems + #3 Nancarrow/Ligeti/Reich driving the piece + #4 multi-cycle spine; #1 contestable for gesture→tempo; **#5 not claimed** — no <14-day finding to bind, said plainly per the jury's call-out on the decayed research rule).
 
 ## Open questions for Karel
-- **Love `565` (the sing-along harmonizer)?** If yes I'll ship it next mic-clear cycle — it's
-  the most ambitious of the three and only lost on diversity timing.
-- Adult cycle 409 (next, DEEP) is teed up to chase a **second 4/5**: splat-spine cycle-3 —
-  swap the cathedral's approximate anisotropy for full EWA covariance + a real captured scene.
+- Love it? Cycle 3 could go **multi-user** (two phones, two real conductors set incommensurable tempi over WebRTC — the jury's literal "two people's gestures") and/or borrow 569's scrolling-piano-roll viz for legibility.
+- Is the abstract Lissajous ribbon legible enough at a glance, or should the next pass lead with the literal Nancarrow scrolling roll (569's approach)?
