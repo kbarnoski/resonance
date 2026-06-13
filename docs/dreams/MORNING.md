@@ -1,24 +1,24 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 410
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 411
 
 ## ⭐ Open this first
-**[/dream/569-kids-ember-keeper](https://getresonance.vercel.app/dream/569-kids-ember-keeper)** — **Ember Keeper** 🔥🐣 (kids 4+)
-A glowing creature that **lives in the device, remembers every visit, and grows a genuinely bigger body each day a child returns — and never resets.** The lab's **first-ever cross-session persistence** in 569 prototypes: the body is regrown from a saved `localStorage` genome that only ever accumulates — a new calendar day adds a glowing limb (golden-angle spiral), humming/petting adds fronds. Hum to feed it (mic → pentatonic, analysis-only), tap to pet.
-- **See the magic in 10 seconds:** tap the **🌙 next-day** button (top-right) — a brand-new limb sparkles into place and the "days / parts" count ticks up. That's the cross-day growth, on demand, without waiting for tomorrow.
-- The directest literal answer to the jury's standing **#6** ("a creature a child finds genuinely changed *tomorrow*, not another 90-second glow toy").
-- Honest **4/5** ambition (first cross-session persistence = grep-verified lab-first; 5 subsystems; Tamagotchi / Steve Grand's *Creatures* / D'Arcy Thompson drive it). The rare clear 4 the jury keeps asking for — no gamed #5.
+**[/dream/570-spoken-spell](https://getresonance.vercel.app/dream/570-spoken-spell)** — **Spoken Spell** 🗣️✨ (adult)
+**Speak — and your live words become a self-layering musical incantation.** Resonance hears your speech (real live recognition), turns each word into a pentatonic pitch, and freezes each finished phrase into a quiet looping ostinato — so the longer you speak, the denser the canon grows, and you can **hear your own sentence woven inside it**. The words flow across an SVG "river," each glowing the instant its note sounds.
+- **See it in 10 seconds:** open it and just wait — if you say nothing, an **auto-demo speaks a seeded incantation** so the accreting-canon effect plays itself. Then tap Start and say a sentence.
+- **Best in Chrome/Edge** (live speech recognition). On iPad Safari/Firefox it offers a **typed-text fallback** that runs the exact same mapping — type a line and watch it become music.
+- The directest answer to the **jury's #2** ("find sound in **language**, not another simulated physical field"). For a composer: your own words, as music.
 
 ## How this cycle ran
-**KIDS · DEEP** (jury-#6 override of the alternation). One massively-bigger concept — *a creature genuinely different each day you return* — built three ways by parallel builders: **BODY** evolves (569, shipped), **SONG** evolves (570), **WORLD** evolves (571). Shipped the most glance-legible + most-literal-to-#6; banked the other two.
+**ADULT · WIDE** (3 orthogonal explorers, one fire). The diversity audit **banned three.js** (it hit 4× in the last 10), so all three dodged it. Three unrelated directions built in parallel; shipped the most glance-legible + research-bound.
 
-## 2 more explored — banked (IDEAS §410)
-- **570-kids-ember-song** — the biggest *concept*: it remembers every melody you hum and sings back a longer, richer woven song each day (Eno-style recombination, WebGL2 strands). Lost only on glance-legibility — its payoff is *audible*, not visible at a silent glance. Best as **569's cycle-2** (body *and* music grow → a clean 5/5 with two lab-firsts).
-- **571-kids-ember-nest** — the warmest take: each visit plants a permanent SVG cut-paper flower/star/friend; a fuller world = a denser, always-consonant chord. Removes Tamagotchi's death/guilt loop. Lost: too close to the existing `116-kids-bloom-garden` + nudges the SVG ban.
+## 2 more explored — banked (IDEAS §411)
+- **571-the-withholding** — *music you can only hear by staying silent.* The mic is an **inverse gate**: the drone reveals more voices the longer you keep quiet, and withdraws the instant you make a sound. The strongest pure **concept** of the night and the missing conceptual/critical lane — lost only because its payoff needs a quiet room (less legible at a silent glance). Refs: Cage *4'33"*, Christine Sun Kim. **Worth reviving.**
+- **572-orrery-tunings** — hold your phone up and **turn/tilt to tune into a just-intonation harmonic sky** (gyro → WebGL2 aurora). Lost on lower ambition (adjacent to our many soundfield/tilt rooms) + a heavy shader that may stutter on iPad.
 
 ## Research finding worth a look
-The *persistent generative companion* is a live 2026 frontier — **Niantic's Peridot generative-AI creatures**, the rctAI "AI pets" wave. The lab had **never persisted anything across sessions** until today; that gap is exactly what jury #6 keeps circling. (cs.SD still server-ML/diffusion, no client-buildable <14-day result — #5 honestly not claimed.)
+**In-browser speech recognition is now a real primitive** — Hugging Face transformers.js runs ASR (Whisper / LiteASR / Cohere Transcribe) fully client-side, no server. 570 ships on the instant Web Speech API; the transformers.js path (offline, cross-browser) is the obvious cycle-2 upgrade. Honest note: the wave is ~3 months old, so I did **not** claim it as a fresh-bind score — said plainly.
 
 ## Open questions for Karel
-- **Love it → I take 569 to cycle 2:** fold in 570's song-memory so the creature's *body and music* both grow across days (two lab-firsts stacked = the clean 5/5). Want that, or a different deepening (night/day animation states, a "two keepers visit" mode)?
-- Next is an **adult** cycle (411). The dive surfaced a strong adult lane: **a drone/room that is audibly a different composition every day you open it** — the real long-form-with-memory the lab keeps faking with one session's clock. Worth chasing, or stay on the splat/polytempo 4/5 spines?
+- **Love 570 → I take it to cycle 2:** tighten the word↔note sync so the *exact* spoken word lights, add the in-browser Whisper path (works on your iPad, offline), and let the loops resolve into a final cadence. Want that — or should the next adult fire instead ship **571-the-withholding** (the silence piece)?
+- Next is a **kids** cycle (412), leaning DEEP. The standing high-value kids move is **569-Ember-Keeper cycle 2** (make its *song* grow across days too, not just its body). Pursue that, or a fresh WIDE?
 
-— Build-verified (`npm run build` ✓ 446/446 pages); not browser-verified (no mic/audio/WebGL in the sandbox). The fresh-device seed + 🌙 button mean the demo is rich with zero setup.
+— Build-verified (`npm run build` ✓ 447/447 pages); not browser-verified (no mic/audio in the sandbox). The auto-demo + typed fallback mean the demo is rich with zero setup, even on Safari.
