@@ -1,18 +1,24 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 409
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 410
 
-## New since yesterday
-- **`568-conductor-hands`** → [/dream/568-conductor-hands](https://getresonance.vercel.app/dream/568-conductor-hands) — **conduct two incommensurable tempi with your two hands.** Raise both hands to the camera: your left hand beats one voice, your right beats another. The system snaps the two tempi to the nearest irrational ratio (√2, φ, e/2, π/2), so the two consonant voices drift through every phase relationship and can **never** share a downbeat — metric dissonance you feel in your own arms. A never-closing Lissajous ribbon (the geometric signature of a Nancarrow tempo canon) is the visible proof they never realign.
-  *Why open this:* it's **cycle 2 of the 514-polytempo-loom spine, made embodied** — the jury's exact #1+#4 ask. Auto-demos silent + animating from frame one, so a glance shows the drift with no camera grant; degrades to two tap pads if the camera's denied.
+## ⭐ Open this first
+**[/dream/569-kids-ember-keeper](https://getresonance.vercel.app/dream/569-kids-ember-keeper)** — **Ember Keeper** 🔥🐣 (kids 4+)
+A glowing creature that **lives in the device, remembers every visit, and grows a genuinely bigger body each day a child returns — and never resets.** The lab's **first-ever cross-session persistence** in 569 prototypes: the body is regrown from a saved `localStorage` genome that only ever accumulates — a new calendar day adds a glowing limb (golden-angle spiral), humming/petting adds fronds. Hum to feed it (mic → pentatonic, analysis-only), tap to pet.
+- **See the magic in 10 seconds:** tap the **🌙 next-day** button (top-right) — a brand-new limb sparkles into place and the "days / parts" count ticks up. That's the cross-day growth, on demand, without waiting for tomorrow.
+- The directest literal answer to the jury's standing **#6** ("a creature a child finds genuinely changed *tomorrow*, not another 90-second glow toy").
+- Honest **4/5** ambition (first cross-session persistence = grep-verified lab-first; 5 subsystems; Tamagotchi / Steve Grand's *Creatures* / D'Arcy Thompson drive it). The rare clear 4 the jury keeps asking for — no gamed #5.
 
-## Mode + the other two explored
-- **DEEP** fire (one big concept, 3 technical approaches). Shipped 1 of 3. The two siblings are banked in IDEAS.md §409:
-  - **`569-conductor-batons`** — two-thumb tap-tempo → a scrolling WebGL2 Nancarrow piano-roll whose two columns fan apart forever. The cleanest + most *legible* of the three — a strong cycle-3 viz to fold into 568.
-  - **`570-conductor-baton-motion`** — wave the phone like a baton → three.js. The most phone-native; lost only because device-motion was the *previous* cycle's input.
+## How this cycle ran
+**KIDS · DEEP** (jury-#6 override of the alternation). One massively-bigger concept — *a creature genuinely different each day you return* — built three ways by parallel builders: **BODY** evolves (569, shipped), **SONG** evolves (570), **WORLD** evolves (571). Shipped the most glance-legible + most-literal-to-#6; banked the other two.
 
-## Honest notes
-- **Build-verified, not browser-verified** (no camera/audio/GPU in the sandbox). Unverified: MediaPipe handedness→hand mapping (worst case the two voices swap hands — harmless), beat-apex velocity tuning, iOS audio unlock.
-- **Ambition floor: honest 3/5** (#2 ≥3 subsystems + #3 Nancarrow/Ligeti/Reich driving the piece + #4 multi-cycle spine; #1 contestable for gesture→tempo; **#5 not claimed** — no <14-day finding to bind, said plainly per the jury's call-out on the decayed research rule).
+## 2 more explored — banked (IDEAS §410)
+- **570-kids-ember-song** — the biggest *concept*: it remembers every melody you hum and sings back a longer, richer woven song each day (Eno-style recombination, WebGL2 strands). Lost only on glance-legibility — its payoff is *audible*, not visible at a silent glance. Best as **569's cycle-2** (body *and* music grow → a clean 5/5 with two lab-firsts).
+- **571-kids-ember-nest** — the warmest take: each visit plants a permanent SVG cut-paper flower/star/friend; a fuller world = a denser, always-consonant chord. Removes Tamagotchi's death/guilt loop. Lost: too close to the existing `116-kids-bloom-garden` + nudges the SVG ban.
+
+## Research finding worth a look
+The *persistent generative companion* is a live 2026 frontier — **Niantic's Peridot generative-AI creatures**, the rctAI "AI pets" wave. The lab had **never persisted anything across sessions** until today; that gap is exactly what jury #6 keeps circling. (cs.SD still server-ML/diffusion, no client-buildable <14-day result — #5 honestly not claimed.)
 
 ## Open questions for Karel
-- Love it? Cycle 3 could go **multi-user** (two phones, two real conductors set incommensurable tempi over WebRTC — the jury's literal "two people's gestures") and/or borrow 569's scrolling-piano-roll viz for legibility.
-- Is the abstract Lissajous ribbon legible enough at a glance, or should the next pass lead with the literal Nancarrow scrolling roll (569's approach)?
+- **Love it → I take 569 to cycle 2:** fold in 570's song-memory so the creature's *body and music* both grow across days (two lab-firsts stacked = the clean 5/5). Want that, or a different deepening (night/day animation states, a "two keepers visit" mode)?
+- Next is an **adult** cycle (411). The dive surfaced a strong adult lane: **a drone/room that is audibly a different composition every day you open it** — the real long-form-with-memory the lab keeps faking with one session's clock. Worth chasing, or stay on the splat/polytempo 4/5 spines?
+
+— Build-verified (`npm run build` ✓ 446/446 pages); not browser-verified (no mic/audio/WebGL in the sandbox). The fresh-device seed + 🌙 button mean the demo is rich with zero setup.
