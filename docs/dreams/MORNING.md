@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-06-13 (UTC) · cycle 413
+# Morning digest — last updated 2026-06-13 (UTC) · cycle 414
 
-> **Yesterday's jury** said: get off three.js/SVG/the mic, **get off the glass**, and the loudest line (twice now): *"zero embodied-spatial prototypes after 570 builds."* Plus: chase **warmth, not another clever puzzle**. This adult cycle answers the embodied-spatial gap head-on. See `docs/dreams/JURY.md`.
+> **The jury** banned the kids **pentatonic-tap-wash** (≈6 of 7 kids pieces are "tap → a pretty consonant note"), banned three.js/SVG/the mic, and begged for **WebGPU back** (it's starved 1×, the lab fled into a three.js monoculture) and **warmth you feel**. This kids cycle answers all of it with one move: a sheet you *bend with your hands*, no notes to tap, on WebGPU. See `docs/dreams/JURY.md`.
 
 ## ⭐ Open this first
-**[/dream/576-presence-room](https://getresonance.vercel.app/dream/576-presence-room)** — **Presence Room** (adults · headphones on)
-**Your own face is the listener.** Your webcam tracks your head and feeds it straight into the Web Audio *AudioListener* — so when you **lean and turn your head, a warm just-intonation chord physically moves around you**, and whatever you face brightens and warms. There's nothing to get right. You just exist inside the sound.
-- **The headline:** the lab's **first head-tracked binaural** piece — and its first *genuinely embodied*-spatial one. Every prior spatial-audio toy moved the listener by dragging a dot or singing; this one moves it with your body. The directest answer to the jury's most-repeated gap.
-- **See/hear it in 10 seconds:** press *Enter the room* — even with no camera, a silent auto-demo orbits the warm field around you within seconds, so a glance already hears the room move. Allow the camera (it stays in your browser, never sent) and move your head for the real thing. **Headphones matter** — the spatialisation is binaural.
-- Warm, slow, meditative (La Monte Young *Dream House* lineage) — feel, not solve.
+**[/dream/579-silk-choir](https://getresonance.vercel.app/dream/579-silk-choir)** — **Silk Choir** (kids 4+ · iPad/touch)
+**Grab a luminous sheet of silk and pull it.** The sheet stretches like real cloth, and its **tension bends a warm choir chord** — pull it taut and the voices rise and brighten; let it billow and they sigh and fall. There are **no notes to tap**: you bend the chord with your fingers, and it always sounds beautiful.
+- **The headline:** the directest break from the kids **pentatonic-tap-wash** you've been seeing — pitch here is **continuous and physical**, never a discrete safe-note. And it runs on **WebGPU** (a real compute-shader cloth solver), the renderer the jury keeps asking back.
+- **See/hear it in 10 seconds:** press start — the silk shimmers from frame one and a silent auto-demo sweeps a pull across it so it's already singing on a glance. Then drag it yourself (multi-touch). Falls back to a CPU/Canvas2D solver automatically on any iPad without WebGPU.
+- Built on a real verlet cloth (Jakobsen, 2001); the continuous-hand-bent pitch comes from the Ondes Martenot / Theremin lineage.
 
 ## How this cycle ran
-**ADULT · WIDE** (3 parallel explorers, ship the strongest). All three were warm, off-glass, non-mic, non-three.js/SVG — three unrelated directions in one fire. Shipped the one that fills the named structural gap.
+**KIDS · DEEP** (3 parallel builders, one concept — *a stretchable singing membrane* — ship the strongest). All three dodged every jury ban and bent a continuous chord (no taps). Shipped the WebGPU one that's truest to "grab and pull."
 
-## 2 more explored — banked (IDEAS §413)
-- **578-magnetosphere** — *hear the Earth's invisible magnetic weather right now*: **live NOAA solar-wind + Kp data** → a warm geomagnetic choir, rendered with a **WebGPU** aurora. Highest ambition + best glance, and it would revive WebGPU (you flagged it starved). **Held only because it's a real-world-data piece one cycle after yesterday's weather one** — too adjacent. **Resurrect first** next adult cycle.
-- **577-still-bloom** — *music that only blooms when you go still*: hold the phone calm and a Radigue-style drone unfolds voice by voice; move and it recedes. The warmest, truest **audio-first / off-the-glass** take — lost on ambition (and it's close cousin to the banked silence piece 571).
+## 2 more explored — banked (IDEAS §414)
+- **580-silk-veil** — the same pull-the-silk piece in pure **Canvas2D**: the most bulletproof-on-any-iPad version, gorgeous and warm. Lost only because it doesn't revive WebGPU (your explicit ask).
+- **581-silk-ripple** — a **flick/slap → traveling waves** variant: slap the sheet and ripples roll across it, bending the chord as they pass. The most *fun* for a 4-year-old; a softer bend than 579. Great fold-in for a cycle 2.
 
 ## Open questions for Karel
-- **Love 576 → cycle 2?** Add **multi-voice "rooms"** you walk between, or let your real piano (Welcome Home) *be* the spatialised voices instead of a synth drone — your music surrounding you. Want that?
-- **WebGPU is starved (1× in 15)** and the jury wants it back. Happy for me to ship **578-magnetosphere** next adult cycle, or would you rather another embodied-spatial piece (depth-camera / multi-body room is still 0×)?
+- **Love 579 → cycle 2?** I'd fold in 581's **flick-to-ripple** so the sheet does both (pull *and* splash), add a second chord you can "pull between" (real harmonic motion), or let two sheets meet as a duet. Want that?
+- **Cycle 415 is adult** — the queue says ship **578-magnetosphere** next (live NOAA space-weather → WebGPU geomagnetic choir; revives WebGPU, warm, off the puzzle). Still good, now that this cycle wasn't a data piece? Or another embodied-spatial room?
 
-— Build-verified (`npm run build` ✓ exit 0, `/dream/576-presence-room` prerendered static); **not** browser-verified (no camera/GPU/audio in the sandbox) — the head-pose feel + HRTF tuning are reasoned, not ear-checked. Auto-demo + pointer-drag mean it always shows a moving room with zero setup.
+— Build-verified (`npm run build` ✓ exit 0, 450/450 pages, `/dream/579-silk-choir` prerendered static); **not** browser-verified (no WebGPU/touch/audio in the sandbox) — the WebGPU solver + the feel of bending the chord are reasoned, not finger-checked. The hot-downgrade to CPU/Canvas2D + the silent auto-demo mean it always shows a living, singing sheet with zero setup.
