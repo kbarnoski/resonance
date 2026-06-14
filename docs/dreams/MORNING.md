@@ -1,40 +1,45 @@
-# Morning digest — last updated 2026-06-14 (UTC), cycle 425
+# Morning digest — last updated 2026-06-14 (UTC), cycle 426
 
 ## New since yesterday
-- **`606-piano-vivisection`** → https://getresonance.vercel.app/dream/606-piano-vivisection
-  **Your own piano, taken apart.** This pulls your real Welcome Home recording into
-  two layers — the **singing strings** (the sustained tone) vs. the **hammers/key
-  noise** (the knock) — and lets you morph between them live. The lab's **first audio
-  source-separation instrument** (nothing here had ever pulled a recording *apart*).
-  *Why open it:* it's the jury's literal pick — provocation #4 said "do `583` again:
-  a fresh analysis technique on *your own* material." Press ←/→ to slide from pure
-  strings to pure hammers and hear the two halves of how your piano makes sound.
+- **`609-kids-blow-parade`** → https://getresonance.vercel.app/dream/609-kids-blow-parade
+  **Blow a raspberry, pop a balloon.** A 4-year-old **blows into the mic** and a parade
+  of googly balloon-creatures puffs up bigger and bigger — then when they stop, it rips
+  a **whoopee-cushion raspberry** and zooms off tumbling. Loud, silly, giggly.
+  *Why open it:* it's the jury's literal ask, kid-safe — a **full WebGPU spectacle**
+  (provocation #2 has begged for the renderer revival), driven by **breath** (not a
+  fingertip), in the funny register 603 opened last kids cycle. No mic? Hold the 💨
+  button or press Space — and it demos itself (a ghost blow) if you just watch.
 
 ## How it was made (the studio choreography)
-- Adult · **DEEP** fire (the jury named `583` as the gem to EXTEND → go deep, not wide).
-  ONE concept — "take Karel's piano apart" — built 3 ways in parallel, I shipped 1:
-  - **606 (shipped):** median-filter **HPSS** → strings vs hammers (most legible + reliable).
-  - **607-piano-prism** (banked, IDEAS §425): **NMF** → factors your piano into 6 learned
-    spectral "voices" you solo/mute — the most ambitious; the strongest cycle-2.
-  - **608-piano-sieve** (banked): **SMS** → tonal partials vs the noise/air, with freeze + stretch.
-- Off the cozy autopilot: WebGL2 (not Canvas2D), keyboard/tilt (not a fingertip),
-  a dissective register that reveals the machine inside the warmth — every standing jury ban dodged.
+- Kids · **WIDE** fire (the jury verdict was overwhelmingly ban-combos + "build with
+  edges" → go wide with fresh tags, not deep). Three orthogonal funny/off-Canvas2D/
+  non-fingertip explorers in parallel, I shipped 1:
+  - **609 (shipped):** mic-**BLOW** → **WGSL/WebGPU** balloon raspberry parade.
+  - **610-kids-stomp-band** (banked, IDEAS §426): shake/stomp → **three.js** cartoon
+    junk-pile foley. Lost — three.js is the relocated monoculture, not the spectacle.
+  - **611-kids-face-monster** (banked): silly faces → a **WebGL2** googly monster that
+    roars/boings/giggles. The most novel idea (first comedic face-puppet) — but the
+    MediaPipe-from-CDN load is the riskiest "just works at 06:30" surface, and camera
+    was already 3× this window. Worth reviving once the camera tag cools.
+- Every standing jury ban dodged: off Canvas2D (WGSL), off touch (breath), off cozy
+  (a raspberry is not a warm drone).
 
 ## Honest notes
-- **Build-verified, not browser-verified** (no real audio/GPU in the sandbox). The
-  median-filter math + phase-preserving resynthesis are coded to spec, but only real
-  speakers confirm the strings/hammers split sounds clean — the median kernels are
-  eye-tuned and may want a tweak on your piano. Auto-demo + keyboard fallback mean it
-  separates on a silent glance with no hardware; if the audio fetch fails it falls back
-  to a synthesized piano so it always decomposes (emerald "Karel's piano" vs amber badge).
-- Ambition honest **3/5** (#1 first source separation, grep-verified 0× + #2 five subsystems
-  + #3 Fitzgerald DAFx 2010 / the CataRT lineage 583 extends). #5 not claimed (the 2026 DNN
-  separation papers are ~3 mo; the classical method is foundational — said plainly).
+- **Build-verified, not browser-verified** (no mic/GPU/audio in the sandbox). The
+  blow-vs-voice gate (it ignores yells, listens for breath via spectral flatness) and
+  the raspberry timbre are coded to spec but **heuristically tuned** — a noisy room or
+  far mic may need a harder puff. The Canvas2D fallback + ghost-blow auto-demo mean it
+  puffs and pops on a silent glance with no hardware.
+- Ambition honest **2/5** (#2 five subsystems + #3 named refs: whoopee-cushion foley /
+  balloon physics / Toca Boca). **#1 NOT claimed** — `95-kids-breath-bubbles` already
+  did blow-via-loudness, so this is a refinement (a blow-vs-voice discriminator), not a
+  first; said plainly. The enabling fact: **Safari 26 put WebGPU on the iPad** (Sept
+  2025), so a WGSL kids toy is now an iPad-native path, not a desktop flex.
 
 ## Open questions for Karel
-- **Deepen the decomposition spine?** The strongest 4/5 path is cycle-2: **fuse the trio**
-  (HPSS pre-split → NMF the harmonic layer into pitched components → freeze/stretch any layer
-  = a full "disassembly bench"), or let you **PLAY the separated layers from a MIDI keyboard**
-  (the strings as a pad, the hammers as a drum). Want that, or ship 607/608 standalone first?
-- **Next (cycle 426, kids):** alternation says WIDE. Keep the new silly register (603) alive
-  so it isn't a singleton, or chase the still-0× genuinely off-SCREEN (audio-only/haptic) toy?
+- **Next (cycle 427, adult):** warmth is the new pentatonic (9 of 15 cozy). Keep
+  swinging to edges — ship `589-still-bloom` (off-glass stillness, so 576 isn't an
+  embodied-spatial singleton) or `590-star-atlas` (aim the phone at the real sky)?
+- **Or deepen the his-piano decomposition spine** (the two 4/5 adults both came from
+  that vein): ship `607-piano-prism` (NMF, 6 learned voices) / `608-piano-sieve` (SMS)
+  standalone, or fuse them into one disassembly bench? Your call sets the adult arc.
