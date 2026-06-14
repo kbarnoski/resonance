@@ -1,38 +1,40 @@
-# Morning digest — last updated 2026-06-14 (UTC), cycle 424
+# Morning digest — last updated 2026-06-14 (UTC), cycle 425
 
 ## New since yesterday
-- **`603-kids-yell-blob`** → https://getresonance.vercel.app/dream/603-kids-yell-blob
-  **The lab's FIRST funny thing.** YELL at a giant wobbly googly blob and it
-  squashes, inflates, and **honks your own voice back like a kazoo.** After 600+
-  prototypes, not one was comedic — every kids toy was warm/gentle. The jury said
-  get OFF cozy and build "edges (fast/loud/abrasive/**funny**/unsettling)"; the
-  kid-safe form of that is **silly**, so this cycle made a big silly racket.
-  *Why open it:* it's loud, goofy, and it's *your* voice transformed — and it's a
-  real instrument, not another warm reactive screen-toy. Yell at it on your phone.
+- **`606-piano-vivisection`** → https://getresonance.vercel.app/dream/606-piano-vivisection
+  **Your own piano, taken apart.** This pulls your real Welcome Home recording into
+  two layers — the **singing strings** (the sustained tone) vs. the **hammers/key
+  noise** (the knock) — and lets you morph between them live. The lab's **first audio
+  source-separation instrument** (nothing here had ever pulled a recording *apart*).
+  *Why open it:* it's the jury's literal pick — provocation #4 said "do `583` again:
+  a fresh analysis technique on *your own* material." Press ←/→ to slide from pure
+  strings to pure hammers and hear the two halves of how your piano makes sound.
 
 ## How it was made (the studio choreography)
-- Kids · **WIDE** fire (the jury was a ban-the-combo verdict → fan out). 3 parallel
-  builder agents each built a different silly off-glass toy; I curated 1, banked 2.
-- Shipped **603** (yell→honk blob, raw WebGL2 soft-body). Banked to IDEAS §424:
-  **604-stomp-band** (shake your phone → a clattering cartoon junk pile, three.js)
-  + **605-blow-parade** (BLOW into the mic → balloons inflate & raspberry-deflate,
-  WebGPU). Both are built + ready to resurrect.
+- Adult · **DEEP** fire (the jury named `583` as the gem to EXTEND → go deep, not wide).
+  ONE concept — "take Karel's piano apart" — built 3 ways in parallel, I shipped 1:
+  - **606 (shipped):** median-filter **HPSS** → strings vs hammers (most legible + reliable).
+  - **607-piano-prism** (banked, IDEAS §425): **NMF** → factors your piano into 6 learned
+    spectral "voices" you solo/mute — the most ambitious; the strongest cycle-2.
+  - **608-piano-sieve** (banked): **SMS** → tonal partials vs the noise/air, with freeze + stretch.
+- Off the cozy autopilot: WebGL2 (not Canvas2D), keyboard/tilt (not a fingertip),
+  a dissective register that reveals the machine inside the warmth — every standing jury ban dodged.
 
 ## Honest notes
-- **Build-verified, not browser-verified** (no real mic/GPU in the sandbox). The
-  auto-demo + tap/key fake-yell mean it wobbles + honks on a silent glance with no
-  hardware. Loudness scaling + honk tuning are eye-tuned — may want a tweak once you
-  yell at it on real speakers (autoGainControl is off, so a quiet room needs a louder yell).
-- Ambition honest **2/5** (4 subsystems + named refs: Disney squash-and-stretch /
-  holtsetio softbody 2026 / Carl Stalling foley). The real win is *register diversity*
-  — the lab is finally 1× comedic. I didn't inflate a technique-first claim (squish
-  physics already exists in the lab).
+- **Build-verified, not browser-verified** (no real audio/GPU in the sandbox). The
+  median-filter math + phase-preserving resynthesis are coded to spec, but only real
+  speakers confirm the strings/hammers split sounds clean — the median kernels are
+  eye-tuned and may want a tweak on your piano. Auto-demo + keyboard fallback mean it
+  separates on a silent glance with no hardware; if the audio fetch fails it falls back
+  to a synthesized piano so it always decomposes (emerald "Karel's piano" vs amber badge).
+- Ambition honest **3/5** (#1 first source separation, grep-verified 0× + #2 five subsystems
+  + #3 Fitzgerald DAFx 2010 / the CataRT lineage 583 extends). #5 not claimed (the 2026 DNN
+  separation papers are ~3 mo; the classical method is foundational — said plainly).
 
 ## Open questions for Karel
-- **Keep the silly register alive?** It's 1× now — the jury's recurring failure mode
-  is letting a fresh lane go cold as a singleton (it warned this about embodied-spatial).
-  Cycle-2 could be a goofy honking *choir* of blobs, or a real pitch-tracker so it
-  *sings* your melody back as a kazoo.
-- **Next (cycle 425, adult):** the jury's pick to EXTEND is `583-piano-mosaic-field`
-  — a fresh analysis technique on *your own* Welcome Home piano (source-separation /
-  DDSP timbre-transfer). Want me to go deep there, or keep chasing edges?
+- **Deepen the decomposition spine?** The strongest 4/5 path is cycle-2: **fuse the trio**
+  (HPSS pre-split → NMF the harmonic layer into pitched components → freeze/stretch any layer
+  = a full "disassembly bench"), or let you **PLAY the separated layers from a MIDI keyboard**
+  (the strings as a pad, the hammers as a drum). Want that, or ship 607/608 standalone first?
+- **Next (cycle 426, kids):** alternation says WIDE. Keep the new silly register (603) alive
+  so it isn't a singleton, or chase the still-0× genuinely off-SCREEN (audio-only/haptic) toy?
