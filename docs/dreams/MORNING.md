@@ -1,17 +1,18 @@
-# Morning digest — last updated 2026-06-14 (UTC) · cycle 421
+# Morning digest — last updated 2026-06-14 (UTC) · cycle 422
 
 ## New since yesterday
-- **[594-disintegration-loop](https://getresonance.vercel.app/dream/594-disintegration-loop)** — *The Disintegration Loop.* A warm little lullaby plays — and then it starts to **fall apart as you listen**. Each pass through the loop is re-recorded onto itself through a "wear" chain (the highs flake off, holes punch through, it desaturates from amber to ash), so the decay is **real, compounding, irreversible** — minute 5 is a hollow ghost of minute 0. There's exactly **one control**: a vertical lever between *hold on* (slows the crumble, buys you time) and *let go* (lets it disappear faster). It's a choice about letting a recording go, not a puzzle to solve. After **William Basinski's _The Disintegration Loops_** + a brand-new (May 28) Eurorack "Degenerator" that does the same thing. **Why open this:** you flagged that the adult side had four warm reactive toys in a row — this is a deliberate swing to a **different register**: long-form, witnessed, about memory and loss. The lab's first piece built on *audible decay as state*. (Silent? It auto-starts and crumbles on its own after ~2.5s.)
+- **[597-kids-water-bowls](https://getresonance.vercel.app/dream/597-kids-water-bowls)** — *Singing Water* (kids). Six glowing water bowls. **Tap** one and it rings like a glass bell; **rub** a finger round and round the rim and it **SINGS** — a breathy glass-armonica tone that gets louder and brighter the faster you rub, and fades softly when you stop. No reading, no menus, no wrong notes; each bowl is a bold color, and the fuller bowls sound lower (real physics, so it teaches itself). **Why open this:** it's the lab's **first friction-excited resonator** — a genuinely new synthesis primitive for us (rub *speed* drives the sound in real time), and the directest answer to the jury's "tension you feel, not solve." Best on an iPad with two hands. (Silent? After ~2.5s a ghost finger demos a bowl singing.)
 
 ## How this cycle ran
-- Adult **DEEP** fire: one concept — *a recording that crumbles as it plays* — attacked in parallel by **3 techniques**; shipped the most literal + emotionally true. **2 more explored — see IDEAS §421:**
-  - `596-disintegration-dust` — the same idea **granular**, crumbling into drifting motes, with a **WebGPU** particle render. The visual-spectacle / WebGPU-revival path.
-  - `595-disintegration-spectral` — the same idea in the **frequency domain**, a chord fading bin-by-bin like a photograph left in the sun.
+- Kids **DEEP** fire: one instrument — *play a row of singing water bowls* — built in parallel via **3 different synthesis cores**; shipped the most robust + truest. **2 more explored — see IDEAS §422:**
+  - `599` — the same bowls modelled as a real **bowed-string AudioWorklet** (most physically authentic stick-slip; banked as our first audio-worklet physical model).
+  - `598` — a **modal additive** version (arguably the truest glass *timbre*, a real inharmonic mode bank).
+- Resurrects the seed `592` you flagged as the strongest unshipped kids idea. Not a growing-creature (the jury asked us to freeze that), and tuned in just-intonation, not the usual pentatonic wash.
 
 ## Research findings worth a look
-- RESEARCH §421 — the freshest *register* the lab was missing is **disintegration as a process**: Music Thing Modular's **"Degenerator"** self-overwriting looper (Synthtopia, 2026-05-28) + arXiv "The Artist is Present" (Nov 2025) both revive Basinski's tape-decay idea right now. The lab *cited* Basinski but had **never built an actual decay** — every prior piece visualizes or scatters sound; none of them gets *worse as it plays*. 594 fills that.
+- RESEARCH §422 — friction/modal physical-modelling synthesis (glass armonica, jal tarang, differentiable modal resonators). Honest note: no fresh <30-day paper bind — the technique is foundational — but the *primitive* (a real-time, drag-speed-driven friction resonator) is **grep-verified 0× across our 594 prior prototypes**. That's the genuinely new thing 597 ships.
 
 ## Open questions for Karel
-- Did the **different register** land? 594 is still warm — but warm-as-*loss* rather than warm-as-cozy. Was that the swing you wanted, or do you want me back on bright/playful for the adult side?
-- The **lever** is deliberately singular (one moral choice, no undo). Too austere — would you want a second gesture (e.g. *scrub back to an earlier, less-worn pass*), or is the no-undo the whole point?
-- Standing banked adult seeds if you want a specific direction next: `596-disintegration-dust` (WebGPU spectacle), `589-still-bloom` (off-glass stillness), `590-star-atlas` (aim-at-the-real-sky Cage chord).
+- Does the **rub actually sing** the way you'd want for a 4-year-old? It's build-verified but not ear-checked here — the friction balance is reasoned, not heard. Worth a real-iPad listen.
+- Is tap-vs-rub the right two-gesture vocabulary for that age, or should rub be the *only* thing (simpler, but loses the bell)?
+- Adult side next (cycle 423): I'm leaning the **off-the-glass** seed `589-still-bloom` (hold the phone still → a drone blooms) — the embodied/spatial swing the jury keeps asking for. Say the word if you'd rather I chase something else.
