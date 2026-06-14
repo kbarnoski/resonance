@@ -1,21 +1,22 @@
 # Morning digest — last updated 2026-06-14 (UTC)
 
-**Cycle 416 · KIDS · DEEP (one big concept, 3 parallel approaches) → shipped `582-kids-dance-sky`.**
+**Cycle 417 · ADULT · DEEP (one big concept, 3 parallel technical approaches) → shipped `583-piano-mosaic-field`.**
 
 ## New since yesterday
-- **[/dream/582-kids-dance-sky](https://getresonance.vercel.app/dream/582-kids-dance-sky)** — **Sky Choir** 🕺🎶. *Why open this:* it's the lab's **first whole-body instrument** — your 4-year-old just **dances** in front of the iPad and the room sings. Raise your arms → the sky brightens; spread wide → the chord opens. No tapping, no humming, no creature. Camera tracks 33 body landmarks (MediaPipe pose) → a glowing skeleton + warm just-intonation Lydian choir over a soft drone. **The directest answer to the jury's #1: get off the glass.**
-- ⚠️ **One real risk:** I can't test a camera/pose model in the sandbox. If the skeleton doesn't show on your iPad, the model didn't load — it falls back to a motion-blob, then finger-drag, then an auto-demo, so it *always* sings, but tell me if pose itself is flaky and I'll ship the zero-download Canvas2D version (581, already built & banked).
+- **[/dream/583-piano-mosaic-field](https://getresonance.vercel.app/dream/583-piano-mosaic-field)** — **Piano Mosaic Field** 🎹✨. *Why open this:* you **reach into your own recorded piano and re-voice it.** Your Welcome-Home solo piano is shattered into thousands of tiny grains laid out by timbre; drag the warm probe and the instrument answers with **your own closest-matching sound** — it's concatenative musaicing (CataRT) in real time, the lab's first. Drag left/right = darker/brighter, down/up = lower/higher register. No tapping, no puzzle — you smear your hand through your own piano and it glides.
+- This is the **557-splat-galaxy model** the jury asked me to extend: *a fresh technique in service of your own music*, warm not cerebral. And it's the genuine step past loved `227-paths-granular` — that one scatters grains blindly; this one **selects** the grain that matches where you point.
 
-## 2 more explored this fire (banked → IDEAS §416)
-- **581-kids-shadow-band** — same idea, **pure Canvas2D, zero deps, instant** (no model download). The bulletproof iPad path / the fallback to ship if 582's pose is unreliable.
-- **583-kids-light-ribbons** — optical-flow → a *continuous* body-bowed choir + flowing light ribbons (the freshest musical idea; lost only because it's close to last week's silk-choir).
+## 2 more explored this fire (banked → IDEAS §417)
+- **584-piano-spectral-tide** — phase-vocoder **spectral freeze**: grab any moment of your piano and stretch it into an endless warm harmonic tide you scrub through. Lovely; lost only because it overlaps your loved spectral cluster (243/267/321) — I'll ship it once that's out of frame.
+- **585-piano-grain-orrery** — your grains become **gravity-bound orbiting bodies** you stir with your hand, each singing as it swings past the core. Gorgeous, but particle/n-body systems are already heavy in the lab.
 
 ## How it cleared the gates
-- **ambition:** #2 (5 subsystems) + #3 (Myron Krueger *Videoplace* 1974 / Daniel Rozin) + soft #1 (first whole-figure instrument).
-- **diversity:** WebGL2 was over-used 4× in the last 10 → banned; jury also banned three.js/SVG/mic/onset/pentatonic-wash. Picked **camera-body input · Canvas2D output · pose-keypoint tech · warm-modal vibe** — clean of every banned tag, and **not** the pentatonic wash.
-- **research → build chain:** RESEARCH §416 (whole-body keypoints → real-time music + Krueger) → today's build. Honest: #5 not claimed (pose tracking is foundational).
+- **ambition (3/5):** #2 (4 subsystems: piano decode + per-grain spectral-feature corpus + CataRT matcher + WebGL2 particle field) + #3 (Diemo Schwarz CataRT 2006 / Tralie&Berger *The Concatenator* 2024 / MACataRT 2026 / Roads *Microsound*); soft #1 (first target-matched concatenative resynthesis — distinct from 227's blind scatter); #5 soft, not gamed.
+- **diversity:** picked **audio-file + touch-drag input** (off camera, which was 3× in the last 10; off the jury-banned mic) · **WebGL2 particle output** (off three.js/SVG) · **concatenative-musaicing tech** · **warm-tactile adult vibe** (not the cerebral tuning/time puzzle the jury named). Clean of every banned tag.
+- **research → build chain:** RESEARCH §417 (concatenative-musaicing wave) → today's build.
+- **love-driven:** your spectral/granular-piano loves (227, 243, 267, 321, 323) + your "use my real Paths music" directive.
 
 ## Open questions for Karel
-- Does MediaPipe **pose** load on your actual iPad? (The one thing I couldn't verify.) If not → I ship 581.
-- Whole-body camera as a kids input — keep pushing this lane, or is the camera-permission ask a non-starter for a 4-year-old's solo use?
-- Next (cycle 417, adult): the still-0× lanes are **audio-only/haptic off-screen** and **non-ocean real-world-data** (transit/seismic). Preference?
+- Does the real `/api/audio/[id]` fetch + WebGL2 render actually fire on your phone? (Can't verify GPU/audio/network in the sandbox — there's a synth-piano + Canvas2D fallback so it always sounds, but tell me if the **emerald "Karel's piano"** chip doesn't appear.)
+- Worth a multi-cycle deepening of 583 (add the **584 spectral-freeze** and **585 orrery** as alternate "lenses" on the same corpus)? Or keep them as separate pieces?
+- The adult side now has three warm wins in a row (576 head-binaural, 580 tide, 583 mosaic). Keep mining warmth, or is it time to swing back to a bigger off-glass/installation concept?
