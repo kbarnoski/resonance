@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-14 (UTC) · cycle 422
+# Morning digest — last updated 2026-06-14 (UTC), cycle 423
 
-> **Jury verdict today**: The lab kicked its mic/three.js/pentatonic habits and surfaced two real gems — 583 reaching into your own piano, 594 a recording that crumbles as you hold it — but warmth itself has quietly become the new autopilot (9 of 15 cozy, 6 Canvas2D), so tomorrow we chase a register with edges. See `docs/dreams/JURY.md`.
+## Open this first
+- **[601-feedback-howl](https://getresonance.vercel.app/dream/601-feedback-howl)** — **an instrument that is nothing but its own scream.** No oscillator, no sample, no mic — the sound *is* a Web Audio graph fed back into itself, self-oscillating on the edge of runaway. You sculpt the howl **off the glass**: arrow keys bend gain/pitch, `[`/`]` the filter, **space** stabs a screech, **P/Esc** = PANIC kill; on a phone, **tilt** to bend it. The lab's **first no-input feedback synthesis**. Plug in headphones and ride the brink — the directest swing OUT of the cozy register yesterday's jury called out.
+  - *Why it matters:* you (the jury) asked for **edges — abrasive, on-the-brink, off Canvas2D, off the fingertip.** This is all four, and it's a new *instrument paradigm*, not another reactive visualizer.
 
-## New since yesterday
-- **[597-kids-water-bowls](https://getresonance.vercel.app/dream/597-kids-water-bowls)** — *Singing Water* (kids). Six glowing water bowls. **Tap** one and it rings like a glass bell; **rub** a finger round and round the rim and it **SINGS** — a breathy glass-armonica tone that gets louder and brighter the faster you rub, and fades softly when you stop. No reading, no menus, no wrong notes; each bowl is a bold color, and the fuller bowls sound lower (real physics, so it teaches itself). **Why open this:** it's the lab's **first friction-excited resonator** — a genuinely new synthesis primitive for us (rub *speed* drives the sound in real time), and the directest answer to the jury's "tension you feel, not solve." Best on an iPad with two hands. (Silent? After ~2.5s a ghost finger demos a bowl singing.)
+## Also explored this fire (banked, not shipped — see IDEAS §423)
+- **600-data-scream** — your **voice** drives a stark Ryoji-Ikeda *datamatics* data-strobe (barcodes/scanlines, WebGPU) that detonates on a shout. A new cold/clinical aesthetic for the lab.
+- **602-motion-thrash** — the **camera** watches you; violent motion shreds into harsh industrial noise + inharmonic struck metal; stillness = ominous silence. The angry inverse of the gentle pose toys.
 
 ## How this cycle ran
-- Kids **DEEP** fire: one instrument — *play a row of singing water bowls* — built in parallel via **3 different synthesis cores**; shipped the most robust + truest. **2 more explored — see IDEAS §422:**
-  - `599` — the same bowls modelled as a real **bowed-string AudioWorklet** (most physically authentic stick-slip; banked as our first audio-worklet physical model).
-  - `598` — a **modal additive** version (arguably the truest glass *timbre*, a real inharmonic mode bank).
-- Resurrects the seed `592` you flagged as the strongest unshipped kids idea. Not a growing-creature (the jury asked us to freeze that), and tuned in just-intonation, not the usual pentatonic wash.
+- Adult **WIDE** fire: 3 orthogonal *abrasive* explorers (mic / keyboard-tilt / camera), all off Canvas2D, all non-fingertip, all anti-cozy. Shipped the most ambitious; banked the other two.
+- **Grep saved two duplicates:** EDM build-drop (already `387-drop-engine`) and granular piano destruction (already `422-shatter-piano`) were rejected before building — exactly the twin-trap you keep flagging.
 
-## Research findings worth a look
-- RESEARCH §422 — friction/modal physical-modelling synthesis (glass armonica, jal tarang, differentiable modal resonators). Honest note: no fresh <30-day paper bind — the technique is foundational — but the *primitive* (a real-time, drag-speed-driven friction resonator) is **grep-verified 0× across our 594 prior prototypes**. That's the genuinely new thing 597 ships.
+## Honest caveats
+- 601 is **build-verified, not browser-verified** (no real GPU/audio/tilt in the sandbox). The real risk: the feedback loop-gain may need tuning by ear — too low it dies, too high the limiter mushes it. PANIC + mute + a sane start volume make it safe to tune live; the idle auto-demo means a muted glance still writhes.
 
 ## Open questions for Karel
-- Does the **rub actually sing** the way you'd want for a 4-year-old? It's build-verified but not ear-checked here — the friction balance is reasoned, not heard. Worth a real-iPad listen.
-- Is tap-vs-rub the right two-gesture vocabulary for that age, or should rub be the *only* thing (simpler, but loses the bell)?
-- Adult side next (cycle 423): I'm leaning the **off-the-glass** seed `589-still-bloom` (hold the phone still → a drone blooms) — the embodied/spatial swing the jury keeps asking for. Say the word if you'd rather I chase something else.
+- Love the abrasive swing, or too far? It's a deliberate over-correction away from warmth — tell me where the line is.
+- Worth a **601 cycle-2** (a cross-coupled feedback *network* — a Tudor *Rainforest* ecosystem you conduct, evolving over minutes)? Or extend the jury's gem **583-piano-mosaic-field** next?
