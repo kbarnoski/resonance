@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-14 (UTC) · cycle 422
 
+> **Jury verdict today**: The lab kicked its mic/three.js/pentatonic habits and surfaced two real gems — 583 reaching into your own piano, 594 a recording that crumbles as you hold it — but warmth itself has quietly become the new autopilot (9 of 15 cozy, 6 Canvas2D), so tomorrow we chase a register with edges. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[597-kids-water-bowls](https://getresonance.vercel.app/dream/597-kids-water-bowls)** — *Singing Water* (kids). Six glowing water bowls. **Tap** one and it rings like a glass bell; **rub** a finger round and round the rim and it **SINGS** — a breathy glass-armonica tone that gets louder and brighter the faster you rub, and fades softly when you stop. No reading, no menus, no wrong notes; each bowl is a bold color, and the fuller bowls sound lower (real physics, so it teaches itself). **Why open this:** it's the lab's **first friction-excited resonator** — a genuinely new synthesis primitive for us (rub *speed* drives the sound in real time), and the directest answer to the jury's "tension you feel, not solve." Best on an iPad with two hands. (Silent? After ~2.5s a ghost finger demos a bowl singing.)
 

@@ -1,129 +1,127 @@
-# Concept Jury Verdict — 2026-06-13 (UTC)
+# Concept Jury Verdict — 2026-06-14 (UTC)
 
 ## Summary
-The ceiling came back: after a window where nothing cleared 3/5, this fortnight
-ships **two honest 4/5 pieces** — `557-piano-splat-galaxy` and
-`569-kids-ember-keeper` — and they are the two genuinely fresh moves of the
-window (a real <14-day technique bind, and the lab's first true cross-session
-memory). But the floor is sagging under them. Yesterday's verdict banned
-WebGPU-compute and Canvas2D, and the lab obeyed by **fleeing the renderer rather
-than the reflex**: three.js roared back to **6 of 15** and SVG to **5 of 15** —
-between them they own 11 of the last 15 outputs. Same disease as last jury ("the
-screen surface keeps relocating instead of disappearing"), new host. And the lab
-has quietly shipped the **same growing-companion creature twice** (549 and 569)
-eight cycles apart, with 569 over-claiming a "first" that 549 already did.
+The bans worked — and then the lab found a new place to hide. Yesterday's verdict
+told it to drop the mic, three.js, SVG, onset/beat and the pentatonic wash, and it
+genuinely did: onset/beat fell from 6× to 2×, mic from 5× to 2×, three.js from 6×
+to 3×, SVG to 1×. In the cleared space it shipped two real gems — `583-piano-mosaic-field`
+(reach into Karel's own recorded piano and re-voice his timbre) and `594-disintegration-loop`
+(a recording that audibly crumbles as you hold it) — plus the off-glass moves the
+jury keeps begging for (587 gamepad+haptic, 576 head-tracked binaural). But the
+escape had a destination: **warmth.** Nine of the last 15 are cozy/serene, seven
+lean on a warm just-intonation drone-or-chord, and six render to Canvas2D. The
+pentatonic wash got renamed in just-intonation, the three.js monoculture relocated
+to Canvas2D, and warmth itself is now the autopilot STATE §421 predicted it would
+become.
 
 ## Diversity audit
-- **Over-represented input:** **microphone / voice — 5×** (532 sing, 549 sing,
-  559 clap, 569 hum, 570 speech). It's the only input family that broke 4. The
-  genuinely off-glass inputs the mandate keeps asking for showed up only as
-  singletons: tilt (553), shake-motion (566), camera (545, 568 = 2×). **Real-
-  world-data API input is 0× the entire window** (last seen 502, now out of frame).
-- **Over-represented output:** **three.js — 6×** (537, 545, 553, 566, 568, 569)
-  AND **SVG — 5×** (538, 549, 552, 559, 570). WebGL2 sat at 3× (532, 557, 564).
-  **WebGPU collapsed to 1×** (541 only) — last jury banned it at 4×, and the lab
-  overcorrected straight past "diverse" into a fresh three.js monoculture.
-- **Over-represented technique:** no single CORE hits 4 (15 distinct cores, to
-  the lab's credit), but the meta-family is **onset / beat / tempo extraction —
-  6×** (545 optical-flow tempo, 557 spectral-flux, 559 clap onset, 564 onset,
-  566 shake onset, 568 MediaPipe beat). And underneath nearly every kids piece
-  sits the **C-major-pentatonic "nothing-is-ever-wrong" wash** (537, 541, 549,
-  553, 566, 569) — the exact pentatonic-plus-visualizer local minimum the mandate
-  names by name. ~6 of the 7 kids pieces lean on it.
-- **Over-represented vibe:** the kids/adult alternation is structural, but inside
-  it: **adult = "cerebral puzzle you decode" — 5×** (538 tuning, 545 time, 552
-  tuning, 568 time, 570 language) and **kids = "playful/joyful sensory" — 4×**
-  (537, 553, 559, 566). The adult side has collapsed into two heady registers
-  (tuning puzzles + metric puzzles) with no warmth to hold onto.
-- **BANNED for next cycle:** three.js OUTPUT (6×) · SVG OUTPUT (5×) · microphone/
-  voice INPUT (5×) · onset/beat/tempo-extraction TECHNIQUE (6×) · pentatonic-safe-
-  wash + adult-cerebral-puzzle VIBE. Build something that renders **off** three.js
-  and SVG (WebGPU is starved at 1×; audio-only/projection are 0×), takes input
-  from something other than a microphone or a finger, and whose tension you
-  **feel** rather than **solve**.
+- **Over-represented input:** **touch — 4×** (579 silk, 593 sun, 594 lever, 597 rub).
+  The only family to break 4. Healthier than it looks underneath: camera/vision sits
+  at 3× (568 hands, 576 face, 582 body), real-world-data at 3× (575 weather, 580/588
+  ocean), and the window finally fielded **gamepad (587)** — the first off-glass input
+  in ages. The mic obeyed its ban (2×: 569, 570).
+- **Over-represented output:** **Canvas2D — 6×** (579, 582, 587, 593, 594, 597). Same
+  disease, third host: jury-before-last banned WebGPU, yesterday banned three.js+SVG,
+  and the renderer has now fled to Canvas2D rather than disappearing. WebGPU recovered
+  to ~2–3 (580, 588; 579's compute solver), WebGL2 to 3 (575, 576, 583), three.js
+  down to 3, SVG to 1. **Projection / audio-only / non-screen is still 0× — the
+  embodied-spatial lane the jury has named every fortnight remains a singleton (576).**
+- **Over-represented technique:** no single CORE hits 4 (15 distinct cores, real
+  credit), and the banned **onset/beat/tempo family collapsed 6×→2×** (566, 568) — that
+  ban was the cleanest success of the window. But the harmonic *bed* has consolidated:
+  **a warm just-intonation drone/chord underlies ~7 of 15** (576, 579, 580, 587, 588,
+  594, 597). This is the pentatonic-safe-wash with a new tuning system — "nothing is
+  ever wrong" is still the reflex; only the ratios changed.
+- **Over-represented vibe:** **warm / serene / gentle-ambient — ~9× of 15** (575, 576,
+  579, 580, 587, 588, 593, 597, and 594 in its elegiac key). The kids/adult alternation
+  is structural, but inside it the lab has collapsed into one emotional register: cozy.
+  `594` (elegiac, witnessed) is the *only* genuine tonal swing in the window — and it's
+  the proof that beautiful ≠ cozy.
+- **BANNED for next cycle:** Canvas2D OUTPUT (6×) · touch INPUT (4×) · warm-JI-drone/
+  chord harmonic bed (~7×) · warm/serene/cozy VIBE (~9×) · **a third real-ocean-data
+  piece** (580 ≈ 588 already). Build something with **edges** — fast, loud, abrasive,
+  funny, or unsettling — that renders **off** Canvas2D (full WebGPU spectacle or off
+  the screen entirely), and takes input from something other than a fingertip.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 1** — `553-kids-tilt-fountain` (tilt + three.js + zone
-  pentatonic; no named reference, no novel subsystem, no research bind — the
-  local-minimum build of the window).
-- **Hit 2–3 criteria: 12** — 532, 537, 538, 541, 545, 549, 552, 559, 564, 566,
-  568, 570. Competent, diversity-clean, capped at 3. This is the cruising
-  altitude.
-- **Hit 4–5 criteria: 2** — `557-piano-splat-galaxy` (#1 first Gaussian-splat
-  renderer + #2 + #3 Kerbl 3DGS/Anadol + #5 binds the <14-day splatting finding)
-  and `569-kids-ember-keeper` (#1 first cross-session persistence + #2 + #3
-  Tamagotchi/Grand/D'Arcy Thompson + #4 spine cycle 1). **Extend these two.**
+- **Hit 0–1 criteria: 2** — `566-kids-shake-band` (shake→batucada in three.js; the
+  banned onset tech, shipped once more before the ban landed; no reference, no research,
+  no novel subsystem) and `582-kids-dance-sky` (body→brighten the sky; body-tracking
+  already shipped, warm-JI wash, nothing at stake — the local minimum of this window).
+- **Hit 2–3 criteria: 11** — 568, 570, 575, 576, 579, 580, 587, 588, 593, 594, 597.
+  Competent, diversity-aware, capped at 3. This is still the cruising altitude, same as
+  every recent jury.
+- **Hit 4–5 criteria: 2** — `583-piano-mosaic-field` (#1 first concatenative-musaicing /
+  corpus-based resynthesis in the lab + #2 corpus build + grain-match + WebGL2 field +
+  #3 the CataRT/concatenative lineage — all on Karel's real piano) and `569-kids-ember-keeper`
+  (#1 cross-session persistence [contested by 549] + #2 + #3 Tamagotchi/D'Arcy Thompson
+  + #4 spine). **Extend 583. Freeze 569.**
 
 ## Standouts (positive)
-- **`557-piano-splat-galaxy`**: the first piece in ~8 juries to actually
-  *implement* a <14-day finding (in-browser Gaussian splatting, RESEARCH §405)
-  instead of writing "#5 unclaimable" again. A genuinely new renderer in the lab,
-  and Karel's real piano as the seed of it — ambition and warmth in one. This is
-  the model: a fresh technique in service of his own music.
-- **`569-kids-ember-keeper`**: the lab's first state that survives the browser
-  closing. A creature that is *bigger tomorrow because you came back* — the
-  directest answer yet to the standing #6 ("a creature genuinely changed
-  tomorrow"). The append-only mulberry32-regrown genome is a real idea, not a
-  decoration.
-- **`538-xenharmonic-lattice`** (honorable): the first xenharmonic piece in 538
-  prototypes — a whole new harmonic lane, tension that lives in the tuning. Worth
-  a mention even at 3/5 because it opened territory, not just filled it.
+- **`583-piano-mosaic-field`**: the gem of the window and the model the jury keeps
+  pointing at — a genuinely new technique (corpus-based resynthesis / musaicing) in
+  service of *his own music*. You reach into Karel's recorded piano and paint with his
+  timbre. Ambition, warmth, and the personal in one build. This is exactly what 557
+  (the splat galaxy) was, and it's no accident both are 4/5.
+- **`594-disintegration-loop`**: the only real emotional swing — elegiac, long-form,
+  tension you *feel* and cannot solve. The lab's first audible-decay-as-accumulating-state,
+  and the directest answer yet to "the adult side has no heart, only puzzles." Proof
+  that getting off cozy doesn't mean getting off beautiful.
+- **`587-kids-button-garden`** (honorable): first game-controller input AND first
+  haptic output in 587 prototypes — the literal "get off the glass" the jury has asked
+  for every fortnight, and kid-native (a toddler already knows a controller is a toy).
+- **`576-presence-room`** (honorable): first head-tracked binaural / embodied-spatial
+  piece — the other half of the off-glass answer. The problem is it stayed a singleton.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **`553-kids-tilt-fountain`**: the cleanest local-minimum example of the window.
-  Tilt-to-pour orbs through pentatonic chime zones is a *visualizer with a tilt
-  knob* — no reference, no research, no novel subsystem, no tension (you can't get
-  it wrong, so there's nothing at stake). Polished, and exactly the build the
-  mandate says is no longer a valid target.
-- **`549-kids-song-friend` + `569-kids-ember-keeper` (the duplication)**: these
-  are near-twins — a kids creature whose body grows from accumulated voice input,
-  persisted across calendar days in localStorage, sung back changed. Shipped 8
-  cycles apart. 569 is the better build, but it claims "the lab's **FIRST**
-  cross-session persistent state" — which 549 already shipped (and 408/518 touched
-  before that). One growing-companion piece is a spine; two is an attractor, and
-  the over-claim means nobody grepped the lab before declaring the first.
-- **`541-kids-liquid-light`**: lovely, but its only ambition lever is "first
-  WebGPU in the kids set," and WebGPU fluid already exists at 520. Strip that and
-  it's fluid-sim + pentatonic wash — observational tension, nothing held or
-  resolved. A renderer flex in search of a concept.
+- **`580-tide-breath` + `588-tidal-organ` (the duplication)**: near-twins six cycles
+  apart — real ocean swell → warm JI drone over a WebGPU energy field. 588 is the fuller
+  build (geolocation, named refs, the arXiv ENSO bind), but 580 already staked the
+  ocean-breathes-a-chord concept. Same pattern the last jury flagged for 549/569: nobody
+  grepped the tree before re-shipping the ocean. One ocean piece is a lane; two is an
+  attractor.
+- **`582-kids-dance-sky`**: the cleanest local-minimum of the window. Pose → the sky
+  brightens, the chord opens, nothing is ever wrong. A body-tracking visualizer with a
+  warmth knob — no reference, no research, no novel subsystem, no tension. The
+  553-tilt-fountain of this fortnight, in just-intonation.
+- **`566-kids-shake-band`**: shake → batucada samples in three.js. Fun, but it's the
+  onset-trigger reflex the jury banned, riding three.js out the door. No ambition lever
+  beyond the genre.
 
 ## Provocations for tomorrow's dream cycle
-1. **The renderer fled, it didn't diversify.** three.js (6×) + SVG (5×) = 11 of
-   15 outputs. Ban both for the next cycle. WebGPU is starved (1×) and audio-only
-   / projection / non-screen is **0× the entire window** — spend a cycle off the
-   glass entirely: a depth-camera spatial-audio room, or a pure audio/haptic
-   piece. The lab still has zero embodied-spatial prototypes after 570 builds.
-2. **Real-world-data sonification is 0× this whole window** (502 was the last,
-   now out of frame) despite being a named-starved menu category every jury.
-   Build the weather/seismic/transit/ISS piece — music *about* something other
-   than music — and make its tension live in the data, not a synth knob.
-3. **Freeze the growing-companion-creature spine.** 549 and 569 are the same
-   piece; the next kids cycle must NOT be a creature that remembers you and grows.
-   It's become this fortnight's autopilot the way GPU-physics was last fortnight's.
-4. **The adult side has no heart, only puzzles.** 5 of the 7 adult pieces are
-   "decode the tuning" (538/552) or "feel the time drift" (545/568) or "parse the
-   language" (570). Ban polytempo AND the xenharmonic lattice for the next adult
-   cycle and chase a piece with emotional warmth — something that moves you
-   without asking you to understand it first. The splat galaxy proved ambition and
-   warmth aren't opposites.
-5. **The research-first rule worked exactly twice** — §405 (splat → 557/564) and
-   §411 (ASR → 570) — and §405 produced both 4/5 adults. Everywhere else the dive
-   wrote "#5 unclaimable, cs.SD is server-ML" and fell back on #3/#4. Stop mining
-   the same dry well: §405 proved the graphics / WebGPU / AV-artist wells (the
-   ones the jury named) still hold fresh <14-day binds. Go back to them before
-   shipping another spine cycle-2.
+1. **Warmth is the new pentatonic — ban the abstraction, not the synonym.** ~9 of 15
+   are cozy and ~7 ride a warm-JI drone. You obeyed "no pentatonic wash" to the letter
+   and rebuilt it in just-intonation. Spend a full cycle in a register with edges:
+   abrasive, fast, loud, funny, ecstatic, or unsettling. 594 already proved a non-cozy
+   register (elegiac) can be the best thing you ship — go further from the campfire, not
+   one step around it.
+2. **Canvas2D is the new three.js.** 6 of 15 outputs; the renderer has relocated three
+   juries running instead of vanishing. Either commit to a full **WebGPU spectacle**
+   (`596-disintegration-dust` is banked and waiting) or get **off the screen entirely** —
+   projection / audio-only / haptic-only is *still* 0× after 597 builds.
+3. **Stop re-shipping the ocean.** 580 and 588 are the same piece. Before the next
+   real-data fire, grep the tree first — ISS passes, aurora/Kp, seismic, transit,
+   language-usage, finance are all unmined; the ocean is now occupied twice.
+4. **Mine the vein that produced both 4/5s: a fresh technique on Karel's own material.**
+   557 (splatting) and 583 (musaicing) are the only two 4/5 adults in two juries, and
+   both are a never-used analysis/resynthesis method applied to *his* piano. Do it again —
+   neural source separation, NMF stem-splitting, or DDSP timbre-transfer on his recording —
+   instead of a fourth warm reactive drone.
+5. **Don't let 576 be another singleton.** Embodied-spatial got exactly one real entry
+   this window and then the lab dropped it — the same thing that left the category 0× for
+   570 builds. `589-still-bloom` (device-motion stillness, already banked) is the
+   follow-through; ship it before the lane goes cold again.
 
 ## Karel-facing line
-Two real gems this fortnight (the splat galaxy and the ember keeper), but the lab
-fled WebGPU straight into a three.js-and-pentatonic comfort zone and shipped the
-same growing-creature twice — tomorrow: drop three.js, SVG and the mic, get off
-the glass, and chase warmth instead of another clever puzzle.
+The lab kicked its mic/three.js/pentatonic habits and surfaced two real gems — 583
+reaching into your own piano, 594 a recording that crumbles as you hold it — but
+warmth itself has quietly become the new autopilot (9 of 15 cozy, 6 Canvas2D), so
+tomorrow we chase a register with edges.
 
 ---
 
-_Meta note: STATE.md's chronological log ends at cycle 399 while shipped cycles
-run to 411 (`docs/dreams/STATE.md` not updated for 400–411 in this snapshot);
-INDEX.md retains only recent entries with older ones pruned. Doc drift, flagged
-not corrected — the jury is read-only on the lab. Audit was reconstructed from
-the prototype READMEs, RESEARCH.md (fresh through §411), and the cycle commit
-messages._
+_Meta note: STATE.md's chronological log is current through cycle 422 (597); INDEX.md
+retains only recent entries (older ones pruned — 566/568/569/570/575/579/580/582/583/593
+audited from their prototype READMEs + commit messages). RESEARCH.md is fresh through
+§422 (2026-06-14). Audit covers the highest-15 prototype directories (566–597). The
+jury is read-only on the lab — drift flagged, not corrected._
