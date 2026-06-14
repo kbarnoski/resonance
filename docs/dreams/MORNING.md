@@ -1,45 +1,19 @@
-# Morning digest — last updated 2026-06-14 (UTC), cycle 426
+# Morning digest — last updated 2026-06-14 (UTC) · cycle 427
+
+**Open this first:** [/dream/613-seismic-choir](https://getresonance.vercel.app/dream/613-seismic-choir) 🌍🌋
 
 ## New since yesterday
-- **`609-kids-blow-parade`** → https://getresonance.vercel.app/dream/609-kids-blow-parade
-  **Blow a raspberry, pop a balloon.** A 4-year-old **blows into the mic** and a parade
-  of googly balloon-creatures puffs up bigger and bigger — then when they stop, it rips
-  a **whoopee-cushion raspberry** and zooms off tumbling. Loud, silly, giggly.
-  *Why open it:* it's the jury's literal ask, kid-safe — a **full WebGPU spectacle**
-  (provocation #2 has begged for the renderer revival), driven by **breath** (not a
-  fingertip), in the funny register 603 opened last kids cycle. No mic? Hold the 💨
-  button or press Space — and it demos itself (a ghost blow) if you just watch.
+- **613-seismic-choir** — *what does the planet sound like right now?* The **live global earthquake feed** of the last 24h becomes an ominous trembling sonification: every real quake on Earth groans through low inharmonic rock-resonators over a slowly rotating **WebGPU globe** of tectonic light (quakes bloom at their true lat/lon, big ones flare + shake the screen). The lab's **first seismic / real-data-sonification piece**, and the only build this fortnight to hit **three jury provocations at once**: edges/off-cozy (#1), full WebGPU spectacle off-Canvas2D (#2), and "stop re-shipping the ocean — mine unmined real data" (#3). Mag→loudness/depth, depth→brightness, lon→pan; the 24h window replays in ~60s so you hear the day's seismic *rhythm* — swarms, clusters, the silence between. Plays on a glance with zero hardware (auto-start + ~46-quake sample fallback + Canvas2D fallback; `LIVE/SAMPLE` + `WebGPU/Canvas2D` badges). Ref: Florian Dombois, *Earthquake Sounds*.
 
-## How it was made (the studio choreography)
-- Kids · **WIDE** fire (the jury verdict was overwhelmingly ban-combos + "build with
-  edges" → go wide with fresh tags, not deep). Three orthogonal funny/off-Canvas2D/
-  non-fingertip explorers in parallel, I shipped 1:
-  - **609 (shipped):** mic-**BLOW** → **WGSL/WebGPU** balloon raspberry parade.
-  - **610-kids-stomp-band** (banked, IDEAS §426): shake/stomp → **three.js** cartoon
-    junk-pile foley. Lost — three.js is the relocated monoculture, not the spectacle.
-  - **611-kids-face-monster** (banked): silly faces → a **WebGL2** googly monster that
-    roars/boings/giggles. The most novel idea (first comedic face-puppet) — but the
-    MediaPipe-from-CDN load is the riskiest "just works at 06:30" surface, and camera
-    was already 3× this window. Worth reviving once the camera tag cools.
-- Every standing jury ban dodged: off Canvas2D (WGSL), off touch (breath), off cozy
-  (a raspberry is not a warm drone).
+## Also explored this fire (WIDE — 2 banked, see IDEAS §427)
+- **612-piano-larynx** — LPC cross-synthesis "**talking piano**" on your material (a piano that vowels/mutters; refs Lansky/Dodge). *Banked:* strong, but 606 just mined the his-material vein and its glance-state was a synthesized piano — resurrect wired to your real `/api/audio` track.
+- **614-combustion** — a **procedural engine** you rev off-glass (pulse-train fired at RPM → recursive Karplus-Strong exhaust resonators; AudioWorklet + WebGPU). Implements this cycle's research (arXiv 2603.09391). *Banked:* the strongest single resurrect for the next "edges" fire.
 
-## Honest notes
-- **Build-verified, not browser-verified** (no mic/GPU/audio in the sandbox). The
-  blow-vs-voice gate (it ignores yells, listens for breath via spectral flatness) and
-  the raspberry timbre are coded to spec but **heuristically tuned** — a noisy room or
-  far mic may need a harder puff. The Canvas2D fallback + ghost-blow auto-demo mean it
-  puffs and pops on a silent glance with no hardware.
-- Ambition honest **2/5** (#2 five subsystems + #3 named refs: whoopee-cushion foley /
-  balloon physics / Toca Boca). **#1 NOT claimed** — `95-kids-breath-bubbles` already
-  did blow-via-loudness, so this is a refinement (a blow-vs-voice discriminator), not a
-  first; said plainly. The enabling fact: **Safari 26 put WebGPU on the iPad** (Sept
-  2025), so a WGSL kids toy is now an iPad-native path, not a desktop flex.
+## Research finding worth a look
+- The freshest cs.SD work this week is **real-time LM jamming** (arXiv 2606.11886, June 11 — an LM that improvises *with* a live player). Logged as a multi-cycle AI-pipeline seed (needs a local LM). The implementable edge I built from instead was the **PTR engine** paper (2603.09391).
 
 ## Open questions for Karel
-- **Next (cycle 427, adult):** warmth is the new pentatonic (9 of 15 cozy). Keep
-  swinging to edges — ship `589-still-bloom` (off-glass stillness, so 576 isn't an
-  embodied-spatial singleton) or `590-star-atlas` (aim the phone at the real sky)?
-- **Or deepen the his-piano decomposition spine** (the two 4/5 adults both came from
-  that vein): ship `607-piano-prism` (NMF, 6 learned voices) / `608-piano-sieve` (SMS)
-  standalone, or fuse them into one disassembly bench? Your call sets the adult arc.
+- The jury's "extend the his-material vein" (#4) was written before it saw cycle 425's 606 (HPSS on your piano) — I read that as freshly answered and went WIDE into the still-open lanes instead. Agree, or keep mining your-piano analysis (612 talking-piano is ready to resurrect)?
+- 613 fetches the **live** USGS feed in your browser at runtime (the sandbox only ever sees the sample set) — worth a look on the real feed to hear an actual loud-quake day.
+
+_Process note: three builder subagents racing one shared `.next` corrupted the first build (ENOENT); `rm -rf .next` fixed it. Authoritative `npm run build` exit 0, 464/464 static pages._
