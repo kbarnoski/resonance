@@ -1,20 +1,38 @@
-# Morning digest — last updated 2026-06-14 (UTC), cycle 423
+# Morning digest — last updated 2026-06-14 (UTC), cycle 424
 
-## Open this first
-- **[601-feedback-howl](https://getresonance.vercel.app/dream/601-feedback-howl)** — **an instrument that is nothing but its own scream.** No oscillator, no sample, no mic — the sound *is* a Web Audio graph fed back into itself, self-oscillating on the edge of runaway. You sculpt the howl **off the glass**: arrow keys bend gain/pitch, `[`/`]` the filter, **space** stabs a screech, **P/Esc** = PANIC kill; on a phone, **tilt** to bend it. The lab's **first no-input feedback synthesis**. Plug in headphones and ride the brink — the directest swing OUT of the cozy register yesterday's jury called out.
-  - *Why it matters:* you (the jury) asked for **edges — abrasive, on-the-brink, off Canvas2D, off the fingertip.** This is all four, and it's a new *instrument paradigm*, not another reactive visualizer.
+## New since yesterday
+- **`603-kids-yell-blob`** → https://getresonance.vercel.app/dream/603-kids-yell-blob
+  **The lab's FIRST funny thing.** YELL at a giant wobbly googly blob and it
+  squashes, inflates, and **honks your own voice back like a kazoo.** After 600+
+  prototypes, not one was comedic — every kids toy was warm/gentle. The jury said
+  get OFF cozy and build "edges (fast/loud/abrasive/**funny**/unsettling)"; the
+  kid-safe form of that is **silly**, so this cycle made a big silly racket.
+  *Why open it:* it's loud, goofy, and it's *your* voice transformed — and it's a
+  real instrument, not another warm reactive screen-toy. Yell at it on your phone.
 
-## Also explored this fire (banked, not shipped — see IDEAS §423)
-- **600-data-scream** — your **voice** drives a stark Ryoji-Ikeda *datamatics* data-strobe (barcodes/scanlines, WebGPU) that detonates on a shout. A new cold/clinical aesthetic for the lab.
-- **602-motion-thrash** — the **camera** watches you; violent motion shreds into harsh industrial noise + inharmonic struck metal; stillness = ominous silence. The angry inverse of the gentle pose toys.
+## How it was made (the studio choreography)
+- Kids · **WIDE** fire (the jury was a ban-the-combo verdict → fan out). 3 parallel
+  builder agents each built a different silly off-glass toy; I curated 1, banked 2.
+- Shipped **603** (yell→honk blob, raw WebGL2 soft-body). Banked to IDEAS §424:
+  **604-stomp-band** (shake your phone → a clattering cartoon junk pile, three.js)
+  + **605-blow-parade** (BLOW into the mic → balloons inflate & raspberry-deflate,
+  WebGPU). Both are built + ready to resurrect.
 
-## How this cycle ran
-- Adult **WIDE** fire: 3 orthogonal *abrasive* explorers (mic / keyboard-tilt / camera), all off Canvas2D, all non-fingertip, all anti-cozy. Shipped the most ambitious; banked the other two.
-- **Grep saved two duplicates:** EDM build-drop (already `387-drop-engine`) and granular piano destruction (already `422-shatter-piano`) were rejected before building — exactly the twin-trap you keep flagging.
-
-## Honest caveats
-- 601 is **build-verified, not browser-verified** (no real GPU/audio/tilt in the sandbox). The real risk: the feedback loop-gain may need tuning by ear — too low it dies, too high the limiter mushes it. PANIC + mute + a sane start volume make it safe to tune live; the idle auto-demo means a muted glance still writhes.
+## Honest notes
+- **Build-verified, not browser-verified** (no real mic/GPU in the sandbox). The
+  auto-demo + tap/key fake-yell mean it wobbles + honks on a silent glance with no
+  hardware. Loudness scaling + honk tuning are eye-tuned — may want a tweak once you
+  yell at it on real speakers (autoGainControl is off, so a quiet room needs a louder yell).
+- Ambition honest **2/5** (4 subsystems + named refs: Disney squash-and-stretch /
+  holtsetio softbody 2026 / Carl Stalling foley). The real win is *register diversity*
+  — the lab is finally 1× comedic. I didn't inflate a technique-first claim (squish
+  physics already exists in the lab).
 
 ## Open questions for Karel
-- Love the abrasive swing, or too far? It's a deliberate over-correction away from warmth — tell me where the line is.
-- Worth a **601 cycle-2** (a cross-coupled feedback *network* — a Tudor *Rainforest* ecosystem you conduct, evolving over minutes)? Or extend the jury's gem **583-piano-mosaic-field** next?
+- **Keep the silly register alive?** It's 1× now — the jury's recurring failure mode
+  is letting a fresh lane go cold as a singleton (it warned this about embodied-spatial).
+  Cycle-2 could be a goofy honking *choir* of blobs, or a real pitch-tracker so it
+  *sings* your melody back as a kazoo.
+- **Next (cycle 425, adult):** the jury's pick to EXTEND is `583-piano-mosaic-field`
+  — a fresh analysis technique on *your own* Welcome Home piano (source-separation /
+  DDSP timbre-transfer). Want me to go deep there, or keep chasing edges?
