@@ -4749,3 +4749,22 @@ rests honestly on #1 lab-first-technique + #3 named-reference + #2 ≥3-subsyste
 - **`621-kids-duet-bloom`.** Two-finger cooperative consonance — the meadow blooms only when two kids find a consonant interval together (Canvas2D). Banked IDEAS §430. **Caveat that lost it:** the freshest *interaction* (the thin cooperative-two-player social lane) but Canvas2D (jury-flagged) + cooperative-consonance overlaps adult `508`; honest 2/5.
 
 **Floor (winner `619`):** #1 (first Galton-board / quincunx stochastic-physics instrument — grep-0× across 618) + #2 (≥3 subsystems: quincunx physics + histogram accumulator + JI struck-bell synth + WebGL2 instanced render) + #3 (Galton 1894 / Wintergatan / Choi 2018) = honest **3/5**; #5 soft (foundational phenomenon, no <14-day bind).
+
+---
+
+## §431 — 2026-06-15 (UTC) · adult cycle · cellular automata as an autonomous composer (the 1D / Wolfram sub-lane)
+
+**Dive (research-first rule).** The concept was seeded by Karel's loved emergent/autonomous-music cluster (`236-particle-life-song`❤️, `130-tsl-particle-compute`❤️, `262-aurora-particle`❤️) plus STATE §430's adult standing-watch: the adult side had run **four edges/real-data builds in a row** (601 howl · 606 piano-HPSS · 613 seismic · 618 solar) and was warned not to let edges/real-data become the new autopilot. A system that *plays itself* is off both the cozy and the edges autopilots. The **decisive research act was a grep audit of the lab's own 619-prototype corpus** — and it surfaced a near-miss worth recording: an initial batch grep returned a **false negative** (a `grep -E` pattern using `\|` alternation, which `-E` treats as a literal, not OR), so a re-run with a correct pattern revealed CA is in fact *well-mined in 2D*: `25-cellular` + `180-cellular` are BOTH "Conway's Life as a musical composer," `264-kids-lenia-pond` is **Lenia** (continuous CA), and `360-kids-sand-choir` / `377-kids-cascade-bloom` are **sandpile** CA.
+
+**The finding (surprising-for-the-lab).** Despite all that CA prior art, the **1D elementary cellular automaton** — Wolfram's 256 rules over a left/self/right neighbourhood, the rules 30 (chaos) / 90 (Sierpinski fractal) / 110 (Turing-complete) — is **grep-0×**. It is a uniquely musical CA: a *single 8-bit integer* defines the entire dynamical system, so "the rule number is the composition" is a genuinely novel one-lever interaction, and the three regime classes (periodic / fractal / chaotic / complex) map cleanly to three audibly distinct musical characters. Live anchors: **Stephen Wolfram, _A New Kind of Science_ (2002)**; **Matthew Cook, Rule-110 Turing-completeness (2004)**; the broader generative/aleatoric cs.SD front (Xenakis's CA-in-composition lineage). **#5 NOT clean-claimed** (foundational, no <14-day result — said plainly, consistent with §420/§422/§430 framing).
+
+**Could become a prototype that:** lets you turn a single integer 0–255 and hear how the universe of elementary CA rules sounds — chaos, fractal, complexity — the rule number as a knob on emergence itself.
+
+**Research→build chain (mode DEEP — one concept, 3 CA paradigms; ship the only duplication-clean one):**
+- **`622-wolfram-rhythm` — WINNER.** 1D elementary CA / Wolfram-rule instrument, WebGL2 scrolling diagram (Canvas2D fallback). The only grep-0× paradigm of the three. Refs: Wolfram 2002 / Cook 2004 / Xenakis.
+- **`620-life-engine` (Conway's Life → playhead composer).** Rejected — duplicates `25-cellular` + `180-cellular`. Banked CAUTIONARY IDEAS §431 (do not rebuild).
+- **`622-quickening` (Lenia → organism voice).** Rejected — duplicates `264-kids-lenia-pond` (reused its code verbatim). Banked CAUTIONARY IDEAS §431 (do not rebuild).
+
+**Floor (winner `622`):** #1 (first 1D-elementary-CA / Wolfram-rule instrument — grep-0×) + #2 (≥3 subsystems: 1D-CA rule engine + stagnation/perturb long-form controller + CA→percussion synth + WebGL2 render) + #3 (Wolfram 2002 / Cook 2004 / Xenakis) = honest **3/5**; #5 soft.
+
+**Meta (for future Decide steps):** in a 600+-deep lab the highest-leverage research is **duplication-checking the CONCEPT, not just the technique name** — and a grep that uses `\|` under `-E` will silently lie. This cycle's DEEP umbrella ("CA-as-composer") was over-broad; the win was the *sub-lane* discovery.
