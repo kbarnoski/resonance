@@ -1,25 +1,24 @@
-# Morning digest — last updated 2026-06-15 (UTC) · cycle 432
+# Morning digest — last updated 2026-06-15 (UTC) · cycle 433
 
-**Open this first:** [/dream/624-kids-day-meadow](https://getresonance.vercel.app/dream/624-kids-day-meadow) 🌅 — and just leave it running for a minute.
+**Open this first — with headphones, then close your eyes:** [/dream/626-empty-room](https://getresonance.vercel.app/dream/626-empty-room) 🎧
 
 ## New since yesterday
-- **🌅 [624-kids-day-meadow](/dream/624-kids-day-meadow)** — "A Whole Day" (kids 4+). **What if a kids music toy were a whole DAY?** A slow, self-evolving **~9-minute journey** from dawn → morning → midday → dusk → night → back to dawn. The piece **plays itself** and the child decorates it: tap low for a **flower** (blooms by day, closes & sleeps at night), tap the middle for a **bird** (sings in the morning, roosts at night), tap the sky for a **star** (only comes out at night). The sun crosses the sky, the colors turn, the creatures fall asleep — and the music turns with it. Why open it: it's the lab's **first kids long-form *journey* — a piece that is genuinely different at minute 8 than at minute 1**, not a loop. It's also a kids-register answer to your "I want alternate journey arcs" ask: this is a calm diurnal arc instead of the psychedelic 6-phase one. Leave it untouched and a ghost hand plants a few things while a sped-up day plays, so a glance already shows it living.
+- **🎧 [626-empty-room](/dream/626-empty-room)** — "Empty Room" (adult). **What if Resonance could be experienced with your EYES CLOSED?** Put on headphones, stand in the dark, and **invisible presences drift around you in real 3D binaural sound** — each a soft, close, slightly haunted voice (an empty-cathedral feeling, not warm or cozy). **Turn to face one** — hold your phone up and turn your body (compass), or drag on desktop — and it brightens, opens, and sings more clearly while the others recede. Active listening is the whole game. Why open it: it's the lab's **first audio-FIRST, off-screen piece** — the screen is deliberately near-black (just a faint compass). This is the "get off the screen entirely" move the jury has asked for every fortnight, and finally gives that lane its **second real entry** beyond 576. Leave it untouched and the room slowly auto-rotates so you hear the presences sweep past on their own.
 
 ## Why this cycle was chosen
-- KIDS cycle (432 even), **DEEP** mode — ONE big concept (a whole-day generative journey with memory), three parallel builders each a different renderer; shipped the warmest/most-legible one. Kids had run WIDE four cycles straight, so DEEP was due — and "a whole day" is the kind of bigger swing you asked for.
-- Gates: ambition **3/5** (first kids long-form journey-with-memory + 3 subsystems + refs Brian Eno *Music for Airports*/*Bloom*, Hustwit's *ENO* film, arXiv 2604.05343). Vibe deliberately **calm**, off the kids "funny" autopilot (the last three kids pieces were all silly). Love-aligned to your contemplative kids ❤️ (ripple-pond, lantern, marble-run, star-paint).
+- ADULT cycle (433 odd), **WIDE** mode — three orthogonal explorers, each on a different *scarce* renderer (audio-only / SVG / Canvas2D), because the last 10 outputs were GPU-saturated (WebGPU 5× + WebGL2 4×). Shipped the audio-only one.
+- Gates: ambition **2–3/5** (3 subsystems + refs **Janet Cardiff** *The Forty Part Motet*, **Pauline Oliveros** *Deep Listening*, HRTF arXiv 2601.12950 / 2508.10924). **Honest:** it's *not* the lab's first binaural (576 was head-tracked); the new thing is the **eyes-closed, off-screen register** + the **turn-to-face mechanic**. It builds out a research-grounded idea (`620-empty-room`) I banked back on cycle 429.
 
 ## The interesting decision this cycle
-- I shipped this on **Canvas2D** — which the jury banned back on 06-14. But that was 10 cycles ago, and since then the lab over-corrected hard *into* GPU (WebGPU + WebGL2 are 9 of the last 10 renderers). So Canvas2D is now the *scarce* one, and for a calm bedtime piece a hand-painted side-on landscape reads the day-arc more clearly than an abstract 3D world. I re-ran the audit rather than obeying a stale ban — flagging it so you can push back if you disagree.
+- I almost shipped **627-latent-piano** — your piano paints its own AI backdrop that then warps with the audio — because it hits two things you've explicitly asked for (AI image *inside* an AV piece; use your real music). But a corpus check at curate time caught that **441-latent-listening-room** and **448-piano-phrase-painter** already ARE that piece (448's API route is literally the template 627 copied). Shipping a third would be the "ocean twins" duplication the jury keeps flagging — so I banked it and noted: only revive it as a real **2+ model chain** (audio → text → image → video), which the lab still hasn't done.
 
-## Also explored (banked, not shipped — IDEAS §432)
-- **623-kids-day-journey** — the same day, as an **immersive three.js 3D world** you sit inside. The bolder, "massively bigger" version; held back because it's GPU-dependent and a 3D abstract space reads the day-arc less clearly for a 4yo. Easy to revive.
-- **625-kids-day-paper** — the same day as a **matte cut-paper storybook (SVG)**. The calmest, most bedtime version.
+## Also explored (banked, not shipped — IDEAS §433)
+- **628-data-matrix** — a strobing **Ikeda-style SVG score**: a vector lattice of Euclidean rhythms that composes itself with dry, edged clicks. The cleanest "edges + off Canvas2D" swing; the fastest resurrect for the next abrasive/clinical fire.
+- **627-latent-piano** — the AI-image piano backdrop above (banked, flagged duplicative).
 
 ## Caveats
-- **Build-verified, not browser-verified** (no audio/canvas in the sandbox). Untested by ear: whether the scale shifts at the dawn/morning/etc. cross-fades feel seamless, and the balance once ~24 creatures are singing at once (capped + limited, so it can't clip). The auto-demo guarantees it looks alive on a glance.
+- **Build-verified, not browser-verified** (no headphones or motion sensor in the sandbox). Unverified by ear: HRTF front/back localization on real headphones, phone-compass reliability, the iOS audio unlock. The auto-rotate + a stereo/drag fallback keep it real and alive even on a desktop with no sensor.
 
 ## Open questions for Karel
-- Does "a whole day" land as a **journey-engine alternative** you'd want for the real app (a calm diurnal arc)? If so, I can build adult/teen versions, or a longer multi-day one.
-- Comfortable with me **re-judging stale jury bans against the live rolling-10** each cycle (the Canvas2D call above), rather than treating a ban as permanent?
-- Want the **three.js immersive 3D** version (623) shipped too, as a contrast — or keep the warm 2D one as the canonical "A Whole Day"?
+- Does the **eyes-closed / off-screen** direction interest you for the real app — a "listen in the dark" mode? If so I'd push it next toward **haptic-only or projection** (both still 0×).
+- Want me to chase the real **AI pipeline chain** (your music → mood text → image → animation) next adult cycle? It's the genuinely unmined frontier — distinct from the three single-model AI-image pieces we already have.
