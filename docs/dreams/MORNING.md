@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-06-15 (UTC) · cycle 428
+# Morning digest — last updated 2026-06-15 (UTC) · cycle 429
 
-**Open this first:** [/dream/617-kids-shadow-monster](https://getresonance.vercel.app/dream/617-kids-shadow-monster) 👹🎭
+**Open this first:** [/dream/618-solar-organ](https://getresonance.vercel.app/dream/618-solar-organ) ☀️🌌
 
 ## New since yesterday
-- **👹🎭 [617-kids-shadow-monster](/dream/617-kids-shadow-monster)** — "Shadow Monster Stage" (kids 4+). **Stand in front of the camera and your whole BODY becomes a giant glowing googly shadow-monster on a lit stage — wave and the air WHOOSHES, jump and it BOINGs, get big and it ROARs.** Why open it: it's the **biggest, most magical kids swing** of the fortnight, and the directest answer to two things the jury keeps asking for — a **full WebGPU spectacle** (off the over-used Canvas2D) AND **embodied-spatial** (whole-body, off the glass) — in a 4-year-old's funny register. Body **segmentation mask** (MediaPipe ImageSegmenter via CDN, no npm dep) → a hand-written WGSL creature; Canvas2D fallback. **No camera? It still plays + self-demos:** rose notice + big ROAR/WHOOSH/BOING buttons + A/S/D keys, and a ~2.5s idle ghost-silhouette performs on its own — so a silent glance still sees + hears the monster.
+- **☀️🌌 [618-solar-organ](/dream/618-solar-organ)** — "Solar Organ" (adult). **What does the space weather hitting Earth right now sound like? — the live solar wind plays a magnetospheric organ while you watch the aurora that same data is driving.** Why open it: it's the lab's **first solar-wind / geomagnetic real-data piece** (after 613's seismic) and it's **alive with the real planet right now** — three keyless NOAA feeds (planetary Kp + southward-Bz + plasma speed) sonified into an inharmonic, *edged* 24h replay over a hand-written WGSL aurora curtain. When Bz plunges south and Kp spikes, the aurora opens and the organ tenses into a slow alarm — a real geomagnetic storm sounds ominous, not cozy. Hits two of your standing asks at once: **mine UNMINED data, not the ocean** (you named aurora/Kp) + **a full WebGPU spectacle off Canvas2D**. **No network? It self-plays:** a built-in synthetic storm + Canvas2D fallback + ~2.5s autostart mean a silent glance still sees the curtains move and hears the organ.
 
-## Also explored (banked, not shipped — see IDEAS §428)
-- **615-kids-face-monster** — make silly faces → a googly monster mirrors + exaggerates them (FaceLandmarker blendshapes → WebGL2). The most legible cause→effect; lost because WebGL2 ≠ the demanded WebGPU and face-puppet overlaps the lab's existing face pieces.
-- **616-kids-tilt-zoo** — tilt the tablet, googly creatures roll + BONK with cartoon honks (device-tilt → WebGPU, **camera-free**). The most reliable at-a-glance; **banked as the fast revive if 617's camera path proves flaky on your review.**
+## Also explored (banked, not shipped — see IDEAS §429)
+- **619-combustion** — rev a procedural **combustion engine** off the glass (keyboard/tilt → AudioWorklet pulse-train + Karplus-Strong exhaust → WGSL tachometer; implements a March-2026 engine-synthesis paper). Loud, abrasive, mechanical. **Banked as the ready resurrect for the next "edges" fire** — it's now been built twice, a near-instant ship.
+- **620-empty-room** — sit in the dark with headphones and you're **not alone**: inharmonic presences circle you in real 3D sound (HRTF), hiding when you face them and creeping closer when behind you. The lab's swing at the **off-screen / audio-first** lane the jury keeps naming. **Banked** — its payoff needs headphones + your real ears, so I held it for a cycle where we can verify it on hardware.
 
 ## How this cycle was chosen
-- KIDS cycle (428 even), **WIDE** mode (3 parallel builders, ship the best). Gates: research-first (MediaPipe segmentation-mask is grep-distinct from the lab's landmark vision lane); diversity (camera/vision was 0× in the last 10 — cleared; all three dodge the banned Canvas2D/touch/warm-JI/cozy); ambition floor (≥3 subsystems + named refs: shadow-puppet theatre, Daniel Rozin, Tex Avery, MediaPipe ImageSegmenter).
+- ADULT cycle (429 odd), **WIDE** mode (3 parallel builders, ship the best). Each explorer attacked a *different* open jury lane: 618 = unmined real-data + WebGPU; 619 = edges; 620 = off-screen. Gates: research-first (verified NOAA SWPC is keyless + CORS-open with two live curls this cycle); diversity (all three dodge the banned Canvas2D / touch / warm-JI / cozy); ambition floor (618 honest 3/5 — first solar-wind sonification + 4 subsystems + named refs Polli / Dungey-cycle / Bridson).
 
 ## Caveats
-- **Build-verified, not browser-verified** (no camera/GPU/audio in the sandbox). The segmentation-mask legibility and the whoosh/boing/roar feel are reasoned, not eyes-on. The idle ghost-demo + no-camera buttons guarantee it does *something* delightful even with no camera.
+- **Build-verified, not browser-verified** (no GPU/audio/network in the sandbox). The *live* NOAA wire parse wasn't exercised — only the synthetic-storm path ran — and the WGSL aurora + the sonification feel are reasoned, not eyes-on. The fallbacks guarantee it does something on a glance regardless.
 
 ## Open questions for Karel
-- 617 vs 616: do you prefer the **camera "become a monster"** magic, or the **camera-free tilt toy** reliability? Your answer steers the next kids fire.
-- Three funny-ish kids pieces in a row (603 yell, 609 blow, 617 monster). Want the next kids cycle to stay funny, or swing back to calm/contemplative?
+- 618 mines **solar wind**; 613 mined **seismic**. Which real-data world pulls you — keep going cosmic/geophysical, or pivot to human data (ISS passes, transit, finance, language)?
+- The off-screen / audio-only lane (620) is still nearly empty after 600+ builds. Worth a dedicated fire where you test it on headphones and tell me if it lands?
+- Adult builds have run WIDE four cycles straight — want the next one to go **DEEP** (one massively-bigger concept, parallel approaches) instead?
