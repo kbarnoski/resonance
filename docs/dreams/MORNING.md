@@ -1,21 +1,25 @@
-# Morning digest — last updated 2026-06-15 (UTC) · cycle 431
+# Morning digest — last updated 2026-06-15 (UTC) · cycle 432
 
-**Open this first:** [/dream/622-wolfram-rhythm](https://getresonance.vercel.app/dream/622-wolfram-rhythm) 🔢
+**Open this first:** [/dream/624-kids-day-meadow](https://getresonance.vercel.app/dream/624-kids-day-meadow) 🌅 — and just leave it running for a minute.
 
 ## New since yesterday
-- **🔢 [622-wolfram-rhythm](/dream/622-wolfram-rhythm)** — "Wolfram Rhythm" (adults). **A single integer composes the music.** A 1D cellular automaton unfolds row by row on a beat; each new row's live cells fire short, metallic, edged hits. Turn one knob — the **rule number (0–255)** — and the whole piece transforms: **30** is pure chaos/noise, **90** a self-similar Sierpinski fractal, **110** complex and alive (it's Turing-complete). The iconic scrolling Wolfram diagram drives the visuals. Why open it: it's the lab's **first 1D-CA / Wolfram instrument** (the existing CA pieces are all 2D — Conway Life, Lenia, sandpile), and a deliberate swing **off the adult edges/real-data rut** (howl/vivisection/seismic/solar) into a colder, rule-driven register. Leave it alone and the diagram self-draws; tap Begin to hear it.
+- **🌅 [624-kids-day-meadow](/dream/624-kids-day-meadow)** — "A Whole Day" (kids 4+). **What if a kids music toy were a whole DAY?** A slow, self-evolving **~9-minute journey** from dawn → morning → midday → dusk → night → back to dawn. The piece **plays itself** and the child decorates it: tap low for a **flower** (blooms by day, closes & sleeps at night), tap the middle for a **bird** (sings in the morning, roosts at night), tap the sky for a **star** (only comes out at night). The sun crosses the sky, the colors turn, the creatures fall asleep — and the music turns with it. Why open it: it's the lab's **first kids long-form *journey* — a piece that is genuinely different at minute 8 than at minute 1**, not a loop. It's also a kids-register answer to your "I want alternate journey arcs" ask: this is a calm diurnal arc instead of the psychedelic 6-phase one. Leave it untouched and a ghost hand plants a few things while a sped-up day plays, so a glance already shows it living.
 
 ## Why this cycle was chosen
-- ADULT cycle (431 odd), **DEEP** mode — one concept (cellular automata that *compose themselves*), 3 parallel builders each a different CA paradigm (Conway Life · Wolfram 1D · Lenia). Gates: love-aligned to your emergent-music ❤️ (236/130/262); ambition floor **3/5** (first Wolfram instrument + 4 subsystems + refs Wolfram 2002 / Cook 2004 / Xenakis); diversity clean (WebGL2, off the over-used WebGPU-5×; a single-integer lever, not mic/data/body).
+- KIDS cycle (432 even), **DEEP** mode — ONE big concept (a whole-day generative journey with memory), three parallel builders each a different renderer; shipped the warmest/most-legible one. Kids had run WIDE four cycles straight, so DEEP was due — and "a whole day" is the kind of bigger swing you asked for.
+- Gates: ambition **3/5** (first kids long-form journey-with-memory + 3 subsystems + refs Brian Eno *Music for Airports*/*Bloom*, Hustwit's *ENO* film, arXiv 2604.05343). Vibe deliberately **calm**, off the kids "funny" autopilot (the last three kids pieces were all silly). Love-aligned to your contemplative kids ❤️ (ripple-pond, lantern, marble-run, star-paint).
 
-## The honest story this cycle
-- The other two builders both turned out to be **duplicates of things you already have** — `620-life-engine` ≈ `25`/`180-cellular` (both "Conway's Life as composer"), and the Lenia one ≈ `264-kids-lenia-pond` (it even reused 264's code). A corpus grep at curate-time caught it (after a `grep` bug nearly hid it). So only the **1D Wolfram** sub-lane was genuinely new — that's the winner. Banked the dupes as *do-not-rebuild* notes (IDEAS §431).
+## The interesting decision this cycle
+- I shipped this on **Canvas2D** — which the jury banned back on 06-14. But that was 10 cycles ago, and since then the lab over-corrected hard *into* GPU (WebGPU + WebGL2 are 9 of the last 10 renderers). So Canvas2D is now the *scarce* one, and for a calm bedtime piece a hand-painted side-on landscape reads the day-arc more clearly than an abstract 3D world. I re-ran the audit rather than obeying a stale ban — flagging it so you can push back if you disagree.
+
+## Also explored (banked, not shipped — IDEAS §432)
+- **623-kids-day-journey** — the same day, as an **immersive three.js 3D world** you sit inside. The bolder, "massively bigger" version; held back because it's GPU-dependent and a 3D abstract space reads the day-arc less clearly for a 4yo. Easy to revive.
+- **625-kids-day-paper** — the same day as a **matte cut-paper storybook (SVG)**. The calmest, most bedtime version.
 
 ## Caveats
-- **Build-verified, not browser-verified** (no GPU/audio in sandbox). Untested by ear: that rules 30/90/110 sound as distinct as they look, and that the metallic voices read as edged-not-harsh. The visual auto-runs on load, so a silent glance already shows the diagram drawing; Canvas2D fallback covers no-WebGL2.
-- **Numbering:** §430 had reserved the labels 620/621 for banked kids text-seeds, so the winner was renumbered to **622** to avoid collision (per the lab's skip-reserved-numbers convention).
+- **Build-verified, not browser-verified** (no audio/canvas in the sandbox). Untested by ear: whether the scale shifts at the dawn/morning/etc. cross-fades feel seamless, and the balance once ~24 creatures are singing at once (capped + limited, so it can't clip). The auto-demo guarantees it looks alive on a glance.
 
 ## Open questions for Karel
-- Adult side has now gone **edges/real-data ×4 → austere-CA ×1**. The truly empty adult lane is still **off-screen / audio-only / spatial** — but you already have spatial pieces (80/394/400/576), so it'd need a genuinely fresh angle. Want me to push there next, or keep mining autonomous/generative systems?
-- This Wolfram piece is deliberately *cold* (Xenakis register). Too austere, or a good contrast to all the warm work?
-- Worth a **polish cycle** that re-voices the old Conway pieces (`25`/`180`) with the richer FM-bell sound design the rejected `620-life-engine` built?
+- Does "a whole day" land as a **journey-engine alternative** you'd want for the real app (a calm diurnal arc)? If so, I can build adult/teen versions, or a longer multi-day one.
+- Comfortable with me **re-judging stale jury bans against the live rolling-10** each cycle (the Canvas2D call above), rather than treating a ban as permanent?
+- Want the **three.js immersive 3D** version (623) shipped too, as a contrast — or keep the warm 2D one as the canonical "A Whole Day"?
