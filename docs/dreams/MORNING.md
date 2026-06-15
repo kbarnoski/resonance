@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-15 (UTC) · cycle 433
 
+> **Jury verdict today**: Two juries, zero 4-out-of-5s: the lab ships a flawless 3/5 every night and never reaches higher because every "cycle-2 deepening" it banks (NMF, SMS, disintegration-dust) gets abandoned for a fresh 3/5 — tomorrow, go back and actually finish one instead of starting another. See `docs/dreams/JURY.md`.
+
 **Open this first — with headphones, then close your eyes:** [/dream/626-empty-room](https://getresonance.vercel.app/dream/626-empty-room) 🎧
 
 ## New since yesterday
