@@ -1,19 +1,16 @@
-# Morning digest — last updated 2026-06-16 (cycle 447, UTC)
+# Morning digest — last updated 2026-06-16 (cycle 448, UTC)
 
-> Acting on **today's jury** (`docs/dreams/JURY.md`): #3 *push the piano spine to a cycle-4 — extend 643, don't start fresh*; #2 + Karel-facing line *get a builder off the glass*; #5 *the un-built adult register is tender/intimate*. This adult fire did all three at once.
+> Acting on **today's jury** (`docs/dreams/JURY.md`): #1 *kill the pentatonic crutch — give a kid a real harmonic event* and #2 + Karel-facing line *get at least one builder off the glass (13 of 15 are screens; the 2 that aren't are the best things here)*. This kids fire did both at once.
 
 ## New since yesterday
-- **[/dream/666-piano-still](/dream/666-piano-still)** — **Still Room** 🕯️🎹 (adult, DEEP). *Open this with headphones and your eyes closed.* The lab's **first genuine cycle-4** — the piano spine `606 → 630 → 643 → 666` pushed to a fourth turn — and the directest answer to the jury's headline note: **get off the glass.** It's **audio-first**: tap a few of your isolated piano notes into a slow ~16s loop, then *stop watching* — over minutes the room grows itself in your own timbre, budding new **consonant** notes (chosen by an asymmetric-consonance rule, **never** pentatonic-snapped) and letting un-played notes fade, so minute 5 ≠ minute 0. The only visual is a quiet SVG aura you're meant to ignore.
-- Built on your real *Welcome Home* recording (the same 643 isolation engine, reused), tender/intimate register — the un-built adult lane the jury named.
+- **[/dream/669-kids-hum-answer](/dream/669-kids-hum-answer)** — **Hum & Answer** 🎤🌙 (kids, WIDE). *Open this on a phone, hum a note, and close your eyes — no screen needed.* The lab's **FIRST off-the-glass KIDS piece** — the directest answer to the jury's loudest note. A child hums one note; an unseen friend answers not by resolving sweetly but by **leaning on a tense note and then sighing down to rest** — a real **suspension chain** (4–3 → 7–6 → 2–1) over their own pitch. The child meets a tense note and discovers it isn't scary: tension→release, the anti-pentatonic harmonic event the jury keeps asking for. Mic pitch-detection (autocorrelation), formant "ah" voices (no AI, no samples), nothing recorded or sent.
+- Grounded in **RESEARCH §448**: 3–4 year-olds don't yet hear minor as "sad" (that's ~age 7) but they *do* feel **tonal closure and its denial** — so a suspension that resolves is the most age-robust harmonic event we can offer.
 
-## How this cycle ran (DEEP, 3 explorers → 1 shipped)
-- One cycle-4 concept — *"the piano remembers you"* — built three ways in parallel; **666** (audio-first / SVG) shipped because it uniquely gets off the glass. The two on-glass siblings are banked in IDEAS §447, ready to resurrect:
-  - **665-piano-loom** — the same looper as a WebGL2 scrolling **phrase-tape** (the most legible "looper" visual).
-  - **667-piano-tide** — the same looper as a three.js reflective **ripple pool** (most immersive).
-
-## Research finding worth a look
-- **De Roure, "An Asymmetric Formula for Interval Consonance," arXiv:2606.16412** — dated *today*. It's the harmonic brain of Still Room: a principled way to *choose* a consonant next note instead of hiding behind a safe scale. The anti-pentatonic move the jury keeps asking for, made concrete (RESEARCH §447).
+## How this cycle ran (kids WIDE, 3 explorers → 1 shipped)
+- Three orthogonal "real harmonic event" explorers built in parallel; **669** shipped because it uniquely gets off the glass (kids' first) and sits on the firmest developmental ground. The two on-glass siblings are banked in **IDEAS §448**:
+  - **668-kids-two-suns** — continuous major↔minor *third-glide* (the "blue third" no piano can play), tilt → **three.js**. Best renderer-diversity; better aimed at older kids (where mode reads).
+  - **670-kids-drone-cave** — a **shifting tanpura drone** re-colors the same bells room to room, gamepad → **WebGL2**. Fresh moving-pedal mechanism; resurrect when WebGL2 is cold.
 
 ## Open questions for Karel
-- Still Room is **build-verified, not ear-verified** (no audio in the sandbox). On the deploy: does it return your real recording, and does the slow decay/growth pacing feel tender over a few minutes — or too sparse? The `stillness ↔ growth` lever is the dial to try.
-- Off-glass has now shipped 3× recently (626, 655, 666). The jury sanctioned it ("put a builder off the glass"), but say the word if you want the adult side swung back to an on-glass register next — 665/667 are sitting right there.
+- 669 is **build-verified, not ear-verified** (no mic/audio in the sandbox). On the deploy: does the autocorrelation reliably catch a small child's breathy hum, and do the leans/sighs *feel* like tension→release (timing is the dial)? If the mic misses, the demo loop still plays the suspension so you can hear the intent.
+- Off-glass has now shipped 4× recently (626, 655, 666, **669**) — but 669 is the **first on the kids side**. Say the word if you want the next kids cycle swung back to a screen register (668/670 are sitting right there).
