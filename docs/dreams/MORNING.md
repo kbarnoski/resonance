@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-15T22:25Z (cycle 438)
+# Morning digest — last updated 2026-06-16T00:30Z (cycle 439)
 
 ## New since yesterday
-- **`640-kids-day-wind` — "A Day on the Wind"** → https://getresonance.vercel.app/dream/640-kids-day-wind
-  A 4-year-old **tilts the iPad** (no touching) to steer a glowing **wind** across a self-evolving ~9-minute day-meadow (dawn→night). The wind **plants** flowers/birds/stars where it lingers, and **plays the garden like a wind-harp** where it sweeps — and it *remembers* the gestures: a melody you swept at morning drifts back, re-voiced, at dusk. *Why open it:* it's the **first real cycle-2 the lab has ever finished on the kids side** — a genuine deepening of **`624-kids-day-meadow`** (the kids piece the jury called your one structural reach), and it does exactly what the jury has begged for two juries running: *finish a deepening instead of starting another fresh 3/5.* Pulled by your ❤️ of `83-kids-tilt-rain` — tilt is a loved input — and it honors the jury's touch ban. Tilt your phone, or just watch: it plays itself on a silent glance (arrow keys work on desktop).
+- **`643-piano-constellation` — "Piano Constellation"** → https://getresonance.vercel.app/dream/643-piano-constellation
+  Your real solo piano, taken apart down to its **12 individual notes** — each pitch class isolated from the recording — and then made **PLAYABLE**: tap a note (or press a key) and it re-fires **that note's own material** from your performance as a grain. Tap several and they stack — you re-perform your recording as chords built from your own touch. Rendered as **12 orbiting star-constellations** that flare when you play them. *Why open it:* this is the **lab's first cycle-3** — the genuine continuation of `606-piano-vivisection` → `630-piano-refract`, and it claims the one ambition criterion the jury says we **bank every time and never finish** (a real multi-cycle deepening). Two juries, zero 4/5s, because we keep abandoning these threads — this one **finishes the thread, on your own music.** Just press Begin and watch; it solos + replays notes by itself on a silent glance.
 
-## Explored but not shipped (banked as IDEAS §438)
-- **`641-kids-tilt-meadow`** — the bolder swing: tilt becomes **gravity on the whole world**, and a stream of glowing **seeds** rolls into the valleys you sculpt by leaning, sprouting where they settle (a real physics toy). Lost on kid-control: you can't reliably plant *where you mean to* — physics decides. Banked with its own future hook (sculpt **persistent valleys** that keep their own chord).
+## Explored but not shipped (banked as IDEAS §439)
+- **`642-piano-chroma`** — the most *faithful* reading: supervised NMF pins 12 harmonic-comb templates to the 12 notes → a glowing **SVG chroma wheel** you solo/mute. Cleanest, most bulletproof build (pure SVG) — but more incremental (12 voices, same interaction). Banked as the safe companion.
+- **`644-piano-respeak`** — the boldest: a **"purity" lever** crossfades your real timbre → a glassy twin **re-synthesized from pure tones** (same notes, same timing). Lost only on the diversity gate (its Canvas2D renderer was over-used this window). A strong future build / cycle-4 fold-in.
 
 ## How this cycle was run
-- Even cycle → **kids**, mode **DEEP**: 2 parallel builder agents attacked ONE cycle-2 concept (deepen 624 + swap touch→tilt) two ways — a *steered wind* vs. *tilt-the-world physics*. Shipped the more legible, truer deepening; banked the other.
-- This is the **structural fix the jury demanded**: it claims ambition #4 (a genuine multi-cycle commitment) **honestly** by deepening a named standout — not by banking-and-abandoning a "cycle-2" like usual.
+- Odd cycle → **adult**, mode **DEEP**: 3 parallel builders attacked ONE cycle-3 concept (isolate your piano to its 12 notes) three different ways — mask-via-NMF, salience-mask + replay, additive resynthesis. Shipped the one that adds a genuinely new **playable** layer; the diversity gate (not just taste) settled the final pick.
 
-## Research finding worth a look (RESEARCH §438)
-- The 2026 long-form-music literature independently arrived at **exactly 624's design**: *MusicWeaver* (arXiv **2509.21714**) ships a **Motif Memory Retrieval** module that stores realized motifs and *retrieves + re-voices* them with controlled variation — which is what 624's motif bank already does by hand. That validated the bet: deepen 624 by making that memory **playable** (the wind-harp), not by adding more decoration.
+## Research finding worth a look (RESEARCH §439)
+- The 2026 source-separation frontier moved past *masking* (filter the spectrum) toward *reconstruction* (re-synthesize a clean source) — arXiv **2603.16926** (Mar 2026). That reframe + 630's own banked next-step ("supervised NMF → true pitch classes") is exactly this cycle-3.
 
 ## Open questions for Karel
-- **The 624 → 640 thread is now real — want a cycle-3?** If you like where this diurnal-garden lane is going, I can push it further (seasons wrapping the day, or 641's tilt-physics-with-persistent-valleys). A ❤️ on `640` or `624` tells me to keep deepening here.
-- **Still chasing your love signal for the 4/5 ceiling.** The honest path to a 4/5 is a cycle-2 of a piece *you* love. If you ❤️ `637-slow-burn` or `630-piano-refract`, I'll spend a full adult cycle deepening it (637 → humanize-from-MIDI + articulation timbre is ready).
-- **Does the tilt *feel* right?** 640's tilt sensitivity + brush radius are tuned by eye — a 30-second play on an actual iPad would tell me whether to loosen or tighten them.
+- **The 606 → 630 → 643 piano arc is now a real 3-cycle thread on your own music.** Want a cycle-4 (re-pitch the isolated notes into a full keyboard, or 644's "purity" re-speak fader per note)? A ❤️ on `643`/`630`/`606` says keep deepening here — otherwise I'll let it rest so it doesn't become its own autopilot.
+- **Does the note-isolation hold up by ear?** The math is exact, but octave/fifth confusions are the known weak spot — a 30-second play tells me whether to add the supervised-NMF sharpening (642's trick) on top.
+- **Missing-middle is filling** (632 groove · 637 tender); still 0× and waiting: **multi-user / shared listening room**, **AI data→image→audio chains**.
