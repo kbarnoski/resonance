@@ -1,15 +1,20 @@
-# Morning digest — last updated 2026-06-16 (cycle 449, UTC)
-
-> Acting on **today's jury** (`docs/dreams/JURY.md`) #5: *"declare the missing middle solved, freeze groove/EDM for a week — the un-built adult register is now **tender / intimate** (the banked 660-glasswork) — go there."* This adult fire went straight there.
+# Morning digest — last updated 2026-06-16 (UTC) · cycle 450
 
 ## New since yesterday
-- **[/dream/671-glasswork](/dream/671-glasswork)** — **Glasswork** 🌙 (adult, WIDE-winner). *Press Begin and just listen — a tender 3am music-box that plays itself.* The realization of the long-banked `660-glasswork` tender seed and the directest hit on the jury's named adult ask. The hook: the harmony **breathes through real four-part voice-leading** — on every chord change an exhaustive nearest-tone solver moves each voice the *smallest* distance and it **portamentos** to its target, so you both **hear** the pad glide (not jump) and **see** faint SVG threads trace each voice crossing to its new tone. D Dorian, never a fixed loop, a never-repeating arched bell melody, all pure Web Audio + inline SVG (zero GPU/sensor/network — the lowest-risk piece in the lab). Eno · Budd · Satie.
+- **🌊🥁 [675-kids-deep](https://getresonance.vercel.app/dream/675-kids-deep)** — *"Deep Drum."* A 4-year-old taps six big glowing stones over a deep glowing abyss while a **drone slowly slides its key underneath them** (i → ♭VI → ♭VII → i). The stones are fixed pitches, so as the floor moves, the *same* tap drifts from *home* → *tense* → *resolves* — a kid literally **hears harmony move under a constant action**. No pentatonic scale-snap; the abyss retints with the key and warms to amber only at "home." **Why open it:** it's the lab's first kids piece that lets a child feel real harmonic *function* change — the directest hit on the jury's #1 kids ask (kill the no-wrong-notes crutch).
+- *2 more kids harmonic-event explorers built this fire — banked, see IDEAS §450 (both demoable, fast to resurrect).*
 
-## How this cycle ran (adult WIDE, 3 explorers → 1 shipped)
-- Three orthogonal under-built-adult-register explorers built in parallel, each a different input × output × technique × vibe, none touching a jury-banned tag. **671 shipped** because it hits the jury's explicitly-named tender register dead-on AND is the most bulletproof glance candidate. The two siblings are banked in **IDEAS §449**:
-  - **672-cinema-swell** — hold chords on a MIDI/computer keyboard → a film-score **string section** blooms with real divisi + crescendo swells + a tension arc, in **three.js**. The cinematic/narrative journey-engine alternative you keep asking for (care #4).
-  - **673-kepler-chimes** — the **music of the spheres**: planets whose orbital periods snap to small-integer **mean-motion resonance** (TRAPPIST-1's chain) become a consonant polyrhythm you hear **lock** from phasing, tilt-steered, raw **WebGL2**. Kepler · Matt Russo.
+## How this cycle ran (orchestration)
+- **WIDE fire, 3 parallel builders**, each a DIFFERENT real harmonic event × input × output × palette: **675 shifting-drone** (touch/WebGL2) · **674 mode-glide** (tilt/three.js, maj↔min) · **676 deceptive-cadence** (rock-the-tablet, off-glass audio-first). Shipped 675; banked 674 + 676.
+- **Why 675 won over the prettier 674:** the lab's own developmental research (§448) says 3–4 yos don't reliably map *minor=sad* until ~age 7–8 — so 674's happy↔spooky mode-flip is really a **6+/family** piece. What a 4yo *does* perceive is "the change itself / a moving drone" — which is exactly 675.
+
+## In progress / partial
+- None. Clean tree; one commit this cycle. Build verified (486/486 pages, exit 0).
+
+## Research findings worth a look
+- **RESEARCH §450** — *Input-Envelope-Output* (CHI 2026): a sensory-safe "constraint-first" framework. Reframe for us: the kid-safe master chain isn't a safety afterthought — it's the *enabler* of un-scary harmonic risk (tension a child can meet without it ever turning harsh). All three explorers carry a real harmonic event behind that envelope.
 
 ## Open questions for Karel
-- 671 is **build-verified, not ear-verified** (no audio in the sandbox). On the deploy: do the voice-leading glides *feel* tender (timing ~0.4–0.8 s), and does the chord-walk wander without losing its homeward pull? It plays itself, so a glance is enough to judge — the timing is the one dial.
-- Adult standing-watch: I deliberately did **not** ship the AI-pipeline chain (jury #4) this fire — it keeps losing because it's paid-AI + invisible at a silent unattended glance unless you click with a live `FAL_KEY`. It's banked and ready (`654-latent-chain`); say the word and I'll run it as a fire while you're **awake** to trigger the chain. The piano spine (606→630→643→666) is resting at a 4-cycle arc — I'm holding off a 5th so it doesn't become the autopilot.
+- **675 needs your ears** (sandbox has no audio): does the ~18s drone migration read as a clear "the floor is moving" event for a small child, or too slow to notice? Tighten the step time?
+- Want a **Resonance Kids 6+/family tier**? 674-two-moons (mode-flip) is its natural flagship — it just isn't a 4yo piece.
+- Off-glass kids is the standing #1 ask, but 669 shipped it 2 cycles ago; I'm holding 676 (the deceptive-cadence boat) as the priority resurrect for the next non-adjacent kids cycle. Good call, or ship off-glass every kids cycle regardless?
