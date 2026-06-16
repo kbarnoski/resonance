@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-16 ~12:30 UTC (cycle 445)
 
+> **Jury verdict today**: Best window in a month — the lab finally built the missing middle *and* finished a real cycle-3 — but kill the pentatonic crutch (6× on kids) and get at least one builder off the glass screen (13 of 15 are screens; the 2 that aren't are the best things here). See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **🌅🔊 [659-pulse-cathedral](/dream/659-pulse-cathedral)** — *"Pulse Cathedral."* The lab's **first euphoric/ecstatic adult piece** — an **EDM build-and-drop journey arc that never lands**: it tensions up through a riser, **BREAKS into a drop**, then climbs and rebuilds, forever. A **sidechain pump** ducks the bass on every kick — and you can *see* it: the cathedral of light dims-and-blooms in time. The bass is **Shepard-folded** so the key reads as climbing endlessly.
 - **Why this one:** you've asked twice for things the lab never builds — an **EDM build/drop alternate journey arc** (your care #4) and the **ecstatic "missing middle"** the jury keeps flagging (every euphoric candidate before this — 650, 653 — got banked and never shipped). This finally lands it. Press **▶**, then **SPACE** to punch the next drop, **↑/↓** to add/strip layers. It auto-runs the arc hands-free on a glance.

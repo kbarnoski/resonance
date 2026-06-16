@@ -1,118 +1,105 @@
-# Concept Jury Verdict — 2026-06-15 (UTC)
+# Concept Jury Verdict — 2026-06-16 (UTC)
 
 ## Summary
-The cozy ban worked — and the lab promptly built two new autopilots in its place.
-On the **adult** side it climbed out of warmth straight into *doom*: five of the last
-adult builds (601 abrasive, 613 ominous, 618 ominous, 622 austere, 626 dark) live in
-the same edges/dark register, and real-data sonification hardened into a fill-in-the-
-blank template (588 ocean → 613 seismic → 618 solar = one machine, three feeds). On
-the **kids** side it's warm-or-silly with nothing between — four warm (593/597/619/624)
-and a three-in-a-row funny-creature streak (603/609/617). The deeper finding is about
-ceiling, not register: **zero of the last 15 hit 4/5, two juries running.** The lab now
-reliably ships a clean, diversity-aware, floor-clearing 3/5 every fire — and never reaches
-higher, because the one move that produces a 4/5 (a real multi-cycle deepening) is banked
-every DEEP cycle and then abandoned.
+This is the best window the lab has produced in a month — and the proof is that it
+**did what the last two juries asked**. The "missing middle" the 2026-06-15 jury said
+nobody was building is now built on both sides (632 groove, 637 neo-soul pocket, 652
+danceable, 659 EDM-ecstatic); the deepening the jury said the lab *banks and abandons*
+finally landed twice (630 = the lab's first honest 4/5, 643 = its first true cycle-3).
+Every one of the last 15 cleared the ambition floor — the floor is no longer the problem.
+The new problem is narrower and more stubborn: the **kids side has shipped
+"pentatonic / no-wrong-notes" six times in fifteen**, and **13 of 15 pieces render to a
+glass screen** — the two that don't (626 empty-room, 655 breath-sanctuary) are the
+freshest things in the batch.
 
 ## Diversity audit
-- **Over-represented input:** **touch — 5×** (593 sun-drag, 594 lever, 597 rub, 619 drop,
-  624 plant). It broke 4 — *and two of those (619, 624) shipped AFTER the 2026-06-14 jury
-  explicitly banned touch at 4×.* The audit gate is being written and then ignored on the
-  kids side. Underneath, healthy spread: real-data 3× (588/613/618), mic 2× (603/609),
-  off-glass keyboard/tilt 2–3× (601/606/622), camera 1× (617), device-orientation 1× (626).
-- **Over-represented output:** **WebGPU — 6×** (588, 601, 609, 613, 617, 618). The prior
-  jury banned Canvas2D (6×); the renderer didn't disappear, it **over-corrected into WebGPU**.
-  Add WebGL2 (4×: 603/606/619/622) and Canvas2D (4×: 593/594/597/624) and the real number is
-  the one that matters: **14 of 15 render to a glass screen.** Off-screen / audio-only is
-  exactly 1× (626) — and that *is* the win of the window, but it's a singleton again.
-- **Over-represented technique:** **none hits 4 — genuine credit, 15 distinct cores.** The
-  nearest attractor is **real-data sonification at 3×** (588/613/618, all adult), and it's an
-  attractor because the three share one *architecture*, not just a lane: live keyless feed →
-  inharmonic resonator/organ → WGSL field + synthetic fallback + autostart. Different data,
-  identical machine.
-- **Over-represented vibe:** a clean **bifurcation, ~5× each**. **Edges/ominous/austere/dark
-  — 5×, all adult** (601, 613, 618, 622, 626). **Warm — 5×** (588, 593, 597, 619, 624), now
-  all kids-side. Cozy fell from the prior jury's 9× — real progress — but it was replaced by
-  a *symmetrical* doom autopilot on the adult side. The missing register is the whole middle:
-  ecstatic, joyful, danceable/groove, tender, sensual. Nobody is building it.
-- **BANNED for next cycle:** **touch INPUT** (5×, and already-ignored-once) · **WebGPU OUTPUT**
-  (6×) · **the adult ominous/dark/austere "edges" reflex** (5× — going further from the
-  campfire is no longer a swing, it's the new autopilot) · **a fourth real-data sonification
-  on the 588/613/618 template** (change the *machine*, not the feed). Build toward the
-  unmined: off-screen/embodied/haptic (1× ever this window), multi-user/WebRTC (0× ever),
-  MIDI/OSC live-performance out (0×), AI-pipeline chains (0× this window), and a register
-  that is neither cozy nor dread.
+- **Over-represented input:** **screen-control (touch/keyboard/slider) — 6×** (622, 624,
+  632, 637, 645, 659). Genuine credit underneath: embodied input is now well-spread —
+  tilt 3× (626, 640, 658), MIDI 2× (643, 645), gamepad 1× (636), webcam 1× (652), mic/breath
+  1× (655), structured-data 1× (649). The sensor diversity is real; the default-reflex is
+  still "a control on the screen."
+- **Over-represented output:** **Canvas2D — 4×** (624, 636, 640, 652) **and WebGL2 — 4×**
+  (622, 630, 658, 659), three.js 3× (632, 643, 645), SVG 3× (637, 649, 655). But the number
+  that matters is the same one the last jury flagged and it has **not moved: 13 of 15 render
+  to a glass screen.** Audio-first is exactly 2× (626, 655) — up from 1×, but still the
+  rarest and still the best.
+- **Over-represented technique:** no single core hits 4 (15 distinct machines — real credit),
+  BUT two cross-cutting attractors do: **(a) look-ahead-scheduler generative groove/accompaniment
+  — ~7×** (624, 632, 637, 640, 645, 652, 659 all run a Chris-Wilson pump under a generative
+  bed), and **(b) pentatonic / scale-snap "no-wrong-notes" — ~6×, all kids** (624, 636, 640,
+  645, 652, 658). (b) is the one the mandate explicitly names as the local minimum.
+- **Over-represented vibe:** **warm/cozy-or-joyful kids — 4×** (624, 640, 645, 658). The
+  adult "doom" autopilot the last jury caught (622, 626) is already cooling — credit the
+  swing into ecstatic (632/652/659). The kids warm pole is now the one that needs a ban.
+- **BANNED for next cycle:** **pentatonic / scale-snap "no-wrong-notes" TECHNIQUE** (6×, the
+  named local minimum) · **Canvas2D OUTPUT** (4×) · **the look-ahead-scheduler-generative-bed
+  reflex** as the *only* idea in a piece (7×) · **warm/cozy kids VIBE** (4×) · and standing:
+  **a glass-screen render as the primary deliverable** — the next fire should put at least one
+  builder fully off the screen.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0.** The floor gate is doing its job — every build clears ≥2. This is a
-  real, sustained improvement; the local-minimum 0–1 builds the jury used to flag are gone.
-- **Hit 2–3 criteria: 15 — *all of them*.** Exactly **2**: 603, 609, 617, 626 (the funny kids
-  3-peat + empty-room). **3**: 588, 593, 594, 597, 601, 606, 613, 618, 619, 622, 624. Competent,
-  diversity-aware, capped at three. This is the cruising altitude, and it has not moved in two
-  juries.
-- **Hit 4–5 criteria: 0.** **Zero, two juries running.** The prior window had two (583, 569);
-  this one has none. Nothing claimed **#4 (multi-cycle commitment)** or cleanly bound **#5
-  (a <14-day finding)**. The DEEP fires (594/597/606) attack one concept three ways and ship
-  cycle 1 — then *never return for cycle 2*. The "next-cycle deepening" seeds they bank
-  (607-piano-prism NMF, 608-piano-sieve SMS, 595/596 disintegration variants) are abandoned,
-  not deepened. **#4 is theater** — banked every time, claimed never. That, not register, is
-  why the lab can't break 3.
+- **Hit 0–1 criteria: 0** — there are no local-minimum builds this window. The orchestration
+  gate is working; the floor is genuinely cleared every fire. This is the headline good news.
+- **Hit 2–3 criteria: 7** — 626, 636, 645, 649, 652, 658, 659. These clear the bar *on paper*
+  (≥3 subsystems + a named ref) but the novelty is usually the *input* or *framing*, not the
+  music or the technique (e.g. 652 = webcam → the same pentatonic layered groove).
+- **Hit 4–5 criteria: 8** — 622, 624, 630, 632, 637, 640, 643, 655. **These are the ones to
+  extend.** 624 is the only 5/5 (first kids long-form generative w/ motif memory + recent
+  arXiv anchor + spawned a cycle-2). 643 is the spine to keep pushing.
 
 ## Standouts (positive)
-- **606-piano-vivisection**: the closest thing to a 4/5 this window, and the one build that
-  hit the vein the *last* jury named by hand ("a fresh analysis/resynthesis on his own material
-  — source separation, NMF, DDSP"). It takes Karel's real recorded piano apart into strings vs.
-  hammers via median-filter HPSS (grep-0× in the lab) and lets you remix the two. Novel technique,
-  his own music, clinical not cozy. This is the model — it just needed a cycle 2 to actually reach 4/5.
-- **594-disintegration-loop**: still the lab's one genuine emotional swing — elegiac, long-form,
-  a recording that audibly crumbles as you hold it, tension you feel and cannot solve. Proof, again,
-  that getting off cozy doesn't mean getting off beautiful.
-- **626-empty-room**: the boldest *diversity* swing — the lab's first audio-FIRST, eyes-closed,
-  off-screen piece (HRTF binaural presences you turn to face). Only honest 2/5, but it's the single
-  build that broke the 14-of-15 screen monoculture and finally gave the off-screen lane a 2nd entry
-  beyond 576. Worth more to the lab's range than several cleaner 3/5s.
-- **624-kids-day-meadow**: the kids side's one structural reach — a ~9-minute diurnal generative
-  journey with state and motif-memory, genuinely different at minute 8 than minute 1. Most kids
-  pieces are loops or one-shots; this is a stateful arc, and a journey-engine alternative (diurnal,
-  not psychedelic) Karel has explicitly asked for.
+- **643-piano-constellation**: the lab's **first genuine cycle-3** (606→630→643) — the exact
+  move two juries said the lab banks and abandons, finally finished. Karel's own recording
+  taken down to its 12 pitch classes and made *playable* via granular replay. Honest #4, real
+  ceiling.
+- **655-breath-sanctuary**: off-screen, eyes-closed, **steered by breath alone** — a stateful
+  5-minute ritual arc, not a loop. Breaks the screen monoculture and earns its surprise. The
+  kind of piece that makes Karel say "huh."
+- **649-chess-duet**: the most *surprising* concept in the batch — the Immortal Game (1851)
+  sonified as strict two-voice counterpoint, game *events* driving the harmony. Real-world
+  structure as score, done with taste, not a sensor feed.
+- **659-pulse-cathedral**: the lab's first euphoric/ecstatic adult piece — an EDM build/drop
+  arc that never lands (visible sidechain pump, Shepard-folded bass). Directly hits Karel's
+  care #4 (journey-engine alternatives) and closes the "missing middle" on the adult side.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **603 + 609 + 617 (the funny-creature 3-peat)**: yell-at-a-blob, blow-up-a-balloon, become-a-
-  shadow-monster — three consecutive kids builds in one comedic-foley-creature register, all 2/5.
-  609 itself admits #1 is unclaimable (95 already did blow-input); 617 admits body-vision isn't
-  lab-first. "Funny" was a real diversity win the *first* time (603); by the third it's the new cozy.
-- **618-solar-organ (≈ 613-seismic-choir)**: the same instrument six cycles apart — live keyless feed
-  → inharmonic organ → WGSL aurora/globe + synthetic fallback + autostart. Solar wind is a lovely
-  feed, but the *build* is 613 with a new data source. This is exactly the 580≈588 duplication the
-  prior jury flagged, recurring in the sonification lane.
-- **588-tidal-organ**: the second ocean piece (580≈588), the warm-JI drone that seeded the entire
-  warmth-autopilot diagnosis. Competent; also the textbook local-minimum the lab keeps re-deriving
-  when it reaches for "real-data, but warm."
+- **640-kids-day-wind**: by its own README "a compact reimplementation of 624" — same diurnal
+  engine, same motif bank, same warm palette, same Canvas2D diorama. The only real delta is
+  tilt-instead-of-touch. A cycle-2 should open a *new musical world*, not re-skin a shipped
+  engine with a fresh sensor. This is the clearest local minimum of the window.
+- **652-kids-dance-band**: webcam motion-energy is a genuinely fresh input, but it drives the
+  lab's Nth pentatonic + Canvas2D + scheduler-groove bed — the novelty is the camera, not the
+  music. (Also shipped build-*unverified* by its builder; the orchestrator's authoritative
+  build was the only gate.) What's missing: let the body's movement *quality* change harmony or
+  mode, not just stack/strip in-key layers.
+- **658-kids-piano-garden**: lovely, and built on Karel's real piano — but it lands on the same
+  tilt + granular + pentatonic + warm-garden combination as 640, in the same warm-cozy pole the
+  kids side overuses. The granular-on-Karel's-piano idea deserves a register that isn't "cozy."
 
 ## Provocations for tomorrow's dream cycle
-1. **Finish a cycle 2 — for real, for once.** Two juries, zero 4/5s, and the reason is mechanical:
-   every DEEP fire banks a "cycle-2 deepening" (607-piano-prism NMF, 608-piano-sieve SMS,
-   595/596-disintegration-dust) and then ships a fresh 3/5 instead. Spend tomorrow as a TRUE cycle 2:
-   resurrect **607-piano-prism** (NMF stem-split on Karel's piano) as the deepening of 606, claim #4
-   honestly, and chase the lab's first 4/5 in two juries. A finished deepening beats a fourth new start.
-2. **Get off the doom autopilot — the cozy ban over-corrected into dread.** Five of the last adult
-   builds are ominous/abrasive/austere/dark. That's no longer a swing; it's the campfire's mirror image.
-   Build the **missing middle**: ecstatic, danceable, groovy, tender, joyful-with-edges. An EDM
-   build-and-drop arc, a polyrhythmic groove engine, something with *body* — Karel has asked for journey-
-   engine alternatives (EDM, ritual, jazz) and nobody has touched them.
-3. **Don't let 626 become the next 576.** Off-screen got its 2nd-ever entry and the lab has a habit of
-   dropping this lane the instant it opens it. Build the THIRD embodied/non-screen piece now — and reach
-   for the genuinely 0×: **multi-user / WebRTC** (a shared listening room, a conducted duet) has *never*
-   shipped, and **MIDI/OSC live-performance out** is 0× this window. Either is a clean #1 + #2.
-4. **Honor your own touch ban, or drop the pretense.** The 2026-06-14 verdict banned touch; 619 and 624
-   shipped on touch anyway. Next kids cycle: NO touch — tilt, breath, camera, voice, or the gamepad path
-   587 already proved works. If the audit isn't a gate, stop printing `picked=[...]` as if it were one.
-5. **If you sonify real data again, change the machine, not the feed.** 588→613→618 is a Mad Lib. Pick a
-   data source whose *structure* demands a different synthesis — a text/language stream as counterpoint,
-   an order-book as two-voice tension, a live chess game as a duet — or run it through an **AI pipeline
-   chain** (data → image → audio), which is 0× this window and squarely in the "AI image inside an AV
-   experiment" lane Karel said interests him most.
+1. **Ban pentatonic / no-wrong-notes on the kids side for a full week.** Six of the last 15
+   kids pieces hide every harmonic choice behind a scale-snap. Build a kids piece where a child
+   *hears* a real harmonic event — a mode flip, a dissonance that resolves, a drone that shifts
+   under them, or a non-Western tuning (gamelan slendro, maqam) they can audibly bend. Let them
+   meet a wrong note and discover it isn't scary.
+2. **Get off the glass.** 13 of 15 are screen renders; the two that aren't (626, 655) are the
+   strongest fresh ideas here. Spend one WIDE builder fully off-screen: haptic-only, audio-only,
+   or — the standing #1 ask across *three* juries the lab has never built — a **depth-camera /
+   room-presence / projection installation** piece. Zero embodied-spatial builds still.
+3. **Push the piano spine to a cycle-4.** 606→630→643 just proved the lab can finish a multi-
+   cycle thread. Don't start a fourth fresh adult idea — extend 643: a per-octave 88-key field,
+   or a looper that records the child/Karel's taps into a phrase made of his own notes. Prove a
+   cycle-4 exists.
+4. **Build an AI-pipeline chain — still zero in the last 15.** Karel explicitly wants AI image
+   generation *inside* an AV piece, and the categorical menu names "2+ models in series." The
+   banked `654-latent-chain` (per MORNING) is sitting there. Audio→image→loop, or
+   music→narrative→score-follower. Nobody has touched it in this whole window.
+5. **Declare the "missing middle" solved and freeze it for a week.** 632 + 637 + 652 + 659
+   covered groove / pocket / danceable / ecstatic in one window — excellent. Now ban a fifth
+   ecstatic/EDM/groove build before groove becomes the new autopilot the way warmth did. The
+   un-built adult register is now **tender / intimate** (the banked 660-glasswork) — go there.
 
 ## Karel-facing line
-Two juries, zero 4-out-of-5s: the lab ships a flawless 3/5 every night and never reaches higher because
-every "cycle-2 deepening" it banks (NMF, SMS, disintegration-dust) gets abandoned for a fresh 3/5 —
-tomorrow, go back and actually finish one instead of starting another.
+Best window in a month — the lab finally built the missing middle *and* finished a real
+cycle-3 — but kill the pentatonic crutch (6× on kids) and get at least one builder off the
+glass screen (13 of 15 are screens; the 2 that aren't are the best things here).
