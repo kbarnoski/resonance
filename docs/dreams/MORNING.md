@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-06-16 ~07:00 UTC (cycle 442)
+# Morning digest — last updated 2026-06-16 ~09:00 UTC (cycle 443)
 
 ## New since yesterday
-- **💃🪩 [652-kids-dance-band](/dream/652-kids-dance-band)** — a 4-year-old makes a whole band play by **DANCING** in front of the camera: move more and layers stack (pad → kick → bass+hats → snare → full party) and the lights erupt; stand still and it eases back to a gentle pad. Whole-body motion drives a real clocked, in-key groove — no wrong moves.
-- **Why this one:** the directest hit on the jury's two-juries-running #1 kids note — the kids side has been "warm-or-silly with nothing between," and **nobody had built the danceable / groovy / *body* register**. This is it. Pure pixel frame-differencing (no ML, no skeleton — just how much you move), camera stays 100% on-device, nothing uploaded. No camera? A big **DANCE!** button + arrow keys drive the same groove, so it fully demos at your desk.
+- **🌬️🕯️ [655-breath-sanctuary](/dream/655-breath-sanctuary)** — close your eyes, put on headphones, and **breathe slowly into the mic**: a just-intonation overtone choir + struck singing bowls swell with your breath and ring on each inhale, through a ~5-min ritual arc (Gathering → Invocation → Presence → Release) that drifts the ground down a fifth and opens up as you go. The screen is one faint breathing halo — the point is to look away from it.
+- **Why this one:** it's the lab's **2nd-ever audio-FIRST / eyes-closed** piece (after 626), the directest answer to the jury's "build the 3rd off-screen piece NOW — don't let that lane die." Two juries flagged that **14 of 15 recent prototypes render to a glass screen**; this is the swing back to the body. No camera, no GPU, no network — mic stays local; no mic? It breathes on its own. A **ritual** journey-engine alternative you'd asked for.
 
 ## In progress / partial
-- None — fresh kids WIDE fire. All prior threads at rest.
+- None — fresh adult WIDE fire. All prior threads at rest.
 
-## Also explored this fire (kids WIDE, 2 banked → IDEAS §442)
-- **651-kids-choir-leader** — sing into the mic and an in-key choir blooms under your voice (real-time pitch-tracking, tender). Realization of the banked sing-kite seed, **love-aligned** (158-hum-paint❤️). I think **tender** is the kids side's strongest un-built register — my pick for next kids cycle.
-- **653-kids-bounce-band** — tilt the tablet and bouncing balls' collisions snap to a groove clock so chaos becomes a beat (bouncy/joyful).
+## Also explored this fire (adult WIDE, 2 banked → IDEAS §443)
+- **654-latent-chain** — the lab's first **2-model AI pipeline chain**: your piano → a FLUX image → an AI caption that *reads its own dream aloud* → those words re-seed the next image, the picture warped live by the audio. This is your most-wanted "AI image *inside* an AV piece." Built + budget-safe, but it lost again because at a silent 06:30 auto-deploy the chain only *shows* with a live FAL key someone clicks — **want me to ship it next while you're awake to drive it?**
+- **653-endless-lift** — an ecstatic gospel-house groove that modulates up forever and **never drops** (every voice Shepard-folded so the key climbs in-band). The euphoric "missing-middle" corner the jury keeps asking for. Build-verified clean — fastest resurrect for a joyful fire.
 
-## Research findings worth a look
-- IRCAM ISMM + children's-movement sonification: you don't need a skeleton/ML to make body→music feel alive — a continuous *motion-energy* signal is enough, and it's exactly what a dancing 4-year-old produces. 2026 in-browser webcam mocap (RADiCAL Live, Rokoko Vision) confirms camera-as-instrument is live and cheap. (RESEARCH §442 → built directly as 652.)
+## Research finding worth a look
+- The 2026 music frontier isn't a better one-shot generator — it's the **continuous, live-steered stream** (Google DeepMind's **Lyria RealTime / Lyria 3**, Feb 2026): music as an unbroken flow you bend in real time, no start/stop. All three of tonight's explorers are the browser-native, no-network ancestors of that idea — steered by a lever (653), the audio itself (654), or your breath (655). (RESEARCH §443.)
 
 ## Open questions for Karel
-- 652 is build-verified but **not danced-in-front-of yet** — the motion-energy thresholds are reasoned, not tuned on a real kid in a real room. The one thing to feel: does dancing harder *actually* feel like it drives the band up the tiers, or does it need calibration? (Try it in good light, a few feet back.)
-- The adult side still hasn't landed a real **cycle-2** in two juries (607-piano-prism NMF deepening of 606). Want me to force that next adult fire to finally chase 4/5?
+- **655 is build-verified but not breathed-into yet.** The thing to feel: does the RMS envelope actually track *your breath* (quiet room, headphones on), or does it need calibration — and do the four phases land as a journey?
+- **Stale-narrative flag (worth your eye):** the notes kept saying "the adult side never landed a real cycle-2 / chase 4/5 via 607-piano-prism NMF." That's **already done** — `630-piano-refract` (cycle-2, the lab's first honest 4/5) consumed that exact NMF seed, and `643-piano-constellation` is a cycle-3. The "two juries, zero 4/5" line is stale by two builds. So I did **not** build a 4th piano-decomposition piece (it'd be the new autopilot); I went WIDE on genuinely-open lanes. Tell me if you'd rather I force that spine again.
