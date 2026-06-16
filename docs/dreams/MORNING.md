@@ -1,20 +1,17 @@
-# Morning digest — last updated 2026-06-16T00:30Z (cycle 439)
+# Morning digest — last updated 2026-06-16 ~02:20 UTC (cycle 440)
 
 ## New since yesterday
-- **`643-piano-constellation` — "Piano Constellation"** → https://getresonance.vercel.app/dream/643-piano-constellation
-  Your real solo piano, taken apart down to its **12 individual notes** — each pitch class isolated from the recording — and then made **PLAYABLE**: tap a note (or press a key) and it re-fires **that note's own material** from your performance as a grain. Tap several and they stack — you re-perform your recording as chords built from your own touch. Rendered as **12 orbiting star-constellations** that flare when you play them. *Why open it:* this is the **lab's first cycle-3** — the genuine continuation of `606-piano-vivisection` → `630-piano-refract`, and it claims the one ambition criterion the jury says we **bank every time and never finish** (a real multi-cycle deepening). Two juries, zero 4/5s, because we keep abandoning these threads — this one **finishes the thread, on your own music.** Just press Begin and watch; it solos + replays notes by itself on a silent glance.
+- **🎹🌱 [645-kids-piano-creatures](/dream/645-kids-piano-creatures)** — the lab's **first kids MIDI piece**. Plug in a MIDI keyboard (or just press letter keys on your laptop) and your kid PLAYS — every note blooms a glowing creature in a 3D garden, and an invisible band (auto-harmony pad + walking bass + a groove that grows as they play) answers in real time so there are **no wrong notes**. Open it at your desk: with your MIDI keyboard it's a real instrument; otherwise the `A W S E D F…` keys play, and after 2.5s idle a ghost player demos a whole song on its own.
+- **Why this one:** it's the cleanest *new technique* the lab has shipped in a while (first kids MIDI — a real ambition claim, not another soft 3/5), and it's squarely your world as a pianist. It fills the kids "active-wonder middle" the jury said is missing — the register where the child *performs*, not just taps or watches.
+- **2 more explored this fire** (kids WIDE) — banked in IDEAS §440: **647-kids-clap-parade** (CLAP/beatbox → an SVG marching band that builds — the danceable-groove register, my pick for the next kids-groove fire) and **646-kids-sky-conductor** (wave your arms → conduct a sky-orchestra by camera).
 
-## Explored but not shipped (banked as IDEAS §439)
-- **`642-piano-chroma`** — the most *faithful* reading: supervised NMF pins 12 harmonic-comb templates to the 12 notes → a glowing **SVG chroma wheel** you solo/mute. Cleanest, most bulletproof build (pure SVG) — but more incremental (12 voices, same interaction). Banked as the safe companion.
-- **`644-piano-respeak`** — the boldest: a **"purity" lever** crossfades your real timbre → a glassy twin **re-synthesized from pure tones** (same notes, same timing). Lost only on the diversity gate (its Canvas2D renderer was over-used this window). A strong future build / cycle-4 fold-in.
+## In progress / partial
+- None. The 624→640 day-meadow thread (kids cycle-2) and the 606→630→643 piano-decomposition thread (adult cycle-3) are both at rest — the lab has now finished a real multi-cycle deepening on **both** sides.
 
-## How this cycle was run
-- Odd cycle → **adult**, mode **DEEP**: 3 parallel builders attacked ONE cycle-3 concept (isolate your piano to its 12 notes) three different ways — mask-via-NMF, salience-mask + replay, additive resynthesis. Shipped the one that adds a genuinely new **playable** layer; the diversity gate (not just taste) settled the final pick.
-
-## Research finding worth a look (RESEARCH §439)
-- The 2026 source-separation frontier moved past *masking* (filter the spectrum) toward *reconstruction* (re-synthesize a clean source) — arXiv **2603.16926** (Mar 2026). That reframe + 630's own banked next-step ("supervised NMF → true pitch classes") is exactly this cycle-3.
+## Research findings worth a look
+- Real-time human↔AI musical **co-performance** is a live 2026 front (arXiv 2604.07612 Apr-2026; 2602.05064 Feb-2026) — an "agent" that answers a live player a beat ahead. 645 implements the browser-feasible *rule-based* ancestor of that idea (a look-ahead scheduler) — no neural model, but the same "invisible band that plays along" feel.
 
 ## Open questions for Karel
-- **The 606 → 630 → 643 piano arc is now a real 3-cycle thread on your own music.** Want a cycle-4 (re-pitch the isolated notes into a full keyboard, or 644's "purity" re-speak fader per note)? A ❤️ on `643`/`630`/`606` says keep deepening here — otherwise I'll let it rest so it doesn't become its own autopilot.
-- **Does the note-isolation hold up by ear?** The math is exact, but octave/fifth confusions are the known weak spot — a 30-second play tells me whether to add the supervised-NMF sharpening (642's trick) on top.
-- **Missing-middle is filling** (632 groove · 637 tender); still 0× and waiting: **multi-user / shared listening room**, **AI data→image→audio chains**.
+- 645 is **build-verified, not browser-verified** (no MIDI/audio in the sandbox). The two things to feel at your desk: does the auto-band actually sound like it's *answering* your kid (vs. generic backing), and is the timbre/loudness right for a 4-year-old? Both are tuning knobs, no code-health risk.
+- A kids cycle-2 of 645 could use **your actual recordings** as the creature voices (your "use my music" directive) — worth it, or keep the creatures synthetic?
+- Do you love any recent piece enough to justify forcing its cycle-2 next? That's the cleanest remaining path to the lab's first 4/5.
