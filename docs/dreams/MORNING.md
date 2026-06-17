@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-06-17 (UTC) · cycle 452
+# Morning digest — last updated 2026-06-17 (UTC) · cycle 453
 
 ## New since yesterday
-- **🌙⛵ [680-kids-night-boat](https://getresonance.vercel.app/dream/680-kids-night-boat)** — *"Night Boat."* **Rock the tablet like a cradle, eyes off the screen** — a near-black sea, one glowing boat, all the music in your ears. A gentle F-major lullaby keeps arriving at a cadence and sometimes lands *almost*-home (deceptive V→vi — the boat dips), then finally lands **truly home** (authentic V→I — warm bloom + sparkle). Rock it to sleep and you're rewarded by hearing the sentence *finish*. **Why open it:** it hits the jury's **two loudest asks at once** — a real harmonic event (NOT pentatonic) AND **off the glass** (the never-moved "13/15 are screens" critique). Best with eyes closed.
-- *2 more non-pentatonic kids harmonic-event explorers built this fire — banked, see IDEAS §452.*
+- **🌌📈 [683-world-pulse](https://getresonance.vercel.app/dream/683-world-pulse)** — *"World Pulse."* The **live, collective fear and greed of the world's markets**, witnessed as a cosmic weather system instead of a trading screen. A keyless WebSocket to the real BTC trade firehose drives a luminous **WebGPU particle nebula** + a drifting D-Dorian drone: when the world is **buying**, the field warms and the harmony opens toward consonance; when it's **selling**, it cools toward a tension that wants to resolve; big trades ring low bells; volatility stirs the storm. It evolves — minute 5 ≠ minute 0. **Why open it:** it's the lab's **first market sonification** *and* its **first-ever WebSocket** — a whole new kind of input. Just press *Listen* and let it drift. (No live feed in your network? It plays a faithful simulated market automatically.)
+- *2 more approaches to the same concept built this fire — banked, see IDEAS §453.*
 
 ## How this cycle ran (orchestration)
-- **WIDE fire, 3 parallel builders**, each a different *real* (non-pentatonic) harmonic event, off banned Canvas2D, one off-glass: **680 cadence** (rock → device-motion, inline-SVG, off-glass) · **681 reharmonization** (touch 12 chromatic petals → a band that *chases* your note so every note sounds lovely — the inverse of the pentatonic crutch; WebGL2) · **682 mode-glide** (tilt a moon between two suns → major↔minor; three.js; 6+/family).
-- **Why 680 won:** the only **off-glass** candidate (the jury's most-emphasized standing ask), the scarcest + most bulletproof renderer (audio-first/SVG, zero GPU risk), and the harmonic event a 4yo can actually perceive (closure/cadence — vs mode, which is ~age 7).
-- **Mode note:** 451 was DEEP → WIDE alternates; and the jury banned a *combo* (pentatonic) → "go WIDE with fresh tags."
+- **DEEP fire, 3 parallel builders, one concept** (the live market as a meditation you witness), three renderers/vibes: **683 nebula** (WebGPU, cosmic — shipped) · **684 tide** (Canvas2D ocean, tender — banked ⭐) · **685 ledger** (Canvas2D Ikeda data-field, austere — banked).
+- **Why 683 won:** the most ambitious + renderer-freshest implementation (WebGPU compute, 0× in the recent window; off the banned WebGL2 / just-used three.js / over-used SVG), love-aligned with your cosmic-particle favorites, and glance-safe via a real Canvas2D fallback + built-in synthetic market.
+- **Mode note:** 452 was WIDE → DEEP alternates; and "massively bigger concept" wants one ambitious idea via parallel approaches.
 
 ## In progress / partial
-- None. Clean tree; one commit this cycle. Build verified (488/488 pages, exit 0).
+- None. Clean tree; one commit this cycle. Build verified (489/489 pages, exit 0).
 
 ## Research findings worth a look
-- **RESEARCH §452** — the inverse of the pentatonic crutch is the principle that **consonance is contextual** (a note isn't right/wrong on its own — the chord beneath decides). That's the seed of **681's reharmonizer**: full chromatic freedom, harmony chases the note. The firm 4yo ground (carried §448/§450): kids feel *closure* and *change* long before minor→sad (~age 7).
+- **RESEARCH §453** — the lab has sonified the sky (618), earth (233/613), a chess game (649), and Wikipedia (437), but never the **market** — the purest real-time index of collective human emotion — and had never opened a **WebSocket**. Both gaps closed this fire. Refs: Brian Foo *Two Trains* · Ryoji Ikeda *test pattern* · Anadol.
 
 ## Open questions for Karel
-- **680 needs your ears** (sandbox has no audio): does **V–vi vs V–I** read as "withheld then granted," and is rocking-it-to-sleep rewarding on a real iPad?
-- We now have **two flavors of "off the glass"**: *embodied / get-off-the-couch* (677 body-spatial; 680 rocking) and *audio-first / eyes-closed-still* (669/666/655). Which do you want more of?
-- **681 (reharmonizer)** is the freshest concept — want it shipped next kids cycle (re-skinned off the hot WebGL2)? And **682** could open a deliberate **Kids 6+/family tier**.
-- Standing: the **AI-pipeline chain** (`654-latent-chain`) is the biggest untouched adult gap — it needs you awake with a live FAL key to run safely.
+- **683 needs your eyes + ears** (sandbox has no GPU/audio/network): does the live Binance feed connect on your phone, does the WebGPU nebula render on iOS Safari, and does momentum→consonance read as "the market breathing"?
+- Is the **market-as-weather** register one you want more of? If so, **684-market-tide** (the bulletproof tender ocean version) is the fastest resurrect.
+- Standing: the **AI-pipeline chain** (`654-latent-chain`) is still the biggest untouched adult gap — it needs you awake with a live FAL key to run safely.
