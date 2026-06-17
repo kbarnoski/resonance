@@ -1,20 +1,21 @@
-# Morning digest — last updated 2026-06-16 (UTC) · cycle 450
+# Morning digest — last updated 2026-06-17 (UTC) · cycle 451
 
 ## New since yesterday
-- **🌊🥁 [675-kids-deep](https://getresonance.vercel.app/dream/675-kids-deep)** — *"Deep Drum."* A 4-year-old taps six big glowing stones over a deep glowing abyss while a **drone slowly slides its key underneath them** (i → ♭VI → ♭VII → i). The stones are fixed pitches, so as the floor moves, the *same* tap drifts from *home* → *tense* → *resolves* — a kid literally **hears harmony move under a constant action**. No pentatonic scale-snap; the abyss retints with the key and warms to amber only at "home." **Why open it:** it's the lab's first kids piece that lets a child feel real harmonic *function* change — the directest hit on the jury's #1 kids ask (kill the no-wrong-notes crutch).
-- *2 more kids harmonic-event explorers built this fire — banked, see IDEAS §450 (both demoable, fast to resurrect).*
+- **🕺🔊 [677-presence-field](https://getresonance.vercel.app/dream/677-presence-field)** — *"Presence Field."* Step back from the screen and your **whole body, tracked as a luminous skeleton, conducts a SPATIAL ensemble** — each limb is a voice placed in 3D around you (its own HRTF panner), so spreading and raising your arms literally **sweeps the music through the room**. Spatialization *is* the instrument: where your body is becomes where the sound is. Slow drifting D-Dorian harmony (no pentatonic), three.js glowing room. **Why open it:** it's the lab's **first adult installation / room-presence piece** — the single biggest untouched first the jury has named *three times running* ("zero embodied-spatial builds still"). Best on headphones.
+- *2 more body→spatial-audio explorers built this fire — banked, see IDEAS §451 (both demoable, fast to resurrect).*
 
 ## How this cycle ran (orchestration)
-- **WIDE fire, 3 parallel builders**, each a DIFFERENT real harmonic event × input × output × palette: **675 shifting-drone** (touch/WebGL2) · **674 mode-glide** (tilt/three.js, maj↔min) · **676 deceptive-cadence** (rock-the-tablet, off-glass audio-first). Shipped 675; banked 674 + 676.
-- **Why 675 won over the prettier 674:** the lab's own developmental research (§448) says 3–4 yos don't reliably map *minor=sad* until ~age 7–8 — so 674's happy↔spooky mode-flip is really a **6+/family** piece. What a 4yo *does* perceive is "the change itself / a moving drone" — which is exactly 675.
+- **DEEP fire, 3 parallel builders** — ONE concept (body-presence → spatial HRTF ensemble) via three body-sensing techniques: **677 pose/skeleton** (three.js) · **678 frame-diff motion-field** (no-ML, WebGL2) · **679 selfie-segmentation envelopment** (WebGL2). Shipped 677; banked 678 + 679.
+- **Why 677 won:** the most literal *installation room* (a body in a 3D space placing voices at each joint), the scarcest renderer (three.js, 0× in the last 10), and its **glance path needs no camera and no MediaPipe** — an idle preview + auto-demo run a synthetic body through the room on their own. (678 is the bulletproof no-dependency twin — banked ⭐ as the safest resurrect.)
+- **Mode note:** 448/449/450 were all WIDE → DEEP was due ("alternate deliberately"), and "massively bigger concept" wants one ambitious idea, not three small ones.
 
 ## In progress / partial
-- None. Clean tree; one commit this cycle. Build verified (486/486 pages, exit 0).
+- None. Clean tree; one commit this cycle. Build verified (487/487 pages, exit 0).
 
 ## Research findings worth a look
-- **RESEARCH §450** — *Input-Envelope-Output* (CHI 2026): a sensory-safe "constraint-first" framework. Reframe for us: the kid-safe master chain isn't a safety afterthought — it's the *enabler* of un-scary harmonic risk (tension a child can meet without it ever turning harsh). All three explorers carry a real harmonic event behind that envelope.
+- **RESEARCH §451** — *spatialization itself is the immersion* (arXiv:2601.22082, Jan 2026): placing sound in 3D around the listener measurably raises the felt *sense of presence* — it's the payload of a room piece, not a garnish. Plus "Sounding Bodies" (pose→spatial sound) and online spatial sonification (Dec 2024). This is what bent the build away from "a pretty body viz" toward "your body moves the sound's *position*."
 
 ## Open questions for Karel
-- **675 needs your ears** (sandbox has no audio): does the ~18s drone migration read as a clear "the floor is moving" event for a small child, or too slow to notice? Tighten the step time?
-- Want a **Resonance Kids 6+/family tier**? 674-two-moons (mode-flip) is its natural flagship — it just isn't a 4yo piece.
-- Off-glass kids is the standing #1 ask, but 669 shipped it 2 cycles ago; I'm holding 676 (the deceptive-cadence boat) as the priority resurrect for the next non-adjacent kids cycle. Good call, or ship off-glass every kids cycle regardless?
+- **677 needs your ears + a body** (sandbox has no camera/audio): does the joint→HRTF placement actually read as voices moving *around* you? HRTF front/back cues are much stronger on **headphones** than speakers — worth a headphone test.
+- This lands the *embodied / get-off-the-couch* reading of "off the glass." The *audio-first / no-screen* reading is already served (669/666/655). Which "off the glass" do you want more of next?
+- The two banked twins are ready: **678** (no-CDN, bulletproof) and **679** (envelopment-by-approach). Want either shipped as a cycle-2 of the spatial-room thread?
