@@ -1,21 +1,20 @@
-# Morning digest — last updated 2026-06-17 (UTC) · cycle 453
+# Morning digest — last updated 2026-06-17 (UTC) · cycle 454
 
 ## New since yesterday
-- **🌌📈 [683-world-pulse](https://getresonance.vercel.app/dream/683-world-pulse)** — *"World Pulse."* The **live, collective fear and greed of the world's markets**, witnessed as a cosmic weather system instead of a trading screen. A keyless WebSocket to the real BTC trade firehose drives a luminous **WebGPU particle nebula** + a drifting D-Dorian drone: when the world is **buying**, the field warms and the harmony opens toward consonance; when it's **selling**, it cools toward a tension that wants to resolve; big trades ring low bells; volatility stirs the storm. It evolves — minute 5 ≠ minute 0. **Why open it:** it's the lab's **first market sonification** *and* its **first-ever WebSocket** — a whole new kind of input. Just press *Listen* and let it drift. (No live feed in your network? It plays a faithful simulated market automatically.)
-- *2 more approaches to the same concept built this fire — banked, see IDEAS §453.*
+- **🎨🎶 [684-kids-every-note](https://getresonance.vercel.app/dream/684-kids-every-note)** — *"Every Note."* The opposite of the "pentatonic, no-wrong-notes" crutch the jury keeps flagging: instead of giving a 4-year-old five safe pads, this hands over the **whole 12-note chromatic palette** — and the **harmony chases whatever they touch**. Tap any color (even a "wrong" one) and the chord underneath quietly reharmonizes to embrace it, the aurora re-tints, a soft bell pings. The pre-verbal lesson: *no note is wrong; the world just blooms a new color to hold it.* **Why open it:** it's the directest answer yet to your #1 kids ask ("let a kid meet a wrong note and discover it isn't scary"), and the chord engine is a tiny **retrieve→edit→rerank reharmonizer** lifted straight from a paper that dropped *this month*. Press *Start* and tap around — it also auto-demos a phrase with deliberate chromatic notes so you can hear it chasing them.
+- *2 more non-pentatonic harmonic-event explorers built this fire — banked, see IDEAS §454.*
 
 ## How this cycle ran (orchestration)
-- **DEEP fire, 3 parallel builders, one concept** (the live market as a meditation you witness), three renderers/vibes: **683 nebula** (WebGPU, cosmic — shipped) · **684 tide** (Canvas2D ocean, tender — banked ⭐) · **685 ledger** (Canvas2D Ikeda data-field, austere — banked).
-- **Why 683 won:** the most ambitious + renderer-freshest implementation (WebGPU compute, 0× in the recent window; off the banned WebGL2 / just-used three.js / over-used SVG), love-aligned with your cosmic-particle favorites, and glance-safe via a real Canvas2D fallback + built-in synthetic market.
-- **Mode note:** 452 was WIDE → DEEP alternates; and "massively bigger concept" wants one ambitious idea via parallel approaches.
+- **WIDE fire, 3 parallel builders**, three *different* real harmonic events (no pentatonic): **684 reharmonization** (Canvas2D — shipped) · **686 suspension→resolution** (drag-a-wish-up, it leans then *resolves home*; WebGPU + Canvas2D — banked ⭐) · **685 major↔minor mode-glide** (tilt between two suns; three.js, 6+/family — banked).
+- **Why 684 won:** the only one clearing a **3/5** ambition floor (it's the one with the same-day <30-day research chain), the *coldest* renderer (Canvas2D — 0× lately, zero GPU-failure surface = most bulletproof glance), and the directest hit on your pentatonic-ban directive.
 
 ## In progress / partial
-- None. Clean tree; one commit this cycle. Build verified (489/489 pages, exit 0).
+- None. Clean tree; one commit this cycle. Build verified (490/490 pages, exit 0).
 
 ## Research findings worth a look
-- **RESEARCH §453** — the lab has sonified the sky (618), earth (233/613), a chess game (649), and Wikipedia (437), but never the **market** — the purest real-time index of collective human emotion — and had never opened a **WebSocket**. Both gaps closed this fire. Refs: Brian Foo *Two Trains* · Ryoji Ikeda *test pattern* · Anadol.
+- **RESEARCH §454** — He et al., *A Decomposed Retrieval-Edit-Rerank Framework for Chord Generation* (arXiv:2605.07489, **2026-05-08**). Retrieve candidate chords → edit for theory → rerank by voice-leading. That's *exactly* the loop a "no wrong note, ever" kids instrument needs — and 684's `harmony.ts` implements it.
 
 ## Open questions for Karel
-- **683 needs your eyes + ears** (sandbox has no GPU/audio/network): does the live Binance feed connect on your phone, does the WebGPU nebula render on iOS Safari, and does momentum→consonance read as "the market breathing"?
-- Is the **market-as-weather** register one you want more of? If so, **684-market-tide** (the bulletproof tender ocean version) is the fastest resurrect.
+- **684 needs your ears** (sandbox has no audio): does the reharmonization read as "the world embracing my wrong note" on real speakers, and does it feel calm/parent-tolerable on an iPad?
+- Two strong kids resurrects sitting ready: **686-kids-wish-well** ⭐ (tension→resolution — arguably the *most* fundamental harmonic event) and **685-kids-two-moons** (opens a deliberate 6+/family tier). Want either next kids cycle?
 - Standing: the **AI-pipeline chain** (`654-latent-chain`) is still the biggest untouched adult gap — it needs you awake with a live FAL key to run safely.
