@@ -1,20 +1,19 @@
-# Morning digest — last updated 2026-06-17 (UTC) · cycle 454
+# Morning digest — last updated 2026-06-17 (UTC) · cycle 455
 
 ## New since yesterday
-- **🎨🎶 [684-kids-every-note](https://getresonance.vercel.app/dream/684-kids-every-note)** — *"Every Note."* The opposite of the "pentatonic, no-wrong-notes" crutch the jury keeps flagging: instead of giving a 4-year-old five safe pads, this hands over the **whole 12-note chromatic palette** — and the **harmony chases whatever they touch**. Tap any color (even a "wrong" one) and the chord underneath quietly reharmonizes to embrace it, the aurora re-tints, a soft bell pings. The pre-verbal lesson: *no note is wrong; the world just blooms a new color to hold it.* **Why open it:** it's the directest answer yet to your #1 kids ask ("let a kid meet a wrong note and discover it isn't scary"), and the chord engine is a tiny **retrieve→edit→rerank reharmonizer** lifted straight from a paper that dropped *this month*. Press *Start* and tap around — it also auto-demos a phrase with deliberate chromatic notes so you can hear it chasing them.
-- *2 more non-pentatonic harmonic-event explorers built this fire — banked, see IDEAS §454.*
+- **🌌🎴 [689-dream-chapters](https://getresonance.vercel.app/dream/689-dream-chapters)** — *"Dream Chapters."* The lab's first **AI image pipeline INSIDE an audio-visual piece** in this whole window — your repeatedly-asked-for, never-built #4. A slow 5-min generative journey walks a named arc (**Threshold → Drift → Deepening → Aurora → Return**, each its own modal color over a drifting D-Dorian centre — no pentatonic, no I-IV-V), and at *every movement boundary* it writes an evocative prompt for that mood, generates one **flux/schnell image**, and floats it to the front of a **three.js corridor** of every card it has ever dreamed — receding, parallaxing, as the camera drifts through. **Memory you can see:** the gallery at minute 5 is visibly fuller than at minute 1. **Why open it:** press *Begin*, let it run hands-off, and watch the piece accumulate a navigable archive of its own past — it's both an AI-image-in-AV piece *and* a new journey-engine arc (your care #4), the slow/contemplative *inverse* of the per-frame StreamDiffusion trend.
+- *2 more approaches to the same concept built this fire — banked, see IDEAS §455.*
 
 ## How this cycle ran (orchestration)
-- **WIDE fire, 3 parallel builders**, three *different* real harmonic events (no pentatonic): **684 reharmonization** (Canvas2D — shipped) · **686 suspension→resolution** (drag-a-wish-up, it leans then *resolves home*; WebGPU + Canvas2D — banked ⭐) · **685 major↔minor mode-glide** (tilt between two suns; three.js, 6+/family — banked).
-- **Why 684 won:** the only one clearing a **3/5** ambition floor (it's the one with the same-day <30-day research chain), the *coldest* renderer (Canvas2D — 0× lately, zero GPU-failure surface = most bulletproof glance), and the directest hit on your pentatonic-ban directive.
+- **DEEP fire, 3 parallel builders, ONE big concept** (a meditation that *dreams its own visuals*), three technical attacks: **689 accumulating-memory gallery** (three.js — shipped) · **687 latent-oracle** ⭐ (a true audio→image→**audio** *closed loop* — the image's color is fed back into the synth; WebGL2 feedback — banked) · **688 spectral-séance** (the *return trip* — the image is **re-sonified** as a playable Ikeda instrument; Canvas2D — banked).
+- **Why 689 won:** the biggest concept (journey-arc + navigable memory), the most Karel-surprising, strongest reference (Anadol *Machine Memoirs*), and it dodges the jury-banned Canvas2D. 687 is the cleanest closed-loop if you'd rather see that next.
 
 ## In progress / partial
-- None. Clean tree; one commit this cycle. Build verified (490/490 pages, exit 0).
+- None. Clean tree; one commit. Build verified (exit 0, ✓ compiled in 46s).
 
 ## Research findings worth a look
-- **RESEARCH §454** — He et al., *A Decomposed Retrieval-Edit-Rerank Framework for Chord Generation* (arXiv:2605.07489, **2026-05-08**). Retrieve candidate chords → edit for theory → rerank by voice-leading. That's *exactly* the loop a "no wrong note, ever" kids instrument needs — and 684's `harmony.ts` implements it.
+- **RESEARCH §455** — the live **TouchDesigner + StreamDiffusion "real-time audio-reactive AI art"** stack (Derivative tutorial #216 + 2025 ACM IMX). State of the art = per-frame img2img diffusion in lockstep with the beat. Dream Chapters deliberately goes the *other* way: slow, one deliberate image per multi-minute movement, kept as memory not surface.
 
 ## Open questions for Karel
-- **684 needs your ears** (sandbox has no audio): does the reharmonization read as "the world embracing my wrong note" on real speakers, and does it feel calm/parent-tolerable on an iPad?
-- Two strong kids resurrects sitting ready: **686-kids-wish-well** ⭐ (tension→resolution — arguably the *most* fundamental harmonic event) and **685-kids-two-moons** (opens a deliberate 6+/family tier). Want either next kids cycle?
-- Standing: the **AI-pipeline chain** (`654-latent-chain`) is still the biggest untouched adult gap — it needs you awake with a live FAL key to run safely.
+- **689 needs your ears + a live FAL key** (sandbox has no audio/GPU and may have no key): does the modal phase-arc read as a genuine *journey* on real speakers, and does the corridor of dreams feel transcendent? It runs forever on a procedural fallback if no key — but the real flux images are the point, so try it with the key live.
+- After a full window of *harmonic-event* builds (kids + tender adult ~7× of the last 10), this swings hard the other way. Want more **AI-pipeline** depth next (687 closed-loop / 688 image-as-instrument both ready), or back to a fresh register?
