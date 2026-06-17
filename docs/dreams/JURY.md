@@ -1,105 +1,115 @@
-# Concept Jury Verdict — 2026-06-16 (UTC)
+# Concept Jury Verdict — 2026-06-17 (UTC)
 
 ## Summary
-This is the best window the lab has produced in a month — and the proof is that it
-**did what the last two juries asked**. The "missing middle" the 2026-06-15 jury said
-nobody was building is now built on both sides (632 groove, 637 neo-soul pocket, 652
-danceable, 659 EDM-ecstatic); the deepening the jury said the lab *banks and abandons*
-finally landed twice (630 = the lab's first honest 4/5, 643 = its first true cycle-3).
-Every one of the last 15 cleared the ambition floor — the floor is no longer the problem.
-The new problem is narrower and more stubborn: the **kids side has shipped
-"pentatonic / no-wrong-notes" six times in fifteen**, and **13 of 15 pieces render to a
-glass screen** — the two that don't (626 empty-room, 655 breath-sanctuary) are the
-freshest things in the batch.
+Two things are true at once this window. (1) The big-ticket firsts the last few juries
+kept asking for **actually landed** — the AI-image-pipeline chain (689), the first live
+`WebSocket` / market sonification (683), the first adult body-in-the-room spatial
+installation (677), and a genuine cycle-4 of the piano spine (666). That's four real
+"new machines" in fifteen, and the off-glass metric the last jury hammered moved from
+13/15-on-glass to **10/15** (5 off-glass). (2) But the kids side answered the last jury's
+"kill pentatonic, give a real harmonic event" provocation **so literally that it built a
+new monoculture out of it**: eight of the last fifteen — and six of the last eight kids
+pieces — are some flavour of "a tonal-tension-and-resolution machine behind a sensor."
+The pentatonic crutch is gone; a *voice-leading* crutch took its place. And the ambition
+*ceiling* slipped: only 2 of 15 cleared 4+ floor criteria, down from 8 of 15 last window.
+The floor is solid; the median has gone comfortable.
 
 ## Diversity audit
-- **Over-represented input:** **screen-control (touch/keyboard/slider) — 6×** (622, 624,
-  632, 637, 645, 659). Genuine credit underneath: embodied input is now well-spread —
-  tilt 3× (626, 640, 658), MIDI 2× (643, 645), gamepad 1× (636), webcam 1× (652), mic/breath
-  1× (655), structured-data 1× (649). The sensor diversity is real; the default-reflex is
-  still "a control on the screen."
-- **Over-represented output:** **Canvas2D — 4×** (624, 636, 640, 652) **and WebGL2 — 4×**
-  (622, 630, 658, 659), three.js 3× (632, 643, 645), SVG 3× (637, 649, 655). But the number
-  that matters is the same one the last jury flagged and it has **not moved: 13 of 15 render
-  to a glass screen.** Audio-first is exactly 2× (626, 655) — up from 1×, but still the
-  rarest and still the best.
-- **Over-represented technique:** no single core hits 4 (15 distinct machines — real credit),
-  BUT two cross-cutting attractors do: **(a) look-ahead-scheduler generative groove/accompaniment
-  — ~7×** (624, 632, 637, 640, 645, 652, 659 all run a Chris-Wilson pump under a generative
-  bed), and **(b) pentatonic / scale-snap "no-wrong-notes" — ~6×, all kids** (624, 636, 640,
-  645, 652, 658). (b) is the one the mandate explicitly names as the local minimum.
-- **Over-represented vibe:** **warm/cozy-or-joyful kids — 4×** (624, 640, 645, 658). The
-  adult "doom" autopilot the last jury caught (622, 626) is already cooling — credit the
-  swing into ecstatic (632/652/659). The kids warm pole is now the one that needs a ban.
-- **BANNED for next cycle:** **pentatonic / scale-snap "no-wrong-notes" TECHNIQUE** (6×, the
-  named local minimum) · **Canvas2D OUTPUT** (4×) · **the look-ahead-scheduler-generative-bed
-  reflex** as the *only* idea in a piece (7×) · **warm/cozy kids VIBE** (4×) · and standing:
-  **a glass-screen render as the primary deliverable** — the next fire should put at least one
-  builder fully off the screen.
+- **Over-represented input: touch / on-glass screen-control — 5×** (662, 666, 671, 675,
+  684). Same default reflex the last jury flagged at 6×; barely moved. The embodied inputs
+  underneath are healthily spread (tilt/motion 3× · mic/voice/breath 2–3× · body-camera 2×
+  · WebSocket 1× · keyboard 1×), but "a finger on the glass" is still the first instinct.
+- **Over-represented output: audio-first / off-glass — 5×** (655, 666, 669, 680, 690)
+  **AND WebGL2 — 4×** (658, 659, 662, 675). The headline is the **inversion**: audio-first
+  was the *rarest and best* output two juries running (1×→2×). It is now the **single most
+  common output in the window.** The off-glass directive over-corrected. Credit where due:
+  **Canvas2D dropped from 4× to 2×** (684, 652) — that ban worked cleanly.
+- **Over-represented technique: "a real harmonic event" / voice-leading / tension-and-
+  resolution — 8×** (662 gamelan-bend, 666 asymmetric-consonance growth, 669 suspension-
+  chain, 671 nearest-tone voice-leading walk, 675 drone-migration, 680 deceptive→authentic
+  cadence, 684 reharmonization, 690 major↔minor mode-morph). **This is the new pentatonic.**
+  The lab took the last jury's #1 ("give a kid a real harmonic event, not the scale-snap")
+  and turned it into the template every other piece now runs. Six of those eight are kids.
+- **Over-represented vibe: tender / intimate / hushed / contemplative — 6×** (655 ritual,
+  658 tender-garden, 666 Eno-ambient, 669 sacred-hum, 671 melancholy, 680 lullaby). The
+  warm-cozy-kids pole the last jury banned cooled to ~1× (good) — but the pendulum swung
+  to *solemn*. The kids side is now uniformly reverent/mysterious (nocturnal boat, deep
+  abyss, temple bronze, sacred hum). Nothing here makes a 4-year-old **laugh**.
+- **BANNED for next cycle:** **"a real harmonic event" / voice-leading / tension-resolution
+  as the core idea** (8×, the new local minimum — *especially* banned on the kids side) ·
+  **audio-first + minimal-SVG/glow as the "brave" default** (5× — it's now the comfortable
+  choice, not the daring one) · **touch/on-glass screen-control as the primary input** (5×)
+  · **WebGL2 output** (4×) · **hushed/tender/contemplative vibe** (6×). And standing:
+  **single-user / solo** — every one of the last 15 is one person alone; multi-user is 0×.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — there are no local-minimum builds this window. The orchestration
-  gate is working; the floor is genuinely cleared every fire. This is the headline good news.
-- **Hit 2–3 criteria: 7** — 626, 636, 645, 649, 652, 658, 659. These clear the bar *on paper*
-  (≥3 subsystems + a named ref) but the novelty is usually the *input* or *framing*, not the
-  music or the technique (e.g. 652 = webcam → the same pentatonic layered groove).
-- **Hit 4–5 criteria: 8** — 622, 624, 630, 632, 637, 640, 643, 655. **These are the ones to
-  extend.** 624 is the only 5/5 (first kids long-form generative w/ motif memory + recent
-  arXiv anchor + spawned a cycle-2). 643 is the spine to keep pushing.
+- **Hit 0–1 criteria: 0** — no local-minimum builds. The orchestration gate still works;
+  the floor is genuinely cleared every fire. Real, durable good news.
+- **Hit 2–3 criteria: 13** — 652, 655, 658, 659, 662, 669, 671, 675, 677, 680, 683, 684,
+  690. The bulk of the window. Most clear the bar on the *comfortable* pair (#2 ≥3
+  subsystems + #3 a named ref); the novelty is usually the input/renderer/framing, not the
+  music or a new technique. This bucket ballooned from 7→13 since last jury.
+- **Hit 4–5 criteria: 2** — **689** (AI-pipeline chain: #1 + #2 + #3 + #5) and **666**
+  (#1 first looper from a performer's isolated pitch-classes + #2 + #4 genuine cycle-4 + #5
+  same-day arXiv). **These are the ceiling — extend them.** Down hard from 8 of 15 last
+  window: the lab is clearing the floor but no longer reaching for the ceiling.
 
 ## Standouts (positive)
-- **643-piano-constellation**: the lab's **first genuine cycle-3** (606→630→643) — the exact
-  move two juries said the lab banks and abandons, finally finished. Karel's own recording
-  taken down to its 12 pitch classes and made *playable* via granular replay. Honest #4, real
-  ceiling.
-- **655-breath-sanctuary**: off-screen, eyes-closed, **steered by breath alone** — a stateful
-  5-minute ritual arc, not a loop. Breaks the screen monoculture and earns its surprise. The
-  kind of piece that makes Karel say "huh."
-- **649-chess-duet**: the most *surprising* concept in the batch — the Immortal Game (1851)
-  sonified as strict two-voice counterpoint, game *events* driving the harmony. Real-world
-  structure as score, done with taste, not a sensor feed.
-- **659-pulse-cathedral**: the lab's first euphoric/ecstatic adult piece — an EDM build/drop
-  arc that never lands (visible sidechain pump, Shepard-folded bass). Directly hits Karel's
-  care #4 (journey-engine alternatives) and closes the "missing middle" on the adult side.
+- **689-dream-chapters**: the AI-image-pipeline chain Karel asked for across *weeks* of
+  juries (0× for the whole prior window) finally shipped — and shipped *right*: a long-form
+  journey that mints one flux chapter-card per movement and accumulates them into a
+  navigable 3D depth-field, so the piece literally remembers what it dreamed. Bulletproof
+  procedural fallback means it runs forever with no key. The boldest build of the window.
+- **666-piano-still**: the lab's **first genuine cycle-4** (606→630→643→666) — the deepening
+  two juries said the lab banks and abandons, pushed to a fourth turn. Karel's own piano,
+  down to 12 pitch classes, grown over minutes by an *asymmetric-consonance* chooser
+  (De Roure 2026, same-day). Off-glass, long-form, his material. The most "Resonance" thing
+  in the batch.
+- **683-world-pulse**: first `WebSocket` input and first market sonification in ~680
+  prototypes (grep-clean) — collective buy/sell pressure as a cosmic weather system, on the
+  scarcest GPU renderer (WebGPU). A genuinely new *machine*, not a sensor reskin.
+- **677-presence-field**: the embodied-spatial room-presence first named across three
+  consecutive juries, finally built on the *adult* side — HRTF spatialization *as the
+  instrument* (move your body, the voices move around you), not a viz bolted onto a bed.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **640-kids-day-wind**: by its own README "a compact reimplementation of 624" — same diurnal
-  engine, same motif bank, same warm palette, same Canvas2D diorama. The only real delta is
-  tilt-instead-of-touch. A cycle-2 should open a *new musical world*, not re-skin a shipped
-  engine with a fresh sensor. This is the clearest local minimum of the window.
-- **652-kids-dance-band**: webcam motion-energy is a genuinely fresh input, but it drives the
-  lab's Nth pentatonic + Canvas2D + scheduler-groove bed — the novelty is the camera, not the
-  music. (Also shipped build-*unverified* by its builder; the orchestrator's authoritative
-  build was the only gate.) What's missing: let the body's movement *quality* change harmony or
-  mode, not just stack/strip in-key layers.
-- **658-kids-piano-garden**: lovely, and built on Karel's real piano — but it lands on the same
-  tilt + granular + pentatonic + warm-garden combination as 640, in the same warm-cozy pole the
-  kids side overuses. The granular-on-Karel's-piano idea deserves a register that isn't "cozy."
+- **The kids harmonic-event cluster (662 → 669 → 675 → 680 → 684 → 690)** — no single one
+  is a local minimum; the *set* is. Six straight kids builds are "a tonal-tension-and-
+  resolution machine behind a different sensor." Individually inventive, collectively the
+  exact trap the last jury warned about, one layer up. A kid should sometimes *giggle*, not
+  always *hush*. This pattern — not any one slug — is the thing to break.
+- **658-kids-piano-garden**: granular-on-Karel's-piano is a real first, but the grains are
+  **hard-quantized to C-major pentatonic** ("no wrong notes, ever") and wrapped in the
+  warm-blooming-garden vibe — the precise pentatonic + warm-cozy + tilt combo the last jury
+  banned. Grandfathered (cycle 444, early in the window), but it's the textbook example.
+- **652-kids-dance-band**: webcam motion-energy is a genuinely fresh input driving the
+  lab's Nth pentatonic + Canvas2D + scheduler-groove bed — and then *abandoned*. The
+  danceable/groovy/**body** register the 2026-06-15 jury demanded got built once here and
+  never returned. The kids side fled rhythm for harmony.
 
 ## Provocations for tomorrow's dream cycle
-1. **Ban pentatonic / no-wrong-notes on the kids side for a full week.** Six of the last 15
-   kids pieces hide every harmonic choice behind a scale-snap. Build a kids piece where a child
-   *hears* a real harmonic event — a mode flip, a dissonance that resolves, a drone that shifts
-   under them, or a non-Western tuning (gamelan slendro, maqam) they can audibly bend. Let them
-   meet a wrong note and discover it isn't scary.
-2. **Get off the glass.** 13 of 15 are screen renders; the two that aren't (626, 655) are the
-   strongest fresh ideas here. Spend one WIDE builder fully off-screen: haptic-only, audio-only,
-   or — the standing #1 ask across *three* juries the lab has never built — a **depth-camera /
-   room-presence / projection installation** piece. Zero embodied-spatial builds still.
-3. **Push the piano spine to a cycle-4.** 606→630→643 just proved the lab can finish a multi-
-   cycle thread. Don't start a fourth fresh adult idea — extend 643: a per-octave 88-key field,
-   or a looper that records the child/Karel's taps into a phrase made of his own notes. Prove a
-   cycle-4 exists.
-4. **Build an AI-pipeline chain — still zero in the last 15.** Karel explicitly wants AI image
-   generation *inside* an AV piece, and the categorical menu names "2+ models in series." The
-   banked `654-latent-chain` (per MORNING) is sitting there. Audio→image→loop, or
-   music→narrative→score-follower. Nobody has touched it in this whole window.
-5. **Declare the "missing middle" solved and freeze it for a week.** 632 + 637 + 652 + 659
-   covered groove / pocket / danceable / ecstatic in one window — excellent. Now ban a fifth
-   ecstatic/EDM/groove build before groove becomes the new autopilot the way warmth did. The
-   un-built adult register is now **tender / intimate** (the banked 660-glasswork) — go there.
+1. **Ban "a real harmonic event" / voice-leading / tension-resolution on the kids side for
+   a full week.** It is the new pentatonic — 8× in the window, 6× on kids. The kids side is
+   starved of **rhythm, play, humor, and surprise**. Build a piece whose *subject* is
+   groove or a joke, not a cadence.
+2. **Stop treating "audio-first + a dark screen with a glow" as the brave choice — it's now
+   the most common output (5×).** The next off-glass swing should be **embodied-spatial /
+   installation / haptic** (the 677 lane), not another eyes-closed SVG. Resurrect
+   **678-presence-flow** (the no-dependency spatial twin) or push 677 to a cycle-2.
+3. **Ship a multi-user / two-player piece — it is still 0× across the entire window.**
+   `692-kids-two-friends` (two-player interval consonance) is banked and ready; social
+   interaction is the genuinely unbuilt register, and it'd break the solo monoculture.
+4. **Extend the two ceiling builds instead of starting a sixth tonal-tension toy.**
+   689 banked **687-latent-oracle** — an audio→image→*audio* **closed loop** that would
+   turn the one-way AI mint into a true round-trip. That's the cycle-2 that earns its
+   ambition. 666's piano spine is at cycle-4; 683's WebSocket engine could sonify a
+   *non-market* live stream (transit, seismic, language-usage) for free.
+5. **Make a kid laugh.** The "silly/funny" pole the lab once over-used is now at zero; the
+   kids side has gone uniformly solemn — nocturnal, abyssal, sacred, temple-dusk. A
+   4-year-old's first reaction should sometimes be delight, not reverence. The pendulum
+   overswung.
 
 ## Karel-facing line
-Best window in a month — the lab finally built the missing middle *and* finished a real
-cycle-3 — but kill the pentatonic crutch (6× on kids) and get at least one builder off the
-glass screen (13 of 15 are screens; the 2 that aren't are the best things here).
+The big firsts all landed — AI-pipeline, live-market, body-in-the-room — but the kids side
+quietly swapped the pentatonic crutch for a new one (six straight tension-and-resolution
+pieces): time to make a kid laugh, not hush.

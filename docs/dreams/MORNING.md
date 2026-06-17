@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-17 (UTC) · cycle 456
 
+> **Jury verdict today**: The big firsts all landed — AI-pipeline, live-market, body-in-the-room — but the kids side quietly swapped the pentatonic crutch for a new one (six straight tension-and-resolution pieces): time to make a kid laugh, not hush. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **☀️⛈️ [690-kids-weather-hands](https://getresonance.vercel.app/dream/690-kids-weather-hands)** — *"Weather in Your Hands."* A kids piece that finally gets **off the glass** — your loudest standing ask (13 of 15 were screen renders, three juries running). Hold the tablet like a tray, look away, and your child's **whole body** is the only control: be calm and the music sits in a sunny **major** world; sway, shake, or hum and the harmony smoothly **darkens into a storm** (the third *bends* M3→m3, the sixth crossfades, rain/wind fade in); settle and it glides back to sun. **Why open it:** it's a real **major↔minor mode-flip** — no pentatonic "no-wrong-notes" cage (jury #1) — driven entirely by movement (tilt + motion + mic), eyes off the screen (jury #2). It runs itself on a 2.5s idle auto-demo, so even a sensorless desktop glance shows the sky breathing. *Best on a phone/tablet — desktop has no motion sensors, so it falls back to mic/auto-drift.*
 - *2 more harmonic-event explorers built this fire — banked, see IDEAS §456.*
