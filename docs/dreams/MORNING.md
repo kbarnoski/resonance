@@ -1,17 +1,17 @@
-# Morning digest — last updated 2026-06-18 (UTC), cycle 467
+# Morning digest — last updated 2026-06-18 (UTC), cycle 468
 
 ## New since yesterday
-- **`718-duet-paths`** ("Duet with the Paths") — **this is the Shadow Duet you asked for, wired to your Paths piano.** Press Begin, then play a phrase (MIDI keyboard, your computer keys `a s d f g h j k l`, or the on-screen keys). When you pause, a "shadow" **answers you in the gap** — a real reply, not an echo: complementary register, opposite contour, density-matched, resolving in D Dorian. The twist: the shadow's voice is **grains pulled from your actual *Welcome Home* recording** — so you're trading fours with your own piano sound. Play over it and it yields; the floor is always yours. A piano-roll "river" shows your notes warm, its answers cool. If you don't touch anything, an idle demo trades fours on its own so you can hear it immediately.
-  - *Why it matters:* the lab's **first call-and-response duet partner whose voice is your real recording** (concatenative/CataRT-style retrieval, not synthesis). It serves you-the-pianist directly, it's the jazz-responsive *alternate journey-arc* you wanted, and it's live-performance-fit. (On the deployed site it loads your real piano; offline it falls back to a soft synth corpus, marked in amber.)
+- **`719-kids-stomp-zoo`** ("Stomp Zoo") — **the off-glass stomp parade you flagged for the kids slot — built.** Tap ▶ STOMP, stand back so the camera sees your feet, and **jump and stamp**: a parade of six googly creatures launches into the air in a left-to-right **ripple**, dust flies, the screen shakes, and a comical **tuba BONK** fires — the more you stomp, the groovier the marching bassline walks. Every ~20s there's a quick **freeze-dance** giggle beat (music drops, creatures freeze ❄, then kick back in). No reading, no wrong moves, no touch — your *whole body* is the controller. If there's no camera, a ghost auto-stomper keeps the parade bonking so it's alive on load.
+  - *Why open it:* it's the lab's directest answer to two of the jury's calls at once — **get the kids side OFF the glass** (whole-body camera, not a finger) and **make a kid LAUGH** (the kids side had gone uniformly solemn; this is pure silly groove, never a cadence).
 
 ## How this cycle ran
-- **Adult DEEP fire:** I took ONE concept (Shadow Duet) and fanned out **3 parallel builders, each a different "mind" for the partner** — then shipped the one that matched your exact ask. Research-led the same day (MACataRT, arXiv:2502.00023 — answering a player by retrieving grains from a *corpus*).
-- **Honesty note:** the old seed called this "the lab's first Web MIDI." It isn't — MIDI's been used ~7× before (4-operator, 291, 365, 375, 391, 483, 486). The real novelty is answering you in *your own recording*. I claimed the ambition floor honestly (#2 subsystems + #3 references), not a false first.
+- **Kids WIDE fire:** I fanned out **3 parallel builders on 3 different *embodied, non-glass* inputs** — SEE (camera-stomp), SHAKE (devicemotion), BLOW (mic-breath) — so they couldn't collapse into the same toy, then shipped the most embodied one. All three were laugh-first groove pieces, none a cadence.
+- Research path (c): resurrected + **deepened** your banked stomp-zoo seed (added the parade ripple + freeze-dance), grounded in *BodyBeats* (Laban's Theory of Effort — whole-body movement → sound for kids).
 
-## Banked, ready to resurrect (IDEAS §467)
-- **`717-duet-mirror`** ⭐ — the **surprising** one I held back: a duet partner that **learns you live** (a variable-order Markov model over your intervals + rhythm) so its answers grow to sound like *your* playing over a session. It carries this cycle's only genuine #1 — but the "it sounds like you" payoff isn't audible at a silent glance, so it's better as its own headline fire ("the instrument learns you").
-- **`716-shadow-duet`** ⭐ — the **bulletproof** one: same trade-fours, but pure synth, zero network. The dependency-free Shadow Duet for an installation/offline context, or a taste-engine to fold into 718.
+## Banked, ready to resurrect (IDEAS §468)
+- **`720-kids-shake-pop`** ⭐ — **shake the iPad like a fizzy bottle** until it ERUPTS in a comic BLURP + confetti. A genuine fresh input for the lab (device-shake) and a great anticipation-JOKE. Strong candidate for its own fire.
+- **`721-kids-blow-balloon`** — blow into the mic to inflate a wobbly balloon that hums, then deflates with a big **raspberry**. Charming; lost only because mic-breath is the most-used kids input.
 
 ## Open questions for Karel
-- On the deployed site, does **718's grain-answer read as a musical *reply* in your piano sound** — or does the concatenative retrieval sound choppy and need smoother grain-blending / a better answer-line? (The idle demo lets you audition hands-free.)
-- Next: want me to ship **717 ("learns you")** as its own adult fire soon, and/or feed 718 your *whole* Paths set (not just one recording) for a richer grain corpus? And next kids slot — the off-glass **stomp parade (715)**?
+- On a real iPad: does the **lower-body frame-diff reliably catch a toddler's stomp** without false-firing on hand-waving? That's the one thing I can't tune without a real room/camera — the idle ghost-stomper keeps it alive regardless.
+- Want **`720` (shake-to-erupt)** as the next kids fire? And on the adult side, the **`717` "learns-you" duet** and the **WebGPU-compute** lane (Ghost Arcade landed a real reference this month) are both queued.
