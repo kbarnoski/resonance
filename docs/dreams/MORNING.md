@@ -1,17 +1,16 @@
-# Morning digest — last updated 2026-06-18 (UTC), cycle 465
+# Morning digest — last updated 2026-06-18 (UTC), cycle 466
 
 ## New since yesterday
-- **`712-seismic-room`** ("Tremor") — open this and press Start, then just listen. **The world's earthquakes, live.** The instant any quake on Earth is detected by the global seismic network, it becomes a struck resonant tone and an expanding ripple on a world map — bigger quakes ring deeper and louder, shallow ones crack bright, deep ones rumble, and each pans by its longitude. You're sitting inside the seismic present of the whole planet. Connects to a **free, no-key real-time feed** (EMSC); if there's no network it falls back to a plausible **simulated swarm** so it always sounds and moves.
-  - *Why it matters:* this is the lab's **first real-world external-live-data instrument** — and the literal thing the last jury asked for (#4: "683's WebSocket engine could sonify a **non-market live stream — seismic — for free**"). 683 sonified the markets; this sonifies the Earth. A genuinely new *machine*, not a sensor reskin.
+- **`713-kids-rubber-face`** ("Rubber Face Sing-Along") — open it, press Start, and **grab the giant googly face.** Pull its nose to slide the pitch up and down, stretch its mouth to make silly vowels (ooo→aaa→eee), squish its cheeks for a wobbly wah, pull its ears for a goofy warble — let go and everything **boings back**. A 4-year-old sculpts a silly voice with their fingers. No reading, no mic, no wrong notes. If you don't touch it, a ghost finger plays with the face on its own so you can hear it immediately.
+  - *Why it matters:* the lab's **first "deformation → voice" instrument.** Every earlier vowel/voice kids toy listened to a microphone; this one is shaped *entirely* by how you squish the face — a real source-filter (formant) synth driven by touch. It's the **"make a kid LAUGH"** swing the last jury asked for (#5), and it breaks the kids side's recent two-player-groove rut.
 
 ## How this cycle ran
-- **Adult WIDE fire:** the adult lane had gone DEEP-single-concept four cycles straight and the jury said "the median has gone comfortable" — so I deliberately fanned out **3 unrelated ambitious directions** (live-data / WebMIDI / slime-mold sim), shipped the strongest, banked the other two.
-- Research-led, same day: the EMSC earthquake WebSocket is **one free URL away** — exactly the non-market live stream the jury named.
+- **Kids WIDE fire:** I fanned out **3 unrelated laugh-first directions** in parallel and shipped the strongest. Research-led the same day (VTech's Toy Fair 2026 "your movement is the controller" line + a density grep of all 712 prototypes that found *deformation→synthesis* was the one big laugh-mechanic the lab had never used).
 
-## Banked, ready to resurrect (IDEAS §465)
-- **`713-shadow-duet`** ⭐ RESURRECT FIRST — the lab's **first Web MIDI piece**: play a phrase (MIDI keyboard, your computer keys, or on-screen) and a **machine improviser answers in the gaps** — it analyzes your phrase and trades fours with you, like a jazz duet partner with taste (complementary register, inverted contour, lands on a consonant note). Serves you-the-pianist directly + the jazz-responsive arc you asked for. Built clean; held only because 712 was the literal jury-named build.
-- **`714-physarum-choir`** — thousands of agents grow a glowing slime-mold network and you *hear* it forming/branching/collapsing as an evolving choir; tap to feed it. The real next step is a WebGPU-compute port to 100k+ agents.
+## Banked, ready to resurrect (IDEAS §466)
+- **`715-kids-stomp-zoo`** ⭐ RESURRECT FIRST — get OFF the screen: **jump and stamp your feet in front of the camera** and a whole parade of googly creatures jumps with you, each stomp a big comic tuba **BONK** (webcam frame-difference, no AI, on-device only; a ghost auto-stomper keeps the parade going if there's no camera). The directest answer to the jury's "get the kids side off the glass."
+- **`714-kids-feed-monster`** — drag silly foods into a hungry monster; it **chomps in rhythm and BURPs**, and feeding it stacks up the groove. Genuinely funny; lost only because its loop-stacking beat engine is the same one the last two kids pieces used.
 
 ## Open questions for Karel
-- **Tremor** is build-verified but I couldn't hear it or hit the live feed in the sandbox — does the magnitude→pitch mapping actually read as *seismic*, and does the live EMSC feed connect on your machine? (The simulated swarm guarantees a sounding glance regardless.)
-- Want the next adult slot to be **Shadow Duet** (first MIDI, jazz call-and-response — I can wire it to answer your actual Paths piano), or keep fanning into more real-world live feeds (transit, aurora/solar-wind, language trends)?
+- **Rubber Face** is build-verified but I couldn't hear it in the sandbox — does the squish-the-mouth vowel morph actually read as a *silly voice* a kid would crack up at, or does it need crisper formants? (The idle ghost-finger demo gives you a hands-free listen on load.)
+- Next kids cycle: want the **off-glass stomp parade** (715) next, or more in the touch-toy vein? And for tonight's adult slot, still keen on **Shadow Duet** (first MIDI, jazz call-and-response wired to your Paths piano)?
