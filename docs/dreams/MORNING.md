@@ -1,22 +1,17 @@
-# Morning digest — last updated 2026-06-18 (UTC) · cycle 463
-
-> **Yesterday's jury** asked for two things on the adult side: **#2** push the embodied-spatial lane forward — *"push 677-presence-field to a cycle-2, not another eyes-closed SVG"* — and **#4** *reach for the ceiling, the median has gone comfortable.* This cycle is the genuine cycle-2 of 677. See `docs/dreams/JURY.md`.
+# Morning digest — last updated 2026-06-18 (UTC), cycle 464
 
 ## New since yesterday
-- **🌌 [710-presence-bloom](https://getresonance.vercel.app/dream/710-presence-bloom)** — *"Presence Bloom."* **A real cycle-2 of 677-presence-field.** 677 placed *static* voices at your joints; here a deliberate wrist gesture (reach → dwell → flick) **leaves behind a persistent voice** fixed in 3D that keeps singing — so over minutes you **build a spatial chord-architecture around your own ears**, rendered as a **60k-particle WebGPU storm** where each voice is a glowing attractor. **Why open it:** two capabilities 677 never had — *accretion* (the room fills and the D-Dorian field drifts, so it's genuinely different at minute 5 than at minute 1) and *distance + reverb as a felt axis* (near voices present & dry, far voices quiet & wet). **Headphones recommended.** No camera/GPU/CDN needed: a synthetic ghost body builds the architecture hands-free, and it falls to a first-class Canvas2D particle field if WebGPU is absent.
-- *2 more spatial explorers built this fire — banked, see IDEAS §463.*
+- **`711-kids-beat-buddies`** ⭐ — open this on a tablet with a kid (or two). **The lab's FIRST two-player piece.** Two kids sit on opposite sides of one tablet (top half is rotated so it reads right-way-up across the table) and tap big silly pads — drum, boing, honk, slide-whistle. Nothing fires raw: every tap **snaps onto one shared 104 BPM groove and loops** (Incredibox/Sprunki style), so two 4-year-olds *can't help* but lock into a beat together. When both play at once the googly conductors **high-five with confetti**. Pure tap — no camera, no tilt, no permissions — so it just works; leave it 2.5s and it auto-demos the groove building itself.
+  - *Why it matters:* directly answers the last jury's **#3** (multi-user / two-player was **0×** across the whole window — the one register the lab had never built) while also being **groove, not a cadence** (#1) and **a laugh, not a hush** (#5). Breaks the standing solo monoculture (every prior piece was one person alone).
 
-## How this cycle ran (orchestration)
-- **ADULT · DEEP fire, 3 parallel builders, ONE concept × 3 renderers:** **710 WebGPU** particle storm (**shipped**) · **708 three.js** cathedral of light-pillars (banked — the most legible installation reading) · **709 Canvas2D** zero-dependency frame-diff room-map (banked ⭐ — the bulletproof no-CDN/no-ML/no-GPU twin, the long-named 678-presence-flow lane).
-- **Why 710 won:** the jury's binding critique was *"reach for the ceiling"* — 710 is the biggest reach (Anadol-scale particle awe, like the praised 683) **and** the freshest renderer (WebGPU is scarcest; three.js was warming to a ban, Canvas2D is hot). Its WebGPU risk is covered by a real Canvas2D fallback, so it degrades rather than breaks. Ambition honest **3–4/5** (#2 + #3 + #4 cycle-2-of-677 + #5 same-day research); clears every banned tag.
+## How this cycle ran
+- **Kids WIDE fire:** 3 parallel builders, 3 different inputs (two-player touch / device-tilt / camera-motion), all groove + laughter, none a banned tag. Shipped the strongest, banked the other two.
+- Research-led: **Incredibox/Sprunki is a 2026-live thing** (shared-clock loop-stacking) + ensemble **entrainment** science (arXiv:2504.03958) → quantize both kids to one clock so togetherness is *engineered*.
 
-## In progress / partial
-- None. Clean tree; one commit. Authoritative winner-only build verified (**EXIT 0**, `501/501` static pages).
-
-## Research findings worth a look
-- **RESEARCH §463** — 2026 spatial-audio papers (**arXiv:2505.18020** distance-cues+reverberation, **arXiv:2407.13083** body-soundfields) say the felt-presence payload isn't *more panning* — it's **distance→reverb** + letting the body sculpt a **persistent** field. That's exactly the cycle-2 capability 677 lacked, and what 710 adds.
+## Banked, ready to resurrect (IDEAS §464)
+- **`713-kids-dance-drum`** ⭐ — off-glass webcam **freeze-dance**: wiggle to build a silly groove, a spring-physics creature mirrors you, the music yells FREEZE → hold still wins confetti. The directest "get off the glass" + revives the dance register you flagged as built-once-then-abandoned. Resurrect first for a body-input kids slot.
+- **`712-kids-roll-a-beat`** — tilt the tablet, a googly ball bonks friends, and every bonk **snaps onto the beat** (faster bonk = higher honk). Slapstick groove; bulletproof WASD fallback.
 
 ## Open questions for Karel
-- **710 wants headphones + a webcam.** On your device: does the WebGPU storm render (or does it fall to Canvas2D)? Do placed voices read as genuinely moving *around* you? Is dwell-then-flick a natural way to "place" a voice? (Sandbox has no GPU/camera — unverified by ear/eye.)
-- **Banked & ready (adult):** **709-presence-tide** ⭐ — the zero-dependency bulletproof spatial twin, resurrect FIRST when robustness matters or GPU/three.js are hot · **708-presence-cathedral** — the three.js cathedral, resurrect when three.js cools.
-- **Doc debt (standing):** INDEX.md still trails (680–704 mostly unlisted; I prepended/appended 705 + 710). Worth a housekeeping/polish cycle.
+- Does two-player on one tablet feel right, or should the next co-op step be **two devices** (WebRTC) so kids can be apart? (711's shared-clock design ports cleanly to a network transport.)
+- Kids side now has three fresh laugh/groove lanes queued (two-player / tilt-rhythm / freeze-dance). Want me to deepen 711 into a **cycle-2** (more pads, a streak meter, two-marble co-op), or keep fanning WIDE?
