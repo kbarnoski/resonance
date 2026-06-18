@@ -1,17 +1,17 @@
-# Morning digest — last updated 2026-06-18 (UTC), cycle 464
+# Morning digest — last updated 2026-06-18 (UTC), cycle 465
 
 ## New since yesterday
-- **`711-kids-beat-buddies`** ⭐ — open this on a tablet with a kid (or two). **The lab's FIRST two-player piece.** Two kids sit on opposite sides of one tablet (top half is rotated so it reads right-way-up across the table) and tap big silly pads — drum, boing, honk, slide-whistle. Nothing fires raw: every tap **snaps onto one shared 104 BPM groove and loops** (Incredibox/Sprunki style), so two 4-year-olds *can't help* but lock into a beat together. When both play at once the googly conductors **high-five with confetti**. Pure tap — no camera, no tilt, no permissions — so it just works; leave it 2.5s and it auto-demos the groove building itself.
-  - *Why it matters:* directly answers the last jury's **#3** (multi-user / two-player was **0×** across the whole window — the one register the lab had never built) while also being **groove, not a cadence** (#1) and **a laugh, not a hush** (#5). Breaks the standing solo monoculture (every prior piece was one person alone).
+- **`712-seismic-room`** ("Tremor") — open this and press Start, then just listen. **The world's earthquakes, live.** The instant any quake on Earth is detected by the global seismic network, it becomes a struck resonant tone and an expanding ripple on a world map — bigger quakes ring deeper and louder, shallow ones crack bright, deep ones rumble, and each pans by its longitude. You're sitting inside the seismic present of the whole planet. Connects to a **free, no-key real-time feed** (EMSC); if there's no network it falls back to a plausible **simulated swarm** so it always sounds and moves.
+  - *Why it matters:* this is the lab's **first real-world external-live-data instrument** — and the literal thing the last jury asked for (#4: "683's WebSocket engine could sonify a **non-market live stream — seismic — for free**"). 683 sonified the markets; this sonifies the Earth. A genuinely new *machine*, not a sensor reskin.
 
 ## How this cycle ran
-- **Kids WIDE fire:** 3 parallel builders, 3 different inputs (two-player touch / device-tilt / camera-motion), all groove + laughter, none a banned tag. Shipped the strongest, banked the other two.
-- Research-led: **Incredibox/Sprunki is a 2026-live thing** (shared-clock loop-stacking) + ensemble **entrainment** science (arXiv:2504.03958) → quantize both kids to one clock so togetherness is *engineered*.
+- **Adult WIDE fire:** the adult lane had gone DEEP-single-concept four cycles straight and the jury said "the median has gone comfortable" — so I deliberately fanned out **3 unrelated ambitious directions** (live-data / WebMIDI / slime-mold sim), shipped the strongest, banked the other two.
+- Research-led, same day: the EMSC earthquake WebSocket is **one free URL away** — exactly the non-market live stream the jury named.
 
-## Banked, ready to resurrect (IDEAS §464)
-- **`713-kids-dance-drum`** ⭐ — off-glass webcam **freeze-dance**: wiggle to build a silly groove, a spring-physics creature mirrors you, the music yells FREEZE → hold still wins confetti. The directest "get off the glass" + revives the dance register you flagged as built-once-then-abandoned. Resurrect first for a body-input kids slot.
-- **`712-kids-roll-a-beat`** — tilt the tablet, a googly ball bonks friends, and every bonk **snaps onto the beat** (faster bonk = higher honk). Slapstick groove; bulletproof WASD fallback.
+## Banked, ready to resurrect (IDEAS §465)
+- **`713-shadow-duet`** ⭐ RESURRECT FIRST — the lab's **first Web MIDI piece**: play a phrase (MIDI keyboard, your computer keys, or on-screen) and a **machine improviser answers in the gaps** — it analyzes your phrase and trades fours with you, like a jazz duet partner with taste (complementary register, inverted contour, lands on a consonant note). Serves you-the-pianist directly + the jazz-responsive arc you asked for. Built clean; held only because 712 was the literal jury-named build.
+- **`714-physarum-choir`** — thousands of agents grow a glowing slime-mold network and you *hear* it forming/branching/collapsing as an evolving choir; tap to feed it. The real next step is a WebGPU-compute port to 100k+ agents.
 
 ## Open questions for Karel
-- Does two-player on one tablet feel right, or should the next co-op step be **two devices** (WebRTC) so kids can be apart? (711's shared-clock design ports cleanly to a network transport.)
-- Kids side now has three fresh laugh/groove lanes queued (two-player / tilt-rhythm / freeze-dance). Want me to deepen 711 into a **cycle-2** (more pads, a streak meter, two-marble co-op), or keep fanning WIDE?
+- **Tremor** is build-verified but I couldn't hear it or hit the live feed in the sandbox — does the magnitude→pitch mapping actually read as *seismic*, and does the live EMSC feed connect on your machine? (The simulated swarm guarantees a sounding glance regardless.)
+- Want the next adult slot to be **Shadow Duet** (first MIDI, jazz call-and-response — I can wire it to answer your actual Paths piano), or keep fanning into more real-world live feeds (transit, aurora/solar-wind, language trends)?
