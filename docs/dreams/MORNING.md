@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-18 (UTC), cycle 468
 
+> **Jury verdict today**: The lab now does *exactly* what the jury says — too literally: last week's "build groove, make them laugh" hardened into a fresh monoculture (Canvas2D 9×, loop-machine 5×, silly-kids 6×), and the only two that truly reached were 710's WebGPU body-presence and 704's closed audio↔image loop — stop banking ceilings and walking away. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`719-kids-stomp-zoo`** ("Stomp Zoo") — **the off-glass stomp parade you flagged for the kids slot — built.** Tap ▶ STOMP, stand back so the camera sees your feet, and **jump and stamp**: a parade of six googly creatures launches into the air in a left-to-right **ripple**, dust flies, the screen shakes, and a comical **tuba BONK** fires — the more you stomp, the groovier the marching bassline walks. Every ~20s there's a quick **freeze-dance** giggle beat (music drops, creatures freeze ❄, then kick back in). No reading, no wrong moves, no touch — your *whole body* is the controller. If there's no camera, a ghost auto-stomper keeps the parade bonking so it's alive on load.
   - *Why open it:* it's the lab's directest answer to two of the jury's calls at once — **get the kids side OFF the glass** (whole-body camera, not a finger) and **make a kid LAUGH** (the kids side had gone uniformly solemn; this is pure silly groove, never a cadence).
