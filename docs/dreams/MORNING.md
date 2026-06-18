@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-06-18 (UTC) · cycle 462
+# Morning digest — last updated 2026-06-18 (UTC) · cycle 463
 
-> **Yesterday's jury** asked the kids side, loudly: the pentatonic crutch got swapped for a *new* one — six straight "harmonic-event / voice-leading" pieces (**#1 banned on kids for a week**). **#5: make a kid LAUGH** — the silly pole is at zero. This cycle answers both. See `docs/dreams/JURY.md`.
+> **Yesterday's jury** asked for two things on the adult side: **#2** push the embodied-spatial lane forward — *"push 677-presence-field to a cycle-2, not another eyes-closed SVG"* — and **#4** *reach for the ceiling, the median has gone comfortable.* This cycle is the genuine cycle-2 of 677. See `docs/dreams/JURY.md`.
 
 ## New since yesterday
-- **🎤 [705-kids-silly-voice](https://getresonance.vercel.app/dream/705-kids-silly-voice)** — *"Silly Voice Monster."* **Talk into the phone and a googly monster repeats your voice back in the silliest possible voice.** Press the giant mic to record ~1.8s, then five big buttons replay *your own voice* as 🐿️ chipmunk / 👹 monster / 🔁 backwards / 🤖 robot / 🌊 wobble — the monster's mouth lip-syncs to it. **Why open it:** a pure pitch-free **voice-changer** — zero scale, zero cadence, the freshest kids register in weeks, and the directest "make a kid laugh" the lab has built. **Works instantly for anyone with a mic** (no camera, no CDN); no mic → 5 pre-baked silly sounds keep it fun.
-- *2 more laugh-first explorers built this fire — banked, see IDEAS §462.*
+- **🌌 [710-presence-bloom](https://getresonance.vercel.app/dream/710-presence-bloom)** — *"Presence Bloom."* **A real cycle-2 of 677-presence-field.** 677 placed *static* voices at your joints; here a deliberate wrist gesture (reach → dwell → flick) **leaves behind a persistent voice** fixed in 3D that keeps singing — so over minutes you **build a spatial chord-architecture around your own ears**, rendered as a **60k-particle WebGPU storm** where each voice is a glowing attractor. **Why open it:** two capabilities 677 never had — *accretion* (the room fills and the D-Dorian field drifts, so it's genuinely different at minute 5 than at minute 1) and *distance + reverb as a felt axis* (near voices present & dry, far voices quiet & wet). **Headphones recommended.** No camera/GPU/CDN needed: a synthetic ghost body builds the architecture hands-free, and it falls to a first-class Canvas2D particle field if WebGPU is absent.
+- *2 more spatial explorers built this fire — banked, see IDEAS §463.*
 
 ## How this cycle ran (orchestration)
-- **KIDS · WIDE fire, 3 parallel builders, 3 divergent comedy cores** (all reject harmony for pure SFX): **705 silly-voice** (mic → voice-changer — **shipped**) · **706 tilt-bonk** (tilt → bouncy-room bonkers, velocity-pitched honk/boing — banked, the bulletproof no-permission sibling) · **707 mega-mouth** ⭐ (MediaPipe face-puppet that eats falling snacks & burps — banked, the most ambitious + most CDN-fragile).
-- **Why 705 won:** most *surprising* (a voice-changer is genuinely absent from the recent kids lab) **and** most *robust* (no camera/CDN/ML to fail — broken build = broken prod, so reliability counts). Ambition honest 2–3/5; clears every banned tag (mic-comedy / Canvas2D / sample-manipulation / silly).
+- **ADULT · DEEP fire, 3 parallel builders, ONE concept × 3 renderers:** **710 WebGPU** particle storm (**shipped**) · **708 three.js** cathedral of light-pillars (banked — the most legible installation reading) · **709 Canvas2D** zero-dependency frame-diff room-map (banked ⭐ — the bulletproof no-CDN/no-ML/no-GPU twin, the long-named 678-presence-flow lane).
+- **Why 710 won:** the jury's binding critique was *"reach for the ceiling"* — 710 is the biggest reach (Anadol-scale particle awe, like the praised 683) **and** the freshest renderer (WebGPU is scarcest; three.js was warming to a ban, Canvas2D is hot). Its WebGPU risk is covered by a real Canvas2D fallback, so it degrades rather than breaks. Ambition honest **3–4/5** (#2 + #3 + #4 cycle-2-of-677 + #5 same-day research); clears every banned tag.
 
 ## In progress / partial
-- None. Clean tree; one commit. Authoritative winner-only build verified (**EXIT 0**, `500/500` static pages).
+- None. Clean tree; one commit. Authoritative winner-only build verified (**EXIT 0**, `501/501` static pages).
 
 ## Research findings worth a look
-- **RESEARCH §462** — 2026 **Toy Fair** rewards *screen-free sound toys* (physical cause → satisfying sound, not melody) + modern **ragdoll-physics** toys drive humor via *velocity→comedic pitch*. The live 2026 kids register is gross/loud/velocity-pitched comedy — the opposite of the "musical correctness" the lab kept chasing. Chained straight into today's three builds.
+- **RESEARCH §463** — 2026 spatial-audio papers (**arXiv:2505.18020** distance-cues+reverberation, **arXiv:2407.13083** body-soundfields) say the felt-presence payload isn't *more panning* — it's **distance→reverb** + letting the body sculpt a **persistent** field. That's exactly the cycle-2 capability 677 lacked, and what 710 adds.
 
 ## Open questions for Karel
-- **705 wants your ears.** On a real phone, do the five transforms read as laugh-out-loud silly to a 4-year-old? Is the mouth lip-sync convincing? (Sandbox has no mic — unverified by ear.)
-- **Banked & ready:** **707-kids-mega-mouth** ⭐ for a night that wants a camera/embodied piece (burp-eating gag is a guaranteed giggle, but carries the MediaPipe-CDN risk) · **706-kids-tilt-bonk** as a zero-risk silly sibling. The standing **703-kids-boing-zoo** (tilt slapstick) is essentially the same lane as 706.
-- **Doc debt:** INDEX.md still trails (680–704 mostly unlisted; I prepended 705). Worth a housekeeping/polish cycle.
+- **710 wants headphones + a webcam.** On your device: does the WebGPU storm render (or does it fall to Canvas2D)? Do placed voices read as genuinely moving *around* you? Is dwell-then-flick a natural way to "place" a voice? (Sandbox has no GPU/camera — unverified by ear/eye.)
+- **Banked & ready (adult):** **709-presence-tide** ⭐ — the zero-dependency bulletproof spatial twin, resurrect FIRST when robustness matters or GPU/three.js are hot · **708-presence-cathedral** — the three.js cathedral, resurrect when three.js cools.
+- **Doc debt (standing):** INDEX.md still trails (680–704 mostly unlisted; I prepended/appended 705 + 710). Worth a housekeeping/polish cycle.
