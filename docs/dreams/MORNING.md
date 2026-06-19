@@ -1,24 +1,40 @@
-# Morning digest — last updated 2026-06-19 (UTC), cycle 476
+# Morning digest — last updated 2026-06-19 (UTC) · cycle 477 (adult · DEEP)
 
-> **A glowing creature a little kid can sing to — and it remembers their songs and slowly grows up.** Tonight's kids fire builds the one thing no kids prototype here has ever had: **memory**. Every other kids toy in the lab reacts and instantly forgets; Song Sprout listens, remembers what you hummed, and over minutes matures — bigger, warmer-voiced — singing your own little melodies back, made new. It's the jury's loudest note ("reward depth, build the accreting-memory ceiling, stop walking away") brought down to a 4-year-old as a *companion*, not a toy.
+> **Two phones, one piano, in time.** Type the same room code on two devices and play Karel's piano together — and a shared clock gently locks both of you onto one pulse so it feels like one room, not two laggy browsers. It's the jury's loudest *unbuilt* ask (#4: "make a multi-user piece *actually* cross-device") finally answered — and gone deeper than a note relay.
 
 ## New since yesterday
-- **`738-kids-song-sprout`** ("Song Sprout", kids 3+) — **hum a few notes; the sprout listens and leans in, then when you go quiet it sings back a little tune recombined from what you taught it.** Keep playing and it grows up: minute-1 is a tiny baby-blue spark with a thin voice; minute-5 is a big warm-gold being with a fuller, vibrato'd voice and longer, more elaborate replies (a legible "stage of life" label shows the growth). Made of glowing three.js particles; nothing is ever out of tune (D-Dorian).
-  - *Why open it:* it's the **lab's first kids piece with memory + a minutes-long arc** — the category the kids side completely lacks. It sings hands-free on load (a ghost "virtual child" hums on its own), so just open it and watch/listen to it grow. No camera, no loop, no groove, no silliness — tender. Refs: **Tamagotchi/*Seaman*** · **Eno *Reflection*** · **George Lewis *Voyager*** (a machine that *answers*, never echoes).
+- **🎹🔗 [/dream/741-piano-room-pulse](/dream/741-piano-room-pulse) — Piano Room Pulse.** Type the same 4-letter
+  room code on **two phones** and play together — and a shared **NTP-style clock** gently locks both of you onto
+  ONE drifting pulse, so a real ensemble **LOCK** emerges despite ~100ms of network latency. **Open this one.**
+  The directest hit on **JURY #4** ("retire the cross-device asterisk") + the deepest on **#3** (reward depth):
+  the prior cross-device piece (729) joined via a clunky manual SDP copy-paste; this joins by *typing a code*
+  (Supabase Realtime — frictionless) and adds what 729 never had — a shared clock + lock, the actual hard
+  problem of networked music. MIDI/computer-keyboard first; D-Dorian so nothing's ever wrong; three.js
+  pulse-ring. **2 more cross-device approaches explored — see IDEAS §477.**
 
-## How this cycle ran
-- **Kids DEEP fire:** 3 parallel builders, ONE concept (*a companion-world that remembers your voice and evolves over minutes*), three scarce-renderer attacks — **three.js single-creature** (won), **three.js accreting grove**, **raw WebGL2 coral reef**. The single-creature won because its memory *composes* (recombines fragments into new replies) rather than just accumulating a glowing field — the more surprising, more "Resonance" reading (a relationship, not a texture).
-- Research → build chain (today): the live-2026 long-form/evolving generative frontier (an audio-reactive WebGPU slime-mold updated yesterday) is **entirely adult/installation**, and 2026 kids-tech reacts-but-forgets → the gap is a kids piece that *remembers and grows*. Avoided WebGPU (already 3× recent) and the jury-banned Canvas2D.
+## How to actually try it
+- **Solo (your 06:30 one-phone glance):** just open it — a *Voyager*-style ghost partner auto-plays in time
+  after ~2.5s, so it's always sounding and visibly a locked duet with zero setup.
+- **Real test:** open the page on two devices, type the **same room code** (e.g. `MOSS`) on each, play. (Uses
+  the Supabase env you already have on Vercel; if it can't reach the room it quietly stays solo — nothing breaks.)
 
-## ⚠️ One honest caveat (please glance)
-- **Build:** 738 **compiled, linted, and type-checked clean** (no warnings attributable to it). The container's tiny file-descriptor ceiling (4096) again kills Next's static-generation step with `EMFILE` — **same infra quirk as the last 5 nights, NOT the code:** I proved it by building *pristine main* (no new folder) — it fails identically at the same file. **Vercel builds this app fine and will deploy 738.**
-- **Not browser-verified here** (no mic/audio/WebGL in the sandbox) — unverified by ear: whether the pitch-tracker follows a small child's hum, and whether the recombined replies truly read as *the sprout developing*. The ghost demo + Canvas2D fallback guarantee a sounding, growing glance regardless.
+## Explored but banked (IDEAS §477)
+- **739-piano-room-relay** ⭐ — Supabase Realtime *direct*: the reliability/frictionless champion. Lost because
+  it moves notes but doesn't fight latency — without the clock, two players smear.
+- **740-piano-room-portal** ⭐ — WebRTC P2P **auto-signaled over Supabase** (join by code, no manual handshake —
+  kills 729's friction). Lowest latency; lost because P2P is the most fragile cross-device (STUN-only NAT risk).
 
-## Banked this cycle, ready to resurrect (IDEAS §476)
-- **`736-kids-echo-grove`** ⭐ — the three.js sibling: hum and a **grove** of glowing trees accumulates, older trees re-singing your earlier notes so a choir builds from your own voice. Resurrect-first for the next kids long-form slot.
-- **`737-kids-memory-reef`** — the **raw WebGL2** sibling (most iPad-bulletproof): sing and a glowing coral reef grows from your voice. Resurrect when iOS-safety is the priority.
+## Heads-up
+- **Build gate: green on code, blocked on infra (standing since cycle 472).** `npm run build` compiles +
+  type-checks + lints clean, but this container's 4096-fd limit kills Next's static-gen worker (`EMFILE`) —
+  **pristine main fails identically**, so it's the container, not the code. Vercel builds it fine.
+- **Open thread (JURY #5):** your real *Welcome Home* piano is still only in the paths-* pieces. The obvious
+  next move is to fuse it INTO this cross-device duet (739/741 base) so two people play *your* recording together.
 
 ## Open questions for Karel
-- On a real device, does Song Sprout feel like *a creature that remembers you and grows* — or does the reply need to land closer to what you actually hummed (more echo, less recombination) for a 4-year-old to feel heard?
-- 738 is built to deepen (cycle-2): richer life-stages/"seasons", a **harmonic memory** that gives the sprout a slow evolving key over a session, and a **second sprout that duets** with the first. Worth pursuing — or resurrect a sibling (736 grove / 737 reef) first?
-- Standing: the kids lane's WebGPU is now 3× recent (warming toward a ban) and Canvas2D is jury-banned — three.js + raw WebGL2 are the scarce renderers I'm steering kids onto. Any renderer you especially want to see (or avoid) for the little ones?
+- Cross-device needs a real two-phone try — does the clock lock *feel* locked by ear? Want me to resurrect
+  **739** (simpler/looser) or **740** (P2P/tighter) instead?
+- Next adult cycle: wire your actual piano into the duet (answers JURY #5), or keep the synth?
+
+## Next
+- Cycle 478 = **kids** (resurrect-first: `736-kids-echo-grove` ⭐ / `737-kids-memory-reef`, or 738's cycle-2).
