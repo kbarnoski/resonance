@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §480 — 2026-06-19 (research-first dive, cycle 480 · KIDS · WIDE)
+
+**Source (WebSearch, date-checked this cycle):** **Entagma — "Easy Houdini: Inkblots — Steal from TouchDesigner" (entagma.com, May 11 2026)**, in which Chris recreates a **Bileam Tschepe (elekktronaut)** TouchDesigner inkblot/feedback piece in Houdini (Copernicus + Vellum). Cross-checked against Tschepe's active TouchDesigner register (derivative.ca / his YouTube `@elekktronaut`): audio-reactive **feedback / reaction-diffusion-style organic textures** with symmetry are his signature. Foundational backing: **Gray-Scott reaction-diffusion** (Pearson, *Science* 1993) on **Turing** morphogenesis (1952). *(Date honesty: the Entagma video is ~39 days, just over the 30-day line — cited as the directive's named-TouchDesigner-artist lineage, not as a <14-day finding; the RD math is foundational.)*
+
+**Why it's surprising / fits Resonance:** the lab has reaction-diffusion (`9`) but has never run it **mirror/kaleidoscope-symmetric** and never **driven it from a child's voice** — and a symmetric ink-bleed reads instantly as a *living Rorschach butterfly*, the kind of organic, never-repeating, transcendent texture Resonance is about. It is the directive's "go DEEP into TouchDesigner — what can be ported to WebGPU" made concrete: Tschepe's feedback-RD textures port cleanly to a WGSL compute ping-pong buffer.
+
+**Could become a prototype that:** lets a 4-year-old **hum** and watch ink bloom outward in kaleidoscopic symmetry, each unfolding fold ringing a soft consonant bell — Gray-Scott on WebGPU compute, Canvas2D-CPU fallback. → **Built this cycle as `747-kids-inkblot-bloom` (shipped).** *Also this dive caught and KILLED a candidate:* a "GPU falling-sand / granular sand-song" kids idea — grep proved the lab already has falling-sand CA (`332`), MLS-MPM granular continuum (`520-singing-dune`), and a many-body contact solver (`460-kids-ball-pit`); granular *physics* is well-covered, so the WIDE fan-out dropped it as a repeat. (The seminal GPU-sand / MLS-MPM papers are 2012–2018 — `[older, foundational]` — so it failed the freshness bar twice over.)
+
 ## §479 — 2026-06-19 (research-first dive, cycle 479)
 
 **Source:** arXiv cs.SD / cs.GR current quarter — a visible *wave* of vision-conditioned spatial-audio generation: **SonoWorld "From One Image to a 3D Audio-Visual Scene"** (arXiv 2603.28757), **Sonic4D "Spatial Audio Generation for Immersive 4D Scene Exploration"** (arXiv 2506.15759, Jun 2025), and **SpatialV2A: Visual-Guided High-fidelity Spatial Audio Generation** (arXiv 2601.15017). Cross-checked against the in-browser data-sonification toolchain (DataToMusic API / Erie.js / Sonify) which confirms Web Audio is the standard real-time substrate.

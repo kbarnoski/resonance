@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-06-19 10:27 UTC · cycle 479 (adult · WIDE)
+# Morning digest — last updated 2026-06-19 12:20 UTC · cycle 480 (kids · WIDE)
 
 ## New since yesterday
-- **`744-magnetic-walk`** ([open](https://getresonance.vercel.app/dream/744-magnetic-walk)) — **the invisible magnetic field around you, made audible.** Turn your phone: your heading in the Earth's geomagnetic frame walks a 12-station "compass of keys" (a different just-intoned drone facing N vs E vs S vs W), and a WebGL2 aurora stays **locked to magnetic north** so the world feels fixed while you turn. The lab's **first true compass/magnetometer piece** (everything before used only raw tilt). **Best opened on your phone** — turn slowly. No mic, no camera, no recorded piano. Refs: Christina Kubisch *Electrical Walks*, Pauline Oliveros *Deep Listening*.
-- *Why this one:* it deliberately **breaks the his-piano-grain monoculture** — 8 of the last 10 prototypes used your Welcome Home recording + concatenative grains (the lab over-corrected on the jury's "use your music" note). This cycle banned that cluster and went somewhere new.
+- **`747-kids-inkblot-bloom`** ([open](https://getresonance.vercel.app/dream/747-kids-inkblot-bloom)) — **a kid hums and watches living, mirror-symmetric inkblots bloom and unfold like a butterfly — each fold singing.** The ink is a real **Gray-Scott reaction-diffusion** field running on **WebGPU compute**, folded into kaleidoscope symmetry. No beat, no loop, no wrong note — contemplative, not silly. **Best opened on a tablet** — hum or blow softly. The drone + a ghost-hum auto-demo keep it alive even in silence.
+- *Why this one:* it came straight from today's research dive — **Bileam Tschepe (elekktronaut) / Entagma's "Inkblots — Steal from TouchDesigner"** — your named TouchDesigner artist, ported to the browser. And it's the literal answer to the jury's "give a *kid* the scarce renderer (WebGPU), stop defaulting to Canvas2D."
 
-## Banked this cycle — worth a look in IDEAS §479
-- **⭐ `745-room-listener`** — the lab's **first in-browser neural net**: TensorFlow.js + COCO-SSD watches your camera and turns each object it recognizes (cup, plant, you) into its own voice — *the room, sung*. The boldest swing (3/5), aligned with your loved `101-camera-song` / `86-sound-to-video`. **Banked, not shipped**, because its headline depends on an unverifiable model download and it landed on Canvas2D — I want to rebuild it on a scarce renderer and verify the load. **Top candidate for the next adult cycle.**
-- `746-orbit-bell` — hear the ISS overhead *right now*: live telemetry → a cosmic globe drone, and a bell rings the instant it crosses into Earth's shadow.
+## Banked this cycle — worth a look in IDEAS §480
+- **⭐ `748-kids-aurora-silk`** — tilt the tablet and a glowing 3D **silk veil of aurora light** billows, folds, and sings like wind through cloth. The lab's **first real cloth simulation**, on three.js (the most iOS-bulletproof renderer), and it pulls straight from your loved `262-aurora-particle`. **My top resurrect-first for the next kids cycle** — it needs no camera/mic permission at all. Lost by a hair only because `747` was the live research chain.
+- `749-kids-shadow-garden` — your child's **shadow waters a garden of glowing flowers** that sing where they stand (camera silhouette → WebGPU). The most moving concept; banked because its segmentation model load needs a real-device check before I ship it unattended.
 
 ## Mode / process note
-- **WIDE fire** — 3 parallel builders, 3 never-used techniques (compass-sensor / neural-camera / ISS-telemetry); shipped the strongest. Went WIDE rather than DEEP because the jury's "deepen a ceiling" plea points only at his-piano pieces — all diversity-banned this cycle — so the right move was to break the monoculture with fresh techniques.
+- **WIDE fire** — 3 parallel builders, 3 unrelated directions (hum→ink / tilt→cloth / shadow→garden), each on a scarce renderer, none silly, none a groove. Went WIDE (not DEEP) because we've run DEEP 3 of the last 4, and the jury asked the *kids* side specifically to spread the register, not run one template. Shipped the strongest; banked the other two.
 
 ## Open questions for Karel
-- The lab swung hard onto your real piano (8 of 10). Right amount, or dial it back toward fresh-synthesized pieces like `744`? Your answer steers the next several cycles.
-- Want me to prioritize resurrecting **`745-room-listener`** (first neural net, on a scarce renderer) for the next adult cycle?
+- The two banked kids siblings are both strong — want `748-kids-aurora-silk` (first cloth sim, aurora) next, or `749-kids-shadow-garden` (your shadow grows a garden)?
+- Renderer note: WebGPU is now at 4× in the last 10 — I'll rotate off it next cycle unless you want more kid-WebGPU.
 
 ## Heads-up
-- `744` is **compile / lint / type-check clean** but only **structurally** verified, not run on a device — same as every cycle since #472 (the sandbox's fd ceiling blocks static-gen; pristine `main` fails identically, so it's the container, not the code — Vercel deploys fine). Unverified by eye/ear: real iOS compass behavior, the aurora shader, drone timbre. The ghost auto-drift + Canvas2D fallback guarantee it's alive on a glance even with no sensor.
+- `747` is **compile / lint / type-check clean** but only **structurally** verified, not run on a device — same as every cycle since #472 (the sandbox's fd ceiling blocks static-gen; pristine `main` fails identically, so it's the container, not the code — Vercel deploys fine). Unverified by eye/ear: whether the WGSL compiles first-run on a real iPad (the Canvas2D fallback runs the *identical* reaction-diffusion as a safety net), and whether the ink regime reads as a butterfly. Ghost-hum + Canvas2D fallback guarantee it's alive on a glance even with no mic or no WebGPU.
