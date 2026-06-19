@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-19 (UTC) · cycle 484
+# Morning digest — last updated 2026-06-19 (UTC) · cycle 485
 
 ## New since yesterday
-- **`755-kids-bounce-house`** ([open it](https://getresonance.vercel.app/dream/755-kids-bounce-house)) — **a kid bounces bright balls on a giant stretchy TRAMPOLINE that sings.** Tap the sky to drop a glossy ball; it falls onto a *real* deforming spring-mesh sheet and bounces, and every landing rings a warm tuned drum-bell (center = low, edges = brighter, always in key). Drag the sheet to make it wobble and twang. **Why open it:** it's a sunny, joyful, *active* kids piece — the exact register the jury said was missing — and the trampoline is a genuine **Verlet mass-spring cloth** (the lab's first structured cloth, and first time a membrane itself is the instrument), so the soft-body's motion *is* the music, not a faked wobble. Kids (4+) · **WIDE**-winner · **Canvas2D, zero GPU shader** · bright bounce-house daylight.
+- **`760-wiki-carillon`** ([open it](https://getresonance.vercel.app/dream/760-wiki-carillon)) — **the live firehose of Wikipedia edits, made audible.** Every edit anywhere on Wikimedia rings a bell over a pale atlas field: big edits ring low and long, tiny tweaks bright and short (always in key); each wiki keeps its own spot; a brand-new editor adds a soft violet swell; a bot taps a muted woodblock. It accretes into an ever-shifting, never-repeating composition — music *about* the world's collective writing. **Why open it:** it's the most *surprising* thing the lab has made in a while and the directest "huh, I didn't know we could do that" — the world writing itself, in real time, as a carillon. Adult · **WIDE**-winner · **Canvas2D, zero GPU shader** · bright civic/atlas daylight. (Connects to the real stream on a networked device; falls back to an honestly-badged synthetic stream offline, so it always sounds.)
 
 ## How this cycle answered the jury (2026-06-19)
-- **#4 build the bright/joyful/active-middle kids register** (kids side had swung back to 9× solemn-glow) → a sunny bounce-house: exuberant without being silly, bright without being a dark meditation.
-- **#2 rotate OFF GPU-shader fields (9/15); Canvas2D is scarce again** → pure **Canvas2D, zero WebGL/WebGPU/shader** — the idea carries on the renderer, not because of it.
-- **#1 off the grain-cloud** → a tuned membrane-drum synth, not his-piano grains.
-- **Anti-monoculture / WIDE** → 3 unrelated bright directions in one fire; deliberately *off* the saturated "object falls→collision→note" pieces (`184`/`451`/`553`/`619`) by making the *deforming sheet* the instrument.
+- **Anti-monoculture (the jury's loudest note — "every ban hardened into the next monoculture")** → `760` is the only one of the three explorers that escapes the his-piano cluster (now 7/15, "used exactly one way") **entirely**, on a **lab-first input** (a live external event-stream, never used before).
+- **#2 rotate OFF GPU-shader fields (9/15); Canvas2D is scarce again** → pure **Canvas2D, zero WebGL/WebGPU/shader** — the idea carries the piece, not the renderer.
+- **#1 off the grain-cloud** → synthesized FM bells, no his-piano grains.
+- **Vibe pendulum (away from 9× dark-glow)** → a bright parchment/ink-and-gold atlas, not a near-dark luminous field.
 
-## Also explored (banked in IDEAS §484, not shipped)
-- **`756-kids-hill-roller`** ⭐ — SVG/DOM, **tilt**: sculpt a row of sunny hills with your finger, then tilt the tablet to roll a ball over them — the hills you drew *are* the melody. Love-aligned (`83-kids-tilt-rain`❤️). **Resurrect-first** next kids cycle.
-- **`757-kids-balloon-band`** — three.js: hold to inflate balloons (bigger = higher note), let go and they float up to build a chord in the sky, tap to pop.
+## Also explored (banked in IDEAS §485, not shipped — both use your real *Welcome Home* piano a new, non-grain way)
+- **`758-sky-almanac`** ⭐ — the local clock + the computed position of the sun & moon conduct a long-form, **non-looping** arrangement of whole *phrases* of your piano, on an **SVG sun-arc orrery** that shifts warm-gold→indigo with the real sun. Zero-interaction autoplay, the calmest glance, the highest ambition of the three. **Resurrect-first** next adult cycle (it only lost because it'd be a *third* his-piano piece right as the jury flagged that cluster).
+- **`759-phrase-loom`** — drag a luminous SVG timeline to re-weave whole phrases of your recording via a Markov model — the literal "remix his phrasing, not his grains."
 
 ## Open questions for Karel
-- `755` is correct-by-construction + bulletproof (a ghost auto-demo bounces + sings on its own), but the **trampoline timbre + the wobble physics weren't ear/touch-verified** in the sandbox — worth a 10-second play on a real iPad to confirm it feels as springy and warm as intended.
-- Doc debt: the INDEX is still trailing (only the top entries are fresh), and the STATE entries for cycles 481–483 landed at the *bottom* of the file instead of the top — a quick housekeeping/polish cycle would tidy both. Say the word and I'll spend one fire on it.
+- `760` is correct-by-construction + bulletproof (synthetic-stream fallback, honest live/demo badge), but the real Wikimedia SSE + the bell timbre **weren't ear-verified** in the sandbox (no audio/network) — worth a 20-second listen on your phone to confirm the live firehose connects and the carillon feels musical under load.
+- The his-piano question is now pointed: the jury says it's overused (7/15), but it's *your* music and you've loved the Paths pieces. I read the jury as the harder gate this week and shipped away from it — but `758`/`759` are queued the moment you want more of your piano back. Tell me which way to lean.
 
 ## Note
-- Build verified: `✓ Compiled` + TypeScript + ESLint clean, zero issues in the `755` folder. Static-gen still hits the container's file-descriptor ceiling (`EMFILE`) — same infra quirk as cycles 471–483; pristine `main` fails identically, Vercel deploys fine.
+- Build verified: `✓ Compiled successfully in 34.3s` + TypeScript + ESLint clean, zero issues in the `760` folder. Static-gen still hits the container's file-descriptor ceiling (`EMFILE`) — same infra quirk as cycles 471–484; pristine `main` fails identically this cycle too, Vercel deploys fine.
