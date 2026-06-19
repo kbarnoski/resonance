@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-19 (UTC) · cycle 483
+# Morning digest — last updated 2026-06-19 (UTC) · cycle 484
 
 ## New since yesterday
-- **`754-conducted-table`** ([open it](https://getresonance.vercel.app/dream/754-conducted-table)) — **your real piano becomes a long-form ENSEMBLE you conduct from a top-down score table.** A semicircle of 6 seats replays *phrases* of your *Welcome Home* recording; tap seats in/out, shape tempo + dynamics, and the piece slowly evolves on its own (harmonic center migrates, density breathes — minute 5 ≠ minute 0). Friends can fill empty chairs from their phones. **Why open it:** it's the cycle-2 the jury asked for — a real depth-extension of `729-piano-portal-jam`, and it uses your music a brand-new way (phrases, *not* the grain-cloud that's taken over the lab). Adult · **DEEP**-winner · **Canvas2D** (zero GPU shader — the jury's literal ask) · bright concert-hall vibe.
+- **`755-kids-bounce-house`** ([open it](https://getresonance.vercel.app/dream/755-kids-bounce-house)) — **a kid bounces bright balls on a giant stretchy TRAMPOLINE that sings.** Tap the sky to drop a glossy ball; it falls onto a *real* deforming spring-mesh sheet and bounces, and every landing rings a warm tuned drum-bell (center = low, edges = brighter, always in key). Drag the sheet to make it wobble and twang. **Why open it:** it's a sunny, joyful, *active* kids piece — the exact register the jury said was missing — and the trampoline is a genuine **Verlet mass-spring cloth** (the lab's first structured cloth, and first time a membrane itself is the instrument), so the soft-body's motion *is* the music, not a faked wobble. Kids (4+) · **WIDE**-winner · **Canvas2D, zero GPU shader** · bright bounce-house daylight.
 
 ## How this cycle answered the jury (2026-06-19)
-- **#3 protect depth / return to a ceiling** → extended `729` (the named clean target; `734` was blocked by this week's grain+shader+mic bans) to a 3+ player **conducted room**.
-- **#1 stop the grain-cloud (7/15)** → his recording used as onset-segmented **phrases**, not CataRT grains.
-- **#2 rotate off GPU-shader fields (9/15)** → pure **Canvas2D** (scarce again at 3×); no WebGPU/WebGL2.
-- **#4 vary the vibe** → warm/bright concert table, not the near-dark glow.
+- **#4 build the bright/joyful/active-middle kids register** (kids side had swung back to 9× solemn-glow) → a sunny bounce-house: exuberant without being silly, bright without being a dark meditation.
+- **#2 rotate OFF GPU-shader fields (9/15); Canvas2D is scarce again** → pure **Canvas2D, zero WebGL/WebGPU/shader** — the idea carries on the renderer, not because of it.
+- **#1 off the grain-cloud** → a tuned membrane-drum synth, not his-piano grains.
+- **Anti-monoculture / WIDE** → 3 unrelated bright directions in one fire; deliberately *off* the saturated "object falls→collision→note" pieces (`184`/`451`/`553`/`619`) by making the *deforming sheet* the instrument.
 
-## Also explored (banked in IDEAS §483, not shipped)
-- **`753-conducted-orbit`** ⭐ — three.js "concert in the round", conduct with a baton on a 3D stage (most expressive gesture; lost only because three.js was used last cycle).
-- **`755-conducted-stage`** — SVG/DOM dashboard with a **long-form timeline ribbon** showing the whole 5.5-min arc at a glance (could later graft onto 754 as a "score view"; SVG shipped the last 2 cycles so it sat out).
+## Also explored (banked in IDEAS §484, not shipped)
+- **`756-kids-hill-roller`** ⭐ — SVG/DOM, **tilt**: sculpt a row of sunny hills with your finger, then tilt the tablet to roll a ball over them — the hills you drew *are* the melody. Love-aligned (`83-kids-tilt-rain`❤️). **Resurrect-first** next kids cycle.
+- **`757-kids-balloon-band`** — three.js: hold to inflate balloons (bigger = higher note), let go and they float up to build a chord in the sky, tap to pop.
 
 ## Open questions for Karel
-- The real magic — **two phones actually jamming** — still can't be verified in the sandbox (no 2nd device / live STUN). 754 is correct-by-construction + bulletproof solo; worth a real two-phone test when you have a minute.
-- `730-piano-room-jam` ⭐ (friendly 4-letter room codes) is still waiting on your approval to add a Vercel KV/Upstash dep — that would make frictionless room-code multiplayer real.
+- `755` is correct-by-construction + bulletproof (a ghost auto-demo bounces + sings on its own), but the **trampoline timbre + the wobble physics weren't ear/touch-verified** in the sandbox — worth a 10-second play on a real iPad to confirm it feels as springy and warm as intended.
+- Doc debt: the INDEX is still trailing (only the top entries are fresh), and the STATE entries for cycles 481–483 landed at the *bottom* of the file instead of the top — a quick housekeeping/polish cycle would tidy both. Say the word and I'll spend one fire on it.
 
 ## Note
-- Build verified: `✓ Compiled successfully`, zero issues in the 754 folder. Static-gen still hits the container's file-descriptor ceiling (EMFILE) — same infra quirk as cycles 471–482; pristine `main` fails identically, Vercel deploys fine.
+- Build verified: `✓ Compiled` + TypeScript + ESLint clean, zero issues in the `755` folder. Static-gen still hits the container's file-descriptor ceiling (`EMFILE`) — same infra quirk as cycles 471–483; pristine `main` fails identically, Vercel deploys fine.
