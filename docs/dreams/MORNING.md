@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-06-18 (UTC), cycle 473
+# Morning digest — last updated 2026-06-19 (UTC), cycle 474
 
-> **The lab's first REAL cross-device jam — two phones, one piano (yours).** Yesterday's jury, three windows running, asked: "make one multiplayer piece *actually* cross-device — every multiplayer build is same-browser `BroadcastChannel` fakery; one real two-phones-across-the-room jam retires the asterisk and is a genuine lab-first." Tonight's adult fire builds exactly that, on your real Welcome Home piano. See `docs/dreams/JURY.md`.
+> **Reach your bare hands into the air and scoop handfuls of singing stars — no screen to touch.** Tonight's kids fire finally *builds* the star-scoop idea the lab has banked and named "resurrect first" three times running — the directest answer to yesterday's jury #3 ("stop banking ceilings and walking away"). On the scarcest, most iPad-reliable renderer.
 
 ## New since yesterday
-- **`729-piano-portal-jam`** ("Piano Portal Jam") — **open a PORTAL to your real *Welcome Home* piano and send it to a friend with one shareable link — then the two of you actually play it together, peer-to-peer, across the room or across the world.** Genuine **WebRTC** between two devices (not the same-browser fakery of every prior "multiplayer"). The trick: both phones already hold your recording, so **no audio is streamed** — only tiny note-events cross the wire and each phone re-sounds the same grain locally (near-zero latency). Two interleaving **constellations** in a three.js starfield show the duet building (warm = you, cool = them). No second phone? After 2.5s a ghost partner plays with you, so it's always a living duet.
-  - *Why open it:* it's the jury's #4 — the one genuine lab-first it's begged for three windows — and it's built on **your real piano** (#5). Tap the field to re-sound your recording; to go cross-device, tap *Open a portal* → share the link → a friend taps it and you jam.
-
-## ⚠️ Two honest caveats (please glance)
-- **The cross-device link is correct-by-construction but NOT link-tested** here (no 2nd device / live STUN in the sandbox). The solo + ghost mode is fully real; the two-phone handshake is the stretch. Public STUN covers most home/office Wi-Fi; strict cellular NATs would need a TURN relay (out of scope for a zero-server piece).
-- **Build:** 729 **compiled + lint-passed cleanly**, but the container's tiny file-descriptor ceiling (4096) killed Next's static-generation step with `EMFILE` — same infra quirk as the last two nights. **It is NOT the code:** I proved it by building *pristine main* (what's live on Vercel now) — it fails identically. Vercel builds this app fine and should deploy 729 normally. Full reasoning in `STATE.md` cycle 473.
+- **`731-kids-star-reach`** ("Star Reach", kids 4+) — **a 4-year-old lifts their bare hands into the air in front of the camera and scoops handfuls of glowing stars out of a deep 3D night sky, each one ringing a soft bell.** **Close a fist** → the nearest stars gather to the palm + a gentle pentatonic cluster; **open wide** → they spill back out in a rising sparkle; **hands high** = bright/high tones, **low** = warm/low. No screen to touch, no beat, no loop, no wrong note — just cause, effect, and wonder over an always-on drone so the sky is never silent.
+  - *Why open it:* it's **off-glass and embodied** (the jury's standing "get a kid off the glass" ask), built on a **hand-written WebGL2 star-field** — the scarce renderer, ported to a *kid* (jury #1) — and it *resurrects the thrice-banked star-scoop seed instead of spinning a new toy* (jury #3). No second hand or camera? Two ghost hands keep scooping so a glance is always alive and singing.
 
 ## How this cycle ran
-- **Adult DEEP fire** (the jury-mandated "depth" mode): 3 parallel builders, ONE concept (a real cross-device jam on your piano), three attacks on **signaling × renderer** — shareable-link + three.js (won), copy-paste-codes + WebGL2, room-code + WebGPU. The decisive axis was *which one actually connects two real phones.*
+- **Kids DEEP fire** (deliberately alternating off the last two kids WIDE fires): 3 parallel builders, ONE concept (bare-hands scoop a singing star-field), three renderer attacks — **three.js**, **raw WebGL2** (won), **WebGPU compute** (12k particles). The decisive axis was *which scarce renderer actually runs on the iPad you'll open this on* — WebGL2 is the scarcest renderer in the recent window AND the most iOS-bulletproof, where WebGPU (3rd in a row) most likely shows you only its Canvas2D fallback on a phone.
 
-## Banked, ready to resurrect (IDEAS §473)
-- **`730-piano-room-jam`** ⭐ — the friendliest version (join by typing a 4-letter **room code**) on the scarcest renderer (WebGPU). It only lost because its serverless relay can't survive Vercel's multi-instance routing. **It becomes the real magic the moment you approve a Vercel KV / Upstash dependency** (a `package.json` change only you can make per the scope fence) — see the open question.
-- **`728-piano-relay-jam`** ⭐ — the purest zero-server handshake (copy-paste two codes) on a scarcer renderer (WebGL2). Next step: graft its field onto 729's shareable-link flow.
+## ⚠️ One honest caveat (please glance)
+- **Build:** 731 **compiled + lint-passed cleanly** (zero issues in its folder), but the container's tiny file-descriptor ceiling (4096) again killed Next's static-generation step with `EMFILE` — same infra quirk as the last three nights. **It is NOT the code:** I proved it by building *pristine main* (what's live on Vercel now) — it fails identically. Vercel builds this app fine and should deploy 731 normally. Full reasoning in `STATE.md` cycle 474.
+- **Not browser-verified** here (no camera/WebGL/audio in the sandbox) — unverified by eye/ear is whether MediaPipe reliably reads a real toddler's fist-vs-open across hand sizes & lighting, and whether the spilled-star glissando reads as wonder on a real iPad. Ghost-hands + Canvas2D fallbacks guarantee a sounding, moving glance regardless.
+
+## Banked this cycle, ready to resurrect (IDEAS §474)
+- **`732-kids-star-cradle`** ⭐ — the same piece on **WebGPU compute** (12,000 GPU particles, a cradling swirl). The bolder swing — resurrect once WebGPU cools in the rotation and there's a real iPad to verify the compute path (12k particles read bigger than 731's 2,600).
+- **`730-kids-star-scoop`** ⭐ — the **three.js** sibling (FogExp2 depth, the warmest-looking glow; the renderer every 2026 hand-particle repo reaches for).
 
 ## Open questions for Karel
-- **Approve a `package.json` dep (Vercel KV or Upstash Redis)?** That's the one thing that turns `730-piano-room-jam` from "best UX but can't connect on Vercel" into frictionless room-code cross-device jamming. I can't touch `package.json` (scope fence) — your call.
-- On two real phones over the same Wi-Fi, does the portal link connect and does the duet feel tight? (Compile-verified only; not link-tested in the sandbox.)
-- Next is **kids** (474). Strong resurrect candidates: `726-kids-star-scoop` ⭐ (bare-hands → 3D star-scoop) or `725-kids-aurora-sail` (tilt → aurora). Preference?
+- Still standing from last night: **approve a `package.json` dep (Vercel KV / Upstash)?** That's the one thing that turns `730-piano-room-jam` into frictionless room-code cross-device jamming — I can't touch `package.json` (scope fence).
+- On a real iPad, does Star Reach feel magic — does the fist-scoop reliably catch a 4-year-old's hand, and does spilling stars read as joy?
+- Next is **adult** (475). Strong resurrect candidates: graft `728-piano-relay-jam`'s WebGL2 field onto the 729 portal link, or extend the presence-room thread (`722-presence-paths` ⭐). Preference?
