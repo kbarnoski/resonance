@@ -1,21 +1,42 @@
-# Morning digest — last updated 2026-06-19 12:20 UTC · cycle 480 (kids · WIDE)
+# Morning digest — last updated 2026-06-19 14:27 UTC
 
-> **Jury verdict today**: The ceiling finally moved (2→4 real builds, depth is sticking) — but you obeyed last week's bans so hard each became this week's monoculture: his piano is now 7/15 grain-clouds, GPU-shaders 9/15, and the kids side swung back to solemn. See `docs/dreams/JURY.md`.
+**Cycle 481 · adult · WIDE (3 explorers, shipped 1).** Built straight to `main`,
+auto-deploys in ~30s. Yesterday's jury said every 2026-06-18 ban hardened into a
+new monoculture (your-piano-as-grains 7×, GPU-shaders 9×, mic 4×, dark-glow 9×) —
+so this fire is a clean sweep: **3 different non-grain uses of your real
+recording, all in SVG/DOM with zero shader, no mic, no camera, no dark-glow.**
 
-## New since yesterday
-- **`747-kids-inkblot-bloom`** ([open](https://getresonance.vercel.app/dream/747-kids-inkblot-bloom)) — **a kid hums and watches living, mirror-symmetric inkblots bloom and unfold like a butterfly — each fold singing.** The ink is a real **Gray-Scott reaction-diffusion** field running on **WebGPU compute**, folded into kaleidoscope symmetry. No beat, no loop, no wrong note — contemplative, not silly. **Best opened on a tablet** — hum or blow softly. The drone + a ghost-hum auto-demo keep it alive even in silence.
-- *Why this one:* it came straight from today's research dive — **Bileam Tschepe (elekktronaut) / Entagma's "Inkblots — Steal from TouchDesigner"** — your named TouchDesigner artist, ported to the browser. And it's the literal answer to the jury's "give a *kid* the scarce renderer (WebGPU), stop defaulting to Canvas2D."
+## New since yesterday — open this
+- **`748-duet-follower`** → https://getresonance.vercel.app/dream/748-duet-follower
+  **Your *Welcome Home* recording becomes an accompanist that LISTENS to you.**
+  Tap a pulse (spacebar / A–L row / tap the stage) and it estimates your tempo
+  and re-times your *actual recording* to follow your groove toward its next
+  musical moment. You conduct your own performance's pace. **The lab's first use
+  of your piano as a *followed score* — not visualized, not shattered into
+  grains.** Pure SVG piano-roll, warm chamber vibe. (Score-following research:
+  Matchmaker 2025 / Raphael *Music Plus One* / Cont *Antescofo*.)
 
-## Banked this cycle — worth a look in IDEAS §480
-- **⭐ `748-kids-aurora-silk`** — tilt the tablet and a glowing 3D **silk veil of aurora light** billows, folds, and sings like wind through cloth. The lab's **first real cloth simulation**, on three.js (the most iOS-bulletproof renderer), and it pulls straight from your loved `262-aurora-particle`. **My top resurrect-first for the next kids cycle** — it needs no camera/mic permission at all. Lost by a hair only because `747` was the live research chain.
-- `749-kids-shadow-garden` — your child's **shadow waters a garden of glowing flowers** that sing where they stand (camera silhouette → WebGPU). The most moving concept; banked because its segmentation model load needs a real-device check before I ship it unattended.
-
-## Mode / process note
-- **WIDE fire** — 3 parallel builders, 3 unrelated directions (hum→ink / tilt→cloth / shadow→garden), each on a scarce renderer, none silly, none a groove. Went WIDE (not DEEP) because we've run DEEP 3 of the last 4, and the jury asked the *kids* side specifically to spread the register, not run one template. Shipped the strongest; banked the other two.
-
-## Open questions for Karel
-- The two banked kids siblings are both strong — want `748-kids-aurora-silk` (first cloth sim, aurora) next, or `749-kids-shadow-garden` (your shadow grows a garden)?
-- Renderer note: WebGPU is now at 4× in the last 10 — I'll rotate off it next cycle unless you want more kid-WebGPU.
+## Also explored (banked, not shipped — IDEAS §481)
+- **`750-sky-almanac`** ⭐ — the SKY composes with your piano: local sun position
+  + moon phase (computed, no network) conduct a slow, *long-form, never-looping*
+  arrangement of your real phrases on an SVG sun-arc dial. Daylight palette.
+  Long-form-stateful + a daylight vibe = two categories the jury keeps asking for.
+  **Resurrect-first candidate.**
+- **`749-spoken-libretto`** — SPEAK and your words arrange your real piano phrases
+  onto a typographic SVG staff (Reich *Different Trains* lineage). Distinct from
+  570 (real recording + editorial type, not synth + glow).
 
 ## Heads-up
-- `747` is **compile / lint / type-check clean** but only **structurally** verified, not run on a device — same as every cycle since #472 (the sandbox's fd ceiling blocks static-gen; pristine `main` fails identically, so it's the container, not the code — Vercel deploys fine). Unverified by eye/ear: whether the WGSL compiles first-run on a real iPad (the Canvas2D fallback runs the *identical* reaction-diffusion as a safety net), and whether the ink regime reads as a butterfly. Ghost-hum + Canvas2D fallback guarantee it's alive on a glance even with no mic or no WebGPU.
+- Build gate: 748 compiles + lints + type-checks **clean** (zero issues in its
+  folder). Full static-gen still can't finish in the container (the known EMFILE
+  fd-ceiling on 500+ pages — confirmed again on pristine `main` this cycle, not
+  our code). Vercel deploys it normally.
+- Not browser-verified (no audio in the sandbox): whether the *following* reads
+  as your performance chasing your pulse on the real recording's dynamics. The
+  offline fallback phrase makes a silent glance still sound + follow.
+
+## Open question for you
+- The jury's depth ask (#3) was to extend a ceiling build (734 tape-erosion with
+  live input, or 729 portal to 3+ players). I went WIDE this window because
+  extending 734 would re-use the just-banned grain-cloud + shader. Want me to
+  take a DEEP run at 729 (multi-player) next adult cycle, once the bans rotate?
