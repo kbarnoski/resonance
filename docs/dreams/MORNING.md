@@ -1,42 +1,45 @@
-# Morning digest — last updated 2026-06-19 14:27 UTC
+# Morning digest — last updated 2026-06-19 16:25 UTC
 
-**Cycle 481 · adult · WIDE (3 explorers, shipped 1).** Built straight to `main`,
-auto-deploys in ~30s. Yesterday's jury said every 2026-06-18 ban hardened into a
-new monoculture (your-piano-as-grains 7×, GPU-shaders 9×, mic 4×, dark-glow 9×) —
-so this fire is a clean sweep: **3 different non-grain uses of your real
-recording, all in SVG/DOM with zero shader, no mic, no camera, no dark-glow.**
+**Cycle 482 · kids · DEEP (3 speech→music mappings, shipped 1).** Built straight to
+`main`, auto-deploys in ~30s. Two of yesterday's jury provocations pointed to the
+same un-built place — **#5** ("a 4-year-old says a word and hears it become a
+sound — grep-0×, build it") and **#4** ("the missing kids register is the bright,
+joyful, active middle"). This is it.
 
 ## New since yesterday — open this
-- **`748-duet-follower`** → https://getresonance.vercel.app/dream/748-duet-follower
-  **Your *Welcome Home* recording becomes an accompanist that LISTENS to you.**
-  Tap a pulse (spacebar / A–L row / tap the stage) and it estimates your tempo
-  and re-times your *actual recording* to follow your groove toward its next
-  musical moment. You conduct your own performance's pace. **The lab's first use
-  of your piano as a *followed score* — not visualized, not shattered into
-  grains.** Pure SVG piano-roll, warm chamber vibe. (Score-following research:
-  Matchmaker 2025 / Raphael *Music Plus One* / Cont *Antescofo*.)
+- **`752-kids-word-band`** → https://getresonance.vercel.app/dream/752-kids-word-band
+  **A kid SAYS a word and the rainbow xylophone plays it.** Say "banana" → it
+  bounces out ba-na-na as a happy climbing riff; the spoken letters tumble in as
+  big colored type; each word lays a loop that joins a gentle groove. **The lab's
+  first kids speech-recognition piece** (real `SpeechRecognition` lived only in
+  adult 570/189; voice-for-kids was always pitch/hum, never the *recognized
+  word*). **Pure SVG/DOM — zero GPU shader** (the literal answer to the jury's
+  "build one with no renderer and prove the idea carries"). Open it in Chrome or
+  on iPad Safari and just talk. No mic? A 26-letter tap keyboard plays the same
+  riffs; a 3s auto-demo runs hands-free.
 
-## Also explored (banked, not shipped — IDEAS §481)
-- **`750-sky-almanac`** ⭐ — the SKY composes with your piano: local sun position
-  + moon phase (computed, no network) conduct a slow, *long-form, never-looping*
-  arrangement of your real phrases on an SVG sun-arc dial. Daylight palette.
-  Long-form-stateful + a daylight vibe = two categories the jury keeps asking for.
+## Also explored (banked, not shipped — IDEAS §482)
+- **`751-kids-say-a-zoo`** ⭐ — semantic: each spoken word becomes a unique
+  bouncing Canvas2D **creature** that sings; the meadow fills into a chord-garden
+  of the child's vocabulary. The most pure-4yo-delightful of the three.
   **Resurrect-first candidate.**
-- **`749-spoken-libretto`** — SPEAK and your words arrange your real piano phrases
-  onto a typographic SVG staff (Reich *Different Trains* lineage). Distinct from
-  570 (real recording + editorial type, not synth + glow).
+- **`753-kids-spell-parade`** — rhythmic/stateful: each word's letters drop onto
+  drum pads in an **accumulating** marching-band groove (different at minute 5 than
+  minute 1 — the thin kids-stateful category you keep asking for).
 
 ## Heads-up
-- Build gate: 748 compiles + lints + type-checks **clean** (zero issues in its
+- Build gate: 752 compiles + lints + type-checks **clean** (zero issues in its
   folder). Full static-gen still can't finish in the container (the known EMFILE
   fd-ceiling on 500+ pages — confirmed again on pristine `main` this cycle, not
   our code). Vercel deploys it normally.
-- Not browser-verified (no audio in the sandbox): whether the *following* reads
-  as your performance chasing your pulse on the real recording's dynamics. The
-  offline fallback phrase makes a silent glance still sound + follow.
+- Not browser-verified (no speech/audio in the sandbox): iOS-Safari recognition
+  latency (0.5–2s is common) could make "say it, hear it" feel slightly laggy, and
+  whether a spelling-driven riff reads as *musical* per word varies (it's always
+  in-scale, so never wrong). The tap-keyboard + auto-demo make a silent glance
+  still sound + move.
 
 ## Open question for you
-- The jury's depth ask (#3) was to extend a ceiling build (734 tape-erosion with
-  live input, or 729 portal to 3+ players). I went WIDE this window because
-  extending 734 would re-use the just-banned grain-cloud + shader. Want me to
-  take a DEEP run at 729 (multi-player) next adult cycle, once the bans rotate?
+- DEEP this cycle attacked ONE concept (kids speech→music) three ways — mode was
+  DEEP to avoid a third WIDE night in a row. Want the next kids cycle to resurrect
+  **751-say-a-zoo** (the creature one), or push 752 deeper (real phoneme→syllable
+  mapping so riffs feel more composed)?
