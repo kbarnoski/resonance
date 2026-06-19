@@ -1,44 +1,19 @@
-# Morning digest — last updated 2026-06-19 (UTC) · cycle 478 (kids · DEEP)
-
-> **A whole family sings your kid's song back — in your piano.** Yesterday's Song Sprout was one creature that
-> remembered a child's hums. Today's cycle-2 is a growing *family* of glowing companions who sing the child's
-> melodies back to each other in harmony — and their voices are made from grains of your real *Welcome Home*
-> piano. The jury's loudest note (#3: "stop banking ceilings — return and extend") + #5 ("use your real music
-> on the kids side"), both in one build.
+# Morning digest — last updated 2026-06-19 10:27 UTC · cycle 479 (adult · WIDE)
 
 ## New since yesterday
-- **🌟🎹 [/dream/743-kids-song-family](/dream/743-kids-song-family) — Song Family.** Hum a phrase → a glowing
-  friend hatches & remembers it. Hum more → a whole family (up to 4) appears, each visibly growing. Go quiet →
-  they sing your kid's remembered melodies back as a **chord choir** (each on a different consonant note, the
-  harmony deepening as they grow up), voiced by **grains of your real piano**. **Open this one.** It's the
-  cycle-2 of `738-kids-song-sprout` — 738 was a single (monophonic) voice; this adds the harmony + family it
-  banked for next time. D-Dorian so nothing's ever wrong. **2 more musical models explored — see IDEAS §478.**
+- **`744-magnetic-walk`** ([open](https://getresonance.vercel.app/dream/744-magnetic-walk)) — **the invisible magnetic field around you, made audible.** Turn your phone: your heading in the Earth's geomagnetic frame walks a 12-station "compass of keys" (a different just-intoned drone facing N vs E vs S vs W), and a WebGL2 aurora stays **locked to magnetic north** so the world feels fixed while you turn. The lab's **first true compass/magnetometer piece** (everything before used only raw tilt). **Best opened on your phone** — turn slowly. No mic, no camera, no recorded piano. Refs: Christina Kubisch *Electrical Walks*, Pauline Oliveros *Deep Listening*.
+- *Why this one:* it deliberately **breaks the his-piano-grain monoculture** — 8 of the last 10 prototypes used your Welcome Home recording + concatenative grains (the lab over-corrected on the jury's "use your music" note). This cycle banned that cluster and went somewhere new.
 
-## How to actually try it
-- **Hands-free (your 06:30 glance):** tap **"Just watch them dream"** — a virtual child hums, hatching & growing
-  the family on its own, so it's always sounding with zero setup.
-- **With a kid:** tap **"Sing to them"**, hum a few notes, then go quiet and listen for the family to answer.
-- If it can't fetch your piano (offline/slow), it quietly falls back to a soft synth voice — it always sounds.
+## Banked this cycle — worth a look in IDEAS §479
+- **⭐ `745-room-listener`** — the lab's **first in-browser neural net**: TensorFlow.js + COCO-SSD watches your camera and turns each object it recognizes (cup, plant, you) into its own voice — *the room, sung*. The boldest swing (3/5), aligned with your loved `101-camera-song` / `86-sound-to-video`. **Banked, not shipped**, because its headline depends on an unverifiable model download and it landed on Canvas2D — I want to rebuild it on a scarce renderer and verify the load. **Top candidate for the next adult cycle.**
+- `746-orbit-bell` — hear the ISS overhead *right now*: live telemetry → a cosmic globe drone, and a bell rings the instant it crosses into Earth's shadow.
 
-## Explored but banked (IDEAS §478)
-- **742-kids-song-round** ⭐ — same family, but they sing a developing **ROUND/canon** (the "Row, Row, Row Your
-  Boat" a kid knows), synth voices, **zero network**. The bulletproof reliability sibling — resurrect-first.
-- **744-kids-song-phase** — same family running your kid's phrase at slightly different speeds → **Steve Reich
-  phasing**, a shimmering ever-evolving weave with visible phase-rings. The prettiest texture of the three.
-
-## Heads-up
-- **Build gate: green on code, blocked on infra (standing since cycle 472).** `npm run build` compiles +
-  type-checks + lints clean, but this container's 4096-fd limit kills Next's static-gen worker (`EMFILE`) —
-  I re-ran the control THIS cycle: **pristine main fails identically**, so it's the container, not the code.
-  Vercel builds it fine. (The fix is an infra one — raise the container fd ulimit.)
-- **JURY #5 now hit on both lanes:** your real *Welcome Home* piano is now in both the adult paths-* thread and
-  two kids pieces (721, 743). The next deepening is a *cross-device* duet on your real piano (739/741 base).
+## Mode / process note
+- **WIDE fire** — 3 parallel builders, 3 never-used techniques (compass-sensor / neural-camera / ISS-telemetry); shipped the strongest. Went WIDE rather than DEEP because the jury's "deepen a ceiling" plea points only at his-piano pieces — all diversity-banned this cycle — so the right move was to break the monoculture with fresh techniques.
 
 ## Open questions for Karel
-- Does the chord-harmony read as *a family answering your kid* — or would a strict **round** (742) land better
-  for a 4-year-old? I can ship 742 next, or merge a round⇄chord toggle into 743.
-- Keep voicing the family with your real piano, or is a clean synth (742/744) warmer for little ones?
+- The lab swung hard onto your real piano (8 of 10). Right amount, or dial it back toward fresh-synthesized pieces like `744`? Your answer steers the next several cycles.
+- Want me to prioritize resurrecting **`745-room-listener`** (first neural net, on a scarce renderer) for the next adult cycle?
 
-## Next
-- Cycle 479 = **adult** (resurrect-first: `739-piano-room-relay` ⭐ — or wire your real piano into a *cross-device*
-  duet, deepening #5 further; `733`/`735` paths siblings; `713-shadow-duet` WebMIDI improviser).
+## Heads-up
+- `744` is **compile / lint / type-check clean** but only **structurally** verified, not run on a device — same as every cycle since #472 (the sandbox's fd ceiling blocks static-gen; pristine `main` fails identically, so it's the container, not the code — Vercel deploys fine). Unverified by eye/ear: real iOS compass behavior, the aurora shader, drone timbre. The ghost auto-drift + Canvas2D fallback guarantee it's alive on a glance even with no sensor.
