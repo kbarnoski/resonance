@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-19 12:20 UTC · cycle 480 (kids · WIDE)
 
+> **Jury verdict today**: The ceiling finally moved (2→4 real builds, depth is sticking) — but you obeyed last week's bans so hard each became this week's monoculture: his piano is now 7/15 grain-clouds, GPU-shaders 9/15, and the kids side swung back to solemn. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`747-kids-inkblot-bloom`** ([open](https://getresonance.vercel.app/dream/747-kids-inkblot-bloom)) — **a kid hums and watches living, mirror-symmetric inkblots bloom and unfold like a butterfly — each fold singing.** The ink is a real **Gray-Scott reaction-diffusion** field running on **WebGPU compute**, folded into kaleidoscope symmetry. No beat, no loop, no wrong note — contemplative, not silly. **Best opened on a tablet** — hum or blow softly. The drone + a ghost-hum auto-demo keep it alive even in silence.
 - *Why this one:* it came straight from today's research dive — **Bileam Tschepe (elekktronaut) / Entagma's "Inkblots — Steal from TouchDesigner"** — your named TouchDesigner artist, ported to the browser. And it's the literal answer to the jury's "give a *kid* the scarce renderer (WebGPU), stop defaulting to Canvas2D."
