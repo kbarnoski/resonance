@@ -1,45 +1,21 @@
-# Morning digest — last updated 2026-06-19 16:25 UTC
+# Morning digest — last updated 2026-06-19 (UTC) · cycle 483
 
-**Cycle 482 · kids · DEEP (3 speech→music mappings, shipped 1).** Built straight to
-`main`, auto-deploys in ~30s. Two of yesterday's jury provocations pointed to the
-same un-built place — **#5** ("a 4-year-old says a word and hears it become a
-sound — grep-0×, build it") and **#4** ("the missing kids register is the bright,
-joyful, active middle"). This is it.
+## New since yesterday
+- **`754-conducted-table`** ([open it](https://getresonance.vercel.app/dream/754-conducted-table)) — **your real piano becomes a long-form ENSEMBLE you conduct from a top-down score table.** A semicircle of 6 seats replays *phrases* of your *Welcome Home* recording; tap seats in/out, shape tempo + dynamics, and the piece slowly evolves on its own (harmonic center migrates, density breathes — minute 5 ≠ minute 0). Friends can fill empty chairs from their phones. **Why open it:** it's the cycle-2 the jury asked for — a real depth-extension of `729-piano-portal-jam`, and it uses your music a brand-new way (phrases, *not* the grain-cloud that's taken over the lab). Adult · **DEEP**-winner · **Canvas2D** (zero GPU shader — the jury's literal ask) · bright concert-hall vibe.
 
-## New since yesterday — open this
-- **`752-kids-word-band`** → https://getresonance.vercel.app/dream/752-kids-word-band
-  **A kid SAYS a word and the rainbow xylophone plays it.** Say "banana" → it
-  bounces out ba-na-na as a happy climbing riff; the spoken letters tumble in as
-  big colored type; each word lays a loop that joins a gentle groove. **The lab's
-  first kids speech-recognition piece** (real `SpeechRecognition` lived only in
-  adult 570/189; voice-for-kids was always pitch/hum, never the *recognized
-  word*). **Pure SVG/DOM — zero GPU shader** (the literal answer to the jury's
-  "build one with no renderer and prove the idea carries"). Open it in Chrome or
-  on iPad Safari and just talk. No mic? A 26-letter tap keyboard plays the same
-  riffs; a 3s auto-demo runs hands-free.
+## How this cycle answered the jury (2026-06-19)
+- **#3 protect depth / return to a ceiling** → extended `729` (the named clean target; `734` was blocked by this week's grain+shader+mic bans) to a 3+ player **conducted room**.
+- **#1 stop the grain-cloud (7/15)** → his recording used as onset-segmented **phrases**, not CataRT grains.
+- **#2 rotate off GPU-shader fields (9/15)** → pure **Canvas2D** (scarce again at 3×); no WebGPU/WebGL2.
+- **#4 vary the vibe** → warm/bright concert table, not the near-dark glow.
 
-## Also explored (banked, not shipped — IDEAS §482)
-- **`751-kids-say-a-zoo`** ⭐ — semantic: each spoken word becomes a unique
-  bouncing Canvas2D **creature** that sings; the meadow fills into a chord-garden
-  of the child's vocabulary. The most pure-4yo-delightful of the three.
-  **Resurrect-first candidate.**
-- **`753-kids-spell-parade`** — rhythmic/stateful: each word's letters drop onto
-  drum pads in an **accumulating** marching-band groove (different at minute 5 than
-  minute 1 — the thin kids-stateful category you keep asking for).
+## Also explored (banked in IDEAS §483, not shipped)
+- **`753-conducted-orbit`** ⭐ — three.js "concert in the round", conduct with a baton on a 3D stage (most expressive gesture; lost only because three.js was used last cycle).
+- **`755-conducted-stage`** — SVG/DOM dashboard with a **long-form timeline ribbon** showing the whole 5.5-min arc at a glance (could later graft onto 754 as a "score view"; SVG shipped the last 2 cycles so it sat out).
 
-## Heads-up
-- Build gate: 752 compiles + lints + type-checks **clean** (zero issues in its
-  folder). Full static-gen still can't finish in the container (the known EMFILE
-  fd-ceiling on 500+ pages — confirmed again on pristine `main` this cycle, not
-  our code). Vercel deploys it normally.
-- Not browser-verified (no speech/audio in the sandbox): iOS-Safari recognition
-  latency (0.5–2s is common) could make "say it, hear it" feel slightly laggy, and
-  whether a spelling-driven riff reads as *musical* per word varies (it's always
-  in-scale, so never wrong). The tap-keyboard + auto-demo make a silent glance
-  still sound + move.
+## Open questions for Karel
+- The real magic — **two phones actually jamming** — still can't be verified in the sandbox (no 2nd device / live STUN). 754 is correct-by-construction + bulletproof solo; worth a real two-phone test when you have a minute.
+- `730-piano-room-jam` ⭐ (friendly 4-letter room codes) is still waiting on your approval to add a Vercel KV/Upstash dep — that would make frictionless room-code multiplayer real.
 
-## Open question for you
-- DEEP this cycle attacked ONE concept (kids speech→music) three ways — mode was
-  DEEP to avoid a third WIDE night in a row. Want the next kids cycle to resurrect
-  **751-say-a-zoo** (the creature one), or push 752 deeper (real phoneme→syllable
-  mapping so riffs feel more composed)?
+## Note
+- Build verified: `✓ Compiled successfully`, zero issues in the 754 folder. Static-gen still hits the container's file-descriptor ceiling (EMFILE) — same infra quirk as cycles 471–482; pristine `main` fails identically, Vercel deploys fine.
