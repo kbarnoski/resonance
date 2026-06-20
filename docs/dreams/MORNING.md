@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-20 ~18:15 UTC · cycle 495
+# Morning digest — last updated 2026-06-20 ~20:20 UTC · cycle 496
 
-> **Today's move:** an ADULT **DEEP** fire (1 big concept × 3 memory mechanisms, ship 1) aimed straight at yesterday's loudest alarm — the depth ceiling **collapsed 4→1**, and the jury said: *RETURN AND EXTEND a gem to a real 4/5; `770-answering-room` is the obvious target — let its gap-agent ACCRETE a motif over minutes.* So I did exactly that.
+> **Today's move:** a KIDS **WIDE** fire (3 unrelated directions, ship 1) — the direct antidote to the jury's headline that the lab is "too similar / sprinting pole to pole." Each explorer dodged all four bans; together they bring **calm** back to the kids side (the jury: only 2 calm kids pieces left).
 
-**Open first:** https://getresonance.vercel.app/dream
+**Open first (headphones help):** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/792-answering-swarm`** — *Answering Swarm.* Cycle-2 of `770`. **Why open it:** your "Welcome Home" piano plays whole as the soloist, and a **swarm of tiny memory-agents harvests your own motifs** — each holds one fragment of what you just played, gains strength when it fits the chord under your hands and fades when it doesn't, so over minutes the colony **self-organizes onto a few emergent themes** and the bell answers you back with them. A `consolidation %` readout climbs as it settles — **minute 5 genuinely ≠ minute 1**. Press Begin, then just let it play for a few minutes and watch the dots cluster. No mic/camera — it listens to the recording itself.
+- **`/dream/795-kids-sound-hunt`** — *Sound Hunt.* **Why open it:** close your eyes, hold the tablet like a lantern, and **turn your body** — eight gentle animal sounds are hidden floating around you in 3D, and you sweep a listening beam to find them; each one swells, chimes, and lights up, and finding all eight blooms a calm chord. The lab's **first kids spatialized-listening** piece — sound you find by *moving*, not by tapping a screen. Press "Light the lantern," then turn slowly (on a laptop it auto-sweeps + you can drag the ring). True HRTF binaural — headphones make the 3D magic land.
 
-## Why this restores the ceiling
-792 is an honest **4/5** — the lab's **first swarm-intelligence / stigmergy** piece (a never-used technique), a true **cycle-2 of 770**, off the 10×-Canvas2D monoculture (audio-forward, the register 770 lives in), and anchored to fresh research (**LiveBand**, arXiv June 2026, causal past-only accompaniment; **MusicSwarm**, MIT, Apr 2026). It's the bigger concept, not another incremental variant.
+## Why this one (of the three)
+The kids lab is almost entirely **screen-bound** and had **fled calm**; 795 is off *every* current ban at once — **device-turn** (not touch), **audio-only** (not the 10×-Canvas2D monoculture), **spatial sound-hunt** (rests your recording), **calm bedtime** (not bright-active). It's also the most robust unattended (no camera/WebGL — fully playable on a laptop) and the directest hit on today's research (web-binaural 2026 / PlugSonic).
 
-## The 2 explored + banked (IDEAS §495)
-- **`790-answering-memory`** ⭐ — the same idea with a **symbolic motif bank**: it quotes your earlier phrases back **transposed / inverted / reversed / stretched** (classical development), with an SVG shelf of your motifs. The most *musically legible* of the three — you hear "that's my phrase, upside down." **Resurrect-first on the adult lane** (or fold its transforms into 792).
-- **`791-answering-markov`** — a **variable-order Markov model** that learns your idiom live. Beautiful, but it's a near-twin of `778-markov-mirror` (shipped 2 cycles ago). Banked low-priority; better as the long-queued "bind 778 to your Welcome Home" variant.
+## The 2 explored + banked (IDEAS §496)
+- **`794-kids-sing-garden`** ⭐ — **sing to grow a 3D garden**: your voice raises L-system plants (taller for higher notes), and when you stop, the garden sings your little melody back on soft bells. Long-form — the garden fills over minutes. **Resurrect-first on the kids lane** (the depth pick).
+- **`793-kids-shadow-puppet`** — your **whole body becomes a singing cut-paper moth** (wayang-kulit shadow theater, pure SVG). Lovely, but it rhymes with last week's `788` (body + pitch); banked to resurrect with a swappable bestiary + a real creature voice.
 
 ## Open questions for Karel
-- **Cycle-3 of this thread?** Best deepening: 792 with **rhythmic stigmergy + cross-pollination** (strong agents spawn transposed variant children → emergent counterpoint), or ship **790** (the legible quote-and-develop) as its own piece. Pick one and I'll go DEEP.
-- **Did the swarm actually consolidate onto coherent themes for you?** I can compile/lint/type-check here but can't hear it (no audio in the sandbox) — your ear on whether the answers land against your pedal-heavy passages is the one thing I can't self-check.
-- **Standing infra ask (unchanged):** the container's ~4096 open-file ceiling blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green and Vercel deploys normally. Raising it would let the loop self-verify the full build.
+- **Calm vs. active on the kids side?** The jury said kids "fled calm"; 795 deliberately swings back to a quiet bedtime register. Tell me if you want more calm or to hold the bright/active energy.
+- **Cycle-3 of the adult answering-machine thread?** Best next adult move is shipping **`790-answering-memory`** (the legible "quote your phrase, developed" sibling of last night's swarm) — say the word.
+- **Two infra flags:** (1) the standing ~4096 open-file ceiling still blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green, Vercel deploys normally. (2) **New this fire:** the first `npm ci` dropped the `next` binary itself — a clean reinstall recovered it, but the container's install step is flaky.
