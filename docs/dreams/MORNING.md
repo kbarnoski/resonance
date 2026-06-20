@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-20 ~02:20 UTC · cycle 487
+# Morning digest — last updated 2026-06-20 ~04:15 UTC · cycle 488
 
 **Open first:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[766-sky-orrery](https://getresonance.vercel.app/dream/766-sky-orrery)** 🌌🎹 (adult) — **Sky Orrery.** Stand under a real 3D dome of the sky: the sun, the moon (correct phase tonight), and eight bright stars/planets (Sirius, Vega, Jupiter, Venus…) sit at their **actual computed altitude/azimuth** for your time & place, the dome turns with sidereal time, and **whichever bodies ride highest conduct a long-form, never-repeating arrangement of whole *phrases* of your real *Welcome Home* piano** — each body a voice, altitude→loudness, azimuth→pan. *Atlas Eclipticalis* made literal: **sky position = score position.** Zero interaction — it plays itself; drag the time slider to flip noon→midnight and hear the arrangement change. **Why open it:** your real recording used a *new* way — not shattered into grains, but **conducted by the sky** (the jury's #1 ask), and a deepening of `347-the-place` (which only used synthesis).
-- *2 more renderers of the same idea built + banked — an SVG sun-arc dial (`764`) and a Canvas2D sky-color field (`765`). See IDEAS §487.*
+- **[767-kids-kite-flyer](https://getresonance.vercel.app/dream/767-kids-kite-flyer)** 🪁☀️ (kids 4+) — **Kite Flyer.** TILT the tablet to fly a glowing kite across a sunny sky, and the flight *plays music*: the kite's **height is a melody** (pentatonic, every height is a "right" note), **wind gusts are a rhythm** (sparkle chimes), and the **taut string hums a soft Aeolian-harp drone** that swells as it tightens. The whole-body tilt IS the instrument. **Why open it:** the bright/joyful/*active* kids register the jury asked for (#4) — exuberant, sunny, not the dark-glow everything had drifted into; and it flies itself on a ~2s idle "ghost breeze," so just point your phone at it.
+- *2 more bright kids explorers built + banked — a Canvas2D two-kid **flower duet** (`769`, plant a meadow together, every flower harmonizes) and a three.js **balloon band** (`768`, inflate-then-pop a pentatonic sky-chord). See IDEAS §488.*
 
 ## In progress / partial
-- Nothing mid-build. DEEP fire: one concept (the sky conducts your piano) built 3 ways in parallel, shipped the strongest renderer, banked 2 as text seeds.
+- Nothing mid-build. WIDE fire: 3 unrelated bright kids directions built in parallel, shipped the strongest (the only one on a non-warming renderer), banked 2 as text seeds.
 
 ## Research findings worth a look
-- **Astronomy is going multimodal/sonified in 2026** (Trayford, "Unseen Astronomy," arXiv Apr 2026; NASA's "A Universe of Sound"). The lab already sonifies the sky (`347`) — the open move was letting the **real sky conduct your real recorded piano**, which is exactly what `766` does. (RESEARCH §487.)
+- **A child's body MOVEMENT, sonified well, reads back as music** (Frid et al., KTH — foundational; the empirical Reggio-Emilia core). The lab's kids side is almost all *touch-on-glass* — `767` is the first to let the **whole body fly a singing object**. Also: I disproved a stale note in my own jury file — "recognized-word→music is unused" is **false** (`752`/`570`/`189` already do speech recognition), so I killed a redundant "first ASR kids piece" before building it. (RESEARCH §488.)
 
 ## Open questions for Karel
-- **Renderer rotation is genuinely tight now.** SVG/DOM and Canvas2D are *both* at 3× in the last 10 (each one ship from the audit ban), three.js sits at 2×, GPU-shader-fields are jury-banned. `766` used three.js precisely to dodge that. Worth a call: lift the GPU-shader ban soon, or push hard into the thin **audio-only / projection / installation** registers next?
-- **Two strong banks from this fire:** `764-sky-almanac` ⭐ (the calm SVG sun-dial version — the safest unattended daylight glance) is the adult resurrect-first once SVG cools; `765-sky-spectra` (the painterly Canvas2D sky-*color* version) for an atmospheric slot.
+- **Renderer rotation just flipped.** three.js is now at 3× (it's been my safe pick three fires running) — it's now the *warming* one. SVG/DOM and Canvas2D are also tight at 3× / 2×, GPU-shader-fields are jury-banned. We're running low on un-warmed renderers. **Worth a call:** lift the GPU-shader ban next, or push into the thin **audio-only / projection / installation** registers? I keep flagging this — it's becoming the real constraint.
+- **Kids resurrect-first:** `769-flower-duet` ⭐ (the social two-kid meadow — most robust of this fire) the moment Canvas2D cools. **Adult resurrect-first:** `764-sky-almanac` ⭐ (the calm SVG sun-dial) the moment SVG cools.
 - Standing: the dream build can't run Next static-gen in this container (4096 fd ceiling — pristine main fails identically). Compile + lint + types verified green every fire; Vercel deploys fine. The fix is infra (raise the container ulimit), not code.
