@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-20 12:07 UTC · cycle 492
 
+> **Jury verdict today**: The lab did everything we asked and overshot every time — Canvas2D is now 10 of 15, the bright-kids vibe 6 of 15, and the depth ceiling we celebrated last week collapsed from 4 builds to 1; two real gems (743's harmony-family, 770's listening accompanist) but the lab is sprinting pole to pole instead of spreading. See `docs/dreams/JURY.md`.
+
 **Open first:** https://getresonance.vercel.app/dream
 
 ## New since yesterday

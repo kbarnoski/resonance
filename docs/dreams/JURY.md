@@ -1,135 +1,133 @@
-# Concept Jury Verdict — 2026-06-19 (UTC)
+# Concept Jury Verdict — 2026-06-20 (UTC)
 
 ## Summary
-Two things are true this window and they point opposite ways. The good one is
-real and new: the **ceiling finally moved**, 2 of 15 → 4 of 15, and it moved for
-the right reason — somebody actually *returned* to extend a ceiling instead of
-banking it (724 is a true cycle-2 of 710; 743 a cycle-2 of 738). Last jury's #3
-("stop banking ceilings and walking away, reward depth") is the one provocation
-that produced a structural habit instead of a one-off. The bad one is the same
-disease in a new organ: **every ban from 2026-06-18 worked, and every one
-hardened into the next monoculture.** "Use Karel's real music (1×)" became a
-**7×** CataRT grain-cloud. "Ban Canvas2D, give the scarce renderer" sent
-**Canvas2D 9×→3×** (clean) but WebGPU 1×→5× and WebGL2 back to 4× — **GPU-shader
-fields are now 9 of 15**, the new renderer monoculture. "Ban the silly kids vibe
-(6×)" sent it to 2× and made the **near-dark luminous-glow contemplative vibe 9×**
-— the kids side is solemn again, the exact pole it fled two windows ago. The lab
-still does what it's told, hits the gas, and forgets to let go of the wheel.
+The lab did everything the 2026-06-19 jury asked, and overshot every single
+target. The GPU-shader ban worked so hard that **Canvas2D is now 10 of 15** —
+the new renderer monoculture, just as severe as the 9× shader field it replaced.
+The "bright/joyful kids" mandate worked so hard that the bright-active register
+is now 8 of 15 and the kids side fled calm entirely. And the depth ceiling the
+last jury celebrated as the lab's one durable habit — 4 of 15 hitting 4–5
+criteria — **collapsed to 1 of 15** this window, the single 4/5 being `743`, the
+*oldest* prototype in the window. The lab is sprinting pole to pole and calling
+it diversity. Two genuine gems survive the noise (`743`, `770`); the rest is a
+clean, competent, undifferentiated 2–3/5 middle.
 
 ## Diversity audit
-- **Over-represented input: microphone breath/hum — 4×** (721, 738, 743, 747).
-  Tied with **camera — 4×** (719 body-stomp, 724 pose, 727 color, 731 hands). The
-  touch ban worked (on-glass primary down to ~2×: 713, 729); the vacuum filled with
-  mic + camera. Inputs spread better than outputs, but mic-hum-into-a-glow-field is
-  now its own reflex.
-- **Over-represented output: WebGPU compute — 5×** (720, 721, 724, 727, 747) **+
-  raw WebGL2 — 4×** (731, 734, 743, 744) = **GPU-shader field 9 of 15.** This is the
-  headline inversion, *again*: last jury banned Canvas2D at 9× and begged for the
-  scarce renderer. One window later Canvas2D is scarce (**3×**: 713, 718, 719) and
-  the GPU-shader field is the monoculture. three.js 3× (729, 738, 741). The pendulum
-  didn't settle — it slammed into the opposite wall.
-- **Over-represented technique: concatenative / corpus-based grain resynthesis of
-  Karel's real recording — 7×** (718, 720, 721, 724, 729, 734, 743). **The new
-  pentatonic / the new loop-groove / the new harmonic-event — fourth window running
-  this lab has converted a provocation into a template.** Last jury: "his music is in
-  only 1 of the last 15." It is now in 7, and *every one of those 7 shatters it into
-  CataRT descriptor-space grains.* His recording is being used exactly one way.
-- **Over-represented vibe: near-dark field + luminous glow + calm/no-beat/no-wrong-
-  note "contemplative" — 9×** (720, 721, 724, 727, 729, 731, 738, 743, 747). Silly/
-  goofy kids collapsed 6×→2× (713, 719) — ban worked clean — and "tender luminous
-  meditation" ate the whole lab, kids and adult alike. The lump moved pole to pole; it
-  never lands on a spread.
-- **BANNED for next cycle:** **concatenative/corpus grain resynthesis of his
-  recording as the core technique** (7× — the new monoculture; his music may be
-  *used*, but NOT by shattering it into a grain cloud) · **WebGPU + raw-WebGL2
-  GPU-shader-field output** (9× combined — rotate to a non-shader surface: SVG/DOM,
-  Canvas2D is *scarce* again at 3×, audio-only, speech-synth, or projection) ·
-  **mic breath/hum analysis input** (4×) · **the near-dark luminous-glow contemplative
-  vibe** (9× — vary the emotional register, not just the renderer).
+- **Over-represented input: touch / finger-on-glass — 4×** (754 seat-touch, 755
+  tap-drag, 761 sculpt, 781 finger-paint), and **autonomous / no-live-input
+  "his-recording-or-data plays itself" — 4×** (760, 766, 770, 777). The touch ban
+  from two windows ago has fully relaxed; touch is back as the kids default.
+- **Over-represented output: Canvas2D — 10×** (744, 747, 748, 752, 754, 755, 760,
+  773, 777, 781). **This is the headline.** Last jury banned the GPU-shader field
+  at 9× and sent everything fleeing to "the scarce renderer" — and the whole lab
+  landed on the same one. three.js is 2× (766, 767), SVG/DOM 1× (761), raw WebGL2
+  1× (743), audio-forward 1× (770). The pendulum didn't settle on a spread; it
+  slammed into the opposite wall, again, for the fourth window running.
+- **Over-represented technique: his-recording-as-conducted/analyzed-structure —
+  5×** (748 tempo-follow, 754 phrase-conduct, 766 sky-conduct, 770 score-follow,
+  777 SSM-analyze). The grain-resynthesis ban *worked cleanly* (grains down 7×→1×,
+  only 743) — but it immediately re-templated into "read the structure of his
+  recording and conduct/follow/analyze it," and **every one of those 5 is an adult
+  piece.** Secondary: **pentatonic-never-wrong kids melody — 4×** (752, 761, 767,
+  781).
+- **Over-represented vibe: bright / sunny / joyful-active — 8×** (752, 754, 755,
+  760, 761, 767, 773, 781), of which **bright-active *kids* is 6×** (752, 755, 761,
+  767, 773, 781). Last jury's #4 begged for the bright/joyful kids register off the
+  9× dark-glow. The lab delivered — and overshot. The kids side now has exactly two
+  calm pieces left (743, 747) and is otherwise uniformly sunny-and-active. Same lump,
+  opposite pole.
+- **BANNED for next cycle:** **Canvas2D-primary output** (10× — rotate to SVG/DOM,
+  three.js, audio-only/eyes-closed, or, if and only if a concept genuinely needs it,
+  back onto a shader; do NOT reflexively flee to one new monoculture) · **touch as
+  the primary input** (4× — use tilt, body/camera, voice, external data, MIDI) ·
+  **his-recording-as-phrase-conductor/structure-reader as the core technique** (5× —
+  either rest his recording for a cycle, or use it a *sixth* genuinely-new way, NOT a
+  conductor/follower/analyzer) · **the uniformly bright-active kids vibe** (6× —
+  but the instruction is SPREAD, not flip back to dark-glow; land one in the middle).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — the cleanest floor in the lab's recent history. No
-  local-minimum build crept in this window (705's regression last jury did not
-  repeat). Even the comfortable builds clear the #2+#3 pair.
-- **Hit 2–3 criteria: 11** — 713, 718, 719, 720, 721, 727, 731, 741, 743, 744, 747.
-  The body of the lab. Most clear the safe pair (#2 ≥3 subsystems + #3 named ref);
-  720, 718, 743, 741 each sit *one criterion* (a stated multi-cycle plan or a fresh
-  research cite) from the ceiling — reach left on the table, as always.
-- **Hit 4–5 criteria: 4** — **724-presence-drift** (#1 long-form stateful + #2 + #3
-  + #4 cycle-2 + #5), **729-piano-portal-jam** (#1 first *real* cross-device WebRTC +
-  #2 + #3 + his music), **734-paths-tape-erosion** (#1 long-form ~7min stateful + #2
-  + #3 + #5 research §421), **738-kids-song-sprout** (#1 first stateful/compositional
-  *kids* memory + #2 + #3 + #4). **The ceiling doubled, 2→4.** This is the single most
-  important number in the verdict and the one habit worth protecting.
+- **Hit 0–1 criteria: 0** — clean, again. No local-minimum build crept in; even the
+  thinnest clears the #2+#3 pair. The floor holds.
+- **Hit 2–3 criteria: 14** — 744, 747, 748, 752, 754, 755, 760, 761, 766, 767, 770,
+  773, 777, 781. The entire window except one. The **last 10 prototypes are ALL
+  2–3** — not a single ceiling build since 743.
+- **Hit 4–5 criteria: 1** — **743-kids-song-family** (#1 first multi-voice/harmonic
+  kids memory + #2 + #3 + #4 true cycle-2 of 738 + #5). **The ceiling fell from 4 to
+  1, and the lone survivor is the window's oldest build.** This is the most important
+  and most alarming number in the verdict. Last jury: "the depth habit is the one
+  worth protecting." One window later it evaporated. The lab climbed the ambition
+  ladder for one cycle and then settled back onto the comfortable #2+#3 rung for ten
+  straight fires.
 
 ## Standouts (positive)
-- **724-presence-drift**: the model citizen of the window. A genuine **cycle-2 of
-  710** — same body-sensing/HRTF/particle architecture, the one change being that each
-  spatial voice is a slow read-head drifting through his *real* recording, so the
-  chord re-voices itself over minutes. Long-form, stateful, his music, returned-to-and-
-  deepened. The literal execution of last jury's #3 *and* #5 at once. Depth done right.
-- **729-piano-portal-jam**: retires an asterisk three juries old. The lab's **first
-  genuinely cross-device, multi-user** piece — real WebRTC P2P via a zero-server
-  shareable-link handshake, sending *note events from a shared corpus, not PCM*. The
-  direct answer to last jury #4 ("make one multi-user piece actually cross-device").
-- **734-paths-tape-erosion**: the most artistically complete build. Basinski's
-  *Disintegration Loops* as a 5-movement state machine — his recording granulated and
-  eroded on a raw WebGL2 ping-pong FBO over ~7 minutes, never an exact repeat. A
-  distinct adult register (decay/entropy) that isn't the glow-meditation everything
-  else is.
-- **738-kids-song-sprout**: the kids-side frontier. The first **long-form, stateful**
-  kids piece with real compositional **memory** — a creature that remembers a child's
-  hums and recombines (not echoes) them as it matures over minutes. Breaks the instant-
-  cause→effect-that-resets reflex the kids side has never escaped.
+- **743-kids-song-family**: the model citizen and the only ceiling build. A true
+  **cycle-2 of 738** — it adds the multi-voice harmonic dimension 738 explicitly
+  banked, hum→a family of companions who sing the child's melody back as a 3–4-part
+  chord choir, voiced from grains of Karel's *real* piano. The only kids piece in the
+  window that uses his recording, and the only one that's long-form stateful and
+  harmonic. Depth done right.
+- **770-answering-room**: the strongest adult *idea*. His recording stays the soloist
+  while a real-time machine "live music agent" score-follows it (chroma+onset) and
+  answers in the phrase-gaps — call-and-response with his actual performance. It's the
+  rare audio-forward / eyes-closed register (1× output), and it's the most defensible
+  escape from the grain cloud. Begs for a cycle-2 (see provocation #2).
+- **781-kids-paint-conductor**: the cleanest execution of a named reference in the
+  window — literally Xenakis's UPIC ("music becomes a game for children: they draw,
+  they hear") in a 4-year-old's hands, one global playhead reading the whole drawing
+  as a continuous pitch-score. Long-form stateful, 0 lint issues, the purest
+  cause→effect. (It is also Canvas2D #10 — strong concept, monoculture renderer.)
+- **766-sky-orrery**: one of only two non-Canvas2D adult outputs (three.js), and a
+  genuinely distinct register — real computed sky positions conduct whole phrases of
+  his recording, "sky position = score position," so minute 5 ≠ minute 1.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **The concatenative-grain cluster (718 → 720 → 721 → 724 → 729 → 734 → 743)** — and
-  this is the important one: *no single slug is a local minimum* — 724/729/734 are this
-  window's standouts. The **set** is the monoculture, precisely as the loop-groove
-  cluster was last window and the harmonic-event cluster the window before. 7 of 15
-  reach into his piano the *identical* way (slice → analyze RMS+brightness → navigate
-  descriptor space → Hann-window the nearest grains). The provocation hardened into a
-  reflex. **This pattern, not any one piece, is the thing to break.**
-- **727-kids-color-hunt** — the window's most comfortable build. Its own README
-  disclaims #1 (317 already did camera-color sampling); it hits the safe #2+#3 pair,
-  paints a consonant C-major-pentatonic "safe wash" (the exact kids crutch the jury
-  keeps flagging), and renders it on the now-overused WebGPU in the now-overused tender-
-  wonder vibe. A well-made median that happens to land on all three monoculture axes.
-- **731-kids-star-reach** — the off-glass MediaPipe-hands input is genuinely fresh, but
-  the *music* is the reflex: a justly-tuned major-pentatonic bell ladder where "nothing
-  can sound wrong." The novelty is in the sensor, not the sound. 2/5.
+- **767-kids-kite-flyer**: 2/5, the lab's worn "tilt-a-thing → pentatonic melody +
+  drone" template. Pretty three.js, but no novel subsystem and no research cite — the
+  comfortable middle. What was missing: a reason this *had* to be a kite and not the
+  fifteenth tilt-pentatonic toy.
+- **752-kids-word-band + 773-kids-parade-caller**: two ASR-kids pieces in one window
+  (752 speech→pitch, 773 speech→rhythm). 773 defends itself as "speech-as-rhythm is
+  lab-first," which is fair, but both collapse to the same shape: ASR → loop →
+  bright-cartoon-Canvas2D. Two in a 15-window is the template re-forming.
+- **761-kids-hill-roller**: 2/5, sculpt-hills-then-tilt-a-ball. Charming, but it sits
+  one room away from 781's draw-a-shape-hear-it and the heightfield-as-melody idea is
+  already worn. Local-minimum: clean, legible, not reaching.
 
 ## Provocations for tomorrow's dream cycle
-1. **Ban the grain-cloud. The concatenative-resynthesis-of-his-piano combo is 7 of
-   15 — it is the new pentatonic.** You over-corrected "his music is in only 1 of 15"
-   straight into a CataRT monoculture. His recording can be used *without* shattering
-   it: **play it and score-follow it; harmonize a live voice against it; let its
-   structure conduct a generative system; remix its phrasing, not its grains.** Use
-   his music a way the lab has never used it — which is any way that isn't a descriptor-
-   space grain field.
-2. **Rotate off GPU-shader fields entirely for a cycle.** WebGPU (5×) + raw-WebGL2
-   (4×) = 9 of 15. Canvas2D — which you banned last week at 9× — is now *scarce* at 3×.
-   The lab is thin on **SVG/DOM output, audio-only / eyes-closed, speech-synth, and
-   projection/installation.** Build one piece with **no GPU shader at all** and prove
-   the idea carries the piece, not the renderer.
-3. **Protect the one habit that worked: depth.** The ceiling moved 2→4 *only* because
-   someone returned to extend (724←710, 743←738). Keep that engine running, but point
-   it at the ceiling builds *nobody has returned to yet*: give **734-tape-erosion** a
-   live-input cycle-2 (a listener's breath or motion drives the erosion rate, so the
-   decay is *played*), or take **729-portal** to 3+ players / a conducted room.
-4. **The vibe pendulum swung again — stop moving the lump.** Silly-kids 6×→2×, and
-   "near-dark luminous-glow contemplative" is now 9×. The un-built kids register this
-   window is the **active/joyful middle**: bright daylight palette, bold primary color,
-   fast legible cause-and-effect that is *neither* solemn-glow *nor* slapstick-googly. A
-   kids piece can be exuberant without being silly and bright without being a dark
-   meditation. Aim there.
-5. **Two fresh research findings are sitting un-built.** RESEARCH §475 (2026-06-18)
-   correctly *rejected* a WebGPU Physarum slime-mold as already-in-lab (327) — good
-   negative result, no redundant ship. But **§411's in-browser client-side ASR /
-   speech→text wave (2026-06-13)** is grep-**0×**: the lab has never once turned a real
-   *recognized spoken word* into music. A 4-year-old who *says a word* and hears it
-   become a sound is a genuine first — off the grain-cloud and off the glow-field in one
-   move. Build it.
+1. **Canvas2D is 10 of 15 — ban it for a week, but DON'T flee to one new wall.**
+   The lesson of four windows of pendulum slams (touch→mic→camera, Canvas2D→shader→
+   Canvas2D, dark-glow→bright-active) is that *renderer-banning into the opposite pole
+   is the disease, not the cure.* Next cycle: pick the renderer the **concept** needs.
+   The starved surfaces are SVG/DOM (1×), audio-only (1×), and — yes — even a shader
+   *if a concept genuinely demands one*. Spread, don't flip.
+2. **The ceiling collapsed 4→1. RETURN AND EXTEND something to a real 4/5.**
+   `770-answering-room` is the obvious target: its live-music-agent answers phrase-by-
+   phrase with **no long-form memory** — a cycle-2 that lets the agent *accrete* a
+   motif over minutes (so minute 5 ≠ minute 1) would hit #1+#4 and be the window's
+   first new ceiling build. Alternative: `754-conducted-table`'s cross-device handshake
+   has **never been link-tested with a second device** (STATE admits "correct-by-
+   construction, NOT link-tested") — a cycle-2 that actually verifies two phones retires
+   that asterisk.
+3. **His recording is 6× and ALL adult; his recording on the KIDS side is 1× (743).**
+   743 proved a kids piece can use his real piano beautifully. Either give the kids
+   side his recording a second time, OR rest his recording entirely for a cycle —
+   744 (geomagnetic) and 760 (Wikipedia firehose) prove the lab makes strong work with
+   no audio source at all.
+4. **Embodied / body / camera went 4×→0× this window.** The depth-camera/MediaPipe
+   body lane the last-last jury opened has vanished. `745-room-listener` was banked
+   "⭐ for a DEEP cycle where the CDN model load can be verified" and never built.
+   Spend a cycle on a body-as-instrument piece — it's the single most-starved input
+   register right now and it's off every current over-represented tag at once.
+5. **Build on the research you already surfaced.** RESEARCH §492 (today) cited the
+   **CHI 2026 "From Movement to Sound and Back"** workshop — movement→sound for
+   non-experts — and 781 only half-used it (touch, not body movement). The full-body
+   version of 781's UPIC idea is sitting unbuilt in your own research log. And be
+   honest about #5: the cited refs are mostly foundational (UPIC 1977, Konnakol,
+   Foote 1999) dressed as a "2026 lane" — a genuine <14-day finding would strengthen
+   the chain.
 
 ## Karel-facing line
-The ceiling finally moved (2→4 real builds, depth is sticking) — but you obeyed last week's bans so hard each became this week's monoculture: his piano is now 7/15 grain-clouds, GPU-shaders 9/15, and the kids side swung back to solemn.
+The lab did everything we asked and overshot every time — Canvas2D is now 10 of 15,
+the bright-kids vibe 6 of 15, and the depth ceiling we celebrated last week collapsed
+from 4 builds to 1; two real gems (743's harmony-family, 770's listening accompanist)
+but the lab is sprinting pole to pole instead of spreading.
