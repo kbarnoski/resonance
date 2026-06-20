@@ -1,23 +1,23 @@
-# Morning digest — last updated 2026-06-20 ~14:20 UTC · cycle 493
+# Morning digest — last updated 2026-06-20 ~16:20 UTC · cycle 494
 
-> **Today's move:** an ADULT **WIDE** fire (3 orthogonal explorers, ship 1) answering yesterday's jury head-on — Canvas2D was 10/15, his recording 6×, body/camera 4×→0×, and SVG/DOM starved. I shipped the one that lands on the **starved surface the jury named**, not the boldest concept.
+> **Today's move:** a KIDS **DEEP** fire (1 big concept × 3 renderers, ship 1) aimed straight at yesterday's jury — body/camera input had collapsed **4×→0×**, and the verdict literally said the full-body version of `781`'s UPIC was "sitting unbuilt in your own research log." So I built it: **your whole dancing body as a continuous singing instrument.**
 
 **Open first:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/778-markov-mirror`** — *Markov Mirror.* Tap a little keyboard (or press `a s d f g h j k l`) and the app learns **your** melodic habits live, then improvises forever in your style. **Why open it:** the glowing **transition graph IS the model** — notes on a ring, edges thickening as you play, and during "Improvise" (Space) you literally **watch the melody walk its own learned web**. It's the lab's first *visible* live-music agent: every accompanist we've built (718/748/770) hides its brain — this one shows it and lets you reshape it. Implements the "make the model visible" axis from a **Feb-2026** live-music-agents paper; refs Cope's EMI + the 1957 *Illiac Suite*. No mic, no camera, no GPU — guaranteed to sound and render on your phone right now. Teach a few phrases, hit Space, then Forget and teach it something jazzier.
+- **`/dream/788-kids-body-glow`** — *Body Glow.* A 4-year-old stands back, **dances**, and their whole body paints a glowing song in the sky. **Why open it:** every limb is a continuous *sung* voice — reach a hand up high → it slides up to a high note, drop it → low (C-major-pentatonic, never a wrong note), and the motion leaves luminous light-trails that **accumulate over minutes** in a warm daylight sky. It's the literal full-body version of Xenakis's UPIC, on a hand-written **raw-WebGL2 feedback field**. Stand a few feet back, allow the camera, and just move — if there's no camera a friendly ghost dancer paints + sings on its own within ~2s.
 
 ## In progress / partial
 - None half-built. One concept shipped clean; the two siblings are text seeds, not folders.
 
-## The 2 explored + banked (IDEAS §493)
-- **`786-body-organ`** ⭐ — your **whole standing body becomes a chord** (webcam pose → organ; arms wide = open voicing, reach up = brighter). The directest hit on the jury's "body went 4×→0×" — banked because MediaPipe was *just* used (731/724) and it'd re-form the stack we left; resurrect for a DEEP body cycle once it cools.
-- **`785-aurora-weather-organ`** — hear the **Sun's weather right now** (live NOAA space-weather → slow organ, under an aurora shader). Rests your recording; banked as the data-sonification lane.
+## The 2 explored + banked (IDEAS §494)
+- **`789-kids-body-ribbons`** ⭐ — the same idea on **SVG/DOM** (the scarcest, most iPad-bulletproof renderer): the body draws glowing cut-paper ribbons. The *safest, most legible* of the three — a close call; it lost only on ambition. **Resurrect-first on the kids lane.**
+- **`787-kids-body-aura`** — a **three.js** 3D choir-of-light + glowing skeleton + an accumulating chord-cloud. Richest "wow," but its dusk/night palette drifted toward the dark-glow you asked us *not* to flip back to. Repalette to daylight and it's a strong slot.
 
-## Why 778 over those two
-Both 785 & 786 fled to a WebGL2 shader — exactly the "don't flee to one new wall" trap the jury warned about. 778's **SVG/DOM** is the genuinely scarce surface (1× in the window) *and* the right one (a model that's a graph, drawn as a graph). Lowest-risk glance, purest research→build chain.
+## Why 788 over those two
+788 is the **highest-ambition** build (the jury's loudest alarm was the depth ceiling collapsing 4→1) AND it spreads the renderer the *right* way — a scarce shader the painterly concept genuinely needs, **not** a flee back to Canvas2D — AND it lands the "middle" vibe (warm daylight, off both bright-active and dark-glow). Robust via Canvas2D + audio-only + ghost fallbacks.
 
 ## Open questions for Karel
-- **Want 778 bound to YOUR music?** Clean next step: let it learn from your *Welcome Home* recording's note-stream so it improvises in **your** style, not just what you tap. Say the word and I'll build the cycle-2.
-- **JURY #2 depth ask still open:** return-and-extend something to a real 4/5 — `770-answering-room` could grow long-form memory (minute 5 ≠ minute 1), or `754-conducted-table` finally gets a real 2-phone link-test. Which would you rather a DEEP cycle on?
-- **Standing infra ask (unchanged):** the container's 4096 open-file ceiling blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically with 778 stashed); compile + lint + `tsc` all green and Vercel deploys normally. Raising it would let the loop self-verify the full build.
+- **The depth ask (#2) is still open on the ADULT lane.** Want a cycle that returns and extends one to a real 4/5? Best targets: give `770-answering-room`'s gap-agent **long-form memory** (minute 5 ≠ minute 1), or finally **2-phone link-test `754-conducted-table`**. Pick one and I'll go DEEP on it.
+- **Bind `778-markov-mirror` to YOUR music?** Still queued from §493 — let it learn your *Welcome Home* note-stream so it improvises in your style. Say the word.
+- **Standing infra ask (unchanged):** the container's ~4096 open-file ceiling blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green and Vercel deploys normally. Raising it would let the loop self-verify the full build.
