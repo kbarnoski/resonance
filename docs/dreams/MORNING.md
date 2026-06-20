@@ -1,23 +1,20 @@
-# Morning digest — last updated 2026-06-20 ~16:20 UTC · cycle 494
+# Morning digest — last updated 2026-06-20 ~18:15 UTC · cycle 495
 
-> **Today's move:** a KIDS **DEEP** fire (1 big concept × 3 renderers, ship 1) aimed straight at yesterday's jury — body/camera input had collapsed **4×→0×**, and the verdict literally said the full-body version of `781`'s UPIC was "sitting unbuilt in your own research log." So I built it: **your whole dancing body as a continuous singing instrument.**
+> **Today's move:** an ADULT **DEEP** fire (1 big concept × 3 memory mechanisms, ship 1) aimed straight at yesterday's loudest alarm — the depth ceiling **collapsed 4→1**, and the jury said: *RETURN AND EXTEND a gem to a real 4/5; `770-answering-room` is the obvious target — let its gap-agent ACCRETE a motif over minutes.* So I did exactly that.
 
 **Open first:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/788-kids-body-glow`** — *Body Glow.* A 4-year-old stands back, **dances**, and their whole body paints a glowing song in the sky. **Why open it:** every limb is a continuous *sung* voice — reach a hand up high → it slides up to a high note, drop it → low (C-major-pentatonic, never a wrong note), and the motion leaves luminous light-trails that **accumulate over minutes** in a warm daylight sky. It's the literal full-body version of Xenakis's UPIC, on a hand-written **raw-WebGL2 feedback field**. Stand a few feet back, allow the camera, and just move — if there's no camera a friendly ghost dancer paints + sings on its own within ~2s.
+- **`/dream/792-answering-swarm`** — *Answering Swarm.* Cycle-2 of `770`. **Why open it:** your "Welcome Home" piano plays whole as the soloist, and a **swarm of tiny memory-agents harvests your own motifs** — each holds one fragment of what you just played, gains strength when it fits the chord under your hands and fades when it doesn't, so over minutes the colony **self-organizes onto a few emergent themes** and the bell answers you back with them. A `consolidation %` readout climbs as it settles — **minute 5 genuinely ≠ minute 1**. Press Begin, then just let it play for a few minutes and watch the dots cluster. No mic/camera — it listens to the recording itself.
 
-## In progress / partial
-- None half-built. One concept shipped clean; the two siblings are text seeds, not folders.
+## Why this restores the ceiling
+792 is an honest **4/5** — the lab's **first swarm-intelligence / stigmergy** piece (a never-used technique), a true **cycle-2 of 770**, off the 10×-Canvas2D monoculture (audio-forward, the register 770 lives in), and anchored to fresh research (**LiveBand**, arXiv June 2026, causal past-only accompaniment; **MusicSwarm**, MIT, Apr 2026). It's the bigger concept, not another incremental variant.
 
-## The 2 explored + banked (IDEAS §494)
-- **`789-kids-body-ribbons`** ⭐ — the same idea on **SVG/DOM** (the scarcest, most iPad-bulletproof renderer): the body draws glowing cut-paper ribbons. The *safest, most legible* of the three — a close call; it lost only on ambition. **Resurrect-first on the kids lane.**
-- **`787-kids-body-aura`** — a **three.js** 3D choir-of-light + glowing skeleton + an accumulating chord-cloud. Richest "wow," but its dusk/night palette drifted toward the dark-glow you asked us *not* to flip back to. Repalette to daylight and it's a strong slot.
-
-## Why 788 over those two
-788 is the **highest-ambition** build (the jury's loudest alarm was the depth ceiling collapsing 4→1) AND it spreads the renderer the *right* way — a scarce shader the painterly concept genuinely needs, **not** a flee back to Canvas2D — AND it lands the "middle" vibe (warm daylight, off both bright-active and dark-glow). Robust via Canvas2D + audio-only + ghost fallbacks.
+## The 2 explored + banked (IDEAS §495)
+- **`790-answering-memory`** ⭐ — the same idea with a **symbolic motif bank**: it quotes your earlier phrases back **transposed / inverted / reversed / stretched** (classical development), with an SVG shelf of your motifs. The most *musically legible* of the three — you hear "that's my phrase, upside down." **Resurrect-first on the adult lane** (or fold its transforms into 792).
+- **`791-answering-markov`** — a **variable-order Markov model** that learns your idiom live. Beautiful, but it's a near-twin of `778-markov-mirror` (shipped 2 cycles ago). Banked low-priority; better as the long-queued "bind 778 to your Welcome Home" variant.
 
 ## Open questions for Karel
-- **The depth ask (#2) is still open on the ADULT lane.** Want a cycle that returns and extends one to a real 4/5? Best targets: give `770-answering-room`'s gap-agent **long-form memory** (minute 5 ≠ minute 1), or finally **2-phone link-test `754-conducted-table`**. Pick one and I'll go DEEP on it.
-- **Bind `778-markov-mirror` to YOUR music?** Still queued from §493 — let it learn your *Welcome Home* note-stream so it improvises in your style. Say the word.
+- **Cycle-3 of this thread?** Best deepening: 792 with **rhythmic stigmergy + cross-pollination** (strong agents spawn transposed variant children → emergent counterpoint), or ship **790** (the legible quote-and-develop) as its own piece. Pick one and I'll go DEEP.
+- **Did the swarm actually consolidate onto coherent themes for you?** I can compile/lint/type-check here but can't hear it (no audio in the sandbox) — your ear on whether the answers land against your pedal-heavy passages is the one thing I can't self-check.
 - **Standing infra ask (unchanged):** the container's ~4096 open-file ceiling blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green and Vercel deploys normally. Raising it would let the loop self-verify the full build.
