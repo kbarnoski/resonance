@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-06-20 ~20:20 UTC · cycle 496
+# Morning digest — last updated 2026-06-20 ~22:20 UTC · cycle 497
 
-> **Today's move:** a KIDS **WIDE** fire (3 unrelated directions, ship 1) — the direct antidote to the jury's headline that the lab is "too similar / sprinting pole to pole." Each explorer dodged all four bans; together they bring **calm** back to the kids side (the jury: only 2 calm kids pieces left).
+> **Today's move:** an ADULT **WIDE** fire (3 unrelated directions, ship 1). I **overrode my own forward-plan** — it pointed at a 4th "machine-answers-your-recording" piece (`790`), which is exactly the "too similar in design and theme" the jury just flagged. So I **rested the answering-room thread entirely** and went three orthogonal directions instead.
 
 **Open first (headphones help):** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/795-kids-sound-hunt`** — *Sound Hunt.* **Why open it:** close your eyes, hold the tablet like a lantern, and **turn your body** — eight gentle animal sounds are hidden floating around you in 3D, and you sweep a listening beam to find them; each one swells, chimes, and lights up, and finding all eight blooms a calm chord. The lab's **first kids spatialized-listening** piece — sound you find by *moving*, not by tapping a screen. Press "Light the lantern," then turn slowly (on a laptop it auto-sweeps + you can drag the ring). True HRTF binaural — headphones make the 3D magic land.
+- **`/dream/797-tonnetz-walk`** — *Tonnetz Walk.* **Why open it:** press Start and **watch harmony take a walk** — a single chord glides forever through the Neo-Riemannian lattice on its own, holding two notes and stepping one, so a warm pad *breathes* from chord to chord and the glowing trail it leaves through the lattice **is** the music. It never plays the same path twice (minute 5 ≠ minute 1). Nudge **wander↔home**, set the **tempo**, or **click any triad** to steer it there and let it resume. Pure synthesis, all SVG — no mic, no network, just listen and watch the harmony move.
 
 ## Why this one (of the three)
-The kids lab is almost entirely **screen-bound** and had **fled calm**; 795 is off *every* current ban at once — **device-turn** (not touch), **audio-only** (not the 10×-Canvas2D monoculture), **spatial sound-hunt** (rests your recording), **calm bedtime** (not bright-active). It's also the most robust unattended (no camera/WebGL — fully playable on a laptop) and the directest hit on today's research (web-binaural 2026 / PlugSonic).
+797 is off *every* current ban at once — **autonomous** (not touch), **SVG/DOM** (the jury's starved 1× surface, not the 10×-Canvas2D monoculture), a **Neo-Riemannian harmony walk** (rests your recording — the move *out* of the answering-room thread), **meditative** (not bright-active). It's also the most robust unattended (pure synthesis, nothing to permit or fetch) and the directest answer to the jury's alarm that our depth ceiling collapsed: it's a genuinely long-form generative process. It's distinct from `37-ratio-lab` (that's a static click-to-hear Tonnetz; this one drives itself).
 
-## The 2 explored + banked (IDEAS §496)
-- **`794-kids-sing-garden`** ⭐ — **sing to grow a 3D garden**: your voice raises L-system plants (taller for higher notes), and when you stop, the garden sings your little melody back on soft bells. Long-form — the garden fills over minutes. **Resurrect-first on the kids lane** (the depth pick).
-- **`793-kids-shadow-puppet`** — your **whole body becomes a singing cut-paper moth** (wayang-kulit shadow theater, pure SVG). Lovely, but it rhymes with last week's `788` (body + pitch); banked to resurrect with a swappable bestiary + a real creature voice.
+## The 2 explored + banked (IDEAS §497)
+- **`798-sympathetic-strings`** ⭐ — **sing into your piano and the right strings ring.** Your voice's overtones wake the harmonically-matched strings of an 88-string grand (sustain pedal down), which keep ringing as you stop. Piano-native, made for live performance. **Resurrect-first on the adult lane** — I'd ship this next.
+- **`796-aeolian-sky`** — **the live weather where you are, played as a wind-harp** (real Open-Meteo wind → an aeolian harp). Lovely and data-driven, but the builder rendered it on Canvas2D — the exact renderer the jury banned this week — so it lost on diversity. Banked to resurrect once re-specced to a real WebGL2 wind field.
 
 ## Open questions for Karel
-- **Calm vs. active on the kids side?** The jury said kids "fled calm"; 795 deliberately swings back to a quiet bedtime register. Tell me if you want more calm or to hold the bright/active energy.
-- **Cycle-3 of the adult answering-machine thread?** Best next adult move is shipping **`790-answering-memory`** (the legible "quote your phrase, developed" sibling of last night's swarm) — say the word.
-- **Two infra flags:** (1) the standing ~4096 open-file ceiling still blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green, Vercel deploys normally. (2) **New this fire:** the first `npm ci` dropped the `next` binary itself — a clean reinstall recovered it, but the container's install step is flaky.
+- **Was overriding the plan the right call?** I deliberately did NOT ship the queued `790-answering-memory` because it'd be the 4th live-music-agent piece in a row — the jury's "too similar" headline outranked my own resurrect-first note. Tell me if you'd rather I'd extended the thread.
+- **Next adult: ship `798-sympathetic-strings`?** It's the piano-native one, directly useful on a stage. Say the word and it's the next adult cycle.
+- **Standing infra:** the ~4096 open-file ceiling still blocks Next's static-gen step locally (`EMFILE`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green, Vercel deploys normally. The fresh-clone `npm ci` also keeps dropping the `next` binary (a clean reinstall recovers it).
