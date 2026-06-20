@@ -5289,3 +5289,23 @@ Dive (WebSearch "WebRTC networked music performance browser low latency jam 2026
 **Why surprising for the lab.** Across 770+ prototypes the lab has many paint→sound pieces (loved 100/104/158/160/152) but every one is either **per-stroke loops in fixed timbre columns** (160) or **splat/triggers** (100) or **draws FROM voice** (158). **None implements the actual UPIC model: a single global traveling reader (x/angle=time) that sounds ALL drawn strokes by their y/radius=pitch as one continuous, evolving score.** That continuous-drawn-curve-as-pitch-read-by-a-playhead is grep-0× — and Xenakis literally designed it as a children's game, so it lands squarely on the un-built bright/joyful/active kids register (JURY 2026-06-19 #4) AND off every 2026-06-19 ban (no grain-cloud, no GPU-shader-field, no mic-hum, no dark-glow).
 
 **Could become a prototype that does X (built this cycle).** → `781-kids-paint-conductor`: a 4yo paints freehand on a bright cream canvas; a glowing playhead sweeps L→R forever; x=time, y=pitch (pentatonic-snapped, never wrong), color=one of five friendly timbres, thickness=loudness; the picture they draw becomes the song they hear, accumulating richer over minutes (long-form stateful). The research→build chain is visible: §492 (UPIC "music becomes a game for children") → 781. Banked siblings: `782-kids-sun-clock-song` (radial/cyclic UPIC), `783-kids-melody-rider` (a character rides the drawn line). Sources: dl.acm.org/doi/10.1145/3772363.3778764 · en.wikipedia.org/wiki/UPIC · iannis-xenakis.org/en/dictionary-upic · cdm.link/sonicsketch · transactions.ismir.net/articles/10.5334/tismir.128
+
+---
+
+## §493 — 2026-06-20 (UTC) — research dive (adult, WIDE fire)
+
+**The dive.** Two WebSearches, current-year filtered: (1) real-time body-movement → music generation, MediaPipe pose, interactive installation 2026; (2) arxiv cs.SD June 2026 symbolic-music Markov/style-modeling.
+
+**What surfaced — fresh, dated, in-window.**
+- **"A Design Space for Live Music Agents"** (arXiv **2602.05064**, **Feb 2026**) — a taxonomy for *live* music agents: systems that listen/sense and respond in real time, organized by what they sense, how much memory/state they hold, and how visible the agent's reasoning is to the player. *In-window (~4mo).* The lab's "answer-in-the-gap" pieces (718/748/770) are exactly these, but always opaque — the agent's model is hidden. The paper's "visible-state" axis is the surprising hook: **make the agent's learned model the visual itself.**
+- **"Rhythm in the Air: Vision-based Real-Time Music Generation through Gestures"** (arXiv **2511.00793**, **Nov 2025**) — a browser-feasible vision→pose→real-time-music pipeline for non-musicians; gestures drive generation with no instrument. *~7mo — at the edge of the window but the freshest pose→music paper that is genuinely browser-shaped (MediaPipe-class).* 
+- **"Composer Vector: Style-steering Symbolic Music Generation"** (arXiv, **June 2026**) — inference-time latent steering of *composer style* without retraining; "continuous steering coefficient" toward a target style. The 2026 descendant of recombinant style-modeling (Cope EMI). Confirms style-as-a-controllable-axis is a live 2026 research front.
+
+**Why surprising for the lab.** Every "live agent" piece the lab has shipped hides its brain — you hear the response but never see the model. The Feb-2026 design-space paper names *model-visibility* as a first-class design axis, which inverts the lab's habit: instead of a black-box accompanist, build an agent **whose learned model IS the screen** and reshapes as you teach it. Separately, pose→music for non-experts (Rhythm in the Air) is browser-shaped and the lab's body-input register collapsed 4×→0× this window (JURY #4).
+
+**Could become prototypes (this WIDE fire → 3 explorers, ship 1):**
+- → **778-markov-mirror** (SVG/DOM): a minimal *visible* live music agent — teach a keyboard your style, watch a live variable-order Markov graph thicken and then walk itself. Directly implements the design-space paper's "visible-state" axis. Refs Cope EMI / Hiller-Isaacson *Illiac Suite* (1957).
+- → **783/785-aurora-weather-organ** (WebGL2 + live NOAA SWPC data): rest his recording; sonify the live magnetosphere as a slow organ + drive an aurora shader — real-world-data sonification (JURY #3).
+- → **784-body-organ** (MediaPipe pose + WebGL2): the full-body, adult-meditative realization of *Rhythm in the Air* — your whole standing body is a chord (JURY #4, the 4×→0× body register).
+
+The research→build chain is visible: §493 (live-agent visible-state axis + pose→music) → today's 3 explorers. Sources: arxiv.org/abs/2602.05064 · arxiv.org/html/2511.00793v1 · arxiv.org/abs/2606.13626
