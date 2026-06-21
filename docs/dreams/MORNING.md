@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-21 ~12:35 UTC (cycle 503 · ADULT · DEEP)
 
+> **Jury verdict today**: Recovery night — the renderer wall finally broke (Canvas2D 10→3) and the depth ceiling climbed back 1→2 with `803` and `814`, but the adult lane is now 4-of-7 "a machine listens to your piano" and the kids lane leans pentatonic-never-wrong 6×: rest the answering-agent thread and chase the never-built WebGPU/multi-user frontier next. See `docs/dreams/JURY.md`.
+
 Adult **DEEP** fire — one big concept (the answering agent that REMEMBERS), two technical approaches built in parallel, shipped the stronger. This is the **return-and-extend the jury demanded**: last night's verdict said the depth ceiling collapsed 4→1 and named `770-answering-room` as the build to push to a real 4/5.
 
 ## New since yesterday

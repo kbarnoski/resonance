@@ -1,133 +1,126 @@
-# Concept Jury Verdict — 2026-06-20 (UTC)
+# Concept Jury Verdict — 2026-06-21 (UTC)
 
 ## Summary
-The lab did everything the 2026-06-19 jury asked, and overshot every single
-target. The GPU-shader ban worked so hard that **Canvas2D is now 10 of 15** —
-the new renderer monoculture, just as severe as the 9× shader field it replaced.
-The "bright/joyful kids" mandate worked so hard that the bright-active register
-is now 8 of 15 and the kids side fled calm entirely. And the depth ceiling the
-last jury celebrated as the lab's one durable habit — 4 of 15 hitting 4–5
-criteria — **collapsed to 1 of 15** this window, the single 4/5 being `743`, the
-*oldest* prototype in the window. The lab is sprinting pole to pole and calling
-it diversity. Two genuine gems survive the noise (`743`, `770`); the rest is a
-clean, competent, undifferentiated 2–3/5 middle.
+The renderer monoculture the last two juries screamed about is **broken** —
+Canvas2D crashed from 10-of-15 to 3-of-15 and no single surface now dominates
+(SVG 4, audio-forward 4, three.js 3, Canvas2D 3, WebGL2 1). And the depth ceiling
+the 06-20 jury watched collapse 4→1 has **recovered to 2** (`803`, `814`), both of
+them *recent* builds, not the window's fossils. That's a genuinely good night. The
+catch: the concentration just migrated from the GPU to the *concept*. **Four of the
+seven adult builds are the same move** — "a machine listens to Karel's recording and
+follows / analyzes / answers / remembers it" — and three of those (`770→792→814`) are
+literally one thread run three cycles deep. The kids lane, meanwhile, leans on
+pentatonic-never-wrong **6 times** and re-runs the UPIC pitch-painter three ways. The
+walls are gone; the ruts are new.
 
 ## Diversity audit
-- **Over-represented input: touch / finger-on-glass — 4×** (754 seat-touch, 755
-  tap-drag, 761 sculpt, 781 finger-paint), and **autonomous / no-live-input
-  "his-recording-or-data plays itself" — 4×** (760, 766, 770, 777). The touch ban
-  from two windows ago has fully relaxed; touch is back as the kids default.
-- **Over-represented output: Canvas2D — 10×** (744, 747, 748, 752, 754, 755, 760,
-  773, 777, 781). **This is the headline.** Last jury banned the GPU-shader field
-  at 9× and sent everything fleeing to "the scarce renderer" — and the whole lab
-  landed on the same one. three.js is 2× (766, 767), SVG/DOM 1× (761), raw WebGL2
-  1× (743), audio-forward 1× (770). The pendulum didn't settle on a spread; it
-  slammed into the opposite wall, again, for the fourth window running.
-- **Over-represented technique: his-recording-as-conducted/analyzed-structure —
-  5×** (748 tempo-follow, 754 phrase-conduct, 766 sky-conduct, 770 score-follow,
-  777 SSM-analyze). The grain-resynthesis ban *worked cleanly* (grains down 7×→1×,
-  only 743) — but it immediately re-templated into "read the structure of his
-  recording and conduct/follow/analyze it," and **every one of those 5 is an adult
-  piece.** Secondary: **pentatonic-never-wrong kids melody — 4×** (752, 761, 767,
-  781).
-- **Over-represented vibe: bright / sunny / joyful-active — 8×** (752, 754, 755,
-  760, 761, 767, 773, 781), of which **bright-active *kids* is 6×** (752, 755, 761,
-  767, 773, 781). Last jury's #4 begged for the bright/joyful kids register off the
-  9× dark-glow. The lab delivered — and overshot. The kids side now has exactly two
-  calm pieces left (743, 747) and is otherwise uniformly sunny-and-active. Same lump,
-  opposite pole.
-- **BANNED for next cycle:** **Canvas2D-primary output** (10× — rotate to SVG/DOM,
-  three.js, audio-only/eyes-closed, or, if and only if a concept genuinely needs it,
-  back onto a shader; do NOT reflexively flee to one new monoculture) · **touch as
-  the primary input** (4× — use tilt, body/camera, voice, external data, MIDI) ·
-  **his-recording-as-phrase-conductor/structure-reader as the core technique** (5× —
-  either rest his recording for a cycle, or use it a *sixth* genuinely-new way, NOT a
-  conductor/follower/analyzer) · **the uniformly bright-active kids vibe** (6× —
-  but the instruction is SPREAD, not flip back to dark-glow; land one in the middle).
+- **Over-represented input: Karel's-recording-as-autonomous-source — 4×** (770, 777,
+  792, 814). The whole adult side is "his piano plays itself and a machine reacts."
+  Runner-up inputs are healthily spread: body/camera 3× (788, 803, 811), mic/voice
+  3× (773, 799, 808), tilt 2×, touch/keyboard 2×.
+- **Over-represented output: SVG — 4×** (778, 797, 808, 811) **and audio-forward — 4×**
+  (770, 792, 795, 814). *Note the win:* Canvas2D fell 10→3 and three.js held at 3 —
+  the renderer field is the most evenly spread it's been in four windows. The 4×
+  leaders are mild, not a monoculture. **Do NOT flip them into a new wall.**
+- **Over-represented technique: pentatonic-never-wrong kids melody — 6×** (781, 788,
+  795, 799, 805, 811) **and machine-listens-to-his-recording — 4×** (770 follow+answer,
+  777 SSM-analyze, 792 swarm-memory, 814 motif-memory). The grain-resynthesis ban from
+  two windows ago is gone (only 805 touches his grains, lightly) — but it re-templated
+  into "read/follow/answer his recording," and that thread is now the adult lane's
+  spine. Secondary: UPIC pitch-painting — 3× (781 touch, 788 body, 811 body).
+- **Over-represented vibe: adult ambient/meditative/intimate — 5×** (770, 792, 803,
+  808, 814) **and bright-active kids — 4×** (773, 781, 788, 811). The good news the
+  last jury demanded: the kids calm register came back — 3 calm pieces (795, 799, 805)
+  now balance the 4 bright-active ones. The kids side is no longer stuck at one pole.
+- **BANNED for next cycle:** **his-recording-as-autonomous-source + machine-listens-to-
+  his-recording-as-core** (4× adult — REST the recording on the adult side, and *stop
+  the answering-agent thread* — 770/792/814 has had its three cycles) · **pentatonic-
+  never-wrong as the kids harmonic crutch** (6× — build a kids piece where harmony or
+  rhythm can be *shaped*, not one where every note is pre-approved) · **the UPIC pitch-
+  painter** (3× — three draw/wave-a-pitch pieces is a template now) · **adult-ambient/
+  meditative as the default register** (5×). NOT a renderer ban this time — the surfaces
+  are finally spread; keep them that way, don't reflexively flee to one.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — clean, again. No local-minimum build crept in; even the
-  thinnest clears the #2+#3 pair. The floor holds.
-- **Hit 2–3 criteria: 14** — 744, 747, 748, 752, 754, 755, 760, 761, 766, 767, 770,
-  773, 777, 781. The entire window except one. The **last 10 prototypes are ALL
-  2–3** — not a single ceiling build since 743.
-- **Hit 4–5 criteria: 1** — **743-kids-song-family** (#1 first multi-voice/harmonic
-  kids memory + #2 + #3 + #4 true cycle-2 of 738 + #5). **The ceiling fell from 4 to
-  1, and the lone survivor is the window's oldest build.** This is the most important
-  and most alarming number in the verdict. Last jury: "the depth habit is the one
-  worth protecting." One window later it evaporated. The lab climbed the ambition
-  ladder for one cycle and then settled back onto the comfortable #2+#3 rung for ten
-  straight fires.
+- **Hit 0–1 criteria: 0** — the floor holds for the fourth window running. Even the
+  thinnest build clears #2+#3.
+- **Hit 2–3 criteria: 13** — 770, 773, 777, 778, 781, 788, 792, 795, 797, 799, 805,
+  808, 811. Still the fat middle; the #2+#3 comfortable rung is where most fires land.
+- **Hit 4–5 criteria: 2** — **`803-body-chimes`** (#1 first body-excited modal physical-
+  modeling instrument + #2 + #3 Vrengt/CORDIS-ANIMA + #5) and **`814-remembering-room`**
+  (#1 first long-form symbolic motif-memory agent + #3 CHI-2026/MusicWeaver + #4 cycle-2
+  of 770 + #5). **The ceiling recovered from 1 to 2, and both are recent (cycles 499 &
+  503), not the window's oldest** — the exact inversion of last window's alarm, where
+  the lone 4/5 was the fossil. The depth habit is breathing again. Hold it: 2 is the
+  floor to beat, not the win to coast on.
 
 ## Standouts (positive)
-- **743-kids-song-family**: the model citizen and the only ceiling build. A true
-  **cycle-2 of 738** — it adds the multi-voice harmonic dimension 738 explicitly
-  banked, hum→a family of companions who sing the child's melody back as a 3–4-part
-  chord choir, voiced from grains of Karel's *real* piano. The only kids piece in the
-  window that uses his recording, and the only one that's long-form stateful and
-  harmonic. Depth done right.
-- **770-answering-room**: the strongest adult *idea*. His recording stays the soloist
-  while a real-time machine "live music agent" score-follows it (chroma+onset) and
-  answers in the phrase-gaps — call-and-response with his actual performance. It's the
-  rare audio-forward / eyes-closed register (1× output), and it's the most defensible
-  escape from the grain cloud. Begs for a cycle-2 (see provocation #2).
-- **781-kids-paint-conductor**: the cleanest execution of a named reference in the
-  window — literally Xenakis's UPIC ("music becomes a game for children: they draw,
-  they hear") in a 4-year-old's hands, one global playhead reading the whole drawing
-  as a continuous pitch-score. Long-form stateful, 0 lint issues, the purest
-  cause→effect. (It is also Canvas2D #10 — strong concept, monoculture renderer.)
-- **766-sky-orrery**: one of only two non-Canvas2D adult outputs (three.js), and a
-  genuinely distinct register — real computed sky positions conduct whole phrases of
-  his recording, "sky position = score position," so minute 5 ≠ minute 1.
+- **814-remembering-room**: the build of the window. A true cycle-2 of `770` that gives
+  the live-music agent the one thing it lacked — *memory*. A growing motif bank (its own
+  answers + contours lifted from his playing) that it transposes / augments / fragments /
+  inverts under rising memory-pressure, so minute 5 reworks minute 1. The visible
+  memory-shelf makes the accretion legible. It's the lab's first long-form *symbolic*
+  memory agent and the directest possible answer to the 06-20 jury's #1. This is what
+  "return and extend" is supposed to look like.
+- **803-body-chimes**: the other ceiling, and the answer to two prior bans at once. Body/
+  camera input (which had gone 4×→0×) returns, and for the first time the body *excites
+  real physical-modeling DSP* — modal damped-sine resonator banks with inharmonic
+  partials struck by 3D spatial collision — instead of just selecting a note. Genuine
+  installation-mode register (Bernhard Leitner cited and felt).
+- **795-kids-sound-hunt**: the cleanest diversity dodge in the window — compass/heading
+  input + HRTF binaural eyes-closed output + calm bedtime kids, three starved registers
+  in one piece, off every over-represented tag. It's also the kids lane's return to calm
+  done right, and the rare "the sound is the star, the screen is almost nothing" build.
+- **808-sympathetic-strings**: first AudioWorklet Karplus-Strong delay-line bank in the
+  lab — 48 mic-excited tuned strings ringing to your live spectrum, on SVG. The most
+  literally *live-performance-fit* piece here: point a mic at the real piano and the
+  strings answer (Karel priority #3), with a named hardware reference (EAE Prismatic Wall)
+  it actually implements rather than gestures at.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **767-kids-kite-flyer**: 2/5, the lab's worn "tilt-a-thing → pentatonic melody +
-  drone" template. Pretty three.js, but no novel subsystem and no research cite — the
-  comfortable middle. What was missing: a reason this *had* to be a kite and not the
-  fifteenth tilt-pentatonic toy.
-- **752-kids-word-band + 773-kids-parade-caller**: two ASR-kids pieces in one window
-  (752 speech→pitch, 773 speech→rhythm). 773 defends itself as "speech-as-rhythm is
-  lab-first," which is fair, but both collapse to the same shape: ASR → loop →
-  bright-cartoon-Canvas2D. Two in a 15-window is the template re-forming.
-- **761-kids-hill-roller**: 2/5, sculpt-hills-then-tilt-a-ball. Charming, but it sits
-  one room away from 781's draw-a-shape-hear-it and the heightfield-as-melody idea is
-  already worn. Local-minimum: clean, legible, not reaching.
+- **805-kids-snow-piano**: pleasant, but a 2/5 local minimum dressed in three.js. Tilt →
+  a Hann-windowed slice of his piano snapped to pentatonic is the `227-paths-granular`
+  music-box move with a snow skin; no novel technique, no real new subsystem. What's
+  missing: a reason it had to be *his* recording rather than any chime sample, or any
+  state that makes minute 5 differ from minute 1.
+- **778-markov-mirror**: competent and the "watch the model glow as it learns" viz is
+  the best thing about it — but the core is a textbook order-2 Markov melody demo with no
+  named-artist reference and no recent-research backing (2/5). The interesting unbuilt
+  version is the one where the *graph itself* is the instrument you reshape, not a mirror
+  of what you played.
+- **781-kids-paint-conductor**: flagged last jury too, and now it's the *first* of three
+  UPIC pitch-painters in the window (781 touch → 788 body → 811 body). Strong on its own;
+  a local minimum as a *pattern* — the lab has proven it can map a drawn/waved gesture to
+  a pentatonic playhead, three times. The technique is banked; stop re-shipping it.
 
 ## Provocations for tomorrow's dream cycle
-1. **Canvas2D is 10 of 15 — ban it for a week, but DON'T flee to one new wall.**
-   The lesson of four windows of pendulum slams (touch→mic→camera, Canvas2D→shader→
-   Canvas2D, dark-glow→bright-active) is that *renderer-banning into the opposite pole
-   is the disease, not the cure.* Next cycle: pick the renderer the **concept** needs.
-   The starved surfaces are SVG/DOM (1×), audio-only (1×), and — yes — even a shader
-   *if a concept genuinely demands one*. Spread, don't flip.
-2. **The ceiling collapsed 4→1. RETURN AND EXTEND something to a real 4/5.**
-   `770-answering-room` is the obvious target: its live-music-agent answers phrase-by-
-   phrase with **no long-form memory** — a cycle-2 that lets the agent *accrete* a
-   motif over minutes (so minute 5 ≠ minute 1) would hit #1+#4 and be the window's
-   first new ceiling build. Alternative: `754-conducted-table`'s cross-device handshake
-   has **never been link-tested with a second device** (STATE admits "correct-by-
-   construction, NOT link-tested") — a cycle-2 that actually verifies two phones retires
-   that asterisk.
-3. **His recording is 6× and ALL adult; his recording on the KIDS side is 1× (743).**
-   743 proved a kids piece can use his real piano beautifully. Either give the kids
-   side his recording a second time, OR rest his recording entirely for a cycle —
-   744 (geomagnetic) and 760 (Wikipedia firehose) prove the lab makes strong work with
-   no audio source at all.
-4. **Embodied / body / camera went 4×→0× this window.** The depth-camera/MediaPipe
-   body lane the last-last jury opened has vanished. `745-room-listener` was banked
-   "⭐ for a DEEP cycle where the CDN model load can be verified" and never built.
-   Spend a cycle on a body-as-instrument piece — it's the single most-starved input
-   register right now and it's off every current over-represented tag at once.
-5. **Build on the research you already surfaced.** RESEARCH §492 (today) cited the
-   **CHI 2026 "From Movement to Sound and Back"** workshop — movement→sound for
-   non-experts — and 781 only half-used it (touch, not body movement). The full-body
-   version of 781's UPIC idea is sitting unbuilt in your own research log. And be
-   honest about #5: the cited refs are mostly foundational (UPIC 1977, Konnakol,
-   Foote 1999) dressed as a "2026 lane" — a genuine <14-day finding would strengthen
-   the chain.
+1. **Rest his recording, and end the answering-agent thread.** Four of seven adult builds
+   are "a machine listens to Karel's piano"; `770→792→814` ran the *same* idea three
+   cycles deep — it earned its depth, now it's a rut. The next adult cycle should use an
+   audio source that is NOT his recording (live mic, external data, pure synthesis) and a
+   core that is NOT follow/analyze/answer/remember.
+2. **WebGPU compute has never appeared — after 814 cycles.** The ambition floor's own
+   flagship example (#1 "first WebGPU compute shader") is *still unclaimed*. That is the
+   single biggest unbuilt ambition flag in the lab. A particle/fluid/reaction-diffusion
+   field driven by his audio on a WebGPU compute pass would clear the floor and break new
+   ground in one move.
+3. **Two cold categories from the menu have zero entries this window: multi-user/WebRTC
+   and real-world-data sonification.** Spend a cycle genuinely cold — a shared/conducted
+   listening room (two browsers, one evolving piece) or a piece that sonifies a live
+   external API (weather, transit, seismic). "Music *about* something other than music"
+   hasn't been touched.
+4. **Kill the pentatonic-never-wrong reflex for one kids cycle.** It's the crutch 6 of
+   the last kids builds lean on. Build a kids piece where the child can shape *harmony or
+   rhythm* and where a "wrong" choice is musically interesting rather than impossible —
+   harmonic agency, not a pre-approved scale.
+5. **Stop banking DEEP-mode losers and never resurrecting them.** `809-sympathetic-modes`,
+   `810-sympathetic-comb`, `815-accreting-room`, `812/813` are all sitting in IDEAS from
+   the last few fires, fully briefed. The DEEP mode keeps generating siblings that die in
+   the bank. Pick ONE banked sibling and ship it instead of starting a fresh research
+   thread — the cheapest ceiling build available.
 
 ## Karel-facing line
-The lab did everything we asked and overshot every time — Canvas2D is now 10 of 15,
-the bright-kids vibe 6 of 15, and the depth ceiling we celebrated last week collapsed
-from 4 builds to 1; two real gems (743's harmony-family, 770's listening accompanist)
-but the lab is sprinting pole to pole instead of spreading.
+Recovery night — the renderer wall finally broke (Canvas2D 10→3) and the depth ceiling
+climbed back 1→2 with `803` and `814`, but the adult lane is now 4-of-7 "a machine
+listens to your piano" and the kids lane leans pentatonic-never-wrong 6×: rest the
+answering-agent thread and chase the never-built WebGPU/multi-user frontier next.
