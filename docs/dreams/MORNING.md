@@ -1,20 +1,18 @@
-# Morning digest — last updated 2026-06-21 ~02:30 UTC · cycle 499
+# Morning digest — last updated 2026-06-21 ~06:25 UTC (cycle 500 · KIDS · WIDE)
 
-> **Today's move:** an ADULT **DEEP** fire — one big concept (*your whole body plays an invisible, room-sized physical-modeling instrument*) built three ways, ship the best. This is the directest answer to the jury's two loudest alarms at once: **body/camera was the single most-starved input (4×→0×)**, and **the depth ceiling collapsed 4→1** — so this one is full-body-tracked AND long-form (it accretes over minutes).
-
-**Open first (allow the camera, then move slowly, whole-body):** https://getresonance.vercel.app/dream
+Cycle 500 — a milestone. Ran a kids **WIDE** fire (3 orthogonal explorers, shipped 1) and used **your real "Welcome Home" piano** for only the 2nd time ever on the kids side.
 
 ## New since yesterday
-- **`/dream/803-body-chimes`** — *Body Chimes / Struck Room.* **Why open it:** tap Start, allow the camera, and **stand back so it sees your whole body**. Your wrists, head and ankles become glowing strikers inside a dark room of suspended metal **bells, bars and bowls** — sweep a limb through one and it **rings for real** (genuine *modal synthesis*, not a sample: each body is a bank of inharmonic resonant modes). Keep moving and the room slowly fills with a shimmering sustained cloud that **remembers how you've been playing** (bodies you strike often re-tune the background), so minute 5 sounds fuller and warmer than minute 1. It's our **first piece where the body EXCITES a real physical instrument** instead of just picking a note — the moving body as the bow. No camera? It plays itself.
+- **❄️🎹 [/dream/805-kids-snow-piano](https://getresonance.vercel.app/dream/805-kids-snow-piano)** — *Tilt the tablet like a snow globe and YOUR real recorded piano pours out as glowing snow that chimes when it lands.* A 3D glass globe of ~220 glowing motes; tilt is gravity, motes fall onto 5 chime rails and each plays a soft window of your actual recording (pitch-snapped, so never wrong), then dissolves to sparkles. **Why open it:** it's the lab's 2nd-ever kids piece on your real music (the jury's open ask), it's tilt + your piano + glow — all three things you've ❤️'d — and it ties straight to your *Snowflake* journey. Calm, wintery, bedtime-tolerable.
+- **2 more explored this fire** (banked to IDEAS §500): **`806-kids-sky-lullaby`** ⭐ (the REAL sky right now — today's sun, clouds, moon phase — sings a dusk lullaby in SVG; resurrect-first) + **`807-kids-breath-bubbles`** (blow into the tablet → a rising cloud of glowing bubbles that pop in chimes).
 
-## Why this one (of the three)
-All three were the same concept — your body plays a room-sized resonator network in three.js — differing by *synthesis method*. **803 (modal struck bodies)** won on: the most complete long-form accretion (sympathetic mode-bed + struck-body memory + root-drift), the most **robust** unattended (standard filter banks, no fragile audio-worklet), the richest visuals (varied bell/bar/bowl geometry), and the **freshest** lab concept. Off every ban: **body/camera** (the starved 0× input), **three.js** (not the 10×-banned Canvas2D), **adult installation** (not bright-kids, not his-recording-conductor), rests your recording.
+## In progress / partial
+- None. One ambitious commit, two banked seeds.
 
-## The 2 explored + banked (IDEAS §499)
-- **`802-body-aviary`** ⭐ — a 3D forest of **plucked strings** (real Karplus-Strong in an audio-worklet); the highest-tech synthesis, **resurrect-first adult** when a worklet slot is wanted.
-- **`804-body-veil`** — one enormous **sympathetic-string veil** you brush with your whole body ("an open piano with the sustain pedal down"); gorgeous and enveloping — resurrect with true 3D brush-depth.
+## Research findings worth a look
+- **RESEARCH §500:** **LEGO SMART Play (2026)** — a screen-free brick that turns *motion through the air* into sound + light (ships March 1). The biggest toy company is betting the very-young music register on exactly our sensorimotor lane — it's what seeded the snow globe.
 
 ## Open questions for Karel
-- **Still queued from last night:** `798-sympathetic-strings` ⭐ (sing into your piano, the right strings ring) is the standing adult resurrect-first. Tonight I went body-as-instrument instead because the jury named body/camera the most-starved input — say the word if you'd rather I ship 798 next.
-- **Standing infra:** the ~4096 open-file ceiling still blocks Next's static-gen step locally (`EMFILE` at `next-font-manifest.json`) — proven environmental again (pristine `main` fails identically); compile + lint + type-check all green (`✓ Compiled successfully in 95s`), Vercel deploys normally.
-- **Verify by eye:** none of the body pieces could be ear/eye-tested in the container (no camera/browser) — worth a 20-second whole-body smoke test in front of the laptop camera to confirm the strikes read cleanly.
+- **805 is three.js #3 in a row** (799→803→805). I shipped it anyway — milestone + your real piano + triple-love outweighed renderer-spread this once. Next cycle I'll deliberately spread (806 is SVG/DOM, queued first). Flag if you'd rather I'd picked the renderer-diverse one tonight.
+- **Not device-verified** (no orientation/audio/network in the sandbox). On a real iPad: does the tilt land motes at a satisfying chime rate, and do windowed slices of your recording read as warm bell-chimes? The fallback bell + auto-drift guarantee a sounding glance even on your phone.
+- Standing infra ask unchanged: the container's ~4096-fd ceiling blocks local static-gen (compile+lint+types verified green every fire; Vercel deploys fine).
