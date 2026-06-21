@@ -1,18 +1,19 @@
-# Morning digest — last updated 2026-06-21 ~06:25 UTC (cycle 500 · KIDS · WIDE)
+# Morning digest — last updated 2026-06-21 ~08:25 UTC (cycle 501 · ADULT · DEEP)
 
-Cycle 500 — a milestone. Ran a kids **WIDE** fire (3 orthogonal explorers, shipped 1) and used **your real "Welcome Home" piano** for only the 2nd time ever on the kids side.
+Adult **DEEP** fire — ONE concept, 3 competing resonator engines, shipped the most reference-faithful one. Deliberately renderer-spread: SVG, off the three.js streak you flagged last night.
 
 ## New since yesterday
-- **❄️🎹 [/dream/805-kids-snow-piano](https://getresonance.vercel.app/dream/805-kids-snow-piano)** — *Tilt the tablet like a snow globe and YOUR real recorded piano pours out as glowing snow that chimes when it lands.* A 3D glass globe of ~220 glowing motes; tilt is gravity, motes fall onto 5 chime rails and each plays a soft window of your actual recording (pitch-snapped, so never wrong), then dissolves to sparkles. **Why open it:** it's the lab's 2nd-ever kids piece on your real music (the jury's open ask), it's tilt + your piano + glow — all three things you've ❤️'d — and it ties straight to your *Snowflake* journey. Calm, wintery, bedtime-tolerable.
-- **2 more explored this fire** (banked to IDEAS §500): **`806-kids-sky-lullaby`** ⭐ (the REAL sky right now — today's sun, clouds, moon phase — sings a dusk lullaby in SVG; resurrect-first) + **`807-kids-breath-bubbles`** (blow into the tablet → a rising cloud of glowing bubbles that pop in chimes).
+- **🎻🎹 [/dream/808-sympathetic-strings](https://getresonance.vercel.app/dream/808-sympathetic-strings)** — *Sing or play into your mic and exactly the right strings ring back — your sound waking a bank of tuned strings that vibrate sympathetically, the way a grand piano hums when you hold the sustain pedal.* 48 strings, each a **real Karplus-Strong tuned delay line** in an AudioWorklet; the live FFT scales each string's excitation so the ones matching your pitch ring. Hold **Space** (sustain pedal) → feedback climbs to near-lossless and a shimmering bed **accretes** (fuller at minute 3 than second 10). Modes: Chromatic / Fifths / Overtone. **Why open it:** it's **piano-native + live-performance-fit** — point a mic at your real piano and the strings answer; it's the literal browser build of the EAE *Prismatic Wall* pedal; and it's on SVG, deliberately off the three.js run.
+- **2 more explored this fire** (banked to IDEAS §501): **`809-sympathetic-modes`** (FFT-gated high-Q bandpass bank — lost for rhyming with 803's modal banks) + **`810-sympathetic-comb`** (native feedback-comb bank — most robust, least KS-faithful).
 
 ## In progress / partial
 - None. One ambitious commit, two banked seeds.
 
 ## Research findings worth a look
-- **RESEARCH §500:** **LEGO SMART Play (2026)** — a screen-free brick that turns *motion through the air* into sound + light (ships March 1). The biggest toy company is betting the very-young music register on exactly our sensorimotor lane — it's what seeded the snow globe.
+- **RESEARCH §501:** the sympathetic-string bank is a live 2026 idea on two fronts — the boutique **EAE *Prismatic Wall*** pedal (tuned-delay-line KS, Jan-2026 reviews, 4 interval modes) and arXiv **Dialogue in Resonance** (May-2026, a piano that answers a live player). 808 is the first mic-excited sympathetic-string instrument in the lab.
 
 ## Open questions for Karel
-- **805 is three.js #3 in a row** (799→803→805). I shipped it anyway — milestone + your real piano + triple-love outweighed renderer-spread this once. Next cycle I'll deliberately spread (806 is SVG/DOM, queued first). Flag if you'd rather I'd picked the renderer-diverse one tonight.
-- **Not device-verified** (no orientation/audio/network in the sandbox). On a real iPad: does the tilt land motes at a satisfying chime rate, and do windowed slices of your recording read as warm bell-chimes? The fallback bell + auto-drift guarantee a sounding glance even on your phone.
-- Standing infra ask unchanged: the container's ~4096-fd ceiling blocks local static-gen (compile+lint+types verified green every fire; Vercel deploys fine).
+- **Renderer spread worked:** after three.js 3× (799→803→805), 808 is back on SVG. The three engines were all SVG by design.
+- **Not ear-verified** (no mic/audio in the sandbox). On real hardware: do sung/played pitches clearly wake their matching strings, and does the pedal-held bed accrete musically or muddy? Always-seeded strings + ghost exciter + a hard limiter guarantee a sounding glance even with no mic.
+- **Orchestration note:** the killed builder sub-agents *recreated* their removed folders mid-build — I had to remove the losers twice. The worktree/self-continue behavior keeps biting; flagging again.
+- Standing infra ask unchanged: the container's ~4096-fd ceiling blocks local static-gen (compile+lint+types verified green; Vercel deploys fine).
