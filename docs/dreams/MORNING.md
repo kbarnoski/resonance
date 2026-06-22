@@ -1,18 +1,22 @@
-# Morning digest — last updated 2026-06-22 ~04:25 UTC (cycle 510 · KIDS · DEEP)
+# Morning digest — last updated 2026-06-22 ~06:25 UTC (cycle 511)
 
-> Kids **DEEP** fire — ONE concept (*the color you mix IS the chord you hear*), two physically-opposite color models built in parallel, ship the stronger. Answers JURY 2026-06-21 #4 (kill the kids "pentatonic-never-wrong" crutch — let harmony be *shaped*) and #5 (ship a banked sibling — this resurrects the §508 ⭐ `829-kids-color-blend`). Mode alternated to DEEP after three WIDE fires (§507/508/509).
+## ▶ Open this first
+- **[/dream/837-quasicrystal](https://getresonance.vercel.app/dream/837-quasicrystal)** — **Quasicrystal.** Music with the structure of a quasicrystal: a real **de Bruijn pentagrid → Penrose tiling** generates a score that's perfectly ordered, self-similar, and **never repeats** — it can play for an hour without looping, different at minute 5 than minute 1. Fat/thin rhombs and their 7 vertex types map to just-intonation pitches; φ-inflation zooms the crystal. The lab's **first aperiodic-order composition** (grep-0×). Press **Begin Crystal** — it plays itself; tune tempo / inflation / traversal. Hit **Design Notes** in-app for the why.
 
-## New since yesterday
-- **🎨 [/dream/834-kids-paint-mixer](https://getresonance.vercel.app/dream/834-kids-paint-mixer)** — *A 4-year-old finger-paints by mixing real paint — and the color they mix IS the chord they hear.* Drag three glowing paint blobs (red / yellow / blue) on cream paper; where they overlap the paint mixes like **REAL paint — blue + yellow makes GREEN** (not the muddy gray that ordinary screen/RGB mixing gives). A GLSL shader runs genuine **Kubelka-Munk pigment optics** per pixel; a GPU `readPixels` under the finger samples the *actual* mixed color → a live, always-in-tune chord whose quality glides warm→bright-major · green→open-sus · blue→tender-minor · magenta→dreamy-maj7, richness rising with vividness. **Why open it:** it's the first time the lab's "mix colors → hear harmony" toy uses physically-honest paint, so what a kid already knows from finger-painting finally matches the screen — and the heard chord exactly equals the seen color. Never silent or blank: a C+G pad always hums, blobs auto-drift when idle, and a CSS fallback covers no-WebGL devices.
-- **DEEP fork (built, banked — not shipped):** **`835-kids-light-mixer`** — the physically-opposite sibling (additive *light*: red+green=yellow, all=white, on a starfield). Complete and clean, de-selected on novelty (additive RGB is the *ordinary* mix the world already does + the original 829 framing; the pigment one is the lab-first surprise). Banked to IDEAS §510 — a natural "light room" companion, or a paint↔light toggle that teaches the color-science difference.
+## How this cycle ran (adult · WIDE · 3 explorers → shipped 1)
+- Mode **WIDE** (alternated off §510's DEEP): 3 orthogonal adult briefs, each resting your recording and dodging the answering-agent thread (JURY #1) + the touch-input rut (5× in last 10). Shipped the strongest.
+- **2 more explored, banked to IDEAS §511** (both built complete + build-verified, neither committed):
+  - **`836-flightpaths`** — sonify the **live ADS-B sky**: each real aircraft a sustained spatial voice on a clinical radar (altitude→pitch, bearing→pan, density→harmony). The genuine real-world-data lab-first; **top resurrect-first next adult cycle.** Banked because the live feed is often CORS-blocked → most visitors would see the simulated sky.
+  - **`838-hocket-loom`** — play one live MIDI/keyboard line, it shatters across an interlocking **hocket / kotekan / phase** ensemble. Banked: canon/interlock is well-trodden lab ground.
 
-## In progress / partial
-- None shipped-partial. `834` is demoable. This completes the kids harmony-shaping set: `816` stack-intervals · `822` shape-rhythm · `828` feeling-position · `834` mix-color.
+## Research finding worth a look (RESEARCH §511)
+- **Skylight** (Tom's Hardware, June 2026) — viral open-source Raspberry-Pi + ADS-B rig that projects real flight paths onto your ceiling. It makes the sky *visible* but never *heard* — that gap seeded `836`. Confirmed by grep that the lab owns **no aircraft/transit data source** (NOAA/USGS/Wiki/weather are taken).
 
-## Research findings worth a look
-- **RESEARCH §510** — the surprising bit is about color *physics*: **Mixbox** and **Spectral.js** now ship **GLSL/WebGL Kubelka-Munk** pigment mixing (plus CoolerSpace, arXiv 2409.02771, and a 2026 color-science agent repo). The point that drove the build: every "mix colors" kids toy mixes in RGB, where **blue+yellow=gray** — a lie to any child who's used real paint. Kubelka-Munk fixes it (blue+yellow=green), and it was **grep-0× in the lab**. Chain: research (RGB mixing is physically wrong) → build the paint-honest version.
+## Process note (the standing fix held)
+- Grepped every brief's technique/data-source **before** fan-out: aircraft = un-owned ✓; **optical-flow, genome/GA, and WebGPU-compute all turned out OWNED/saturated** — so I cut those and never over-claimed. The jury's "WebGPU compute never appeared" (#2) is **factually wrong** — ~21 prototypes already use it; please don't keep chasing it as the unbuilt frontier.
 
 ## Open questions for Karel
-- **Does `834` land by eye + ear** — does blue+yellow visibly read as *green* on your real GPU, and does the chord track the mixed color tightly under a finger? (Verified at compile/lint/type level only; no GPU/audio in the sandbox. The always-on pad + auto-drift + CSS fallback guarantee a sounding, painting glance regardless.)
-- Worth a paint↔light **toggle** in 834 (fold in the banked `835`) so a kid feels "blue+yellow=green" vs "blue+yellow=gray"? It's a one-shader-swap and a genuine, gentle color-science lesson.
-- Standing infra: the container's ~4096-fd ceiling still blocks local static-gen (EMFILE at the font manifest, fails identically on pristine `main`; Vercel deploys fine). Also: remote `main` again arrived diverged 50/50 (stale orphan local history at cycle 305) — reset to `origin/main` before building, as every recent cycle.
+- **836 is one CORS check from shippable.** Want me to verify airplanes.live returns in-browser next cycle and ship the real-sky version (with a tiny guarded proxy if the feed is blocked)?
+- Quasicrystal is **autonomous/generative** — happy with pieces that "play themselves" in the adult lane, or do you want a live-performance hand on everything?
+
+_Infra (standing since 472): local `npm run build` passes compile+lint+type-check but can't finish static-gen — a ~4096-fd container ceiling, not a code defect; Vercel deploys fine._
