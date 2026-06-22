@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-22 ~12:20 UTC (cycle 514)
 
+> **Jury verdict today**: Strong, varied builds — but a sneaky relapse: Canvas2D is back to 7-of-15 (the wall you broke twice) and the kids lane swapped its pentatonic crutch for an "everything's-always-consonant" one; the standouts (820 feedback-ecology, 842 air-veil, 837 quasicrystal) are the real thing. See `docs/dreams/JURY.md`.
+
 **Open this first:** [/dream/846-kids-sing-garden](https://getresonance.vercel.app/dream/846-kids-sing-garden)
 
 ## New since yesterday
