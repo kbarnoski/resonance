@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-06-22 (cycle 517, adult · DEEP)
+# Morning digest — last updated 2026-06-22 (cycle 518, kids · WIDE)
 
 ## New since yesterday
-- **[/dream/853-motet-room-reach](/dream/853-motet-room-reach)** — **The Motet Room (Reach).** Stand at the center of a fixed ring of ~18 HRTF-spatialized choir voices and **conduct it with your bare hands** (webcam): reach toward a section to swell it, spread your arms to bloom the whole choir open, hands together to collapse it to a resolved cluster, and **pinch-and-fling a single voice across the room where it STAYS** — you permanently re-sculpt the field and *hear* each voice fly around your head. Why open it: it's the lab's first **body-navigated binaural spatial-audio room** — the deferred "pose-driven spatial room" the jury kept asking for — on **raw WebGL2** (the scarce GPU surface), off the banned Canvas2D. **Headphones recommended** for the binaural effect; works with **no webcam** (two virtual hands auto-conduct; mouse fallback).
+- **[/dream/856-kids-rumble-band](/dream/856-kids-rumble-band)** — **Feel the Beat.** A 4-year-old plays music with a **game controller they already hold**: push the two thumbsticks to conduct two glowing creature-voices, mash the big colored buttons to drum — and **the controller RUMBLES on the beat so they FEEL the music in their hands.** Why open it: it's the lab's first **cross-modal / haptic** kids piece (our coldest, never-touched menu category) and the first on a **gamepad** input (0× in the last 10 — off camera, off glass, off the over-used touch/mic). On **raw WebGL2** (a scarce GPU surface), off the jury's hard-banned Canvas2D. **Works with no controller** — on-screen virtual sticks + drum buttons + an auto-demo, and the glow field visibly pulses on the beat so you SEE the felt beat even on a laptop.
 
 ## How this cycle was run
-- **DEEP mode**: one big concept — *navigate/sculpt a fixed constellation of spatialized voices with your body* (the Janet Cardiff *Forty Part Motet* idea) — built **3 ways in parallel** at three body granularities. Shipped the strongest; banked the other two.
-- Differs from the older `677-presence-field` (which sticks a voice on each body joint): here the voices are **pinned in the room** and you move among / reshape them.
+- **WIDE mode** (alternating after §517's DEEP): 3 orthogonal kids explorers, each a GPU surface on a *different starved input* — shipped the strongest, banked the other two. The directest attack on "too similar."
+- Deliberately avoided a **4th MediaPipe-hands build in a row** (517 shipped bare-hand conducting) — that's why the hands explorer was banked, not shipped.
 
-## Banked siblings (see IDEAS §517)
-- `852-motet-room-walk` ⭐ — MediaPipe **Pose**: physically *walk* the listener through the fixed oval of voices (three.js). The literal Cardiff gallery walk — **top resurrect-first**.
-- `854-motet-room-lean` — MediaPipe **Face**: *head-tracked binaural* — turn your head and the choir stays anchored in the world (three.js). The most elegant cut; ties directly to this cycle's research.
+## Banked siblings (see IDEAS §518) — both built complete + verified clean
+- `855-kids-solfege-signs` ⭐ — make the **Curwen/Kodály solfège hand-signs** in the air → a choir sings the matching scale degree → build a melody by signing (MediaPipe + three.js). The most *pedagogically real* of the three — **top resurrect-first** for a cycle where hands isn't freshly over-used.
+- `857-kids-color-wand` — wave any bright **colored toy/scarf** → a glowing **WebGPU** particle comet that sings (hue = instrument, height = pitch). The freshest GPU surface; banked on runtime risk (WebGPU + color-tracking unverified without hardware).
 
-## Research worth a look (RESEARCH §517)
-- Webcam-as-head-tracker binaural is now mature: **MediaPipe** face/hand landmarks → drive the WebAudio `AudioListener` over a fixed HRTF field, **no special hardware**. That's the technique under all three Motet Room builds.
+## Research worth a look (RESEARCH §518)
+- **Embodied music pedagogy is the 2026 throughline** — Dalcroze eurhythmics, Orff, the Curwen/Kodály solfège hand-signs (CHI "Music Corner"): kids learn music through the *body*. 856 delivers that as a *felt* beat (haptics); 855 as solfège gestures. Plus: WebGPU audio-reactive particle work is shipping this month.
 
 ## Open questions for Karel
-- Want one unified "Motet Room" with a **walk / reach / lean** mode toggle (a multi-cycle build), or keep the three flavors as separate prototypes?
-- All three need a real **webcam + headphones** to judge the feel (sandbox has no camera/audio) — worth a hands-on pass when you're at a machine with both.
+- The haptic "feel it in your hands" claim is the one thing I can't verify without a physical controller — worth a hands-on pass if you have an Xbox/PS/Switch pad to pair with your tablet.
+- Want me to resurrect **855-kids-solfege-signs** next kids cycle (real music teaching), or keep pushing fresh non-camera inputs?
