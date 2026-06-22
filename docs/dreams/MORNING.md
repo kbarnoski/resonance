@@ -1,21 +1,19 @@
-# Morning digest — last updated 2026-06-22 ~16:30 UTC (cycle 516)
-
-> **Yesterday's jury** (`docs/dreams/JURY.md`) kids notes: **#3 give a kid the freedom to be WRONG** (dissonance reachable AND resolvable, a real decision — not a steer through a pre-vetted always-consonant field, the new 5× rut) and **#4 bring back a CALM kids piece** (7 of 8 were bright/active). This cycle hits BOTH at once.
-
-**Open this first (on a phone/tablet you can tilt):** [✨🥣 Star Bowl — /dream/849-kids-star-bowl](https://getresonance.vercel.app/dream/849-kids-star-bowl)
+# Morning digest — last updated 2026-06-22 (cycle 517, adult · DEEP)
 
 ## New since yesterday
-- **Star Bowl (849)** — *Tilt the tablet like a bowl of glowing stars: pool them in the calm center for a warm chord, tip them to the spiky rim for a soft, safe dissonance, then **tilt home to resolve it.*** Dissonance is reachable AND resolvable — a real harmonic decision made with the body — and the whole thing is a calm night-blue bedtime register. **Tilt** input (the cold one) · **three.js** GPU (off the banned Canvas2D). Desktop falls back to drag-to-tilt.
+- **[/dream/853-motet-room-reach](/dream/853-motet-room-reach)** — **The Motet Room (Reach).** Stand at the center of a fixed ring of ~18 HRTF-spatialized choir voices and **conduct it with your bare hands** (webcam): reach toward a section to swell it, spread your arms to bloom the whole choir open, hands together to collapse it to a resolved cluster, and **pinch-and-fling a single voice across the room where it STAYS** — you permanently re-sculpt the field and *hear* each voice fly around your head. Why open it: it's the lab's first **body-navigated binaural spatial-audio room** — the deferred "pose-driven spatial room" the jury kept asking for — on **raw WebGL2** (the scarce GPU surface), off the banned Canvas2D. **Headphones recommended** for the binaural effect; works with **no webcam** (two virtual hands auto-conduct; mouse fallback).
 
-## Explored but banked (2 more, see IDEAS §516)
-- **851-kids-hand-choir ⭐** — conduct a light-choir with **bare hands**: spread = tension, together = resolve (MediaPipe + raw WebGL2). The embodied "do something a touchscreen can't" build the jury most wants — **queued top for the next kids cycle**.
-- **850-kids-monster-keys** — a piano where **every chromatic note plays**; a wrong note is a friendly googly wobble-monster you calm (Web MIDI + raw WebGL2). The purest freedom-to-be-wrong.
+## How this cycle was run
+- **DEEP mode**: one big concept — *navigate/sculpt a fixed constellation of spatialized voices with your body* (the Janet Cardiff *Forty Part Motet* idea) — built **3 ways in parallel** at three body granularities. Shipped the strongest; banked the other two.
+- Differs from the older `677-presence-field` (which sticks a voice on each body joint): here the voices are **pinned in the room** and you move among / reshape them.
+
+## Banked siblings (see IDEAS §517)
+- `852-motet-room-walk` ⭐ — MediaPipe **Pose**: physically *walk* the listener through the fixed oval of voices (three.js). The literal Cardiff gallery walk — **top resurrect-first**.
+- `854-motet-room-lean` — MediaPipe **Face**: *head-tracked binaural* — turn your head and the choir stays anchored in the world (three.js). The most elegant cut; ties directly to this cycle's research.
+
+## Research worth a look (RESEARCH §517)
+- Webcam-as-head-tracker binaural is now mature: **MediaPipe** face/hand landmarks → drive the WebAudio `AudioListener` over a fixed HRTF field, **no special hardware**. That's the technique under all three Motet Room builds.
 
 ## Open questions for Karel
-- Star Bowl's tilt-gravity feel is tuned blind — give it a real tilt and tell me if it should roll looser or tighter for a 4yo.
-- Does the rim dissonance read as "ooh, wobbly" (safe + fun) or just flat? It's deliberately gentle; I can push the "wrong" braver if you want.
-- 851 (bare-hand choir) is next-kids-cycle top — want it standalone, or fold its hand-distance idea into Star Bowl?
-
-## Standing notes
-- Canvas2D still HARD-banned; 849 keeps the GPU-surface streak (three.js). WebGPU remains 0× recently but is NOT a frontier (saturated ~21× historically).
-- Build verified clean (compile + lint + types); local static-gen still blocked by the container fd ceiling (infra since cycle 472, not the code) — Vercel deploys normally. Not device-verified (no tilt/GPU/audio in sandbox).
+- Want one unified "Motet Room" with a **walk / reach / lean** mode toggle (a multi-cycle build), or keep the three flavors as separate prototypes?
+- All three need a real **webcam + headphones** to judge the feel (sandbox has no camera/audio) — worth a hands-on pass when you're at a machine with both.
