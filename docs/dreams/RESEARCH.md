@@ -4,6 +4,20 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §529 — 2026-06-23 (research-first dive, cycle 529 · ADULT · WIDE) — cross-modal "deformation = timbre" + the prosody/speech-melody anchor
+
+**The dive.** WebSearch ×4, date-checked against June 2026. Three threads converged on a single design law: *the structure you see can BE the sound you hear, mapped cross-modally.*
+
+1. **"It Sounds Squishy" — Understanding Cross-Modal Correspondences of Deformable Shapes and Sounds** (Yu et al., **ACM DIS 2025**; dl.acm.org/doi/10.1145/3715336.3735797). An empirical study of how people pair *deformable* shapes with sounds: **shape governs pitch & brightness**, while **stiffness governs the sound's fade-in / fade-out (attack/decay)**. This is a concrete, validated mapping for "deformation = timbre" — the missing rubric for any squish/stretch instrument.
+2. **Differentiable Modal Synthesis for Physical Modeling of Planar String Sound *and* Motion Simulation** (arXiv 2407.05516). One model yields BOTH the visible 2-D motion of a vibrating string and its sound — the "what you see is what you hear" ideal made literal and differentiable. Older (Jul 2024) but foundational to the adult "the picture is the waveform" register.
+3. **Negative steering toward named anchors.** arXiv cs.SD recent (June 2026) is still TTS/anti-spoofing-dominated with little client-buildable; the live value was steering the three explorers onto durable named references: **Leoš Janáček's *nápěvky mluvy* (speech-melody transcriptions)** for a text→cadence piece, **John Cage *4′33″* / Pauline Oliveros "Deep Listening"** for a silence-as-content piece, and **Brian Eno**'s generative lineage (*Music for Airports*, *Reflection*) for long-form evolution.
+
+**Could become a prototype that does X.** (a) A typed sentence → a real functional-harmony phrase whose punctuation drives cadences, notated live in SVG (cross-modal prosody → music; Janáček inverted). (b) A mic piece you play by being *silent* — the music blooms in the gaps and ducks on sound (Cage's silence as the content). (c) Karel's recorded piano as a 10-minute evolving generative reverie with memory (Eno long-form). These became cycle 529's three WIDE explorers. **#5 fix:** §529 is dated TODAY and is cited by name in each prototype's README, finally landing the dated <14-day RESEARCH citation the jury flagged 0-for-15.
+
+**Sources.** *It Sounds Squishy* (ACM DIS 2025) · arXiv 2407.05516 (differentiable planar-string) · Janáček speech-melody (musicology) · Cage *4′33″* / Oliveros Deep Listening · Brian Eno generative works.
+
+---
+
 ## §528 — 2026-06-23 (research-first dive, cycle 528 · KIDS · WIDE) — the design law for "freedom to be wrong"
 
 **The consonance-development design law.** *"Development of tonality and consonance categorization ability and preferences in 4- to 6-year-old children"* (Frontiers in Psychology; **PMC11336827**, corrigendum **PMC11472291**). 4-year-olds *do* prefer consonance over dissonance — but they reliably register the difference **only when the dissonant contrast is LARGE and unmistakable**; a subtle detune doesn't read as "wrong" to them at all. WebSearch ×3 (date-checked, June 2026) turned up no bleeding-edge last-30-day *kids-template-relevant* hook (the freshest hits — the "Studies for" human-AI co-creative real-time sound model, arXiv 2510.25228, Oct 2025; a Frontiers digital-music-instruction study, feduc.2026.1847381 — aren't about wrong-note/dissonance pedagogy), so I anchored on this foundational law, which the freshness rule explicitly permits for stable techniques.
