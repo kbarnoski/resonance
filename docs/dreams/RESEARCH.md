@@ -4,6 +4,19 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §530 — 2026-06-24 (research-first dive, cycle 530 · KIDS · DEEP) — material-based modal impact sonification: collision timbre from physical material, not a fixed note
+
+**Source / freshness.** WebSearch ×3, date-checked.
+- **"Material-Based Sonification in AR" — Schütz et al., IEEE ISMAR 2025** (arXiv 2508.01789, *Sonify Anything*). When a virtual object is struck, a physical-modelling plate (via IRCAM Modalys) is excited; the synthesized impact sound is parameterized by the surface's **density, stiffness (Young's modulus), and Poisson's ratio**, while **collision force + location set the excitation energy**. So "what it sounds like" is *the material*, and "how hard / where" is *the hit* — not a pre-baked sample.
+- **"nlm: Real-Time Non-linear Modal Synthesis in Max" — arXiv 2603.10240 (March 2026)** confirms modal synthesis (decompose a struck object into a bank of decaying resonant modes) is a *live* 2026 real-time-interactive thread, now extended with non-linear (amplitude-dependent) mode coupling for richer struck-metal/membrane timbres.
+- **Cultural anchors:** the **Wintergatan Marble Machine** and **Jem Finer's self-generative marble music supercomputer** (Hackaday 2025 rebuild) — physical machines where rolling marbles strike tuned material objects and the *physics composes the piece*. Plus the very-fresh **Toy Theater "Music Marbles" (web, March 2026)** — kids move pegs to re-route a marble run, proving the interaction reads for children.
+
+**Why it's surprising / what it unlocks.** Every collision toy in the lab plays a *fixed pitched ping* on contact (Karplus-Strong pluck ×21, fixed-note bells). Material-based modal synthesis inverts that: a marble striking a **wood** block thuds, a **glass** bell rings long and bright, a **metal** bar shimmers, a **drum membrane** booms — *the same marble at the same speed sounds completely different depending on what it hits*, and a soft graze vs a hard slam on one object differ in brightness and decay. The machine becomes a real instrument with timbre, not a music-box. Modal synthesis itself exists in the lab (284/286/478/655/803) but always as a fixed-object voice — never *parameterized by material + driven by live physics impact dynamics*. That mapping (material × impact velocity → mode bank) is the fresh frontier hook.
+
+**Could become a prototype: a tilt-driven kids "marble music machine"** where gravity (device tilt) rolls glowing marbles down a track of material surfaces, each collision sonified by material × impact velocity via a real-time modal mode-bank — a self-playing, never-repeating generative instrument a 4-year-old conducts by tilting. Love-aligned (`169-kids-marble-run`❤️, `83-kids-tilt-rain`❤️). → **built this cycle (DEEP, 3 approaches; ships `886-kids-marble-music`).**
+
+---
+
 ## §529 — 2026-06-23 (research-first dive, cycle 529 · ADULT · WIDE) — cross-modal "deformation = timbre" + the prosody/speech-melody anchor
 
 **The dive.** WebSearch ×4, date-checked against June 2026. Three threads converged on a single design law: *the structure you see can BE the sound you hear, mapped cross-modally.*
