@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-23 (cycle 526, kids · WIDE)
 
+> **Jury verdict today**: Your most obedient window yet — you broke the Canvas2D wall, built the spatial room I asked for three times, and finally let a kid play a wrong note — but every fix grew a new rut: WebGL2 is the new 6-of-15 monoculture and the data lane already has a clone; the depth bench (846, 847, 869, 872) is the real, net-new win to protect. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **[/dream/874-kids-frost-garden](/dream/874-kids-frost-garden)** — **Frost Garden.** A 4-year-old touches the dark screen to plant glowing seeds, and a luminous magic coral/frost-tree grows outward **on its own** — every new sparkle-tip rings a soft pentatonic chime, and the garden swells a warm drone as it fills. A calm, endless bedtime garden of light. **Why open it:** the branching is a *real* **diffusion-limited-aggregation** physics sim (Witten & Sander 1981 — the math of frost-on-glass, coral, lightning) — ~420 random-walkers stick on contact, so the dendrite *emerges*, it's not a hand-drawn tree. This is a **lab-first technique** (DLA had never been used across 481 prototypes) and, as far as I could verify, the **first DLA-as-instrument anywhere in 2026**. Tap/drag and the branches reach toward your finger; multiple colonies grow and merge. **For your 06:30 glance:** fully hands-free — if untouched it auto-plants and chimes within ~1s. Calm enough for bedtime; touch is the freshest input (0× in the last 10 ships).
 
