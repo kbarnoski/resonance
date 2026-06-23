@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-06-22 (cycle 519, adult · WIDE)
+# Morning digest — last updated 2026-06-23 (cycle 520, kids · DEEP)
 
 ## New since yesterday
-- **[/dream/859-paths-compute-bloom](/dream/859-paths-compute-bloom)** — **Compute Bloom.** Drop your own piano recording (or play the built-in tape-piano) and the music blooms a living cloud of **half a million particles computed on the GPU** — an 8-band FFT drives a curl-noise field: bass swells the core, highs scatter sparkle, every onset blooms the whole cloud then settles, and velocity-damping gives it **memory** (different at minute 5 than minute 1). Why open it: it lands the **scarcest surface in the lab — WebGPU compute, 0× in the last 15** — the exact thing the jury keeps begging for, and it answers Karel's "use my real piano" directive (drag-drop intake). On a non-Safari-26 phone it auto-falls to a WebGL2 cloud, so it's never a dead screen.
+- **[/dream/862-kids-solfege-signs](/dream/862-kids-solfege-signs)** — **Sing With Your Hand.** A 4-year-old makes the classic music-teacher hand-signs in the air — ✊ fist = *do*, ✋ flat hand = *mi*, ☝️ pointing finger = *ti* — and a choir of glowing creature-orbs sings that note back. Hold and change shapes to build a tune; go still and the choir **echoes your melody** (the Kodály call-and-response game). Why open it: it's **real, named music pedagogy** (the Curwen/Kodály solfège signs taught to children worldwide) made playable by a toddler — the lab's first solfège-sign recognition, and the deepest-payload version of "if you have a body, do something a touchscreen can't." **No camera needed for your 06:30 glance** — a ghost hand is already singing and the big colored sign-buttons play the same choir.
 
 ## How this cycle was run
-- **WIDE mode** — 3 orthogonal adult explorers, each a **GPU surface** (jury HARD-banned Canvas2D) on a *different* non-banned input — shipped the strongest, banked the other two.
-- Today's research found the unlock: **WebGPU just became iOS-deployable** (Safari 26 / three.js r171, late 2025). That's what made shipping a phone-glance WebGPU surface defensible *now* rather than a desktop flex — the cleanest today's-research → today's-build chain.
+- **DEEP mode** — one concept (solfège-signs → choir), **two rendering approaches** built in parallel; shipped the stronger, banked the other.
+- **It resurrects a banked ⭐** — `855-kids-solfege-signs` was parked two cycles ago only to avoid back-to-back hand-tracking builds. This directly answers the jury's "**ship a banked sibling, stop letting them ghost**" (#5) and "force a GPU surface, not Canvas2D" (#1 — it's three.js).
+- Today's research found the hook: an **April-2026 paper** recognizing *conducting* as a real-time **musical sign-language** (museum-robust, MediaPipe) — which reframes solfège-signs from "wave your hand" into "recognize a real sign-language and conduct a choir."
 
-## Banked siblings (see IDEAS §519) — both built complete
-- `860-marine-gamelan` ⭐ — the **live ocean plays a bronze gamelan**, and rough seas audibly **DETUNE the metal** (live Open-Meteo wave data → modal physical-modeling + WebGL2 caustics). The jury-PRAISED real-world-data-with-consequence register (like air-veil); **top adult resurrect-first** — built, clean, lowest runtime risk.
-- `861-flow-veil` — conduct a luminous dye veil with the **raw river of your motion** (webcam **optical flow**, not tracked joints) → granular audio. Built complete but needs a 1-line `OffscreenCanvas`→`ImageBitmap` texImage2D fix before it builds.
+## Banked sibling (see IDEAS §520) — built complete
+- `863-kids-solfege-choir` ⭐ — the **same idea as a glowing "ladder of light"** (raw-WebGL2): 7 luminous rungs do→ti bottom-to-top, rendering Kodály's pitch-height *literally* (do low, la high). Arguably the smarter visual mapping; de-selected only because raw-WebGL2 was over-used in the recent window. **Top kids resurrect-first.**
 
-## Research worth a look (RESEARCH §519)
-- **WebGPU crossed into production on iOS** (Safari 26 + three.js r171 auto-fallback) — a browser GPU-compute surface is now phone-safe, and the creative-coding field is shipping audio-reactive compute-particle work this month (webgpu.com "Party," etc.). The lab's scarcest surface just became its safest.
+## Research worth a look (RESEARCH §520)
+- **arXiv 2604.27957 (Apr 2026)** treats conducting as a recognized musical sign-language built for **public-museum robustness** — a direct hint for a Tauri/installation **conductor-driven spatial-audio room** (still the jury's 0× depth-camera gap, #2).
 
 ## Open questions for Karel
-- 859 has a real WebGL2 fallback, but the **WebGPU compute path is device-unverified** here (no GPU in the build sandbox) — worth a look on your phone/desktop to confirm the 500k-particle path actually lights up vs. quietly falling back.
-- Want the next adult cycle to **resurrect 860-marine-gamelan** (the sea plays gamelan, jury-loved data register), or keep pushing fresh WebGPU surfaces while the jury's GPU-only window is open?
+- 862 is **device-unverified** here (no camera/GPU in the sandbox) — worth a look on your phone to confirm the 7 hand-signs reliably distinguish on a real hand; the classifier favours *distinct shapes* over clinical accuracy, and `classify.ts` thresholds are the thing most likely to want a hands-on nudge.
+- Next adult cycle (521): **resurrect `860-marine-gamelan`** (the live ocean plays a bronze gamelan, rough seas detune the metal — jury-loved data register, lowest runtime risk), or keep opening fresh surfaces?
