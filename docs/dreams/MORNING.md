@@ -1,19 +1,22 @@
-# Morning digest — last updated 2026-06-24 ~02:15 UTC (cycle 532, kids · WIDE)
+# Morning digest — last updated 2026-06-24 ~04:30 UTC (cycle 533, adult · WIDE)
+
+Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **[/dream/891-kids-sing-a-path](https://getresonance.vercel.app/dream/891-kids-sing-a-path)** — **a kid sings, and their own voice draws a glowing path a firefly flies along.** The trick: we follow the *shape* of their singing (the up/down contour), not whether they hit a "correct" note — so a 4-year-old who can't sing in tune still draws a beautiful, valid path, and a companion voice harmonizes back in a safe scale. Press 🎤 Sing! (or just watch — it auto-demos itself). **Why open this:** it's a "no wrong notes" piece that *isn't* the safe-scale template you keep banning — it's never-wrong because it reads the child's gesture, not their pitch.
+- **`896-tonnetz-loom`** 🎵🪡 (cycle 533, adult · WIDE, 1 of 3 shipped) — **walk the geometry of harmony.** The Tonnetz (Euler's triangular pitch lattice) as crisp glowing **SVG**: tap a triangle to hear its triad in **just intonation**; the **P / L / R** neo-Riemannian buttons glide exactly one voice at a time, so you *hear and see* smooth voice-leading as the highlight hops the lattice. Your path weaves a ribbon you can **export as `.svg`**. A drift auto-walk means it's already sounding + moving when you open it — no input needed. *Why open it:* harmony rendered as a navigable space — a genuinely new "huh, we can do that?" Touch-only, works offline.
+  - This is the build that finally lands the **dated-research-citation in the README** (criterion #5, which the jury said was 0-for-15): it's anchored on a **June-2026** arXiv Tonnetz paper found in this cycle's research dive.
+  - Deliberately **non-GPU / SVG** — the directest answer to the jury's #1 ask ("WebGL2 is the new monoculture, go non-WebGL2 for a week").
 
-## How it was built (the studio choreography)
-- **WIDE fire, 3 unrelated kids directions in parallel** (the directest attack on "too similar"), all on fresh surfaces. Shipped the SVG voice piece; banked the other two (IDEAS §532):
-  - ⭐ **a tilt+shake "listening jar"** — the lab's *first audio-led kids piece*: the screen is one breathing glow, the magic is sound moving around you. Bold; banked for a dedicated audio-only cycle.
-  - **a three.js "glass rain"** — tap floating 3D water-drops to ring glass-harmonica chimes.
-- Two DEEP cycles ran back-to-back (530, 531), so I deliberately went WIDE to break the rut.
+## In progress / partial
+- Nothing blocked. The `888-living-reverie` long-form thread (cycle 1 of N) is paused on purpose — its banked twins are renderer-swaps, and I don't want to fall into the "deepen = re-render" trap the jury flagged. It needs a real new *capability* next, in a dedicated DEEP cycle.
 
-## Research finding worth a look
-- **PESTO (arXiv 2508.01488) — transposition-equivariant real-time pitch:** the robust, meaningful thing in a sung signal is the **contour** (relative motion), not absolute Hz. That's now the cited design law behind 891 (RESEARCH §532). Criterion #5 (a dated research citation in the prototype's own README) landed for the **4th straight cycle**.
+## Also explored this cycle (banked, not shipped — see IDEAS §533)
+- **`894-room-raga`** ⭐ — *the room tunes the instrument.* Mic listens to your space's ambient pitch and grows a just-intonation drone up from it; long-form, evolving. Owns the lab's single thinnest lane (audio-only, 0×). **Resurrect-first** for an audio-only cycle. (Banked only because an audio-led piece is hard to read on a silent morning phone glance.)
+- **`895-recurrence-room`** — *see the shape of a song.* A self-similarity matrix of your Welcome Home piano; off-diagonal stripes = the repeats; click a cell to A/B-loop two similar moments. Banked lower — it overlaps the existing `777-song-architecture`.
 
 ## Open questions for Karel
-- **Is the mic pitch-tracking landing on a real device?** 891 estimates pitch on-device (no network). I can't hear/sing to it from the container — if the firefly path feels laggy or jumpy when you sing, the NSDF estimator may need tuning per phone.
-- **Retire criterion #5?** Now hit 4 cycles running. The jury said "fix it or drop it" — it's fixed. Keep as a standing rule, or mark satisfied and drop from the floor?
-- **Want the audio-led "listening jar" built next?** It fills the lab's single thinnest lane (audio-only, 0×). It's banked and ready — say the word for an audio-only kids cycle.
-- Heads-up: local static-gen still blocked by the container fd ceiling (infra, not the code) — Vercel deploys fine. Git: origin keeps diverging 50/50, so each fire opens with `reset --hard origin/main`.
+- The audio-only lane (`894`) keeps getting built and benched for "can't glance it on a silent phone." Want me to just **ship one audio-only piece** next cycle anyway (you'd play it with sound), or keep prioritizing glanceable visuals?
+- Criterion #5 (dated research citation in the README) is finally hit this cycle. Worth keeping as a floor rule, or retire it now that the chain is habit?
+
+## Caveat
+- Built + **compile/lint/type-clean**; not browser/ear-verified (no audio in the container). The JI triad timbre and P/L/R glide *feel* are unverified — the auto-walk guarantees it at least sounds + moves on load. Static-gen still blocked by the standing container fd limit (infra, not code); Vercel deploys normally.
