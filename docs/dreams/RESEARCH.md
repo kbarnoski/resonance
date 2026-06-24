@@ -4,6 +4,17 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §534 — 2026-06-24 (research-first dive, cycle 534 · KIDS · WIDE) — dissonance is a *category a 4-year-old is still learning*; teach it as a consequence, not by hiding it
+
+**Source / freshness.** WebSearch ×3 (children's consonance/dissonance perception 2026; arXiv cs.SD/cs.GR June-2026 listings; real-time modal synthesis), every date checked.
+- **Developmental anchor — *Development of tonality and consonance categorization ability and preferences in 4- to 6-year-old children* (NIH/PMC11336827).** The surprise worth building on: an early preference for consonance exists at age 4 but is **only measurable with large consonant/dissonant contrasts**, and the *ability to categorize* tonal-vs-atonal develops by age 6 — i.e. the 4-yo we design for is **right in the middle of acquiring this category.** Most lab kids pieces (and the whole banned "no-wrong-notes safe-scale" template) *hide* dissonance, which removes the very contrast the child needs to build the category.
+- **Affective-valence anchor — *Electrophysiological and behavioural responses to consonant and dissonant piano chords as standardised affective stimuli* (PMC12605063, published 29 Oct 2025).** Consonant chords are reliably rated *pleasant*, dissonant *unpleasant*, with dissonance driving stronger frontotemporal/beta activation — a measurable felt valence. So a "sour buzz / dark gap that the child resolves into a warm bloom" maps onto a real affective gradient, not an arbitrary game rule.
+- **Technique sweep (last-30-days check):** arXiv cs.SD June-2026 listing surfaced *LiveBand* (2606.03803, live audio-domain accompaniment) and structure-control song-gen (*SketchSong* 2606.03169) — real but ML-heavy/out-of-browser. The browser-feasible technique anchor stays **real-time non-linear modal/impact synthesis (*nlm*, arXiv 2603.10240, Mar 2026)** — resonators excited by impact/friction — which frames "a note as a physical event/collision" (a seesaw settle, a relit flame).
+
+**Chain → today's build (AGENT.md path (a)).** These anchor a KIDS·WIDE fire of **three template-breakers** (JURY 2026-06-23 #4: "let the wrong choice persist and matter, no auto-resolve — build the third one"), each making dissonance a *persistent consequence the child resolves*, on a different non-WebGL2 surface. **Shipped `897-kids-balance-band`** (touch · Canvas2D · 2D rigid-lever torque ↔ consonance): a spicy creature is literally *heavier* — the seesaw tips and stays tipped with a sour beating voice until the child hangs a balancing consonant creature on the high arm. Banked siblings `898-kids-echo-keeper` (mic · SVG · a clash sticks looping in a knot until sung free) and `899-kids-candle-choir` (touch · WebGPU · a clash blows out a candle relit only by a consonant neighbor). **Could become more prototypes that:** map the *degree* of dissonance to the *size* of the consequence (a near-miss tips a little, a tritone tips hard), or let two children co-resolve one beam (the multi-user lane). The README of `897` cites PMC11336827 + PMC12605063 (criterion #5, the in-README dated citation — second straight cycle landing it).
+
+---
+
 ## §532 — 2026-06-24 (research-first dive, cycle 532 · KIDS · WIDE) — contour over absolute pitch: the kids "no wrong notes" law, stated as a real-time-pitch design principle
 
 **Source / freshness.** WebSearch (cs.SD real-time pitch + children's voice-music threads), date-checked.
