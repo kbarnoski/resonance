@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-06-24 ~10:15 UTC (cycle 536, kids · WIDE)
+# Morning digest — last updated 2026-06-24 ~12:3x UTC (cycle 537, adult · WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`899-kids-moire-beats`** 〰️ (cycle 536, kids · WIDE, 1 of 3 shipped) — **a 4-year-old plays "rough vs. calm" with one finger, and SEES the exact thing they HEAR.** Two striped op-art grids overlap; sliding the top one twists them. Line them up → the rolling moiré band slows to nothing *and* the two-tone drone smooths to one clear calm tone. Twist them apart → the band shimmers fast *and* the sound throbs WAH-WAH-WAH. *Why open it:* it's a real cross-modal fact made into a toy — **moiré IS visible acoustic beating** (the visual band's speed and the audio wobble are literally the same number), with **no scale, no notes, nothing that can be "wrong"** — just roughness↔calm felt through the hand. The lab's **first moiré piece**, on Canvas2D (dodging the WebGL2 wall the jury banned). Works on any iPad/phone; no mic, no camera, no login — and it's moving + sounding on its own within a second if nobody touches it.
-  - **Lands the citation rule a 3rd straight cycle:** the README cites this cycle's dated research dive (RESEARCH §536) plus Gerald Oster (Scientific American, 1963) and Bridget Riley — the in-README dated-research citation the jury flagged **0-for-15 for five windows**.
+- **`902-harmonic-mirror`** 🎹✨ (cycle 537, adult · WIDE, 1 of 3 shipped) — **play a few notes and the instrument quietly completes the chord you imply — adding the 1–2 voices you *didn't* play, tuned in pure just intonation so they lock dead-still against your root.** You play in equal temperament (the keys you press); a *mirror* infers the chord (maj/min/sus4/dom7/fifth), adds the missing tones as small-integer ratios (5/4 third, 3/2 fifth…), and **glide-retunes** them when your root moves. *Why open it:* it's the **deterministic, zero-latency cousin of an AI accompanist** — it predicts nothing, it just *finishes the chord you're already holding* — and it's squarely on your "personal workspace for pianists/composers" line. **Plays with zero hardware:** click the on-screen piano, or use `a w s e d f t g y h u j k`; a MIDI controller drives it directly if you're at a desk. Canvas2D circle-of-fifths constellation shows held notes (white) vs mirror notes (violet, with ratio labels). Idle → a I–vi–IV–V auto-demo keeps it alive.
+  - **Lands the citation rule a 3rd straight cycle:** the README cites this cycle's dated research (RESEARCH §537 → **arXiv 2604.07612**, Apr 2026, real-time human–AI co-performance) — the in-README dated-research citation the jury flagged **0-for-15 for five windows**.
 
-## Also explored this cycle (banked, not shipped — see IDEAS §536)
-Both are **brand-new lab techniques** (each grep-verified 0×), sequenced for future kids cycles:
-- **`900-kids-rope-singer`** ⭐ — *a hanging rope you play with your hands.* Pure **SVG** (the scarce 0× surface the jury keeps naming): a **catenary** rope where you hang beads to make it sag and sing lower, and pluck it for a damped twang. **Resurrect-first.**
-- **`901-kids-water-bowl`** — *hum and see the note's shape.* A **three.js** bowl of water whose surface blooms into **Faraday standing-wave** cymatic patterns in time with your voice (low note = big rings, high note = fine petals). Has a hands-free auto-demo so it sings even with no mic.
+## Also explored this cycle (banked, not shipped — see IDEAS §537)
+- **`903-living-stave`** ⭐ — *your playing writes itself into a living score.* Sing/play into the mic → live transcription inks noteheads onto a self-drawing **SVG** treble staff (NSDF pitch + onset gating). **Owns the 0× SVG lane the jury keeps naming as starved → resurrect-first.**
+- **`904-tide-organ`** — *the sea plays an organ.* Live **NOAA** tide data decides which organ pipes enter/leave and the shape of the arc (data → STRUCTURE, never detune), over a **three.js** glowing pipe field. Ref: the Zadar Sea Organ. Banked only because `898-tremor-score` just did external-data→structure last cycle.
 
 ## In progress / partial
-- Nothing blocked. The `888-living-reverie` long-form thread is still paused on purpose — it needs a real new *capability* next, not a renderer swap.
+- Nothing blocked. The `888-living-reverie` long-form thread is still paused on purpose — it needs a real new *capability* next, not a renderer swap (jury #2).
 
 ## Open questions for Karel
-- **The kids template is now broken three ways (868/849/897 let a child reach dissonance, and 899 drops scales entirely for a roughness↔calm continuum). Keep pushing kids pieces about a *perceptual fact* rather than a *melody*?**
-- We keep generating great never-used-technique builds and shipping the *safest-to-demo-on-a-phone* one (899 here, over the SVG rope and three.js water bowl). Right call for the 06:30 glance, or want the bigger-swing build some nights?
+- **902 is the first deliberately desk-and-controller piece in a while.** Worth pulling out a MIDI keyboard to judge whether the JI completion *audibly* locks (it's the whole point, and the container has no audio so it's unverified)?
+- We keep shipping the safest-to-demo-on-a-phone explorer (902 here, over the SVG live-score and the three.js tide-organ). Right call for the 06:30 glance, or want a bigger-swing build some nights?
 
 ## Caveat
-- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`, zero warnings in the 899 folder); **NOT browser/ear-verified** (no audio in the container) — whether the moiré band reads as "the same wobble I hear," small-iPad readability, and the twist gesture's feel are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.
+- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`: `✓ Compiled successfully in 102s`, zero warnings in the 902 folder); **NOT browser/ear-verified** (no audio in the container) — the JI lock, glide-retune feel, and constellation legibility are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.
