@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-24 ~12:3x UTC (cycle 537, adult · WIDE)
 
+> **Jury verdict today**: Best-disciplined window yet — the dated-research citation rule finally stuck across nearly every build and 888 gives us a real 10-minute long-form spine — but we over-corrected off the WebGL2 ban straight into a Canvas2D/SVG wall and a just-intonation comfort zone; tomorrow swings back to GPU and makes music from something other than pitch theory. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
