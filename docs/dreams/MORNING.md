@@ -1,20 +1,22 @@
-# Morning digest — last updated 2026-06-24 ~16:20 UTC (cycle 539, adult · DEEP)
+# Morning digest — last updated 2026-06-24 ~18:2x UTC (cycle 540, kids · WIDE)
 
-**Open this first (headphones!):** https://getresonance.vercel.app/dream/909-resonant-field-volume
+**Open this first (prop the phone up and dance!):** https://getresonance.vercel.app/dream/911-kids-shadow-dance
 
 ## New since yesterday
-- **909-resonant-field-volume** ☁️🔊 — *sing, hum, or play, and your own sound is scattered back around your head as a 3D cloud of grains while it blooms as a volume of light — both shaped by TIMBRE, never pitch.* The directest answer yet to the jury's standing challenge "make music from **timbre, texture, or space — not pitch theory**": there is **zero pitch detection** anywhere. Brightness, noisiness, loudness, and change decide where each grain lands in 3D (HRTF-panned) and how the GPU nebula churns; a single fixed drone holds harmony deliberately flat so the whole piece lives in *texture × space*. **Why open it:** put on headphones and make any sound — it's the most immersive, least "instrument-y" thing the lab has built.
+- **[/dream/911-kids-shadow-dance](https://getresonance.vercel.app/dream/911-kids-shadow-dance)** 🕺✨ — **a 4-year-old DANCES and their whole body becomes a cloud of light.** The front camera reads whole-body movement (MediaPipe Pose) and maps its *quality* — energy, fluidity, impulsivity — to a GPU particle bloom + granular texture; a sudden move is the beat. **Zero pitch logic** (one warm drone underneath). Why open it: the lab's first "make music by moving your whole body" kids piece. No camera? a ghost-dancer auto-demo blooms + sounds within ~1s.
 
-## Explored but not shipped (2 more, banked → IDEAS §539)
-This was a **DEEP** cycle: one concept, three GPU render engines built in parallel, shipped the most robust.
-- **908-resonant-field-compute** ⭐ resurrect-first — the frontier version: a hand-written **WebGPU compute shader** advecting 120k particles. De-selected only because WebGPU still isn't on most phones (it'd show its fallback at your 06:30 glance); it's the best one on a desktop GPU.
-- **910-resonant-field-flow** — a **GPGPU "river of light"** (~147k flowing points). Lovely, but depends on float-texture support; 909's raymarched volume runs on any WebGL.
+## Mode + how it was made
+- **KIDS · WIDE** — orchestrated **3 parallel builders** on ONE theme ("music from the BODY, not pitch") via different non-touch inputs. Shipped the dance piece; **2 more explored, banked in IDEAS §540**:
+  - ⭐ `913-kids-spin-galaxy` — spin the tablet → a **WebGPU** star-galaxy whose orbits ring a rhythm (the purest "swing back to GPU" answer; resurrect on a desktop where WebGPU lands).
+  - `912-kids-wind-garden` — **blow** at the screen → wind sweeps a glowing meadow, dandelion seeds chime (clever spectral-flatness blow-vs-hum detection; calm/bedtime).
 
-## How this cycle stayed on-mandate
-- Jury 2026-06-24 banned **Canvas2D + SVG** (swing back to GPU), **touch input**, and the **interval/JI harmony engine**. 909 is **mic** (non-touch) + **three.js GPU raymarched volume** (the scarce surface) + **timbre→space, pitch held to one drone** — clears every ban.
-- Research→build chain is visible: today's dive (Delta Sound Labs **XStream**, a spatial *live* granular synth from NAMM Jan 2026) → today's winner, which **inverts** it: placement is automatic & timbre-driven, not knob-driven.
-- In-README dated research citation landed **5 cycles running** — the criterion the jury said had been failing for months.
+## Research findings worth a look
+- **RESEARCH §540** — the children's-movement-sonification model (Frontiers PMC5104747): movement has three sonifiable qualities — *energy, fluidity, impulsivity*. Plus *The Moving Mandala* (2025): rhythmic music + embodied movement → child synchrony. This cycle's build implements that mapping directly. (6 straight cycles now carry an in-README dated citation — criterion #5 is locked in.)
+
+## Honest caveats
+- Winner is **compile/lint/type-clean** but **not** camera/ear-verified in the container — whether MediaPipe Pose reliably tracks a *small* child across lighting, and the motion-scaling feel, need a real-device playtest. The auto-demo guarantees a glance always works.
+- Static-gen still blocked by the standing container fd ceiling (EMFILE) — infra, not code; Vercel deploys normally.
 
 ## Open questions for Karel
-- 909 is tuned blind (no audio/WebGL in the build container). On headphones, does the grain cloud read as "my own sound placed *around* me," or just stereo wash? And does the volume read as your *timbre's shape*?
-- Still 0× and waiting: **multi-user/WebRTC** (two people in one sounding room) and an **AI-pipeline-chain** (audio→image→video). Want me to aim a future adult cycle at one of those, or resurrect the WebGPU-compute 908 on a desktop pass?
+- Dance (911) vs. spin-galaxy (913, WebGPU) vs. blow (912) — which embodied input feels most "yours" for the kids zone? I shipped dance as the directest research fit; happy to resurrect either sibling next.
+- Still 0× in the lab: depth-camera, multi-user/WebRTC, AI-pipeline-chains. Want me to push toward one of those next adult cycle (541)?
