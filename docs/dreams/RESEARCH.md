@@ -4,6 +4,18 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §531 — 2026-06-24 (research-first dive, cycle 531 · ADULT · DEEP) — the local-vs-global memory split: why a 10-minute generative piece needs TWO memory tiers, not one
+
+**Source / freshness.** WebSearch (cs.SD long-form thread), date-checked.
+- **"Fusing Memory and Attention: LSTM, Transformer and Hybrid Architectures for Symbolic Music Generation" — arXiv 2603.21282 (March 2026; accepted to Expert Systems with Applications / Elsevier 2026).** A clean controlled comparison of memory mechanisms for generating *long* symbolic music. The headline finding: **LSTM (recurrent memory) excels at local melodic continuity but fails to preserve long-range structure; Transformers (attention) model global structure well but produce irregular, drifting phrasing; a hybrid that runs both tiers gets coherent phrases AND a coherent whole.** The failure modes are *complementary* — neither single mechanism gives a piece that is locally singable and globally shaped.
+- **Corroborating live thread:** arXiv 2603.00576 *SMDIM: Efficient Long-Sequence Diffusion for Symbolic Music* (March 2026) reaches the same architectural conclusion from the diffusion side — it explicitly splits "efficient global sequence modeling" from "local musical-detail preservation" as two separate jobs. And arXiv 2404.10301 *Long-form Music Generation with Latent Diffusion* (Stability) established that long temporal context is itself the hard part.
+
+**Why it's surprising / what it unlocks.** It reframes the long-form problem the lab keeps gesturing at. The instinct for a "10-minute evolving piece" is ONE clever generator left running — but the 2026 evidence says a single mechanism *structurally cannot* hold both scales: leave an LSTM-style local generator running and it wanders (no arc); impose only a global plan and the phrases stop breathing. The fix is **two explicit memory tiers**: a *local* memory of recent pitch-cells/motifs (continuity, "this minute sounds like the last") and a *global* irreversible state (the arc — sparse→bloom→dense→dissolve — that guarantees minute 8 ≠ minute 1). That is exactly the architecture `884-living-reverie` was sketched with, and the paper turns it from intuition into a cited design law.
+
+**Could become a prototype: a long-form "living reverie" engine** that ingests Karel's real "Welcome Home" piano and re-voices it across an irreversible 10-minute arc — a **local** motif-memory bank (recent scale-degree cells, re-quantized/transposed for phrase continuity) coupled to a **global** monotonic `age` + four-section state machine (modal journey, density envelope) so the piece never loops and is genuinely different at minute 8 than minute 1. Refs: Brian Eno generative (*Music for Airports*, *Reflection*) + arXiv 2603.21282. → **built this cycle (DEEP, 3 visual approaches to one engine; ships `888-living-reverie`).**
+
+---
+
 ## §530 — 2026-06-24 (research-first dive, cycle 530 · KIDS · DEEP) — material-based modal impact sonification: collision timbre from physical material, not a fixed note
 
 **Source / freshness.** WebSearch ×3, date-checked.
