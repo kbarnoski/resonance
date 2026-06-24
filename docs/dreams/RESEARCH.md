@@ -4,6 +4,14 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §532 — 2026-06-24 (research-first dive, cycle 532 · KIDS · WIDE) — contour over absolute pitch: the kids "no wrong notes" law, stated as a real-time-pitch design principle
+
+**Source / freshness.** WebSearch (cs.SD real-time pitch + children's voice-music threads), date-checked.
+- **PESTO — *Real-Time Pitch Estimation with a Self-supervised Transposition-equivariant Objective* (arXiv 2508.01488).** A lightweight, self-supervised, *real-time* pitch tracker whose training objective is **transposition-equivariance**: shift the input up an octave and the output shifts by exactly that, learned with no labels. The structural insight worth stealing: the *robust, meaningful* quantity in a sung signal is the **contour — relative up/down/hold motion** — not absolute Hz. Absolute pitch is fragile (mic, room, a 4-year-old's untrained voice); the *shape* of the melody is stable and is what carries musical meaning. Corroborated as a live thread by the 2026 singing-voice-synthesis literature (arXiv 2601.13910 review; YingMusic-Singer-Plus 2603.24589), all leaning on robust F0/contour front-ends.
+- **Children's-voice corroboration:** the music-education literature (interactive pitch-visualization toys; 2026 voice-analysis-software studies) consistently shows kids benefit from **immediate visual pitch feedback** and from *contour* games (sing-the-shape) far more than from absolute-pitch targets.
+
+**Why it's surprising / the hook.** It turns the lab's recurring kids dilemma into a *cited design law*. The jury keeps banning the "snap every note to a safe pentatonic scale" template (it removes agency — a child can't be wrong, but can't be *expressive* either). PESTO's transposition-equivariance points at the better move: **follow the child's gesture (the contour) literally in the visuals, and only quantize the audio you sing back.** The kid is never "wrong" — not because we hid the wrongness, but because we're reading the right variable (shape, not pitch). **Could become a prototype that** lets a child sing and watch their *own* voice draw a glowing path (contour → a rising/falling line), with a companion voice harmonizing in a safe scale — a no-wrong-notes piece that is NOT the banned snap-to-scale template. → **shipped this cycle as `891-kids-sing-a-path`** (AGENT.md research→build path (a)). **Date honesty:** PESTO's arXiv id is 2508 (Aug 2025, ~10 mo) — cited as the *foundational real-time-pitch / transposition-equivariance* anchor (the rule permits foundational technique), corroborated by the active 2026 singing-voice thread above; the design-law framing is the fresh contribution.
+
 ## §531 — 2026-06-24 (research-first dive, cycle 531 · ADULT · DEEP) — the local-vs-global memory split: why a 10-minute generative piece needs TWO memory tiers, not one
 
 **Source / freshness.** WebSearch (cs.SD long-form thread), date-checked.
