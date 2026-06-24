@@ -10,6 +10,18 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §538 banked seeds — 2026-06-24 (cycle 538 · KIDS · WIDE non-winners, fully built then de-selected)
+
+Both were built to demoable + self-reported clean in the cycle-538 fan-out, de-selected only because `907-kids-stomp-garden` (the cleaner rhythm-not-pitch answer to JURY 2026-06-24 + the direct developmental-rhythm research chain) won. The code was NOT committed; resurrect from these specs.
+
+### `905-kids-water-bowl` ⭐ RESURRECT-FIRST — `queued`
+**For: kids (4+).** Hum/sing → live pitch + loudness drive **Faraday-style standing waves** on a glowing three.js water surface (a high-res circular mesh displaced by a sum of cosine radial standing-wave terms; pitch → number of concentric rings/mode, loudness → amplitude, pitch → warm↔cool color). The pattern you see *is* the sound you make. Soft "singing-bowl" drone whose brightness tracks pitch; permanent idle micro-ripple so it's never still; synthetic swept-voice auto-demo when mic denied. INPUT mic-hum · OUTPUT three.js (GPU) · TECH Faraday/cymatic surface displacement · VIBE calm/luminous/water. Ambition 2/5 (#2 ≥3 subsystems + #3 Faraday 1831/Chladni; #1 does NOT hold — cymatics already built in 19/165). Dodges all JURY 2026-06-24 bans (GPU, mic-not-touch, no pitch-theory *engine*). **Deepening (from §536/§538):** real Bessel `J_n(k·r)` eigenmodes; caustic light cast beneath the bowl; two-voice duet → interfering/beating ring sets. Strongest because mic-hum needs no motion sensor → bulletproof at the 06:30 glance.
+
+### `906-kids-tilt-fireflies` — `queued`
+**For: kids (4+).** Tilt the iPad → `DeviceOrientationEvent` becomes a gravity vector; a swarm of ~hundreds of glowing three.js firefly particles drifts "downhill," and where the swarm **clumps** (spatial-grid density) or **bumps a flower node**, it emits a soft capped mallet "bloom" — so *the rhythm of the music is the rhythm of your tilting*. Five flowers = a few fixed warm timbres (no scale/harmony engine); swarm speed → shimmer-pad brightness. Pointer-drag fallback + orbiting auto-demo when no sensor. INPUT device-tilt · OUTPUT three.js GPU particles · TECH gravity/Boids swarm density→rhythm · VIBE night/fireflies/playful. Ambition 2/5 (#2 ≥3 subsystems + #3 Reynolds *Boids* 1986). Dodges all bans. **Deepening:** flower light-ripple on bump (visual rhythm reads sound-off); add Boids cohesion → swirling rivers; long calm/busy periods grow flowers/fireflies (slow texture evolution). Resurrect on a kids cycle once tilt/motion input has cooled.
+
+---
+
 ## §537 — banked explorers from cycle 537 (ADULT · WIDE) — 2 seeds
 
 Cycle 537 shipped `902-harmonic-mirror` (MIDI/keyboard · Canvas2D · just-intonation chord-completion — the directest answer to today's RESEARCH §537 dive on real-time human–AI co-performance, and the first build in 6 windows to cite a dated finding *in its own README*, fixing JURY #5). The two non-winning explorers, both built complete + self-reported tsc/eslint-clean, `rm -rf`'d before the authoritative winner-only build (NOT committed) — rebuild from these briefs:

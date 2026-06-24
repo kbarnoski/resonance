@@ -1,23 +1,18 @@
-# Morning digest — last updated 2026-06-24 ~12:3x UTC (cycle 537, adult · WIDE)
+# Morning digest — last updated 2026-06-24 ~14:25 UTC (cycle 538, kids · WIDE)
 
-> **Jury verdict today**: Best-disciplined window yet — the dated-research citation rule finally stuck across nearly every build and 888 gives us a real 10-minute long-form spine — but we over-corrected off the WebGL2 ban straight into a Canvas2D/SVG wall and a just-intonation comfort zone; tomorrow swings back to GPU and makes music from something other than pitch theory. See `docs/dreams/JURY.md`.
-
-Open the lab: https://getresonance.vercel.app/dream
+**Open this first:** https://getresonance.vercel.app/dream/907-kids-stomp-garden
 
 ## New since yesterday
-- **`902-harmonic-mirror`** 🎹✨ (cycle 537, adult · WIDE, 1 of 3 shipped) — **play a few notes and the instrument quietly completes the chord you imply — adding the 1–2 voices you *didn't* play, tuned in pure just intonation so they lock dead-still against your root.** You play in equal temperament (the keys you press); a *mirror* infers the chord (maj/min/sus4/dom7/fifth), adds the missing tones as small-integer ratios (5/4 third, 3/2 fifth…), and **glide-retunes** them when your root moves. *Why open it:* it's the **deterministic, zero-latency cousin of an AI accompanist** — it predicts nothing, it just *finishes the chord you're already holding* — and it's squarely on your "personal workspace for pianists/composers" line. **Plays with zero hardware:** click the on-screen piano, or use `a w s e d f t g y h u j k`; a MIDI controller drives it directly if you're at a desk. Canvas2D circle-of-fifths constellation shows held notes (white) vs mirror notes (violet, with ratio labels). Idle → a I–vi–IV–V auto-demo keeps it alive.
-  - **Lands the citation rule a 3rd straight cycle:** the README cites this cycle's dated research (RESEARCH §537 → **arXiv 2604.07612**, Apr 2026, real-time human–AI co-performance) — the in-README dated-research citation the jury flagged **0-for-15 for five windows**.
+- **907-kids-stomp-garden** 🌱👏🌸 — *clap/stomp a beat, grow a glowing 3D garden, and it loops your beat back so the kid can dance along.* The lab's **first true rhythm-loop kids piece** — every other kids toy we've shipped is a *pitch* toy (color→note, safe scales). This one estimates **no pitch at all**: a spectral-flux onset detector hears claps/stomps/taps, springs up an elastic plant per beat, then infers tempo and **loops the rhythm back** as a steady pulse the child can lock onto. three.js (GPU); mic + tap fallback + auto-demo groove; kid-safe audio. **Why open it:** hear what "music from rhythm, not notes" feels like for a 4-year-old.
 
-## Also explored this cycle (banked, not shipped — see IDEAS §537)
-- **`903-living-stave`** ⭐ — *your playing writes itself into a living score.* Sing/play into the mic → live transcription inks noteheads onto a self-drawing **SVG** treble staff (NSDF pitch + onset gating). **Owns the 0× SVG lane the jury keeps naming as starved → resurrect-first.**
-- **`904-tide-organ`** — *the sea plays an organ.* Live **NOAA** tide data decides which organ pipes enter/leave and the shape of the arc (data → STRUCTURE, never detune), over a **three.js** glowing pipe field. Ref: the Zadar Sea Organ. Banked only because `898-tremor-score` just did external-data→structure last cycle.
+## Explored but not shipped (2 more, banked → IDEAS §538)
+- **905-kids-water-bowl** ⭐ resurrect-first — hum and your voice carves Faraday standing-wave rings into a glowing bowl of water (three.js); needs no motion sensor, so it's the most bulletproof of the three.
+- **906-kids-tilt-fireflies** — tilt the iPad to herd a glowing firefly swarm; where they clump/bump flowers makes a soft pulsing rhythm (three.js GPU particles, Boids lineage).
 
-## In progress / partial
-- Nothing blocked. The `888-living-reverie` long-form thread is still paused on purpose — it needs a real new *capability* next, not a renderer swap (jury #2).
+## How this cycle stayed on-mandate
+- Jury 2026-06-24 banned **Canvas2D + SVG** (swing back to GPU), **touch-as-primary input**, and the **interval/JI harmony engine**. All 3 explorers used **three.js (GPU)** + a **non-touch input** (mic / tilt) + **rhythm/texture/physics, never pitch theory** — clean dodges across the board.
+- Research→build chain is visible: today's dive (developmental beat-synchronization is the emerging early-childhood skill + WebGPU is now mainstream) → today's winner.
 
 ## Open questions for Karel
-- **902 is the first deliberately desk-and-controller piece in a while.** Worth pulling out a MIDI keyboard to judge whether the JI completion *audibly* locks (it's the whole point, and the container has no audio so it's unverified)?
-- We keep shipping the safest-to-demo-on-a-phone explorer (902 here, over the SVG live-score and the three.js tide-organ). Right call for the 06:30 glance, or want a bigger-swing build some nights?
-
-## Caveat
-- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`: `✓ Compiled successfully in 102s`, zero warnings in the 902 folder); **NOT browser/ear-verified** (no audio in the container) — the JI lock, glide-retune feel, and constellation legibility are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.
+- 907's onset detector is tuned blind (no audio in the build container). Does it fire cleanly on a real clap vs. room noise on your iPad? If it's twitchy or sluggish, that adaptive threshold is the one knob to tweak.
+- Next kids cycle: resurrect **905-water-bowl** (the safest of the three), or push 907 deeper — two kids clapping against each other's loops (the still-0× multi-user lane)?
