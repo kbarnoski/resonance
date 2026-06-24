@@ -1,18 +1,20 @@
-# Morning digest — last updated 2026-06-24 ~14:25 UTC (cycle 538, kids · WIDE)
+# Morning digest — last updated 2026-06-24 ~16:20 UTC (cycle 539, adult · DEEP)
 
-**Open this first:** https://getresonance.vercel.app/dream/907-kids-stomp-garden
+**Open this first (headphones!):** https://getresonance.vercel.app/dream/909-resonant-field-volume
 
 ## New since yesterday
-- **907-kids-stomp-garden** 🌱👏🌸 — *clap/stomp a beat, grow a glowing 3D garden, and it loops your beat back so the kid can dance along.* The lab's **first true rhythm-loop kids piece** — every other kids toy we've shipped is a *pitch* toy (color→note, safe scales). This one estimates **no pitch at all**: a spectral-flux onset detector hears claps/stomps/taps, springs up an elastic plant per beat, then infers tempo and **loops the rhythm back** as a steady pulse the child can lock onto. three.js (GPU); mic + tap fallback + auto-demo groove; kid-safe audio. **Why open it:** hear what "music from rhythm, not notes" feels like for a 4-year-old.
+- **909-resonant-field-volume** ☁️🔊 — *sing, hum, or play, and your own sound is scattered back around your head as a 3D cloud of grains while it blooms as a volume of light — both shaped by TIMBRE, never pitch.* The directest answer yet to the jury's standing challenge "make music from **timbre, texture, or space — not pitch theory**": there is **zero pitch detection** anywhere. Brightness, noisiness, loudness, and change decide where each grain lands in 3D (HRTF-panned) and how the GPU nebula churns; a single fixed drone holds harmony deliberately flat so the whole piece lives in *texture × space*. **Why open it:** put on headphones and make any sound — it's the most immersive, least "instrument-y" thing the lab has built.
 
-## Explored but not shipped (2 more, banked → IDEAS §538)
-- **905-kids-water-bowl** ⭐ resurrect-first — hum and your voice carves Faraday standing-wave rings into a glowing bowl of water (three.js); needs no motion sensor, so it's the most bulletproof of the three.
-- **906-kids-tilt-fireflies** — tilt the iPad to herd a glowing firefly swarm; where they clump/bump flowers makes a soft pulsing rhythm (three.js GPU particles, Boids lineage).
+## Explored but not shipped (2 more, banked → IDEAS §539)
+This was a **DEEP** cycle: one concept, three GPU render engines built in parallel, shipped the most robust.
+- **908-resonant-field-compute** ⭐ resurrect-first — the frontier version: a hand-written **WebGPU compute shader** advecting 120k particles. De-selected only because WebGPU still isn't on most phones (it'd show its fallback at your 06:30 glance); it's the best one on a desktop GPU.
+- **910-resonant-field-flow** — a **GPGPU "river of light"** (~147k flowing points). Lovely, but depends on float-texture support; 909's raymarched volume runs on any WebGL.
 
 ## How this cycle stayed on-mandate
-- Jury 2026-06-24 banned **Canvas2D + SVG** (swing back to GPU), **touch-as-primary input**, and the **interval/JI harmony engine**. All 3 explorers used **three.js (GPU)** + a **non-touch input** (mic / tilt) + **rhythm/texture/physics, never pitch theory** — clean dodges across the board.
-- Research→build chain is visible: today's dive (developmental beat-synchronization is the emerging early-childhood skill + WebGPU is now mainstream) → today's winner.
+- Jury 2026-06-24 banned **Canvas2D + SVG** (swing back to GPU), **touch input**, and the **interval/JI harmony engine**. 909 is **mic** (non-touch) + **three.js GPU raymarched volume** (the scarce surface) + **timbre→space, pitch held to one drone** — clears every ban.
+- Research→build chain is visible: today's dive (Delta Sound Labs **XStream**, a spatial *live* granular synth from NAMM Jan 2026) → today's winner, which **inverts** it: placement is automatic & timbre-driven, not knob-driven.
+- In-README dated research citation landed **5 cycles running** — the criterion the jury said had been failing for months.
 
 ## Open questions for Karel
-- 907's onset detector is tuned blind (no audio in the build container). Does it fire cleanly on a real clap vs. room noise on your iPad? If it's twitchy or sluggish, that adaptive threshold is the one knob to tweak.
-- Next kids cycle: resurrect **905-water-bowl** (the safest of the three), or push 907 deeper — two kids clapping against each other's loops (the still-0× multi-user lane)?
+- 909 is tuned blind (no audio/WebGL in the build container). On headphones, does the grain cloud read as "my own sound placed *around* me," or just stereo wash? And does the volume read as your *timbre's shape*?
+- Still 0× and waiting: **multi-user/WebRTC** (two people in one sounding room) and an **AI-pipeline-chain** (audio→image→video). Want me to aim a future adult cycle at one of those, or resurrect the WebGPU-compute 908 on a desktop pass?

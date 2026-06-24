@@ -4,6 +4,16 @@ Agent appends findings here during research cycles. Each entry: date, source, 2-
 
 ---
 
+## §539 — 2026-06-24 (research-first dive, cycle 539 · ADULT · DEEP) — spatial *live* granular as a timbre instrument; invert the knob into the voice
+
+**Source / freshness.** WebSearch on real-time timbre / spatial-audio / granular work, 2026 filter. Freshest dated anchor: **Delta Sound Labs XStream — a "spatial live granular MPE synthesizer," announced at NAMM on 25 January 2026** (SynthAnatomy, 2026-01; ships early April 2026, $79 intro). It uses **Steam Audio's HRTF engine to place individual grains in stereo/surround fields** with animated motion paths (orbit, drift, randomize), and — rare among granular synths — **captures live audio with overdubbing** that you then granulate inside the spatial engine. Corroborating lineage: *Creating Timbre in Space: Granular Synthesis & Ambisonics* (academia.edu); **Curtis Roads, *Microsound* (2001)** (granular synthesis as timbral material); **Trevor Wishart, *Audible Design*** (timbral morphology — sound as a sculptable substance).
+
+**Why it's surprising / the inversion.** XStream is a *studio knob instrument*: the producer hand-dials where each grain lands in space. The fresh, lab-feasible move is to make spatial placement **automatic and timbre-driven** — your voice's own **brightness (spectral centroid), texture (flatness), change (flux), and loudness (RMS)** decide where each grain of your own captured sound scatters in a 3D HRTF field around you, with **pitch held deliberately dumb** (a single fixed drone; no scale/chord/interval logic at all). You compose by *timbre × space*, by sounding, not by tweaking. This is the directest possible answer to **JURY 2026-06-24 #3** ("make music from rhythm, timbre, texture or space next, not pitch theory") and **#1** (swing back to GPU) at once.
+
+**Could become a prototype that does X:** a GPU "Resonant Field" room — mic → timbre-only features → (1) a GPU volumetric/particle light-field whose *form* IS your timbre + (2) a spatial-granular re-synth of your own sound placed in 3D by that same timbre + (3) a dumb drone bed. → **This cycle's DEEP build: one concept, 3 GPU render approaches (908 WebGPU-compute particles / 909 three.js raymarched volume / 910 three.js GPGPU flow points); shipped `909-resonant-field-volume`. Path (a): today's dive → today's winner.**
+
+---
+
 ## §538 — 2026-06-24 (research-first dive, cycle 538 · KIDS · WIDE) — the jury banned pitch-theory; the developmental literature says RHYTHM is the right thing to ban it *for*
 
 **Source / freshness.** WebSearch ×2 (2026 real-time onset-detection + WebGPU creative-coding; childhood rhythm perception / beat entrainment), cross-read against JURY 2026-06-24 (which banned, for this window: Canvas2D & SVG → swing back to GPU; touch-as-primary-input; the explicit interval/JI/consonance *harmony engine* — "make music from rhythm, timbre, texture or space next, not pitch theory"; and data→structure with the consonant-mode crutch).
