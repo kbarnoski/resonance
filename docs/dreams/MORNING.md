@@ -1,21 +1,22 @@
-# Morning digest — last updated 2026-06-24 ~06:25 UTC (cycle 534, kids · WIDE)
+# Morning digest — last updated 2026-06-24 ~08:20 UTC (cycle 535, adult · WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`897-kids-balance-band`** ⚖️🎵 (cycle 534, kids · WIDE, 1 of 3 shipped) — **a musical seesaw where a wrong note has weight.** Tap to hang singing creatures on a balance beam. A "spicy" creature (tritone / minor-2nd) is literally *heavier and grumpier* — the beam **tips over and STAYS tipped**, the chord buzzes sour, and **nothing fixes it for you.** The child earns the calm by hanging a friendly creature on the high side: the beam glides level and the sour voice blooms into a warm chord. *Why open it:* it's the **third** piece (after `868-monster-keys`, `849-star-bowl`) where a 4-year-old's wrong note *persists and matters* — the jury asked us to break the "no-wrong-notes" template "for good," and this makes dissonance a thing you can literally *feel tip a seesaw*. Touch-only, Canvas2D, runs on any phone.
-  - **First-ever lab technique:** a 2D rigid-lever torque sim (mass × leverage → beam angle) wired straight to a consonance engine. And it's the **2nd straight cycle** to land the in-README dated-research citation (the floor rule that was 0-for-15) — anchored on developmental work showing 4–6 yos are *still learning* the consonant/dissonant category, so teaching it by consequence (not by hiding it) is the point.
+- **`898-tremor-score`** 🌍🎼 (cycle 535, adult · WIDE, 1 of 3 shipped) — **a live earthquake feed composes a piece.** Press play and it pulls the last 24 h of global seismicity from the USGS feed; the whole day collapses into ~90 seconds. Every quake becomes a *voice entering* — a big deep quake is a low, long, loud tone; a tiny shallow one is a brief high glint; an aftershock swarm becomes a dense overlapping flurry; a quiet stretch becomes a sparse solo. *Why open it:* it's a real, unrepeatable portrait of one day on Earth — and it's the **clean answer to the rut the jury called out twice** (`842`→`864` both mapped data to *detuning the harmony*). Here the data decides only the **shape** — who plays, when, in what register — while a fixed consonant mode keeps every note in tune. **Data → structure, never → roughness.** Works on any device, including your phone; no mic, no camera, no login.
+  - **Finally lands the citation rule:** the README cites genuinely recent research (OpenSeisML, arXiv May 2026 — seismic *catalogues* as generative input) plus Ryoji Ikeda + Florian Dombois. That in-README dated-research citation is the floor criterion the jury flagged **0-for-15 for five straight windows** — landed now two cycles running. Deliberately **SVG**, not GPU (the jury banned the WebGL2 monoculture).
 
-## Also explored this cycle (banked, not shipped — see IDEAS §534)
-- **`898-kids-echo-keeper`** ⭐ — *sing a stuck echo free.* A clash you sing into the cave gets STUCK looping in a tangled **SVG** knot until you sing the note that resolves it. Owns the lab's scarcest output lane (SVG). **Resurrect-first** for the next kids cycle.
-- **`899-kids-candle-choir`** — *a clash blows out a candle.* It stays dark and silent (a real hole in the chord) until you relight it by tapping a candle a consonant interval away. WebGPU flames, Canvas2D fallback.
+## Also explored this cycle (banked, not shipped — see IDEAS §535)
+Both are **brand-new lab capabilities** — sequenced for the next two cycles, not dropped:
+- **`899-harmonic-mirror`** ⭐ — *your keyboard's shadow.* The lab's **first-ever MIDI** prototype: play your controller and a partner voice infers the chord you're implying and adds the just-intonation note(s) that complete it, beat-lessly locked. Deeply on-mission for Resonance (a tool for pianists/composers). **Resurrect-first** — ideally on a cycle when you can sit at a desk with a keyboard. (Has a no-hardware fallback too: on-screen piano + computer keys.)
+- **`900-flow-grains`** — *your gesture is granular texture.* The lab's **first optical-flow / camera** instrument: motion in front of your webcam scatters both a particle field and grains of sound (TouchDesigner lineage). The biggest novelty leap of the night; benched only for a performance pass.
 
 ## In progress / partial
-- Nothing blocked. The `888-living-reverie` long-form thread (cycle 1 of N) is paused on purpose — it needs a real new *capability* next, not a renderer swap (the trap the jury flagged on the `847/872` thread).
+- Nothing blocked. The `888-living-reverie` long-form thread (cycle 1 of N) is still paused on purpose — it needs a real new *capability* next, not a renderer swap (the trap the jury flagged on `847/872`).
 
 ## Open questions for Karel
-- We've now broken the no-wrong-notes kids template three times (`868`/`849`/`897`). Is the lesson landing — should kids pieces keep making dissonance a *consequence the child resolves*, or have we made the point and you want the calm/consonant register back for a bit?
-- The audio-only lane (`894-room-raga`) and the SVG lane (`898`) keep getting benched for "can't glance them on a silent phone." Want me to just **ship one** next cycle anyway?
+- **You likely have a MIDI keyboard — want me to ship `899-harmonic-mirror` next adult cycle?** It's the most directly *useful-to-you* thing in the queue (a real-time just-intonation harmonizing partner), and it'd be the lab's first MIDI integration.
+- We keep generating great never-used-technique builds (MIDI, optical-flow) but shipping the *safest-to-demo-on-a-phone* one. Is that the right call for the 06:30 review, or would you rather I ship the bigger-swing build and trust you to open it at your desk?
 
 ## Caveat
-- Built + **compile/lint/type-clean**; NOT browser/ear-verified (no audio in the container). The seesaw *feel* and whether a 4-yo reads "tipping = sour, balanced = sweet" are unverified — the auto-demo guarantees it at least moves + sounds on load. Static-gen still blocked by the standing container fd limit (infra, not code); Vercel deploys normally.
+- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`); **NOT browser/ear-verified** (no audio in the container) — the actual sound of a real USGS day, whether dense swarms stay un-clipped, and small-screen SVG crowding are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.
