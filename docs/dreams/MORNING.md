@@ -1,22 +1,22 @@
-# Morning digest — last updated 2026-06-24 ~08:20 UTC (cycle 535, adult · WIDE)
+# Morning digest — last updated 2026-06-24 ~10:15 UTC (cycle 536, kids · WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`898-tremor-score`** 🌍🎼 (cycle 535, adult · WIDE, 1 of 3 shipped) — **a live earthquake feed composes a piece.** Press play and it pulls the last 24 h of global seismicity from the USGS feed; the whole day collapses into ~90 seconds. Every quake becomes a *voice entering* — a big deep quake is a low, long, loud tone; a tiny shallow one is a brief high glint; an aftershock swarm becomes a dense overlapping flurry; a quiet stretch becomes a sparse solo. *Why open it:* it's a real, unrepeatable portrait of one day on Earth — and it's the **clean answer to the rut the jury called out twice** (`842`→`864` both mapped data to *detuning the harmony*). Here the data decides only the **shape** — who plays, when, in what register — while a fixed consonant mode keeps every note in tune. **Data → structure, never → roughness.** Works on any device, including your phone; no mic, no camera, no login.
-  - **Finally lands the citation rule:** the README cites genuinely recent research (OpenSeisML, arXiv May 2026 — seismic *catalogues* as generative input) plus Ryoji Ikeda + Florian Dombois. That in-README dated-research citation is the floor criterion the jury flagged **0-for-15 for five straight windows** — landed now two cycles running. Deliberately **SVG**, not GPU (the jury banned the WebGL2 monoculture).
+- **`899-kids-moire-beats`** 〰️ (cycle 536, kids · WIDE, 1 of 3 shipped) — **a 4-year-old plays "rough vs. calm" with one finger, and SEES the exact thing they HEAR.** Two striped op-art grids overlap; sliding the top one twists them. Line them up → the rolling moiré band slows to nothing *and* the two-tone drone smooths to one clear calm tone. Twist them apart → the band shimmers fast *and* the sound throbs WAH-WAH-WAH. *Why open it:* it's a real cross-modal fact made into a toy — **moiré IS visible acoustic beating** (the visual band's speed and the audio wobble are literally the same number), with **no scale, no notes, nothing that can be "wrong"** — just roughness↔calm felt through the hand. The lab's **first moiré piece**, on Canvas2D (dodging the WebGL2 wall the jury banned). Works on any iPad/phone; no mic, no camera, no login — and it's moving + sounding on its own within a second if nobody touches it.
+  - **Lands the citation rule a 3rd straight cycle:** the README cites this cycle's dated research dive (RESEARCH §536) plus Gerald Oster (Scientific American, 1963) and Bridget Riley — the in-README dated-research citation the jury flagged **0-for-15 for five windows**.
 
-## Also explored this cycle (banked, not shipped — see IDEAS §535)
-Both are **brand-new lab capabilities** — sequenced for the next two cycles, not dropped:
-- **`899-harmonic-mirror`** ⭐ — *your keyboard's shadow.* The lab's **first-ever MIDI** prototype: play your controller and a partner voice infers the chord you're implying and adds the just-intonation note(s) that complete it, beat-lessly locked. Deeply on-mission for Resonance (a tool for pianists/composers). **Resurrect-first** — ideally on a cycle when you can sit at a desk with a keyboard. (Has a no-hardware fallback too: on-screen piano + computer keys.)
-- **`900-flow-grains`** — *your gesture is granular texture.* The lab's **first optical-flow / camera** instrument: motion in front of your webcam scatters both a particle field and grains of sound (TouchDesigner lineage). The biggest novelty leap of the night; benched only for a performance pass.
+## Also explored this cycle (banked, not shipped — see IDEAS §536)
+Both are **brand-new lab techniques** (each grep-verified 0×), sequenced for future kids cycles:
+- **`900-kids-rope-singer`** ⭐ — *a hanging rope you play with your hands.* Pure **SVG** (the scarce 0× surface the jury keeps naming): a **catenary** rope where you hang beads to make it sag and sing lower, and pluck it for a damped twang. **Resurrect-first.**
+- **`901-kids-water-bowl`** — *hum and see the note's shape.* A **three.js** bowl of water whose surface blooms into **Faraday standing-wave** cymatic patterns in time with your voice (low note = big rings, high note = fine petals). Has a hands-free auto-demo so it sings even with no mic.
 
 ## In progress / partial
-- Nothing blocked. The `888-living-reverie` long-form thread (cycle 1 of N) is still paused on purpose — it needs a real new *capability* next, not a renderer swap (the trap the jury flagged on `847/872`).
+- Nothing blocked. The `888-living-reverie` long-form thread is still paused on purpose — it needs a real new *capability* next, not a renderer swap.
 
 ## Open questions for Karel
-- **You likely have a MIDI keyboard — want me to ship `899-harmonic-mirror` next adult cycle?** It's the most directly *useful-to-you* thing in the queue (a real-time just-intonation harmonizing partner), and it'd be the lab's first MIDI integration.
-- We keep generating great never-used-technique builds (MIDI, optical-flow) but shipping the *safest-to-demo-on-a-phone* one. Is that the right call for the 06:30 review, or would you rather I ship the bigger-swing build and trust you to open it at your desk?
+- **The kids template is now broken three ways (868/849/897 let a child reach dissonance, and 899 drops scales entirely for a roughness↔calm continuum). Keep pushing kids pieces about a *perceptual fact* rather than a *melody*?**
+- We keep generating great never-used-technique builds and shipping the *safest-to-demo-on-a-phone* one (899 here, over the SVG rope and three.js water bowl). Right call for the 06:30 glance, or want the bigger-swing build some nights?
 
 ## Caveat
-- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`); **NOT browser/ear-verified** (no audio in the container) — the actual sound of a real USGS day, whether dense swarms stay un-clipped, and small-screen SVG crowding are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.
+- Built + **compile/lint/type-clean** (authoritative winner-only `npm run build`, zero warnings in the 899 folder); **NOT browser/ear-verified** (no audio in the container) — whether the moiré band reads as "the same wobble I hear," small-iPad readability, and the twist gesture's feel are unverified. Static-gen still blocked by the standing container fd limit (infra, not code — every cycle since ~472); Vercel deploys normally.

@@ -2,6 +2,34 @@
 
 ---
 
+## Cycle 536 — 2026-06-24 (~10:15 UTC) · KIDS (536 % 2 == 0, no blocker / no in-progress thread) · **WIDE** (3 orthogonal explorers, orchestrated) · SHIPS `899-kids-moire-beats`
+
+**Orient / git sync.** Fresh container: `git fetch` → local `main` was the stale cycle-305-era orphan again (`2e98f5e`, "diverged 50/50") → `--ff-only` aborted → `git reset --hard origin/main` (HEAD `4f10609` = cycle 535 = `898-tremor-score`; **max committed folder = 898**). Work on main. `node_modules` absent → `npm ci --ignore-scripts` (standing sharp/libvips abort workaround; no manifest edits; `next` + `three` present). Read AGENT.md in full + JURY 2026-06-23 + STATE/IDEAS/INDEX/RESEARCH/votes. Committed HEAD = 535 → this fire = **536 → even → KIDS**. Pre-allocated **899/900/901**.
+
+**Research-first dive → RESEARCH §536.** WebSearch ×4 + a grep of the lab's own README corpus to date-check novelty. The field's embodied-music spine (*Sound Scene 2026* / BeSound's Laban Theory of Effort / SIGGRAPH-Asia-2024 "Embodied Visions … as Shadows") points at the *obvious* kids build — a camera/shadow/Laban-effort band — which the grep **disqualifies**: that lane is already 4-deep (`221-optical-flow-music`, `295-kids-shadow-dance`, `268-kids-shadow-theater`, and `719-kids-stomp-zoo` which *already cites Laban*). Building it would fail ambition #1. The fresh kids frontier the corpus is **0× on** (grep-verified): physical phenomena where *the visual pattern IS the sound's structure* — **moiré, Faraday waves, catenary, ripple-tank, double-pendulum, soap-film**. Build hook = **moiré as the visual analogue of acoustic beating.** Chain: §536 dive → today's build (path (a) — winner directly implements the moiré hook).
+
+**Decide — gates.**
+- **Mode: WIDE.** JURY 2026-06-23 gave diversity provocations (break the WebGL2 wall, widen the kids crack — already done by 897), not a single "extend X" → WIDE is the right tool against "too similar." Three orthogonal explorers, each a grep-verified-novel technique on a *different non-WebGL2 surface*.
+- **Ambition floor (winner 899): 3/5** — #1 **never-used technique** (moiré interference; grep `moire`=0×) · #3 **named refs** (Gerald Oster, *Moiré Patterns*, Scientific American 1963 · Bridget Riley op-art · acoustic beating) · #5 **in-README dated RESEARCH §536 citation** (the criterion JURY flagged 0-for-15 — landed again, now 3 cycles running).
+- **Diversity audit (last ~10): `banned (JURY 2026-06-23 + audit) = [raw-WebGL2 (the 6× wall), three.js (approaching cap), data→timbral-roughness/fouling, no-wrong-notes-safe-scale-kids-loop, 847/872 renderer-only thread]`** · **`picked (winner 899) = [touch INPUT, Canvas2D OUTPUT (JURY-reopened, scarce 2×), moiré-interference TECH (0×), op-art VIBE (fresh)]`** — clears every ban. Crucially 899 **controls beat-rate over a fixed consonant fifth, not a scale** → sidesteps the pentatonic-never-wrong crutch entirely.
+- **Research-first rule:** path (a) — winner implements this cycle's dive hook. Chain visible above.
+
+**Act — orchestrated WIDE fan-out (3 parallel Builder subagents, pre-allocated numbers, folder-isolated).**
+- **`899-kids-moire-beats`** (touch · Canvas2D · moiré=visible acoustic beats · op-art) — **WINNER.**
+- **`900-kids-rope-singer`** (touch · **SVG** · catenary hanging-string, hang beads to sag→lower pitch, pluck for a damped twang · warm wooden) — banked IDEAS §536 ⭐ (owns the 0× SVG lane, resurrect-first).
+- **`901-kids-water-bowl`** (mic-hum · **three.js** · Faraday standing-wave patterns bloom on a vibrated water surface, ~40-line autocorr pitch detector → mode count · calm luminous) — banked IDEAS §536.
+- All three returned complete + self-reported ESLint/tsc clean. Non-winners' folders removed before the authoritative winner-only build (rule: never commit a non-winner's code; seeds are text).
+
+**Why 899 won.** The conceptual standout — moiré *is* visible acoustic beating, a real cross-modal fact a 4-yo feels through one forgiving gesture ("huh, I didn't know we could do that"). Most novel technique (0×), cleanest template-break (beat-rate not scale), and the **most robust for a hands-off 06:30 glance** (no mic/camera dependency → always alive). Lands on Canvas2D (JURY-reopened/scarce) — dodging both the WebGL2 ban and the three.js cap that 901 would have leaned on. 900/901 are both genuinely new lab capabilities (the SVG catenary, the three.js Faraday bowl) — sequenced, not dropped.
+
+**Validate.** Authoritative winner-only `npm run build`: compile + ESLint + type-check **clean** (the lint phase ran — it only runs after a successful compile — and printed **zero warnings in the 899 folder**; all warnings are pre-existing `src/lib/**`). **Failed only at "Collecting page data" on the standing container `EMFILE` fd ceiling** (`next-font-manifest.json`) — the documented environmental block, identical every cycle since ~472, cgroup-locked at 4096 fds, unraisable as root; Vercel builds this app normally and will deploy 899. **NOT browser/ear-verified** (no audio in container): whether the moiré band reads as "the same wobble I hear," small-iPad readability of the op-art field, and the exact feel of the twist gesture are unverified; the always-on drone + 2s auto-demo guarantee a moving, sounding glance regardless.
+
+**Love signal.** No direct pull — but the loved kids cluster (`82-kids-color-piano`, `104-kids-mirror-draw`, `133-kids-ripple-pond`, `317-kids-color-bells`) is all *immediate-cause-and-effect, no-reading, tactile*, which is exactly 899's register. No loved prototype uses moiré/beating, so this opens a fresh direction rather than extending a saturated one.
+
+**Queued next.** Resurrect `900-kids-rope-singer` (SVG catenary — owns the 0× SVG lane) or `901-kids-water-bowl` (three.js Faraday) on a future kids cycle. Next fire = 537 → odd → ADULT.
+
+---
+
 ## Cycle 535 — 2026-06-24 (~08:20 UTC) · ADULT (535 % 2 == 1, no blocker / no in-progress thread) · **WIDE** (3 orthogonal explorers, orchestrated) · SHIPS `898-tremor-score`
 
 **Orient / git sync.** Fresh container: `git fetch` → local `main` was the stale cycle-305-era orphan again (`2e98f5e`, "diverged 50/50") → `--ff-only` aborted → `git reset --hard origin/main` (HEAD `ce92fa4` = cycle 534 = `897-kids-balance-band`; **max committed folder = 897**; 898/899 in IDEAS §534 are banked KIDS SEED names, NOT folders — this cycle's `898-tremor-score` is an ADULT build that reuses the next free number). Work on main. `node_modules` absent → `npm ci --ignore-scripts` (standing sharp/libvips abort workaround; no manifest edits; `next` + `three` present). Read AGENT.md in full + JURY 2026-06-23 + STATE/IDEAS/INDEX/RESEARCH/votes. Committed HEAD = 534 → this fire = **535 → odd → ADULT**. Pre-allocated **898/899/900**.
