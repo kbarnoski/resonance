@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~02:2x UTC (cycle 544, kids · WIDE)
+# Morning digest — last updated 2026-06-25 ~04:1x UTC (cycle 545, adult · WIDE)
 
 ## ☀️ Open this first
-**[924-kids-sing-a-sprout](https://getresonance.vercel.app/dream/924-kids-sing-a-sprout)** — *a 4-year-old hums, and a glowing garden grows from their voice.* Every note plants a sprout on a sunflower-spiral (Vogel phyllotaxis, golden angle 137.5°) and chimes right away; keep singing and over a few minutes it blooms — and every ~14s the garden **softly sings an earlier phrase back**. No mic? A synthetic "humming child" starts growing it within ~0.35s, so it's alive on a glance.
-*Why it matters:* the lab's **first long-form, stateful KIDS piece** — the depth register the jury most praised (888's lane), now for a child. The child's accumulating voice is a *memory trace* that biases later growth and re-voices the garden, so minute 5 genuinely differs from minute 1. Mic-voice, three.js GPU, no pitch theory — clears every jury ban.
+**[927-depth-room](https://getresonance.vercel.app/dream/927-depth-room)** — *your webcam becomes a depth camera, and distance is the instrument.* Tap **Enter the room**, allow the camera, and **lean in** → a close, bright granular foreground blooms and the room glows warm; **pull back** → it recedes to cool dark and a low drone. Move toward/away → shimmer rises. You're sculpted in light and sound by distance alone — no notes, no scale.
+*Why it matters:* the lab's **first depth-camera piece** — the one thing the jury has named in *every single verdict* ("depth-camera STILL 0×"), always deferred for "needs a Kinect." A browser ML model (**Depth Anything V2** on **WebGPU via Transformers.js**) reads how far every pixel is from an ordinary laptop cam — no hardware. Music lives in **space/proximity, not pitch** (the jury's other standing ask). Camera is on-device, live, never recorded.
 
 ## New since yesterday
-- **924-kids-sing-a-sprout** (kids, WIDE fire) — winner of 3 orthogonal explorers. Mic-voice → Vogel phyllotaxis garden + a stigmergic memory bank that re-sings the child's song. Ambition 4/5; in-README dated research citation now **10 cycles running**.
+- **927-depth-room** (adult, WIDE fire) — winner of 3 orthogonal explorers. Camera → in-browser monocular-depth → HRTF-spatialized granular voices + a WebGL2 depth-shaded room. Ambition 4/5; in-README dated research citation now **11 cycles running**.
 
-## Explored but banked (see IDEAS §544)
-- **925-kids-tilt-tide** ⭐ resurrect-first — tilt the iPad and a sea of light tips & pools; where it pools, warm bells ring in the rhythm of your tilting. The freshest input (tilt is 0× in the last 10 kids builds) and the most bulletproof of the bench.
-- **926-kids-firefly-meadow** — wave a hand at the camera and a swarm of glowing fireflies gathers + chimes where you move. Uses raw frame-difference motion (no ML model, camera never shown) — a lightweight fresh camera technique.
+## Explored but banked (see IDEAS §545)
+- **928-tilt-orrery** ⭐ resurrect-first — tilt your phone and a little cosmos of ~1,400 orbiting bodies pours around a gravity well; when a body swings to its closest point it strikes a percussive grain, so the **gravitational rhythm** is the music. Real **WebGPU compute** (the scarce GPU surface you loved in 130-tsl-particle-compute), CPU fallback. The cleanest unbuilt compute swing — next adult fire.
+- **929-cathedral-rhythm** — play interlocking **Euclidean rhythms** (Reich-style phasing), pitch held to one drone, through a procedural cathedral reverb; a WebGL2 **raymarched stone nave** flashes with each pulse. MIDI / keyboard / pads.
 
-## Research finding (RESEARCH §544)
-- **MusicSwarm** (Buehler, *Advanced Intelligent Systems*, 2026) — long-form musical *coherence* emerges from a **stigmergic swarm** (agents leaving traces in a shared field), not a central composer. The inversion that drove this cycle: make the child's own sung phrases the trace that grows the garden. (Paywalled — month not pinned; flagged honestly.)
+## Research finding (RESEARCH §545)
+- **A webcam is now a depth camera.** Real-time **monocular depth estimation** (Depth Anything V2, NeurIPS 2024) runs in the browser on **WebGPU via Transformers.js** — no install, no server, no special hardware. Drove 927 directly. (Model is 2024-foundational; the *in-browser WebGPU real-time path* is the recent enabler — flagged honestly.)
 
 ## Open questions for Karel
-- Does 924 read as **"my song became a garden"** over minutes, or does it need a clearer macro-arc (seasons / day→night the garden passes through)? Only your ears + a few minutes can tell.
-- The autocorrelation pitch detector is untested on a real small-child voice (octave wobble possible) — worth a more robust detector, or is the snap-to-pentatonic forgiving enough?
+- Does **"lean in = bloom, pull back = drone"** read as embodied and musical, or do you want distance mapped to something stronger (a clear arc, or distance → *timbre* not just density)? Only your body + the real cam can tell.
+- The depth model loads from a CDN on first open (a few seconds, then live ~6fps). If it doesn't load on your machine, you'll see the **synthetic breathing-depth fallback** — still sounds + shows, but it's not *you*. Worth knowing whether WebGPU+the model actually fire on your setup.
 
-*Build: `✓ Compiled successfully in 112s`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). Not yet ear/mic/GPU-verified — no audio hardware in the build sandbox. 2 more explored — see IDEAS §544.*
+*Build: `✓ Compiled successfully in 81s`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). NOT camera/WebGPU/ear-verified — no sensors in the build sandbox. 2 more explored — see IDEAS §545.*
