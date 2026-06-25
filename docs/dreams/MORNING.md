@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~04:1x UTC (cycle 545, adult · WIDE)
+# Morning digest — last updated 2026-06-25 ~06:1x UTC (cycle 546, kids · DEEP)
+
+Open the lab: https://getresonance.vercel.app/dream
 
 ## ☀️ Open this first
-**[927-depth-room](https://getresonance.vercel.app/dream/927-depth-room)** — *your webcam becomes a depth camera, and distance is the instrument.* Tap **Enter the room**, allow the camera, and **lean in** → a close, bright granular foreground blooms and the room glows warm; **pull back** → it recedes to cool dark and a low drone. Move toward/away → shimmer rises. You're sculpted in light and sound by distance alone — no notes, no scale.
-*Why it matters:* the lab's **first depth-camera piece** — the one thing the jury has named in *every single verdict* ("depth-camera STILL 0×"), always deferred for "needs a Kinect." A browser ML model (**Depth Anything V2** on **WebGPU via Transformers.js**) reads how far every pixel is from an ordinary laptop cam — no hardware. Music lives in **space/proximity, not pitch** (the jury's other standing ask). Camera is on-device, live, never recorded.
+- **[931-kids-tide-pool](https://getresonance.vercel.app/dream/931-kids-tide-pool)** 🌊🔔 — *Tilt the iPad at bedtime; a glowing sea of light flows downhill, pools in the low corner, and every pool rings a soft bell.* The lab's **first all-GPU shallow-water sim** — the *entire* physics (water height + four pipe-fluxes per cell) lives in ping-pong float textures, advanced every frame by fragment shaders, so a 4-year-old's tilt makes the light-water **genuinely** run downhill and pool (real conserved flux, not a faked wobble). **The rhythm of the music is the rhythm of how they tilt** — gentle rock = sparse drops, fast sway = a flurry; pitch is a fixed warm pentatonic (no wrong notes, no harmony engine). The directest answer to the jury's "swing all-in to GPU" + "make music from rhythm, not pitch theory," as a calm, parent-tolerable bedtime piece.
+  - Kids-safe: master gain 0.24 → 6kHz lowpass → limiter; a hard tilt makes *more soft* bells, never louder. Always-on drone so it's never silent. Tilt input (the freshest — touch was over-used in recent kids builds).
+  - On your laptop (no tilt sensor): pointer-drag + an idle auto-demo rock the tide for you, so it sees+sounds within ~0.6s.
 
-## New since yesterday
-- **927-depth-room** (adult, WIDE fire) — winner of 3 orthogonal explorers. Camera → in-browser monocular-depth → HRTF-spatialized granular voices + a WebGL2 depth-shaded room. Ambition 4/5; in-README dated research citation now **11 cycles running**.
+## In progress / partial
+- Nothing mid-thread. Cycle 547 (adult) resurrect-first: **928-tilt-orrery** (WebGPU-compute N-body gravity rhythm).
 
-## Explored but banked (see IDEAS §545)
-- **928-tilt-orrery** ⭐ resurrect-first — tilt your phone and a little cosmos of ~1,400 orbiting bodies pours around a gravity well; when a body swings to its closest point it strikes a percussive grain, so the **gravitational rhythm** is the music. Real **WebGPU compute** (the scarce GPU surface you loved in 130-tsl-particle-compute), CPU fallback. The cleanest unbuilt compute swing — next adult fire.
-- **929-cathedral-rhythm** — play interlocking **Euclidean rhythms** (Reich-style phasing), pitch held to one drone, through a procedural cathedral reverb; a WebGL2 **raymarched stone nave** flashes with each pulse. MIDI / keyboard / pads.
+## Research findings worth a look
+- **RESEARCH §546** — a full shallow-water sim now runs *entirely on the GPU* in-browser via the **virtual-pipes model** (Mei/Decaudin/Hu 2007; lisyarus/webgpu-shallow-water 2025; 80.lv WebGPU water Jan 2026). This is what made the tide-pool's pooling real physics, not a damped membrane. In-README dated-citation streak now **12 cycles**.
 
-## Research finding (RESEARCH §545)
-- **A webcam is now a depth camera.** Real-time **monocular depth estimation** (Depth Anything V2, NeurIPS 2024) runs in the browser on **WebGPU via Transformers.js** — no install, no server, no special hardware. Drove 927 directly. (Model is 2024-foundational; the *in-browser WebGPU real-time path* is the recent enabler — flagged honestly.)
+## Also explored (DEEP — 1 concept × 2 approaches, shipped 1)
+- **930-kids-tilt-tide** — same tide-pool idea, solved on the CPU + rendered with three.js (the bulletproof, no-float-texture path). Build-clean, banked ⭐ resurrect-first in IDEAS §546.
 
 ## Open questions for Karel
-- Does **"lean in = bloom, pull back = drone"** read as embodied and musical, or do you want distance mapped to something stronger (a clear arc, or distance → *timbre* not just density)? Only your body + the real cam can tell.
-- The depth model loads from a CDN on first open (a few seconds, then live ~6fps). If it doesn't load on your machine, you'll see the **synthetic breathing-depth fallback** — still sounds + shows, but it's not *you*. Worth knowing whether WebGPU+the model actually fire on your setup.
-
-*Build: `✓ Compiled successfully in 81s`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). NOT camera/WebGPU/ear-verified — no sensors in the build sandbox. 2 more explored — see IDEAS §545.*
+- Tide-pool deepening: should a *sustained* tilt-hold carve a standing channel the water **remembers** (state/memory over minutes — the long-form depth the jury most praised)? Or keep it simple and immediate for a 4-year-old?
+- Only compile+lint+type are verified here (container has no GPU/tilt/audio; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). Worth a real-iPad pass on the tilt-feel when you have a moment.
