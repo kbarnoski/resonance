@@ -1,24 +1,22 @@
-# Morning digest — last updated 2026-06-25 ~16:2x UTC (cycle 551, adult · DEEP)
+# Morning digest — last updated 2026-06-25 ~18:1x UTC (cycle 552, kids · WIDE)
 
-> **Today's jury** (`docs/dreams/JURY.md`) asked for four things: **ban three.js / push onto raw WebGPU** (#1), **make music from real PITCH / voice-leading again** (#2), and above all **deepen one of the three "0× category-openers" you cracked — don't open a fifth** (#4). This build does all three at once.
+> **Today's jury** (`docs/dreams/JURY.md`) said: stop apologizing for omitting pitch — **make real melody / harmony the idea** (#2), and **get off three.js** (#1). After two DEEP nights I went **WIDE**: three unrelated kids directions in one fire, all melody-first, none on three.js. Shipped the most novel.
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## ☀️ Open this first
-- **[942-depth-harmonic-room](https://getresonance.vercel.app/dream/942-depth-harmonic-room)** 🎹🕯️🟠 — *Walk through harmony.* Stand in front of your webcam: an ML model reads the room as a live **depth field**, and your **distance + sideways position place you inside a Tonnetz** — the classic geometry of chords. **Step sideways** and the harmony rotates through related keys (C → Am → F → Dm…); **lean in** and the chord brightens to major, **pull back** and it darkens to minor. Every step is a real **neo-Riemannian P/L/R move** — two of the three voices hold, one glides — so you literally *walk voice-led chord changes*. Rendered as a candle-warm **WebGPU** lattice that blooms as you lean in.
-  - **This is the deepening of `927-depth-room`** the jury asked for (#4) — same depth-camera idea, but where 927 froze pitch, here **harmony IS the instrument** (#2). And it's on **raw WebGPU** (the scarce surface the jury wants), *not* three.js (#1).
-  - **No camera? It still plays.** A synthetic "presence" drifts the Tonnetz on its own within ~1s, a laptop without a camera steers by mouse, and it degrades WebGPU → WebGL2 → a plain chord view. Camera is processed on-device, never recorded.
+- **[946-kids-bird-round](https://getresonance.vercel.app/dream/946-kids-bird-round)** 🐦🎶🌅 — *Teach a bird a tune; hear a flock sing it as a round.* A 4-year-old **drags a glowing bird up & down a tree** to sing (height = pitch, auto-snapped to a friendly scale so it's always pretty). Let go — the bird **remembers your tune and loops it**. Tap **add-a-bird** and a second bird sings the same tune a beat later: a real **canon / round** ("Row, Row, Row Your Boat"), blooming into layered birdsong as the flock grows.
+  - **The lab's first kids canon/counterpoint piece** — melody IS the toy (jury #2), and it's on **raw WebGL2**, not three.js (jury #1). No reading, big emoji buttons, ~2s-idle auto-demo sings a tune + adds a bird so a hands-off glance hears a little round within ~1–2s. Falls back to Canvas2D on older browsers; more birds never gets louder.
+  - **Why this one of the three:** it extends the loop/layering toys you've ❤️'d (172-loop-station, 111-kids-shape-loop, 160-kids-paint-loop), and it *doesn't* repeat last night's 941 harmony piece.
 
-## In progress / partial
-- Nothing mid-thread. **Next fire = cycle 552 (kids).** Kids resurrect-first: **940-kids-blob-choir** (the Canvas2D conduct-a-choir twin of yesterday's 941).
-
-## Also explored this fire (DEEP — 1 concept × 2 render approaches, shipped 1)
-- **943-depth-tonnetz-room** ⭐ — the *same* depth→Tonnetz instrument on **raw WebGL2** instead of WebGPU. Build-green, banked in IDEAS §551 as the **adult resurrect-first**: the bulletproof no-WebGPU twin if 942's WebGPU path feels flaky on your hardware. (Its builder honestly flagged that a rectangular grid can't make *both* axes perfectly parsimonious — the Tonnetz is triangular — a real limitation to fix in a future pass.)
+## Also explored this fire (WIDE — 3 built, shipped 1)
+- **944-kids-melody-coaster** ⭐ (kids resurrect-first) — *draw a hilly track, a cart rolls and **sings the shape** as a melody.* The most instantly-graspable 4yo delight; banked only because "draw a melody" is our most familiar kids ground. Grounded in the research below.
+- **945-kids-harmony-garden** — *tap to plant note-flowers; consonant ones grow "friend-vines" and the chord **voice-leads** smoothly.* The directest harmony/voice-leading answer (and Canvas2D, which the jury wants back) — banked only because it overlaps last night's 941. A strong "workspace for composers, kids edition" seed. Both are build-green; rebuild briefs in IDEAS §552.
 
 ## Research finding worth a look
-- **RESEARCH §551** — browser-native monocular depth (Depth Anything V2, Apache-2.0, runs on WebGPU via Transformers.js) is now a *free, no-hardware room sensor* in 2026. Point it at the **neo-Riemannian Tonnetz** (the spatial geometry of harmony, where least distance = smoothest voice-leading) and walking *becomes* composing. In-README dated-citation streak now **17 cycles**.
+- **RESEARCH §552** — for young children, **the SHAPE of a tune (melodic contour) IS the tune** — they recognize melodies by their up/down contour before interval or key. So the most age-true way to obey the jury's "make music from pitch" is to let a kid *draw/drag a contour and hear it* — exactly what 946 (drag → round) and 944 (draw → cart) do. (Foundational developmental-psych, flagged honestly — not a last-30-days paper.)
 
 ## Open questions for Karel
-- I **rejected the other two deepen-targets the jury named:** 918 (WebRTC) is a *kids* piece (wrong rotation tonight), and 915's suggested path (music→narrative→**TTS**) collides with your standing "pull way back on AI voice generation." 927→harmony felt like the cleanest adult read of #4 + #2. Push back if you'd rather I'd taken 915 (routing narrative to on-screen text/score instead of TTS).
-- 942 is **not GPU/camera/ear-verified** here (no WebGPU/webcam/audio in the container; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). Worth a real-device check: does **Depth Anything V2 actually load on your WebGPU**, and do the warm pads read as genuinely *voice-led* as you move? The fallbacks cover every failure, so it'll always sound — but the live depth path is the unverified bit.
-- **Verification debt is mounting** (jury #3): 942 is the 17th build-green-but-unheard prototype. If infra allowed me to actually run 927/942/932 on a real device, that'd be a higher-value cycle than a fresh build — flagging in case you want to prioritize an infra fix.
+- **Three melody-first kids directions, one shipped.** Did I pick right? 946 (round) is the novel/love-aligned one; 944 (draw-a-melody) is the safest delight; 945 (harmony garden) is the most "composer-ish." Say the word and I'll ship a banked one next kids cycle.
+- 946 is **not ear-verified** here (no audio/WebGL2 in the container; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). The unverified bit is whether the **canon offsets sound like a genuinely harmonious round** on a real speaker — the always-on pad + auto-demo guarantee it'll *sound*, but the round-feel wants a real-device listen.
+- **Verification debt keeps mounting** (jury #3): 946 is ~the 18th build-green-but-unheard prototype. An infra fix to actually *run* 927/942/946 on a real device would likely beat shipping a 19th. Flagging again.
