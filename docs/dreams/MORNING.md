@@ -1,22 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~18:1x UTC (cycle 552, kids · WIDE)
+# Morning digest — last updated 2026-06-25 (cycle 553, adult · WIDE)
 
-> **Today's jury** (`docs/dreams/JURY.md`) said: stop apologizing for omitting pitch — **make real melody / harmony the idea** (#2), and **get off three.js** (#1). After two DEEP nights I went **WIDE**: three unrelated kids directions in one fire, all melody-first, none on three.js. Shipped the most novel.
+> **Today's jury** (`docs/dreams/JURY.md`): push GPU onto **raw WebGPU compute** (still only 1×! — #1) and **make real pitch/harmony the idea** (#2). I went **WIDE** — three orthogonal *pitch-is-the-idea* adult explorers, none on three.js, none mic. Shipped the one that answers #1 hardest.
 
 Open the lab: https://getresonance.vercel.app/dream
 
-## ☀️ Open this first
-- **[946-kids-bird-round](https://getresonance.vercel.app/dream/946-kids-bird-round)** 🐦🎶🌅 — *Teach a bird a tune; hear a flock sing it as a round.* A 4-year-old **drags a glowing bird up & down a tree** to sing (height = pitch, auto-snapped to a friendly scale so it's always pretty). Let go — the bird **remembers your tune and loops it**. Tap **add-a-bird** and a second bird sings the same tune a beat later: a real **canon / round** ("Row, Row, Row Your Boat"), blooming into layered birdsong as the flock grows.
-  - **The lab's first kids canon/counterpoint piece** — melody IS the toy (jury #2), and it's on **raw WebGL2**, not three.js (jury #1). No reading, big emoji buttons, ~2s-idle auto-demo sings a tune + adds a bird so a hands-off glance hears a little round within ~1–2s. Falls back to Canvas2D on older browsers; more birds never gets louder.
-  - **Why this one of the three:** it extends the loop/layering toys you've ❤️'d (172-loop-station, 111-kids-shape-loop, 160-kids-paint-loop), and it *doesn't* repeat last night's 941 harmony piece.
+## New since yesterday
+- **[/dream/947-overtone-loom](/dream/947-overtone-loom)** — **Play a chord and SEE why it sounds sweet or sour.** Each note is a stack of overtones; a **raw WebGPU compute shader** paints the live roughness field between every partial — octaves/fifths lock dark & smooth, tritones/minor-2nds churn bright — and a **timbre knob** shifts which intervals read as consonant. *Why open it:* the lab's first **dissonance-curve-as-instrument**, the only build this fortnight on the still-1× WebGPU-compute surface the jury keeps begging for, and it sits right on your loved **spectral** cluster (fourier-paint / spectral-cloud / spectral-drift / spectral-flight) + GPU-compute (tsl-particle-compute). No mic, no camera — on-screen keyboard or MIDI; ~1.2s auto-demo cycles unison→octave→fifth→tritone→cluster so a glance hears the contrast.
 
-## Also explored this fire (WIDE — 3 built, shipped 1)
-- **944-kids-melody-coaster** ⭐ (kids resurrect-first) — *draw a hilly track, a cart rolls and **sings the shape** as a melody.* The most instantly-graspable 4yo delight; banked only because "draw a melody" is our most familiar kids ground. Grounded in the research below.
-- **945-kids-harmony-garden** — *tap to plant note-flowers; consonant ones grow "friend-vines" and the chord **voice-leads** smoothly.* The directest harmony/voice-leading answer (and Canvas2D, which the jury wants back) — banked only because it overlaps last night's 941. A strong "workspace for composers, kids edition" seed. Both are build-green; rebuild briefs in IDEAS §552.
+## Explored but not shipped (2 more — banked in IDEAS §553)
+- **948-cantus-engine ⭐ (resurrect-first)** — a long-form, **self-developing counterpoint** piece: seed a motif, watch a Fux/Bach engine invert/augment/stretto/modulate it over 5+ minutes (minute 5 ≠ minute 1). The long-form-with-memory gap; squarely "workspace for composers." Lost only because counterpoint was just mined 3 cycles running and WebGL2 is less scarce than WebGPU compute.
+- **949-maqam-road** — a microtonal **Arabic maqam** instrument; the quarter-tone slides a piano can't make. The non-Western-pitch surprise.
 
-## Research finding worth a look
-- **RESEARCH §552** — for young children, **the SHAPE of a tune (melodic contour) IS the tune** — they recognize melodies by their up/down contour before interval or key. So the most age-true way to obey the jury's "make music from pitch" is to let a kid *draw/drag a contour and hear it* — exactly what 946 (drag → round) and 944 (draw → cart) do. (Foundational developmental-psych, flagged honestly — not a last-30-days paper.)
+## Why this shape (cycle 553)
+- **WIDE** (alternating after two DEEP nights): the 2026-06-25 jury is mostly a *spread/ban* signal, and its DEEP targets were already handled (depth → 551) or mismatched (AI-chain hits your voice-gen ban; WebRTC is a kids piece). Three fresh-tag bets beat one more harmony concept.
+- All three made **pitch the idea** (jury #2) on **fresh surfaces** (WebGPU-compute / WebGL2 / Canvas2D — none three.js) with **fresh inputs** (keyboard/MIDI/maqam — none mic). 947 implements *today's* research: a May-2026 paper re-deriving the Sethares/Helmholtz dissonance curve (consonance is a property of the timbre's spectrum, not abstract ratios).
 
 ## Open questions for Karel
-- **Three melody-first kids directions, one shipped.** Did I pick right? 946 (round) is the novel/love-aligned one; 944 (draw-a-melody) is the safest delight; 945 (harmony garden) is the most "composer-ish." Say the word and I'll ship a banked one next kids cycle.
-- 946 is **not ear-verified** here (no audio/WebGL2 in the container; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). The unverified bit is whether the **canon offsets sound like a genuinely harmonious round** on a real speaker — the always-on pad + auto-demo guarantee it'll *sound*, but the round-feel wants a real-device listen.
-- **Verification debt keeps mounting** (jury #3): 946 is ~the 18th build-green-but-unheard prototype. An infra fix to actually *run* 927/942/946 on a real device would likely beat shipping a 19th. Flagging again.
+- **Verification debt (jury #3 is right):** 947 is compile/lint/type-green but **not GPU/ear-verified** — no WebGPU/audio in the container (static-gen still blocked by the standing `EMFILE` fd ceiling; Vercel deploys fine). Worth running 947 + recent 927/942 on a real machine to confirm the WGSL compiles and the field reads as intended?
+- **Resurrect 948 next adult fire?** Strongest answer to the long-form-with-memory gap and the most "composer's instrument" of the three.
+- **Infra:** raising the container's ~4096-fd ceiling would let local static-gen (full `next build`) run again.
