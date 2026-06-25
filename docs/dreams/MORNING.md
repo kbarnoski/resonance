@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~08:2x UTC (cycle 547, adult · DEEP)
+# Morning digest — last updated 2026-06-25 ~10:2x UTC (cycle 548, kids · DEEP)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## ☀️ Open this first
-- **[932-tilt-orrery](https://getresonance.vercel.app/dream/932-tilt-orrery)** 🪐🔔 — *Tilt your device and a little cosmos tips like a bowl; every time a body swings through its closest approach to the center, it rings.* The music is the emergent **polyrhythm of orbits** — pitch is held deliberately dumb (a drone + fixed pentatonic) so the piece lives in **rhythm, density and space, not pitch theory**. Steeper tilt squashes orbits → faster, denser passes. Listen for the steady hypnotic sub-pulse inside the chaos: **seven amber bodies seeded in the TRAPPIST-1 resonance chain** (Kepler's "harmony of the spheres," made literal) lock into a repeating beat against the chaotic violet field.
-  - **The whole N-body sim AND the perihelion detection run on the GPU** — 3000 bodies integrated in a raw WGSL compute shader, only a tiny per-frame flag buffer read back for audio. The directest answer to the jury's "swing to the scarce GPU surface" + "make music from rhythm, not pitch." Bell timbre from radius+speed, stereo pan from angular position (you hear the cosmos rotate).
-  - No tilt sensor (laptop)? It opens in auto-drift + drag + sliders, sounding/moving within ~0.6s. No WebGPU? Falls back to a 360-body CPU sim on a 2D canvas — still sounding.
+- **[935-kids-shake-critters](https://getresonance.vercel.app/dream/935-kids-shake-critters)** 🫨🟡🔵🟣🟢 — *Shake the iPad like a rattle and a little band of glowing jelly-creatures wakes up.* The harder a 4-year-old shakes, the **denser and brighter** the rattle gets (never louder — kids-safe). Pause, and **the rhythm you just shook is caught into a loop the critters keep grooving** — a warm stomp-and-shaker groove builds up as you play.
+  - The rattle is a real **PhISEM stochastic-shaker synth** (Perry Cook, 1997) — there are **no chimes, no notes to get "right," no wrong moves**: you sculpt *texture and groove*, not a tune. The deliberate opposite of a calm pentatonic lullaby (the directest answer to the jury's "make music from rhythm/timbre, not pitch theory").
+  - No shake sensor (laptop)? **Drag a finger or mouse anywhere** — it plays fully. Leave it alone → it gently auto-plays so it's never silent or still. Visuals are **three.js on the GPU** (the scarcer GPU surface after the last two builds both used raw WebGL2).
 
 ## In progress / partial
-- Nothing mid-thread. Cycle 548 (kids) resurrect-first: **930-kids-tilt-tide** (three.js/CPU tide-pool). Adult resurrect-first: **933-tilt-orrery** (below) then **929-cathedral-rhythm**.
+- Nothing mid-thread. Cycle 549 (adult) resurrect-first: **933-tilt-orrery** (lush three.js galaxy) → **929-cathedral-rhythm**. Cycle 550 (kids) resurrect-first: **936-kids-rattle-bloom** (below) → **930-kids-tilt-tide**.
 
 ## Research findings worth a look
-- **RESEARCH §547** — browser N-body gravity now runs *entirely on the GPU* at 1M+ bodies, and **WebGPU finally reached the iPad (Safari 26 / iOS 26)** — so a tilt-held GPU cosmos is now shippable on the device it's for. Paired with **Kepler 1619 + NASA's 2017 TRAPPIST-1 sonification** for the resonance-chain-inside-chaos idea. In-README dated-citation streak now **13 cycles**.
+- **RESEARCH §548** — **PhISEM** (Cook 1997), the foundational real-time *shaker* model: shaking a handful of virtual beans makes sound as pure **texture + rhythm**, no pitch at all. Every modern 2026 granular/particle synth descends from it. The cleanest "music from not-pitch" idea for a 4yo who already loves shaking things. In-README dated-citation streak now **14 cycles**.
 
-## Also explored (DEEP — 1 concept × 2 approaches, shipped 1)
-- **933-tilt-orrery** — the same cosmos as a lush three.js `WebGLRenderer` galaxy (~12k bodies) with a dynamic-`import()` WebGPU/TSL compute enhancement (~100k). Build-green, banked ⭐ resurrect-first in IDEAS §547 (a richer galaxy look to fold into 932; and a reusable build-safe way to use `three/webgpu` in this repo).
+## Also explored (DEEP — 1 concept × 2 GPU approaches, shipped 1)
+- **936-kids-rattle-bloom** — the same shake→rattle→groove as a **raw-WebGL2 metaball shader**: gooey candy-bright blobs that wobble and *merge* with shake energy. Build-green, banked in IDEAS §548. De-selected because abstract blobs read less like "a band of creatures" than 935's actual characters — but the gooey-merge look could be a striking alternate skin for 935.
 
 ## Open questions for Karel
-- Orrery deepening: should a *sustained* tilt-hold **capture** bodies into a held resonance the cosmos remembers over minutes (state/memory — the long-form depth the jury most praised)? And do you want the lush galaxy look (933) folded in, or is the clean point-field right?
-- Only compile+lint+type are verified here (container has no GPU/tilt/audio; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). The resonance-pulse-vs-chaos "feel" may want a real-device tuning pass when you have a moment.
+- For kids, do **identifiable character critters** (935) land better than abstract gooey blobs (936)? That was the deciding call this cycle — worth your gut check on a real iPad.
+- Only compile+lint+type are verified here (container has no shake sensor / GPU / audio; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). The PhISEM grain balance + the "the critters kept my rhythm" groove-loop feel may want a real-device tuning pass.
