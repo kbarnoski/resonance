@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~00:2x UTC (cycle 543, adult · DEEP)
+# Morning digest — last updated 2026-06-25 ~02:2x UTC (cycle 544, kids · WIDE)
 
 ## ☀️ Open this first
-**[922-breath-aeolian](https://getresonance.vercel.app/dream/922-breath-aeolian)** — *breathe into the screen and the air sings back.* Your breath injects wind into a real GPU fluid simulation; the vortices it stirs whistle past 7 reeds, and **the pitch is set by airflow physics, not by any scale** (`f = St·U/d`, the Aeolian-tone law). No mic? A synthetic breath keeps the cloud alive and singing, so it works on a glance.
-*Why it matters:* the lab's first **aeroacoustics** piece — sound generated *by the airflow itself* — the cleanest answer yet to the jury's two standing asks: swing back to GPU (#1) and make music from texture, not pitch theory (#3). Built on a Jan-2026 arXiv paper (FW-H + fluid-on-a-sphere).
+**[924-kids-sing-a-sprout](https://getresonance.vercel.app/dream/924-kids-sing-a-sprout)** — *a 4-year-old hums, and a glowing garden grows from their voice.* Every note plants a sprout on a sunflower-spiral (Vogel phyllotaxis, golden angle 137.5°) and chimes right away; keep singing and over a few minutes it blooms — and every ~14s the garden **softly sings an earlier phrase back**. No mic? A synthetic "humming child" starts growing it within ~0.35s, so it's alive on a glance.
+*Why it matters:* the lab's **first long-form, stateful KIDS piece** — the depth register the jury most praised (888's lane), now for a child. The child's accumulating voice is a *memory trace* that biases later growth and re-voices the garden, so minute 5 genuinely differs from minute 1. Mic-voice, three.js GPU, no pitch theory — clears every jury ban.
 
 ## New since yesterday
-- **922-breath-aeolian** (adult, DEEP fire) — winner of 3 technical takes on one concept: *the air itself sings.* Real WebGL2 Jos-Stam stable-fluids solver + mic breath input + per-reed aeolian-tone synthesis. Lab-first technique (live fluid-solver aeroacoustics). Ambition 3–4/5.
+- **924-kids-sing-a-sprout** (kids, WIDE fire) — winner of 3 orthogonal explorers. Mic-voice → Vogel phyllotaxis garden + a stigmergic memory bank that re-sings the child's song. Ambition 4/5; in-README dated research citation now **10 cycles running**.
 
-## Explored but banked (see IDEAS §543)
-- **923-aeolian-globe** ⭐ resurrect-first — gorgeous three.js planet, 36k GPU wind particles, peaks sing as winds stream past; *directest homage to the arXiv paper.* Lost only because its wind field is prescribed, not solved — 922's flow is a real simulation. Fix: give it a real on-sphere solver.
-- **921-aeolian-loom** — the same real fluid solver as a *pointer-stir* "stir the air" instrument; lost on the touch-as-primary jury ban. Resurrect as a desktop/trackpad piece.
+## Explored but banked (see IDEAS §544)
+- **925-kids-tilt-tide** ⭐ resurrect-first — tilt the iPad and a sea of light tips & pools; where it pools, warm bells ring in the rhythm of your tilting. The freshest input (tilt is 0× in the last 10 kids builds) and the most bulletproof of the bench.
+- **926-kids-firefly-meadow** — wave a hand at the camera and a swarm of glowing fireflies gathers + chimes where you move. Uses raw frame-difference motion (no ML model, camera never shown) — a lightweight fresh camera technique.
 
-## Research finding (RESEARCH §543)
-- **arXiv:2601.15982** (Jan 2026) — real-time fluid + **Ffowcs Williams–Hawkings aeroacoustics**: pressure fluctuations → real far-field sound. The inversion that drove this cycle: sound *from* the flow, pitch dictated by vortex shedding. June-2026 confirmations: ShaderVine, Ghost Arcade both shipping WebGPU fluid-compute.
+## Research finding (RESEARCH §544)
+- **MusicSwarm** (Buehler, *Advanced Intelligent Systems*, 2026) — long-form musical *coherence* emerges from a **stigmergic swarm** (agents leaving traces in a shared field), not a central composer. The inversion that drove this cycle: make the child's own sung phrases the trace that grows the garden. (Paywalled — month not pinned; flagged honestly.)
 
 ## Open questions for Karel
-- 922's audio scaling (`U→Hz`, amplitude) is a first-guess calibration — **does it read as "wind singing" or just "filtered noise"?** Only your ears can settle this one.
-- Worth deepening 922 over a few cycles (true FW-H far-field term; let breath *pitch* bend the flow), or resurrect the **923 planet** next? Both are queued.
+- Does 924 read as **"my song became a garden"** over minutes, or does it need a clearer macro-arc (seasons / day→night the garden passes through)? Only your ears + a few minutes can tell.
+- The autocorrelation pitch detector is untested on a real small-child voice (octave wobble possible) — worth a more robust detector, or is the snap-to-pentatonic forgiving enough?
 
-*Build: `✓ Compiled successfully`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). Not yet ear/mic/GPU-verified — no audio hardware in the build sandbox.*
+*Build: `✓ Compiled successfully in 112s`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). Not yet ear/mic/GPU-verified — no audio hardware in the build sandbox. 2 more explored — see IDEAS §544.*
