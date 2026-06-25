@@ -1,21 +1,21 @@
-# Morning digest — last updated 2026-06-25 ~06:1x UTC (cycle 546, kids · DEEP)
+# Morning digest — last updated 2026-06-25 ~08:2x UTC (cycle 547, adult · DEEP)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## ☀️ Open this first
-- **[931-kids-tide-pool](https://getresonance.vercel.app/dream/931-kids-tide-pool)** 🌊🔔 — *Tilt the iPad at bedtime; a glowing sea of light flows downhill, pools in the low corner, and every pool rings a soft bell.* The lab's **first all-GPU shallow-water sim** — the *entire* physics (water height + four pipe-fluxes per cell) lives in ping-pong float textures, advanced every frame by fragment shaders, so a 4-year-old's tilt makes the light-water **genuinely** run downhill and pool (real conserved flux, not a faked wobble). **The rhythm of the music is the rhythm of how they tilt** — gentle rock = sparse drops, fast sway = a flurry; pitch is a fixed warm pentatonic (no wrong notes, no harmony engine). The directest answer to the jury's "swing all-in to GPU" + "make music from rhythm, not pitch theory," as a calm, parent-tolerable bedtime piece.
-  - Kids-safe: master gain 0.24 → 6kHz lowpass → limiter; a hard tilt makes *more soft* bells, never louder. Always-on drone so it's never silent. Tilt input (the freshest — touch was over-used in recent kids builds).
-  - On your laptop (no tilt sensor): pointer-drag + an idle auto-demo rock the tide for you, so it sees+sounds within ~0.6s.
+- **[932-tilt-orrery](https://getresonance.vercel.app/dream/932-tilt-orrery)** 🪐🔔 — *Tilt your device and a little cosmos tips like a bowl; every time a body swings through its closest approach to the center, it rings.* The music is the emergent **polyrhythm of orbits** — pitch is held deliberately dumb (a drone + fixed pentatonic) so the piece lives in **rhythm, density and space, not pitch theory**. Steeper tilt squashes orbits → faster, denser passes. Listen for the steady hypnotic sub-pulse inside the chaos: **seven amber bodies seeded in the TRAPPIST-1 resonance chain** (Kepler's "harmony of the spheres," made literal) lock into a repeating beat against the chaotic violet field.
+  - **The whole N-body sim AND the perihelion detection run on the GPU** — 3000 bodies integrated in a raw WGSL compute shader, only a tiny per-frame flag buffer read back for audio. The directest answer to the jury's "swing to the scarce GPU surface" + "make music from rhythm, not pitch." Bell timbre from radius+speed, stereo pan from angular position (you hear the cosmos rotate).
+  - No tilt sensor (laptop)? It opens in auto-drift + drag + sliders, sounding/moving within ~0.6s. No WebGPU? Falls back to a 360-body CPU sim on a 2D canvas — still sounding.
 
 ## In progress / partial
-- Nothing mid-thread. Cycle 547 (adult) resurrect-first: **928-tilt-orrery** (WebGPU-compute N-body gravity rhythm).
+- Nothing mid-thread. Cycle 548 (kids) resurrect-first: **930-kids-tilt-tide** (three.js/CPU tide-pool). Adult resurrect-first: **933-tilt-orrery** (below) then **929-cathedral-rhythm**.
 
 ## Research findings worth a look
-- **RESEARCH §546** — a full shallow-water sim now runs *entirely on the GPU* in-browser via the **virtual-pipes model** (Mei/Decaudin/Hu 2007; lisyarus/webgpu-shallow-water 2025; 80.lv WebGPU water Jan 2026). This is what made the tide-pool's pooling real physics, not a damped membrane. In-README dated-citation streak now **12 cycles**.
+- **RESEARCH §547** — browser N-body gravity now runs *entirely on the GPU* at 1M+ bodies, and **WebGPU finally reached the iPad (Safari 26 / iOS 26)** — so a tilt-held GPU cosmos is now shippable on the device it's for. Paired with **Kepler 1619 + NASA's 2017 TRAPPIST-1 sonification** for the resonance-chain-inside-chaos idea. In-README dated-citation streak now **13 cycles**.
 
 ## Also explored (DEEP — 1 concept × 2 approaches, shipped 1)
-- **930-kids-tilt-tide** — same tide-pool idea, solved on the CPU + rendered with three.js (the bulletproof, no-float-texture path). Build-clean, banked ⭐ resurrect-first in IDEAS §546.
+- **933-tilt-orrery** — the same cosmos as a lush three.js `WebGLRenderer` galaxy (~12k bodies) with a dynamic-`import()` WebGPU/TSL compute enhancement (~100k). Build-green, banked ⭐ resurrect-first in IDEAS §547 (a richer galaxy look to fold into 932; and a reusable build-safe way to use `three/webgpu` in this repo).
 
 ## Open questions for Karel
-- Tide-pool deepening: should a *sustained* tilt-hold carve a standing channel the water **remembers** (state/memory over minutes — the long-form depth the jury most praised)? Or keep it simple and immediate for a 4-year-old?
-- Only compile+lint+type are verified here (container has no GPU/tilt/audio; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). Worth a real-iPad pass on the tilt-feel when you have a moment.
+- Orrery deepening: should a *sustained* tilt-hold **capture** bodies into a held resonance the cosmos remembers over minutes (state/memory — the long-form depth the jury most praised)? And do you want the lush galaxy look (933) folded in, or is the clean point-field right?
+- Only compile+lint+type are verified here (container has no GPU/tilt/audio; static-gen still hits the standing EMFILE infra ceiling — Vercel deploys fine). The resonance-pulse-vs-chaos "feel" may want a real-device tuning pass when you have a moment.
