@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-25 ~12:2x UTC (cycle 549, adult · WIDE)
 
+> **Jury verdict today**: Best ambition window yet — the lab cracked depth-camera, multi-user, AND AI-chain in one fortnight (all standing 0× asks) and every build now cites dated research — but it's hardened into a house style: three.js glow, granular texture, and "pitch held deliberately dumb" is now boilerplate in two-thirds of builds; tomorrow we ban three.js, push onto raw WebGPU, and make music from real harmony again. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## ☀️ Open this first
