@@ -1,18 +1,21 @@
-# Morning digest — last updated 2026-06-24 22:1x UTC (cycle 542, kids · WIDE)
+# Morning digest — last updated 2026-06-25 ~00:2x UTC (cycle 543, adult · DEEP)
 
-**Open this first (on TWO phones if you can):** https://getresonance.vercel.app/dream/918-kids-starlight-friend
+## ☀️ Open this first
+**[922-breath-aeolian](https://getresonance.vercel.app/dream/922-breath-aeolian)** — *breathe into the screen and the air sings back.* Your breath injects wind into a real GPU fluid simulation; the vortices it stirs whistle past 7 reeds, and **the pitch is set by airflow physics, not by any scale** (`f = St·U/d`, the Aeolian-tone law). No mic? A synthetic breath keeps the cloud alive and singing, so it works on a glance.
+*Why it matters:* the lab's first **aeroacoustics** piece — sound generated *by the airflow itself* — the cleanest answer yet to the jury's two standing asks: swing back to GPU (#1) and make music from texture, not pitch theory (#3). Built on a Jan-2026 arXiv paper (FW-H + fluid-on-a-sphere).
 
 ## New since yesterday
-- **[/dream/918-kids-starlight-friend](/dream/918-kids-starlight-friend)** — ✨ **the lab's first multi-user piece — two 4-year-olds, two iPads, ONE shared night sky.** Shake your iPad to fling a shooting star; it streaks across a deep indigo→violet GPU sky, blooms, and chimes — *and the same star lights up + sings in your friend's sky too.* You build a constellation song together. No tempo clock: stars chime whenever they arrive on each device — the reward is purely "we made this together." One warm pentatonic, so nothing two kids fling can ever clash. **Why open it:** it finally answers the jury's #2 — **multi-user/WebRTC shared room, 0× after being named in every single jury** — and it's the answer to *your own* question from yesterday's digest ("want multi-user as the next big swing?"). Yes. In the kids register.
-- **Works solo, hands-free:** a **"ghost friend"** auto-joins within ~1s and flings its own (cooler-hued) stars, so a single phone shows living two-player co-play with zero interaction. Tap 👋 to invite a real friend (serverless — a share-link, no account). Same-room / same-hotspot is the real two-iPads use case and connects cleanly.
+- **922-breath-aeolian** (adult, DEEP fire) — winner of 3 technical takes on one concept: *the air itself sings.* Real WebGL2 Jos-Stam stable-fluids solver + mic breath input + per-reed aeolian-tone synthesis. Lab-first technique (live fluid-solver aeroacoustics). Ambition 3–4/5.
 
-## In progress / partial
-- Two siblings were fully built then banked (IDEAS §542): **`920-kids-sing-a-sprout`** ⭐ (hum and a glowing garden **grows over minutes** on a sunflower spiral, then **sings your melody back** when you go quiet — the long-form/stateful depth lane 888 opened, the most bulletproof of the three) and **`919-kids-rain-bowl`** (tilt to pour glowing rain that chimes as it splashes — a from-scratch **WebGPU compute** particle sim with a lush three.js fallback). Both ready to rebuild from one brief.
+## Explored but banked (see IDEAS §543)
+- **923-aeolian-globe** ⭐ resurrect-first — gorgeous three.js planet, 36k GPU wind particles, peaks sing as winds stream past; *directest homage to the arXiv paper.* Lost only because its wind field is prescribed, not solved — 922's flow is a real simulation. Fix: give it a real on-sphere solver.
+- **921-aeolian-loom** — the same real fluid solver as a *pointer-stir* "stir the air" instrument; lost on the touch-as-primary jury ban. Resurrect as a desktop/trackpad piece.
 
-## Research findings worth a look
-- RESEARCH §542: networked-music research chases sub-30ms tight tempo for adult ensembles — but the dyadic-child-synchrony studies (PMC12063534, 2025; Kirschner & Tomasello 2010) show the *prosocial* "we made this together" payoff for a 4yo is robust to **loose** sync. So 918 makes latency-tolerance the **feature**, not the enemy.
+## Research finding (RESEARCH §543)
+- **arXiv:2601.15982** (Jan 2026) — real-time fluid + **Ffowcs Williams–Hawkings aeroacoustics**: pressure fluctuations → real far-field sound. The inversion that drove this cycle: sound *from* the flow, pitch dictated by vortex shedding. June-2026 confirmations: ShaderVine, Ghost Arcade both shipping WebGPU fluid-compute.
 
 ## Open questions for Karel
-- For a 4yo, is loose serverless two-device WebRTC the right bar, or should the multi-user piece run through a tiny shared "room" (one code, both join) instead of copy-pasting star-codes? The copy-paste handshake is parent-assisted; a room would be tap-and-go.
-- Deepen 918 → **3+ players** / a shared constellation that *remembers* the session (the multi-cycle plan), or resurrect 920 (long-form voice garden) next?
-- **Not device-verified** in-container (no audio/GPU/motion/second-peer here) — worth a 30-sec play on two phones to check the shake feel + the real connect; solo+ghost is verified-by-design to always sound and move.
+- 922's audio scaling (`U→Hz`, amplitude) is a first-guess calibration — **does it read as "wind singing" or just "filtered noise"?** Only your ears can settle this one.
+- Worth deepening 922 over a few cycles (true FW-H far-field term; let breath *pitch* bend the flow), or resurrect the **923 planet** next? Both are queued.
+
+*Build: `✓ Compiled successfully`, lint + types clean (only the standing container EMFILE static-gen blocker — infra, Vercel deploys fine). Not yet ear/mic/GPU-verified — no audio hardware in the build sandbox.*
