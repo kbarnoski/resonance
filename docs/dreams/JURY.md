@@ -1,141 +1,52 @@
-# Concept Jury Verdict — 2026-06-25 (UTC)
+# Concept Jury Verdict — 2026-06-26 (UTC)
 
 ## Summary
-The best **ambition** window the lab has ever posted — and the most **conformist**
-in execution. In one fortnight the field knocked out **three categories the jury
-named as 0× in every prior verdict**: the first depth-camera piece (927), the
-first multi-user/WebRTC piece (918), and the first true AI-pipeline-chain (915,
-audio→image→video). Provocations are being consumed at scale, criterion #5
-(in-README dated research) is now **15-for-15 / total**, and 9 of 15 builds clear
-4/5. The catch is the mirror of that discipline: the research-dive→one-build
-machine has hardened into a **house style** — three.js glow (7×), granular
-texture (4×), cosmic-ambient adult vibe (5×) — and the anti-pitch-theory stance
-the jury once *asked* for has metastasized into the new safety crutch: "pitch
-held deliberately dumb, music lives in rhythm/timbre/space" is now boilerplate in
-~10 of 15 READMEs. We fixed the Canvas2D/SVG wall and built a three.js wall behind
-it.
+The best **execution-diversity** window in months — the field obeyed last jury's
+hardest asks almost to the letter. three.js is *dead* (7×→1×), WebGPU is now the
+house renderer (6×), and **real harmony came roaring back on BOTH sides**: the
+adult Tonnetz room (942), the kids voice-leading choir (941), the two-kid I–IV–V–vi
+conductor (950) and the V→I firefly (957) make the "pitch held deliberately dumb"
+boilerplate from two weeks ago look like a phase we grew out of. Technique
+diversity is genuinely high — Kuramoto, differential growth, real friction physics,
+maqam microtones, oscilloscope vector-synth, neo-Riemannian voice-leading all in
+one fortnight, none repeating. The catch is the same shape it always is: as one rut
+closes, two open. **Pointer-drag-on-glass is back to ~7× as the input reflex**, the
+"**ship a GPU sim, pulse a bell off it**" move quietly became the new adult default
+(4×), pentatonic-no-wrong-notes crept back as the kids safety harmony, and the
+verification debt the last two juries flagged is *worse* — **15 of 15 are still
+machine-unverified**, every README closing with the identical EMFILE/no-GPU
+disclaimer.
 
 ## Diversity audit
-- **Over-represented input: mic 4× (907 onset, 909 timbre, 922 breath, 924 sing).**
-  The lab's reflex source for "embodied but not pitch." Sensors finally spread
-  otherwise — camera/body 2× (911 pose, 927 depth), shake 2× (918, 935), tilt 2×
-  (931, 932), external-data 2× (898, 939), MIDI 1× (902), touch 1× (899). **MIDI
-  is thin at 1×; multi-source desk input still rare.**
-- **Over-represented output: three.js 7× (907, 909, 911, 915, 918, 924, 935).**
-  This is the structural story. Last jury banned Canvas2D+SVG; the field obeyed
-  (those collapsed to 3 of 15) and swung hard to GPU (12 of 15 are now
-  GPU-rendered — exactly the swing-back asked for) **but funneled almost all of it
-  into one library.** WebGPU compute is *still* the scarce surface at **1×** (only
-  932); raw-WebGL2 is healthier at 4× (922, 927, 931, 939). We keep trading one
-  monoculture for the next. **AI-image/AI-video output finally 1× (915).**
-- **Over-represented technique: granular / grain-texture synthesis 4× (909, 911,
-  927, 935).** Grains are now the timbre default the way JI was last window. A
-  secondary cluster: **GPU physics sims 3× in one window (922 fluid, 931
-  shallow-water, 932 N-body)** — gorgeous, but "ship a simulation and pulse a bell
-  off it" is becoming its own reliable adult move.
-- **Over-represented vibe: kids 7× (structural — every-other rotation) AND
-  cosmic-ambient on the adult side 5× (909, 915, 922, 932, 939).** Nearly every
-  adult build is a dark-glow nebula/aurora/cosmos. The data/Ikeda-clinical
-  register (898) and the bright theory/instrument register (902) are the lone
-  outliers. **Plus a non-tag tic worth naming: the "pitch is deliberately dumb"
-  disclaimer itself is now a template** — it appears in ~10 READMEs as a virtue,
-  and it has quietly become the excuse not to compose.
-- **BANNED for next cycle:** **three.js** (7× — push GPU work onto raw WebGPU
-  compute (1×!) or raw-WebGL2 instead) · **mic as primary input** (4×; reach for
-  MIDI, a feed, a sensor, or the network) · **granular-texture synthesis** (4× —
-  make the sound some other way) · **the "pitch held deliberately dumb /
-  drone+texture" stance** (now ~10×; for one cycle, real melody or harmonic
-  motion must BE the idea, not the thing you apologize for omitting).
+- **Over-represented input: pointer/touch-drag-on-glass — 7× (941, 946, 953, 954, 957, 960, 965)** + drag-secondary on 932. Last window the jury *praised* the sensor spread (depth, shake, data, MIDI, tilt all appeared); it's collapsing back to a finger on glass. tilt holds at 3× (932, 950, 964); shake/data/depth/MIDI/none are 1× each — the interesting sensors are each one-offs that nothing extends.
+- **Over-represented output: raw GPU shader (no library) — 11× (WebGPU/WGSL 6×: 932, 941, 942, 947, 950, 954; raw WebGL2 5×: 939, 946, 957, 960, 965).** This is the *correction working* — three.js fell to 1× (935, the lone holdout) exactly as asked. Credit where due. But WebGPU at 6× is already the next candidate-monoculture, and Canvas2D (952, 953, 964) is healthy and earns its place — keep it legitimate, don't ban it back.
+- **Over-represented technique: the "GPU physics sim → sonify it" move — 4× (932 N-body, 953 magnetic-field, 954 Kuramoto, 964 differential-growth).** No *named* technique repeats ≥4× — diversity is real — but this *meta-pattern* (run a gorgeous simulation, read a pitch off it) has become the reliable adult/kids gesture, the way granular was last window.
+- **Over-represented vibe: kids 7× (structural, every-other rotation — not a fault) + cosmic/bioluminescent-glow on the adult side 4× (932, 939, 942, 954).** The dark-nebula/aurora/phase-field adult look persists; 952 (ink-and-gold), 947 (clinical Ikeda), 960 (glass luminescence), 965 (CRT green) prove it's escapable. **Plus a harmony tic: pentatonic-no-wrong-notes is back as the kids crutch — 3 strict (946, 953, 964) + 935/960 lean on it.**
+- **BANNED for next cycle: pointer/touch-drag-as-primary-input · cosmic/bioluminescent-glow adult vibe · pentatonic-no-wrong-notes kids harmony · the "ship-a-GPU-sim-and-pulse-a-bell-off-it" pattern.** (WebGPU/WebGL2 explicitly NOT banned — the correction is healthy; just don't let WebGPU become the next 7×.)
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — the floor holds for the eighth window running.
-- **Hit 2–3 criteria: 6** — 898, 899, 907, 911, 935, 939 (all 3/5). The
-  comfortable middle: a competent build clearing ≥3 subsystems + named ref +
-  dated research but adding no genuinely new technique.
-- **Hit 4–5 criteria: 9 — the deepest bench the lab has fielded** — 902, 909,
-  915, 918, 922, 924, 927, 931, 932 (all 4/5). Each pairs a novel-for-the-lab
-  technique (#1) with ≥3 subsystems, a named reference, and a dated finding.
-  **Criterion #5 (in-README dated recent research) is now 15-for-15** — the streak
-  the last verdict begged to "lock in" is total. That regression risk is closed.
+- **Hit 0–1 criteria: 0** — zero local-minimum builds. The floor is holding.
+- **Hit 2–3 criteria: 5** — 935 (3), 946 (3), 950 (3), 953 (3), 957 (3). All five are kids-side; the kids lane is carrying the lighter builds.
+- **Hit 4–5 criteria: 10** — 932, 939, 941, 947, 954, 960, 964, 965 (each 4) + **942 (5) and 952 (5)**. Two-thirds of the window clears 4/5, and criterion #5 (in-README dated research) is near-universal again.
 
 ## Standouts (positive)
-- **927-depth-room**: the build of the window. The lab's **first depth-camera
-  piece** — named as a 0× gap in *every single prior jury* — and done in pure
-  software (Depth Anything V2 on WebGPU via Transformers.js, no special hardware,
-  no npm dep). Distance-as-instrument, pitch held genuinely subordinate to
-  proximity/space. This is a standing ask finally answered, cleanly.
-- **915-resonant-cinema**: the **first true AI-pipeline-chain** (audio→flux-schnell
-  →LTX-video→live-shader), another 0× menu category. The real idea is the
-  *inversion*: the human plays live and the model only SEEDS a canvas the live
-  audio keeps animating — with hard cost-gating (fires only on explicit click,
-  never idle). An ambitious model-chain, not a single-synth toy.
-- **918-starlight-friend**: the **first multi-user/WebRTC piece** — a third 0×
-  category cracked in one window. Serverless P2P with a gzipped-SDP `#join` link
-  is genuinely clever, and the dyadic-child framing (loose sync is the *feature*)
-  is well-grounded. Three long-standing gaps closed in one fortnight is the
-  headline.
-- **902-harmonic-mirror**: the lone adult build that still reasons about *pitch* —
-  deterministic just-intonation chord-completion under your hands — and it's a
-  standout precisely because it bucks the window's anti-harmony drift. Squarely on
-  Karel's "workspace for composers" line.
-- **922-breath-aeolian**: the freshest sound *source* — real aeroacoustics, pitch
-  set by vortex-shedding physics (`f = St·U/d`) rather than a scale or a drone. A
-  build where "no scale" is earned by physics, not declared by fiat.
+- **942-depth-harmonic-room**: the verdict's high-water mark. It takes last jury's open ask #4 — "develop the depth-camera opener into a walk-through instrument" — and *does it*: Depth Anything V2 on WebGPU + a neo-Riemannian Tonnetz where your body position walks parsimonious P/L/R triad transforms with real voice-leading. Depth-camera AND real harmony in one build. 5/5.
+- **952-maqam-calligraphy**: the bravest concept. Autonomous 5.5-minute long-form taqsim in *exact microtonal cents* (never snapped to 12-TET), driven by a sayr state machine, rendered as calligraphic brushstrokes. No on-glass input, no cosmic glow, no pentatonic — it dodges every monoculture at once and fills a real cultural-tooling gap. 5/5.
+- **960-cristal-friction**: the direct answer to "granular is comfort food." A real stick-slip LuGre friction model solved per-sample in an AudioWorklet, coupled to a modal resonator bank — the *timbre is physics*, not a sample or a grain cloud. The bowed-glass register is genuinely new.
+- **947-overtone-loom**: the lone clinical/Ikeda build, and it earns it — a live Sethares/Plomp-Levelt dissonance field that *proves* consonance comes from the spectrum, not abstract ratios. Uses MIDI (the 1× sensor). Intellectually the most honest piece here.
+- **957-kids-come-home**: the kids-side answer to "make music from PITCH again." A V→I cadence as a one-finger toy — drag the firefly into the leading-tone's tremble, let go, it swoops home on a resolved chord. Only 3/5 on the floor, but conceptually it's exactly the move the last jury begged for.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **898-tremor-score ↔ 939-aurora-harp**: the same pairing the *last* jury flagged
-  (877↔898) recurs — **two live-external-data sonifications in one window**
-  (USGS quakes, NOAA solar wind) with a near-identical architecture: live feed +
-  synthetic fallback + "data → musical structure/resonance" + a feed-readout
-  panel. 939 deserves credit for finally *dropping* the consonant-mode crutch the
-  jury banned — but "live feed → drone instrument" is now a reliable template the
-  lab reaches for whenever it wants an easy adult win. One idea, shipped twice.
-- **911-shadow-dance**: the thinnest of the granular cluster. MediaPipe Pose
-  already shipped (869), and "bodily input → granular texture, pitch dumb, GPU
-  glow" is the exact 909/911 pair — 911 is 909's body-driven re-skin. Clears the
-  floor at 3/5 on subsystem count, but adds no new *technique*.
-- **935-kids-shake-critters**: the purest instance of the **kids formula** now
-  fully crystallized — sensor input + GPU glow + always-on drone + auto-demo +
-  "no wrong notes / pitch held dumb" + kids-safe limiter chain. Competent in every
-  part, novel in none beyond "first PhISEM." The kids rotation has a recipe now,
-  and 935 is it cooked exactly to spec.
+- **953-kids-iron-garden**: the cleanest example of the kids comfort formula — multi-touch drag + C-pentatonic-no-wrong-notes + always-on drone + bloom-on-proximity. The iron-filing field viz is lovely, but the *instrument* underneath is the lab's Nth "drag glowing things, pentatonic chords bloom." Missing: a recent-research cite (#5 absent) and a genuinely new technique.
+- **946-kids-bird-round**: melodic-contour-into-canon is a nice idea, but the realization is drag-to-draw-a-melody + C-pentatonic + WebGL2 glow — three things the lab has done many times. No #5 research anchor; the canon scheduler is the only fresh part.
+- **935-kids-shake-critters**: PhISEM stochastic-shaker synthesis is a legitimate technique, but the build is "shake → rattle band, three.js glow, no melody" — the timbre-rhythm-only kids move *and* the lone three.js straggler. Local-minimum on harmony (it has none) and on renderer (the banned library).
 
 ## Provocations for tomorrow's dream cycle
-1. **Ban three.js for a cycle.** The field over-fixed the Canvas2D/SVG ban into a
-   7-of-15 three.js monoculture. **WebGPU compute is still 1×** after the menu has
-   named it for weeks (932 is the lone instance). The next GPU build should be raw
-   WebGPU compute or a hand-written WebGL2 path — not `new THREE.Scene()`.
-2. **Make music from PITCH again — the pendulum over-swung.** The jury asked *once*
-   for "music from something other than pitch theory"; the lab obeyed so totally
-   that "drone + texture, pitch held dumb" is now in ~10 of 15 and has become the
-   excuse not to compose. 902 is the only adult build still reasoning about
-   harmony and it's a standout. Spend a cycle where **melody, voice-leading, or a
-   real harmonic arc IS the idea** — pitch as expressive material, not the thing
-   you apologize for omitting.
-3. **Verification debt is real and accumulating.** All 15 are build-green but
-   **runtime-unverified** — none were heard, none seen running; every README ends
-   with the same "no GPU/audio/mic/camera/net in sandbox + EMFILE blocks
-   static-gen" disclaimer. The lab is stacking untested surface area. Spend a
-   cycle (or push for the infra fix) to actually *run and verify* 2–3 of the
-   strongest recent builds (927, 915, 918) on a real device instead of shipping a
-   16th unheard prototype.
-4. **Develop the three category-openers — don't move on to a fourth.** 927 (depth),
-   915 (AI-chain), and 918 (WebRTC) each cracked a 0× category this window. That's
-   where the depth budget belongs next, not a brand-new category. Go DEEP on one:
-   depth-room → a real multi-zone spatial *instrument* you walk through; the
-   AI-chain → music→narrative→TTS→score-follower; the WebRTC room → a conducted
-   two-player ensemble with roles.
-5. **Granular is the new comfort food (4×).** If you reach for grains again,
-   justify in STATE.md why it isn't just the default texture — or make the timbre
-   some other way (physical modeling, FM, additive, sampled-and-mangled).
-6. **A third live-data sonification needs a different OUTPUT.** 898 and 939 already
-   spent the feed→fallback→data-as-form template twice. If a feed composes again,
-   route it to a *different* modality — data→AI-image, data→haptics, data→a
-   networked room — or skip it.
+1. **Pentatonic-no-wrong-notes is the new kids crutch — ban it for a week.** You just *proved* on the adult side (941 voice-leading, 950 I–IV–V–vi, 957 V→I) that a child can hold real harmony in one finger. If a kid touches the next build, give them a real mode, a functional progression, or genuine tension/resolution — not the can't-be-wrong scale.
+2. **Kill the "ship-a-GPU-sim-and-pulse-a-bell-off-it" reflex (4× this window).** Next adult build, make the *sound* the primary object the way 960 (friction) and 965 (oscilloscope) did — the simulation should be the instrument's resonating *body*, not a screensaver you read a pitch off of.
+3. **Force a non-pointer input.** Drag-on-glass is back to 7×; the sensor spread the last jury praised is decaying into one-offs. The richest open thread is 942 — push the depth-room into a *multi-zone* spatial instrument you physically walk through. Or build the adult MIDI/desk-controller piece (MIDI is 1×, only 947). Embodied-spatial, not a finger.
+4. **Verification debt is now the #1 liability — two juries and counting.** 15/15 build-green, 0/15 ever heard or seen running; every README ends with the same EMFILE/no-GPU sandbox disclaimer. We are stacking a fortnight of untested surface area. Spend a cycle on the infra fix, or hand-verify the three strongest (942, 952, 960) on a real device, before shipping a 16th unheard prototype.
+5. **The adult-cosmic-glow look is still the default (4×).** 952's ink-and-gold, 947's clinical lab, 960's glass, 965's CRT green show the adult side can look like *anything* else. Keep choosing a register that isn't a dark nebula.
 
 ## Karel-facing line
-Best ambition window yet — the lab cracked depth-camera, multi-user, AND AI-chain
-in one fortnight (all standing 0× asks) and every build now cites dated research —
-but it's hardened into a house style: three.js glow, granular texture, and "pitch
-held deliberately dumb" is now boilerplate in two-thirds of builds; tomorrow we
-ban three.js, push onto raw WebGPU, and make music from real harmony again.
+The lab did everything you asked two weeks ago — three.js is dead, WebGPU is the new default, and real harmony came back hard on both adult AND kids sides — so today's note is about the *next* ruts, not the old ones: pointer-drag is back to 7×, "ship-a-sim-and-pulse-a-bell" is the new adult reflex, pentatonic crept back for kids, and **15 of 15 builds are still machine-unverified** — but 942 (a depth-camera you walk through a harmony lattice) and 952 (a 5½-minute autonomous maqam improvisation in true microtones) are the two to actually open.

@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-26 ~12:30 UTC (cycle 561, adult · DEEP)
 
+> **Jury verdict today**: The lab did everything you asked two weeks ago — three.js is dead, WebGPU is the new default, and real harmony came back hard on both adult AND kids sides — so today's note is about the *next* ruts, not the old ones: pointer-drag is back to 7×, "ship-a-sim-and-pulse-a-bell" is the new adult reflex, pentatonic crept back for kids, and **15 of 15 builds are still machine-unverified** — but 942 (a depth-camera you walk through a harmony lattice) and 952 (a 5½-minute autonomous maqam improvisation in true microtones) are the two to actually open. See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
