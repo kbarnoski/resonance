@@ -1,14 +1,19 @@
-# Morning digest — last updated 2026-06-27 ~20:15 UTC
+# Morning digest — last updated 2026-06-27 ~22:15 UTC
 
 ## New since yesterday
-- **`/dream/997-resonant-halls`** (adult, cycle 577, DEEP) — **walk in FIRST PERSON through a cathedral of 5 harmonic rooms, each a key on the circle of fifths with its OWN acoustics; stepping through a doorway is a key change you hear in the reverb itself.** Drag to look, WASD to walk (or "Take the tour" for hands-free). *Why open it:* this is the deep extension of the spatial thread (977→992→here) — and unlike 992, the **acoustics themselves change as you move** (per-room synthesized convolution IRs: bright short chapel → long dark nave). The doorway modulation is a real pivot chord: each key's fifth IS the next key's root, so the shared tone holds across the threshold while the rest retune. Hand-rolled raymarched 3D, no three.js. Directly answers your jury's #2 (extend 977 into a walkable room) and #3 (force a 3D/GPU path).
+- **[1000-kids-bubble-harp](https://getresonance.vercel.app/dream/1000-kids-bubble-harp)** — *Tap glowing bubbles in a calm aquarium; each is a REAL plucked string (genuine Karplus-Strong, not a sample). Drag to strum a glissando harp.* **Why open this:** it's the rare new build you can actually *verify on your phone in one tap* — no mic/camera permission, no sensor, instant sound. The "sound is real physics" lane (960/970) ported to a 4-year-old. Tap a few bubbles, then drag across them.
+- Kids · WIDE fire — **2 more explored + banked, see IDEAS.md** (§578): a hum-steered WebGPU firefly flock + a camera-shadow singing creature.
 
 ## In progress / partial
-- **`996-dream-rooms` ⭐ resurrect-first** — the *other* approach from tonight's DEEP fire, banked not shipped: the same walk-the-harmonic-chambers idea as a top-down floor-plan, but the resonating body is a **real WebGPU compute shader** (12k particles). It's the directest answer to the jury's "WebGPU-compute collapsed 6×→1×" alarm; built clean (lint 0/0), ready to resurrect next adult GPU cycle. Seed in IDEAS §577.
+- 1000 deepening: a sustained "bow" gesture (hold-drag), two-finger duet, the string ripple shown in the bubble rim.
 
 ## Research findings worth a look
-- **The 2026 spatial-audio frontier is *acoustics-as-a-navigable-field*** (Reciprocal Latent Fields, arXiv:2602.06937, Feb 2026): learned acoustic fields you walk through, where source and listener are interchangeable. Our strongest builds (977, 992) make *position* the instrument but keep the reverb fixed — 997 is the first to make the **acoustics** change as you move. (RESEARCH §577.)
+- **§578** — arXiv:2606.24958 (Jun 23, 4 days old): 2026 swarm research makes flock *emergence controllable by a cue* — i.e. a kid could steer a firefly flock by humming, and the flock's coordination *is* the chord. That drove the banked ⭐ `998-kids-firefly-hum`.
+
+## This cycle's choices
+- **Mode WIDE** to break a forming rut: the last 3 kids builds leaned on physics-sim-as-body (cloth/fluid) + tilt/touch/shake. This fire spread **3 distinct inputs — mic / camera / touch** and shipped the touch one.
+- **Why bubble-harp over the bigger firefly-hum swing:** verification debt is the jury's #1 standing liability ("stop adding to the unheard pile"). Firefly is the bigger, research-chained swing but needs a real GPU+mic to trust — banked ⭐ for a cycle that can device-verify it.
 
 ## Open questions for Karel
-- Verification debt is real: 977, 960, 997, 996 are the strongest builds **nobody has heard on a real device**. Worth one of us doing a live click-through pass? The jury has asked twice.
-- The adult "explainable-inverse music-theory explainer" formula is now retired (you'd flagged it 4× in a row). Tonight is pure spatial presence instead — is that the direction you want the adult lane to hold?
+- **Verification debt (still the #1 ask):** the lab keeps shipping things only auto-demos can confirm. Two unblocks need you: (a) raise the container's ~4096 file-descriptor ceiling so `npm run build` static-gen runs locally, or (b) a quick hand-verify pass on a real device — 1000 (touch, easiest), 997 (raymarch room), 995 (tilt), 992 (pose+WebGPU) all await an ear/eye.
+- Next fire (579) is ADULT — planning to extend the 977→992→997 walkable-spatial-instrument thread (banked ⭐ `996-dream-rooms` WebGPU twin). Want me to push that, or pivot?
