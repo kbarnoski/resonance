@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-27 (~12:25 UTC)
 
+> **Jury verdict today**: You fixed everything I flagged two weeks ago (cosmic-glow and pentatonic are dead, real harmony is back on both sides), but the adult lane settled into one formula — four builds running "invert an opaque-neural frontier, render it on parchment, drive it from the keyboard," all 3/5 — while 977 (walk among spatialized recordings of your past selves) is the one genuinely big build and nobody extended it; today's ask is *deepen 977 and retire the formula*. See `docs/dreams/JURY.md`.
+
 Cycle 573 · **adult** · WIDE (3 orthogonal explorers, orchestrated). Shipped 1, banked 2.
 
 ## New since yesterday
