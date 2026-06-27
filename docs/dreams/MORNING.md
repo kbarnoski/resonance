@@ -1,21 +1,14 @@
-# Morning digest — last updated 2026-06-27 (~18:25 UTC)
-
-> **Jury verdict (2026-06-27)**: old ruts fixed, new ones formed. Loudest standing asks: *extend 977/992 into a multi-cycle spatial building*, *retire the explainable-inverse formula* (pure timbre / presence), *rebuild WebGPU-compute*, and the perennial #1 — *pay down verification debt (too many unheard builds)*. See `docs/dreams/JURY.md`.
-
-Cycle 576 · **kids** · DEEP (2 engine approaches, orchestrated). Shipped 1, banked 1. **This fire is the lab's FIRST true-3D scene-graph build (jury: that's 0×) and a deliberately verification-safe ship — it runs on any browser with no WebGPU/permission friction.**
+# Morning digest — last updated 2026-06-27 ~20:15 UTC
 
 ## New since yesterday
-- **[/dream/995-kids-moon-trampoline](https://getresonance.vercel.app/dream/995-kids-moon-trampoline)** — *Moon Trampoline (kids 4+).* **Tilt a tablet like a tray and roll a glowing moon-ball across a springy TRAMPOLINE OF STARS — the stretching cloth itself rings like a soft drum, because the sheet's own simulated vibration modes ARE the sound.**
-  - *Why it's different:* the lab's **first true-3D scene-graph** piece (hand-written perspective camera that orbits so the sheet stretches toward/away in depth — no three.js), and the most literal "the physical simulation IS the resonating body" — the 960-friction "timbre is physics" idea ported to a 4-year-old toy. A 24×24 Provot mass-spring cloth; where the moon dents it, **the drum's fundamental bends DOWN** (real struck-membrane physics, Avanzini & Marogna), ripples open the higher modes, settling gives a warm Eb chord. Eb lullaby, no wrong notes, never silent.
-  - *Try it:* tap the moon to start, then **tilt** (or drag, or just leave it — the moon auto-drifts in a slow circle so it's always moving + singing). Runs on any phone/laptop; calm indigo bedtime palette with a ~12-min goodnight fade.
+- **`/dream/997-resonant-halls`** (adult, cycle 577, DEEP) — **walk in FIRST PERSON through a cathedral of 5 harmonic rooms, each a key on the circle of fifths with its OWN acoustics; stepping through a doorway is a key change you hear in the reverb itself.** Drag to look, WASD to walk (or "Take the tour" for hands-free). *Why open it:* this is the deep extension of the spatial thread (977→992→here) — and unlike 992, the **acoustics themselves change as you move** (per-room synthesized convolution IRs: bright short chapel → long dark nave). The doorway modulation is a real pivot chord: each key's fifth IS the next key's root, so the shared tone holds across the threshold while the rest retune. Hand-rolled raymarched 3D, no three.js. Directly answers your jury's #2 (extend 977 into a walkable room) and #3 (force a 3D/GPU path).
 
-## Also explored (banked, not shipped — IDEAS §576)
-- **994-kids-star-cloth** ⭐ RESURRECT-FIRST (kids) — the **WebGPU-compute** twin: same toy, but the cloth relaxation runs in a genuine WGSL `@compute` pipeline at higher res — the bigger technical swing and the literal jury-encouraged GPU-compute rebuild. De-selected only because its headline GPU path is unverifiable in this box and degrades to a coarser fallback on phones without solid WebGPU; **995 was the more reliable morning artifact.** Cycle-2 graft: fold 994's GPU cloth into 995 as an optional high-res path once we can verify on a real GPU.
+## In progress / partial
+- **`996-dream-rooms` ⭐ resurrect-first** — the *other* approach from tonight's DEEP fire, banked not shipped: the same walk-the-harmonic-chambers idea as a top-down floor-plan, but the resonating body is a **real WebGPU compute shader** (12k particles). It's the directest answer to the jury's "WebGPU-compute collapsed 6×→1×" alarm; built clean (lint 0/0), ready to resurrect next adult GPU cycle. Seed in IDEAS §577.
 
-## Research finding worth a look (RESEARCH §576)
-- The 2026 real-time cloth-animation frontier is going **neural** (arXiv:2603.25580 "UNIC", Mar 2026) — so a *transparent physical* cloth-as-instrument is the on-mandate inversion. Browser feasibility is settled (arXiv:2507.11794, WebGPU cloth @ 60fps/640K nodes). The fun law I built the toy around: a struck membrane's pitch literally bends under a deep dent (Avanzini & Marogna).
+## Research findings worth a look
+- **The 2026 spatial-audio frontier is *acoustics-as-a-navigable-field*** (Reciprocal Latent Fields, arXiv:2602.06937, Feb 2026): learned acoustic fields you walk through, where source and listener are interchangeable. Our strongest builds (977, 992) make *position* the instrument but keep the reverb fixed — 997 is the first to make the **acoustics** change as you move. (RESEARCH §577.)
 
 ## Open questions for Karel
-- **995 wants a real-device tilt check** — the render + membrane audio are reasoned but not yet seen/heard; on hardware the tilt axis may need a sign flip (drag/keys/auto-demo work regardless, so it's never dead). One play would let me tune cloth res + modal partials.
-- **Next adult step (577):** I'd push the **992 → walkable *building*** thread — fold the banked `991-dream-rooms` doorway-modulation + `993-resonant-halls` per-room acoustics + 977's record/replay ghosts into one piece. Want that, or deepen 995 to its GPU high-res path first?
-- Standing infra: either raise the container ~4096-fd ceiling so Next static-gen runs locally, or do one hand-verify pass on a real tilt/GPU/camera device (995/994/992/977/988 all await). Everything builds green + Vercel-deploys.
+- Verification debt is real: 977, 960, 997, 996 are the strongest builds **nobody has heard on a real device**. Worth one of us doing a live click-through pass? The jury has asked twice.
+- The adult "explainable-inverse music-theory explainer" formula is now retired (you'd flagged it 4× in a row). Tonight is pure spatial presence instead — is that the direction you want the adult lane to hold?
