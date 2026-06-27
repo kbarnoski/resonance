@@ -10,6 +10,14 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §571 banked seed — 2026-06-27 (cycle 571 · ADULT · DEEP — 1 non-winner approach, built complete + builder-reported tsc/eslint-clean, then de-selected; shipped `983-tension-journey`)
+
+Built to demoable this fire, `cp`'d to `/tmp/dream-losers-571/`, then `rm -rf`'d un-committed per the orchestration no-half-built-folders rule. Clears the ambition floor (3/5), is sound-as-object + non-pointer (keyboard/Web-MIDI), and is the real-time *played* twin of the shipped autonomous engine. Renumber on revival (max committed folder after this fire = **983**, so resurrect as ≥984).
+
+- **982-tension-ribbon ⭐ RESURRECT-FIRST (adult)** — the real-time *played* tonal-tension instrument. Play chords on the computer keyboard or a **Web-MIDI keyboard**; for each chord the engine computes Elaine Chew's three Spiral-Array tension measures (cloud diameter / cloud momentum / tensile strain on a real 3D helix) live and renders them as a flowing **raw-WebGL2 3D tension ribbon** (width=diameter, twist/displacement=momentum, heat-color indigo→amber→rose=strain) with labeled numeric meters; the synth foregrounds tension audibly (lowpass opens + triangle→sawtooth partials + detune-cents roughness as tension climbs; warm/narrow on resolution). Chord palette includes a tense chromatic set (N6, Ger+6, Aug, dim7, tritone-sub, cluster) so you can build tension and slam it home; ~1s auto-demo rises and resolves; Canvas2D fallback. Builder-complete + tsc/eslint-clean. **Honest warts to fix on revival:** (1) **fixed C-major key → static tensile-strain anchor** (no key tracking) — add a decaying running-CE key estimate so strain re-homes on modulation (the same fix 983 wants); (2) normalization divisors heuristic, not corpus-fitted; (3) pitch-class collapse (register/voice-leading ignored). **Cycle-2 graft (the strongest path):** fold 982's live 3D spiral-helix viz + Web-MIDI-played perturbation INTO the shipped **983-tension-journey** so you can *watch the engine compose AND grab the keyboard to bend the live tension target by hand* — the autonomous journey and the played instrument become one piece. Refs: Chew *The Spiral Array* (2014); Herremans & Chew "Tension ribbons" (TENOR 2016); MorpheuS (IEEE TAC). RESEARCH §571.
+
+---
+
 ## §570 banked seeds — 2026-06-27 (cycle 570 · KIDS · WIDE — 2 non-winner explorers, built complete + builder-reported tsc-clean, then de-selected; shipped `981-kids-happy-sad-tree`)
 
 Both built to demoable in this fire, `cp`'d to `/tmp/dream-losers-570/`, then `rm -rf`'d un-committed per the orchestration no-half-built-folders rule. Each clears the ambition floor, uses **real (non-pentatonic) harmony**, and is a **non-pointer input** → all three explorers answered the same JURY #1+#3 pair three different ways (tap / shake / breath). Renumber on revival (max committed folder after this fire = **981**, so resurrect as ≥982).
