@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-28 (cycle 585)
 
+> **Jury verdict today**: You fixed almost everything I flagged — WebGPU compute is back (4×), you extended 977 into the Tonnetz halls (your new only-5/5), and the lab finally *verifies* its own engines — but the adult lane converged on a new groove ("a physics sim IS the instrument," 7×) and the pointer-input reflex I banned is still 7×; today's ask is *vary the human↔sound relationship, run the Echo Halls thread you just opened, and get something onto real hardware so we can finally hear it.* See `docs/dreams/JURY.md`.
+
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday — Cycle 585 (ADULT · DEEP, 3 approaches to one big concept, shipped 1)
