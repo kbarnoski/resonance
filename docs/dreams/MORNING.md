@@ -1,18 +1,17 @@
-# Morning digest — last updated 2026-06-28 (cycle 589)
+# Morning digest — last updated 2026-06-28 (~UTC, cycle 590)
 
 Open the lab: https://getresonance.vercel.app/dream
 
-## New since yesterday — Cycle 589 (ADULT · DEEP, 3 competing approaches to one concept, shipped 1)
-- **`1029-echo-halls-sphere` — walk through a *sphere* of six harmonic rooms (some above you, some below, some behind) and find a chord by *ear*.** **Why open this:** it's **cycle 2 of the Echo Halls thread** — I finally extended `1019`, your only 5/5, like the jury kept asking (it warned I'd abandoned `977` for three fires; I shipped this before the same line). You are the listener: your gaze rewrites the binaural pan *every frame*, so closing your eyes and turning toward a chord actually works — and the rooms aren't on a flat ring, **IV floats overhead, ii sits underfoot, vi/iii hide behind you** (that's the dated full-sphere-localization research made playable). Each room is sung alive by a **real WebGPU compute particle field** whose measured energy drives its shimmer — so it keeps the GPU-compute win the jury loves, but the *primary* mechanic is spatial orientation, not "the sim is the instrument" (the groove the jury asked me to vary). Pointer-look on desktop, turn-your-phone on mobile, or just watch — a 2s auto-tour sweeps between a low and a high room so it plays itself.
-- ✅ **Verified:** winner's headless geometry test — **89/89 pass** (full-sphere spread, find-by-ear weighting peaks at the room you face, every chord diatonic). ⚠️ **Not heard / not GPU-run** (no audio/WebGPU in my box): whether you can truly localize *above vs below* by ear is HRTF/headphone-dependent and wants a real device.
+## New since yesterday
+- **`1033-kids-hum-blossom`** ([open](https://getresonance.vercel.app/dream/1033-kids-hum-blossom)) — **hum a note and a flower blooms *in tune with you*.** A 4-year-old hums into the mic; we track the actual **pitch** in real time (autocorrelation/YIN-lite) and a glowing flower grows — petals spiral out while you hold a tone, color follows your pitch — and a soft 3-voice "ah" choir **answers**, folding your hum into a real **I–vi–IV–V**. *Why open it:* the lab's **first voice-*pitch* instrument** — every prior mic piece used voice as loudness; this one listens to the *note* you sing. Passing pitch unit test; mic→analyser only (no howl); no-mic auto-demo. Won a 3-way kids fire.
 
-## Also explored this fire (built complete, banked — not shipped) — see IDEAS §589
-- **`echo-halls-flock`** ⭐ RESURRECT-FIRST — a **100k WebGPU swarm pools in your room and its measured density/energy *honestly* drives the sound** (no proxy; 8156-assertion test; it even ran a full `next build`). The most honest sim→audio loop of the three — held back only because it leans *into* the "sim-is-body" groove you flagged. First in line next adult fire: I'll graft its density→cutoff readback onto the sphere (cycle 3).
-- **`echo-halls-gyro`** — hold the phone, **close your eyes, turn your body**; dwelling your gaze on a room locks it, so you *play a progression by looking*. Lovely + freshest input — held back because its visuals are Canvas2D-only (no GPU-compute) and the gyro magic needs a phone, not a desktop glance.
+## In progress / partial
+- **Echo Halls thread** is 2 cycles deep (`1019`→`1029`) and still the jury's #2 ask — banked **`echo-halls-flock`** (100k WebGPU compute swarm, honest audio readback) is resurrect-first for the next adult fire.
+- **2 more kids prototypes built this fire, not shipped** (banked, IDEAS S590): **`1034-kids-rain-chimes`** ⭐ — tilt pours a WebGPU droplet-rain through chimes that ring a real chord (a near-done GPU build, resurrect-first next kids fire); **`1032-kids-shadow-choir`** — your camera silhouette sings, where you stand picks the chord.
 
-## Why this shape (ADULT · DEEP · Echo Halls cycle 2)
-- Odd cycle = adult. Your jury's #2 was an explicit named instruction — *run the Echo Halls thread, don't abandon it* — so I went DEEP on one big concept and raced three technical approaches at it in parallel, shipping the one that threads **all three** of your provocations at once (#2 extend the thread, #3 keep WebGPU compute, #1 vary the human↔sound relationship). Today's research (WebGPU hit browser *baseline* in 2026 + Sonic4D's viewpoint-adaptive binaural) → today's build.
+## Research findings worth a look (RESEARCH §590)
+- Browser-local **real-time pitch detection went commodity in 2026** (fully client-side, no server) — exactly what makes a kids "sing-and-it-harmonizes-you" toy feasible. Drove today's build directly.
 
 ## Open questions for Karel
-- **The unheard pile (jury #4) is real:** `1029`, `1027`, `1024`, `1019`, `977` are all green-build-but-never-heard (no audio/GPU in my container). One pass on a real device — or raising the container's ~4096-fd ceiling — is the highest-value thing you could do. I'd love to actually *hear* the spheres pan.
-- **Cycle 3 of Echo Halls** is set up: graft the flock's honest readback + the gyro's dwell-to-play onto the sphere, and/or finally do **two-person WebRTC** (the lab is still 0× multi-user, your standing COLD axis) — a shared Echo Halls field two people walk together. Redirect me if you'd rather I pivot.
+- **Nothing this window has been heard on a real device** (no mic/GPU/camera in the build container). `1033` (mic), `1034`/`1029` (GPU), `1032` (camera) all need one hand-verify pass on hardware — still the lab's biggest standing gap (jury #4). Worth a 5-min play on your phone?
+- Kids lane was getting physics-sim-heavy (4 of the last kids builds). I deliberately shipped a **voice** piece to break that — does the hum-in-tune direction land, or do you want the GPU rain (`1034`) next?
