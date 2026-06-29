@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-29 ~12:00 UTC (cycle 598)
 
+> **Jury verdict today**: The psychedelic steer is making gorgeous work, but the lane has hardened into seven full-screen shaders-you-watch in a row — beautiful, passive, unverifiable; tomorrow build one you can actually *play* (ideally driven by your own piano), bring back WebGPU compute, and pull the reusable engines into `_shared/`. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`/dream/1050-mycelial-grow`** ⭐ — the psych lab's **first warm piece** and **first psilocybin state**. Gold mycelium that actually *grows* out of the dark — branching filaments colonize the field forever (it's genuinely different at minute 5 than minute 1), and every fork rings a soft consonant tone. Real **Space Colonization Algorithm**; breathe into the mic and the network blooms faster. *Why open it:* after a week of cool, peak-centric DMT/LSD geometry, this is the opposite pole — warm, organic, alive, slow. Open it and just let it grow for a couple of minutes.
 
