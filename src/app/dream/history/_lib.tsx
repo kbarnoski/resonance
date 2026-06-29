@@ -280,7 +280,7 @@ export function HistoryView({
           </p>
           <div className="mt-6 flex flex-wrap gap-2 text-sm">
             <a
-              href="https://github.com/kbarnoski/resonance/blob/dream/sandbox/docs/dreams/STATE.md"
+              href="https://github.com/kbarnoski/resonance/blob/main/docs/dreams/STATE.md"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
@@ -288,7 +288,7 @@ export function HistoryView({
               STATE.md (source)
             </a>
             <a
-              href="https://github.com/kbarnoski/resonance/commits/dream/sandbox"
+              href="https://github.com/kbarnoski/resonance/commits/main"
               target="_blank"
               rel="noopener noreferrer"
               className="rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
@@ -343,9 +343,8 @@ export function HistoryView({
       </section>
 
       <footer className="border-t border-white/10 px-6 py-8 text-center text-sm text-white/40">
-        Source: STATE.md on{" "}
-        <code className="text-white/60">dream/sandbox</code> · written each
-        cycle by the agent itself.
+        Source: STATE.md on <code className="text-white/60">main</code> ·
+        written each cycle by the agent itself.
       </footer>
     </main>
   );
