@@ -1,23 +1,18 @@
-# Morning digest — last updated 2026-06-29 (cycle 594 · ADULT · psychedelic — WIDE)
+# Morning digest — last updated 2026-06-29 (cycle 595 · ADULT · psychedelic — WIDE)
 
-Open the lab: https://getresonance.vercel.app/dream
-
-**The lab just did its first 4D.** This morning's ship falls toward the DMT "breakthrough" by raymarching a four-dimensional polytope rotating through planes that don't exist in our space — the literal "more axes than reality allows."
+**Today's ship: [`/dream/1043-dreamachine`](https://getresonance.vercel.app/dream/1043-dreamachine)** — the lab's first **Dreamachine / Ganzflicker**, and its first **gated safe-flicker engine**.
 
 ## New since yesterday
-- **[1042-hyperspace-bloom](https://getresonance.vercel.app/dream/1042-hyperspace-bloom)** — **the lab's FIRST 4D / hyperdimensional raymarch** (grep-0× in 593 cycles). A 24-cell rotates through all six 4D planes — the three hidden *w*-rotations make its glowing neon-jeweled edges balloon and turn inside-out as it's stereographically projected to 3D and raymarched. A ~75s journey rises into the breakthrough; tilt to steer or let it play itself; no strobe, no permissions needed beyond optional tilt. **Why open it:** it's the "massively bigger concept" you asked for — true 4D, the actual DMT-breakthrough phenomenology, not another flat warp. Ambition 4/5 (first-ever technique). Refs: QRI "hyperbolic geometry of DMT", Bressloff–Cowan.
+- **`1043-dreamachine`** — dim your lights, soft-focus the center, and your *own* visual cortex blooms the spirals/tunnels/honeycombs. The screen never draws the hallucination — it only gives you a uniform warm field (a *Ganzfeld*) + a slow safe pulse + a breathing drone, the way Brion Gysin's 1959 Dreamachine does. `state: jhāna/hypnagogia · pole: cosmic-ambient`. **Why open it:** it's the calm, meditative counterweight to this week's intense DMT pieces — and the concept ("the screen doesn't draw it, your brain does") is the most surprising thing in the lab right now.
+- This is the **safety build** the whole psychedelic direction needs: flicker is hard-capped at **≤3 Hz** in code (the slider can't reach the seizure-risk band), soft sine never a strobe, a photosensitive-epilepsy warning + opt-in before anything, and an always-visible instant Stop. Default mode is no-flicker drift. Chained straight from today's research: the 2026 Oxford Ganzflicker study.
 
-## In progress / banked next (IDEAS §594 + §592)
-- **1043-clear-light** ⭐ resurrect-first — the cosmic-ambient **soft-white boundless** pole (jhāna / Oceanic Boundlessness): breath-paced particle dissolution washing to pure white, drone bank + cathedral reverb. The light-boundless counterweight the lane lacks (1041 is the *dark* void). Built complete this fire, banked.
-- **1044-mycelial-bloom** — the **warm-organic** psilocybin pole: your voice (analysis-only) makes a fBm domain-warp + kaleidoscope field bloom with your affect. Built complete this fire, banked.
-- **1040-ganzfeld-bloom** ⭐ (from 592) — meditative Ganzfeld + the **safe-flicker engine** the direction needs.
-
-## Honest notes
-- WIDE fire: 3 untapped states built in parallel (DMT 4D / jhāna soft-white / psilocybin warm); shipped the biggest swing, banked the other two. The lane now spans intense (1038 warp, 1042 4D) + cosmic-ambient (1041 void) — next should be a *light* cosmic-ambient (1043) to balance.
-- Verified clean where the box allows: `tsc` 0 errors project-wide, ESLint 0/0 on the 1042 folder, compile clean. Static-gen still blocked only by the container's fd ceiling (infra, not code; Vercel deploys past it).
-- **Seen/heard nothing on real hardware.** 4D especially needs your eyes — whether the *w*-rotation truly reads as "impossible morphing" on a real GPU is the open question.
+## Explored but not shipped (2 more — see IDEAS §595)
+- **`1044-hyperbolic-bloom`** ⭐ — gorgeous **intense** DMT piece: the lab's first Poincaré-disk hyperbolic {7,3} tiling you fall through forever, jeweled + iridescent. Banked because it'd be a *third* intense piece in a row and I wanted to rebalance toward calm. Strong resurrect candidate for an intense night.
+- **`1045-k-hole`** — first ketamine "K-hole": float untethered into a vast time-dilated void as your body dissolves. Banked over aesthetic-overlap risk with the existing `1041-nde-tunnel` dark-void.
 
 ## Open questions for Karel
-- Next I want to **extract the shared psychedelic engines into `_shared/`** (the log-polar warp, the 4D-geometry module, a safe-flicker engine, a drone/convolution-void audio kit) so every future piece composes fast. A good DEEP cycle — worth it?
-- The lane is wide open on **LSD drift, hypnagogia/lucid-dream, and hyperbolic {7,3} tiling** (another never-done technique). Any pull toward one?
-- Still worth a one-pass hand-verify of a psychedelic build on real hardware so we finally *see* one?
+- **The local build gate is broken in my sandbox (not the code).** Full `npm run build` can't finish here — the container's open-file limit (4096) is too low for the lab's 1000+ routes, so it dies with `EMFILE` in the prerender step. I proved it's environmental: clean cycle-594 HEAD (live in prod) fails identically. I validate with `next build --experimental-build-mode compile` (full TS + ESLint + bundle = green) instead. **Could you raise the fd limit, or bless compile-mode as the official gate?** It will hit every future cycle.
+- Want me to lift `1043`'s `flicker.ts` + drone bank into `_shared/` (`safeFlicker.ts` / `droneBank.ts`) next — the core psychedelic infra PSYCHEDELIC.md keeps asking for. Worth a DEEP infra cycle?
+
+## Lane status (psychedelic)
+4 builds: `1038` DMT (intense) · `1041` NDE (cosmic) · `1042` 4D-DMT (intense) · **`1043` Dreamachine (cosmic)**. Pole back in balance, 2/2.
