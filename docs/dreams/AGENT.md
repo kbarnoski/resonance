@@ -56,7 +56,7 @@ Pick ONE action for this cycle, in priority order:
 
 1. **Unblock**: if STATE.md notes a blocker from a prior cycle (e.g. "tsc fails on /dream/3-fluid because X"), fix it.
 2. **Continue**: if a prototype is in-progress (less than ~70% complete), continue it. Pick the highest-priority in-progress one.
-3. **Kid-cycle rotation**: if `cycle_number % 2 === 0` AND no blocker / in-progress work, this cycle is **kids-focused** (Karel bumped this from every-4th to every-other on 2026-05-21 because the first kids prototype landed well). Read `docs/dreams/KIDS.md` for design principles + seeded ideas. Build a prototype matching the kids design rules (iPad / mobile, 4-year-old usable, no reading, tap-targets ≥64px, immediate response, safe sounds). Use the slug convention `kids-<name>` (e.g. `72-kids-color-piano`). If KIDS.md's queue is thin, do a kids-focused **research** sweep instead and seed new ideas there.
+3. **Kid-cycle rotation — PAUSED 2026-06-28.** Karel said "pause on kids dream agent ones." **Do NOT build kids prototypes** until this line is changed back. Skip this step entirely — `cycle_number % 2` no longer routes to kids. Every cycle is now a **psychedelic / altered-states** cycle: read `docs/dreams/PSYCHEDELIC.md` and pick a state + pole from there. (Frozen rule, for when kids resumes: it was every-other via `cycle_number % 2 === 0`, slug `kids-<name>`, reading `docs/dreams/KIDS.md`. KIDS.md is preserved, just not driven.)
 4. **Build new**: if a queued idea is ready (clear spec exists), start its prototype skeleton.
 5. **Research**: if the IDEAS queue is thin (<3 entries) OR you haven't researched in 3+ cycles, do a research cycle (see "Research cycles" below).
 6. **Polish**: if there's nothing else, pick the oldest demoable prototype and polish it (better UX, better defaults, fix a rough edge, document it).
@@ -218,6 +218,19 @@ In rough priority (updated 2026-05-21 — read carefully, this changed):
 3. **Live performance fitness** — many prototypes should be playable on a stage with mic input, low latency, GPU-only paths.
 4. **Journey engine alternatives** — the current engine has a psychedelic 6-phase arc. He wants to see EDM build-and-drop, ritual, jazz responsive, cinematic narrative, etc. as alternate arcs.
 5. **Tauri / installation-mode** — what does Resonance look like as an immersive local install at a venue? Operator UI, MIDI/OSC, projection mapping.
+
+### PRIMARY DIRECTION (set 2026-06-28) — Psychedelic / altered states
+
+**This is now the top creative driver. Read `docs/dreams/PSYCHEDELIC.md` in full every cycle.**
+
+Karel: *"let's go into very psychedelic and trippy territory where the immersive experiments transport users to psychedelic states without taking the drug. this can include cosmic ambient states too not just super intense. do deep research on dmt, lsd, mushroom, ketamine, meditative, near death, dream like states and draw inspiration from them."*
+
+- Build drug-free immersive AV that evokes the **phenomenology** of altered states (DMT/LSD/psilocybin, ketamine/NDE, meditation/hypnagogia/dreams). The user takes nothing — screen + sound do the work.
+- Cover the **whole spectrum**: INTENSE (DMT breakthrough, peak fractal melt) AND COSMIC-AMBIENT (meditative boundlessness, NDE tunnel-to-light, calm void). Don't camp on one pole.
+- Tag every prototype in STATE.md: `state: <which> · pole: intense|cosmic-ambient`. Run the diversity audit over state/pole/technique/palette.
+- The single biggest lever: **the log-polar / form-constant engine** — all psychedelic geometry is stripes/hex under an `exp()` warp. Build it into `_shared/` early. See PSYCHEDELIC.md §"single most load-bearing finding" + the shared-infra list.
+- **SAFETY (non-negotiable):** any flicker/strobe MUST gate through a ≤3 Hz-default, opt-in, instant-kill engine — photosensitive-epilepsy risk is real. See the safety callout in PSYCHEDELIC.md. When in doubt, use slow luminance drift, not flicker.
+- The 2026-05-21 directives below still apply as constraints (esp. **use Karel's real Path music as the carrier wave**, pull back on standalone voice gen), but the *theme* is now altered-states, not "spread across journeys."
 
 ### Current direction (set 2026-05-21)
 
