@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-29 (cycle 595 · ADULT · psychedelic — WIDE)
+# Morning digest — last updated 2026-06-29 (cycle 596 · ADULT · psychedelic — WIDE)
 
-**Today's ship: [`/dream/1043-dreamachine`](https://getresonance.vercel.app/dream/1043-dreamachine)** — the lab's first **Dreamachine / Ganzflicker**, and its first **gated safe-flicker engine**.
+**Today's ship: [`/dream/1047-tracer-drift`](https://getresonance.vercel.app/dream/1047-tracer-drift)** — the long weightless *drift* of an acid trip, and the lab's first feedback-trail engine.
 
 ## New since yesterday
-- **`1043-dreamachine`** — dim your lights, soft-focus the center, and your *own* visual cortex blooms the spirals/tunnels/honeycombs. The screen never draws the hallucination — it only gives you a uniform warm field (a *Ganzfeld*) + a slow safe pulse + a breathing drone, the way Brion Gysin's 1959 Dreamachine does. `state: jhāna/hypnagogia · pole: cosmic-ambient`. **Why open it:** it's the calm, meditative counterweight to this week's intense DMT pieces — and the concept ("the screen doesn't draw it, your brain does") is the most surprising thing in the lab right now.
-- This is the **safety build** the whole psychedelic direction needs: flicker is hard-capped at **≤3 Hz** in code (the slider can't reach the seizure-risk band), soft sine never a strobe, a photosensitive-epilepsy warning + opt-in before anything, and an always-visible instant Stop. Default mode is no-flicker drift. Chained straight from today's research: the 2026 Oxford Ganzflicker study.
+- **`1047-tracer-drift`** — surfaces breathe, and any motion smears into lagging, color-shifting **trails** behind it; faint visual-snow and slow moiré drift underneath. Breathe into the mic and the trails lengthen. `state: LSD · pole: cosmic-ambient (drifting)`. **Why open it:** every psychedelic piece so far chases the *peak* (DMT breakthrough, NDE light, form-constant bloom, Dreamachine flicker) — this is the one that's all *plateau*, the hours-long weightless drift. It feels different from the rest of the lane on purpose.
+- Under the hood it's the lab's **first ping-pong feedback buffer** (two textures swapping each frame, the old frame re-fed warped + decayed) — exactly the `feedbackBuffer.ts` shared-infra PSYCHEDELIC.md keeps asking for. Pastel palette (lilac/peach/mint/rose), not neon. Works hands-free with zero permissions (self-driven drone + drift if you skip the mic).
 
-## Explored but not shipped (2 more — see IDEAS §595)
-- **`1044-hyperbolic-bloom`** ⭐ — gorgeous **intense** DMT piece: the lab's first Poincaré-disk hyperbolic {7,3} tiling you fall through forever, jeweled + iridescent. Banked because it'd be a *third* intense piece in a row and I wanted to rebalance toward calm. Strong resurrect candidate for an intense night.
-- **`1045-k-hole`** — first ketamine "K-hole": float untethered into a vast time-dilated void as your body dissolves. Banked over aesthetic-overlap risk with the existing `1041-nde-tunnel` dark-void.
+## Explored but not shipped (2 more — see IDEAS §596)
+- **`1048-threshold`** ⭐ — **hypnagogia**: forms self-assemble out of the dark (a half-seen face, a horizon, a lattice) and the scene *teleports* with dream-logic, never repeating. The most "did I just see that?" of the three — banked resurrect-first for the next fire. (Held only because 1047 landed the missing feedback infra + the missing *drift* tempo.)
+- **`1046-mycelial-bloom`** — **psilocybin**: warm-organic foliage/mycelium structure breathing and blooming open like a chrysanthemum (amber/rust/moss/gold). Brings the warm palette the whole lane lacks; good for an intense-warm night.
 
 ## Open questions for Karel
-- **The local build gate is broken in my sandbox (not the code).** Full `npm run build` can't finish here — the container's open-file limit (4096) is too low for the lab's 1000+ routes, so it dies with `EMFILE` in the prerender step. I proved it's environmental: clean cycle-594 HEAD (live in prod) fails identically. I validate with `next build --experimental-build-mode compile` (full TS + ESLint + bundle = green) instead. **Could you raise the fd limit, or bless compile-mode as the official gate?** It will hit every future cycle.
-- Want me to lift `1043`'s `flicker.ts` + drone bank into `_shared/` (`safeFlicker.ts` / `droneBank.ts`) next — the core psychedelic infra PSYCHEDELIC.md keeps asking for. Worth a DEEP infra cycle?
+- **Overdue, worth a DEEP cycle:** I now have real consumers for all the `_shared/` psychedelic infra — `1047`→`feedbackBuffer.ts`, `1043`→`safeFlicker.ts`+`droneBank.ts`, `1038`→`logPolarWarp`, `1042`→`raymarch4D`. Four cycles have deferred extracting them. Want me to spend a cycle building the shared kit so future psych pieces compose in minutes? **Highest-leverage non-build cycle available.**
+- **Still the local build gate** (unchanged from yesterday): full `npm run build` can't finish in my sandbox — the container's open-file cap (4096) is too low for 1000+ routes, so it dies with `EMFILE` in prerender (proven environmental; Vercel deploys fine). I validate via the full compile+ESLint+type-check, which passes clean. Could you raise the fd limit or bless `--experimental-build-mode compile` as the gate?
 
 ## Lane status (psychedelic)
-4 builds: `1038` DMT (intense) · `1041` NDE (cosmic) · `1042` 4D-DMT (intense) · **`1043` Dreamachine (cosmic)**. Pole back in balance, 2/2.
+5 builds: `1038` DMT (intense) · `1041` NDE (cosmic) · `1042` 4D-DMT (intense) · `1043` Dreamachine (cosmic) · **`1047` LSD-drift (cosmic)**. Pole leans cosmic-ambient 3/2 → next fire could go intense (banked `1044` hyperbolic / `1046` psilocybin fit).
