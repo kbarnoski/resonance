@@ -1,17 +1,18 @@
-# Morning digest — last updated 2026-06-28 (~UTC, cycle 590)
+# Morning digest — last updated 2026-06-29 (cycle 591 · ADULT · WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`1033-kids-hum-blossom`** ([open](https://getresonance.vercel.app/dream/1033-kids-hum-blossom)) — **hum a note and a flower blooms *in tune with you*.** A 4-year-old hums into the mic; we track the actual **pitch** in real time (autocorrelation/YIN-lite) and a glowing flower grows — petals spiral out while you hold a tone, color follows your pitch — and a soft 3-voice "ah" choir **answers**, folding your hum into a real **I–vi–IV–V**. *Why open it:* the lab's **first voice-*pitch* instrument** — every prior mic piece used voice as loudness; this one listens to the *note* you sing. Passing pitch unit test; mic→analyser only (no howl); no-mic auto-demo. Won a 3-way kids fire.
+- **[1035-living-album](https://getresonance.vercel.app/dream/1035-living-album)** — **a piece of music you *garden*, not play.** Drop a seed (tap), or nudge the "climate," and a population of melodic agents breeds, ages, and dies — so the motifs alive at minute 6 are literal *descendants* of the ones you planted at minute 1. That lineage is the audible **memory** (drawn on screen as child→parent threads). Minute-5 ≠ minute-1; it never loops. **Why open it:** it answers the thing you keep asking for — *vary the human↔sound relationship* — by making you the slow gardener of a system that remembers, not a note-trigger. Plays on its own from load; zero permissions. Verified: `evolve.test.ts` **13/13**, including a test that *proves the memory* (descendants present after ~6 simulated minutes), not just the math.
 
-## In progress / partial
-- **Echo Halls thread** is 2 cycles deep (`1019`→`1029`) and still the jury's #2 ask — banked **`echo-halls-flock`** (100k WebGPU compute swarm, honest audio readback) is resurrect-first for the next adult fire.
-- **2 more kids prototypes built this fire, not shipped** (banked, IDEAS S590): **`1034-kids-rain-chimes`** ⭐ — tilt pours a WebGPU droplet-rain through chimes that ring a real chord (a near-done GPU build, resurrect-first next kids fire); **`1032-kids-shadow-choir`** — your camera silhouette sings, where you stand picks the chord.
+## Explored but not shipped (2 more — banked in IDEAS §591)
+- **1036-piano-mosaic** ⭐ — sing, and hear your voice rebuilt **grain-by-grain out of your own *Welcome Home* piano** (real-time concatenative mosaicing; CataRT / The Concatenator). The fire's biggest "huh, we can do that?" and the only one that uses your real music — held back only because it needs a mic + a real device to hear it work. Resurrect-first for the next adult fire on hardware you can listen on.
+- **1037-presence-song** — a song that lives only while you're *present* for it; look away (switch tabs, go still) and it audibly withers, return and it revives. Quiet, conceptual, zero-permission.
 
-## Research findings worth a look (RESEARCH §590)
-- Browser-local **real-time pitch detection went commodity in 2026** (fully client-side, no server) — exactly what makes a kids "sing-and-it-harmonizes-you" toy feasible. Drove today's build directly.
+## Honest notes
+- Build passed (compile + lint + type-check clean; winner folder eslint = 0/0). Static-gen still blocked only by the container's fd ceiling — infra, not code; Vercel deploys past it, same as every cycle.
+- **Heard nothing on real hardware** (no audio device in the box). 1035's *structure* is machine-proven; whether the heredity is *subjectively* gripping over 6 real minutes needs your ears.
+- Useful correction this cycle: I checked the jury's "0× COLD" gaps (WebRTC, seismic) and **both are already built** — so I stopped chasing a never-used *technique* (nearly exhausted at 591 cycles) and chased a never-tried *relationship* instead.
 
-## Open questions for Karel
-- **Nothing this window has been heard on a real device** (no mic/GPU/camera in the build container). `1033` (mic), `1034`/`1029` (GPU), `1032` (camera) all need one hand-verify pass on hardware — still the lab's biggest standing gap (jury #4). Worth a 5-min play on your phone?
-- Kids lane was getting physics-sim-heavy (4 of the last kids builds). I deliberately shipped a **voice** piece to break that — does the hum-in-tune direction land, or do you want the GPU rain (`1034`) next?
+## Open question for Karel
+- Of the three relationships — **gardener** (1035, shipped) / **sing-through-your-piano** (1036) / **be-present-for-it** (1037) — which should I deepen into a multi-cycle build? 1036 most needs your ears on real hardware.
