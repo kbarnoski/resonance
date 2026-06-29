@@ -1,18 +1,18 @@
-# Morning digest — last updated 2026-06-29 (cycle 591 · ADULT · WIDE)
+# Morning digest — last updated 2026-06-29 (cycle 592 · ADULT · WIDE · **first psychedelic cycle**)
 
 Open the lab: https://getresonance.vercel.app/dream
 
-## New since yesterday
-- **[1035-living-album](https://getresonance.vercel.app/dream/1035-living-album)** — **a piece of music you *garden*, not play.** Drop a seed (tap), or nudge the "climate," and a population of melodic agents breeds, ages, and dies — so the motifs alive at minute 6 are literal *descendants* of the ones you planted at minute 1. That lineage is the audible **memory** (drawn on screen as child→parent threads). Minute-5 ≠ minute-1; it never loops. **Why open it:** it answers the thing you keep asking for — *vary the human↔sound relationship* — by making you the slow gardener of a system that remembers, not a note-trigger. Plays on its own from load; zero permissions. Verified: `evolve.test.ts` **13/13**, including a test that *proves the memory* (descendants present after ~6 simulated minutes), not just the math.
+## New since yesterday — the altered-states direction is live
+- **[1038-form-constant](https://getresonance.vercel.app/dream/1038-form-constant)** — **play music or just speak into the mic and watch your visual cortex's own hallucinated geometry bloom: tunnels, spirals, funnels, honeycomb.** This is the lab's **first build under your psychedelic steer**, and I deliberately opened the direction with its **single most load-bearing finding**: the **log-polar / form-constant engine** (Bressloff–Cowan / Klüver — all hallucinated geometry is one stripe/hex pattern seen through an `exp()` warp). The shader computes true cortical `(log r, θ)` coords and one `formMix` knob sweeps continuously through all four Klüver form constants; mic FFT drives it (bass→flow, mids→form-morph & kaleidoscope bloom, highs→detail, loudness→saturation), and a ~5-min entropy arc (entropic-brain/REBUS) makes minute-5 ≠ minute-1. **Why open it:** every later psychedelic piece can stand on this engine — it's the foundation, not a one-off. Grep-verified lab-first technique. Mic primary; falls back to a self-playing Shepard–Risset drone so it always sounds. **No strobe** (continuous warp, not flicker).
 
-## Explored but not shipped (2 more — banked in IDEAS §591)
-- **1036-piano-mosaic** ⭐ — sing, and hear your voice rebuilt **grain-by-grain out of your own *Welcome Home* piano** (real-time concatenative mosaicing; CataRT / The Concatenator). The fire's biggest "huh, we can do that?" and the only one that uses your real music — held back only because it needs a mic + a real device to hear it work. Resurrect-first for the next adult fire on hardware you can listen on.
-- **1037-presence-song** — a song that lives only while you're *present* for it; look away (switch tabs, go still) and it audibly withers, return and it revives. Quiet, conceptual, zero-permission.
+## Explored but not shipped (2 more — banked in IDEAS §592, both ready to resurrect)
+- **1039-light-tunnel** ⭐ — the **cosmic-ambient** counterpart: a raymarched **NDE wormhole** falling toward a growing being-of-light, hypoxic vignette, a one-time gamma "clarity snap," and a vast convolution-void drone with time-dilation. The natural next ship to balance 1038's intensity.
+- **1040-ganzfeld-bloom** ⭐ — the **meditative** pole: an empty Ganzfeld field, a breath-paced mandala (~5.5 breaths/min), Shepard ascent — and it carries the **safe-flicker engine** (opt-in, ≤3 Hz hard-capped, instant-kill) the whole direction needs for the Dreamachine-style work.
 
 ## Honest notes
-- Build passed (compile + lint + type-check clean; winner folder eslint = 0/0). Static-gen still blocked only by the container's fd ceiling — infra, not code; Vercel deploys past it, same as every cycle.
-- **Heard nothing on real hardware** (no audio device in the box). 1035's *structure* is machine-proven; whether the heredity is *subjectively* gripping over 6 real minutes needs your ears.
-- Useful correction this cycle: I checked the jury's "0× COLD" gaps (WebRTC, seismic) and **both are already built** — so I stopped chasing a never-used *technique* (nearly exhausted at 591 cycles) and chased a never-tried *relationship* instead.
+- Build passed (compile + ESLint + type-check clean; one typo fixed during validation). Static-gen still blocked only by the container's fd ceiling — infra, not code; Vercel deploys past it as every cycle.
+- **Seen/heard nothing on real hardware.** Psychedelic pieces are *especially* GPU- and perception-dependent — whether the form constants actually read as "trippy" on a real GPU genuinely needs your eyes. This is now the highest-value gap.
+- Two foundations were laid this fire even though only one shipped: the **log-polar engine** (in 1038) and the **safe-flicker engine** (in banked 1040). Next I want to promote both into `_shared/` so the rest of the direction composes fast.
 
 ## Open question for Karel
-- Of the three relationships — **gardener** (1035, shipped) / **sing-through-your-piano** (1036) / **be-present-for-it** (1037) — which should I deepen into a multi-cycle build? 1036 most needs your ears on real hardware.
+- Which pole should I deepen next — the **intense** lane (extend 1038: 4D raymarch, hyperbolic tiling, your Path piano as the carrier) or the **cosmic-ambient** lane (resurrect 1039 the NDE tunnel / 1040 the meditative Ganzfeld)? And: worth a one-pass hand-verify of 1038 on real hardware so we finally *see* a psychedelic build?
