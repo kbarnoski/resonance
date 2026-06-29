@@ -1,22 +1,23 @@
-# Morning digest — last updated 2026-06-29 (cycle 593 · ADULT · psychedelic — both poles now live)
+# Morning digest — last updated 2026-06-29 (cycle 594 · ADULT · psychedelic — WIDE)
 
 Open the lab: https://getresonance.vercel.app/dream
 
-**Your psychedelic / altered-states direction is live, and this morning it ships *both poles*** — the intense one and the cosmic-ambient one. (Two autonomous fires ran overnight; see the honest note below for how that shook out.)
+**The lab just did its first 4D.** This morning's ship falls toward the DMT "breakthrough" by raymarching a four-dimensional polytope rotating through planes that don't exist in our space — the literal "more axes than reality allows."
 
 ## New since yesterday
-- **[1038-form-constant](https://getresonance.vercel.app/dream/1038-form-constant)** — **the intense pole.** Play music or just speak into the mic and your visual cortex's own hallucinated geometry blooms — tunnels, spirals, funnels, honeycomb — generated the way the brain makes them (the log-polar / form-constant engine, Bressloff–Cowan / Klüver). This is the direction's foundation and its single most load-bearing finding. **Why open it:** it's the "biggest lever" you named, now real.
-- **[1041-nde-tunnel](https://getresonance.vercel.app/dream/1041-nde-tunnel)** — **the cosmic-ambient pole.** Drift, drug-free, down a wormhole toward a growing being of light: the near-death / ketamine void, with a hypoxic vignette, a one-time gamma "clarity snap," and the audio deliberately *lagging* the visuals so your senses come gently apart (dissociation). **Why open it:** it's the calm counterweight to 1038's intensity — open them back to back to feel the whole spectrum. Plays itself; zero permissions; no strobe.
+- **[1042-hyperspace-bloom](https://getresonance.vercel.app/dream/1042-hyperspace-bloom)** — **the lab's FIRST 4D / hyperdimensional raymarch** (grep-0× in 593 cycles). A 24-cell rotates through all six 4D planes — the three hidden *w*-rotations make its glowing neon-jeweled edges balloon and turn inside-out as it's stereographically projected to 3D and raymarched. A ~75s journey rises into the breakthrough; tilt to steer or let it play itself; no strobe, no permissions needed beyond optional tilt. **Why open it:** it's the "massively bigger concept" you asked for — true 4D, the actual DMT-breakthrough phenomenology, not another flat warp. Ambition 4/5 (first-ever technique). Refs: QRI "hyperbolic geometry of DMT", Bressloff–Cowan.
 
-## Still banked (1 more — IDEAS §592)
-- **1040-ganzfeld-bloom** ⭐ — the **meditative** pole: an empty Ganzfeld field, a breath-paced mandala (~5.5 breaths/min), Shepard ascent — and it carries the **safe-flicker engine** (opt-in, ≤3 Hz hard-capped, instant-kill) the whole direction needs for Dreamachine-style work. The natural next ship.
+## In progress / banked next (IDEAS §594 + §592)
+- **1043-clear-light** ⭐ resurrect-first — the cosmic-ambient **soft-white boundless** pole (jhāna / Oceanic Boundlessness): breath-paced particle dissolution washing to pure white, drone bank + cathedral reverb. The light-boundless counterweight the lane lacks (1041 is the *dark* void). Built complete this fire, banked.
+- **1044-mycelial-bloom** — the **warm-organic** psilocybin pole: your voice (analysis-only) makes a fBm domain-warp + kaleidoscope field bloom with your affect. Built complete this fire, banked.
+- **1040-ganzfeld-bloom** ⭐ (from 592) — meditative Ganzfeld + the **safe-flicker engine** the direction needs.
 
 ## Honest notes
-- **Two autonomous fires raced overnight** and independently reached the *same* opening plan (both picked the form-constant engine as the first build). The other fire pushed first and shipped 1038. Rather than ship a near-duplicate, I deferred to it and shipped the **cosmic-ambient counterweight (1041)** that 1038's own notes called "the natural next ship." Net result: you got both poles this morning instead of two near-identical intense pieces. (Lesson logged for future fires: grep the remote before committing; on a tie, ship the complementary piece.)
-- Both builds passed (compile + lint + type-check clean; 1041 folder eslint 0/0). Static-gen still blocked only by the container's fd ceiling — infra, not code; Vercel deploys past it.
-- **Seen/heard nothing on real hardware.** Psychedelic pieces are *especially* GPU- and perception-dependent — whether the form constants read as "trippy" and the tunnel reads as a real descent genuinely needs your eyes. Highest-value gap.
+- WIDE fire: 3 untapped states built in parallel (DMT 4D / jhāna soft-white / psilocybin warm); shipped the biggest swing, banked the other two. The lane now spans intense (1038 warp, 1042 4D) + cosmic-ambient (1041 void) — next should be a *light* cosmic-ambient (1043) to balance.
+- Verified clean where the box allows: `tsc` 0 errors project-wide, ESLint 0/0 on the 1042 folder, compile clean. Static-gen still blocked only by the container's fd ceiling (infra, not code; Vercel deploys past it).
+- **Seen/heard nothing on real hardware.** 4D especially needs your eyes — whether the *w*-rotation truly reads as "impossible morphing" on a real GPU is the open question.
 
 ## Open questions for Karel
-- With both poles shipped, next I'd like to **promote the two engines into `_shared/`** — the log-polar warp (in 1038) and the safe-flicker engine (in banked 1040) — so every future piece composes on top fast. Good?
-- Want the next pieces to use your real **Welcome Home** Path piano as the carrier wave (FFT → geometry/bloom)? It fits the cosmic-ambient lane especially.
-- Worth a one-pass hand-verify of 1038 + 1041 on real hardware so we finally *see and hear* a psychedelic build?
+- Next I want to **extract the shared psychedelic engines into `_shared/`** (the log-polar warp, the 4D-geometry module, a safe-flicker engine, a drone/convolution-void audio kit) so every future piece composes fast. A good DEEP cycle — worth it?
+- The lane is wide open on **LSD drift, hypnagogia/lucid-dream, and hyperbolic {7,3} tiling** (another never-done technique). Any pull toward one?
+- Still worth a one-pass hand-verify of a psychedelic build on real hardware so we finally *see* one?
