@@ -1,22 +1,19 @@
-# Morning digest — last updated 2026-06-29 ~22:15 UTC (cycle 603)
+# Morning digest — last updated 2026-06-30 ~16:30 UTC (cycle 604)
 
 ## Open this first
-- **[1057-face-bloom](https://getresonance.vercel.app/dream/1057-face-bloom)** — *your FACE is the instrument.* Allow the camera, then **open your jaw** to bloom the kaleidoscope, **raise your brows** to heat and densify it, **turn your head** to tour tunnels → spokes → spirals → honeycombs, **smile** to push it gold. Idle/neutral = quiet warm dark; it comes alive only as you express. The petals aren't arbitrary — they're real Klüver form constants warped out of your visual cortex's log-polar map (the shared `_shared/psych/` engine). No camera? Sliders play the same instrument. `state: psilocybin · pole: intense-warm`.
+- **[1059-piano-flock](https://getresonance.vercel.app/dream/1059-piano-flock)** — *conduct YOUR piano with a school of light.* Press **Conduct**, then move your pointer: a luminous flock chases your hand, and the *shape* it takes — tight or scattered, fast or slow, high or low — re-voices your real *Welcome Home* piano grain by grain. A tight, aligned herd snaps the notes onto a consonant just-intonation scale; let it scatter and the same piano blooms into a wide, detuned cosmic cloud; a sudden contraction fires a chord-like onset burst. The flock isn't decorated by the music — **the flock IS the instrument.** `state: psilocybin / cosmic drift · pole: cosmic-ambient`.
 
 ## Why this one
-The lab has webcam *hand* tracking (1051) but had **never used the face** — and MediaPipe now hands us **52 live facial-expression coefficients** (jaw, brow, squint, smile), a *semantic* control channel, not raw geometry. So the instrument isn't "where's your hand," it's "what's your face *doing*" — a uniquely apt psychedelic coupling (your face dissolving into the field). It's the **3rd piece to compose the new shared engine** instead of re-deriving it, and the lowest-friction camera demo in the lab (no calibration — just emote).
+This finally brings back the two things the last jury asked for, in one build: **WebGPU compute as the resonating body** (a real GPU boids flock — cohesion/alignment/separation in a WGSL compute pass, ~14k boids) **and your actual piano as the carrier wave** (CataRT-style concatenative synthesis — the flock's emergent statistics navigate a grain corpus carved from your recording). The fresh idea is the fusion: the audio-research frontier (MACataRT, "The Concatenator") frames granular synthesis as *an agent navigating a corpus* — so here the **flock's shape literally is that navigation agent.** No WebGPU on your device? It falls back to a genuinely-good Canvas2D flock running the *same* audio mapping, so it still plays.
 
 ## Also explored (banked, not shipped)
-WIDE fire — **"active-control surfaces the lab hasn't used"**, 3 parallel builders (face / tilt / hand-conduct), shipped the strongest:
-- **1059-piano-flock** ⭐ (IDEAS §603) — *conduct a GPU particle flock by hand; the flock's living shape re-voices YOUR PIANO.* Brings back the WebGPU **compute** body you wanted (and uses your real *Welcome Home* recordings via the anon API + file-drop). Lost only because that compute-body + real-piano combo just shipped twice (1052/1053) — first to resurrect.
-- **1058-tilt-temple** (IDEAS §603) — *steer a cosmic-ambient void descent by tilting your phone*, with a Shepard-tone "endless fall." Canvas2D (dodges the banned shader form), but it's another tunnel — adjacent to 1041/1042/1051, so it lost on diversity.
+DEEP fire — ONE concept, **two substrates**, shipped the stronger:
+- **1060-piano-current** ⭐ (IDEAS §604) — *stir a divergence-free curl-noise river with your hand and it granulates the same piano.* The **fully-verifiable, runs-on-any-device** Canvas2D sibling (gorgeous braided currents, no WebGPU). Lost only because 1059 was the queued resurrect-first + the WebGPU-compute discharge — but it's the perfect low-risk pick next time, and its two best ideas (audio→flow feedback; confluence → real harmonic intervals) are folded into 1059's notes.
 
-## Research finding worth a look
-- **MediaPipe Face Landmarker** ships 52 ARKit-style **blendshape** expression coefficients + a head-pose matrix live in-browser (GPU). That's an under-used *expression* control surface for the whole lab — face, smile, squint, brow as instrument inputs (RESEARCH §603). 1057 is the first to use it.
+## Honest caveats
+- **Not GPU/ear-verified.** No WebGPU/audio in the build container, so the GPU compute path + the grain↔flock coupling *feel* are type-/lint-clean but unseen — the Canvas2D fallback is what runs headlessly. You'll be the first to hear it. (This is the 3rd green-but-GPU-unseen ship in a short run; 1060 above is the antidote — fully verifiable — when you want certainty.)
+- Pitch tagging is rough monophonic autocorrelation, so on dense chords the per-grain pitch is approximate (register-level, not exact harmony).
 
 ## Open questions for Karel
-- Want a small public **Welcome Home track-list endpoint**? It'd let 1059 (and others) auto-load your real piano instead of you dropping a file at review.
-- Next infra is a DEEP cycle: **`feedback.ts`** (ping-pong accumulator, re-derived in 1047) + the **drone/Shepard/convolution-void** audio kit (re-synthesized in 5+ recent pieces incl. this fire's 1058). Worth it?
-
-## Caveat (same as every cycle)
-Built + type/lint-clean (authoritative `npm run build`: **✓ Compiled successfully → lint + type-check pass, 0 issues from the 1057 folder**; only the standing container fd-ceiling blocks local static-gen — Vercel deploys fine, lab is live). **Not camera/ear-verified** in-container (no webcam/audio) — the expression→bloom feel, organ balance, and the squint-shimmer threshold are reasoned, not yet seen/heard; first review may want a gain tune.
+- **The fd-ceiling block is still open.** Full `npm run build` can't finish locally (container `EMFILE` at ~4096 open files during static-gen of 1000+ routes — infra, not code; compile+lint+type-check all pass, and Vercel deploys fine). Worth raising the ceiling or blessing `next build --experimental-build-mode compile` as the gate so I stop shipping on a partial local build.
+- Want the **`_shared/psych/` infra cycle** next (extract `feedback.ts` / `droneBank.ts` / `shepard.ts`, re-derived ~5× now), or keep shipping instruments?
