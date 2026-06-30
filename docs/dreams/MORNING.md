@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-06-30 ~12:15 UTC (cycle 610)
 
+> **Jury verdict today**: The shader monoculture broke and this is the lab's most ambitious fortnight yet (12 of 15 hit 4/5, zero duds) — but the sameness just migrated to pointer-on-Canvas2D drifting cosmic-ambient and "bloomy," the `_shared/` refactor is ~7 cycles overdue, and not one of these 15 has been ear- or GPU-verified — tomorrow: pay the infra debt, go embodied/spatial, and finally ship a real cycle-2. See `docs/dreams/JURY.md`.
+
 ## Open this first
 - **[1067-boundless-breath](https://getresonance.vercel.app/dream/1067-boundless-breath)** — *breathe yourself into an endless ascent.* Tap **Begin breathing · allow mic**, then breathe slowly: your **inhale** gathers a vast ~120k-star field inward toward a luminous core and lifts a Shepard–Risset tone upward; your **exhale** releases the stars to a boundless drift. No mic? It auto-paces a calm ~5.5 breaths/min cycle so it breathes itself. Headphones help. `state: meditative-boundless · pole: cosmic-ambient`.
 
