@@ -2,6 +2,19 @@
 
 `state: DMT hyperspace / entity-lattice · pole: intense`
 
+> **Cycle 2 (cycle 612, 2026-06-30).** This is the lab's first *honored*
+> multi-cycle commitment — a genuine cycle-2 of an existing concept, the move
+> JURY 2026-06-30 flagged as "claimed by ~6, honored by none." Two deepenings
+> landed: **(1) per-joint velocity colouring** — every particle is coloured by
+> its joint's true per-frame speed, so a fast limb paints its copies hot
+> gold-white while a still torso stays deep indigo; and **(2) a breakthrough
+> state machine** — sustaining high drive charges a meter, crossing it *latches*
+> the lattice into a held hyper-symmetric mandala (fold snaps to max, the spin
+> freezes, everything floods gold, a high JI shimmer chord blooms) for a bounded
+> dwell, then a refractory cool-down. The piece now has an **arc with memory**,
+> not just instantaneous reactivity. The demo body self-drives a vigorous passage
+> every ~40 s so the whole machine is visible headlessly.
+
 ## The one question
 
 **What if your whole moving body were multiplied — by camera body-tracking — into
@@ -91,12 +104,21 @@ brightness swells and saturation, not hard strobing.
 - **Heinrich Klüver** — form constants. **Roger Shepard / Jean-Claude Risset** —
   the endless glissando.
 
-## Next-cycle deepening
+## Deepening status
 
-- Per-joint **velocity colouring** (true speed, not a jitter proxy).
-- **Depth-aware z** from the pose so leaning in/out scales the lattice.
+Done in **cycle 2** (cycle 612):
+
+- ✅ Per-joint **velocity colouring** — true per-frame joint speed → particle hue
+  (`uJointSpeed[12]`), so fast limbs glow gold.
+- ✅ A **breakthrough threshold** that latches the lattice into a held
+  hyper-symmetric mandala (state machine in `scene.ts`: charge → latch → bounded
+  dwell → refractory), with a HUD meter, a frozen-spin/max-fold visual lock, and a
+  blooming high-JI **shimmer chord** in `audio.ts`.
+
+Still ahead (cycle 3+):
+
+- **Depth-aware z** from the pose so leaning in/out scales the lattice (needs the
+  pose's z / body-scale; not exercised by the headless demo body yet).
 - A **WebGPU / TSL compute** path toward the Osaka million-particle scale.
 - Entity **gaze**: nearest copies orient toward you at peak drive.
-- A **breakthrough threshold** that snaps the lattice into a held hyper-symmetric
-  mandala.
-- **Multi-body lattices** when two people share the frame.
+- **Multi-body lattices** when two people share the frame (`numPoses: 2`).

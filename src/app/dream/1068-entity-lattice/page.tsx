@@ -15,11 +15,13 @@ export default function EntityLatticePage() {
   const poseRef = useRef<PoseRig | null>(null);
   const tickRef = useRef<number>(0);
   const lastRef = useRef<number>(0);
+  const lastBreakNotchRef = useRef<number>(0);
 
   const [phase, setPhase] = useState<Phase>("idle");
   const [mode, setMode] = useState<PoseMode | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [showNotes, setShowNotes] = useState(false);
+  const [breakLevel, setBreakLevel] = useState(0);
 
   const teardown = useCallback(() => {
     if (tickRef.current) cancelAnimationFrame(tickRef.current);
@@ -110,6 +112,14 @@ export default function EntityLatticePage() {
         sc.setPose(f.joints, f.motion, f.lift, f.spread);
         const d = sc.getDrive();
         audioRef.current?.setDrive(d);
+        const b = sc.getBreakthrough();
+        audioRef.current?.setBreakthrough(b);
+        // Throttle React re-renders: only update the meter when it moves a notch.
+        const notch = Math.round(b * 20);
+        if (notch !== lastBreakNotchRef.current) {
+          lastBreakNotchRef.current = notch;
+          setBreakLevel(b);
+        }
       }
       audioRef.current?.step(dt);
 
@@ -185,9 +195,26 @@ export default function EntityLatticePage() {
             </p>
           )}
           <p className="mt-2 max-w-xs text-base text-white/55">
-            Move. Lift your arms. Spread wide. The lattice multiplies and the
-            tone rises toward breakthrough.
+            Move. Lift your arms. Spread wide. Fast limbs glow gold; sustain the
+            intensity and the lattice locks into a held mandala.
           </p>
+          {/* Breakthrough meter — fills as you charge, latches at the mandala. */}
+          <div className="mt-3 max-w-xs">
+            <div className="flex items-center justify-between">
+              <span className="font-mono text-xs text-white/55">breakthrough</span>
+              {breakLevel >= 0.95 && (
+                <span className="font-mono text-xs text-amber-300/95">
+                  ✦ mandala
+                </span>
+              )}
+            </div>
+            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-amber-200 transition-[width] duration-150"
+                style={{ width: `${Math.round(breakLevel * 100)}%` }}
+              />
+            </div>
+          </div>
         </div>
       )}
 
@@ -260,14 +287,26 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Next-cycle deepening.</span> Per-joint
-              velocity colouring (true speed, not a proxy); depth-aware z from the
+              <span className="text-white">Cycle 2 — breakthrough &amp; velocity
+              colouring.</span> Each particle is now coloured by its joint&apos;s{" "}
+              <em>true</em> per-frame speed, so a fast limb paints its copies hot
+              gold-white while a still torso stays deep indigo — the lattice is
+              literally painted by where your body moves. And the piece now has an{" "}
+              <em>arc</em>: sustaining high drive charges a breakthrough meter; cross
+              it and the lattice <em>latches</em> a held hyper-symmetric mandala —
+              the fold snaps to maximum, the kaleidoscope spin freezes, everything
+              floods gold, and a high just-intonation shimmer chord blooms in — for
+              a bounded dwell before a refractory cool-down. The synthetic demo body
+              self-drives a vigorous passage every ~40 s so the whole machine shows
+              with no camera.
+            </p>
+
+            <p className="mt-4 text-base leading-relaxed">
+              <span className="text-white">Still ahead.</span> Depth-aware z from the
               pose so leaning in/out scales the lattice; a WebGPU/TSL compute path
               toward the Osaka million-particle scale; entity &ldquo;gaze&rdquo;
-              where the nearest copies orient toward you at peak drive; a
-              breakthrough threshold that snaps the lattice into a held
-              hyper-symmetric mandala; multi-body lattices when two people are in
-              frame.
+              where the nearest copies orient toward you at peak drive; multi-body
+              lattices when two people are in frame.
             </p>
           </div>
         </div>

@@ -10,6 +10,14 @@ via Claude Code conversation; assistant transcribes into this file.
 
 ---
 
+## §612 note — 2026-06-30 (cycle 612 · ADULT · PSYCHEDELIC · DEEP-deepen — NO new prototype, NO banked seed: the lab's FIRST honored multi-cycle commitment)
+
+**No new folder this fire.** Cycle 612 cashed JURY 2026-06-30 #4 (multi-cycle commitment — claimed ~6×, honored by ZERO) by **deepening `1068-entity-lattice` in place** — the move STATE 611 queued-next #1 + the cycle-611 MORNING "Open questions" both named. Two deepenings landed: **per-joint velocity colouring** (true joint speed → hue) + a **breakthrough state machine** (sustain drive → latch a held hyper-symmetric mandala with a blooming high-JI shimmer chord, bounded dwell → refractory), turning instantaneous reactivity into an arc with memory. Grounded in RESEARCH §612 (DMT breakthrough = stabilization-by-symmetry). See STATE/INDEX §612.
+
+**Cycle-3 of 1068 (keep the commitment going — do NOT abandon it again):** depth-aware z (lean in/out scales the lattice — needs the pose's z/body-scale, not exercised by the headless demo yet), **entity gaze** (nearest copies orient toward you at peak drive), **multi-body lattices** (`numPoses:2`), and the **WebGPU/TSL compute** path toward the cited Osaka ~1M-particle scale. The discrete-beings sibling **⭐ `1069-entity-swarm` (§611 below)** remains the other open entity-lattice resurrect.
+
+---
+
 ## §611 banked seed — 2026-06-30 (cycle 611 · ADULT · PSYCHEDELIC · DEEP — 1 non-winner *substrate* explorer, built complete by a parallel builder + tsc/ESLint-clean for its folder, then de-selected & `rm -rf`'d per the non-winner rule; shipped `1068-entity-lattice` = full-body camera-pose → a ~200k-point three.js kaleidoscopic self-replication lattice that ascends a Shepard–Risset glissando as you move, AND extracted the `_shared/psych/` audio engines — answering JURY 2026-06-30 #1+#2+#3 in one fire)
 
 **`_shared/psych/` infra extraction — PARTIALLY DONE this fire.** `shepard.ts` (generalised, drive-coupled, rise/fall) + `droneBank.ts` (JI bed, drive-opening lowpass+saturation) + `convolutionVoid.ts` (code-generated noise-decay IR, wet/dry pair) are now extracted and live in `src/app/dream/_shared/psych/` (joining the pre-existing `logpolar.ts` + `safeFlicker.ts`); `1068-entity-lattice` is their first consumer. **STILL TO EXTRACT:** `feedback.ts` (ping-pong FBO accumulator, JURY-named, re-derived in 1047). Future builds should COMPOSE these, not re-synthesise them.

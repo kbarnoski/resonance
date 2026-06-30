@@ -19,6 +19,8 @@ import { createVoidReverb, type VoidReverb } from "../_shared/psych/convolutionV
 
 export interface LatticeAudio {
   setDrive(d: number): void;
+  /** 0..1 breakthrough amount from the scene — blooms a held high shimmer chord. */
+  setBreakthrough(b: number): void;
   step(dt: number): void;
   stop(): void;
 }
@@ -48,6 +50,27 @@ export function startAudio(ctx: AudioContext): LatticeAudio {
   const sh: ShepardEngine = startShepard(ctx, verb.input, { dir: 1 });
   const drone: DroneBank = startDroneBank(ctx, verb.input, { root: 55 });
 
+  // ── Breakthrough shimmer (cycle-2): a high just-intonation chord that stays
+  // silent until the lattice latches the held mandala, then blooms in as the
+  // "more real than real" ceiling tone. Routed through the void so it shimmers. ─
+  const shimmer = ctx.createGain();
+  shimmer.gain.value = 0.0001;
+  shimmer.connect(verb.input);
+  const shimmerOscs: OscillatorNode[] = [];
+  const shimmerRatios = [1, 5 / 4, 3 / 2, 2, 5 / 2];
+  for (let i = 0; i < shimmerRatios.length; i++) {
+    const o = ctx.createOscillator();
+    o.type = "sine";
+    o.frequency.value = 660 * shimmerRatios[i];
+    o.detune.value = (i % 2 === 0 ? -3 : 3); // faint chorus beat
+    const g = ctx.createGain();
+    g.gain.value = 0.5 / (i + 1);
+    o.connect(g);
+    g.connect(shimmer);
+    o.start();
+    shimmerOscs.push(o);
+  }
+
   // ── Accent voice: a metallic bell/pluck on sudden motion surges. ───────────
   let lastDrive = 0;
   let accentCooldown = 0;
@@ -76,14 +99,29 @@ export function startAudio(ctx: AudioContext): LatticeAudio {
   };
 
   let drive = 0;
+  let brk = 0;
+
+  // Drive + breakthrough both feed the core engines (breakthrough nudges the
+  // ascent + drone a little brighter/faster) and the reverb wet mix.
+  const applyAll = () => {
+    const eff = Math.min(1, drive + brk * 0.25);
+    sh.setDrive(eff);
+    drone.setDrive(eff);
+    // Reverb opens from cavernous-dry to fully wet immersion; breakthrough floods it.
+    verb.setWet(Math.min(0.95, 0.35 + drive * 0.4 + brk * 0.2));
+  };
 
   return {
     setDrive(d: number) {
       drive = Math.min(1, Math.max(0, d));
-      sh.setDrive(drive);
-      drone.setDrive(drive);
-      // Reverb opens from cavernous-dry to fully wet immersion.
-      verb.setWet(0.35 + drive * 0.45);
+      applyAll();
+    },
+    setBreakthrough(b: number) {
+      brk = Math.min(1, Math.max(0, b));
+      // Shimmer chord blooms in above the threshold (brk > 0.5 = latched mandala).
+      const lvl = Math.max(0.0001, Math.pow(Math.max(0, (brk - 0.45) / 0.55), 1.4) * 0.22);
+      shimmer.gain.setTargetAtTime(lvl, ctx.currentTime, 0.25);
+      applyAll();
     },
     step(dt: number) {
       sh.step(dt);
@@ -99,6 +137,21 @@ export function startAudio(ctx: AudioContext): LatticeAudio {
     stop() {
       sh.stop();
       drone.stop();
+      const now = ctx.currentTime;
+      try {
+        shimmer.gain.cancelScheduledValues(now);
+        shimmer.gain.setValueAtTime(Math.max(0.0001, shimmer.gain.value), now);
+        shimmer.gain.exponentialRampToValueAtTime(0.0001, now + 0.6);
+      } catch {
+        /* ctx closing */
+      }
+      for (const o of shimmerOscs) {
+        try {
+          o.stop(now + 0.7);
+        } catch {
+          /* already stopped */
+        }
+      }
     },
   };
 }

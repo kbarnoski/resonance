@@ -167,22 +167,34 @@ function applyFeatures(st: Internal, dt: number): void {
   st.prev.set(st.joints);
 }
 
-/** Synthetic demo body — slow offset sinusoids: arms sweeping, body breathing. */
+/** Synthetic demo body — slow offset sinusoids: arms sweeping, body breathing.
+ *  A macro INTENSITY arc (~40 s period) periodically drives a vigorous passage —
+ *  fast wide sweeps with arms raised — so drive climbs past the breakthrough
+ *  threshold and back, demonstrating the whole cycle-2 state machine (velocity
+ *  colouring + the held mandala) with ZERO hardware. */
 function makeDemoRig(): PoseRig {
   const st = makeInternal();
   let t = 0;
+  // Accumulated sweep phases (so changing the sweep RATE with intensity never
+  // produces a phase discontinuity — we integrate angular speed instead of t·f).
+  let sweepPhase = 0;
   const buf: number[] = new Array(JOINT_COUNT * 3).fill(0);
 
   const read = (dt: number): PoseFeatures => {
     t += dt;
+    // 0..1 macro intensity: mostly calm, with a vigorous peak roughly every 40 s.
+    const intensity = Math.pow(Math.sin(t * 0.16) * 0.5 + 0.5, 2);
+    // Sweep faster + wider at peak intensity (integrated phase, see above).
+    sweepPhase += dt * (0.8 + intensity * 6.0);
     const breath = Math.sin(t * 0.6) * 0.06;
-    const sweep = Math.sin(t * 0.8);
-    const sweep2 = Math.sin(t * 0.8 + 0.5);
-    const armUp = (Math.sin(t * 0.45) + 1) * 0.5; // 0..1 slow raise
+    const sweep = Math.sin(sweepPhase);
+    const sweep2 = Math.sin(sweepPhase + 0.5);
+    // Arms raise with intensity (plus a slow idle bob) → lift climbs at the peak.
+    const armUp = Math.min(1, 0.2 + intensity * 0.9 + 0.1 * Math.sin(t * 0.45));
 
     // Shoulders
     const shY = 0.32 + breath;
-    const wristSpread = 0.45 + 0.35 * Math.abs(sweep);
+    const wristSpread = 0.42 + (0.18 + 0.42 * intensity) * Math.abs(sweep);
     const wristY = shY + armUp * 1.0 - 0.2;
 
     // nose

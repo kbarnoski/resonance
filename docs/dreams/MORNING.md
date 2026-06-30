@@ -1,27 +1,22 @@
-# Morning digest — last updated 2026-06-30 ~14:15 UTC (cycle 611)
+# Morning digest — last updated 2026-06-30 ~16:15 UTC (cycle 612)
 
-> **Yesterday's jury (2026-06-30)** asked for three things at once: **#1 pay the ~7-cycle-overdue `_shared/psych/` infra debt**, **#2 go embodied/spatial + three.js (the sameness migrated to pointer-on-Canvas2D, 8×/15 each)**, **#3 ship an intense piece that isn't a membrane or a bloom (cosmic-ambient was 6×/15).** This fire answers all three in one move. See `docs/dreams/JURY.md`.
+> **The one thing this fire did:** broke the lab's oldest pattern. Six juries running, the verdict has been the same — *"the lab ships novelty-first and never returns; criterion #4 (multi-cycle commitment) is claimed by ~6 builds and honored by none. That's how 1019 — the last 5/5 — died."* So this cycle shipped **no new skeleton** — it went back and **deepened yesterday's `1068-entity-lattice`** into a real cycle-2. First honored multi-cycle commitment in the lab's history.
 
 ## Open this first
-- **[1068-entity-lattice](https://getresonance.vercel.app/dream/1068-entity-lattice)** — *your body becomes the hyperspace.* Tap **Start · allow camera**, then **move** — your whole tracked body is multiplied into a luminous ~200k-point lattice of recursive kaleidoscopic copies of *you*, tiled across "more directions than there should be," and the more you move / raise / spread your arms, the faster an endless **rising** Shepard–Risset glissando climbs toward breakthrough. No camera? It runs a synthetic **demo body** so it moves + sounds anyway. Headphones help. `state: DMT hyperspace / entity-lattice · pole: intense`.
+- **[1068-entity-lattice](https://getresonance.vercel.app/dream/1068-entity-lattice)** — *now it arrives, not just rises.* Same piece (your moving body multiplied into a luminous DMT hyperspace lattice), with two upgrades you'll feel:
+  1. **Your motion paints the lattice.** Each particle is now coloured by its joint's *true* speed — sweep an arm and that limb's copies flare hot gold while your still torso stays deep indigo.
+  2. **It has an arc now.** Sustain the intensity (move hard, arms up + wide) and a **breakthrough meter** fills — cross it and the lattice **latches into a held hyper-symmetric mandala**: the fold snaps to max, the spin freezes, everything floods gold, and a high shimmer chord blooms. Holds, then cools down. No camera? The **demo body now self-drives a vigorous passage every ~40 s**, so you'll see the whole thing happen on its own. `state: DMT hyperspace · pole: intense`.
 
-## Why this one
-It clears the whole jury list in a single fire:
-- **#2 embodied + three.js** — full-body MediaPipe camera-pose (zero pointer), a three.js GPU point-field (zero Canvas2D). The window had **0× embodied**; this is it.
-- **#3 intense, not a membrane, not a bloom** — a DMT-breakthrough lattice you inhabit, not a calm drift or a center-out bloom.
-- Grounded in **today's research**: the embodied-installation frontier ("Waves of Connection," Osaka Expo 2025 — three.js+WebGPU, ~1M particles, Kinect body tracking) fused with DMT-breakthrough phenomenology ("experiencing more directions in space than there should be" + accelerating geometry + an ascending sound, which is literally a Shepard ascent).
-- **Love-signal tailwind**: your loved cluster is luminous particle fields (130-tsl-particle-compute, 262-aurora-particle, 321-spectral-flight, 243/267-spectral) — a 200k-point lattice of selves sits right there.
+## Why a cycle-2 instead of a 1069th new thing
+Three signals all pointed the same way: the **jury** lists "a genuine cycle-2" as *actively wanted* and calls never-returning the lab's core failure; **STATE 611's queued-next #1** was "deepen 1068"; and **yesterday's MORNING** literally asked you "Honor a cycle-2 next? — breakthrough mandala + per-joint velocity colouring." So I did exactly that. A deepened strong concept beats another solid-but-orphaned skeleton.
 
-## Infra debt — paid (the jury's #1)
-- Extracted the audio engines that were re-derived by hand nearly every recent cycle into **`_shared/psych/`**: `shepard.ts` + `droneBank.ts` + `convolutionVoid.ts` (joining the existing `logpolar.ts` + `safeFlicker.ts`). 1068 is their first consumer, so the refactor isn't invisible — it's load-bearing on today's ship. Only `feedback.ts` (ping-pong FBO) is left to extract.
-
-## Also explored (DEEP — 2 three.js substrates, 1 banked)
-- **1069-entity-swarm** (IDEAS §611) — the same body-multiplied concept as a swarm of ~7,500 **spinning geometric beings** (`THREE.InstancedMesh` octahedra) instead of a dust-field. Discrete polyhedra read more literally as "entities," but it's CPU-bound at ~7,500 where the point-field is GPU-scalable; banked to resurrect on the GPU with flocking *between* the copies (true entity-contact).
+## Grounded in fresh research
+- RESEARCH §612: the DMT breakthrough is a **stabilization-by-symmetry** event — QRI's account says scenes "too irregular are *impossible to stabilize*"; the state holds the world together by snapping it to maximal symmetry (and 2026's DMTx protocol literally *holds* the breakthrough for study). That's the exact rationale for the latch-into-a-held-mandala mechanic.
 
 ## Honest caveats
-- **Built green, not camera/GPU/ear-verified.** `✓ Compiled successfully` + ESLint (0 issues from 1068 or `_shared/psych`) + project `tsc` (exit 0) all pass; full `npm run build` hit only the standing container EMFILE block (infra, not code — Vercel deploys fine). The 3 extracted audio engines are verifiable by reading (pure Web Audio). The **demo-body fallback IS the headless path** (lives + sounds with no camera). Unverified on a device: the pose→drive ranging and the *felt* intensity ramp with a real camera + sound.
+- **Built green; the demo arc is the headless proof.** `tsc --noEmit` exit 0 + scoped ESLint ✔ 0/0 + full `npm run build` `✓ Compiled` (0 issues from 1068; only the standing container EMFILE fd-block, Vercel-safe). The new self-driving demo body exercises the colouring, the latched mandala, the meter and the shimmer **with no camera** — so this deepen *reduces* 1068's verification debt rather than adding to it. Still not verified on a real camera/GPU/ears: the felt intensity ramp and the exact breakthrough timing on a device.
 
 ## Open questions for Karel
-- **Does the body→lattice→ascent coupling land?** The bet: moving visibly densifies the lattice *and* speeds the upward glide. If it feels weak with your camera, I can add depth-aware z (lean in/out scales the lattice) and per-joint velocity colouring.
-- **Honor a cycle-2 next?** The jury's #4 (multi-cycle commitment, claimed 6× / cashed 0×) is the obvious next move — deepen 1068 (entity gaze, breakthrough-threshold mandala, two-body lattices) instead of starting another skeleton. Want that, or a fresh embodied direction?
-- **Still open:** the fd-ceiling block (full `npm run build` can't finish locally — raise the ~4096 ceiling or bless `next build --experimental-build-mode compile`); and multi-user/WebRTC + real-world-data sonification + score-following are all still 0× in the window.
+- **Does the breakthrough land?** The bet: charging the meter and the snap into the frozen gold mandala feels like *arriving*, not just rising. If the threshold is too hard/easy to hit with your camera, that's a one-line tune.
+- **Keep the commitment going?** Cycle-3 of 1068 is queued: **lean in/out to scale the lattice** (depth-z), **entity gaze** (copies turn to look at you at peak), **two-body lattices**, and a WebGPU path toward the million-particle Osaka scale. Want me to keep deepening, or swing back to a fresh **cosmic-ambient** piece (intense has run twice now)?
+- **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and I can stop caveating "build-green-but-unfelt."
