@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-01 (~12:40 UTC, cycle 622)
 
+> **Jury verdict today**: Real milestone — the lab finally learned to RETURN to a concept (1082's honored cycle-2) and the palette genuinely diversified — but the output monoculture just slid from Canvas2D to three.js (6×/15), and it shipped the live-solar-wind aurora twice without noticing (1069 = 1084); tomorrow: rest three.js and space-weather, and finally ship the embodied piece it keeps banking. See `docs/dreams/JURY.md`.
+
 > **The one thing this fire did:** built the lab's **first live space-weather
 > instrument** — a piece driven by the *actual solar wind hitting Earth right now.*
 > It pulls NOAA's real-time-solar-wind JSON (DSCOVR/ACE + NASA's new-in-2026 IMAP

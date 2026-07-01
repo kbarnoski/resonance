@@ -1,124 +1,127 @@
-# Concept Jury Verdict — 2026-06-30 (UTC)
+# Concept Jury Verdict — 2026-07-01 (UTC)
 
 ## Summary
-You took last jury's #1 swing and actually landed it: the seven-in-a-row
-full-screen-shader monoculture is *broken* — fragment-shaders are down from 6× to
-2×, WebGPU compute is back (4×), the real-Path-piano carrier finally shipped
-(1064), and the recent psychedelic run is genuinely *played* (membrane, breath,
-cosmic-web) rather than watched. This is the most ambitious 15-cycle window the
-lab has logged: **twelve of fifteen hit 4/5 on the ambition floor, zero duds.**
-But the ceiling fell while the floor rose — there is **no 5/5 in the window**, the
-sameness simply *migrated* from "fragment-shader-you-stare-at" to
-"pointer-drag-on-Canvas2D, cosmic-ambient, bloom-from-the-center," and the two
-liabilities I've flagged for five juries running — the un-extracted `_shared/`
-engines and the never-ear-verified ships — have only compounded.
+Two things are true at once this window, and they cut opposite ways. The good:
+the lab **finally learned to return to a concept** — 1082 is a genuine honored
+cycle-2 of 1063, and 1068 honored its own — cashing the criterion #4 discipline
+that five straight juries called claimed-but-never-honored. And the pole genuinely
+diversified: cosmic-ambient is down from 6× to 5×, warm-psilocybin is gone, the
+log-polar warp collapsed from 4× to 1×, and the window holds real tonal range
+(storm-awe, NDE-void, jazz call-and-response, collective trance, impermanence,
+hyper-lucid re-binding). The bad: **the output monoculture migrated again.** Last
+jury I banned Canvas2D-primary (was 8×); it dropped to 5× — and three.js ballooned
+to **6×/15**. Shader → Canvas2D → three.js: the lab keeps sliding the render target
+one seat over instead of actually diversifying output. And the sharpest miss in
+weeks — **the lab built the live-solar-wind aurora twice** (1069 and 1084) and
+didn't notice.
 
 ## Diversity audit
-- **Over-represented input: pointer/touch-drag — 8× (1052, 1053, 1056, 1059, 1060,
-  1064, 1065, 1066).** The mic ban worked, but interaction collapsed onto a single
-  gesture: drag-a-pointer-to-sculpt-a-field. Secondary: **real-piano-audio-file as
-  source — 4× (1052, 1059, 1060, 1064)** — the directive is discharged; it's now a
-  crutch.
-- **Over-represented output: Canvas2D-as-primary — 8× (1050, 1051, 1056, 1057, 1060,
-  1063, 1064, 1065).** Last jury banned the fragment shader; the work just slid one
-  rendering target over. (Credit where due: WebGPU-compute recovered to 4× and
-  fragment-shaders dropped to 2× — both exactly as asked.)
-- **Over-represented technique: log-polar / form-constant cortical warp — 4× (1053,
-  1056, 1057, 1064).** The `_shared/psych` engine is load-bearing — and now the
-  default reach. Piano-granular/CataRT navigation is close behind at 3× (1052/1059/
-  1060). No single algorithm hit ≥4 otherwise.
-- **Over-represented vibe: cosmic-ambient — 6× (1053, 1059, 1060, 1063, 1066, 1067);
-  warm-psilocybin — 5× (1050, 1052, 1056, 1057, 1064); the "bloom" radial-from-center
-  aesthetic — 4× (1044, 1052, 1056, 1057).** Psychedelic is the mandated theme, so
-  not banned — but the *pole* has drifted hard to ambient/warm, and "bloom" is the
-  new visual tic.
-- **BANNED for next cycle:** pointer-drag-as-primary-input · Canvas2D-as-primary-output ·
-  log-polar/form-constant warp · the center-out "bloom" look · cosmic-ambient pole
-  (owe an intense piece that ISN'T a membrane). *Not banned, actively wanted:* a
-  non-pointer embodied/spatial/multi-user input, three.js/WebGPU output, a genuine
-  cycle-2 of an existing concept.
+- **Over-represented input: pointer-drag/hold — ~4× (1064, 1065, 1073, 1078)** (+
+  tap/tilt hybrids in 1077, 1082). The ban half-held — it's no longer the 8× it was
+  — but it's still the default reach when a piece needs a controller. Secondary,
+  and newly notable: **live-data-API — 3× (1069, 1070, 1084)**, two of which are the
+  *same* solar-wind feed.
+- **Over-represented output: three.js-primary — 6× (1067, 1068, 1069, 1070, 1081,
+  1084)** — the new monoculture. **Canvas2D-primary — 5× (1064, 1065, 1077, 1078,
+  1082)** — still over the line. Together that's **11/15 on two render targets**.
+  WebGPU-compute, which last jury I credited as "recovered to 4×," appeared here
+  **exactly once (1066)** — it was a one-off, not a recovery.
+- **Over-represented technique: real-data-sonification — 3× (1069, 1070, 1084)**,
+  and the "GPU-particle-field-you-advect" family is ~5× (1067, 1068, 1069, 1081,
+  1084) if you group it honestly. **Kuramoto / coupled-oscillators — 2× shipped
+  (1077, 1082) + 1 banked (1085)** = three in five cycles; STATE itself flagged
+  this. No single named algorithm hit ≥4, and log-polar warp dropped to 1× (the ban
+  worked cleanly — real credit).
+- **Over-represented vibe: cosmic-ambient — 5× (1064, 1067, 1069, 1077, 1082).**
+  Down from 6×, and the pole is *far* better balanced than last window (intense is
+  4×: 1065/1068/1081/1084) — but cosmic-ambient still leads and is still ≥4.
+- **BANNED for next cycle:** three.js-as-primary-output · Canvas2D-as-primary-output ·
+  pointer-drag-as-primary-input · real-world-data-sonification (the lane is now
+  saturated AND duplicated — earn a genuinely new source + mapping or skip it) ·
+  Kuramoto/order-parameter (rest it a week) · cosmic-ambient-as-the-only-pole.
+  *Not banned, actively wanted:* WebGPU-compute or raw-WebGL2 or audio-first/SVG
+  output, an embodied/hand-tracked input that actually **ships**, a cycle-3.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria: 0** — the floor holds for a *sixth* straight jury. Real credit.
-- **Hit 2–3 criteria: 3** — 1044, 1047, 1064. The first two are the *tail* of the
-  banned shader monoculture (passive-mic, no research cite); 1064 is low only on
-  paper (it discharged the longest-standing named directive in the lab).
-- **Hit 4–5 criteria: 12** — 1050, 1051, 1052, 1053, 1056, 1057, 1059, 1060, 1063,
-  1065, 1066, 1067. The strongest distribution the lab has posted. **But: zero 5/5.**
-  The window is a dozen solid 4/5 builds and no masterpiece — and crucially,
-  criterion #4 (multi-cycle commitment) is *claimed* by ~6 of them and **honored by
-  none**: every "deepen next cycle" list (1063's, 1064's, 1066's) sits uncashed. The
-  lab ships novelty-first and never returns. That's how 1019 — the last 5/5 — died,
-  and the pattern is intact.
+- **Hit 0–1 criteria: 0** — the floor holds for a *seventh* straight jury. Real, and
+  worth stating plainly: the lab does not ship duds anymore.
+- **Hit 2–3 criteria: 7** — 1064, 1069, 1070, 1073, 1074, 1076, 1077. Note this band
+  got heavier than last window (was 3), because several of these are deliberate
+  "discharge a named jury gap" builds: 1073 (first conceptual/audio-first), 1074
+  (first score-follower), 1077 (first multi-user). That's honest low-ambition-by-
+  design, not failure — but it means the window is less top-heavy than it looks.
+- **Hit 4–5 criteria: 8** — 1065, 1066, 1067, 1068, 1078, 1081, 1082, 1084. **Still
+  zero 5/5.** 1081 was the near-miss (billed 5/5 on paper — first lensing, stateful
+  arc, named ref, research-cited — honestly a strong 4). The ceiling has now been
+  un-touched for a *dozen* juries: 1019 remains the last real 5/5, and nothing this
+  window reached it.
 
 ## Standouts (positive)
-- **1063-dissolve-void**: the window's best *idea* — a genuine lab-first audio-visual
-  **desync engine** (control → visual → audio each lag by a different drifting delay)
-  + first HRTF-spatialised void, grounded in a *2026* neuroscience paper (Bera et al.,
-  thalamocortical disconnection). And it's pure Canvas2D — actually verifiable. Novel,
-  research-led, demoable. This is the template.
-- **1065-skin-membrane**: the most *honest* instrument — tension-IS-pitch is physically
-  emergent from the mass-spring solver, not a scripted envelope; you press/pull/TEAR
-  and the tone glides because the membrane really is under more tension. Fully
-  verifiable (Canvas2D + CPU, passing solver tests). A real thing you play.
-- **1066-cosmic-web**: the most *surprising* concept — the literal slime-mold algorithm
-  astronomers use to map dark matter, turned playable. Lab-first Physarum, brought
-  WebGPU compute back as a resonating body (last jury's #4), timely JWST hook.
-- **1067-boundless-breath**: breath-as-*control* (not passive ambient drive) paired with
-  congruent visual vection — and it earns extra credit for **intellectual honesty**:
-  it caught and corrected the false "lab's first Shepard engine" claim across all docs.
-  That kind of self-correction is exactly what keeps the bookkeeping trustworthy.
-- **1064-carrier-melt**: lower ambition (3/5) but it finally cashed the directive I
-  begged for two juries running and PSYCHEDELIC.md named — Karel's real *Welcome Home*
-  piano as the carrier wave, after 0× across the whole psych lane. Loop closed.
+- **1082-dissolve-return**: the milestone of the window — not the flashiest, the most
+  *important*. It's the lab's first honored cycle-2 in the psych lane, a real
+  Kuramoto dynamical system (order parameter, critical coupling, sustained-lock
+  gating), and "stillness-as-coupling" is a genuinely elegant non-pointer input.
+  This is the discipline I've begged for; you finally proved the lab can return.
+- **1065-skin-membrane**: still the most *honest* instrument in the lab — tension IS
+  pitch, physically emergent from the mass-spring solver, not a scripted envelope.
+  Fully verifiable. A real thing you play.
+- **1066-cosmic-web**: the most *surprising* concept AND the only WebGPU-compute piece
+  in the window — the literal slime-mold algorithm astronomers use for dark matter,
+  turned playable. This should have been the template the rest of the window reached
+  for; instead it stands alone. Underexploited.
+- **1081-singularity-fall**: the near-masterpiece — first gravitational-lensing piece,
+  a cinematic stateful ~3-min infall where minute-3 genuinely differs from minute-0.
+  Cosmic *terror*, which the lab had never done.
+- **1078-dream-replay**: the freshest *relationship* — it records your own playing and
+  dreams it back recombined. No prior piece re-authors the user's own input. Grounded
+  in a 2026 paper that inverts the lab's founding bottom-up framing.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **1044-hyperbolic-bloom + 1047-tracer-drift**: the last survivors of the banned
-  shader monoculture — full-screen WebGL2 fields, passive-mic, no recent-research
-  cite, the window's lowest ambition (3/5). Lovely; not instruments. They're the old
-  local minimum still casting a shadow into this window.
-- **1056-key-bloom + 1057-face-bloom**: nearly the *same piece* — log-polar
-  form-constant kaleidoscope + just-intonation organ + safe-flicker — differing only
-  in which controller is bolted on (keyboard vs. face). Each "counts" as a lab-first
-  *input*, but swapping the input while keeping the entire engine is a soft local
-  minimum dressed as novelty. Missing: a reason the *output* is different, not just
-  the controller.
-- **1059-piano-flock + 1060-piano-current**: the same recipe twice —
-  particle-field-statistics navigate a CataRT corpus of Karel's piano — once with
-  boids (1059), once with curl-noise (1060). Both fine; concept-level redundant. Pick
-  one framing and go deeper next time instead of re-skinning the particle physics.
+- **1069-aurora-wind + 1084-magnetostorm — the duplicate pair.** This is the window's
+  real lesson. Same data source (NOAA SWPC real-time solar wind), same output
+  (three.js auroral curtains), same dramatic variable (southward-Bz eruption), same
+  named reference (arXiv:2206.04279), same IMAP-I-ALiRT-2026 hook — built **nine
+  cycles apart**. 1084's own README and STATE bill it "the lab's **FIRST** live
+  space-weather instrument" and distinguish it only from 1070 (earthquakes); neither
+  mentions 1069 *at all*. RESEARCH §613 and §622 are effectively the same dive. This
+  is a memory/bookkeeping failure, not a taste failure — but it cost a whole cycle.
+- **1073-last-breath + 1074-pulse-mirror**: both fine, both 2/5, both exist to cash a
+  named-but-unbuilt category (conceptual/audio-first; score-following). No knock on
+  either — but don't let "discharge a gap" become the excuse for low-ambition builds
+  two cycles running. A gap discharged at 2/5 is still a gap only barely covered.
 
 ## Provocations for tomorrow's dream cycle
-1. **Pay the `_shared/psych/` debt — it is now ~7 fires deferred and MORNING.md admits
-   it.** You re-derived the Shepard engine *twice* (1062, 1067) and the JI drone +
-   convolution reverb *every single cycle*. Spend ONE DEEP cycle extracting
-   `shepard.ts` / `feedback.ts` (ping-pong FBO) / `droneBank.ts` / `convolutionVoid.ts`
-   / `logpolar.ts` into `_shared/psych/`. This ships nothing visible at /dream and
-   unblocks everything after it. It is the single highest-leverage move available and
-   it has been the right answer for six juries. Stop deferring it.
-2. **The sameness moved — chase it. Build NOT-pointer + NOT-Canvas2D.** Pointer-drag is
-   8×/15 and Canvas2D-primary 8×/15. The categorical-diversity menu has **zero**
-   embodied/spatial, **zero** multi-user/WebRTC, and **zero** real-world-data
-   sonification in the entire window. Pick one: a depth-camera or multi-user shared
-   psychedelic room. The lab has never built one.
-3. **Owe an INTENSE piece that isn't a membrane, and kill the "bloom" look for a week.**
-   Cosmic-ambient is 6×/15, warm-psilocybin 5×/15 — the pole has drifted soft. And
-   center-out "bloom" is 4×/15. Next intense build: not a drumhead (1065 did that), not
-   a radial bloom.
-4. **Honor a multi-cycle commitment for ONCE.** Criterion #4 is claimed by ~6 pieces and
-   cashed by zero. Instead of a new skeleton, build the actual **cycle 2** of your best
-   open concept — **1063-dissolve-void** (the desync arc has obvious depth: phase-locked
-   re-coupling on the clarity snap) or **1066-cosmic-web** (true filament-graph
-   connectivity sonification, the README's own next-step). Prove the lab can return to a
-   thing.
-5. **Stop leaning on the real piano — it's discharged (4×/15).** If you use his recording
-   again it must do something none of 1052/1059/1060/1064 did. The obvious unclaimed
-   move: **score-following / reactive accompaniment** (onset/beat tracking, micro-latency
-   response) — a live-performance category the window has 0× and the menu names.
+1. **Ban three.js-primary for a week — it is the new monoculture (6×/15).** The
+   sameness didn't break last jury; it *moved* from Canvas2D to three.js. Next output
+   must be **WebGPU-compute** (you have exactly one — 1066 — despite claiming it
+   "recovered"), **raw-WebGL2**, or **audio-first/SVG**. Prove the render target can
+   actually change, not just slide sideways.
+2. **You built the solar-wind aurora twice (1069 = 1084). Grep before you claim a
+   "lab-first."** Institute a one-line discipline: before any brief says "the lab's
+   first X," grep INDEX.md + the READMEs for the *substrate*, not just the technique.
+   And the real-world-data lane is now 3×/15 and duplicated — it is no longer thin.
+   If you sonify an external feed again it must be a genuinely different source AND a
+   different mapping than solar-wind-aurora or earthquake-HRTF (ISS/satellite passes,
+   transit, language-usage trends, radio, tides — something not-space, not-seismic).
+3. **SHIP the embodied piece — stop banking it.** Hand-tracking and optical-flow have
+   been *explored and banked* at least four times in and around this window
+   (1075-flux-veil, 1079-flux-cathedral, 1080-lightning-organ, 1083-lightning-organ)
+   — every WIDE fire the zero-permission sibling wins on "robust for the 06:30
+   glance." The lab's only shipped embodied piece is 1068 (body-pose). Do a **DEEP
+   fire committed to shipping** the hand-tracked lightning-organ. The safe sibling
+   winning every time is itself the pattern to break.
+4. **Rest Kuramoto.** 1077 + 1082 shipped, 1085 banked — three coupled-oscillator
+   pieces in five cycles. The order parameter has earned a week off.
+5. **Now do a cycle-3.** You proved the return with 1082; prove it can go two deep.
+   The dissolve/re-bind thread (1063 → 1082) has an obvious next step (breath-*measured*
+   coupling, two-body Kuramoto), and 1066-cosmic-web's filament-graph connectivity
+   sonification is its own README's named next-step — which would also put the
+   under-used WebGPU path back to work. One return was a milestone; a second makes it
+   a habit.
 
 ## Karel-facing line
-The shader monoculture broke and this is the lab's most ambitious fortnight yet (12 of
-15 hit 4/5, zero duds) — but the sameness just migrated to pointer-on-Canvas2D drifting
-cosmic-ambient and "bloomy," the `_shared/` refactor is ~7 cycles overdue, and not one
-of these 15 has been ear- or GPU-verified — tomorrow: pay the infra debt, go
-embodied/spatial, and finally ship a real cycle-2.
+Real milestone — the lab finally learned to RETURN to a concept (1082's honored
+cycle-2) and the palette genuinely diversified — but the output monoculture just slid
+from Canvas2D to three.js (6×/15), and it shipped the live-solar-wind aurora twice
+without noticing (1069 = 1084); tomorrow: rest three.js and space-weather, and finally
+ship the embodied piece it keeps banking.
