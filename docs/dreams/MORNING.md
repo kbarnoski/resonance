@@ -1,22 +1,29 @@
-# Morning digest — last updated 2026-07-01 ~08:15 UTC (cycle 620)
+# Morning digest — last updated 2026-07-01 ~10:30 UTC (cycle 621)
 
-> **The one thing this fire did:** shipped the lab's **FIRST black-hole** — an interactive *gravitational-lensing infall* you steer, light bending into an Einstein ring around the shadow, your **own sound red-shifting** as you fall, across a stateful ~3-min arc that ends different than it began. It's the owed **intense, non-bloom** pole (the recent run drifted soft — aurora, void, dream) and it came straight out of today's research dive (the 2026 Three.js/WebGPU lensing thread).
+> **The one thing this fire did:** finally **returned to a thing.** The jury has
+> begged for five juries running that the lab "honor a multi-cycle commitment —
+> build the actual cycle-2 of your best open concept," and even named it:
+> *1063-dissolve-void, phase-locked re-coupling on the clarity snap.* This fire
+> builds exactly that. Where 1063 un-bound your senses and hid the re-sync in a
+> one-frame flash, **1082 makes the re-binding the star — a felt, participatory
+> phase-lock you cause by settling.** Pure Canvas2D, zero permissions — so unlike
+> the recent GPU ships, you can actually *see and hear* this one on a phone glance.
 
 ## Open this first
-- **[1081-singularity-fall](https://getresonance.vercel.app/dream/1081-singularity-fall)** — *fall toward a black hole.* Tap **Fall ▸** (starts audio; on a phone, grants tilt). **Tilt your phone** — or arrow-keys / WASD on desktop — to steer the infall; with no sensor it drives itself, so it plays with zero input. Light bends around the shadow into an **Einstein ring**, an accretion disk roars Doppler-bright on its approaching side, ~4000 GPU points spiral in and redshift, and your **own descent tone glides down in pitch** while a sub-bass "swallow" swells — until the horizon whites out (a smooth ramp, never a strobe) and resets to a fresh distant approach. `state: black-hole-infall / ego-dissolution-void · pole: intense → cosmic-terror`. Ref: Interstellar's *Gargantua* (Thorne et al. 2015) + the 2026 Three.js/WebGPU "Singularity" lensing pieces.
+- **[1082-dissolve-return](https://getresonance.vercel.app/dream/1082-dissolve-return)** — *pull your un-glued senses back into one.* Tap **Enter the void** (starts sound; on a phone, grants tilt). Your **control**, the **image** and the **sound** are three coupled phase oscillators drifting out of sync — you *see* it as a faint ghost layer **doubling/moiréing** beneath the image, and *hear* it as a partial **beating** against the drone. **Now hold the phone still** (or, on desktop, release the drag and be still — or press **Let it settle**): stillness raises the coupling, the three phase-dots in the corner ring converge, the doubling **fuses to one crisp image**, the beat slows to **zero-beat**, and it blooms into one hyper-lucid instant — a **✦ bound** badge. Move frantically and it scatters again. Locks in ~3 s of stillness; hands-off it also resolves on its own in ~3 min. `state: dissociation → gamma re-binding · pole: cosmic-ambient → hyper-lucid intense`. Model: the **Kuramoto** synchronization model; concept: gamma **binding-by-synchrony** as the substrate of one coherent percept.
 
-## Also explored this fire (WIDE — 3 orthogonal intense builds; 2 banked ⭐)
-- **1080-lightning-organ** ⭐ *(top resurrection pick)* — your **two hands are electrodes** (webcam hand-tracking); fractal lightning forks between them via the real **Dielectric Breakdown Model**, and **every branch that cracks into being rings a note**. Hits an *electric* pole the lab has never touched. Built + type/lint-clean; needs a webcam to land. (IDEAS §620)
-- **1079-flux-cathedral** ⭐ — push your **whole body** *through* a self-transforming **DMT hyperspace cathedral** (camera optical-flow → WebGL2 raymarched vaulted corridor that opens the harder you move). Built + clean; wants a GPU-flow pass. (IDEAS §620)
+## Why this one, and why now
+The jury's loudest, oldest complaint (5+ juries) is *"the lab ships novelty-first and never returns — criterion #4 is claimed by ~6 pieces and cashed by zero."* So this fire deliberately did **not** ship a new skeleton. It returned to 1063 — the jury's own "best idea / the template" — and turned its scripted clarity-snap into a real, modelled, participatory phase-lock. It also **dents the #1 verification liability** (Canvas2D + Web Audio, no mic/cam/GPU/network — you can verify it on your phone) and **breaks the migrating sameness** (instead of a third back-to-back GPU-cosmic piece, a return to the Canvas2D void).
 
-## Why this one won
-All 3 cleared the ambition floor and dodged every diversity ban. **1081 won** because it's the most *robust in your actual morning review* — a full autonomous cinematic arc with **zero permissions/hardware** (the two siblings only shine with a webcam + tracked hands), it makes the research→build chain most visible, it's a genuine **lab-first concept** (0× black-hole/lensing), it clears the floor most decisively (**5/5 on paper** — the window's first), and it sits right in your loved GPU-cosmic-particle vein (130❤️ / 262❤️ / 148❤️).
+## Also explored this fire (DEEP — 2 models of the one concept; 1 banked)
+- **1083-coherence-tide** ⭐ *(banked, IDEAS §621)* — the same re-binding, but earned by **~0.1 Hz coherent breathing** paced to a guided breath ring, with coherence shown as a **real measured cross-correlation** on an honest tide-gauge. A more *legible* mechanic; close call. Built + type/lint-clean. Worth its own fire — especially with mic-measured *actual* breath.
 
 ## Honest caveats
-- **Built green.** Authoritative winner-only `npm run build` → compile + ESLint + project `tsc --noEmit` all PASS (reached `Collecting page data`); scoped lint on the 1081 folder = **0/0**, project `tsc --noEmit` = **exit 0**; only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
-- **Not GPU/ear-verified.** No GPU/audio in the box, so the lensing *look* + the red-shift *feel* are device-only — but the autonomous-spiral + keyboard paths run the whole arc headlessly, so a desktop glance sees and hears it.
+- **Built green.** Authoritative winner-only `npm run build` → `✓ Compiled successfully` + ESLint + project `tsc --noEmit` all PASS (reached `Collecting page data`); scoped lint on the 1082 folder = **0/0**, project `tsc --noEmit` = **exit 0 / 0 errors**. Only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
+- **The strongest verification posture in weeks.** Zero permissions, Canvas2D + Web Audio; the un-bind→re-bind is fully headless and active stillness locks it in ~3 s. Only the fine ear-feel of the zero-beat fuse is device-only.
+- I shortened the arc (10 min → ~4 min hands-off) as a small curation tweak so a fully passive glance also reaches the bloom — the interactive lock (~3 s) is unchanged.
 
 ## Open questions for Karel
-- **Does the fall land as *terror*, not just spectacle?** The bet: steering your own infall + hearing your descent red-shift is more visceral than a black hole you only watch.
-- **Which next?** Obvious **cycle-2 of 1081** (JURY keeps asking us to actually return to a thing): a true geodesic integrator for correct multi-image lensing, real depth-occlusion of the disk behind the shadow, and an accretion-disk *sonification*. Or cash **⭐ 1080-lightning-organ** (the electric pole is unhit).
+- **Does the re-binding land as *felt* — something you *did*?** The bet: causing the lock by settling your own hand (and watching the ghost fuse + hearing the beat vanish) is more visceral than a snap that just happens to you.
+- **Which next?** Obvious **cycle-3 of this thread**: the README's list — **breath as coupling** (drive K from a mic breath-envelope), **two-body Kuramoto** (a second person's stillness as a 4th oscillator — binding *together*), or **chimera states** (two streams lock while one orbits free — the shimmer of almost-coherence). Or cash **⭐ 1083-coherence-tide** (the breath-paced/measured-gauge sibling), or the still-owed **⭐ 1080-lightning-organ** (the electric pole).
 - **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and the GPU pieces finally get hardware-verified.
