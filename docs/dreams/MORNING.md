@@ -1,29 +1,26 @@
-# Morning digest — last updated 2026-07-01 ~10:30 UTC (cycle 621)
+# Morning digest — last updated 2026-07-01 (~12:40 UTC, cycle 622)
 
-> **The one thing this fire did:** finally **returned to a thing.** The jury has
-> begged for five juries running that the lab "honor a multi-cycle commitment —
-> build the actual cycle-2 of your best open concept," and even named it:
-> *1063-dissolve-void, phase-locked re-coupling on the clarity snap.* This fire
-> builds exactly that. Where 1063 un-bound your senses and hid the re-sync in a
-> one-frame flash, **1082 makes the re-binding the star — a felt, participatory
-> phase-lock you cause by settling.** Pure Canvas2D, zero permissions — so unlike
-> the recent GPU ships, you can actually *see and hear* this one on a phone glance.
+> **The one thing this fire did:** built the lab's **first live space-weather
+> instrument** — a piece driven by the *actual solar wind hitting Earth right now.*
+> It pulls NOAA's real-time-solar-wind JSON (DSCOVR/ACE + NASA's new-in-2026 IMAP
+> I-ALiRT sentinel) and turns speed / density / interplanetary Bz / Kp into BOTH a
+> vast folding three.js auroral sheet AND a matched sound. Verified fetching live
+> 200-OK data this cycle; still builds a full modeled storm offline.
 
 ## Open this first
-- **[1082-dissolve-return](https://getresonance.vercel.app/dream/1082-dissolve-return)** — *pull your un-glued senses back into one.* Tap **Enter the void** (starts sound; on a phone, grants tilt). Your **control**, the **image** and the **sound** are three coupled phase oscillators drifting out of sync — you *see* it as a faint ghost layer **doubling/moiréing** beneath the image, and *hear* it as a partial **beating** against the drone. **Now hold the phone still** (or, on desktop, release the drag and be still — or press **Let it settle**): stillness raises the coupling, the three phase-dots in the corner ring converge, the doubling **fuses to one crisp image**, the beat slows to **zero-beat**, and it blooms into one hyper-lucid instant — a **✦ bound** badge. Move frantically and it scatters again. Locks in ~3 s of stillness; hands-off it also resolves on its own in ~3 min. `state: dissociation → gamma re-binding · pole: cosmic-ambient → hyper-lucid intense`. Model: the **Kuramoto** synchronization model; concept: gamma **binding-by-synchrony** as the substrate of one coherent percept.
+- **[1084-magnetostorm](https://getresonance.vercel.app/dream/1084-magnetostorm)** — *what does the solar wind actually hitting Earth right now sound and look like?* Tap **Start**. ~42k GPU particles form seven vertical **auroral curtains** advected by a data-driven flow; a live panel shows the real numbers (speed / density / Bz / Kp + timestamp + a **live/offline** badge). The dramatic variable is real physics: when the interplanetary **Bz turns south** — the orientation that actually couples the wind into the magnetosphere — the storm **erupts**: curtains brighten and redden from quiet green/teal to storm magenta, the audio opens, a substorm **sub-boom** fires. Re-polls every 60 s; when the feed is blocked it swaps to a bundled modeled G2 storm so the whole arc still plays. `state: geomagnetic-storm / auroral-substorm · pole: intense → auroral storm-awe`.
 
 ## Why this one, and why now
-The jury's loudest, oldest complaint (5+ juries) is *"the lab ships novelty-first and never returns — criterion #4 is claimed by ~6 pieces and cashed by zero."* So this fire deliberately did **not** ship a new skeleton. It returned to 1063 — the jury's own "best idea / the template" — and turned its scripted clarity-snap into a real, modelled, participatory phase-lock. It also **dents the #1 verification liability** (Canvas2D + Web Audio, no mic/cam/GPU/network — you can verify it on your phone) and **breaks the migrating sameness** (instead of a third back-to-back GPU-cosmic piece, a return to the Canvas2D void).
+Direct **today's-research → today's-build** chain: RESEARCH §622 found that as of 2026 NASA's IMAP I-ALiRT telemetry joined NOAA's *public* real-time stream, and June 2026 logged real G1–G3 storms — so the live solar wind is now a playable substrate. It dodges every diversity ban (three.js not Canvas2D, live-data not pointer-drag, storm-awe not the banned cosmic-ambient bloom), fills the thin **real-world-data** lane with a fresh substrate distinct from the lab's only prior (`1070-deep-tremor`, USGS earthquakes), and sits in Karel's loved aurora/particle/spatial cluster — while being **zero-permission and live-fetch-verified**, denting the jury's #1 verification liability.
 
-## Also explored this fire (DEEP — 2 models of the one concept; 1 banked)
-- **1083-coherence-tide** ⭐ *(banked, IDEAS §621)* — the same re-binding, but earned by **~0.1 Hz coherent breathing** paced to a guided breath ring, with coherence shown as a **real measured cross-correlation** on an honest tide-gauge. A more *legible* mechanic; close call. Built + type/lint-clean. Worth its own fire — especially with mic-measured *actual* breath.
+## Also explored + banked this fire (WIDE — 3 orthogonal explorers, 2 banked ⭐ IDEAS §622)
+- **1083-lightning-organ** ⭐ *(top resurrection candidate)* — your two hands are electrodes; MediaPipe hand-tracking → a **dielectric-breakdown / Laplacian-growth** lightning that forks between them, every branch ringing a note. The *electric* pole the lab has never shipped, and embodied. Built + type/lint-clean; needs a webcam to shine.
+- **1085-veil-room** ⭐ — a real **WebRTC multi-user** shared psychedelic room (copy-paste-SDP, no server); several people's tapped rhythms Kuramoto-lock a single coherent field. Cashes the jury's named "multi-user room" gap — banked because it'd be the lab's *third* Kuramoto piece in ~5 cycles.
 
 ## Honest caveats
-- **Built green.** Authoritative winner-only `npm run build` → `✓ Compiled successfully` + ESLint + project `tsc --noEmit` all PASS (reached `Collecting page data`); scoped lint on the 1082 folder = **0/0**, project `tsc --noEmit` = **exit 0 / 0 errors**. Only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
-- **The strongest verification posture in weeks.** Zero permissions, Canvas2D + Web Audio; the un-bind→re-bind is fully headless and active stillness locks it in ~3 s. Only the fine ear-feel of the zero-beat fuse is device-only.
-- I shortened the arc (10 min → ~4 min hands-off) as a small curation tweak so a fully passive glance also reaches the bloom — the interactive lock (~3 s) is unchanged.
+- **Built green.** Authoritative winner-only `npm run build` → `✓ Compiled successfully` + ESLint + full-project `tsc --noEmit` all PASS (reached `Collecting page data`); scoped lint on the 1084 folder = **0/0**; build-log grep of the slug in errors = **0**. Only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
+- **Strong verification posture:** three.js + Web Audio, no mic/cam/permissions — and the live NOAA fetch was confirmed **200-OK, well-formed** from the build box this cycle, with the modeled-storm fallback running regardless. The GPU aurora look + storm-swell audio feel are the device-only part.
 
 ## Open questions for Karel
-- **Does the re-binding land as *felt* — something you *did*?** The bet: causing the lock by settling your own hand (and watching the ghost fuse + hearing the beat vanish) is more visceral than a snap that just happens to you.
-- **Which next?** Obvious **cycle-3 of this thread**: the README's list — **breath as coupling** (drive K from a mic breath-envelope), **two-body Kuramoto** (a second person's stillness as a 4th oscillator — binding *together*), or **chimera states** (two streams lock while one orbits free — the shimmer of almost-coherence). Or cash **⭐ 1083-coherence-tide** (the breath-paced/measured-gauge sibling), or the still-owed **⭐ 1080-lightning-organ** (the electric pole).
-- **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and the GPU pieces finally get hardware-verified.
+- **The embodied pattern:** for two fires running (620, 622) the lab *explored* embodied/hand-tracking and *shipped* the zero-permission piece (genuinely the more robust 06:30 review). `1083-lightning-organ` is banked, one fire from demoable — want me to **DEEP it next cycle** to finally land an embodied ship, even though it needs a webcam?
+- **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and the GPU/embodied pieces finally get hardware-verified.
