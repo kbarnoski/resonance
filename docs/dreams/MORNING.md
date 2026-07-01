@@ -1,28 +1,24 @@
-# Morning digest — last updated 2026-07-01 (~12:40 UTC, cycle 622)
+# Morning digest — last updated 2026-07-01 (~14:20 UTC, cycle 623)
 
-> **Jury verdict today**: Real milestone — the lab finally learned to RETURN to a concept (1082's honored cycle-2) and the palette genuinely diversified — but the output monoculture just slid from Canvas2D to three.js (6×/15), and it shipped the live-solar-wind aurora twice without noticing (1069 = 1084); tomorrow: rest three.js and space-weather, and finally ship the embodied piece it keeps banking. See `docs/dreams/JURY.md`.
-
-> **The one thing this fire did:** built the lab's **first live space-weather
-> instrument** — a piece driven by the *actual solar wind hitting Earth right now.*
-> It pulls NOAA's real-time-solar-wind JSON (DSCOVR/ACE + NASA's new-in-2026 IMAP
-> I-ALiRT sentinel) and turns speed / density / interplanetary Bz / Kp into BOTH a
-> vast folding three.js auroral sheet AND a matched sound. Verified fetching live
-> 200-OK data this cycle; still builds a full modeled storm offline.
+> **The one thing this fire did:** it finally **SHIPPED the embodied hand-tracked
+> piece the jury has begged for four windows straight** — and did it the honest way.
+> Your two hands are electrodes; a *real* dielectric-breakdown discharge forks
+> between them and every branch rings a note. Not drawn — **simulated** (Laplacian
+> growth, the same equation that predicts the fractal dimension of real lightning).
 
 ## Open this first
-- **[1084-magnetostorm](https://getresonance.vercel.app/dream/1084-magnetostorm)** — *what does the solar wind actually hitting Earth right now sound and look like?* Tap **Start**. ~42k GPU particles form seven vertical **auroral curtains** advected by a data-driven flow; a live panel shows the real numbers (speed / density / Bz / Kp + timestamp + a **live/offline** badge). The dramatic variable is real physics: when the interplanetary **Bz turns south** — the orientation that actually couples the wind into the magnetosphere — the storm **erupts**: curtains brighten and redden from quiet green/teal to storm magenta, the audio opens, a substorm **sub-boom** fires. Re-polls every 60 s; when the feed is blocked it swaps to a bundled modeled G2 storm so the whole arc still plays. `state: geomagnetic-storm / auroral-substorm · pole: intense → auroral storm-awe`.
+- **[1085-lightning-organ](https://getresonance.vercel.app/dream/1085-lightning-organ)** — *can a genuine physical growth model be played like an instrument with your bare hands?* It loads playing itself: two charged terminals orbit and lightning **cracks between them continuously** with zero permissions — tap **Click for sound** to hear it. Drag the **η slider** (1→6) and watch the discharge morph from bushy DLA to sharp **forked lightning** live. Then hit **Enable camera** and your two palms *become* the electrodes — separation + finger openness set the voltage. Every branch rings an FM pluck (pitch by height → a downward strike sweeps a descending pentatonic). `state: dielectric-storm / electric-terror · pole: intense`.
 
 ## Why this one, and why now
-Direct **today's-research → today's-build** chain: RESEARCH §622 found that as of 2026 NASA's IMAP I-ALiRT telemetry joined NOAA's *public* real-time stream, and June 2026 logged real G1–G3 storms — so the live solar wind is now a playable substrate. It dodges every diversity ban (three.js not Canvas2D, live-data not pointer-drag, storm-awe not the banned cosmic-ambient bloom), fills the thin **real-world-data** lane with a fresh substrate distinct from the lab's only prior (`1070-deep-tremor`, USGS earthquakes), and sits in Karel's loved aurora/particle/spatial cluster — while being **zero-permission and live-fetch-verified**, denting the jury's #1 verification liability.
+The jury's loudest un-cashed provocation (four windows running): *"SHIP the embodied piece — stop banking it."* Hand-tracking kept getting **explored and banked** because in every WIDE fire the zero-permission sibling won the 06:30 glance. The fix wasn't to try again — it was a **DEEP fire committed to shipping it**, with the autonomous storm engineered to be a *finished performance on its own*, so robustness stops being a reason to defer. It dodges every 2026-07-01 ban (raw-WebGL2 not three.js/Canvas2D, hand-tracking not pointer-drag, electric-intense not cosmic-ambient, not real-data, not Kuramoto) and hits the *electric* pole the lab had never shipped. Grounded in RESEARCH §623: a June-2026 build clocked MediaPipe-hand→GPU-VFX under **35 ms at 28–30 fps** on mid-range hardware — the input budget was never the blocker.
 
-## Also explored + banked this fire (WIDE — 3 orthogonal explorers, 2 banked ⭐ IDEAS §622)
-- **1083-lightning-organ** ⭐ *(top resurrection candidate)* — your two hands are electrodes; MediaPipe hand-tracking → a **dielectric-breakdown / Laplacian-growth** lightning that forks between them, every branch ringing a note. The *electric* pole the lab has never shipped, and embodied. Built + type/lint-clean; needs a webcam to shine.
-- **1085-veil-room** ⭐ — a real **WebRTC multi-user** shared psychedelic room (copy-paste-SDP, no server); several people's tapped rhythms Kuramoto-lock a single coherent field. Cashes the jury's named "multi-user room" gap — banked because it'd be the lab's *third* Kuramoto piece in ~5 cycles.
+## Also explored + banked this fire (DEEP — 2 approaches to ONE concept, 1 banked ⭐ IDEAS §623)
+- **1086-tesla-hands** ⭐ — the *procedural* sibling: recursive **midpoint-displacement fractal bolts** (Reed & Wyvill, SIGGRAPH 1994) leap the gap, and **hand separation sets the root pitch — you voice a chord by spreading your palms.** Gorgeous and cheaper; banked because 1085's DBM is the more rigorous/surprising physics and has cleaner UX. The gap→chord mechanic + a physical-vs-procedural pair are worth resurrecting.
 
 ## Honest caveats
-- **Built green.** Authoritative winner-only `npm run build` → `✓ Compiled successfully` + ESLint + full-project `tsc --noEmit` all PASS (reached `Collecting page data`); scoped lint on the 1084 folder = **0/0**; build-log grep of the slug in errors = **0**. Only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
-- **Strong verification posture:** three.js + Web Audio, no mic/cam/permissions — and the live NOAA fetch was confirmed **200-OK, well-formed** from the build box this cycle, with the modeled-storm fallback running regardless. The GPU aurora look + storm-swell audio feel are the device-only part.
+- **Built green.** Authoritative winner-only `npm run build` → compile + ESLint + full-project `tsc --noEmit` all PASS (reached `Collecting page data`); build-log grep of the slug in errors = **0**. Only the standing container **EMFILE** fd-ceiling stops static-gen (infra, Vercel-safe).
+- **Verification honesty:** the **autonomous storm is fully headless-verified** (zero permissions — it forks, rings, flashes + reseeds on its own, robust for a desktop glance). The DBM look, arc audio, and the **CDN/webcam hand-tracking upgrade** are device-only — code + fallback verified this fire, not pixel-verified (no GPU/camera in the build box). The fallback guarantees a complete piece regardless.
 
 ## Open questions for Karel
-- **The embodied pattern:** for two fires running (620, 622) the lab *explored* embodied/hand-tracking and *shipped* the zero-permission piece (genuinely the more robust 06:30 review). `1083-lightning-organ` is banked, one fire from demoable — want me to **DEEP it next cycle** to finally land an embodied ship, even though it needs a webcam?
-- **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and the GPU/embodied pieces finally get hardware-verified.
+- **Try it with a webcam.** This is the first hand-tracked instrument since 1068 — grant the camera and tell me how the palms-as-electrodes mapping *feels*; I'll tune voltage/η response for a cycle-2 (plus a GPU DBM + a "charge between the palms" clench gesture).
+- **Still open (needs you):** raise the container's ~4096 fd-ceiling (or bless `next build --experimental-build-mode compile`) so the full build finishes locally and the GPU/embodied pieces finally get hardware-verified — the standing #1 verification debt.
