@@ -1,28 +1,26 @@
-# Morning digest — last updated 2026-07-02 (~06:20 UTC, cycle 630)
+# Morning digest — last updated 2026-07-02 (~08:10 UTC, cycle 631)
 
-> **The one thing this fire did:** it *grew* a hallucination instead of painting one.
-> `1098-cortical-bloom` runs a WebGPU compute shader simulating a sheet of excitable
-> neurons; tuned near instability the field self-organizes into stripes and hexagons,
-> and — because the retina→cortex map is a complex logarithm — those read out on
-> screen as **spirals, tunnels and honeycomb lattices**: the actual Ermentrout–Cowan
-> neuroscience of *why* psychedelic geometry looks the way it does. It's the lab's
-> second-ever WebGPU-compute piece and its first neural-field.
+> **The one thing this fire did:** it made an instrument out of *breaking* your
+> senses apart. `1101-time-dissolve` is audio-first — an endless falling tone
+> poured into a swelling void until echo and onset merge — and the faint light
+> you see is drawn *late*, on a lag that deepens as you sink, so your eyes and
+> ears quietly disagree. That mismatch **is** the dissociation. A "Re-bind"
+> button snaps them back into sync so you can feel it switch on and off.
 
 ## Open this first
-- **[1098-cortical-bloom](https://getresonance.vercel.app/dream/1098-cortical-bloom)** — *watch tunnels and honeycomb bloom out of a simulated cortex, and tap to seed a new one.* A Gray-Scott / Wilson–Cowan neural field on the GPU, read out through the retino-cortical log-polar map so cortical stripes become spirals/tunnels and hexagons become an expanding honeycomb. It drifts through the four Klüver form constants on its own (~30s); tap to seed a fresh nucleus with an audible bloom; arrow keys / slider push it toward the lattice or tunnel pole; field statistics drive a just-intonation drone. `state: DMT/psilocybin geometric form-constant emergence · pole: intense-hypnotic`. **30-second morning check: open it, let it drift, tap the field once.**
+- **[1101-time-dissolve](https://getresonance.vercel.app/dream/1101-time-dissolve)** — *an audio-first descent that dissolves your sense of when; put headphones on, tap "Begin", and let it run.* A Shepard–Risset endless **descent** + just-intoned drone + a granular time-stretch smear pour into a swelling convolution void; one global `timeScale` slows everything the deeper you go. It's a real ~4-minute arc with state — deepening → a plateau → a brief hyper-lucid **clarity snap** near minute 3 (everything sharp and coherent for a moment — the "gamma surge at death" translation) → a soft return, so minute 4 sounds nothing like minute 1. The novel core is the deliberate **audio-visual desync + Re-bind A/B** — grep-0× in the lab. `state: ketamine/NDE temporal dissolution · pole: cosmic-ambient`. **30-sec check:** open it, hit Begin, then toggle "Re-bind" a couple times and watch the bloom snap into/out of time with the sound.
 
 ## Why this one, and why now
-A WIDE fire — 3 parallel builders across 3 different output targets, ship the strongest. **Cortical Bloom won** over `1097-resonant-drift` (a raw-WebGL2 resonant corridor) and `1099-third-sound` (an audio-first ear-generated-tone drone) because it (1) directly cashes the 2026-07-01 jury's loudest standing note — *"prove the render target can change → WebGPU-compute, you have exactly ONE"* — making it the lab's second; (2) implements the PSYCHEDELIC direction's single most load-bearing mechanism (the form-constant engine) as **real cortical dynamics**, not a decorative warp; (3) degrades WebGPU→Canvas2D so it's never blank/silent; (4) swings to an intense-hypnotic pole off the recent cosmic-ambient runs. Today's research seeded it (RESEARCH §630).
+A **DEEP** fire — 2 parallel builders on ONE concept (dissolve the felt sense of *when/where* sound comes from), ship the stronger. **Time-dissolve won** over `1100-sourceless` (a binaural HRTF "sound-with-no-place" version) because 1100's HRTF-ring + Shepard substrate overlaps the already-shipped `1090-threshold-descent` — and this lab just learned (1069=1084) not to build the same substrate twice. Time-dissolve is more differentiated (granular time-stretch + clarity-snap arc), fills the thin **long-form-generative-with-state** category, and reads on the morning glance without headphones. It also swings the pole back to **cosmic-ambient** after four intense pieces in a row, and rests WebGPU-compute (used 3× recently). Today's research seeded it (RESEARCH §631): the 2026 frontier races to perfectly *sync* spatial audio to video — this inverts it.
 
-## Also explored (banked — see IDEAS §630)
-- **⭐ `1097-resonant-drift`** — the space IS the instrument: drift through a corridor whose cavity radius drives a live convolution reverb + a modal "tube singer," so a narrow throat pinches the drone and a chamber blooms it. Build-complete, ready-as-is, and the **closest to your loved `148-spatial-palette`** — top resurrect. Say the word and I ship it next.
-- **`1099-third-sound`** — two pure sines make your *ear* manufacture a third tone that isn't in the air (Tartini / Dream House); a "reveal the phantom" A/B lets you confirm you heard true. Audio-first, meditative.
+## Also explored (banked — see IDEAS §631)
+- **`1100-sourceless`** — 8 binaural voices orbit your head and never settle anywhere; the sound comes from everywhere and nowhere (ketamine spatial de-localization), same Re-bind A/B. Build-complete and clean; banked only to avoid duplicating 1090's substrate. Worth resurrecting once sharpened away from it (broadband grains, a continuous desync slider, Doppler).
 
 ## Honest caveats
-- **Built green (for shipping).** Winner-only `npm run build` → compile + ESLint + full-project type-check all PASS (0 output from the 1098 folder; `tsc --noEmit` exit 0; scoped `eslint` exit 0). Only the standing container static-gen `EMFILE` (~4096-fd ceiling, every cycle since ~472) stops a full green. Vercel-safe.
-- **Verification honesty:** the WGSL compute sim is a **GPU-device-only path** — code-verified (buffer alignments, ping-pong ordering, reduction barriers reasoned through), but not run on a GPU in this headless box. A complete independent Canvas2D fallback (CPU value-noise cortical field through the same log-polar map, same audio feed) guarantees it's never blank or silent — so the glance always shows *something*, but the headline GPU path wants your real hardware.
+- **Built green (for shipping).** Winner-only `npm run build` → compile + ESLint + full type-check all PASS (0 ESLint issues from the 1101 folder; `tsc --noEmit` exit 0; scoped `eslint` exit 0; the page compiled). Only the standing container static-gen `EMFILE` (~4096-fd ceiling, every cycle since ~472) stops a full green. Vercel-safe.
+- **Not heard on hardware.** The audio graph, the ~4-min arc, and the desync are code-verified (kit signatures, grain scheduler, ring-buffer lag, arc math all reasoned through) but **not listened to** in this headless box — the lag-warp and clarity-snap constants are hand-tuned, not perceptually validated. This one really wants your ears and a full ~4-min sit.
 
 ## Open questions for Karel
-- **Does the honeycomb/spiral actually bloom on your machine?** WebGPU should be live in your desktop Chrome/Safari — worth 30s to see the real compute path vs the fallback.
-- **Ship `1097-resonant-drift` next?** It's your spatial-love lane, build-complete, and would rest WebGPU for a fire. One word and it's the next ship.
-- **Still open (needs you):** raise the container's ~4096-fd ceiling (or bless `next build --experimental-build-mode compile`) so full builds finish locally and the GPU/audio pieces finally get hardware-verified — the standing #1 verification debt.
+- **Does the clarity snap land?** ~3:15 in — a brief everything-goes-sharp moment before the return. Worth the full listen to tell me if it needs to hit harder / sooner / not at all.
+- **Ship `1100-sourceless` next** (sharpened away from 1090), or push a cycle-2 of this one (multi-channel desync, grain-pitch descent, endless-arc mode)?
+- **Still open (needs you):** raise the container's ~4096-fd ceiling (or bless `next build --experimental-build-mode compile`) so full builds finish locally and the audio/GPU pieces finally get hardware-verified — the standing #1 verification debt.
