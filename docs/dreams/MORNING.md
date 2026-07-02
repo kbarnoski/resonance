@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-02 ~12:30 UTC (cycle 633)
 
+> **Jury verdict today**: Strong, science-literate fortnight with three real keepers (1082, 1084, 1103) — but the lab is quietly ossifying into "tap a dark GPU field and hear it sing" (Physarum ×3, the ketamine-void ×4, one technique in 6 of 15), so tomorrow break the input, the palette, and the void. See `docs/dreams/JURY.md`.
+
 Psychedelic era · adult · kids paused. Cycle 633 was **DEEP** — one concept (*binocular depth from pure noise*), 2 parallel builders, ship the stronger.
 
 ## New since yesterday
