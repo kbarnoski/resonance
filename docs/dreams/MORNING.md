@@ -1,18 +1,22 @@
-# Morning digest — last updated 2026-07-03 ~12:22 UTC (cycle 645)
+# Morning digest — last updated 2026-07-03 ~14:20 UTC (cycle 646)
 
-> **Jury verdict today**: Best ambition fortnight yet — zero local-minimum builds and nearly every note I gave you cashed (dichotic, MIDI, live-data, non-black) — but the fix overshot: the black-void monoculture became a warm-paper one (11/15) and "turn a named illusion into an instrument" is now the reflex (6+/15), so tomorrow break the paper palette, rest the illusions, and finally put your real piano through one of these. See `docs/dreams/JURY.md`.
+> **I read your jury and finally did the overdue thing.** The jury's #1 note was: the whole 15-build window ignored your real Welcome Home piano — every carrier was synthesized. Tonight's ship puts your **actual recording** through the instrument. It also breaks all four of the jury's bans at once (no warm-paper, no Canvas2D-primary, active input, no perceptual-illusion). Psychedelic era · adult · kids paused.
 
-> **Where we are:** a DEEP fire — one concept, two parallel builds, shipped the stronger. Tonight I **resurrected + deepened** last night's ⭐ top-banked idea. Theme: **a living body your brain builds out of nothing but flat, moving dots.** Psychedelic era · adult · kids paused.
+> **Where we are:** a WIDE fire — three unrelated explorers, each clearing every jury ban, shipped the one that cashes the real-music mandate.
 
 ## New since yesterday
-- **⭐ `/dream/1129-kinetic-dancer`** — *fourteen dots that become a person.* Fourteen flat, identical, un-shaded dots — no shading, no perspective, no depth cue at all — yet your brain assembles a **woman turning in place**, and decides for itself which way she spins. **Drag** her to tip the illusion; let go and watch her spontaneously **flip** direction. Two rivalrous drones (bright/right = clockwise, dark/left = counter-clockwise) lean with the percept, and a **noise slider** buries her among decoy dots so she only "pops out" once your brain locks on. *Why open it:* it's the iconic **Spinning Dancer**, but built honestly from **Johansson point-light joints** (the real biological-motion stimulus) — a body assembled purely from motion. Fresh **uncanny** pole (a figure that shouldn't be there but is), ivory-on-slate, and it moves on load with no audio or hardware.
+- **⭐ `/dream/1130-spectral-scrub`** — *reach into your recording and drag it through time.* You don't press play. You grab your real piano and **scrub** it (drag left/right) — slow it to a crawl, **freeze** an instant into a held shimmering chord, or run it backwards, all with the pitch intact. Drag up/down to sculpt the timbre. The whole screen is a **deep-ocean → electric-cyan spectral field** you're painting in (a granular phase-vocoder feeding a WebGL2 shader). *Why open it:* **load one of your Path tracks** (paste a recording id) — or just drop any audio file — and hear/see your own music become a playable instrument. This is the "put your real piano through one of these" note, cashed.
+
+## How to load your real music
+- **Paste a Path recording id** → it fetches `/api/audio/[id]` and streams the real track. (The public `/api/featured` returned empty, so I couldn't auto-list your albums — you'll need an id, or:)
+- **Drop / choose any audio file** — works instantly for anyone.
+- Leave both empty and it plays a labelled synth-piano placeholder so the field is never blank.
 
 ## Also explored this fire (built complete, banked — not shipped)
-- **`kinetic-solid`** ⭐ — the abstract sibling: a cloud of dots that resolves into a **rotating solid** (sphere / hourglass / double-helix) that bistably flips, with a richer 3-form menu. It's actually the more *reliably* legible of the two (an abstract solid doesn't depend on dots reading as a *body*) — banked top-resurrect, and its form-menu can fold into the dancer as a cycle-2 toggle. Full write-up in IDEAS §645.
+- **`flock-organ`** — a **GPU swarm you conduct**: drag to herd ~43k boids on the GPU; the flock's order↔chaos (a Vicsek coherence number) *is* the sound — a tight stream sings pure tones, a scattered cloud dissolves into beating noise. Electric neon. Freshest output of the three.
+- **`slow-machine`** — a piece of music **with memory that never loops**: a Markov matrix under Hebbian reinforcement + mutation you seed and steer; minute 5 is provably different from minute 1. Cold Ikeda black/white/red data-notation. Both write-ups in IDEAS §646.
 
-## Research → build chain (honest)
-- Today's dive surfaced **two genuinely fresh 2026 papers**: a Jan-2026 method for controllable point-light walker stimuli, and *"I see moving people"* (PMC 2026) showing **expectation drives whether you detect a walker buried in noise**. I built that second finding straight into the piece as the noise slider — so tonight's research → tonight's build is direct. The kinetic-depth technique itself is **grep-0× / never built** in the lab before (I checked before spawning).
-
-## Open questions for Karel
-- **Does she read as a person for you — and does the flip land?** This is the one thing I couldn't verify: no display in my box, and the joint positions + tilt strength are hand-tuned guesses a real eye should sanity-check. Fixate near the hips and let your perception settle.
-- **Two illusion nights in a row now** (1126 Enigma → 1129 kinetic-depth). Both broke the input/output/palette monoculture, but the *meta-theme* ("percept made in you") is getting a run. Want a third (I have `kinetic-solid` + `necker-vase` banked and ready), or pivot away from perceptual illusions toward something else entirely — WebRTC multi-user (still cold, needs your signaling-infra call), or back to Karel's real Path music as the carrier?
+## Open questions for you
+- **Does the spectral scrub sound good with your real piano?** I can't hear it in my box — the granular freeze/stretch and the shader field are code-verified only. Load a Path track and drag: does freezing a chord bloom into a shimmer? does the field read as flowing pigment, not a chart?
+- **Which of the three lanes do you want deepened?** Real-music-instrument (1130), GPU-swarm-organ (flock), or long-form-memory (slow-machine) — all three are fresh seams the lab is thin on.
+- **Still cold: real WebRTC multi-user** (the jury's other big ask). It needs your call on signaling infra — a genuine shared-room piece is a multi-cycle commitment, not a blind single fire.
