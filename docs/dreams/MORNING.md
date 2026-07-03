@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-03 ~12:22 UTC (cycle 645)
 
+> **Jury verdict today**: Best ambition fortnight yet — zero local-minimum builds and nearly every note I gave you cashed (dichotic, MIDI, live-data, non-black) — but the fix overshot: the black-void monoculture became a warm-paper one (11/15) and "turn a named illusion into an instrument" is now the reflex (6+/15), so tomorrow break the paper palette, rest the illusions, and finally put your real piano through one of these. See `docs/dreams/JURY.md`.
+
 > **Where we are:** a DEEP fire — one concept, two parallel builds, shipped the stronger. Tonight I **resurrected + deepened** last night's ⭐ top-banked idea. Theme: **a living body your brain builds out of nothing but flat, moving dots.** Psychedelic era · adult · kids paused.
 
 ## New since yesterday

@@ -1,48 +1,48 @@
-# Concept Jury Verdict — 2026-07-02
+# Concept Jury Verdict — 2026-07-03
 
 ## Summary
-The last fortnight is the most *scientifically literate* the lab has ever been —
-almost every prototype turns a real, named mechanism (Kuramoto sync, Laplacian
-breakdown, Lenia, Ermentrout–Cowan form constants, Julesz stereopsis) into an
-instrument, and three of them (1082, 1084, 1103) are genuine keepers. But the
-*form* has quietly ossified: **6 of the last 15 are "tap a dark GPU-simulated
-field and hear it sing,"** Physarum/cosmic-web has run three cycles straight, the
-ketamine-void dissolution family is now four deep, and 13 of 15 share the same
-black-void-plus-luminous-glow palette. The concepts are diverging; the interaction,
-output, and palette are converging. That's the exact "too similar" trap the
-Ambition Mandate exists to break.
+This is the strongest ambition-floor fortnight the lab has ever posted, and it's
+because the lab *read yesterday's jury and did the work*: the dichotic piece got
+cashed (1109), the MIDI chromatic organ shipped (1107), a second live-data
+sonification landed (1110), the palette left the black void — every provocation
+answered. But the correction overshot. The all-black monoculture is now an
+all-**warm-paper** one (11 of 15), and "take a named perceptual illusion and
+turn it into an instrument" has quietly become the new house move (6–7 of 15).
+The lab traded one convergence for two fresher ones. Great follow-through; now it
+needs to stop following the jury and surprise it.
 
-## Diversity audit (last 15: 1078, 1081, 1082, 1084, 1085, 1086, 1089, 1090, 1092, 1095, 1096, 1098, 1101, 1103, 1105)
-- **Over-represented input:** tap / click / pointer-to-seed — **6×** (1078, 1086, 1089, 1092, 1095, 1096). Only four builds used anything else: external data (1084), hands (1085), camera (1103), body-pace (1090).
-- **Over-represented output:** GPU shader / compute visual (WebGL2 · WebGPU · three.js) — **10×** (1081, 1084, 1085, 1086, 1089, 1092, 1095, 1098, 1103, 1105). Raw-WebGL2 alone is 4× (1092, 1095, 1103, 1105). Audio-first is only 3× and is the genuinely *under*-served output.
-- **Over-represented technique:** GPU-simulated physical/biological field read out as sound — **6×** (Physarum 1089/1092, Lenia 1086, Gray-Scott neural field 1098, FDTD plate 1095, Laplacian-growth 1085). Physarum specifically is 3× if you count 1066 just outside the window.
-- **Over-represented vibe:** dark-void + luminous-glow, `intense`/`intense-hypnotic` pole — **7×** (1081, 1084, 1085, 1086, 1095, 1098, 1105); the black-background house style itself is ~13/15. Only 1084 (auroral colour) and 1103 (webcam flesh-tone) break it.
-- **BANNED for next cycle:** `tap-to-seed` input · raw-WebGL2/WebGPU field-simulation output · Physarum / agent-transport / graph-sonification · "dissolve-the-void" dissociation concept · black-void-plus-glow palette · `intense-hypnotic` pole. The next build must clear the floor via a *fresh* input verb, a non-GPU-field output, and a palette that isn't a dark nebula.
+## Diversity audit (last 15: 1101, 1103, 1105, 1107, 1109, 1110, 1114, 1116, 1119, 1121, 1123, 1124, 1125, 1126, 1129)
+- **Over-represented input:** passive-perceptual (fixate / listen / gaze, no active control verb) — **5×** (1101, 1109, 1124, 1125, 1126). Caveat, and it's a big one: this is the *most improved* axis in the lab's history. The tap/pointer collapse the last jury flagged (6×) is **gone** — this window has camera (1103), MIDI (1107), live external data (1110), voice-mic (1114), breath-mic (1119), gait/accelerometer (1116), two-body touch (1121), and baton gesture (1123). Eight distinct real input verbs in fifteen builds. The 5× "passive" is the residue of the illusion theme, not an input failure.
+- **Over-represented output:** **Canvas2D — 7×** (1101, 1109, 1114, 1119, 1121, 1123, 1125). The last jury banned raw-WebGL2/GPU-field output; the lab swung to Canvas2D and made it the new default. three.js is 3× (1110, 1124, 1129), WebGL2 3× (1103, 1105, 1107), SVG 2× (1116, 1126). Audio-first is now healthy at 3–4× (1101, 1109, 1125) — the previously-underserved output is served.
+- **Over-represented technique/theme:** **perceptual-illusion-as-instrument — 6–7×** (1103 Caputo strange-face, 1105 autostereogram, 1109 Deutsch/Zwicker, 1125 verbal transformation, 1126 Enigma drift, 1129 kinetic depth, ~1124 Ganzfeld). The *sub-*techniques are genuinely varied (SIRDS ≠ dichotic ≠ formant-synth ≠ Op-art ≠ structure-from-motion) — this is a **theme** convergence, not a code convergence. But "the percept is manufactured inside you" is now the reflex concept, and it's running unchecked.
+- **Over-represented vibe:** **warm paper / daylight / amber palette — 11×** (1107, 1109, 1110, 1114, 1116, 1119, 1121, 1123, 1124, 1125, 1126). Only 4 dark (1101, 1103, 1105 — all pre-mandate carryovers — and 1129, which is already creeping back to slate-blue). The pendulum swung all the way across: from 13/15 black-void to 11/15 warm-paper in one fortnight.
+- **BANNED for next cycle:** warm-paper/daylight-only palette · Canvas2D-as-primary-output · perceptual-illusion-as-instrument concept · passive-fixate/listen input. The next build must commit to a **cool, saturated-electric, or genuinely-dark-done-well** palette, drive an **active** input, and answer a question that is *not* "what does your own perceptual system invent."
 
 ## Ambition floor stats (last 15 prototypes)
-Scored strictly on the 5 floor criteria (novel technique / ≥3 subsystems / named reference / multi-cycle / research from last 14 days):
-- **Hit 0–1 criteria: 3** — 1090-threshold-descent, 1096-noise-bloom, 1101-time-dissolve. These are the local-minimum builds. Caveat: the floor penalises *deliberate minimalism* — 1096 (stochastic resonance) is a sharp concept that is thin by design, not by laziness. 1090 and 1101 are thin for the wrong reason: they re-tread the ketamine-void already built in 1063/1082.
-- **Hit 2–3 criteria: 4** — 1081, 1092, 1095, 1098.
-- **Hit 4–5 criteria: 8** — 1078, 1082 (the only 5/5), 1084, 1085, 1086, 1089, 1103, 1105. These are the ones to extend.
+Scored strictly on the 5 floor criteria (novel-to-lab technique / ≥3 subsystems / named reference / multi-cycle commitment / research from last 14 days):
+- **Hit 0–1 criteria: 0.** For the first time in the jury's memory there is **no local-minimum build** in the window. The mandate worked.
+- **Hit 2–3 criteria: 10** — 1101, 1103, 1107, 1110, 1114, 1116, 1119, 1121, 1125, 1126.
+- **Hit 4–5 criteria: 5** — 1105, 1109, 1123, 1124, and **1129 (the only 5/5)**. These are the seams to extend.
 
 ## Standouts (positive)
-- **1082-dissolve-return:** the model of what the mandate wants. It took a *scripted one-frame trick* from 1063 (the "clarity snap") and rebuilt it as a participatory **Kuramoto phase-coupling model you can feel lock** by holding still. Honored cycle-2, 5/5 floor, and the rare piece where the deepening is conceptual, not cosmetic. Best in window.
-- **1084-magnetostorm:** the only build with a truly *external* input — live NOAA/NASA solar-wind telemetry driving the aurora. Music *about something other than music*, and the single biggest break from the tap-a-field monotony. This is the category the lab is thinnest on (real-world data sonification); do more.
-- **1103-strange-face:** the only camera-input piece, and an honest one — a real named perceptual illusion (Caputo strange-face + Troxler fade) turned into an instrument, with a candid "unverified on real hardware" note instead of overclaiming. Fresh input × fresh mechanism.
-- **1085-lightning-organ:** finally cashes the embodied hand-tracked ship the jury had flagged for four windows, and does it with real physics (Niemeyer–Pietronero–Wiesmann DBM), not a gesture gimmick.
+- **1129-kinetic-dancer:** the only 5/5 in the window and the model of the whole pipeline working — a grep-0× technique (kinetic depth / Johansson biological motion), today's fresh 2026 research (the PMC noise-expectation paper) built *straight into the instrument* as the decoy-dot slider, and it resurrects a banked idea (multi-cycle). Fourteen dots that become a person is the rare build where the honesty ("can't verify the flip headless") strengthens rather than hedges. Best in window.
+- **1109-inner-ear:** the lab reading its own jury and delivering. Yesterday's verdict said "cash the banked dichotic piece"; this is it — strict per-ear routing of Deutsch's octave/scale/tritone illusions plus the Zwicker phantom tone (with the 2025 *Imaging Neuroscience* study cited), audio-first, zero-GPU, warm-paper. It broke the output AND palette monotony in one move, exactly as asked.
+- **1107-chromatic-organ:** the piece that serves *Karel* most — a live-performance MIDI/keyboard instrument (performance-fitness is his stated priority #3), Scriabin's clavier-à-lumières mapped to plane-wave moiré, on a deliberate daylight ground. A real instrument you play, not a toy you tap.
+- **1124-noise-veil:** the strongest cosmic-ambient build — four genuine subsystems (spectral-noise engine → HRTF panner field → macro-swell → volumetric fog), grounded in the 2025 *i-Perception* Ganzfeld finding that noise *spectrum* steers hallucination *content*, with the white↔brown morph as the actual instrument. Audio-led, warm→oceanic.
+- **1110-earth-hum:** cashes the last jury's "extend 1084 with a second real-world data source" note — live NOAA space-weather driving physically-accurate Schumann-cavity synthesis. Music about something other than music, warm globe. Real-world data sonification remains the category the lab should keep feeding.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **1101-time-dissolve:** the *fourth* ketamine/NDE void piece (1063 → 1082 → 1090 → 1101). Shepard–Risset descent, convolution-void tail, clarity-snap, and audio-visual desync toggle were all already shipped in that lineage. Beautifully made, but mechanically it adds nothing the family didn't have — this is the "too similar" flag made literal.
-- **1092-filament-lattice:** third consecutive Physarum cosmic-web (1066 → 1089 → 1092). The edge-dyad and clustering-coefficient sonification are real refinements, but three slime-mold-graph builds in a row is exactly the convergence to critique. The cosmic-web thread has now been honored enough; rest it.
-- **1090-threshold-descent:** genuinely valuable as an audio-first / no-screen break, but its *destination* — stillness → tunnel → light bloom — is the same NDE arc as 1082 and 1101. Keep the audio-first courage, ditch the well-worn void.
+- **1101-time-dissolve:** the **fifth** ketamine/NDE dissolution-of-the-void piece (1063 → 1082 → 1090 → 1101, plus this). Shepard–Risset descent, convolution-void tail, the clarity-snap, and the audio-visual desync toggle were all shipped earlier in that exact lineage. Beautifully made and it's a pre-mandate carryover — but mechanically it is the "too similar" flag made literal, and the last jury already called it. The void family is closed; do not reopen it.
+- **1114-tanpura-throat:** its ambition-floor "first-ever Karplus-Strong" claim is **false** — KS ships in `808-sympathetic-strings` (which already did *voice-driven sympathetic strings*, this exact concept) and in 10+ kids builds. Strip the novel-technique credit and it's a 3/5 revisit of 808 with a warmer mandala, not a fresh direction. Lovely craft; not new ground.
+- **1126-enigma-drift:** the point where the illusion-cabinet theme tips from fresh to formulaic — the sixth "percept made in you" build, thin on subsystems (a static SVG field + a beating drone, ~2–3), and 1105 already delivered "structure your visual system invents from nothing." It cashed the non-black-intense mandate honestly, but it's the marginal illusion, not another keeper.
 
 ## Provocations for tomorrow's dream cycle
-- **Ban the GPU-field-you-tap-to-seed pattern for a full week.** Physarum/CA/reaction-diffusion/FDTD/Laplacian-growth has been the core technique 6 of the last 15. No slime mold, no continuous CA, no wave-sim-you-strike next cycle — force a different interaction verb entirely (blow, speak, walk, conduct, two people).
-- **Fix the input collapse.** Tap/pointer is 6×; voice, breath, MIDI, gait/accelerometer, and WebRTC multi-user are at 0–1 in the window. Spend a cycle on an input the lab barely has — the queued `1102-chromatic-organ` (MIDI/keyboard chromesthesia) would land a live-performance, Karel-serving input in one move.
-- **Cash the banked dichotic piece.** RESEARCH §633 (today) and MORNING both flag Deutsch's dichotic illusions (`1104-banked`) — the purely *auditory* analog of the "percept made in YOU" thread. That's a rare audio-first, headphones-required, zero-GPU ship that would break both the output and palette monotony at once.
-- **Mandate a non-black palette.** 13 of 15 are dark-void + glow. Next build must live in daylight, paper-white, or saturated flat colour (Ikeda/Anadol warm) — 1084's aurora and 1103's webcam are the only two that escaped the nebula, and it shows.
-- **Extend a 4–5, don't invent a 6th void.** 1082 (Kuramoto re-binding) and 1084 (live-data sonification) are the richest seams. A cycle-2 of 1084 — a *second* real-world data source (seismic, transit, language-usage) with a warm palette — would deepen a standout instead of re-treading dissolution.
-- **Housekeeping / credibility:** the lab is miscounting its own firsts — 1086 claims "second-ever WebGPU-compute," 1089 "third," then 1098 claims "second" again; and 1098 is billed as growing the first neural field though reaction-diffusion already ships in 1052/1067. Small, but Karel reads these claims; get the ordinals right.
+- **The palette over-corrected — mandate range, not a new monoculture.** 11 of 15 are warm-paper/daylight; that's just the black-void trap wearing a lighter coat. Next build must commit to a palette the window doesn't have: **Ikeda monochrome, deep-ocean cool, or saturated electric neon-on-dark done deliberately**. One warm-paper piece in the next five, max.
+- **Rest the perceptual-illusion move for a full week.** Six-to-seven of the last fifteen are "a named illusion turned into an instrument." It's brilliant and it's spent. No autostereogram / dichotic / Op-art / kinetic-depth / verbal-transformation next cycle — build something whose payoff is *not* a trick of your own cortex.
+- **Go back to Karel's real Path music as the carrier wave.** AGENT.md, STATE, and MORNING all keep flagging this and the entire 15-build window ignored it — every carrier here is synthesized (Shepard, drones, formants, noise, KS). A cycle that visualizes/transforms his actual Welcome Home piano tracks (`/api/audio/[id]`) is overdue and would break the whole synthetic-source monoculture at once.
+- **Stop cashing the jury; surprise it.** Credit where due — this window answered nearly *every* prior provocation (dichotic ✓, MIDI/chromatic ✓, non-black ✓, second data-sonification ✓, conducting ✓, gait ✓). That's extraordinary follow-through, but it means the queue is now jury-driven, not surprise-driven. Build the thing no jury asked for: **real WebRTC multi-user** — 1121 fakes two-player with a seeded ghost partner; do the genuine shared-room version and cash the coldest category on the menu.
+- **Extend a 4–5, don't invent a seventh illusion.** 1129 (kinetic depth) and 1124 (audio-led Ganzfeld) are the richest new seams. A cycle-2 of 1129 folding in the banked `kinetic-solid` form-menu (sphere/hourglass/helix toggle), or 1124 with a real per-viewer imagery capture, deepens a standout instead of thinning the theme with another one.
+- **Credibility housekeeping (again):** the "first-ever X" ordinals keep drifting — 1114 claimed a KS first that's 10+ builds old. Grep INDEX + READMEs before writing "first" / "novel" in a floor claim; Karel reads these and a wrong ordinal cheapens the real firsts (1105, 1109, 1129).
 
 ## Karel-facing line
-Strong, science-literate fortnight with three real keepers (1082, 1084, 1103) — but the lab is quietly ossifying into "tap a dark GPU field and hear it sing" (Physarum ×3, the ketamine-void ×4, one technique in 6 of 15), so tomorrow break the input, the palette, and the void.
+Best ambition fortnight yet — zero local-minimum builds and nearly every note I gave you cashed (dichotic, MIDI, live-data, non-black) — but the fix overshot: the black-void monoculture became a warm-paper one (11/15) and "turn a named illusion into an instrument" is now the reflex (6+/15), so tomorrow break the paper palette, rest the illusions, and finally put your real piano through one of these.
