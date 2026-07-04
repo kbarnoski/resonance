@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-07-04 (cycle 660, evening UTC)
+# Morning digest — last updated 2026-07-04 (cycle 661, evening UTC)
 
-> The last two cycles answered the jury's "embodied" (body-choir) and "real-world data" (flight-choir) demands. Today answers its **loudest still-open** one — provocation #4: *"the screen bias is near-total; one audio-first piece in fifteen."* So this piece has almost no screen. The instrument is inside your own ear.
+> Your jury's #1 complaint this fortnight wasn't "not ambitious" — 14 of 15 clear the floor — it was **monotony of form**: one dark physics-sim you drag, fifteen costumes. So this cycle the gate wasn't "is it clever?" but "does it feel like anything we shipped this fortnight?" Today's ship feels like nothing recent — and it's built for the phone in your hand.
 
-## New since yesterday
-- **`/dream/1165-third-ear` — a melody you hear that no speaker is playing. Put on headphones, close your eyes, press Begin.** Two high tones sound together; the *gap* between them is a low tune your cochlea itself generates (a real phenomenon — the "difference tone", discovered by Tartini in 1714, made into music by Maryanne Amacher). Sweep the **carrier** slider: the played pitch climbs, but the phantom melody stays put — proof it's in your head. Mute one tone with the **A/B toggle** and the melody vanishes — proof it was never played.
-- **Why this one:** it's the direct cash of your jury's "build an audio-first piece" demand, on a technique the lab has never touched (`otoacoustic`/`Tartini` = 0× — and it's *not* another binaural-beat/meditation piece; that corner's already taken). Bright, alert, active — the opposite of the dark drone the jury banned.
-- **The honest caveat:** I build headless — no ears — so whether the ear-tone actually *rings* at these safe volumes is designed, not heard. That's exactly why the carrier sweep exists: it lets you hunt for the height where your own ear-tone is loudest. Tell me if you hear the phantom melody, and at what carrier height it's strongest.
+## New since yesterday — **open this on your phone**
+- **`/dream/1170-tilt-pool` — play chords by *balancing*.** Press Begin, then tilt your phone: sound pools like water to the lowest corner. Hold it near **level** and several just-intonation voices coexist as a full chord; tilt **steeply** and everything drains into one deep low pool. On desktop the pointer stands in for tilt, so it plays there too.
+- **Why this one:** tilt is an input the lab has literally never shipped (your jury flagged it 0×), and the fluid-balance interaction breaks the "bright data-map" and "dark drone" forms at once. It's the one piece whose headline gesture is native to the device you review from at 06:30 — so just tilt it.
 
-## Banked (fully built, one cycle away)
-- **⭐ `1166-ear-tone-field`** — the SAME ear-tone phenomenon as an **immersive sustained field**: 9 tone-pairs tuned so the phantom difference-tones stack into one slow, breathing low chord (an Amacher/*Dream House* register), evolving over ~10 minutes. Richer and more transporting than 1165 — I held it back only because it's a dark meditative drone and you just told me to ban that vibe for a week. **Ships the moment you lift the glow-ban** (or as a "melody ↔ field" toggle on 1165).
-- **⭐ `1162-loom-of-hours`** (from cycle 659) — your REAL "Welcome Home" piano woven into a bright textile as it plays. Still queued; say the word.
+## Banked (fully built, one word away)
+- **⭐ `1171-solar-wind-choir`** — hear the sun's weather hitting Earth *right now*: three live NOAA space-weather feeds sung as a choir (wind speed→register, a southward magnetic tilt→tension, Kp→aurora sparkle). This was the **freshest research of the night** (Helioradar, 2026) and I nearly shipped it — I held it only because its shape (live feed → bright readout) repeats `1161-flight-choir` from two ships ago, and you told the lab to stop repeating forms. **Say "ship the solar wind" and it goes next.**
+- **`1172-midi-fresco`** — the lab's **first Web MIDI**: every note paints a living Renaissance fresco. Best when you can plug a controller in.
+- **⭐ `1166-ear-tone-field`** (cycle 660) — the immersive ear-tone version; ships when you lift the near-black-glow ban.
 
 ## Research finding worth a look
-- Sonorities 2026 (Belfast) has a whole symposium session on Amacher's "ear tones" — the difference/combination-tone family is a *live* current-year topic, not a museum piece. That's the lineage `1165` sits in. RESEARCH §660.
+- **Helioradar AV** (av.helioradar.com, 2026) — real-time NOAA space-weather sonification with a sub-minute WebSocket pipeline. Live proof that "sonify the sun's weather" is a current, doable idea; it's the seed behind the banked `1171`. RESEARCH §661.
 
 ## Open questions for Karel
-1. **Do you actually hear the phantom melody in `1165-third-ear`?** (Headphones, eyes closed.) And at what carrier height does it ring loudest? Can't verify headless — your ears are the only test instrument.
-2. **Lift the near-black-glow ban yet?** If so, `1166-ear-tone-field` (the immersive version) ships next.
-3. **Real WebRTC multi-user** (the coldest open ask) still needs your call on a durable signaling store before I can build it.
+1. **Which banked piece next?** `1171-solar-wind-choir` (cosmos data) vs `1166-ear-tone-field` (immersive ear-tone) vs `1172-midi-fresco` (needs a controller). One word picks one.
+2. **Lift the near-black-glow ban yet?** (Gates `1166`.)
+3. **Real WebRTC multi-user** still needs your call on a durable signaling store before I can build it.
