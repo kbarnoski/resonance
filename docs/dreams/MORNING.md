@@ -1,20 +1,16 @@
-# Morning digest — last updated 2026-07-04 ~06:2x UTC (cycle 654)
-
-> **Tonight I built the thing no jury asked for: an instrument you play with your *silence*.** `Anechoic Veil` inverts every mic visualizer we've made. Instead of rewarding loudness, it rewards its absence — a violet-indigo mandala fully blooms *only* when you go quiet and still, and a warm-cool drone swells the longer you hold the silence. Any sound you make scatters the veil and thins the drone. There's a stillness-ring readout so you can feel the loop: stay quiet, watch it crystallize. Your last two jury notes were "stop cashing me — *surprise* me, and build something whose payoff isn't a trick of your own cortex." This is that. Psychedelic era · adult · kids paused.
-
-> **Where we are:** a WIDE fire — I ran 3 unrelated explorers and shipped the surprise, banking the other two. It deliberately breaks our recent monoculture (everything lately *reacts to* sound; this one reacts to the *absence* of it).
+# Morning digest — last updated 2026-07-04 (cycle 655, ~afternoon UTC)
 
 ## New since yesterday
-- **⭐ `/dream/1152-anechoic-veil`** — *the instrument is your stillness.* Tap **Enter with microphone** (or **Enter in stillness** for a no-mic press-&-hold version), then get quiet. The mandala blooms and the drone rises the longer you stay silent; make a sound and it scatters. *Why open it:* it's a meditation trainer disguised as a psychedelic visualizer — the first piece here whose payoff is restraint, not spectacle. The mic measures loudness only; nothing is recorded. Reads best with a real mic + speakers.
+- **`/dream/1153-vortex-filaments` — stir a superfluid.** Open this. Glowing electric-cyan **quantized vortex lines** writhe in a dark sphere; **drag to stir** — slow strokes send Kelvin waves rippling along the threads, fast strokes birth new vortex rings. When two strands cross they **reconnect, recoil, and ring a bell**. It's the lab's first piece built on real superfluid *hydrodynamics* (after quantum mechanics in 1142 and statistical mechanics in 1145) — vortices move by the 1906 Local Induction law; the *sound* comes straight from a 2025 physics finding that reconnecting vortices "separate faster than they approach, like cardiac ripples." Cool, precise, intense — a deliberate break from the last two cosmic-ambient ships.
+- **Mode was DEEP** — I raced one concept two ways (crisp filament lines vs. a soft Anadol-style particle "condensate"). Shipped the crisp/legible one; the glowing-mist sibling (`1154-vortex-condensate`) is banked as a "lines ↔ condensate" toggle — see IDEAS §655.
 
-## Also explored this fire (built complete, banked — not shipped)
-- **⭐ `halluci-atlas`** — six sliders = the six *measured* dimensions of a hallucination (the 2026 6D-VHQ), morphing an electric-neon form-constant field. The strongest, safest build and your requested electric palette — I held it because shipping it would be *cashing* a note you gave me rather than surprising you. It's queued to ship next on an intense/electric night. (IDEAS §654)
-- **`tilt-descent`** — tilt your phone to fall down a non-Euclidean tunnel toward a light, drone panning as you turn. Lovely and phone-first — but its tunnel-to-the-light theme collides head-on with *last night's* Light Accretion, so I benched it rather than repeat myself. (IDEAS §654)
+## Why this one and not the twice-deferred halluci-atlas
+- `1150-halluci-atlas` was queued as ⭐ SHIP-NEXT, but the diversity audit blocked it *this* cycle for a concrete reason: its output (raw-WebGL2 fragment field) is now **over-represented — 4 of the last 10 builds** — and Canvas2D is too. three.js true-3D was the only fresh GPU output left. So halluci-atlas stays ⭐ SHIP-NEXT with an unblock condition: ship it the next cycle GPU-fragment output has cooled.
 
-## Open questions for you
-- **Does the silence loop *feel* rewarding?** The rise/fall timing and how "full bloom" reads are tuned in code but unverified without a real mic + screen — a one-file tweak once you've tried it.
-- **Ship `halluci-atlas` next?** It's build-complete and it's your electric palette; say the word and it goes out the next intense cycle.
-- **Still cold:** genuine WebRTC multi-user (your other standing ask) — still needs your call on a durable signaling store (outside the dream scope fence).
+## Research finding worth a look
+- arXiv **2607.00821** (July 2026) directly images Kelvin waves on a superfluid vortex lattice; paired with the 2025 "universal reconnection asymmetry" law, it handed me the whole audio design. RESEARCH §655.
 
-## Heads-up (infra, not your app)
-- Same standing ~4096-open-files cap: the full ~600-page `npm run build` can't finish page-collection here (identical on the pristine baseline). `1152` **compiled + type-checked + lint-passed** cleanly before that point; Vercel (uncapped) deploys normally.
+## Open questions for Karel
+1. **Does the quantum-turbulence read + the reconnection bells land?** I can't ear/eye-verify headless — this is the standing verification debt. A 30-second play tells us if the physics *feels* like a superfluid.
+2. **Want the calm sibling?** `1154-vortex-condensate` (soft glowing mist, reverberant bells, meditative) is fully built and one cycle away — say the word and I'll ship it or graft it as a toggle on 1153.
+3. **Real WebRTC multi-user** (the jury's coldest open ask) still needs your call on a durable signaling store before I can build it.
