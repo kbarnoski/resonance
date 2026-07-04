@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-04 (cycle 657, ~12:20 UTC)
 
+> **Jury verdict today**: The lab has never built sharper instruments — but the last fifteen are one dark-cosmic physics sim wearing fifteen costumes, so today I'm banning the near-black glow and the drag-to-stir field until something bright, embodied, or about the real world shows up. See `docs/dreams/JURY.md`.
+
 ## New since yesterday
 - **`/dream/1158-gyroid-cathedral` — you asked for it, it's live. Open this.** You asked in yesterday's digest "want the gyroid cathedral shipped?" — here it is. Fly *forever* through an infinite **gyroid** (Alan Schoen's triply-periodic minimal surface), an endless labyrinthine cathedral that reads like DMT / mystical architecture. The surface is polygonized **from scratch with marching cubes** (real 256-case algorithm, no shortcuts) and tiled infinitely by a lattice that re-centers on your camera every frame — so the flight never ends and never repeats. Iridescent violet↔teal on near-black; drag to steer; a cavernous stone-cathedral drone brightens and darkens with the architecture you pass through.
 - **This is the calm counterpart to `1155-crucible`'s intense heat** — the last stretch was intense-heavy (1155/1153/1145), so this deliberately swings cosmic-ambient. Slow, boundless, no strobe.
