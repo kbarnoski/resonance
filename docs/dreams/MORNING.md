@@ -1,25 +1,26 @@
-# Morning digest — last updated 2026-07-05 (cycle 669, adult · WIDE)
+# Morning digest — last updated 2026-07-05 (cycle 670, adult · DEEP)
 
-> **Following yesterday's jury**: it said the lab overdosed on my medicine — the dark glow is gone, but now nearly everything is bright-daylight with a just-intonation choir humming under it, and it **banned that bright-choir combo** so colour and sound get their range back. Today's fire is the direct answer: three never-built *engines*, each with a distinct non-choir voice and a chromatic (not daylight, not black) palette. See `docs/dreams/JURY.md`.
+> **Following yesterday's jury**: it praised the fast diversification of *form* but said embodiment came back **shallow** — motion-energy and face-blendshapes, never the body's actual geometry — and left **provocation #4 un-cashed**: *"go structural. Full-body Pose skeleton, gait→tempo, joints/limbs/presence-in-a-room as the instrument."* Today's fire cashes exactly that. See `docs/dreams/JURY.md`.
 
 ## Open this first
-- **`/dream/1196-fibration` — float, drug-free, inside the Hopf fibration. Press "Begin" (tilt your phone, or let it play itself).**
-  The 3-sphere fibres into hundreds of **interlocked glowing rings** — nested, mutually-linked tori that slowly turn inside-out through **4D**. It's a cosmic-ambient, near-death/boundless space you float through. And **the geometry *sings the topology*:** each lead ring rings a shimmering **FM bell** (pitch from its latitude, brightness from how far it swings). Jewel-tones on graphite with a luminous violet tunnel-centre — chromatic, not bright-daylight, not black.
+- **`/dream/1200-gait-loom` — your GAIT is the sequencer. Press "Begin · use camera", step back so your legs are in frame, and walk (or step in place). Headphones on.**
+  Your stepping cadence **locks a BPM**; each footfall drops a low granular thud and each arm-swing sprays bright grains, all quantized to your gait clock — a groove **weaves** as you keep moving and **unravels to silence** when you stop. No camera? It falls back to limb pads + a tap-tempo button + spacebar, same engine.
 
 ## Why this one
-- It breaks **both** monocultures the jury named in one move: the voice is **FM bells**, not a JI choir (provocation #2); the palette is **chromatic-chiaroscuro** (provocation #1); and it fills the **cosmic-ambient pole** the all-bright window is starved of.
-- It's a **genuinely new structure** — the true Hopf **fibre bundle** (grep-0×). The lab did 4D once before (`1042`) but that was a *polytope* wireframe; this is the real nested-circles topology, mathematically correct in the code.
-- Ran **WIDE**: three orthogonal grep-0× engines, each a *different* non-choir voice. Won on being the freshest structure + the freshest voice + bulletproof for a hands-free glance (auto-journey plays itself if you don't tilt).
-- **This morning's research (2026):** confirmed a *Parker Solar Probe → Hopf fibration* sonification exists (Zenodo, Feb 2025) but used a data feed + granular — so I took the opposite route the jury asked for: **pure topology, no feed** (provocation #3, "stop sonifying feeds").
+- **The instrument is your body's locomotion, not a pose→knob map.** MediaPipe Pose tracks 33 landmarks; a per-foot lift→plant state machine finds your footfalls and smooths them into tempo. **Gait→tempo was 0×** even within the lab's ~10 existing body pieces — this is the first.
+- **Breaks all four of the jury's standing bans at once:** active body-skeleton input (not passive), **granular** voice (not the banned JI choir — 6× in the window), chromatic **ember+teal-on-graphite** palette (not bright-daylight), a Canvas2D loom that isn't a bright scene.
+- **Ran DEEP:** three body-skeleton instruments with three different non-JI voices raced; `1200` (gait→granular) won for being the freshest angle + voice + *form*.
+- **Honest scope-check that shaped it:** the jury called full-body Pose "0×", but a grep says it's lab-common (677/582/803/811/869…) — it's only 0× in the recent *window*. So I didn't oversell it as a new technique; the real freshness is gait+granular+rhythm. That same grep killed one of the three at curate (a body→drumhead→modal piece too close to the shipped **803-body-chimes** — the "same instrument twice" trap you flagged with 1190≈1152).
 
-## Explored but banked (2 more — see IDEAS §669, both fully built + folder-clean)
-- **⭐ `1195-ignition`** — a living sheet of **spiking neurons** (real Hodgkin–Huxley/Izhikevich dynamics) you **touch to ignite**; ignition spreads as travelling spike-waves and every spike strikes a **modal-percussion** drum. Teal→ember chiaroscuro. My **top resurrect** — the strongest pure *instrument* of the three; banked only because its modal voice echoes yesterday's `1193` gong. One word and I ship it next.
-- **`1197-torsion`** — a **(p,q) torus knot** you **drag to re-tie**, its crossings driving a **Karplus–Strong plucked string**; ink-blue + vermilion **two-colour Ikeda** palette (the directest hit on your "two-colour riso" provocation). Banked because its topology→sound coupling is the loosest of the three.
+## Explored but banked (2 more — see IDEAS §670, both fully built + clean)
+- **⭐ `1198-limbline`** — your body as **plucked Karplus-Strong strings**: each bone a waveguide, a fast joint plucks it, extending a limb rings it lower; glowing filaments with pulses that travel down a struck bone. Robust, distinct voice — my **top resurrect** for the next embodied slot; lost only because gait→tempo was the newer angle.
+- **`1199-resonant-room`** — your joints strike a real **128×128 finite-difference wave-membrane**; the drumhead's own modes are the sound. Dropped because it lands too near 803-body-chimes.
+
+## Heads-up (build gate — infra, not code)
+- The winner passed the **real gate**: `next lint --dir 1200-gait-loom` → **0 warnings/0 errors**, `tsc --noEmit` project-wide → **0 errors**. The full `npm run build` still can't finish *in this container* — it hits the **standing `EMFILE` fd ceiling** (hard-capped at 4096 open files) during static-gen of the ~700-page tree. **Same ceiling documented back in cycle 603; Vercel has no such cap and deploys normally** (668/669 are live). Not a code problem.
+- **NOT camera/ear-verified** (headless container, no webcam/speakers): the gait lift/plant thresholds, grain balance, and tempo-lock *feel* want your screen + a few steps. The tap-tempo/pad fallback guarantees it's never blank or silent.
 
 ## Still queued behind you
-- **Near-black-glow ban** (jury 07-04, "for a week") lifts ~**07-11** — still gates the dark resurrects `1174-magnetosphere-song`, `1166-ear-tone-field`. Lift it early? One word.
-- The jury's remaining un-cashed provocations: **structural full-body Pose** (skeleton/joints as the instrument — camera pose *exists* but never as real body geometry), and **WebRTC multi-user** (still 0×, still blocked on your **signaling-store** call — or say "stub it against a public test server" and I'll open the category).
-- `1195-ignition` (⭐) · `1197-torsion` · `1184-phase-mill` (Reich phasing) · `1189-turner-sky` (painterly sky) all want a slot.
-
-## Honest gap
-- 1196 is **build-green + math-verified, not GPU/ear-verified** — the Hopf quaternion math and stereographic projection are correct by construction, but whether the nested tori *read* as "floating through 4D" and the FM bells *read* as the topology singing wants your screen + speakers (the container is headless). A Canvas2D fallback + the self-playing auto-journey guarantee it's never blank or silent.
+- Jury's other un-cashed provocations: **WebRTC multi-user** (still 0×, still blocked on your **signaling-store** call — or say "stub it against a public test server"); **depth-camera spatial audio** (0×).
+- Near-black-glow ban (jury 07-04) lifts ~**07-11** — gates the dark resurrects `1174-magnetosphere-song`, `1166-ear-tone-field`.
+- `1198-limbline` (⭐) · `1195-ignition` (⭐) · `1197-torsion` · `1189-turner-sky` all want a slot.
