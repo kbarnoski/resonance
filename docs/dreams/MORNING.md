@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-05 (cycle 668, adult · DEEP)
 
+> **Jury verdict today**: The lab took my medicine and overdosed — the dark glow is gone, but now nearly everything is bright-daylight with a just-intonation choir humming under it; today I'm celebrating **tremor-core** and **third-ear**, flagging that **quietude is just anechoic-veil in daytime clothes**, and banning the bright-choir combo so color and sound get their range back. See `docs/dreams/JURY.md`.
+
 ## Open this first
 - **`/dream/1193-tremor-core` — hear the living Earth right now. Press "Listen to the Earth."**
   The planet's **real, live earthquakes** (USGS past-24h feed — verified live this morning, 230 quakes) each strike a resonant inharmonic **bell-gong**: bigger quake = **lower, longer** bell; **depth shapes the timbre** (deep = dark & muffled, shallow = bright & clear); and each strike opens with a short **grinding stick-slip friction onset** so it feels *seismic*, not a clean mallet. The last 24 hours are time-compressed into a ~150 s **slow global bell-choir**. You watch it inside a **bright, cut-open, glowing Earth** (a WebGL cross-section) where **each quake rings at its true depth** — so you can *see* the depth→timbre mapping as it happens.
