@@ -1,25 +1,28 @@
-# Morning digest — last updated 2026-07-05 (cycle 671, adult · WIDE)
+# Morning digest — last updated 2026-07-05 (cycle 672, adult · DEEP)
 
-> **Following the jury**: its headline was that the *sound* homogenized — six of the last fifteen play a just-intonation choir/drone, "new costume, same body." Provocation #2: *"ban the JI choir for a week — build the next piece on a fundamentally different synthesis: granular/FM/physical-modeling/noise-spectral/waveguide. Change the VOICE, not just the visual."* Today's fire is three fresh voices raced head-to-head, shipping the freshest. See `docs/dreams/JURY.md`.
+> **Following the jury**: its un-cashed provocation #5 named *"a conducted shared ensemble"* as **the single largest un-built category** in the whole menu. So today went DEEP — one big concept (a many-hand collaborative instrument), three topologies raced, ship the least-derivative. Research spine: a **lookahead-commit** distributed clock (StreamMUSE arXiv 2606.11886, 10 Jun 2026 + ReaLJam 2502.21267). See `docs/dreams/JURY.md`.
 
 ## Open this first
-- **`/dream/1203-gendy` — hold a living waveform and tune it from a pure tone to a stochastic roar. Press Begin, headphones on, then drag on the field.**
-  The tone isn't sampled or oscillated — it's **drawn** as a 12-corner polygon, and every cycle each corner takes a random step (Xenakis's GENDYN). **Drag up/right** and the walk tightens into a clean pitched tone; **drag down/left** and it convulses into gritty, living roughness. The glowing oscilloscope *is* the actual waveform, breathing over its own afterimage so you can see the random walk.
+- **`/dream/1206-murmuration` — a flock of 180 voice-birds that *sings when it clusters*. Press "Enter the flock", headphones on, then move your pointer to pull the swarm.**
+  You are a glowing attractor; the murmuration bends toward you, and when birds knot together they ring a glassy, bowed-glass ping. **Open a second tab** and each tab becomes another hand — the two of you sculpt one emergent piece together, kept in phase by a shared beat clock. Alone, two drifting ghost-attractors keep it breathing.
 
 ## Why this one
-- **A synthesis voice this lab has literally never had.** GENDYN (dynamic stochastic synthesis) is grep-0× — Xenakis was only ever *name-dropped* before (cellular automata, UPIC, granular), never built as a stochastic-waveform voice. It's the most direct answer to the jury's "the ear is bored" — a whole new category of sound, not another pad.
-- **Clears all four standing bans:** active drag input (not passive), GENDYN voice (not the banned JI choir), WebGL2 feedback oscilloscope (not bright-Canvas2D), violet→amber-on-charcoal chromatic chiaroscuro (neither bright-daylight nor flat near-black).
-- **Ran WIDE:** three orthogonal fresh voices — GENDYN stochastic · Izhikevich→modal · torus-knot→Karplus-Strong — raced. GENDYN won on being the single freshest voice against the jury's exact complaint.
+- **The lab's first *collaborative* instrument** — every prior multi-peer piece is a 2-person duet (508, 729, 1077). This is a symmetric N-hand ensemble where the swarm itself is the shared score.
+- **A real distributed-timing spine, not a fake.** The voice is quantised to a shared beat grid and committed one beat ahead (lookahead-commit, straight from this week's StreamMUSE paper + ReaLJam) — so tabs ring the same notes in phase instead of chasing each other's latency.
+- **Clears all four standing bans:** active multi-hand input (not passive), granular bowed-glass voice (not the banned JI choir), deep-indigo additive chiaroscuro (not bright-daylight Canvas2D), teal→magenta→amber chromatic palette.
+- **Honest ambition: 3/5.** I did *not* claim "first multi-user" — a grep found the jury was wrong that it's 0× (WebRTC/BroadcastChannel duets already exist). The fresh part is the *collaborative flock-instrument + distributed clock* combination.
 
-## Explored but banked (2 more — see IDEAS §671, both fully built + clean)
-- **⭐ `1201-ignition`** — a 96×96 sheet of **Izhikevich spiking neurons** you **ignite with a touch**; ignition spreads as spike-spirals, each spike striking **inharmonic modal percussion**, in teal→ember. Strongest ambition floor (4/5), a keeper engine — my **top resurrect** for the next intense/active-touch slot. Lost only because its modal voice is the least-fresh of the three (echoes 1193's gong).
-- **`1202-torsion`** — a **(p,q) torus knot** you **drag to re-tie**, its topology plucking a **Karplus-Strong string**, in a strict two-colour ink-blue+vermilion Ikeda palette. This rebuild finally delivered a *true* projected-crossing detector — so it **supersedes** the older banked 1197. Resurrect for the next two-colour / plucked-string slot.
+## Explored but banked (2 more — see IDEAS §672, both fully built + lint/tsc clean)
+- **`1204-baton-ensemble`** — you *conduct* with a baton (tempo/dynamics/key), others each drive one chair of an FM gamelan section. Lovely, but it shadows the existing **754-conducted-table** — same concept, so I banked it rather than ship the instrument twice.
+- **`1205-loom-in-c`** — a leaderless room playing Terry Riley's *In C*, everyone braiding through the 53 cells at their own pace, on a struck-bar marimba. Also strong, but it shadows the existing **1183-in-c-loom**. Banked.
 
 ## Heads-up (build gate — infra, not code)
-- Winner passed the **real gate**: `next lint --dir 1203-gendy` → **0 warnings/0 errors**; `tsc --noEmit` project-wide → **0 errors**; the winner's `page.js` **compiled (51 KB)**. The full `npm run build` still can't finish *in this container* — the **standing `EMFILE` fd ceiling** (hard-capped 4096 open files) hits during static-gen of the ~700-page tree. **Same ceiling since cycle ~472; Vercel has no such cap and deploys normally.** Not a code problem.
-- **NOT ear/GPU-verified** (headless box, no speakers/display): whether the grit *reads* as a musical order↔chaos gradient wants your hardware. The Canvas2D fallback + slow-breath idle guarantee it's never blank or silent.
+- Winner passed the real gate: `next lint --dir 1206` → **0 warnings/0 errors**; `tsc --noEmit` project-wide → **0 errors**; the winner's `page.js` **compiled (28.7 KB)**. The full `npm run build` "compiled with warnings" (all pre-existing files, **none from 1206**) then can't finish static-gen in this container — the **standing `EMFILE` fd ceiling** since ~cycle 472. **Vercel has no such cap and deploys normally.**
+- **NOT ear/GPU-verified, and multiplayer not runtime-verified** (headless box, no speakers/display, can't open two live tabs): whether the flock *reads* as gorgeous and whether two tabs truly stay phase-locked wants your hardware. Solo + ghost path guarantees it's never blank/silent.
+
+## Open question for you
+- **Cross-device multiplayer** (phone ↔ laptop, not just two tabs) needs a signaling-store decision — or I can stub it against a public WebRTC broker. 1206's intent/clock protocol is already the right shape to drop onto WebRTC. Say the word and next cycle wires it.
 
 ## Still queued behind you
-- Jury's un-cashed provocations: **WebRTC multi-user** — the jury calls it 0×, but a grep found several prior attempts (`508-accord-call`, `754-conducted-table`, `918`…); it's a *revisit*, not a clean 0×, and still wants your **signaling-store** call (or "stub it against a public test server"). **Depth-camera spatial audio** is genuinely 0×.
-- Near-black-glow ban (jury 07-04) lifts ~**07-11** — gates the dark resurrects `1174-magnetosphere-song`, `1166-ear-tone-field`.
-- `1201-ignition` (⭐) · `1202-torsion` · `1198-limbline` (⭐) · `1189-turner-sky` all want a slot.
+- `1201-ignition` (⭐ Izhikevich→modal) · `1202-torsion` (torus-knot→Karplus-Strong) · `1198-limbline` · `1189-turner-sky`.
+- Genuinely fresh grep-0× engines confirmed for a future WIDE: **Belousov–Zhabotinsky** spiral waves · **magnetohydrodynamics / Alfvén waves**.
