@@ -1,25 +1,25 @@
-# Morning digest — last updated 2026-07-05 (cycle 668, adult · DEEP)
+# Morning digest — last updated 2026-07-05 (cycle 669, adult · WIDE)
 
-> **Jury verdict today**: The lab took my medicine and overdosed — the dark glow is gone, but now nearly everything is bright-daylight with a just-intonation choir humming under it; today I'm celebrating **tremor-core** and **third-ear**, flagging that **quietude is just anechoic-veil in daytime clothes**, and banning the bright-choir combo so color and sound get their range back. See `docs/dreams/JURY.md`.
+> **Following yesterday's jury**: it said the lab overdosed on my medicine — the dark glow is gone, but now nearly everything is bright-daylight with a just-intonation choir humming under it, and it **banned that bright-choir combo** so colour and sound get their range back. Today's fire is the direct answer: three never-built *engines*, each with a distinct non-choir voice and a chromatic (not daylight, not black) palette. See `docs/dreams/JURY.md`.
 
 ## Open this first
-- **`/dream/1193-tremor-core` — hear the living Earth right now. Press "Listen to the Earth."**
-  The planet's **real, live earthquakes** (USGS past-24h feed — verified live this morning, 230 quakes) each strike a resonant inharmonic **bell-gong**: bigger quake = **lower, longer** bell; **depth shapes the timbre** (deep = dark & muffled, shallow = bright & clear); and each strike opens with a short **grinding stick-slip friction onset** so it feels *seismic*, not a clean mallet. The last 24 hours are time-compressed into a ~150 s **slow global bell-choir**. You watch it inside a **bright, cut-open, glowing Earth** (a WebGL cross-section) where **each quake rings at its true depth** — so you can *see* the depth→timbre mapping as it happens.
+- **`/dream/1196-fibration` — float, drug-free, inside the Hopf fibration. Press "Begin" (tilt your phone, or let it play itself).**
+  The 3-sphere fibres into hundreds of **interlocked glowing rings** — nested, mutually-linked tori that slowly turn inside-out through **4D**. It's a cosmic-ambient, near-death/boundless space you float through. And **the geometry *sings the topology*:** each lead ring rings a shimmering **FM bell** (pitch from its latitude, brightness from how far it swings). Jewel-tones on graphite with a luminous violet tunnel-centre — chromatic, not bright-daylight, not black.
 
 ## Why this one
-- This is the **⭐ resurrect I've flagged for two cycles** (`1191-tremor-gongs`) — finally shipped. It cashes your jury's **provocation #5** ("real-world data sonification — 0× in fifteen; build about the *world*, not a Hamiltonian").
-- But I deliberately **re-formed it** to avoid the one thing it was banked on: a bright 2D *world map* repeats `1173-solar-wind-choir`. Instead it renders the Earth's **depth structure** — a fresher form — and on **WebGL**, dodging Canvas2D, which has quietly become the lab's over-used surface (6 of the last 10).
-- Ran **DEEP**: one concept, two renderers. Beat `1194-tremor-strata` (the same engine on a bright SVG depth-*column* diagram) on being the more *transporting* render.
-- **This morning's research (2026):** the stick-slip friction onset comes from *"Echoes of the Land"* (arXiv 2507.14947, 2025), and Alexandre Estrela's *"RedSkyFalls"* at the **Venice Biennale 2026** does this exact thing live — the domain is current, not recycled.
+- It breaks **both** monocultures the jury named in one move: the voice is **FM bells**, not a JI choir (provocation #2); the palette is **chromatic-chiaroscuro** (provocation #1); and it fills the **cosmic-ambient pole** the all-bright window is starved of.
+- It's a **genuinely new structure** — the true Hopf **fibre bundle** (grep-0×). The lab did 4D once before (`1042`) but that was a *polytope* wireframe; this is the real nested-circles topology, mathematically correct in the code.
+- Ran **WIDE**: three orthogonal grep-0× engines, each a *different* non-choir voice. Won on being the freshest structure + the freshest voice + bulletproof for a hands-free glance (auto-journey plays itself if you don't tilt).
+- **This morning's research (2026):** confirmed a *Parker Solar Probe → Hopf fibration* sonification exists (Zenodo, Feb 2025) but used a data feed + granular — so I took the opposite route the jury asked for: **pure topology, no feed** (provocation #3, "stop sonifying feeds").
 
-## Explored but banked (1 more — see IDEAS §668, fully built + typecheck-clean)
-- **`1194-tremor-strata`** — the same live-earthquake gong engine rendered as a bright **SVG depth-strata column** (labeled crust → lower mantle, 0–700 km), quakes blooming at their depth. The legible, diagrammatic sibling. Cleanest resurrect: a **"cross-section ↔ depth-column" toggle on 1193** — one planet, two ways to read it. One word and I graft it on.
+## Explored but banked (2 more — see IDEAS §669, both fully built + folder-clean)
+- **⭐ `1195-ignition`** — a living sheet of **spiking neurons** (real Hodgkin–Huxley/Izhikevich dynamics) you **touch to ignite**; ignition spreads as travelling spike-waves and every spike strikes a **modal-percussion** drum. Teal→ember chiaroscuro. My **top resurrect** — the strongest pure *instrument* of the three; banked only because its modal voice echoes yesterday's `1193` gong. One word and I ship it next.
+- **`1197-torsion`** — a **(p,q) torus knot** you **drag to re-tie**, its crossings driving a **Karplus–Strong plucked string**; ink-blue + vermilion **two-colour Ikeda** palette (the directest hit on your "two-colour riso" provocation). Banked because its topology→sound coupling is the loosest of the three.
 
 ## Still queued behind you
-- **Near-black-glow ban** (jury, 07-04, "for a week") lifts ~**07-11** — still gates the dark resurrects `1174-magnetosphere-song`, `1166-ear-tone-field`. Lift it early? One word.
-- `1184-phase-mill` (Reich phasing) + `1189-turner-sky` (painterly sky) both want to graft on as mode-toggles (onto 1183 / 1188).
-- **MIDI input** is now the freshest *embodied* lane — MediaPipe camera/body is lab-saturated (33 prototypes), so it no longer counts as novel.
-- **WebRTC multi-user** still blocked on your **signaling-store** call.
+- **Near-black-glow ban** (jury 07-04, "for a week") lifts ~**07-11** — still gates the dark resurrects `1174-magnetosphere-song`, `1166-ear-tone-field`. Lift it early? One word.
+- The jury's remaining un-cashed provocations: **structural full-body Pose** (skeleton/joints as the instrument — camera pose *exists* but never as real body geometry), and **WebRTC multi-user** (still 0×, still blocked on your **signaling-store** call — or say "stub it against a public test server" and I'll open the category).
+- `1195-ignition` (⭐) · `1197-torsion` · `1184-phase-mill` (Reich phasing) · `1189-turner-sky` (painterly sky) all want a slot.
 
 ## Honest gap
-- 1193 is **build-green + logic-verified, not ear/eye-verified** — whether the bell-choir *reads* as musical (vs. too sparse or machine-gun) and the glowing cross-section *reads* as a ringing planet want your speakers + a real browser (the container is headless). The live USGS feed IS reachable, and it degrades to identical-sounding sample data + a Canvas2D fallback on any failure, so it never blank-screens or falls silent.
+- 1196 is **build-green + math-verified, not GPU/ear-verified** — the Hopf quaternion math and stereographic projection are correct by construction, but whether the nested tori *read* as "floating through 4D" and the FM bells *read* as the topology singing wants your screen + speakers (the container is headless). A Canvas2D fallback + the self-playing auto-journey guarantee it's never blank or silent.
