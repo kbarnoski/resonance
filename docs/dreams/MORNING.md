@@ -1,42 +1,46 @@
-# Morning digest — last updated 2026-07-06 ~06:xx UTC (cycle 677, adult · WIDE)
+# Morning digest — last updated 2026-07-06 ~later UTC (cycle 678, adult · DEEP)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ `/dream/1220-torsion` — the winding numbers ARE the tuning.**
-  A glowing **(p,q) torus knot** — one string wound *p* times around a donut and
-  *q* times through it — floating in 3D. **Drag empty space to turn it; click the
-  string to pluck it.** Each pluck is a real **Karplus–Strong plucked string**, and
-  a **displacement wave travels down the tube from exactly where you touched** — so
-  the thing you *see* and the thing you *hear* are the same object. Tap a preset —
-  **(2,3) trefoil · (3,2) · (2,5) cinquefoil · (3,4)** — and the whole instrument
-  **retunes**, because the two winding numbers literally set the scale. **Why open
-  it:** it's a gemstone you can turn in your hand and play; garnet/gold on deep
-  indigo, no setup, just drag and pluck.
+- **`/dream/1225-tideglass` — your two hands play a cloud of sound in stereo space.**
+  Stand in front of the camera: your two hands become **grain-heads** scrubbing a
+  living **granular cloud**. **Lift a hand** to raise its pitch and brighten it,
+  **reach wide** to scatter a dense shower of grains, bring your **hands together**
+  to focus it to a point — and your **body's place in the room pans the whole cloud
+  in true stereo**. Rendered as a teal→violet **3D depth field** of drifting points
+  that spark amber as they fire, your hands two bright attractors moving through it.
+  **Why open it:** it's the lab's first instrument where *where you stand in the
+  room* is a real spatial-audio control — and it plays itself (auto-drifting hands)
+  even with no webcam, so a cold glance still hears and sees it.
 
-## Why this one (the story)
-- Alternation said **WIDE** this fire, so I fielded **three unrelated grep-0×
-  engines** (none sharing a tag) and shipped the one that best breaks the "too
-  similar" pattern you flagged. Two of the three cashed *never-built* ideas the lab
-  banked back in cycle 669. `1220` won because it lands on a **starved surface**
-  (real 3D — most recent pieces are flat full-screen fields) with a **fresh plucked
-  voice**, not because the others were weak — they weren't.
+## Why this one (and an honest flag)
+- Alternation said **DEEP** this fire, so I ran **one concept — *your body plays the
+  sound* — three ways** (bones→plucked strings, joints→bells, hands→spatial grain
+  cloud) and shipped the strongest. **Honest flag:** I picked "body as instrument"
+  off your jury's "structural embodiment is 0×" note — but at curate I caught that
+  it's only 0× in the *recent* window; the lab has actually built a lot of body
+  pieces (803-body-chimes, 869, 1068, 1200-gait-loom last week). Two of my three
+  explorations turned out to re-derive ideas we already banked back at cycle 670.
+  **`1225` survives because its one axis — true stereo spatial audio from body
+  position — is genuinely new**, but the concept pick was weaker on novelty than I'd
+  want, and I've flagged the next cycle to grab a *whole-lab* 0× category instead.
+  (Root cause: web search was down all fire — 529 overloaded — so I couldn't do a
+  real freshness dive and leaned on the jury note.)
 
-## Also explored this fire (WIDE — 3 built, 1 shipped, 2 banked ⭐)
-- **⭐ `1219-ignition`** (banked, RESURRECT-FIRST) — **ignite a sheet of spiking
-  neurons and it drums itself.** A living membrane (real Izhikevich neurons) where a
-  tap sends a spike wave rippling out, striking metal tones, evolving over minutes.
-  Actually the *higher-ambition* build (4/5) — it lost **only** because its
-  full-screen 2D field is the visual you've seen too much of lately. **Say the word
-  and it ships next.**
-- **⭐ `1221-foldsong`** (banked) — **fold a plain sine into a living voice.** The
-  lab's first **West-Coast wavefolder + Buchla lowpass-gate** — play the keyboard,
-  drag to fold, and watch a pure tone bloom into a rich harmonic voice on a warm
-  analog scope. The freshest *sound* of the three.
+## Also explored this fire (DEEP — 3 built, 1 shipped, 2 banked)
+- **`1223-marrow`** (banked) — **your skeleton as a harp**: each bone a Karplus–Strong
+  string, length = pitch, limb speed = pluck. Banked because it duplicates our
+  already-banked `1198-limbline` and reuses last night's plucked-string voice.
+- **`1224-augur`** (banked) — **your posture tunes a set of bells**: each joint an
+  inharmonic resonator that detunes as you bend it. Banked because it's essentially
+  the `803-body-chimes` we already shipped, built again.
 
 ## Open questions for Karel
-- **Which of the two banks do you want next?** `1219` (the self-drumming neuron
-  field — one word ships it) or `1221` (the wavefolder synth)?
-- The **responsive-duet lane** (jazz mic partner, `1216-consort`) from cycle 676 is
-  still waiting on **a mic test on your hardware** — one word and it ships.
-- **Multi-user / WebRTC** still needs your **signaling-store call**.
+- **Where next?** I'd like to spend the next fire on a *whole-lab* 0× category —
+  the biggest un-built one is still **multi-user / WebRTC** (a conducted shared
+  room), which only needs your **signaling-store call**. Otherwise a fresh physics
+  engine (Belousov–Zhabotinsky / Hodgkin–Huxley — the self-drumming neuron field
+  `1219-ignition` is built and one word ships it).
+- The **jazz mic duet partner** (`1216-consort`, cycle 676) still waits on **a mic
+  test on your hardware** — one word and it ships.
