@@ -1,46 +1,18 @@
-# Morning digest — last updated 2026-07-06 ~later UTC (cycle 678, adult · DEEP)
+# Morning digest — last updated 2026-07-06 ~10:2x UTC (cycle 679, adult · WIDE)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/1225-tideglass` — your two hands play a cloud of sound in stereo space.**
-  Stand in front of the camera: your two hands become **grain-heads** scrubbing a
-  living **granular cloud**. **Lift a hand** to raise its pitch and brighten it,
-  **reach wide** to scatter a dense shower of grains, bring your **hands together**
-  to focus it to a point — and your **body's place in the room pans the whole cloud
-  in true stereo**. Rendered as a teal→violet **3D depth field** of drifting points
-  that spark amber as they fire, your hands two bright attractors moving through it.
-  **Why open it:** it's the lab's first instrument where *where you stand in the
-  room* is a real spatial-audio control — and it plays itself (auto-drifting hands)
-  even with no webcam, so a cold glance still hears and sees it.
+- **`/dream/1226-loom` — pluck a glowing ring and hear its SHAPE.** ⭐ tonight's ship (adult, WIDE-winner). A 128-mass springy ring wobbles in slow motion; that live wobble *is* the waveform you hear (real **scanned synthesis**, Verplank/Mathews/Shaw 2000). Pluck it with the mouse, or play `a s d f g h j k` in D Dorian — one gesture morphs both the teal→magenta 3D ring and the timbre. It breathes on load and auto-plucks when idle, so it's already playing when you open it. **Why open:** the most tactile "the instrument you see IS the sound" piece the lab has made — and the literal cash of today's research (the string-physics frontier where the moving object and its sound are one state).
 
-## Why this one (and an honest flag)
-- Alternation said **DEEP** this fire, so I ran **one concept — *your body plays the
-  sound* — three ways** (bones→plucked strings, joints→bells, hands→spatial grain
-  cloud) and shipped the strongest. **Honest flag:** I picked "body as instrument"
-  off your jury's "structural embodiment is 0×" note — but at curate I caught that
-  it's only 0× in the *recent* window; the lab has actually built a lot of body
-  pieces (803-body-chimes, 869, 1068, 1200-gait-loom last week). Two of my three
-  explorations turned out to re-derive ideas we already banked back at cycle 670.
-  **`1225` survives because its one axis — true stereo spatial audio from body
-  position — is genuinely new**, but the concept pick was weaker on novelty than I'd
-  want, and I've flagged the next cycle to grab a *whole-lab* 0× category instead.
-  (Root cause: web search was down all fire — 529 overloaded — so I couldn't do a
-  real freshness dive and leaned on the jury note.)
+## Explored but not shipped (banked → IDEAS §679)
+- **`1227-operators`** — an **FM synth as a 3D galaxy**: drag a modulator star toward a carrier and hear the sidebands bloom (real Chowning/DX FM). The literal "give me FM" ask — held only for less interaction depth (fixed ratios) + no research tie.
+- **`1228-reed`** — **blow into your screen and a reed pipe self-oscillates + overblows** (McIntyre–Schumacher–Woodhouse wind model, mic or slider). Boldest voice — held because the overblow is a disclosed "assisted" trick and the mic path can't be verified headless. Worth a resurrect once you can test the mic on your hardware.
 
-## Also explored this fire (DEEP — 3 built, 1 shipped, 2 banked)
-- **`1223-marrow`** (banked) — **your skeleton as a harp**: each bone a Karplus–Strong
-  string, length = pitch, limb speed = pluck. Banked because it duplicates our
-  already-banked `1198-limbline` and reuses last night's plucked-string voice.
-- **`1224-augur`** (banked) — **your posture tunes a set of bells**: each joint an
-  inharmonic resonator that detunes as you bend it. Banked because it's essentially
-  the `803-body-chimes` we already shipped, built again.
+## Research findings worth a look
+- WebSearch recovered after yesterday's outage. Two dives (RESEARCH §679): **(1)** differentiable physical-modeling of strings is the live cs.SD frontier → drove tonight's build. **(2)** WebGPU compute-shader creative coding went mainstream in 2026 (ShaderVine's 16 browser sims, audio-reactive TSL fluid) — banked for a future WebGPU-compute-as-instrument fire.
 
 ## Open questions for Karel
-- **Where next?** I'd like to spend the next fire on a *whole-lab* 0× category —
-  the biggest un-built one is still **multi-user / WebRTC** (a conducted shared
-  room), which only needs your **signaling-store call**. Otherwise a fresh physics
-  engine (Belousov–Zhabotinsky / Hodgkin–Huxley — the self-drumming neuron field
-  `1219-ignition` is built and one word ships it).
-- The **jazz mic duet partner** (`1216-consort`, cycle 676) still waits on **a mic
-  test on your hardware** — one word and it ships.
+- Three fresh *voices* landed this week (scanned / FM / wind-waveguide) plus granular (1225) — **which do you want deepened into a real instrument?** (loom → full 2D scanned *drumhead*; operators → editable-ratio FM; reed → true tonehole overblow.)
+- The lab is ~1226 pieces deep, so "never-used technique" (ambition #1) is nearly unreachable — I've rested honestly on subsystems + named refs + fresh voices. Still the right bar, or force novelty harder (e.g. commit a WebGPU-compute lane)?
+- Standing verification debt: tonight's sound is build-green but **unheard** (headless box, no speakers). The keyboard route needs no mic, so 1226 is fully driveable by you.
