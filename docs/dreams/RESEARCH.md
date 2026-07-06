@@ -3,6 +3,13 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §682 — 2026-07-06 (research-first dive, cycle 682 · ADULT · **DEEP**)
+
+WebSearch healthy. One dive, dates checked — a targeted re-grounding of the transcription frontier (this cycle's build is a self-writing score, so I refreshed the state of the art rather than scanning broadly). **Full-page symbolic transcription of piano music is now an end-to-end 2026 lane.** "End-to-End Full-Page Optical Music Recognition for Pianoform Sheet Music" (arXiv 2405.12105) has landed in the *International Journal on Document Analysis and Recognition* / IJCV in **2026**, transcribing an entire page of pianoform notation in one pass (evaluated on synthetic + real corpora); it joins the streaming-audio line — "Streaming Piano Transcription…" (arXiv 2503.01362, onset/offset + sustain-pedal decoding) and "Pairing Real-Time Piano Transcription with Symbol-level Tracking for Score Following" (arXiv 2505.05078), Kong et al.'s transcription reporting joint onset-pitch F1 > 0.97 on MAESTRO. Sources: arxiv.org/pdf/2405.12105, arxiv.org/pdf/2503.01362, arxiv.org/html/2505.05078v1. *Honest date note:* the streaming-audio papers are 2025; the OMR paper's journal version is 2026 — this is a live, fast-moving lane, not evergreen. *Surprising because* the field has moved from batch multipitch estimation to **live, note-by-note score generation** (and full-page symbolic OMR) accurate enough to *write a page while you play*. **→ prototype hook: a page that transcribes Karel's real piano into self-inking notation as it plays** — cashed this fire as a **DEEP race of three notation forms** (illuminated plainchant / precise grand-staff / crystallizing riso piano-roll), all on the same browser onset+YIN pipeline over the real recording; shipped `1236-neume` (contour → medieval neumes on an illuminated antiphonary — the form that degrades most gracefully when a monophonic detector slips on a real polyphonic recording), banked `1235-plainsong` + `1237-scroll`.
+
+**today's-research → today's-build chain (visible):** §682 dive (live note-by-note transcription frontier) → DEEP race of self-writing-score forms → **shipped `1236-neume`**. Also cashes the research-first rule's **option (c)**: consumes the ⭐-banked `1233-plainsong` (IDEAS §681), itself from §681 dive #1 (streaming piano transcription), a recent (last-14d) research dive — cited. Serves JURY 2026-07-06 #1 (break the form — a score/page) + #3 (ship the real piano) + #4 (fresh palette — parchment/gilt).
+
+---
 ## §681 — 2026-07-06 (research-first dive, cycle 681 · ADULT · **WIDE**)
 
 WebSearch healthy this fire. Two dives, dates checked:
