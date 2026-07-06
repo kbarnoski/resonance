@@ -1,51 +1,48 @@
-# Concept Jury Verdict — 2026-07-05
+# Concept Jury Verdict — 2026-07-06
 
 ## Summary
-The lab took the 2026-07-04 medicine and swallowed the whole bottle. The near-black
-cosmic glow that was 10 of the prior 15 is *gone* — the last window is embodied
-(camera, face, tilt), audio-first (the cochlea itself, Terry Riley), text→SVG,
-and three separate live-data sonifications. That is a genuine, fast, praiseworthy
-diversification of **form**. But the pendulum over-swung: **bright-daylight is now
-the monoculture** (≈10 of 15), and underneath the diversified visuals **the sound
-has homogenized** — six of fifteen play a just-intonation choir/drone-bank. We
-escaped the dark-glow trap and walked straight into its mirror image: bright,
-high-key, with a JI choir humming underneath. New costume, same body.
+The lab is disciplined but camping. Every one of the last 15 clears the ambition
+floor and dodges the *hard* bans — but 13 of 15 sit at the bare 2–3 minimum, and
+underneath the nightly voice-rotation a new monoculture has quietly reassembled:
+**a jewel-toned 3D object you pluck/strike and hear ring** (1209 → 1213 → 1220 →
+1226 → 1231). The team broke the *timbre* monoculture the last jury named and
+then rebuilt it one level up as a *form* monoculture. Two builds genuinely soared
+— `1213-splatsong` and `1193-tremor-core` — and they show exactly what "above the
+floor" looks like.
 
 ## Diversity audit
-- **Over-represented input:** *passive / no-active-gesture* — **5×** (1161, 1165, 1173, 1183, 1193 all play themselves; the human only presses Begin). Drag/touch collapsed to **3×** (1153, 1155, 1158) — down from the prior window's 8×, a real win. Embodied (camera) is back at 2× (1160, 1185); tilt 1× (1170); text/keyboard 1× (1180).
-- **Over-represented output:** *Canvas2D (bright)* — **4×** (1160, 1161, 1170, 1173). three.js 3D **3×** (1153, 1155, 1158); WebGL2 fragment shader **3×** (1152, 1188, 1193); SVG **2×** (1180, 1190); audio-first **2×** (1165, 1183). Output surface is the healthiest axis in the window.
-- **Over-represented technique:** *just-intonation choir / drone-bank as the sound engine* — **6×** (1152, 1160, 1161, 1170, 1173, 1190). This is the hidden monoculture. The visual algorithms are all distinct and lab-first; the **synthesis voice** is the same warm JI pad over and over. Real-world-data-sonification is a rising cluster at **3×** (1161, 1173, 1193); physics-sim-as-instrument fell to **3×** (1153, 1155, 1158) — down from 7×, another win.
-- **Over-represented vibe:** *bright / high-key / daylight palette* — **≈10×** (1155, 1160, 1161, 1170, 1173, 1180, 1183, 1185, 1188, 1190). The headline. This is the exact inverse of last window's near-dark 10×. We banned one monoculture and manufactured its opposite.
-- **BANNED for next cycle:** bright/high-key/daylight palette · Canvas2D-bright output · just-intonation-choir/drone-bank sound engine · passive/no-gesture input. Any build combining these four is the new re-skin and must be rejected at Decide. In particular: **no fourth "live keyless feed → bright scene → JI choir."**
+Tags for the last 15 (1188, 1190, 1193, 1196, 1200, 1203, 1206, 1209, 1210,
+1213, 1218, 1220, 1225, 1226, 1231):
+
+- **Over-represented input**: active pointer / orbit / drag direct-manipulation — **7×** (1196, 1203, 1209, 1213, 1220, 1226, 1231). The starved inputs — real-piano audio-file (1×), live external data (1×), MIDI/keyboard (1×), draw (1×), mic (1×) — each appeared only once.
+- **Over-represented output**: GPU-rendered surface (WebGL2 / three.js) — **10×**; and inside that, a **three.js / WebGL 3D single object you rotate** — **6×** (1209, 1213, 1220, 1225, 1226, 1231). Canvas2D 4×, SVG 1×. The screen bias the mandate warns about is now a GPU-3D-object bias.
+- **Over-represented technique**: no single *named* technique hits 4 — the team rotates the specific model well (Hopf, GENDYN, Alfvén, splat, torus-knot, scanned-synth, FitzHugh-Nagumo). But the *family* **"a physically-modelled resonator object, excited by a gesture, that rings its own voice"** is **~6×** (1196, 1209, 1213, 1220, 1226, 1231). The novelty is in the physics chosen, not in the interaction or the form.
+- **Over-represented vibe**: **chromatic-chiaroscuro / saturated-jewel-on-dark — 10×** (1196, 1200, 1203, 1206, 1209, 1218, 1220, 1225, 1226, 1231). This is the exact "we banned bright-daylight and manufactured its opposite" trap the team *named itself* at cycle 675 — then kept shipping it for six more nights. The only escapes were the bright pieces (1188/1190/1193) and the two hard-idiom pieces (1210 strict-mono, 1213 vitrine-neutral) — and all of them are among the strongest.
+- **BANNED for next cycle**: three.js/WebGL **3D-single-object-you-pluck** OUTPUT · **chromatic-chiaroscuro / jewel-on-dark** PALETTE · **physical-resonator-object-you-excite** TECHNIQUE-family · **pointer/orbit direct-manipulation** as the only input.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0-1 criteria: 1** — 1160-body-choir (frame-diff optical flow is textbook 40-line pixel math, no strong named ref, no research backing, ~2 subsystems). It earns its place as the *first embodied re-entry*, but on the floor it's the thinnest build in the window.
-- **Hit 2-3 criteria: 9** — 1152, 1165, 1170, 1173, 1180, 1183, 1185, 1188, 1190.
-- **Hit 4-5 criteria: 5** — 1153-vortex-filaments, 1155-crucible, 1158-gyroid-cathedral (all three: novel-lab-first-technique + ≥3 subsystems + named ref + recent research), 1161-flight-choir, 1193-tremor-core. **These are the ones to extend.**
-
-The floor is not the problem and hasn't been for two windows — 14/15 clear ≥2. The
-problem is the same one the last jury named from the other side: you can hit four
-floor criteria and still ship the tenth interchangeable *bright* piece with a JI
-choir, exactly as you could once ship the tenth *dark* physics sim. Ambition ≠
-distinctiveness.
+- **Hit 0–1 criteria**: 0 — nobody fell through the floor; the discipline is real.
+- **Hit 2–3 criteria**: **13** — 1188(3), 1190(3), 1196(3), 1200(2), 1203(3), 1206(3), 1209(3), 1210(3), 1218(3), 1220(3), 1225(2), 1226(3), 1231(2). The lab is living *at* the floor, not above it.
+- **Hit 4–5 criteria**: **2** — `1193-tremor-core` (4/5) and `1213-splatsong` (4/5). **Zero hit 5.** And criterion **#1 (never-used technique) is now being openly declined cycle after cycle** — the honesty notes admit it's "nearly unreachable" at 1225+ prototypes deep. That's the real ceiling: the lab has stopped reaching for the top two rungs.
 
 ## Standouts (positive)
-- **1193-tremor-core**: the piece that *learned the whole fortnight's lesson at once*. Live USGS seismicity → each quake an inharmonic modal bell-gong opening with a real stick-slip friction onset (arXiv 2507.14947, 2025), rendered as a bright Earth **cross-section** where every quake rings at its **true depth**. It deliberately re-formed *away* from the flat-world-map it was banked on, and it clears every prior ban. This is the model: real-world data, fresh render surface, a synthesis voice that is *not* a JI pad, and a form chosen to be unlike its own siblings.
-- **1165-third-ear**: the boldest concept in the window and the one that fights the screen bias hardest — the instrument is the listener's own cochlea (Tartini/Amacher difference tones, grep-0× as a compositional engine). No screen to speak of. Praise it for existing and for being genuinely unlike anything else the lab has made.
-- **1180-illuminated-word**: the furthest-from-the-corpus *surface* — first text→music **and** first SVG-typographic output in one build. A new input and a new output, cross-modal, bright without being a fourth Canvas2D scene.
-- **1155-crucible** (carried praise, still valid): Karel's real piano as the literal *heat* driving a real Lennard-Jones phase transition, in a crystal-cyan→plasma-magenta palette that is neither dark-cosmic nor bright-daylight. More palettes like this — chromatic, not high-key.
+- **1213-splatsong**: the ambition ceiling of the fortnight. Genuine **3D Gaussian-splat anisotropic-covariance rasterization** (grep-0×, real EWA conics, not the lab's usual loose additive blobs) + material-inference modal impact, and it *directly implements* the Feb-2026 WebSplatter dive — the cleanest today's-research→today's-build chain in the window. This is what a real #1 claim looks like.
+- **1193-tremor-core**: the most *resonant* concept — the solid Earth plays itself, live USGS quakes ringing inharmonic gongs at their true depth inside a glowing cutaway. Real-world-data sonification (seismic grep-0×), about-the-world not about-itself, bright, bulletproof with a deterministic fallback. The rare piece that reads in one phone glance.
+- **1218-shadow**: a genuine *musical intelligence* rather than another object-to-pluck — real-time functional voice-leading that harmonizes your single line into a four-voice chorale by minimizing voice motion. A different kind of ambition (harmony, not geometry) the lab attempts too rarely.
+- **1210-datamatics**: the palette escape that worked — strict Ikeda monochrome, a clinical sine/noise/click register, a draw-the-spectrogram instrument. Proof that leaving the jewel-tone comfort zone pays off.
 
 ## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **1190-quietude ≈ 1152-anechoic-veil** — the lab built the *same instrument twice*, 38 cycles apart. Both are "inverted mic, room-silence blooms a radial mandala + a JI drone-choir, stillness is the reward." 1152 is the violet-on-near-black version; 1190 is the gold-on-ivory version. That is a **palette swap of one concept**, and it's the single clearest evidence of the local minimum: the second one is the first one wearing this window's mandatory bright costume. What was missing: any mechanism that makes 1190 *not* re-derivable from 1152 (a different silence-sensor, a spatial dimension, a non-choir voice).
-- **1173-solar-wind-choir** — the most generic of the three data pieces: keyless feed → bright Canvas2D streaks → 8-voice JI choir. Technically clean, but 1161 and 1193 already occupy "live feed → bright → choir," and 1193 does it with a fresher render and a non-JI voice. What's missing: a reason this is space-weather and not any other numeric feed.
-- **1160-body-choir** — the first embodied piece back, and welcome for that, but the embodiment is *motion energy*, not *body*. Frame-diff → a choir pad is a mapping the lab has effectively made before with mic RMS; the camera adds little the microphone didn't. 1185-face-organ (real MediaPipe blendshapes → formant synth) shows what embodiment with actual structure looks like. What's missing: skeleton/pose, not a brightness-delta centroid.
+- **1231-cardium** (2/5): well-built, but it's the **fourth** excitable-media engine (1207 BZ, 1209 Alfvén, 1219 Izhikevich-bank), and the team's own note declines #1 for exactly that reason. The only fresh axes were rhythm-voice and palette; the form (dark-jewel 3D globe you nudge and watch) is the camped one. A local minimum dressed as a self-composing arc.
+- **1225-tideglass** (2/5): Pose-hands + granular is lab-common on *both* axes, and 1200-gait-loom just did Pose five cycles earlier — another "body → granular cloud on a 3D point-field." Fine execution, floor-scraping concept.
+- **1200-gait-loom** (2/5): MediaPipe Pose is well-trodden; gait→tempo is the single fresh angle carrying the whole build.
+- **The set, not just the members**: 1209 / 1213 / 1220 / 1226 / 1231 are five well-made variations of one sentence — *"a glowing 3D resonator you excite and hear."* Individually strong; collectively the monoculture the mandate exists to break, reconstituted at the form level.
 
 ## Provocations for tomorrow's dream cycle
-1. **The pendulum over-swung — kill the bright-daylight monoculture, don't flip it back to dark.** Bright/high-key is now 10 of 15. The answer is not "return to cosmic glow"; it's **chromatic range**. Ship a piece with deep saturated color, real chiaroscuro, a two-color Ikeda/riso constraint, or a deliberately limited non-neutral palette. 1155-crucible's cyan→magenta proves the lab can be serious in a palette that is neither near-black nor high-key. Palette *diversity*, not palette *inversion*.
-2. **Ban the just-intonation choir/drone-bank for a week.** It's 6 of 15 and it's why the ear is bored even when the eye isn't. Build the next piece on a *fundamentally different* synthesis: granular/sample-mangling, FM, physical-modeling percussion (1193's modal gong is the proof-of-life), noise/spectral resynthesis, waveguide. Change the *voice*, not just the visual.
-3. **Real-world-data sonification is now its own cluster (3× — 1161, 1173, 1193). Provocation #5 is cashed; stop cashing it.** If you sonify a feed again you must change the FORM hard the way 1193 did — no fourth "feed → bright scene → choir." Better: build about the *world* via a non-data route, or take a cycle off from external feeds entirely.
-4. **Embodiment is back but shallow — go structural.** 1160 is motion energy; 1185 is face blendshapes. Full-body **MediaPipe Pose (skeleton)**, depth-camera spatial audio, and gait→tempo are all *still* 0×. The "spatial/installation" menu has not appeared in this window either. Spend a cycle where the body's actual geometry — joints, limbs, presence in a room — is the instrument.
-5. **Multi-user / WebRTC is still 0× and still sitting cold in Karel's open questions.** No collaborative piece has ever shipped; the only blocker is the signaling-store decision. Resolve it, or stub it against a public test signaling server for one cycle. A conducted shared ensemble is the single largest un-built category in the entire menu — and RESEARCH.md still has grep-0× domains (Belousov–Zhabotinsky, Hodgkin–Huxley, magnetohydrodynamics, Hopf fibration, knot theory) waiting if you want a fresh *engine* to build it on.
+1. **Break the FORM, not just the voice.** The "3D jewel-toned object you pluck" is 6 of the last 15. You've rotated timbre nightly while camping form + palette. Hard-ban three.js/WebGL-3D-single-object OUTPUT **and** chromatic-chiaroscuro PALETTE for a week — force a non-object form (a room, a map, a score, a page, a conversation).
+2. **Reach for the top rungs you've abandoned.** 13/15 sit at 2–3; nothing hit 5; #1 is being waved off as unreachable. Stop chasing grep-0× novelty and instead cash criterion **#4 (multi-cycle commitment)** or a real **≥4-subsystem AI-pipeline chain** (audio→image→video, or music→narrative→TTS→score-follower). The lab has shipped **zero** genuine 2-model pipelines and **zero** >5-min stateful long-form pieces in this window (1188 only gestured at it). *Deepen a past winner across a second cycle* — the mandate explicitly wants that over another fresh floor-scraper.
+3. **Ship the real piano.** Karel's actual "Welcome Home" recording drove exactly **1×** in the last 15 (1188), and `1162-loom-of-hours` has been the ⭐ resurrect for many cycles and never shipped. The love signal points here every fire. Cash it.
+4. **Do the palette the team already knows works.** The best-received breaks from the jewel-on-dark rut were the bright pieces and the two hard-idiom pieces (strict-mono 1210, vitrine 1213). Pick a genuinely new register — high-key pastel, riso/print two-color, or clinical white — not a ninth chiaroscuro.
+5. **Multi-user is still theatre, not reality.** 1206-murmuration was the lone collaborative piece and it's BroadcastChannel (same-device). Real cross-device WebRTC is 0× in-window and has been scope-blocked on Karel's signaling-store call for **weeks** — put the one-line decision in front of him again instead of re-deferring it.
 
 ## Karel-facing line
-The lab took my medicine and overdosed — the dark glow is gone, but now nearly everything is bright-daylight with a just-intonation choir humming under it; today I'm celebrating **tremor-core** and **third-ear**, flagging that **quietude is just anechoic-veil in daytime clothes**, and banning the bright-choir combo so color and sound get their range back.
+Sharp discipline, narrowing imagination: the last five ships are the same glowing-3D-object-you-pluck in five synth voices — two builds (splatsong, tremor-core) actually soared, so break the *form* now, not just the timbre.

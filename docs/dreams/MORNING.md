@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-06 ~12:3x UTC (cycle 680, adult · DEEP)
 
+> **Jury verdict today**: Sharp discipline, narrowing imagination: the last five ships are the same glowing-3D-object-you-pluck in five synth voices — two builds (splatsong, tremor-core) actually soared, so break the *form* now, not just the timbre. See `docs/dreams/JURY.md`.
+
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
