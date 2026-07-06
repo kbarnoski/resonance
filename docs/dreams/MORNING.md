@@ -1,19 +1,20 @@
-# Morning digest — last updated 2026-07-06 ~18:xx UTC (cycle 683, adult · WIDE)
+# Morning digest — last updated 2026-07-06 ~20:xx UTC (cycle 684, adult · DEEP)
 
-> **Tonight the Sun is composing.** After two nights on your real piano (almanac, chant), this fire rotates off it and answers the *other* half of your jury (`docs/dreams/JURY.md`): **break the form** (a paper logbook, not a 3D object) and a **genuinely new palette** (warm vellum, not a ninth jewel-on-dark). Three non-object forms raced in parallel; the one that reads the live sky shipped.
-
-**Open the lab:** https://getresonance.vercel.app/dream
+**Open this first:** [**/dream/1242-stretto**](https://getresonance.vercel.app/dream/1242-stretto) — *answer your single line with a real **canon**.*
 
 ## New since yesterday
-- **`/dream/1238-heliograph` — the live solar wind, right now, composing a cosmic-ambient drone and inking itself onto a paper magnetogram.** ⭐ tonight's ship (adult, WIDE-winner). Press **"Listen to the Sun"** and the actual NOAA space-weather telemetry (solar-wind speed, the magnetic Bz, the Kp storm index) both *plays* — a slow drone that thickens with plasma density and beats + shimmers green when Bz turns southward and auroras fire — and *draws itself*, three pens inking a strip-chart onto cream vellum with a big **QUIET / UNSETTLED / STORM** readout. **Why open:** it's your `1193-tremor-core` recipe (real-world data, about-the-world, one-glance-readable) pointed at the **sky** instead of the crust — and 2026 is at solar maximum, so it's genuinely dramatic tonight (a CME hit Earth on June 30). If NOAA is unreachable behind the proxy it falls back to a built-in CME-storm day, so it always sounds and draws.
+- **`1242-stretto`** — draw a short melody (or hit **Generate a subject**), pick a canon type, and imitative voices chase your line — delayed, transposed up a 5th, mirror-inverted, doubled in length — **self-correcting** any harsh clash to the nearest consonant note, building into a stretto, all crystallizing on a scrolling riso-duotone score. **Flip the *Consonance-fix on/off* toggle to hear the intelligence working** — the raw clashes come back when it's off. Why it matters: this is a genuine **deepening of your loved `1218-shadow`** — where that stacked block *chords* under your line, this answers with **independent melodic voices** (real counterpoint, not harmony). The jury asked us to deepen a past winner instead of shipping another fresh floor-scraper; this is that.
 
-## Explored but not shipped (banked → IDEAS §683, both ⭐ resurrects)
-- **`1239-antiphon`** — a written musical **conversation**: you type a line, it's *sung back* to you (letters→scale degrees, `?`→a rising question, `.`→a falling cadence), then the instrument **answers** with a mirror-inverted reply in a darker voice, quoting your motif back — accumulating as a two-color call-and-response transcript on parchment. A genuinely new *form* (a conversation) and input (text).
-- **`1240-cavern`** — **draw the shape of a room, then hear it**: sketch walls and the enclosed geometry becomes the acoustics — big caves boom low and ring long, tight niches sound bright — with a source that wanders and pings off the walls you drew. Draw-input + a room-form, both starved lanes.
+## In progress / partial
+- Mode was **DEEP** (one concept, 3 engines raced). **2 more counterpoint pieces explored — see IDEAS §684:**
+  - **`1241-parnassus`** — strict *species counterpoint* over a cantus firmus (Fux), inking on a warm parchment manuscript. The most beautiful; banked only because its parchment page overlapped last week's `1236-neume`.
+  - **`1243-strands`** — free counterpoint that *maximizes* voice independence (literally inverts 1218's objective, on a live slider), woven as four ribbons. The sharpest idea; banked as a ⭐ resurrect.
 
-## Research finding worth a look (RESEARCH §683)
-- **Live space-weather sonification** is a current 2026 lane at solar max — *Helioradar AV* streams raw NOAA SWPC numbers into a generative "composed-by-the-Sun" soundscape, and a CME arrived **30 June 2026**. Drove tonight's build. The raw numbers a scientist reads off a magnetogram *are* a beautiful, always-changing cosmic drone.
+## Research finding worth a look
+- The live real-time-jamming frontier (LiveBand / LK-Jam / ReaLJam) runs on a *lookahead-commit* protocol — the same thing a browser does with lightweight DSP + rule-based generation. That's why all three counterpoint engines run fully client-side: no model call, no latency.
 
-## Open questions for Karel
-- **The one top rung we've never shipped is a real AI-pipeline chain** (audio→image→video, or music→narrative→TTS→score-follower). It's the loudest remaining jury ask. I want to build one next fire — but it needs a **guarded API route + an explicit opt-in "Generate" button** so it never spends your FAL/image budget without a click, plus a procedural fallback. **One-line decision:** OK to spend a small per-run image budget on an opt-in pipeline prototype? Say yes/no and I'll design it that way (or keep deferring it).
-- Standing **verification debt**: tonight is build-green but **unheard/unseen** (headless box). `1238` needs no mic — "Listen to the Sun" is fully driveable by you; whether the live NOAA fetch clears the proxy CORS (vs the offline fallback) is the one thing only your browser confirms.
+## Open question for Karel (one line — it unblocks the last untouched rung)
+- The one top rung we haven't cashed in the recent window is a **fresh ≥4-subsystem AI-pipeline** (audio→image→video, etc.). Older pieces did it (915/689/704), but a new one needs to spend a **small FAL image/video quota** — click-gated, quota-capped, with a full procedural fallback so it never spends without your tap. **May I? yes / no.** If no, I'll keep cashing the ⭐ banks (parnassus · strands · antiphon · cavern · plainsong).
+
+## Note
+- Every ship is build-verified (compile + lint + types clean) but **not ear/eye-verified** — I run headless with no speakers/display. `1242` needs no mic, so you can fully drive it from your phone; it never dead-screens (Generate seeds a canon on mount).
