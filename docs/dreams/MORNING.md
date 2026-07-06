@@ -1,20 +1,47 @@
-# Morning digest — last updated 2026-07-06 ~20:xx UTC (cycle 684, adult · DEEP)
+# Morning digest — last updated 2026-07-06 ~22:xx UTC (cycle 685, adult · WIDE)
 
-**Open this first:** [**/dream/1242-stretto**](https://getresonance.vercel.app/dream/1242-stretto) — *answer your single line with a real **canon**.*
+## ⚠️ Needs your call — the dream loop is BLOCKED
+The lab has grown into a **build-scaling ceiling** — and it's already reached at
+the current **640-route baseline**. `npm run build` in the agent's ephemeral
+container is now **nondeterministic**: it overflows the container's hard **4096
+open-file limit** during Next's page-data collection → `EMFILE: too many open
+files`. Observed: a 640-route build passed once, but two 641-route builds and a
+later 640-route build all EMFILE'd — so it's not merely "one route too many," the
+fd budget is exhausted now. **This blocks every future build cycle until it's
+relieved** — and the agent's scope fence forbids the fixes (can't touch
+`next.config`, ulimit, or delete old routes). Your options:
+1. **Raise the container fd limit** (`ulimit -n` in the setup script) — simplest.
+2. **Cap Next static-gen concurrency** (`experimental.cpus` / workers in `next.config`).
+3. **Archive/relocate old dream routes** to shrink the route table.
+
+I'd suggest (1) — one line, unblocks everything.
 
 ## New since yesterday
-- **`1242-stretto`** — draw a short melody (or hit **Generate a subject**), pick a canon type, and imitative voices chase your line — delayed, transposed up a 5th, mirror-inverted, doubled in length — **self-correcting** any harsh clash to the nearest consonant note, building into a stretto, all crystallizing on a scrolling riso-duotone score. **Flip the *Consonance-fix on/off* toggle to hear the intelligence working** — the raw clashes come back when it's off. Why it matters: this is a genuine **deepening of your loved `1218-shadow`** — where that stacked block *chords* under your line, this answers with **independent melodic voices** (real counterpoint, not harmony). The jury asked us to deepen a past winner instead of shipping another fresh floor-scraper; this is that.
+- **Nothing shipped tonight** — but 3 full prototypes were built and curated; the
+  winner just can't be committed until the ceiling above is fixed.
+- **⭐ `1244-dayline` (curated winner, built & ready)** — *the Earth is a
+  clock-sequencer*: the day/night terminator sweeps a flat world atlas and every
+  city it crosses at dawn/dusk rings a note; a drone tracks the sunlit landmass.
+  Fully offline solar astronomy, one-glance legible ("hear the sun move around
+  the Earth"). Commits as-is the moment the fd-limit is raised.
 
-## In progress / partial
-- Mode was **DEEP** (one concept, 3 engines raced). **2 more counterpoint pieces explored — see IDEAS §684:**
-  - **`1241-parnassus`** — strict *species counterpoint* over a cantus firmus (Fux), inking on a warm parchment manuscript. The most beautiful; banked only because its parchment page overlapped last week's `1236-neume`.
-  - **`1243-strands`** — free counterpoint that *maximizes* voice independence (literally inverts 1218's objective, on a live slider), woven as four ribbons. The sharpest idea; banked as a ⭐ resurrect.
+## Built tonight, banked (IDEAS §685) — a WIDE fire of 3 non-object FORMS
+Directly cashing yesterday's jury note "break the FORM, not just the timbre":
+- **`1244-dayline`** — a MAP (winner, above).
+- **⭐ `1245-antiphon`** — a CONVERSATION: you tap a phrase, a generative partner
+  *listens* and answers in the gap (echo / invert / stretch / leave-space, biased
+  by how dense you played, with a short motif memory that quotes you back). A
+  two-lane scrolling manuscript. The "musical intelligence, not object-to-pluck"
+  lane you liked in 1218-shadow. Strong resurrect.
+- **`1243-calligram`** — a PAGE: type a poem, each letter both sounds a diatonic
+  note and settles as ink into a living concrete-poem that's also a score.
 
 ## Research finding worth a look
-- The live real-time-jamming frontier (LiveBand / LK-Jam / ReaLJam) runs on a *lookahead-commit* protocol — the same thing a browser does with lightweight DSP + rule-based generation. That's why all three counterpoint engines run fully client-side: no model call, no latency.
+- **Refik Anadol's *Dataland*** opened **2026-06-20** (LA) — *Machine Dreams:
+  Rainforest*, where the artwork IS a living real-world data field. Seeded
+  tonight's map/data direction. (RESEARCH.md)
 
-## Open question for Karel (one line — it unblocks the last untouched rung)
-- The one top rung we haven't cashed in the recent window is a **fresh ≥4-subsystem AI-pipeline** (audio→image→video, etc.). Older pieces did it (915/689/704), but a new one needs to spend a **small FAL image/video quota** — click-gated, quota-capped, with a full procedural fallback so it never spends without your tap. **May I? yes / no.** If no, I'll keep cashing the ⭐ banks (parnassus · strands · antiphon · cavern · plainsong).
-
-## Note
-- Every ship is build-verified (compile + lint + types clean) but **not ear/eye-verified** — I run headless with no speakers/display. `1242` needs no mic, so you can fully drive it from your phone; it never dead-screens (Generate seeds a canon on mount).
+## Open question for Karel
+- Which unblock do you want (fd-limit / Next concurrency / archive routes)? Once
+  you pick, `1244-dayline` ships next fire and `1245-antiphon` is queued right
+  behind it.
