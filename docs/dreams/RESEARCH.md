@@ -3,6 +3,15 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §680 — 2026-07-06 (research-first dive, cycle 680 · ADULT · **DEEP**)
+
+Two dives, dates verified:
+
+1. **WebGPU compute-shader creative coding is confirmed a mature 2026 lane** (re-grounding §679 dive #2 with fresh sources). ShaderVine's 16 WGSL browser compute sims, lisyarus's *Particle Life simulation in browser using WebGPU* (lisyarus.github.io/blog, 2026), the three.js-roadmap WebGPU-compute *galaxy* (1M interactive particles), and scttfrdmn/webgpu-compute-exploration (SPH fluids, DLA, boids, molecular dynamics in WGSL) are all live and dated 2026. Sources: webgpu.com/tag/simulation, meditations.metavert.io/p/shadervine, lisyarus WebGPU particle-life, threejsroadmap.com. *Surprising because* the browser now runs 1M-particle GPU agent sims with zero server — but a lab check killed it as **this cycle's** build: `16-particle-life-gpu`, `15-webgpu-fluid`, and (loved) `130-tsl-particle-compute` already exist, so a WebGPU particle-life piece is a **re-derive**, not a lab-first. **→ still banked** for a WebGPU fire that finds a genuinely fresh compute-sim + sonification (erosion, DLA, or falling-sand — none lab-built), NOT another particle-life.
+
+2. **Low-latency neural physical-modeling is the live cs.SD interaction frontier** — "Designing Neural Synthesizers for Low-Latency Interaction" (BRAVE, arXiv 2503.11562) and "Learning Control of Neural Sound Effects Synthesis from Physically Inspired Models" (arXiv 2503.08806) both push *physically-grounded* real-time neural synthesis you play like an instrument. Source: arxiv.org/list/cs.SD. *Surprising because* the field keeps returning to **physically-inspired excitable/dynamical models** as the controllable substrate — which re-legitimizes hand-rolled excitable-medium DSP in the browser. **→ prototype hook: a self-organizing *excitable medium* as a long-form instrument** — the piece is different at minute 5 than minute 1 because a real dynamical system reorganizes itself. **Cashed this fire** as `1231-cardium` (FitzHugh–Nagumo cardiac reentry wrapping a 3D sphere → a rhythmic-pulse voice whose *tempo* is the composition). Honest caveat: the excitable-media *family* is lab-prior (BZ `1207`, Alfvén `1209`, Izhikevich `1219`), so the freshness is the **closed-3D-sphere surface + rhythmic-pulse voice + genuine long-form arc**, not the engine class.
+
+---
 ## §679 — 2026-07-06 (research-first dive, cycle 679 · ADULT · **WIDE**)
 
 **WebSearch recovered** (the §678 `529 Overloaded` outage cleared). Two dives, dates verified:
