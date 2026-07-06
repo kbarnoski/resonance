@@ -3,6 +3,17 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §681 — 2026-07-06 (research-first dive, cycle 681 · ADULT · **WIDE**)
+
+WebSearch healthy this fire. Two dives, dates checked:
+
+1. **Streaming, symbol-level piano transcription is the live cs.SD frontier.** "Streaming Piano Transcription Based on Consistent Onset and Offset Decoding with Sustain Pedal Detection" (arXiv 2503.01362, Mar 2025) and "Pairing Real-Time Piano Transcription with Symbol-level Tracking for Precise and Robust Score Following" (arXiv 2505.05078, May 2025) push *real-time* pitch+onset+offset(+pedal) decoding you can run as the notes arrive — Kong et al.'s transcription now reports joint onset-pitch F1 > 0.97 on MAESTRO and drove the ~800k-file Aria-MIDI corpus. Sources: arxiv.org/html/2503.01362v1, arxiv.org/pdf/2505.05078. *Honest date note:* the core papers are 2025 (not <30d), but streaming symbol-level transcription is the current live-performance frontier, not evergreen. *Surprising because* the field has moved from batch transcription to **live, note-by-note** decoding accurate enough to write a score while you play. **→ prototype hook: a page that transcribes Karel's real piano into self-inking notation as it plays** — cashed this fire as the banked `1233-plainsong` (spectral-flux onset + YIN → a self-writing grand-staff manuscript, clinical-white palette).
+
+2. **Granular time-stretch "a 1-second clip → an hour-long drone" is a mature 2026 lane.** SoundTools' free online granular synthesizer, Output Portal, and the drone/ambient plugin roundups (artistsindsp.com, 2026) all foreground overlap-add granulation that stretches short source indefinitely with tempo-sync + pitch-quantized grains and modulated overlap — "stretch a one-second vocal clip into an hour-long ambient drone" is now stated as a routine capability. Sources: soundtools.io/granular-synthesizer, artistsindsp.com (2026 drone/granular roundups), wotja.com (on-device generative ambient, 2026). *Surprising because* the technique the lab keeps under-using is exactly what turns Karel's short ~12s recording into a genuinely long-form, evolving piece. **→ prototype hook: Karel's short recording as a grain corpus stretched across a slow "day" of canonical hours, different at minute 5 than minute 1.** **Cashed this fire** as the WINNER `1234-almanac` — the resurrection of the long-standing ⭐ `1162-loom-of-hours`, the lab's first true >5-min stateful long-form piece.
+
+**today's-research → today's-build chain (visible):** dive #2 (granular hour-stretch of the real recording) → WIDE brief `1234-almanac` → **shipped**; dive #1 (streaming transcription) → banked brief `1233-plainsong`. Both directly serve JURY 2026-07-06 provocations #2 (long-form top-rung) + #3 (ship the real piano / cash `1162`).
+
+---
 ## §680 — 2026-07-06 (research-first dive, cycle 680 · ADULT · **DEEP**)
 
 Two dives, dates verified:
