@@ -1,47 +1,44 @@
-# Morning digest — last updated 2026-07-06 ~02:xx UTC (cycle 675, adult · WIDE)
+# Morning digest — last updated 2026-07-06 ~04:2x UTC (cycle 676, adult · DEEP)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ `/dream/1213-splatsong` — strike a cloud of light and hear its material.**
-  A sculpture made of **thousands of soft glowing 3D Gaussians** (a "resonant
-  cairn") floats in a neutral studio light-box. **Drag** to orbit it; **tap** a
-  cluster to strike it — and each cluster *sounds like what it's made of*: the
-  small bright cool one rings like **glass**, the big dark one thuds like
-  **stone**, the long metallic one sings like a struck **metal bar**, the warm
-  one knocks like **wood**. **Why open it:** it's a whole new medium for the lab —
-  **real 3D Gaussian splatting** (the photoreal-capture rendering everyone's
-  doing in 2026, here procedural + playable), and the material isn't hand-labelled
-  — it's *inferred from the splats' own shape/color* (à la the SonicGauss paper).
-  Fresh surface, fresh palette (a product-photography vitrine, not another glow),
-  fresh voice (struck-material modal, not a pad). ⚠ Wants your **GPU + speakers** —
-  I can't see the volumetric look or hear the strikes headless.
+- **⭐ `/dream/1218-shadow` — play one finger, hear a four-part choir.**
+  Play a **single-note melody** (click the on-screen keys, or your computer
+  keyboard, or plug in MIDI) and a **"shadow" partner harmonizes you in real
+  time** — a beat behind, it blooms your one note into a full **four-part chorale
+  / close-harmony** underneath your hand, and you *watch the inner voices glide*
+  as four lines (jade soprano on top, rose inner voices below). **Why open it:**
+  it isn't a canned backing track — for **every** note it picks the chord by real
+  jazz/classical **voice-leading** (smoothest possible voice motion, no parallel
+  fifths, cadences with a real leading tone) and voices it live. This is your
+  **"jazz responsive"** direction, made playable. **Press Demo** and it plays a
+  melody itself — no mic, no setup, fully driveable by you.
 
-## Why this one (the diversity story)
-- The ambition mandate said *massively bigger, stop shipping near-variants* — and
-  the audit showed **5 of the last 10 went chromatic-chiaroscuro** + three straight
-  cycles were "a physics-sim you play." So I raced **3 genuinely different big
-  concepts** (below) and shipped the biggest swing: a rendering medium the lab has
-  **never** truly done, directly built on **this cycle's** freshest research
-  (WebSplatter, Feb 2026). See RESEARCH.md §675.
+## Why this one (the story)
+- Alternation said DEEP this fire, so instead of three unrelated ideas I took **one
+  big concept — "a duet partner that answers you"** (your directive #4) — and raced
+  **three different musical *intelligences*** for it, shipping the deepest. Grounded
+  on **this week's** frontier research (LiveBand + LK Jam, arXiv, Jun 2026 — live
+  human-AI jamming): those use heavyweight neural models; I proved the same
+  *lookahead-commit* protocol runs **fully in the browser** with lightweight DSP.
+  See RESEARCH.md §676.
 
-## Also explored this fire (WIDE — 3 built, 1 shipped, 2 banked) — both are worth a look-later
-- **⭐ `1215-consort`** (banked, resurrect-first) — **a duet partner that follows
-  you.** Sing / hum / tap into the mic and a warm **Rhodes-piano + bass consort
-  answers you in time**, harmonising your notes and locking to your tempo (real
-  YIN pitch-tracking + key-finding + a look-ahead beat clock; full keyboard
-  fallback if you don't want to use the mic). **This is your own "jazz responsive"
-  idea** — I held it only because its lead-sheet visual is quieter on a cold glance
-  and I can't test a mic headless. **Say the word and I ship it next.**
-- **`1214-reef`** (banked) — **grow an instrument over ten minutes.** A coral grows
-  by space-colonization as you feed + prune it; a slow tide rings the whole
-  structure, so it's **sparse and high early, thick and low late** — genuinely
-  different at minute 8 than minute 1. Two-color blue+vermilion print.
+## Also explored this fire (DEEP — 3 built, 1 shipped, 2 banked ⭐) — both are the same "duet partner" idea, other intelligences
+- **⭐ `1216-consort`** (banked) — **sing/play and a band answers.** The *mic* version:
+  hum, sing, or play into the mic and a warm Rhodes+bass consort answers in time
+  (real pitch-tracking + key-finding). Held only because a mic can't be verified
+  headless and it's quieter on a cold glance — **say the word and it ships.**
+- **⭐ `1217-tradefours`** (banked) — **trade fours with the machine.** You play a
+  phrase; on the turnaround it answers with **your own lick, developed** (transposed
+  to the changes, inverted, fragmented) over a swinging comp. The playful
+  call-and-response one.
 
 ## Open questions for Karel
-- **`1215-consort` is your "jazz responsive" ask, fully built and banked** — one
-  word and it's the next ship.
+- **The responsive-duet lane is now 4 built briefs deep** (1218 shipped; 1216 mic /
+  1217 trade-fours / 1215 banked). **Which intelligence do you want deepened —
+  harmonize-me, trade-fours, or the mic consort?** One word picks the next ship.
 - **Multi-user / WebRTC** still needs your **signaling-store call** (1206's protocol
   is ready to drop onto it).
-- **Near-black-glow soft-ban** lifts ~07-11 — one word and `1174-magnetosphere-song`
-  + `1166-ear-tone-field` can resurrect.
+- **Near-black-glow soft-ban** — one word and `1174-magnetosphere-song` +
+  `1166-ear-tone-field` can resurrect.
