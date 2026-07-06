@@ -1,44 +1,42 @@
-# Morning digest — last updated 2026-07-06 ~04:2x UTC (cycle 676, adult · DEEP)
+# Morning digest — last updated 2026-07-06 ~06:xx UTC (cycle 677, adult · WIDE)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ `/dream/1218-shadow` — play one finger, hear a four-part choir.**
-  Play a **single-note melody** (click the on-screen keys, or your computer
-  keyboard, or plug in MIDI) and a **"shadow" partner harmonizes you in real
-  time** — a beat behind, it blooms your one note into a full **four-part chorale
-  / close-harmony** underneath your hand, and you *watch the inner voices glide*
-  as four lines (jade soprano on top, rose inner voices below). **Why open it:**
-  it isn't a canned backing track — for **every** note it picks the chord by real
-  jazz/classical **voice-leading** (smoothest possible voice motion, no parallel
-  fifths, cadences with a real leading tone) and voices it live. This is your
-  **"jazz responsive"** direction, made playable. **Press Demo** and it plays a
-  melody itself — no mic, no setup, fully driveable by you.
+- **⭐ `/dream/1220-torsion` — the winding numbers ARE the tuning.**
+  A glowing **(p,q) torus knot** — one string wound *p* times around a donut and
+  *q* times through it — floating in 3D. **Drag empty space to turn it; click the
+  string to pluck it.** Each pluck is a real **Karplus–Strong plucked string**, and
+  a **displacement wave travels down the tube from exactly where you touched** — so
+  the thing you *see* and the thing you *hear* are the same object. Tap a preset —
+  **(2,3) trefoil · (3,2) · (2,5) cinquefoil · (3,4)** — and the whole instrument
+  **retunes**, because the two winding numbers literally set the scale. **Why open
+  it:** it's a gemstone you can turn in your hand and play; garnet/gold on deep
+  indigo, no setup, just drag and pluck.
 
 ## Why this one (the story)
-- Alternation said DEEP this fire, so instead of three unrelated ideas I took **one
-  big concept — "a duet partner that answers you"** (your directive #4) — and raced
-  **three different musical *intelligences*** for it, shipping the deepest. Grounded
-  on **this week's** frontier research (LiveBand + LK Jam, arXiv, Jun 2026 — live
-  human-AI jamming): those use heavyweight neural models; I proved the same
-  *lookahead-commit* protocol runs **fully in the browser** with lightweight DSP.
-  See RESEARCH.md §676.
+- Alternation said **WIDE** this fire, so I fielded **three unrelated grep-0×
+  engines** (none sharing a tag) and shipped the one that best breaks the "too
+  similar" pattern you flagged. Two of the three cashed *never-built* ideas the lab
+  banked back in cycle 669. `1220` won because it lands on a **starved surface**
+  (real 3D — most recent pieces are flat full-screen fields) with a **fresh plucked
+  voice**, not because the others were weak — they weren't.
 
-## Also explored this fire (DEEP — 3 built, 1 shipped, 2 banked ⭐) — both are the same "duet partner" idea, other intelligences
-- **⭐ `1216-consort`** (banked) — **sing/play and a band answers.** The *mic* version:
-  hum, sing, or play into the mic and a warm Rhodes+bass consort answers in time
-  (real pitch-tracking + key-finding). Held only because a mic can't be verified
-  headless and it's quieter on a cold glance — **say the word and it ships.**
-- **⭐ `1217-tradefours`** (banked) — **trade fours with the machine.** You play a
-  phrase; on the turnaround it answers with **your own lick, developed** (transposed
-  to the changes, inverted, fragmented) over a swinging comp. The playful
-  call-and-response one.
+## Also explored this fire (WIDE — 3 built, 1 shipped, 2 banked ⭐)
+- **⭐ `1219-ignition`** (banked, RESURRECT-FIRST) — **ignite a sheet of spiking
+  neurons and it drums itself.** A living membrane (real Izhikevich neurons) where a
+  tap sends a spike wave rippling out, striking metal tones, evolving over minutes.
+  Actually the *higher-ambition* build (4/5) — it lost **only** because its
+  full-screen 2D field is the visual you've seen too much of lately. **Say the word
+  and it ships next.**
+- **⭐ `1221-foldsong`** (banked) — **fold a plain sine into a living voice.** The
+  lab's first **West-Coast wavefolder + Buchla lowpass-gate** — play the keyboard,
+  drag to fold, and watch a pure tone bloom into a rich harmonic voice on a warm
+  analog scope. The freshest *sound* of the three.
 
 ## Open questions for Karel
-- **The responsive-duet lane is now 4 built briefs deep** (1218 shipped; 1216 mic /
-  1217 trade-fours / 1215 banked). **Which intelligence do you want deepened —
-  harmonize-me, trade-fours, or the mic consort?** One word picks the next ship.
-- **Multi-user / WebRTC** still needs your **signaling-store call** (1206's protocol
-  is ready to drop onto it).
-- **Near-black-glow soft-ban** — one word and `1174-magnetosphere-song` +
-  `1166-ear-tone-field` can resurrect.
+- **Which of the two banks do you want next?** `1219` (the self-drumming neuron
+  field — one word ships it) or `1221` (the wavefolder synth)?
+- The **responsive-duet lane** (jazz mic partner, `1216-consort`) from cycle 676 is
+  still waiting on **a mic test on your hardware** — one word and it ships.
+- **Multi-user / WebRTC** still needs your **signaling-store call**.
