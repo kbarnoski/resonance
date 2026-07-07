@@ -1,19 +1,19 @@
-# Morning digest — last updated 2026-07-07 (~02:xx UTC, cycle 687)
+# Morning digest — last updated 2026-07-07 (~04:xx UTC, cycle 688)
 
-**Cycle 687 · adult · WIDE — and it finally ships the thing you keep asking for: the REAL PIANO.**
-Three parallel builders each turned your real "Welcome Home" recording into a *non-object, non-notation* form; I curated one to ship.
+**Cycle 688 · adult / psychedelic · DEEP — the real piano now *flies you into a tunnel of light.***
+Three parallel builders attacked one big concept — a >5-minute, single-take passage into an altered state — three different ways; I shipped the one that transports you bodily.
 
 ## New since yesterday — ▶ open this first
-- **[`/dream/1246-warp`](https://getresonance.vercel.app/dream/1246-warp)** — **your recording weaves itself into cloth.** Press *Begin weaving*: a Canvas2D loom reads the live spectrum and lays one dyed weft row per shuttle pass, so the finished tapestry is a physical record of the music's dynamics — loud/bright passages become dense saturated cloth, quiet ones stay near-linen; busy bands even tip from plain weave into a diagonal twill. Natural-dye palette (indigo / madder / weld / walnut on unbleached linen) — a genuinely new register, palette-distant from last night's pale-chart dayline. **Why:** cashes the loudest recurring unmet ask (the real piano — drove only 1× in 15 cycles), riffs on a real 2026 show — Alva Noto × HOSOO's *WAVE WEAVE*, where he weaves music into fabric — and reads in one glance.
+- **[`/dream/1251-borealis`](https://getresonance.vercel.app/dream/1251-borealis)** — **your recording flies you into a receding tunnel of light.** Press *Begin*: a full-screen WebGL2 raymarch pulls you *forward* through luminous white-gold fog toward a growing radiance — real perceived depth, not a pattern on a wall. Loud passages surge you forward and whiten the core; quiet ones let the light settle. Over ~5–6 min the fog thins and the light widens, so **minute 5 is a different place than minute 1** — and because the walls depend on how far you've travelled, it can *never* loop. **Why:** this finally cashes the top rung the jury flagged as untouched — a genuine long-form *stateful* piece — and re-opens the psychedelic/cosmic-ambient direction we'd drifted from. Riffs on Karolina Halatek's NDE light-tunnel installation *Terminal*; the tunnel geometry is Klüver's actual form-constants (the retino-cortical warp behind the NDE tunnel).
 
-## Explored tonight but banked (see IDEAS §687)
-- **`1247-thermal`** ⭐⭐ — your recording as a live **weather chart**: a real Navier–Stokes (Jos Stam *Stable Fluids*) atmosphere where onsets blow gusts, loudness lifts warm plumes, register steers the wind — rendered as pale isobars + streamlines + fronts. The lab's most ambitious build tonight; lost only because its pale-chart look would re-camp the dayline I shipped *last* cycle. **Top of the resurrect queue.**
-- **`1248-verdure`** ⭐ — your *whole* recording grows a **long-form botanical garden** (L-systems): phrase by phrase a herbarium plate fills into a meadow that's genuinely different at minute 5 than at minute 1. Banked because its payoff takes minutes to read (a poor fit for a 06:30 glance).
+## Explored tonight but banked (see IDEAS §688)
+- **`1250-lumen`** ⭐ — the same journey as a **never-repeats Eno-style accumulator** (Ornstein–Uhlenbeck drift, no script) — the purest answer to "long-form that never repeats," but the weakest at a 06:30 glance; its drift engine is the natural next-cycle deepening *for borealis*.
+- **`1249-threshold`** ⭐ — the same journey as a **legible five-stage NDE arc** (Body → Onset → Tunnel → Light → Return). Most readable, least novel visual. Its stage-scripting would give borealis a narrative on top of the raw transport.
 
 ## Open questions for you
-- **Which real-piano form do you want most?** Cloth (shipped), weather, or garden — I'll deepen the one you like and drop the others.
-- **The build fd-ceiling** (cycle 685's "hard blocker") is *worked around*, not fixed — I validate each new route with an isolation build. A one-line `ulimit -n` raise (or capping Next's static-gen concurrency) would restore a clean full local build. Your call, no longer urgent.
-- **WebRTC multi-user** is still blocked on your durable-signaling-store decision (jury #5, deferred for weeks).
+- **Deepen borealis, or ship the banked `1247-thermal` (Navier–Stokes weather chart) next?** Borealis has two ready deepenings (fold in the stage-arc + the never-repeats drift). Your call which direction I take next.
+- **The build fd-ceiling** is still *worked around* (isolation build), not fixed — a one-line `ulimit -n` raise would restore a clean full local build. Not urgent.
+- **WebRTC multi-user** still blocked on your durable-signaling-store decision (jury #5, deferred for weeks).
 
 ## Standing note
-Verification debt: everything is build-green but I can't *hear/see* it headless — the weave's musicality + how the dyes read on-screen want your browser. The bare warped loom draws on load (never blank); audio + weaving start after *Begin*.
+Verification debt: build-green but headless — I can't *see/hear* it (no GPU/display/speakers here), so whether the tunnel reads as depthful transport and the shader runs smoothly on a real GPU want your browser. The dark tunnel mouth draws on load (never blank); sound + the flight into the light start together on *Begin*. Safety: smooth forward drift only, no strobe; any luminance pulse is opt-in, ≤3 Hz, instant-kill.
