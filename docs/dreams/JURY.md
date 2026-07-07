@@ -1,48 +1,145 @@
-# Concept Jury Verdict — 2026-07-06
+# Concept Jury Verdict — 2026-07-07
 
 ## Summary
-The lab is disciplined but camping. Every one of the last 15 clears the ambition
-floor and dodges the *hard* bans — but 13 of 15 sit at the bare 2–3 minimum, and
-underneath the nightly voice-rotation a new monoculture has quietly reassembled:
-**a jewel-toned 3D object you pluck/strike and hear ring** (1209 → 1213 → 1220 →
-1226 → 1231). The team broke the *timbre* monoculture the last jury named and
-then rebuilt it one level up as a *form* monoculture. Two builds genuinely soared
-— `1213-splatsong` and `1193-tremor-core` — and they show exactly what "above the
-floor" looks like.
+The team read yesterday's verdict and *obeyed it violently*. Told to "break the
+FORM, not just the voice," they demolished the glowing-3D-object monoculture in a
+single night — and immediately rebuilt a **new** one in its place: six of the last
+fifteen are now flat-Canvas2D-non-object pieces on warm parchment (almanac, neume,
+heliograph, stretto, dayline, warp). The form is broken; the *reflex* isn't. And
+the deeper instruction — reach the top rungs — went unpaid: 14 of 15 still sit at
+the 2–3 floor and only one build (**1242-stretto**) reached 4/5, down from two last
+fortnight. Two builds genuinely soared — **1234-almanac** and **1242-stretto** — and
+they're the ones that cashed jury provocations *and* reached for real ambition at
+the same time.
 
 ## Diversity audit
-Tags for the last 15 (1188, 1190, 1193, 1196, 1200, 1203, 1206, 1209, 1210,
-1213, 1218, 1220, 1225, 1226, 1231):
+Tags for the last 15 (1220, 1225, 1226, 1231, 1234, 1236, 1238, 1242, 1244, 1246,
+1251, 1254, 1257, 1259, 1263). The set splits cleanly into three blocks: the tail
+of the old 3D-object rut (1220/1225/1226/1231), the new warm-paper Canvas2D bloc
+(1234/1236/1238/1242/1244/1246), and the psychedelic WebGL-field bloc
+(1251/1254/1257/1259/1263).
 
-- **Over-represented input**: active pointer / orbit / drag direct-manipulation — **7×** (1196, 1203, 1209, 1213, 1220, 1226, 1231). The starved inputs — real-piano audio-file (1×), live external data (1×), MIDI/keyboard (1×), draw (1×), mic (1×) — each appeared only once.
-- **Over-represented output**: GPU-rendered surface (WebGL2 / three.js) — **10×**; and inside that, a **three.js / WebGL 3D single object you rotate** — **6×** (1209, 1213, 1220, 1225, 1226, 1231). Canvas2D 4×, SVG 1×. The screen bias the mandate warns about is now a GPU-3D-object bias.
-- **Over-represented technique**: no single *named* technique hits 4 — the team rotates the specific model well (Hopf, GENDYN, Alfvén, splat, torus-knot, scanned-synth, FitzHugh-Nagumo). But the *family* **"a physically-modelled resonator object, excited by a gesture, that rings its own voice"** is **~6×** (1196, 1209, 1213, 1220, 1226, 1231). The novelty is in the physics chosen, not in the interaction or the form.
-- **Over-represented vibe**: **chromatic-chiaroscuro / saturated-jewel-on-dark — 10×** (1196, 1200, 1203, 1206, 1209, 1218, 1220, 1225, 1226, 1231). This is the exact "we banned bright-daylight and manufactured its opposite" trap the team *named itself* at cycle 675 — then kept shipping it for six more nights. The only escapes were the bright pieces (1188/1190/1193) and the two hard-idiom pieces (1210 strict-mono, 1213 vitrine-neutral) — and all of them are among the strongest.
-- **BANNED for next cycle**: three.js/WebGL **3D-single-object-you-pluck** OUTPUT · **chromatic-chiaroscuro / jewel-on-dark** PALETTE · **physical-resonator-object-you-excite** TECHNIQUE-family · **pointer/orbit direct-manipulation** as the only input.
+- **Over-represented input**: **real-piano audio-file — 4×** (1234, 1236, 1246, 1251).
+  The team over-cashed "ship the real piano" and it's now the single most common
+  input. Everything else is lonely: pointer/orbit 3×, live external data 2×,
+  keyboard 2×, mic 1×, camera-body 1×, draw 1×.
+- **Over-represented output**: a **triptych of three ≥4× outputs** — **flat Canvas2D
+  non-object surface — 6×** (1234, 1236, 1238, 1242, 1244, 1246); **WebGL2 full-screen
+  field — 5×** (1251, 1254, 1257, 1259, 1263); **three.js 3D-object-you-rotate — 4×**
+  (1220, 1225, 1226, 1231). There is no third form in the window. Every single piece
+  is one of these three surfaces.
+- **Over-represented technique**: **passive signal → 1:1 sonification/readout — ~5×**
+  (1234 grain-crawl, 1238 data→drone, 1244 astronomy→sequencer, 1246 FFT→weave,
+  1259 data→curtains): a live audio or data stream read straight through an
+  analyser/sample-crawl into a flat visual + drone, with no instrument to *play*.
+  Runner-up: **self-playing long-form arc — 5×** (1231, 1234, 1251, 1257, 1263) — the
+  "minute-5 ≠ minute-1" provocation cashed hard.
+- **Over-represented vibe**: **two 6× palettes at once.** **Warm-paper /
+  parchment / riso / vellum / linen — 6×** (1234, 1236, 1238, 1242, 1244, 1246), a
+  brand-new monoculture — and note this palette was *already banned* by the
+  2026-07-04 jury. **Jewel / cosmic-glow-on-dark — 6×** (1220, 1225, 1226, 1231, 1259,
+  1263), the one yesterday's jury banned and which survived in both the 3D-object
+  tail and the psych bloc. The team fled jewel-on-dark straight into parchment and
+  called it diversity.
+- **BANNED for next cycle**: **flat-Canvas2D-signal-readout** OUTPUT · **warm-paper /
+  parchment / riso / vellum** PALETTE · **real-piano-audio-file as the sole input** ·
+  **passive-signal 1:1 sonification (watch/listen, don't play)** TECHNIQUE. Still
+  live from prior juries and *not yet earned back*: **jewel/cosmic-glow-on-dark**
+  PALETTE and **full-screen psychedelic shader-field you stare at** OUTPUT.
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria**: 0 — nobody fell through the floor; the discipline is real.
-- **Hit 2–3 criteria**: **13** — 1188(3), 1190(3), 1196(3), 1200(2), 1203(3), 1206(3), 1209(3), 1210(3), 1218(3), 1220(3), 1225(2), 1226(3), 1231(2). The lab is living *at* the floor, not above it.
-- **Hit 4–5 criteria**: **2** — `1193-tremor-core` (4/5) and `1213-splatsong` (4/5). **Zero hit 5.** And criterion **#1 (never-used technique) is now being openly declined cycle after cycle** — the honesty notes admit it's "nearly unreachable" at 1225+ prototypes deep. That's the real ceiling: the lab has stopped reaching for the top two rungs.
+- **Hit 0–1 criteria**: **0** — the floor discipline is still real; nobody shipped junk.
+- **Hit 2–3 criteria**: **14** — 1220(2), 1225(2), 1226(3), 1231(2), 1234(3), 1236(3),
+  1238(2), 1244(2), 1246(2), 1251(3), 1254(3), 1257(2), 1259(3), 1263(3). The lab is
+  living *at* the floor, wall to wall.
+- **Hit 4–5 criteria**: **1** — **1242-stretto** (4/5: the only explicit multi-cycle
+  deepening, real musical intelligence, plausibly grep-0× imitative-canon engine,
+  named refs). **Zero hit 5**, and criterion **#1 (never-used technique) is again
+  openly declined** across the psych bloc (RD is 6× in the lab, desync already
+  shipped at 1063, GPU particles are lab-common). This is a **regression** on the
+  axis that mattered most: yesterday's jury reported 2 builds at 4/5 and told the
+  team to climb — the team spent the entire budget breaking the *form* and left the
+  *ambition* unpaid, dropping to one 4/5.
 
 ## Standouts (positive)
-- **1213-splatsong**: the ambition ceiling of the fortnight. Genuine **3D Gaussian-splat anisotropic-covariance rasterization** (grep-0×, real EWA conics, not the lab's usual loose additive blobs) + material-inference modal impact, and it *directly implements* the Feb-2026 WebSplatter dive — the cleanest today's-research→today's-build chain in the window. This is what a real #1 claim looks like.
-- **1193-tremor-core**: the most *resonant* concept — the solid Earth plays itself, live USGS quakes ringing inharmonic gongs at their true depth inside a glowing cutaway. Real-world-data sonification (seismic grep-0×), about-the-world not about-itself, bright, bulletproof with a deterministic fallback. The rare piece that reads in one phone glance.
-- **1218-shadow**: a genuine *musical intelligence* rather than another object-to-pluck — real-time functional voice-leading that harmonizes your single line into a four-voice chorale by minimizing voice motion. A different kind of ambition (harmony, not geometry) the lab attempts too rarely.
-- **1210-datamatics**: the palette escape that worked — strict Ikeda monochrome, a clinical sine/noise/click register, a draw-the-spectrogram instrument. Proof that leaving the jewel-tone comfort zone pays off.
+- **1234-almanac**: the single most jury-responsive build of the fortnight — it
+  cashes *three* provocations in one piece: it ships Karel's real Welcome Home piano,
+  it finally **resurrects `1162-loom-of-hours`** (the ⭐ that's been named-and-never-shipped
+  for weeks), and it's a genuine **>5-min stateful long-form** on a Liturgy-of-Hours
+  arc where minute 5 (dense, bright Sext) is unmistakably not minute 1 (sparse, low
+  Lauds). A non-object clock-page, not another jewel. This is what "answer the note"
+  looks like.
+- **1242-stretto**: the fortnight's only 4/5 and its only explicit **multi-cycle
+  deepening** — it extends `1218-shadow` from block homophony into real imitative
+  *polyphony* (delayed/transposed/inverted canon with genuine consonance
+  self-correction that changes exactly the notes that would clash). Musical
+  intelligence over geometry, in a riso two-color idiom — exactly the register the
+  last jury praised in 1218 and 1210.
+- **1236-neume**: the boldest form+palette escape — Karel's piano transcribed live
+  (spectral-flux onsets + YIN pitch) into a **self-writing illuminated plainchant
+  manuscript** on vellum. Typographic, non-object, warm-craft done with real
+  conviction; "contour, not rhythm" is a smart hedge against detector noise.
+- **1259-auroral** (with its sibling `1193-tremor-core`): the live-planet lineage is
+  the lab's most one-glance-legible work — Earth's real aurora sung back as a
+  curtain-field, about-the-world not about-itself, spiking *intense* only during a
+  real geomagnetic storm. Bright, bulletproof fallback. The concept is a suite
+  waiting to happen.
 
-## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
-- **1231-cardium** (2/5): well-built, but it's the **fourth** excitable-media engine (1207 BZ, 1209 Alfvén, 1219 Izhikevich-bank), and the team's own note declines #1 for exactly that reason. The only fresh axes were rhythm-voice and palette; the form (dark-jewel 3D globe you nudge and watch) is the camped one. A local minimum dressed as a self-composing arc.
-- **1225-tideglass** (2/5): Pose-hands + granular is lab-common on *both* axes, and 1200-gait-loom just did Pose five cycles earlier — another "body → granular cloud on a 3D point-field." Fine execution, floor-scraping concept.
-- **1200-gait-loom** (2/5): MediaPipe Pose is well-trodden; gait→tempo is the single fresh angle carrying the whole build.
-- **The set, not just the members**: 1209 / 1213 / 1220 / 1226 / 1231 are five well-made variations of one sentence — *"a glowing 3D resonator you excite and hear."* Individually strong; collectively the monoculture the mandate exists to break, reconstituted at the form level.
+## Pruning candidates (concept-level, NOT for deletion — immutability rule holds)
+- **1246-warp** (2/5): FFT-of-the-real-recording → a Canvas2D visualizer. This is
+  the textbook local minimum the mandate exists to kill — a spectrogram wearing a
+  loom costume. The weave metaphor is the only fresh axis; the engine underneath is
+  the oldest one in the lab.
+- **1257-lattice** (2/5): a beautiful field, but reaction-diffusion is 6× in the lab
+  and GPU-RD is lab-prior; the only interaction is passive mic-gain. A full-screen
+  psychedelic shader-you-watch — the exact "screensaver, not instrument" the 06-29
+  jury named, dressed in nacre.
+- **1238-heliograph** (2/5): another live-data → drone + strip-chart. Data
+  sonification is ~7× in the lab; with no named artist and no novel technique it's a
+  paper-costumed `1193-tremor-core` minus the gong.
+- **1244-dayline** (2/5): leans on a **pentatonic** scale (the crutch the mandate
+  explicitly warns against) and hand-authored coarse coastlines; the
+  terminator-as-sequencer idea deserves real harmony, not "no wrong notes."
+- **The pre-jury tail** (1220 / 1226 / 1231 / 1225): the last exhalation of the
+  "glowing object you excite and hear ring" monoculture the previous two juries
+  already flagged. 1231-cardium and 1225-tideglass re-appear as local minima here.
 
 ## Provocations for tomorrow's dream cycle
-1. **Break the FORM, not just the voice.** The "3D jewel-toned object you pluck" is 6 of the last 15. You've rotated timbre nightly while camping form + palette. Hard-ban three.js/WebGL-3D-single-object OUTPUT **and** chromatic-chiaroscuro PALETTE for a week — force a non-object form (a room, a map, a score, a page, a conversation).
-2. **Reach for the top rungs you've abandoned.** 13/15 sit at 2–3; nothing hit 5; #1 is being waved off as unreachable. Stop chasing grep-0× novelty and instead cash criterion **#4 (multi-cycle commitment)** or a real **≥4-subsystem AI-pipeline chain** (audio→image→video, or music→narrative→TTS→score-follower). The lab has shipped **zero** genuine 2-model pipelines and **zero** >5-min stateful long-form pieces in this window (1188 only gestured at it). *Deepen a past winner across a second cycle* — the mandate explicitly wants that over another fresh floor-scraper.
-3. **Ship the real piano.** Karel's actual "Welcome Home" recording drove exactly **1×** in the last 15 (1188), and `1162-loom-of-hours` has been the ⭐ resurrect for many cycles and never shipped. The love signal points here every fire. Cash it.
-4. **Do the palette the team already knows works.** The best-received breaks from the jewel-on-dark rut were the bright pieces and the two hard-idiom pieces (strict-mono 1210, vitrine 1213). Pick a genuinely new register — high-key pastel, riso/print two-color, or clinical white — not a ninth chiaroscuro.
-5. **Multi-user is still theatre, not reality.** 1206-murmuration was the lone collaborative piece and it's BroadcastChannel (same-device). Real cross-device WebRTC is 0× in-window and has been scope-blocked on Karel's signaling-store call for **weeks** — put the one-line decision in front of him again instead of re-deferring it.
+1. **You broke the form — now don't camp the escape hatch.** Six of fifteen are
+   flat-Canvas2D-non-object-of-a-signal on warm paper; you fled jewel-on-dark
+   straight into a parchment/riso monoculture the 07-04 jury *already banned*. Hard-ban
+   **warm-paper/vellum/riso PALETTE** and **flat-Canvas2D-signal-readout OUTPUT** for a
+   week alongside the still-live jewel-on-dark ban. Force a third surface you haven't
+   touched — a *room* you're inside, a spatial-audio field, a genuine 3D-navigable
+   space that isn't a single object.
+2. **Stop over-cashing the piano — make it PLAYABLE.** "Ship the real piano" became
+   four real-piano-audio-file pieces in one fortnight, and half of them (weave it,
+   transcribe it, warp it) treat his recording as *wallpaper* to visualize. One great
+   playable real-piano instrument — a duet, a call-and-response, something you touch
+   and it answers with his notes — beats four passive visualizers of the same 12-second clip.
+3. **Reach a top rung, for real this time.** You were told to climb and instead went
+   wide; 14/15 still sit at 2–3. Cash a genuine **≥4-subsystem AI-pipeline chain**
+   (audio→image→video, or music→narrative→TTS→score-follow) — still **0×** in the lab
+   and gated only on Karel's per-prototype budget call (put that decision in front of
+   him again) — or deliberately **deepen ONE winner across a full second cycle** the way
+   1242 deepened 1218. That single move is worth more than the next five floor-scrapers.
+4. **The psych bloc regressed to screensavers.** Four of the five WebGL psych fields
+   (1251/1257/1259/1263) are watch-or-passive-mic full-screen fields — the exact
+   liability the 06-29 jury named. `1254-dissolve` is the *only* one you actually play
+   (keyboard). Make the next altered-states piece hand/body/touch-**played**, and give
+   it a palette that isn't cosmic-glow.
+5. **The live-planet suite is sitting right there.** `1193-tremor-core` and
+   `1259-auroral` are your most legible, most extensible work — a whole "Earth plays
+   itself" family is one decision away (magnetosphere, tides, jet-stream, Schumann
+   resonance). But the next one must be an instrument you can **perturb**, not another
+   readout, so it finally clears the floor's top rungs instead of being a fourth data-drone.
+6. **Spend the research you already banked.** The 07-05 dive named three untouched
+   excitable-media members; **1207-oregonator (BZ)** and **1208-swarmalator** are still
+   banked, grep-0×, and unbuilt — and yesterday's Anadol dive surfaced a **typographic /
+   ASCII-terminal surface** hook nothing has touched. Build a banked-0× idea before
+   shipping a fifth signal-readout.
 
 ## Karel-facing line
-Sharp discipline, narrowing imagination: the last five ships are the same glowing-3D-object-you-pluck in five synth voices — two builds (splatsong, tremor-core) actually soared, so break the *form* now, not just the timbre.
+You asked them to break the 3D-object form and they did it overnight — then rebuilt
+the monoculture in warm-paper Canvas2D and still didn't reach the top rungs; almanac
+and stretto are the two that actually soared.

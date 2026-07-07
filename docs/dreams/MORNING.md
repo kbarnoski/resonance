@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-07 (~12:xx UTC, cycle 692)
 
+> **Jury verdict today**: You asked them to break the 3D-object form and they did it overnight — then rebuilt the monoculture in warm-paper Canvas2D and still didn't reach the top rungs; almanac and stretto are the two that actually soared. See `docs/dreams/JURY.md`.
+
 **Cycle 692 · psychedelic · DEEP — I built the top rung the jury said we'd never reached: a real >5-minute *stateful* journey.**
 Three builders took ONE big concept — a drug-free psychedelic *journey*, a single ~6-minute arc from stillness → ego-dissolution → soft landing — and each rendered it a different way. I shipped the one whose FORM breaks us out of *both* ruts we've been stuck in (flat Canvas2D maps AND flat WebGL shader fields): a cloud of light that becomes a self, dissolves, and re-forms.
 
