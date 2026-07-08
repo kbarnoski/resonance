@@ -1,34 +1,30 @@
-# Morning digest — last updated 2026-07-08 ~20:30 UTC (cycle 708)
+# Morning digest — last updated 2026-07-08 ~22:15 UTC (cycle 709)
+
+**Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **`/dream/1310-piano-duet` — sing INTO your own recorded piano.** Your live *Welcome Home*
-  piano loops as the carrier; your **voice becomes the sculptor** — humming "ahh" vs "ooo"
-  morphs your chord toward that vowel in real time (a 20-band cross-synthesis). Open it,
-  hit Start, and sing or hum — you'll hear your voice carving your piano's harmonics. A
-  duet with a recording. *(No mic? An XY-pad + auto-morph plays it for you — never silent.)*
-- This directly cashes the **two lanes the 07-08 jury said were 0×**: the mic as a *real
-  controller* (not a loudness bar), and your actual recorded piano as the material.
+- **⭐ `/dream/1308-piano-freeze` — reach into your recorded piano and freeze a moment into an infinite shimmer.**
+  Your real *Welcome Home* solo piano loads into a granular engine. Move your **hand** left/right (webcam) to
+  scrub through the recording; **raise your hand** to FREEZE — the moment crystallizes into a shimmering
+  Paulstretch-style drone while a dry path keeps it legible; **pinch/spread** darkens/brightens the tone.
+  The spectral curtain freezes with it. *Why open this:* it's the one that turns your finished recording into
+  plastic, playable material — the most transporting piece of the week. **No webcam? It drives with the mouse**
+  (left/right scrubs, top freezes, scroll tilts) and auto-drifts on its own, so it's alive on a cold glance.
 
-## Mode this cycle — DEEP (one big concept, 3 approaches)
-- Concept: **re-perform your fixed recording live** — turn finished audio into plastic material.
-- Shipped the strongest of three; **2 more built and banked** (IDEAS §708) as the next fires
-  of this thread — both are genuinely good, I just couldn't ship all three:
-  - **⭐⭐ 1308-piano-freeze** — raise a hand (webcam) to *freeze* a struck chord into an
-    infinite Paulstretch drone. The "wow" of the fire; lost only because the last two ships
-    were already camera-based (diversity). **This is next.**
-  - **⭐ 1309-time-pour** — tilt your phone to *pour* your piano like liquid time: rush,
-    slow, freeze, **reverse**. The most phone-delightful of the three.
+## How it was picked (WIDE fire — 3 built in parallel, 1 shipped)
+- Three orthogonal **sensor** instruments raced: camera (freeze), **mic** (clap-loom), **tilt** (tilt-pour).
+- Shipped the freeze because it's the most surprising, uses your **real piano** (the lane you love + the jury
+  keeps asking for), and cites the freshest reference — Sampleson *Aeronaut* (a 2026 tool that does exactly this).
 
-## Research finding worth a look
-- Anchored on **Trevor Wishart** (cross-synthesis / *Vox*) + **Robert Henke / Monolake**
-  (living, still-touring) — deliberately a *living art-frontier* reference, not another
-  dead-scientist equation (jury #3). Full note: RESEARCH §708.
+## Banked for the next fires (both fully built, in IDEAS §709)
+- **⭐⭐ `1307-clap-loom`** — clap/beatbox into the mic and each hit snaps to the grid, stacking a live **dub groove**
+  (a browser loop-station). This is the *rhythm* piece — the jury's loudest single ask. Ship-next.
+- **⭐ `1306-tilt-pour`** — tilt your phone to pour a 3-against-4 dub groove over a liquid field. Best on a phone.
 
-## Open questions for Karel
-1. **The AI-pipeline chain (audio→image→video) is still 0× — the one build that would hit
-   5/5** — and it's gated only on your per-prototype paid-budget call. Fourth time asking:
-   want me to green-light one? (Jury #6.)
-2. Do you review `/dream` mostly on **phone or desktop**? It decides whether tilt-first pieces
-   like 1309 are worth prioritizing (desktop gets a pointer fallback, less magical).
-3. 1310's vowel-morph is audible but timbrally coarse (20-band vocoder). Worth a cycle on a
-   true phase-vocoder morph, or is the channel-vocoder feel good enough?
+## Open questions for you
+- **The 5/5 ceiling is still one budget call away.** The ≥4-model **AI-pipeline chain** (audio→image→video, or
+  music→narrative→TTS→score-follow) is the last un-hit ambition rung — it's blocked only on your OK for a small
+  paid per-prototype budget. Want me to scope one?
+- Real-piano is now in 3 of the last 4 ships (all loved/jury-wanted, but noting it so it doesn't become the new rut).
+- 1308 is verified to **build**, not yet felt on real hardware — the hand-freeze + real-recording decode want a
+  webcam + your ears to confirm the drone lands as *shimmer*, not mush.
