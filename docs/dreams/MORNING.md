@@ -1,47 +1,48 @@
-# Morning digest — updated 2026-07-08 (cycle 699, WIDE)
+# Morning digest — updated 2026-07-08 (cycle 700, DEEP)
 
 ## Open this first
-- **`1280-earth-bell`** → https://getresonance.vercel.app/dream/1280-earth-bell
-  **Strike the whole planet like a bell.** Tap anywhere on a dark basalt globe
-  — a virtual great earthquake — and it *rings* in the Earth's real
-  free-oscillation normal modes: the globe visibly deforms into each mode's
-  spherical-harmonic shape (the ₀S₂ "football," the radial "breathing," the
-  higher rosettes) while you hear those enormous ~hour-long resonances scaled up
-  ~6 octaves into a chord whose intervals ARE the true mode spectrum. Strike
-  near a mode's node and it barely rings; near an antinode it sings. Orbit-drag
-  to look, solo/mute modes, leave the swell on for a planetary bed. Best on a
-  laptop/GPU. Cosmic-ambient — planetary awe.
+- **`1284-quantum-etch`** → https://getresonance.vercel.app/dream/1284-quantum-etch
+  **Quantum mechanics as a living copper engraving.** The wavefunction draws
+  *itself* — nested topographic contour lines of |ψ|² and bright moving nodal
+  curves, like a bathymetric chart that ripples and splits in real time. It
+  opens on the **double-slit**: watch a wave-packet fire through two gaps and
+  its interference fringes fan out as a clean set of lines. Pick a tool and
+  **play** it — tap to fire a packet, drag to paint walls (tunnel through them)
+  or wells (trap and focus). Four presets, including the **Bunimovich stadium**
+  where the field settles into Heller "quantum scar" figures. The wave's own
+  momentum spectrum rings a just-intonation chord. Real physics: the 2D
+  time-dependent Schrödinger equation, solved by a unitary split-step Fourier
+  method on a hand-written FFT (zero dependencies). Intense → cosmic-ambient.
 
-## Why this one (the fire was WIDE — 3 built, 1 shipped, 2 banked)
-- I've cashed the jury's biggest standing complaint (a genuinely new technique)
-  two fires running, so this fire spread WIDE for diversity — three unrelated
-  directions in one night: quantum, geophysical, psychoacoustic.
-- `1280` won because it cashes the jury's *specifically-named* uncashed note —
-  "the live-planet suite is sitting right there, but the next one must be an
-  instrument you can **perturb**, not another readout" — and because its payoff
-  is **visible on screen**: you can *see* it ring in distinct mode shapes, so it
-  doesn't depend on me having ears/a GPU here to prove it works. It's a played
-  physical model, explicitly not the passive earthquake-data readout the lab
-  already has (`463-terra-gamelan`).
+## Why this one (the fire was DEEP — 1 concept, 3 render surfaces built, 1 shipped)
+- This finally SHIPS the quantum reach I built-but-banked last night — a
+  genuinely **new-to-the-lab technique** (a real time-dependent Schrödinger
+  simulation), which is the jury's single loudest standing ask. Three builders
+  attacked the same solver via three different looks so I could pick the one
+  that best dodges the "flat glowing field you just stare at" ban.
+- `1284` won because it's a **line-drawing**, not a filled field — so it's the
+  cleanest escape from both live palette/form bans — and because its payoff is
+  **visible on screen without needing my ears or a GPU here**: the double-slit
+  fringe fan reads instantly. It's also a genuinely fresh *form* for the lab (a
+  topographic contour etching — nothing else here looks like it).
 
-## Also explored — banked, ready to resurrect (see IDEAS §699)
-- **⭐⭐ `1279-quantum-ripple`** — the *highest-ambition* build of the fire: a
-  played **quantum ripple tank** (real 2D time-dependent Schrödinger, split-step
-  Fourier, numerically verified norm-conserving). Sculpt walls/wells, fire a
-  wave-packet, watch it tunnel and settle into shimmering "quantum-scar"
-  patterns, each a chord. Banked only because a Canvas2D probability field edges
-  toward the banned "shader-field you stare at" and its psychedelic read is the
-  hardest to eye-verify without a screen — it's first in line to ship next.
-- **⭐ `1281-eternal-rise`** — an **impossible-motion** instrument: a tempo AND a
-  pitch that rise forever and never arrive (rhythmic Risset + Shepard glissando)
-  on a rotating log-spiral barber-pole. Ship once I can confirm the endless-loop
-  seamlessness by ear in your browser.
+## Also explored — banked, ready to resurrect (see IDEAS §700)
+- **⭐⭐ `1283-quantum-cloud`** — the same quantum engine as a **3D probability
+  object you orbit**: a luminous point-cloud that bulges where the particle is
+  likely and settles into scars as you circle it. Banked only because its glow
+  edges toward the cosmic-glow ban and a 3D height-map of a 2D field is a less
+  obvious read — resurrect with a cooler palette.
+- **⭐ `1282-quantum-ripple`** — the same physics as a filled |ψ|² field (the
+  classic look), with the best-verified solver of the three (0.00006% norm
+  drift). Banked because a filled field is exactly the "shader you stare at"
+  form on the ban list — ships when that window clears, or I promote its solver
+  into a shared primitive any future interference piece can reuse.
 
 ## Open questions for Karel
 - The one genuinely-0× top rung still unbuilt is an **AI pipeline chain**
   (audio→image→video, 2 models in series). It needs a per-prototype paid-API
   budget I won't spend unattended — say the word and I'll build it.
 - Housekeeping: the container's **file-descriptor build ceiling** is still only
-  worked around (I build the winner in isolation each cycle — 12× now). Raising
+  worked around (I build the winner in isolation each cycle — 13× now). Raising
   `ulimit -n` on the runner, or capping Next's static-gen concurrency, retires
   the dance.
