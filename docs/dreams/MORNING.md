@@ -1,45 +1,47 @@
-# Morning digest — updated 2026-07-08 (cycle 698, DEEP)
+# Morning digest — updated 2026-07-08 (cycle 699, WIDE)
 
 ## Open this first
-- **`1278-faraday-relief`** → https://getresonance.vercel.app/dream/1278-faraday-relief
-  A vibrating fluid membrane you **play as tactile 3D liquid metal.** Drag to
-  drive it and watch real displaced geometry rise into stripes → squares →
-  hexagons → a **12-fold quasicrystal** — the same geometry your visual cortex
-  hallucinates on closed eyes — with copper speculars sliding along the ridges
-  as they lock. Each symmetry answers at the subharmonic **f/2** (the real
-  Faraday signature) with its own chord; drop the drive below threshold and the
-  surface goes flat and silent. Drag horizontally = frequency (which symmetry),
-  vertically = drive strength, tap = drop a ripple. Best on a laptop/GPU.
+- **`1280-earth-bell`** → https://getresonance.vercel.app/dream/1280-earth-bell
+  **Strike the whole planet like a bell.** Tap anywhere on a dark basalt globe
+  — a virtual great earthquake — and it *rings* in the Earth's real
+  free-oscillation normal modes: the globe visibly deforms into each mode's
+  spherical-harmonic shape (the ₀S₂ "football," the radial "breathing," the
+  higher rosettes) while you hear those enormous ~hour-long resonances scaled up
+  ~6 octaves into a chord whose intervals ARE the true mode spectrum. Strike
+  near a mode's node and it barely rings; near an antinode it sings. Orbit-drag
+  to look, solo/mute modes, leave the swell on for a planetary bed. Best on a
+  laptop/GPU. Cosmic-ambient — planetary awe.
 
-## Why this one (the fire was DEEP — 1 concept, 3 built, 1 shipped)
-- **Parametric Faraday-wave instability is grep-0× in the lab** — every prior
-  cymatics/plate piece drives modes straight at the audio frequency; this is the
-  first *parametric/subharmonic* one, and its emergent symmetries ARE the Klüver
-  form-constants, so one engine is both a fluid instrument and a psychedelic-
-  geometry engine. That cashes the concept jury's single loudest standing
-  complaint — "criterion #1, a never-used technique, keeps getting declined" —
-  for the **second fire running** (697 did it with the swarmalator).
-- I built the same engine three ways and shipped the one that (a) escapes the
-  still-banned "shader-field you stare at" via real 3D relief and (b) keeps the
-  four symmetries genuinely distinct. The most beautiful sibling (a WebGL fluid)
-  IS the banned form; the sand-plate sibling had a physics bug where a held
-  hexagon slowly rots to stripes — so the relief won on correctness + surprise.
+## Why this one (the fire was WIDE — 3 built, 1 shipped, 2 banked)
+- I've cashed the jury's biggest standing complaint (a genuinely new technique)
+  two fires running, so this fire spread WIDE for diversity — three unrelated
+  directions in one night: quantum, geophysical, psychoacoustic.
+- `1280` won because it cashes the jury's *specifically-named* uncashed note —
+  "the live-planet suite is sitting right there, but the next one must be an
+  instrument you can **perturb**, not another readout" — and because its payoff
+  is **visible on screen**: you can *see* it ring in distinct mode shapes, so it
+  doesn't depend on me having ears/a GPU here to prove it works. It's a played
+  physical model, explicitly not the passive earthquake-data readout the lab
+  already has (`463-terra-gamelan`).
 
-## Also explored — banked, ready to resurrect (see IDEAS §698)
-- **⭐⭐ `1276-faraday-pool`** — the same idea as an oil-on-water WebGL fluid, and
-  actually the **best engine of the three** (it solves the pattern-selection math
-  the others ducked). Banked only because a full-screen shader field is the form
-  the jury banned; its coupling model should get promoted into the winner next.
-- **⭐ `1277-faraday-sand`** — a **cymatic sand plate**: thousands of grains flee
-  the antinodes and pile onto the nodal lines, drawing each figure like the real
-  cymatics photographs. The most one-glance-legible of the three — ship it once
-  its held-pattern drift is fixed.
+## Also explored — banked, ready to resurrect (see IDEAS §699)
+- **⭐⭐ `1279-quantum-ripple`** — the *highest-ambition* build of the fire: a
+  played **quantum ripple tank** (real 2D time-dependent Schrödinger, split-step
+  Fourier, numerically verified norm-conserving). Sculpt walls/wells, fire a
+  wave-packet, watch it tunnel and settle into shimmering "quantum-scar"
+  patterns, each a chord. Banked only because a Canvas2D probability field edges
+  toward the banned "shader-field you stare at" and its psychedelic read is the
+  hardest to eye-verify without a screen — it's first in line to ship next.
+- **⭐ `1281-eternal-rise`** — an **impossible-motion** instrument: a tempo AND a
+  pitch that rise forever and never arrive (rhythmic Risset + Shepard glissando)
+  on a rotating log-spiral barber-pole. Ship once I can confirm the endless-loop
+  seamlessness by ear in your browser.
 
 ## Open questions for Karel
 - The one genuinely-0× top rung still unbuilt is an **AI pipeline chain**
   (audio→image→video, 2 models in series). It needs a per-prototype paid-API
   budget I won't spend unattended — say the word and I'll build it.
 - Housekeeping: the container's **file-descriptor build ceiling** is still only
-  worked around (I build the winner in isolation each cycle). Raising `ulimit -n`
-  on the runner — or capping Next's static-gen concurrency — would retire the
-  dance.
+  worked around (I build the winner in isolation each cycle — 12× now). Raising
+  `ulimit -n` on the runner, or capping Next's static-gen concurrency, retires
+  the dance.
