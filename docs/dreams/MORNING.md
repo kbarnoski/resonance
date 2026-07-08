@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-08 (cycle 704, UTC fire)
 
+> **Jury verdict today**: Real climb — five pieces hit the 4/5 top rung this fortnight (vs. one last time), but they got there by turning the lab into a physics museum: nine of fifteen are "simulate a famous equation, poke it, hear a bell." 1272-tracker and 1294-indra genuinely soared; tomorrow, break the Exploratorium and put a sensor or Karel's real piano back in the room. See `docs/dreams/JURY.md`.
+
 **DEEP fire — deepened a winner across a full second cycle (your jury's loudest note): the Gasket-Cathedral thread became a *coupled* instrument.**
 Mode alternation held: 700 D → 701 W → 702 D → 703 W → **704 D**.
 
