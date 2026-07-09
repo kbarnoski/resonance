@@ -1,20 +1,33 @@
-# Morning digest — last updated 2026-07-09 10:30 UTC (cycle 715)
+# Morning digest — last updated 2026-07-09 ~19:30 UTC (cycle 716)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
-## Open this first
-- **`/dream/1332-liquid-light`** — **tilt your phone to pour a 1960s psychedelic liquid light show.** Molten pools of colored oil that a projectionist once pushed across a hot plate by heat + gravity — here they flow and bloom as you *lean the plate*. Tilt direction = where the oil runs; tilt harder = hotter, bigger blooms + the drone opens and bends up. On desktop, drag to pour. Best on a phone — one tilt and color moves.
-  - *Why it's new:* the lab has never built the single most iconic drug-free psychedelic medium — the analog oil-wheel light show (Joshua Light Show / Mark Boyle's "Sensual Laboratory"). Canvas2D dye-advection, real ~0.3 Hz throb in the audio (not another bell), no strobe.
+## New since yesterday — the lab finally has a GROOVE
+- **`/dream/1338-shadow-808`** — **dance a drum pattern into an 808.** Tap Begin and a real
+  swung 808 groove starts immediately; stand in front of the camera and your silhouette
+  moving through an 8×5 step-grid **arms the beat** as the playhead sweeps — you literally
+  choreograph the pattern, and it accretes as you keep dancing. **No camera? It's a plain
+  touch step-sequencer** — tap cells to build a beat. This is the lab's **first real
+  rhythm/swing/probability/build-drop content**, the direct answer to three juries begging
+  "put TIME in the room, stop ringing bells." Best on your phone (front camera), instant on
+  a tap. `intense`.
 
-## Also explored this fire (WIDE — 3 built in parallel, 1 shipped, 2 banked)
-- **`1330-dream-machine`** (banked ⭐⭐, highest ambition) — a drug-free **Dreamachine you PLAY on a MIDI keyboard** (QWERTY + auto-demo fallback): each note ignites a ≤3 Hz photosensitive-SAFE light pulse that blooms Klüver form-constants deeper as you hold chords. Your native input — say the word and I ship it in a keyboard slot.
-- **`1334-comet-choir`** (banked ⭐⭐, best love-fit) — **conduct a 7,000-particle murmuration**; its density + coherence play a 3/4/5-against-the-bar polyrhythmic choir. Rides your loved particle-flow cluster; only de-selected because it's pointer-driven (the input the jury keeps flagging).
-- Both are fully built + specced in IDEAS §715 — one command resurrects either.
+## Explored this fire (DEEP — one concept, 3 attacks; 2 banked, see IDEAS §716)
+- **⭐⭐ `1340-dub-conductor`** — conduct **dub-techno with two hands**; the LEFT hand rides a
+  minor-9 with a **b9 dissonance that resolves** as you lift it. The only piece that cashes
+  the jury's "deliberate dissonance" ask — held back only because two-hand air-conducting is
+  subtle on a phone and a dub delay chain's audio can't be verified on my headless box.
+  **This is the top ship-next** once it can be ear-tuned.
+- **⭐⭐ `1336-flow-drummer`** — whole-body motion drives a **polymetric Euclidean** groove
+  (voice lengths 16/12/7/5 phase against each other — the freshest engine, 0× in the lab).
 
 ## Open questions for Karel
-- **The one budget call still gating a 5/5:** a real ≥4-subsystem **AI-pipeline** piece (audio→image→video). It needs your per-prototype paid budget — I won't spend it unattended. Say yes and it's the next DEEP fire.
-- **Verify on your phone:** `1332` is build-green + code-read but I can't eye/ear-verify headless — does the oil visibly *pour* with tilt, and does the dye read like molten color? 30 seconds on your phone tells us.
-- **`ulimit -n` = 4096** still blocks the local full static build (worked around via compile-mode; Vercel is uncapped). Raising it or archiving old routes would remove the last friction.
-
-## State
-712 D → 713 W → 714 D → **715 W** · psychedelic track · next fire ~2h · alternation → 716 DEEP.
+- **The TOP rung is still one budget call away.** The ≥4-subsystem **AI-pipeline chain**
+  (audio→image→video, or music→narrative→TTS→score-follow) is still **0×** and gated only on
+  your per-prototype **paid budget** — I won't spend it unattended. Say the word and I'll build one.
+- **Ear/eye-verify debt (standing):** 1338 is build-green + code-read but not heard on real
+  hardware. Whether the danced beat actually grooves + the silhouette reliably writes cells
+  wants your phone. Same caveat for the two banked pieces.
+- **fd ceiling (infra):** local `npm run build` still `EMFILE`s at Next's prerender (box fd
+  cap 4096 vs ~660 routes); I ship via the compile-mode build path — Vercel builds fine.
+  Raising `ulimit -n` or archiving old dream routes would clear it.
