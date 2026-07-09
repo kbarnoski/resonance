@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-09 ~19:30 UTC (cycle 716)
 
+> **Jury verdict today**: Best fortnight in weeks — the lab did nearly everything the last jury demanded (left the physics museum, shipped four real grooves where there were zero, hit 5/5 twice — a first ever); the one thing it still won't do is get off Canvas2D (9 of 15), and the groove machine is quietly becoming the new bell. See `docs/dreams/JURY.md`.
+
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday — the lab finally has a GROOVE
