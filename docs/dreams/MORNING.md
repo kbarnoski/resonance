@@ -1,20 +1,20 @@
-# Morning digest — last updated 2026-07-09 (cycle 717, PSYCHEDELIC · WIDE)
+# Morning digest — last updated 2026-07-09 (cycle 718, PSYCHEDELIC · DEEP)
 
 ## Open this first
-- **`/dream/1344-light-tunnel`** — tilt your phone and **fall down a near-death tunnel toward the light**, drawn entirely as living **SVG vector line-art** (no canvas, no WebGL — every ring is a real DOM element). Lean to steer the tunnel and fall faster into the being-of-light; a slow Shepard ascent rises forever underneath. *Why:* this cycle answers the jury's #1 note — you've built on a flat Canvas2D 9 of the last 15 times; this is a genuinely **new look** (precise Ikeda/Lieberman line-work) on a fresh substrate. Best on a phone.
+- **`/dream/1348-prism-cortex`** — **play a DMT-breakthrough chemistry on a keyboard.** A living Gray-Scott reaction-diffusion reaction runs as the lab's **first-ever WebGPU compute shader**, warped through the cortical form-constant map into tunnels, spirals and honeycomb lattices; every note you press (MIDI, or the `a–l` keys) sows fresh neon chemistry into it. Leave it idle a few seconds and it plays itself. *Why:* this is the WebGPU-compute piece you flagged as the ambition ceiling last cycle — **now shipped**, not banked. Best on a desktop Chrome/Edge, or iOS Safari 26+.
 
-## What this cycle did (WIDE — 3 fresh-substrate explorers, shipped the strongest)
-The current jury (2026-07-09) said the lab diversified *input* and *technique* brilliantly but never changed the **render surface** — "Canvas2D is the one demand missed across four straight juries." So all three explorers this fire land on a **different fresh substrate, none Canvas2D**, each on a non-pointer input:
-- **SVG DOM line-art** + tilt → `1344-light-tunnel` (**shipped** — NDE tunnel, cosmic-ambient).
-- **WebGPU compute** + MIDI → `1342-prism-cortex` (banked ⭐⭐ — a Gray-Scott reaction-diffusion field warped into DMT form-constants, played on a keyboard; MIDI is the jury's 0× input).
-- **three.js point-cloud** + mic-breath → `1346-breath-galaxy` (banked ⭐⭐ — 100k motes your hum gathers into a luminous core and disperses into a jhāna void; rides your loved particle cluster + Anadol's 2026 point-cloud year).
+## What this cycle did (DEEP — one big concept, 3 GPU-compute attacks, shipped the strongest)
+Two jury notes pointed the same way, so I aimed at both at once: **#1** "get off Canvas2D — ship the still-0× **WebGPU compute** field," and the sharp **#4** "stop banking your own research anchor — *ship it*." Last cycle banked the WebGPU-compute piece and shipped the safer SVG one; this cycle **ships the anchor.** All three explorers are the lab's first real WGSL compute shaders, each a different technique + input:
+- **Gray-Scott reaction-diffusion compute** + MIDI/keyboard → `1348-prism-cortex` (**shipped** — DMT-breakthrough, intense).
+- **N-body particle compute** (180k motes) + phone-tilt → `1350-gpu-murmur` (banked ⭐⭐ — a jhāna void your tilt gathers into a core of light).
+- **Cyclic-CA / BZ-reaction compute** + QWERTY organ → `1352-hex-bloom` (banked ⭐⭐ — psilocybin honeycomb + spiral blooms).
 
-## Banked, ready to ship next (2 more explored — full specs in IDEAS §717)
-- **⭐⭐ `1342-prism-cortex`** — highest ambition of the fire + the freshest substrate (WebGPU-compute, 0× in-lab) + MIDI-0×. De-selected only because MIDI gates a *phone* glance and a headless box can't verify WebGPU renders. Best resurrect on a desktop/MIDI slot.
-- **⭐⭐ `1346-breath-galaxy`** — best love-fit + phone-native mic input + a current living reference (Anadol). Ship near-verbatim.
+## Banked, ready to ship next (2 more explored — full specs in IDEAS §718)
+- **⭐⭐ `1350-gpu-murmur`** — the most **phone-native** of the fire (tilt to gather/disperse), the best **love-fit** (rides your loved compute/particle cluster — `130-tsl-particle-compute`, `236`, `321`, `262`), and the **lowest-risk** WebGPU path (storage buffers). Strongest single ship-next.
+- **⭐⭐ `1352-hex-bloom`** — a distinct compute technique (self-organizing spirals) and the best graceful degrade (no WebGPU → the organ still makes sound). Good desktop/keyboard slot.
 
 ## Open questions for Karel
-- **WebGPU on your phone?** 1342 is the ambition ceiling but needs a keyboard + a WebGPU-capable browser (iOS Safari 26+). If you want it shipped, it's a desktop-first piece — say the word and it goes up next fire.
-- **The still-0× top rung:** a ≥4-subsystem **AI-pipeline** chain (audio→image→video). It needs a per-prototype **paid budget** — I won't spend your FAL/API budget unattended. Green-light one and I'll build it.
-- **Verification debt:** 1344 is build-green + code-read but **not** eye/ear-verified (this box has no display/speakers/accelerometer). Whether the tunnel visibly bends with tilt is the one thing only your phone confirms.
-- **fd-ceiling (infra):** local `npm run build` still EMFILEs at ~670 routes (box cap 4096) — worked around via compile-mode; Vercel is uncapped. Raising `ulimit -n` or archiving old routes would fix it cleanly.
+- **Does WebGPU render on your device?** This is the honest risk I can't retire from a headless box: 1348 is build-green and code-verified, but I can't confirm the GPU pipeline actually *paints* (no GPU/display here). If it shows the amber "needs a WebGPU browser" notice, tell me your browser and I'll adjust — otherwise it should be live.
+- **The still-0× top rung:** a ≥4-subsystem **AI-pipeline** chain (audio→image→video). Needs a per-prototype **paid budget** — I won't spend your FAL/API budget unattended. Green-light one and I'll build it. (5th jury in a row raising this.)
+- **Want the phone-native one instead?** `1350-gpu-murmur` (tilt) is the better *phone* glance and the lowest WebGPU risk. Say the word and it ships next fire.
+- **fd-ceiling (infra):** local `npm run build` still EMFILEs at ~670 routes (box cap 4096) — worked around via compile-mode; Vercel is uncapped. Raising `ulimit -n` or archiving old routes fixes it cleanly.
