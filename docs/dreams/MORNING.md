@@ -1,35 +1,20 @@
-# Morning digest — last updated 2026-07-09 ~19:30 UTC (cycle 716)
+# Morning digest — last updated 2026-07-09 (cycle 717, PSYCHEDELIC · WIDE)
 
-> **Jury verdict today**: Best fortnight in weeks — the lab did nearly everything the last jury demanded (left the physics museum, shipped four real grooves where there were zero, hit 5/5 twice — a first ever); the one thing it still won't do is get off Canvas2D (9 of 15), and the groove machine is quietly becoming the new bell. See `docs/dreams/JURY.md`.
+## Open this first
+- **`/dream/1344-light-tunnel`** — tilt your phone and **fall down a near-death tunnel toward the light**, drawn entirely as living **SVG vector line-art** (no canvas, no WebGL — every ring is a real DOM element). Lean to steer the tunnel and fall faster into the being-of-light; a slow Shepard ascent rises forever underneath. *Why:* this cycle answers the jury's #1 note — you've built on a flat Canvas2D 9 of the last 15 times; this is a genuinely **new look** (precise Ikeda/Lieberman line-work) on a fresh substrate. Best on a phone.
 
-**Open the lab:** https://getresonance.vercel.app/dream
+## What this cycle did (WIDE — 3 fresh-substrate explorers, shipped the strongest)
+The current jury (2026-07-09) said the lab diversified *input* and *technique* brilliantly but never changed the **render surface** — "Canvas2D is the one demand missed across four straight juries." So all three explorers this fire land on a **different fresh substrate, none Canvas2D**, each on a non-pointer input:
+- **SVG DOM line-art** + tilt → `1344-light-tunnel` (**shipped** — NDE tunnel, cosmic-ambient).
+- **WebGPU compute** + MIDI → `1342-prism-cortex` (banked ⭐⭐ — a Gray-Scott reaction-diffusion field warped into DMT form-constants, played on a keyboard; MIDI is the jury's 0× input).
+- **three.js point-cloud** + mic-breath → `1346-breath-galaxy` (banked ⭐⭐ — 100k motes your hum gathers into a luminous core and disperses into a jhāna void; rides your loved particle cluster + Anadol's 2026 point-cloud year).
 
-## New since yesterday — the lab finally has a GROOVE
-- **`/dream/1338-shadow-808`** — **dance a drum pattern into an 808.** Tap Begin and a real
-  swung 808 groove starts immediately; stand in front of the camera and your silhouette
-  moving through an 8×5 step-grid **arms the beat** as the playhead sweeps — you literally
-  choreograph the pattern, and it accretes as you keep dancing. **No camera? It's a plain
-  touch step-sequencer** — tap cells to build a beat. This is the lab's **first real
-  rhythm/swing/probability/build-drop content**, the direct answer to three juries begging
-  "put TIME in the room, stop ringing bells." Best on your phone (front camera), instant on
-  a tap. `intense`.
-
-## Explored this fire (DEEP — one concept, 3 attacks; 2 banked, see IDEAS §716)
-- **⭐⭐ `1340-dub-conductor`** — conduct **dub-techno with two hands**; the LEFT hand rides a
-  minor-9 with a **b9 dissonance that resolves** as you lift it. The only piece that cashes
-  the jury's "deliberate dissonance" ask — held back only because two-hand air-conducting is
-  subtle on a phone and a dub delay chain's audio can't be verified on my headless box.
-  **This is the top ship-next** once it can be ear-tuned.
-- **⭐⭐ `1336-flow-drummer`** — whole-body motion drives a **polymetric Euclidean** groove
-  (voice lengths 16/12/7/5 phase against each other — the freshest engine, 0× in the lab).
+## Banked, ready to ship next (2 more explored — full specs in IDEAS §717)
+- **⭐⭐ `1342-prism-cortex`** — highest ambition of the fire + the freshest substrate (WebGPU-compute, 0× in-lab) + MIDI-0×. De-selected only because MIDI gates a *phone* glance and a headless box can't verify WebGPU renders. Best resurrect on a desktop/MIDI slot.
+- **⭐⭐ `1346-breath-galaxy`** — best love-fit + phone-native mic input + a current living reference (Anadol). Ship near-verbatim.
 
 ## Open questions for Karel
-- **The TOP rung is still one budget call away.** The ≥4-subsystem **AI-pipeline chain**
-  (audio→image→video, or music→narrative→TTS→score-follow) is still **0×** and gated only on
-  your per-prototype **paid budget** — I won't spend it unattended. Say the word and I'll build one.
-- **Ear/eye-verify debt (standing):** 1338 is build-green + code-read but not heard on real
-  hardware. Whether the danced beat actually grooves + the silhouette reliably writes cells
-  wants your phone. Same caveat for the two banked pieces.
-- **fd ceiling (infra):** local `npm run build` still `EMFILE`s at Next's prerender (box fd
-  cap 4096 vs ~660 routes); I ship via the compile-mode build path — Vercel builds fine.
-  Raising `ulimit -n` or archiving old dream routes would clear it.
+- **WebGPU on your phone?** 1342 is the ambition ceiling but needs a keyboard + a WebGPU-capable browser (iOS Safari 26+). If you want it shipped, it's a desktop-first piece — say the word and it goes up next fire.
+- **The still-0× top rung:** a ≥4-subsystem **AI-pipeline** chain (audio→image→video). It needs a per-prototype **paid budget** — I won't spend your FAL/API budget unattended. Green-light one and I'll build it.
+- **Verification debt:** 1344 is build-green + code-read but **not** eye/ear-verified (this box has no display/speakers/accelerometer). Whether the tunnel visibly bends with tilt is the one thing only your phone confirms.
+- **fd-ceiling (infra):** local `npm run build` still EMFILEs at ~670 routes (box cap 4096) — worked around via compile-mode; Vercel is uncapped. Raising `ulimit -n` or archiving old routes would fix it cleanly.
