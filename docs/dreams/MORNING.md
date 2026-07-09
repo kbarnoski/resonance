@@ -1,40 +1,39 @@
-# Morning digest — last updated 2026-07-09 ~00:40 UTC (cycle 710)
+# Morning digest — last updated 2026-07-09 ~03:00 UTC (cycle 711)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
 ## New since yesterday
-- **⭐ `/dream/1314-motif-weave` — a dream that REMEMBERS you.**
-  **Drag** anywhere (up/down = pitch) to play a phrase — you hear each note instantly. Let go and the piece
-  keeps it *forever*: a beat clock weaves your phrase back in **minutes later, transformed** — as a canon, an
-  echo, harmonized, or reversed — and the phrase you played at minute 1 audibly returns, changed, at minute 6.
-  Each remembered phrase also glows as a permanent thread in the weave, so the picture *is* the record of
-  everything you played. A ~6-minute dream arc (drifting-off → deepens → lucid bloom → dissolution → waking).
-  *Why open this:* it's the first piece in a while that genuinely **remembers** — a played, evolving instrument
-  with real tempo and rhythm, not a texture you watch. A single-performer echo of teamLab's *World of
-  Irreversible Change*. **No mic needed** (breath is optional); idle seed phrases keep it alive + make the recall
-  demonstrable within seconds of the single **Begin** tap.
+- **⭐ `/dream/1316-moire-drift` — the beat you SEE is the beat you HEAR.**
+  Press **Begin**, then **drag anywhere** across two fine op-art gratings: left–right rotates one layer against
+  the other, up–down slides them out of tune. Where they nearly align they *interfere* and beat out slow living
+  **tunnels, spirals and honeycombs** (the actual geometry of a hallucination — Klüver's form constants). The
+  trick: the rate you watch the moiré drift is the **exact same number** you hear beating in the sound — one
+  value drives both, and a little readout prints it in Hz. Drag faster to push the trance from stark black-and-
+  white toward a saturated neon peak. *Why open this:* it's the fire's one-glance "huh" — you're literally
+  *tuning* a psychedelic pattern by hand and the sound proves it's the same beat. A playable echo of **Bridget
+  Riley's** Op-art, made audible. Alive on an idle drift before you even click.
 
-## Why this, and why it's a deliberate turn
-The last **five** fires (705–709) all leaned on your real piano or a camera/mic sensor — exactly what the jury
-asked for, but now *those* are becoming the rut (real-piano in 3 of the last 10, camera in 2). So this DEEP fire
-pivoted to the one lane the lab is thin on — **long-form pieces with real memory** — and answered the jury's
-loudest remaining note in the same move: *"there's not one rhythm or groove in the whole window."* 1314 has a
-tempo, a beat, call-and-response, and a five-phase arc. Concept: teamLab's **"World of Irreversible Change"** —
-a work you change permanently just by being in it — made personal and musical.
+## Why this shape tonight — a deliberate turn
+The last **six** fires all leaned on a sensor or your real piano or dense ornate geometry. So this was a WIDE
+"subtraction" fire: **three unrelated psychedelic directions in one night, none of them a sensor, a physics-sim,
+a piano-melt, or a bell** — then ship the strongest. 1316 won because it best answers the jury's loudest
+standing note (*"put a real rhythm/beat in the room"*) by the most surprising route, and it's the lowest-risk to
+trust unseen (a single shader + plain Web Audio).
 
-## Built in parallel, banked for next fires (both fully built, in IDEAS §710)
-- **⭐⭐ `1312-irreversible-bloom`** — a glowing tunnel-to-light melt where every stroke you draw is **permanent**
-  and can only ever build up; by the end the center is a dense record of your whole passage. (Held back only
-  because it looks close to last week's `1300-carrier-bloom`.)
-- **⭐⭐ `1313-sediment-descent`** — you deposit crystal on the wall of a shaft and then **sink through everything
-  you built**; the deep is the literal sum of your hands. The most on-the-nose "irreversible" piece.
+## Built in parallel, banked for next fires (both fully built, in IDEAS §711)
+- **⭐⭐ `1318-void-breath`** — the calm opposite pole: drift out of your body toward a distant **being of light**,
+  **hold** to be drawn in as time slows, release to fall back into the dark. Its trick is a real **audio-visual
+  desync** — the sound comes deliberately *un-glued* from what you see (the dissociative/ketamine feeling). This
+  is the cosmic-ambient piece the recent window is missing, and it's my top ship-next.
+- **⭐⭐ `1317-attractor-flow`** — a swarm of ~5,000 luminous particles flowing along a living strange attractor;
+  reach in to herd them into a vortex, morph the attractor and the whole cloud re-forms. Rides your loved
+  particle pieces (`aurora-particle`, `spectral-flight`, `particle-life-song`).
 
 ## Open questions for you
 - **The 5/5 ceiling is still one budget call away.** The ≥4-model **AI-pipeline chain** (audio→image→video) is
-  the last un-hit rung — blocked only on your OK for a small paid per-prototype budget. *(A free alternative I
-  could scope: a local in-browser generative model — no API cost.)* Want me to put one in front of you?
-- 1314 is verified to **build**, not yet heard on real speakers — whether a phrase you played early *audibly*
-  comes back transformed is the one thing only your ears confirm. Give it ~2 min of playing to judge the recall.
-- Housekeeping: STATE.md had drifted 4 cycles stale (it still said 706 while 707–709 had shipped) — I re-anchored
-  it this fire. And the local build still hits the file-descriptor ceiling (harmless; Vercel builds fine) — worth
-  raising `ulimit -n` or archiving old routes at some point.
+  the last un-hit rung — blocked only on your OK for a small paid per-prototype budget. *(Free alternative I
+  could scope: a local in-browser generative model, no API cost.)* Want me to put one in front of you?
+- 1316 is verified to **build**, not yet seen/heard on real hardware — whether the seen-beat == heard-beat
+  coupling actually *lands* is the one thing only your screen + speakers confirm. Give it 30 s of dragging.
+- Housekeeping unchanged: the local build still hits the file-descriptor ceiling (harmless; Vercel builds fine) —
+  worth raising `ulimit -n` or archiving old routes at some point.
