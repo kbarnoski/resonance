@@ -1,38 +1,36 @@
-# Morning digest — last updated 2026-07-10 (cycle 723, PSYCHEDELIC · WIDE)
+# Morning digest — last updated 2026-07-10 (cycle 724, PSYCHEDELIC · DEEP)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
-## New since yesterday — ▶ `/dream/1380-overtone-throat` (cycle 723 · WIDE)
-**Overtone Throat — sing one note and play its hidden overtone ladder, like a Tuvan throat singer.**
-Why open this: hum or sing a steady note into your mic. The piece finds your fundamental, then reads
-how strongly you're emphasizing each **overtone (harmonics 1–12)** — and those overtones **bloom and
-hold** into a shimmering self-sustaining chord. Lean your vowel and a bright cursor **walks up the
-ladder**. It's rendered as a living **glyph terminal**: 12 rows of monospace characters, each an
-oscilloscope trace labelled with its interval — an oscilloscope-meets-poem.
-- Directly cashes the jury's **#1** ask ("get off Canvas2D → extend the glyph-organ"). This is its cycle-2.
-- Feedback-safe (your mic is analysed, never played back); mic-denied → an auto-sweep keeps it singing.
-- **Best on desktop/laptop with a mic.** Give it permission, then hum an "oo" or "ah" and hold it.
+## New since yesterday — ▶ `/dream/1384-gravity-choir-points` (cycle 724 · DEEP)
+**Gravity Choir — a swarm that doesn't react to music, it *makes* it.**
+Why open this: place a few gravitational **stars** in a boundless star-void; **24,000** motes fall
+into orbit around them — and their **orbital motion IS the sound**. Every particle piece you've seen
+is *audio-reactive* (sound first, visuals dance). This runs the arrow **backwards**: the geometry
+comes first, and the swarm sonifies its own orbits — density near a star's periapsis blooms its tone,
+motes swinging through fire soft grains. The rhythm is **emergent** from the orbital periods; there's
+no sequencer, no drum grid.
+- **Play it:** two stars sing on Start · **click the void** to place a star (up to 6) or click one to
+  select it · **number keys 1–7** tune the selected star (A-minor-pentatonic, always consonant).
+- Cashes the jury's **#1** (get off Canvas2D → a **point-cloud** surface) and **#2** (TIME off the
+  drum grid) in one move; runs on plain WebGL so it plays on any device.
+- **Best on desktop/laptop.** Give it a moment on Start, then place a star and tune it.
 
-## The honest part of this fire (please read)
-- My front-runner was a **live-Wikipedia-edit-stream choir** — built, then I caught at validation that
-  the lab **already has `437-wiki-pulse`** on the exact same feed + same 3D surface. It was a near-
-  **duplicate**, so I cut it. My research dive "found" a domain we'd already done — a real miss; I've
-  added a standing rule to grep the lab for the domain *before* building.
-- So this was a **modest fire**: I shipped the one genuinely non-duplicate piece rather than force a
-  redundant one. Overtone-Throat itself has cousins (`1114-tanpura-throat`, `200-harmonic-series`) — its
-  fresh part is the glyph-terminal ladder + the "play the overtones with your timbre" framing, not a new
-  algorithm. Floor cleared honestly at 2/5, not a triumph.
-
-## Also explored, banked (see IDEAS §723)
-- **⭐ `1378-jhana-drift`** — tilt your phone to **drift, weightless, through a tunnel toward light**
-  (WebGL2 raymarch, cosmic-ambient, no strobe). Beautiful but lower-ambition (we have 1344/1320 tunnels);
-  banked with a one-change fix to make it *played*: drive the approach with your breath.
+## How this fire worked (DEEP — one concept, three builds)
+- I built **one** concept — *a gravity swarm that sonifies its own motion* — three ways in parallel,
+  and shipped the most robust: `1384` (three.js point-cloud). The other two are banked:
+  - **⭐⭐ `1382-gravity-choir-gpu`** — the SAME choir on a **raw WebGPU compute shader** (100k motes).
+    The freshest substrate (the jury's #1 want), and it *does* build — de-selected only because WebGPU
+    won't render for Safari/many browsers at review time. **Top ship-next** once a WebGPU-verified path
+    is confirmed.
+  - **⭐ `1386-gravity-choir-conduct`** — **conduct the swarm by tilting your phone** (gather toward
+    light → the choir swells; scatter → a whisper). Phone-delightful; banked to make the gesture more
+    *played* before it ships.
 
 ## Open questions for Karel
-- **Does Overtone-Throat's mic detection feel good in your browser?** f0-detection is the soft spot — if
-  it wanders, there's a manual note-lock. Worth your ear on whether the overtones actually "bloom."
-- **Want the played Wikipedia-edit conductor?** The cut piece's *interactive* layer (catch an edit into a
-  drone, conduct languages) is a genuine upgrade to the watched `437-wiki-pulse` — I can ship it as 437's
-  cycle-2 next fire if you like it.
+- **Does the choir read as distinct voices, or a wash?** With several stars the drones can blend —
+  the sonification is deliberately gentle and has lots of headroom. Your ear would tell.
+- **Want the WebGPU 100k-mote version (`1382`) shipped next?** It's built and compiles; it needs a
+  browser with WebGPU (Chrome/Edge) to shine. Say the word and it's the next fire.
 - **The 5/5 rung is still 0×:** the ≥4-model **AI-pipeline chain** (audio→image→video) needs your
-  per-prototype **paid-budget** call — I won't spend it unattended. 8th time raised.
+  per-prototype **paid-budget** call — I won't spend it unattended. 9th time raised.
