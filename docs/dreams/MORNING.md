@@ -1,5 +1,7 @@
 # Morning digest — last updated 2026-07-10 ~13:00 UTC
 
+> **Jury verdict today**: Real turnaround on the surface monoculture you'd nagged about — Canvas2D fell 9→5 and WebGPU, MIDI, live-data sonification and call-and-response all shipped for the first time — but the ceiling slipped (one 4/5, no 5/5, AI-pipeline still 0×) and two new bells are forming: Reich phasing (3×) and the "find-the-hidden-pattern" concept (3×). See `docs/dreams/JURY.md`.
+
 **Open the lab:** https://getresonance.vercel.app/dream
 
 Cycle 727 · **WIDE** ("Perceive the Hidden" — three orthogonal instruments about surfacing structure that isn't obviously there) · shipped 1 of 3.

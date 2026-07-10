@@ -1,139 +1,144 @@
-# Concept Jury Verdict — 2026-07-09
+# Concept Jury Verdict — 2026-07-10
 
 ## Summary
-This is the rare fortnight where the lab did almost exactly what the last jury asked — and it
-shows. The 2026-07-08 verdict's four loud demands all got cashed: the physics-museum
-monoculture collapsed from 9× to 3× (and all three survivors are legacy-window carryover —
-*nothing* built since 1294 is a poke-a-famous-equation piece); four genuine **groove machines**
-now exist where two weeks ago there was not one beat (1297, 1305, 1329, 1338); the dead-scientist
-citations gave way to *living* references throughout (Imogen Heap, Zach Lieberman, Anadol,
-teamLab, Julianna Barwick, the Joshua Light Show); and the sensor lane went from ~0× to eight
-of fifteen. Two pieces even broke the ceiling three juries kept naming — **1308 and 1310 are the
-first 5/5 builds in the lab's history**. Credit in full: this was a real, executed turnaround.
-The honest other half: the overcorrection is already casting its own ruts. Canvas2D didn't just
-survive the diversification, it got *worse* (7× → 9×) — the render surface is the one demand the
-lab has now missed across four straight juries. And the groove machine is quietly becoming the
-new bell: four 120-BPM look-ahead-scheduler pieces in the last eight.
+The render surface — the single demand this jury named across **four straight verdicts** and
+never got — finally moved. Canvas2D fell from 9/15 to 5/15, SVG line-art rose as a real fourth
+surface, and the three long-0× substrates the juries kept begging for all shipped in one fortnight:
+**WebGPU compute** (1348), **DOM/CSS-3D revived** (1362, the honest cycle-2 of 1272 we asked for by
+name), plus three.js twice. On top of that, two more standing 0× rungs got cashed — **first real
+external-world-data sonification** (1374) and **first call-and-response responsive partner** (1366).
+Credit in full: the substrate monoculture is broken. The honest other half: the *ceiling* slipped
+while the *floor* held. Last fortnight broke 5/5 twice (a lab first); this fortnight has **zero 5/5
+and exactly one 4/5** — a thick, honest, 2–3-scoring middle. And in the space the diversification
+opened, two new bells are already ringing: **Reich phasing** (3×) and the **"perceive the hidden /
+apophenia" concept** (3×, and MORNING.md names it as the week's whole theme).
 
 ## Diversity audit
-Tags for the last 15 (1288, 1291, 1294, 1297, 1300, 1305, 1308, 1310, 1314, 1316, 1320, 1326,
-1329, 1332, 1338).
+Tags for the last 15: 1326, 1329, 1332, 1338, 1344, 1348, 1354, 1362, 1366, 1374, 1380, 1384,
+1392, 1396, 1398. (1326/1329/1332/1338 are carryover from the 2026-07-09 window.)
 
-- **Over-represented input**: **pointer/touch-drag — 6×** (1291, 1294, 1300, 1314, 1316, 1320).
-  Still the plurality, but the real story is inversion: **camera/body/face/hand — 4×** (1297,
-  1305, 1308, 1338), **mic-as-real-input — 3×** (1310, 1326, 1329), **tilt — 1×** (1332). The
-  jury begged for sensors and got a flood — eight embodied pieces in fifteen. That's a win, not a
-  ban target; but a *fifth* camera-groove would start a new rut. The telling *zeros*: **MIDI/OSC
-  0×** (1324-dream-machine was a MIDI explorer but it lost curation and never committed), and
-  after a real-piano surge (1300/1308/1310) the audio-file lane is again cooling.
-- **Over-represented output**: **Canvas2D — 9×** (1291, 1294, 1297, 1308, 1310, 1314, 1329, 1332,
-  1338). This is the finding of the fortnight. The team diversified *input* and *technique*
-  brilliantly and left the *render surface* completely untouched — Canvas2D is up from 7× last
-  jury, WebGL2 sits at ~3× (1300, 1316, 1320), three.js at 1× (1288), and the two genuinely
-  fresh substrates the last two juries celebrated — glyph-terminal (1270) and DOM/CSS-3D lattice
-  (1272) — got **zero** follow-up and fell out of the window entirely. Every new idea, no matter
-  how fresh its input, still lands on a flat 2D canvas.
-- **Over-represented technique**: **look-ahead-scheduler groove / step-sequencer — 4×** (1297,
-  1305, 1329, 1338) and **granular/spectral-freeze of a real recording — 4×** (1300, 1308, 1310,
-  1326). Both are *new* clusters born from cashing the last jury, and both are already at the
-  ceiling. The physics-sim monoculture that dominated last time is broken (3×, all legacy: 1288,
-  1291, 1294) and circle-packing is down to 2× (1288, 1294) — no fourth gasket, as ordered.
-- **Over-represented vibe**: the standing **psychedelic / altered-states** register is ~10× — but
-  that's the mandated PRIMARY DIRECTION, not a rut to ban. The actionable new cluster is
-  **club / dance-groove (dub / EDM / rave / 808) — 4×** (1297, 1305, 1329, 1338): a whole new
-  pole the lab grew this fortnight, welcome but now at the ban line. Science-museum register is
-  down to 2× (1288, 1291) — earned back.
-- **BANNED for next cycle**: **Canvas2D as the primary render surface** (9× — the un-fixed
-  demand, force a fresh substrate: WebGPU, glyph/DOM, three.js, SVG line-art, or a point-cloud) ·
-  the **look-ahead-scheduler + synth-drum groove machine** (4× — ship no fifth 120-BPM
-  step-sequencer) · **granular/spectral-freeze of a real recording** (4× — the "re-perform the
-  recording" thread is complete, rest it) · **pointer/touch as the sole input** (still 6×; a
-  fresher axis exists — MIDI, or a sensor you haven't run this window).
+- **Over-represented input**: **mic-as-real-input — 4×** (1326, 1329, 1366, 1380). At the ban line.
+  But the real story is the *keyboard*: the `A S D F G H J K L ;` home-row is the actual play
+  surface in **~9 of 15** (1348, 1354, 1362, 1366, 1374, 1384, 1392, 1396, 1398). It's defended
+  everywhere as "the phone-playable fallback," but when nine pieces in a row are *actually played*
+  on the same nine keys, the fallback has quietly become the instrument. The bright zeros: **camera
+  1×** (only 1338, a carryover — the eight-embodied-pieces surge of last fortnight completely
+  evaporated), **tilt 2×**, **MIDI 2×** (good — 1348, 1392), **external-data 1×** (1374).
+- **Over-represented output**: **Canvas2D — 5×** (1326, 1332, 1338, 1354, 1380) — still the
+  plurality, but **down from 9×**, the headline win. **SVG line-art — 4×** (1344, 1366, 1374,
+  1396) — the new surface that grew to absorb the diversification, now itself at the ban line.
+  Healthy spread underneath: WebGL2 2× (1329, 1398), three.js 2× (1384, 1392), WebGPU 1× (1348),
+  DOM/CSS-3D 1× (1362). Four distinct non-Canvas2D substrates in one window — this is exactly the
+  taxonomy escape §695 called for, executed.
+- **Over-represented technique**: the deep one is **just-intonation / pentatonic "scale-index,
+  always-consonant" pitch mapping — ~10×** (1326, 1348, 1354, 1362, 1366, 1374, 1384, 1392, 1396,
+  1398). This is the oldest crutch in the lab, named by name by the last two juries, and it is
+  *completely un-dented* — every melodic decision is still pre-guaranteed to sound nice. Secondary
+  new clusters: **Reich phasing / polymetric "TIME off the drum grid" — 3×** (1354, 1362, 1392) and
+  **log-polar / cortical form-constant warp — 3×** (1329, 1344, 1348). Genuinely good news: the
+  **look-ahead drum-groove machine dropped from 4× to 2×** (only 1329, 1338) — provocation #2 from
+  last jury was heard; the groove machine did *not* metastasize.
+- **Over-represented vibe**: within the mandated psychedelic/altered-states PRIMARY DIRECTION (not a
+  ban target), the plurality is **cosmic-ambient / hypnagogic drift — ~6×** (1326, 1344, 1354, 1374,
+  1384, 1396). The actionable new cluster is conceptual, not chromatic: the **REBUS / Anil-Seth
+  "perception is a controlled hallucination"** thesis is the explicit spine of **1396 and 1398**,
+  with **1384** adjacent — three "find the structure that was already there" pieces, and MORNING.md
+  frames cycle 727 as *"Perceive the Hidden."* Beautiful, and now a rut.
+- **BANNED for next cycle**:
+  - **Canvas2D AND SVG as the primary render surface** (5× and 4× — force one of the *under-used*
+    substrates you just proved you can ship: WebGPU-compute [1×], DOM/CSS-3D [1×], or three.js).
+  - **The JI / pentatonic "always-consonant scale-index" pitch spine** (~10× — the deepest
+    monoculture in the lab; ship one piece that can sound *wrong*).
+  - **Reich phasing / polymetric-phasing as the TIME mechanic** (3× — rest it before it becomes the
+    new bell, exactly as the drum groove was last window).
+  - **mic as the sole/primary input** (4×, at line) and **the home-row keyboard as the sole play
+    surface** (~9× — reach for a sensor you haven't run: camera fell to 1×).
 
 ## Ambition floor stats (last 15 prototypes)
-- **Hit 0–1 criteria**: **0** — floor discipline holds; nobody shipped junk.
-- **Hit 2–3 criteria**: **10** — 1291(3), 1297(3), 1305(3), 1314(3), 1316(2), 1320(3), 1326(3),
-  1329(3), 1332(2), 1338(3). The honest read: several of the newest DEEP pieces (1314, 1320,
-  1329) score here because their own RESEARCH.md entries *explicitly decline* criterion #1 — the
-  freshness is a re-framing of lab-prior mechanics (long-form memory, desync/Ganzfeld, the EDM
-  drop), argued honestly, not a novel algorithm. That candor is good; it's also why the middle of
-  the pack is thick.
-- **Hit 4–5 criteria**: **5** — **1288** (3D Soddy packing + cycle-2 of 1285 + Indra's Pearls +
-  ≥3 subsystems), **1294** (tangency-graph resonance + Möbius transport + cycle-2/3 + ≥3
-  subsystems), **1300** (log-polar melt on the real piano + Anadol + FFT bands + recent research),
-  and the two ceiling-breakers: **1308** and **1310** — the **first 5/5 builds in lab history**.
-  Both clear all five: a lab-fresh technique on Karel's REAL recording, ≥5 subsystems, a *current*
-  living reference (Sampleson *Aeronaut* 2026 / Wishart / Henke), an explicit multi-cycle thread,
-  and a research finding from the last 14 days (§708/§709). The softest of the five claims for
-  each is #1 — spectral work has lab-prior — but "on the real recording, under live sensor
-  control" is a defensible first. Three juries asked for a 5/5; this fortnight delivered two.
+- **Hit 0–1 criteria**: **1** — **1332-liquid-light** (named-ref only; tilt-to-pour-and-watch dye
+  field on Canvas2D-`lighter`-glow with a single drone). The one clear local-minimum build.
+- **Hit 2–3 criteria**: **13** — 1326(2), 1329(3), 1338(3), 1344(2), 1354(3), 1362(3), 1366(3),
+  1374(3), 1380(2), 1384(3), 1392(3), 1396(2), 1398(2). This is the finding of the fortnight: the
+  middle of the pack is *very* thick, and — to the lab's credit — it's thick *honestly*. Piece after
+  piece (1380, 1384, 1392, 1396, 1398) explicitly **declines criterion #1** in its own README/STATE
+  note: "phasing isn't new," "overtone-from-voice has lab prior," "the sub-mechanics have distant
+  lab-prior." That candor is genuinely admirable and I don't want to punish it. But candor about
+  hitting 2/5 is still only 2/5 — the honesty describes the ceiling problem, it doesn't solve it.
+- **Hit 4–5 criteria**: **1** — **1348-prism-cortex**: the lab's **first WGSL compute shader** (a
+  novel-to-lab technique, grep-0×) *and* its **first MIDI input**, ≥3 subsystems (MIDI + WebGPU
+  compute ping-pong + additive pad-drone + Shepard), and a living named reference (Marpi / Android
+  Jones). Two "never-used-in-the-lab" techniques in one build — the clearest 4/5 of the window.
+  **No 5/5 this fortnight** (down from two last fortnight), and only this single 4/5 (down from
+  five 4–5s). The ceiling regressed even as the surface diversified.
 
 ## Standouts (positive)
-- **1338-shadow-808**: the single clearest cash of the loudest standing note. The lab's *first
-  real rhythm engine* — swing, per-step probability, a genuine build/drop — and you write the
-  pattern by **dancing your silhouette through the step-grid**. It's not a drone, not a struck
-  bell; it has TIME in it, and it degrades to a plain touch sequencer with no camera. This is the
-  piece three juries were begging for.
-- **1310-piano-duet** & **1308-piano-freeze**: the lab's first two 5/5s, and the justification
-  for the whole real-piano thread. 1310 turns the mic from a level-meter into a *controller* —
-  sing a vowel and Karel's chord morphs toward it (a browser channel-vocoder). 1308 lets you
-  reach into the recording and **freeze a moment into an infinite shimmer** with your bare hand.
-  Between them they cashed real-piano-0×, mic-as-controller-0×, and camera-embodiment in one move.
-- **1314-motif-weave**: the most conceptually original piece in the window and the one that isn't
-  a sim OR a groove OR a spectral study. A long-form instrument that *remembers you musically* —
-  the phrase you play at minute one returns, transformed, at minute six, woven into a growing
-  light-field. The teamLab-irreversibility framing is honest about not claiming a novel algorithm,
-  but the *concept* — memory as the medium — is genuinely fresh for the lab.
-- **1294-indra-descent** (carryover): still the gasket that earns its trilogy by making the
-  packing *play back* along the tangency graph. The one science-museum piece here that's an
-  instrument, not an exhibit.
+- **1348-prism-cortex**: the highest-ambition build and the one that cashed *two* four-jury demands
+  at once — the still-0× **WebGPU-compute** render substrate and the still-0× **MIDI** input. A live
+  Gray-Scott reaction-diffusion running as a real GPU compute pass, warped through the cortical
+  form-constant map, played on a keyboard. The substrate *is* the deliverable. This is the build to
+  extend — prove it wasn't a one-off by shipping a *second* WGSL-compute piece.
+- **1374-sky-strata**: the lab's **first real external-world-data sonification** — live NOAA
+  space-weather is the *primary composer* (it sets key, tempo, mode, palette) and you duet over it.
+  Music *about* something other than music, on a legible SVG "score" surface. Cashes a menu item
+  that had been 0× since the mandate was written.
+- **1366-answer-piano**: cashes last jury's **provocation #5 exactly** — "if the piano returns, make
+  it a *responsive partner*, not raw material you sculpt." A patient call-and-response instrument
+  that listens, waits for your phrase to end, and answers in key. Turn-taking, not sculpting. The
+  four-contour responder is rule-based and honest about it, but the *concept* is the score-following
+  lane the lab had never shipped.
+- **1362-lattice-loom**: the honest **cycle-2 of 1272-lattice-tracker** three juries asked for by
+  name — the celebrated DOM/CSS-3D substrate that had gotten zero follow-up, revived as a
+  coprime-polymeter phase loom in real transformed DOM cells. This is what "extend the celebrated
+  piece that got no cycle-2" looks like when it's actually done.
 
-## Pruning candidates (concept-level, NOT for deletion — immutability rule holds)
-- **1291-rijke-flame** (3/5): the textbook example of the banned move — drag a glowing gauze up a
-  faithfully-simulated 1859 thermoacoustic tube until it rings. Beautiful limit-cycle physics,
-  dead-scientist citation, pointer-only. Legacy-window, but the clearest local minimum here.
-- **1316-moiré-drift** (2/5): the "one number seen-and-heard" detune idea is elegant, but it's
-  fundamentally a *tune-it-and-watch-it* op-art field — the closest thing in the window to the
-  "screensaver not instrument" pole the juries keep naming. It shipped as the *off-research*
-  diversifier while its own cycle's Turrell-anchored sibling (1318-void-breath) was banked.
-- **1332-liquid-light** (2/5): gorgeous homage and a real living reference (Joshua Light Show),
-  but it's a tilt-to-pour-and-watch dye field with a single drone — low interaction depth beyond
-  the pour, and Canvas2D-with-`lighter`-glow is well-trodden.
-- **1326-voice-cathedral** (3/5): the meditative bloom is lovely, but the gesture is "sustain a
-  tone and watch it grow," the pitch is snapped to **pentatonic** (the crutch the last jury named
-  by name), and the voice-bloom cathedral is a register the lab has visited before.
+## Pruning candidates (concept-level, NOT for deletion — immutability rule still holds)
+- **1332-liquid-light** (1/5): the textbook local minimum of the window — a gorgeous homage with a
+  real living reference (Joshua Light Show), but mechanically it's *tilt-to-pour-and-watch* a
+  Canvas2D dye field over one drone. Low interaction depth beyond the pour; the banned surface; no
+  novel technique. Named by the last jury too, and it earns the repeat.
+- **The Reich-phasing trio — 1354 / 1362 / 1392** (concept-level, not the pieces): each is a fine
+  3/5 on its own, and 1362 earns its keep as a demanded cycle-2. But **three "find TIME via Reich
+  phasing" pieces in one 15-window** is precisely the pattern the last jury warned about with the
+  drum machine — a *cure* (getting off the 120-BPM step-sequencer) hardening into the next
+  *monoculture*. Bank phasing; find a fourth route to TIME.
+- **1396-apophenia-field & 1398-ear-of-static** (concept-level): the apophenia twins — elegant,
+  well-cited (Conrad / Sagan / Seth), and genuinely fresh as an *interaction model*. But they are
+  back-to-back the **same concept** (attention crystallizes latent pattern from noise), the **same
+  JI-pentatonic sonification**, and the **same "idle self-demo hunts for you"** scaffolding, one
+  visual (SVG) and one auditory (WebGL2). With 1384 adjacent, that's the "perceive the hidden"
+  thesis three times. The concept-diversity mandate applies to *ideas*, not just tag tuples.
 
 ## Provocations for tomorrow's dream cycle
-1. **You fixed everything except the one surface you render on.** Canvas2D is 9 of 15 — *worse*
-   than last jury's 7×, and unbroken across four straight verdicts. You diversified input and
-   technique beautifully and left the render substrate frozen. The next build must land on a
-   surface the lab isn't drowning in: extend **1270-glyph-organ** or **1272-lattice-tracker**
-   (both celebrated, both got zero cycle-2), or ship the still-0× **WebGPU compute** field, or an
-   SVG/point-cloud surface. Put the fresh input on a fresh surface.
-2. **Don't let the groove machine become the new bell.** Four of the last eight are the identical
-   spine: a 25 ms look-ahead scheduler booking synth-drum voices at ~120 BPM, played with a
-   sensor. That was the *cure* for the JI-bell monoculture — don't let it metastasize into the
-   next one. Rest the 4/4 step-sequencer for a week; if you want TIME, find it somewhere other
-   than a drum grid (polymetric phasing, a swung melodic loop, a rhythm made of the real piano).
-3. **Cash the 5/5 you just proved you can reach.** You broke the ceiling twice this fortnight —
-   the *only* rung left is the ≥4-model **AI-pipeline chain** (audio→image→video, or
-   music→narrative→TTS→score-follow), still **0×** after every jury, gated solely on Karel's
-   per-prototype paid-budget call. This is the fifth time it's been raised. One such build is
-   worth more than the next five groove machines.
-4. **Stop banking your own research anchor.** Twice in the last several WIDE fires the piece that
-   shipped was explicitly the *off-research* sibling — 1316 shipped while its Turrell-anchored
-   1318 was cut; 1326 shipped while the MIDI Dreamachine 1324 (the actual dive) was cut. The
-   research log is superb and current, but the "dive → build, chain visible" promise is becoming
-   decorative when the curator keeps shipping the diversifier. Either ship the anchor or stop
-   claiming the chain.
-5. **The re-perform-the-recording thread is complete — bank it and move the piano somewhere
-   structurally new.** Freeze (1308) / duet (1310) / bloom cousins have had 3–4 fires and it's
-   your strongest cluster. Don't fire a fifth granular-spectral piano piece; if the piano returns,
-   make it a *responsive* partner (score-following, call-and-response) rather than raw material you
-   sculpt with a sensor.
+1. **The surface win is real — now protect it from its own success.** Canvas2D 9→5 is the best
+   structural news in a month. But SVG rose straight to the ban line (4×) filling the vacuum, and
+   Canvas2D is *still* the plurality. The next build must land on a surface the lab is **thin** on:
+   a **second WebGPU-compute** piece (prove 1348 wasn't a fluke), **DOM/CSS-3D** (only 1362), or
+   three.js — **not** Canvas2D and **not** SVG. Put a fresh input on a fresh surface.
+2. **Break the "always-consonant" spell.** The JI/pentatonic scale-index crutch is now ~10 of 15 —
+   the oldest, deepest monoculture in the lab and the one two juries have named to no effect. "An
+   answer can never sound wrong" (1366's own words) is *also* why nothing ever surprises. Ship ONE
+   piece where the wrong note is **possible** and that's the point: microtonality, a spectral /
+   inharmonic tuning, a just-intonation *comma* you can hear grind, or dissonance as a played axis.
+3. **Don't let Reich phasing become the new drum machine.** 1354, 1362, 1392 are three phase pieces
+   in one window — the identical warning the last jury issued about the look-ahead groove (which you
+   *did* successfully rest, 4×→2×). Rest polymetric phasing for a week. If you want TIME off the
+   grid, find a *fourth* way: rubato/agogic accent, generative rhythm authored by external data
+   (extend 1374), or an actual notated meter played straight.
+4. **The AI-pipeline chain is now the only 0× rung left — and it's the sixth jury asking.** You
+   cashed WebGPU, external-data, and call-and-response this fortnight. The ≥4-model
+   **audio→image→video** (or music→narrative→TTS→score-follow) chain is the last standing demand,
+   gated **solely** on Karel's per-prototype paid-budget go-ahead (FAL/Replicate). It's an open
+   question in MORNING.md *again*. One such build is worth more than the next five 2/5 middle-pack
+   pieces. **Karel: say the word and it ships.**
+5. **"Perceive the hidden" is done — bank the thesis.** The REBUS / Anil-Seth "controlled
+   hallucination" concept shipped three times this cycle and is the named theme of the week. It's
+   beautiful and it's complete. Rest it for a month and reach into a lab-thin *category*, not
+   another altered-states framing: the **camera/embodied** lane collapsed to 1× (revive it), or
+   build on the **2026-07-06 Refik Anadol *Dataland*** finding (living-data-field at museum scale) —
+   fresh in RESEARCH.md and, so far, built on by nothing.
 
 ## Karel-facing line
-Best fortnight in weeks — the lab did nearly everything the last jury demanded: it left the
-physics museum, shipped four real grooves where there were zero, and hit 5/5 twice (a first ever).
-The one thing it still won't do is get off Canvas2D (9 of 15) — and the groove machine is quietly
-becoming the new bell.
+Real turnaround on the thing you'd nagged about for a month — Canvas2D fell 9→5 and WebGPU, MIDI,
+live-data sonification and call-and-response all shipped for the first time — but the ceiling
+slipped (one 4/5, no 5/5, AI-pipeline still 0×) and two new bells are forming: Reich phasing (3×)
+and the "find-the-hidden-pattern" concept (3×).
