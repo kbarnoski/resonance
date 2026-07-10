@@ -1,39 +1,36 @@
-# Morning digest — last updated 2026-07-09 (cycle 721, PSYCHEDELIC · WIDE)
+# Morning digest — last updated 2026-07-10 (cycle 722, PSYCHEDELIC · DEEP)
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
-## New since yesterday — ▶ `/dream/1366-answer-piano` (cycle 721 · WIDE)
-**Answer Piano — play a short phrase and a patient partner answers you in the same key.**
-Why open this: it's the lab's **first responsive partner** — not a recording you sculpt, a *conversation*.
-You play a few notes (sing/play into the mic, or tap the keys — phone-friendly, always works), pause for a
-breath, and a distinct **violet partner voice** replies in-key: it reads your phrase's shape and inverts it,
-sequences it, or echoes-and-resolves it, always landing in **D pentatonic** so an answer can never sound
-wrong. Two **voice ribbons** braid in SVG — amber = you, violet = the partner — so you *see* the turn-taking.
-It talks to itself if you walk away.
-- Directly cashes the jury's still-unmet **#5** ("the re-perform-the-recording thread is done — if the
-  piano returns, make it a **responsive partner**, not raw material"). This is that piece.
-- Deliberately **breaks the 4-cycle spatial-lattice/phasing rut** (719+720 were both lattices — the "too
-  similar" pattern). And unlike the recent GPU winners, the render is **deterministic SVG** — no "did the
-  shader draw?" question. What still wants your ears/eyes: the conversation *feel* + audio balance + live mic.
+## New since yesterday — ▶ `/dream/1374-sky-strata` (cycle 722 · DEEP)
+**Sky Strata — the live sky over Earth composes this piece right now, and you play the second voice.**
+Why open this: it's the lab's **first real external-world-data sonification**. Three live **NOAA
+space-weather** feeds (solar-wind speed & density, magnetic-field Bz, planetary Kp) set the music's
+**key, tempo, palette and mode** — the actual state of the sky above us becomes the composition. Then
+**you play over it**: tap a light-band or press `A S D F G H J` to pluck a voice (always in-key), each
+flaring its band. Rendered as clean **layered light-strata you can read like a score**, with a
+solar-wind "score ribbon" tracing recent history. A green **LIVE — NOAA** badge (or amber `simulated`)
+tells you whether real data loaded.
+- Directly cashes the jury's **#4** ("stop banking your sky-composer anchor — ship it"). This ships it.
+- **Deterministic SVG** (no GPU) so the render is verifiable — and the full build ran clean **exit 0**
+  this fire (no EMFILE). What still wants your screen: does real space-weather actually load in your
+  browser (it falls to a labeled synthetic sky here), plus the strata tuning + audio balance.
 
-## Also explored this fire (built, banked — 2 genuinely different directions)
-- **⭐⭐ `1368-sky-composer`** — a piece **composed by the live sky**: NOAA solar-wind + geomagnetic (Kp)
-  data drives a WebGL2 **aurora** + a cosmic pad in real time. The lab's **first real external-data
-  sonification** (music *about* the actual cosmos right now). Rides your loved particle/point pieces
-  (130/236/321/262). Top ship-next — banked only because a headless box can't confirm the WebGL render
-  *or* exercise the live NOAA fetch (it falls to a clearly-labeled simulated sky).
-- **⭐ `1370-form-organ`** — a QWERTY organ that **melts the screen into the four "form constants"**
-  (tunnels/spirals/lattices/spokes) the brain makes under psychedelics, on the shared log-polar `exp()`
-  engine PSYCHEDELIC.md keeps naming. Intense/DMT pole.
-Full rebuildable specs in IDEAS §721.
+## Also explored this fire (built, banked — same "the world composes" thesis)
+- **⭐⭐ `1376-earth-pulse`** — **play the planet's live earthquakes.** USGS's past-24h feed becomes a
+  **seismic drone-choir**: every real quake a struck voice (big = bass groan, small = shimmer), panned
+  by longitude, timbred by depth, on an SVG world of pulsing ripples. A **playhead sweeps the day** and
+  you scrub / strike / re-sound tremors. The **strongest instrument** of the three and the most
+  surprising — **top ship-next** (deterministic + USGS CORS is reliable, so it ships trivially next fire).
+- **⭐ `1372-sky-weather`** — the **WebGL2 aurora** version of Sky Strata (same NOAA feeds → glowing
+  fbm-warped curtains). Banked only because a headless box can't confirm the shader render *or* the live
+  fetch. Rides your loved particle/point pieces (130/236/321/262).
+Full rebuildable specs in IDEAS §722.
 
 ## Open questions for Karel
-- **Does the call-and-response feel like a partner** on your phone — is the ~0.9 s turn-taking latency
-  right, and do the answers sound musical? That's the whole bet.
+- **Does real space-weather load in your browser?** If the LIVE badge shows green on the deployed site,
+  the whole real-world-data lane is open — weather / tides / ISS passes / transit all become composers.
+- **Want `1376-earth-pulse` shipped next?** It's the best *instrument* here; I banked it only to ship the
+  named sky-composer anchor first (jury #4). Say the word and it goes up next fire.
 - **The 5/5 rung is still 0×:** the ≥4-model **AI-pipeline chain** (audio→image→video) needs your
-  per-prototype **paid budget** call — I won't spend it unattended. 6th time raised; one such build is
-  worth more than the next five diversifiers.
-- **Want the live-data lane pursued?** `1368-sky-composer` is the first "real-world data as composer"
-  piece — if it lands, weather / seismic / transit / satellite feeds all open up.
-- **fd ceiling (infra, not code):** `npm run build` still EMFILEs locally at ~670 routes; I ship via the
-  identical compile-mode gates and Vercel builds fine. Raising `ulimit -n` or archiving old routes clears it.
+  per-prototype **paid budget** call — I won't spend it unattended. 7th time raised.
