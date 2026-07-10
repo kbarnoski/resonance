@@ -1,36 +1,19 @@
-# Morning digest — last updated 2026-07-10 (cycle 724, PSYCHEDELIC · DEEP)
+# Morning digest — last updated 2026-07-10 ~08:35 UTC
 
 **Open the lab:** https://getresonance.vercel.app/dream
 
-## New since yesterday — ▶ `/dream/1384-gravity-choir-points` (cycle 724 · DEEP)
-**Gravity Choir — a swarm that doesn't react to music, it *makes* it.**
-Why open this: place a few gravitational **stars** in a boundless star-void; **24,000** motes fall
-into orbit around them — and their **orbital motion IS the sound**. Every particle piece you've seen
-is *audio-reactive* (sound first, visuals dance). This runs the arrow **backwards**: the geometry
-comes first, and the swarm sonifies its own orbits — density near a star's periapsis blooms its tone,
-motes swinging through fire soft grains. The rhythm is **emergent** from the orbital periods; there's
-no sequencer, no drum grid.
-- **Play it:** two stars sing on Start · **click the void** to place a star (up to 6) or click one to
-  select it · **number keys 1–7** tune the selected star (A-minor-pentatonic, always consonant).
-- Cashes the jury's **#1** (get off Canvas2D → a **point-cloud** surface) and **#2** (TIME off the
-  drum grid) in one move; runs on plain WebGL so it plays on any device.
-- **Best on desktop/laptop.** Give it a moment on Start, then place a star and tune it.
+Cycle 725 · **WIDE** (3 fresh-substrate explorers, all non-Canvas2D) · shipped 1 of 3.
 
-## How this fire worked (DEEP — one concept, three builds)
-- I built **one** concept — *a gravity swarm that sonifies its own motion* — three ways in parallel,
-  and shipped the most robust: `1384` (three.js point-cloud). The other two are banked:
-  - **⭐⭐ `1382-gravity-choir-gpu`** — the SAME choir on a **raw WebGPU compute shader** (100k motes).
-    The freshest substrate (the jury's #1 want), and it *does* build — de-selected only because WebGPU
-    won't render for Safari/many browsers at review time. **Top ship-next** once a WebGPU-verified path
-    is confirmed.
-  - **⭐ `1386-gravity-choir-conduct`** — **conduct the swarm by tilting your phone** (gather toward
-    light → the choir swells; scatter → a whisper). Phone-delightful; banked to make the gesture more
-    *played* before it ships.
+## New since yesterday — open this first
+- **[/dream/1392-phase-loom](https://getresonance.vercel.app/dream/1392-phase-loom)** — *hold notes; each becomes a loop at its OWN period and they drift Reich-style in and out of phase.* No drum grid, no step-sequencer — TIME comes from **phasing** (Steve Reich *Piano Phase* / Terry Riley *In C*). Each note spawns a short just-intonation cell that loops at a slightly different period; over ~10–60 s any pair slides from unison through every offset and back. You SEE it on a **three.js** ring-field: each loop is an orbiting mote, and when two align a filament lights and the core swells. **Play it:** hit *Begin* (it auto-seeds two loops), then tap the pads / press `A S D F G H J K L ;` — or plug in a MIDI keyboard. Direct cash of the jury's "don't let the groove machine become the new bell — find TIME off the drum grid."
+
+## Explored but not shipped (2 more — banked, see IDEAS §725)
+- **⭐ 1390-jhana-shells** (SHIP-NEXT) — tilt to drift, weightless, inward through a boundless cathedral of translucent **CSS-3D** light-shells toward a luminous core (meditative / NDE tunnel-to-light). The lab's cleanest DOM/CSS-3D piece and best cosmic-ambient *visual* — de-selected only because tunnel-to-light has 3 lab-priors and it leans watch-not-play. Worth firing on its own.
+- **1388-cortex-diffuse** — a WebGPU-compute reaction-diffusion "play the Turing field into DMT geometry" piece — **disqualified at curation**: it's a near-duplicate of the existing **1348-prism-cortex** (already exactly that). Banked instead as a *polish* idea for 1348. Honest miss, logged in RESEARCH §725.
+
+## Research finding worth a look
+- **WebGPU shipped in Safari/iOS 26 in 2026** — now reaching "the vast majority of web users." This removes the render-reach objection that made us de-select the banked **1382-gravity-choir-gpu** (100k-mote WebGPU-compute gravity choir) last cycle. It's now shippable-with-reach as a dedicated fire. (RESEARCH §725.)
 
 ## Open questions for Karel
-- **Does the choir read as distinct voices, or a wash?** With several stars the drones can blend —
-  the sonification is deliberately gentle and has lots of headroom. Your ear would tell.
-- **Want the WebGPU 100k-mote version (`1382`) shipped next?** It's built and compiles; it needs a
-  browser with WebGPU (Chrome/Edge) to shine. Say the word and it's the next fire.
-- **The 5/5 rung is still 0×:** the ≥4-model **AI-pipeline chain** (audio→image→video) needs your
-  per-prototype **paid-budget** call — I won't spend it unattended. 9th time raised.
+- **The AI-pipeline chain is the last 0× rung** (audio→image→video, or music→narrative→TTS→score-follow — jury #3, raised 5×). It needs your explicit per-prototype **paid-budget** go-ahead (FAL/Replicate). Say the word and I'll build one — I will NOT auto-spend.
+- The last few fires lean geometric/intense (gravity swarm, phasing, form-constants). Is that landing, or do you want more **cosmic-ambient / meditative** (1390-jhana-shells is queued for exactly that)? Tell me which pole to lean into.
