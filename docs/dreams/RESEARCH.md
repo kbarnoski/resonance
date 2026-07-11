@@ -3,6 +3,22 @@
 Agent appends findings here during research cycles. Each entry: date, source, 2-3 sentence summary, prototype speculation.
 
 ---
+## §735 — 2026-07-11 (research-first dive, cycle 735 · PSYCHEDELIC · **WIDE** — "The mind hallucinates the rest")
+
+**Dive target:** drug-free altered-states induction that uses the perceptual system's OWN quirks as the transport — i.e. genuine illusions, not simulated psychedelia. Searched: Ganzfeld/Troxler interactive art (2026), arxiv June-2026 auditory-illusion / binaural perception, and the perceptual-science literature the lab hasn't mined.
+
+**Finding (the fresh synthesis, honestly dated).** The lab has built *flicker* form-constants (Ganzflicker) and *apophenia*, but has **never** staged the two most on-theme drug-free perceptual illusions as interactive pieces:
+- **Troxler fading + the Ganzfeld effect** — under steady fixation on a uniform low-contrast field the *periphery dissolves into void* (neural adaptation, retinal + cortical). A real, robust sensory-boundary dissolution. Troxler, 1804; Ganzfeld — Wolfgang Metzger, 1930. PSYCHEDELIC.md §Ganzfeld itself names this "directly screen-implementable," yet a lab grep is **0×**. https://en.wikipedia.org/wiki/Troxler's_fading
+- **Auditory illusions** — **Diana Deutsch's octave illusion / scale illusion** (1974: tones swapped between the ears fuse into a phantom melody that is physically nowhere) and the **missing fundamental** (present only upper harmonics → the brain synthesizes the absent bass). The perceived music is demonstrably *not* what is emitted. Named installation-practice reference surfaced this dive: *"Investigating the Physically Hidden: Auditory-based illusions for sound installations,"* Organised Sound (Cambridge Core). https://www.cambridge.org/core/journals/organised-sound/article/abs/investigating-the-physically-hidden-auditorybased-illusions-for-sound-installations/8B1AD1F8937AD1642B7B0F2CD8203F4C
+
+**Freshness note (honest, per the mandate):** the core phenomena are foundational (1804 / 1974), not <30-day. The genuinely fresh axis is the *synthesis* — staging perception-itself-as-the-instrument for drug-free ego/sensory-dissolution, a lane the lab is at 0×. My <30-day searches (Ganzfeld-WebGL-art 2026, arxiv June-2026 binaural) surfaced only HRTF/spatial-audio engineering papers already adjacent to last cycle's echo-void — no non-duplicate <30-day item, logged plainly.
+
+**Could become a prototype (this cycle's WIDE fan-out — chain visible):**
+- `1444-troxler-void` — hold still and the screen melts to a uniform void; move and it re-forms; the drone thins/re-blooms with the fade. (Troxler/Ganzfeld visual dissolution.)
+- `1446-ghost-choir` — a melody & bass your brain invents from tones split between the ears. (Deutsch octave/scale illusion + missing fundamental.)
+- `1448-resonant-hall` — play Karel's real piano into impossible halls you sculpt; the reverb (an FDN) is the instrument. (Not an illusion piece — the diversity third of the WIDE fire; cashes the real-piano directive.)
+
+---
 ## §733 — 2026-07-11 (research-first dive, cycle 733 · PSYCHEDELIC · **WIDE** — "Navigate by Ear / Comment on the Self")
 
 **Dive target:** a genuinely <30-day, surprising piece to anchor today's build. Searched: WebGPU-compute audio-reactive (June 2026), web volumetric raymarching AV (2026), arxiv cs.SD real-time neural/binaural (June 2026), and the TouchDesigner/Houdini educator feeds (Tschepe/Entagma/Horikawa) for last-30-day uploads.
