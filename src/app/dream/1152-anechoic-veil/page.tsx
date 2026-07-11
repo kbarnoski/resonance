@@ -227,7 +227,7 @@ export default function AnechoicVeilPage() {
   const scatterHot = scatterPct > 18;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05040c] text-white/95">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05040c] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block h-full w-full"
@@ -236,13 +236,13 @@ export default function AnechoicVeilPage() {
 
       {/* Title + one-question, top-left */}
       <header className="pointer-events-none absolute left-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Anechoic Veil
         </h1>
         <p className="mt-1 max-w-md font-mono text-base text-violet-300">
           What if the instrument were your stillness?
         </p>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           The veil blooms only in silence. Any sound scatters it.
         </p>
       </header>
@@ -251,14 +251,14 @@ export default function AnechoicVeilPage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur-sm transition-colors hover:bg-white/10 hover:text-white/95"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
-        <aside className="absolute right-4 top-20 z-20 max-w-sm rounded-2xl border border-white/15 bg-black/80 p-5 text-base text-white/75 backdrop-blur-md">
-          <h2 className="text-xl font-semibold text-white/95">Design notes</h2>
+        <aside className="absolute right-4 top-20 z-20 max-w-sm rounded-2xl border border-border bg-black/80 p-5 text-base text-muted-foreground backdrop-blur-md">
+          <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
           <p className="mt-2">
             An <span className="text-violet-300">inverted microphone</span>:
             sustained silence is the control. A running{" "}
@@ -267,13 +267,13 @@ export default function AnechoicVeilPage() {
             on any spike. Stillness drives a symmetric WebGL2 additive-bloom
             mandala and a warm-cool drone that swells with restraint.
           </p>
-          <p className="mt-2 text-white/75">
+          <p className="mt-2 text-muted-foreground">
             In the spirit of John Cage&apos;s <em>4&prime;33&Prime;</em> and
             Pauline Oliveros&apos;s <em>Deep Listening</em> — the reveal comes
             only through restraint. Full references and subsystem list in{" "}
             <span className="font-mono text-violet-300">README.md</span>.
           </p>
-          <p className="mt-2 text-white/55">
+          <p className="mt-2 text-muted-foreground">
             Safety: no strobe — slow luminance drift only; reduced-motion
             honored. Mic is measured for level only, never recorded or uploaded.
           </p>
@@ -315,7 +315,7 @@ export default function AnechoicVeilPage() {
               x="64"
               y="60"
               textAnchor="middle"
-              className="fill-white/95 font-mono"
+              className="fill-foreground font-mono"
               fontSize="26"
             >
               {stillPct}
@@ -324,19 +324,19 @@ export default function AnechoicVeilPage() {
               x="64"
               y="80"
               textAnchor="middle"
-              className="fill-white/55 font-mono"
+              className="fill-muted-foreground font-mono"
               fontSize="11"
             >
               STILLNESS
             </text>
           </svg>
           <div className="max-w-[13rem] font-mono text-base">
-            <p className={scatterHot ? "text-rose-300" : "text-white/75"}>
+            <p className={scatterHot ? "text-violet-300" : "text-muted-foreground"}>
               {scatterHot
                 ? "sound is scattering the veil"
                 : "the veil is crystallizing"}
             </p>
-            <p className="mt-1 text-white/55">
+            <p className="mt-1 text-muted-foreground">
               {inputMode === "mic"
                 ? "listening for your silence"
                 : "hold to stay still"}
@@ -356,8 +356,8 @@ export default function AnechoicVeilPage() {
             onPointerCancel={holdOff}
             className={`min-h-[44px] select-none rounded-full border px-8 py-4 font-mono text-base transition-colors ${
               held
-                ? "border-violet-300/60 bg-violet-500/25 text-white/95"
-                : "border-white/20 bg-black/50 text-white/75 hover:bg-white/10"
+                ? "border-violet-300/60 bg-violet-500/25 text-foreground"
+                : "border-border bg-black/50 text-muted-foreground hover:bg-accent"
             }`}
           >
             {held ? "…staying still…" : "press & hold to be still"}
@@ -368,11 +368,11 @@ export default function AnechoicVeilPage() {
       {/* Intro overlay — canvas already animating behind it */}
       {phase === "intro" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-6">
-          <div className="max-w-lg rounded-2xl border border-white/15 bg-black/70 p-7 text-center backdrop-blur-md">
-            <h2 className="text-2xl font-semibold text-white/95">
+          <div className="max-w-lg rounded-2xl border border-border bg-black/70 p-7 text-center backdrop-blur-md">
+            <h2 className="text-2xl font-semibold text-foreground">
               A reward for quiet
             </h2>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               This inverts the usual visualizer. It listens for the{" "}
               <span className="text-violet-300">absence</span> of sound. The
               stiller and quieter you stay, the more the mandala blooms and the
@@ -383,20 +383,20 @@ export default function AnechoicVeilPage() {
               <button
                 type="button"
                 onClick={beginMic}
-                className="min-h-[44px] rounded-full border border-violet-300/50 bg-violet-500/25 px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-violet-500/40"
+                className="min-h-[44px] rounded-full border border-violet-300/50 bg-violet-500/25 px-4 py-2.5 text-base text-foreground transition-colors hover:bg-violet-500/40"
               >
                 Enter with microphone
               </button>
               <button
                 type="button"
                 onClick={beginManual}
-                className="min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 text-base text-white/75 transition-colors hover:bg-white/10 hover:text-white/95"
+                className="min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
               >
                 Enter in stillness (no mic)
               </button>
             </div>
             {glError && (
-              <p className="mt-4 text-base text-rose-300">{glError}</p>
+              <p className="mt-4 text-base text-violet-300">{glError}</p>
             )}
           </div>
         </div>
@@ -404,7 +404,7 @@ export default function AnechoicVeilPage() {
 
       {/* Mic-denied notice */}
       {micError && phase === "running" && (
-        <p className="absolute left-1/2 top-24 z-20 max-w-md -translate-x-1/2 rounded-xl border border-rose-300/30 bg-black/70 px-4 py-2.5 text-center text-base text-rose-300 backdrop-blur-sm">
+        <p className="absolute left-1/2 top-24 z-20 max-w-md -translate-x-1/2 rounded-xl border border-violet-300/30 bg-black/70 px-4 py-2.5 text-center text-base text-violet-300 backdrop-blur-sm">
           {micError}
         </p>
       )}

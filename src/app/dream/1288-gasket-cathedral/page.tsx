@@ -157,24 +157,24 @@ export default function GasketCathedralPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#0b0e14]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Gasket Cathedral</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Gasket Cathedral</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Walk inside the Apollonian gasket — a cathedral of nested nacre bells
           where each sphere&apos;s size is its pitch, spatialised around your head.
           Move through the 3D Soddy packing and strike the bells; big shells ring
@@ -184,20 +184,20 @@ export default function GasketCathedralPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if you
+            <strong className="text-foreground">The question:</strong> what if you
             could <em>walk inside</em> the Apollonian gasket — a cathedral of
             nested bells where each sphere&apos;s size is its pitch, spatialised
             around your head?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The packing:</strong> four unit
+            <strong className="text-foreground">The packing:</strong> four unit
             spheres at the vertices of a regular tetrahedron, mutually tangent
             inside their common bounding sphere — the 3D{" "}
-            <span className="text-cyan-200/90">Soddy configuration</span>. Five
+            <span className="text-violet-200/90">Soddy configuration</span>. Five
             mutually-tangent spheres obey the{" "}
-            <span className="text-cyan-200/90">Soddy–Gosset theorem</span>,
+            <span className="text-violet-200/90">Soddy–Gosset theorem</span>,
             (Σbᵢ)² = 3·Σbᵢ² (the 3D generalisation of the Descartes Circle
             Theorem). Given four spheres, the two tangent to all four have bends
             summing to Σ(the four), so the &ldquo;other&rdquo; sphere is the
@@ -206,21 +206,21 @@ export default function GasketCathedralPage() {
             Tangency verifies to ~1e-15.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Curvature → pitch:</strong> a
+            <strong className="text-foreground">Curvature → pitch:</strong> a
             sphere&apos;s bend b = 1/r maps to frequency on a 5-limit
             just-intonation pentatonic — big nave bells low, tiny deep bells high,
             every strike consonant over a low root+fifth drone bed.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Spatialised:</strong> each ring is a
-            Web Audio <span className="text-emerald-300/95">PannerNode</span>{" "}
+            <strong className="text-foreground">Spatialised:</strong> each ring is a
+            Web Audio <span className="text-violet-300/95">PannerNode</span>{" "}
             (HRTF) at the sphere&apos;s 3D world position; the AudioListener is
             driven by the first-person camera, so a bell above-left of you sounds
             above-left. Move with pointer-lock + WASD (or drag-look, or phone
             gyro); strike the bell under your gaze, or pass through one to ring it.
             Idle ~2s and the camera auto-tours the nave hands-free.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: Frederick Soddy, &ldquo;The Kiss Precise,&rdquo; <em>Nature</em>{" "}
             139 (1936); the Soddy–Gosset theorem; the 3D generalisation of the
             Descartes Circle Theorem (Lagarias, Mallows &amp; Wilks, &ldquo;Beyond
@@ -237,28 +237,28 @@ export default function GasketCathedralPage() {
         {/* Fixed crosshair reticle */}
         {started && !webglFailed && (
           <div className="pointer-events-none absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2">
-            <div className="h-5 w-5 rounded-full ring-1 ring-white/50" />
+            <div className="h-5 w-5 rounded-full ring-1 ring-border" />
           </div>
         )}
 
         {/* Live readout */}
         {info && !webglFailed && (
-          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
-            <div className="text-cyan-200/90">
+          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
+            <div className="text-violet-200/90">
               {info.spheres} tangent bells{" "}
-              <span className="text-white/45">· tangency {info.err.toExponential(0)}</span>
+              <span className="text-muted-foreground">· tangency {info.err.toExponential(0)}</span>
             </div>
-            <div className="text-white/60">
+            <div className="text-muted-foreground">
               {locked
                 ? "WASD move · mouse look · click = strike"
                 : "drag = look · click bell = strike"}
             </div>
-            {touring && <div className="text-emerald-300/90">auto-touring the nave…</div>}
+            {touring && <div className="text-violet-300/90">auto-touring the nave…</div>}
           </div>
         )}
 
         {webglFailed && (
-          <div className="absolute inset-x-4 top-4 z-10 max-w-md rounded bg-black/60 px-4 py-3 font-mono text-base text-rose-300 ring-1 ring-rose-400/25 backdrop-blur-sm">
+          <div className="absolute inset-x-4 top-4 z-10 max-w-md rounded bg-black/60 px-4 py-3 font-mono text-base text-violet-300 ring-1 ring-violet-400/25 backdrop-blur-sm">
             WebGL is unavailable in this browser, so the navigable 3D cathedral
             can&apos;t render. The sphere packing and its just-intonation audio
             need a WebGL canvas — try a hardware-accelerated browser.
@@ -272,7 +272,7 @@ export default function GasketCathedralPage() {
               <button
                 type="button"
                 onClick={relock}
-                className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 font-mono text-base text-white/90 ring-1 ring-white/25 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 font-mono text-base text-foreground ring-1 ring-border transition hover:bg-accent"
               >
                 click to lock mouse-look
               </button>
@@ -282,8 +282,8 @@ export default function GasketCathedralPage() {
               onClick={enableGyro}
               className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                 gyroOn
-                  ? "bg-emerald-400/20 text-emerald-300/95 ring-emerald-300/40"
-                  : "text-white/60 ring-white/15 hover:text-white/90"
+                  ? "bg-violet-400/20 text-violet-300/95 ring-violet-300/40"
+                  : "text-muted-foreground ring-border hover:text-foreground"
               }`}
             >
               {gyroOn ? "gyro on" : "use gyro (phone)"}
@@ -297,11 +297,11 @@ export default function GasketCathedralPage() {
             <button
               type="button"
               onClick={enter}
-              className="min-h-[44px] rounded-full bg-cyan-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-cyan-200/40 transition hover:bg-cyan-300"
+              className="min-h-[44px] rounded-full bg-violet-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-violet-200/40 transition hover:bg-violet-300"
             >
               ▶ Enter the cathedral
             </button>
-            <p className="max-w-md text-center text-base text-white/60">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Starts the sound and drops you inside the packing. Move with WASD +
               mouse (or drag to look); strike the bells. Leave it idle and it
               tours itself.
@@ -311,7 +311,7 @@ export default function GasketCathedralPage() {
 
         {started && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Strike the bell under the reticle, or drift through one to ring it.
             </p>
           </div>

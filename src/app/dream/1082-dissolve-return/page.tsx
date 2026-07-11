@@ -226,15 +226,15 @@ export default function DissolveReturnPage() {
   }, [onOrient]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {/* corner UI */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Dissolve · Return
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           Your senses have come un-bound — motion, image and sound gliding out of
           phase. Hold still to <em>pull them back into one</em>, and watch and hear
           the moment they lock.
@@ -259,19 +259,19 @@ export default function DissolveReturnPage() {
           )}
           <button
             onClick={() => setNotesOpen((v) => !v)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur transition hover:bg-black/60"
+            className="min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition hover:bg-black/60"
           >
             {notesOpen ? "close notes" : "Read the design notes"}
           </button>
         </div>
 
         {phase === "idle" && (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             tap to begin — sound + visuals start together
           </p>
         )}
         {phase === "running" && (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             {inputMode === "tilt"
               ? "tilt to steer · hold the phone STILL to let the streams re-bind"
               : "drag to steer · release and be STILL to let the streams re-bind"}
@@ -282,14 +282,14 @@ export default function DissolveReturnPage() {
             ✦ bound — one coherent, hyper-lucid instant
           </p>
         )}
-        {error && <p className="mt-2 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-2 text-base text-violet-300">{error}</p>}
       </div>
 
       {/* design notes panel */}
       {notesOpen && (
-        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-white/10 bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
-          <h2 className="text-xl text-white/95">Design notes</h2>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-border bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
+          <h2 className="text-xl text-foreground">Design notes</h2>
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             The three streams — your <em>control</em>, the <em>image</em> and the{" "}
             <em>sound</em> — are three coupled phase oscillators (the{" "}
             <em>Kuramoto model</em>). Early on the global coupling K is near zero,
@@ -297,20 +297,20 @@ export default function DissolveReturnPage() {
             doubles beneath the lagged image, and a partial <em>beats</em> against
             the drone.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             You re-bind them by <em>settling</em>. Holding still raises the coupling
             K; the three phase-dots (bottom-right ring) converge, the doubling fuses
             to one crisp image, and the beat slows to <em>zero-beat</em> — a bright
             bloom as everything locks. This is binding-by-synchrony: a global
             gamma-band phase-lock as the substrate of one coherent percept.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             It deepens <em>1063 · Dissolve · Void</em>: that piece un-bound the
             senses and hid the re-sync in a single scripted flash. Here the
             re-binding is the star — modelled, participatory, and visibly/audibly
             legible.
           </p>
-          <p className="mt-3 text-base text-white/55">
+          <p className="mt-3 text-base text-muted-foreground">
             see README.md in this prototype&apos;s folder for full references.
           </p>
         </div>

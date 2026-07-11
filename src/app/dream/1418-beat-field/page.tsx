@@ -56,9 +56,9 @@ async function makeRenderer(
 }
 
 const TIER_STYLE: Record<Tier, string> = {
-  webgpu: "border-emerald-300/50 bg-emerald-500/15 text-emerald-100",
-  webgl2: "border-sky-300/50 bg-sky-500/15 text-sky-100",
-  canvas: "border-amber-300/50 bg-amber-500/15 text-amber-100",
+  webgpu: "border-violet-300/50 bg-violet-500/15 text-violet-100",
+  webgl2: "border-violet-300/50 bg-violet-500/15 text-violet-100",
+  canvas: "border-violet-300/50 bg-violet-500/15 text-violet-100",
 };
 const TIER_LABEL: Record<Tier, string> = { webgpu: "WebGPU", webgl2: "WebGL2", canvas: "Canvas" };
 
@@ -267,7 +267,7 @@ export default function BeatFieldPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04030a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04030a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -292,25 +292,25 @@ export default function BeatFieldPage() {
 
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-white md:text-5xl">
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground md:text-5xl">
             Beat Field
           </h1>
-          <p className="mt-3 text-base text-white/80">
+          <p className="mt-3 text-base text-foreground">
             What if the music were composed in the{" "}
             <span className="text-violet-300">beating</span> itself? Four detuned
             voices, one axis: from the <span className="text-violet-300">lock</span>{" "}
             (silence-of-beating) out into the{" "}
-            <span className="text-rose-300">howl</span>. The roughness is the
+            <span className="text-violet-300">howl</span>. The roughness is the
             instrument — push into it, release back.
           </p>
           {phase === "running" && (
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               bt <span className="text-violet-300">{hud.bt.toFixed(2)} Hz</span> ·{" "}
               {describeRegime(hud.bt)} · chord{" "}
-              <span className="text-white/90">{CHORD_PRESETS[hud.preset].name}</span> ·
-              root <span className="text-white/90">{Math.round(hud.root)} Hz</span> ·
+              <span className="text-foreground">{CHORD_PRESETS[hud.preset].name}</span> ·
+              root <span className="text-foreground">{Math.round(hud.root)} Hz</span> ·
               lit pairs <span className="text-violet-300">{hud.pairs}</span>
-              {reduced && <span className="text-white/75"> · reduced-motion</span>}
+              {reduced && <span className="text-muted-foreground"> · reduced-motion</span>}
             </p>
           )}
         </header>
@@ -324,9 +324,9 @@ export default function BeatFieldPage() {
               >
                 Begin · enter the lock
               </button>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Sound starts on this tap (browsers block autoplay). Then{" "}
-                <span className="text-white/90">drag anywhere</span>: left↔right is
+                <span className="text-foreground">drag anywhere</span>: left↔right is
                 the beat rate (lock→howl), up↕down is drive. Keys{" "}
                 <span className="font-mono text-violet-300">1–5</span> pick a chord,{" "}
                 <span className="font-mono text-violet-300">↑ ↓</span> move the root,{" "}
@@ -339,7 +339,7 @@ export default function BeatFieldPage() {
 
         {phase === "running" && (
           <footer className="pointer-events-auto max-w-2xl">
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Each voice&apos;s partial <span className="font-mono text-violet-300">h</span>{" "}
               sits at <span className="font-mono text-violet-300">h·f ± h·bt/2</span>, so
               the upper partials roughen first as you push bt up. The field shows{" "}
@@ -366,27 +366,27 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-xl border border-white/15 bg-[#0a0812] p-6 md:p-8"
+        className="relative w-full max-w-2xl rounded-xl border border-border bg-[#0a0812] p-6 md:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 min-h-[44px] rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-base text-white/95 hover:bg-white/20"
+          className="absolute right-4 top-4 min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
         >
           Close
         </button>
-        <h2 className="font-serif text-2xl font-semibold text-white">Beat Field — design notes</h2>
+        <h2 className="font-serif text-2xl font-semibold text-foreground">Beat Field — design notes</h2>
 
-        <div className="mt-4 space-y-4 text-base leading-relaxed text-white/85">
+        <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground">
           <p>
-            <span className="font-semibold text-white">The question.</span> What if
+            <span className="font-semibold text-foreground">The question.</span> What if
             the music were composed in the <em>beating</em> itself? Not a tuning to
             purify and not a dissonance to minimize — the acoustic roughness is the
             expressive medium you play, along one continuous axis from the dark calm
             of the lock to the dense howl.
           </p>
           <p>
-            <span className="font-semibold text-white">The kernel.</span> Between two
+            <span className="font-semibold text-foreground">The kernel.</span> Between two
             partials the Plomp–Levelt / Sethares sensory roughness is{" "}
             <span className="font-mono text-violet-300">
               r = a₁a₂(e^(−3.5·s·df) − e^(−5.75·s·df))
@@ -397,7 +397,7 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             feeds every render tier and the audio.
           </p>
           <p>
-            <span className="font-semibold text-white">The instrument.</span> Four
+            <span className="font-semibold text-foreground">The instrument.</span> Four
             detunable voices (a chord), each 6 partials, alternating detune
             direction. A single control{" "}
             <span className="font-mono text-violet-300">bt</span> (0.25 → 42 Hz,
@@ -409,25 +409,25 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             the harmonic ladder as you push.
           </p>
           <p>
-            <span className="font-semibold text-white">Sound.</span> 24 oscillators
+            <span className="font-semibold text-foreground">Sound.</span> 24 oscillators
             (4 voices × 6 partials) tuned straight to the split partials. The tremolo
             and howl are the <em>real</em> acoustic beating between them — no LFO is
             faked on top. Master gain ramps to ≤ 0.20 behind a compressor/limiter,
             over a low just-intonation drone bed and a void reverb.
           </p>
           <p>
-            <span className="font-semibold text-white">Render substrate.</span> The
-            primary tier is a <span className="text-emerald-200">raw WebGPU compute
+            <span className="font-semibold text-foreground">Render substrate.</span> The
+            primary tier is a <span className="text-violet-200">raw WebGPU compute
             shader</span> (WGSL) dispatched over a 256×256 grid that splats the
             partial-pair roughness into an{" "}
             <span className="font-mono">rgba16float</span> storage texture; a render
             pass blits it with an additive glow. If WebGPU is missing it drops to a{" "}
-            <span className="text-sky-200">WebGL2</span> fragment shader, then a{" "}
-            <span className="text-amber-200">Canvas2D</span> coarse grid — never a
+            <span className="text-violet-200">WebGL2</span> fragment shader, then a{" "}
+            <span className="text-violet-200">Canvas2D</span> coarse grid — never a
             blank frame. The tier badge (top-left) tells you which is live.
           </p>
           <p>
-            <span className="font-semibold text-white">Safety.</span> No strobe. Every
+            <span className="font-semibold text-foreground">Safety.</span> No strobe. Every
             visual pulsation is clamped to ≤ 2.8 Hz even when the audio beat is fast,
             and the idle auto-sweep moves over tens of seconds.{" "}
             <span className="font-mono">prefers-reduced-motion</span> slows the sweep
@@ -435,7 +435,7 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             a dark-violet nebula floor is always present.
           </p>
           <p>
-            <span className="font-semibold text-white">References.</span> Plomp &amp;
+            <span className="font-semibold text-foreground">References.</span> Plomp &amp;
             Levelt (1965), &ldquo;Tonal Consonance and Critical Bandwidth&rdquo;;
             William Sethares, <em>Tuning, Timbre, Spectrum, Scale</em> (2005); and the
             beating dissonance submodel of the{" "}

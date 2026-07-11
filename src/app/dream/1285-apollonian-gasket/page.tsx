@@ -278,24 +278,24 @@ export default function ApollonianGasketPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#05060a]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Apollonian Gasket</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Apollonian Gasket</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Tap a circle to sound its tone and grow tangent children into the gap beneath
           your finger — packing an infinite, self-similar fractal you compose by ear. A
           circle&apos;s curvature is its pitch: bigger rings ring lower, and every tap
@@ -304,14 +304,14 @@ export default function ApollonianGasketPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if the
+            <strong className="text-foreground">The question:</strong> what if the
             Apollonian gasket were an <em>instrument</em> — each circle a just-intonation
             voice, packing it by ear until an infinite chord condenses out of the gaps?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The math:</strong> circles are stored as a
+            <strong className="text-foreground">The math:</strong> circles are stored as a
             signed curvature (bend) <span className="text-violet-300">b = ±1/r</span> and a
             complex centre. Each new tangent circle is placed by the{" "}
             <span className="text-violet-300">Descartes Circle Theorem</span> —{" "}
@@ -323,7 +323,7 @@ export default function ApollonianGasketPage() {
             to its three parents to ~1e-15.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Played:</strong> tap anywhere — the circle
+            <strong className="text-foreground">Played:</strong> tap anywhere — the circle
             under your finger sounds (curvature → pitch, quantised to a 5-limit JI
             pentatonic so taps harmonise), and its neighbouring gaps grow their next
             generation of tangent children, each chiming higher and quieter. Drag to pan,
@@ -331,12 +331,12 @@ export default function ApollonianGasketPage() {
             chord together.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Altered states:</strong> the endless
+            <strong className="text-foreground">Altered states:</strong> the endless
             self-similar nesting evokes the fractal-regress phenomenology of the Klüver
             form constants (tunnels, honeycomb, cobweb) — drug-free, driven only by the
             geometry. All luminance change is slow drift; there is no strobe.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: Descartes (1643); Apollonius of Perga, <em>Tangencies</em>; Soddy, &ldquo;The
             Kiss Precise,&rdquo; <em>Nature</em> (1936); Mumford, Series &amp; Wright,{" "}
             <em>Indra&apos;s Pearls</em> (2002); Klüver, <em>Mescal and Mechanisms of
@@ -359,7 +359,7 @@ export default function ApollonianGasketPage() {
 
         {noCanvas && (
           <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-            <p className="max-w-md text-center text-base text-rose-300">
+            <p className="max-w-md text-center text-base text-violet-300">
               Canvas 2D is unavailable in this browser, so the gasket can&apos;t be drawn.
               Try a current desktop or mobile browser.
             </p>
@@ -367,9 +367,9 @@ export default function ApollonianGasketPage() {
         )}
 
         {/* Live readout */}
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
           <div className="text-violet-300">circles ≈ {count}</div>
-          <div className="text-white/60">tap = sound + pack · drag = pan · scroll = zoom</div>
+          <div className="text-muted-foreground">tap = sound + pack · drag = pan · scroll = zoom</div>
         </div>
 
         {/* View controls */}
@@ -377,14 +377,14 @@ export default function ApollonianGasketPage() {
           <button
             type="button"
             onClick={resetView}
-            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-white/70 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white"
+            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
           >
             reset view
           </button>
           <button
             type="button"
             onClick={reseed}
-            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-white/70 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white"
+            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
           >
             reseed
           </button>
@@ -400,7 +400,7 @@ export default function ApollonianGasketPage() {
             >
               ▶ Begin — sound the gasket
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               The packing is already alive and silent — Begin lets each circle ring.
             </p>
           </div>
@@ -408,7 +408,7 @@ export default function ApollonianGasketPage() {
 
         {audioOn && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Tap to pack and sound · pinch or scroll to dive toward the limit.
             </p>
           </div>

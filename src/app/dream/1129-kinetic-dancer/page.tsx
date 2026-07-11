@@ -181,15 +181,15 @@ export default function KineticDancerPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#111a26] text-white/95">
+    <main className="min-h-screen bg-[#111a26] text-foreground">
       <div className="mx-auto max-w-3xl px-4 py-8">
         <h1
-          className="text-2xl sm:text-3xl font-serif tracking-tight text-white/95"
+          className="text-2xl sm:text-3xl font-serif tracking-tight text-foreground"
           style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
         >
           Kinetic Dancer
         </h1>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           Fourteen flat, identical dots — no shading, no depth — yet your brain
           builds a person turning in place, and decides for itself which way she
           spins. Drag the figure to tip the illusion; let go and watch it flip.
@@ -202,7 +202,7 @@ export default function KineticDancerPage() {
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
           onPointerCancel={endDrag}
-          className="relative mt-5 aspect-[4/3] w-full touch-none select-none overflow-hidden rounded-lg border border-white/10 bg-[#18212f]"
+          className="relative mt-5 aspect-[4/3] w-full touch-none select-none overflow-hidden rounded-lg border border-border bg-[#18212f]"
           style={{ cursor: phase === "running" ? "ew-resize" : "default" }}
         >
           {phase !== "running" && (
@@ -212,7 +212,7 @@ export default function KineticDancerPage() {
               ) : (
                 <button
                   onClick={begin}
-                  className="min-h-[44px] rounded-md bg-white/90 px-4 py-2.5 text-base font-medium text-[#111a26] transition hover:bg-white"
+                  className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base font-medium text-[#111a26] transition hover:bg-card"
                 >
                   Begin
                 </button>
@@ -222,19 +222,19 @@ export default function KineticDancerPage() {
         </div>
 
         {phase === "error" && errorMsg && (
-          <p className="mt-3 text-base text-rose-300">{errorMsg}</p>
+          <p className="mt-3 text-base text-violet-300">{errorMsg}</p>
         )}
 
         {/* Readout */}
         {phase === "running" && (
           <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-1 text-base">
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               Committed reading:{" "}
-              <span className="text-white/95">{readout.dir}</span>
+              <span className="text-foreground">{readout.dir}</span>
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               bias{" "}
-              <span className="tabular-nums text-white/95">
+              <span className="tabular-nums text-foreground">
                 {readout.eff >= 0 ? "+" : ""}
                 {readout.eff.toFixed(2)}
               </span>
@@ -244,7 +244,7 @@ export default function KineticDancerPage() {
 
         {/* Controls */}
         <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <label className="flex flex-col gap-1.5 text-base text-white/75">
+          <label className="flex flex-col gap-1.5 text-base text-muted-foreground">
             <span>Rotation speed — {speed.toFixed(2)}×</span>
             <input
               type="range"
@@ -253,11 +253,11 @@ export default function KineticDancerPage() {
               step={0.05}
               value={speed}
               onChange={(e) => onSpeed(Number(e.target.value))}
-              className="h-11 accent-amber-200"
+              className="h-11 accent-violet-200"
             />
           </label>
 
-          <label className="flex flex-col gap-1.5 text-base text-white/75">
+          <label className="flex flex-col gap-1.5 text-base text-muted-foreground">
             <span>
               Bias {audioOnly ? "(audio pan)" : "(visual tilt)"} —{" "}
               {bias >= 0 ? "+" : ""}
@@ -270,11 +270,11 @@ export default function KineticDancerPage() {
               step={0.02}
               value={bias}
               onChange={(e) => onBias(Number(e.target.value))}
-              className="h-11 accent-amber-200"
+              className="h-11 accent-violet-200"
             />
           </label>
 
-          <label className="flex flex-col gap-1.5 text-base text-white/75">
+          <label className="flex flex-col gap-1.5 text-base text-muted-foreground">
             <span>Noise field — {Math.round(noise * 100)}%</span>
             <input
               type="range"
@@ -283,16 +283,16 @@ export default function KineticDancerPage() {
               step={0.02}
               value={noise}
               onChange={(e) => onNoise(Number(e.target.value))}
-              className="h-11 accent-amber-200"
+              className="h-11 accent-violet-200"
             />
           </label>
 
-          <label className="flex min-h-[44px] items-center gap-3 text-base text-white/75">
+          <label className="flex min-h-[44px] items-center gap-3 text-base text-muted-foreground">
             <input
               type="checkbox"
               checked={audioOnly}
               onChange={(e) => onAudioOnly(e.target.checked)}
-              className="h-5 w-5 accent-amber-200"
+              className="h-5 w-5 accent-violet-200"
             />
             <span>Audio-only bias (no visual cue — let sound tip it)</span>
           </label>
@@ -302,17 +302,17 @@ export default function KineticDancerPage() {
         <div className="mt-7">
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="min-h-[44px] text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white/95"
+            className="min-h-[44px] text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
           >
             {showNotes ? "Hide the design notes" : "Read the design notes"}
           </button>
           {showNotes && (
-            <div className="mt-3 space-y-3 rounded-lg border border-white/10 bg-white/5 p-4 text-base text-white/75">
+            <div className="mt-3 space-y-3 rounded-lg border border-border bg-muted p-4 text-base text-muted-foreground">
               <p>
                 Each dot is drawn flat and identical — a three.js{" "}
-                <code className="text-white/90">PointsMaterial</code> with{" "}
-                <code className="text-white/90">sizeAttenuation:false</code>{" "}
-                under an <code className="text-white/90">OrthographicCamera</code>
+                <code className="text-foreground">PointsMaterial</code> with{" "}
+                <code className="text-foreground">sizeAttenuation:false</code>{" "}
+                under an <code className="text-foreground">OrthographicCamera</code>
                 . Orthographic projection throws away depth, so the figure&apos;s
                 real (always-the-same) rotation about the vertical axis is
                 genuinely <em>ambiguous</em>: nothing in the image says whether
@@ -334,7 +334,7 @@ export default function KineticDancerPage() {
                 locks on, echoing the 2026 finding that expectation drives
                 detection of biological motion.
               </p>
-              <p className="text-white/60">
+              <p className="text-muted-foreground">
                 References: Johansson 1973 (point-light biological motion);
                 Wallach &amp; O&apos;Connell 1953 and Ullman 1979 (kinetic depth /
                 structure-from-motion); Kayahara 2003 (the Spinning Dancer);

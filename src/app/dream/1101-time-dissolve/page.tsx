@@ -167,7 +167,7 @@ export default function TimeDissolvePage() {
   const running = phase === "running";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04030a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04030a] text-foreground">
       {/* Canvas fills the viewport */}
       <canvas
         ref={canvasRef}
@@ -179,7 +179,7 @@ export default function TimeDissolvePage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full px-4 py-2.5 text-base text-white/75 underline decoration-white/30 underline-offset-4 transition hover:text-white/95"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition hover:text-foreground"
       >
         Read the design notes
       </button>
@@ -187,16 +187,16 @@ export default function TimeDissolvePage() {
       {/* Idle / start overlay */}
       {!running && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-5 px-6 text-center">
-          <h1 className="font-serif text-4xl text-white/95 sm:text-5xl">
+          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
             Time, Dissolving
           </h1>
-          <p className="max-w-xl text-base text-white/75 sm:text-lg">
+          <p className="max-w-xl text-base text-muted-foreground sm:text-lg">
             An audio-first descent that dissolves your sense of <em>when</em>. An
             endless falling tone, a swelling void, and a light that quietly
             refuses to keep time with the sound.
           </p>
           {phase === "error" ? (
-            <p className="max-w-md text-base text-rose-300">{errorMsg}</p>
+            <p className="max-w-md text-base text-violet-300">{errorMsg}</p>
           ) : null}
           <button
             type="button"
@@ -206,7 +206,7 @@ export default function TimeDissolvePage() {
           >
             {phase === "starting" ? "Descending…" : "Begin the descent"}
           </button>
-          <p className="max-w-md text-base text-white/55">
+          <p className="max-w-md text-base text-muted-foreground">
             Best with headphones, eyes soft. Runs on its own for ~4 minutes —
             tap the void anytime to sink deeper.
           </p>
@@ -216,7 +216,7 @@ export default function TimeDissolvePage() {
       {/* Running HUD */}
       {running && (
         <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col items-center gap-3 px-6 pb-8">
-          <p className="max-w-2xl text-center text-base text-white/75">
+          <p className="max-w-2xl text-center text-base text-muted-foreground">
             {bound
               ? "Re-bound: the light now tracks the sound exactly — eyes and ears agree."
               : "Desynced: the light lags and warps behind the sound, so what you see never quite matches what you hear. That mismatch is the dissolution."}
@@ -227,8 +227,8 @@ export default function TimeDissolvePage() {
               onClick={toggleBind}
               className={`min-h-[44px] rounded-full px-6 py-2.5 text-base transition ${
                 bound
-                  ? "border border-emerald-300/50 bg-emerald-500/20 text-emerald-300/95"
-                  : "border border-white/25 bg-white/5 text-white/75 hover:text-white/95"
+                  ? "border border-violet-300/50 bg-violet-500/20 text-violet-300/95"
+                  : "border border-border bg-muted text-muted-foreground hover:text-foreground"
               }`}
             >
               {bound ? "Re-bound (sync ON)" : "Re-bind (sync OFF)"}
@@ -248,38 +248,38 @@ export default function TimeDissolvePage() {
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-start justify-center overflow-y-auto bg-black/80 px-6 py-16 backdrop-blur-sm">
           <div className="max-w-2xl space-y-4 text-left">
-            <h2 className="font-serif text-2xl text-white/95">Design notes</h2>
-            <p className="text-base text-white/75">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <p className="text-base text-muted-foreground">
               <span className="text-violet-300">The question:</span> what if we
               could dissolve the felt flow and grain of <em>time</em> — the way
               ketamine / NDE time-dilation makes onset and echo merge and the
               floor of pitch drop away forever?
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               <span className="text-violet-300">State · pole:</span> ketamine /
               NDE temporal dissolution &amp; oceanic boundlessness ·
               cosmic-ambient.
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               The sound is a Shepard–Risset endless <em>descent</em> over a
               just-intoned drone, smeared by a granular time-stretch and poured
               into a swelling convolution void whose tail grows until each onset
               and its echo become one. A single global{" "}
-              <span className="text-amber-300/95">timeScale</span> stretches the
+              <span className="text-violet-300/95">timeScale</span> stretches the
               glide and the grain playhead together. A slowly closing low-pass
               re-opens at a brief hyper-lucid{" "}
-              <span className="text-rose-300">clarity snap</span> near minute 3.3
+              <span className="text-violet-300">clarity snap</span> near minute 3.3
               before a soft return.
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               The visual is intentionally minimal and{" "}
               <em>deliberately desynced</em>: the bloom follows a heavily lagged,
               warping copy of the audio envelope, so eyes and ears quietly
-              disagree. The <span className="text-emerald-300/95">Re-bind</span>{" "}
+              disagree. The <span className="text-violet-300/95">Re-bind</span>{" "}
               toggle snaps them into sync so you can A/B the dissociation on and
               off.
             </p>
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               <span className="text-violet-300">References:</span> Pauline
               Oliveros&rsquo; <em>Deep Listening</em> (long reverb spaces); La
               Monte Young&rsquo;s sustained-drone / Dream House; the
@@ -287,13 +287,13 @@ export default function TimeDissolvePage() {
               hyper-lucidity finding (Borjigin, PNAS 2013/2023) as the
               clarity-snap. Phenomenology only — no medical claims.
             </p>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               A full write-up lives in this prototype&rsquo;s README.md.
             </p>
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="min-h-[44px] rounded-full border border-white/25 bg-white/5 px-6 py-2.5 text-base text-white/75 transition hover:text-white/95"
+              className="min-h-[44px] rounded-full border border-border bg-muted px-6 py-2.5 text-base text-muted-foreground transition hover:text-foreground"
             >
               Close
             </button>

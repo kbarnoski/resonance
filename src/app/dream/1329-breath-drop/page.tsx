@@ -395,12 +395,12 @@ export default function Page() {
 
   // ── UI ───────────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL2 is not available in this browser, so the breath-drop visual
             cannot run. Try a recent desktop Chrome, Edge, or Firefox.
           </p>
@@ -414,17 +414,17 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
               Resonance · Dream Lab · 1329
             </p>
-            <h1 className="mt-3 font-serif text-2xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-3 font-serif text-2xl font-semibold text-foreground sm:text-4xl">
               Breath Drop
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/75">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Breathe the drop into being. A sustained{" "}
               <span className="text-violet-300">rising hum</span> into the mic
               charges the tension and stacks the beat; a sharp{" "}
-              <span className="text-emerald-300/95">exhale</span> at the peak
+              <span className="text-violet-300/95">exhale</span> at the peak
               releases the drop. No timer — the build is yours.
             </p>
-            <p className="mt-3 text-sm text-amber-300/95">
+            <p className="mt-3 text-sm text-violet-300/95">
               Headphones recommended (keeps the mic from hearing the beat).
             </p>
 
@@ -435,15 +435,15 @@ export default function Page() {
               >
                 Begin — allow the mic
               </button>
-              <p className="text-sm text-white/55">
+              <p className="text-sm text-muted-foreground">
                 No mic? Hold{" "}
-                <span className="font-mono text-white/75">SPACE</span> to charge,
-                tap <span className="font-mono text-white/75">ENTER</span> to
+                <span className="font-mono text-muted-foreground">SPACE</span> to charge,
+                tap <span className="font-mono text-muted-foreground">ENTER</span> to
                 drop. An auto-demo runs hands-free.
               </p>
             </div>
 
-            {micError && <p className="mt-4 text-base text-rose-300">{micError}</p>}
+            {micError && <p className="mt-4 text-base text-violet-300">{micError}</p>}
 
             <button
               onClick={() => setShowNotes((s) => !s)}
@@ -459,7 +459,7 @@ export default function Page() {
 
       {phase === "error-fatal" && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             Audio could not start in this browser. Try a recent desktop Chrome,
             Edge, or Firefox.
           </p>
@@ -472,23 +472,23 @@ export default function Page() {
           {/* top-left: state */}
           <div className="pointer-events-none absolute left-0 top-0 p-4">
             <div className="rounded-xl bg-black/45 px-3 py-2 backdrop-blur-sm">
-              <p className="font-mono text-sm text-white/95">
+              <p className="font-mono text-sm text-foreground">
                 Breath Drop
                 <span className="ml-2 text-violet-300">
                   {hud.mic ? "· mic" : "· keys"}
                   {hud.demo ? " · auto-demo" : ""}
                 </span>
               </p>
-              <p className="mt-1 font-mono text-sm text-white/75">
+              <p className="mt-1 font-mono text-sm text-muted-foreground">
                 layer:{" "}
                 <span
                   className={
-                    hud.dropActive ? "text-amber-300/95" : "text-violet-300"
+                    hud.dropActive ? "text-violet-300/95" : "text-violet-300"
                   }
                 >
                   {hud.layer}
                 </span>
-                <span className="ml-3 text-white/55">{hud.bpm} BPM</span>
+                <span className="ml-3 text-muted-foreground">{hud.bpm} BPM</span>
               </p>
             </div>
           </div>
@@ -497,13 +497,13 @@ export default function Page() {
           <div className="pointer-events-auto absolute right-0 top-0 flex flex-col items-end gap-2 p-4">
             <button
               onClick={onStop}
-              className="min-h-[44px] rounded-xl bg-rose-500/20 px-4 py-2.5 text-base font-medium text-rose-200 ring-1 ring-rose-300/40 transition hover:bg-rose-500/35"
+              className="min-h-[44px] rounded-xl bg-violet-500/20 px-4 py-2.5 text-base font-medium text-violet-200 ring-1 ring-violet-300/40 transition hover:bg-violet-500/35"
             >
               Stop
             </button>
             <button
               onClick={onToggleFlicker}
-              className="min-h-[44px] rounded-xl bg-black/45 px-4 py-2.5 text-sm text-white/75 ring-1 ring-white/15 backdrop-blur-sm transition hover:bg-black/65"
+              className="min-h-[44px] rounded-xl bg-black/45 px-4 py-2.5 text-sm text-muted-foreground ring-1 ring-border backdrop-blur-sm transition hover:bg-black/65"
             >
               {flickerOn ? "Flicker: on (≤3 Hz)" : "Flicker: off"}
             </button>
@@ -519,14 +519,14 @@ export default function Page() {
           <div className="pointer-events-none absolute inset-x-0 bottom-0 p-4">
             <div className="mx-auto max-w-2xl rounded-2xl bg-black/45 p-4 backdrop-blur-sm">
               <div className="flex items-baseline justify-between">
-                <span className="font-mono text-sm uppercase tracking-[0.2em] text-white/75">
+                <span className="font-mono text-sm uppercase tracking-[0.2em] text-muted-foreground">
                   Tension
                 </span>
                 <span
                   className={`font-mono text-sm ${
                     hud.tension >= DROP_TENSION_MIC
-                      ? "text-emerald-300/95"
-                      : "text-white/55"
+                      ? "text-violet-300/95"
+                      : "text-muted-foreground"
                   }`}
                 >
                   {hud.tension >= DROP_TENSION_MIC
@@ -534,35 +534,35 @@ export default function Page() {
                     : "keep the hum going"}
                 </span>
               </div>
-              <div className="relative mt-2 h-5 w-full overflow-hidden rounded-full bg-white/10">
+              <div className="relative mt-2 h-5 w-full overflow-hidden rounded-full bg-muted">
                 <div
                   className={`h-full transition-[width] duration-75 ${
                     hud.dropActive
-                      ? "bg-amber-300/90"
+                      ? "bg-violet-300/90"
                       : hud.tension >= DROP_TENSION_MIC
-                        ? "bg-emerald-400/85"
+                        ? "bg-violet-400/85"
                         : "bg-violet-400/80"
                   }`}
                   style={{ width: pct(hud.tension) }}
                 />
                 {/* drop threshold marker */}
                 <div
-                  className="absolute top-0 h-full w-px bg-white/50"
+                  className="absolute top-0 h-full w-px bg-muted"
                   style={{ left: pct(DROP_TENSION_MIC) }}
                 />
               </div>
 
               <div className="mt-3 flex items-center gap-3">
-                <span className="font-mono text-sm text-white/55">input</span>
-                <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+                <span className="font-mono text-sm text-muted-foreground">input</span>
+                <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
                   <div
                     className={`h-full ${
-                      hud.inputActive ? "bg-violet-300/80" : "bg-white/20"
+                      hud.inputActive ? "bg-violet-300/80" : "bg-muted"
                     }`}
                     style={{ width: pct(hud.level) }}
                   />
                 </div>
-                <span className="font-mono text-sm text-white/55">
+                <span className="font-mono text-sm text-muted-foreground">
                   {hud.inputActive ? (hud.demo ? "demo" : "live") : "quiet"}
                 </span>
               </div>
@@ -570,7 +570,7 @@ export default function Page() {
           </div>
 
           {micError && (
-            <p className="pointer-events-none absolute left-1/2 top-20 max-w-md -translate-x-1/2 rounded-lg bg-black/70 px-3 py-2 text-center text-base text-rose-300 backdrop-blur-sm">
+            <p className="pointer-events-none absolute left-1/2 top-20 max-w-md -translate-x-1/2 rounded-lg bg-black/70 px-3 py-2 text-center text-base text-violet-300 backdrop-blur-sm">
               {micError}
             </p>
           )}
@@ -589,7 +589,7 @@ export default function Page() {
 // ── design-notes overlay (toggle, not a route) ────────────────────────────────
 function DesignNotes() {
   return (
-    <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/65 p-5 text-left text-base leading-relaxed text-white/75 backdrop-blur-sm">
+    <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/65 p-5 text-left text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
       <p>
         The build-and-drop tension{" "}
         <code className="font-mono text-violet-300">T ∈ [0,1]</code> is not a
@@ -600,7 +600,7 @@ function DesignNotes() {
         is high, fires the drop: a hard downbeat, full four-on-the-floor, and a
         cosmic-gold bloom of the log-polar Klüver form-constant field.
       </p>
-      <p className="mt-3 text-sm text-white/55">
+      <p className="mt-3 text-sm text-muted-foreground">
         Safety: the drop is a luminance/saturation/scale bloom, never a strobe.
         Optional flicker is capped at ≤3 Hz and honors reduced-motion. In the
         lineage of Imogen Heap, Holly Herndon, and Max Cooper — voice/gesture as

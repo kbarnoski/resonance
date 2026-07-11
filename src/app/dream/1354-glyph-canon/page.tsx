@@ -331,17 +331,17 @@ export default function GlyphCanonPage() {
   }, [teardownAudio]);
 
   return (
-    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#05060a] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-mono text-2xl font-semibold uppercase tracking-[0.25em] text-white/95">
+        <h1 className="font-mono text-2xl font-semibold uppercase tracking-[0.25em] text-foreground">
           glyph canon
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
           A psychedelic instrument played inside a living monospace text field — its sense of{" "}
-          <span className="text-white/95">time</span> comes from a Steve-Reich phase canon, not a
+          <span className="text-foreground">time</span> comes from a Steve-Reich phase canon, not a
           drum beat.
         </p>
       </header>
@@ -349,8 +349,8 @@ export default function GlyphCanonPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex max-w-md flex-col items-center gap-5 border border-white/15 bg-black/70 px-8 py-7 text-center backdrop-blur-sm">
-            <p className="text-base text-white/80">
+          <div className="flex max-w-md flex-col items-center gap-5 border border-border bg-black/70 px-8 py-7 text-center backdrop-blur-sm">
+            <p className="text-base text-foreground">
               Play the three keyboard rows (or the on-screen keys) — three octaves of a
               just-intonation scale. Every phrase you play is captured and replayed by a{" "}
               <span className="text-violet-300">twin loop</span> a hair slower, so the two
@@ -358,15 +358,15 @@ export default function GlyphCanonPage() {
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] min-w-[44px] bg-white px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-white/85"
+              className="min-h-[44px] min-w-[44px] bg-card px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-accent"
             >
               Begin
             </button>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Sound and the canon start on this tap. If you stay quiet, it plays a gentle motif to
               itself.
             </p>
-            {audioError && <p className="text-base text-rose-300">{audioError}</p>}
+            {audioError && <p className="text-base text-violet-300">{audioError}</p>}
           </div>
         </div>
       )}
@@ -375,9 +375,9 @@ export default function GlyphCanonPage() {
       {phase === "running" && (
         <div className="absolute bottom-4 left-1/2 z-10 w-[min(96vw,760px)] -translate-x-1/2">
           {audioError && (
-            <p className="mb-2 text-center text-base text-rose-300">{audioError}</p>
+            <p className="mb-2 text-center text-base text-violet-300">{audioError}</p>
           )}
-          <div className="flex flex-col items-center gap-1.5 border border-white/12 bg-black/60 px-3 py-3 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-1.5 border border-border bg-black/60 px-3 py-3 backdrop-blur-sm">
             {ROWS.map((rowKeys, ri) => (
               <div key={ri} className="flex justify-center gap-1">
                 {rowKeys.map(({ key, degree }) => (
@@ -406,8 +406,8 @@ export default function GlyphCanonPage() {
                     title={`${Math.round(degreeToFreq(degree))} Hz`}
                     className={`min-h-[44px] w-9 border font-mono text-base uppercase transition-colors sm:w-10 ${
                       active[key]
-                        ? "border-violet-300 bg-violet-300/25 text-white"
-                        : "border-white/20 text-white/75 hover:bg-white/10"
+                        ? "border-violet-300 bg-violet-300/25 text-foreground"
+                        : "border-border text-muted-foreground hover:bg-accent"
                     }`}
                   >
                     {key}
@@ -419,18 +419,18 @@ export default function GlyphCanonPage() {
           <div className="mt-2 flex items-center justify-center gap-2">
             <button
               onClick={() => engineRef.current?.clearPhrase()}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               clear loop
             </button>
             <button
               onClick={handleStop}
-              className="min-h-[44px] border border-rose-300/50 px-4 py-2.5 font-mono text-base text-rose-300 transition-colors hover:bg-rose-300/10"
+              className="min-h-[44px] border border-violet-300/50 px-4 py-2.5 font-mono text-base text-violet-300 transition-colors hover:bg-violet-300/10"
             >
               stop
             </button>
           </div>
-          <p className="mt-2 text-center font-mono text-base text-white/55">
+          <p className="mt-2 text-center font-mono text-base text-muted-foreground">
             keys z…m / a…l / q…i · violet = you, teal = the twin loop drifting behind
           </p>
         </div>
@@ -439,35 +439,35 @@ export default function GlyphCanonPage() {
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] border border-white/20 bg-black/50 px-4 py-2.5 font-mono text-base text-white/80 backdrop-blur-sm transition-colors hover:bg-black/70"
+        className="absolute right-4 top-4 z-20 min-h-[44px] border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-foreground backdrop-blur-sm transition-colors hover:bg-black/70"
       >
         {showNotes ? "close" : "read the design notes"}
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 w-[min(92vw,460px)] border border-white/15 bg-black/85 p-5 text-base text-white/85 backdrop-blur-sm">
-          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-white/95">
+        <div className="absolute right-4 top-20 z-30 w-[min(92vw,460px)] border border-border bg-black/85 p-5 text-base text-foreground backdrop-blur-sm">
+          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-foreground">
             time without a beat
           </p>
           <p className="mb-2">
             The whole instrument lives inside a monospace character grid — the glyphs themselves are
             the art. A log-polar spiral of characters scrolls inward as an ambient hypnagogic field;
             each note you play injects a bright ring of glyphs that ages down a luminance ramp{" "}
-            <span className="font-mono text-white/95">{RAMP.trim()}</span>.
+            <span className="font-mono text-foreground">{RAMP.trim()}</span>.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Time comes from a <span className="text-violet-300">Steve Reich phase canon</span>: your
             phrase loops, and a twin loop replays it at 1 : 1.012 tempo, so the two streams start in
             unison and slowly de-phase. Violet is the live voice, teal the drifting twin — you both
             hear (stereo-split) and see (two ring-families) the phasing. No BPM grid anywhere.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: <em>Steve Reich — Piano Phase</em> (the phasing canon); <em>Ryoji Ikeda —
             datamatics</em> (data/glyph field aesthetic); the teletype / ASCII-art lineage. Safety:
             no strobe — pulses are local per-cell fades, global luminance near-constant, honors
             prefers-reduced-motion.
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="font-mono text-white/90 underline hover:text-white">
+            <Link href="/dream" className="font-mono text-foreground underline hover:text-foreground">
               &larr; back to the lab
             </Link>
           </div>

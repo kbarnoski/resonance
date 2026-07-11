@@ -184,19 +184,19 @@ export default function PhaseLoomPage() {
 
   const badgeClass =
     midiKind === "midi"
-      ? "text-emerald-300/95"
+      ? "text-violet-300/95"
       : midiKind === "keys"
-        ? "text-amber-300/95"
-        : "text-white/55";
+        ? "text-violet-300/95"
+        : "text-muted-foreground";
   const badgeDot = midiKind === "midi" ? "●" : "○";
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen bg-black text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Phase Loom
         </h1>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           Hold notes and each becomes a short melodic loop running at its own
           period; the loops slowly drift in and out of phase, weaving evolving
           polymetric music with no drum grid.
@@ -209,32 +209,32 @@ export default function PhaseLoomPage() {
           <button
             type="button"
             onClick={() => setShowNotes((v) => !v)}
-            className="text-violet-300 underline decoration-white/25 underline-offset-4 hover:decoration-white/60"
+            className="text-violet-300 underline decoration-muted-foreground underline-offset-4 hover:decoration-muted-foreground"
           >
             Read the design notes
           </button>
         </div>
 
         {/* ── the 3D stage ── */}
-        <div className="relative mt-5 aspect-square w-full overflow-hidden rounded-2xl border border-white/10 bg-[#04030a] sm:aspect-[16/10]">
+        <div className="relative mt-5 aspect-square w-full overflow-hidden rounded-2xl border border-border bg-[#04030a] sm:aspect-[16/10]">
           <div ref={mountRef} className="absolute inset-0 h-full w-full" />
 
           {glError && (
             <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
-              <p className="text-base text-rose-300">{glError}</p>
+              <p className="text-base text-violet-300">{glError}</p>
             </div>
           )}
 
           {!started && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/50 backdrop-blur-[1px]">
-              <p className="max-w-sm px-6 text-center text-base text-white/75">
+              <p className="max-w-sm px-6 text-center text-base text-muted-foreground">
                 Two loops start at once. Add more, then watch and listen as their
                 orbits drift into and out of unison over the next minute.
               </p>
               <button
                 type="button"
                 onClick={() => void begin()}
-                className="rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-white transition-colors hover:bg-violet-400"
+                className="rounded-full bg-violet-500/90 px-6 py-3 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
               >
                 Begin the loom
               </button>
@@ -256,7 +256,7 @@ export default function PhaseLoomPage() {
                 className={`flex min-h-[56px] flex-col items-center justify-center rounded-xl border px-4 py-2.5 text-base transition-colors disabled:opacity-40 ${
                   on
                     ? "border-transparent text-black"
-                    : "border-white/15 bg-white/[0.04] text-white/75 hover:bg-white/[0.08]"
+                    : "border-border bg-muted text-muted-foreground hover:bg-accent"
                 }`}
                 style={
                   on
@@ -267,7 +267,7 @@ export default function PhaseLoomPage() {
                 <span className="font-medium">{pad.name}</span>
                 <span
                   className={
-                    on ? "text-xs text-black/70" : "text-xs text-white/55"
+                    on ? "text-xs text-black/70" : "text-xs text-muted-foreground"
                   }
                 >
                   {KEY_ROW[pad.slot] === ";" ? ";" : KEY_ROW[pad.slot]}
@@ -283,7 +283,7 @@ export default function PhaseLoomPage() {
             type="button"
             onClick={nudge}
             disabled={!started}
-            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.08] disabled:opacity-40"
+            className="rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent disabled:opacity-40"
           >
             Nudge a loop
           </button>
@@ -291,18 +291,18 @@ export default function PhaseLoomPage() {
             type="button"
             onClick={clearAll}
             disabled={!started}
-            className="rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.08] disabled:opacity-40"
+            className="rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent disabled:opacity-40"
           >
             Clear
           </button>
         </div>
 
         {showNotes && (
-          <div className="mt-6 space-y-3 rounded-2xl border border-white/10 bg-white/[0.03] p-5 text-base text-white/75">
+          <div className="mt-6 space-y-3 rounded-2xl border border-border bg-muted p-5 text-base text-muted-foreground">
             <p>
               Every pad you switch on spawns a repeating melodic cell tuned to a
               just-intonation pentatonic. Each loop keeps its{" "}
-              <span className="text-white/95">own period</span> — a slightly
+              <span className="text-foreground">own period</span> — a slightly
               different step tempo and a cell of 3–6 notes — so no two loops
               share a grid. Because the periods differ, the loops drift against
               one another and the composite pattern is never the same twice.
@@ -313,10 +313,10 @@ export default function PhaseLoomPage() {
               in phase: a filament lights between them and the core swells. As
               they drift apart the light fades — you are watching the interference
               beat itself. This is Steve Reich&apos;s{" "}
-              <span className="text-white/95">Piano Phase</span> and Terry
-              Riley&apos;s <span className="text-white/95">In C</span> idea:
+              <span className="text-foreground">Piano Phase</span> and Terry
+              Riley&apos;s <span className="text-foreground">In C</span> idea:
               finding time through phasing, not a metronome. Full notes in{" "}
-              <span className="text-white/95">README.md</span> beside this
+              <span className="text-foreground">README.md</span> beside this
               prototype.
             </p>
           </div>
@@ -325,7 +325,7 @@ export default function PhaseLoomPage() {
         <div className="mt-6">
           <Link
             href="/dream"
-            className="text-sm text-white/55 underline underline-offset-4 hover:text-white/80"
+            className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
           >
             ← back to the dream lab
           </Link>

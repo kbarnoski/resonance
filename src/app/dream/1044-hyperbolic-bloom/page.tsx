@@ -264,17 +264,17 @@ export default function HyperbolicBloomPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 h-full w-full touch-none"
       />
 
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Hyperbolic Bloom
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           A drug-free descent into the DMT &ldquo;hyperbolic
           hyperspace&rdquo;: a {"{7,3}"} tiling rendered on the Poincar&eacute;
           disk, where space stops being flat and becomes negatively curved
@@ -294,7 +294,7 @@ export default function HyperbolicBloomPage() {
           {phase === "running" && (
             <button
               onClick={handlePause}
-              className="min-h-[44px] min-w-[44px] rounded-full border border-white/25 bg-black/50 px-4 py-2.5 text-base font-medium text-white/95 backdrop-blur transition hover:bg-black/70"
+              className="min-h-[44px] min-w-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-black/70"
             >
               Pause
             </button>
@@ -321,21 +321,21 @@ export default function HyperbolicBloomPage() {
         )}
 
         {noWebGL && (
-          <p className="mt-3 max-w-sm text-base text-rose-300">
+          <p className="mt-3 max-w-sm text-base text-violet-300">
             WebGL2 is unavailable here, so the hyperbolic tiling can&rsquo;t be
             drawn &mdash; but the generative drone still plays the full ~5
             minute descent.
           </p>
         )}
         {phase === "running" && !micOn && (
-          <p className="mt-3 max-w-sm text-sm text-white/75">
+          <p className="mt-3 max-w-sm text-sm text-muted-foreground">
             No microphone &mdash; the self-sufficient drone is driving the
             field. (If you allow the mic, it modulates the curvature; it is
             analysis-only and never played back.)
           </p>
         )}
 
-        <details className="mt-4 max-w-sm text-sm text-white/75">
+        <details className="mt-4 max-w-sm text-sm text-muted-foreground">
           <summary className="cursor-pointer text-violet-300 hover:text-violet-200">
             Read the design notes
           </summary>

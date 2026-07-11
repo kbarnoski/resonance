@@ -417,17 +417,17 @@ export default function QuietudePage() {
         {started && (
           <div className="mt-auto mb-4 flex flex-col items-center gap-4 text-center">
             {audioError && (
-              <p className="max-w-md rounded-lg bg-rose-50 px-4 py-3 text-base font-medium text-rose-600">
+              <p className="max-w-md rounded-lg bg-violet-50 px-4 py-3 text-base font-medium text-violet-600">
                 {audioError}
               </p>
             )}
             {micError && (
-              <p className="max-w-md rounded-lg bg-rose-50 px-4 py-3 text-base text-rose-600">
+              <p className="max-w-md rounded-lg bg-violet-50 px-4 py-3 text-base text-violet-600">
                 {micError}
               </p>
             )}
             {!audioError && (
-              <div className="flex items-center gap-6 rounded-full bg-white/60 px-6 py-3 text-base text-stone-600 shadow-sm backdrop-blur-sm">
+              <div className="flex items-center gap-6 rounded-full bg-muted px-6 py-3 text-base text-stone-600 shadow-sm backdrop-blur-sm">
                 <span>
                   openness{" "}
                   <span ref={opennessTextRef} className="font-semibold text-stone-800">
@@ -461,7 +461,7 @@ export default function QuietudePage() {
         )}
 
         {showNotes && (
-          <div className="mb-16 max-w-md rounded-xl bg-white/70 p-6 text-left text-base leading-relaxed text-stone-600 shadow-sm backdrop-blur-sm">
+          <div className="mb-16 max-w-md rounded-xl bg-muted p-6 text-left text-base leading-relaxed text-stone-600 shadow-sm backdrop-blur-sm">
             <h2 className="mb-2 text-xl font-semibold text-stone-800">
               Design notes
             </h2>

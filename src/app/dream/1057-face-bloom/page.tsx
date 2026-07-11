@@ -303,14 +303,14 @@ export default function FaceBloom() {
   };
   const isError = status === "no-camera" || status === "no-cdn";
   const statusColor = isError
-    ? "text-rose-300"
+    ? "text-violet-300"
     : status === "tracking"
-      ? "text-amber-300"
-      : "text-white/80";
+      ? "text-violet-300"
+      : "text-foreground";
   const showFallback = phase === "running" && (isError || status === "no-face");
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* hidden video — MediaPipe input only */}
       <video ref={videoRef} className="hidden" playsInline muted />
 
@@ -319,10 +319,10 @@ export default function FaceBloom() {
       {/* overlay UI */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="p-5 sm:p-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Face Bloom
           </h1>
-          <p className="mt-2 max-w-xl text-base text-white/80">
+          <p className="mt-2 max-w-xl text-base text-foreground">
             Your face is the psychedelic instrument. Your expressions sculpt an
             altered-state visual field and its sound — no drug, just emotion.
           </p>
@@ -336,11 +336,11 @@ export default function FaceBloom() {
             <div className="pointer-events-auto flex max-w-md flex-col items-center gap-4">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-amber-500/90 px-8 py-3 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-amber-400"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-3 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-violet-400"
               >
                 Start — let your face play
               </button>
-              <p className="text-center text-base text-white/75">
+              <p className="text-center text-base text-muted-foreground">
                 Sound and camera start on Start. Open your jaw to bloom the
                 kaleidoscope, raise your brows for warmth, turn your head to tour
                 the geometry. No camera? Sliders appear so you can still play.
@@ -352,7 +352,7 @@ export default function FaceBloom() {
         {phase === "running" && (
           <div className="mt-auto p-5 sm:p-8">
             {/* expression → parameter legend */}
-            <div className="pointer-events-none mb-4 flex flex-wrap gap-x-5 gap-y-1 font-mono text-base text-white/75">
+            <div className="pointer-events-none mb-4 flex flex-wrap gap-x-5 gap-y-1 font-mono text-base text-muted-foreground">
               <span>jawOpen → bloom + swell</span>
               <span>browUp → density + warmth</span>
               <span>eyes → entropy</span>
@@ -360,8 +360,8 @@ export default function FaceBloom() {
             </div>
 
             {showFallback && (
-              <div className="pointer-events-auto max-w-xl rounded-2xl border border-white/15 bg-zinc-900/80 p-4 backdrop-blur">
-                <p className="mb-3 text-base text-white/80">
+              <div className="pointer-events-auto max-w-xl rounded-2xl border border-border bg-zinc-900/80 p-4 backdrop-blur">
+                <p className="mb-3 text-base text-foreground">
                   Play with the sliders:
                 </p>
                 <FallbackSlider
@@ -395,14 +395,14 @@ export default function FaceBloom() {
                 onClick={() => setShimmerOn((v) => !v)}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 text-base font-medium transition-colors ${
                   shimmerOn
-                    ? "bg-amber-500/90 text-black"
-                    : "bg-white/10 text-white/80 hover:bg-white/20"
+                    ? "bg-violet-500/90 text-black"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {shimmerOn ? "Phosphene shimmer: ON" : "Phosphene shimmer: off"}
               </button>
               {shimmerOn && (
-                <span className="max-w-xs text-base text-rose-300">
+                <span className="max-w-xs text-base text-violet-300">
                   Photosensitivity note: a deliberate slow squint adds a soft
                   ≤3 Hz luminance shimmer. Turn off if you are
                   photosensitive.
@@ -416,56 +416,56 @@ export default function FaceBloom() {
       {/* design notes link */}
       <Link
         href="/dream/1057-face-bloom/README.md"
-        className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur transition-colors hover:bg-white/20"
+        className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-accent"
       >
         Read the design notes
       </Link>
 
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute right-4 top-20 z-30 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur transition-colors hover:bg-white/20"
+        className="pointer-events-auto absolute right-4 top-20 z-30 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-accent"
       >
         {showNotes ? "Hide quick notes" : "Quick notes"}
       </button>
 
       {showNotes && (
         <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/80 p-6 backdrop-blur">
-          <div className="max-w-lg rounded-2xl border border-white/15 bg-zinc-900/90 p-6 text-base text-white/85">
-            <h2 className="text-xl font-semibold text-white">How to play</h2>
+          <div className="max-w-lg rounded-2xl border border-border bg-zinc-900/90 p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">How to play</h2>
             <p className="mt-3">
               MediaPipe Face Landmarker reads 52 live{" "}
-              <span className="text-amber-300">blendshape</span> expression
+              <span className="text-violet-300">blendshape</span> expression
               coefficients plus a head-pose matrix. Those drive a log-polar
               form-constant kaleidoscope (the Bressloff–Cowan retina{"→"}V1
               complex-log map over Klüver{"'"}s four form constants), drawn in
               Canvas2D.
             </p>
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-white/80">
+            <ul className="mt-3 list-disc space-y-1 pl-5 text-foreground">
               <li>
-                <span className="text-amber-300">Open your jaw</span> — blooms the
+                <span className="text-violet-300">Open your jaw</span> — blooms the
                 N-fold kaleidoscope (2{"→"}~12) and swells the organ.
               </li>
               <li>
-                <span className="text-amber-300">Raise your brows</span> — denser
+                <span className="text-violet-300">Raise your brows</span> — denser
                 rings/spokes and a hotter, brighter palette.
               </li>
               <li>
-                <span className="text-amber-300">Narrow your eyes</span> — adds
+                <span className="text-violet-300">Narrow your eyes</span> — adds
                 entropy / fine detail.
               </li>
               <li>
-                <span className="text-amber-300">Turn / tilt your head</span> —
+                <span className="text-violet-300">Turn / tilt your head</span> —
                 sets spiral handedness, inward come-up drift, and tours
                 tunnel{"→"}spoke{"→"}spiral{"→"}honeycomb.
               </li>
             </ul>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Idle (no face / neutral) is quiet and near-still — it only comes
               alive as you emote. Any flicker is opt-in and clamped to ≤3 Hz.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-amber-500/90 px-5 py-2.5 text-base font-semibold text-black hover:bg-amber-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-black hover:bg-violet-400"
             >
               Close
             </button>
@@ -493,7 +493,7 @@ function FallbackSlider({
   max?: number;
 }) {
   return (
-    <label className="mb-2 flex items-center gap-3 text-base text-white/80">
+    <label className="mb-2 flex items-center gap-3 text-base text-foreground">
       <span className="w-20 font-mono">{label}</span>
       <input
         type="range"
@@ -502,7 +502,7 @@ function FallbackSlider({
         step={0.01}
         value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
-        className="h-2 flex-1 cursor-pointer accent-amber-400"
+        className="h-2 flex-1 cursor-pointer accent-violet-400"
       />
     </label>
   );

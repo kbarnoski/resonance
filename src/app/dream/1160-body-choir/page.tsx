@@ -270,7 +270,7 @@ export default function BodyChoir() {
           </p>
         </header>
 
-        <div className="relative w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-amber-900/10">
+        <div className="relative w-full overflow-hidden rounded-2xl shadow-lg ring-1 ring-violet-900/10">
           <canvas
             ref={canvasRef}
             onPointerMove={onPointer}
@@ -280,17 +280,17 @@ export default function BodyChoir() {
           <video ref={videoRef} playsInline muted className="hidden" />
 
           {!started && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-white/25 backdrop-blur-[1px]">
+            <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-muted backdrop-blur-[1px]">
               <div className="flex flex-wrap items-center justify-center gap-3">
                 <button
                   onClick={startCamera}
-                  className="min-h-[44px] rounded-full bg-slate-900 px-6 py-2.5 text-base font-medium text-white shadow hover:bg-slate-800"
+                  className="min-h-[44px] rounded-full bg-slate-900 px-6 py-2.5 text-base font-medium text-foreground shadow hover:bg-slate-800"
                 >
                   Start camera
                 </button>
                 <button
                   onClick={startMouse}
-                  className="min-h-[44px] rounded-full bg-white/80 px-6 py-2.5 text-base font-medium text-slate-800 shadow ring-1 ring-slate-900/10 hover:bg-white"
+                  className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-slate-800 shadow ring-1 ring-slate-900/10 hover:bg-card"
                 >
                   Play with your mouse
                 </button>
@@ -303,7 +303,7 @@ export default function BodyChoir() {
         </div>
 
         {notice && (
-          <p className="mt-3 text-base text-rose-300 bg-rose-950/70 rounded-lg px-4 py-2.5">
+          <p className="mt-3 text-base text-violet-300 bg-violet-950/70 rounded-lg px-4 py-2.5">
             {notice}
           </p>
         )}
@@ -324,7 +324,7 @@ export default function BodyChoir() {
         </button>
 
         {showNotes && (
-          <div className="mt-2 rounded-xl bg-white/70 p-4 text-base text-slate-800 ring-1 ring-slate-900/10">
+          <div className="mt-2 rounded-xl bg-muted p-4 text-base text-slate-800 ring-1 ring-slate-900/10">
             <p className="mb-2">
               The instrument computes its own motion field — no ML model, no
               library. Each frame is shrunk to a {GW}×{GH} grid; per-cell

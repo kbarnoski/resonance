@@ -138,13 +138,13 @@ export default function OvertoneThroat() {
       if (badgeRef.current) {
         if (!eng) {
           badgeRef.current.textContent = "○ idle";
-          badgeRef.current.className = "font-mono text-base text-white/55";
+          badgeRef.current.className = "font-mono text-base text-muted-foreground";
         } else if (state.micActive) {
           badgeRef.current.textContent = "● mic";
-          badgeRef.current.className = "font-mono text-base text-emerald-300/95";
+          badgeRef.current.className = "font-mono text-base text-violet-300/95";
         } else {
           badgeRef.current.textContent = "○ auto";
-          badgeRef.current.className = "font-mono text-base text-amber-300/95";
+          badgeRef.current.className = "font-mono text-base text-violet-300/95";
         }
       }
       if (domRef.current) {
@@ -203,14 +203,14 @@ export default function OvertoneThroat() {
     "min-h-[44px] px-4 py-2.5 rounded-lg font-mono text-base transition-colors";
 
   return (
-    <main className="relative min-h-screen w-full bg-[#070613] text-white/95">
+    <main className="relative min-h-screen w-full bg-[#070613] text-foreground">
       <div className="mx-auto flex max-w-4xl flex-col gap-5 px-5 py-7 sm:px-7">
         {/* Title + one-sentence description */}
         <header className="flex flex-col gap-2">
-          <h1 className="font-mono text-2xl text-white/95 sm:text-3xl">
+          <h1 className="font-mono text-2xl text-foreground sm:text-3xl">
             Overtone Throat
           </h1>
-          <p className="max-w-2xl text-base text-white/75">
+          <p className="max-w-2xl text-base text-muted-foreground">
             Sing one steady note and{" "}
             <span className="text-violet-300">play its hidden overtone ladder</span>
             : the throat listens to your timbre, then a drone bank blooms and
@@ -231,7 +231,7 @@ export default function OvertoneThroat() {
           ) : (
             <button
               onClick={stop}
-              className={`${btn} bg-rose-500/85 text-white hover:bg-rose-400`}
+              className={`${btn} bg-violet-500/85 text-foreground hover:bg-violet-400`}
             >
               ■ Stop
             </button>
@@ -242,8 +242,8 @@ export default function OvertoneThroat() {
             disabled={!begun || micState === "on"}
             className={`${btn} border ${
               micState === "on"
-                ? "border-emerald-300/70 bg-emerald-400/15 text-emerald-100"
-                : "border-white/20 bg-white/[0.04] text-white/80 hover:bg-white/[0.08]"
+                ? "border-violet-300/70 bg-violet-400/15 text-violet-100"
+                : "border-border bg-muted text-foreground hover:bg-accent"
             } disabled:opacity-40`}
           >
             {micState === "on" ? "● mic: singing in" : "○ sing / hum (mic)"}
@@ -252,27 +252,27 @@ export default function OvertoneThroat() {
           <button
             onClick={detectPitch}
             disabled={micState !== "on"}
-            className={`${btn} border border-white/20 bg-white/[0.04] text-white/80 hover:bg-white/[0.08] disabled:opacity-40`}
+            className={`${btn} border border-border bg-muted text-foreground hover:bg-accent disabled:opacity-40`}
           >
             ◎ detect pitch
           </button>
 
           {/* Fundamental note picker */}
-          <div className="flex items-center gap-2 rounded-lg border border-white/15 bg-white/[0.03] px-2 py-1">
+          <div className="flex items-center gap-2 rounded-lg border border-border bg-muted px-2 py-1">
             <button
               onClick={() => shiftMidi(-1)}
               aria-label="Lower fundamental"
-              className="min-h-[44px] min-w-[44px] rounded-md font-mono text-xl text-white/80 hover:bg-white/[0.08]"
+              className="min-h-[44px] min-w-[44px] rounded-md font-mono text-xl text-foreground hover:bg-accent"
             >
               −
             </button>
-            <span className="min-w-[7ch] text-center font-mono text-base text-white/95">
+            <span className="min-w-[7ch] text-center font-mono text-base text-foreground">
               {f0Note.name}
             </span>
             <button
               onClick={() => shiftMidi(1)}
               aria-label="Raise fundamental"
-              className="min-h-[44px] min-w-[44px] rounded-md font-mono text-xl text-white/80 hover:bg-white/[0.08]"
+              className="min-h-[44px] min-w-[44px] rounded-md font-mono text-xl text-foreground hover:bg-accent"
             >
               +
             </button>
@@ -281,32 +281,32 @@ export default function OvertoneThroat() {
 
         {/* Readouts */}
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-base">
-          <span ref={badgeRef} className="text-white/55">
+          <span ref={badgeRef} className="text-muted-foreground">
             ○ idle
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             fundamental{" "}
             <span className="text-violet-300">
               {f0.toFixed(1)} Hz · {f0Note.name}
             </span>
           </span>
-          <span className="text-white/75">
+          <span className="text-muted-foreground">
             dominant overtone{" "}
-            <span ref={domRef} className="text-emerald-300/95">
+            <span ref={domRef} className="text-violet-300/95">
               H2 · 2:1 · octave
             </span>
           </span>
         </div>
 
         {micState === "denied" ? (
-          <p className="font-mono text-base text-rose-300">
+          <p className="font-mono text-base text-violet-300">
             mic unavailable — the throat is running its auto sweep so it still
             sings. Check permissions and reload to sing in.
           </p>
         ) : null}
 
         {/* ── The glyph-terminal: the harmonic ladder as living monospace rows ── */}
-        <div className="overflow-x-auto rounded-xl border border-white/10 bg-[#050411]/80 p-4">
+        <div className="overflow-x-auto rounded-xl border border-border bg-[#050411]/80 p-4">
           <div className="min-w-[640px] font-mono text-base leading-[1.35] tracking-tight">
             {Array.from({ length: NUM_HARMONICS }).map((_, disp) => {
               const hIdx = NUM_HARMONICS - 1 - disp;
@@ -317,17 +317,17 @@ export default function OvertoneThroat() {
                     ref={(el) => {
                       markerRefs.current[disp] = el;
                     }}
-                    className="w-[1.5ch] text-emerald-300"
+                    className="w-[1.5ch] text-violet-300"
                   >
                     {" "}
                   </span>
-                  <span className="text-white/70">
+                  <span className="text-muted-foreground">
                     {`H${String(m.h).padStart(2, " ")} `}
                   </span>
-                  <span className="text-white/55">
+                  <span className="text-muted-foreground">
                     {`${m.ratio.padEnd(5, " ")}${m.interval.padEnd(15, " ")}`}
                   </span>
-                  <span className="text-white/25">{"│"}</span>
+                  <span className="text-muted-foreground/70">{"│"}</span>
                   <span
                     ref={(el) => {
                       traceRefs.current[disp] = el;
@@ -342,16 +342,16 @@ export default function OvertoneThroat() {
           </div>
         </div>
 
-        <p className="max-w-2xl font-mono text-base text-white/55">
+        <p className="max-w-2xl font-mono text-base text-muted-foreground">
           Each row is one overtone; density = its live energy, scrolling right to
           left like an oscilloscope. Hold a vowel and slowly brighten it — the{" "}
-          <span className="text-emerald-300/95">► emerald cursor</span> marks the
+          <span className="text-violet-300/95">► emerald cursor</span> marks the
           partial you are shaping toward, and it sustains after your voice
           softens. Ref: Tanya Tagaq · Wolfgang Saus · cycle-2 of 1270-glyph-organ.
         </p>
 
         {stopped && !begun ? (
-          <p className="font-mono text-base text-white/55">
+          <p className="font-mono text-base text-muted-foreground">
             stopped — press Begin to play again.
           </p>
         ) : null}

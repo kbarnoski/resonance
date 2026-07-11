@@ -354,7 +354,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04040a] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04040a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block h-full w-full touch-none"
@@ -368,16 +368,16 @@ export default function Page() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-b from-black/75 via-black/60 to-black/85 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl text-white sm:text-4xl">
+            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
               Box Temple
             </h1>
-            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/75">
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
               Fall forward through an endless folded-architecture fractal — a
               cathedral of impossible corridors and boxes-within-boxes whose own
               folding structure resonates as sound. Travelling through it plays it.
             </p>
             {phase === "nogl" && (
-              <p className="mt-6 text-base text-rose-300">
+              <p className="mt-6 text-base text-violet-300">
                 This device could not open a WebGL2 context, so the temple cannot
                 be drawn — but you can still enter and hear it resonate.
               </p>
@@ -385,38 +385,38 @@ export default function Page() {
             <button
               type="button"
               onClick={enter}
-              className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-amber-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-amber-400"
+              className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-violet-400"
             >
               Enter the temple
             </button>
             <button
               type="button"
               onClick={() => setShowNotes((s) => !s)}
-              className="mt-4 block w-full text-base text-amber-300/95 underline-offset-4 hover:underline"
+              className="mt-4 block w-full text-base text-violet-300/95 underline-offset-4 hover:underline"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
             {showNotes && (
-              <div className="mt-4 max-h-[40vh] overflow-y-auto rounded-2xl border border-white/10 bg-black/50 p-5 text-left text-base leading-relaxed text-white/75">
+              <div className="mt-4 max-h-[40vh] overflow-y-auto rounded-2xl border border-border bg-black/50 p-5 text-left text-base leading-relaxed text-muted-foreground">
                 <p>
                   A single WebGL2 fragment shader raymarches a{" "}
-                  <span className="text-emerald-300/95">Mandelbox</span> distance
+                  <span className="text-violet-300/95">Mandelbox</span> distance
                   estimator (Tom Lowe / &ldquo;Tglad&rdquo;, 2010; sphere-tracing
                   per I&ntilde;igo Qu&iacute;lez). Each iteration box-folds and
                   sphere-folds space; a negative scale gives the rigid, hyperbolic
                   temple look.
                 </p>
                 <p className="mt-3">
-                  The <span className="text-amber-300/95">same fold</span> is run on
+                  The <span className="text-violet-300/95">same fold</span> is run on
                   the CPU at the camera each frame. Every iteration that folds lights
                   one resonant band-pass voice, pitched{" "}
-                  <span className="text-amber-300/95">continuously</span> by that
+                  <span className="text-violet-300/95">continuously</span> by that
                   iteration&rsquo;s radius — the temple&rsquo;s own dimensions, not
                   any musical scale, so the chords are alien on purpose. Nearness to
                   a wall makes the sound present and dry; open chambers turn it
                   distant and reverberant. Folding deeper multiplies the corridors.
                 </p>
-                <p className="mt-3 text-white/75">
+                <p className="mt-3 text-muted-foreground">
                   All motion is slow luminance drift — no strobing. With reduced
                   motion the flythrough slows and brightness swings are damped.
                 </p>
@@ -429,12 +429,12 @@ export default function Page() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 select-none">
-            <div className="font-serif text-2xl text-white/95">Box Temple</div>
-            <div className="mt-1 text-base text-white/75">
-              fold depth <span className="text-amber-300/95">{readout.depth}%</span>{" "}
-              · folds <span className="text-amber-300/95">{readout.folds}</span>
+            <div className="font-serif text-2xl text-foreground">Box Temple</div>
+            <div className="mt-1 text-base text-muted-foreground">
+              fold depth <span className="text-violet-300/95">{readout.depth}%</span>{" "}
+              · folds <span className="text-violet-300/95">{readout.folds}</span>
             </div>
-            <div className="text-base text-white/75">
+            <div className="text-base text-muted-foreground">
               wall proximity{" "}
               <span className="text-violet-300">{readout.near}%</span>
             </div>
@@ -447,7 +447,7 @@ export default function Page() {
               onPointerUp={holdStop}
               onPointerLeave={holdStop}
               onPointerCancel={holdStop}
-              className="min-h-[44px] rounded-full border border-white/15 bg-black/70 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-white/10"
+              className="min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               Fold deeper
             </button>
@@ -457,14 +457,14 @@ export default function Page() {
               onPointerUp={holdStop}
               onPointerLeave={holdStop}
               onPointerCancel={holdStop}
-              className="min-h-[44px] rounded-full border border-white/15 bg-black/70 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-white/10"
+              className="min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               Rise
             </button>
           </div>
 
           <div className="pointer-events-none absolute bottom-28 left-1/2 z-10 -translate-x-1/2 select-none px-4 text-center">
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               drag to steer · wheel / pinch / buttons to fold deeper and descend
             </p>
           </div>

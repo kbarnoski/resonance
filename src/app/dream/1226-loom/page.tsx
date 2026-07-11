@@ -230,7 +230,7 @@ export default function LoomPage() {
       {/* WebGL failure notice */}
       {!glOk && (
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none px-6">
-          <p className="text-rose-300 text-base text-center">
+          <p className="text-violet-300 text-base text-center">
             WebGL is unavailable, so the 3D ring can&apos;t render. Audio still
             works — press Begin and use the keys below to pluck.
           </p>
@@ -240,12 +240,12 @@ export default function LoomPage() {
       {/* UI overlay */}
       <div className="relative z-10 flex flex-col min-h-screen px-6 py-8 pointer-events-none">
         <header className="flex flex-col gap-2 max-w-2xl">
-          <h1 className="text-2xl font-semibold text-white/95 tracking-tight">
+          <h1 className="text-2xl font-semibold text-foreground tracking-tight">
             Loom
           </h1>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Pluck a physical membrane and hear its shape — the vibrating ring{" "}
-            <span className="text-white/95">is</span> the waveform you&apos;re
+            <span className="text-foreground">is</span> the waveform you&apos;re
             listening to.
           </p>
         </header>
@@ -254,12 +254,12 @@ export default function LoomPage() {
 
         <div className="flex flex-col gap-4 pointer-events-auto">
           {appState === "running" && audioMode === "additive" && (
-            <p className="text-white/55 text-base font-mono">
+            <p className="text-muted-foreground text-base font-mono">
               additive-resynthesis fallback active (no AudioWorklet)
             </p>
           )}
           {appState === "error" && (
-            <p className="text-rose-300 text-base">
+            <p className="text-violet-300 text-base">
               The audio engine failed to start. Please refresh and try again.
             </p>
           )}
@@ -267,7 +267,7 @@ export default function LoomPage() {
           {/* Scale-degree row */}
           {appState === "running" && (
             <div className="flex flex-col gap-2">
-              <span className="text-white/55 text-base font-mono">
+              <span className="text-muted-foreground text-base font-mono">
                 pluck a string — keys a s d f g h j k
               </span>
               <div className="flex flex-wrap gap-2">
@@ -278,12 +278,12 @@ export default function LoomPage() {
                     className={[
                       "min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium transition-all",
                       selected === i
-                        ? "bg-fuchsia-500/85 text-white shadow-lg shadow-fuchsia-500/30"
-                        : "bg-white/10 text-white/80 hover:bg-white/20",
+                        ? "bg-violet-500/85 text-foreground shadow-lg shadow-violet-500/30"
+                        : "bg-muted text-foreground hover:bg-accent",
                     ].join(" ")}
                   >
                     <span className="font-mono">{KEYS[i]}</span>
-                    <span className="mx-1 text-white/50">·</span>
+                    <span className="mx-1 text-muted-foreground">·</span>
                     {name}
                   </button>
                 ))}
@@ -295,7 +295,7 @@ export default function LoomPage() {
           {appState !== "running" && (
             <button
               onClick={() => void handleBegin()}
-              className="min-h-[44px] w-fit px-6 py-2.5 rounded-xl bg-teal-400 hover:bg-teal-300 text-slate-900 text-base font-semibold transition-all shadow-lg shadow-teal-400/30"
+              className="min-h-[44px] w-fit px-6 py-2.5 rounded-xl bg-violet-400 hover:bg-violet-300 text-slate-900 text-base font-semibold transition-all shadow-lg shadow-violet-400/30"
             >
               Begin — pluck to play
             </button>
@@ -305,14 +305,14 @@ export default function LoomPage() {
           <div>
             <button
               onClick={() => setShowNotes((v) => !v)}
-              className="text-white/55 text-base hover:text-white/80 transition-colors min-h-[44px] px-2 py-2.5 font-mono"
+              className="text-muted-foreground text-base hover:text-foreground transition-colors min-h-[44px] px-2 py-2.5 font-mono"
             >
               {showNotes ? "hide design notes ↑" : "design notes ↓"}
             </button>
             {showNotes && (
-              <div className="mt-2 p-4 rounded-xl bg-black/25 border border-white/10 max-w-xl backdrop-blur-sm">
-                <p className="text-white/80 text-base leading-relaxed">
-                  <strong className="text-white/95">Scanned synthesis.</strong>{" "}
+              <div className="mt-2 p-4 rounded-xl bg-black/25 border border-border max-w-xl backdrop-blur-sm">
+                <p className="text-foreground text-base leading-relaxed">
+                  <strong className="text-foreground">Scanned synthesis.</strong>{" "}
                   A closed ring of 128 masses is a 1D circular mass-spring string
                   integrated at the slow, visible haptic rate. Its instantaneous
                   shape is a single-cycle wavetable; an AudioWorklet oscillator
@@ -320,13 +320,13 @@ export default function LoomPage() {
                   morphs as the ring wobbles. The gold dot is a slowed
                   representation of the audio-rate read head.
                 </p>
-                <p className="text-white/55 text-base mt-2 font-mono">
+                <p className="text-muted-foreground text-base mt-2 font-mono">
                   Verplank, Mathews &amp; Shaw — &ldquo;Scanned
                   Synthesis&rdquo;, ICMC 2000.
                 </p>
                 <Link
                   href="/dream/1226-loom/README.md"
-                  className="text-teal-300 text-base hover:text-teal-200 underline mt-2 inline-block"
+                  className="text-violet-300 text-base hover:text-violet-200 underline mt-2 inline-block"
                 >
                   full notes →
                 </Link>
@@ -334,8 +334,8 @@ export default function LoomPage() {
             )}
           </div>
 
-          <div className="mt-2 pt-4 border-t border-white/10">
-            <p className="text-white/40 text-base font-mono">
+          <div className="mt-2 pt-4 border-t border-border">
+            <p className="text-muted-foreground/70 text-base font-mono">
               loom · dream lab 1226 · three.js + scanned-synthesis worklet
             </p>
           </div>

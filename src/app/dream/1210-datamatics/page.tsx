@@ -457,7 +457,7 @@ export default function DatamaticsPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full cursor-crosshair"
@@ -470,11 +470,11 @@ export default function DatamaticsPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-white/95 sm:text-2xl">
+        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-foreground sm:text-2xl">
           datamatics
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
-          The image <span className="text-white/95">is</span> the score. Paint bright
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
+          The image <span className="text-foreground">is</span> the score. Paint bright
           marks onto the spectrogram; the cyan playhead reads each column as a bank of
           pure sine partials. Vertical = log-frequency, horizontal = time.
         </p>
@@ -483,34 +483,34 @@ export default function DatamaticsPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex max-w-md flex-col items-center gap-5 border border-white/15 bg-black/70 px-8 py-7 text-center backdrop-blur-sm">
-            <p className="text-base text-white/80">
+          <div className="flex max-w-md flex-col items-center gap-5 border border-border bg-black/70 px-8 py-7 text-center backdrop-blur-sm">
+            <p className="text-base text-foreground">
               An image-as-score additive resynthesiser in the black-and-white idiom of
               Ryoji Ikeda. Row &rarr; log frequency (55 Hz &ndash; 7.5 kHz), brightness
               &rarr; partial amplitude. Draw a spectrum and hear it.
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] min-w-[44px] bg-white px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-white/85"
+              className="min-h-[44px] min-w-[44px] bg-card px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-accent"
             >
               Begin
             </button>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Sound + the playhead start on this tap. Then draw anywhere, or load a
               preset below.
             </p>
-            {audioError && <p className="text-base text-rose-300">{audioError}</p>}
+            {audioError && <p className="text-base text-violet-300">{audioError}</p>}
           </div>
         </div>
       )}
 
       {/* control dock */}
       <div className="absolute bottom-4 left-1/2 z-10 w-[min(96vw,760px)] -translate-x-1/2">
-        <div className="flex flex-wrap items-center gap-2 border border-white/12 bg-black/70 px-4 py-3 backdrop-blur-sm">
+        <div className="flex flex-wrap items-center gap-2 border border-border bg-black/70 px-4 py-3 backdrop-blur-sm">
           {phase !== "idle" && (
-            <div className="mr-2 min-w-[130px] font-mono text-base text-white/75">
+            <div className="mr-2 min-w-[130px] font-mono text-base text-muted-foreground">
               {phase === "paused" ? "paused" : "playing"}
-              <span className="text-white/45">
+              <span className="text-muted-foreground">
                 {" · "}
                 {readout.hz > 0 ? `${readout.hz} Hz` : "—"}
                 {" · "}
@@ -524,8 +524,8 @@ export default function DatamaticsPage() {
               onClick={() => setTool("draw")}
               className={`min-h-[44px] min-w-[44px] border px-4 py-2.5 font-mono text-base transition-colors ${
                 tool === "draw"
-                  ? "border-white bg-white text-black"
-                  : "border-white/25 text-white/85 hover:bg-white/10"
+                  ? "border-border bg-card text-black"
+                  : "border-border text-foreground hover:bg-accent"
               }`}
             >
               draw
@@ -534,50 +534,50 @@ export default function DatamaticsPage() {
               onClick={() => setTool("erase")}
               className={`min-h-[44px] min-w-[44px] border px-4 py-2.5 font-mono text-base transition-colors ${
                 tool === "erase"
-                  ? "border-white bg-white text-black"
-                  : "border-white/25 text-white/85 hover:bg-white/10"
+                  ? "border-border bg-card text-black"
+                  : "border-border text-foreground hover:bg-accent"
               }`}
             >
               erase
             </button>
           </div>
 
-          <span className="mx-1 hidden h-6 w-px bg-white/15 sm:block" />
+          <span className="mx-1 hidden h-6 w-px bg-muted sm:block" />
 
           <div className="flex flex-wrap items-center gap-1">
             <button
               onClick={() => loadPreset("sweep")}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               sweep
             </button>
             <button
               onClick={() => loadPreset("chord")}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               chord
             </button>
             <button
               onClick={() => loadPreset("dots")}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               dots
             </button>
             <button
               onClick={() => loadPreset("clear")}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               clear
             </button>
           </div>
 
-          <span className="mx-1 hidden h-6 w-px bg-white/15 sm:block" />
+          <span className="mx-1 hidden h-6 w-px bg-muted sm:block" />
 
           <div className="ml-auto flex items-center gap-1">
             {phase === "running" && (
               <button
                 onClick={handlePause}
-                className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+                className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
               >
                 pause
               </button>
@@ -585,7 +585,7 @@ export default function DatamaticsPage() {
             {phase === "paused" && (
               <button
                 onClick={handleResume}
-                className="min-h-[44px] bg-white px-4 py-2.5 font-mono text-base text-black transition-colors hover:bg-white/85"
+                className="min-h-[44px] bg-card px-4 py-2.5 font-mono text-base text-black transition-colors hover:bg-accent"
               >
                 resume
               </button>
@@ -593,14 +593,14 @@ export default function DatamaticsPage() {
             {phase !== "idle" && (
               <button
                 onClick={handleStop}
-                className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+                className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
               >
                 stop
               </button>
             )}
           </div>
         </div>
-        <p className="mt-2 text-center font-mono text-base text-white/45">
+        <p className="mt-2 text-center font-mono text-base text-muted-foreground">
           drag to paint energy · shift-drag or &ldquo;erase&rdquo; to clear · brighter =
           louder partial
         </p>
@@ -609,13 +609,13 @@ export default function DatamaticsPage() {
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] border border-white/20 bg-black/50 px-4 py-2.5 font-mono text-base text-white/80 backdrop-blur-sm transition-colors hover:bg-black/70"
+        className="absolute right-4 top-4 z-20 min-h-[44px] border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-foreground backdrop-blur-sm transition-colors hover:bg-black/70"
       >
         design notes
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 w-[min(92vw,460px)] border border-white/15 bg-black/85 p-5 text-base text-white/85 backdrop-blur-sm">
-          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-white/95">
+        <div className="absolute right-4 top-20 z-30 w-[min(92vw,460px)] border border-border bg-black/85 p-5 text-base text-foreground backdrop-blur-sm">
+          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-foreground">
             the image is the score
           </p>
           <p className="mb-2">
@@ -627,21 +627,21 @@ export default function DatamaticsPage() {
             match what you draw. Hard high-contrast edges fire a short band-passed noise
             tick, so onsets read as precise.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Clinical Ikeda register: pure sines + noise clicks, no warmth, no FM, no
             grain. Dense columns are energy-normalised across partials and the whole bus
             runs through a brick-wall limiter, so a fully-painted column can never spike.
             No strobe — the only periodic motion is a single ~0.09 Hz sweep; respects
             prefers-reduced-motion.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: Ryoji Ikeda &mdash; <em>datamatics</em> / <em>test pattern</em> /{" "}
             <em>data-verse</em> (2026 <em>data.gram [n&ordm;11]</em>); the ANS
             synthesiser; Iannis Xenakis, <em>UPIC</em>; <em>Phosphor</em> (spectral
             synth, Synthtopia Feb 2026); Tembrica Image-to-Sound (Mar 2026).
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="font-mono text-white/90 underline hover:text-white">
+            <Link href="/dream" className="font-mono text-foreground underline hover:text-foreground">
               &larr; back to the lab
             </Link>
           </div>

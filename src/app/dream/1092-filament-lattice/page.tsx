@@ -463,18 +463,18 @@ export default function FilamentLatticePage() {
 
       {/* Live title + HUD */}
       <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-        <span className="font-serif text-xl text-white/95">Filament Lattice</span>
+        <span className="font-serif text-xl text-foreground">Filament Lattice</span>
         {path === "webgl2" && (
-          <span className="font-mono text-base text-emerald-300/95">● WebGL2 · {hud.agents.toLocaleString()} agents</span>
+          <span className="font-mono text-base text-violet-300/95">● WebGL2 · {hud.agents.toLocaleString()} agents</span>
         )}
         {path === "cpu" && (
-          <span className="font-mono text-base text-amber-300/95">● CPU fallback · {hud.agents.toLocaleString()} agents</span>
+          <span className="font-mono text-base text-violet-300/95">● CPU fallback · {hud.agents.toLocaleString()} agents</span>
         )}
-        {!path && <span className="font-mono text-base text-white/55">initialising…</span>}
-        <span className="font-mono text-base text-white/75">
+        {!path && <span className="font-mono text-base text-muted-foreground">initialising…</span>}
+        <span className="font-mono text-base text-muted-foreground">
           {hud.nodes} nodes · Σ degree {hud.sumDeg.toFixed(1)} · {hud.edges} edges
         </span>
-        <span className="font-mono text-base text-white/55">peak clustering {hud.peakClust.toFixed(2)}</span>
+        <span className="font-mono text-base text-muted-foreground">peak clustering {hud.peakClust.toFixed(2)}</span>
       </div>
 
       {/* Controls */}
@@ -482,28 +482,28 @@ export default function FilamentLatticePage() {
         {audioOn && (
           <button
             onClick={() => setMuted((m) => !m)}
-            className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+            className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
           >
             {muted ? "unmute" : "mute"}
           </button>
         )}
         <button
           onClick={() => setShowNotes(true)}
-          className="min-h-[44px] px-2 py-2.5 text-base text-white/75 hover:text-white"
+          className="min-h-[44px] px-2 py-2.5 text-base text-muted-foreground hover:text-foreground"
         >
           design notes ↗
         </button>
-        <Link href="/dream" className="text-base text-white/55 hover:text-white/85">
+        <Link href="/dream" className="text-base text-muted-foreground hover:text-foreground">
           ← back
         </Link>
       </div>
 
-      <p className="pointer-events-none absolute bottom-4 left-4 max-w-md select-none font-mono text-base text-white/55">
+      <p className="pointer-events-none absolute bottom-4 left-4 max-w-md select-none font-mono text-base text-muted-foreground">
         tap to seed a node · filaments bridge into edges (dyads) · gravity merges clusters · it evolves on its own
       </p>
 
       {err && (
-        <p className="pointer-events-none absolute bottom-4 right-4 max-w-xs rounded border border-rose-300/40 px-3 py-2 text-base text-rose-300">
+        <p className="pointer-events-none absolute bottom-4 right-4 max-w-xs rounded border border-violet-300/40 px-3 py-2 text-base text-violet-300">
           {err}
         </p>
       )}
@@ -513,7 +513,7 @@ export default function FilamentLatticePage() {
         <div className="pointer-events-none absolute inset-0 z-10 flex items-end justify-center pb-20">
           <button
             onClick={startAudio}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-violet-300/50 bg-violet-300/15 px-8 py-2.5 text-base font-medium text-white shadow-lg backdrop-blur transition hover:border-violet-300/90 hover:bg-violet-300/25"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-violet-300/50 bg-violet-300/15 px-8 py-2.5 text-base font-medium text-foreground shadow-lg backdrop-blur transition hover:border-violet-300/90 hover:bg-violet-300/25"
           >
             ▶ begin — sound on
           </button>
@@ -530,15 +530,15 @@ export default function FilamentLatticePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-white">Design notes</h2>
+              <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:border-border hover:text-foreground"
               >
                 close
               </button>
             </div>
-            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-white/80">{DESIGN_NOTES}</pre>
+            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-foreground">{DESIGN_NOTES}</pre>
           </div>
         </div>
       )}

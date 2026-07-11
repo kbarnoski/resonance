@@ -34,7 +34,7 @@ type Phase = "idle" | "loading" | "running";
 const SOURCE_CHIP: Record<AudioSourceKind, { label: string; cls: string }> = {
   recording: {
     label: "♪ Karel's Welcome Home piano",
-    cls: "bg-emerald-500/15 text-emerald-200 ring-emerald-400/30",
+    cls: "bg-violet-500/15 text-violet-200 ring-violet-400/30",
   },
   file: {
     label: "♪ your file",
@@ -42,7 +42,7 @@ const SOURCE_CHIP: Record<AudioSourceKind, { label: string; cls: string }> = {
   },
   fallback: {
     label: "♪ synth piano (couldn't reach recording)",
-    cls: "bg-amber-500/15 text-amber-200 ring-amber-400/30",
+    cls: "bg-violet-500/15 text-violet-200 ring-violet-400/30",
   },
 };
 
@@ -283,7 +283,7 @@ export default function WelcomeSkyPage() {
 
   return (
     <main
-      className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-white/95"
+      className="relative min-h-screen w-full overflow-hidden bg-neutral-950 text-foreground"
       onDragOver={(e) => {
         e.preventDefault();
         setDragOver(true);
@@ -297,11 +297,11 @@ export default function WelcomeSkyPage() {
       {/* chrome overlay (dark Resonance theme) */}
       <div className="pointer-events-none absolute inset-0 flex flex-col justify-between p-6 sm:p-8">
         <header className="max-w-2xl">
-          <div className="pointer-events-auto inline-block rounded-2xl bg-black/35 px-5 py-4 backdrop-blur-md ring-1 ring-white/10">
-            <h1 className="font-serif text-2xl sm:text-3xl text-white/95">
+          <div className="pointer-events-auto inline-block rounded-2xl bg-black/35 px-5 py-4 backdrop-blur-md ring-1 ring-border">
+            <h1 className="font-serif text-2xl sm:text-3xl text-foreground">
               Welcome Sky
             </h1>
-            <p className="mt-1 text-base text-white/75">
+            <p className="mt-1 text-base text-muted-foreground">
               Karel&rsquo;s piano paints the sky it belongs under — dawn when it
               begins, golden dusk when it ends.
             </p>
@@ -313,7 +313,7 @@ export default function WelcomeSkyPage() {
               </span>
             )}
             {!glOk && (
-              <p className="mt-2 text-sm text-amber-200">
+              <p className="mt-2 text-sm text-violet-200">
                 WebGL2 unavailable — simplified sky.
               </p>
             )}
@@ -326,14 +326,14 @@ export default function WelcomeSkyPage() {
             <button
               onClick={begin}
               disabled={phase === "loading"}
-              className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg ring-1 ring-violet-300/40 transition hover:bg-violet-500 disabled:opacity-60"
+              className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground shadow-lg ring-1 ring-violet-300/40 transition hover:bg-violet-500 disabled:opacity-60"
             >
               {phase === "loading" ? "Waking the sky…" : "Begin"}
             </button>
           )}
 
           {phase !== "running" && (
-            <label className="min-h-[44px] cursor-pointer rounded-xl bg-black/40 px-4 py-2.5 text-base text-white/75 ring-1 ring-white/15 backdrop-blur-md transition hover:text-white/95">
+            <label className="min-h-[44px] cursor-pointer rounded-xl bg-black/40 px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground">
               Use my audio
               <input
                 type="file"
@@ -345,7 +345,7 @@ export default function WelcomeSkyPage() {
           )}
 
           {phase === "running" && (
-            <div className="rounded-xl bg-black/35 px-4 py-2.5 text-sm text-white/75 backdrop-blur-md ring-1 ring-white/10">
+            <div className="rounded-xl bg-black/35 px-4 py-2.5 text-sm text-muted-foreground backdrop-blur-md ring-1 ring-border">
               The sun crosses the sky as the piece plays. Louder passages thicken
               the clouds; brighter notes lift them into wisps.
             </div>
@@ -362,14 +362,14 @@ export default function WelcomeSkyPage() {
       <div className="absolute right-6 top-6 sm:right-8 sm:top-8">
         <button
           onClick={() => setNotesOpen((v) => !v)}
-          className="pointer-events-auto min-h-[44px] rounded-xl bg-black/40 px-3 py-2 text-sm text-violet-300 ring-1 ring-white/10 backdrop-blur-md transition hover:text-violet-200"
+          className="pointer-events-auto min-h-[44px] rounded-xl bg-black/40 px-3 py-2 text-sm text-violet-300 ring-1 ring-border backdrop-blur-md transition hover:text-violet-200"
         >
           Read the design notes
         </button>
       </div>
       {notesOpen && (
-        <aside className="absolute right-6 top-20 z-10 max-w-sm rounded-2xl bg-black/70 p-5 text-sm text-white/80 ring-1 ring-white/10 backdrop-blur-lg sm:right-8">
-          <p className="text-base text-white/95">A piece of music with a time of day.</p>
+        <aside className="absolute right-6 top-20 z-10 max-w-sm rounded-2xl bg-black/70 p-5 text-sm text-foreground ring-1 ring-border backdrop-blur-lg sm:right-8">
+          <p className="text-base text-foreground">A piece of music with a time of day.</p>
           <p className="mt-2">
             A single global day-phase advances with playback position, sweeping
             the sun on a full arc: low &amp; rose at dawn, high &amp; white at
@@ -377,7 +377,7 @@ export default function WelcomeSkyPage() {
             loudness thickens and lights the clouds, brightness makes them wispy
             and cool, onsets add soft light shafts.
           </p>
-          <p className="mt-2 text-white/70">
+          <p className="mt-2 text-muted-foreground">
             Full notes:{" "}
             <a
               href="./README.md"

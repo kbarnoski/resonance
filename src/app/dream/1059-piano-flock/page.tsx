@@ -222,7 +222,7 @@ export default function PianoFlockPage() {
 
   // ─── UI ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06040f] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06040f] text-foreground">
       {/* the flock canvas. keyed by substrate so a fresh element is used if we
           fall back from webgpu to canvas2d (a canvas keeps its first context). */}
       <canvas
@@ -247,10 +247,10 @@ export default function PianoFlockPage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
             psilocybin · cosmic drift
           </p>
-          <h1 className="text-2xl font-semibold text-white/95 sm:text-3xl">
+          <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
             Piano Flock
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-white/75">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
             Conduct a luminous GPU particle flock with your pointer; its living,
             emergent shape re-voices Karel&apos;s own piano into a cosmic,
             drifting granular instrument.
@@ -260,7 +260,7 @@ export default function PianoFlockPage() {
             type="button"
             onClick={start}
             disabled={phase === "loading"}
-            className="mt-8 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400 disabled:opacity-60"
+            className="mt-8 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400 disabled:opacity-60"
           >
             {phase === "loading" ? "Summoning the flock…" : "Conduct"}
           </button>
@@ -268,17 +268,17 @@ export default function PianoFlockPage() {
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="mt-5 min-h-[44px] px-4 py-2.5 text-base text-white/55 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white/80"
+            className="mt-5 min-h-[44px] px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
           >
             Read the design notes
           </button>
 
           {audioError && (
-            <p className="mt-5 text-base text-rose-300">{audioError}</p>
+            <p className="mt-5 text-base text-violet-300">{audioError}</p>
           )}
 
           {showNotes && (
-            <div className="mt-6 max-w-xl rounded-xl border border-white/10 bg-black/40 p-5 text-left text-base leading-relaxed text-white/75">
+            <div className="mt-6 max-w-xl rounded-xl border border-border bg-black/40 p-5 text-left text-base leading-relaxed text-muted-foreground">
               <p>
                 A WebGPU compute pass runs Craig Reynolds&apos; three boids rules
                 (cohesion, alignment, separation) over thousands of glowing
@@ -293,7 +293,7 @@ export default function PianoFlockPage() {
                 scattered cloud detunes into shimmer; a sudden contraction fires
                 an onset burst.
               </p>
-              <p className="mt-3 text-white/55">
+              <p className="mt-3 text-muted-foreground">
                 No WebGPU? A Canvas2D CPU flock with a spatial hash runs the same
                 rules and the same audio mapping. Drag an audio file onto the
                 canvas to flock your own corpus.
@@ -308,18 +308,18 @@ export default function PianoFlockPage() {
         <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-1 p-4">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-xs">
             {source === "piano" ? (
-              <span className="text-emerald-300/95">♪ Karel&apos;s piano</span>
+              <span className="text-violet-300/95">♪ Karel&apos;s piano</span>
             ) : (
-              <span className="text-amber-300/95">synth piano (offline)</span>
+              <span className="text-violet-300/95">synth piano (offline)</span>
             )}
             {substrate === "webgpu" ? (
               <span className="text-violet-300">WebGPU compute flock</span>
             ) : (
-              <span className="text-amber-300/95">Canvas2D flock (no WebGPU)</span>
+              <span className="text-violet-300/95">Canvas2D flock (no WebGPU)</span>
             )}
-            <span className="text-white/55">{grainCount} grains</span>
+            <span className="text-muted-foreground">{grainCount} grains</span>
           </div>
-          <p className="max-w-md text-base text-white/75">
+          <p className="max-w-md text-base text-muted-foreground">
             Move your pointer to conduct. Let go and the flock drifts.
           </p>
           {dropHint && (
@@ -333,7 +333,7 @@ export default function PianoFlockPage() {
         <div className="absolute bottom-4 left-4 z-10">
           <Link
             href="/dream"
-            className="pointer-events-auto font-mono text-xs text-white/40 transition-colors hover:text-white/70"
+            className="pointer-events-auto font-mono text-xs text-muted-foreground/70 transition-colors hover:text-muted-foreground"
           >
             ← dream lab
           </Link>

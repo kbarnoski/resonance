@@ -242,10 +242,10 @@ export default function ThreadScanPage() {
   }, [scrub]);
 
   const ctrl =
-    "min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-sm text-white/75 transition-colors hover:text-white hover:bg-white/[0.08]";
+    "min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground hover:bg-accent";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-black text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -257,10 +257,10 @@ export default function ThreadScanPage() {
 
       {/* title */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Thread Scan
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           One unbroken thread weaves the whole field into a single line of light
           and pitch.
         </p>
@@ -272,8 +272,8 @@ export default function ThreadScanPage() {
           <span
             className={`rounded-full border px-2.5 py-1 font-mono text-xs ${
               tier === "webgl2"
-                ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-                : "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                ? "border-violet-400/40 bg-violet-400/10 text-violet-300"
+                : "border-violet-400/40 bg-violet-400/10 text-violet-300"
             }`}
           >
             {tier === "webgl2" ? "WebGL2" : "Canvas2D"}
@@ -283,7 +283,7 @@ export default function ThreadScanPage() {
 
       {glError && tier === "canvas2d" && (
         <div className="pointer-events-none absolute inset-x-0 top-16 z-20 flex justify-center px-4">
-          <p className="max-w-md rounded-xl border border-rose-400/30 bg-rose-500/10 px-4 py-2 text-center text-sm text-rose-300">
+          <p className="max-w-md rounded-xl border border-violet-400/30 bg-violet-500/10 px-4 py-2 text-center text-sm text-violet-300">
             {glError}
           </p>
         </div>
@@ -292,7 +292,7 @@ export default function ThreadScanPage() {
       {/* controls */}
       {phase === "running" && (
         <div className="absolute inset-x-0 bottom-16 z-20 flex flex-wrap items-center justify-center gap-2 px-4 sm:gap-3">
-          <div className="flex items-center gap-1 rounded-full border border-white/12 bg-black/60 p-1 backdrop-blur-md">
+          <div className="flex items-center gap-1 rounded-full border border-border bg-black/60 p-1 backdrop-blur-md">
             {[3, 4, 5, 6].map((o) => (
               <button
                 key={o}
@@ -301,7 +301,7 @@ export default function ThreadScanPage() {
                 className={`min-h-[44px] min-w-[44px] rounded-full px-3 py-2 font-mono text-sm transition-colors ${
                   order === o
                     ? "bg-violet-500/25 text-violet-200"
-                    : "text-white/55 hover:text-white"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
                 title={`Hilbert order ${o} — ${1 << o}×${1 << o} cells`}
               >
@@ -310,8 +310,8 @@ export default function ThreadScanPage() {
             ))}
           </div>
 
-          <label className="flex items-center gap-2 rounded-full border border-white/12 bg-black/60 px-4 py-2.5 backdrop-blur-md">
-            <span className="font-mono text-xs text-white/55">speed</span>
+          <label className="flex items-center gap-2 rounded-full border border-border bg-black/60 px-4 py-2.5 backdrop-blur-md">
+            <span className="font-mono text-xs text-muted-foreground">speed</span>
             <input
               type="range"
               min={0}
@@ -333,8 +333,8 @@ export default function ThreadScanPage() {
           </button>
 
           {!letGo && (
-            <label className="flex items-center gap-2 rounded-full border border-white/12 bg-black/60 px-4 py-2.5 backdrop-blur-md">
-              <span className="font-mono text-xs text-white/55">scrub</span>
+            <label className="flex items-center gap-2 rounded-full border border-border bg-black/60 px-4 py-2.5 backdrop-blur-md">
+              <span className="font-mono text-xs text-muted-foreground">scrub</span>
               <input
                 type="range"
                 min={0}
@@ -356,7 +356,7 @@ export default function ThreadScanPage() {
       {/* live hint */}
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-7 z-10 text-center">
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             drag on the field to paint · the thread reads what you paint
           </p>
         </div>
@@ -365,19 +365,19 @@ export default function ThreadScanPage() {
       {/* gesture gate — the glyph is already weaving behind it */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/45 backdrop-blur-[2px]">
-          <div className="mx-6 max-w-md rounded-2xl border border-white/12 bg-black/70 p-6 text-center backdrop-blur-md">
-            <p className="text-base text-white/75">
+          <div className="mx-6 max-w-md rounded-2xl border border-border bg-black/70 p-6 text-center backdrop-blur-md">
+            <p className="text-base text-muted-foreground">
               A single Hilbert thread is already tracing the field into music.
               Turn on the sound, then paint your own marks for it to read.
             </p>
             <button
               type="button"
               onClick={handleBegin}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-semibold text-white transition-colors hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-semibold text-foreground transition-colors hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
               Begin — sound on
             </button>
-            <p className="mt-4 font-mono text-sm text-white/55">
+            <p className="mt-4 font-mono text-sm text-muted-foreground">
               drag = paint · order = weave · let go = it travels alone
             </p>
           </div>
@@ -388,14 +388,14 @@ export default function ThreadScanPage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-3 left-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/60 px-4 py-2.5 text-sm text-white/75 transition-colors hover:text-white"
+        className="absolute bottom-3 left-3 z-30 min-h-[44px] rounded-full border border-border bg-black/60 px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-16 left-3 z-30 max-w-sm rounded-2xl border border-white/12 bg-black/85 p-4 text-sm leading-relaxed text-white/75 backdrop-blur-md">
-          <p className="text-base font-semibold text-white/95">One woven line</p>
+        <div className="absolute bottom-16 left-3 z-30 max-w-sm rounded-2xl border border-border bg-black/85 p-4 text-sm leading-relaxed text-muted-foreground backdrop-blur-md">
+          <p className="text-base font-semibold text-foreground">One woven line</p>
           <p className="mt-2">
             A <span className="text-violet-300">Hilbert space-filling curve</span>{" "}
             (Hilbert 1891) is one unbroken line that visits every cell of the
@@ -403,12 +403,12 @@ export default function ThreadScanPage() {
             near each other in time, so a shape becomes a coherent gesture and the
             whole field is audibly <em>one thread</em>.
           </p>
-          <p className="mt-2 text-white/75">
+          <p className="mt-2 text-muted-foreground">
             Pitch is a <span className="text-violet-300">continuous glissando</span>{" "}
             from the head&apos;s vertical position — a woven continuum, deliberately
             not a scale. Brightness → loudness, hue → timbre, density → shimmer.
           </p>
-          <p className="mt-2 text-white/55">
+          <p className="mt-2 text-muted-foreground">
             Higher order &amp; speed = a finer, faster, more intense weave
             (ego-dissolution&apos;s hyperconnected unified field; Carhart-Harris,
             entropic brain / REBUS).

@@ -641,14 +641,14 @@ export default function VoiceCathedralPage() {
   }, []);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070f] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070f] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         {/* Header (scrim keeps text readable when the field blooms white) */}
         <header className="w-full max-w-xl rounded-2xl bg-black/35 px-5 py-4 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">Voice Cathedral</h1>
-          <p className="mt-2 text-base text-white/80">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Voice Cathedral</h1>
+          <p className="mt-2 text-base text-foreground">
             Hum or sing a sustained tone. Your held voice is captured, frozen and
             multiplied into a slowly-blooming cathedral of light — sustain, and
             its boundaries dissolve toward a boundless white choir.
@@ -661,25 +661,25 @@ export default function VoiceCathedralPage() {
             <button
               type="button"
               onClick={runBegin}
-              className="min-h-[44px] rounded-full bg-amber-300/90 px-8 py-2.5 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-amber-200 active:bg-amber-300"
+              className="min-h-[44px] rounded-full bg-violet-300/90 px-8 py-2.5 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-violet-200 active:bg-violet-300"
             >
               Begin — sing your space
             </button>
           ) : (
             <div className="rounded-2xl bg-black/35 px-5 py-3 text-center backdrop-blur-sm">
-              <p className="min-h-[28px] text-base text-white/95">
+              <p className="min-h-[28px] text-base text-foreground">
                 {micOn
                   ? "Listening — hold a hum and let the space bloom."
                   : "Demo voice singing — grant mic access to sing your own."}
               </p>
-              <p className="mt-1 font-mono text-base text-white/75">
+              <p className="mt-1 font-mono text-base text-muted-foreground">
                 boundlessness {boundlessPct}% · voices {voicesCount}
               </p>
             </div>
           )}
 
           {micNotice && (
-            <p className="max-w-md rounded-xl bg-black/40 px-4 py-2 text-center text-base text-rose-300 backdrop-blur-sm">
+            <p className="max-w-md rounded-xl bg-black/40 px-4 py-2 text-center text-base text-violet-300 backdrop-blur-sm">
               {micNotice}
             </p>
           )}
@@ -687,13 +687,13 @@ export default function VoiceCathedralPage() {
 
         {/* Footer */}
         <footer className="flex w-full max-w-xl items-center justify-between gap-4">
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Nothing is recorded or sent — your voice is heard only on this device.
           </p>
           <button
             type="button"
             onClick={() => setShowNotes((v) => !v)}
-            className="min-h-[44px] shrink-0 rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur-sm transition-colors hover:bg-white/20 hover:text-white"
+            className="min-h-[44px] shrink-0 rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-foreground"
           >
             {showNotes ? "Close notes" : "Read the design notes"}
           </button>
@@ -703,10 +703,10 @@ export default function VoiceCathedralPage() {
       {/* Design-notes overlay (in-page, not a route) */}
       {showNotes && (
         <div className="absolute inset-0 z-20 overflow-y-auto bg-black/80 px-6 py-10 backdrop-blur-md">
-          <div className="mx-auto max-w-2xl text-white/90">
-            <h2 className="font-serif text-2xl text-white">Voice Cathedral — design notes</h2>
-            <p className="mt-4 text-base text-white/80">
-              <span className="text-white/95">The question:</span> what if your own
+          <div className="mx-auto max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Voice Cathedral — design notes</h2>
+            <p className="mt-4 text-base text-foreground">
+              <span className="text-foreground">The question:</span> what if your own
               held voice could build a vast luminous meditative space? A sustained
               hum is granularly captured, frozen and multiplied into a slowly-
               blooming cathedral of light; sustain longer and the cloud&apos;s
@@ -714,8 +714,8 @@ export default function VoiceCathedralPage() {
               boundlessness&rdquo; of deep meditation — one voice becoming a
               boundless choir.
             </p>
-            <p className="mt-4 text-base text-white/80">
-              <span className="text-white/95">Technique:</span> the mic feeds an
+            <p className="mt-4 text-base text-foreground">
+              <span className="text-foreground">Technique:</span> the mic feeds an
               AnalyserNode <em>only</em> (never the speakers, so there is no
               feedback path). A rolling ~3s buffer of your voice is granulated —
               short Hann-windowed grains are scheduled continuously, read from the
@@ -725,32 +725,32 @@ export default function VoiceCathedralPage() {
               reverb, over a low drone bed and a pitch-following seed drone snapped
               to a pentatonic scale so it stays consonant.
             </p>
-            <p className="mt-4 text-base text-white/80">
-              <span className="text-white/95">Boundlessness arc:</span> sustaining
+            <p className="mt-4 text-base text-foreground">
+              <span className="text-foreground">Boundlessness arc:</span> sustaining
               climbs a value that dissolves the cloud edge&rarr;center&rarr;white
               and lightens the ground; silence lets it settle back into a dark
               spacious void.
             </p>
-            <p className="mt-4 text-base text-white/80">
-              <span className="text-white/95">Lineage:</span> Julianna Barwick&apos;s
+            <p className="mt-4 text-base text-foreground">
+              <span className="text-foreground">Lineage:</span> Julianna Barwick&apos;s
               looped-voice cathedral ambient, the Pauline Oliveros / Deep Listening
               tradition, and Éliane Radigue&apos;s sustained drone. This evokes a
               phenomenology; it makes no medical claims.
             </p>
-            <p className="mt-4 text-base text-white/80">
-              <span className="text-white/95">Safety:</span> cosmic-ambient — only
+            <p className="mt-4 text-base text-foreground">
+              <span className="text-foreground">Safety:</span> cosmic-ambient — only
               slow smooth luminance drift, no strobe; a breath-paced ~0.1 Hz swell.
               The dissolve to white is eased in so it never blows out harshly.
               prefers-reduced-motion slows all motion. Master gain is ≤0.26 with a
               1.5s fade-in and a limiter before the speakers.
             </p>
-            <p className="mt-4 text-base text-white/70">
-              <span className="text-white/95">Controls:</span> Begin (unlock audio +
+            <p className="mt-4 text-base text-muted-foreground">
+              <span className="text-foreground">Controls:</span> Begin (unlock audio +
               mic), then simply hold a sustained tone — the longer and steadier the
               hum, the more voices freeze and the more boundless the light becomes.
             </p>
-            <p className="mt-4 text-base text-white/70">
-              <span className="text-white/95">Next:</span> an AudioWorklet grain
+            <p className="mt-4 text-base text-muted-foreground">
+              <span className="text-foreground">Next:</span> an AudioWorklet grain
               engine for sample-accurate scheduling, per-layer spatial panning for
               a wider choir, and a breath-detector so inhales momentarily part the
               white.
@@ -758,7 +758,7 @@ export default function VoiceCathedralPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-full bg-white/15 px-4 py-2.5 text-base text-white transition-colors hover:bg-white/25"
+              className="mt-6 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               Close
             </button>

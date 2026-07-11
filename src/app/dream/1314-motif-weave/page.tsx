@@ -211,17 +211,17 @@ export default function MotifWeavePage() {
   const pct = (x: number) => Math.round(x * 100);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#06040e] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#06040e] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
-      <span className="absolute left-4 top-4 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-white/75">
+      <span className="absolute left-4 top-4 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-muted-foreground">
         Canvas2D · woven memory
       </span>
       <a
         href="/dream/1314-motif-weave/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -229,14 +229,14 @@ export default function MotifWeavePage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">Motif Weave</h1>
-          <p className="mt-2 text-base text-white/75">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">Motif Weave</h1>
+          <p className="mt-2 text-base text-muted-foreground">
             A long-form dream that <span className="text-violet-300">remembers you musically</span>. Every phrase you
             play is recorded into a growing library and woven back in later — transposed, stretched, harmonised,
             reversed — so at minute six you hear irreversible echoes of what you played at minute one. Each remembered
             motif becomes a persistent thread of light in the weave.
           </p>
-          {micMsg && <p className="mt-2 text-base text-rose-300">{micMsg}</p>}
+          {micMsg && <p className="mt-2 text-base text-violet-300">{micMsg}</p>}
         </header>
 
         {/* Center: Begin */}
@@ -249,7 +249,7 @@ export default function MotifWeavePage() {
               >
                 Begin · enter the weave
               </button>
-              <p className="max-w-xl font-mono text-sm text-white/55">
+              <p className="max-w-xl font-mono text-sm text-muted-foreground">
                 the loom already drifts below — tap Begin to give it sound, then drag to play a phrase it will remember
               </p>
             </>
@@ -259,29 +259,29 @@ export default function MotifWeavePage() {
         {/* Footer: live readout + controls */}
         {phase === "running" && (
           <footer className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-white/75">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted-foreground">
               <span>
                 phase <span className="text-violet-300">{hud.phaseName}</span>
               </span>
               <span>
-                {mmss(hud.elapsed)} · <span className="text-white/95">{Math.round(hud.tempo)} bpm</span>
+                {mmss(hud.elapsed)} · <span className="text-foreground">{Math.round(hud.tempo)} bpm</span>
               </span>
               <span>
-                threads <span className="text-amber-200">{hud.motifs}</span>
+                threads <span className="text-violet-200">{hud.motifs}</span>
               </span>
               <span>
-                you played <span className="text-emerald-300">{hud.played}</span>
+                you played <span className="text-violet-300">{hud.played}</span>
               </span>
               <span>
                 recalls <span className="text-violet-200">{hud.recalls}</span>
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 breath {pct(hud.breath)}
                 {hud.note ? ` · ${hud.note}` : ""}
               </span>
             </div>
 
-            <p className="max-w-2xl text-base text-white/75">
+            <p className="max-w-2xl text-base text-muted-foreground">
               Drag anywhere to play a melody — position sets pitch. Release and it is committed to memory forever (within
               this run) and will return, transformed, minutes later. Let go entirely and idle seed phrases keep the dream
               alive on their own.
@@ -291,31 +291,31 @@ export default function MotifWeavePage() {
               {micState === "off" && (
                 <button
                   onClick={() => void enableMic()}
-                  className="min-h-[44px] rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                  className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   Add breath (mic)
                 </button>
               )}
               {micState === "on" && (
-                <span className="font-mono text-sm text-emerald-300">breath active — exhale to brighten the dream</span>
+                <span className="font-mono text-sm text-violet-300">breath active — exhale to brighten the dream</span>
               )}
               <button
                 onClick={toggleFlicker}
                 className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
-                  flickerOn ? "bg-white/25 text-white" : "bg-white/5 text-white/75 hover:bg-white/10"
+                  flickerOn ? "bg-muted text-foreground" : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 {flickerOn ? "flicker on (≤3 Hz) — tap to kill" : "add gentle flicker (≤3 Hz)"}
               </button>
               <button
                 onClick={beginAgain}
-                className="min-h-[44px] rounded-md border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/75 hover:bg-white/10"
+                className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground hover:bg-accent"
               >
                 Begin again (clear memory)
               </button>
             </div>
             {prefersReducedMotion() && (
-              <p className="font-mono text-sm text-white/55">reduced-motion respected — drift only, no flicker</p>
+              <p className="font-mono text-sm text-muted-foreground">reduced-motion respected — drift only, no flicker</p>
             )}
           </footer>
         )}

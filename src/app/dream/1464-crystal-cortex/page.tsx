@@ -272,7 +272,7 @@ export default function CrystalCortex() {
   }, [resize]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -287,17 +287,17 @@ export default function CrystalCortex() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-10 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl text-white sm:text-4xl">
+            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
               Crystal Cortex
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/80">
+            <p className="mt-4 text-base leading-relaxed text-foreground">
               The DMT &ldquo;jewelled honeycomb&rdquo; as a living Voronoi lattice
               you play by dragging its cells — a GPU jump-flood partition warped
               into an infinite stained-glass tunnel, where every cell sings a
               continuous tone.
             </p>
             {phase === "error" ? (
-              <p className="mt-6 text-base text-rose-300">
+              <p className="mt-6 text-base text-violet-300">
                 WebGL2 is unavailable in this browser, so the lattice can&rsquo;t
                 run. Try a recent Chrome, Firefox, Safari, or Edge.
               </p>
@@ -310,7 +310,7 @@ export default function CrystalCortex() {
                 Enter the lattice
               </button>
             )}
-            <p className="mt-6 text-sm text-white/55">
+            <p className="mt-6 text-sm text-muted-foreground">
               Drag cells with mouse or several fingers at once. Sound starts on
               tap. No strobe — all motion is slow drift.
             </p>
@@ -321,25 +321,25 @@ export default function CrystalCortex() {
       {/* Running HUD */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xs">
-          <h2 className="font-serif text-xl text-white/95">Crystal Cortex</h2>
-          <p className="mt-1 text-sm text-white/75">
+          <h2 className="font-serif text-xl text-foreground">Crystal Cortex</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
             Drag a cell to bend the honeycomb and glide its voice.
           </p>
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="pointer-events-auto mt-3 min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-sm text-white/80 transition-colors hover:bg-white/10"
+            className="pointer-events-auto mt-3 min-h-[44px] rounded-lg border border-border px-4 py-2.5 text-sm text-foreground transition-colors hover:bg-accent"
           >
             {showNotes ? "Hide design notes" : "Design notes"}
           </button>
           {showNotes && (
-            <div className="pointer-events-auto mt-3 rounded-lg border border-white/10 bg-black/70 p-4 text-sm leading-relaxed text-white/75 backdrop-blur">
+            <div className="pointer-events-auto mt-3 rounded-lg border border-border bg-black/70 p-4 text-sm leading-relaxed text-muted-foreground backdrop-blur">
               <p>
                 The cell partition is a real{" "}
-                <span className="text-emerald-300/95">Jump Flooding</span> Voronoi
+                <span className="text-violet-300/95">Jump Flooding</span> Voronoi
                 diagram (Rong &amp; Tan 2006), computed on the GPU in ping-pong
                 framebuffers over ~9 passes, then sampled through an inverse{" "}
-                <span className="text-amber-300/95">log-polar</span> warp — the
+                <span className="text-violet-300/95">log-polar</span> warp — the
                 retina&rarr;V1 cortical map behind Kl&uuml;ver&rsquo;s honeycomb
                 form-constant.
               </p>
@@ -347,7 +347,7 @@ export default function CrystalCortex() {
                 Each cell is a continuous voice: tunnel-depth &rarr; pitch, cell
                 area &rarr; loudness, crowding &rarr; brightness.
               </p>
-              <p className="mt-2 text-white/55">
+              <p className="mt-2 text-muted-foreground">
                 Field storage: {usesFloat ? "RGBA16F (float)" : "RGBA8 16-bit packed (fallback)"}.
               </p>
             </div>

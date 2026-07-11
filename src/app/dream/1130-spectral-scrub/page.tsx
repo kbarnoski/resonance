@@ -426,10 +426,10 @@ export default function SpectralScrubPage() {
       {/* top: title + status */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6">
         <div className="max-w-xl">
-          <h1 className="font-serif text-2xl leading-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl leading-tight text-foreground sm:text-3xl">
             Spectral Scrub
           </h1>
-          <p className="mt-1 text-base text-white/75">
+          <p className="mt-1 text-base text-muted-foreground">
             Reach into Karel&rsquo;s real piano and drag it through time —
             scrub, freeze, and stretch a recording into a playable spectral field.
           </p>
@@ -437,15 +437,15 @@ export default function SpectralScrubPage() {
             <p className="mt-1.5 text-base text-violet-300">{modeLabel}</p>
           )}
           {errorMsg && (
-            <p className="mt-1.5 text-base text-rose-300">{errorMsg}</p>
+            <p className="mt-1.5 text-base text-violet-300">{errorMsg}</p>
           )}
           {!webglOk && (
-            <p className="mt-1.5 text-base text-rose-300">
+            <p className="mt-1.5 text-base text-violet-300">
               WebGL2 unavailable — showing a Canvas2D spectrogram fallback.
             </p>
           )}
           {!audioOk && (
-            <p className="mt-1.5 text-base text-rose-300">
+            <p className="mt-1.5 text-base text-violet-300">
               Web Audio is unavailable in this browser.
             </p>
           )}
@@ -454,7 +454,7 @@ export default function SpectralScrubPage() {
           type="button"
           onPointerDown={(e) => e.stopPropagation()}
           onClick={() => setShowNotes((s) => !s)}
-          className="pointer-events-auto min-h-[44px] shrink-0 rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+          className="pointer-events-auto min-h-[44px] shrink-0 rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
         >
           Design notes
         </button>
@@ -463,9 +463,9 @@ export default function SpectralScrubPage() {
       {/* center drag hint */}
       {live && hint && (
         <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center">
-          <p className="rounded-2xl bg-black/40 px-5 py-3 text-center font-serif text-xl text-white/95 backdrop-blur-sm">
+          <p className="rounded-2xl bg-black/40 px-5 py-3 text-center font-serif text-xl text-foreground backdrop-blur-sm">
             drag anywhere
-            <span className="mt-1 block text-base font-sans text-white/75">
+            <span className="mt-1 block text-base font-sans text-muted-foreground">
               ← → scrub &amp; stretch time · ↑ ↓ sculpt the spectrum
             </span>
           </p>
@@ -474,13 +474,13 @@ export default function SpectralScrubPage() {
 
       {/* bottom control deck */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 sm:p-5">
-        <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl border border-white/10 bg-black/60 p-3 backdrop-blur-md sm:p-4">
+        <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl border border-border bg-black/60 p-3 backdrop-blur-md sm:p-4">
           {!live ? (
             <div
               className="flex flex-col gap-3"
               onPointerDown={(e) => e.stopPropagation()}
             >
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Load a real Welcome Home piano track, drop your own audio, or
                 start the placeholder demo.
               </p>
@@ -492,19 +492,19 @@ export default function SpectralScrubPage() {
                     if (e.key === "Enter") void runLoadId();
                   }}
                   placeholder="Paste a Path recording id"
-                  className="min-h-[44px] flex-1 rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white placeholder:text-white/45 focus:border-cyan-300/60 focus:outline-none"
+                  className="min-h-[44px] flex-1 rounded-xl border border-border bg-muted px-4 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:border-violet-300/60 focus:outline-none"
                 />
                 <button
                   type="button"
                   onClick={() => void runLoadId()}
                   disabled={phase === "loading" || !trackId.trim()}
-                  className="min-h-[44px] rounded-xl bg-cyan-400/90 px-4 py-2.5 text-base font-medium text-black transition-colors hover:bg-cyan-300 disabled:opacity-40"
+                  className="min-h-[44px] rounded-xl bg-violet-400/90 px-4 py-2.5 text-base font-medium text-black transition-colors hover:bg-violet-300 disabled:opacity-40"
                 >
                   Load track
                 </button>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
-                <label className="min-h-[44px] flex-1 cursor-pointer rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-center text-base text-white/90 transition-colors hover:border-violet-300/60">
+                <label className="min-h-[44px] flex-1 cursor-pointer rounded-xl border border-border bg-muted px-4 py-2.5 text-center text-base text-foreground transition-colors hover:border-violet-300/60">
                   Drop / choose an audio file
                   <input
                     type="file"
@@ -520,7 +520,7 @@ export default function SpectralScrubPage() {
                   type="button"
                   onClick={() => void runDemo()}
                   disabled={phase === "loading"}
-                  className="min-h-[44px] rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/90 transition-colors hover:border-white/40 disabled:opacity-40"
+                  className="min-h-[44px] rounded-xl border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:border-border disabled:opacity-40"
                 >
                   {phase === "loading" ? "Loading…" : "Play demo"}
                 </button>
@@ -533,7 +533,7 @@ export default function SpectralScrubPage() {
             >
               {/* waveform scrub strip */}
               <div
-                className="relative h-16 w-full cursor-ew-resize rounded-xl border border-white/10 bg-white/[0.03]"
+                className="relative h-16 w-full cursor-ew-resize rounded-xl border border-border bg-muted"
                 onPointerDown={(e) => {
                   e.stopPropagation();
                   onPointerDownWave(e);
@@ -546,7 +546,7 @@ export default function SpectralScrubPage() {
                   ref={waveCanvasRef}
                   className="absolute inset-0 h-full w-full"
                 />
-                <span className="pointer-events-none absolute left-2 top-1.5 text-sm text-white/55">
+                <span className="pointer-events-none absolute left-2 top-1.5 text-sm text-muted-foreground">
                   {engineMode === "element"
                     ? "drag to scrub (streamed)"
                     : "drag the waveform to scrub"}
@@ -563,7 +563,7 @@ export default function SpectralScrubPage() {
                     className={`min-h-[44px] flex-1 rounded-xl px-4 py-2.5 text-base font-medium transition-colors ${
                       rateName === b.name
                         ? "bg-violet-400/90 text-black"
-                        : "border border-white/15 bg-white/5 text-white/85 hover:border-white/40"
+                        : "border border-border bg-muted text-foreground hover:border-border"
                     } disabled:opacity-30`}
                   >
                     {b.label}
@@ -578,7 +578,7 @@ export default function SpectralScrubPage() {
                     setModeLabel("");
                     setPhase("idle");
                   }}
-                  className="min-h-[44px] rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/70 transition-colors hover:text-white"
+                  className="min-h-[44px] rounded-xl border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground transition-colors hover:text-foreground"
                 >
                   Load another
                 </button>
@@ -598,30 +598,30 @@ export default function SpectralScrubPage() {
           }}
         >
           <div
-            className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/10 bg-[#070b16] p-6 text-white/85"
+            className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#070b16] p-6 text-foreground"
             onPointerDown={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
-            <p className="mt-3 text-base text-white/80">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <p className="mt-3 text-base text-foreground">
               The hero visual is a WebGL2 fragment shader sampling a live
               scrolling spectrogram of the audio, rendered as drifting pigment —
               Refik Anadol&rsquo;s &ldquo;data as pigment&rdquo; spectral field
               in deep-ocean cool → electric cyan/violet.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               The instrument is a granular resynthesis engine: dozens of short,
               Hann-windowed grains fire from a moving read head. Moving that head
               slowly — or freezing it — time-stretches the recording without
               changing pitch, the pitch-preserving idea behind the phase vocoder
               (Flanagan &amp; Golden, 1966).
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               Drag horizontally to scrub and stretch time; drag vertically to
               sculpt tone (a filter cutoff the shader mirrors as a glowing band).
               Freeze holds the read head so the piano dissolves into a shimmering
               chord you can hold in your hand.
             </p>
-            <p className="mt-3 text-base text-white/60">
+            <p className="mt-3 text-base text-muted-foreground">
               Three source tiers: a Path recording id, your own dropped file, or
               a built-in synth placeholder. Cross-origin recordings that
               can&rsquo;t be decoded stream through an &lt;audio&gt; element
@@ -630,7 +630,7 @@ export default function SpectralScrubPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-xl bg-white/10 px-4 py-2.5 text-base text-white transition-colors hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               Close
             </button>

@@ -126,16 +126,16 @@ export default function AuroraWindPage() {
   const live = wind?.source === "live";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#02030a] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#02030a] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Idle / Begin overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#02030a]/70 px-6 text-center backdrop-blur-sm">
-          <h1 className="font-serif text-3xl text-white/95 sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             Aurora Wind
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/75">
+          <p className="max-w-xl text-base leading-relaxed text-muted-foreground">
             The real, live solar wind streaming past Earth right now — sonified
             into a cosmic-ambient aurora you fall into. An endless rising
             glissando and drifting luminous curtains, driven by NOAA space-weather
@@ -148,7 +148,7 @@ export default function AuroraWindPage() {
           >
             Begin
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Headphones recommended. One gesture starts the sound; it then drifts
             on its own.
           </p>
@@ -158,7 +158,7 @@ export default function AuroraWindPage() {
       {/* WebGL-missing notice */}
       {phase === "nowebgl" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
-          <p className="max-w-md text-base leading-relaxed text-rose-300">
+          <p className="max-w-md text-base leading-relaxed text-violet-300">
             This piece needs WebGL to render the aurora, and your browser does not
             appear to support it. Try a recent desktop browser with hardware
             acceleration enabled.
@@ -168,33 +168,33 @@ export default function AuroraWindPage() {
 
       {/* Live HUD */}
       {phase === "running" && (
-        <div className="absolute left-4 top-4 z-10 rounded-xl border border-white/10 bg-black/45 px-4 py-3 text-base backdrop-blur-md">
+        <div className="absolute left-4 top-4 z-10 rounded-xl border border-border bg-black/45 px-4 py-3 text-base backdrop-blur-md">
           <div className="mb-1.5 flex items-center gap-2">
             <span
               className={
                 live
-                  ? "inline-block h-2.5 w-2.5 rounded-full bg-emerald-400"
-                  : "inline-block h-2.5 w-2.5 rounded-full bg-amber-400"
+                  ? "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
+                  : "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
               }
             />
-            <span className={live ? "text-emerald-300" : "text-amber-300"}>
+            <span className={live ? "text-violet-300" : "text-violet-300"}>
               {live ? "live · NOAA SWPC" : "synthetic fallback"}
             </span>
           </div>
-          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-white/95">
-            <dt className="text-white/75">speed</dt>
+          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-foreground">
+            <dt className="text-muted-foreground">speed</dt>
             <dd className="text-right tabular-nums">
               {wind ? Math.round(wind.speed) : "—"} km/s
             </dd>
-            <dt className="text-white/75">density</dt>
+            <dt className="text-muted-foreground">density</dt>
             <dd className="text-right tabular-nums">
               {wind ? wind.density.toFixed(1) : "—"} p/cc
             </dd>
-            <dt className="text-white/75">Bz</dt>
+            <dt className="text-muted-foreground">Bz</dt>
             <dd className="text-right tabular-nums">
               {wind ? wind.bz.toFixed(1) : "—"} nT
             </dd>
-            <dt className="text-white/75">Kp</dt>
+            <dt className="text-muted-foreground">Kp</dt>
             <dd className="text-right tabular-nums">
               {wind ? wind.kp.toFixed(1) : "—"}
             </dd>
@@ -206,7 +206,7 @@ export default function AuroraWindPage() {
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition hover:text-white/95"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Design notes"}
       </button>
@@ -217,11 +217,11 @@ export default function AuroraWindPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-4 min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/75 hover:text-white/95"
+              className="mb-4 min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
             >
               Close
             </button>
-            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-white/85">
+            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-foreground">
               {README}
             </pre>
           </div>

@@ -260,8 +260,8 @@ export default function QuantumEtchPage() {
       title={hint}
       className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
         tool === id
-          ? "bg-amber-300/20 text-amber-200 ring-amber-300/40"
-          : "text-white/60 ring-white/15 hover:text-white/90"
+          ? "bg-violet-300/20 text-violet-200 ring-violet-300/40"
+          : "text-muted-foreground ring-border hover:text-foreground"
       }`}
     >
       {label}
@@ -272,24 +272,24 @@ export default function QuantumEtchPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#0a0807]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Quantum Etch</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Quantum Etch</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Quantum probability drawn as a living topographic etching — animated
           iso-contour lines of |ψ|² with bright nodal curves — that you sculpt with
           walls and wells, then fire a wave-packet through to watch it tunnel,
@@ -298,16 +298,16 @@ export default function QuantumEtchPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if quantum
+            <strong className="text-foreground">The question:</strong> what if quantum
             probability drew <em>itself</em> as a copper ETCHING — a topographic map
             of |ψ|² whose contour lines ripple, split, and re-form as the wave moves?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The physics:</strong> the 2D
+            <strong className="text-foreground">The physics:</strong> the 2D
             time-dependent Schrödinger equation is integrated by the{" "}
-            <span className="text-amber-200">split-step Fourier method</span> — a
+            <span className="text-violet-200">split-step Fourier method</span> — a
             half potential kick, a kinetic drift done in Fourier space (via a
             hand-written radix-2 FFT), then another half kick. Each factor is a pure
             phase, so the scheme is <em>unitary</em> and conserves ∑|ψ|² (checked in
@@ -315,7 +315,7 @@ export default function QuantumEtchPage() {
             reaches the edge.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Why lines, not a filled field:</strong>{" "}
+            <strong className="text-foreground">Why lines, not a filled field:</strong>{" "}
             each frame marching-squares extracts ~9 log-spaced iso levels of |ψ|² and
             strokes them as nested rings, and the nodal set Re(ψ)=0 is drawn as a
             finer bright curve. Those moving nodal lines <em>are</em> the interference
@@ -323,7 +323,7 @@ export default function QuantumEtchPage() {
             them, which a glowing fill would blur.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Played:</strong> pick Inject / Wall /
+            <strong className="text-foreground">Played:</strong> pick Inject / Wall /
             Well. Tap with Inject to fire a momentum-aimed Gaussian packet; drag with
             Wall or Well to paint the potential. Four presets — double-slit, the
             Bunimovich stadium (scars), a well lattice, a harmonic trap — plus Clear.
@@ -331,7 +331,7 @@ export default function QuantumEtchPage() {
             just-intonation partial bank: a locked scar is a stable chord, a spreading
             packet a wider, brighter cluster; a mallet pings when it strikes a wall.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: Schrödinger, <em>Ann. Phyik</em> (1926); Feit, Fleck &amp; Steiger,{" "}
             <em>J. Comput. Phys.</em> 47 (1982) — split-step Fourier propagation;
             E. J. Heller, &ldquo;Bound-state eigenfunctions of classically chaotic
@@ -354,7 +354,7 @@ export default function QuantumEtchPage() {
 
         {noCanvas && (
           <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-            <p className="max-w-md text-center text-base text-rose-300">
+            <p className="max-w-md text-center text-base text-violet-300">
               Canvas 2D is unavailable in this browser, so the quantum etching
               can&apos;t be drawn. The audio engine and physics still require a canvas
               to interact with — try a current desktop browser.
@@ -363,9 +363,9 @@ export default function QuantumEtchPage() {
         )}
 
         {/* Live readout */}
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
-          <div className="text-amber-200">∑|ψ|² ≈ {normPct}</div>
-          <div className="text-white/60">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
+          <div className="text-violet-200">∑|ψ|² ≈ {normPct}</div>
+          <div className="text-muted-foreground">
             {tool === "inject" ? "tap = fire a packet" : `drag = paint ${tool}`}
           </div>
         </div>
@@ -384,7 +384,7 @@ export default function QuantumEtchPage() {
               key={p.id}
               type="button"
               onClick={() => runPreset(p.id)}
-              className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-white/70 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white"
+              className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
             >
               {p.label}
             </button>
@@ -392,7 +392,7 @@ export default function QuantumEtchPage() {
           <button
             type="button"
             onClick={clearAll}
-            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-rose-300/90 ring-1 ring-rose-400/25 transition hover:bg-rose-400/10"
+            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-violet-300/90 ring-1 ring-violet-400/25 transition hover:bg-violet-400/10"
           >
             clear
           </button>
@@ -404,11 +404,11 @@ export default function QuantumEtchPage() {
             <button
               type="button"
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-amber-300/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-amber-200/40 transition hover:bg-amber-200"
+              className="min-h-[44px] rounded-full bg-violet-300/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-violet-200/40 transition hover:bg-violet-200"
             >
               ▶ Begin — sound the wavefunction
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               The etching is already alive and silent — Begin lets the wave&apos;s own
               spectrum sing.
             </p>
@@ -417,7 +417,7 @@ export default function QuantumEtchPage() {
 
         {audioOn && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Fire packets, paint walls, try a preset — the chord follows the wave.
             </p>
           </div>

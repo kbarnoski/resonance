@@ -260,7 +260,7 @@ export default function InCLoomPage() {
     <main className="min-h-screen w-full bg-[#f6efdd] text-stone-800">
       <div className="mx-auto flex max-w-3xl flex-col gap-6 px-5 py-10 sm:py-14">
         <header className="flex flex-col gap-2">
-          <p className="text-sm font-medium uppercase tracking-[0.22em] text-amber-700/80">
+          <p className="text-sm font-medium uppercase tracking-[0.22em] text-violet-700/80">
             Dream Lab · 1183
           </p>
           <h1 className="text-3xl font-semibold text-stone-900 sm:text-4xl">
@@ -276,13 +276,13 @@ export default function InCLoomPage() {
         </header>
 
         {!supported && (
-          <p className="rounded-lg border border-rose-300 bg-rose-50 px-4 py-3 text-base text-rose-600">
+          <p className="rounded-lg border border-violet-300 bg-violet-50 px-4 py-3 text-base text-violet-600">
             Web Audio isn&rsquo;t available in this browser, so the ensemble
             can&rsquo;t sound. The ring below still shows the score layout.
           </p>
         )}
 
-        <div className="relative overflow-hidden rounded-2xl border border-amber-200/70 bg-gradient-to-b from-[#fbf6e9] to-[#f2e8cf] shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl border border-violet-200/70 bg-gradient-to-b from-[#fbf6e9] to-[#f2e8cf] shadow-sm">
           <canvas
             ref={canvasRef}
             className="block h-[340px] w-full sm:h-[420px]"
@@ -299,24 +299,24 @@ export default function InCLoomPage() {
               type="button"
               onClick={handleBegin}
               disabled={!supported}
-              className="min-h-[44px] rounded-full bg-amber-600 px-6 py-2.5 text-base font-semibold text-white shadow-sm transition-colors hover:bg-amber-700 disabled:cursor-not-allowed disabled:bg-stone-300"
+              className="min-h-[44px] rounded-full bg-violet-600 px-6 py-2.5 text-base font-semibold text-foreground shadow-sm transition-colors hover:bg-violet-700 disabled:cursor-not-allowed disabled:bg-stone-300"
             >
               {phase === "running" ? "Stop" : "Begin"}
             </button>
             <button
               type="button"
               onClick={rerollSeed}
-              className="min-h-[44px] rounded-full border border-amber-300 bg-white/70 px-5 py-2.5 text-base font-medium text-stone-800 transition-colors hover:bg-amber-50"
+              className="min-h-[44px] rounded-full border border-violet-300 bg-muted px-5 py-2.5 text-base font-medium text-stone-800 transition-colors hover:bg-violet-50"
             >
               Re-roll seed
-              <span className="ml-2 text-sm text-amber-700">#{seed}</span>
+              <span className="ml-2 text-sm text-violet-700">#{seed}</span>
             </button>
           </div>
 
           <label className="flex flex-col gap-1.5">
             <span className="text-base font-medium text-stone-800">
               Pulse tempo
-              <span className="ml-2 text-sm text-amber-700">{tempo} BPM</span>
+              <span className="ml-2 text-sm text-violet-700">{tempo} BPM</span>
             </span>
             <input
               type="range"
@@ -325,14 +325,14 @@ export default function InCLoomPage() {
               step={1}
               value={tempo}
               onChange={(e) => setTempo(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-amber-200 accent-amber-600"
+              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200 accent-violet-600"
             />
           </label>
 
           <label className="flex flex-col gap-1.5">
             <span className="text-base font-medium text-stone-800">
               Density
-              <span className="ml-2 text-sm text-amber-700">
+              <span className="ml-2 text-sm text-violet-700">
                 {density} of 12 players
               </span>
             </span>
@@ -343,16 +343,16 @@ export default function InCLoomPage() {
               step={1}
               value={density}
               onChange={(e) => setDensity(Number(e.target.value))}
-              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-amber-200 accent-amber-600"
+              className="h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200 accent-violet-600"
             />
           </label>
         </div>
 
-        <div className="rounded-xl border border-amber-200/70 bg-[#fbf6e9] px-4 py-3">
+        <div className="rounded-xl border border-violet-200/70 bg-[#fbf6e9] px-4 py-3">
           <button
             type="button"
             onClick={() => setShowNotes((s) => !s)}
-            className="text-base font-medium text-amber-700 hover:text-amber-800"
+            className="text-base font-medium text-violet-700 hover:text-violet-800"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>

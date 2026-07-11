@@ -274,10 +274,10 @@ export default function CorticalBloomPage() {
 
       {/* title */}
       <div className="pointer-events-none absolute left-4 top-4 max-w-md">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Cortical Bloom
         </h1>
-        <p className="mt-1 text-base text-white/75">
+        <p className="mt-1 text-base text-muted-foreground">
           Hallucination geometry, grown from a simulated sheet of excitable neurons.
         </p>
         <p className="mt-1 text-base text-violet-300">{regimeLabel}</p>
@@ -287,13 +287,13 @@ export default function CorticalBloomPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-lg border border-white/15 bg-black/50 px-4 py-2.5 text-base text-white/95 backdrop-blur transition-colors hover:bg-white/10"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-lg border border-border bg-black/50 px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-accent"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {/* controls */}
-      <div className="absolute bottom-6 left-1/2 z-20 w-[min(92vw,560px)] -translate-x-1/2 rounded-2xl border border-white/10 bg-black/55 px-5 py-4 backdrop-blur">
+      <div className="absolute bottom-6 left-1/2 z-20 w-[min(92vw,560px)] -translate-x-1/2 rounded-2xl border border-border bg-black/55 px-5 py-4 backdrop-blur">
         {!audioOn && (
           <button
             type="button"
@@ -303,11 +303,11 @@ export default function CorticalBloomPage() {
             Turn on sound
           </button>
         )}
-        <label className="block text-base text-white/75">
+        <label className="block text-base text-muted-foreground">
           Excitation ↔ inhibition balance
         </label>
         <div className="mt-2 flex items-center gap-3">
-          <span className="text-base text-white/60">Lattice</span>
+          <span className="text-base text-muted-foreground">Lattice</span>
           <input
             type="range"
             min={0}
@@ -315,23 +315,23 @@ export default function CorticalBloomPage() {
             step={0.01}
             value={sliderVal}
             onChange={onSlider}
-            className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-white/20 accent-violet-400"
+            className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-muted accent-violet-400"
             aria-label="Excitation to inhibition balance"
           />
-          <span className="text-base text-white/60">Tunnels</span>
+          <span className="text-base text-muted-foreground">Tunnels</span>
         </div>
-        <p className="mt-3 text-base text-white/60">
+        <p className="mt-3 text-base text-muted-foreground">
           Tap the field to seed a new bloom. Arrow keys nudge the balance. It
           evolves on its own.
         </p>
-        {note && <p className="mt-2 text-base text-rose-300">{note}</p>}
+        {note && <p className="mt-2 text-base text-violet-300">{note}</p>}
       </div>
 
       {/* notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-30 overflow-y-auto bg-black/85 px-6 py-16 backdrop-blur-md">
-          <div className="mx-auto max-w-2xl text-white/85">
-            <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+          <div className="mx-auto max-w-2xl text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-4 text-base">
               The geometric hallucinations of a psychedelic state are not painted
               here — they are <span className="text-violet-300">grown</span>. A
@@ -375,7 +375,7 @@ export default function CorticalBloomPage() {
               Canvas2D value-noise cortical field warped by the same map — never
               blank, never silent.
             </p>
-            <p className="mt-4 text-base text-white/60">
+            <p className="mt-4 text-base text-muted-foreground">
               Reference: Ermentrout &amp; Cowan (1979), &quot;A mathematical theory
               of visual hallucination patterns&quot;; Bressloff, Cowan, Golubitsky,
               Thomas &amp; Wiener (2001/2002) on Turing instabilities in a cortical
@@ -384,7 +384,7 @@ export default function CorticalBloomPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-lg border border-white/15 bg-white/10 px-4 py-2.5 text-base text-white/95 hover:bg-white/20"
+              className="mt-6 min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

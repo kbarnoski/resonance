@@ -482,7 +482,7 @@ export default function DreamReplayPage() {
         : "dreaming — top-down replay";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04040a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04040a] text-foreground">
       {/* Canvas field */}
       <canvas
         ref={canvasRef}
@@ -499,10 +499,10 @@ export default function DreamReplayPage() {
 
       {/* Title + description (top-left) */}
       <div className="pointer-events-none absolute left-0 top-0 p-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Dream Replay
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Play the field; it records you. At the peak it stops listening and
           dreams your own playing back — recombined and drifting.
         </p>
@@ -512,14 +512,14 @@ export default function DreamReplayPage() {
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="max-w-lg px-6 text-center">
-            <p className="mb-6 text-base text-white/75">
+            <p className="mb-6 text-base text-muted-foreground">
               Tap and drag the dark field to play warm just-intonation bells —
               each note is remembered. Over about fifty seconds the instrument
               closes its eyes and replays your gestures back, less and less
               faithfully. Headphones recommended. No microphone, no camera.
             </p>
             {phase === "error" && errorMsg && (
-              <p className="mb-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mb-4 text-base text-violet-300">{errorMsg}</p>
             )}
             <button
               type="button"
@@ -536,7 +536,7 @@ export default function DreamReplayPage() {
       {phase === "running" && (
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center gap-3 p-6">
           {audioBlocked && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Audio is blocked on this device — the visuals still run.
             </p>
           )}
@@ -544,14 +544,14 @@ export default function DreamReplayPage() {
             <button
               type="button"
               onClick={wake}
-              className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 ring-1 ring-white/20 transition hover:bg-white/15"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               ◂ Wake
             </button>
             <button
               type="button"
               onClick={resumeAuto}
-              className="min-h-[44px] rounded-lg bg-white/5 px-4 py-2.5 text-base font-medium text-white/75 ring-1 ring-white/15 transition hover:bg-white/10"
+              className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-muted-foreground ring-1 ring-border transition hover:bg-accent"
             >
               Let it drift
             </button>
@@ -566,16 +566,16 @@ export default function DreamReplayPage() {
 
           {/* alpha / phase readout */}
           <div className="flex w-full max-w-md flex-col items-center gap-1">
-            <div className="flex w-full items-center justify-between text-sm font-mono text-white/75">
+            <div className="flex w-full items-center justify-between text-sm font-mono text-muted-foreground">
               <span>awake</span>
-              <span className="text-white/95">
+              <span className="text-foreground">
                 α {alphaView.toFixed(2)} · {phaseLabel}
               </span>
               <span>dreaming</span>
             </div>
-            <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-sky-400/70 to-violet-400"
+                className="h-full rounded-full bg-gradient-to-r from-violet-400/70 to-violet-400"
                 style={{ width: `${Math.round(alphaView * 100)}%` }}
               />
             </div>
@@ -587,14 +587,14 @@ export default function DreamReplayPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 ring-1 ring-white/20 transition hover:bg-white/15"
+        className="absolute right-4 top-4 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base font-medium text-foreground ring-1 ring-border transition hover:bg-accent"
       >
         {showNotes ? "Close notes" : "Design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute right-4 top-20 max-h-[70vh] w-[min(92vw,32rem)] overflow-y-auto rounded-xl bg-[#0a0a16]/95 p-6 text-base leading-relaxed text-white/85 ring-1 ring-white/15 backdrop-blur">
-          <h2 className="mb-2 text-xl font-semibold text-white">Design notes</h2>
+        <div className="absolute right-4 top-20 max-h-[70vh] w-[min(92vw,32rem)] overflow-y-auto rounded-xl bg-[#0a0a16]/95 p-6 text-base leading-relaxed text-foreground ring-1 ring-border backdrop-blur">
+          <h2 className="mb-2 text-xl font-semibold text-foreground">Design notes</h2>
           <p className="mb-3">
             An instrument that records you as you play, then at its peak stops
             listening and <em>dreams your own playing back</em> — your recent
@@ -629,7 +629,7 @@ export default function DreamReplayPage() {
             inference; this piece takes the replay side literally and makes it
             audible: the priors here are your own just-played phrases.
           </p>
-          <p className="text-white/70">
+          <p className="text-muted-foreground">
             Two layers, metaphorically: basal (bottom-up, faithful live input,
             fading) vs apical (top-down, the dreaming glow, rising).
           </p>

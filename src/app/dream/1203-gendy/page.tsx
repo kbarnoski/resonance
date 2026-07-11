@@ -408,7 +408,7 @@ export default function GendyPage() {
   }, [stopEverything]);
 
   return (
-    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#06131a] text-white">
+    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#06131a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -421,10 +421,10 @@ export default function GendyPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white/95 drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
           Gendy
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/75 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
+        <p className="mt-2 max-w-2xl text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
           A waveform that is alive — a jagged polygon whose every corner drifts by
           a random walk. Hold it, and calm it to a pure tone or unleash it into
           stochastic grit.
@@ -434,8 +434,8 @@ export default function GendyPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/10 bg-black/45 px-8 py-7 text-center backdrop-blur-md">
-            <p className="max-w-md text-base text-white/80">
+          <div className="flex flex-col items-center gap-5 rounded-2xl border border-border bg-black/45 px-8 py-7 text-center backdrop-blur-md">
+            <p className="max-w-md text-base text-foreground">
               Iannis Xenakis&rsquo;s dynamic stochastic synthesis: the sound is
               drawn directly by a set of breakpoints that random-walk between
               elastic barriers. Drag up/right to tighten toward a pitched tone,
@@ -443,15 +443,15 @@ export default function GendyPage() {
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] rounded-full bg-fuchsia-300/90 px-4 py-2.5 text-base font-medium text-[#1a0a1a] shadow-lg transition-colors hover:bg-fuchsia-200"
+              className="min-h-[44px] rounded-full bg-violet-300/90 px-4 py-2.5 text-base font-medium text-[#1a0a1a] shadow-lg transition-colors hover:bg-violet-200"
             >
               Begin
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               Sound + motion start on this tap. Then drag anywhere on the field.
             </p>
             {audioError && (
-              <p className="max-w-sm text-base text-rose-300">{audioError}</p>
+              <p className="max-w-sm text-base text-violet-300">{audioError}</p>
             )}
           </div>
         </div>
@@ -460,12 +460,12 @@ export default function GendyPage() {
       {/* running / paused controls */}
       {phase !== "idle" && (
         <div className="absolute bottom-16 left-1/2 z-10 w-[min(94vw,640px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/12 bg-black/50 px-5 py-4 backdrop-blur-md">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-black/50 px-5 py-4 backdrop-blur-md">
             <div className="min-w-[200px] flex-1">
-              <div className="text-base font-medium text-white/95">
+              <div className="text-base font-medium text-foreground">
                 {phase === "paused" ? "Paused" : "Holding the living wave"}
               </div>
-              <div className="mt-1 font-mono text-base text-white/75">
+              <div className="mt-1 font-mono text-base text-muted-foreground">
                 chaos {readout.chaos}% · {readout.hz} Hz
                 {rendererMode === "canvas2d" ? " · canvas2d" : ""}
                 {usingFallback ? " · scriptnode" : ""}
@@ -475,27 +475,27 @@ export default function GendyPage() {
               {phase === "running" ? (
                 <button
                   onClick={handlePause}
-                  className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/20"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Pause
                 </button>
               ) : (
                 <button
                   onClick={handleResume}
-                  className="min-h-[44px] rounded-full bg-fuchsia-300/90 px-4 py-2.5 text-base font-medium text-[#1a0a1a] transition-colors hover:bg-fuchsia-200"
+                  className="min-h-[44px] rounded-full bg-violet-300/90 px-4 py-2.5 text-base font-medium text-[#1a0a1a] transition-colors hover:bg-violet-200"
                 >
                   Resume
                 </button>
               )}
               <button
                 onClick={handleStop}
-                className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/20"
+                className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
               >
                 Stop
               </button>
             </div>
           </div>
-          <p className="mt-2 text-center text-base text-white/55">
+          <p className="mt-2 text-center text-base text-muted-foreground">
             drag the field · up/right = order, down/left = chaos · left↔right = pitch
           </p>
         </div>
@@ -504,13 +504,13 @@ export default function GendyPage() {
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base font-medium text-white/80 backdrop-blur-md transition-colors hover:bg-black/60"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/60"
       >
         Read the design notes
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 w-[min(92vw,440px)] rounded-2xl border border-white/12 bg-black/70 p-5 text-base text-white/85 backdrop-blur-md">
-          <p className="mb-2 font-serif text-xl text-white/95">A waveform that walks</p>
+        <div className="absolute right-4 top-20 z-30 w-[min(92vw,440px)] rounded-2xl border border-border bg-black/70 p-5 text-base text-foreground backdrop-blur-md">
+          <p className="mb-2 font-serif text-xl text-foreground">A waveform that walks</p>
           <p className="mb-2">
             The tone is not sampled or oscillated — it is <em>drawn</em>. A dozen
             breakpoints define one cycle; after every cycle each breakpoint&rsquo;s
@@ -519,14 +519,14 @@ export default function GendyPage() {
             steps &amp; tight barriers give a nearly periodic pitched tone; wide
             ones give Xenakis&rsquo;s gritty stochastic roar.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Three voices at different registers add body. The glowing filament is
             the actual current waveform; the fading afterimage field is the walk
             itself, made visible. Colour tracks chaos: cool violet when calm, hot
             amber when unleashed. Master limiter, gain ramped from zero, hard
             amplitude clamp — no strobe, slow luminance only.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: Iannis Xenakis, <em>GENDY3</em> (1991) &amp; <em>Formalized
             Music</em>; Peter Hoffmann&rsquo;s analysis of GENDYN; Nick Collins /
             Andrew Brown realtime implementations; the GendyJS Web Audio proof of
@@ -534,7 +534,7 @@ export default function GendyPage() {
             here before.
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="text-fuchsia-300 underline hover:text-fuchsia-200">
+            <Link href="/dream" className="text-violet-300 underline hover:text-violet-200">
               ← back to the lab
             </Link>
           </div>

@@ -72,21 +72,21 @@ function renderNotes(md: string) {
     }
     if (line.startsWith("# ")) {
       return (
-        <h1 key={i} className="text-2xl font-semibold text-white">
+        <h1 key={i} className="text-2xl font-semibold text-foreground">
           {line.slice(2)}
         </h1>
       );
     }
     if (line.startsWith("- ")) {
       return (
-        <li key={i} className="ml-5 list-disc text-base text-white/75">
+        <li key={i} className="ml-5 list-disc text-base text-muted-foreground">
           {line.slice(2)}
         </li>
       );
     }
     if (line.trim() === "") return <div key={i} className="h-2" />;
     return (
-      <p key={i} className="text-base leading-relaxed text-white/75">
+      <p key={i} className="text-base leading-relaxed text-muted-foreground">
         {line}
       </p>
     );
@@ -230,7 +230,7 @@ export default function StrangeCanonPage() {
 
   return (
     <main
-      className="relative min-h-screen overflow-hidden bg-[#040308] text-white"
+      className="relative min-h-screen overflow-hidden bg-[#040308] text-foreground"
       onPointerMove={phase === "live" ? onPointer : undefined}
     >
       <canvas
@@ -243,10 +243,10 @@ export default function StrangeCanonPage() {
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
           dream · 1076
         </p>
-        <h1 className="mt-2 text-2xl font-semibold text-white/95">
+        <h1 className="mt-2 text-2xl font-semibold text-foreground">
           Strange Canon
         </h1>
-        <p className="mt-3 max-w-xl text-base leading-relaxed text-white/75">
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground">
           A chaotic attractor is the{" "}
           <span className="text-violet-300">composer</span>: one deterministic,
           never-repeating trajectory becomes both the score and the light, read
@@ -260,11 +260,11 @@ export default function StrangeCanonPage() {
             <button
               type="button"
               onClick={() => void begin()}
-              className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-violet-500/30"
+              className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30"
             >
               Begin
             </button>
-            <p className="max-w-md text-center text-base text-white/55">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Plays and moves entirely on its own. Tilt your device — or move the
               pointer — to nudge the chaos constant and hear the canon bifurcate.
             </p>
@@ -277,31 +277,31 @@ export default function StrangeCanonPage() {
             </span>
 
             <div className="flex items-baseline gap-2">
-              <span className="font-mono text-[40px] font-light leading-none tabular-nums text-white/95">
+              <span className="font-mono text-[40px] font-light leading-none tabular-nums text-foreground">
                 {bValue.toFixed(3)}
               </span>
-              <span className="text-xl text-white/55">b</span>
+              <span className="text-xl text-muted-foreground">b</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="h-2 w-52 overflow-hidden rounded-full bg-white/10">
+              <div className="h-2 w-52 overflow-hidden rounded-full bg-muted">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-violet-300 to-amber-300 transition-[width] duration-200"
+                  className="h-full rounded-full bg-gradient-to-r from-violet-300 via-violet-300 to-violet-300 transition-[width] duration-200"
                   style={{ width: `${bPct}%` }}
                 />
               </div>
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 chaos constant · {B_MIN}–{B_MAX}
               </span>
             </div>
 
-            <p className="max-w-md text-center text-base text-white/75">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Four voices trail the same line at 0 / 1.5 / 3.0 / 4.5 s. Nudge{" "}
               <span className="text-violet-300">b</span> toward {B_MAX} and the
               chaos tightens toward a cycle.
             </p>
 
             {!usingGL && (
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 WebGL2 unavailable — showing the Canvas2D ribbon fallback. Audio
                 is still playing.
               </p>
@@ -309,13 +309,13 @@ export default function StrangeCanonPage() {
           </div>
         )}
 
-        {error && <p className="mt-4 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-4 text-base text-violet-300">{error}</p>}
       </section>
 
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/10 bg-black/70 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white/95"
+        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Read the design notes"}
       </button>
@@ -326,7 +326,7 @@ export default function StrangeCanonPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-6 min-h-[44px] rounded-full border border-white/10 bg-white/[0.06] px-4 py-2.5 text-base text-white/75 hover:text-white/95"
+              className="mb-6 min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
             >
               ← Close
             </button>

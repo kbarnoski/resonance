@@ -301,7 +301,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -313,7 +313,7 @@ export default function Page() {
 
       {supported === false && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This piece needs WebGL2, which this browser does not seem to
             provide. Try a recent desktop Chrome, Firefox or Safari.
           </p>
@@ -323,10 +323,10 @@ export default function Page() {
       {/* Title + Begin overlay */}
       {!started && supported !== false && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-6 p-8 text-center">
-          <h1 className="font-serif text-2xl text-white/95 sm:text-4xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-4xl">
             Moiré Drift
           </h1>
-          <p className="max-w-xl text-base text-white/75">
+          <p className="max-w-xl text-base text-muted-foreground">
             Two fine op-art gratings, nearly aligned. Slide and rotate one
             against the other until their interference beats out living tunnels,
             spirals and honeycombs — and hear the same beat-frequency in the
@@ -335,11 +335,11 @@ export default function Page() {
           <button
             type="button"
             onClick={handleBegin}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-white/40 bg-white/10 px-4 py-2.5 text-base text-white/95 backdrop-blur transition hover:bg-white/20"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition hover:bg-accent"
           >
             Begin
           </button>
-          <p className="max-w-md text-base text-white/55">
+          <p className="max-w-md text-base text-muted-foreground">
             Drag anywhere: left–right rotates the top layer, up–down detunes it.
             Drag faster to push the trance forward.
           </p>
@@ -348,13 +348,13 @@ export default function Page() {
 
       {/* Live HUD once playing */}
       {started && (
-        <div className="pointer-events-none absolute left-4 top-4 select-none text-base text-white/75">
+        <div className="pointer-events-none absolute left-4 top-4 select-none text-base text-muted-foreground">
           <div>
             beat{" "}
-            <span className="text-white/95">{beatHzHud.toFixed(2)} Hz</span>
-            <span className="text-white/55"> — seen &amp; heard</span>
+            <span className="text-foreground">{beatHzHud.toFixed(2)} Hz</span>
+            <span className="text-muted-foreground"> — seen &amp; heard</span>
           </div>
-          <div className="text-white/55">
+          <div className="text-muted-foreground">
             drag: ←→ rotate · ↕ detune · faster = deeper
           </div>
         </div>
@@ -364,21 +364,21 @@ export default function Page() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/25 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur transition hover:text-white/95"
+        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition hover:text-foreground"
       >
         {showNotes ? "Close" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 p-6 backdrop-blur">
-          <div className="max-w-lg space-y-4 text-base text-white/75">
-            <h2 className="font-serif text-xl text-white/95">
+          <div className="max-w-lg space-y-4 text-base text-muted-foreground">
+            <h2 className="font-serif text-xl text-foreground">
               What you are playing
             </h2>
             <p>
               Two (really three) high-frequency gratings are summed in a WebGL2
               shader in cortical{" "}
-              <span className="text-white/95">(log r, θ)</span> space. Overlaid
+              <span className="text-foreground">(log r, θ)</span> space. Overlaid
               gratings add, and two nearly-equal frequencies beat at their
               difference — that slow emergent envelope is a Klüver form constant:
               concentric rings become tunnels, radial rays become spokes,
@@ -390,7 +390,7 @@ export default function Page() {
               oscillator pair in the audio — so the pattern you see pulsing and
               the roughness you hear are the same number.
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Lineage: Bridget Riley&apos;s op-art (kinetic interference on the
               retina) and the Bressloff–Cowan cortical model of Klüver&apos;s
               form constants. Full notes in the folder README. No strobe; all
@@ -399,7 +399,7 @@ export default function Page() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="pointer-events-auto min-h-[44px] rounded-full border border-white/40 bg-white/10 px-4 py-2.5 text-base text-white/95"
+              className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground"
             >
               Back
             </button>

@@ -877,10 +877,10 @@ export default function HeliographPage() {
   const word = latest ? stateWord(latest) : "—";
   const wordColor =
     word === "STORM"
-      ? "text-rose-800"
+      ? "text-violet-800"
       : word === "UNSETTLED"
-        ? "text-amber-800"
-        : "text-emerald-800";
+        ? "text-violet-800"
+        : "text-violet-800";
   const stampStr = data
     ? new Date(data.stamp).toISOString().replace("T", " ").slice(0, 19) + " UTC"
     : "—";
@@ -906,18 +906,18 @@ export default function HeliographPage() {
           <span
             className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-sm font-medium ${
               data?.source === "live"
-                ? "border-emerald-700/40 bg-emerald-50 text-emerald-900"
+                ? "border-violet-700/40 bg-violet-50 text-violet-900"
                 : data?.source === "offline"
-                  ? "border-amber-700/40 bg-amber-50 text-amber-900"
+                  ? "border-violet-700/40 bg-violet-50 text-violet-900"
                   : "border-stone-400/40 bg-stone-100 text-stone-700"
             }`}
           >
             <span
               className={`h-2 w-2 rounded-full ${
                 data?.source === "live"
-                  ? "bg-emerald-600"
+                  ? "bg-violet-600"
                   : data?.source === "offline"
-                    ? "bg-amber-500"
+                    ? "bg-violet-500"
                     : "bg-stone-400"
               }`}
             />
@@ -938,12 +938,12 @@ export default function HeliographPage() {
             type="button"
             onClick={begin}
             disabled={started}
-            className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-stone-900 px-5 py-2.5 text-base font-medium text-amber-50 shadow-sm transition-colors hover:bg-stone-800 disabled:cursor-default disabled:bg-stone-500"
+            className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-stone-900 px-5 py-2.5 text-base font-medium text-violet-50 shadow-sm transition-colors hover:bg-stone-800 disabled:cursor-default disabled:bg-stone-500"
           >
             {started ? "◉ Listening to the Sun" : "Listen to the Sun"}
           </button>
           {audioNote && (
-            <span className="text-sm text-amber-800">{audioNote}</span>
+            <span className="text-sm text-violet-800">{audioNote}</span>
           )}
         </div>
       </header>

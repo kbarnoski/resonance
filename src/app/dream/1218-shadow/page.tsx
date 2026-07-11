@@ -696,12 +696,12 @@ export default function ShadowPage() {
 
   // ─── UI ───
   const btnGhost =
-    "min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10";
+    "min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent";
   const btnActive =
-    "min-h-[44px] border border-emerald-300/70 bg-emerald-300/15 px-4 py-2.5 font-mono text-base text-emerald-100 transition-colors";
+    "min-h-[44px] border border-violet-300/70 bg-violet-300/15 px-4 py-2.5 font-mono text-base text-violet-100 transition-colors";
 
   return (
-    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#0a1119] text-white">
+    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#0a1119] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full cursor-pointer"
@@ -711,13 +711,13 @@ export default function ShadowPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-white/95 sm:text-2xl">
+        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-foreground sm:text-2xl">
           shadow
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/75">
-          Play a <span className="text-emerald-200">single-note melody</span>; a
+        <p className="mt-2 max-w-2xl text-base text-muted-foreground">
+          Play a <span className="text-violet-200">single-note melody</span>; a
           voice-leading &ldquo;shadow&rdquo; voices it into{" "}
-          <span className="text-rose-300">four-part harmony</span> a beat behind you,
+          <span className="text-violet-300">four-part harmony</span> a beat behind you,
           choosing each chord by minimising how far the inner voices have to move.
         </p>
       </header>
@@ -725,22 +725,22 @@ export default function ShadowPage() {
       {/* readout */}
       {chordInfo && phase !== "idle" && (
         <div className="pointer-events-none absolute left-6 top-28 z-10 font-mono text-base sm:left-10">
-          <div className="text-2xl text-white/95">
+          <div className="text-2xl text-foreground">
             {chordInfo.symbol}
-            <span className="ml-2 text-base text-white/55">{chordInfo.roman}</span>
+            <span className="ml-2 text-base text-muted-foreground">{chordInfo.roman}</span>
           </div>
-          <div className="mt-1 text-base text-white/70">
+          <div className="mt-1 text-base text-muted-foreground">
             {KEY_NAMES[keyRoot]} {mode} · {style}
           </div>
           <div className="mt-1 text-base">
-            <span className="text-emerald-200">S {chordInfo.notes[0]}</span>
-            <span className="text-rose-300">
+            <span className="text-violet-200">S {chordInfo.notes[0]}</span>
+            <span className="text-violet-300">
               {" "}· A {chordInfo.notes[1]} · T {chordInfo.notes[2]} · B{" "}
               {chordInfo.notes[3]}
             </span>
           </div>
           {chordInfo.nonChord && (
-            <div className="mt-1 text-base text-white/55">colour tone over chord</div>
+            <div className="mt-1 text-base text-muted-foreground">colour tone over chord</div>
           )}
         </div>
       )}
@@ -748,8 +748,8 @@ export default function ShadowPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex max-w-md flex-col items-center gap-5 border border-white/15 bg-black/60 px-8 py-7 text-center backdrop-blur-sm">
-            <p className="text-base text-white/80">
+          <div className="flex max-w-md flex-col items-center gap-5 border border-border bg-black/60 px-8 py-7 text-center backdrop-blur-sm">
+            <p className="text-base text-foreground">
               A real-time four-part harmonizer. You are the soprano (jade); a rule-based
               shadow partner supplies alto, tenor and bass (rose) a beat later, always
               taking the smoothest voice-leading path. Play with the on-screen keys, your
@@ -757,35 +757,35 @@ export default function ShadowPage() {
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] min-w-[44px] bg-emerald-300 px-6 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-emerald-200"
+              className="min-h-[44px] min-w-[44px] bg-violet-300 px-6 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-violet-200"
             >
               Begin
             </button>
             <button
               onClick={handleDemo}
-              className="min-h-[44px] border border-white/30 px-5 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-5 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               Demo — play a melody
             </button>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Sound starts on this tap (audio is gesture-gated). Then press keys, or let
               the demo play a phrase for you.
             </p>
-            {audioError && <p className="text-base text-rose-300">{audioError}</p>}
+            {audioError && <p className="text-base text-violet-300">{audioError}</p>}
           </div>
         </div>
       )}
 
       {/* control dock */}
       <div className="absolute bottom-[calc(24vh+16px)] left-1/2 z-10 w-[min(96vw,860px)] -translate-x-1/2">
-        <div className="flex flex-wrap items-center justify-center gap-2 border border-white/12 bg-black/55 px-4 py-3 backdrop-blur-sm">
+        <div className="flex flex-wrap items-center justify-center gap-2 border border-border bg-black/55 px-4 py-3 backdrop-blur-sm">
           {/* key */}
-          <label className="font-mono text-base text-white/70">
+          <label className="font-mono text-base text-muted-foreground">
             key
             <select
               value={keyRoot}
               onChange={(e) => setKeyRoot(Number(e.target.value))}
-              className="ml-2 min-h-[44px] border border-white/25 bg-black/40 px-3 py-2.5 font-mono text-base text-white/90"
+              className="ml-2 min-h-[44px] border border-border bg-black/40 px-3 py-2.5 font-mono text-base text-foreground"
             >
               {KEY_NAMES.map((n, i) => (
                 <option key={n} value={i} className="bg-slate-900">
@@ -841,7 +841,7 @@ export default function ShadowPage() {
             </button>
           </div>
 
-          <span className="mx-1 hidden h-6 w-px bg-white/15 sm:block" />
+          <span className="mx-1 hidden h-6 w-px bg-muted sm:block" />
 
           {!demoPlaying ? (
             <button onClick={handleDemo} className={btnGhost}>
@@ -868,7 +868,7 @@ export default function ShadowPage() {
             </button>
           )}
         </div>
-        <p className="mt-2 text-center font-mono text-base text-white/55">
+        <p className="mt-2 text-center font-mono text-base text-muted-foreground">
           click keys · QWERTY (A W S E D F …) · {midiNote}
         </p>
       </div>
@@ -876,13 +876,13 @@ export default function ShadowPage() {
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] border border-white/20 bg-black/50 px-4 py-2.5 font-mono text-base text-white/80 backdrop-blur-sm transition-colors hover:bg-black/70"
+        className="absolute right-4 top-4 z-20 min-h-[44px] border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-foreground backdrop-blur-sm transition-colors hover:bg-black/70"
       >
         design notes
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 w-[min(92vw,480px)] border border-white/15 bg-black/85 p-5 text-base text-white/85 backdrop-blur-sm">
-          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-white/95">
+        <div className="absolute right-4 top-20 z-30 w-[min(92vw,480px)] border border-border bg-black/85 p-5 text-base text-foreground backdrop-blur-sm">
+          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-foreground">
             the shadow harmonizer
           </p>
           <p className="mb-2">
@@ -894,7 +894,7 @@ export default function ShadowPage() {
             chord, within comfortable ranges, keeping the bass on the root, avoiding
             doubled leading tones and parallel perfect fifths / octaves.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             The harmonized alto, tenor and bass sound a musical shadow-delay (an eighth or
             quarter note) behind your soprano, so the choir blooms under your hand. The
             ribbon draws all four voices gliding: jade soprano on top, rose inner voices
@@ -902,14 +902,14 @@ export default function ShadowPage() {
             (Chris Wilson&rsquo;s &ldquo;A Tale of Two Clocks&rdquo;) drives the Demo
             melody onto the audio clock.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: Bach chorale voice-leading · Fux, <em>Gradus ad Parnassum</em> · Dmitri
             Tymoczko, <em>A Geometry of Music</em> · Chris Wilson, <em>A Tale of Two
             Clocks</em> · Chowning FM synthesis. No strobe; scroll drifts well under 3 Hz;
             note-flashes are smooth exponential ramps; respects prefers-reduced-motion.
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="font-mono text-white/90 underline hover:text-white">
+            <Link href="/dream" className="font-mono text-foreground underline hover:text-foreground">
               &larr; back to the lab
             </Link>
           </div>

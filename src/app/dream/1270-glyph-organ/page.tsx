@@ -547,7 +547,7 @@ export default function GlyphOrgan() {
     "min-h-[44px] px-4 py-2.5 rounded-lg font-mono text-base transition-colors";
 
   return (
-    <main className="relative min-h-screen w-full bg-[#060814] text-white/95">
+    <main className="relative min-h-screen w-full bg-[#060814] text-foreground">
       {/* The terminal — the entire art surface is a monospace glyph grid. */}
       <div className="absolute inset-0">
         <canvas ref={canvasRef} className="h-full w-full" aria-hidden />
@@ -555,12 +555,12 @@ export default function GlyphOrgan() {
 
       {/* Header / title chrome */}
       <div className="pointer-events-none relative z-10 flex flex-col gap-1 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Glyph Organ
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           The screen is a living{" "}
-          <span className="font-mono text-cyan-200/90">terminal</span> you play.
+          <span className="font-mono text-violet-200/90">terminal</span> you play.
           Type on the home row to sound a just-intonation organ; each key writes
           a glyph that spreads, ages, and answers you a beat later.
         </p>
@@ -571,14 +571,14 @@ export default function GlyphOrgan() {
         {!begun ? (
           <button
             onClick={begin}
-            className={`${btn} bg-cyan-400/90 text-[#04121a] hover:bg-cyan-300`}
+            className={`${btn} bg-violet-400/90 text-[#04121a] hover:bg-violet-300`}
           >
             ▶ Begin
           </button>
         ) : (
           <button
             onClick={stop}
-            className={`${btn} bg-rose-500/85 text-white hover:bg-rose-400`}
+            className={`${btn} bg-violet-500/85 text-foreground hover:bg-violet-400`}
           >
             ■ Stop
           </button>
@@ -588,20 +588,20 @@ export default function GlyphOrgan() {
           disabled={!begun}
           className={`${btn} border ${
             micRef.current.running
-              ? "border-cyan-300/70 bg-cyan-400/15 text-cyan-100"
-              : "border-white/20 bg-white/[0.04] text-white/75 hover:bg-white/[0.08]"
+              ? "border-violet-300/70 bg-violet-400/15 text-violet-100"
+              : "border-border bg-muted text-muted-foreground hover:bg-accent"
           } disabled:opacity-40`}
         >
           {micRef.current.running ? "● mic: singing in" : "○ sing / hum (mic)"}
         </button>
-        <span className="font-mono text-base text-white/55">
+        <span className="font-mono text-base text-muted-foreground">
           keys: z x c v b n m · a s d f g h j · q w e r t y u
         </span>
       </div>
 
       {/* Mic errors */}
       {micWanted && mic.error ? (
-        <p className="absolute left-5 top-44 z-20 max-w-md font-mono text-base text-rose-300 sm:left-7">
+        <p className="absolute left-5 top-44 z-20 max-w-md font-mono text-base text-violet-300 sm:left-7">
           mic: {mic.error} — keyboard still plays fully.
         </p>
       ) : null}
@@ -609,19 +609,19 @@ export default function GlyphOrgan() {
       {/* Corner "Design notes" affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-16 right-4 z-30 min-h-[44px] rounded-lg border border-white/15 bg-black/60 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur hover:bg-black/80"
+        className="absolute bottom-16 right-4 z-30 min-h-[44px] rounded-lg border border-border bg-black/60 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur hover:bg-black/80"
       >
         {showNotes ? "× close" : "Design notes"}
       </button>
 
       {showNotes ? (
-        <div className="absolute bottom-32 right-4 z-30 max-w-sm rounded-xl border border-white/15 bg-[#070a18]/95 p-5 font-mono text-base text-white/75 backdrop-blur">
-          <p className="mb-2 text-white/95">A terminal you play.</p>
+        <div className="absolute bottom-32 right-4 z-30 max-w-sm rounded-xl border border-border bg-[#070a18]/95 p-5 font-mono text-base text-muted-foreground backdrop-blur">
+          <p className="mb-2 text-foreground">A terminal you play.</p>
           <p className="mb-2">
-            The grid is an <span className="text-cyan-200">excitable medium</span>
+            The grid is an <span className="text-violet-200">excitable medium</span>
             : each frame every cell diffuses into its neighbors and decays down
             the ramp{" "}
-            <span className="text-cyan-200">{" .:-=+*#%@"}</span>, so glyphs
+            <span className="text-violet-200">{" .:-=+*#%@"}</span>, so glyphs
             bloom outward and age. The field keeps composing after you stop.
           </p>
           <p className="mb-2">
@@ -629,7 +629,7 @@ export default function GlyphOrgan() {
             Every note writes a glyph AND sounds an FM voice — you see what you
             hear. A beat later the field replies with a transposed echo.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             Ref: Ikeda · <i>datamatics</i> · Cage · <i>Empty Words</i> · teletype
             ASCII.
           </p>
@@ -637,7 +637,7 @@ export default function GlyphOrgan() {
       ) : null}
 
       {stopped && !begun ? (
-        <p className="absolute bottom-16 left-4 z-20 font-mono text-base text-white/55 sm:left-7">
+        <p className="absolute bottom-16 left-4 z-20 font-mono text-base text-muted-foreground sm:left-7">
           stopped — press Begin to play again.
         </p>
       ) : null}

@@ -392,7 +392,7 @@ export default function Murmuration() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#070812] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#070812] text-foreground">
       <canvas
         ref={canvasRef}
         onPointerMove={onPointer}
@@ -404,15 +404,15 @@ export default function Murmuration() {
       {started && (
         <div className="pointer-events-none absolute left-4 top-4 flex flex-wrap gap-2 font-mono text-xs">
           <span
-            className="rounded-full px-2.5 py-1 text-white/95"
+            className="rounded-full px-2.5 py-1 text-foreground"
             style={{ background: "rgba(255,255,255,0.08)", border: `1px solid ${selfColor}` }}
           >
             you
           </span>
-          <span className="rounded-full bg-white/5 px-2.5 py-1 text-white/75">
+          <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
             {hands} {hands === 1 ? "hand" : "hands"}
           </span>
-          <span className="rounded-full bg-white/5 px-2.5 py-1 text-white/75">
+          <span className="rounded-full bg-muted px-2.5 py-1 text-muted-foreground">
             {GHOSTS} ghosts
           </span>
         </div>
@@ -420,7 +420,7 @@ export default function Murmuration() {
 
       {/* hint */}
       {started && (
-        <p className="pointer-events-none absolute bottom-4 left-4 font-mono text-xs text-white/75">
+        <p className="pointer-events-none absolute bottom-4 left-4 font-mono text-xs text-muted-foreground">
           Move to steer the flock · Open a second tab to add a hand.
         </p>
       )}
@@ -428,7 +428,7 @@ export default function Murmuration() {
       {/* design notes link */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 min-h-[36px] rounded-md bg-white/5 px-3 py-1.5 font-mono text-xs text-white/75 hover:text-white/95"
+        className="absolute right-4 top-4 min-h-[36px] rounded-md bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -437,21 +437,21 @@ export default function Murmuration() {
       {!started && (
         <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-[#070812]/80 via-[#0a0b18]/70 to-[#070812]/90 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl leading-tight text-white sm:text-4xl">
+            <h1 className="font-serif text-3xl leading-tight text-foreground sm:text-4xl">
               Murmuration
             </h1>
-            <p className="mx-auto mt-4 max-w-lg text-base text-white/80 sm:text-lg">
+            <p className="mx-auto mt-4 max-w-lg text-base text-foreground sm:text-lg">
               A flock of 180 voice-birds that sing when they cluster. You are a
               glowing attractor pulling the swarm — several hands together
               sculpt one emergent piece of music.
             </p>
             <button
               onClick={() => setStarted(true)}
-              className="mt-7 min-h-[44px] rounded-lg bg-white px-4 py-2.5 font-mono text-sm font-medium text-[#070812] hover:bg-white/90"
+              className="mt-7 min-h-[44px] rounded-lg bg-card px-4 py-2.5 font-mono text-sm font-medium text-[#070812] hover:bg-accent"
             >
               Enter the flock
             </button>
-            <p className="mt-4 font-mono text-xs text-white/75">
+            <p className="mt-4 font-mono text-xs text-muted-foreground">
               Open a second tab to add a hand.
             </p>
           </div>
@@ -461,23 +461,23 @@ export default function Murmuration() {
       {/* inline design notes */}
       {showNotes && (
         <div className="absolute inset-0 z-10 overflow-y-auto bg-[#070812]/95 px-6 py-16">
-          <div className="mx-auto max-w-2xl space-y-4 text-sm leading-relaxed text-white/85">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="mx-auto max-w-2xl space-y-4 text-sm leading-relaxed text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p>
-              <span className="font-mono text-white/95">The question:</span> what
+              <span className="font-mono text-foreground">The question:</span> what
               if the ensemble were a murmuration — a flock that sings when it
               clusters — and each person is an attractor pulling the swarm, so a
               room sculpts one emergent piece together?
             </p>
             <p>
-              <span className="font-mono text-white/95">Flock:</span> 180 boids
+              <span className="font-mono text-foreground">Flock:</span> 180 boids
               (Reynolds 1987 — separation, alignment, cohesion) integrated
               locally on every client from a fixed seed, steered by the union of
               all attractors. Ghost attractors drift so it breathes solo; each
               real peer becomes another glowing hand.
             </p>
             <p>
-              <span className="font-mono text-white/95">Sound clock:</span> the
+              <span className="font-mono text-foreground">Sound clock:</span> the
               motion is continuous but the voice is quantised to a shared beat
               grid. A 40ms scheduler commits cluster events one beat ahead
               (lookahead-commit, after ReaLJam arXiv:2502.21267 and StreamMUSE
@@ -485,20 +485,20 @@ export default function Murmuration() {
               tab rings the same notes in phase.
             </p>
             <p>
-              <span className="font-mono text-white/95">Voice:</span> granular /
+              <span className="font-mono text-foreground">Voice:</span> granular /
               bowed-glass pings — a short glassy harmonic burst per cluster,
               pitch from its vertical position on a minor-pentatonic set,
               brightness from flock speed. Warm and transient, never a drone.
             </p>
             <p>
-              <span className="font-mono text-white/95">Multiplayer:</span>{" "}
+              <span className="font-mono text-foreground">Multiplayer:</span>{" "}
               BroadcastChannel is same-origin — open a second tab or device on
               the same origin to add a hand. Cross-device WebRTC is the next
               step. Full write-up in the folder README.
             </p>
             <Link
               href="/dream"
-              className="inline-block font-mono text-xs text-white/75 hover:text-white/95"
+              className="inline-block font-mono text-xs text-muted-foreground hover:text-foreground"
             >
               ← back to the lab
             </Link>

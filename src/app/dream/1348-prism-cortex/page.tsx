@@ -334,7 +334,7 @@ export default function PrismCortexPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -344,7 +344,7 @@ export default function PrismCortexPage() {
       {/* Corner: design notes overlay control */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute right-4 top-4 z-30 min-h-[44px] rounded-md border border-cyan-300/40 bg-black/40 px-4 py-2.5 font-mono text-sm text-cyan-100/90 backdrop-blur hover:bg-black/60"
+        className="absolute right-4 top-4 z-30 min-h-[44px] rounded-md border border-violet-300/40 bg-black/40 px-4 py-2.5 font-mono text-sm text-violet-100/90 backdrop-blur hover:bg-black/60"
       >
         Read the design notes
       </button>
@@ -352,24 +352,24 @@ export default function PrismCortexPage() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-mono text-2xl font-semibold tracking-tight text-white/95 md:text-4xl">
+          <h1 className="font-mono text-2xl font-semibold tracking-tight text-foreground md:text-4xl">
             Prism Cortex
           </h1>
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             A DMT-breakthrough field as a living{" "}
-            <span className="text-cyan-200">Gray-Scott reaction-diffusion</span>{" "}
+            <span className="text-violet-200">Gray-Scott reaction-diffusion</span>{" "}
             chemistry — run as a{" "}
             <span className="text-violet-200">WebGPU compute shader</span>, warped
             through the cortical{" "}
-            <span className="text-fuchsia-200">form-constant map</span>, and{" "}
+            <span className="text-violet-200">form-constant map</span>, and{" "}
             <em>played</em> on a MIDI keyboard.
           </p>
           {phase === "running" && (
-            <p className="mt-2 font-mono text-sm text-white/75">
+            <p className="mt-2 font-mono text-sm text-muted-foreground">
               input: {midiLabel} · voices held:{" "}
-              <span className="text-cyan-200">{heldCount}</span>
+              <span className="text-violet-200">{heldCount}</span>
               {reducedMotion && (
-                <span className="text-white/75"> · reduced-motion honoured</span>
+                <span className="text-muted-foreground"> · reduced-motion honoured</span>
               )}
             </p>
           )}
@@ -385,10 +385,10 @@ export default function PrismCortexPage() {
               >
                 Begin · sow the chemistry
               </button>
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 Sound only starts on this click (browsers block autoplay). Then
-                play the <span className="font-mono text-cyan-200">a–l</span> keys
-                (black keys on <span className="font-mono text-cyan-200">w e t y u o</span>),
+                play the <span className="font-mono text-violet-200">a–l</span> keys
+                (black keys on <span className="font-mono text-violet-200">w e t y u o</span>),
                 or plug in a MIDI keyboard. Idle for a few seconds and it plays
                 itself.
               </p>
@@ -399,19 +399,19 @@ export default function PrismCortexPage() {
           {phase === "unsupported" && <WebGPUNotice detail={statusMsg} />}
 
           {phase === "error" && (
-            <div className="rounded-lg border border-rose-300/40 bg-rose-950/40 p-4">
-              <p className="text-base text-rose-100">
+            <div className="rounded-lg border border-violet-300/40 bg-violet-950/40 p-4">
+              <p className="text-base text-violet-100">
                 Something went wrong starting the GPU pipeline.
               </p>
               {statusMsg && (
-                <p className="mt-1 font-mono text-sm text-rose-200/90">{statusMsg}</p>
+                <p className="mt-1 font-mono text-sm text-violet-200/90">{statusMsg}</p>
               )}
               <button
                 onClick={() => {
                   setPhase("intro");
                   setStatusMsg(null);
                 }}
-                className="mt-3 min-h-[44px] rounded-md border border-rose-300/40 bg-rose-500/20 px-4 py-2.5 text-base text-rose-50 hover:bg-rose-500/30"
+                className="mt-3 min-h-[44px] rounded-md border border-violet-300/40 bg-violet-500/20 px-4 py-2.5 text-base text-violet-50 hover:bg-violet-500/30"
               >
                 Try again
               </button>
@@ -426,7 +426,7 @@ export default function PrismCortexPage() {
         {/* Footer: how to play */}
         {phase === "running" && (
           <footer className="pointer-events-auto max-w-2xl">
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Each note sows a Gaussian seed of chemical B into the field at an
               angle set by its pitch class; velocity sets the bloom size. Held
               keys sustain both the worm-source and a detuned drone partial. The
@@ -444,17 +444,17 @@ export default function PrismCortexPage() {
 
 function WebGPUNotice({ detail }: { detail: string | null }) {
   return (
-    <div className="rounded-lg border border-amber-300/40 bg-amber-950/40 p-4">
-      <p className="text-base text-amber-50">
+    <div className="rounded-lg border border-violet-300/40 bg-violet-950/40 p-4">
+      <p className="text-base text-violet-50">
         This piece needs a <span className="font-semibold">WebGPU</span> browser.
       </p>
-      <p className="mt-1 text-base text-white/75">
+      <p className="mt-1 text-base text-muted-foreground">
         Try Chrome 113+, Edge 113+, or Safari 18+ (desktop or a recent iOS/iPadOS).
         WebGPU is the whole point here — the visuals are a GPU compute-shader
         chemistry, so there is nothing to fall back to.
       </p>
       {detail && (
-        <p className="mt-2 font-mono text-sm text-amber-200/90">detail: {detail}</p>
+        <p className="mt-2 font-mono text-sm text-violet-200/90">detail: {detail}</p>
       )}
     </div>
   );
@@ -470,42 +470,42 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-2xl rounded-xl border border-white/15 bg-[#0a0b12] p-6 md:p-8"
+        className="relative w-full max-w-2xl rounded-xl border border-border bg-[#0a0b12] p-6 md:p-8"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 min-h-[44px] rounded-md border border-white/20 bg-white/10 px-4 py-2.5 text-base text-white/95 hover:bg-white/20"
+          className="absolute right-4 top-4 min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
         >
           Close
         </button>
-        <h2 className="font-mono text-2xl font-semibold text-white/95">
+        <h2 className="font-mono text-2xl font-semibold text-foreground">
           Prism Cortex — design notes
         </h2>
 
-        <div className="mt-4 space-y-4 text-base leading-relaxed text-white/85">
+        <div className="mt-4 space-y-4 text-base leading-relaxed text-foreground">
           <p>
-            <span className="font-semibold text-white/95">The question.</span>{" "}
+            <span className="font-semibold text-foreground">The question.</span>{" "}
             What if a DMT-breakthrough field were a living Gray-Scott
             reaction-diffusion chemistry running as a WebGPU <em>compute</em>{" "}
             shader, warped through the cortical form-constant map, and you played
             it on a MIDI keyboard?
           </p>
           <p>
-            <span className="font-semibold text-white/95">The substrate.</span>{" "}
+            <span className="font-semibold text-foreground">The substrate.</span>{" "}
             This is the lab&apos;s first WGSL compute-shader piece. Two chemicals
             A/B live in a pair of{" "}
-            <span className="font-mono text-cyan-200">rgba16float</span> storage
+            <span className="font-mono text-violet-200">rgba16float</span> storage
             textures, ping-ponged. A compute shader steps the Gray-Scott
             equations 3–8 iterations per frame via{" "}
-            <span className="font-mono text-cyan-200">dispatchWorkgroups</span> — a
+            <span className="font-mono text-violet-200">dispatchWorkgroups</span> — a
             genuine GPU cellular chemistry in the worm/maze regime, with a slow
             LFO on feed/kill for &ldquo;breathing.&rdquo;
           </p>
           <p>
-            <span className="font-semibold text-white/95">The warp.</span> A render
+            <span className="font-semibold text-foreground">The warp.</span> A render
             pass samples the field through an inverse log-polar
-            (<span className="font-mono text-cyan-200">log r</span>, θ) map — the
+            (<span className="font-mono text-violet-200">log r</span>, θ) map — the
             Bressloff–Cowan retino-cortical projection behind Klüver&apos;s form
             constants. Radial structure becomes tunnels, angular structure becomes
             funnels, and the diagonal maze becomes spirals and honeycomb lattices.
@@ -513,35 +513,35 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             the neon jewel.
           </p>
           <p>
-            <span className="font-semibold text-white/95">Playing it.</span> Web
+            <span className="font-semibold text-foreground">Playing it.</span> Web
             MIDI note-ons inject Gaussian seeds of chemical B into the field at an
             angle set by pitch class (velocity → bloom size); note-off releases the
             seed and its held drone partial. A QWERTY fallback
-            (<span className="font-mono text-cyan-200">a–l</span> white keys,{" "}
-            <span className="font-mono text-cyan-200">w e t y u o</span> black keys)
+            (<span className="font-mono text-violet-200">a–l</span> white keys,{" "}
+            <span className="font-mono text-violet-200">w e t y u o</span> black keys)
             is always live, and after a few idle seconds the field auto-seeds a
             gentle pentatonic loop so it&apos;s alive on a phone.
           </p>
           <p>
-            <span className="font-semibold text-white/95">Sound.</span> An additive
+            <span className="font-semibold text-foreground">Sound.</span> An additive
             pad-drone: a just-intonation drone bed, a detuned partial per held
             note, and a slow Shepard shimmer, summed into a void-reverb bus and
             hard-limited by a compressor at master gain ≤ 0.25 with an exponential
             fade-in.
           </p>
           <p>
-            <span className="font-semibold text-white/95">Safety.</span> No strobe;
+            <span className="font-semibold text-foreground">Safety.</span> No strobe;
             any global luminance oscillation stays ≤ 3 Hz (the breath LFO is ~0.05
             Hz).{" "}
-            <span className="font-mono text-cyan-200">prefers-reduced-motion</span>{" "}
+            <span className="font-mono text-violet-200">prefers-reduced-motion</span>{" "}
             slows the chemistry and softens contrast. If WebGPU is missing the page
             shows a readable notice instead of a blank screen.
           </p>
           <p>
-            <span className="font-semibold text-white/95">Reference.</span> The
+            <span className="font-semibold text-foreground">Reference.</span> The
             iridescent GPU-field aesthetic follows{" "}
-            <span className="text-fuchsia-200">Marpi</span> (marpi.studio) and{" "}
-            <span className="text-fuchsia-200">Android Jones</span> — both living
+            <span className="text-violet-200">Marpi</span> (marpi.studio) and{" "}
+            <span className="text-violet-200">Android Jones</span> — both living
             artists working in luminous, jeweled generative fields.
           </p>
         </div>

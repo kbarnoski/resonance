@@ -293,7 +293,7 @@ export default function BreathBloomPage() {
         : "○ idle";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#f7f0e2] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#f7f0e2] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -303,10 +303,10 @@ export default function BreathBloomPage() {
       {/* product bar */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-3 p-4 sm:p-6">
         <div className="pointer-events-auto max-w-2xl rounded-2xl border border-black/10 bg-black/70 p-4 shadow-lg backdrop-blur-md">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Breath Bloom
           </h1>
-          <p className="mt-1 text-base text-white/85">
+          <p className="mt-1 text-base text-foreground">
             Each slow exhale unfurls one more segment of a living plant and
             rings one more chime — a long, calm session grows a whole blooming
             form and a whole chord out of nothing but your breathing.
@@ -316,41 +316,41 @@ export default function BreathBloomPage() {
             {phase === "idle" ? (
               <button
                 onClick={startBreathing}
-                className="min-h-[44px] rounded-full bg-emerald-400/90 px-4 py-2.5 text-base font-medium text-emerald-950 transition-colors hover:bg-emerald-300"
+                className="min-h-[44px] rounded-full bg-violet-400/90 px-4 py-2.5 text-base font-medium text-violet-950 transition-colors hover:bg-violet-300"
               >
                 Start (breathe)
               </button>
             ) : (
               <button
                 onClick={stopAll}
-                className="min-h-[44px] rounded-full bg-white/15 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-white/25"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
               >
                 Stop
               </button>
             )}
             <button
               onClick={simulateBreath}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/20"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               Simulate breath
             </button>
             <button
               onClick={resetGardenState}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/20"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               Reset garden
             </button>
           </div>
 
           {micError && (
-            <p className="mt-3 text-base text-rose-300">{micError}</p>
+            <p className="mt-3 text-base text-violet-300">{micError}</p>
           )}
 
           {/* live readout */}
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-white/75">
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-muted-foreground">
             <span>
               drive{" "}
-              <span className="text-emerald-300/95">
+              <span className="text-violet-300/95">
                 {readout.drive.toFixed(2)}
               </span>
             </span>
@@ -359,23 +359,23 @@ export default function BreathBloomPage() {
               <span className="text-violet-300">
                 {readout.flatness.toFixed(2)}
               </span>{" "}
-              <span className="text-white/60">({flatnessLabel})</span>
+              <span className="text-muted-foreground">({flatnessLabel})</span>
             </span>
             <span>
               breaths{" "}
-              <span className="text-amber-300/95">{readout.breaths}</span>
+              <span className="text-violet-300/95">{readout.breaths}</span>
             </span>
             <span>
               segments{" "}
-              <span className="text-amber-300/95">{readout.segments}</span>
+              <span className="text-violet-300/95">{readout.segments}</span>
             </span>
             <span
               className={
                 readout.source === "mic"
-                  ? "text-emerald-300/95"
+                  ? "text-violet-300/95"
                   : readout.source === "breeze"
                     ? "text-violet-300"
-                    : "text-white/60"
+                    : "text-muted-foreground"
               }
             >
               {sourceDot}
@@ -387,8 +387,8 @@ export default function BreathBloomPage() {
       {/* design-notes corner panel */}
       <div className="pointer-events-none absolute bottom-4 right-4 z-10 flex flex-col items-end gap-2">
         {showNotes && (
-          <div className="pointer-events-auto max-w-sm rounded-2xl border border-black/10 bg-black/80 p-4 text-base text-white/85 shadow-lg backdrop-blur-md">
-            <p className="mb-2 text-white/95">
+          <div className="pointer-events-auto max-w-sm rounded-2xl border border-black/10 bg-black/80 p-4 text-base text-foreground shadow-lg backdrop-blur-md">
+            <p className="mb-2 text-foreground">
               A broadband exhale opens the gate; a hum, whistle, or sung note at
               the same loudness is heavily attenuated by the{" "}
               <span className="text-violet-300">spectral-flatness</span>{" "}
@@ -397,13 +397,13 @@ export default function BreathBloomPage() {
               chord and the garden accumulate together and drift over a long
               session.
             </p>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               With no mic (or on denial) a seeded breeze breathes for you.
               Analysis only — the mic never reaches the speakers.
             </p>
             <Link
               href="/dream"
-              className="mt-3 inline-block text-emerald-300/95 underline"
+              className="mt-3 inline-block text-violet-300/95 underline"
             >
               back to gallery
             </Link>
@@ -411,7 +411,7 @@ export default function BreathBloomPage() {
         )}
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto min-h-[44px] rounded-full border border-black/10 bg-black/70 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg backdrop-blur-md transition-colors hover:bg-black/80"
+          className="pointer-events-auto min-h-[44px] rounded-full border border-black/10 bg-black/70 px-4 py-2.5 text-base font-medium text-foreground shadow-lg backdrop-blur-md transition-colors hover:bg-black/80"
         >
           {showNotes ? "Hide notes" : "Design notes"}
         </button>

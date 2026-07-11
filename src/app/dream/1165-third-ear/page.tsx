@@ -228,16 +228,16 @@ export default function ThirdEarPage() {
   const carrierHz = readout?.carrierHz ?? 1200 + (2700 - 1200) * carrier;
 
   return (
-    <main className="min-h-dvh w-full bg-[#050507] text-white">
+    <main className="min-h-dvh w-full bg-[#050507] text-foreground">
       <div className="mx-auto flex min-h-dvh max-w-xl flex-col gap-6 px-5 py-10">
         <header className="flex flex-col gap-2">
-          <p className="text-xs uppercase tracking-[0.22em] text-white/55">
+          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
             dream · 1165
           </p>
-          <h1 className="font-serif text-3xl text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
             The Third Ear
           </h1>
-          <p className="text-base text-white/80">
+          <p className="text-base text-foreground">
             What if the instrument were inside your own ear? The melody you hear
             is one your cochlea makes — a phantom{" "}
             <span className="text-violet-300">difference tone</span> that no
@@ -246,19 +246,19 @@ export default function ThirdEarPage() {
         </header>
 
         {uiPhase === "unsupported" ? (
-          <div className="rounded-xl border border-rose-400/30 bg-rose-500/10 p-4">
-            <p className="text-base text-rose-200">
+          <div className="rounded-xl border border-violet-400/30 bg-violet-500/10 p-4">
+            <p className="text-base text-violet-200">
               Web Audio isn&rsquo;t available in this browser, so this piece
               can&rsquo;t make sound. Try a recent Chrome, Safari, or Firefox.
             </p>
           </div>
         ) : (
           <>
-            <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-              <p className="text-base font-medium text-white/95">
+            <div className="rounded-xl border border-border bg-muted p-4">
+              <p className="text-base font-medium text-foreground">
                 🎧 Put on headphones. Close your eyes. Listen for the low tune.
               </p>
-              <p className="mt-1.5 text-base text-white/75">
+              <p className="mt-1.5 text-base text-muted-foreground">
                 Two high tones sound together; only their{" "}
                 <span className="text-violet-300">gap</span> carries the melody —
                 and that gap is generated inside <em>you</em>, not the speakers.
@@ -266,19 +266,19 @@ export default function ThirdEarPage() {
             </div>
 
             {/* instructional diagram */}
-            <div className="rounded-xl border border-white/10 bg-black/40 p-3">
+            <div className="rounded-xl border border-border bg-black/40 p-3">
               <canvas
                 ref={canvasRef}
                 className="h-[280px] w-full"
                 aria-label="Diagram: two played primary tones (high) and a phantom difference tone (low)."
               />
-              <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-1 text-xs text-white/55">
+              <div className="mt-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-1 text-xs text-muted-foreground">
                 <span>
-                  <span className="text-sky-300">● f₁, f₂</span> played ·{" "}
+                  <span className="text-violet-300">● f₁, f₂</span> played ·{" "}
                   <span className="text-violet-300">◯ phantom</span> = in your ear
                 </span>
                 {running && readout && (
-                  <span className="text-white/55">
+                  <span className="text-muted-foreground">
                     phase: {PHASE_LABEL[readout.phase]}
                   </span>
                 )}
@@ -298,7 +298,7 @@ export default function ThirdEarPage() {
               <button
                 type="button"
                 onClick={handleStop}
-                className="min-h-[44px] w-full rounded-xl border border-white/15 bg-white/[0.06] px-4 py-3 text-lg font-medium text-white/90 transition-colors hover:bg-white/[0.12]"
+                className="min-h-[44px] w-full rounded-xl border border-border bg-muted px-4 py-3 text-lg font-medium text-foreground transition-colors hover:bg-accent"
               >
                 Stop
               </button>
@@ -307,10 +307,10 @@ export default function ThirdEarPage() {
             {/* live expressive control */}
             <div className="flex flex-col gap-2">
               <div className="flex items-baseline justify-between">
-                <label htmlFor="carrier" className="text-base text-white/80">
+                <label htmlFor="carrier" className="text-base text-foreground">
                   Carrier height
                 </label>
-                <span className="text-sm tabular-nums text-white/55">
+                <span className="text-sm tabular-nums text-muted-foreground">
                   {Math.round(carrierHz)} Hz
                 </span>
               </div>
@@ -324,7 +324,7 @@ export default function ThirdEarPage() {
                 onChange={(e) => handleCarrier(Number(e.target.value))}
                 className="h-11 w-full cursor-pointer accent-violet-400"
               />
-              <p className="text-sm text-white/55">
+              <p className="text-sm text-muted-foreground">
                 Sweep it: the played pitch climbs, but the phantom melody stays
                 put. Find the height where your ear-tone rings loudest.
               </p>
@@ -338,7 +338,7 @@ export default function ThirdEarPage() {
               className={`min-h-[44px] w-full rounded-xl border px-4 py-2.5 text-base font-medium transition-colors disabled:opacity-40 ${
                 phantom
                   ? "border-violet-400/30 bg-violet-500/15 text-violet-200 hover:bg-violet-500/25"
-                  : "border-white/15 bg-white/[0.04] text-white/80 hover:bg-white/[0.1]"
+                  : "border-border bg-muted text-foreground hover:bg-accent"
               }`}
             >
               {phantom
@@ -346,14 +346,14 @@ export default function ThirdEarPage() {
                 : "One tone muted — the phantom is gone. Turn both back on"}
             </button>
 
-            <p className="text-sm text-white/55">
+            <p className="text-sm text-muted-foreground">
               Best with headphones. Start at low volume and raise gently — these
               are sustained tones. Stop any time.
             </p>
           </>
         )}
 
-        <footer className="mt-auto border-t border-white/10 pt-4 text-xs text-white/55">
+        <footer className="mt-auto border-t border-border pt-4 text-xs text-muted-foreground">
           After Tartini&rsquo;s <em>il terzo suono</em> (1714) and Maryanne
           Amacher&rsquo;s <em>Making the Third Ear</em> (1999). The composition
           lives in the difference tone.

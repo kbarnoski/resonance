@@ -120,7 +120,7 @@ export default function BoundlessBreathPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#05030f] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#05030f] text-foreground">
       {/* Full-screen three.js canvas mounts here, behind the UI. */}
       <div ref={containerRef} className="absolute inset-0" aria-hidden />
 
@@ -130,11 +130,11 @@ export default function BoundlessBreathPage() {
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-2xl bg-black/45 p-8 backdrop-blur-md ring-1 ring-white/10">
-            <h1 className="font-serif text-3xl tracking-tight text-white sm:text-4xl">
+          <div className="max-w-xl rounded-2xl bg-black/45 p-8 backdrop-blur-md ring-1 ring-border">
+            <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
               Boundless Breath
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               Breathe yourself into an endless ascent. Your inhale gathers a vast
               field of stars inward toward a luminous core and lifts a
               Shepard–Risset glissando upward; your exhale releases them to a
@@ -145,16 +145,16 @@ export default function BoundlessBreathPage() {
               type="button"
               onClick={begin}
               disabled={phase === "starting"}
-              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
             >
               {phase === "starting" ? "Listening…" : "Begin breathing · allow mic"}
             </button>
 
             {errorMsg && (
-              <p className="mt-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mt-4 text-base text-violet-300">{errorMsg}</p>
             )}
 
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               Use headphones if you can. We listen only to drive your breath
               envelope — no audio is recorded or sent anywhere. Without a mic it
               auto-paces a calm ~5.5 breaths-per-minute cycle.
@@ -166,12 +166,12 @@ export default function BoundlessBreathPage() {
       {/* ── Running HUD ────────────────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-white/95">Boundless Breath</h1>
+          <h1 className="font-serif text-2xl text-foreground">Boundless Breath</h1>
           {mode === "mic" && (
-            <p className="mt-1 text-base text-emerald-300/95">● breath</p>
+            <p className="mt-1 text-base text-violet-300/95">● breath</p>
           )}
           {mode === "auto" && (
-            <p className="mt-1 text-base text-amber-300/95">
+            <p className="mt-1 text-base text-violet-300/95">
               ○ auto-breath (no mic)
             </p>
           )}
@@ -182,23 +182,23 @@ export default function BoundlessBreathPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/45 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur-md transition hover:text-white"
+        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/45 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/70 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/85">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The question:</span> what if the felt
+              <span className="text-foreground">The question:</span> what if the felt
               sense of rising forever — auditory and visual vection together —
               were something you <em>play</em> with your breath, not a video you
               watch?
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Breath as control.</span> The mic RMS
+              <span className="text-foreground">Breath as control.</span> The mic RMS
               is smoothed into a slow envelope b∈[0,1]. Inhale (rising b)
               accelerates the upward Shepard transpose, opens timbral brightness,
               blooms the reverb, and speeds the stars&apos; inward flow toward the
@@ -207,7 +207,7 @@ export default function BoundlessBreathPage() {
               breaths/min sine paces it automatically.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Congruent vection.</span> A
+              <span className="text-foreground">Congruent vection.</span> A
               Shepard–Risset glissando induces <em>auditory</em> vection — a
               metaphorical bodily sense of self-motion strong enough to shift
               listeners&apos; postural sway. We pair it with <em>visual</em>{" "}
@@ -216,20 +216,20 @@ export default function BoundlessBreathPage() {
               without the drug.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">References.</span> Roger Shepard
+              <span className="text-foreground">References.</span> Roger Shepard
               (1964), discrete circular pitch; Jean-Claude Risset, the continuous
               glissando; and auditory-vection research showing the Shepard–Risset
               glissando evokes metaphorical self-motion / measurable postural
               sway.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Honest novelty.</span> The lab already
+              <span className="text-foreground">Honest novelty.</span> The lab already
               has passive Shepard-tone demos (40-, 132-, 187-shepard-tone). The
               new thing here is the <em>breath-coupled, vection-paired, played</em>{" "}
               version — you steer the endless rise with your own lungs.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Next-cycle deepening:</span> detect
+              <span className="text-foreground">Next-cycle deepening:</span> detect
               inhale/exhale phase (not just amplitude) for true direction control;
               a breath-locked particle bloom at the core on the inhale peak;
               binaural spatialisation of the partials; gentle pitch-class colour

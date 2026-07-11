@@ -223,12 +223,12 @@ export default function BorealisPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {noGL && (
         <div className="pointer-events-none fixed inset-x-0 top-24 z-20 flex justify-center px-6">
-          <p className="max-w-md text-center text-base leading-relaxed text-rose-300">
+          <p className="max-w-md text-center text-base leading-relaxed text-violet-300">
             WebGL2 is unavailable, so the volumetric raymarch cannot run here.
             You are seeing a simple Canvas2D tunnel instead — try a recent
             desktop Chrome, Firefox, or Safari for the full passage into the
@@ -238,10 +238,10 @@ export default function BorealisPage() {
       )}
 
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Borealis
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           Karel&rsquo;s piano flies you bodily into a receding tunnel of light —
           a single-take, never-repeating raymarched passage through luminous fog
           toward a growing white-gold core. Loud passages surge you forward;
@@ -254,7 +254,7 @@ export default function BorealisPage() {
             <button
               onClick={handleBegin}
               disabled={loading}
-              className="min-h-[44px] min-w-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-black transition hover:bg-white disabled:opacity-60"
+              className="min-h-[44px] min-w-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-black transition hover:bg-card disabled:opacity-60"
             >
               {loading ? "Listening…" : phase === "paused" ? "Resume" : "Begin"}
             </button>
@@ -262,7 +262,7 @@ export default function BorealisPage() {
           {phase === "running" && (
             <button
               onClick={handlePause}
-              className="min-h-[44px] min-w-[44px] rounded-full border border-white/25 bg-black/50 px-6 py-2.5 text-base font-medium text-white/95 backdrop-blur transition hover:bg-black/70"
+              className="min-h-[44px] min-w-[44px] rounded-full border border-border bg-black/50 px-6 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-black/70"
             >
               Pause
             </button>
@@ -270,42 +270,42 @@ export default function BorealisPage() {
           <button
             onClick={togglePulse}
             aria-pressed={pulse}
-            className="min-h-[44px] min-w-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 text-base font-medium text-white/75 backdrop-blur transition hover:bg-black/60"
+            className="min-h-[44px] min-w-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base font-medium text-muted-foreground backdrop-blur transition hover:bg-black/60"
           >
             {pulse ? "Pulse on" : "Pulse off"}
           </button>
         </div>
 
         {phase === "idle" && (
-          <p className="mt-3 text-base text-amber-200/80">
+          <p className="mt-3 text-base text-violet-200/80">
             tap Begin — sound and the passage into the light start together
           </p>
         )}
         {phase === "running" && (
-          <p className="mt-3 text-base text-amber-200/80">
+          <p className="mt-3 text-base text-violet-200/80">
             flying in · hands-free · move the pointer to nudge the drift
           </p>
         )}
         {phase === "paused" && (
-          <p className="mt-3 text-base text-amber-200/80">
+          <p className="mt-3 text-base text-violet-200/80">
             held still · Resume to continue toward the light
           </p>
         )}
       </div>
 
       <div className="fixed bottom-16 right-4 z-30 max-w-sm sm:bottom-4 sm:right-5">
-        <details className="rounded-xl border border-white/10 bg-black/70 p-4 text-base text-white/75 backdrop-blur">
-          <summary className="cursor-pointer font-medium text-white/90">
+        <details className="rounded-xl border border-border bg-black/70 p-4 text-base text-muted-foreground backdrop-blur">
+          <summary className="cursor-pointer font-medium text-foreground">
             Design notes
           </summary>
           <div className="mt-3 flex flex-col gap-3 leading-relaxed">
             <p>
-              <strong className="text-white/90">The question.</strong> What if
+              <strong className="text-foreground">The question.</strong> What if
               Karel&rsquo;s real piano flew you bodily INTO a receding volumetric
               tunnel of light — the way near-death survivors describe it?
             </p>
             <p>
-              <strong className="text-white/90">How it works.</strong> A
+              <strong className="text-foreground">How it works.</strong> A
               full-screen WebGL2 fragment shader raymarches ~64 steps through a
               volume of luminous fog. The camera translates forward along +z
               every frame, so the ring-structured walls stream past you — real
@@ -316,7 +316,7 @@ export default function BorealisPage() {
               grows and widens as you approach.
             </p>
             <p>
-              <strong className="text-white/90">The piano drives it.</strong> An
+              <strong className="text-foreground">The piano drives it.</strong> An
               AnalyserNode reads the recording&rsquo;s energy; loud passages surge
               your forward speed and brighten the core, quiet passages let the
               light settle. A Shepard endless-rising tone (the auditory analog of
@@ -325,14 +325,14 @@ export default function BorealisPage() {
               the fog thins and the radiance whitens, so minute 5 ≠ minute 1.
             </p>
             <p>
-              <strong className="text-white/90">References.</strong> Karolina
+              <strong className="text-foreground">References.</strong> Karolina
               Halatek, <em>Terminal</em> (a walk-through cylindrical LED
               light-tunnel built from near-death survivor testimony); Klüver&rsquo;s
               tunnel/funnel form constant; the Bressloff–Cowan retino-cortical log
               map; Íñigo Quílez&rsquo;s volumetric fog/raymarch technique.
             </p>
             <p>
-              <strong className="text-white/90">Safety.</strong> Forward motion is
+              <strong className="text-foreground">Safety.</strong> Forward motion is
               smooth continuous translation, never a strobe. Any optional
               luminance pulse routes through the shared safe-flicker engine
               (≤3&nbsp;Hz, soft floor, instant kill, off by default) and reduced

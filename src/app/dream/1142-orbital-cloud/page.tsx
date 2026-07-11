@@ -452,7 +452,7 @@ export default function OrbitalCloudPage() {
   );
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#05060a] text-foreground">
       {/* the cloud */}
       <canvas
         ref={canvasRef}
@@ -472,27 +472,27 @@ export default function OrbitalCloudPage() {
       {/* ── pre-Begin hero ── */}
       {!begun && (
         <div className="relative z-10 mx-auto flex min-h-dvh max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
-          <p className="font-mono text-sm tracking-[0.3em] text-white/55">DREAM · 1142</p>
-          <h1 className="font-serif text-4xl leading-tight text-white sm:text-5xl">
+          <p className="font-mono text-sm tracking-[0.3em] text-muted-foreground">DREAM · 1142</p>
+          <h1 className="font-serif text-4xl leading-tight text-foreground sm:text-5xl">
             Orbital Cloud
           </h1>
-          <p className="max-w-lg text-base leading-relaxed text-white/80">
+          <p className="max-w-lg text-base leading-relaxed text-foreground">
             Reach into a hydrogen atom and pump it between electron orbitals. Watch the real
-            quantum probability cloud <span className="text-white/95">|ψ|²</span> morph in 3D and
+            quantum probability cloud <span className="text-foreground">|ψ|²</span> morph in 3D and
             hear the atom play its own emission spectrum — the actual Rydberg spectral lines as a
             scale.
           </p>
           <button
             type="button"
             onClick={() => setBegun(true)}
-            className="min-h-[44px] rounded-full border border-white/25 bg-white/5 px-8 py-2.5 font-mono text-base text-white/95 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-8 py-2.5 font-mono text-base text-foreground transition hover:bg-accent"
           >
             Begin
           </button>
-          <p className="font-mono text-sm text-white/55">
+          <p className="font-mono text-sm text-muted-foreground">
             drag up/down to excite &amp; relax · left/right to reshape · tap to reorient
           </p>
-          {error && <p className="text-base text-rose-300">{error}</p>}
+          {error && <p className="text-base text-violet-300">{error}</p>}
         </div>
       )}
 
@@ -500,8 +500,8 @@ export default function OrbitalCloudPage() {
       {begun && (
         <>
           <div className="pointer-events-none absolute left-0 top-0 z-10 p-5">
-            <h1 className="font-serif text-xl text-white/95">Orbital Cloud</h1>
-            <p className="mt-1 font-mono text-sm text-white/70">
+            <h1 className="font-serif text-xl text-foreground">Orbital Cloud</h1>
+            <p className="mt-1 font-mono text-sm text-muted-foreground">
               n={readout.n} &nbsp; {readout.n}
               {L_LABELS[readout.l]} &nbsp; m={readout.m >= 0 ? `+${readout.m}` : readout.m}
             </p>
@@ -510,18 +510,18 @@ export default function OrbitalCloudPage() {
 
           {error && (
             <div className="absolute left-1/2 top-4 z-20 -translate-x-1/2">
-              <p className="text-base text-rose-300">{error}</p>
+              <p className="text-base text-violet-300">{error}</p>
             </div>
           )}
 
           {/* fallback controls (Canvas2D path) */}
           {fallback && (
             <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 bg-black/50 p-5 backdrop-blur">
-              <p className="text-base text-rose-300">
+              <p className="text-base text-violet-300">
                 WebGL2 unavailable — showing a Canvas2D projection. The atom still plays its
                 spectrum; use the sliders to pump it.
               </p>
-              <label className="font-mono text-sm text-white/75">
+              <label className="font-mono text-sm text-muted-foreground">
                 energy level n = {readout.n}
                 <input
                   type="range"
@@ -533,7 +533,7 @@ export default function OrbitalCloudPage() {
                   className="mt-1 block w-full"
                 />
               </label>
-              <label className="font-mono text-sm text-white/75">
+              <label className="font-mono text-sm text-muted-foreground">
                 sublevel ({readout.n}
                 {L_LABELS[readout.l]} m={readout.m})
                 <input
@@ -552,20 +552,20 @@ export default function OrbitalCloudPage() {
           {/* design notes toggle */}
           <div className="absolute bottom-4 right-4 z-20 max-w-sm">
             {showNotes ? (
-              <div className="rounded-lg border border-white/15 bg-black/60 p-4 backdrop-blur">
-                <p className="text-base leading-relaxed text-white/80">
+              <div className="rounded-lg border border-border bg-black/60 p-4 backdrop-blur">
+                <p className="text-base leading-relaxed text-foreground">
                   Each point is placed by rejection-sampling the genuine hydrogen wavefunction
-                  <span className="text-white/95"> |ψ_nlm|² = R_nl(r)² · Y_lm(θ,φ)²</span> — real
+                  <span className="text-foreground"> |ψ_nlm|² = R_nl(r)² · Y_lm(θ,φ)²</span> — real
                   Laguerre radial functions times real spherical harmonics. Colour is the phase
                   (sign) of ψ. Downward jumps emit a photon whose pitch is the Rydberg line
-                  <span className="text-white/95"> ΔE = 13.6 eV·(1/n_f² − 1/n_i²)</span>, folded
+                  <span className="text-foreground"> ΔE = 13.6 eV·(1/n_f² − 1/n_i²)</span>, folded
                   into an audible register. Palette anchors are the real Balmer wavelengths (Hα
                   656, Hβ 486, Hγ 434, Hδ 410 nm). Full notes in README.md.
                 </p>
                 <button
                   type="button"
                   onClick={() => setShowNotes(false)}
-                  className="mt-3 min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 font-mono text-sm text-white/80"
+                  className="mt-3 min-h-[44px] rounded-full border border-border px-4 py-2.5 font-mono text-sm text-foreground"
                 >
                   close
                 </button>
@@ -574,7 +574,7 @@ export default function OrbitalCloudPage() {
               <button
                 type="button"
                 onClick={() => setShowNotes(true)}
-                className="min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 font-mono text-sm text-white/70 backdrop-blur transition hover:text-white/95"
+                className="min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-sm text-muted-foreground backdrop-blur transition hover:text-foreground"
               >
                 design notes
               </button>
@@ -584,7 +584,7 @@ export default function OrbitalCloudPage() {
           <div className="absolute left-4 bottom-4 z-20">
             <Link
               href="/dream"
-              className="font-mono text-sm text-white/55 transition hover:text-white/90"
+              className="font-mono text-sm text-muted-foreground transition hover:text-foreground"
             >
               ← dream
             </Link>

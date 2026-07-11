@@ -439,18 +439,18 @@ export default function EmberReplayPage() {
       {/* top: title + status */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4 sm:p-6">
         <div className="max-w-xl">
-          <h1 className="font-serif text-2xl leading-tight text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl leading-tight text-foreground sm:text-3xl">
             Ember Replay
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             A hallucination is not noise — it is the mind replaying a learned
             world. Here that world is Karel&rsquo;s real piano, learned into
             grains and replayed as drifting memory.
           </p>
-          {modeLabel && <p className="mt-1.5 text-base text-amber-300/90">{modeLabel}</p>}
-          {errorMsg && <p className="mt-1.5 text-base text-rose-300">{errorMsg}</p>}
+          {modeLabel && <p className="mt-1.5 text-base text-violet-300/90">{modeLabel}</p>}
+          {errorMsg && <p className="mt-1.5 text-base text-violet-300">{errorMsg}</p>}
           {!audioOk && (
-            <p className="mt-1.5 text-base text-rose-300">
+            <p className="mt-1.5 text-base text-violet-300">
               Web Audio is unavailable — the constellation still breathes, silently.
             </p>
           )}
@@ -458,7 +458,7 @@ export default function EmberReplayPage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="pointer-events-auto min-h-[44px] shrink-0 rounded-full border border-amber-200/20 bg-black/50 px-4 py-2.5 text-base text-white/80 backdrop-blur-md transition-colors hover:text-white"
+          className="pointer-events-auto min-h-[44px] shrink-0 rounded-full border border-violet-200/20 bg-black/50 px-4 py-2.5 text-base text-foreground backdrop-blur-md transition-colors hover:text-foreground"
         >
           Design notes
         </button>
@@ -466,7 +466,7 @@ export default function EmberReplayPage() {
 
       {/* bottom control deck */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-3 sm:p-5">
-        <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl border border-amber-200/10 bg-black/60 p-3 backdrop-blur-md sm:p-4">
+        <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl border border-violet-200/10 bg-black/60 p-3 backdrop-blur-md sm:p-4">
           <div className="flex flex-col gap-3">
             {/* source row */}
             <div className="flex flex-col gap-2 sm:flex-row">
@@ -477,17 +477,17 @@ export default function EmberReplayPage() {
                   if (e.key === "Enter") void runLoadId();
                 }}
                 placeholder="Paste a Path recording id to learn a real track"
-                className="min-h-[44px] flex-1 rounded-xl border border-amber-200/15 bg-white/5 px-4 py-2.5 text-base text-white placeholder:text-white/60 focus:border-amber-300/60 focus:outline-none"
+                className="min-h-[44px] flex-1 rounded-xl border border-violet-200/15 bg-muted px-4 py-2.5 text-base text-foreground placeholder:text-muted-foreground focus:border-violet-300/60 focus:outline-none"
               />
               <button
                 type="button"
                 onClick={() => void runLoadId()}
                 disabled={phase === "loading" || !trackId.trim()}
-                className="min-h-[44px] rounded-xl bg-amber-400/90 px-4 py-2.5 text-base font-medium text-black transition-colors hover:bg-amber-300 disabled:opacity-40"
+                className="min-h-[44px] rounded-xl bg-violet-400/90 px-4 py-2.5 text-base font-medium text-black transition-colors hover:bg-violet-300 disabled:opacity-40"
               >
                 Learn track
               </button>
-              <label className="min-h-[44px] cursor-pointer rounded-xl border border-amber-200/15 bg-white/5 px-4 py-2.5 text-center text-base text-white/90 transition-colors hover:border-amber-300/60">
+              <label className="min-h-[44px] cursor-pointer rounded-xl border border-violet-200/15 bg-muted px-4 py-2.5 text-center text-base text-foreground transition-colors hover:border-violet-300/60">
                 Drop a file
                 <input
                   type="file"
@@ -505,9 +505,9 @@ export default function EmberReplayPage() {
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {sliders.map((s) => (
                 <label key={s.label} className="flex flex-col gap-1">
-                  <span className="flex items-baseline justify-between text-base text-white/80">
+                  <span className="flex items-baseline justify-between text-base text-foreground">
                     <span>{s.label}</span>
-                    <span className="text-sm text-white/60">{s.hint}</span>
+                    <span className="text-sm text-muted-foreground">{s.hint}</span>
                   </span>
                   <input
                     type="range"
@@ -516,13 +516,13 @@ export default function EmberReplayPage() {
                     step={0.01}
                     value={s.value}
                     onChange={(e) => s.on(parseFloat(e.target.value))}
-                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-amber-200/15 accent-amber-400"
+                    className="h-2 w-full cursor-pointer appearance-none rounded-full bg-violet-200/15 accent-violet-400"
                   />
                 </label>
               ))}
             </div>
 
-            <p className="text-sm text-white/60">
+            <p className="text-sm text-muted-foreground">
               {live
                 ? `Replaying ${grainCount} captured grains of the real recording, recombined — the audio you hear is Karel's piano re-sequenced, not synthesised notes.`
                 : phase === "loading"
@@ -540,38 +540,38 @@ export default function EmberReplayPage() {
           onClick={() => setShowNotes(false)}
         >
           <div
-            className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-amber-200/10 p-6 text-white/85"
+            className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-violet-200/10 p-6 text-foreground"
             style={{ background: "#120a06" }}
             onClick={(e) => e.stopPropagation()}
           >
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
-            <p className="mt-3 text-base text-white/80">
-              A 2026 <span className="text-amber-300/90">eLife</span> computational
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
+            <p className="mt-3 text-base text-foreground">
+              A 2026 <span className="text-violet-300/90">eLife</span> computational
               study modelled classical psychedelics as shifting perception from
               bottom-up sensory inference toward a top-down generative{" "}
               <em>replay of a learned world</em> — hallucination as recombined
               wake-time memory rather than random noise. This piece is a drug-free
               embodiment of that model.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               <strong>Learn.</strong> The real recording is analysed into a small
               vocabulary of grains: onset detection captures a short slice of the
               actual audio plus a rough pitch, brightness and energy for each.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               <strong>Replay.</strong> A look-ahead scheduler walks that
               vocabulary as memory — mostly stepping to a grain like the last one
               (smooth recall), sometimes jumping (mutation) — and plays the actual
               captured grains, gently overlapping and detuned. It never hard-loops.
               A warm just-intonation drone bed sits underneath.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               Each replayed grain blooms a warm-ember mote in a constellation whose
               home positions are fixed per grain, so a recurring memory re-blooms
               in the same place — memory as living pigment (Refik Anadol), a
               generative system that evolves without repeating (Brian Eno).
             </p>
-            <p className="mt-3 text-base text-white/60">
+            <p className="mt-3 text-base text-muted-foreground">
               Three source tiers: a Path recording id, your own dropped file, or a
               deterministic offline-rendered demo so the world is never empty. All
               randomness is a seeded mulberry32 PRNG — the same seed dreams the
@@ -580,7 +580,7 @@ export default function EmberReplayPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-xl bg-amber-400/20 px-4 py-2.5 text-base text-white transition-colors hover:bg-amber-400/30"
+              className="mt-5 min-h-[44px] rounded-xl bg-violet-400/20 px-4 py-2.5 text-base text-foreground transition-colors hover:bg-violet-400/30"
             >
               Close
             </button>

@@ -139,35 +139,35 @@ export default function SolarWindChoirPage() {
     : "";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0d16] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0d16] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* ── Live numeric readout (dark translucent panel for contrast) ── */}
-      <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-xl border border-white/10 bg-black/55 px-4 py-3 backdrop-blur-md">
+      <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-xl border border-border bg-black/55 px-4 py-3 backdrop-blur-md">
         <div className="mb-2 flex items-center gap-2 text-base">
           <span
             className={
               live
-                ? "inline-block h-2.5 w-2.5 rounded-full bg-emerald-400"
-                : "inline-block h-2.5 w-2.5 rounded-full bg-amber-400"
+                ? "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
+                : "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
             }
           />
           <span
             className={
               live
-                ? "font-mono text-emerald-300"
-                : "font-mono text-amber-300"
+                ? "font-mono text-violet-300"
+                : "font-mono text-violet-300"
             }
           >
             {live ? `● live · ${stamp}` : "○ using sample data"}
           </span>
         </div>
-        <dl className="grid grid-cols-[auto_auto] gap-x-6 gap-y-1 font-mono text-base tabular-nums text-white/95">
-          <dt className="text-white/75">wind speed</dt>
+        <dl className="grid grid-cols-[auto_auto] gap-x-6 gap-y-1 font-mono text-base tabular-nums text-foreground">
+          <dt className="text-muted-foreground">wind speed</dt>
           <dd className="text-right">{Math.round(data.speed)} km/s</dd>
-          <dt className="text-white/75">density</dt>
+          <dt className="text-muted-foreground">density</dt>
           <dd className="text-right">{data.density.toFixed(1)} p/cm³</dd>
-          <dt className="text-white/75">Bz (GSM)</dt>
+          <dt className="text-muted-foreground">Bz (GSM)</dt>
           <dd
             className={
               data.bz < 0 ? "text-right text-violet-300" : "text-right"
@@ -175,17 +175,17 @@ export default function SolarWindChoirPage() {
           >
             {data.bz.toFixed(1)} nT
           </dd>
-          <dt className="text-white/75">Bt</dt>
+          <dt className="text-muted-foreground">Bt</dt>
           <dd className="text-right">{data.bt.toFixed(1)} nT</dd>
-          <dt className="text-white/75">Kp index</dt>
+          <dt className="text-muted-foreground">Kp index</dt>
           <dd className="text-right">{data.kp.toFixed(1)} / 9</dd>
         </dl>
       </div>
 
       {/* ── Title ── */}
-      <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[18rem] rounded-xl border border-white/10 bg-black/45 px-4 py-3 text-right backdrop-blur-md">
-        <h1 className="text-xl font-semibold text-white">Solar Wind Choir</h1>
-        <p className="mt-1 text-base leading-snug text-white/75">
+      <div className="pointer-events-none absolute right-4 top-4 z-10 max-w-[18rem] rounded-xl border border-border bg-black/45 px-4 py-3 text-right backdrop-blur-md">
+        <h1 className="text-xl font-semibold text-foreground">Solar Wind Choir</h1>
+        <p className="mt-1 text-base leading-snug text-muted-foreground">
           The sun&rsquo;s weather hitting Earth right now, sung as a
           just-intonation choir.
         </p>
@@ -197,7 +197,7 @@ export default function SolarWindChoirPage() {
           <button
             type="button"
             onClick={begin}
-            className="min-h-[44px] rounded-full border border-white/20 bg-white/90 px-6 py-2.5 text-base font-semibold text-black transition hover:bg-white"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-6 py-2.5 text-base font-semibold text-black transition hover:bg-card"
           >
             ▶ Begin
           </button>
@@ -205,13 +205,13 @@ export default function SolarWindChoirPage() {
           <button
             type="button"
             onClick={stop}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/50 px-6 py-2.5 text-base font-semibold text-white/95 backdrop-blur-md transition hover:bg-black/70"
+            className="min-h-[44px] rounded-full border border-border bg-black/50 px-6 py-2.5 text-base font-semibold text-foreground backdrop-blur-md transition hover:bg-black/70"
           >
             ■ Stop
           </button>
         )}
         {audioFailed && (
-          <span className="rounded-lg bg-black/60 px-3 py-2 text-base text-amber-300 backdrop-blur-md">
+          <span className="rounded-lg bg-black/60 px-3 py-2 text-base text-violet-300 backdrop-blur-md">
             Audio could not start here — the sky still moves.
           </span>
         )}
@@ -221,7 +221,7 @@ export default function SolarWindChoirPage() {
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-white/85 backdrop-blur-md transition hover:text-white"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-foreground backdrop-blur-md transition hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "About"}
       </button>
@@ -232,14 +232,14 @@ export default function SolarWindChoirPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-4 min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/85 hover:text-white"
+              className="mb-4 min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:text-foreground"
             >
               Close
             </button>
-            <h2 className="text-xl font-semibold text-white">
+            <h2 className="text-xl font-semibold text-foreground">
               Solar Wind Choir
             </h2>
-            <div className="mt-3 space-y-3 text-base leading-relaxed text-white/85">
+            <div className="mt-3 space-y-3 text-base leading-relaxed text-foreground">
               <p>
                 Three live NOAA Space Weather Prediction Center feeds — solar-wind
                 plasma, interplanetary magnetic field, and the planetary K index —
@@ -268,12 +268,12 @@ export default function SolarWindChoirPage() {
                   voices.
                 </li>
               </ul>
-              <p className="text-white/70">
+              <p className="text-muted-foreground">
                 If the feeds are unreachable, an embedded snapshot keeps it singing
                 and rendering — the badge then reads &ldquo;using sample
                 data.&rdquo; Brightness only drifts slowly; there is no strobe.
               </p>
-              <p className="text-white/70">
+              <p className="text-muted-foreground">
                 Lineage: Helioradar AV (2026); Andrea Polli, &ldquo;Atmospherics /
                 Weather Works.&rdquo;
               </p>

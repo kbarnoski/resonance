@@ -303,23 +303,23 @@ export default function HiddenEyePage() {
   }, [onOrient]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {/* convergence guide dots (stereogram mode) — "make two dots become three" */}
       {running && mode === "stereo" && (
         <div className="pointer-events-none fixed left-1/2 top-6 z-20 flex -translate-x-1/2 gap-[86px]">
-          <span className="h-3 w-3 rounded-full bg-white/90" />
-          <span className="h-3 w-3 rounded-full bg-white/90" />
+          <span className="h-3 w-3 rounded-full bg-muted" />
+          <span className="h-3 w-3 rounded-full bg-muted" />
         </div>
       )}
 
       {/* header / controls */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Hidden Eye
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           A field of pure random-dot noise that hides a living, breathing 3-D
           surface — visible only inside your own visual cortex when your eyes
           fuse the pattern. Can&apos;t free-fuse? The reveal mode shades the
@@ -330,7 +330,7 @@ export default function HiddenEyePage() {
           {!running && (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               Start
             </button>
@@ -345,7 +345,7 @@ export default function HiddenEyePage() {
           )}
           <button
             onClick={() => setNotesOpen((v) => !v)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/50 px-4 py-2.5 text-base font-medium text-white/85 backdrop-blur transition hover:bg-black/70"
+            className="min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-black/70"
           >
             Design notes
           </button>
@@ -364,18 +364,18 @@ export default function HiddenEyePage() {
           </p>
         )}
         {running && (
-          <p className="mt-2 font-mono text-xs text-white/55">
+          <p className="mt-2 font-mono text-xs text-muted-foreground">
             keys: 1-4 sculpt form · A auto · arrows steer · [ ] depth · , . eye-sep · R toggle
           </p>
         )}
 
         {audioErr && (
-          <p className="mt-2 text-sm text-rose-300">
+          <p className="mt-2 text-sm text-violet-300">
             Audio could not start — visuals continue without sound.
           </p>
         )}
         {noGL && (
-          <p className="mt-2 text-sm text-rose-300">
+          <p className="mt-2 text-sm text-violet-300">
             WebGL2 is unavailable — falling back to a shaded 2-D heightfield
             reveal so the hidden surface stays visible.
           </p>
@@ -384,18 +384,18 @@ export default function HiddenEyePage() {
 
       {/* design notes panel */}
       {notesOpen && (
-        <div className="fixed right-0 top-0 z-40 h-full w-full max-w-md overflow-y-auto border-l border-white/10 bg-black/90 p-6 backdrop-blur-md sm:p-7">
+        <div className="fixed right-0 top-0 z-40 h-full w-full max-w-md overflow-y-auto border-l border-border bg-black/90 p-6 backdrop-blur-md sm:p-7">
           <div className="flex items-start justify-between gap-4">
-            <h2 className="font-serif text-xl text-white/95">Design notes</h2>
+            <h2 className="font-serif text-xl text-foreground">Design notes</h2>
             <button
               onClick={() => setNotesOpen(false)}
-              className="min-h-[44px] rounded-full border border-white/20 px-4 py-2.5 text-sm text-white/85 hover:bg-white/10"
+              className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-sm text-foreground hover:bg-accent"
             >
               Close
             </button>
           </div>
-          <div className="mt-4 space-y-3 text-sm leading-relaxed text-white/75">
-            <p className="text-white/90">
+          <div className="mt-4 space-y-3 text-sm leading-relaxed text-muted-foreground">
+            <p className="text-foreground">
               What if a field of pure random-dot noise could reveal a breathing
               3-D psychedelic surface that exists nowhere in the image — only in
               your visual cortex?
@@ -406,7 +406,7 @@ export default function HiddenEyePage() {
               receding tunnel, radial ripples, and a mandala of bumps. A
               per-scanline SIRDS encoder turns that depth into dots: the
               horizontal separation between two dots that must share a colour is{" "}
-              <span className="font-mono text-white/90">
+              <span className="font-mono text-foreground">
                 round(E·(1 − μ·depth))
               </span>
               , so a nearer surface shrinks the period and pops toward you. There
@@ -429,7 +429,7 @@ export default function HiddenEyePage() {
               just-intonation drone (brightness ∝ relief); the chord shifts with
               each form and a soft FM bell rings when a new form locks in.
             </p>
-            <p className="text-white/90">To view</p>
+            <p className="text-foreground">To view</p>
             <p>
               Reveal / wiggle: nothing to do — the shaded surface sways on its
               own. Stereogram: relax and diverge your eyes (look &quot;through&quot;
@@ -438,12 +438,12 @@ export default function HiddenEyePage() {
               A resumes auto, arrows steer, [ ] change depth intensity, , . change
               eye-separation, R toggles mode.
             </p>
-            <p className="text-white/60">
+            <p className="text-muted-foreground">
               Limitations: free-fusing is genuinely hard and not everyone can do
               it (hence the default reveal mode). The morph/encode timing
               constants are hand-tuned, not perceptually validated headless.
             </p>
-            <p className="text-white/60">
+            <p className="text-muted-foreground">
               References: Julesz, <em>Foundations of Cyclopean Perception</em>
               (1971); Tyler &amp; Clarke, &quot;The autostereogram&quot;, SPIE Proc.
               1256 (1990).

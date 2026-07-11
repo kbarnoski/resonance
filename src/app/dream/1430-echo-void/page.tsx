@@ -204,7 +204,7 @@ export default function EchoVoidPage() {
   );
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-black text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -216,10 +216,10 @@ export default function EchoVoidPage() {
 
       {/* Title / intro over the void */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Echo Void
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           A hidden cathedral you can only see by listening to your own echoes.
           Ping the dark; the space answers.
         </p>
@@ -231,8 +231,8 @@ export default function EchoVoidPage() {
           <span
             className={`rounded-full border px-2.5 py-1 text-xs font-medium ${
               tier === "webgl2"
-                ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300"
-                : "border-amber-400/40 bg-amber-400/10 text-amber-300"
+                ? "border-violet-400/40 bg-violet-400/10 text-violet-300"
+                : "border-violet-400/40 bg-violet-400/10 text-violet-300"
             }`}
           >
             {tier === "webgl2" ? "WebGL2" : "Canvas"}
@@ -244,18 +244,18 @@ export default function EchoVoidPage() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="mx-6 max-w-md text-center">
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               Sound and motion. Put on headphones for the spatial echoes, then
               begin.
             </p>
             <button
               type="button"
               onClick={handleBegin}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-semibold text-white transition-colors hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-semibold text-foreground transition-colors hover:bg-violet-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
               Begin — enter the void
             </button>
-            <p className="mt-4 text-sm text-white/55">
+            <p className="mt-4 text-sm text-muted-foreground">
               tap / space to ping · drag / arrows to steer your heading
             </p>
           </div>
@@ -265,7 +265,7 @@ export default function EchoVoidPage() {
       {/* Live hint while running */}
       {phase === "running" && (
         <div className="pointer-events-none absolute inset-x-0 bottom-16 z-10 text-center">
-          <p className="text-sm text-white/55">
+          <p className="text-sm text-muted-foreground">
             tap / space to ping · drag / arrows to steer
           </p>
         </div>
@@ -275,14 +275,14 @@ export default function EchoVoidPage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute bottom-3 left-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/60 px-4 py-2.5 text-sm text-white/75 transition-colors hover:text-white"
+        className="absolute bottom-3 left-3 z-30 min-h-[44px] rounded-full border border-border bg-black/60 px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
       >
         {showNotes ? "close" : "design notes"}
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-16 left-3 z-30 max-w-sm rounded-2xl border border-white/12 bg-black/85 p-4 text-sm leading-relaxed text-white/75 backdrop-blur-md">
-          <p className="text-base font-semibold text-white">Active echolocation</p>
+        <div className="absolute bottom-16 left-3 z-30 max-w-sm rounded-2xl border border-border bg-black/85 p-4 text-sm leading-relaxed text-muted-foreground backdrop-blur-md">
+          <p className="text-base font-semibold text-foreground">Active echolocation</p>
           <p className="mt-2">
             Every ping launches a spherical wavefront at a fixed speed of sound.
             Where it crosses a surface, that surface lights as a cluster of points
@@ -290,13 +290,13 @@ export default function EchoVoidPage() {
             2·distance/speed — so near walls answer first, the far apse last.
             Time emerges from the geometry.
           </p>
-          <p className="mt-2 text-white/75">
+          <p className="mt-2 text-muted-foreground">
             Each material rings with{" "}
             <span className="text-violet-300">inharmonic</span> partials (struck
             bell / plate ratios), so the field stays eerie, never sweetly
             consonant.
           </p>
-          <p className="mt-2 text-white/55">
+          <p className="mt-2 text-muted-foreground">
             After biosonar (bats, dolphins), Alvin Lucier&apos;s{" "}
             <em>I Am Sitting in a Room</em>, and James Turrell.
           </p>

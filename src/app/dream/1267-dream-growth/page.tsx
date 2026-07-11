@@ -256,18 +256,18 @@ export default function DreamGrowthPage() {
   const modeLabel = emergingDeg >= 0 ? DEGREE_NAMES[emergingDeg] : "—";
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#a9bab7] text-white select-none">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#a9bab7] text-foreground select-none">
       <div ref={mountRef} className="absolute inset-0" />
 
       {entered && (locked || lookMode === "drag") && (
         <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="h-4 w-4 rounded-full border border-white/70 bg-white/10" />
+          <div className="h-4 w-4 rounded-full border border-border bg-muted" />
         </div>
       )}
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL is unavailable in this browser, so the growing dream-
             architecture can&apos;t render. Try a hardware-accelerated browser to
             walk and build the space.
@@ -277,10 +277,10 @@ export default function DreamGrowthPage() {
 
       {!entered && !glError && (
         <div className="pointer-events-none absolute left-0 top-0 p-6 sm:p-9">
-          <h1 className="font-serif text-3xl font-semibold tracking-tight text-white drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:text-4xl">
+          <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)] sm:text-4xl">
             Dream Growth
           </h1>
-          <p className="mt-3 max-w-md text-base leading-relaxed text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">
+          <p className="mt-3 max-w-md text-base leading-relaxed text-foreground drop-shadow-[0_1px_6px_rgba(0,0,0,0.35)]">
             Walk a first-person dream-plaza and play it by striking its surfaces.
             Every strike grows the room — a pillar rises, an arch spans, a chime
             hangs — shaped by how you play. By minute five the empty ground has
@@ -294,7 +294,7 @@ export default function DreamGrowthPage() {
         <div className="absolute inset-0 flex items-end justify-center pb-16 sm:items-center sm:pb-0">
           <button
             onClick={enter}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-white/40 bg-black/30 px-6 py-3 font-serif text-xl font-medium text-white backdrop-blur-md transition-colors hover:bg-black/45"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/30 px-6 py-3 font-serif text-xl font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/45"
           >
             Enter and start building ▸
           </button>
@@ -302,7 +302,7 @@ export default function DreamGrowthPage() {
       )}
 
       {entered && (
-        <div className="pointer-events-none absolute bottom-4 left-4 max-w-xs text-base text-white/75 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
+        <div className="pointer-events-none absolute bottom-4 left-4 max-w-xs text-base text-muted-foreground drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
           <p>
             {lookMode === "drag"
               ? "Drag to look · WASD to walk · click a surface or the ground to strike + grow"
@@ -313,9 +313,9 @@ export default function DreamGrowthPage() {
 
       {/* growth readout */}
       {entered && (
-        <div className="pointer-events-none absolute right-4 top-4 rounded-lg border border-white/20 bg-black/40 px-4 py-2.5 text-right backdrop-blur-md">
-          <p className="text-base font-medium text-white/95">{grownCount} grown</p>
-          <p className="text-base text-white/75">emerging mode · {modeLabel}</p>
+        <div className="pointer-events-none absolute right-4 top-4 rounded-lg border border-border bg-black/40 px-4 py-2.5 text-right backdrop-blur-md">
+          <p className="text-base font-medium text-foreground">{grownCount} grown</p>
+          <p className="text-base text-muted-foreground">emerging mode · {modeLabel}</p>
         </div>
       )}
 
@@ -323,7 +323,7 @@ export default function DreamGrowthPage() {
         <div className="absolute inset-0 flex items-center justify-center bg-black/25 backdrop-blur-[2px]">
           <button
             onClick={resume}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-white/40 bg-black/40 px-6 py-3 font-serif text-xl text-white transition-colors hover:bg-black/55"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-6 py-3 font-serif text-xl text-foreground transition-colors hover:bg-black/55"
           >
             Click to keep walking
           </button>
@@ -332,7 +332,7 @@ export default function DreamGrowthPage() {
 
       {notice && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 w-[min(90vw,40rem)] -translate-x-1/2 p-4 text-center">
-          <p className="text-base text-rose-300 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
+          <p className="text-base text-violet-300 drop-shadow-[0_1px_6px_rgba(0,0,0,0.5)]">
             {notice}
           </p>
         </div>
@@ -340,15 +340,15 @@ export default function DreamGrowthPage() {
 
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/25 bg-black/40 px-4 py-2.5 text-base text-white/80 backdrop-blur-md transition-colors hover:text-white"
+        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         Design notes
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-4 w-[min(92vw,32rem)] rounded-xl border border-white/20 bg-black/85 p-5 backdrop-blur-md">
-          <h2 className="font-serif text-xl font-semibold text-white">Design notes</h2>
-          <p className="mt-3 text-base leading-relaxed text-white/85">
+        <div className="absolute bottom-20 right-4 w-[min(92vw,32rem)] rounded-xl border border-border bg-black/85 p-5 backdrop-blur-md">
+          <h2 className="font-serif text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mt-3 text-base leading-relaxed text-foreground">
             A real three.js interior you walk in first person. Each strike is a
             physically-modelled modal resonator (mildly-inharmonic partials, each
             with its own decay) placed in 3D by its own HRTF PannerNode at the
@@ -364,7 +364,7 @@ export default function DreamGrowthPage() {
           </p>
           <Link
             href="/dream/1267-dream-growth"
-            className="mt-3 inline-block text-base text-teal-300 hover:text-teal-200"
+            className="mt-3 inline-block text-base text-violet-300 hover:text-violet-200"
           >
             README →
           </Link>

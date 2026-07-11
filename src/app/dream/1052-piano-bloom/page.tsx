@@ -320,12 +320,12 @@ export default function PianoBloomPage() {
 
   /* -------------------------------- view ----------------------------- */
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0604] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0604] text-foreground">
       {/* Field + overlay, centred square */}
       <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-6">
         <div
           ref={wrapRef}
-          className="relative aspect-square w-full max-w-[min(92vw,82vh)] overflow-hidden rounded-2xl ring-1 ring-amber-900/40 shadow-[0_0_80px_-10px_rgba(180,90,30,0.35)]"
+          className="relative aspect-square w-full max-w-[min(92vw,82vh)] overflow-hidden rounded-2xl ring-1 ring-violet-900/40 shadow-[0_0_80px_-10px_rgba(180,90,30,0.35)]"
         >
           <canvas
             ref={fieldCanvasRef}
@@ -348,22 +348,22 @@ export default function PianoBloomPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-4 sm:p-6">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-amber-100 sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-violet-100 sm:text-3xl">
           Piano Bloom
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/80">
+        <p className="mt-1 max-w-md text-base text-foreground">
           Play your piano into a living reaction-diffusion field. Touch grows
           blooms; the reader probes granulate and re-voice the recording back at
           you.
         </p>
         {phase === "running" && (
-          <p className="mt-2 font-mono text-base text-white/75">
+          <p className="mt-2 font-mono text-base text-muted-foreground">
             field:{" "}
             <span
               className={
                 backend === "webgpu"
-                  ? "text-emerald-300/95"
-                  : "text-amber-300/95"
+                  ? "text-violet-300/95"
+                  : "text-violet-300/95"
               }
             >
               {backend === "webgpu" ? "WebGPU compute" : "Canvas2D / CPU"}
@@ -371,7 +371,7 @@ export default function PianoBloomPage() {
             · voice:{" "}
             <span
               className={
-                mode === "grain" ? "text-emerald-300/95" : "text-amber-300/95"
+                mode === "grain" ? "text-violet-300/95" : "text-violet-300/95"
               }
             >
               {mode === "grain" ? "your recording (grains)" : "felt-piano bed"}
@@ -384,10 +384,10 @@ export default function PianoBloomPage() {
       {phase === "idle" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/60 backdrop-blur-sm">
           <div className="flex max-w-lg flex-col items-center px-6 text-center">
-            <h2 className="font-serif text-2xl font-semibold text-amber-100 sm:text-3xl">
+            <h2 className="font-serif text-2xl font-semibold text-violet-100 sm:text-3xl">
               An instrument you play
             </h2>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               A Gray-Scott reaction-diffusion field is the resonating body. Press
               Begin and it blooms with sound immediately — a warm felt-piano
               bed. Then touch to sculpt the field, drag the glowing reader probes
@@ -397,11 +397,11 @@ export default function PianoBloomPage() {
             <button
               type="button"
               onClick={begin}
-              className="mt-7 min-h-[44px] rounded-full bg-amber-500/90 px-7 py-2.5 text-base font-semibold text-[#1a0f06] transition-colors hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300"
+              className="mt-7 min-h-[44px] rounded-full bg-violet-500/90 px-7 py-2.5 text-base font-semibold text-[#1a0f06] transition-colors hover:bg-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-300"
             >
               Begin
             </button>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Audio starts on tap. Output only — no microphone is used.
             </p>
           </div>
@@ -421,16 +421,16 @@ export default function PianoBloomPage() {
             onDrop={onDrop}
             className={`rounded-xl border-2 border-dashed px-4 py-3 backdrop-blur transition-colors ${
               dragOver
-                ? "border-amber-300 bg-amber-500/15"
-                : "border-amber-700/50 bg-black/55"
+                ? "border-violet-300 bg-violet-500/15"
+                : "border-violet-700/50 bg-black/55"
             }`}
           >
-            <p className="text-base font-medium text-amber-100">
+            <p className="text-base font-medium text-violet-100">
               {fileName
                 ? `Loaded: ${fileName}`
                 : "Drop a piano recording (or any audio)"}
             </p>
-            <p className="mt-0.5 text-base text-white/75">
+            <p className="mt-0.5 text-base text-muted-foreground">
               {decoding
                 ? "Decoding…"
                 : fileName
@@ -441,7 +441,7 @@ export default function PianoBloomPage() {
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="min-h-[44px] rounded-full border border-amber-600/50 bg-amber-500/15 px-4 py-2.5 text-base text-amber-100 transition-colors hover:bg-amber-500/25"
+                className="min-h-[44px] rounded-full border border-violet-600/50 bg-violet-500/15 px-4 py-2.5 text-base text-violet-100 transition-colors hover:bg-violet-500/25"
               >
                 Choose a file
               </button>
@@ -449,7 +449,7 @@ export default function PianoBloomPage() {
                 <button
                   type="button"
                   onClick={useFeltFallback}
-                  className="min-h-[44px] rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-base text-white/80 transition-colors hover:bg-white/10"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
                 >
                   Back to felt bed
                 </button>
@@ -469,8 +469,8 @@ export default function PianoBloomPage() {
           </div>
 
           {/* Reader count */}
-          <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-black/55 px-4 py-2.5 backdrop-blur">
-            <span className="text-base text-white/75">Readers</span>
+          <div className="flex items-center gap-2 rounded-xl border border-border bg-black/55 px-4 py-2.5 backdrop-blur">
+            <span className="text-base text-muted-foreground">Readers</span>
             {[1, 2, 3, 4].map((n) => (
               <button
                 key={n}
@@ -478,8 +478,8 @@ export default function PianoBloomPage() {
                 onClick={() => toggleReaders(n)}
                 className={`min-h-[44px] min-w-[44px] rounded-full px-3 py-2 text-base transition-colors ${
                   activeCount === n
-                    ? "bg-amber-500/90 font-semibold text-[#1a0f06]"
-                    : "bg-white/5 text-white/80 hover:bg-white/10"
+                    ? "bg-violet-500/90 font-semibold text-[#1a0f06]"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {n}
@@ -491,7 +491,7 @@ export default function PianoBloomPage() {
 
       {/* Error notice */}
       {error && (
-        <p className="absolute bottom-16 right-3 z-30 max-w-xs rounded-lg bg-black/70 px-4 py-2.5 text-base text-rose-300 sm:right-6">
+        <p className="absolute bottom-16 right-3 z-30 max-w-xs rounded-lg bg-black/70 px-4 py-2.5 text-base text-violet-300 sm:right-6">
           {error}
         </p>
       )}
@@ -500,34 +500,34 @@ export default function PianoBloomPage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/55 px-4 py-2.5 text-base text-white/80 backdrop-blur transition-colors hover:bg-black/70 hover:text-white sm:right-6 sm:top-6"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/55 px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-black/70 hover:text-foreground sm:right-6 sm:top-6"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/85 p-6 backdrop-blur-md">
-          <div className="mt-14 max-w-2xl text-white/80">
-            <h2 className="font-serif text-2xl font-semibold text-amber-100">
+          <div className="mt-14 max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl font-semibold text-violet-100">
               Design notes
             </h2>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               The resonating body is a real{" "}
-              <span className="text-white">Gray-Scott reaction-diffusion</span>{" "}
+              <span className="text-foreground">Gray-Scott reaction-diffusion</span>{" "}
               simulation (Pearson 1993): two chemicals U and V diffuse and react
               on a double-buffered grid with a Laplacian stencil. When{" "}
-              <span className="text-white">WebGPU</span> is available the
+              <span className="text-foreground">WebGPU</span> is available the
               simulation step runs as a compute shader on ping-pong storage
               buffers — the lab&rsquo;s psych lane had zero WebGPU compute, so
               this brings it back as the living body. With no WebGPU it falls
               back to a Canvas2D / typed-array CPU step at a smaller grid, so it
               never shows a blank screen.
             </p>
-            <p className="mt-3 text-base text-white/80">
-              <span className="text-white">You play it.</span> Touching the
+            <p className="mt-3 text-base text-foreground">
+              <span className="text-foreground">You play it.</span> Touching the
               field injects reagent (paints V), so blooms grow where you touch.
               You then place up to four{" "}
-              <span className="text-white">reader probes</span> on the field —
+              <span className="text-foreground">reader probes</span> on the field —
               an interaction model borrowed from Reactive Audio{" "}
               <span className="italic">Growth</span> (2026), where modulation
               readers placed on an evolving field translate local field values
@@ -538,15 +538,15 @@ export default function PianoBloomPage() {
               Dense blooms become thick grain clouds; a calm field gives sparse
               sparse grains. So touch → field → audio is bidirectional and felt.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               With no file, the readers instead modulate a warm{" "}
-              <span className="text-white">felt-piano</span> bed (detuned
+              <span className="text-foreground">felt-piano</span> bed (detuned
               triangle/sine partials, soft attack, long release, a slow low pad)
               — opening filter cutoff with gradient, detuning with bloom
               intensity, panning by position. The play-relationship survives even
               with zero input, so it makes sound on a phone glance.
             </p>
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               References: Pearson, &ldquo;Complex Patterns in a Simple
               System&rdquo; (Science, 1993) / Gray-Scott model · Reactive Audio,{" "}
               <span className="italic">Growth</span> (2026, reader-on-a-living-
@@ -554,7 +554,7 @@ export default function PianoBloomPage() {
               Laplacian-stencil implementations · Web Audio API granular
               synthesis (windowed BufferSource grains).
             </p>
-            <p className="mt-3 text-base text-white/60">
+            <p className="mt-3 text-base text-muted-foreground">
               Honest note: the WebGPU path reads the field back to the CPU each
               frame for sampling and rendering, which is the simple-but-not-
               fastest approach; a full GPU render pass would scale to larger
@@ -564,7 +564,7 @@ export default function PianoBloomPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-base text-white transition-colors hover:bg-white/20"
+              className="mt-6 min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               Close
             </button>

@@ -318,7 +318,7 @@ export default function LightTunnelPage() {
   const spokes = Array.from({ length: N_SPOKES });
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#04060d] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#04060d] text-foreground">
       {/* ── the render surface: pure SVG DOM line-art ────────────────────── */}
       <svg
         viewBox={`0 0 ${VB} ${VB}`}
@@ -405,10 +405,10 @@ export default function LightTunnelPage() {
 
       {/* ── corner UI ─────────────────────────────────────────────────────── */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-sm p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Light Tunnel
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           Tilt your phone to steer down a tunnel of living line-art toward a
           being of light. Lean in to fall faster; hold still to drift.
         </p>
@@ -417,7 +417,7 @@ export default function LightTunnelPage() {
           {phase === "idle" && (
             <button
               onClick={handleBegin}
-              className="min-h-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               Begin
             </button>
@@ -425,17 +425,17 @@ export default function LightTunnelPage() {
         </div>
 
         {phase === "idle" && (
-          <p className="mt-3 font-mono text-sm text-white/55">
+          <p className="mt-3 font-mono text-sm text-muted-foreground">
             tap Begin — sound + the descent start together
           </p>
         )}
         {phase === "running" && mode === "tilt" && (
-          <p className="mt-3 font-mono text-sm text-white/55">
+          <p className="mt-3 font-mono text-sm text-muted-foreground">
             tilt to steer · lean to accelerate toward the light
           </p>
         )}
         {phase === "running" && mode !== "tilt" && (
-          <p className="mt-3 font-mono text-sm text-amber-300">
+          <p className="mt-3 font-mono text-sm text-violet-300">
             {permDenied
               ? "motion access denied — drag to steer the tunnel"
               : "no tilt sensor — drag across the field to steer"}
@@ -446,26 +446,26 @@ export default function LightTunnelPage() {
       {/* ── Design notes trigger + overlay ────────────────────────────────── */}
       <button
         onClick={() => setNotesOpen(true)}
-        className="fixed right-4 top-4 z-30 min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 font-mono text-sm text-white/75 backdrop-blur transition hover:bg-black/60 hover:text-white/95"
+        className="fixed right-4 top-4 z-30 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-sm text-muted-foreground backdrop-blur transition hover:bg-black/60 hover:text-foreground"
       >
         Design notes
       </button>
 
       {notesOpen && (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 p-5 backdrop-blur-sm">
-          <div className="max-h-[85vh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#080b16] p-6 text-white/85 shadow-2xl">
+          <div className="max-h-[85vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#080b16] p-6 text-foreground shadow-2xl">
             <div className="flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-white/95">Light Tunnel</h2>
+              <h2 className="font-serif text-2xl text-foreground">Light Tunnel</h2>
               <button
                 onClick={() => setNotesOpen(false)}
-                className="min-h-[44px] rounded-full border border-white/20 px-4 py-2.5 font-mono text-sm text-white/75 transition hover:text-white/95"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 font-mono text-sm text-muted-foreground transition hover:text-foreground"
               >
                 close
               </button>
             </div>
             <p className="mt-4 text-base leading-relaxed">
               The near-death tunnel-toward-light rendered entirely as living{" "}
-              <span className="text-white/95">vector line-art</span> — ~90
+              <span className="text-foreground">vector line-art</span> — ~90
               concentric <span className="font-mono">&lt;circle&gt;</span> rings
               and a faint radial vector-field of{" "}
               <span className="font-mono">&lt;line&gt;</span> spokes, all inline
@@ -482,20 +482,20 @@ export default function LightTunnelPage() {
               under 3&nbsp;Hz, never a strobe.
             </p>
             <p className="mt-3 text-base leading-relaxed">
-              Sound is a slow <span className="text-white/95">Shepard–Risset
+              Sound is a slow <span className="text-foreground">Shepard–Risset
               ascent</span> (the endless-rising illusion) over a warm
               just-intonation drone inside a synthetic convolution void. Your
               approach speed opens a low-pass and lifts the brightness toward the
               being-of-light moment; a ~0.1&nbsp;Hz breath swell breathes over it
               all. Master stays ≤0.2 behind a limiter.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
-              In the lineage of <span className="text-white/95">Ryoji Ikeda</span>{" "}
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
+              In the lineage of <span className="text-foreground">Ryoji Ikeda</span>{" "}
               (data / line minimalism) and{" "}
-              <span className="text-white/95">Zach Lieberman</span> (generative
+              <span className="text-foreground">Zach Lieberman</span> (generative
               vector poetry) — both living.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               Steered by device tilt; degrades to pointer-drag on desktop or when
               motion access is denied. Honors reduced-motion by slowing the
               approach and softening contrast.

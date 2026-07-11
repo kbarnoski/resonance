@@ -293,12 +293,12 @@ export default function Page() {
 
   // ── render ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL2 is not available in this browser, so the form-constant engine
             cannot run. Try a recent desktop Chrome, Edge, or Firefox.
           </p>
@@ -312,10 +312,10 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
               Resonance · Dream Lab · 1038
             </p>
-            <h1 className="mt-3 text-2xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-3 text-2xl font-semibold text-foreground sm:text-4xl">
               Form Constant
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/75">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               The geometry your visual cortex draws on the dark — tunnels,
               spirals, funnels, honeycomb lattices — sung out of sound through a
               log-polar warp. Make a noise, play music, or let it sing to itself.
@@ -330,14 +330,14 @@ export default function Page() {
               </button>
               <button
                 onClick={onStartDrone}
-                className="min-h-[44px] rounded-xl bg-white/10 px-5 py-2.5 text-base font-medium text-white/95 ring-1 ring-white/20 transition hover:bg-white/20"
+                className="min-h-[44px] rounded-xl bg-muted px-5 py-2.5 text-base font-medium text-foreground ring-1 ring-border transition hover:bg-accent"
               >
                 Play generative drone instead
               </button>
             </div>
 
             {error && (
-              <p className="mt-4 text-base text-rose-300">{error}</p>
+              <p className="mt-4 text-base text-violet-300">{error}</p>
             )}
 
             <button
@@ -349,12 +349,12 @@ export default function Page() {
           </div>
 
           {showNotes && (
-            <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/55 p-5 text-left text-base leading-relaxed text-white/75 backdrop-blur-sm">
+            <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/55 p-5 text-left text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
               <p>
                 The retina-to-V1 cortical map is approximately a complex
                 logarithm (Bressloff &amp; Cowan). So Klüver&apos;s four form
                 constants are{" "}
-                <span className="text-white/95">one</span> periodic pattern seen
+                <span className="text-foreground">one</span> periodic pattern seen
                 through that warp. We take screen UV, compute cortical
                 coordinates{" "}
                 <code className="font-mono text-violet-300">
@@ -377,16 +377,16 @@ export default function Page() {
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-between p-4">
             <div className="rounded-xl bg-black/40 px-3 py-2 backdrop-blur-sm">
-              <p className="font-mono text-sm text-white/95">
+              <p className="font-mono text-sm text-foreground">
                 Form Constant
                 <span className="ml-2 text-violet-300">
                   {mode === "mic" ? "· mic" : "· drone"}
                 </span>
               </p>
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-mono text-sm text-muted-foreground">
                 phase: <span className="text-violet-300">{phaseLabel}</span>
               </p>
-              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-white/15">
+              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-violet-400/80"
                   style={{ width: `${Math.round(progress * 100)}%` }}
@@ -398,7 +398,7 @@ export default function Page() {
               {mode === "mic" && (
                 <button
                   onClick={onStartDrone}
-                  className="min-h-[44px] rounded-xl bg-white/10 px-4 py-2.5 text-base text-white/95 ring-1 ring-white/20 transition hover:bg-white/20"
+                  className="min-h-[44px] rounded-xl bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   Add generative drone
                 </button>
@@ -422,25 +422,25 @@ export default function Page() {
               ] as const
             ).map(([name, v]) => (
               <div key={name} className="flex flex-col items-center gap-1">
-                <div className="flex h-20 w-3 items-end overflow-hidden rounded-full bg-white/10">
+                <div className="flex h-20 w-3 items-end overflow-hidden rounded-full bg-muted">
                   <div
                     className="w-full bg-violet-400/80"
                     style={{ height: `${Math.min(100, v * 140)}%` }}
                   />
                 </div>
-                <span className="font-mono text-sm text-white/55">{name}</span>
+                <span className="font-mono text-sm text-muted-foreground">{name}</span>
               </div>
             ))}
           </div>
 
           {error && (
-            <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/60 px-3 py-2 text-base text-rose-300">
+            <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/60 px-3 py-2 text-base text-violet-300">
               {error}
             </p>
           )}
 
           {showNotes && (
-            <div className="pointer-events-auto absolute bottom-16 right-4 max-w-sm rounded-2xl bg-black/65 p-5 text-base leading-relaxed text-white/75 backdrop-blur-sm">
+            <div className="pointer-events-auto absolute bottom-16 right-4 max-w-sm rounded-2xl bg-black/65 p-5 text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
               <p>
                 Cortical coordinates{" "}
                 <code className="font-mono text-violet-300">(log r, θ)</code>{" "}

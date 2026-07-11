@@ -260,24 +260,24 @@ export default function EarthBellPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#04070a]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Earth Bell</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Earth Bell</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Strike the whole planet like a bell and watch it ring — excite the
           Earth&apos;s real free-oscillation normal modes, see the globe breathe in
           the true spherical-harmonic mode shapes, and hear those hour-long
@@ -286,9 +286,9 @@ export default function EarthBellPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if you
+            <strong className="text-foreground">The question:</strong> what if you
             could <em>STRIKE</em> the whole Earth like a bell and watch it ring?
             After a great earthquake the entire planet rings for weeks in its{" "}
             <span className="text-violet-300">free oscillations</span> — discrete
@@ -296,7 +296,7 @@ export default function EarthBellPage() {
             of a mHz (the gravest, ₀S₂, has a ~54-minute period).
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The model:</strong> we take real PREM
+            <strong className="text-foreground">The model:</strong> we take real PREM
             eigenfrequencies for a handful of modes and scale them by one fixed
             factor (×315) into the audible band — ratios preserved, so the chord{" "}
             <em>is</em> the true mode spectrum. Each mode l carries a
@@ -306,21 +306,21 @@ export default function EarthBellPage() {
             football, the l=4/6 sectoral crowns, the ₀S₀ breathing.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Played:</strong> tap anywhere = a
+            <strong className="text-foreground">Played:</strong> tap anywhere = a
             virtual great earthquake <em>there</em>. Each mode is excited in
             proportion to the value of its shape at the strike point — strike a{" "}
-            <span className="text-emerald-300/95">node</span> and the mode barely
-            rings; strike an <span className="text-emerald-300/95">antinode</span>{" "}
+            <span className="text-violet-300/95">node</span> and the mode barely
+            rings; strike an <span className="text-violet-300/95">antinode</span>{" "}
             and it sings. Orbit-drag turns the planet; the mode buttons solo/mute;
             the swell keeps a soft planetary bed alive.
           </p>
           <p className="mb-2">
-            <strong className="text-amber-300/95">Not 463-terra-gamelan:</strong>{" "}
+            <strong className="text-violet-300/95">Not 463-terra-gamelan:</strong>{" "}
             that piece is a <em>passive readout</em> of real earthquake DATA ringing
             bells. This is a <em>played physical MODEL</em> of the Earth&apos;s
             eigenmodes that you perturb by striking — no data, fully offline.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: free oscillations of the Earth; Benioff, Press &amp; Smith,
             &ldquo;Excitation of the free oscillations of the Earth by
             earthquakes,&rdquo; <em>J. Geophys. Res.</em> 66 (1961); the 1960
@@ -352,13 +352,13 @@ export default function EarthBellPage() {
         )}
 
         {/* Live readout */}
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
           <div className="text-violet-300">ringing energy {(energyUI * 100).toFixed(0)}%</div>
-          <div className="text-white/60">tap globe = strike · drag = orbit</div>
+          <div className="text-muted-foreground">tap globe = strike · drag = orbit</div>
         </div>
 
         {webglFailed && (
-          <div className="absolute right-4 top-4 z-10 max-w-xs rounded bg-black/60 px-3 py-2 font-mono text-base text-rose-300 ring-1 ring-rose-400/25 backdrop-blur-sm">
+          <div className="absolute right-4 top-4 z-10 max-w-xs rounded bg-black/60 px-3 py-2 font-mono text-base text-violet-300 ring-1 ring-violet-400/25 backdrop-blur-sm">
             WebGL unavailable — showing a 2D meridian cross-section of the same
             ringing globe. Tap to strike; drag to spin.
           </div>
@@ -374,12 +374,12 @@ export default function EarthBellPage() {
               title={`${d.id} · ${d.shape} · ${modeAudioHz(d).toFixed(0)} Hz`}
               className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                 enabledUI[i]
-                  ? "bg-white/15 text-white ring-white/40"
-                  : "text-white/55 ring-white/15 hover:text-white/90"
+                  ? "bg-muted text-foreground ring-border"
+                  : "text-muted-foreground ring-border hover:text-foreground"
               }`}
             >
               {d.label}{" "}
-              <span className="text-white/55">{modeAudioHz(d).toFixed(0)}Hz</span>
+              <span className="text-muted-foreground">{modeAudioHz(d).toFixed(0)}Hz</span>
             </button>
           ))}
         </div>
@@ -391,8 +391,8 @@ export default function EarthBellPage() {
             onClick={toggleSwell}
             className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
               swell
-                ? "bg-emerald-400/20 text-emerald-300/95 ring-emerald-300/40"
-                : "text-white/60 ring-white/15 hover:text-white/90"
+                ? "bg-violet-400/20 text-violet-300/95 ring-violet-300/40"
+                : "text-muted-foreground ring-border hover:text-foreground"
             }`}
           >
             {swell ? "swell on" : "swell off"}
@@ -405,11 +405,11 @@ export default function EarthBellPage() {
             <button
               type="button"
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-cyan-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-cyan-200/40 transition hover:bg-cyan-300"
+              className="min-h-[44px] rounded-full bg-violet-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-violet-200/40 transition hover:bg-violet-300"
             >
               ▶ Begin — strike the planet
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               The globe is already ringing silently — Begin adds the sound and
               gives it a first great earthquake.
             </p>
@@ -418,7 +418,7 @@ export default function EarthBellPage() {
 
         {audioOn && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">Tap the globe to ring it again.</p>
+            <p className="text-base text-muted-foreground">Tap the globe to ring it again.</p>
           </div>
         )}
       </div>

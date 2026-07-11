@@ -259,7 +259,7 @@ export default function CarrierMeltPage() {
       : "fallback drone (recording unavailable)";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05060a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -271,7 +271,7 @@ export default function CarrierMeltPage() {
         href="/dream/1064-carrier-melt/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -279,10 +279,10 @@ export default function CarrierMeltPage() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-2xl tracking-tight text-white md:text-4xl">
+          <h1 className="font-serif text-2xl tracking-tight text-foreground md:text-4xl">
             Carrier Melt
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Karel&apos;s real piano is the carrier wave that melts the field. The
             music guides the journey; <span className="text-violet-300">your hand</span> decides
             the intensity — drag across the field to move the melt focus, and drag{" "}
@@ -292,7 +292,7 @@ export default function CarrierMeltPage() {
           {sourceKind && (
             <p className="mt-2 font-mono text-sm">
               source:{" "}
-              <span className={sourceKind === "piano" ? "text-emerald-300" : "text-amber-300"}>
+              <span className={sourceKind === "piano" ? "text-violet-300" : "text-violet-300"}>
                 {sourceLabel}
               </span>
             </p>
@@ -301,10 +301,10 @@ export default function CarrierMeltPage() {
             <p className="mt-2 text-base text-violet-300">{statusMsg}</p>
           )}
           {phase === "error" && statusMsg && (
-            <p className="mt-2 text-base text-rose-300">{statusMsg}</p>
+            <p className="mt-2 text-base text-violet-300">{statusMsg}</p>
           )}
           {reducedMotion && (
-            <p className="mt-2 text-base text-white/75">
+            <p className="mt-2 text-base text-muted-foreground">
               reduced-motion respected — the melt drifts gently.
             </p>
           )}
@@ -331,7 +331,7 @@ export default function CarrierMeltPage() {
                 setPhase("idle");
                 setStatusMsg(null);
               }}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/20 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/30"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/20 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/30"
             >
               Try again
             </button>
@@ -341,7 +341,7 @@ export default function CarrierMeltPage() {
         {/* Footer: live readout + transport */}
         {phase === "ready" && (
           <footer className="pointer-events-auto flex flex-col gap-3">
-            <p className="max-w-2xl text-base text-white/75">
+            <p className="max-w-2xl text-base text-muted-foreground">
               Hold still for calm cosmic drift; drag fast and frantic for peak
               melt. Bass swells the flow, mids sharpen the trails, highs spark the
               fine ripples — your speed sets the gain.
@@ -349,15 +349,15 @@ export default function CarrierMeltPage() {
             <div className="flex flex-wrap items-center gap-4">
               <button
                 onClick={togglePlay}
-                className="min-h-[44px] rounded-md bg-white/10 px-4 py-2.5 text-base text-white/95 hover:bg-white/15"
+                className="min-h-[44px] rounded-md bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 {playing ? "pause" : "play"}
               </button>
               {/* Live driver meters */}
-              <div className="flex items-center gap-3 font-mono text-sm text-white/75">
-                <Meter label="bass" v={meter.bass} hue="text-rose-300" />
-                <Meter label="mid" v={meter.mid} hue="text-emerald-300" />
-                <Meter label="high" v={meter.high} hue="text-sky-300" />
+              <div className="flex items-center gap-3 font-mono text-sm text-muted-foreground">
+                <Meter label="bass" v={meter.bass} hue="text-violet-300" />
+                <Meter label="mid" v={meter.mid} hue="text-violet-300" />
+                <Meter label="high" v={meter.high} hue="text-violet-300" />
                 <Meter label="warp" v={meter.warp} hue="text-violet-300" />
               </div>
             </div>
@@ -372,9 +372,9 @@ function Meter({ label, v, hue }: { label: string; v: number; hue: string }) {
   return (
     <span className="flex items-center gap-1.5">
       <span className={hue}>{label}</span>
-      <span className="inline-block h-1.5 w-16 overflow-hidden rounded-full bg-white/10">
+      <span className="inline-block h-1.5 w-16 overflow-hidden rounded-full bg-muted">
         <span
-          className="block h-full rounded-full bg-white/70"
+          className="block h-full rounded-full bg-muted"
           style={{ width: `${Math.round(Math.min(1, v) * 100)}%` }}
         />
       </span>

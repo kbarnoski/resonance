@@ -139,7 +139,7 @@ export default function TroxlerVoidPage() {
   }, [started]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {/* soft central fixation glyph — anchors the gaze so the periphery fades */}
@@ -157,10 +157,10 @@ export default function TroxlerVoidPage() {
 
       {/* corner UI */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="text-2xl font-light tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-light tracking-tight text-foreground sm:text-3xl">
           Troxler Void
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           Hold perfectly still and the screen dissolves into a uniform void; move,
           and the world re-forms. A drug-free staging of boundary-dissolution built
           on your own visual system — Troxler fading inside a Ganzfeld field.
@@ -170,49 +170,49 @@ export default function TroxlerVoidPage() {
           {!started && (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-white/95 px-4 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               Begin — sound on
             </button>
           )}
           <button
             onClick={() => setNotesOpen((v) => !v)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur transition hover:bg-black/60"
+            className="min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition hover:bg-black/60"
           >
             {notesOpen ? "Close notes" : "Read the design notes"}
           </button>
         </div>
 
         {!started ? (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             Rest your eyes on the centre dot. The periphery is already drifting and
             self-fading — press Begin to add the drone.
           </p>
         ) : (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             Softly fix the centre dot and be still — the edges melt toward the void
             and the drone thins. The smallest movement re-blooms both.
           </p>
         )}
         {mode === "canvas2d" && (
-          <p className="mt-2 text-base text-white/55">
+          <p className="mt-2 text-base text-muted-foreground">
             Running the Canvas2D fallback (WebGL2 unavailable).
           </p>
         )}
-        {error && <p className="mt-2 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-2 text-base text-violet-300">{error}</p>}
       </div>
 
       {notesOpen && (
-        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[72vh] overflow-y-auto border-t border-white/10 bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
-          <h2 className="text-xl font-light text-white/95">Design notes</h2>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[72vh] overflow-y-auto border-t border-border bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
+          <h2 className="text-xl font-light text-foreground">Design notes</h2>
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             The screen is a <em>Ganzfeld</em> — a uniform, structureless field. Under
             steady fixation, the visual system stops reporting unchanging input:
             the periphery literally fades from awareness. This is{" "}
             <em>Troxler fading</em>, described by Ignác Troxler in 1804; the whole-
             field version was studied by Wolfgang Metzger (the Ganzfeld, 1930).
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Each region of the screen carries an <em>adaptation level</em> that rises
             the longer it goes without change or attention — faster in the periphery
             than at the fixated centre. As it rises, that region&apos;s contrast and
@@ -221,12 +221,12 @@ export default function TroxlerVoidPage() {
             drone dissolves in lock-step: partials drop out, brightness closes, and
             the reverb tail opens as the field empties.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             This is a real, robust perceptual phenomenon, not a medical claim — the
             calmer and stiller you are, the more the field disappears. No strobe, no
             flash; only slow, sub-Hz drift.
           </p>
-          <p className="mt-3 text-base text-white/55">
+          <p className="mt-3 text-base text-muted-foreground">
             See README.md in this prototype&apos;s folder for references and honest
             caveats.
           </p>

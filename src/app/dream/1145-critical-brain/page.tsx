@@ -24,9 +24,9 @@ function heatOf(t: number): number {
   return c * c;
 }
 function phaseLabel(t: number): { name: string; tone: string } {
-  if (t < TC - 0.35) return { name: "ordered · frozen", tone: "text-emerald-300/95" };
+  if (t < TC - 0.35) return { name: "ordered · frozen", tone: "text-violet-300/95" };
   if (t <= TC + 0.35) return { name: "CRITICAL · edge of chaos", tone: "text-violet-300" };
-  return { name: "overload · hot noise", tone: "text-rose-300" };
+  return { name: "overload · hot noise", tone: "text-violet-300" };
 }
 
 export default function CriticalBrainPage() {
@@ -175,14 +175,14 @@ export default function CriticalBrainPage() {
   const phase = phaseLabel(tempUI);
 
   return (
-    <main className="min-h-screen bg-[#050307] text-white">
+    <main className="min-h-screen bg-[#050307] text-foreground">
       <div className="mx-auto max-w-6xl px-5 py-8">
         <header className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
               Critical Brain
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/75">
+            <p className="mt-1 max-w-2xl text-base text-muted-foreground">
               A drug-free psychedelic instrument built on a real 2D Ising model.
               Drag a &ldquo;consciousness temperature&rdquo; through the critical
               point Tc&nbsp;&approx;&nbsp;2.269 and feel order melt into the
@@ -192,7 +192,7 @@ export default function CriticalBrainPage() {
           <div className="flex flex-col items-end gap-2 text-right">
             <Link
               href="/dream"
-              className="rounded-full border border-white/15 px-4 py-2.5 text-sm text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white"
+              className="rounded-full border border-border px-4 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               ↑ all prototypes
             </Link>
@@ -206,7 +206,7 @@ export default function CriticalBrainPage() {
         </header>
 
         {showNotes && (
-          <div className="mb-6 rounded-xl border border-white/10 bg-black/40 p-5 text-base leading-relaxed text-white/80">
+          <div className="mb-6 rounded-xl border border-border bg-black/40 p-5 text-base leading-relaxed text-foreground">
             <p className="mb-2">
               The lattice on screen is a genuine{" "}
               <span className="text-violet-300">2D Ising model</span> run as a{" "}
@@ -220,7 +220,7 @@ export default function CriticalBrainPage() {
               neighbouring spins never change at once — the correct way to
               parallelise Metropolis.
             </p>
-            <p className="mb-2 text-white/75">
+            <p className="mb-2 text-muted-foreground">
               At the critical temperature (Onsager&rsquo;s 1944 exact solution:{" "}
               <span className="font-mono">Tc = 2/ln(1+&radic;2) &approx; 2.269</span>)
               the correlation length diverges and scale-free domains of every
@@ -229,7 +229,7 @@ export default function CriticalBrainPage() {
               (overload). The magnetization, read back from the GPU, drives the
               synth.
             </p>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               This is a metaphor-made-literal for near-critical brain dynamics —
               not a claim that the brain <em>is</em> an Ising model. It nods to
               the Entropic Brain hypothesis (Carhart-Harris), Toker et&nbsp;al.
@@ -243,8 +243,8 @@ export default function CriticalBrainPage() {
         )}
 
         {webglFailed ? (
-          <div className="rounded-2xl border border-rose-400/30 bg-rose-950/20 p-8 text-center">
-            <p className="text-base text-rose-300">
+          <div className="rounded-2xl border border-violet-400/30 bg-violet-950/20 p-8 text-center">
+            <p className="text-base text-violet-300">
               WebGL2 is unavailable in this browser, so the GPU lattice can&rsquo;t
               run. Try a recent Chrome, Firefox, or Safari with hardware
               acceleration enabled.
@@ -252,7 +252,7 @@ export default function CriticalBrainPage() {
           </div>
         ) : (
           <>
-            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-black">
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-black">
               <canvas
                 ref={canvasRef}
                 onPointerDown={onPointerDown}
@@ -263,29 +263,29 @@ export default function CriticalBrainPage() {
                 className="block h-[62vh] w-full touch-none cursor-ns-resize"
               />
               <div className="pointer-events-none absolute left-3 top-3 rounded-md bg-black/60 px-3 py-1.5 text-sm">
-                <span className="text-white/55">phase </span>
+                <span className="text-muted-foreground">phase </span>
                 <span className={phase.tone}>{phase.name}</span>
               </div>
-              <div className="pointer-events-none absolute right-3 top-3 rounded-md bg-black/60 px-3 py-1.5 font-mono text-sm text-white/80">
+              <div className="pointer-events-none absolute right-3 top-3 rounded-md bg-black/60 px-3 py-1.5 font-mono text-sm text-foreground">
                 T {tempUI.toFixed(3)} · |M| {obsUI.mag.toFixed(3)}
               </div>
               {!started && (
-                <div className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-black/60 px-3 py-1.5 text-sm text-white/75">
+                <div className="pointer-events-none absolute bottom-3 left-3 rounded-md bg-black/60 px-3 py-1.5 text-sm text-muted-foreground">
                   drag up/down on the lattice · press Begin for sound
                 </div>
               )}
             </div>
 
             {/* temperature slider — the primary control, also draggable on canvas */}
-            <div className="mt-4 rounded-xl border border-white/10 bg-black/30 p-4">
+            <div className="mt-4 rounded-xl border border-border bg-black/30 p-4">
               <div className="flex items-baseline justify-between">
                 <label
                   htmlFor="temp"
-                  className="text-sm uppercase tracking-widest text-white/55"
+                  className="text-sm uppercase tracking-widest text-muted-foreground"
                 >
                   consciousness temperature
                 </label>
-                <span className="font-mono text-base text-white/80">
+                <span className="font-mono text-base text-foreground">
                   T = {tempUI.toFixed(3)}
                 </span>
               </div>
@@ -298,7 +298,7 @@ export default function CriticalBrainPage() {
                   step={0.001}
                   value={tempUI}
                   onChange={(e) => setTemp(parseFloat(e.target.value))}
-                  className="w-full accent-fuchsia-400"
+                  className="w-full accent-violet-400"
                   aria-label="consciousness temperature"
                 />
                 {/* Tc marker */}
@@ -307,65 +307,65 @@ export default function CriticalBrainPage() {
                   style={{ left: `${((TC - T_MIN) / (T_MAX - T_MIN)) * 100}%` }}
                 />
               </div>
-              <div className="mt-1 flex justify-between text-sm text-white/55">
-                <span className="text-emerald-300/95">cold · ordered</span>
+              <div className="mt-1 flex justify-between text-sm text-muted-foreground">
+                <span className="text-violet-300/95">cold · ordered</span>
                 <span className="text-violet-300">Tc ≈ 2.269</span>
-                <span className="text-rose-300">hot · noise</span>
+                <span className="text-violet-300">hot · noise</span>
               </div>
             </div>
 
             {/* transport + observables */}
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
-              <div className="rounded-xl border border-white/10 bg-black/30 p-4">
-                <div className="text-sm uppercase tracking-widest text-white/55">
+              <div className="rounded-xl border border-border bg-black/30 p-4">
+                <div className="text-sm uppercase tracking-widest text-muted-foreground">
                   Sound
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {!started ? (
                     <button
                       onClick={handleBegin}
-                      className="min-h-[44px] rounded-full bg-fuchsia-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-fuchsia-400"
+                      className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-violet-400"
                     >
                       ▶ Begin
                     </button>
                   ) : (
                     <button
                       onClick={handleStop}
-                      className="min-h-[44px] rounded-full border border-rose-400/50 px-6 py-2.5 text-base font-medium text-rose-300 transition-colors hover:bg-rose-500/10"
+                      className="min-h-[44px] rounded-full border border-violet-400/50 px-6 py-2.5 text-base font-medium text-violet-300 transition-colors hover:bg-violet-500/10"
                     >
                       ■ Stop (audio + motion)
                     </button>
                   )}
                   <button
                     onClick={handleReset}
-                    className="min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/75 transition-colors hover:bg-white/[0.06] hover:text-white"
+                    className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
                   >
                     ↻ Reseed lattice
                   </button>
                 </div>
                 {noAudio && (
-                  <p className="mt-3 text-base text-rose-300">
+                  <p className="mt-3 text-base text-violet-300">
                     Web Audio is unavailable — the visuals still run, but there is
                     no sound in this browser.
                   </p>
                 )}
-                <p className="mt-3 text-sm text-white/55">
+                <p className="mt-3 text-sm text-muted-foreground">
                   Headphones recommended. Audio is limited for your ears and only
                   starts on your gesture.
                 </p>
               </div>
 
-              <div className="rounded-xl border border-white/10 bg-black/30 p-4">
-                <div className="text-sm uppercase tracking-widest text-white/55">
+              <div className="rounded-xl border border-border bg-black/30 p-4">
+                <div className="text-sm uppercase tracking-widest text-muted-foreground">
                   Order parameters (read from the GPU)
                 </div>
-                <div className="mt-2 font-mono text-base text-white/80">
+                <div className="mt-2 font-mono text-base text-foreground">
                   |magnetization| {obsUI.mag.toFixed(3)}
                 </div>
-                <div className="font-mono text-base text-white/80">
+                <div className="font-mono text-base text-foreground">
                   neighbour agreement {obsUI.order.toFixed(3)}
                 </div>
-                <p className="mt-3 text-base text-white/75">
+                <p className="mt-3 text-base text-muted-foreground">
                   Drag up to heat the lattice. Watch |M| collapse from ~1
                   (one frozen domain) toward 0 as you cross{" "}
                   <span className="text-violet-300">Tc</span> — the correlation

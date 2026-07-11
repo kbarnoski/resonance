@@ -213,7 +213,7 @@ export default function SkinMembranePage() {
   );
 
   return (
-    <main className="relative h-[100dvh] w-screen overflow-hidden bg-[#08061a] text-white">
+    <main className="relative h-[100dvh] w-screen overflow-hidden bg-[#08061a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -225,30 +225,30 @@ export default function SkinMembranePage() {
 
       {/* Title + description + awaken button overlay. */}
       <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-3 p-6 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
           Skin Membrane
         </h1>
-        <p className="max-w-xl text-base text-white/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+        <p className="max-w-xl text-base text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
           Press, pull and tear a living skin of sound. Its physical tension{" "}
-          <span className="text-white/95">is</span> the pitch — bend the membrane and the tone
+          <span className="text-foreground">is</span> the pitch — bend the membrane and the tone
           glides.
         </p>
         {phase !== "live" && (
           <button
             type="button"
             onClick={awaken}
-            className="pointer-events-auto mt-1 min-h-[44px] rounded-full border border-fuchsia-300/40 bg-fuchsia-500/15 px-6 py-2.5 font-mono text-base text-white transition hover:bg-fuchsia-500/30 active:scale-95"
+            className="pointer-events-auto mt-1 min-h-[44px] rounded-full border border-violet-300/40 bg-violet-500/15 px-6 py-2.5 font-mono text-base text-foreground transition hover:bg-violet-500/30 active:scale-95"
           >
             Awaken the skin
           </button>
         )}
         {phase === "live" && (
-          <p className="font-mono text-base text-white/75 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+          <p className="font-mono text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
             drag to press · flick to send a wave · overstretch to tear
           </p>
         )}
         {notice && (
-          <p className="pointer-events-auto max-w-md font-mono text-base text-rose-300 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+          <p className="pointer-events-auto max-w-md font-mono text-base text-violet-300 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
             {notice}
           </p>
         )}
@@ -259,19 +259,19 @@ export default function SkinMembranePage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="pointer-events-auto min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 font-mono text-base text-white/80 transition hover:text-white"
+          className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-base text-foreground transition hover:text-foreground"
         >
           {showNotes ? "Close notes" : "Read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 max-w-sm rounded-2xl border border-white/10 bg-black/70 p-5 text-left backdrop-blur">
-            <p className="text-base text-white/90">
+          <div className="mt-3 max-w-sm rounded-2xl border border-border bg-black/70 p-5 text-left backdrop-blur">
+            <p className="text-base text-foreground">
               A 52×52 mass-spring drumhead with structural, shear and bend springs and a pinned
               boundary, integrated with symplectic Euler. Mean spring stretch drives a
               Bessel-zero modal resonator bank — tension is pitch. Springs that overstretch snap
               into hot rupture rims.
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Full notes &amp; references in{" "}
               <a
                 href="https://github.com/"
@@ -279,7 +279,7 @@ export default function SkinMembranePage() {
                   e.preventDefault();
                   setShowNotes(true);
                 }}
-                className="font-mono text-fuchsia-300 underline decoration-dotted"
+                className="font-mono text-violet-300 underline decoration-dotted"
               >
                 README.md
               </a>{" "}

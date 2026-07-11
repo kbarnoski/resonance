@@ -385,7 +385,7 @@ export default function LightningOrganPage() {
   const tracking = inputMode === "hands" && handsFrameRef.current.present;
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#050308] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#050308] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -394,7 +394,7 @@ export default function LightningOrganPage() {
 
       {renderMode === "none" && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             Your browser could not provide WebGL2 or a 2D canvas, so the
             lightning organ cannot render here. Try a recent Chrome, Edge, or
             Firefox on a machine with GPU access.
@@ -404,10 +404,10 @@ export default function LightningOrganPage() {
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
           Lightning Organ
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           Your two hands are electrodes. Every branch of a real
           dielectric-breakdown discharge that cracks between them rings a note.
         </p>
@@ -419,8 +419,8 @@ export default function LightningOrganPage() {
           className={
             "rounded-full border px-3 py-1.5 font-mono text-sm " +
             (tracking
-              ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-200"
-              : "border-amber-400/40 bg-amber-400/10 text-amber-200")
+              ? "border-violet-400/40 bg-violet-400/10 text-violet-200"
+              : "border-violet-400/40 bg-violet-400/10 text-violet-200")
           }
         >
           {tracking
@@ -435,7 +435,7 @@ export default function LightningOrganPage() {
           {!soundOn && (
             <button
               onClick={ensureAudio}
-              className="min-h-[44px] rounded-full border border-white/20 bg-white/[0.06] px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/[0.12]"
+              className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               ▶ Click for sound
             </button>
@@ -450,15 +450,15 @@ export default function LightningOrganPage() {
           )}
           <button
             onClick={() => setFlickerOn((f) => !f)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-white/[0.06] px-4 py-2.5 text-base text-white/95 transition-colors hover:bg-white/[0.12]"
+            className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             {flickerOn ? "Steady glow" : "Slow pulse (≤3 Hz)"}
           </button>
         </div>
 
         {/* η slider — the signature control */}
-        <label className="flex w-full max-w-md items-center gap-3 rounded-2xl border border-white/10 bg-black/50 px-4 py-3 backdrop-blur-sm">
-          <span className="whitespace-nowrap font-mono text-base text-white/95">
+        <label className="flex w-full max-w-md items-center gap-3 rounded-2xl border border-border bg-black/50 px-4 py-3 backdrop-blur-sm">
+          <span className="whitespace-nowrap font-mono text-base text-foreground">
             η {eta.toFixed(1)}
           </span>
           <input
@@ -468,39 +468,39 @@ export default function LightningOrganPage() {
             step={0.1}
             value={eta}
             onChange={(e) => setEta(parseFloat(e.target.value))}
-            className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-violet-400"
+            className="h-1.5 w-full cursor-pointer appearance-none rounded-full bg-muted accent-violet-400"
           />
-          <span className="whitespace-nowrap text-sm text-white/75">
+          <span className="whitespace-nowrap text-sm text-muted-foreground">
             bushy → forked
           </span>
         </label>
 
         {camMsg && (
-          <p className="max-w-md text-center text-sm text-rose-300">{camMsg}</p>
+          <p className="max-w-md text-center text-sm text-violet-300">{camMsg}</p>
         )}
       </div>
 
       {/* design-notes link */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute bottom-4 right-5 font-mono text-sm text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white sm:right-7"
+        className="absolute bottom-4 right-5 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground sm:right-7"
       >
         Read the design notes
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 p-6">
-          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-white/15 bg-[#0a0712] p-6 text-white/90">
+          <div className="max-h-[80vh] max-w-2xl overflow-y-auto rounded-2xl border border-border bg-[#0a0712] p-6 text-foreground">
             <div className="mb-3 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-xl text-white">Design notes</h2>
+              <h2 className="font-serif text-xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full border border-white/20 px-4 py-2 text-base text-white/95 hover:bg-white/10"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>
             </div>
-            <div className="space-y-3 text-base leading-relaxed text-white/85">
+            <div className="space-y-3 text-base leading-relaxed text-foreground">
               <p>
                 The discharge is grown with the{" "}
                 <strong>Dielectric Breakdown Model</strong> (Niemeyer,
@@ -525,7 +525,7 @@ export default function LightningOrganPage() {
                 keypoints/hand): palm centroids set the terminals, and hand
                 separation + openness set the field voltage.
               </p>
-              <p className="text-sm text-white/70">
+              <p className="text-sm text-muted-foreground">
                 Rendered in hand-written WebGL2 with an accumulation-FBO
                 afterglow (never a full-frame strobe); any luminance pulse is
                 gated ≤ 3 Hz through the shared safe-flicker engine.

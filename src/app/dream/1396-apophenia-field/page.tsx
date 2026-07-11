@@ -60,21 +60,21 @@ function renderNotes(md: string) {
     }
     if (line.startsWith("# ")) {
       return (
-        <h1 key={i} className="text-2xl font-semibold text-white">
+        <h1 key={i} className="text-2xl font-semibold text-foreground">
           {line.slice(2)}
         </h1>
       );
     }
     if (line.startsWith("- ")) {
       return (
-        <li key={i} className="ml-5 list-disc text-base leading-relaxed text-white/80">
+        <li key={i} className="ml-5 list-disc text-base leading-relaxed text-foreground">
           {renderInline(line.slice(2))}
         </li>
       );
     }
     if (line.trim() === "") return <div key={i} className="h-2" />;
     return (
-      <p key={i} className="text-base leading-relaxed text-white/80">
+      <p key={i} className="text-base leading-relaxed text-foreground">
         {renderInline(line)}
       </p>
     );
@@ -87,14 +87,14 @@ function renderInline(text: string) {
   return parts.map((p, i) => {
     if (p.startsWith("**") && p.endsWith("**")) {
       return (
-        <strong key={i} className="font-semibold text-white">
+        <strong key={i} className="font-semibold text-foreground">
           {p.slice(2, -2)}
         </strong>
       );
     }
     if (p.startsWith("`") && p.endsWith("`")) {
       return (
-        <code key={i} className="rounded bg-white/10 px-1 text-[0.95em] text-violet-200">
+        <code key={i} className="rounded bg-muted px-1 text-[0.95em] text-violet-200">
           {p.slice(1, -1)}
         </code>
       );
@@ -488,13 +488,13 @@ export default function ApopheniaFieldPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#07060c] px-4 py-6 text-white sm:px-6">
+    <main className="min-h-screen bg-[#07060c] px-4 py-6 text-foreground sm:px-6">
       <div className="mx-auto max-w-3xl">
         <header className="mb-4">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Apophenia Field
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             An instrument of attention: where you dwell, latent patterns
             crystallise out of pure noise and sound themselves.
           </p>
@@ -617,14 +617,14 @@ export default function ApopheniaFieldPage() {
           {/* pre-Begin overlay */}
           {phase === "idle" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/45 backdrop-blur-[1px]">
-              <p className="max-w-sm px-6 text-center text-base text-white/85">
+              <p className="max-w-sm px-6 text-center text-base text-foreground">
                 The field is pure noise — nothing is drawn yet. Begin, then let
                 your attention find the signs hiding in it.
               </p>
               <button
                 type="button"
                 onClick={begin}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
               >
                 Begin
               </button>
@@ -638,7 +638,7 @@ export default function ApopheniaFieldPage() {
                 signs recognised · {signCount}
               </span>
               {idleHint && (
-                <span className="rounded-full bg-black/60 px-3 py-1 text-sm text-amber-300/95">
+                <span className="rounded-full bg-black/60 px-3 py-1 text-sm text-violet-300/95">
                   hunting on its own — move to take over
                 </span>
               )}
@@ -648,30 +648,30 @@ export default function ApopheniaFieldPage() {
 
         {/* controls */}
         <div className="mt-4 flex flex-wrap items-center gap-3">
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Pointer or touch to aim; keys{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-200">A…;</code>{" "}
-            sweep, arrows nudge, <span className="text-white/90">space</span>{" "}
-            recognises, <span className="text-white/90">X</span> lets one go.
+            <code className="rounded bg-muted px-1 text-violet-200">A…;</code>{" "}
+            sweep, arrows nudge, <span className="text-foreground">space</span>{" "}
+            recognises, <span className="text-foreground">X</span> lets one go.
           </p>
           <button
             type="button"
             onClick={() => setNotesOpen((v) => !v)}
-            className="ml-auto min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/10"
+            className="ml-auto min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             {notesOpen ? "Hide notes" : "Design notes"}
           </button>
         </div>
 
         {reduced && (
-          <p className="mt-3 text-base text-amber-300/95">
+          <p className="mt-3 text-base text-violet-300/95">
             Reduced-motion is on — the field drifts gently and signs bloom softly.
           </p>
         )}
-        {error && <p className="mt-3 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-3 text-base text-violet-300">{error}</p>}
 
         {notesOpen && (
-          <div className="mt-4 max-h-[60vh] overflow-y-auto rounded-xl border border-white/10 bg-white/[0.03] p-5">
+          <div className="mt-4 max-h-[60vh] overflow-y-auto rounded-xl border border-border bg-muted p-5">
             {renderNotes(NOTES_MD)}
           </div>
         )}

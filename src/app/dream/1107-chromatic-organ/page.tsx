@@ -320,8 +320,8 @@ export default function Page() {
 
       {/* Title + description chip (dark translucent for contrast on daylight) */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-md rounded-2xl bg-neutral-900/70 px-4 py-3 backdrop-blur-sm">
-        <h1 className="font-serif text-2xl text-white">Chromatic Organ</h1>
-        <p className="mt-1 text-base text-white/95">
+        <h1 className="font-serif text-2xl text-foreground">Chromatic Organ</h1>
+        <p className="mt-1 text-base text-foreground">
           Play notes and <em>see</em> the music — every pitch bursts into its
           Scriabin colour; chords interfere into shimmering moiré, in bright
           daylight.
@@ -330,7 +330,7 @@ export default function Page() {
 
       {/* Live legend / status */}
       {phase === "running" && (
-        <div className="absolute bottom-4 left-4 z-10 max-w-lg rounded-2xl bg-neutral-900/70 px-4 py-3 text-white backdrop-blur-sm">
+        <div className="absolute bottom-4 left-4 z-10 max-w-lg rounded-2xl bg-neutral-900/70 px-4 py-3 text-foreground backdrop-blur-sm">
           <div className="flex flex-wrap items-center gap-1.5">
             {WHITE_LEGEND.map(([k, note]) => (
               <span
@@ -338,12 +338,12 @@ export default function Page() {
                 className={
                   "inline-flex min-w-[34px] items-center justify-center rounded-md px-2 py-1 text-base font-medium " +
                   (pressed.has(k.toLowerCase())
-                    ? "bg-white text-neutral-900"
-                    : "bg-white/15 text-white")
+                    ? "bg-card text-neutral-900"
+                    : "bg-muted text-foreground")
                 }
               >
                 {k}
-                <span className="ml-1 text-sm text-white/70">{note}</span>
+                <span className="ml-1 text-sm text-muted-foreground">{note}</span>
               </span>
             ))}
           </div>
@@ -354,16 +354,16 @@ export default function Page() {
                 className={
                   "inline-flex min-w-[34px] items-center justify-center rounded-md px-2 py-1 text-base font-medium " +
                   (pressed.has(k.toLowerCase())
-                    ? "bg-white text-neutral-900"
-                    : "bg-white/10 text-white/85")
+                    ? "bg-card text-neutral-900"
+                    : "bg-muted text-foreground")
                 }
               >
                 {k}
-                <span className="ml-1 text-sm text-white/70">{note}</span>
+                <span className="ml-1 text-sm text-muted-foreground">{note}</span>
               </span>
             ))}
           </div>
-          <p className="mt-2 text-sm text-white/90">
+          <p className="mt-2 text-sm text-foreground">
             <span className="font-medium">Z</span> / <span className="font-medium">X</span> shift octave ·{" "}
             {midiState === "ready"
               ? "MIDI connected"
@@ -386,7 +386,7 @@ export default function Page() {
             lumières. Bring a MIDI keyboard, or play the letter keys.
           </p>
           {phase === "unsupported" ? (
-            <div className="rounded-xl bg-neutral-900/80 px-4 py-3 text-base text-rose-300">
+            <div className="rounded-xl bg-neutral-900/80 px-4 py-3 text-base text-violet-300">
               WebGL2 isn&apos;t available in this browser, so the color-organ
               can&apos;t render. Try a recent Chrome, Edge, or Firefox.
             </div>
@@ -394,7 +394,7 @@ export default function Page() {
             <button
               type="button"
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-neutral-900 px-8 py-2.5 text-xl font-medium text-white shadow-lg transition hover:bg-neutral-800 active:scale-95"
+              className="min-h-[44px] rounded-full bg-neutral-900 px-8 py-2.5 text-xl font-medium text-foreground shadow-lg transition hover:bg-neutral-800 active:scale-95"
             >
               ▶ Play / Start
             </button>
@@ -406,7 +406,7 @@ export default function Page() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full bg-neutral-900/70 px-4 py-2.5 text-base text-white backdrop-blur-sm transition hover:bg-neutral-900/85"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full bg-neutral-900/70 px-4 py-2.5 text-base text-foreground backdrop-blur-sm transition hover:bg-neutral-900/85"
       >
         Design notes
       </button>
@@ -419,7 +419,7 @@ export default function Page() {
               <button
                 type="button"
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full bg-neutral-900 px-4 py-2.5 text-base text-white"
+                className="min-h-[44px] rounded-full bg-neutral-900 px-4 py-2.5 text-base text-foreground"
               >
                 Close
               </button>

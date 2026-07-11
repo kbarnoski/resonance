@@ -445,15 +445,15 @@ export default function PulseLockPage() {
   const alignPct = Math.round(readout.align * 100);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#140a0c] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#140a0c] text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {/* header + controls */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           Pulse · Lock
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           Two people, one screen. Tap your own pulse on your side — and feel your
           two rhythms <em>fall into sync</em> as the piece blooms into consonance.
         </p>
@@ -462,68 +462,68 @@ export default function PulseLockPage() {
           {phase === "idle" && (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-rose-500/20 px-4 py-2.5 text-base font-medium text-rose-300 backdrop-blur transition hover:bg-rose-500/30"
+              className="min-h-[44px] rounded-full bg-violet-500/20 px-4 py-2.5 text-base font-medium text-violet-300 backdrop-blur transition hover:bg-violet-500/30"
             >
               Begin
             </button>
           )}
           <button
             onClick={() => setNotesOpen((v) => !v)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/30 px-4 py-2.5 text-base text-white/75 backdrop-blur transition hover:bg-black/50"
+            className="min-h-[44px] rounded-full border border-border bg-black/30 px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition hover:bg-black/50"
           >
             {notesOpen ? "close notes" : "Read the design notes"}
           </button>
         </div>
 
         {phase === "idle" && (
-          <p className="mt-3 text-base text-white/75">
+          <p className="mt-3 text-base text-muted-foreground">
             tap to begin — sound and visuals start together
           </p>
         )}
         {phase === "running" && (
           <>
-            <p className="mt-3 text-base text-white/75">
-              left half or <span className="text-rose-300">F</span> = you · right
-              half or <span className="text-amber-300">J</span> = them
+            <p className="mt-3 text-base text-muted-foreground">
+              left half or <span className="text-violet-300">F</span> = you · right
+              half or <span className="text-violet-300">J</span> = them
             </p>
             {readout.source === "ghost-partner" && (
-              <p className="mt-1 text-base text-white/55">
+              <p className="mt-1 text-base text-muted-foreground">
                 better with two — a ghost partner is holding the other side
               </p>
             )}
           </>
         )}
-        {error && <p className="mt-2 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-2 text-base text-violet-300">{error}</p>}
       </div>
 
       {/* live status readout */}
       {phase === "running" && (
-        <div className="pointer-events-none fixed right-4 top-4 z-30 rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-right backdrop-blur">
-          <div className="text-base tabular-nums text-white/95">
-            <span className="text-rose-300">{readout.bpmA}</span>
-            <span className="text-white/55"> / </span>
-            <span className="text-amber-300">{readout.bpmB}</span>
-            <span className="text-white/55"> bpm</span>
+        <div className="pointer-events-none fixed right-4 top-4 z-30 rounded-2xl border border-border bg-black/40 px-4 py-3 text-right backdrop-blur">
+          <div className="text-base tabular-nums text-foreground">
+            <span className="text-violet-300">{readout.bpmA}</span>
+            <span className="text-muted-foreground"> / </span>
+            <span className="text-violet-300">{readout.bpmB}</span>
+            <span className="text-muted-foreground"> bpm</span>
           </div>
-          <div className="mt-1 text-base tabular-nums text-white/75">
+          <div className="mt-1 text-base tabular-nums text-muted-foreground">
             phase-lock {alignPct}%
           </div>
-          <div className="mt-1 text-base text-white/55">{readout.source}</div>
+          <div className="mt-1 text-base text-muted-foreground">{readout.source}</div>
         </div>
       )}
 
       {/* design notes */}
       {notesOpen && (
-        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-white/10 bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:bottom-4 sm:top-auto sm:max-w-md sm:rounded-2xl sm:border">
-          <h2 className="text-xl text-white/95">Design notes</h2>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-border bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:bottom-4 sm:top-auto sm:max-w-md sm:rounded-2xl sm:border">
+          <h2 className="text-xl text-foreground">Design notes</h2>
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             Each person is a phase oscillator with a natural frequency ω set by how
             fast they tap. A coupling term <em>K·sin(θ₂ − θ₁)</em> — the two-body{" "}
             <em>Kuramoto model</em> — gently pulls the two phases together. When the
             tempos are close enough, the pair <em>entrains</em>: the phase
             difference collapses and they phase-lock.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             The visuals and sound share that one state. Two warm lobes (rose · amber)
             orbit on their own phases and fuse into one symmetric bloom as they lock,
             with a brightening filament between them. The bell voices sit on a shared
@@ -531,11 +531,11 @@ export default function PulseLockPage() {
             its detune collapsing from a beating shimmer into a fused unison, while
             reverb and brightness open.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Alone? A deterministic seeded ghost partner taps a near-miss tempo on the
             other side, so you can still watch and hear the two drift toward lock.
           </p>
-          <p className="mt-3 text-base text-white/55">
+          <p className="mt-3 text-base text-muted-foreground">
             see README.md in this prototype&apos;s folder for full references.
           </p>
         </div>

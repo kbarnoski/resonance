@@ -283,7 +283,7 @@ export default function NdeTunnelPage() {
   }, [onOrient]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       {/* full-screen WebGL2 raymarch */}
       <canvas
         ref={canvasRef}
@@ -292,7 +292,7 @@ export default function NdeTunnelPage() {
 
       {noGL && (
         <div className="fixed inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This piece needs WebGL2, which is not available in your browser.
             The near-death tunnel cannot be raymarched here — try a recent
             desktop Chrome, Firefox, or Safari.
@@ -302,10 +302,10 @@ export default function NdeTunnelPage() {
 
       {/* corner UI */}
       <div className="fixed left-0 top-0 z-30 max-w-sm p-5 sm:p-7">
-        <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
           NDE Tunnel
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           A drug-free raymarched descent down an endless wormhole toward the
           being of light — leaving the body, drifting the void, the gamma
           clarity-snap, the soft return. It plays itself; loops forever.
@@ -315,7 +315,7 @@ export default function NdeTunnelPage() {
           {phase !== "running" && (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               {phase === "paused" ? "Resume" : "Start"}
             </button>
@@ -323,7 +323,7 @@ export default function NdeTunnelPage() {
           {phase === "running" && (
             <button
               onClick={handlePause}
-              className="min-h-[44px] rounded-full border border-white/25 bg-black/50 px-6 py-2.5 text-base font-medium text-white/95 backdrop-blur transition hover:bg-black/70"
+              className="min-h-[44px] rounded-full border border-border bg-black/50 px-6 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-black/70"
             >
               Pause
             </button>

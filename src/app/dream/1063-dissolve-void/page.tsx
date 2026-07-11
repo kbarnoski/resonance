@@ -210,7 +210,7 @@ export default function DissolveVoidPage() {
   }, [onOrient]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 h-full w-full touch-none"
@@ -218,10 +218,10 @@ export default function DissolveVoidPage() {
 
       {/* corner UI */}
       <div className="pointer-events-none fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-mono text-2xl tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="font-mono text-2xl tracking-tight text-foreground sm:text-3xl">
           Dissolve · Void
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           What you do, what you see, and what you hear gently come un-bound — a
           drifting luminous void where the link between motion, image and sound
           dissolves, then snaps clear once before the soft return.
@@ -231,41 +231,41 @@ export default function DissolveVoidPage() {
           {phase === "idle" && (
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-white/95 px-4 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               Enter the void
             </button>
           )}
           <button
             onClick={() => setNotesOpen((v) => !v)}
-            className="min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur transition hover:bg-black/60"
+            className="min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur transition hover:bg-black/60"
           >
             {notesOpen ? "close notes" : "design notes"}
           </button>
         </div>
 
         {phase === "idle" && (
-          <p className="mt-3 font-mono text-base text-white/75">
+          <p className="mt-3 font-mono text-base text-muted-foreground">
             tap to begin — sound + visuals start together
           </p>
         )}
         {phase === "running" && (
-          <p className="mt-3 font-mono text-base text-white/75">
+          <p className="mt-3 font-mono text-base text-muted-foreground">
             {inputMode === "tilt"
               ? "tilt your phone to float — the image and sound trail your hand"
               : "drag anywhere to float — the image and sound trail your hand"}
           </p>
         )}
         {error && (
-          <p className="mt-2 font-mono text-base text-rose-300">{error}</p>
+          <p className="mt-2 font-mono text-base text-violet-300">{error}</p>
         )}
       </div>
 
       {/* design notes panel */}
       {notesOpen && (
-        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-white/10 bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
-          <h2 className="font-mono text-xl text-white/95">Design notes</h2>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+        <div className="pointer-events-auto fixed inset-x-0 bottom-0 z-40 max-h-[70vh] overflow-y-auto border-t border-border bg-black/90 p-5 backdrop-blur-md sm:inset-x-auto sm:right-4 sm:top-4 sm:bottom-auto sm:max-w-md sm:rounded-2xl sm:border">
+          <h2 className="font-mono text-xl text-foreground">Design notes</h2>
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             This is the dream lab&apos;s first <em>audio-visual desync engine</em>.
             Normally your motion, the image and the sound are bound together. Here
             they are deliberately un-bound: your tilt/drag is the ground truth, the
@@ -273,13 +273,13 @@ export default function DissolveVoidPage() {
             follows it through a <em>different</em> lag — so cause and effect feel
             unglued.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Across the ~4.5-minute arc the binding loosens toward a peak, then a
             brief <em>clarity snap</em> re-syncs and brightens everything (the
             end-of-arc gamma surge) before a soft return. Five sound motes float
             around you in 3D via HRTF spatial audio.
           </p>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Grounded in Bera, Looger, Proekt &amp; Cichon, &ldquo;Cortical
             Mechanisms Contributing to Ketamine-Induced Dissociation&rdquo; (The
             Neuroscientist, 2026): a defining feature of the dissociated brain
@@ -288,7 +288,7 @@ export default function DissolveVoidPage() {
             thalamocortical disconnection). The desync engine literally enacts that
             finding.
           </p>
-          <p className="mt-3 font-mono text-base text-white/55">
+          <p className="mt-3 font-mono text-base text-muted-foreground">
             see README.md in this prototype&apos;s folder for full references.
           </p>
         </div>

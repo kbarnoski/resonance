@@ -584,7 +584,7 @@ export default function AnswerPiano() {
         : "your turn";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a12] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0a12] text-foreground">
       <style>{`
         @keyframes answerHalo {
           0% { opacity: 0.18; }
@@ -594,10 +594,10 @@ export default function AnswerPiano() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 w-full px-6 pt-6 sm:px-10">
-        <h1 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
           Answer Piano
         </h1>
-        <p className="mt-1 max-w-xl text-base text-white/75">
+        <p className="mt-1 max-w-xl text-base text-muted-foreground">
           Play a short phrase — sing or tap — and a patient partner answers you
           in the same key.
         </p>
@@ -606,7 +606,7 @@ export default function AnswerPiano() {
       {/* Design-notes toggle */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-6 z-30 rounded-full border border-white/15 bg-white/[0.04] px-4 py-2.5 font-mono text-sm text-white/75 transition-colors hover:bg-white/[0.1] hover:text-white"
+        className="absolute right-4 top-6 z-30 rounded-full border border-border bg-muted px-4 py-2.5 font-mono text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         {showNotes ? "close notes" : "read the design notes"}
       </button>
@@ -721,14 +721,14 @@ export default function AnswerPiano() {
         {/* status + legend */}
         {started && (
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 font-mono text-sm">
-            <span className="flex items-center gap-2 text-white/80">
+            <span className="flex items-center gap-2 text-foreground">
               <span
                 className="inline-block h-3 w-3 rounded-full"
                 style={{ background: USER_HUE }}
               />
               you
             </span>
-            <span className="flex items-center gap-2 text-white/80">
+            <span className="flex items-center gap-2 text-foreground">
               <span
                 className="inline-block h-3 w-3 rounded-full"
                 style={{ background: PARTNER_HUE }}
@@ -741,7 +741,7 @@ export default function AnswerPiano() {
                   ? "text-[#c4b5fd]"
                   : status === "listening"
                     ? "text-[#f6b26b]"
-                    : "text-white/55"
+                    : "text-muted-foreground"
               }
             >
               {statusLabel}
@@ -751,13 +751,13 @@ export default function AnswerPiano() {
 
         {/* mic notice */}
         {started && micState === "denied" && (
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             No microphone — that&apos;s fine. Tap the keys below (or press the
             <span className="font-mono"> A–L </span> keys) to play your phrase.
           </p>
         )}
         {started && micState === "on" && (
-          <p className="text-center text-sm text-white/55">
+          <p className="text-center text-sm text-muted-foreground">
             Sing or play a short phrase — or tap the keys. Pause, and it answers.
           </p>
         )}
@@ -772,12 +772,12 @@ export default function AnswerPiano() {
                   e.preventDefault();
                   captureNote(deg, true);
                 }}
-                className="flex min-h-[56px] min-w-[44px] flex-1 flex-col items-center justify-center rounded-lg border border-white/10 bg-white/[0.05] px-2 py-2.5 transition-colors hover:bg-white/[0.12] active:bg-[#f6b26b]/25"
+                className="flex min-h-[56px] min-w-[44px] flex-1 flex-col items-center justify-center rounded-lg border border-border bg-muted px-2 py-2.5 transition-colors hover:bg-accent active:bg-[#f6b26b]/25"
               >
-                <span className="text-base font-medium text-white/90">
+                <span className="text-base font-medium text-foreground">
                   {degName(deg)}
                 </span>
-                <span className="font-mono text-xs text-white/60">
+                <span className="font-mono text-xs text-muted-foreground">
                   {QWERTY[i]}
                 </span>
               </button>
@@ -789,18 +789,18 @@ export default function AnswerPiano() {
       {/* Begin overlay */}
       {!started && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center gap-6 bg-[#0a0a12]/80 px-6 text-center backdrop-blur-sm">
-          <p className="max-w-lg text-base text-white/80 sm:text-lg">
+          <p className="max-w-lg text-base text-foreground sm:text-lg">
             An improvising duet partner. You play a phrase; it listens, waits for
             you to finish, then replies with a complementary line in your key —
             not a recording you sculpt, a conversation.
           </p>
           <button
             onClick={begin}
-            className="rounded-full bg-white px-8 py-3.5 text-base font-semibold text-[#0a0a12] transition-transform hover:scale-[1.03]"
+            className="rounded-full bg-card px-8 py-3.5 text-base font-semibold text-[#0a0a12] transition-transform hover:scale-[1.03]"
           >
             Begin
           </button>
-          <p className="font-mono text-sm text-white/55">
+          <p className="font-mono text-sm text-muted-foreground">
             Uses your mic if allowed — analysis only, nothing is recorded.
           </p>
         </div>
@@ -809,10 +809,10 @@ export default function AnswerPiano() {
       {/* Design notes overlay */}
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto bg-[#0a0a12]/92 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl space-y-4 text-base leading-relaxed text-white/80">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-w-2xl space-y-4 text-base leading-relaxed text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p>
-              <span className="text-white/95">The loop.</span> You play a short
+              <span className="text-foreground">The loop.</span> You play a short
               phrase — sing/play into the mic, or tap the on-screen keys. The
               system detects your notes in real time (autocorrelation pitch
               detection, snapped to the nearest note of D major pentatonic),
@@ -820,35 +820,35 @@ export default function AnswerPiano() {
               second voice answers.
             </p>
             <p>
-              <span className="text-white/95">The answer.</span> A rising
+              <span className="text-foreground">The answer.</span> A rising
               &ldquo;question&rdquo; is met with a falling, inverted line that
               resolves to the tonic. A falling phrase is answered by an ascending
               sequence left open on the dominant. Everything lives in one warm
               pentatonic key, so a reply is always consonant.
             </p>
             <p>
-              <span className="text-white/95">The mic is a controller.</span> We
+              <span className="text-foreground">The mic is a controller.</span> We
               never play your recording back — we re-synthesize the pitches we
               detect as a soft triangle voice; the partner is a warmer FM pad. A
               quiet drone bed sits underneath. Nothing is recorded or sent
               anywhere.
             </p>
             <p>
-              <span className="text-white/95">Reference.</span> Dan Tepfer&apos;s{" "}
+              <span className="text-foreground">Reference.</span> Dan Tepfer&apos;s{" "}
               <em>Natural Machines</em> — a Yamaha Disklavier that improvises{" "}
               <em>with</em> him from algorithmic rules keyed to what he plays —
               and the score-following / Music-Information-Retrieval lineage
               (Roger Dannenberg). We borrow the responsive-partner framing, not
               any code.
             </p>
-            <p className="text-white/60">
+            <p className="text-muted-foreground">
               After ~4 seconds of quiet the instrument plays a seed phrase to
               itself and answers it, so there is always something to see and
               hear.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 hover:bg-white/10"
+              className="mt-2 rounded-full border border-border px-5 py-2.5 text-sm text-foreground hover:bg-accent"
             >
               close
             </button>

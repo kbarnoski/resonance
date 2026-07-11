@@ -210,7 +210,7 @@ export default function MagnetostormPage() {
   const live = source === "live";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#02040a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#02040a] text-foreground">
       {/* WebGL canvas fills the viewport when running. */}
       <canvas
         ref={canvasRef}
@@ -228,10 +228,10 @@ export default function MagnetostormPage() {
 
       {/* ── Header / poster ─────────────────────────────────────────────── */}
       <div className="pointer-events-none relative z-10 flex flex-col gap-3 p-6 sm:p-8">
-        <h1 className="text-2xl font-semibold text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
           Magnetostorm
         </h1>
-        <p className="max-w-2xl text-base text-white/75">
+        <p className="max-w-2xl text-base text-muted-foreground">
           What the solar wind hitting Earth right now sounds and looks like — a
           live sonification and particle aurora driven by NOAA SWPC real-time
           solar-wind telemetry (DSCOVR / ACE + IMAP I-ALiRT).
@@ -242,11 +242,11 @@ export default function MagnetostormPage() {
             <button
               type="button"
               onClick={start}
-              className="min-h-[44px] w-fit rounded-full bg-emerald-400/90 px-4 py-2.5 text-base font-semibold text-black transition-colors hover:bg-emerald-300"
+              className="min-h-[44px] w-fit rounded-full bg-violet-400/90 px-4 py-2.5 text-base font-semibold text-black transition-colors hover:bg-violet-300"
             >
               Start — feel the storm
             </button>
-            <p className="max-w-xl text-base text-white/60">
+            <p className="max-w-xl text-base text-muted-foreground">
               Audio + WebGL begin on Start. Drag to steer the field; the data
               drives the aurora. Falls back to a modeled G2 storm sample if the
               live feed is unreachable.
@@ -257,67 +257,67 @@ export default function MagnetostormPage() {
 
       {/* ── Live readout panel (running) ─────────────────────────────────── */}
       {phase === "running" && (
-        <div className="pointer-events-none absolute bottom-6 left-4 z-10 max-w-md rounded-2xl border border-white/10 bg-black/55 p-4 backdrop-blur-md sm:left-6">
+        <div className="pointer-events-none absolute bottom-6 left-4 z-10 max-w-md rounded-2xl border border-border bg-black/55 p-4 backdrop-blur-md sm:left-6">
           <div className="mb-2 flex items-center gap-2">
             {live ? (
-              <span className="text-base font-medium text-emerald-300">
+              <span className="text-base font-medium text-violet-300">
                 ● live — NOAA SWPC
               </span>
             ) : (
-              <span className="text-base font-medium text-amber-300">
+              <span className="text-base font-medium text-violet-300">
                 ● offline sample (modeled storm)
               </span>
             )}
             {drivers?.timestamp && (
-              <span className="text-base text-white/60">
+              <span className="text-base text-muted-foreground">
                 {drivers.timestamp}
               </span>
             )}
           </div>
 
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-1 text-base text-white/85 sm:grid-cols-4">
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-1 text-base text-foreground sm:grid-cols-4">
             <div>
-              <dt className="text-base text-white/60">Speed</dt>
+              <dt className="text-base text-muted-foreground">Speed</dt>
               <dd className="tabular-nums">
                 {fmt(drivers?.speed ?? NaN, 0)} km/s
               </dd>
             </div>
             <div>
-              <dt className="text-base text-white/60">Density</dt>
+              <dt className="text-base text-muted-foreground">Density</dt>
               <dd className="tabular-nums">
                 {fmt(drivers?.density ?? NaN, 1)} /cm³
               </dd>
             </div>
             <div>
-              <dt className="text-base text-white/60">Bz (GSM)</dt>
+              <dt className="text-base text-muted-foreground">Bz (GSM)</dt>
               <dd
                 className={`tabular-nums ${
                   (drivers?.bz ?? 0) < -5
-                    ? "text-rose-300"
-                    : "text-white/85"
+                    ? "text-violet-300"
+                    : "text-foreground"
                 }`}
               >
                 {fmt(drivers?.bz ?? NaN, 1)} nT
               </dd>
             </div>
             <div>
-              <dt className="text-base text-white/60">Kp</dt>
+              <dt className="text-base text-muted-foreground">Kp</dt>
               <dd className="tabular-nums">{fmt(drivers?.kp ?? NaN, 1)}</dd>
             </div>
           </dl>
 
-          <p className="mt-3 text-base text-white/60">
+          <p className="mt-3 text-base text-muted-foreground">
             Speed → energy · southward Bz → the storm erupts · density → curtain
             thickness · |B| → turbulence · Kp → global intensity + color.
           </p>
 
           {audioBlocked && (
-            <p className="mt-2 text-base text-amber-300">
+            <p className="mt-2 text-base text-violet-300">
               Audio was blocked — the aurora still runs, silent.
             </p>
           )}
           {webglError && (
-            <p className="mt-2 text-base text-rose-300">{webglError}</p>
+            <p className="mt-2 text-base text-violet-300">{webglError}</p>
           )}
         </div>
       )}

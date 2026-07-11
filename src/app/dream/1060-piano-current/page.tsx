@@ -295,7 +295,7 @@ export default function PianoCurrentPage() {
 
   // ─── UI ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#08061a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#08061a] text-foreground">
       {/* Canvas */}
       {phase === "flowing" && (
         <canvas
@@ -320,10 +320,10 @@ export default function PianoCurrentPage() {
           <p className="mb-3 font-mono text-base text-violet-300/90">
             1060 · piano-current
           </p>
-          <h1 className="mb-4 font-serif text-4xl text-white sm:text-5xl">
+          <h1 className="mb-4 font-serif text-4xl text-foreground sm:text-5xl">
             Stir the luminous river
           </h1>
-          <p className="mb-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
+          <p className="mb-8 max-w-xl text-base leading-relaxed text-foreground sm:text-lg">
             Thousands of particles drift through a divergence-free curl-noise
             field. Stir them with your hand and where the flow pools, accelerates
             and braids, Karel&rsquo;s own piano is re-voiced into a cosmic drift.
@@ -336,9 +336,9 @@ export default function PianoCurrentPage() {
             {phase === "loading" ? "summoning the current…" : "Stir the current →"}
           </button>
           {audioError && (
-            <p className="mt-5 max-w-md text-base text-rose-300">{audioError}</p>
+            <p className="mt-5 max-w-md text-base text-violet-300">{audioError}</p>
           )}
-          <p className="mt-8 font-mono text-base text-white/55">
+          <p className="mt-8 font-mono text-base text-muted-foreground">
             state: meditative cosmic drift · pole: cosmic-ambient
           </p>
         </div>
@@ -349,38 +349,38 @@ export default function PianoCurrentPage() {
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 flex items-start justify-between p-4 sm:p-6">
             <div className="pointer-events-auto">
-              <h1 className="font-serif text-xl text-white/95 sm:text-2xl">
+              <h1 className="font-serif text-xl text-foreground sm:text-2xl">
                 piano-current
               </h1>
-              <p className="mt-1 max-w-xs text-base text-white/75">
+              <p className="mt-1 max-w-xs text-base text-muted-foreground">
                 Stir the river. It stays quiet until you move; pools swell, braids
                 shimmer.
               </p>
               {source === "piano" && (
-                <p className="mt-2 font-mono text-base text-emerald-300/95">
+                <p className="mt-2 font-mono text-base text-violet-300/95">
                   ♪ Karel&rsquo;s piano · {grainCount} grains
                 </p>
               )}
               {source === "fallback" && (
-                <p className="mt-2 font-mono text-base text-amber-300/95">
+                <p className="mt-2 font-mono text-base text-violet-300/95">
                   ♪ synth piano (offline) · {grainCount} grains
                 </p>
               )}
               {audioError && (
-                <p className="mt-2 text-base text-rose-300">{audioError}</p>
+                <p className="mt-2 text-base text-violet-300">{audioError}</p>
               )}
             </div>
             <div className="pointer-events-auto text-right">
               <button
                 onClick={() => setShowNotes((v) => !v)}
-                className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 font-mono text-base text-white/80 ring-1 ring-white/15 transition hover:bg-white/10"
+                className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 font-mono text-base text-foreground ring-1 ring-border transition hover:bg-accent"
               >
                 {showNotes ? "close" : "Design notes"}
               </button>
             </div>
           </div>
 
-          <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 text-center font-mono text-base text-white/55">
+          <p className="pointer-events-none absolute bottom-4 left-0 right-0 z-10 text-center font-mono text-base text-muted-foreground">
             {dropHint
               ? "drop an audio file to re-voice the river"
               : "drag-drop any audio file to swap the corpus"}
@@ -388,8 +388,8 @@ export default function PianoCurrentPage() {
 
           {/* Design notes panel */}
           {showNotes && (
-            <div className="absolute right-4 top-24 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-[#0c0a24]/95 p-5 text-base leading-relaxed text-white/80 ring-1 ring-white/15 backdrop-blur sm:right-6">
-              <h2 className="mb-2 font-serif text-xl text-white/95">Design notes</h2>
+            <div className="absolute right-4 top-24 z-30 max-h-[70vh] w-[min(92vw,28rem)] overflow-y-auto rounded-2xl bg-[#0c0a24]/95 p-5 text-base leading-relaxed text-foreground ring-1 ring-border backdrop-blur sm:right-6">
+              <h2 className="mb-2 font-serif text-xl text-foreground">Design notes</h2>
               <p className="mb-3">
                 <span className="text-violet-300">The question:</span> what if you
                 could stir a river of thousands of particles flowing through a
@@ -400,7 +400,7 @@ export default function PianoCurrentPage() {
               <p className="mb-3">
                 <span className="text-violet-300">Field:</span> particles are
                 advected through a 2D <em>curl-noise</em> velocity field{" "}
-                <code className="text-white/95">v = (∂ψ/∂y, −∂ψ/∂x)</code>. Because
+                <code className="text-foreground">v = (∂ψ/∂y, −∂ψ/∂x)</code>. Because
                 v is the curl of a stream function ψ, the field is divergence-free
                 — pure swirls and braids, no sources or sinks. ψ is two octaves of
                 gradient noise on a slowly drifting 3rd axis, so the river stays
@@ -413,7 +413,7 @@ export default function PianoCurrentPage() {
                 shimmer; a pool → a sustained pad; a stir burst → onset; idle →
                 sparse twinkle. Two merging vortices fire a deliberate fifth.
               </p>
-              <p className="mb-3 text-white/75">
+              <p className="mb-3 text-muted-foreground">
                 Canvas2D only, Web Audio only — no WebGL/WebGPU, so it runs (and is
                 verifiable) everywhere. See the README in this folder for the full
                 technique and references (Bridson 2007; Schwarz 2006).

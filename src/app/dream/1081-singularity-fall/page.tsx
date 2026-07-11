@@ -167,30 +167,30 @@ export default function SingularityFallPage() {
         : "No sensor detected — falling on an autonomous spiral. Arrow keys / WASD steer.";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       <div ref={containerRef} className="absolute inset-0" aria-hidden />
 
       {phase !== "running" && (
         <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center">
-          <h1 className="font-serif text-2xl sm:text-4xl text-white">Singularity Fall</h1>
-          <p className="mt-4 max-w-xl text-base text-white/80">
+          <h1 className="font-serif text-2xl sm:text-4xl text-foreground">Singularity Fall</h1>
+          <p className="mt-4 max-w-xl text-base text-foreground">
             Fall toward a black hole — light bending around it, your own sound red-shifting —
             until you cross the horizon and the universe swallows itself.
           </p>
 
           {phase === "error" ? (
-            <p className="mt-6 max-w-md text-base text-rose-300">{errorMsg}</p>
+            <p className="mt-6 max-w-md text-base text-violet-300">{errorMsg}</p>
           ) : (
             <button
               type="button"
               onClick={start}
-              className="mt-8 min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/20 px-4 py-2.5 font-mono text-base text-white transition-colors hover:bg-violet-500/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
+              className="mt-8 min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/20 px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-violet-500/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-300"
             >
               Fall ▸
             </button>
           )}
 
-          <p className="mt-6 max-w-md font-mono text-sm text-white/75">
+          <p className="mt-6 max-w-md font-mono text-sm text-muted-foreground">
             Tilt your phone to steer. Desktop: arrow keys / WASD. Sound on.
           </p>
         </div>
@@ -198,7 +198,7 @@ export default function SingularityFallPage() {
 
       {phase === "running" && (
         <>
-          <p className="pointer-events-none absolute left-4 top-4 z-10 max-w-xs font-mono text-base text-amber-300/95">
+          <p className="pointer-events-none absolute left-4 top-4 z-10 max-w-xs font-mono text-base text-violet-300/95">
             {inputNotice}
           </p>
 
@@ -208,7 +208,7 @@ export default function SingularityFallPage() {
               teardown();
               setPhase("idle");
             }}
-            className="absolute right-4 top-4 z-10 min-h-[44px] rounded-md border border-white/25 bg-black/50 px-4 py-2.5 font-mono text-base text-white/90 hover:bg-black/70"
+            className="absolute right-4 top-4 z-10 min-h-[44px] rounded-md border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-foreground hover:bg-black/70"
           >
             End ▸
           </button>
@@ -220,25 +220,25 @@ export default function SingularityFallPage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="min-h-[44px] rounded-md border border-white/20 bg-black/50 px-4 py-2.5 font-mono text-base text-white/80 hover:bg-black/70"
+          className="min-h-[44px] rounded-md border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-foreground hover:bg-black/70"
         >
           {showNotes ? "Hide design notes" : "Design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 rounded-md border border-white/15 bg-black/70 p-4 font-mono text-sm text-white/80 backdrop-blur">
-            <p className="text-base text-white/95">Singularity Fall</p>
+          <div className="mt-3 rounded-md border border-border bg-black/70 p-4 font-mono text-sm text-foreground backdrop-blur">
+            <p className="text-base text-foreground">Singularity Fall</p>
             <p className="mt-2">
               A real-time browser approximation of gravitational lensing around a Schwarzschild
               black hole — screen rays bent toward the shadow by a deflection ∝ 1/impact-parameter,
               an Einstein ring, a Doppler-beamed accretion disk, and a swarm of infalling GPU
               particles that red-shift and vanish at the horizon.
             </p>
-            <p className="mt-2 text-white/75">
+            <p className="mt-2 text-muted-foreground">
               Reference: the <span className="text-violet-300">Interstellar</span> &quot;Gargantua&quot;
               DNGR renderer (James, von Tunzelmann, Franklin, Thorne, 2015) and 2026 Three.js/WebGPU
               &quot;Singularity&quot; raymarch pieces. Not a full geodesic integrator.
             </p>
-            <p className="mt-2 text-white/75">
+            <p className="mt-2 text-muted-foreground">
               Arc (~3 min): distant approach → lensing intensifies → disk roar → horizon crossing
               (photon-ring bell + smooth white-out) → reset. The white-out is a slow luminance ramp
               (≤2 Hz, floored), never a strobe.

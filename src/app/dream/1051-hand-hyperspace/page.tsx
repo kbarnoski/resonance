@@ -592,11 +592,11 @@ export default function HandHyperspace() {
     status === "tracking"
       ? "text-violet-300"
       : status === "no-camera" || status === "no-cdn"
-        ? "text-rose-300"
-        : "text-white/80";
+        ? "text-violet-300"
+        : "text-foreground";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* hidden video used only as MediaPipe input */}
       <video ref={videoRef} className="hidden" playsInline muted />
 
@@ -613,10 +613,10 @@ export default function HandHyperspace() {
       {/* overlay UI */}
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="p-5 sm:p-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Hand Hyperspace
           </h1>
-          <p className="mt-2 max-w-xl text-base text-white/80">
+          <p className="mt-2 max-w-xl text-base text-foreground">
             Reach into hyperspace and turn a four-dimensional jewel with your
             bare hands. Your gestures rotate it through six planes at once —
             and play the chord those rotations make.
@@ -631,11 +631,11 @@ export default function HandHyperspace() {
             <div className="pointer-events-auto flex flex-col items-center gap-4">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-3 text-lg font-semibold text-white shadow-lg transition-colors hover:bg-violet-400"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-3 text-lg font-semibold text-foreground shadow-lg transition-colors hover:bg-violet-400"
               >
                 Start
               </button>
-              <p className="max-w-sm text-center text-base text-white/75">
+              <p className="max-w-sm text-center text-base text-muted-foreground">
                 Sound starts on Start. Works with a webcam, or just drag on the
                 canvas if you{"'"}d rather not turn one on.
               </p>
@@ -645,15 +645,15 @@ export default function HandHyperspace() {
 
         {phase === "running" && (
           <div className="pointer-events-auto mt-auto flex flex-wrap items-center gap-3 p-5 sm:p-8">
-            <span className="font-mono text-base text-white/75">jewel:</span>
+            <span className="font-mono text-base text-muted-foreground">jewel:</span>
             {(["8-cell", "24-cell"] as Shape[]).map((s) => (
               <button
                 key={s}
                 onClick={() => setShape(s)}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 text-base font-medium transition-colors ${
                   shape === s
-                    ? "bg-violet-500/90 text-white"
-                    : "bg-white/10 text-white/80 hover:bg-white/20"
+                    ? "bg-violet-500/90 text-foreground"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {s === "8-cell" ? "tesseract (8-cell)" : "24-cell"}
@@ -666,15 +666,15 @@ export default function HandHyperspace() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/80 backdrop-blur transition-colors hover:bg-white/20"
+        className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-accent"
       >
         Read the design notes
       </button>
 
       {showNotes && (
         <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/80 p-6 backdrop-blur">
-          <div className="max-w-lg rounded-2xl border border-white/15 bg-zinc-900/90 p-6 text-base text-white/85">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-w-lg rounded-2xl border border-border bg-zinc-900/90 p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               A 4D polytope (tesseract or 24-cell) is rotated through all six
               independent planes (XY, XZ, XW, YZ, YW, ZW), stereographically
@@ -692,7 +692,7 @@ export default function HandHyperspace() {
               gesture is literally a shifting neon chord with a cosmic reverb
               tail.
             </p>
-            <p className="mt-3 text-white/75">
+            <p className="mt-3 text-muted-foreground">
               Reference: the Pardesco 4D Polytope Viewer (4d.pardesco.com) and
               the DMT {"“"}hyperdimensional / more-real-than-real
               geometry{"”"} phenomenology — turned from a watch-only viewer
@@ -700,7 +700,7 @@ export default function HandHyperspace() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-white hover:bg-violet-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-foreground hover:bg-violet-400"
             >
               Close
             </button>

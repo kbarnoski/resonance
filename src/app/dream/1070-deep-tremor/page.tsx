@@ -168,7 +168,7 @@ export default function DeepTremorPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#04060c] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#04060c] text-foreground">
       {/* Full-screen three.js canvas mounts here, behind the UI. */}
       <div ref={containerRef} className="absolute inset-0" aria-hidden />
 
@@ -178,11 +178,11 @@ export default function DeepTremorPage() {
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-2xl bg-black/55 p-8 ring-1 ring-white/10 backdrop-blur-md">
-            <h1 className="font-serif text-2xl tracking-tight text-white sm:text-3xl">
+          <div className="max-w-xl rounded-2xl bg-black/55 p-8 ring-1 ring-border backdrop-blur-md">
+            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
               Deep Tremor
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               The planet&apos;s live seismic activity, made into a dark
               instrument you fall into. Every real earthquake of the last hour
               rings out as one depth-timbred strike, placed in 3D from its true
@@ -193,16 +193,16 @@ export default function DeepTremorPage() {
               type="button"
               onClick={begin}
               disabled={phase === "starting"}
-              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
             >
               {phase === "starting" ? "Falling in…" : "Begin · descend into the void"}
             </button>
 
             {errorMsg && (
-              <p className="mt-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mt-4 text-base text-violet-300">{errorMsg}</p>
             )}
 
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               Use headphones — each quake is HRTF-spatialised, so it rings out
               from its true compass bearing around you. Live data from the USGS;
               if the network is unavailable it plays a synthetic Ring of Fire so
@@ -215,24 +215,24 @@ export default function DeepTremorPage() {
       {/* ── Running HUD ────────────────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-white/95">Deep Tremor</h1>
+          <h1 className="font-serif text-2xl text-foreground">Deep Tremor</h1>
           <div className="mt-2 flex items-center gap-3">
             {source === "live" && (
-              <span className="rounded-full bg-emerald-500/15 px-3 py-1 font-mono text-base text-emerald-300 ring-1 ring-emerald-400/30">
+              <span className="rounded-full bg-violet-500/15 px-3 py-1 font-mono text-base text-violet-300 ring-1 ring-violet-400/30">
                 live · USGS
               </span>
             )}
             {source === "synthetic" && (
-              <span className="rounded-full bg-amber-500/15 px-3 py-1 font-mono text-base text-amber-300 ring-1 ring-amber-400/30">
+              <span className="rounded-full bg-violet-500/15 px-3 py-1 font-mono text-base text-violet-300 ring-1 ring-violet-400/30">
                 synthetic
               </span>
             )}
             {source === null && (
-              <span className="font-mono text-base text-white/75">
+              <span className="font-mono text-base text-muted-foreground">
                 listening to Earth…
               </span>
             )}
-            <span className="font-mono text-base text-white/75">
+            <span className="font-mono text-base text-muted-foreground">
               {count} quakes
             </span>
           </div>
@@ -243,24 +243,24 @@ export default function DeepTremorPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/55 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur-md transition hover:text-white"
+        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/55 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/85">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The question.</span> What if the
+              <span className="text-foreground">The question.</span> What if the
               planet&apos;s live seismic activity — every earthquake happening
               on Earth right now — were a dark, spatialised instrument you fall
               into: each real quake a depth-timbred strike placed in 3D space
               around you, ringing out into a cavernous void?
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The data.</span> On the Begin
+              <span className="text-foreground">The data.</span> On the Begin
               gesture we fetch the USGS{" "}
               <span className="font-mono text-base">all_hour</span> GeoJSON feed
               (no key, CORS-enabled), widening to{" "}
@@ -272,7 +272,7 @@ export default function DeepTremorPage() {
               piece always plays with zero network (amber badge).
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The HRTF mapping.</span> Each quake is
+              <span className="text-foreground">The HRTF mapping.</span> Each quake is
               one struck gong: pitch maps inversely to magnitude (a big quake is
               a low, massive boom; a small one a high tap), depth maps to timbre
               (shallow = brighter and sharper; deep = darker, longer, more sub),
@@ -286,7 +286,7 @@ export default function DeepTremorPage() {
               drone.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The visual.</span> A slowly
+              <span className="text-foreground">The visual.</span> A slowly
               auto-rotating dark point/wireframe Earth in a star-flecked void.
               Each quake spawns an expanding ring tangent to the globe surface at
               its true lat/lon plus a brief radial glow; ring radius and
@@ -295,7 +295,7 @@ export default function DeepTremorPage() {
               luminance changes are slow drifts, well under 3 Hz (no strobing).
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">References.</span> &ldquo;Echoes of
+              <span className="text-foreground">References.</span> &ldquo;Echoes of
               the Land: An Interactive Installation Based on Physical Model of
               Earthquake&rdquo; (arXiv:2507.14947, 2025), turning seismic
               dynamics into real-time multisensory sound and light; the
@@ -307,7 +307,7 @@ export default function DeepTremorPage() {
               target.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Next cycle.</span> Map the true P→S→
+              <span className="text-foreground">Next cycle.</span> Map the true P→S→
               surface-wave glide of each event as a short downward sweep; couple
               ring colour to depth; add a faint great-circle ripple propagating
               across the globe from each epicentre; let the listener orbit the

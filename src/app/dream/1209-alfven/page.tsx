@@ -452,7 +452,7 @@ export default function AlfvenPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden text-foreground">
       {/* deep indigo → near-black backdrop (chiaroscuro) */}
       <div
         className="absolute inset-0"
@@ -465,14 +465,14 @@ export default function AlfvenPage() {
 
       {err && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">{err}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{err}</p>
         </div>
       )}
 
       {/* title + description */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white/95 sm:text-3xl">Alfvén Rack</h1>
-        <p className="max-w-xl text-base text-white/75">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Alfvén Rack</h1>
+        <p className="max-w-xl text-base text-muted-foreground">
           Pluck a magnetic field line like a string and hear the plasma sing — each glowing loop
           rings in the standing Alfvén modes that set its pitch.
         </p>
@@ -481,7 +481,7 @@ export default function AlfvenPage() {
       {/* notes toggle */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base font-medium text-white/80 backdrop-blur-md transition-colors hover:bg-black/60"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/60"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -492,7 +492,7 @@ export default function AlfvenPage() {
           {!started && (
             <button
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-emerald-400/20 px-5 py-2.5 text-base font-medium text-emerald-200 ring-1 ring-emerald-300/40 transition hover:bg-emerald-400/30"
+              className="min-h-[44px] rounded-full bg-violet-400/20 px-5 py-2.5 text-base font-medium text-violet-200 ring-1 ring-violet-300/40 transition hover:bg-violet-400/30"
             >
               Energize the field
             </button>
@@ -500,12 +500,12 @@ export default function AlfvenPage() {
           {started && (
             <button
               onClick={toggleMute}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/15 transition hover:bg-white/15"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               {muted ? "Unmute" : "Mute"}
             </button>
           )}
-          <label className="flex min-h-[44px] items-center gap-2 rounded-full bg-white/5 px-4 py-2.5 text-base text-white/75 ring-1 ring-white/10">
+          <label className="flex min-h-[44px] items-center gap-2 rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border">
             <span className="text-violet-200">Field&nbsp;B</span>
             <input
               type="range"
@@ -514,13 +514,13 @@ export default function AlfvenPage() {
               step={0.01}
               value={field}
               onChange={(e) => onField(parseFloat(e.target.value))}
-              className="h-1 w-28 cursor-pointer accent-emerald-300"
+              className="h-1 w-28 cursor-pointer accent-violet-300"
               aria-label="Global magnetic field strength"
             />
           </label>
         </div>
         {started && (
-          <p className="pointer-events-none text-base text-white/55">
+          <p className="pointer-events-none text-base text-muted-foreground">
             Grab a loop, pull, and release to pluck it — raise Field B to tune the whole rack up.
           </p>
         )}
@@ -528,10 +528,10 @@ export default function AlfvenPage() {
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-0 top-20 z-20 mx-auto max-h-[76dvh] max-w-xl overflow-y-auto rounded-2xl bg-black/70 p-5 text-base text-white/75 ring-1 ring-white/10 backdrop-blur sm:top-24">
-          <p className="mb-3 text-white/95">
+        <div className="pointer-events-auto absolute inset-x-0 top-20 z-20 mx-auto max-h-[76dvh] max-w-xl overflow-y-auto rounded-2xl bg-black/70 p-5 text-base text-muted-foreground ring-1 ring-border backdrop-blur sm:top-24">
+          <p className="mb-3 text-foreground">
             A magnetic field line threading a plasma behaves like a string under tension.
-            Transverse <span className="text-emerald-300">Alfvén waves</span> travel along it at the
+            Transverse <span className="text-violet-300">Alfvén waves</span> travel along it at the
             Alfvén speed <span className="text-violet-200">v_A = B / √(μ₀ρ)</span>, reflect at the
             anchored footpoints, and ring in standing modes: fundamental{" "}
             <span className="text-violet-200">f₁ = v_A / 2L</span> and harmonics{" "}
@@ -543,20 +543,20 @@ export default function AlfvenPage() {
             are one model — a plucked line rings as a sum of its partials (additive resynthesis),
             higher harmonics decaying faster, just as a real string does. Pitch is set physically by
             length and field: the loop lengths L are tuned so the rack lands on a pentatonic set, and
-            raising <span className="text-emerald-300">Field B</span> lifts every pitch at once. (The
+            raising <span className="text-violet-300">Field B</span> lifts every pitch at once. (The
             visible shimmer is time-dilated to a few Hz; the audio rings at the true fₙ.)
           </p>
-          <p className="mb-3 text-white/75">
-            <span className="text-white/95">Palette:</span> aurora green ↔ violet on deep indigo,
+          <p className="mb-3 text-muted-foreground">
+            <span className="text-foreground">Palette:</span> aurora green ↔ violet on deep indigo,
             with a hot-magenta flash at the pluck.
           </p>
-          <p className="mb-3 text-white/75">
-            <span className="text-white/95">References:</span> Hannes Alfvén predicted
+          <p className="mb-3 text-muted-foreground">
+            <span className="text-foreground">References:</span> Hannes Alfvén predicted
             magnetohydrodynamic (Alfvén) waves in 1942 (Nobel Prize in Physics, 1970); coronal-loop
             &ldquo;seismology&rdquo; of transverse loop oscillations (Nakariakov et al.); and the
             plucked-string lineage of Chladni and Helmholtz.
           </p>
-          <Link href="/dream" className="text-emerald-300 underline-offset-4 hover:underline">
+          <Link href="/dream" className="text-violet-300 underline-offset-4 hover:underline">
             ← back to the lab
           </Link>
         </div>

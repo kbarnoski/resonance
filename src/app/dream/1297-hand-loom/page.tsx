@@ -411,22 +411,22 @@ export default function HandLoomPage() {
   }, [camState]);
 
   return (
-    <div ref={wrapRef} className="relative h-dvh w-full overflow-hidden bg-[#05020c] text-white">
+    <div ref={wrapRef} className="relative h-dvh w-full overflow-hidden bg-[#05020c] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 block" />
       <video ref={videoRef} className="hidden" playsInline muted />
 
       {/* corner design-notes link */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {/* header */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xl">
-        <h1 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">Hand Loom</h1>
-        <p className="mt-1 text-base text-white/75">
+        <h1 className="text-xl font-semibold tracking-tight text-foreground sm:text-2xl">Hand Loom</h1>
+        <p className="mt-1 text-base text-muted-foreground">
           Play a groove in the air — two hands conduct a 16-step machine tracked by your webcam.
         </p>
       </div>
@@ -434,25 +434,25 @@ export default function HandLoomPage() {
       {/* primary controls */}
       <div className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3 px-4">
         {notice && (
-          <p className="max-w-md text-center text-base text-rose-300">{notice}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{notice}</p>
         )}
 
         {phase === "idle" ? (
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-fuchsia-500/90 px-4 py-2.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(217,70,239,0.5)] hover:bg-fuchsia-400"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-foreground shadow-[0_0_30px_rgba(217,70,239,0.5)] hover:bg-violet-400"
           >
             Begin the groove
           </button>
         ) : camState === "on" ? (
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Hands live — raise to brighten, move across to pick a lane, pinch to drop a hit.
           </p>
         ) : (
           <button
             onClick={enableCamera}
             disabled={camState === "loading"}
-            className="min-h-[44px] rounded-full bg-cyan-500/90 px-4 py-2.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(34,211,238,0.5)] hover:bg-cyan-400 disabled:opacity-60"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-foreground shadow-[0_0_30px_rgba(34,211,238,0.5)] hover:bg-violet-400 disabled:opacity-60"
           >
             {camState === "loading" ? "Starting camera…" : "Enable camera to play with your hands"}
           </button>
@@ -462,8 +462,8 @@ export default function HandLoomPage() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-4">
-          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#0a0518] p-6 text-base text-white/85">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0518] p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               A steady 16-step transport at 110 BPM runs a UV black-light rave groove — kick,
               clap, hat and an offbeat rolling bass, all pure Web Audio (oscillators, noise,
@@ -476,14 +476,14 @@ export default function HandLoomPage() {
               index) quantises to the nearest step and toggles a hit ON the beat, finger SPREAD
               swings it, and the distance between your two hands adds density.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               A glove-free cousin of Imogen Heap&apos;s MiMU gloves — gestural music control,
               but through a camera instead of sensors. Before or without a camera, an autonomous
               demo groove keeps playing. No strobe; motion is smooth and reduced-motion aware.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

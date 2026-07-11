@@ -403,7 +403,7 @@ export default function DeepMemoryPage() {
   };
 
   return (
-    <div className="relative h-[100dvh] w-full overflow-hidden bg-[#03040c] text-white">
+    <div className="relative h-[100dvh] w-full overflow-hidden bg-[#03040c] text-foreground">
       {/* The immersive field — always present, alive even before Begin. */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -457,17 +457,17 @@ function SeedStage(props: {
   return (
     <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-6">
       <div className="max-w-xl text-center">
-        <h1 className="text-2xl font-semibold text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">
           Deep Memory
         </h1>
-        <p className="mt-3 text-base text-white/75">
+        <p className="mt-3 text-base text-muted-foreground">
           Watch a mind dream. A piece of music that learns from every note it
           plays — its memory drifting, reinforcing, and re-firing. Steer it, and
           be transported into the field. Minute five is never minute one.
         </p>
 
         <div className="mt-8">
-          <p className="text-base text-white/55">Choose a mode of thought</p>
+          <p className="text-base text-muted-foreground">Choose a mode of thought</p>
           <div className="mt-3 flex flex-wrap justify-center gap-3">
             {SCALE_LIST.map((id) => (
               <button
@@ -479,8 +479,8 @@ function SeedStage(props: {
                 }}
                 className={`min-h-[44px] rounded-full px-4 py-2.5 text-base transition ${
                   scaleId === id
-                    ? "bg-cyan-400/25 text-white ring-1 ring-cyan-300/60"
-                    : "bg-white/5 text-white/75 ring-1 ring-white/10 hover:bg-white/10"
+                    ? "bg-violet-400/25 text-foreground ring-1 ring-violet-300/60"
+                    : "bg-muted text-muted-foreground ring-1 ring-border hover:bg-accent"
                 }`}
               >
                 {SCALES[id].label}
@@ -490,7 +490,7 @@ function SeedStage(props: {
         </div>
 
         <div className="mt-8">
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Tap a short motif — its first memories (optional)
           </p>
           <div className="mt-3 flex flex-wrap justify-center gap-2">
@@ -499,14 +499,14 @@ function SeedStage(props: {
                 key={i}
                 type="button"
                 onClick={() => setMotif([...motif, i].slice(-8))}
-                className="min-h-[44px] min-w-[44px] rounded-lg bg-white/5 px-4 py-2.5 text-base text-white/85 ring-1 ring-white/10 transition hover:bg-cyan-400/15"
+                className="min-h-[44px] min-w-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-violet-400/15"
               >
                 {i + 1}
               </button>
             ))}
           </div>
           <div className="mt-3 flex items-center justify-center gap-3">
-            <span className="text-base text-white/75">
+            <span className="text-base text-muted-foreground">
               {motif.length
                 ? motif.map((d) => d + 1).join(" · ")
                 : "— (a default seed will be used)"}
@@ -515,7 +515,7 @@ function SeedStage(props: {
               <button
                 type="button"
                 onClick={() => setMotif([])}
-                className="min-h-[44px] rounded-md px-4 py-2.5 text-base text-white/55 hover:text-white/85"
+                className="min-h-[44px] rounded-md px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
               >
                 clear
               </button>
@@ -526,11 +526,11 @@ function SeedStage(props: {
         <button
           type="button"
           onClick={onBegin}
-          className="mt-10 min-h-[44px] rounded-full bg-cyan-400/90 px-8 py-3 text-xl font-medium text-[#03040c] shadow-[0_0_40px_-4px_rgba(56,214,245,0.7)] transition hover:bg-cyan-300"
+          className="mt-10 min-h-[44px] rounded-full bg-violet-400/90 px-8 py-3 text-xl font-medium text-[#03040c] shadow-[0_0_40px_-4px_rgba(56,214,245,0.7)] transition hover:bg-violet-300"
         >
           Begin
         </button>
-        <p className="mt-4 text-base text-white/55">
+        <p className="mt-4 text-base text-muted-foreground">
           Sound begins on your tap (autoplay is blocked — that&apos;s fine).
         </p>
       </div>
@@ -558,8 +558,8 @@ function LiveStage(props: {
       {/* Top readout */}
       <div className="flex items-start justify-between gap-4">
         <div className="pointer-events-auto">
-          <h2 className="text-xl font-semibold text-white/95">Deep Memory</h2>
-          <p className="text-base text-white/55">
+          <h2 className="text-xl font-semibold text-foreground">Deep Memory</h2>
+          <p className="text-base text-muted-foreground">
             {scaleLabel} · note {readout.step}
           </p>
         </div>
@@ -570,13 +570,13 @@ function LiveStage(props: {
       </div>
 
       {audioError && (
-        <p className="pointer-events-auto self-center text-base text-rose-300">
+        <p className="pointer-events-auto self-center text-base text-violet-300">
           Web Audio is unavailable — the mind still dreams in silence.
         </p>
       )}
 
       {/* Bottom control deck */}
-      <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl bg-black/35 p-4 ring-1 ring-white/10 backdrop-blur-md sm:p-5">
+      <div className="pointer-events-auto mx-auto w-full max-w-3xl rounded-2xl bg-black/35 p-4 ring-1 ring-border backdrop-blur-md sm:p-5">
         <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
           <Dial label="Density" value={steering.density} onChange={setDial("density")} />
           <Dial label="Tension" value={steering.tension} onChange={setDial("tension")} />
@@ -587,22 +587,22 @@ function LiveStage(props: {
           <button
             type="button"
             onClick={onPerturb}
-            className="min-h-[44px] rounded-full bg-violet-400/25 px-6 py-2.5 text-base text-white ring-1 ring-violet-300/50 transition hover:bg-violet-400/40"
+            className="min-h-[44px] rounded-full bg-violet-400/25 px-6 py-2.5 text-base text-foreground ring-1 ring-violet-300/50 transition hover:bg-violet-400/40"
           >
             Perturb
           </button>
           <button
             type="button"
             onClick={() => setShowNotes(!showNotes)}
-            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+            className="min-h-[44px] rounded-full px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
           >
             {showNotes ? "Hide design notes" : "Read the design notes"}
           </button>
         </div>
 
         {showNotes && (
-          <div className="mt-4 max-h-[38vh] overflow-y-auto rounded-xl bg-black/40 p-4 text-base leading-relaxed text-white/75 ring-1 ring-white/10">
-            <p className="text-white/95">What you are watching</p>
+          <div className="mt-4 max-h-[38vh] overflow-y-auto rounded-xl bg-black/40 p-4 text-base leading-relaxed text-muted-foreground ring-1 ring-border">
+            <p className="text-foreground">What you are watching</p>
             <p className="mt-2">
               A live Markov transition matrix over the scale degrees. Each note
               the machine plays is a walk from one degree to the next. The path
@@ -614,7 +614,7 @@ function LiveStage(props: {
               steering all feed back into the sampling distribution, the exact
               state provably never repeats: a drifting attractor, not a loop.
             </p>
-            <p className="mt-3 text-white/95">The dials</p>
+            <p className="mt-3 text-foreground">The dials</p>
             <p className="mt-2">
               Density sets how eagerly it moves and how strongly it commits paths
               to memory. Tension pulls it toward restless, dissonant leaps or
@@ -622,7 +622,7 @@ function LiveStage(props: {
               forgetting and drift — turn it up to watch memories dissolve and
               reform. Perturb throws a passing thought through the whole field.
             </p>
-            <p className="mt-3 text-white/95">Lineage</p>
+            <p className="mt-3 text-foreground">Lineage</p>
             <p className="mt-2">
               Hopfield associative memory / neural fields; Refik Anadol&apos;s
               data-as-living-pigment; Brian Eno&apos;s generative ambient; and the
@@ -642,14 +642,14 @@ function Dial(props: {
 }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="text-base text-white/75">{props.label}</span>
+      <span className="text-base text-muted-foreground">{props.label}</span>
       <input
         type="range"
         min={0}
         max={100}
         value={Math.round(props.value * 100)}
         onChange={props.onChange}
-        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-white/15 accent-cyan-400"
+        className="h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-violet-400"
       />
     </label>
   );
@@ -659,14 +659,14 @@ function Meter(props: { label: string; v: number }) {
   const pct = Math.round(Math.max(0, Math.min(1, props.v)) * 100);
   return (
     <div className="mb-1 flex items-center justify-end gap-2">
-      <span className="text-base text-white/55">{props.label}</span>
-      <span className="inline-block h-2 w-24 overflow-hidden rounded-full bg-white/10">
+      <span className="text-base text-muted-foreground">{props.label}</span>
+      <span className="inline-block h-2 w-24 overflow-hidden rounded-full bg-muted">
         <span
-          className="block h-full rounded-full bg-cyan-300/80"
+          className="block h-full rounded-full bg-violet-300/80"
           style={{ width: `${pct}%` }}
         />
       </span>
-      <span className="w-9 text-right text-base tabular-nums text-white/75">{pct}</span>
+      <span className="w-9 text-right text-base tabular-nums text-muted-foreground">{pct}</span>
     </div>
   );
 }

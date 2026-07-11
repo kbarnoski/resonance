@@ -386,24 +386,24 @@ export default function DissolvePage() {
   const bound = desyncPct < 8;
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#080a0d] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#080a0d] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">dissolve</h1>
-        <p className="mt-1 max-w-xl text-base text-white/85">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">dissolve</h1>
+        <p className="mt-1 max-w-xl text-base text-foreground">
           Play the keyboard: at first the sound you hear and the shape you see are
           bound together — then the senses slowly stop agreeing.
         </p>
-        <p className="mt-1 font-mono text-sm text-white/60">
+        <p className="mt-1 font-mono text-sm text-muted-foreground">
           state: ketamine · pole: dissociative
         </p>
       </div>
 
       {error && (
-        <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-rose-300/40 bg-rose-950/40 px-5 py-4">
-          <p className="text-base text-rose-300">{error}</p>
+        <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2 rounded-xl border border-violet-300/40 bg-violet-950/40 px-5 py-4">
+          <p className="text-base text-violet-300">{error}</p>
         </div>
       )}
 
@@ -425,8 +425,8 @@ export default function DissolvePage() {
         {/* Desync indicator + controls */}
         <div className="mb-3 flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-sm text-white/75">desync</span>
-            <div className="h-2 w-40 overflow-hidden rounded-full bg-white/10">
+            <span className="font-mono text-sm text-muted-foreground">desync</span>
+            <div className="h-2 w-40 overflow-hidden rounded-full bg-muted">
               <div
                 className="h-full rounded-full bg-violet-300/80 transition-[width] duration-150"
                 style={{ width: `${desyncPct}%` }}
@@ -458,14 +458,14 @@ export default function DissolvePage() {
             <button
               type="button"
               onClick={letItDrift}
-              className="min-h-[44px] rounded-lg border border-white/20 bg-white/5 px-4 py-2.5 font-mono text-sm text-white/75 transition hover:bg-white/10"
+              className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 font-mono text-sm text-muted-foreground transition hover:bg-accent"
             >
               Let it drift
             </button>
           </div>
         </div>
 
-        <p className="mb-3 font-mono text-sm text-white/70">
+        <p className="mb-3 font-mono text-sm text-muted-foreground">
           Keys A S D F G H J K L = a floating whole-tone scale · Spacebar = re-bind ·
           drag the slider to force the K-hole
         </p>
@@ -490,8 +490,8 @@ export default function DissolvePage() {
                 onPointerCancel={() => onPadUp(k)}
                 className={`flex h-16 min-h-[44px] min-w-[44px] flex-1 select-none items-center justify-center rounded-lg border px-4 py-2.5 font-mono text-sm transition-transform ${
                   isDown
-                    ? "border-slate-200/70 bg-slate-200/30 text-white"
-                    : "border-white/20 bg-white/5 text-white/80 hover:bg-white/10"
+                    ? "border-slate-200/70 bg-slate-200/30 text-foreground"
+                    : "border-border bg-muted text-foreground hover:bg-accent"
                 }`}
                 style={{ transform: isDown ? "translateY(2px) scale(0.97)" : "none" }}
               >
@@ -505,7 +505,7 @@ export default function DissolvePage() {
       {/* Design notes link */}
       <Link
         href="/dream/1254-dissolve/README.md"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/60 underline decoration-white/30 underline-offset-4 transition hover:text-white/85"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition hover:text-foreground"
       >
         Read the design notes
       </Link>

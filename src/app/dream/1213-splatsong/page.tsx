@@ -393,7 +393,7 @@ export default function SplatsongPage() {
   }, [teardownAudio]);
 
   return (
-    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#232427] text-white">
+    <main className="relative min-h-screen w-full touch-none overflow-hidden bg-[#232427] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
@@ -406,12 +406,12 @@ export default function SplatsongPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-white/95 sm:text-2xl">
+        <h1 className="font-mono text-xl font-semibold uppercase tracking-[0.25em] text-foreground sm:text-2xl">
           splatsong
         </h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
           A cloud-of-light cairn of true 3D Gaussian splats with a{" "}
-          <span className="text-white/95">material you can hear</span>. Drag to orbit; tap a
+          <span className="text-foreground">material you can hear</span>. Drag to orbit; tap a
           cluster to strike it. Each cluster&rsquo;s material is inferred from its splats and
           rings a modelled modal impact.
         </p>
@@ -420,24 +420,24 @@ export default function SplatsongPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex max-w-md flex-col items-center gap-5 border border-white/15 bg-black/55 px-8 py-7 text-center backdrop-blur-sm">
-            <p className="text-base text-white/80">
+          <div className="flex max-w-md flex-col items-center gap-5 border border-border bg-black/55 px-8 py-7 text-center backdrop-blur-sm">
+            <p className="text-base text-foreground">
               Six splat clusters &mdash; glass, stone, a brass bar, wood &mdash; float as a
               resonant cairn. Orbit by dragging. Tap a cluster and its inferred material sings
               a physically-modelled strike.
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] min-w-[44px] bg-white px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-white/85"
+              className="min-h-[44px] min-w-[44px] bg-card px-4 py-2.5 font-mono text-base font-medium uppercase tracking-widest text-black transition-colors hover:bg-accent"
             >
               Begin
             </button>
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Sound starts on this tap (master gain ramps up from silence). The sculpture is
               already turning behind this panel.
             </p>
-            {audioError && <p className="text-base text-rose-300">{audioError}</p>}
-            {glNotice && <p className="text-base text-rose-300">{glNotice}</p>}
+            {audioError && <p className="text-base text-violet-300">{audioError}</p>}
+            {glNotice && <p className="text-base text-violet-300">{glNotice}</p>}
           </div>
         </div>
       )}
@@ -445,56 +445,56 @@ export default function SplatsongPage() {
       {/* control dock */}
       {phase === "running" && (
         <div className="absolute bottom-4 left-1/2 z-10 w-[min(96vw,720px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center gap-2 border border-white/12 bg-black/55 px-4 py-3 backdrop-blur-sm">
-            <div className="mr-2 min-w-[190px] font-mono text-base text-white/75">
+          <div className="flex flex-wrap items-center gap-2 border border-border bg-black/55 px-4 py-3 backdrop-blur-sm">
+            <div className="mr-2 min-w-[190px] font-mono text-base text-muted-foreground">
               {lastStrike ? (
                 <>
-                  struck <span className="text-white/95">{lastStrike.label}</span>
-                  <span className="text-white/55">
+                  struck <span className="text-foreground">{lastStrike.label}</span>
+                  <span className="text-muted-foreground">
                     {" · "}
                     {lastStrike.hz} Hz
                   </span>
                 </>
               ) : (
-                <span className="text-white/55">tap a cluster to strike it</span>
+                <span className="text-muted-foreground">tap a cluster to strike it</span>
               )}
             </div>
 
             <button
               onClick={shimmerAll}
-              className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+              className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
             >
               shimmer all
             </button>
 
-            <span className="mx-1 hidden h-6 w-px bg-white/15 sm:block" />
+            <span className="mx-1 hidden h-6 w-px bg-muted sm:block" />
 
             <div className="ml-auto flex items-center gap-1">
               <button
                 onClick={handleStop}
-                className="min-h-[44px] border border-white/25 px-4 py-2.5 font-mono text-base text-white/85 transition-colors hover:bg-white/10"
+                className="min-h-[44px] border border-border px-4 py-2.5 font-mono text-base text-foreground transition-colors hover:bg-accent"
               >
                 stop
               </button>
             </div>
           </div>
-          <p className="mt-2 text-center font-mono text-base text-white/55">
+          <p className="mt-2 text-center font-mono text-base text-muted-foreground">
             drag = orbit · tap = strike · quicker tap = harder hit
           </p>
-          {glNotice && <p className="mt-1 text-center text-base text-rose-300">{glNotice}</p>}
+          {glNotice && <p className="mt-1 text-center text-base text-violet-300">{glNotice}</p>}
         </div>
       )}
 
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] border border-white/20 bg-black/40 px-4 py-2.5 font-mono text-base text-white/80 backdrop-blur-sm transition-colors hover:bg-black/60"
+        className="absolute right-4 top-4 z-20 min-h-[44px] border border-border bg-black/40 px-4 py-2.5 font-mono text-base text-foreground backdrop-blur-sm transition-colors hover:bg-black/60"
       >
         design notes
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 max-h-[78vh] w-[min(92vw,470px)] overflow-y-auto border border-white/15 bg-black/85 p-5 text-base text-white/85 backdrop-blur-sm">
-          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-white/95">
+        <div className="absolute right-4 top-20 z-30 max-h-[78vh] w-[min(92vw,470px)] overflow-y-auto border border-border bg-black/85 p-5 text-base text-foreground backdrop-blur-sm">
+          <p className="mb-2 font-mono text-xl uppercase tracking-widest text-foreground">
             a material you can hear
           </p>
           <p className="mb-2">
@@ -506,7 +506,7 @@ export default function SplatsongPage() {
             back-to-front on the CPU and composited with premultiplied &ldquo;over&rdquo; alpha
             for the soft volumetric look.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Each cluster&rsquo;s <em>material</em> is inferred from its splat statistics, the way
             SonicGauss reads a material off a Gaussian field: tight+small+bright+cool &rArr; glass;
             large+diffuse+dark+desaturated &rArr; stone; elongated+metallic &rArr; a brass bar;
@@ -516,18 +516,18 @@ export default function SplatsongPage() {
             strike velocity sets loudness + brightness. The bus runs into a limiter and the master
             gain ramps from 0.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Palette: a neutral studio light-box, not a dark void &mdash; the colour lives in the
             material (glass aqua, slate stone, brass, umber wood). No strobe: the auto-orbit and
             idle shimmer are slow continuous drift (&#8810;3 Hz) and every strike flash is a smooth
             exponential ramp. Respects prefers-reduced-motion.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: Kerbl et al., <em>3D Gaussian Splatting for Real-Time Radiance Field Rendering</em>,
             SIGGRAPH 2023; WebSplatter (arXiv 2602.03207, Feb 2026); SonicGauss (arXiv 2507.19835).
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="font-mono text-white/90 underline hover:text-white">
+            <Link href="/dream" className="font-mono text-foreground underline hover:text-foreground">
               &larr; back to the lab
             </Link>
           </div>

@@ -315,20 +315,20 @@ export default function EarOfStaticPage() {
   const res = resonancesRef.current;
 
   return (
-    <main className="min-h-screen bg-[#05040a] px-4 py-6 text-white sm:px-6">
+    <main className="min-h-screen bg-[#05040a] px-4 py-6 text-foreground sm:px-6">
       <div className="mx-auto max-w-3xl">
         <header className="mb-4">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Ear of Static
           </h1>
-          <p className="mt-1 text-base text-white/80">
+          <p className="mt-1 text-base text-foreground">
             Sweep a listening focus across a bed of pure noise. Dwell, and a
             hidden melody resolves itself out of the hiss — as if it was ringing
             there all along.
           </p>
           <p className="mt-2 text-base text-violet-300">
             Drag across the ribbon or press{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-200">A … ;</code>{" "}
+            <code className="rounded bg-muted px-1 text-violet-200">A … ;</code>{" "}
             to jump between bands. Hold still over a resonance to let it ring out.
           </p>
         </header>
@@ -384,14 +384,14 @@ export default function EarOfStaticPage() {
           {/* pre-Begin overlay */}
           {phase === "idle" && (
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/55 backdrop-blur-[1px]">
-              <p className="max-w-sm px-6 text-center text-base text-white/85">
+              <p className="max-w-sm px-6 text-center text-base text-foreground">
                 Seven resonances are already ringing inside the static, silenced.
                 Begin, then sweep your ear across them.
               </p>
               <button
                 type="button"
                 onClick={begin}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
               >
                 Begin
               </button>
@@ -402,7 +402,7 @@ export default function EarOfStaticPage() {
           {phase === "live" && (
             <div className="pointer-events-none absolute left-3 top-3 flex flex-col gap-1.5">
               {resolvingLabel && (
-                <span className="rounded-full bg-amber-400/20 px-3 py-1 text-sm text-amber-200">
+                <span className="rounded-full bg-violet-400/20 px-3 py-1 text-sm text-violet-200">
                   {resolvingLabel}
                 </span>
               )}
@@ -417,27 +417,27 @@ export default function EarOfStaticPage() {
 
         {/* controls / help */}
         <div className="mt-4 space-y-2">
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Pointer or touch to sweep;{" "}
-            <code className="rounded bg-white/10 px-1 text-violet-200">A S D F G H J K L ;</code>{" "}
+            <code className="rounded bg-muted px-1 text-violet-200">A S D F G H J K L ;</code>{" "}
             jump to preset bands, arrows nudge,{" "}
-            <span className="text-white/90">space</span> locks the current weave.
+            <span className="text-foreground">space</span> locks the current weave.
           </p>
         </div>
 
         {reduced && (
-          <p className="mt-3 text-base text-amber-300/95">
+          <p className="mt-3 text-base text-violet-300/95">
             Reduced-motion is on — the hiss animation and luminance drift are
             frozen; resonances still ring out under your focus.
           </p>
         )}
         {!webglOk && (
-          <p className="mt-3 text-base text-amber-300/95">
+          <p className="mt-3 text-base text-violet-300/95">
             WebGL2 is unavailable — showing a focus-meter fallback. The audio
             instrument still plays in full.
           </p>
         )}
-        {error && <p className="mt-3 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-3 text-base text-violet-300">{error}</p>}
       </div>
 
       <PrototypeNav slugs={["1396-apophenia-field", "1392-phase-loom"]} />

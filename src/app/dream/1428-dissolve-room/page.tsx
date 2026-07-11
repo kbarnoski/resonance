@@ -271,7 +271,7 @@ export default function DissolveRoomPage() {
   }, [status]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* ── The 3D room ─────────────────────────────────────────────────── */}
       <div
         className="pointer-events-none absolute inset-0"
@@ -343,10 +343,10 @@ export default function DissolveRoomPage() {
       {/* ── Text + controls overlay ──────────────────────────────────────── */}
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="pointer-events-auto max-w-2xl">
-          <h1 className="font-serif text-3xl font-semibold text-white sm:text-4xl">
+          <h1 className="font-serif text-3xl font-semibold text-foreground sm:text-4xl">
             The Dissolve
           </h1>
-          <p className="mt-2 text-base leading-relaxed text-white/80">
+          <p className="mt-2 text-base leading-relaxed text-foreground">
             A room you cannot leave. A solid glowing lattice loosens over five
             minutes and tunnels toward a light — tuned so it was never quite in
             tune, and grinding further out as it comes apart. You don&rsquo;t
@@ -369,13 +369,13 @@ export default function DissolveRoomPage() {
           )}
 
           {reduced && (
-            <p className="mt-3 max-w-xl text-base text-rose-300">
+            <p className="mt-3 max-w-xl text-base text-violet-300">
               Reduced-motion is on, so the arc is frozen to a formed-but-gently-
               alive lattice — no accumulating dissolve, no brightness pulsing.
             </p>
           )}
           {status === "running" && usingFallback && !reduced && (
-            <p className="mt-3 max-w-xl text-base text-rose-300">
+            <p className="mt-3 max-w-xl text-base text-violet-300">
               No device tilt detected — using the desktop fallback: drag to steer
               the room, and press-and-hold anywhere to pull back toward a more
               formed lattice.
@@ -384,13 +384,13 @@ export default function DissolveRoomPage() {
         </header>
 
         {status === "running" && (
-          <div className="pointer-events-auto mb-16 max-w-md rounded-2xl border border-white/10 bg-black/50 p-4 backdrop-blur-sm">
+          <div className="pointer-events-auto mb-16 max-w-md rounded-2xl border border-border bg-black/50 p-4 backdrop-blur-sm">
             <label
               htmlFor="drift"
-              className="flex items-center justify-between text-base text-white/80"
+              className="flex items-center justify-between text-base text-foreground"
             >
               <span>Drift speed</span>
-              <span className="text-white/55">{driftSpeed.toFixed(2)}×</span>
+              <span className="text-muted-foreground">{driftSpeed.toFixed(2)}×</span>
             </label>
             <input
               id="drift"
@@ -402,7 +402,7 @@ export default function DissolveRoomPage() {
               onChange={(e) => setDriftSpeed(parseFloat(e.target.value))}
               className="mt-2 w-full accent-violet-400"
             />
-            <p className="mt-2 text-base text-white/75">
+            <p className="mt-2 text-base text-muted-foreground">
               {usingFallback
                 ? "Drag to steer · press-and-hold to resist."
                 : "Tilt to steer · lean in / hold to resist."}{" "}
@@ -417,13 +417,13 @@ export default function DissolveRoomPage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-base text-white/75 backdrop-blur-sm transition-colors hover:text-white"
+          className="min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
         >
           {showNotes ? "Close" : "Design notes"}
         </button>
         {showNotes && (
-          <div className="mt-2 max-w-xs rounded-2xl border border-white/10 bg-black/80 p-4 text-base leading-relaxed text-white/80 backdrop-blur">
-            <p className="text-white/95">
+          <div className="mt-2 max-w-xs rounded-2xl border border-border bg-black/80 p-4 text-base leading-relaxed text-foreground backdrop-blur">
+            <p className="text-foreground">
               Long-form &amp; irreversible: one monotonic clock, ~5 min. The
               phases {PHASES.join(" · ")} accumulate — minute 5 is not minute 1.
             </p>
@@ -432,7 +432,7 @@ export default function DissolveRoomPage() {
               octave-stretch that grows with the dissolve, chorus widening cents
               → tens of cents. It drifts further out of consonance, never back.
             </p>
-            <p className="mt-2 text-white/75">
+            <p className="mt-2 text-muted-foreground">
               After Blackmore&rsquo;s <em>Dying to Live</em> (1993) and the
               DMT-models-NDE finding: the tunnel → void → light is a universal,
               brain-generated scaffold; only its content is personal.
@@ -448,21 +448,21 @@ export default function DissolveRoomPage() {
 
 function PhaseReadout({ phase, elapsed }: { phase: Phase; elapsed: string }) {
   return (
-    <div className="rounded-full border border-white/10 bg-black/50 px-4 py-2 backdrop-blur-sm">
+    <div className="rounded-full border border-border bg-black/50 px-4 py-2 backdrop-blur-sm">
       <div className="flex items-center gap-2 text-base">
         {PHASES.map((p, i) => (
           <span key={p} className="flex items-center gap-2">
             <span
               className={
-                p === phase ? "text-violet-300" : "text-white/55"
+                p === phase ? "text-violet-300" : "text-muted-foreground"
               }
             >
               {p}
             </span>
-            {i < PHASES.length - 1 && <span className="text-white/55">·</span>}
+            {i < PHASES.length - 1 && <span className="text-muted-foreground">·</span>}
           </span>
         ))}
-        <span className="ml-1 border-l border-white/15 pl-3 tabular-nums text-white/55">
+        <span className="ml-1 border-l border-border pl-3 tabular-nums text-muted-foreground">
           {elapsed}
         </span>
       </div>

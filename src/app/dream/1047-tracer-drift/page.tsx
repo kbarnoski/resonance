@@ -160,12 +160,12 @@ export default function Page() {
 
   // ── UI ────────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL2 is not available in this browser, so the feedback tracer
             engine cannot run. Try a recent desktop Chrome, Edge, or Firefox.
           </p>
@@ -179,10 +179,10 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-200">
               Resonance · Dream Lab · 1047
             </p>
-            <h1 className="mt-3 text-3xl font-semibold text-white sm:text-4xl">
+            <h1 className="mt-3 text-3xl font-semibold text-foreground sm:text-4xl">
               Tracer Drift
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/75">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Surfaces breathing and slowly drifting, motion leaving lagging
               colour trails, a haze of visual snow — the long, weightless plateau
               of an acid come-up, drug-free. Breathe near the mic to swell the
@@ -196,13 +196,13 @@ export default function Page() {
               >
                 Begin the drift
               </button>
-              <p className="text-sm text-white/55">
+              <p className="text-sm text-muted-foreground">
                 Asks for the mic (analysis only — never recorded or played back).
                 Works without it.
               </p>
             </div>
 
-            {notice && <p className="mt-4 text-base text-rose-300">{notice}</p>}
+            {notice && <p className="mt-4 text-base text-violet-300">{notice}</p>}
 
             <button
               onClick={() => setShowNotes((s) => !s)}
@@ -213,10 +213,10 @@ export default function Page() {
           </div>
 
           {showNotes && (
-            <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/55 p-5 text-left text-base leading-relaxed text-white/75 backdrop-blur-sm">
+            <div className="pointer-events-auto max-w-xl rounded-2xl bg-black/55 p-5 text-left text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
               <p>
                 A WebGL2{" "}
-                <span className="text-white/95">ping-pong feedback buffer</span>{" "}
+                <span className="text-foreground">ping-pong feedback buffer</span>{" "}
                 drives everything: each frame samples the previous frame with a
                 tiny zoom, rotation and fBm warp, fades it (the positive
                 afterimage), then composites a breathing fBm surface, two
@@ -235,16 +235,16 @@ export default function Page() {
         <>
           <div className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-between p-4">
             <div className="rounded-xl bg-black/35 px-3 py-2 backdrop-blur-sm">
-              <p className="font-mono text-sm text-white/95">
+              <p className="font-mono text-sm text-foreground">
                 Tracer Drift
                 <span className="ml-2 text-violet-200">
                   {micDriven ? "· breath" : "· self-drift"}
                 </span>
               </p>
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-mono text-sm text-muted-foreground">
                 phase: <span className="text-violet-200">{phaseLabel}</span>
               </p>
-              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-white/15">
+              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-violet-300/80"
                   style={{ width: `${Math.round(progress * 100)}%` }}
@@ -261,19 +261,19 @@ export default function Page() {
           </div>
 
           {!micDriven && (
-            <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/45 px-3 py-2 text-base text-rose-300 backdrop-blur-sm">
+            <p className="pointer-events-none absolute bottom-4 left-1/2 -translate-x-1/2 rounded-lg bg-black/45 px-3 py-2 text-base text-violet-300 backdrop-blur-sm">
               Drifting on a self-driven breath swell — no microphone in use.
             </p>
           )}
 
           {notice && (
-            <p className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 rounded-lg bg-black/55 px-3 py-2 text-base text-rose-300 backdrop-blur-sm">
+            <p className="pointer-events-none absolute bottom-16 left-1/2 -translate-x-1/2 rounded-lg bg-black/55 px-3 py-2 text-base text-violet-300 backdrop-blur-sm">
               {notice}
             </p>
           )}
 
           {showNotes && (
-            <div className="pointer-events-auto absolute bottom-16 right-4 max-w-sm rounded-2xl bg-black/60 p-5 text-base leading-relaxed text-white/75 backdrop-blur-sm">
+            <div className="pointer-events-auto absolute bottom-16 right-4 max-w-sm rounded-2xl bg-black/60 p-5 text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
               <p>
                 Ping-pong feedback: the previous frame is warped, faded and
                 re-composited under fresh content every frame — that lag is the

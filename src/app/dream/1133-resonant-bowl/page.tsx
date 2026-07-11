@@ -145,7 +145,7 @@ export default function ResonantBowlPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#05060f] text-foreground">
       {/* 3D resonance-bath */}
       <div
         ref={containerRef}
@@ -159,15 +159,15 @@ export default function ResonantBowlPage() {
 
       {/* Title + description (top-left) */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 max-w-xl p-6">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] sm:text-3xl">
           Resonant Bowl
         </h1>
-        <p className="mt-2 text-base text-white/75 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+        <p className="mt-2 text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
           Strike and rub a singing bowl until the space around you rings into
           slow, breathing shells of light — a sound-bath you sink into.
         </p>
         {started && (
-          <p className="mt-3 text-base text-white/75 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+          <p className="mt-3 text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
             Tap to strike · drag across to sing the rim.
           </p>
         )}
@@ -175,8 +175,8 @@ export default function ResonantBowlPage() {
 
       {/* WebGL fallback notice (audio still plays) */}
       {webglFailed && (
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(90vw,32rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-rose-400/40 bg-black/70 p-5 text-center">
-          <p className="text-base text-rose-300">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(90vw,32rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-violet-400/40 bg-black/70 p-5 text-center">
+          <p className="text-base text-violet-300">
             3D visuals could not start on this device (WebGL unavailable), but
             the singing bowl still sounds — tap and drag anywhere to play it.
           </p>
@@ -189,11 +189,11 @@ export default function ResonantBowlPage() {
           <button
             type="button"
             onClick={handleStart}
-            className="min-h-[44px] rounded-full border border-teal-300/40 bg-teal-400/10 px-4 py-2.5 text-base font-medium text-white transition hover:bg-teal-400/20"
+            className="min-h-[44px] rounded-full border border-violet-300/40 bg-violet-400/10 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400/20"
           >
             Begin the sound-bath
           </button>
-          <p className="mt-4 max-w-sm px-6 text-center text-base text-white/75">
+          <p className="mt-4 max-w-sm px-6 text-center text-base text-muted-foreground">
             Headphones and a quiet minute recommended. Sound begins on tap.
           </p>
         </div>
@@ -204,15 +204,15 @@ export default function ResonantBowlPage() {
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="min-h-[44px] rounded-lg border border-white/20 bg-black/50 px-4 py-2.5 text-base font-medium text-white/90 backdrop-blur-sm transition hover:bg-black/70"
+          className="min-h-[44px] rounded-lg border border-border bg-black/50 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-sm transition hover:bg-black/70"
         >
           {showNotes ? "Hide design notes" : "Design notes"}
         </button>
         {showNotes && (
-          <div className="mt-2 rounded-xl border border-white/15 bg-black/80 p-4 text-base text-white/75 backdrop-blur-md">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="mt-2 rounded-xl border border-border bg-black/80 p-4 text-base text-muted-foreground backdrop-blur-md">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-2">
-              Seven <span className="text-white/95">inharmonic partials</span>{" "}
+              Seven <span className="text-foreground">inharmonic partials</span>{" "}
               (ratios 1, 2.76, 5.4, 8.93, 13.34, 18.64, 24.7) are summed with
               per-partial exponential decay; the fundamental is split into two
               detuned oscillators so it slowly <em>beats</em> — the singing-bowl
@@ -222,12 +222,12 @@ export default function ResonantBowlPage() {
             </p>
             <p className="mt-2">
               Each partial&rsquo;s amplitude drives one concentric{" "}
-              <span className="text-white/95">standing-wave shell</span> of
+              <span className="text-foreground">standing-wave shell</span> of
               points, displaced by a Chladni-like spherical-harmonic function —
               rendered in true 3D three.js with additive glow. Idle a few
               seconds and the bowl self-strikes.
             </p>
-            <p className="mt-2 text-white/75">
+            <p className="mt-2 text-muted-foreground">
               References: Tibetan singing-bowl acoustics · Ernst Chladni nodal
               patterns / spherical harmonics · the drone-listening tradition of
               Lucier, La Monte Young &amp; Éliane Radigue.

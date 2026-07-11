@@ -277,7 +277,7 @@ export default function Page() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0a0503] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#0a0503] text-foreground">
       <div
         ref={mountRef}
         className="absolute inset-0 block h-full w-full touch-none"
@@ -290,18 +290,18 @@ export default function Page() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-b from-black/70 via-black/55 to-black/85 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-mono text-3xl text-white sm:text-4xl">
+            <h1 className="font-mono text-3xl text-foreground sm:text-4xl">
               The Drop
             </h1>
-            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/80">
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-foreground">
               Grains rain onto a landscape. Slopes steepen invisibly to a
-              critical angle, then <span className="text-amber-300/95">topple</span>{" "}
+              critical angle, then <span className="text-violet-300/95">topple</span>{" "}
               in scale-free avalanches — and the avalanches <em>are</em> the music:
               mostly tiny ticks, the rare big one a full-spectrum drop. A real
               self-organized-critical sandpile that composes itself and never loops.
             </p>
             {phase === "nogl" && (
-              <p className="mt-6 text-base text-rose-300">
+              <p className="mt-6 text-base text-violet-300">
                 This device could not open a WebGL context, so the terrain cannot be
                 drawn — but you can still press Begin and hear the pile play.
               </p>
@@ -309,31 +309,31 @@ export default function Page() {
             <button
               type="button"
               onClick={begin}
-              className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-amber-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-amber-400"
+              className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-black transition-colors hover:bg-violet-400"
             >
               Begin
             </button>
             <button
               type="button"
               onClick={() => setShowNotes((s) => !s)}
-              className="mt-4 block w-full text-base text-amber-300/95 underline-offset-4 hover:underline"
+              className="mt-4 block w-full text-base text-violet-300/95 underline-offset-4 hover:underline"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
             {showNotes && (
-              <div className="mt-4 max-h-[42vh] overflow-y-auto rounded-2xl border border-white/10 bg-black/50 p-5 text-left text-base leading-relaxed text-white/80">
+              <div className="mt-4 max-h-[42vh] overflow-y-auto rounded-2xl border border-border bg-black/50 p-5 text-left text-base leading-relaxed text-foreground">
                 <p>
-                  A CPU <span className="text-amber-300/95">abelian sandpile</span>{" "}
+                  A CPU <span className="text-violet-300/95">abelian sandpile</span>{" "}
                   (Bak&ndash;Tang&ndash;Wiesenfeld, <em>Self-Organized Criticality</em>,
                   1987) runs on an 80&times;80 grid. A cell with 4+ grains topples,
                   shedding one to each neighbour; grains off the edge are lost. The
                   pile is driven slowly, so avalanche sizes follow a{" "}
-                  <span className="text-amber-300/95">power law</span> &mdash; mostly
+                  <span className="text-violet-300/95">power law</span> &mdash; mostly
                   tiny, rarely enormous.
                 </p>
                 <p className="mt-3">
                   Each column is one instance in a three.js{" "}
-                  <span className="text-amber-300/95">InstancedMesh</span>; its height
+                  <span className="text-violet-300/95">InstancedMesh</span>; its height
                   is its grain count and it glows white-hot as it topples, so an
                   avalanche is a wave of light. Tension (how loaded the pile is toward
                   critical) drives a riser; each avalanche&rsquo;s size drives the
@@ -341,7 +341,7 @@ export default function Page() {
                   continuous and inharmonic, mapped from the cascade&rsquo;s centroid,
                   never a scale.
                 </p>
-                <p className="mt-3 text-white/75">
+                <p className="mt-3 text-muted-foreground">
                   Tap/drag to pour grains. Space = a seismic shock. Arrow keys (or
                   device tilt on a phone) lean gravity so avalanches drift. It plays
                   itself with no input. All motion is slow luminance drift &mdash; no
@@ -356,20 +356,20 @@ export default function Page() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 select-none">
-            <div className="font-mono text-2xl text-white/95">The Drop</div>
-            <div className="mt-1 text-base text-white/80">
+            <div className="font-mono text-2xl text-foreground">The Drop</div>
+            <div className="mt-1 text-base text-foreground">
               tension{" "}
-              <span className="text-amber-300/95">{readout.tension}%</span> · topples/f{" "}
-              <span className="text-amber-300/95">{readout.activity}</span>
+              <span className="text-violet-300/95">{readout.tension}%</span> · topples/f{" "}
+              <span className="text-violet-300/95">{readout.activity}</span>
             </div>
-            <div className="text-base text-white/75">
-              last drop <span className="text-orange-300">{readout.last}</span> ·
-              biggest <span className="text-orange-300">{readout.biggest}</span>
+            <div className="text-base text-muted-foreground">
+              last drop <span className="text-violet-300">{readout.last}</span> ·
+              biggest <span className="text-violet-300">{readout.biggest}</span>
             </div>
           </div>
 
           <div className="pointer-events-none absolute bottom-16 left-1/2 z-10 -translate-x-1/2 select-none px-4 text-center">
-            <p className="text-base text-white/75">
+            <p className="text-base text-muted-foreground">
               tap / drag to pour · space = seismic shock · arrows / tilt lean gravity
             </p>
           </div>

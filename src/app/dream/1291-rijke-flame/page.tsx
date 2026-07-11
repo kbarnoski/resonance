@@ -250,24 +250,24 @@ export default function RijkeFlamePage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#0d0b09]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Rijke Flame</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Rijke Flame</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           A singing flame you play with your hand. Drag the glowing gauze down
           into the tube&apos;s lower half and it spontaneously breaks into a loud
           standing-wave tone — Rayleigh&apos;s thermoacoustic criterion made
@@ -277,26 +277,26 @@ export default function RijkeFlamePage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if you
+            <strong className="text-foreground">The question:</strong> what if you
             could <em>play</em> a singing flame — a thermoacoustic Rijke tube that
             sings when you place heat inside it?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The physics:</strong> an open–open
+            <strong className="text-foreground">The physics:</strong> an open–open
             pipe&apos;s fundamental has a{" "}
-            <span className="text-amber-200/90">pressure antinode</span> at its
+            <span className="text-violet-200/90">pressure antinode</span> at its
             centre and velocity antinodes at the open ends. Rayleigh&apos;s
             criterion (1878): heat added where acoustic pressure is rising feeds
             the oscillation. The mode&apos;s growth rate goes as{" "}
-            <span className="text-amber-200/90">sin(2πh)</span> — positive
+            <span className="text-violet-200/90">sin(2πh)</span> — positive
             (driving) in the lower half, peaking at h = ¼, negative (damping) in
             the upper half. The second mode grows as sin(4πh), leaving a pure
             octave pocket near h ≈ 0.62 where the fundamental is being damped.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Hand → sound:</strong> the flame
+            <strong className="text-foreground">Hand → sound:</strong> the flame
             position sets each mode&apos;s target amplitude via that Rayleigh
             curve; a limit-cycle integrator relaxes toward it — slow on the way up
             (the onset swell) and quicker down. The tube tone is a fundamental +
@@ -305,11 +305,11 @@ export default function RijkeFlamePage() {
             just intonation so dragging is always playable.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Idle:</strong> ~3s untouched and the
+            <strong className="text-foreground">Idle:</strong> ~3s untouched and the
             flame drifts to the sweet spot and slowly sweeps the length — it plays
             itself until you grab it again.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: P.L. Rijke, &ldquo;singing tube&rdquo; (1859); Lord Rayleigh, on
             the maintenance of vibrations by heat (1878). Palette: brushed copper
             / brass + ember heat-shimmer on deep charcoal. Not verified on real
@@ -331,15 +331,15 @@ export default function RijkeFlamePage() {
 
         {/* Live readout */}
         {started && (
-          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
-            <div className="text-amber-200/90">
+          <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
+            <div className="text-violet-200/90">
               {readout.freq.toFixed(1)} Hz{" "}
-              <span className="text-white/45">· drive {Math.round(readout.drive * 100)}%</span>
+              <span className="text-muted-foreground">· drive {Math.round(readout.drive * 100)}%</span>
             </div>
-            <div className={readout.zone.includes("sings") ? "text-orange-300/95" : "text-white/60"}>
+            <div className={readout.zone.includes("sings") ? "text-violet-300/95" : "text-muted-foreground"}>
               {readout.zone}
             </div>
-            {readout.auto && <div className="text-amber-300/90">playing itself…</div>}
+            {readout.auto && <div className="text-violet-300/90">playing itself…</div>}
           </div>
         )}
 
@@ -349,11 +349,11 @@ export default function RijkeFlamePage() {
             <button
               type="button"
               onClick={enter}
-              className="min-h-[44px] rounded-full bg-amber-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-amber-200/40 transition hover:bg-amber-300"
+              className="min-h-[44px] rounded-full bg-violet-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-violet-200/40 transition hover:bg-violet-300"
             >
               ▶ Light the flame
             </button>
-            <p className="max-w-md text-center text-base text-white/60">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Starts the sound. Drag the glowing gauze into the lower half to make
               it sing; drag the top handle to change pitch. Leave it idle and it
               plays itself.
@@ -363,7 +363,7 @@ export default function RijkeFlamePage() {
 
         {started && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Drag the gauze low to sing · drag the top handle for pitch
             </p>
           </div>

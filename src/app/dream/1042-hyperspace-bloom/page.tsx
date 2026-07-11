@@ -333,17 +333,17 @@ export default function HyperspaceBloomPage() {
   }, [onOrient]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         className="fixed inset-0 h-full w-full touch-none"
       />
 
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Hyperspace Bloom
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80">
+        <p className="mt-2 text-base leading-relaxed text-foreground">
           A drug-free fall toward the DMT &ldquo;breakthrough&rdquo;: a 24-cell
           polytope rotating through six planes of four-dimensional space,
           stereographically projected and raymarched as glowing neon-jeweled
@@ -364,7 +364,7 @@ export default function HyperspaceBloomPage() {
           {phase === "running" && (
             <button
               onClick={handlePause}
-              className="min-h-[44px] min-w-[44px] rounded-full border border-white/25 bg-black/50 px-4 py-2.5 text-base font-medium text-white/95 backdrop-blur transition hover:bg-black/70"
+              className="min-h-[44px] min-w-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur transition hover:bg-black/70"
             >
               Pause
             </button>
@@ -390,14 +390,14 @@ export default function HyperspaceBloomPage() {
         )}
 
         {usingFallback && (
-          <p className="mt-3 max-w-sm text-base text-rose-300">
+          <p className="mt-3 max-w-sm text-base text-violet-300">
             WebGL2 is unavailable here, so this is a lighter Canvas2D
             wireframe of the same rotating 24-cell. The audio and the
             four-dimensional morph still play.
           </p>
         )}
 
-        <details className="mt-4 max-w-sm text-sm text-white/75">
+        <details className="mt-4 max-w-sm text-sm text-muted-foreground">
           <summary className="cursor-pointer text-violet-300 hover:text-violet-200">
             Read the design notes
           </summary>

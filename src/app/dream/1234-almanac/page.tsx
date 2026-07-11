@@ -211,7 +211,7 @@ export default function Page() {
           <button
             onClick={begin}
             disabled={loading}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-slate-400/60 bg-white/70 px-4 py-2.5 text-base font-medium text-slate-800 shadow-sm backdrop-blur transition hover:bg-white/90 disabled:opacity-60"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-slate-400/60 bg-muted px-4 py-2.5 text-base font-medium text-slate-800 shadow-sm backdrop-blur transition hover:bg-accent disabled:opacity-60"
           >
             {loading ? "loading Karel's piano…" : "Begin the day"}
           </button>
@@ -227,7 +227,7 @@ export default function Page() {
                 {"  ·  "}
                 <span
                   className={
-                    source === "piano" ? "text-emerald-700" : "text-amber-700"
+                    source === "piano" ? "text-violet-700" : "text-violet-700"
                   }
                 >
                   {source === "piano" ? "Karel's piano" : "fallback tone"}
@@ -262,7 +262,7 @@ export default function Page() {
       </div>
 
       {/* Design notes */}
-      <details className="pointer-events-auto absolute right-4 top-4 max-w-sm rounded-md border border-slate-300/70 bg-white/70 p-3 text-slate-700 backdrop-blur">
+      <details className="pointer-events-auto absolute right-4 top-4 max-w-sm rounded-md border border-slate-300/70 bg-muted p-3 text-slate-700 backdrop-blur">
         <summary className="cursor-pointer text-base text-slate-700">
           Design notes
         </summary>

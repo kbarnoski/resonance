@@ -203,7 +203,7 @@ export default function SemaAscentPage() {
 
   return (
     <main
-      className="relative h-dvh w-full overflow-hidden bg-[#030209] text-white"
+      className="relative h-dvh w-full overflow-hidden bg-[#030209] text-foreground"
       onClick={() => surge()}
     >
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
@@ -211,13 +211,13 @@ export default function SemaAscentPage() {
       {/* Hero / Begin overlay (idle preview whirls dimly behind it) */}
       {(phase === "idle" || phase === "loading") && (
         <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 bg-[#030209]/55 px-6 text-center backdrop-blur-[2px]">
-          <p className="font-mono text-sm uppercase tracking-[0.3em] text-amber-300/95">
+          <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300/95">
             drug-free sema · ecstatic ascent
           </p>
-          <h1 className="font-serif text-4xl text-white/95 sm:text-5xl">
+          <h1 className="font-serif text-4xl text-foreground sm:text-5xl">
             Sema Ascent
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/80">
+          <p className="max-w-xl text-base leading-relaxed text-foreground">
             A whirling trance built as a six-minute climb. Nested rings of light
             spin at locked polyrhythmic ratios, accelerate, phase-lock into a
             white-hot peak, then set you gently down. Tilt your phone to lean the
@@ -230,11 +230,11 @@ export default function SemaAscentPage() {
               void begin();
             }}
             disabled={phase !== "idle"}
-            className="min-h-[44px] rounded-full border border-amber-300/50 bg-amber-300/10 px-6 py-2.5 text-base text-amber-200 transition hover:bg-amber-300/20 disabled:opacity-60"
+            className="min-h-[44px] rounded-full border border-violet-300/50 bg-violet-300/10 px-6 py-2.5 text-base text-violet-200 transition hover:bg-violet-300/20 disabled:opacity-60"
           >
             Begin the whirl
           </button>
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Headphones recommended. One gesture starts the sound; the ascent runs
             on its own.
           </p>
@@ -244,7 +244,7 @@ export default function SemaAscentPage() {
       {/* WebGL-missing notice */}
       {phase === "nowebgl" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
-          <p className="max-w-md text-base leading-relaxed text-rose-300">
+          <p className="max-w-md text-base leading-relaxed text-violet-300">
             This piece needs WebGL to render the whirl, and your browser does not
             appear to support it. Try a recent desktop or mobile browser with
             hardware acceleration enabled.
@@ -254,24 +254,24 @@ export default function SemaAscentPage() {
 
       {/* Live HUD while running */}
       {phase === "running" && (
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-xl border border-white/10 bg-black/45 px-4 py-3 text-base backdrop-blur-md">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded-xl border border-border bg-black/45 px-4 py-3 text-base backdrop-blur-md">
           <div className="mb-1.5 flex items-center gap-2">
-            <span className="inline-block h-2.5 w-2.5 rounded-full bg-amber-400" />
-            <span className="font-serif text-amber-300/95">{hud.movement}</span>
+            <span className="inline-block h-2.5 w-2.5 rounded-full bg-violet-400" />
+            <span className="font-serif text-violet-300/95">{hud.movement}</span>
           </div>
-          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-white/95">
-            <dt className="text-white/75">time</dt>
+          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-foreground">
+            <dt className="text-muted-foreground">time</dt>
             <dd className="text-right tabular-nums">
               {fmtTime(hud.elapsed)} / 6:00
             </dd>
-            <dt className="text-white/75">cycle</dt>
+            <dt className="text-muted-foreground">cycle</dt>
             <dd className="text-right tabular-nums">{hud.cycle}</dd>
-            <dt className="text-white/75">input</dt>
+            <dt className="text-muted-foreground">input</dt>
             <dd className="text-right">
               {tiltRef.current ? "tilt" : "pointer"}
             </dd>
           </dl>
-          <p className="mt-2 text-sm text-white/55">tap / space = surge</p>
+          <p className="mt-2 text-sm text-muted-foreground">tap / space = surge</p>
         </div>
       )}
 
@@ -282,7 +282,7 @@ export default function SemaAscentPage() {
           e.stopPropagation();
           setNotesOpen((v) => !v);
         }}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition hover:text-white/95"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Read the design notes"}
       </button>
@@ -296,11 +296,11 @@ export default function SemaAscentPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-4 min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/75 hover:text-white/95"
+              className="mb-4 min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
             >
               Close
             </button>
-            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-white/85">
+            <pre className="whitespace-pre-wrap font-serif text-base leading-relaxed text-foreground">
               {README}
             </pre>
           </div>

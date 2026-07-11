@@ -164,7 +164,7 @@ export default function TorsionPage() {
   const active = PRESETS[presetIdx];
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#160a2a] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#160a2a] text-foreground">
       {/* 3D stage */}
       <div
         ref={containerRef}
@@ -181,14 +181,14 @@ export default function TorsionPage() {
         <header className="max-w-2xl">
           <Link
             href="/dream"
-            className="pointer-events-auto text-base text-white/75 underline-offset-4 hover:underline"
+            className="pointer-events-auto text-base text-muted-foreground underline-offset-4 hover:underline"
           >
             ← dream lab
           </Link>
-          <h1 className="mt-3 font-serif text-3xl text-white/95 sm:text-4xl">
+          <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">
             Torsion
           </h1>
-          <p className="mt-2 text-base text-white/80">
+          <p className="mt-2 text-base text-foreground">
             A {active.label} torus knot — one string wound {active.p}× around and{" "}
             {active.q}× through — plucked like a physical instrument, its winding
             numbers set as the tuning.
@@ -197,7 +197,7 @@ export default function TorsionPage() {
 
         <div className="pointer-events-auto max-w-2xl">
           {phase === "error" ? (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               WebGL or Web Audio is unavailable in this browser, so the knot
               can’t be awoken here. Try a recent desktop Chrome, Firefox, or
               Safari.
@@ -208,7 +208,7 @@ export default function TorsionPage() {
                 <button
                   type="button"
                   onClick={onStart}
-                  className="min-h-[44px] rounded-full bg-amber-500/90 px-4 py-2.5 text-base font-medium text-[#160a2a] transition-colors hover:bg-amber-400"
+                  className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-[#160a2a] transition-colors hover:bg-violet-400"
                 >
                   Awaken the knot
                 </button>
@@ -223,8 +223,8 @@ export default function TorsionPage() {
                     onClick={() => onPreset(idx)}
                     className={`min-h-[44px] rounded-full border px-4 py-2.5 text-base transition-colors ${
                       idx === presetIdx
-                        ? "border-amber-300/70 bg-amber-400/15 text-white/95"
-                        : "border-white/15 text-white/75 hover:border-white/30 hover:text-white/90"
+                        ? "border-violet-300/70 bg-violet-400/15 text-foreground"
+                        : "border-border text-muted-foreground hover:border-border hover:text-foreground"
                     }`}
                     title={preset.name}
                   >
@@ -233,7 +233,7 @@ export default function TorsionPage() {
                 ))}
               </div>
 
-              <p className="mt-4 font-mono text-base text-white/75">
+              <p className="mt-4 font-mono text-base text-muted-foreground">
                 {phase === "running"
                   ? "drag to turn · click the string to pluck · slide to strum"
                   : "press awaken, then drag to turn and pluck the string"}

@@ -236,24 +236,24 @@ export default function PlateModesPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-black text-white/80">
+    <main className="min-h-screen bg-black text-foreground">
       <div className="mx-auto max-w-3xl px-5 py-8">
         <Link
           href="/dream"
-          className="text-white/60 hover:text-white/90 text-base transition-colors"
+          className="text-muted-foreground hover:text-foreground text-base transition-colors"
         >
           ← dream lab
         </Link>
 
-        <h1 className="mt-4 font-serif text-3xl text-white/95">Plate Modes</h1>
-        <p className="mt-2 text-base text-white/80">
+        <h1 className="mt-4 font-serif text-3xl text-foreground">Plate Modes</h1>
+        <p className="mt-2 text-base text-foreground">
           Tap the plate and watch the exact standing-wave (Chladni) nodal lines
           you are hearing form in real time — the sound and the geometry are the
           same vibrating physics.
         </p>
 
         {backend === "unsupported" ? (
-          <p className="mt-6 text-base text-rose-300">
+          <p className="mt-6 text-base text-violet-300">
             This piece needs WebGL2 with float render targets, which this browser
             or device does not provide. Try a recent desktop Chrome, Firefox, or
             Safari.
@@ -264,12 +264,12 @@ export default function PlateModesPage() {
               <button
                 type="button"
                 onClick={handleStart}
-                className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-500 active:bg-violet-700"
+                className="min-h-[44px] rounded-lg bg-violet-600 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500 active:bg-violet-700"
               >
                 {running ? "Strike the plate" : "Start"}
               </button>
 
-              <label className="flex items-center gap-3 text-base text-white/70">
+              <label className="flex items-center gap-3 text-base text-muted-foreground">
                 <span className="whitespace-nowrap">damping</span>
                 <input
                   type="range"
@@ -283,14 +283,14 @@ export default function PlateModesPage() {
                 />
               </label>
 
-              <span className="text-base text-white/60">
+              <span className="text-base text-muted-foreground">
                 {readout
                   ? `driver ≈ ${readout.hz} Hz · mode (${readout.m},${readout.n})`
                   : "warming up…"}
               </span>
             </div>
 
-            <div className="mt-5 overflow-hidden rounded-xl border border-white/10 bg-black">
+            <div className="mt-5 overflow-hidden rounded-xl border border-border bg-black">
               <canvas
                 ref={canvasRef}
                 onPointerDown={onPointerDown}
@@ -298,7 +298,7 @@ export default function PlateModesPage() {
               />
             </div>
 
-            <p className="mt-3 text-base text-white/60">
+            <p className="mt-3 text-base text-muted-foreground">
               Tap the plate to strike it — each tap is an impulse. Even untouched,
               the swept driver keeps ringing up new modes, so the luminous sand
               lines reorganize on their own. Cyan-white lines are nodes (where the

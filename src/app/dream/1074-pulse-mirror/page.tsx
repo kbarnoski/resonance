@@ -20,21 +20,21 @@ function renderNotes(md: string) {
     }
     if (line.startsWith("# ")) {
       return (
-        <h1 key={i} className="text-2xl font-semibold text-white">
+        <h1 key={i} className="text-2xl font-semibold text-foreground">
           {line.slice(2)}
         </h1>
       );
     }
     if (line.startsWith("- ")) {
       return (
-        <li key={i} className="ml-5 list-disc text-base text-white/75">
+        <li key={i} className="ml-5 list-disc text-base text-muted-foreground">
           {line.slice(2)}
         </li>
       );
     }
     if (line.trim() === "") return <div key={i} className="h-2" />;
     return (
-      <p key={i} className="text-base leading-relaxed text-white/75">
+      <p key={i} className="text-base leading-relaxed text-muted-foreground">
         {line}
       </p>
     );
@@ -117,7 +117,7 @@ export default function PulseMirrorPage() {
   const onsetCount = snap ? snap.tempo.onsetCount : 0;
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#050507] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#050507] text-foreground">
       {/* WebGL2 stage. */}
       <canvas
         ref={canvasRef}
@@ -129,10 +129,10 @@ export default function PulseMirrorPage() {
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
           dream · 1074
         </p>
-        <h1 className="mt-2 text-2xl font-semibold text-white/95">
+        <h1 className="mt-2 text-2xl font-semibold text-foreground">
           Pulse Mirror
         </h1>
-        <p className="mt-3 max-w-xl text-base leading-relaxed text-white/75">
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground">
           Play a rhythm — clap, tap, sing, or knock — and a duet partner tracks
           your tempo and answers <span className="text-violet-300">on</span> the
           beat, anticipating where your next beat will fall.
@@ -146,19 +146,19 @@ export default function PulseMirrorPage() {
               <button
                 type="button"
                 onClick={() => begin(true)}
-                className="min-h-[44px] rounded-full border border-amber-400/40 bg-amber-500/20 px-6 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-amber-500/30"
+                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30"
               >
                 Start mic
               </button>
               <button
                 type="button"
                 onClick={() => begin(false)}
-                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-violet-500/30"
+                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30"
               >
                 Start demo performer
               </button>
             </div>
-            <p className="max-w-md text-center text-base text-white/55">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               Mic starts a live listener. No mic (or denied) falls back to a
               self-clocking demo performer so the duet still plays.
             </p>
@@ -169,8 +169,8 @@ export default function PulseMirrorPage() {
             <span
               className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-base ${
                 mode === "mic"
-                  ? "border-emerald-400/30 bg-emerald-500/10 text-emerald-300/95"
-                  : "border-amber-400/30 bg-amber-500/10 text-amber-300/95"
+                  ? "border-violet-400/30 bg-violet-500/10 text-violet-300/95"
+                  : "border-violet-400/30 bg-violet-500/10 text-violet-300/95"
               }`}
             >
               <span aria-hidden>●</span>
@@ -179,31 +179,31 @@ export default function PulseMirrorPage() {
 
             {/* Tempo readout. */}
             <div className="flex items-baseline gap-2">
-              <span className="font-mono text-[44px] font-light leading-none tabular-nums text-white/95">
+              <span className="font-mono text-[44px] font-light leading-none tabular-nums text-foreground">
                 {onsetCount >= 3 && confidence > 0.1 ? bpm : "—"}
               </span>
-              <span className="text-xl text-white/55">bpm</span>
+              <span className="text-xl text-muted-foreground">bpm</span>
             </div>
             <div className="flex flex-col items-center gap-1">
-              <div className="h-2 w-52 overflow-hidden rounded-full bg-white/10">
+              <div className="h-2 w-52 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full rounded-full bg-violet-300 transition-[width] duration-200"
                   style={{ width: `${Math.round(confidence * 100)}%` }}
                 />
               </div>
-              <span className="font-mono text-xs uppercase tracking-[0.2em] text-white/55">
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
                 tempo confidence · {onsetCount} onsets
               </span>
             </div>
 
-            <p className="max-w-md text-center text-base text-white/75">
+            <p className="max-w-md text-center text-base text-muted-foreground">
               {mode === "mic"
                 ? "Keep a steady rhythm going. The violet/rose voice will lock to your pulse and answer on the beat."
                 : "The synthetic performer is playing; the violet/rose voice is following and answering it on the beat."}
             </p>
 
             {!usingGL && (
-              <p className="text-base text-amber-300/95">
+              <p className="text-base text-violet-300/95">
                 WebGL2 unavailable — showing the Canvas2D fallback. Audio is
                 still playing.
               </p>
@@ -211,14 +211,14 @@ export default function PulseMirrorPage() {
           </div>
         )}
 
-        {error && <p className="mt-4 text-base text-rose-300">{error}</p>}
+        {error && <p className="mt-4 text-base text-violet-300">{error}</p>}
       </section>
 
       {/* In-page design notes toggle. */}
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/10 bg-black/70 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white/95"
+        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Read the design notes"}
       </button>
@@ -229,7 +229,7 @@ export default function PulseMirrorPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-6 min-h-[44px] rounded-full border border-white/10 bg-white/[0.06] px-4 py-2.5 text-base text-white/75 hover:text-white/95"
+              className="mb-6 min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
             >
               ← Close
             </button>

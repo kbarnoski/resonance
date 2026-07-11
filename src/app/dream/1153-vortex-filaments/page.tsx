@@ -361,13 +361,13 @@ export default function VortexFilamentsPage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#03040a] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#03040a] text-foreground">
       <div ref={mountRef} className="absolute inset-0" />
 
       {/* header / controls */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">Vortex Filaments</h1>
-        <p className="max-w-xl text-base text-white/75">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Vortex Filaments</h1>
+        <p className="max-w-xl text-base text-muted-foreground">
           Stir a superfluid and watch its quantized vortices tangle, ripple with Kelvin waves, and
           hear each reconnection fire.
         </p>
@@ -378,7 +378,7 @@ export default function VortexFilamentsPage() {
           {!started && (
             <button
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-cyan-500/20 px-5 py-2.5 text-base font-medium text-cyan-200 ring-1 ring-cyan-400/40 transition hover:bg-cyan-500/30"
+              className="min-h-[44px] rounded-full bg-violet-500/20 px-5 py-2.5 text-base font-medium text-violet-200 ring-1 ring-violet-400/40 transition hover:bg-violet-500/30"
             >
               Stir the superfluid
             </button>
@@ -386,20 +386,20 @@ export default function VortexFilamentsPage() {
           {started && (
             <button
               onClick={toggleMute}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/15 transition hover:bg-white/15"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
             >
               {muted ? "Unmute" : "Mute"}
             </button>
           )}
           <button
             onClick={() => setShowNotes((v) => !v)}
-            className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 text-base text-white/70 ring-1 ring-white/10 transition hover:bg-white/10"
+            className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent"
           >
             {showNotes ? "Hide notes" : "Design notes"}
           </button>
         </div>
         {started && (
-          <p className="pointer-events-none text-sm text-white/55">
+          <p className="pointer-events-none text-sm text-muted-foreground">
             Drag anywhere to stir — fast strokes birth new rings.
           </p>
         )}
@@ -407,24 +407,24 @@ export default function VortexFilamentsPage() {
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-0 top-24 z-20 mx-auto max-w-xl rounded-2xl bg-black/70 p-5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur sm:top-28">
-          <p className="mb-2 text-white/95">
+        <div className="pointer-events-auto absolute inset-x-0 top-24 z-20 mx-auto max-w-xl rounded-2xl bg-black/70 p-5 text-base text-foreground ring-1 ring-border backdrop-blur sm:top-28">
+          <p className="mb-2 text-foreground">
             A superfluid can&apos;t rotate as ordinary fluid does — its vorticity is quantized into
-            thin <span className="text-cyan-300">vortex filaments</span> (Feynman, 1955).
+            thin <span className="text-violet-300">vortex filaments</span> (Feynman, 1955).
           </p>
           <p className="mb-2">
-            Each loop moves under the <span className="text-cyan-300">Local Induction
+            Each loop moves under the <span className="text-violet-300">Local Induction
             Approximation</span> (Da Rios 1906 / Arms–Hama): every point drifts along its binormal
             at a speed set by local curvature. Rings translate; helical{" "}
-            <span className="text-cyan-300">Kelvin waves</span> (Lord Kelvin, 1880) propagate.
+            <span className="text-violet-300">Kelvin waves</span> (Lord Kelvin, 1880) propagate.
           </p>
           <p className="mb-2">
-            When two strands cross they <span className="text-cyan-300">reconnect</span> — and, per
+            When two strands cross they <span className="text-violet-300">reconnect</span> — and, per
             the 2025 universal-asymmetry law, they recoil <em>faster than they approached</em>,
             firing an energy burst. Each burst rings a fast-decay bell whose brightness tracks that
             energy.
           </p>
-          <p className="text-white/55">
+          <p className="text-muted-foreground">
             See the full README for references, including arXiv 2607.00821 (2026).
           </p>
         </div>
@@ -433,13 +433,13 @@ export default function VortexFilamentsPage() {
       {/* error / no-WebGL notice */}
       {err && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">{err}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{err}</p>
         </div>
       )}
 
       <Link
         href="/dream"
-        className="pointer-events-auto absolute right-5 top-5 z-10 text-sm text-white/55 transition hover:text-white/90 sm:right-7 sm:top-7"
+        className="pointer-events-auto absolute right-5 top-5 z-10 text-sm text-muted-foreground transition hover:text-foreground sm:right-7 sm:top-7"
       >
         ← gallery
       </Link>

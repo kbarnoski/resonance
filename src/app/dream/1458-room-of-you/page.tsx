@@ -235,13 +235,13 @@ export default function RoomOfYou() {
   }, [teardown]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full" />
 
       {/* design-notes link, corner */}
       <Link
         href="https://github.com/kbarnoski/resonance/blob/main/src/app/dream/1458-room-of-you/README.md"
-        className="fixed right-4 top-4 z-30 rounded-full border border-white/15 bg-black/50 px-4 py-2.5 text-sm text-white/75 backdrop-blur-md transition-colors hover:text-white"
+        className="fixed right-4 top-4 z-30 rounded-full border border-border bg-black/50 px-4 py-2.5 text-sm text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         Read the design notes →
       </Link>
@@ -249,19 +249,19 @@ export default function RoomOfYou() {
       {phase === "idle" && (
         <div className="relative z-20 flex min-h-screen flex-col items-center justify-center px-6 text-center">
           <p className="mb-3 text-sm uppercase tracking-[0.3em] text-violet-300/90">a cross-modal meditation</p>
-          <h1 className="font-serif text-4xl leading-tight text-white sm:text-5xl md:text-6xl">The Room of You</h1>
-          <p className="mt-5 max-w-xl text-lg leading-relaxed text-white/80">
+          <h1 className="font-serif text-4xl leading-tight text-foreground sm:text-5xl md:text-6xl">The Room of You</h1>
+          <p className="mt-5 max-w-xl text-lg leading-relaxed text-foreground">
             Stand before the camera and your silhouette becomes the shape of a resonant room. Move, and the space
             re-tunes; a soft bell rings out through the you-shaped cathedral.
           </p>
           <button
             onClick={begin}
             disabled={starting}
-            className="mt-8 min-h-[44px] rounded-full bg-violet-500/90 px-8 py-3.5 text-lg font-medium text-white shadow-lg transition-colors hover:bg-violet-400 disabled:opacity-60"
+            className="mt-8 min-h-[44px] rounded-full bg-violet-500/90 px-8 py-3.5 text-lg font-medium text-foreground shadow-lg transition-colors hover:bg-violet-400 disabled:opacity-60"
           >
             {starting ? "Opening the room…" : "Begin — and allow the camera"}
           </button>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-white/55">
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
             If you decline the camera, a synthetic presence inhabits the room for you. Best with headphones, in a dim
             space.
           </p>
@@ -270,23 +270,23 @@ export default function RoomOfYou() {
 
       {phase === "running" && (
         <>
-          <div className="fixed left-4 top-4 z-30 rounded-2xl border border-white/10 bg-black/45 px-4 py-3 backdrop-blur-md">
+          <div className="fixed left-4 top-4 z-30 rounded-2xl border border-border bg-black/45 px-4 py-3 backdrop-blur-md">
             <p
               className={
                 mode === "camera"
-                  ? "text-sm font-medium text-emerald-300/95"
-                  : "text-sm font-medium text-amber-300/95"
+                  ? "text-sm font-medium text-violet-300/95"
+                  : "text-sm font-medium text-violet-300/95"
               }
             >
               {mode === "camera" ? "camera: your body is the room" : "synthetic presence (no camera)"}
             </p>
             {mode === "synthetic" && visionError && (
-              <p className="mt-1 text-xs text-rose-300/90">{visionError} — using the synthetic presence</p>
+              <p className="mt-1 text-xs text-violet-300/90">{visionError} — using the synthetic presence</p>
             )}
             {glKind === "canvas2d" && (
-              <p className="mt-1 text-xs text-amber-300/90">WebGL2 unavailable — simplified visual, audio intact</p>
+              <p className="mt-1 text-xs text-violet-300/90">WebGL2 unavailable — simplified visual, audio intact</p>
             )}
-            <div className="mt-2 flex gap-4 text-xs text-white/75">
+            <div className="mt-2 flex gap-4 text-xs text-muted-foreground">
               <span>room {Math.round(hud.size * 100)}%</span>
               <span>bright {Math.round(hud.bright * 100)}%</span>
               <span>motion {Math.round(hud.motion * 100)}%</span>
@@ -295,7 +295,7 @@ export default function RoomOfYou() {
 
           <button
             onClick={stop}
-            className="fixed bottom-20 left-1/2 z-30 min-h-[44px] -translate-x-1/2 rounded-full border border-white/20 bg-black/60 px-6 py-2.5 text-base text-white/85 backdrop-blur-md transition-colors hover:text-white"
+            className="fixed bottom-20 left-1/2 z-30 min-h-[44px] -translate-x-1/2 rounded-full border border-border bg-black/60 px-6 py-2.5 text-base text-foreground backdrop-blur-md transition-colors hover:text-foreground"
           >
             Stop
           </button>

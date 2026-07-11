@@ -227,17 +227,17 @@ export default function TremorCorePage() {
   const badge =
     feed &&
     (feed.source === "live" ? (
-      <span className="font-mono text-base text-emerald-300/95">
+      <span className="font-mono text-base text-violet-300/95">
         {statusLabel(feed)}
       </span>
     ) : (
-      <span className="font-mono text-base text-amber-300/95">
+      <span className="font-mono text-base text-violet-300/95">
         {statusLabel(feed)}
       </span>
     ));
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0906] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0906] text-foreground">
       {/* the BRIGHT Earth cross-section canvas */}
       <canvas
         ref={canvasRef}
@@ -247,10 +247,10 @@ export default function TremorCorePage() {
 
       {/* header */}
       <header className="relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] sm:text-3xl">
           Tremor Core
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/80 drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
+        <p className="mt-2 max-w-2xl text-base text-foreground drop-shadow-[0_1px_6px_rgba(0,0,0,0.7)]">
           Every real, live earthquake on Earth strikes a resonant inharmonic
           gong — ringing at its true depth inside a glowing cutaway of the
           planet.
@@ -260,23 +260,23 @@ export default function TremorCorePage() {
       {/* pre-start overlay */}
       {runState === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/10 bg-black/45 px-8 py-7 text-center backdrop-blur-md">
-            <p className="max-w-md text-base text-white/80">
+          <div className="flex flex-col items-center gap-5 rounded-2xl border border-border bg-black/45 px-8 py-7 text-center backdrop-blur-md">
+            <p className="max-w-md text-base text-foreground">
               The past 24 hours of USGS earthquakes, compressed into a slow bell
               choir. Deep quakes ring near the core; shallow ones near the
               crust.
             </p>
             <button
               onClick={handleStart}
-              className="min-h-[44px] rounded-full bg-amber-200/90 px-4 py-2.5 text-base font-medium text-[#20160a] shadow-lg transition-colors hover:bg-amber-100"
+              className="min-h-[44px] rounded-full bg-violet-200/90 px-4 py-2.5 text-base font-medium text-[#20160a] shadow-lg transition-colors hover:bg-violet-100"
             >
               ▶ Listen to the Earth
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               Audio starts on this click — gesture-gated, with a limiter.
             </p>
             {audioError && (
-              <p className="max-w-sm text-base text-rose-300">{audioError}</p>
+              <p className="max-w-sm text-base text-violet-300">{audioError}</p>
             )}
           </div>
         </div>
@@ -285,20 +285,20 @@ export default function TremorCorePage() {
       {/* live readout panel */}
       {runState === "running" && (
         <div className="absolute bottom-16 left-1/2 z-10 w-[min(94vw,760px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/12 bg-black/55 px-5 py-4 backdrop-blur-md">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-black/55 px-5 py-4 backdrop-blur-md">
             <div className="min-w-[220px] flex-1">
               {lastQuake ? (
                 <div>
-                  <div className="text-base font-medium text-white">
+                  <div className="text-base font-medium text-foreground">
                     {lastQuake.place}
                   </div>
-                  <div className="mt-1 font-mono text-base text-white/80">
+                  <div className="mt-1 font-mono text-base text-foreground">
                     M {lastQuake.mag.toFixed(1)} · {Math.round(lastQuake.depth)}{" "}
                     km deep · {formatClock(lastQuake.time)}
                   </div>
                 </div>
               ) : (
-                <div className="text-base text-white/70">
+                <div className="text-base text-muted-foreground">
                   Waiting for the first tremor…
                 </div>
               )}
@@ -307,20 +307,20 @@ export default function TremorCorePage() {
             <div className="flex flex-col items-end gap-2">
               {badge}
               {rendererMode === "canvas2d" && (
-                <span className="font-mono text-base text-amber-300/95">
+                <span className="font-mono text-base text-violet-300/95">
                   canvas2d fallback
                 </span>
               )}
               <button
                 onClick={handleStop}
-                className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/20"
+                className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
               >
                 ■ Stop
               </button>
             </div>
           </div>
           {audioError && (
-            <p className="mt-2 text-center text-base text-rose-300">
+            <p className="mt-2 text-center text-base text-violet-300">
               {audioError}
             </p>
           )}

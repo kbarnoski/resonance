@@ -176,21 +176,21 @@ export default function NeumePage() {
   }, []);
 
   return (
-    <main className="min-h-screen w-full bg-[#e7d9b6] text-amber-950">
+    <main className="min-h-screen w-full bg-[#e7d9b6] text-violet-950">
       <div className="mx-auto flex max-w-5xl flex-col gap-5 px-5 py-8 sm:px-8">
         <header className="flex flex-col gap-2">
           <div className="flex items-baseline justify-between gap-4">
-            <h1 className="text-3xl font-semibold tracking-tight text-amber-950 sm:text-4xl">
+            <h1 className="text-3xl font-semibold tracking-tight text-violet-950 sm:text-4xl">
               Antiphonary
             </h1>
             <Link
               href="/dream"
-              className="text-base text-amber-900/80 underline underline-offset-4 hover:text-amber-950"
+              className="text-base text-violet-900/80 underline underline-offset-4 hover:text-violet-950"
             >
               ← all prototypes
             </Link>
           </div>
-          <p className="max-w-2xl text-base leading-relaxed text-amber-950/90">
+          <p className="max-w-2xl text-base leading-relaxed text-violet-950/90">
             A real piano recording notates itself as medieval plainchant — the melody&apos;s rise
             and fall inking square neumes onto a four-line stave, an illuminated manuscript
             writing itself as it plays.
@@ -198,7 +198,7 @@ export default function NeumePage() {
         </header>
 
         {/* the manuscript page */}
-        <div className="relative overflow-hidden rounded-2xl border border-amber-900/30 shadow-[0_10px_40px_-12px_rgba(90,60,20,0.5)]">
+        <div className="relative overflow-hidden rounded-2xl border border-violet-900/30 shadow-[0_10px_40px_-12px_rgba(90,60,20,0.5)]">
           <canvas
             ref={canvasRef}
             className="block w-full"
@@ -206,14 +206,14 @@ export default function NeumePage() {
           />
           {phase === "idle" && (
             <div className="pointer-events-none absolute inset-0 flex items-end justify-center pb-8">
-              <span className="rounded-full bg-amber-950/10 px-4 py-2 text-base text-amber-950/80">
+              <span className="rounded-full bg-violet-950/10 px-4 py-2 text-base text-violet-950/80">
                 the ruled stave awaits its chant
               </span>
             </div>
           )}
           {phase === "listening" && (
             <div className="absolute inset-0 flex items-center justify-center bg-[#efe4c6]/60 backdrop-blur-[1px]">
-              <span className="rounded-full bg-amber-950/85 px-5 py-2.5 text-base font-medium text-amber-50">
+              <span className="rounded-full bg-violet-950/85 px-5 py-2.5 text-base font-medium text-violet-50">
                 {subMsg}
               </span>
             </div>
@@ -228,12 +228,12 @@ export default function NeumePage() {
                 type="button"
                 onClick={handlePlayRecording}
                 disabled={phase === "listening"}
-                className="min-h-[44px] rounded-full bg-amber-900 px-6 py-2.5 text-base font-semibold text-amber-50 shadow-sm transition hover:bg-amber-800 disabled:opacity-60"
+                className="min-h-[44px] rounded-full bg-violet-900 px-6 py-2.5 text-base font-semibold text-violet-50 shadow-sm transition hover:bg-violet-800 disabled:opacity-60"
               >
                 {phase === "listening" ? "Copying…" : "Play the recording"}
               </button>
               {phase === "error" && errMsg && (
-                <span className="text-base font-medium text-rose-700">{errMsg}</span>
+                <span className="text-base font-medium text-violet-700">{errMsg}</span>
               )}
             </div>
           ) : (
@@ -241,12 +241,12 @@ export default function NeumePage() {
               <button
                 type="button"
                 onClick={togglePlay}
-                className="min-h-[44px] min-w-[44px] rounded-full bg-amber-900 px-6 py-2.5 text-base font-semibold text-amber-50 shadow-sm transition hover:bg-amber-800"
+                className="min-h-[44px] min-w-[44px] rounded-full bg-violet-900 px-6 py-2.5 text-base font-semibold text-violet-50 shadow-sm transition hover:bg-violet-800"
               >
                 {playing ? "Pause" : "Play"}
               </button>
               <div className="flex flex-1 items-center gap-3">
-                <span className="w-12 text-right text-base tabular-nums text-amber-950/80">
+                <span className="w-12 text-right text-base tabular-nums text-violet-950/80">
                   {fmt(pos)}
                 </span>
                 <input
@@ -258,10 +258,10 @@ export default function NeumePage() {
                   onChange={(e) => onSeekInput(Number(e.target.value))}
                   onPointerUp={(e) => onSeekCommit(Number((e.target as HTMLInputElement).value))}
                   onKeyUp={(e) => onSeekCommit(Number((e.target as HTMLInputElement).value))}
-                  className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-amber-900/25 accent-amber-800"
+                  className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-violet-900/25 accent-violet-800"
                   aria-label="Seek through the chant"
                 />
-                <span className="w-12 text-base tabular-nums text-amber-950/80">
+                <span className="w-12 text-base tabular-nums text-violet-950/80">
                   {fmt(duration)}
                 </span>
               </div>
@@ -270,21 +270,21 @@ export default function NeumePage() {
 
           <div className="flex flex-wrap items-center gap-4">
             {source && (
-              <span className="rounded-full border border-amber-900/30 bg-amber-100/60 px-3 py-1 text-sm font-medium text-amber-950">
+              <span className="rounded-full border border-violet-900/30 bg-violet-100/60 px-3 py-1 text-sm font-medium text-violet-950">
                 source: {source === "recording" ? "Karel's piano" : "fallback tone"}
               </span>
             )}
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="text-base text-amber-900 underline underline-offset-4 hover:text-amber-950"
+              className="text-base text-violet-900 underline underline-offset-4 hover:text-violet-950"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
           </div>
 
           {showNotes && (
-            <div className="max-w-2xl rounded-2xl border border-amber-900/25 bg-amber-100/50 p-5 text-base leading-relaxed text-amber-950/90">
+            <div className="max-w-2xl rounded-2xl border border-violet-900/25 bg-violet-100/50 p-5 text-base leading-relaxed text-violet-950/90">
               <p className="mb-3">
                 After you press play, the whole recording is decoded and analysed offline:{" "}
                 <strong>spectral-flux onset detection</strong> finds each note attack, and{" "}

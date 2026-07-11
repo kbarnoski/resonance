@@ -22,21 +22,21 @@ function renderNotes(md: string) {
     }
     if (line.startsWith("# ")) {
       return (
-        <h1 key={i} className="text-2xl font-semibold text-white">
+        <h1 key={i} className="text-2xl font-semibold text-foreground">
           {line.slice(2)}
         </h1>
       );
     }
     if (line.startsWith("- ")) {
       return (
-        <li key={i} className="ml-5 list-disc text-base leading-relaxed text-white/75">
+        <li key={i} className="ml-5 list-disc text-base leading-relaxed text-muted-foreground">
           {line.slice(2)}
         </li>
       );
     }
     if (line.trim() === "") return <div key={i} className="h-2" />;
     return (
-      <p key={i} className="text-base leading-relaxed text-white/75">
+      <p key={i} className="text-base leading-relaxed text-muted-foreground">
         {line}
       </p>
     );
@@ -223,15 +223,15 @@ export default function NoiseBloomPage() {
   }, []);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070c] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#06070c] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* header */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Noise Bloom
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           A melody hidden below hearing — add noise to bring it into being.
         </p>
       </div>
@@ -240,7 +240,7 @@ export default function NoiseBloomPage() {
       <button
         type="button"
         onClick={() => setShowNotes(true)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full px-4 py-2.5 font-mono text-sm text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white/85"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full px-4 py-2.5 font-mono text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         design notes →
       </button>
@@ -248,11 +248,11 @@ export default function NoiseBloomPage() {
       {/* intro / start */}
       {phase === "intro" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-6">
-          <div className="max-w-md rounded-2xl border border-white/10 bg-black/60 p-6 backdrop-blur-md">
-            <h2 className="text-xl font-medium text-white/95">
+          <div className="max-w-md rounded-2xl border border-border bg-black/60 p-6 backdrop-blur-md">
+            <h2 className="text-xl font-medium text-foreground">
               Hunt for the resonance
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               A phrase is playing right now — too faint to hear. Add the right
               amount of noise and it phases into being. Too little: silence. Too
               much: it drowns. Find the sweet-spot in the middle. Headphones or a
@@ -272,11 +272,11 @@ export default function NoiseBloomPage() {
       {/* unsupported */}
       {phase === "unsupported" && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-6">
-          <div className="max-w-md rounded-2xl border border-rose-400/20 bg-black/70 p-6 backdrop-blur-md">
-            <h2 className="text-xl font-medium text-rose-300">
+          <div className="max-w-md rounded-2xl border border-violet-400/20 bg-black/70 p-6 backdrop-blur-md">
+            <h2 className="text-xl font-medium text-violet-300">
               Audio unavailable
             </h2>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               This piece needs the Web Audio API, which your browser did not
               expose. Try a recent Chrome, Safari, or Firefox to hear the melody
               bloom out of the noise.
@@ -290,20 +290,20 @@ export default function NoiseBloomPage() {
         <div className="absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-4 p-5 sm:p-7">
           {/* clarity meter */}
           <div className="max-w-xs flex-1">
-            <div className="flex items-baseline justify-between font-mono text-sm text-white/55">
+            <div className="flex items-baseline justify-between font-mono text-sm text-muted-foreground">
               <span>clarity</span>
               <span ref={clarityTxtRef} className="text-violet-300">
                 0%
               </span>
             </div>
-            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-muted">
               <div
                 ref={clarityBarRef}
                 className="h-full rounded-full bg-gradient-to-r from-violet-500/60 to-violet-300"
                 style={{ width: "0%" }}
               />
             </div>
-            <p className="mt-2 text-sm leading-relaxed text-white/55">
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               {auto
                 ? "auto-sweeping — drag the dial to take over"
                 : "you have the dial — release to resume the sweep"}
@@ -312,8 +312,8 @@ export default function NoiseBloomPage() {
 
           {/* noise dial */}
           <div className="flex flex-col items-center gap-2">
-            <span className="font-mono text-sm text-white/55">
-              noise <span ref={noiseTxtRef} className="text-white/85">8</span>
+            <span className="font-mono text-sm text-muted-foreground">
+              noise <span ref={noiseTxtRef} className="text-foreground">8</span>
             </span>
             <div
               ref={dialRef}
@@ -327,7 +327,7 @@ export default function NoiseBloomPage() {
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}
               onKeyDown={onKeyDown}
-              className="relative h-56 w-16 cursor-ns-resize touch-none select-none rounded-full border border-white/15 bg-white/[0.04] outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
+              className="relative h-56 w-16 cursor-ns-resize touch-none select-none rounded-full border border-border bg-muted outline-none focus-visible:ring-2 focus-visible:ring-violet-400/70"
             >
               <div ref={trackRef} className="absolute inset-x-0 inset-y-2">
                 {/* sweet-spot marker */}
@@ -344,7 +344,7 @@ export default function NoiseBloomPage() {
                 />
               </div>
             </div>
-            <span className="font-mono text-sm text-white/55">drag ↕ / arrows</span>
+            <span className="font-mono text-sm text-muted-foreground">drag ↕ / arrows</span>
           </div>
         </div>
       )}
@@ -352,16 +352,16 @@ export default function NoiseBloomPage() {
       {/* notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-40 flex justify-end bg-black/50 backdrop-blur-sm">
-          <div className="h-full w-full max-w-lg overflow-y-auto border-l border-white/10 bg-[#0a0b12] p-6 sm:p-8">
+          <div className="h-full w-full max-w-lg overflow-y-auto border-l border-border bg-[#0a0b12] p-6 sm:p-8">
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mb-4 min-h-[44px] rounded-full px-4 py-2.5 font-mono text-sm text-white/55 transition-colors hover:bg-white/[0.06] hover:text-white/85"
+              className="mb-4 min-h-[44px] rounded-full px-4 py-2.5 font-mono text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               ← close
             </button>
             <div className="space-y-1">{renderNotes(NOTES_MD)}</div>
-            <p className="mt-6 font-mono text-sm text-white/40">
+            <p className="mt-6 font-mono text-sm text-muted-foreground/70">
               src/app/dream/1096-noise-bloom/README.md
             </p>
           </div>

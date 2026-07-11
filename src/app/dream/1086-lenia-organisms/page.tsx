@@ -216,34 +216,34 @@ export default function LeniaOrganismsPage() {
 
   const badge =
     path === "gpu" ? (
-      <span className="text-emerald-300">● GPU</span>
+      <span className="text-violet-300">● GPU</span>
     ) : path === "cpu" ? (
-      <span className="text-amber-300">● CPU fallback</span>
+      <span className="text-violet-300">● CPU fallback</span>
     ) : (
-      <span className="text-white/75">● starting…</span>
+      <span className="text-muted-foreground">● starting…</span>
     );
 
   return (
     <main
-      className="min-h-screen w-full bg-[#07060f] text-white flex flex-col items-center px-4 py-6"
+      className="min-h-screen w-full bg-[#07060f] text-foreground flex flex-col items-center px-4 py-6"
       onPointerDown={ensureAudio}
     >
       <div className="w-full max-w-3xl">
         <div className="flex items-baseline justify-between gap-4 flex-wrap">
-          <h1 className="text-2xl sm:text-3xl font-semibold text-white">
+          <h1 className="text-2xl sm:text-3xl font-semibold text-foreground">
             Lenia Organisms
           </h1>
           <div className="text-base font-medium">{badge}</div>
         </div>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           A field of continuous artificial life that self-organizes into alien
           creatures — an instrument you seed by tapping, that sings back as it lives.
         </p>
-        <p className="mt-1 text-base text-emerald-200/90">
+        <p className="mt-1 text-base text-violet-200/90">
           Tap the field to seed a blob of living matter. The Lenia dynamics grow it.
         </p>
 
-        <div className="mt-4 relative w-full aspect-square rounded-xl overflow-hidden ring-1 ring-white/10 shadow-[0_0_60px_-15px_rgba(20,180,160,0.4)]">
+        <div className="mt-4 relative w-full aspect-square rounded-xl overflow-hidden ring-1 ring-border shadow-[0_0_60px_-15px_rgba(20,180,160,0.4)]">
           <canvas
             ref={canvasRef}
             width={GPU_SIZE}
@@ -267,8 +267,8 @@ export default function LeniaOrganismsPage() {
                 className={
                   "min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium transition-colors " +
                   (active
-                    ? "bg-emerald-400/90 text-black"
-                    : "bg-white/10 text-white/95 hover:bg-white/20")
+                    ? "bg-violet-400/90 text-black"
+                    : "bg-muted text-foreground hover:bg-accent")
                 }
                 aria-pressed={active}
               >
@@ -283,27 +283,27 @@ export default function LeniaOrganismsPage() {
           <button
             type="button"
             onClick={toggleMute}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-white/10 text-white/95 hover:bg-white/20"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-muted text-foreground hover:bg-accent"
           >
             {muted ? "Sound: off" : "Sound: on"}
           </button>
           <button
             type="button"
             onClick={clearField}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-white/10 text-white/95 hover:bg-white/20"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-muted text-foreground hover:bg-accent"
           >
             Reseed field
           </button>
           <button
             type="button"
             onClick={() => setShowNotes(true)}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-white/10 text-white/95 hover:bg-white/20"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-muted text-foreground hover:bg-accent"
           >
             Design notes
           </button>
           <Link
             href="/dream"
-            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium text-white/75 hover:text-white/95 flex items-center"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium text-muted-foreground hover:text-foreground flex items-center"
           >
             ← Dream lab
           </Link>
@@ -316,7 +316,7 @@ export default function LeniaOrganismsPage() {
           <Meter label="Activity" value={live.activity} scale={6} />
         </div>
 
-        <p className="mt-4 text-base text-white/75">
+        <p className="mt-4 text-base text-muted-foreground">
           The whole model — a smooth ring-kernel convolution plus a Gaussian growth
           function — runs in a WebGPU compute shader (or a 128² JS fallback). The
           field&apos;s mass, motion and centroid drive a just-intonation choir:
@@ -333,11 +333,11 @@ export default function LeniaOrganismsPage() {
 function Meter({ label, value, scale }: { label: string; value: number; scale: number }) {
   const pct = Math.min(100, Math.max(0, value * scale * 100));
   return (
-    <div className="rounded-lg bg-white/5 ring-1 ring-white/10 px-3 py-2">
-      <div className="text-white/75 text-sm">{label}</div>
-      <div className="mt-1 h-2 rounded-full bg-white/10 overflow-hidden">
+    <div className="rounded-lg bg-muted ring-1 ring-border px-3 py-2">
+      <div className="text-muted-foreground text-sm">{label}</div>
+      <div className="mt-1 h-2 rounded-full bg-muted overflow-hidden">
         <div
-          className="h-full bg-gradient-to-r from-teal-400 to-amber-300"
+          className="h-full bg-gradient-to-r from-violet-400 to-violet-300"
           style={{ width: `${pct}%` }}
         />
       </div>
@@ -382,28 +382,28 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
       aria-label="Design notes"
     >
       <div
-        className="max-w-2xl w-full max-h-[85vh] overflow-y-auto rounded-2xl bg-[#0d0b1a] ring-1 ring-white/15 p-6 text-white"
+        className="max-w-2xl w-full max-h-[85vh] overflow-y-auto rounded-2xl bg-[#0d0b1a] ring-1 ring-border p-6 text-foreground"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
-          <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+          <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
           <button
             type="button"
             onClick={onClose}
-            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-white/10 hover:bg-white/20 text-white/95"
+            className="min-h-[44px] px-4 py-2.5 rounded-lg text-base font-medium bg-muted hover:bg-accent text-foreground"
           >
             Close
           </button>
         </div>
-        <div className="mt-4 space-y-4 text-base text-white/85 leading-relaxed">
+        <div className="mt-4 space-y-4 text-base text-foreground leading-relaxed">
           <p>
-            <span className="text-white font-medium">The question.</span> What if a
+            <span className="text-foreground font-medium">The question.</span> What if a
             screen of continuous artificial <em>life</em> — real alien organisms
             self-organizing out of a field — were an instrument you seed and that
             sings back as it lives?
           </p>
           <p>
-            <span className="text-white font-medium">Lenia.</span> Lenia (Bert
+            <span className="text-foreground font-medium">Lenia.</span> Lenia (Bert
             Wang-Chak Chan, <em>Lenia — Biology of Artificial Life</em>, 2019)
             generalizes Conway&apos;s Game of Life to continuous state, space and
             time. Each cell holds a real value A ∈ [0,1]. Every step the field is
@@ -416,23 +416,23 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             arXiv:2212.07906).
           </p>
           <p>
-            <span className="text-white font-medium">Phenomenology.</span> Self-
+            <span className="text-foreground font-medium">Phenomenology.</span> Self-
             organizing beings that appear, greet you and dissolve are the
             DMT/entity-encounter register made literal (cf. QRI / Andrés Gómez
             Emilsson on entity phenomenology). You don&apos;t draw them — you feed a
             field and meet what grows.
           </p>
           <p>
-            <span className="text-white font-medium">Compute.</span> The field lives
+            <span className="text-foreground font-medium">Compute.</span> The field lives
             in two ping-pong GPU storage buffers; a WGSL compute shader does the
             direct ring-kernel convolution + growth each frame. A render pass colours
             it (indigo void → teal → gold by local mass). If there&apos;s no WebGPU,
             the identical model runs on a 128² grid in plain JS to a 2D canvas — the
-            badge shows <span className="text-emerald-300">● GPU</span> or{" "}
-            <span className="text-amber-300">● CPU fallback</span>.
+            badge shows <span className="text-violet-300">● GPU</span> or{" "}
+            <span className="text-violet-300">● CPU fallback</span>.
           </p>
           <p>
-            <span className="text-white font-medium">Sound.</span> Cheap global
+            <span className="text-foreground font-medium">Sound.</span> Cheap global
             summaries (mass, motion, centroid) are read back each frame and mapped to
             a just-intonation additive/FM choir: total mass swells a stacked JI
             drone, growth events ring soft plucked JI bells pitched by creature
@@ -442,14 +442,14 @@ function DesignNotes({ onClose }: { onClose: () => void }) {
             within a couple of seconds with zero input.
           </p>
           <p>
-            <span className="text-white font-medium">Regimes.</span> Orbium, Rotor and
+            <span className="text-foreground font-medium">Regimes.</span> Orbium, Rotor and
             Colony differ in kernel radius and growth window (μ, σ) — different
             species. They sit near (not exactly on) the razor-edge classic Orbium
             point, tuned a touch wider so a symmetric tap reliably grows into living
             structure rather than dying.
           </p>
           <p>
-            <span className="text-white font-medium">Honest limitations.</span> The
+            <span className="text-foreground font-medium">Honest limitations.</span> The
             symmetric gaussian taps this instrument uses don&apos;t reproduce the
             clean, endlessly-gliding Orbium (which needs its exact asymmetric seed
             pattern); instead they grow robust, churning, slowly-drifting life. The

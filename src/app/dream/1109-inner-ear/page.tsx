@@ -195,14 +195,14 @@ export default function InnerEarPage() {
         disabled={!running}
         className={`min-h-[44px] rounded-lg border px-3 py-2 text-left text-sm font-medium transition-colors disabled:opacity-40 ${
           on
-            ? "border-neutral-800 bg-neutral-900 text-white"
-            : "border-neutral-300 bg-white/70 text-neutral-800 hover:bg-white"
+            ? "border-neutral-800 bg-neutral-900 text-foreground"
+            : "border-neutral-300 bg-muted text-neutral-800 hover:bg-card"
         }`}
       >
         <span className="block leading-tight">{m.title}</span>
         <span
           className={`block text-[11px] font-normal ${
-            on ? "text-white/70" : "text-neutral-500"
+            on ? "text-muted-foreground" : "text-neutral-500"
           }`}
         >
           {m.year}
@@ -212,8 +212,8 @@ export default function InnerEarPage() {
   };
 
   const ctlBtn =
-    "min-h-[44px] rounded-lg border border-neutral-300 bg-white/70 px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-white disabled:opacity-40 transition-colors";
-  const ctlOn = "border-neutral-800 bg-neutral-900 text-white hover:bg-neutral-900";
+    "min-h-[44px] rounded-lg border border-neutral-300 bg-muted px-4 py-2 text-sm font-medium text-neutral-800 hover:bg-card disabled:opacity-40 transition-colors";
+  const ctlOn = "border-neutral-800 bg-neutral-900 text-foreground hover:bg-neutral-900";
 
   return (
     <main className="min-h-screen bg-[#efe8db] px-4 py-6 text-neutral-800 sm:px-6">
@@ -234,7 +234,7 @@ export default function InnerEarPage() {
         </header>
 
         {/* Headphones advisory */}
-        <div className="mb-4 flex items-start gap-3 rounded-xl border border-amber-500 bg-amber-300/80 px-4 py-3 text-neutral-900 shadow-sm">
+        <div className="mb-4 flex items-start gap-3 rounded-xl border border-violet-500 bg-violet-300/80 px-4 py-3 text-neutral-900 shadow-sm">
           <span className="text-2xl leading-none">🎧</span>
           <p className="text-[15px] font-semibold">
             Headphones required. These illusions depend on each ear hearing a
@@ -272,7 +272,7 @@ export default function InnerEarPage() {
                 <div className="absolute inset-0 flex items-center justify-center bg-[#f4efe6]/85">
                   <button
                     onClick={start}
-                    className="min-h-[44px] rounded-full bg-neutral-900 px-8 py-3 text-lg font-semibold text-white shadow-lg hover:bg-neutral-800"
+                    className="min-h-[44px] rounded-full bg-neutral-900 px-8 py-3 text-lg font-semibold text-foreground shadow-lg hover:bg-neutral-800"
                   >
                     ▶ Start the exhibit
                   </button>
@@ -308,8 +308,8 @@ export default function InnerEarPage() {
                     disabled={!running}
                     className={`min-h-[44px] px-3 py-2 text-sm font-medium transition-colors disabled:opacity-40 ${
                       reveal === r
-                        ? "bg-neutral-900 text-white"
-                        : "bg-white/70 text-neutral-800 hover:bg-white"
+                        ? "bg-neutral-900 text-foreground"
+                        : "bg-muted text-neutral-800 hover:bg-card"
                     }`}
                   >
                     {label}
@@ -335,13 +335,13 @@ export default function InnerEarPage() {
                   </span>
                   <button
                     onClick={() => answerCalib("up")}
-                    className={`${ctlBtn} border-emerald-600 text-emerald-800`}
+                    className={`${ctlBtn} border-violet-600 text-violet-800`}
                   >
                     Higher ↑
                   </button>
                   <button
                     onClick={() => answerCalib("down")}
-                    className={`${ctlBtn} border-orange-600 text-orange-800`}
+                    className={`${ctlBtn} border-violet-600 text-violet-800`}
                   >
                     Lower ↓
                   </button>
@@ -386,7 +386,7 @@ export default function InnerEarPage() {
 
         {/* Design notes */}
         <details
-          className="mt-6 rounded-xl border border-neutral-300 bg-white/50 px-4 py-3"
+          className="mt-6 rounded-xl border border-neutral-300 bg-muted px-4 py-3"
           open={showNotes}
           onToggle={(e) => setShowNotes((e.target as HTMLDetailsElement).open)}
         >

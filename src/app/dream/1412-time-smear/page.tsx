@@ -571,7 +571,7 @@ export default function TimeSmearPage() {
   const started = mode !== null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0510] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0510] text-foreground">
       <canvas
         ref={canvasRef}
         onPointerMove={onPointerMove}
@@ -594,13 +594,13 @@ export default function TimeSmearPage() {
       {/* ── intro / start panel ── */}
       {!started && (
         <div className="relative z-10 mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-16">
-          <p className="mb-3 font-mono text-xs uppercase tracking-[0.32em] text-white/75">
+          <p className="mb-3 font-mono text-xs uppercase tracking-[0.32em] text-muted-foreground">
             dream · 1412 · slit-scan chronophotography
           </p>
-          <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+          <h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
             Time Smear
           </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80">
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-foreground">
             Perform in front of your webcam and watch your motion get smeared into a flowing
             chronophotographic ribbon that sings. The screen shows only one thin slice of each
             frame, scrolled sideways — so the horizontal axis becomes <em>time</em>. Move, and
@@ -614,7 +614,7 @@ export default function TimeSmearPage() {
                 setCamError(null);
                 setMode("camera");
               }}
-              className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-violet-500 px-4 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-lg bg-violet-500 px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
             >
               Start camera
             </button>
@@ -623,12 +623,12 @@ export default function TimeSmearPage() {
                 setCamError(null);
                 setMode("pointer");
               }}
-              className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-white/20 bg-white/[0.04] px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/[0.1]"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-lg border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
             >
               No camera — use pointer
             </button>
           </div>
-          <p className="mt-4 text-base text-white/75">
+          <p className="mt-4 text-base text-muted-foreground">
             Sound and motion begin the instant you press a button. Master volume stays gentle
             (≤ 0.20) behind a limiter.
           </p>
@@ -637,37 +637,37 @@ export default function TimeSmearPage() {
 
       {/* ── live controls ── */}
       {started && (
-        <div className="absolute left-3 top-3 z-20 w-[min(92vw,320px)] rounded-xl border border-white/10 bg-black/55 p-3.5 backdrop-blur-md">
+        <div className="absolute left-3 top-3 z-20 w-[min(92vw,320px)] rounded-xl border border-border bg-black/55 p-3.5 backdrop-blur-md">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-white">Time Smear</h2>
+            <h2 className="text-xl font-semibold text-foreground">Time Smear</h2>
             <button
               onClick={() => setMode(null)}
-              className="rounded-md border border-white/15 px-2.5 py-1 font-mono text-xs text-white/80 hover:bg-white/10"
+              className="rounded-md border border-border px-2.5 py-1 font-mono text-xs text-foreground hover:bg-accent"
             >
               stop
             </button>
           </div>
-          <p className="mt-1 text-base leading-snug text-white/75">
+          <p className="mt-1 text-base leading-snug text-muted-foreground">
             {mode === "camera"
               ? "Move in front of the camera — you become a ribbon of time."
               : "Drag across the ribbon to paint bright time-slices."}
           </p>
 
           {camError && (
-            <p className="mt-2 rounded-md bg-rose-500/10 px-2.5 py-2 text-base leading-snug text-rose-300">
+            <p className="mt-2 rounded-md bg-violet-500/10 px-2.5 py-2 text-base leading-snug text-violet-300">
               {camError}
             </p>
           )}
           {glError && (
-            <p className="mt-2 rounded-md bg-rose-500/10 px-2.5 py-2 text-base leading-snug text-rose-300">
+            <p className="mt-2 rounded-md bg-violet-500/10 px-2.5 py-2 text-base leading-snug text-violet-300">
               {glError}
             </p>
           )}
 
-          <label className="mt-3 block text-base text-white/80">
+          <label className="mt-3 block text-base text-foreground">
             <span className="flex justify-between">
               <span>Scroll speed</span>
-              <span className="font-mono text-white/60">{scrollSpeed.toFixed(1)}×</span>
+              <span className="font-mono text-muted-foreground">{scrollSpeed.toFixed(1)}×</span>
             </span>
             <input
               type="range"
@@ -683,7 +683,7 @@ export default function TimeSmearPage() {
           <div className="mt-3 flex items-center gap-2">
             <button
               onClick={() => setOrient((o) => (o === 0 ? 1 : 0))}
-              className="min-h-[44px] flex-1 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/95 hover:bg-white/[0.1]"
+              className="min-h-[44px] flex-1 rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Scan: {orient === 0 ? "horizontal ↔" : "vertical ↕"}
             </button>
@@ -691,8 +691,8 @@ export default function TimeSmearPage() {
               onClick={() => setFlickerOn((f) => !f)}
               className={`min-h-[44px] rounded-lg border px-4 py-2.5 text-base ${
                 flickerOn
-                  ? "border-amber-300/40 bg-amber-400/15 text-amber-200"
-                  : "border-white/15 bg-white/[0.04] text-white/80 hover:bg-white/[0.1]"
+                  ? "border-violet-300/40 bg-violet-400/15 text-violet-200"
+                  : "border-border bg-muted text-foreground hover:bg-accent"
               }`}
               title="Opt-in slow luminance drift (≤ 3 Hz). Tap again to stop instantly."
             >
@@ -705,27 +705,27 @@ export default function TimeSmearPage() {
       {/* ── design notes corner link + toggle ── */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-3 right-3 z-20 rounded-full border border-white/12 bg-black/55 px-3 py-1.5 font-mono text-xs text-white/75 backdrop-blur-md hover:bg-white/10 hover:text-white"
+        className="absolute bottom-3 right-3 z-20 rounded-full border border-border bg-black/55 px-3 py-1.5 font-mono text-xs text-muted-foreground backdrop-blur-md hover:bg-accent hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
-          <div className="max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-white/12 bg-[#120a1c] p-6">
-            <h2 className="text-2xl font-semibold text-white">Design notes</h2>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+          <div className="max-h-[80vh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#120a1c] p-6">
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               This is a <strong>slit-scan</strong> instrument (a.k.a. chronophotography /
               time-smear). Each tick it samples a single thin slice of the live camera and scrolls
               the accumulated slices across a WebGL2 ring buffer, so one screen axis becomes{" "}
               <em>time</em>. A moving body is stretched into an eerie liquid ribbon.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               <strong>It sings:</strong> the vertical luminance profile of the newest slice is split
               into 16 bands; each drives one voice of a stretched, inharmonic, drone-anchored
               additive bank. Frame-to-frame motion opens a filter for brightness.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               Lineage: <strong>Golan Levin</strong> (slit-scan works / <em>The Manual Input
               Sessions</em>) and <strong>Zbigniew Rybczyński</strong> (<em>Fourth Dimension</em>).
             </p>
@@ -738,7 +738,7 @@ export default function TimeSmearPage() {
               </Link>
               <button
                 onClick={() => setShowNotes(false)}
-                className="ml-auto min-h-[44px] rounded-lg border border-white/15 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                className="ml-auto min-h-[44px] rounded-lg border border-border px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>

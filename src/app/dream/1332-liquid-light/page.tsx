@@ -290,7 +290,7 @@ export default function LiquidLightPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         onPointerDown={onPointerDown}
@@ -302,23 +302,23 @@ export default function LiquidLightPage() {
 
       {/* ── title + status (top-left) ────────────────────────────────────────── */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 max-w-lg p-5">
-        <h1 className="font-serif text-3xl font-semibold tracking-tight text-white drop-shadow-lg">
+        <h1 className="font-serif text-3xl font-semibold tracking-tight text-foreground drop-shadow-lg">
           Liquid Light
         </h1>
-        <p className="mt-2 text-base text-white/80 drop-shadow-lg">
+        <p className="mt-2 text-base text-foreground drop-shadow-lg">
           Pour a 1960s oil-wheel light show with your phone — tilt to push the
           molten color across the plate and let the pools bloom.
         </p>
         {phase === "running" && (
-          <p className="mt-2 text-base text-amber-200 drop-shadow-lg">
+          <p className="mt-2 text-base text-violet-200 drop-shadow-lg">
             {mode === "tilt" ? "Tilt to pour the oil." : "Drag the plate to pour the oil."}
           </p>
         )}
         {sensorMsg && (
-          <p className="mt-1 text-base text-amber-200 drop-shadow-lg">{sensorMsg}</p>
+          <p className="mt-1 text-base text-violet-200 drop-shadow-lg">{sensorMsg}</p>
         )}
         {sensorErr && (
-          <p className="mt-1 text-base text-rose-300 drop-shadow-lg">{sensorErr}</p>
+          <p className="mt-1 text-base text-violet-300 drop-shadow-lg">{sensorErr}</p>
         )}
       </div>
 
@@ -327,7 +327,7 @@ export default function LiquidLightPage() {
         {phase === "idle" ? (
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-fuchsia-600/90 px-6 py-2.5 text-base font-medium text-white shadow-lg transition hover:bg-fuchsia-500"
+            className="min-h-[44px] rounded-full bg-violet-600/90 px-6 py-2.5 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-500"
           >
             Begin
           </button>
@@ -336,14 +336,14 @@ export default function LiquidLightPage() {
             {mode !== "tilt" && (
               <button
                 onClick={enableTilt}
-                className="min-h-[44px] rounded-full bg-cyan-600/85 px-4 py-2.5 text-base font-medium text-white shadow-lg transition hover:bg-cyan-500"
+                className="min-h-[44px] rounded-full bg-violet-600/85 px-4 py-2.5 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-500"
               >
                 Enable tilt
               </button>
             )}
             <button
               onClick={stop}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white shadow-lg backdrop-blur transition hover:bg-white/20"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground shadow-lg backdrop-blur transition hover:bg-accent"
             >
               Stop
             </button>
@@ -354,47 +354,47 @@ export default function LiquidLightPage() {
       {/* ── design-notes affordance (bottom-right) ───────────────────────────── */}
       <button
         onClick={() => setNotesOpen((v) => !v)}
-        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/80 shadow backdrop-blur transition hover:bg-white/20"
+        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground shadow backdrop-blur transition hover:bg-accent"
       >
         Read the design notes
       </button>
 
       {notesOpen && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-neutral-900/90 p-6 shadow-2xl ring-1 ring-white/10">
-            <h2 className="font-serif text-2xl font-semibold text-white">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-neutral-900/90 p-6 shadow-2xl ring-1 ring-border">
+            <h2 className="font-serif text-2xl font-semibold text-foreground">
               Liquid Light — design notes
             </h2>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               In the 1960s a projectionist would push pools of colored oil across a
               glass plate on a hot overhead projector, letting heat and gravity make
               them bloom and swirl behind the band. This makes that plate an
               instrument you pour: tilt your phone (or drag on desktop) and the oil
               flows the way you lean it.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               Tilt <em>direction</em> is the gravity the color flows along; tilt{" "}
               <em>magnitude</em> is the heat — the harder you pour, the hotter and
               brighter the pools bloom, and the more the drone opens and bends up.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               The picture is a coarse dye-advection on a small Canvas2D buffer:
               every frame the last image is smeared along your pour vector and faded,
               then colored emitters re-inject additive glow. No WebGL, no strobe —
               the bloom is smooth, capped luminance.
             </p>
-            <p className="mt-3 text-base text-white/70">
+            <p className="mt-3 text-base text-muted-foreground">
               Reference: the <strong>Joshua Light Show</strong> (Joshua White,
               Fillmore East) and <strong>Mark Boyle &amp; Joan Hills&apos;
               &ldquo;Sensual Laboratory&rdquo;</strong> liquid projections.
             </p>
-            <p className="mt-3 text-base text-white/70">
+            <p className="mt-3 text-base text-muted-foreground">
               input = tilt / drag · output = canvas2d dye-advection · technique =
               analog oil-wheel liquid light show · palette = saturated oil-slick
             </p>
             <button
               onClick={() => setNotesOpen(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-fuchsia-600/90 px-4 py-2.5 text-base font-medium text-white transition hover:bg-fuchsia-500"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-600/90 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-500"
             >
               Close
             </button>

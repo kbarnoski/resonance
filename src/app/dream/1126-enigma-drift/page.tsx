@@ -151,7 +151,7 @@ export default function EnigmaDriftPage() {
             {playing ? "Stop the drone" : "Begin"}
           </button>
           {audioError && (
-            <p className="max-w-md text-center text-base text-rose-600">
+            <p className="max-w-md text-center text-base text-violet-600">
               {audioError}
             </p>
           )}

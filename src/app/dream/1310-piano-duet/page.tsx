@@ -295,7 +295,7 @@ export default function PianoDuetPage() {
   }, [usingMic]);
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#08070f] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#08070f] text-foreground">
       {/* Visualization canvas */}
       <canvas
         ref={canvasRef}
@@ -321,7 +321,7 @@ export default function PianoDuetPage() {
         href="/dream/1310-piano-duet/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -329,15 +329,15 @@ export default function PianoDuetPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="font-serif text-2xl font-semibold tracking-tight text-white md:text-3xl">
+          <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Sing Into His Piano
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Karel&apos;s real recorded piano — his album{" "}
             <span className="text-violet-300">Welcome Home</span> — keeps playing.
             Your live voice becomes the sculptor: a bank of 20 filters lets each
             band of your{" "}
-            <span className="text-rose-300">vowel</span> boost or carve the same
+            <span className="text-violet-300">vowel</span> boost or carve the same
             band of his chord. Hum &ldquo;ahh,&rdquo; then &ldquo;ooo,&rdquo; and
             his harmonics morph toward you. A duet with a recording.
           </p>
@@ -348,8 +348,8 @@ export default function PianoDuetPage() {
               <span
                 className={
                   sourceKind === "piano"
-                    ? "rounded bg-emerald-500/15 px-2 py-0.5 text-emerald-300"
-                    : "rounded bg-amber-500/15 px-2 py-0.5 text-amber-300"
+                    ? "rounded bg-violet-500/15 px-2 py-0.5 text-violet-300"
+                    : "rounded bg-violet-500/15 px-2 py-0.5 text-violet-300"
                 }
               >
                 {sourceKind === "piano" ? "Karel's real piano" : "fallback synth piano"}
@@ -357,8 +357,8 @@ export default function PianoDuetPage() {
               <span
                 className={
                   usingMic
-                    ? "ml-1 rounded bg-rose-500/15 px-2 py-0.5 text-rose-300"
-                    : "ml-1 rounded bg-white/10 px-2 py-0.5 text-white/75"
+                    ? "ml-1 rounded bg-violet-500/15 px-2 py-0.5 text-violet-300"
+                    : "ml-1 rounded bg-muted px-2 py-0.5 text-muted-foreground"
                 }
               >
                 {usingMic ? "mic live" : "auto-morph / drag to sculpt"}
@@ -366,8 +366,8 @@ export default function PianoDuetPage() {
             </p>
           )}
 
-          {micError && <p className="mt-2 text-base text-rose-300">{micError}</p>}
-          {errorMsg && <p className="mt-2 text-base text-rose-300">{errorMsg}</p>}
+          {micError && <p className="mt-2 text-base text-violet-300">{micError}</p>}
+          {errorMsg && <p className="mt-2 text-base text-violet-300">{errorMsg}</p>}
         </header>
 
         {/* Center: start / loading */}
@@ -375,20 +375,20 @@ export default function PianoDuetPage() {
           {phase === "idle" && (
             <button
               onClick={() => void begin()}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Start &amp; sing into his piano
             </button>
           )}
           {phase === "loading" && (
-            <p className="font-mono text-base text-white/75">
+            <p className="font-mono text-base text-muted-foreground">
               loading Karel&apos;s carrier + opening the mic…
             </p>
           )}
           {phase === "error" && (
             <button
               onClick={() => setPhase("idle")}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Try again
             </button>
@@ -398,15 +398,15 @@ export default function PianoDuetPage() {
         {/* Footer: live readout + controls */}
         {phase === "ready" && (
           <footer className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-white/75">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <span
                   className={`inline-block h-2.5 w-2.5 rounded-full ${
                     ui.singing > 0.25
-                      ? "bg-rose-400"
+                      ? "bg-violet-400"
                       : ui.loudness > 0.05
-                        ? "bg-amber-400"
-                        : "bg-white/30"
+                        ? "bg-violet-400"
+                        : "bg-muted"
                   }`}
                 />
                 {usingMic
@@ -416,12 +416,12 @@ export default function PianoDuetPage() {
                   : "auto-morph"}
               </span>
               <span>
-                voice level <span className="text-amber-300/95">{pct(ui.loudness)}%</span>
+                voice level <span className="text-violet-300/95">{pct(ui.loudness)}%</span>
               </span>
               <span>
-                sculpt <span className="text-rose-300">{pct(ui.singing)}%</span>
+                sculpt <span className="text-violet-300">{pct(ui.singing)}%</span>
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 {N_BANDS}-band cross-synthesis · violet = his piano · rose = your
                 vowel · bright = the blend
               </span>
@@ -430,11 +430,11 @@ export default function PianoDuetPage() {
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="mix"
-                className="font-mono text-sm text-white/75"
+                className="font-mono text-sm text-muted-foreground"
               >
                 sculpt intensity{" "}
-                <span className="text-rose-300">{pct(mix)}%</span>{" "}
-                <span className="text-white/55">
+                <span className="text-violet-300">{pct(mix)}%</span>{" "}
+                <span className="text-muted-foreground">
                   (louder singing pushes it further)
                 </span>
               </label>
@@ -446,13 +446,13 @@ export default function PianoDuetPage() {
                 step={0.01}
                 value={mix}
                 onChange={(e) => setMix(parseFloat(e.target.value))}
-                className="h-2 w-full max-w-md cursor-pointer accent-rose-400"
+                className="h-2 w-full max-w-md cursor-pointer accent-violet-400"
               />
             </div>
 
             {!usingMic && (
-              <p className="max-w-2xl text-base text-white/75">
-                No mic — <span className="text-rose-300">drag anywhere</span> on the
+              <p className="max-w-2xl text-base text-muted-foreground">
+                No mic — <span className="text-violet-300">drag anywhere</span> on the
                 field: left/right moves the vowel formant across his spectrum,
                 up/down sharpens it and pushes the sculpt harder.
               </p>
@@ -461,7 +461,7 @@ export default function PianoDuetPage() {
             <div>
               <button
                 onClick={() => void end()}
-                className="min-h-[44px] rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Stop
               </button>

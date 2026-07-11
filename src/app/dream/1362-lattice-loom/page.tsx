@@ -491,7 +491,7 @@ export default function LatticeLoom() {
   }, [markInteract]);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-[#05070c] text-white">
+    <div className="relative min-h-screen w-full overflow-hidden bg-[#05070c] text-foreground">
       <StyleBlock />
 
       {/* cosmic vignette */}
@@ -508,10 +508,10 @@ export default function LatticeLoom() {
       <header className="relative z-30 px-5 pt-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
           <div>
-            <h1 className="font-serif text-2xl tracking-tight text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
               Lattice Loom
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/80">
+            <p className="mt-1 max-w-2xl text-base text-foreground">
               A crystalline lattice of real DOM cells floating in CSS-3D space —
               three metric layers (lengths 3 / 5 / 7) whose phase-cursors sweep
               at their own periods, weaving polymetric light and just-intonation
@@ -521,7 +521,7 @@ export default function LatticeLoom() {
           <button
             type="button"
             onClick={() => setInfoOpen((o) => !o)}
-            className="min-h-[44px] shrink-0 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] shrink-0 rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             {infoOpen ? "Hide notes" : "Design notes"}
           </button>
@@ -534,7 +534,7 @@ export default function LatticeLoom() {
               type="button"
               onClick={begin}
               disabled={!supported}
-              className="min-h-[44px] rounded-lg bg-[#7fe9ff] px-6 py-2.5 text-base font-semibold text-[#04141a] shadow-[0_0_24px_rgba(127,233,255,0.35)] transition-colors hover:bg-[#a8f1ff] disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/75"
+              className="min-h-[44px] rounded-lg bg-[#7fe9ff] px-6 py-2.5 text-base font-semibold text-[#04141a] shadow-[0_0_24px_rgba(127,233,255,0.35)] transition-colors hover:bg-[#a8f1ff] disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
             >
               ▶ Begin
             </button>
@@ -542,7 +542,7 @@ export default function LatticeLoom() {
             <button
               type="button"
               onClick={stop}
-              className="min-h-[44px] rounded-lg bg-rose-400/90 px-6 py-2.5 text-base font-semibold text-[#1a0508] transition-colors hover:bg-rose-300"
+              className="min-h-[44px] rounded-lg bg-violet-400/90 px-6 py-2.5 text-base font-semibold text-[#1a0508] transition-colors hover:bg-violet-300"
             >
               ■ Stop
             </button>
@@ -551,34 +551,34 @@ export default function LatticeLoom() {
           <button
             type="button"
             onClick={reweave}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             ⟲ Reweave
           </button>
           <button
             type="button"
             onClick={clearGrid}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Clear
           </button>
         </div>
 
         {!supported && (
-          <p className="mt-3 text-base text-rose-300">
+          <p className="mt-3 text-base text-violet-300">
             Web Audio is unavailable in this browser — the lattice will still
             weave, but there is no sound.
           </p>
         )}
 
         {infoOpen && (
-          <div className="mt-4 max-w-3xl rounded-xl border border-white/12 bg-black/55 p-4 text-base leading-relaxed text-white/80 backdrop-blur-sm">
+          <div className="mt-4 max-w-3xl rounded-xl border border-border bg-black/55 p-4 text-base leading-relaxed text-foreground backdrop-blur-sm">
             <p>
-              <span className="text-white">Columns are pitches</span> — a
+              <span className="text-foreground">Columns are pitches</span> — a
               just-intonation scale (1, 9/8, 5/4, 4/3, 3/2, 5/3, 15/8) above a
               110&nbsp;Hz root, so every cell is a rational ratio and the whole
               lattice stays consonant.{" "}
-              <span className="text-white">
+              <span className="text-foreground">
                 Rows are three metric layers
               </span>{" "}
               of length 3, 5 and 7, each an octave apart. A phase-cursor sweeps
@@ -586,20 +586,20 @@ export default function LatticeLoom() {
               flares and its tone sounds. Because 3, 5 and 7 are coprime, the
               sweeps drift out of step and slowly re-align — Reich phase music
               spread across space rather than a beat. Type the{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-white/90">
+              <code className="rounded bg-muted px-1 py-0.5 text-sm text-foreground">
                 1-7
               </code>
               ,{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-white/90">
+              <code className="rounded bg-muted px-1 py-0.5 text-sm text-foreground">
                 q-u
               </code>{" "}
               and{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-white/90">
+              <code className="rounded bg-muted px-1 py-0.5 text-sm text-foreground">
                 a-j
               </code>{" "}
               key rows (one row per layer) or tap the cells to weave. Full notes
               in{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-white/90">
+              <code className="rounded bg-muted px-1 py-0.5 text-sm text-foreground">
                 README.md
               </code>
               .
@@ -699,7 +699,7 @@ export default function LatticeLoom() {
         ))}
       </div>
 
-      <p className="relative z-30 mx-auto mb-16 mt-2 max-w-xl px-4 text-center text-base text-white/75">
+      <p className="relative z-30 mx-auto mb-16 mt-2 max-w-xl px-4 text-center text-base text-muted-foreground">
         Tap cells or press the key rows to weave · press Begin for sound
       </p>
 

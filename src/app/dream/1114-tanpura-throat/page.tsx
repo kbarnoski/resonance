@@ -343,13 +343,13 @@ export default function TanpuraThroatPage() {
   }, []);
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-[#120a12] text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-[#120a12] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       <div className="relative z-10 flex min-h-dvh flex-col items-center justify-between px-6 py-8">
         <header className="w-full max-w-xl text-center">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">Tanpura Throat</h1>
-          <p className="mt-3 text-base text-white/80">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Tanpura Throat</h1>
+          <p className="mt-3 text-base text-foreground">
             Sing into it and a bank of just-intonation sympathetic strings rings back — a
             physical-modeling drone that answers the harmonics of your voice.
           </p>
@@ -360,14 +360,14 @@ export default function TanpuraThroatPage() {
             <button
               type="button"
               onClick={runStart}
-              className="min-h-[44px] rounded-full bg-amber-500/90 px-8 py-2.5 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-amber-400 active:bg-amber-500"
+              className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-lg font-semibold text-black shadow-lg transition-colors hover:bg-violet-400 active:bg-violet-500"
             >
               Start — sing into it
             </button>
           ) : (
-            <p className="min-h-[44px] text-center text-base text-white/95">
+            <p className="min-h-[44px] text-center text-base text-foreground">
               <span
-                className={micOn ? "text-emerald-300/95" : "text-amber-300/95"}
+                className={micOn ? "text-violet-300/95" : "text-violet-300/95"}
                 aria-hidden
               >
                 ●
@@ -377,46 +377,46 @@ export default function TanpuraThroatPage() {
           )}
 
           {notice && (
-            <p className="max-w-md text-center text-base text-rose-300">{notice}</p>
+            <p className="max-w-md text-center text-base text-violet-300">{notice}</p>
           )}
         </div>
 
         <footer className="w-full max-w-xl text-center">
-          <p className="text-base text-white/55">
+          <p className="text-base text-muted-foreground">
             Your voice is measured only, never played back or recorded. Nothing leaves this device.
           </p>
           <div className="mt-3 flex items-center justify-center gap-4">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] text-base text-white/75 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white"
+              className="min-h-[44px] text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
             >
               {showNotes ? "Hide design notes" : "Design notes"}
             </button>
             <Link
               href="/dream/1114-tanpura-throat/README.md"
-              className="min-h-[44px] py-2.5 text-base text-white/55 underline decoration-white/20 underline-offset-4 transition-colors hover:text-white/80"
+              className="min-h-[44px] py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition-colors hover:text-foreground"
             >
               README
             </Link>
           </div>
 
           {showNotes && (
-            <div className="mx-auto mt-4 max-w-xl rounded-2xl border border-white/10 bg-black/40 p-5 text-left text-base leading-relaxed text-white/75 backdrop-blur">
+            <div className="mx-auto mt-4 max-w-xl rounded-2xl border border-border bg-black/40 p-5 text-left text-base leading-relaxed text-muted-foreground backdrop-blur">
               <p>
-                <span className="text-amber-300/95">What it does.</span> The mic is analysed, not
+                <span className="text-violet-300/95">What it does.</span> The mic is analysed, not
                 heard. Each frame we estimate your fundamental with time-domain autocorrelation and
                 measure the energy sitting on each partial with an FFT. That energy re-plucks twelve{" "}
-                <span className="text-white/90">Karplus-Strong</span> waveguide strings tuned to a
+                <span className="text-foreground">Karplus-Strong</span> waveguide strings tuned to a
                 just-intonation drone over ~110&nbsp;Hz, over a self-plucking tanpura drone bed.
               </p>
               <p className="mt-3">
                 <span className="text-violet-300">Never silent.</span> A seeded &quot;cantor&quot; —
                 a synthetic vowel singer — drives the same analyser, so with no mic the strings still
                 answer. All randomness is a seeded mulberry32 PRNG; motion honors{" "}
-                <span className="text-white/90">prefers-reduced-motion</span>.
+                <span className="text-foreground">prefers-reduced-motion</span>.
               </p>
-              <p className="mt-3 text-white/55">
+              <p className="mt-3 text-muted-foreground">
                 Lineage: the Indian tanpura &amp; its jvari drone, sitar/sarangi tarab strings,
                 Karplus &amp; Strong (1983), La Monte Young&apos;s <em>Dream House</em>, Pauline
                 Oliveros&apos; <em>Deep Listening</em>. Full references in the README.

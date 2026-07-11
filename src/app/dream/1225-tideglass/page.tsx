@@ -571,7 +571,7 @@ export default function TideglassPage() {
 
   return (
     <main
-      className="relative h-[100dvh] w-full overflow-hidden text-white"
+      className="relative h-[100dvh] w-full overflow-hidden text-foreground"
       style={{
         background:
           "radial-gradient(120% 90% at 50% 22%, #0f3d47 0%, #0b2440 38%, #1a1140 72%, #0a0618 100%)",
@@ -591,7 +591,7 @@ export default function TideglassPage() {
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL is unavailable here, so the grain field can&apos;t render. The
             granular cloud still plays in stereo when you press Start.
           </p>
@@ -607,7 +607,7 @@ export default function TideglassPage() {
             aria-label="Left grain-head — drag to scrub"
             tabIndex={0}
             onPointerDown={puckPointer("left")}
-            className="absolute z-20 h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-amber-200/80 bg-amber-300/30 backdrop-blur-sm active:cursor-grabbing"
+            className="absolute z-20 h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-violet-200/80 bg-violet-300/30 backdrop-blur-sm active:cursor-grabbing"
             style={{ left: "15%", top: "45%" }}
           />
           <div
@@ -616,7 +616,7 @@ export default function TideglassPage() {
             aria-label="Right grain-head — drag to scrub"
             tabIndex={0}
             onPointerDown={puckPointer("right")}
-            className="absolute z-20 h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-amber-200/80 bg-amber-300/30 backdrop-blur-sm active:cursor-grabbing"
+            className="absolute z-20 h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none rounded-full border-2 border-violet-200/80 bg-violet-300/30 backdrop-blur-sm active:cursor-grabbing"
             style={{ left: "85%", top: "45%" }}
           />
         </>
@@ -624,15 +624,15 @@ export default function TideglassPage() {
 
       {/* top-left: title + description */}
       <div className="pointer-events-none absolute left-0 top-0 p-5 sm:p-7">
-        <h1 className="font-mono text-2xl font-semibold tracking-tight text-white/95">
+        <h1 className="font-mono text-2xl font-semibold tracking-tight text-foreground">
           Tideglass
         </h1>
-        <p className="mt-2 max-w-md text-base leading-snug text-white/75">
+        <p className="mt-2 max-w-md text-base leading-snug text-muted-foreground">
           Your two hands are grain-heads moving through a cloud of sound. Reach
           wide to scatter it, lift a hand to raise its pitch, and step across the
           room to pan the whole cloud in space.
         </p>
-        <p className="mt-2 max-w-md font-mono text-base text-white/55">
+        <p className="mt-2 max-w-md font-mono text-base text-muted-foreground">
           Camera stays on-device. Nothing is stored or sent.
         </p>
       </div>
@@ -641,12 +641,12 @@ export default function TideglassPage() {
       {phase === "running" && (
         <div className="pointer-events-none absolute left-5 top-1/2 -translate-y-1/2 sm:left-7">
           {fallback ? (
-            <p className="max-w-xs text-base text-rose-300">
+            <p className="max-w-xs text-base text-violet-300">
               Fallback mode — drag the two amber pucks, or let them drift and the
               cloud plays itself.
             </p>
           ) : (
-            <p className="font-mono text-base text-cyan-200/75">
+            <p className="font-mono text-base text-violet-200/75">
               tracking body — hands are grain-heads
             </p>
           )}
@@ -655,7 +655,7 @@ export default function TideglassPage() {
 
       {notice && (
         <div className="pointer-events-none absolute bottom-24 left-1/2 w-[min(90vw,42rem)] -translate-x-1/2 p-4 text-center">
-          <p className="text-base text-rose-300">{notice}</p>
+          <p className="text-base text-violet-300">{notice}</p>
         </div>
       )}
 
@@ -664,7 +664,7 @@ export default function TideglassPage() {
         <div className="absolute inset-0 flex items-end justify-center pb-16 sm:items-center sm:pb-0">
           <button
             onClick={start}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-amber-200/40 bg-amber-300/10 px-4 py-2.5 font-mono text-base font-medium text-white/95 backdrop-blur-md transition-colors hover:bg-amber-300/20"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-violet-200/40 bg-violet-300/10 px-4 py-2.5 font-mono text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-violet-300/20"
           >
             ▶ Start — scrub the grain cloud
           </button>
@@ -674,17 +674,17 @@ export default function TideglassPage() {
       {/* corner: design notes */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-white/15 bg-black/50 px-4 py-2.5 font-mono text-base text-white/75 backdrop-blur-md transition-colors hover:text-white/95"
+        className="pointer-events-auto absolute bottom-4 right-4 min-h-[44px] rounded-full border border-border bg-black/50 px-4 py-2.5 font-mono text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {showNotes && (
-        <div className="absolute bottom-20 right-4 w-[min(92vw,32rem)] rounded-xl border border-white/15 bg-black/85 p-5 backdrop-blur-md">
-          <h2 className="font-mono text-xl font-semibold text-white/95">
+        <div className="absolute bottom-20 right-4 w-[min(92vw,32rem)] rounded-xl border border-border bg-black/85 p-5 backdrop-blur-md">
+          <h2 className="font-mono text-xl font-semibold text-foreground">
             Design notes
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-white/75">
+          <p className="mt-3 text-base leading-relaxed text-muted-foreground">
             Each hand is a granular grain-head scrubbing a synthesized wavetable.
             Hand height sets grain playback-rate + filter cutoff; the reach
             between your hands sets grain density (wide = a dense scatter,
@@ -696,7 +696,7 @@ export default function TideglassPage() {
           </p>
           <Link
             href="/dream/1225-tideglass/README.md"
-            className="mt-3 inline-block font-mono text-base text-amber-300 hover:text-amber-200"
+            className="mt-3 inline-block font-mono text-base text-violet-300 hover:text-violet-200"
           >
             README →
           </Link>

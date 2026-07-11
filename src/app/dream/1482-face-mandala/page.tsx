@@ -257,7 +257,7 @@ export default function FaceMandala() {
   };
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       {/* hidden camera preview — MediaPipe input only */}
       <video ref={videoRef} className="hidden" playsInline muted />
 
@@ -265,17 +265,17 @@ export default function FaceMandala() {
 
       <div className="pointer-events-none absolute inset-0 flex flex-col">
         <header className="p-5 sm:p-8">
-          <h1 className="font-serif text-2xl tracking-tight text-white/95 sm:text-4xl">
+          <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-4xl">
             Face Mandala
           </h1>
-          <p className="mt-2 max-w-xl text-base text-white/75">
+          <p className="mt-2 max-w-xl text-base text-muted-foreground">
             Your own face conducts a living psychedelic mandala — your mouth,
             brows, and gaze bend an ecstatic kaleidoscopic bloom in real 3D.
           </p>
           {phase === "running" && (
             <p
               className={`mt-3 font-mono text-base ${
-                isDemo ? "text-rose-300" : "text-amber-300/95"
+                isDemo ? "text-violet-300" : "text-violet-300/95"
               }`}
             >
               {statusLine[track]}
@@ -288,11 +288,11 @@ export default function FaceMandala() {
             <div className="pointer-events-auto flex max-w-md flex-col items-center gap-4">
               <button
                 onClick={handleStart}
-                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-lg font-semibold text-white shadow-lg transition-colors hover:bg-violet-400"
+                className="min-h-[44px] rounded-full bg-violet-500/90 px-8 py-2.5 text-lg font-semibold text-foreground shadow-lg transition-colors hover:bg-violet-400"
               >
                 Start camera
               </button>
-              <p className="text-center text-base text-white/75">
+              <p className="text-center text-base text-muted-foreground">
                 Sound and camera start on Start. Open your jaw to bloom the
                 mandala, smile for warmth, raise your brows for an upper tier,
                 purse your lips to sharpen the petals, tilt your head to steer it
@@ -304,13 +304,13 @@ export default function FaceMandala() {
 
         {phase === "running" && (
           <div className="mt-auto p-5 sm:p-8">
-            <div className="pointer-events-none mb-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-base text-white/55">
+            <div className="pointer-events-none mb-3 flex flex-wrap gap-x-5 gap-y-1 font-mono text-base text-muted-foreground">
               <span className="text-violet-300">jaw → bloom + swell</span>
-              <span className="text-amber-300/95">smile → gold glow</span>
-              <span className="text-emerald-300/95">brow → upper tier</span>
+              <span className="text-violet-300/95">smile → gold glow</span>
+              <span className="text-violet-300/95">brow → upper tier</span>
               <span>pucker → sharper petals · head → tilt</span>
             </div>
-            <p className="font-mono text-base text-white/75">{readout}</p>
+            <p className="font-mono text-base text-muted-foreground">{readout}</p>
           </div>
         )}
       </div>
@@ -318,7 +318,7 @@ export default function FaceMandala() {
       {phase === "running" && (
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/75 backdrop-blur transition-colors hover:bg-white/20"
+          className="pointer-events-auto absolute right-4 top-4 z-30 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground backdrop-blur transition-colors hover:bg-accent"
         >
           {showNotes ? "Hide design notes" : "Read the design notes"}
         </button>
@@ -326,13 +326,13 @@ export default function FaceMandala() {
 
       {showNotes && (
         <div className="pointer-events-auto absolute inset-0 z-40 flex items-center justify-center bg-black/85 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-zinc-900/90 p-6">
-            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-white/85">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-zinc-900/90 p-6">
+            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-foreground">
               {README}
             </pre>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-white hover:bg-violet-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-foreground hover:bg-violet-400"
             >
               Close
             </button>

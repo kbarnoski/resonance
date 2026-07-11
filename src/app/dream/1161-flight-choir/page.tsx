@@ -400,7 +400,7 @@ export default function FlightChoir() {
   const simChip = mode === "sim";
 
   return (
-    <main className="relative min-h-dvh w-full overflow-hidden bg-neutral-950 text-white">
+    <main className="relative min-h-dvh w-full overflow-hidden bg-neutral-950 text-foreground">
       {/* bright daylight map canvas */}
       <canvas
         ref={canvasRef}
@@ -411,51 +411,51 @@ export default function FlightChoir() {
 
       {/* top chrome */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-wrap items-start justify-between gap-3 p-4 sm:p-5">
-        <div className="pointer-events-auto max-w-md rounded-2xl border border-white/10 bg-black/70 p-4 backdrop-blur-md">
+        <div className="pointer-events-auto max-w-md rounded-2xl border border-border bg-black/70 p-4 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <Link
               href="/dream"
-              className="rounded-full bg-white/[0.06] px-2.5 py-1 text-[11px] uppercase tracking-[0.18em] text-white/65 transition-colors hover:bg-white/[0.12] hover:text-white"
+              className="rounded-full bg-muted px-2.5 py-1 text-[11px] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               ↑ dream
             </Link>
-            <h1 className="text-2xl font-semibold text-white">Flight Choir</h1>
+            <h1 className="text-2xl font-semibold text-foreground">Flight Choir</h1>
           </div>
-          <p className="mt-1.5 text-base text-white/75">
+          <p className="mt-1.5 text-base text-muted-foreground">
             The whole sky in flight, right now, as a bright generative choir.
           </p>
 
           {/* status chip */}
           <div className="mt-3 flex items-center gap-2 text-base">
             {mode === "connecting" ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-white/75">
-                <span className="h-2 w-2 animate-pulse rounded-full bg-white/60" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-3 py-1 text-muted-foreground">
+                <span className="h-2 w-2 animate-pulse rounded-full bg-muted" />
                 connecting to the sky…
               </span>
             ) : liveChip ? (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 px-3 py-1 text-emerald-300/95">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/15 px-3 py-1 text-violet-300/95">
+                <span className="h-2 w-2 rounded-full bg-violet-400" />
                 {count} live aircraft
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/15 px-3 py-1 text-amber-300/95">
-                <span className="h-2 w-2 rounded-full bg-amber-400" />
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-500/15 px-3 py-1 text-violet-300/95">
+                <span className="h-2 w-2 rounded-full bg-violet-400" />
                 simulated sky · {count} aircraft
               </span>
             )}
           </div>
           {simChip && (
-            <p className="mt-1.5 text-base text-white/60">
+            <p className="mt-1.5 text-base text-muted-foreground">
               No live feed reachable here — flying a deterministic simulated field
               through the identical sonification.
             </p>
           )}
-          {notice && <p className="mt-2 text-base text-rose-300">{notice}</p>}
+          {notice && <p className="mt-2 text-base text-violet-300">{notice}</p>}
         </div>
 
         {/* preset picker */}
-        <div className="pointer-events-auto rounded-2xl border border-white/10 bg-black/70 p-3 backdrop-blur-md">
-          <div className="mb-2 text-[11px] uppercase tracking-[0.18em] text-white/55">
+        <div className="pointer-events-auto rounded-2xl border border-border bg-black/70 p-3 backdrop-blur-md">
+          <div className="mb-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
             listening over
           </div>
           <div className="flex flex-wrap gap-2">
@@ -468,7 +468,7 @@ export default function FlightChoir() {
                   className={`min-h-[44px] rounded-xl px-4 py-2.5 text-base transition-colors ${
                     active
                       ? "bg-violet-500/25 text-violet-200 ring-1 ring-violet-400/40"
-                      : "bg-white/[0.06] text-white/75 hover:bg-white/[0.12] hover:text-white"
+                      : "bg-muted text-muted-foreground hover:bg-accent hover:text-foreground"
                   }`}
                 >
                   {p.label}
@@ -484,7 +484,7 @@ export default function FlightChoir() {
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/45 backdrop-blur-[2px]">
           <button
             onClick={startAudio}
-            className="min-h-[44px] rounded-2xl bg-white/95 px-8 py-4 text-xl font-semibold text-neutral-900 shadow-xl transition-transform hover:scale-[1.02] active:scale-95"
+            className="min-h-[44px] rounded-2xl bg-muted px-8 py-4 text-xl font-semibold text-neutral-900 shadow-xl transition-transform hover:scale-[1.02] active:scale-95"
           >
             ▶ Listen to the sky
           </button>
@@ -493,31 +493,31 @@ export default function FlightChoir() {
 
       {/* focused-aircraft legend */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex items-end justify-between gap-3 p-4 sm:p-5">
-        <div className="pointer-events-auto min-w-[15rem] max-w-sm rounded-2xl border border-white/10 bg-black/70 p-4 backdrop-blur-md">
-          <div className="text-[11px] uppercase tracking-[0.18em] text-white/55">
+        <div className="pointer-events-auto min-w-[15rem] max-w-sm rounded-2xl border border-border bg-black/70 p-4 backdrop-blur-md">
+          <div className="text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
             in focus {pointerRef.current.inside ? "· cursor" : "· auto"}
           </div>
           {focus ? (
             <div className="mt-1">
-              <div className="text-2xl font-semibold text-white tabular-nums">
+              <div className="text-2xl font-semibold text-foreground tabular-nums">
                 {focus.callsign}
               </div>
-              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-base text-white/75 tabular-nums">
+              <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5 text-base text-muted-foreground tabular-nums">
                 <span>
                   <span className="text-violet-300">{focus.altFt.toLocaleString()}</span> ft
                 </span>
                 <span>
-                  <span className="text-emerald-300/95">{focus.speedKt}</span> kt
+                  <span className="text-violet-300/95">{focus.speedKt}</span> kt
                 </span>
                 <span>
                   {focus.vfpm > 0 ? "▲" : focus.vfpm < 0 ? "▼" : "▬"}{" "}
                   {Math.abs(focus.vfpm)} fpm
                 </span>
               </div>
-              <div className="mt-0.5 text-base text-white/60">{focus.place}</div>
+              <div className="mt-0.5 text-base text-muted-foreground">{focus.place}</div>
             </div>
           ) : (
-            <div className="mt-1 text-base text-white/60">
+            <div className="mt-1 text-base text-muted-foreground">
               hover an aircraft to focus it
             </div>
           )}
@@ -525,7 +525,7 @@ export default function FlightChoir() {
 
         <button
           onClick={() => setShowNotes((s) => !s)}
-          className="pointer-events-auto min-h-[44px] rounded-xl border border-white/10 bg-black/70 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white"
+          className="pointer-events-auto min-h-[44px] rounded-xl border border-border bg-black/70 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
         >
           {showNotes ? "hide" : "how it sounds"}
         </button>
@@ -533,25 +533,25 @@ export default function FlightChoir() {
 
       {/* mapping notes */}
       {showNotes && (
-        <div className="pointer-events-auto absolute bottom-24 right-4 z-30 max-w-sm rounded-2xl border border-white/10 bg-black/85 p-4 text-base text-white/75 backdrop-blur-md sm:right-5">
-          <div className="mb-2 text-xl font-semibold text-white">How the sky sings</div>
+        <div className="pointer-events-auto absolute bottom-24 right-4 z-30 max-w-sm rounded-2xl border border-border bg-black/85 p-4 text-base text-muted-foreground backdrop-blur-md sm:right-5">
+          <div className="mb-2 text-xl font-semibold text-foreground">How the sky sings</div>
           <ul className="space-y-1.5">
             <li>
               <span className="text-violet-300">altitude</span> → pitch on a bright
               just-intonation lydian lattice (higher = higher)
             </li>
             <li>
-              <span className="text-emerald-300/95">ground speed</span> → filter
+              <span className="text-violet-300/95">ground speed</span> → filter
               brightness (faster = brighter)
             </li>
             <li>
-              <span className="text-amber-300/95">longitude</span> → stereo pan (west
+              <span className="text-violet-300/95">longitude</span> → stereo pan (west
               = left, east = right)
             </li>
             <li>vertical rate → vibrato + a small detune glide (climb = shimmer)</li>
             <li>traffic density → sub-drone bed + reverb depth</li>
           </ul>
-          <p className="mt-2 text-base text-white/55">
+          <p className="mt-2 text-base text-muted-foreground">
             Each aircraft is one sustained voice (fade in on entry, out on exit),
             capped at 16 with voice-stealing, through a shared reverb + limiter.
           </p>

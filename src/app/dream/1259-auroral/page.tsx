@@ -176,15 +176,15 @@ export default function AuroralPage() {
   const isLive = aurora?.source === "live";
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#03040a] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
       {/* header */}
       <header className="relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
           Auroral
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
+        <p className="mt-2 max-w-2xl text-base text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
           Earth&rsquo;s live auroral oval, sonified — the real global aurora
           happening right now, drifting overhead as a slow luminous curtain-field
           and a boundless cosmic-ambient void.
@@ -194,35 +194,35 @@ export default function AuroralPage() {
       {/* pre-start overlay */}
       {runState === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/10 bg-black/45 px-8 py-7 text-center backdrop-blur-md">
-            <p className="max-w-md text-base text-white/80">
+          <div className="flex flex-col items-center gap-5 rounded-2xl border border-border bg-black/45 px-8 py-7 text-center backdrop-blur-md">
+            <p className="max-w-md text-base text-foreground">
               The curtains you see are the live NOAA aurora forecast this minute.
               The louder and more violet it gets, the more active Earth&rsquo;s
               real geomagnetic storm. Press begin to dissolve in.
             </p>
             <button
               onClick={handleStart}
-              className="min-h-[44px] min-w-[44px] rounded-full bg-emerald-200/90 px-4 py-2.5 text-base font-medium text-[#04140c] shadow-lg transition-colors hover:bg-emerald-100"
+              className="min-h-[44px] min-w-[44px] rounded-full bg-violet-200/90 px-4 py-2.5 text-base font-medium text-[#04140c] shadow-lg transition-colors hover:bg-violet-100"
             >
               ▶ Begin
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               Audio starts on this click — gesture-gated, with a limiter.
             </p>
             {aurora && (
-              <p className="text-base text-white/75">
+              <p className="text-base text-muted-foreground">
                 {isLive ? "● live" : "○ offline sample"} · Kp{" "}
                 {aurora.kp.toFixed(0)} ({kpLabel(aurora.kp)}) ·{" "}
                 {formatObs(aurora.observationTime)}
               </p>
             )}
             {aurora && !isLive && (
-              <p className="max-w-sm text-base text-rose-300">
+              <p className="max-w-sm text-base text-violet-300">
                 using offline sample — live NOAA data unavailable
               </p>
             )}
             {audioError && (
-              <p className="max-w-sm text-base text-rose-300">{audioError}</p>
+              <p className="max-w-sm text-base text-violet-300">{audioError}</p>
             )}
           </div>
         </div>
@@ -231,21 +231,21 @@ export default function AuroralPage() {
       {/* live readout while running */}
       {runState === "running" && (
         <div className="absolute bottom-16 left-1/2 z-10 w-[min(94vw,720px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/12 bg-black/55 px-5 py-4 backdrop-blur-md">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-black/55 px-5 py-4 backdrop-blur-md">
             <div className="min-w-[220px] flex-1">
               {aurora ? (
                 <div>
-                  <div className="text-base font-medium text-white/95">
+                  <div className="text-base font-medium text-foreground">
                     {isLive ? "Live aurora" : "Offline sample aurora"} · Kp{" "}
                     {aurora.kp.toFixed(0)} — {kpLabel(aurora.kp)}
                   </div>
-                  <div className="mt-1 text-base text-white/75">
+                  <div className="mt-1 text-base text-muted-foreground">
                     peak {Math.round(aurora.peakProb)}% · observed{" "}
                     {formatObs(aurora.observationTime)}
                   </div>
                 </div>
               ) : (
-                <div className="text-base text-white/70">
+                <div className="text-base text-muted-foreground">
                   Reading the sky…
                 </div>
               )}
@@ -253,26 +253,26 @@ export default function AuroralPage() {
             <div className="flex flex-col items-end gap-2">
               <span
                 className={`text-base ${
-                  isLive ? "text-emerald-300/95" : "text-amber-300/95"
+                  isLive ? "text-violet-300/95" : "text-violet-300/95"
                 }`}
               >
                 {isLive ? "● NOAA SWPC live" : "○ offline sample"}
               </span>
               <button
                 onClick={handleStop}
-                className="min-h-[44px] min-w-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-white/20"
+                className="min-h-[44px] min-w-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
               >
                 ■ Stop
               </button>
             </div>
           </div>
           {aurora && !isLive && (
-            <p className="mt-2 text-center text-base text-rose-300">
+            <p className="mt-2 text-center text-base text-violet-300">
               using offline sample — live NOAA data unavailable
             </p>
           )}
           {audioError && (
-            <p className="mt-2 text-center text-base text-rose-300">
+            <p className="mt-2 text-center text-base text-violet-300">
               {audioError}
             </p>
           )}

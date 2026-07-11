@@ -309,12 +309,12 @@ export default function KholeTunnelPage() {
   }, [renderLoop, resize, onPointerMove, onPointerDown, onPointerUp]);
 
   return (
-    <main className="relative min-h-screen touch-none overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen touch-none overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="fixed inset-0 h-full w-full touch-none" />
 
       {noGL && (
         <div className="fixed inset-0 z-40 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base leading-relaxed text-rose-300">
+          <p className="max-w-md text-center text-base leading-relaxed text-violet-300">
             This piece needs WebGL2, which is not available in your browser. The
             dissociative void cannot be raymarched here — try a recent desktop
             Chrome, Firefox, or Safari.
@@ -324,10 +324,10 @@ export default function KholeTunnelPage() {
 
       {/* hero / controls */}
       <div className="fixed left-0 top-0 z-30 max-w-md p-5 sm:p-7">
-        <h1 className="font-serif text-3xl tracking-tight text-white/95 sm:text-4xl">
+        <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
           K-Hole Tunnel
         </h1>
-        <p className="mt-3 text-base leading-relaxed text-white/80">
+        <p className="mt-3 text-base leading-relaxed text-foreground">
           A drug-free drift, disembodied, toward a distant being of light — where
           the beat you hear comes loose from the flash you see, and the world
           un-binds the deeper you go.
@@ -337,7 +337,7 @@ export default function KholeTunnelPage() {
           {phase === "idle" ? (
             <button
               onClick={handleBegin}
-              className="min-h-[44px] rounded-full bg-white/95 px-6 py-2.5 text-base font-medium text-black transition hover:bg-white"
+              className="min-h-[44px] rounded-full bg-muted px-6 py-2.5 text-base font-medium text-black transition hover:bg-card"
             >
               Begin
             </button>
@@ -348,7 +348,7 @@ export default function KholeTunnelPage() {
           )}
         </div>
 
-        <p className="mt-3 font-mono text-sm text-white/60">
+        <p className="mt-3 font-mono text-sm text-muted-foreground">
           {phase === "idle"
             ? "the void is alive · press Begin for sound"
             : "hold anywhere to be drawn toward the light · move to steer · release to fall back"}
@@ -358,18 +358,18 @@ export default function KholeTunnelPage() {
       {/* design notes affordance */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="fixed bottom-3 right-3 z-40 min-h-[44px] rounded-full border border-white/15 bg-black/70 px-4 py-2.5 text-sm font-medium text-white/75 backdrop-blur transition hover:text-white/95"
+        className="fixed bottom-3 right-3 z-40 min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-sm font-medium text-muted-foreground backdrop-blur transition hover:text-foreground"
       >
         {showNotes ? "close notes" : "design notes"}
       </button>
 
       {showNotes && (
         <div className="fixed inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/80 p-5 backdrop-blur-md sm:p-10">
-          <div className="max-w-2xl py-6 text-white/85">
-            <h2 className="font-serif text-2xl text-white/95 sm:text-3xl">
+          <div className="max-w-2xl py-6 text-foreground">
+            <h2 className="font-serif text-2xl text-foreground sm:text-3xl">
               K-Hole Tunnel — design notes
             </h2>
-            <p className="mt-4 text-base leading-relaxed text-white/80">
+            <p className="mt-4 text-base leading-relaxed text-foreground">
               <span className="text-violet-300">The one question:</span> what if a
               drug-free screen could evoke the ketamine k-hole / near-death
               tunnel-to-light — and make you feel the dissociative{" "}
@@ -377,8 +377,8 @@ export default function KholeTunnelPage() {
               loose from the light you see?
             </p>
 
-            <h3 className="mt-6 text-xl text-white/95">The desync engine</h3>
-            <p className="mt-2 text-base leading-relaxed text-white/75">
+            <h3 className="mt-6 text-xl text-foreground">The desync engine</h3>
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               A steady ~3 Hz pulse drives a shallow luminance breath in the void.
               Each frame that drive is pushed into a ring buffer; the audio does
               not read it directly — it reads the value from{" "}
@@ -390,28 +390,28 @@ export default function KholeTunnelPage() {
               un-binds more the deeper you go.
             </p>
 
-            <h3 className="mt-6 text-xl text-white/95">Real ~3 Hz TIME</h3>
-            <p className="mt-2 text-base leading-relaxed text-white/75">
+            <h3 className="mt-6 text-xl text-foreground">Real ~3 Hz TIME</h3>
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               The pulse rides its own steady clock, undilated. When you hold, the
               scene clock dilates toward 0.35× (time distension), yet the rhythmic
               pulse keeps ticking — the piece always has a beat. This mirrors the
               retrosplenial ~3 Hz rhythm implicated in dissociation.
             </p>
 
-            <h3 className="mt-6 text-xl text-white/95">Phenomenology</h3>
-            <p className="mt-2 text-base leading-relaxed text-white/75">
+            <h3 className="mt-6 text-xl text-foreground">Phenomenology</h3>
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">
               Disembodied forward drift, a hypoxic vignette constricting toward a
               warm being of light, and a smooth gamma clarity-swell on arrival —
               the reported shape of the k-hole and the near-death tunnel. Nothing
               strobes: full-field luminance change stays ≤ 3 Hz and continuous.
             </p>
 
-            <h3 className="mt-6 text-xl text-white/95">References</h3>
-            <p className="mt-2 text-base leading-relaxed text-white/75">
-              <span className="text-white/95">James Turrell</span> — Ganzfeld
+            <h3 className="mt-6 text-xl text-foreground">References</h3>
+            <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+              <span className="text-foreground">James Turrell</span> — Ganzfeld
               works, light as a physical object you inhabit rather than look at.
               <br />
-              <span className="text-white/95">Bera et al. 2026</span> — &ldquo;Cortical
+              <span className="text-foreground">Bera et al. 2026</span> — &ldquo;Cortical
               Mechanisms Contributing to Ketamine-Induced Dissociation&rdquo;:
               dissociation as the uncoupling of sensory input from awareness,
               carried on a retrosplenial ~3 Hz rhythm. This desync engine is a
@@ -420,7 +420,7 @@ export default function KholeTunnelPage() {
 
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-7 min-h-[44px] rounded-full border border-white/20 bg-white/10 px-6 py-2.5 text-base font-medium text-white/95 transition hover:bg-white/20"
+              className="mt-7 min-h-[44px] rounded-full border border-border bg-muted px-6 py-2.5 text-base font-medium text-foreground transition hover:bg-accent"
             >
               close
             </button>

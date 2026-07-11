@@ -275,7 +275,7 @@ export default function ThetaEnginePage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04040a] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#04040a] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full touch-none"
@@ -288,10 +288,10 @@ export default function ThetaEnginePage() {
 
       {/* Title + description */}
       <div className="pointer-events-none absolute left-0 top-0 z-20 max-w-xl p-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)] sm:text-3xl">
           Theta Engine
         </h1>
-        <p className="mt-2 text-base leading-relaxed text-white/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+        <p className="mt-2 text-base leading-relaxed text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
           A psychedelic field organised not by spatial geometry but by the
           cortex&rsquo;s own <span className="text-violet-300">temporal</span>{" "}
           rhythm: a ~5&nbsp;Hz <span className="text-violet-300">theta</span>{" "}
@@ -300,10 +300,10 @@ export default function ThetaEnginePage() {
           rhythm; watch it re-bloom the field each cycle.
         </p>
         {started && (
-          <p className="mt-3 text-base text-white/75 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+          <p className="mt-3 text-base text-muted-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
             Drag anywhere &middot; left&ndash;right ={" "}
-            <span className="text-cyan-300">coupling depth</span> &middot;
-            up&ndash;down = <span className="text-cyan-300">theta rate</span>.
+            <span className="text-violet-300">coupling depth</span> &middot;
+            up&ndash;down = <span className="text-violet-300">theta rate</span>.
           </p>
         )}
       </div>
@@ -311,24 +311,24 @@ export default function ThetaEnginePage() {
       {/* Live readouts + audio meter */}
       {started && (
         <div className="pointer-events-none absolute right-4 top-4 z-20 flex flex-col items-end gap-2">
-          <div className="rounded-lg border border-white/15 bg-black/55 px-3 py-2 text-right font-mono text-base text-white/90 backdrop-blur-sm">
+          <div className="rounded-lg border border-border bg-black/55 px-3 py-2 text-right font-mono text-base text-foreground backdrop-blur-sm">
             <div>
               coupling{" "}
-              <span className="text-cyan-300">
+              <span className="text-violet-300">
                 {(coupling * 100).toFixed(0)}%
               </span>
             </div>
             <div>
               theta{" "}
-              <span className="text-cyan-300">{thetaRate.toFixed(2)} Hz</span>
+              <span className="text-violet-300">{thetaRate.toFixed(2)} Hz</span>
             </div>
-            <div className="text-white/75">gamma 40 Hz (audio)</div>
+            <div className="text-muted-foreground">gamma 40 Hz (audio)</div>
           </div>
           <canvas
             ref={meterRef}
             width={220}
             height={56}
-            className="rounded-lg border border-white/15 bg-black/55 backdrop-blur-sm"
+            className="rounded-lg border border-border bg-black/55 backdrop-blur-sm"
           />
         </div>
       )}
@@ -341,8 +341,8 @@ export default function ThetaEnginePage() {
             onClick={toggleDeep}
             className={`min-h-[44px] rounded-lg border px-4 py-2.5 text-base font-medium backdrop-blur-sm transition ${
               deep
-                ? "border-violet-300/60 bg-violet-400/25 text-white"
-                : "border-white/20 bg-black/50 text-white/90 hover:bg-black/70"
+                ? "border-violet-300/60 bg-violet-400/25 text-foreground"
+                : "border-border bg-black/50 text-foreground hover:bg-black/70"
             }`}
           >
             {deep ? "Deep coupling: ON" : "Deep coupling"}
@@ -350,12 +350,12 @@ export default function ThetaEnginePage() {
           <button
             type="button"
             onClick={handleStop}
-            className="min-h-[44px] rounded-lg border border-rose-300/45 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-200 backdrop-blur-sm transition hover:bg-rose-500/25"
+            className="min-h-[44px] rounded-lg border border-violet-300/45 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-200 backdrop-blur-sm transition hover:bg-violet-500/25"
           >
             Stop
           </button>
           {deep && (
-            <p className="max-w-xs text-base text-amber-300/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
+            <p className="max-w-xs text-base text-violet-300/95 drop-shadow-[0_1px_8px_rgba(0,0,0,0.9)]">
               Deep mode sharpens the bursts and raises the visual drift (still a
               soft ≤6&nbsp;Hz drift, never a strobe).
             </p>
@@ -365,16 +365,16 @@ export default function ThetaEnginePage() {
 
       {/* Fallback notices */}
       {audioFailed && (
-        <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(90vw,32rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-rose-400/40 bg-black/70 p-5 text-center">
-          <p className="text-base text-rose-300">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 z-20 w-[min(90vw,32rem)] -translate-x-1/2 -translate-y-1/2 rounded-xl border border-violet-400/40 bg-black/70 p-5 text-center">
+          <p className="text-base text-violet-300">
             Web Audio is unavailable on this device, so the theta&ndash;gamma
             engine can&rsquo;t sound &mdash; the visual field still breathes.
           </p>
         </div>
       )}
       {webglFailed && (
-        <div className="pointer-events-none absolute bottom-24 left-1/2 z-20 w-[min(90vw,30rem)] -translate-x-1/2 rounded-xl border border-rose-400/40 bg-black/70 p-4 text-center">
-          <p className="text-base text-rose-300">
+        <div className="pointer-events-none absolute bottom-24 left-1/2 z-20 w-[min(90vw,30rem)] -translate-x-1/2 rounded-xl border border-violet-400/40 bg-black/70 p-4 text-center">
+          <p className="text-base text-violet-300">
             WebGL2 is unavailable here, so the shader field can&rsquo;t draw
             &mdash; but the theta&ndash;gamma audio still plays. Drag to steer
             it.
@@ -388,11 +388,11 @@ export default function ThetaEnginePage() {
           <button
             type="button"
             onClick={handleStart}
-            className="min-h-[44px] rounded-full border border-violet-300/45 bg-violet-400/15 px-4 py-2.5 text-base font-medium text-white transition hover:bg-violet-400/25"
+            className="min-h-[44px] rounded-full border border-violet-300/45 bg-violet-400/15 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400/25"
           >
             Start the theta engine
           </button>
-          <p className="mt-4 max-w-sm px-6 text-center text-base text-white/75">
+          <p className="mt-4 max-w-sm px-6 text-center text-base text-muted-foreground">
             Headphones recommended &mdash; the ~5&nbsp;Hz / 40&nbsp;Hz nesting
             lives in the sound. Visuals stay a soft, safe drift. Sound begins on
             tap.
@@ -405,16 +405,16 @@ export default function ThetaEnginePage() {
         <button
           type="button"
           onClick={() => setShowNotes((v) => !v)}
-          className="min-h-[44px] rounded-lg border border-white/20 bg-black/50 px-4 py-2.5 text-base font-medium text-white/90 backdrop-blur-sm transition hover:bg-black/70"
+          className="min-h-[44px] rounded-lg border border-border bg-black/50 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-sm transition hover:bg-black/70"
         >
           {showNotes ? "Hide design notes" : "Design notes"}
         </button>
         {showNotes && (
-          <div className="mt-2 rounded-xl border border-white/15 bg-black/80 p-4 text-base leading-relaxed text-white/75 backdrop-blur-md">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="mt-2 rounded-xl border border-border bg-black/80 p-4 text-base leading-relaxed text-muted-foreground backdrop-blur-md">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-2">
               The real coupling is in the{" "}
-              <span className="text-white/95">audio</span>: a ~5&nbsp;Hz theta
+              <span className="text-foreground">audio</span>: a ~5&nbsp;Hz theta
               sine amplitude-modulates a mid carrier, and a 40&nbsp;Hz gamma
               oscillator is run through a VCA whose gain is a{" "}
               <em>sharpened function of the theta phase</em> &mdash; so gamma
@@ -423,17 +423,17 @@ export default function ThetaEnginePage() {
               guards the peaks.
             </p>
             <p className="mt-2">
-              The <span className="text-white/95">visual</span> is a raw WebGL2
+              The <span className="text-foreground">visual</span> is a raw WebGL2
               form-constant field (log-polar / Bressloff&ndash;Cowan) that
               re-blooms each theta cycle, with a fine &ldquo;gamma sparkle&rdquo;
               whose <em>amplitude</em> rides the theta phase. All luminance runs
-              through <span className="text-white/95">SafeFlicker</span> &mdash;
+              through <span className="text-foreground">SafeFlicker</span> &mdash;
               a soft ≤8&nbsp;Hz drift that never blacks out &mdash; so the
               seizure-risk 5/40&nbsp;Hz flicker never reaches the screen.
             </p>
-            <p className="mt-2 text-white/75">
+            <p className="mt-2 text-muted-foreground">
               Phenomenology, not medicine. References in{" "}
-              <span className="font-mono text-white/85">README.md</span>: the
+              <span className="font-mono text-foreground">README.md</span>: the
               2026 5-HT2A 5&nbsp;Hz-oscillation study, Lisman &amp; Jensen&rsquo;s
               theta&ndash;gamma code, and Bressloff&ndash;Cowan form constants.
             </p>

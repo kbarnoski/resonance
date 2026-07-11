@@ -229,7 +229,7 @@ export default function EmergePage() {
 
       {glError && (
         <div className="absolute inset-0 flex items-center justify-center px-6 text-center">
-          <p className="max-w-md rounded-lg border border-rose-300/30 bg-black/60 px-5 py-4 text-base text-rose-300">
+          <p className="max-w-md rounded-lg border border-violet-300/30 bg-black/60 px-5 py-4 text-base text-violet-300">
             {glError}
           </p>
         </div>
@@ -238,17 +238,17 @@ export default function EmergePage() {
       {/* Intro overlay — canvas already shows a forming luminous body behind it. */}
       {!started && !glError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/45 px-6 text-center backdrop-blur-[2px]">
-          <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-teal-200/90">
+          <p className="mb-3 font-mono text-xs uppercase tracking-[0.35em] text-violet-200/90">
             Resonance · dream 1263
           </p>
-          <h1 className="mb-4 font-serif text-3xl text-white md:text-5xl">Emerge</h1>
-          <p className="mb-3 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+          <h1 className="mb-4 font-serif text-3xl text-foreground md:text-5xl">Emerge</h1>
+          <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
             A drug-free psychedelic <em>journey</em> — one six-minute arc from
             stillness, through ego-dissolution, and softly back. A vast cloud of
             ninety thousand GPU particles condenses into a luminous body, then
             dissolves its own boundary into boundless light, then re-condenses.
           </p>
-          <p className="mb-8 max-w-lg text-base leading-relaxed text-white/60">
+          <p className="mb-8 max-w-lg text-base leading-relaxed text-muted-foreground">
             Press begin and surrender. It runs itself; nothing to do but watch it
             evolve. A Shepard–Risset ascent climbs to the breakthrough. Optionally
             grant the mic for &ldquo;neural-gain&rdquo; — a louder room deepens the
@@ -258,13 +258,13 @@ export default function EmergePage() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={begin}
-              className="min-h-[44px] rounded-full border border-teal-200/40 bg-teal-200/10 px-8 py-2.5 text-base font-medium text-white transition hover:border-teal-200/80 hover:bg-teal-200/20"
+              className="min-h-[44px] rounded-full border border-violet-200/40 bg-violet-200/10 px-8 py-2.5 text-base font-medium text-foreground transition hover:border-violet-200/80 hover:bg-violet-200/20"
             >
               Begin the journey
             </button>
             <button
               onClick={jumpToPeak}
-              className="min-h-[44px] rounded-full border border-amber-200/30 px-6 py-2.5 text-base text-white/80 transition hover:border-amber-200/70 hover:text-white"
+              className="min-h-[44px] rounded-full border border-violet-200/30 px-6 py-2.5 text-base text-foreground transition hover:border-violet-200/70 hover:text-foreground"
             >
               Jump to the peak
             </button>
@@ -274,11 +274,11 @@ export default function EmergePage() {
             href="/dream/1263-emerge/README.md"
             target="_blank"
             rel="noreferrer"
-            className="mt-6 text-base text-white/60 underline-offset-4 hover:text-white/85 hover:underline"
+            className="mt-6 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             Read the design notes
           </a>
-          <Link href="/dream" className="mt-6 text-base text-white/60 hover:text-white/85">
+          <Link href="/dream" className="mt-6 text-base text-muted-foreground hover:text-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -288,13 +288,13 @@ export default function EmergePage() {
       {started && !glError && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-            <span className="font-serif text-xl text-white/90">Emerge</span>
-            <span className="font-mono text-base text-teal-200/95">{hud.phaseName}</span>
-            <span className="font-mono text-base text-white/60">
+            <span className="font-serif text-xl text-foreground">Emerge</span>
+            <span className="font-mono text-base text-violet-200/95">{hud.phaseName}</span>
+            <span className="font-mono text-base text-muted-foreground">
               {mmss(hud.elapsed)} / {mmss(TOTAL)} · {(hud.journey * 100).toFixed(0)}%
             </span>
             {mic.running && (
-              <span className="font-mono text-base text-amber-200/90">
+              <span className="font-mono text-base text-violet-200/90">
                 neural-gain · live
               </span>
             )}
@@ -304,13 +304,13 @@ export default function EmergePage() {
             <div className="flex gap-2">
               <button
                 onClick={() => setPaused((p) => !p)}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
               >
                 {paused ? "resume" : "pause"}
               </button>
               <button
                 onClick={() => setMuted((m) => !m)}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
               >
                 {muted ? "unmute" : "mute"}
               </button>
@@ -318,13 +318,13 @@ export default function EmergePage() {
             <div className="flex gap-2">
               <button
                 onClick={toggleMic}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
               >
                 {mic.running ? "mic off" : "neural-gain"}
               </button>
               <button
                 onClick={() => setBreath((b) => !b)}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
                 title="A gentle, photosensitive-safe luminance breath (≤0.6 Hz, off by default)."
               >
                 {breath ? "breath on" : "breath off"}
@@ -332,14 +332,14 @@ export default function EmergePage() {
             </div>
             <button
               onClick={end}
-              className="min-h-[44px] rounded-full border border-rose-300/30 px-4 py-2.5 text-base text-rose-200/90 transition hover:border-rose-300/70 hover:text-rose-100"
+              className="min-h-[44px] rounded-full border border-violet-300/30 px-4 py-2.5 text-base text-violet-200/90 transition hover:border-violet-300/70 hover:text-violet-100"
             >
               stop
             </button>
           </div>
 
           {mic.error && (
-            <p className="absolute right-4 top-56 max-w-xs rounded border border-amber-300/30 px-3 py-2 text-base text-amber-300/95">
+            <p className="absolute right-4 top-56 max-w-xs rounded border border-violet-300/30 px-3 py-2 text-base text-violet-300/95">
               {mic.error} — the journey keeps running on its own.
             </p>
           )}
@@ -353,12 +353,12 @@ export default function EmergePage() {
               value={Math.round((hud.elapsed / TOTAL) * 1000)}
               onChange={onScrub}
               aria-label="Journey scrubber"
-              className="h-2 w-full max-w-3xl cursor-pointer appearance-none rounded-full bg-white/20 accent-teal-300"
+              className="h-2 w-full max-w-3xl cursor-pointer appearance-none rounded-full bg-muted accent-violet-300"
             />
-            <div className="flex w-full max-w-3xl justify-between font-mono text-base text-white/55">
+            <div className="flex w-full max-w-3xl justify-between font-mono text-base text-muted-foreground">
               <span>onset</span>
               <span>come-up</span>
-              <button onClick={jumpToPeak} className="text-amber-200/90 hover:text-amber-100">
+              <button onClick={jumpToPeak} className="text-violet-200/90 hover:text-violet-100">
                 peak ↑
               </button>
               <span>plateau</span>

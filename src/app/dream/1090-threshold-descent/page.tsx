@@ -142,7 +142,7 @@ export default function ThresholdDescentPage() {
   const glow = light * (0.85 + 0.15 * Math.sin(Date.now() / 1400));
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#04030a] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#04030a] text-foreground">
       {/* The austere SVG — concentric rings contracting toward a luminous point. */}
       <div className="absolute inset-0 flex items-center justify-center">
         <svg
@@ -210,14 +210,14 @@ export default function ThresholdDescentPage() {
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-2xl bg-black/55 p-8 backdrop-blur-md ring-1 ring-white/10">
+          <div className="max-w-xl rounded-2xl bg-black/55 p-8 backdrop-blur-md ring-1 ring-border">
             <p className="font-mono text-sm text-violet-300">
               resonance · dream lab
             </p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Threshold Descent
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               Close your eyes and descend by <em>slowing down</em>. Tap a pulse,
               then let each tap fall further apart — and finally go still.
               Stillness takes you deepest, where a warm light blooms out of the
@@ -228,16 +228,16 @@ export default function ThresholdDescentPage() {
               type="button"
               onClick={begin}
               disabled={phase === "starting"}
-              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
             >
               {phase === "starting" ? "Descending…" : "Begin the descent"}
             </button>
 
             {errorMsg && (
-              <p className="mt-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mt-4 text-base text-violet-300">{errorMsg}</p>
             )}
 
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               Tap with the spacebar, a tap on screen, or the pulse button. If you
               never tap, it descends on its own. Nothing is recorded or sent
               anywhere.
@@ -258,18 +258,18 @@ export default function ThresholdDescentPage() {
           />
 
           <div className="pointer-events-none absolute left-6 top-6 z-10 select-none">
-            <h1 className="text-2xl font-semibold text-white/95">
+            <h1 className="text-2xl font-semibold text-foreground">
               Threshold Descent
             </h1>
-            <p className="mt-1 font-mono text-sm text-white/60">
+            <p className="mt-1 font-mono text-sm text-muted-foreground">
               depth {(depth * 100).toFixed(0)}%
             </p>
             {auto ? (
-              <p className="mt-1 text-base text-amber-300/95">
+              <p className="mt-1 text-base text-violet-300/95">
                 ○ auto-descent — tap to take the wheel
               </p>
             ) : depth > 0.85 ? (
-              <p className="mt-1 text-base text-emerald-300/95">
+              <p className="mt-1 text-base text-violet-300/95">
                 ● stillness — the light
               </p>
             ) : (
@@ -284,7 +284,7 @@ export default function ThresholdDescentPage() {
             <button
               type="button"
               onClick={registerTap}
-              className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-white/10 px-8 py-4 text-base font-medium text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
+              className="inline-flex min-h-[44px] items-center justify-center rounded-full bg-muted px-8 py-4 text-base font-medium text-foreground ring-1 ring-border backdrop-blur-md transition hover:bg-accent"
               style={{
                 boxShadow: `0 0 ${8 + 40 * pulse}px rgba(200,210,255,${0.2 + 0.5 * pulse})`,
               }}
@@ -299,23 +299,23 @@ export default function ThresholdDescentPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-6 z-20 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/45 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur-md transition hover:text-white"
+        className="absolute right-6 top-6 z-20 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/45 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-start justify-center overflow-y-auto bg-black/80 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/85">
-            <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+          <div className="max-w-2xl text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The question:</span> what if Resonance
+              <span className="text-foreground">The question:</span> what if Resonance
               could induce a near-death / ketamine &ldquo;tunnel-to-the-light&rdquo;
               dissolution with almost <em>no screen</em> — using only spatial audio
               and the pace of your own body, so you can close your eyes?
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Descend by slowing.</span> A tap-tempo
+              <span className="text-foreground">Descend by slowing.</span> A tap-tempo
               state machine measures the interval between your taps. Fast taps mean
               you&apos;re agitated, near the surface (shallow). As the intervals
               lengthen, <code>depth</code> rises; when you go <em>still</em>, depth
@@ -323,7 +323,7 @@ export default function ThresholdDescentPage() {
               Every transition is exponentially smoothed, so nothing clicks.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">What depth drives.</span> A
+              <span className="text-foreground">What depth drives.</span> A
               Shepard–Risset endless <em>fall</em> (deeper = faster, more committed
               plunge); a void convolution reverb that grows cavernous; a ring of
               HRTF-panned just-intonation voices that contracts inward toward your
@@ -334,27 +334,27 @@ export default function ThresholdDescentPage() {
               go.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Audio-first, austere visual.</span> The
+              <span className="text-foreground">Audio-first, austere visual.</span> The
               only picture is minimal SVG: concentric rings that contract toward a
               central dot which brightens with the light — slow luminance drift,
               never a strobe. The sound carries the experience; the piece works with
               your eyes closed.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">References.</span> Jean-Claude Risset —
+              <span className="text-foreground">References.</span> Jean-Claude Risset —
               the endless glissando / Risset rhythm; Roger Shepard — Shepard tones;
               Susan Blackmore, <em>Dying to Live</em> — the tunnel-to-light NDE
               phenomenology.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Next-cycle deepening:</span> accept device
+              <span className="text-foreground">Next-cycle deepening:</span> accept device
               &ldquo;stillness&rdquo; (accelerometer quiet) as a second descent
               channel; a breath-locked shimmer at the threshold; per-tap
               micro-timing to detect an intentional <em>ritardando</em>; head-tracked
               HRTF so turning your head moves the ring; a longer scored arc that
               releases you back to the surface.
             </p>
-            <p className="mt-6 font-mono text-sm text-white/55">
+            <p className="mt-6 font-mono text-sm text-muted-foreground">
               state: NDE tunnel-to-light / ketamine dissolution · pole:
               cosmic-ambient → luminous-intense
             </p>

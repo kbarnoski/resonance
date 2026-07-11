@@ -479,7 +479,7 @@ export default function GravityChoirPage() {
   }, [syncViews]);
 
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden text-foreground">
       {/* deep star-void backdrop — always present, so it's never blank */}
       <div
         className="absolute inset-0"
@@ -492,16 +492,16 @@ export default function GravityChoirPage() {
 
       {err && (
         <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">{err}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{err}</p>
         </div>
       )}
 
       {/* title + one-sentence description */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-2 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Gravity Choir
         </h1>
-        <p className="max-w-xl text-base text-white/75">
+        <p className="max-w-xl text-base text-muted-foreground">
           A swarm that doesn&apos;t react to music — it <span className="text-violet-300">makes</span>{" "}
           it. Tens of thousands of motes fall into orbit around the stars you place, and their
           orbital motion <span className="text-violet-300">is</span> the sound.
@@ -511,7 +511,7 @@ export default function GravityChoirPage() {
       {/* notes toggle */}
       <button
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base font-medium text-white/80 backdrop-blur-md transition-colors hover:bg-black/60"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/60"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -524,10 +524,10 @@ export default function GravityChoirPage() {
               <button
                 key={lbl}
                 onClick={() => onPickPitch(i)}
-                className="min-h-[44px] rounded-lg bg-white/5 px-3 py-2.5 text-base text-white/75 ring-1 ring-white/10 transition hover:bg-violet-500/20 hover:text-white"
+                className="min-h-[44px] rounded-lg bg-muted px-3 py-2.5 text-base text-muted-foreground ring-1 ring-border transition hover:bg-violet-500/20 hover:text-foreground"
                 title={`Set the selected star to ${lbl}`}
               >
-                <span className="mr-1 font-mono text-white/45">{i + 1}</span>
+                <span className="mr-1 font-mono text-muted-foreground">{i + 1}</span>
                 {lbl}
               </button>
             ))}
@@ -547,25 +547,25 @@ export default function GravityChoirPage() {
               <>
                 <button
                   onClick={stop}
-                  className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/15 transition hover:bg-white/15"
+                  className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   Stop
                 </button>
                 <button
                   onClick={toggleMute}
-                  className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/15 transition hover:bg-white/15"
+                  className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-foreground ring-1 ring-border transition hover:bg-accent"
                 >
                   {muted ? "Unmute" : "Mute"}
                 </button>
                 {views.length < MAX_ATTRACTORS && (
-                  <span className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 text-base text-white/55 ring-1 ring-white/10">
+                  <span className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-muted-foreground ring-1 ring-border">
                     Click the void to place a star
                   </span>
                 )}
                 {selectedRef.current >= 0 && views.length > 1 && (
                   <button
                     onClick={onClearSelected}
-                    className="min-h-[44px] rounded-full bg-white/5 px-4 py-2.5 text-base text-rose-200/80 ring-1 ring-white/10 transition hover:bg-rose-500/15"
+                    className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base text-violet-200/80 ring-1 ring-border transition hover:bg-violet-500/15"
                   >
                     Remove star
                   </button>
@@ -574,7 +574,7 @@ export default function GravityChoirPage() {
             )}
           </div>
           {started && (
-            <p className="pointer-events-none text-base text-white/55">
+            <p className="pointer-events-none text-base text-muted-foreground">
               {views.length} star{views.length === 1 ? "" : "s"} singing · click to place or select ·
               keys 1–7 tune the selected one
             </p>
@@ -584,8 +584,8 @@ export default function GravityChoirPage() {
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-0 top-20 z-20 mx-auto max-h-[76dvh] max-w-xl overflow-y-auto rounded-2xl bg-black/70 p-5 text-base text-white/75 ring-1 ring-white/10 backdrop-blur sm:top-24">
-          <p className="mb-3 text-white/95">
+        <div className="pointer-events-auto absolute inset-x-0 top-20 z-20 mx-auto max-h-[76dvh] max-w-xl overflow-y-auto rounded-2xl bg-black/70 p-5 text-base text-muted-foreground ring-1 ring-border backdrop-blur sm:top-24">
+          <p className="mb-3 text-foreground">
             Almost every particle piece is <em>audio-reactive</em>: sound comes first and the visuals
             dance to it. <span className="text-violet-300">Gravity Choir inverts that.</span> Here the
             geometry comes first — the swarm sonifies its own orbital motion.
@@ -600,20 +600,20 @@ export default function GravityChoirPage() {
             crossing <em>into</em> the shell fires a soft grain. The rhythm you hear is emergent —
             written by the orbital periods, not a sequencer.
           </p>
-          <p className="mb-3 text-white/75">
-            <span className="text-white/95">Controls:</span> Start · click the void to place a star (or
+          <p className="mb-3 text-muted-foreground">
+            <span className="text-foreground">Controls:</span> Start · click the void to place a star (or
             click an existing one to select it) · number keys 1–7 pick the selected star&apos;s pitch
             from an A-minor-pentatonic set · Remove star · Mute · Stop ramps everything to silence.
           </p>
-          <p className="mb-3 text-white/75">
-            <span className="text-white/95">References &amp; divergence:</span> kin to{" "}
+          <p className="mb-3 text-muted-foreground">
+            <span className="text-foreground">References &amp; divergence:</span> kin to{" "}
             <em>Party</em> (2026, a WebGPU particle-physics playground) and Robert Borghesi&apos;s{" "}
             <em>ASTRODITHER</em> (2026, Three.js WebGPU/TSL audio-reactive particles). Both are
             gorgeous GPU swarms driven <em>by</em> audio. This one runs on plain WebGL for broad
             device support and reverses the arrow: the swarm is the instrument, not the visualiser.
           </p>
-          <p className="mb-3 text-white/60">
-            <span className="text-white/95">Honest novelty:</span> GPU/point-cloud particle fields have
+          <p className="mb-3 text-muted-foreground">
+            <span className="text-foreground">Honest novelty:</span> GPU/point-cloud particle fields have
             deep lab prior art, and CPU n-body toys are old. The fresh part is narrow but real — a
             gravitational swarm that plays <em>itself</em>, its music emerging from orbital dynamics
             rather than reacting to a track.

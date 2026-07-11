@@ -228,24 +228,24 @@ export default function FaradayReliefPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#05070a]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-mono text-2xl font-bold text-white">Faraday Relief</h1>
+          <h1 className="font-mono text-2xl font-bold text-foreground">Faraday Relief</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Play a vibrating fluid membrane as real 3D relief — drag to drive a
           liquid-metal surface through stripes, squares, hexagons and a 12-fold
           quasicrystal, each symmetry answering at the subharmonic f/2 with its
@@ -254,19 +254,19 @@ export default function FaradayReliefPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if you
+            <strong className="text-foreground">The question:</strong> what if you
             could <em>play</em> a Faraday-vibrated fluid as tactile relief —
             watching displaced geometry rise into stripes → squares → hexagons →
             a 12-fold quasicrystal, catching metallic light, each symmetry a
             chord?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The physics:</strong> not
+            <strong className="text-foreground">The physics:</strong> not
             Navier–Stokes but the slow-envelope amplitude equations of six
             competing standing waves,{" "}
-            <span className="text-white/90">
+            <span className="text-foreground">
               dA_j/dt = A_j(σ_j − A_j² − c·Σ A_m²)
             </span>
             . The drive amplitude ε gates growth (below ε_c the surface
@@ -277,19 +277,19 @@ export default function FaradayReliefPage() {
             major-add9 / quartal shimmer).
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The render:</strong> the height
+            <strong className="text-foreground">The render:</strong> the height
             field h(x,y)=Σ A_j·cos(k·(x·cosθ_j+y·sinθ_j)+φ_j) is displaced into a
             real subdivided mesh, normals recomputed each frame, lit by a dark
             mercury environment and two drifting lights at a low raking angle so
             the specular glints slide along the ridges as they lock.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Played:</strong> drag horizontally
+            <strong className="text-foreground">Played:</strong> drag horizontally
             for frequency (symmetry + ripple scale), vertically for drive
             amplitude, tap to drop a ripple that collapses and re-forms the
             relief, or jump with the preset buttons.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: Faraday 1831, <em>On the forms and states assumed by fluids in
             contact with vibrating elastic surfaces</em>; Chladni 1787; Edwards &
             Fauve 1994, <em>Patterns and quasi-patterns in the Faraday
@@ -321,18 +321,18 @@ export default function FaradayReliefPage() {
         )}
 
         {/* Live readout */}
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
-          <div className="text-cyan-300">{SYMMETRY_LABEL[readout.symmetry]}</div>
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
+          <div className="text-violet-300">{SYMMETRY_LABEL[readout.symmetry]}</div>
           <div>drive f {readout.f.toFixed(0)} Hz</div>
           <div>subharmonic {(readout.f / 2).toFixed(0)} Hz</div>
-          <div className={belowThreshold ? "text-rose-300" : ""}>
+          <div className={belowThreshold ? "text-violet-300" : ""}>
             ε {readout.eps.toFixed(2)} {belowThreshold ? "· below εc (flat)" : ""}
           </div>
           <div>lock {(readout.lock * 100).toFixed(0)}%</div>
         </div>
 
         {webglFailed && (
-          <div className="absolute right-4 top-4 z-10 max-w-xs rounded bg-black/60 px-3 py-2 font-mono text-base text-rose-300 ring-1 ring-rose-400/25 backdrop-blur-sm">
+          <div className="absolute right-4 top-4 z-10 max-w-xs rounded bg-black/60 px-3 py-2 font-mono text-base text-violet-300 ring-1 ring-violet-400/25 backdrop-blur-sm">
             WebGL unavailable — showing a shaded Canvas2D heightmap of the same
             simulation.
           </div>
@@ -347,8 +347,8 @@ export default function FaradayReliefPage() {
               onClick={() => jumpTo(sym)}
               className={`min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
                 readout.symmetry === sym
-                  ? "bg-white/15 text-white ring-white/40"
-                  : "text-white/75 ring-white/15 hover:text-white"
+                  ? "bg-muted text-foreground ring-border"
+                  : "text-muted-foreground ring-border hover:text-foreground"
               }`}
             >
               {sym === "quasicrystal" ? "quasicrystal" : sym}
@@ -362,11 +362,11 @@ export default function FaradayReliefPage() {
             <button
               type="button"
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-cyan-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-cyan-200/40 transition hover:bg-cyan-300"
+              className="min-h-[44px] rounded-full bg-violet-400/90 px-4 py-2.5 font-mono text-base font-semibold text-black ring-1 ring-violet-200/40 transition hover:bg-violet-300"
             >
               ▶ Begin — let the surface sing
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               The relief is already forming — drag it now; Begin adds the sound.
             </p>
           </div>

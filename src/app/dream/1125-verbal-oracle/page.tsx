@@ -208,7 +208,7 @@ export default function VerbalOraclePage() {
       >
         <div className="mx-auto max-w-xl">
           <h1 className="font-serif text-3xl">The Verbal Oracle</h1>
-          <p className="mt-4 text-base text-rose-600">
+          <p className="mt-4 text-base text-violet-600">
             This piece needs the Web Audio API, which your browser does not seem
             to support. Try a recent desktop Chrome, Firefox, or Safari with
             headphones.
@@ -252,7 +252,7 @@ export default function VerbalOraclePage() {
               type="button"
               onClick={begin}
               disabled={!ready}
-              className="min-h-[44px] rounded-full px-6 py-2.5 text-base font-medium text-white transition-opacity disabled:opacity-40"
+              className="min-h-[44px] rounded-full px-6 py-2.5 text-base font-medium text-foreground transition-opacity disabled:opacity-40"
               style={{ background: INK }}
             >
               {ready ? "Begin" : "Preparing voice…"}
@@ -279,7 +279,7 @@ export default function VerbalOraclePage() {
         </div>
 
         {notice && (
-          <p className="text-base font-medium text-rose-600">{notice}</p>
+          <p className="text-base font-medium text-violet-600">{notice}</p>
         )}
 
         {/* word picker */}

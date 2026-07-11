@@ -225,20 +225,20 @@ export default function GaitLoomPage() {
   }, [phase, mode, fireLimb]);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#0d0f13] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#0d0f13] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-3xl bg-black/55 p-8 ring-1 ring-white/12 backdrop-blur-md">
-            <h1 className="text-2xl font-semibold tracking-tight text-white/95 sm:text-4xl">
+          <div className="max-w-xl rounded-3xl bg-black/55 p-8 ring-1 ring-border backdrop-blur-md">
+            <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-4xl">
               Gait Loom
             </h1>
             <p className="mt-1 font-mono text-base text-violet-300">
               your gait is the step sequencer
             </p>
-            <p className="mt-4 text-base leading-relaxed text-white/75">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Step in place or walk on the spot in view of the camera. The loom
               locks a tempo to your cadence: every footfall drops a low granular
               thud onto the ring, every swing of a wrist sprays bright grains, and
@@ -251,7 +251,7 @@ export default function GaitLoomPage() {
                 type="button"
                 onClick={() => begin(true)}
                 disabled={phase === "starting"}
-                className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
               >
                 {phase === "starting" ? "Warming up the loom…" : "Start camera · step"}
               </button>
@@ -259,15 +259,15 @@ export default function GaitLoomPage() {
                 type="button"
                 onClick={() => begin(false)}
                 disabled={phase === "starting"}
-                className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white/12 px-4 py-2.5 text-base font-medium text-white/95 ring-1 ring-white/25 transition hover:bg-white/20 disabled:opacity-60"
+                className="inline-flex min-h-[44px] items-center justify-center rounded-xl bg-muted px-4 py-2.5 text-base font-medium text-foreground ring-1 ring-border transition hover:bg-accent disabled:opacity-60"
               >
                 No camera — use limb pads
               </button>
             </div>
 
-            {notice && <p className="mt-4 text-base text-rose-300">{notice}</p>}
+            {notice && <p className="mt-4 text-base text-violet-300">{notice}</p>}
 
-            <p className="mt-5 text-base text-white/55">
+            <p className="mt-5 text-base text-muted-foreground">
               The camera runs entirely in your browser — nothing is recorded or
               sent anywhere. Use headphones; audio starts only when you press a
               button. Slow glows only — no strobing.
@@ -280,22 +280,22 @@ export default function GaitLoomPage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-6 top-6 select-none">
-            <h1 className="text-2xl font-semibold text-white/95 drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
+            <h1 className="text-2xl font-semibold text-foreground drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
               Gait Loom
             </h1>
             {mode === "pose" ? (
-              <p className="mt-1 font-mono text-base text-emerald-300/95">
+              <p className="mt-1 font-mono text-base text-violet-300/95">
                 ● live body · step to drive the clock
               </p>
             ) : (
-              <p className="mt-1 font-mono text-base text-amber-300/95">
+              <p className="mt-1 font-mono text-base text-violet-300/95">
                 ● fallback · pads / spacebar drive the clock
               </p>
             )}
             {notice && (
-              <p className="mt-2 max-w-xs text-base text-rose-300">{notice}</p>
+              <p className="mt-2 max-w-xs text-base text-violet-300">{notice}</p>
             )}
-            <p className="mt-2 font-mono text-base text-white/55">
+            <p className="mt-2 font-mono text-base text-muted-foreground">
               {hud.locked
                 ? `gait-locked · ${hud.cadence} steps/min`
                 : "seeking a steady cadence…"}
@@ -316,10 +316,10 @@ export default function GaitLoomPage() {
                     }}
                     className={`inline-flex min-h-[64px] min-w-[92px] flex-col items-center justify-center rounded-2xl px-4 py-2.5 ring-1 backdrop-blur-md transition ${
                       activePad === p.limb
-                        ? "bg-white text-black ring-white"
+                        ? "bg-card text-black ring-border"
                         : p.limb === "footL" || p.limb === "footR"
-                          ? "bg-amber-500/15 text-amber-200 ring-amber-300/30 hover:bg-amber-500/25"
-                          : "bg-teal-500/15 text-teal-200 ring-teal-300/30 hover:bg-teal-500/25"
+                          ? "bg-violet-500/15 text-violet-200 ring-violet-300/30 hover:bg-violet-500/25"
+                          : "bg-violet-500/15 text-violet-200 ring-violet-300/30 hover:bg-violet-500/25"
                     }`}
                   >
                     <span className="text-base font-semibold">{p.label}</span>
@@ -327,7 +327,7 @@ export default function GaitLoomPage() {
                   </button>
                 ))}
               </div>
-              <p className="font-mono text-base text-white/55">
+              <p className="font-mono text-base text-muted-foreground">
                 tap the foot pads (or press spacebar) in a steady rhythm — the loom
                 locks its tempo to your taps
               </p>
@@ -340,24 +340,24 @@ export default function GaitLoomPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute bottom-6 right-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-white/90 ring-1 ring-white/20 backdrop-blur-md transition hover:text-white"
+        className="absolute bottom-6 right-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/85 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/75">
-            <h2 className="text-2xl font-semibold text-white/95">
+          <div className="max-w-2xl text-muted-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">
               Gait Loom — design notes
             </h2>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white/95">The question.</span> What if walking —
+              <span className="text-foreground">The question.</span> What if walking —
               or stepping in place — were a step sequencer, your gait setting the
               tempo and your limbs weaving a granular rhythm?
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white/95">Technique.</span> MediaPipe Pose gives
+              <span className="text-foreground">Technique.</span> MediaPipe Pose gives
               33 body landmarks per frame. A per-foot state machine watches each
               ankle&rsquo;s vertical motion (normalized by torso height): a lift
               then a plant registers a footfall. The intervals between footfalls
@@ -366,7 +366,7 @@ export default function GaitLoomPage() {
               fire limb-swings between the beats.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white/95">Voice.</span> Granular synthesis, not a
+              <span className="text-foreground">Voice.</span> Granular synthesis, not a
               choir or drone. Two source buffers are synthesized at load — a
               filtered-noise burst and a decaying resonator ping — and every hit
               granulates them: short Hann-windowed slices pitched by playbackRate
@@ -376,12 +376,12 @@ export default function GaitLoomPage() {
               unravels when you stop.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white/95">Lineage.</span> Curtis Roads,
+              <span className="text-foreground">Lineage.</span> Curtis Roads,
               <em> Microsound</em> (2001); Myron Krueger&rsquo;s <em>Videoplace</em>
               {" "}(1974–75) for full-body interaction; and the &ldquo;Sonified
               Body&rdquo; practice of mapping skeletal movement to sound.
             </p>
-            <p className="mt-4 text-base leading-relaxed text-white/55">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Full mapping table, fallback behaviour, safety and references live in
               this prototype&rsquo;s README.md.
             </p>

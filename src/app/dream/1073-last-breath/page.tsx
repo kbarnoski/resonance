@@ -27,7 +27,7 @@ function renderNotes(md: string) {
   return md.split("\n").map((line, i) => {
     if (line.startsWith("### ")) {
       return (
-        <h3 key={i} className="mt-4 text-xl font-medium text-white/95">
+        <h3 key={i} className="mt-4 text-xl font-medium text-foreground">
           {line.slice(4)}
         </h3>
       );
@@ -41,21 +41,21 @@ function renderNotes(md: string) {
     }
     if (line.startsWith("# ")) {
       return (
-        <h1 key={i} className="text-2xl font-semibold text-white">
+        <h1 key={i} className="text-2xl font-semibold text-foreground">
           {line.slice(2)}
         </h1>
       );
     }
     if (line.startsWith("- ")) {
       return (
-        <li key={i} className="ml-5 list-disc text-base text-white/75">
+        <li key={i} className="ml-5 list-disc text-base text-muted-foreground">
           {line.slice(2)}
         </li>
       );
     }
     if (line.trim() === "") return <div key={i} className="h-2" />;
     return (
-      <p key={i} className="text-base leading-relaxed text-white/75">
+      <p key={i} className="text-base leading-relaxed text-muted-foreground">
         {line}
       </p>
     );
@@ -199,7 +199,7 @@ export default function LastBreathPage() {
   const live = snap.held || witnessing;
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#050507] text-white">
+    <main className="relative min-h-screen overflow-hidden bg-[#050507] text-foreground">
       {/* Quiet vignette — luminance follows the remaining material. */}
       <div
         className="pointer-events-none absolute inset-0 transition-opacity duration-1000"
@@ -214,10 +214,10 @@ export default function LastBreathPage() {
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-violet-300">
           dream · 1073
         </p>
-        <h1 className="mt-2 text-2xl font-semibold text-white/95">
+        <h1 className="mt-2 text-2xl font-semibold text-foreground">
           Last Breath
         </h1>
-        <p className="mt-3 max-w-xl text-base leading-relaxed text-white/75">
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted-foreground">
           A sound that lives only while you hold it — and erodes a little every
           time you listen. It can never be heard the same way twice.
         </p>
@@ -228,7 +228,7 @@ export default function LastBreathPage() {
           <button
             type="button"
             onClick={begin}
-            className="mt-6 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-white/95 transition-colors hover:bg-violet-500/30"
+            className="mt-6 min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30"
           >
             Begin
           </button>
@@ -293,14 +293,14 @@ export default function LastBreathPage() {
               </svg>
 
               <div className="relative z-10 flex flex-col items-center">
-                <span className="font-mono text-[44px] font-light leading-none text-white/95 tabular-nums">
+                <span className="font-mono text-[44px] font-light leading-none text-foreground tabular-nums">
                   {Math.round(remaining * 100)}
-                  <span className="text-xl text-white/55">%</span>
+                  <span className="text-xl text-muted-foreground">%</span>
                 </span>
-                <span className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-white/55">
+                <span className="mt-1 font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground">
                   material
                 </span>
-                <span className="mt-3 text-base text-white/75">
+                <span className="mt-3 text-base text-muted-foreground">
                   {gone
                     ? "gone"
                     : witnessing
@@ -326,20 +326,20 @@ export default function LastBreathPage() {
                 />
               ))}
             </div>
-            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-white/55">
+            <p className="mt-2 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
               {snap.partials.length} partials · listened {formatClock(snap.listened)}
             </p>
 
             {/* Witness banner so a headless glance reads the self-demo. */}
             {witnessing && (
-              <p className="mt-4 text-base text-amber-300/95">
+              <p className="mt-4 text-base text-violet-300/95">
                 No one was holding it, so it held itself — watch it erode, then
                 let go.
               </p>
             )}
 
             {gone && (
-              <p className="mt-4 max-w-md text-center text-base text-white/75">
+              <p className="mt-4 max-w-md text-center text-base text-muted-foreground">
                 The material is spent. This version is over. You can begin again
                 — but the sound you made will not return.
               </p>
@@ -349,11 +349,11 @@ export default function LastBreathPage() {
             <button
               type="button"
               onClick={reset}
-              className="mt-6 min-h-[44px] rounded-full border border-rose-400/30 bg-rose-500/10 px-4 py-2.5 text-base font-medium text-rose-300 transition-colors hover:bg-rose-500/20"
+              className="mt-6 min-h-[44px] rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2.5 text-base font-medium text-violet-300 transition-colors hover:bg-violet-500/20"
             >
               Begin again (erase &amp; reset)
             </button>
-            <p className="mt-2 max-w-sm text-center text-base text-white/55">
+            <p className="mt-2 max-w-sm text-center text-base text-muted-foreground">
               Resetting restores the full material and destroys the eroded
               version you are listening to. There is no undo.
             </p>
@@ -361,7 +361,7 @@ export default function LastBreathPage() {
         )}
 
         {error && (
-          <p className="mt-4 text-base text-rose-300">{error}</p>
+          <p className="mt-4 text-base text-violet-300">{error}</p>
         )}
       </section>
 
@@ -369,7 +369,7 @@ export default function LastBreathPage() {
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-white/10 bg-black/70 px-4 py-2.5 text-base text-white/75 backdrop-blur-md transition-colors hover:text-white/95"
+        className="fixed right-3 top-3 z-30 min-h-[44px] rounded-full border border-border bg-black/70 px-4 py-2.5 text-base text-muted-foreground backdrop-blur-md transition-colors hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Read the design notes"}
       </button>
@@ -380,7 +380,7 @@ export default function LastBreathPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-6 min-h-[44px] rounded-full border border-white/10 bg-white/[0.06] px-4 py-2.5 text-base text-white/75 hover:text-white/95"
+              className="mb-6 min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base text-muted-foreground hover:text-foreground"
             >
               ← Close
             </button>

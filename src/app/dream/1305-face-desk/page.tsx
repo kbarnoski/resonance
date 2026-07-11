@@ -549,22 +549,22 @@ export default function FaceDeskPage() {
   }, [phase]);
 
   return (
-    <div ref={wrapRef} className="relative h-dvh w-full overflow-hidden bg-[#07060d] text-white">
+    <div ref={wrapRef} className="relative h-dvh w-full overflow-hidden bg-[#07060d] text-foreground">
       <canvas ref={canvasRef} onClick={onCanvasClick} className="absolute inset-0 block" />
       <video ref={videoRef} className="hidden" playsInline muted />
 
       {/* corner design-notes link */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {/* header */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xl">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">Face Desk</h1>
-        <p className="mt-1 text-base text-white/75">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Face Desk</h1>
+        <p className="mt-1 text-base text-muted-foreground">
           Your face is the mixing desk. Play a live dub-techno groove with your jaw, brows,
           head-tilt and blinks — no mouse, no keyboard.
         </p>
@@ -572,26 +572,26 @@ export default function FaceDeskPage() {
 
       {/* primary controls */}
       <div className="absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-3 px-4">
-        {notice && <p className="max-w-md text-center text-base text-rose-300">{notice}</p>}
+        {notice && <p className="max-w-md text-center text-base text-violet-300">{notice}</p>}
 
         {phase === "idle" ? (
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.55)] hover:bg-violet-400"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-5 py-2.5 text-base font-semibold text-foreground shadow-[0_0_30px_rgba(139,92,246,0.55)] hover:bg-violet-400"
           >
             Start — enable camera + sound
           </button>
         ) : camState === "on" ? (
-          <p className="max-w-lg text-center text-base text-white/75">
+          <p className="max-w-lg text-center text-base text-muted-foreground">
             <span className="text-violet-300">Live.</span> Open your jaw to bloom + throw an echo ·
             raise your brows to build · turn your head to pan · blink to stutter · smile to brighten.
           </p>
         ) : camState === "loading" ? (
-          <p className="text-base text-white/75">Starting camera…</p>
+          <p className="text-base text-muted-foreground">Starting camera…</p>
         ) : (
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-cyan-500/90 px-4 py-2.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(34,211,238,0.5)] hover:bg-cyan-400"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-foreground shadow-[0_0_30px_rgba(34,211,238,0.5)] hover:bg-violet-400"
           >
             Retry camera
           </button>
@@ -601,8 +601,8 @@ export default function FaceDeskPage() {
       {/* design notes panel */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-4">
-          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#0a0812] p-6 text-base text-white/85">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0812] p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               A steady 124 BPM dub-techno transport runs a 16-step machine — four-on-the-floor
               kick, a rolling filtered dub bass, closed hats, and a minor-9th chord stab thrown into
@@ -611,29 +611,29 @@ export default function FaceDeskPage() {
             </p>
             <p className="mt-3">
               MediaPipe FaceLandmarker v2 reads 52 ARKit blendshapes each frame.{" "}
-              <span className="text-white">jawOpen</span> opens the low-pass and, crossing a
-              threshold, throws a dub echo; <span className="text-white">brow raise</span> builds
-              layers in; <span className="text-white">head yaw</span> pans the stab and drives the
-              feedback; a deliberate <span className="text-white">blink</span> fires a quantised
-              beat-stutter; a <span className="text-white">smile</span> lifts a high shelf and the
+              <span className="text-foreground">jawOpen</span> opens the low-pass and, crossing a
+              threshold, throws a dub echo; <span className="text-foreground">brow raise</span> builds
+              layers in; <span className="text-foreground">head yaw</span> pans the stab and drives the
+              feedback; a deliberate <span className="text-foreground">blink</span> fires a quantised
+              beat-stutter; a <span className="text-foreground">smile</span> lifts a high shelf and the
               brighter voicing. Every control is one-pole smoothed; the blink is debounced with a
               cooldown so a natural blink doesn&apos;t fire.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               Lineage: Zach Lieberman &amp; Kyle McDonald&apos;s{" "}
               <span className="text-violet-300">FaceOSC / ofxFaceTracker</span> and Lieberman&apos;s
               <em> Más Que la Cara</em> — face-driven AV performance, now browser-native via
               blendshapes. If the camera is denied or the CDN fails, the groove keeps playing and
               your mouse (Y = jaw, X = build, click = stutter) stands in.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               What worked: jawOpen→cutoff+throw is instantly legible — the sound blooms with your
               mouth. What&apos;s next: per-user blendshape calibration (rest-pose subtraction) and a
               second face for duets.
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

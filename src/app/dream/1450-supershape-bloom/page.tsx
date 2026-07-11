@@ -320,7 +320,7 @@ export default function Page() {
 
   // ── UI ───────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#050508] text-white">
+    <main className="relative h-[100dvh] w-full overflow-hidden bg-[#050508] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 block h-full w-full touch-none"
@@ -334,16 +334,16 @@ export default function Page() {
       {phase !== "running" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-b from-black/70 via-black/60 to-black/80 px-6">
           <div className="max-w-xl text-center">
-            <h1 className="font-serif text-3xl text-white sm:text-4xl">
+            <h1 className="font-serif text-3xl text-foreground sm:text-4xl">
               Supershape Bloom
             </h1>
-            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/75">
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
               Reach into the equation behind natural form and play the whole
               morphospace of alien organisms as an instrument. Drag to morph the
               creature; each shape rings its own chord.
             </p>
             {phase === "nogl" ? (
-              <p className="mt-6 text-base text-rose-300">
+              <p className="mt-6 text-base text-violet-300">
                 This device could not open a WebGL2 context, so the supershape
                 cannot be drawn. Try a recent desktop or mobile browser.
               </p>
@@ -351,7 +351,7 @@ export default function Page() {
               <button
                 type="button"
                 onClick={begin}
-                className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-400"
+                className="mt-8 inline-flex min-h-[44px] items-center justify-center rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-400"
               >
                 Bloom
               </button>
@@ -364,26 +364,26 @@ export default function Page() {
               {showNotes ? "Hide design notes" : "Design notes"}
             </button>
             {showNotes && (
-              <div className="mt-4 max-h-[38vh] overflow-y-auto rounded-2xl border border-white/10 bg-black/50 p-5 text-left text-base leading-relaxed text-white/75">
+              <div className="mt-4 max-h-[38vh] overflow-y-auto rounded-2xl border border-border bg-black/50 p-5 text-left text-base leading-relaxed text-muted-foreground">
                 <p>
-                  Built on the <span className="text-emerald-300/95">Superformula</span>{" "}
+                  Built on the <span className="text-violet-300/95">Superformula</span>{" "}
                   (Johan Gielis, 2003), extended to a 3D{" "}
-                  <span className="text-emerald-300/95">supershape</span> as the
+                  <span className="text-violet-300/95">supershape</span> as the
                   spherical product of two superformulas (Paul Bourke). A 120×120
                   parametric mesh is recomputed in JavaScript every frame and drawn
                   as a lit two-sided surface with an engraved wireframe sheen —
                   Ernst Haeckel&rsquo;s <em>Kunstformen der Natur</em> coming alive.
                 </p>
                 <p className="mt-3">
-                  <span className="text-amber-300/95">m</span> is symmetry (lobe
-                  count); <span className="text-amber-300/95">n1,n2,n3</span> are
+                  <span className="text-violet-300/95">m</span> is symmetry (lobe
+                  count); <span className="text-violet-300/95">n1,n2,n3</span> are
                   roundness / pinch. Drag horizontally to change symmetry, vertically
-                  to pinch or bloom. The <span className="text-amber-300/95">symmetry
+                  to pinch or bloom. The <span className="text-violet-300/95">symmetry
                   number drives the audio spectrum</span>: integer/even m rings a
                   near-harmonic chord, prime or fractional m produces inharmonic,
                   beating partials that sound alien on purpose.
                 </p>
-                <p className="mt-3 text-white/55">
+                <p className="mt-3 text-muted-foreground">
                   All motion is slow and sub-Hz — no strobing. With reduced-motion
                   enabled the auto-tour freezes to a calm drift.
                 </p>
@@ -397,18 +397,18 @@ export default function Page() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 z-10 select-none">
-            <div className="font-serif text-2xl text-white/95">{readout.name}</div>
-            <div className="mt-1 text-base text-white/75">
-              symmetry m1 <span className="text-amber-300/95">{readout.m1}</span> ·
-              m2 <span className="text-amber-300/95">{readout.m2}</span>
+            <div className="font-serif text-2xl text-foreground">{readout.name}</div>
+            <div className="mt-1 text-base text-muted-foreground">
+              symmetry m1 <span className="text-violet-300/95">{readout.m1}</span> ·
+              m2 <span className="text-violet-300/95">{readout.m2}</span>
             </div>
-            <div className="text-base text-white/75">
+            <div className="text-base text-muted-foreground">
               inharmonicity{" "}
               <span className="text-violet-300">{readout.inh.toFixed(2)}</span>
             </div>
           </div>
           <div className="pointer-events-none absolute bottom-16 left-1/2 z-10 -translate-x-1/2 select-none px-4 text-center">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               drag = morph · two-finger / shift+drag = orbit · keys 1–8 = organisms
               · space = auto-tour
             </p>

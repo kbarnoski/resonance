@@ -137,16 +137,16 @@ export default function GyroidCathedralPage() {
   }, []);
 
   return (
-    <div className="relative h-dvh w-screen overflow-hidden bg-[#04060a] font-mono text-white">
+    <div className="relative h-dvh w-screen overflow-hidden bg-[#04060a] font-mono text-foreground">
       <div ref={mountRef} className="absolute inset-0 z-0" aria-hidden />
 
       {/* overlay UI */}
       <div className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-between p-5 sm:p-7">
         <header className="max-w-xl space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
             Gyroid Cathedral
           </h1>
-          <p className="text-base leading-relaxed text-white/75">
+          <p className="text-base leading-relaxed text-muted-foreground">
             An endless flight through Alan Schoen&apos;s{" "}
             <span className="text-violet-300">gyroid</span> — a single
             triply-periodic minimal surface that fills space into an impossible,
@@ -154,15 +154,15 @@ export default function GyroidCathedralPage() {
           </p>
 
           {!webglOk && (
-            <p className="text-base text-rose-300" role="alert">
+            <p className="text-base text-violet-300" role="alert">
               Your browser reports no WebGL — the cathedral cannot render here.
             </p>
           )}
           {audioNote && (
-            <p className="text-base text-rose-300">{audioNote}</p>
+            <p className="text-base text-violet-300">{audioNote}</p>
           )}
           {phase === "flying" && (
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Drag to steer your heading · {tris.toLocaleString()} triangles per
               marched chunk, tiled 5×5×5.
             </p>
@@ -175,14 +175,14 @@ export default function GyroidCathedralPage() {
               <button
                 onClick={() => void enter()}
                 disabled={phase === "starting" || !webglOk}
-                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-5 py-2.5 text-base font-medium text-white transition-colors hover:bg-violet-500/30 disabled:cursor-wait disabled:opacity-60"
+                className="min-h-[44px] rounded-full border border-violet-400/40 bg-violet-500/20 px-5 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-violet-500/30 disabled:cursor-wait disabled:opacity-60"
               >
                 {phase === "starting"
                   ? "Marching the surface…"
                   : "Enter the cathedral"}
               </button>
             ) : (
-              <span className="text-base text-white/75">
+              <span className="text-base text-muted-foreground">
                 Flying — drag anywhere to change course.
               </span>
             )}
@@ -190,7 +190,7 @@ export default function GyroidCathedralPage() {
 
           <button
             onClick={() => setShowNotes((s) => !s)}
-            className="pointer-events-auto min-h-[44px] px-2 py-2.5 text-base text-white/55 underline transition-colors hover:text-white/95"
+            className="pointer-events-auto min-h-[44px] px-2 py-2.5 text-base text-muted-foreground underline transition-colors hover:text-foreground"
           >
             {showNotes ? "Hide design notes" : "Design notes"}
           </button>
@@ -199,13 +199,13 @@ export default function GyroidCathedralPage() {
 
       {/* design notes panel */}
       {showNotes && (
-        <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 max-h-[70vh] overflow-y-auto border-t border-white/10 bg-black/85 p-6 backdrop-blur sm:inset-y-0 sm:right-0 sm:left-auto sm:max-h-none sm:w-[28rem] sm:border-l">
-          <div className="space-y-4 text-base leading-relaxed text-white/75">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+        <div className="pointer-events-auto absolute inset-x-0 bottom-0 z-20 max-h-[70vh] overflow-y-auto border-t border-border bg-black/85 p-6 backdrop-blur sm:inset-y-0 sm:right-0 sm:left-auto sm:max-h-none sm:w-[28rem] sm:border-l">
+          <div className="space-y-4 text-base leading-relaxed text-muted-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p>
               <span className="text-violet-300">The surface.</span> The gyroid is
               the implicit isosurface{" "}
-              <code className="text-white/95">
+              <code className="text-foreground">
                 sin x·cos y + sin y·cos z + sin z·cos x = 0
               </code>
               . It is triply-periodic (period 2π on every axis) and space-filling,
@@ -235,7 +235,7 @@ export default function GyroidCathedralPage() {
               Callophrys rubi butterfly-wing gyroid photonics; arXiv 2512.18308
               (2025, chiral gyrating-surface family).
             </p>
-            <p className="text-white/55">
+            <p className="text-muted-foreground">
               Full write-up in README.md. Safe by design: no strobe — luminance
               only drifts slowly (≤ 0.2 Hz).
             </p>

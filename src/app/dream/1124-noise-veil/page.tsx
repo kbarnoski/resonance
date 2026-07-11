@@ -209,7 +209,7 @@ export default function NoiseVeilPage() {
   }, [onSlope, onIntensity]);
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#3a4a52] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#3a4a52] text-foreground">
       {/* volumetric fog canvas mounts here */}
       <div ref={containerRef} className="absolute inset-0 h-full w-full" />
 
@@ -224,16 +224,16 @@ export default function NoiseVeilPage() {
 
       {/* product panel */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex flex-col gap-3 p-4 sm:p-6">
-        <div className="pointer-events-auto max-w-xl rounded-2xl border border-white/15 bg-black/55 p-4 shadow-xl backdrop-blur-md sm:p-5">
-          <h1 className="font-serif text-2xl text-white sm:text-3xl">
+        <div className="pointer-events-auto max-w-xl rounded-2xl border border-border bg-black/55 p-4 shadow-xl backdrop-blur-md sm:p-5">
+          <h1 className="font-serif text-2xl text-foreground sm:text-3xl">
             Noise Veil
           </h1>
-          <p className="mt-1.5 text-base leading-relaxed text-white/85">
+          <p className="mt-1.5 text-base leading-relaxed text-foreground">
             Rest your gaze in a soft, uniform fog and let the sound compose the
             vision. Slide the noise from{" "}
-            <span className="text-white/95">white</span> through{" "}
-            <span className="text-white/95">pink</span> to{" "}
-            <span className="text-white/95">brown</span> — its spectral slope
+            <span className="text-foreground">white</span> through{" "}
+            <span className="text-foreground">pink</span> to{" "}
+            <span className="text-foreground">brown</span> — its spectral slope
             steers what imagery your own brain manufactures.
           </p>
 
@@ -241,13 +241,13 @@ export default function NoiseVeilPage() {
             {phase !== "running" && (
               <button
                 onClick={handleBegin}
-                className="min-h-[44px] rounded-full bg-teal-300/95 px-4 py-2.5 text-base font-medium text-teal-950 transition-colors hover:bg-teal-200"
+                className="min-h-[44px] rounded-full bg-violet-300/95 px-4 py-2.5 text-base font-medium text-violet-950 transition-colors hover:bg-violet-200"
               >
                 {phase === "error" ? "Retry audio" : "Begin the noise bath"}
               </button>
             )}
             {phase === "running" && (
-              <span className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/90">
+              <span className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground">
                 bath playing · hands-free
               </span>
             )}
@@ -256,9 +256,9 @@ export default function NoiseVeilPage() {
           {/* spectrum morph — the instrument */}
           <div className="mt-4 space-y-3">
             <label className="block">
-              <span className="flex items-center justify-between text-base text-white/80">
+              <span className="flex items-center justify-between text-base text-foreground">
                 <span>spectrum</span>
-                <span className="text-teal-200">{slopeToLabel(slope)}</span>
+                <span className="text-violet-200">{slopeToLabel(slope)}</span>
               </span>
               <input
                 type="range"
@@ -268,14 +268,14 @@ export default function NoiseVeilPage() {
                 value={slope}
                 onChange={(e) => onSlope(parseFloat(e.target.value))}
                 aria-label="noise spectrum: white to pink to brown"
-                className="mt-1.5 h-2 w-full cursor-pointer appearance-none rounded-full bg-gradient-to-r from-slate-200 via-rose-300 to-teal-800 accent-teal-300"
+                className="mt-1.5 h-2 w-full cursor-pointer appearance-none rounded-full bg-gradient-to-r from-slate-200 via-violet-300 to-violet-800 accent-violet-300"
               />
             </label>
 
             <label className="block">
-              <span className="flex items-center justify-between text-base text-white/80">
+              <span className="flex items-center justify-between text-base text-foreground">
                 <span>intensity</span>
-                <span className="text-teal-200">
+                <span className="text-violet-200">
                   {Math.round(intensity * 100)}%
                 </span>
               </span>
@@ -287,23 +287,23 @@ export default function NoiseVeilPage() {
                 value={intensity}
                 onChange={(e) => onIntensity(parseFloat(e.target.value))}
                 aria-label="bath intensity"
-                className="mt-1.5 h-2 w-full cursor-pointer appearance-none rounded-full bg-white/20 accent-teal-300"
+                className="mt-1.5 h-2 w-full cursor-pointer appearance-none rounded-full bg-muted accent-violet-300"
               />
             </label>
           </div>
 
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-white/75">
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-base text-muted-foreground">
             <span>
               swell{" "}
-              <span className="text-teal-200">{driveReadout.toFixed(2)}</span>
+              <span className="text-violet-200">{driveReadout.toFixed(2)}</span>
             </span>
-            <span className="text-white/60">
+            <span className="text-muted-foreground">
               ←/→ spectrum · ↑/↓ intensity · no flicker
             </span>
           </div>
 
           {notice && (
-            <p className="mt-3 text-base text-rose-300">{notice}</p>
+            <p className="mt-3 text-base text-violet-300">{notice}</p>
           )}
         </div>
       </div>
@@ -311,17 +311,17 @@ export default function NoiseVeilPage() {
       {/* design-notes panel */}
       <div className="pointer-events-none absolute bottom-4 right-4 z-10 flex max-w-[calc(100%-2rem)] flex-col items-end gap-2">
         {showNotes && (
-          <div className="pointer-events-auto max-w-sm rounded-2xl border border-white/15 bg-black/70 p-4 text-base leading-relaxed text-white/85 shadow-xl backdrop-blur-md">
-            <p className="mb-2 text-white/95">
+          <div className="pointer-events-auto max-w-sm rounded-2xl border border-border bg-black/70 p-4 text-base leading-relaxed text-foreground shadow-xl backdrop-blur-md">
+            <p className="mb-2 text-foreground">
               A Ganzfeld pairs a uniform visual field with auditory noise; sensory
               homogeneity lets the brain start manufacturing imagery. The finding
               this piece is built on (Pistolas, Smets &amp; Wagemans,{" "}
               <span className="italic">i-Perception</span> 2025) is that the
-              noise&rsquo;s <span className="text-teal-200">spectral slope</span>{" "}
+              noise&rsquo;s <span className="text-violet-200">spectral slope</span>{" "}
               shapes the <em>content</em>: brown noise pushed viewers toward
               water/fluid themes vs white.
             </p>
-            <p className="mb-2 text-white/80">
+            <p className="mb-2 text-foreground">
               So the slope is the instrument. Three seeded noise buffers
               (white/pink/brown) equal-power crossfade, spread across five HRTF
               panners that slowly orbit you in a &ldquo;wave after wave&rdquo;
@@ -329,7 +329,7 @@ export default function NoiseVeilPage() {
               track the spectrum: white → bright even, pink → warm glow, brown →
               deep teal oceanic drift.
             </p>
-            <p className="text-white/70">
+            <p className="text-muted-foreground">
               No health claim. Ganzfeld imagery is a normal product of sensory
               homogeneity — viewer- and hardware-dependent, not a fixed effect.
               This induces the conditions; it does not cause an experience. Full
@@ -339,7 +339,7 @@ export default function NoiseVeilPage() {
         )}
         <button
           onClick={() => setShowNotes((v) => !v)}
-          className="pointer-events-auto min-h-[44px] rounded-full border border-white/15 bg-black/60 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg backdrop-blur-md transition-colors hover:bg-black/75"
+          className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/60 px-4 py-2.5 text-base font-medium text-foreground shadow-lg backdrop-blur-md transition-colors hover:bg-black/75"
         >
           {showNotes ? "Hide notes" : "Read the design notes"}
         </button>

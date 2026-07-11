@@ -268,7 +268,7 @@ export default function MycelialGrowPage() {
   const clock = `${mm}:${ss.toString().padStart(2, "0")}`;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0705] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0a0705] text-foreground">
       <canvas
         ref={canvasRef}
         className="absolute inset-0 h-full w-full"
@@ -277,15 +277,15 @@ export default function MycelialGrowPage() {
 
       {/* Header / title */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Mycelial Grow
         </h1>
-        <p className="mt-1 max-w-md text-base text-white/75">
+        <p className="mt-1 max-w-md text-base text-muted-foreground">
           Gold filaments colonise the dark in real time. Never the same twice —
           and genuinely different at minute five than at minute one.
         </p>
         {started && (
-          <p className="mt-2 font-mono text-base text-white/55">
+          <p className="mt-2 font-mono text-base text-muted-foreground">
             elapsed {clock}
             {micState === "on" && " · breathe to bloom"}
             {micState === "off" && " · self-drive"}
@@ -297,10 +297,10 @@ export default function MycelialGrowPage() {
       {!started && (
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/55 backdrop-blur-sm">
           <div className="flex max-w-lg flex-col items-center px-6 text-center">
-            <h2 className="text-2xl font-semibold text-white sm:text-3xl">
+            <h2 className="text-2xl font-semibold text-foreground sm:text-3xl">
               Watch the mycelium grow
             </h2>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               A long-form audio-visual piece. Branching gold filaments grow via
               the space colonization algorithm, each split ringing a soft
               consonant tone over a warm drone. Optional: allow the mic and
@@ -309,11 +309,11 @@ export default function MycelialGrowPage() {
             <button
               type="button"
               onClick={begin}
-              className="mt-7 min-h-[44px] rounded-full bg-amber-500/90 px-6 py-2.5 text-base font-semibold text-[#1a0f06] transition-colors hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-300"
+              className="mt-7 min-h-[44px] rounded-full bg-violet-500/90 px-6 py-2.5 text-base font-semibold text-[#1a0f06] transition-colors hover:bg-violet-400 focus:outline-none focus:ring-2 focus:ring-violet-300"
             >
               Begin
             </button>
-            <p className="mt-3 text-base text-white/55">
+            <p className="mt-3 text-base text-muted-foreground">
               Audio starts on tap. Mic is analysis-only — never recorded, never
               played back.
             </p>
@@ -323,7 +323,7 @@ export default function MycelialGrowPage() {
 
       {/* Mic-denied notice */}
       {started && micState === "denied" && (
-        <p className="absolute bottom-16 left-5 z-10 max-w-xs text-base text-rose-300">
+        <p className="absolute bottom-16 left-5 z-10 max-w-xs text-base text-violet-300">
           Mic unavailable — running in self-drive. The mycelium grows on its own
           at a calm default rate.
         </p>
@@ -333,18 +333,18 @@ export default function MycelialGrowPage() {
       <button
         type="button"
         onClick={() => setShowNotes((v) => !v)}
-        className="absolute right-4 top-4 z-30 min-h-[44px] rounded-full border border-white/15 bg-black/55 px-4 py-2.5 text-base text-white/80 backdrop-blur transition-colors hover:bg-black/70 hover:text-white"
+        className="absolute right-4 top-4 z-30 min-h-[44px] rounded-full border border-border bg-black/55 px-4 py-2.5 text-base text-foreground backdrop-blur transition-colors hover:bg-black/70 hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-40 flex items-start justify-center overflow-y-auto bg-black/80 p-6 backdrop-blur-md">
-          <div className="mt-16 max-w-2xl text-white/80">
-            <h2 className="text-2xl font-semibold text-white">Design notes</h2>
-            <p className="mt-3 text-base text-white/80">
+          <div className="mt-16 max-w-2xl text-foreground">
+            <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
+            <p className="mt-3 text-base text-foreground">
               This is a living branching network grown with the{" "}
-              <span className="text-white">Space Colonization Algorithm</span>{" "}
+              <span className="text-foreground">Space Colonization Algorithm</span>{" "}
               (Runions, Lane &amp; Prusinkiewicz, 2007). A cloud of attractor
               points pulls growth nodes forward; each attractor influences its
               nearest node, nodes step toward the average direction of the
@@ -352,14 +352,14 @@ export default function MycelialGrowPage() {
               consumed. Branching emerges naturally when a node is pulled in
               divergent directions.
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               Fresh attractor clouds reseed in slow waves, so the network keeps
               reaching new territory — it is visibly more complex at minute five
               than at minute one. The whole field fades a hair each frame, so the
               oldest filaments dim and it can run indefinitely (a slow breathing
               recolonisation).
             </p>
-            <p className="mt-3 text-base text-white/80">
+            <p className="mt-3 text-base text-foreground">
               Each branch split triggers a soft tone from a fixed A-minor
               pentatonic set (no wrong notes), panned by x and pitched by depth,
               over a warm 55 Hz drone with a just fifth. Voice count is capped so
@@ -367,7 +367,7 @@ export default function MycelialGrowPage() {
               breath RMS drives growth rate and tip brightness, and is never
               connected to the speakers.
             </p>
-            <p className="mt-4 text-base text-white/55">
+            <p className="mt-4 text-base text-muted-foreground">
               References: Runions, Lane &amp; Prusinkiewicz, &ldquo;Modeling Trees
               with a Space Colonization Algorithm&rdquo; (2007, algorithmicbotany.org)
               · Jason Webb, &ldquo;Modeling organic branching structures with the
@@ -377,7 +377,7 @@ export default function MycelialGrowPage() {
             <button
               type="button"
               onClick={() => setShowNotes(false)}
-              className="mt-6 min-h-[44px] rounded-full border border-white/15 bg-white/10 px-5 py-2.5 text-base text-white transition-colors hover:bg-white/20"
+              className="mt-6 min-h-[44px] rounded-full border border-border bg-muted px-5 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
             >
               Close
             </button>

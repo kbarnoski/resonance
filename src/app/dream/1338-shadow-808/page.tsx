@@ -211,7 +211,7 @@ export default function ShadowEightOhEight() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#08060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#08060a] text-foreground">
       <canvas
         ref={canvasRef}
         onPointerDown={onCanvasPointer}
@@ -222,7 +222,7 @@ export default function ShadowEightOhEight() {
       {/* corner: design notes */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-amber-400/30 bg-black/50 px-4 py-2.5 text-sm text-white/85 backdrop-blur hover:text-white"
+        className="absolute right-3 top-3 z-30 min-h-[44px] rounded-full border border-violet-400/30 bg-black/50 px-4 py-2.5 text-sm text-foreground backdrop-blur hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -230,26 +230,26 @@ export default function ShadowEightOhEight() {
       {/* idle: title + description + Begin */}
       {phase === "idle" && (
         <div className="relative z-20 mx-auto flex min-h-screen max-w-2xl flex-col items-center justify-center gap-6 px-6 text-center">
-          <p className="font-mono text-sm uppercase tracking-[0.3em] text-amber-300/80">
+          <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300/80">
             Dream 1338
           </p>
-          <h1 className="text-4xl font-semibold text-white sm:text-5xl">
+          <h1 className="text-4xl font-semibold text-foreground sm:text-5xl">
             Shadow 808
           </h1>
-          <p className="max-w-xl text-base text-white/85 sm:text-lg">
+          <p className="max-w-xl text-base text-foreground sm:text-lg">
             Step into a drum machine and{" "}
-            <span className="text-white">dance the pattern in</span>: as the
+            <span className="text-foreground">dance the pattern in</span>: as the
             playhead sweeps the grid, wherever your silhouette lands arms that
             step. The groove loops back at you with swing, ghost notes, and a
             build-to-drop when you dance hard.
           </p>
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-2xl bg-amber-500 px-8 py-3 text-lg font-semibold text-black shadow-lg transition hover:bg-amber-400 active:scale-[0.98]"
+            className="min-h-[44px] rounded-2xl bg-violet-500 px-8 py-3 text-lg font-semibold text-black shadow-lg transition hover:bg-violet-400 active:scale-[0.98]"
           >
             Begin
           </button>
-          <p className="max-w-md text-sm text-white/70">
+          <p className="max-w-md text-sm text-muted-foreground">
             Sound starts on tap. The camera only senses motion on this device —
             nothing is recorded or sent. No camera? The beat still plays and you
             can tap the grid.
@@ -260,20 +260,20 @@ export default function ShadowEightOhEight() {
       {/* running HUD */}
       {phase === "running" && (
         <>
-          <div className="pointer-events-none absolute left-3 top-3 z-20 flex flex-col gap-1 rounded-xl border border-white/10 bg-black/45 px-3 py-2 font-mono text-sm text-white/90 backdrop-blur">
+          <div className="pointer-events-none absolute left-3 top-3 z-20 flex flex-col gap-1 rounded-xl border border-border bg-black/45 px-3 py-2 font-mono text-sm text-foreground backdrop-blur">
             <span>
               {hud.bpm} BPM · {STEPS} steps · swing {Math.round(swing * 100)}%
             </span>
-            <span className="text-white/75">
+            <span className="text-muted-foreground">
               {camStatus === "camera" ? "camera: dancing in" : "touch: tap grid"}{" "}
               ·{" "}
               <span
                 className={
                   hud.phase === "slam"
-                    ? "text-rose-300"
+                    ? "text-violet-300"
                     : hud.phase === "build"
-                      ? "text-amber-300"
-                      : "text-white/75"
+                      ? "text-violet-300"
+                      : "text-muted-foreground"
                 }
               >
                 {hud.phase === "slam"
@@ -288,7 +288,7 @@ export default function ShadowEightOhEight() {
           </div>
 
           {camNotice && (
-            <div className="pointer-events-none absolute left-1/2 top-16 z-20 max-w-sm -translate-x-1/2 rounded-lg border border-rose-400/30 bg-black/60 px-4 py-2 text-center text-base text-rose-300 backdrop-blur">
+            <div className="pointer-events-none absolute left-1/2 top-16 z-20 max-w-sm -translate-x-1/2 rounded-lg border border-violet-400/30 bg-black/60 px-4 py-2 text-center text-base text-violet-300 backdrop-blur">
               {camNotice}
             </div>
           )}
@@ -297,17 +297,17 @@ export default function ShadowEightOhEight() {
           <div className="absolute inset-x-0 bottom-0 z-20 flex flex-wrap items-center justify-center gap-3 px-4 pb-6 pt-4">
             <button
               onClick={() => seqRef.current?.triggerBuild()}
-              className="min-h-[44px] rounded-xl bg-rose-500/90 px-4 py-2.5 text-sm font-semibold text-black hover:bg-rose-400"
+              className="min-h-[44px] rounded-xl bg-violet-500/90 px-4 py-2.5 text-sm font-semibold text-black hover:bg-violet-400"
             >
               Build → Drop
             </button>
             <button
               onClick={() => seqRef.current?.clear()}
-              className="min-h-[44px] rounded-xl border border-white/20 bg-black/50 px-4 py-2.5 text-sm text-white/90 hover:text-white"
+              className="min-h-[44px] rounded-xl border border-border bg-black/50 px-4 py-2.5 text-sm text-foreground hover:text-foreground"
             >
               Clear
             </button>
-            <label className="flex items-center gap-2 rounded-xl border border-white/15 bg-black/40 px-3 py-2 font-mono text-sm text-white/80">
+            <label className="flex items-center gap-2 rounded-xl border border-border bg-black/40 px-3 py-2 font-mono text-sm text-foreground">
               BPM
               <input
                 type="range"
@@ -320,10 +320,10 @@ export default function ShadowEightOhEight() {
                   setBpmState(v);
                   seqRef.current?.setBpm(v);
                 }}
-                className="w-24 accent-amber-500"
+                className="w-24 accent-violet-500"
               />
             </label>
-            <label className="flex items-center gap-2 rounded-xl border border-white/15 bg-black/40 px-3 py-2 font-mono text-sm text-white/80">
+            <label className="flex items-center gap-2 rounded-xl border border-border bg-black/40 px-3 py-2 font-mono text-sm text-foreground">
               SWING
               <input
                 type="range"
@@ -336,7 +336,7 @@ export default function ShadowEightOhEight() {
                   setSwingState(v);
                   seqRef.current?.setSwing(v);
                 }}
-                className="w-24 accent-amber-500"
+                className="w-24 accent-violet-500"
               />
             </label>
           </div>
@@ -345,18 +345,18 @@ export default function ShadowEightOhEight() {
 
       {/* design notes overlay */}
       {showNotes && (
-        <div className="absolute inset-x-4 top-20 z-40 mx-auto max-w-2xl rounded-2xl border border-amber-400/20 bg-black/85 p-5 text-left backdrop-blur-md">
-          <h2 className="text-xl font-semibold text-white">Design notes</h2>
-          <p className="mt-2 text-base text-white/85">
+        <div className="absolute inset-x-4 top-20 z-40 mx-auto max-w-2xl rounded-2xl border border-violet-400/20 bg-black/85 p-5 text-left backdrop-blur-md">
+          <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
+          <p className="mt-2 text-base text-foreground">
             The screen is an 8-step × 5-voice TR-808 grid (kick / snare / hat /
             clap / tom). Your camera frame is mirrored, shrunk to 64×40, and
-            turned into a decaying <span className="text-amber-300">presence
+            turned into a decaying <span className="text-violet-300">presence
             field</span> (frame-difference plus background subtraction). As the
             playhead sweeps left→right in time, whichever cells your silhouette
-            occupies get <span className="text-amber-300">armed</span> — so you
+            occupies get <span className="text-violet-300">armed</span> — so you
             choreograph the beat with your body, and it loops back at you.
           </p>
-          <p className="mt-3 text-base text-white/85">
+          <p className="mt-3 text-base text-foreground">
             A look-ahead Web Audio scheduler (the &ldquo;Tale of Two
             Clocks&rdquo; pattern) drives synthesised 808 voices with real swing
             and per-step probability, so armed steps sometimes ghost. Dance hard
@@ -364,7 +364,7 @@ export default function ShadowEightOhEight() {
             slams back at full density. The pattern is persistent state — it
             accretes the longer you play.
           </p>
-          <p className="mt-3 text-sm text-white/75">
+          <p className="mt-3 text-sm text-muted-foreground">
             In the lineage of Sergi Jordà&rsquo;s <em>reactable</em> and Jono
             Brandel&rsquo;s <em>Patatap</em>, with per-step probability after
             BeatState (beatstate.net). No strobe — beat pulses are smooth
@@ -372,7 +372,7 @@ export default function ShadowEightOhEight() {
           </p>
           <Link
             href="/dream"
-            className="mt-4 inline-block text-sm text-amber-300/95 hover:underline"
+            className="mt-4 inline-block text-sm text-violet-300/95 hover:underline"
           >
             ← Back to the dream lab
           </Link>

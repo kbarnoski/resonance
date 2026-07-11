@@ -194,7 +194,7 @@ export default function ConductorVeilPage() {
   }, [phase]);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[hsl(300,40%,8%)] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[hsl(300,40%,8%)] text-foreground">
       <PrototypeNav slugs={["1123-conductor-veil"]} />
 
       <canvas
@@ -207,22 +207,22 @@ export default function ConductorVeilPage() {
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-5 sm:p-8">
         <header className="pointer-events-auto max-w-2xl">
           <h1
-            className="text-3xl font-medium tracking-tight text-white sm:text-4xl"
+            className="text-3xl font-medium tracking-tight text-foreground sm:text-4xl"
             style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
           >
             Conductor&rsquo;s Veil
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Conduct an unseen ensemble with one continuous baton gesture — a
             warm string-and-pad choir answers your hand in real time.
           </p>
-          <p className="mt-1 text-base text-amber-200/90">
+          <p className="mt-1 text-base text-violet-200/90">
             Move your hand — up-down strokes set the tempo, height sets the
             register, energy sets the dynamics.
           </p>
 
           {error && (
-            <p className="mt-3 max-w-md text-base text-rose-300">{error}</p>
+            <p className="mt-3 max-w-md text-base text-violet-300">{error}</p>
           )}
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -230,26 +230,26 @@ export default function ConductorVeilPage() {
               <button
                 type="button"
                 onClick={begin}
-                className="min-h-[44px] rounded-full bg-amber-400/95 px-6 py-2.5 text-base font-medium text-[hsl(300,45%,12%)] shadow-lg transition-colors hover:bg-amber-300"
+                className="min-h-[44px] rounded-full bg-violet-400/95 px-6 py-2.5 text-base font-medium text-[hsl(300,45%,12%)] shadow-lg transition-colors hover:bg-violet-300"
               >
                 Take the baton
               </button>
             ) : (
-              <span className="min-h-[44px] rounded-full border border-white/20 bg-black/30 px-4 py-2.5 text-base text-white/85 backdrop-blur-sm">
+              <span className="min-h-[44px] rounded-full border border-border bg-black/30 px-4 py-2.5 text-base text-foreground backdrop-blur-sm">
                 Ensemble live — conduct anywhere on the field
               </span>
             )}
             <button
               type="button"
               onClick={() => setNotesOpen((v) => !v)}
-              className="min-h-[44px] rounded-full border border-white/20 px-4 py-2.5 text-base text-white/75 transition-colors hover:bg-white/10 hover:text-white"
+              className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               {notesOpen ? "Hide notes" : "About"}
             </button>
           </div>
 
           {notesOpen && (
-            <div className="mt-4 max-w-md rounded-2xl border border-white/15 bg-black/40 p-4 text-base text-white/75 backdrop-blur-sm">
+            <div className="mt-4 max-w-md rounded-2xl border border-border bg-black/40 p-4 text-base text-muted-foreground backdrop-blur-sm">
               <p>
                 The baton&rsquo;s downward strokes are read for their low
                 point — a vertical-velocity reversal marks each downbeat, and
@@ -273,7 +273,7 @@ export default function ConductorVeilPage() {
             label="dynamics"
             value={`${Math.round(readout.energy * 100)}%`}
           />
-          <span className="flex items-center gap-2 text-white/75">
+          <span className="flex items-center gap-2 text-muted-foreground">
             <span
               className="inline-block h-2.5 w-2.5 rounded-full"
               style={{
@@ -294,10 +294,10 @@ export default function ConductorVeilPage() {
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <span className="flex flex-col leading-tight">
-      <span className="text-xs uppercase tracking-[0.16em] text-white/60">
+      <span className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
         {label}
       </span>
-      <span className="text-base font-medium text-white/95 tabular-nums">
+      <span className="text-base font-medium text-foreground tabular-nums">
         {value}
       </span>
     </span>

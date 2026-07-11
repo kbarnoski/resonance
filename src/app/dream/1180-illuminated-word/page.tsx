@@ -116,13 +116,13 @@ export default function IlluminatedWordPage() {
   const progress = score.glyphs.length ? litCount / score.glyphs.length : 0;
 
   return (
-    <main className="min-h-screen w-full bg-[#241a12] px-4 py-8 text-amber-50">
+    <main className="min-h-screen w-full bg-[#241a12] px-4 py-8 text-violet-50">
       <div className="mx-auto flex max-w-3xl flex-col gap-5">
         <header className="flex flex-col gap-2">
-          <h1 className="text-2xl font-semibold tracking-tight text-amber-100 sm:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-violet-100 sm:text-3xl">
             Illuminated Word
           </h1>
-          <p className="text-base text-amber-100/90">
+          <p className="text-base text-violet-100/90">
             Type any name, line, or short poem and hear it become an illuminated
             hymn — a gospel-book page that sings itself into being, letter by
             gilded letter.
@@ -138,7 +138,7 @@ export default function IlluminatedWordPage() {
         />
 
         <div className="flex flex-col gap-3">
-          <label htmlFor="verse" className="text-base font-medium text-amber-100/90">
+          <label htmlFor="verse" className="text-base font-medium text-violet-100/90">
             Your verse
           </label>
           <textarea
@@ -149,7 +149,7 @@ export default function IlluminatedWordPage() {
             maxLength={220}
             spellCheck={false}
             placeholder={DEFAULT_TEXT}
-            className="w-full resize-none rounded-lg border border-amber-200/25 bg-[#f6ecce] px-4 py-3 text-base text-[#33261a] placeholder-[#33261a]/45 shadow-inner outline-none focus:border-amber-300/70"
+            className="w-full resize-none rounded-lg border border-violet-200/25 bg-[#f6ecce] px-4 py-3 text-base text-[#33261a] placeholder-[#33261a]/45 shadow-inner outline-none focus:border-violet-300/70"
           />
 
           <div className="flex flex-wrap items-center gap-3">
@@ -161,26 +161,26 @@ export default function IlluminatedWordPage() {
             >
               {isPlaying ? "Stop" : "Begin"}
             </button>
-            <span className="text-base text-amber-100/70" aria-live="polite">
+            <span className="text-base text-violet-100/70" aria-live="polite">
               {statusLabel(status, progress)}
             </span>
           </div>
 
           {status === "unsupported" && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               Web Audio is not available in this browser, so the hymn cannot be
               sung. The manuscript still lays out your text above.
             </p>
           )}
           {status === "error" && (
-            <p className="text-base text-rose-300">
+            <p className="text-base text-violet-300">
               The audio engine could not start. Try tapping Begin again.
             </p>
           )}
         </div>
 
-        <section className="rounded-lg border border-amber-200/15 bg-black/20 p-4 text-base text-amber-100/80">
-          <h2 className="mb-1 text-lg font-semibold text-amber-100">How it works</h2>
+        <section className="rounded-lg border border-violet-200/15 bg-black/20 p-4 text-base text-violet-100/80">
+          <h2 className="mb-1 text-lg font-semibold text-violet-100">How it works</h2>
           <p>
             Each letter is a scale degree of D&nbsp;Dorian over a soft drone.
             Vowels are sustained choir tones, consonants are short plucked
@@ -237,7 +237,7 @@ function ManuscriptSVG({
   const DASH = 2400;
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-amber-900/30 shadow-lg">
+    <div className="overflow-x-auto rounded-xl border border-violet-900/30 shadow-lg">
       <svg
         viewBox={`0 0 ${viewW} ${viewH}`}
         width="100%"

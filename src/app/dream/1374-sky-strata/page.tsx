@@ -271,7 +271,7 @@ export default function SkyStrataPage() {
   const horizonHue = drivers.hue.toFixed(0);
 
   return (
-    <main className="min-h-screen w-full bg-[#05060d] text-white flex flex-col items-center px-4 py-6 gap-4">
+    <main className="min-h-screen w-full bg-[#05060d] text-foreground flex flex-col items-center px-4 py-6 gap-4">
       <style>{`
         @keyframes strataDriftA { 0%{transform:translateX(-16px)} 50%{transform:translateX(16px)} 100%{transform:translateX(-16px)} }
         @keyframes strataDriftB { 0%{transform:translateX(16px)} 50%{transform:translateX(-16px)} 100%{transform:translateX(16px)} }
@@ -285,10 +285,10 @@ export default function SkyStrataPage() {
       `}</style>
 
       <header className="w-full max-w-[1000px] flex flex-col gap-1">
-        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-white">
+        <h1 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
           Sky Strata
         </h1>
-        <p className="text-base text-white/80 max-w-2xl">
+        <p className="text-base text-foreground max-w-2xl">
           The live sky over Earth composes this piece right now — real NOAA
           space-weather sets the key, tempo, palette and mode as clean layered
           light-strata you can read like a score. Tap the bands or press{" "}
@@ -297,23 +297,23 @@ export default function SkyStrataPage() {
       </header>
 
       {/* Live HUD */}
-      <div className="w-full max-w-[1000px] flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-white/70">
+      <div className="w-full max-w-[1000px] flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-muted-foreground">
         {sky.live ? (
-          <span className="text-emerald-300/95 font-medium">● LIVE — NOAA SWPC</span>
+          <span className="text-violet-300/95 font-medium">● LIVE — NOAA SWPC</span>
         ) : (
-          <span className="text-amber-300/95 font-medium">● simulated sky (feed offline)</span>
+          <span className="text-violet-300/95 font-medium">● simulated sky (feed offline)</span>
         )}
-        <span>speed <span className="text-white/90">{fmt(sky.speed)}</span> km/s</span>
-        <span>density <span className="text-white/90">{fmt(sky.density, 1)}</span> p/cm³</span>
-        <span>Bz <span className={sky.bz < -1 ? "text-violet-300" : "text-white/90"}>{fmt(sky.bz, 1)}</span> nT</span>
-        <span>Kp <span className="text-white/90">{fmt(sky.kp, 1)}</span></span>
-        <span className="text-white/70">key {drivers.minor ? "minor" : "major"} pentatonic</span>
+        <span>speed <span className="text-foreground">{fmt(sky.speed)}</span> km/s</span>
+        <span>density <span className="text-foreground">{fmt(sky.density, 1)}</span> p/cm³</span>
+        <span>Bz <span className={sky.bz < -1 ? "text-violet-300" : "text-foreground"}>{fmt(sky.bz, 1)}</span> nT</span>
+        <span>Kp <span className="text-foreground">{fmt(sky.kp, 1)}</span></span>
+        <span className="text-muted-foreground">key {drivers.minor ? "minor" : "major"} pentatonic</span>
       </div>
 
-      {error && <p className="w-full max-w-[1000px] text-sm text-rose-300">{error}</p>}
+      {error && <p className="w-full max-w-[1000px] text-sm text-violet-300">{error}</p>}
 
       {/* The deterministic sky */}
-      <div className="w-full max-w-[1000px] relative rounded-xl overflow-hidden ring-1 ring-white/10">
+      <div className="w-full max-w-[1000px] relative rounded-xl overflow-hidden ring-1 ring-border">
         <svg
           ref={svgRef}
           viewBox={`0 0 ${VW} ${VH}`}
@@ -419,8 +419,8 @@ export default function SkyStrataPage() {
         </svg>
 
         {/* Ribbon label */}
-        <div className="absolute top-2 left-3 text-sm text-white/70 pointer-events-none">
-          <span className="text-emerald-300/95">solar-wind speed</span> · recent history
+        <div className="absolute top-2 left-3 text-sm text-muted-foreground pointer-events-none">
+          <span className="text-violet-300/95">solar-wind speed</span> · recent history
         </div>
 
         {/* Begin gate */}
@@ -428,7 +428,7 @@ export default function SkyStrataPage() {
           <div className="absolute inset-0 flex items-center justify-center bg-black/45 backdrop-blur-[2px]">
             <button
               onClick={begin}
-              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-white text-base font-medium ring-1 ring-white/20 transition-colors"
+              className="min-h-[44px] px-4 py-2.5 rounded-lg bg-violet-500/90 hover:bg-violet-400 text-foreground text-base font-medium ring-1 ring-border transition-colors"
             >
               Begin — let the sky play
             </button>
@@ -437,7 +437,7 @@ export default function SkyStrataPage() {
       </div>
 
       {/* Footer: how-to + notes */}
-      <div className="w-full max-w-[1000px] flex items-center justify-between text-sm text-white/70">
+      <div className="w-full max-w-[1000px] flex items-center justify-between text-sm text-muted-foreground">
         <span>
           {started
             ? "The sky is composing. Tap a band or press A S D F G H J; drag left↔right to shift emphasis."
@@ -452,19 +452,19 @@ export default function SkyStrataPage() {
       </div>
 
       {notesOpen && (
-        <div className="w-full max-w-[1000px] text-base text-white/80 rounded-lg ring-1 ring-white/10 bg-white/[0.03] p-4 leading-relaxed">
+        <div className="w-full max-w-[1000px] text-base text-foreground rounded-lg ring-1 ring-border bg-muted p-4 leading-relaxed">
           <p className="mb-2">
-            <span className="text-white">Sky Strata</span> is the lab&apos;s first
+            <span className="text-foreground">Sky Strata</span> is the lab&apos;s first
             real external-world-data sonification. Three live NOAA SWPC feeds are
             the primary composer; you are the second voice.
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><span className="text-white/90">speed</span> → arp tempo &amp; band drift speed</li>
-            <li><span className="text-white/90">density</span> → number &amp; thickness of strata bands</li>
-            <li><span className="text-white/90">southward Bz</span> → minor mode &amp; higher, brighter aurora bands</li>
-            <li><span className="text-white/90">Kp</span> → overall energy &amp; palette (calm teal → storm violet/red)</li>
+            <li><span className="text-foreground">speed</span> → arp tempo &amp; band drift speed</li>
+            <li><span className="text-foreground">density</span> → number &amp; thickness of strata bands</li>
+            <li><span className="text-foreground">southward Bz</span> → minor mode &amp; higher, brighter aurora bands</li>
+            <li><span className="text-foreground">Kp</span> → overall energy &amp; palette (calm teal → storm violet/red)</li>
           </ul>
-          <p className="mt-2 text-white/70">
+          <p className="mt-2 text-muted-foreground">
             Rendered as deterministic inline SVG (no GPU) so it is eye-verifiable.
             Reference: Ryoji Ikeda, <span className="italic">datamatics</span>.
           </p>

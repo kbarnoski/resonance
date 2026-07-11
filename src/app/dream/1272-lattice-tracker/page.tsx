@@ -467,7 +467,7 @@ export default function LatticeTracker() {
 
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden bg-[#080b11] text-white"
+      className="relative min-h-screen w-full overflow-hidden bg-[#080b11] text-foreground"
       style={{
         // slow, safe global luminance breathing (gated by createSafeFlicker)
         filter: "brightness(var(--breath,1))",
@@ -490,10 +490,10 @@ export default function LatticeTracker() {
       <header className="relative z-30 px-5 pt-5 sm:px-8">
         <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
           <div>
-            <h1 className="font-serif text-2xl tracking-tight text-white sm:text-3xl">
+            <h1 className="font-serif text-2xl tracking-tight text-foreground sm:text-3xl">
               Lattice Tracker
             </h1>
-            <p className="mt-1 max-w-2xl text-base text-white/75">
+            <p className="mt-1 max-w-2xl text-base text-muted-foreground">
               A step-sequencer spreadsheet whose rows recede into a glowing 3D
               tunnel — type notes into cells and play the corridor as it streams
               toward you, tuned to a just-intonation harmonic lattice.
@@ -502,7 +502,7 @@ export default function LatticeTracker() {
           <button
             type="button"
             onClick={() => setInfoOpen((o) => !o)}
-            className="min-h-[44px] shrink-0 rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] shrink-0 rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             {infoOpen ? "Hide notes" : "Design notes"}
           </button>
@@ -515,7 +515,7 @@ export default function LatticeTracker() {
               type="button"
               onClick={play}
               disabled={!supported}
-              className="min-h-[44px] rounded-lg bg-[#b7ff4a] px-6 py-2.5 text-base font-semibold text-[#0b1206] shadow-[0_0_24px_rgba(183,255,74,0.35)] transition-colors hover:bg-[#c9ff74] disabled:cursor-not-allowed disabled:bg-white/20 disabled:text-white/50"
+              className="min-h-[44px] rounded-lg bg-[#b7ff4a] px-6 py-2.5 text-base font-semibold text-[#0b1206] shadow-[0_0_24px_rgba(183,255,74,0.35)] transition-colors hover:bg-[#c9ff74] disabled:cursor-not-allowed disabled:bg-muted disabled:text-muted-foreground"
             >
               ▶ Play
             </button>
@@ -523,15 +523,15 @@ export default function LatticeTracker() {
             <button
               type="button"
               onClick={stop}
-              className="min-h-[44px] rounded-lg bg-rose-400/90 px-6 py-2.5 text-base font-semibold text-[#1a0508] transition-colors hover:bg-rose-300"
+              className="min-h-[44px] rounded-lg bg-violet-400/90 px-6 py-2.5 text-base font-semibold text-[#1a0508] transition-colors hover:bg-violet-300"
             >
               ■ Stop
             </button>
           )}
 
-          <label className="flex min-h-[44px] items-center gap-2 rounded-lg border border-white/12 bg-white/[0.03] px-4 py-2 text-base text-white/75">
-            <span className="tabular-nums text-white/90">{bpm}</span>
-            <span className="text-white/55">bpm</span>
+          <label className="flex min-h-[44px] items-center gap-2 rounded-lg border border-border bg-muted px-4 py-2 text-base text-muted-foreground">
+            <span className="tabular-nums text-foreground">{bpm}</span>
+            <span className="text-muted-foreground">bpm</span>
             <input
               type="range"
               min={40}
@@ -546,39 +546,39 @@ export default function LatticeTracker() {
           <button
             type="button"
             onClick={newPattern}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             ⟲ New pattern
           </button>
           <button
             type="button"
             onClick={clearGrid}
-            className="min-h-[44px] rounded-lg border border-white/15 bg-white/[0.04] px-4 py-2.5 text-base text-white/85 transition-colors hover:bg-white/[0.1]"
+            className="min-h-[44px] rounded-lg border border-border bg-muted px-4 py-2.5 text-base text-foreground transition-colors hover:bg-accent"
           >
             Clear
           </button>
         </div>
 
         {!supported && (
-          <p className="mt-3 text-base text-rose-300">
+          <p className="mt-3 text-base text-violet-300">
             Web Audio is unavailable in this browser — the tunnel will still
             move, but there is no sound.
           </p>
         )}
 
         {infoOpen && (
-          <div className="mt-4 max-w-3xl rounded-xl border border-white/12 bg-black/50 p-4 text-base leading-relaxed text-white/80 backdrop-blur-sm">
+          <div className="mt-4 max-w-3xl rounded-xl border border-border bg-black/50 p-4 text-base leading-relaxed text-foreground backdrop-blur-sm">
             <p>
-              <span className="text-white">Columns are voices</span>, pinned to
+              <span className="text-foreground">Columns are voices</span>, pinned to
               pure harmonics of a 55&nbsp;Hz root (1, 3/2, 2, 3, 4, 6, 8, 12).{" "}
-              <span className="text-white">Rows are time steps.</span> Click a
+              <span className="text-foreground">Rows are time steps.</span> Click a
               cell to cycle its note 1→7 (a just-intonation scale degree), or
               focus a cell and type a digit. The playhead sweeps down; every
               filled cell in the struck row fires — and because every pitch is a
               rational ratio of the same root, the whole grid stays consonant.
               The table is a real DOM grid transformed into a receding corridor.
               Full design notes live in{" "}
-              <code className="rounded bg-white/10 px-1 py-0.5 text-sm text-white/90">
+              <code className="rounded bg-muted px-1 py-0.5 text-sm text-foreground">
                 README.md
               </code>
               .
@@ -683,7 +683,7 @@ export default function LatticeTracker() {
         />
       </div>
 
-      <p className="relative z-30 mx-auto mb-16 mt-1 max-w-xl px-4 text-center text-base text-white/60">
+      <p className="relative z-30 mx-auto mb-16 mt-1 max-w-xl px-4 text-center text-base text-muted-foreground">
         Click cells to compose · focus + type 0–7 · arrow keys to move
       </p>
 

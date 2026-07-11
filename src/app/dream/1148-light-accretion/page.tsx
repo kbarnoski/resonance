@@ -267,7 +267,7 @@ export default function LightAccretionPage() {
           : null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04060a] text-foreground">
       {/* Volumetric canvas */}
       <canvas
         ref={canvasRef}
@@ -281,13 +281,13 @@ export default function LightAccretionPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-10">
         {/* Header / hero */}
         <header className="max-w-2xl">
-          <p className="mb-2 text-sm uppercase tracking-[0.28em] text-amber-200/80">
+          <p className="mb-2 text-sm uppercase tracking-[0.28em] text-violet-200/80">
             Resonance · Dream Lab
           </p>
-          <h1 className="font-serif text-4xl font-medium leading-tight text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl font-medium leading-tight text-foreground sm:text-5xl">
             Light Accretion
           </h1>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-white/80">
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground">
             A recorded piano slowly accretes a volumetric cathedral of light —
             a 3D field with a real ~75-second memory, so minute five is not
             minute one. Drift inward, down the tunnel, toward the being of
@@ -298,10 +298,10 @@ export default function LightAccretionPage() {
         {/* Controls */}
         <section className="mt-8 max-w-xl">
           {phase !== "playing" ? (
-            <div className="rounded-2xl border border-white/10 bg-black/45 p-5 backdrop-blur-md">
+            <div className="rounded-2xl border border-border bg-black/45 p-5 backdrop-blur-md">
               <label
                 htmlFor="rec-id"
-                className="block text-sm font-medium text-white/75"
+                className="block text-sm font-medium text-muted-foreground"
               >
                 Path recording id
               </label>
@@ -312,14 +312,14 @@ export default function LightAccretionPage() {
                   value={recordingId}
                   onChange={(e) => setRecordingId(e.target.value)}
                   spellCheck={false}
-                  className="min-w-0 flex-1 rounded-lg border border-white/15 bg-black/50 px-3 py-2.5 font-mono text-sm text-white/90 outline-none placeholder:text-white/40 focus:border-amber-300/60"
+                  className="min-w-0 flex-1 rounded-lg border border-border bg-black/50 px-3 py-2.5 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-violet-300/60"
                   placeholder="recording id"
                 />
                 <button
                   type="button"
                   onClick={() => void runBegin()}
                   disabled={phase === "loading"}
-                  className="rounded-lg bg-amber-300 px-4 py-2.5 text-sm font-semibold text-[#1a1206] transition-colors hover:bg-amber-200 disabled:opacity-60"
+                  className="rounded-lg bg-violet-300 px-4 py-2.5 text-sm font-semibold text-[#1a1206] transition-colors hover:bg-violet-200 disabled:opacity-60"
                 >
                   {phase === "loading" ? "Loading…" : "Begin"}
                 </button>
@@ -334,15 +334,15 @@ export default function LightAccretionPage() {
                 onDrop={onDrop}
                 className={`mt-3 rounded-lg border border-dashed px-3 py-3 text-sm transition-colors ${
                   dragOver
-                    ? "border-amber-300/70 bg-amber-300/10 text-white/90"
-                    : "border-white/15 text-white/60"
+                    ? "border-violet-300/70 bg-violet-300/10 text-foreground"
+                    : "border-border text-muted-foreground"
                 }`}
               >
                 Drop an audio file here, or{" "}
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-amber-200 underline underline-offset-2 hover:text-amber-100"
+                  className="text-violet-200 underline underline-offset-2 hover:text-violet-100"
                 >
                   choose a file
                 </button>
@@ -357,31 +357,31 @@ export default function LightAccretionPage() {
               </div>
 
               {notice && (
-                <p className="mt-3 text-sm text-rose-300">{notice}</p>
+                <p className="mt-3 text-sm text-violet-300">{notice}</p>
               )}
             </div>
           ) : (
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 backdrop-blur-md">
-              <p className="text-base text-white/85">
+            <div className="rounded-2xl border border-border bg-black/40 p-4 backdrop-blur-md">
+              <p className="text-base text-foreground">
                 Now accreting from{" "}
-                <span className="text-amber-200">{sourceLabel}</span>.
-                <span className="ml-2 text-white/60">
+                <span className="text-violet-200">{sourceLabel}</span>.
+                <span className="ml-2 text-muted-foreground">
                   {minutes < 1
                     ? "the cathedral is forming…"
                     : `${minutes.toFixed(1)} min of light remembered`}
                 </span>
               </p>
               {source === "fallback" && (
-                <p className="mt-1 text-sm text-amber-300">
+                <p className="mt-1 text-sm text-violet-300">
                   Synth fallback — no recording or file loaded.
                 </p>
               )}
-              {notice && <p className="mt-2 text-sm text-rose-300">{notice}</p>}
+              {notice && <p className="mt-2 text-sm text-violet-300">{notice}</p>}
             </div>
           )}
 
           {webglFailed && (
-            <p className="mt-3 text-sm text-rose-300">
+            <p className="mt-3 text-sm text-violet-300">
               WebGL2 is unavailable — showing a simpler Canvas2D projection of
               the same light-field.
             </p>
@@ -391,20 +391,20 @@ export default function LightAccretionPage() {
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="text-sm text-white/70 underline underline-offset-2 hover:text-white/90"
+              className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
               {showNotes ? "Hide design notes" : "Read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="text-sm text-white/60 hover:text-white/85"
+              className="text-sm text-muted-foreground hover:text-foreground"
             >
               ← all prototypes
             </Link>
           </div>
 
           {showNotes && (
-            <div className="mt-3 max-w-xl rounded-2xl border border-white/10 bg-black/50 p-5 text-sm leading-relaxed text-white/75 backdrop-blur-md">
+            <div className="mt-3 max-w-xl rounded-2xl border border-border bg-black/50 p-5 text-sm leading-relaxed text-muted-foreground backdrop-blur-md">
               <p>
                 Each onset deposits a soft gaussian blob into a 48³ density
                 grid. Brightness (spectral centroid) sets its height; a slowly
@@ -414,12 +414,12 @@ export default function LightAccretionPage() {
               </p>
               <p className="mt-3">
                 The grid is uploaded each frame as a WebGL2{" "}
-                <span className="text-amber-200">sampler3D</span> and
+                <span className="text-violet-200">sampler3D</span> and
                 raymarched front-to-back with emission/absorption. The camera
                 drifts perpetually inward toward the brightening core — the NDE
                 tunnel toward a being of light.
               </p>
-              <p className="mt-3 text-white/60">
+              <p className="mt-3 text-muted-foreground">
                 References: Refik Anadol (data as luminous pigment); the
                 near-death &ldquo;tunnel toward the light&rdquo; phenomenology
                 described by

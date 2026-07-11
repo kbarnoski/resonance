@@ -278,7 +278,7 @@ export default function SwarmChoirPage() {
   const S = Math.max(order.Splus, order.Sminus);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#0d1017] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#0d1017] text-foreground">
       {/* Canvas fills the viewport behind the controls. */}
       <canvas
         ref={canvasRef}
@@ -293,29 +293,29 @@ export default function SwarmChoirPage() {
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 p-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           Swarm Choir
         </h1>
-        <p className="mt-1 max-w-md font-mono text-base text-white/75">
-          a swarmalator: every dot is a position <span className="text-white/95">and</span> a phase
+        <p className="mt-1 max-w-md font-mono text-base text-muted-foreground">
+          a swarmalator: every dot is a position <span className="text-foreground">and</span> a phase
         </p>
       </div>
 
       {/* Begin overlay */}
       {!started && (
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-5 bg-[#0d1017]/70 backdrop-blur-sm">
-          <p className="max-w-lg px-6 text-center text-base text-white/75">
+          <p className="max-w-lg px-6 text-center text-base text-muted-foreground">
             Space and phase steer each other. Drag across the field to stir the swarm and
             move the two coupling knobs — J (phase↔space) and K (sync). Double-tap to spawn a burst.
           </p>
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-white px-6 py-2.5 text-base font-semibold text-[#0d1017] transition hover:bg-white/90"
+            className="min-h-[44px] rounded-full bg-card px-6 py-2.5 text-base font-semibold text-[#0d1017] transition hover:bg-accent"
           >
             Begin
           </button>
           {audioError && (
-            <p className="px-6 text-center text-base text-rose-300">{audioError}</p>
+            <p className="px-6 text-center text-base text-violet-300">{audioError}</p>
           )}
         </div>
       )}
@@ -324,7 +324,7 @@ export default function SwarmChoirPage() {
       {started && (
         <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col gap-3 p-4 sm:p-5">
           {audioError && (
-            <p className="text-base text-rose-300">{audioError}</p>
+            <p className="text-base text-violet-300">{audioError}</p>
           )}
 
           <div className="flex flex-wrap gap-2">
@@ -334,8 +334,8 @@ export default function SwarmChoirPage() {
                 onClick={() => applyPreset(p)}
                 className={`min-h-[44px] rounded-lg px-4 py-2.5 font-mono text-base transition ${
                   stateName === p.name
-                    ? "bg-white text-[#0d1017]"
-                    : "bg-white/10 text-white/90 hover:bg-white/20"
+                    ? "bg-card text-[#0d1017]"
+                    : "bg-muted text-foreground hover:bg-accent"
                 }`}
               >
                 {p.label}
@@ -344,26 +344,26 @@ export default function SwarmChoirPage() {
           </div>
 
           <div className="flex flex-col gap-3 rounded-xl bg-black/30 p-4 backdrop-blur-sm sm:flex-row sm:items-center sm:gap-6">
-            <label className="flex flex-1 items-center gap-3 text-base text-white/90">
+            <label className="flex flex-1 items-center gap-3 text-base text-foreground">
               <span className="w-24 font-mono">K sync {K.toFixed(2)}</span>
               <input
                 type="range" min={-1} max={1} step={0.01} value={K}
                 onChange={(e) => setK(parseFloat(e.target.value))}
-                className="h-2 flex-1 cursor-pointer accent-sky-400"
+                className="h-2 flex-1 cursor-pointer accent-violet-400"
               />
             </label>
-            <label className="flex flex-1 items-center gap-3 text-base text-white/90">
+            <label className="flex flex-1 items-center gap-3 text-base text-foreground">
               <span className="w-24 font-mono">J space {J.toFixed(2)}</span>
               <input
                 type="range" min={0} max={1.2} step={0.01} value={J}
                 onChange={(e) => setJ(parseFloat(e.target.value))}
-                className="h-2 flex-1 cursor-pointer accent-amber-400"
+                className="h-2 flex-1 cursor-pointer accent-violet-400"
               />
             </label>
           </div>
 
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-base text-white/75">
-            <span className="text-white/95">{stateName}</span>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-base text-muted-foreground">
+            <span className="text-foreground">{stateName}</span>
             <span>R {order.R.toFixed(2)}</span>
             <span>S {S.toFixed(2)}</span>
             <span>spin {order.meanSpeed.toFixed(2)}</span>
@@ -374,7 +374,7 @@ export default function SwarmChoirPage() {
       {/* Design notes toggle */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 font-mono text-base text-white/90 hover:bg-white/20"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 font-mono text-base text-foreground hover:bg-accent"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
@@ -383,10 +383,10 @@ export default function SwarmChoirPage() {
         <div className="absolute inset-0 z-40 overflow-y-auto bg-[#0d1017]/95 p-6 sm:p-10">
           <div className="mx-auto max-w-2xl">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-semibold text-white">Design notes</h2>
+              <h2 className="text-2xl font-semibold text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white/90 hover:bg-white/20"
+                className="min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
               >
                 Close
               </button>
@@ -394,16 +394,16 @@ export default function SwarmChoirPage() {
             <div className="mt-6 space-y-6">
               {NOTES.map((n) => (
                 <section key={n.title}>
-                  <h3 className="font-mono text-base font-semibold text-white/95">{n.title}</h3>
+                  <h3 className="font-mono text-base font-semibold text-foreground">{n.title}</h3>
                   {n.body.map((line, i) => (
-                    <p key={i} className="mt-2 text-base leading-relaxed text-white/75">
+                    <p key={i} className="mt-2 text-base leading-relaxed text-muted-foreground">
                       {line}
                     </p>
                   ))}
                 </section>
               ))}
-              <p className="pt-2 text-base text-white/75">
-                <Link href="/dream" className="underline hover:text-white">
+              <p className="pt-2 text-base text-muted-foreground">
+                <Link href="/dream" className="underline hover:text-foreground">
                   ← back to the dream lab
                 </Link>
               </p>

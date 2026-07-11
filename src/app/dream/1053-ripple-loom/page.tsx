@@ -738,7 +738,7 @@ export default function RippleLoomPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-black text-foreground">
       <canvas
         ref={canvasRef}
         data-logpolar={LOGPOLAR_FINGERPRINT}
@@ -755,12 +755,12 @@ export default function RippleLoomPage() {
           <span className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
             ripple loom
           </span>
-          <span className="text-2xl font-light text-white/95">Strike the pond of light</span>
-          <span className="max-w-md px-6 text-base text-white/75">
+          <span className="text-2xl font-light text-foreground">Strike the pond of light</span>
+          <span className="max-w-md px-6 text-base text-muted-foreground">
             Tap and drag anywhere. Each ripple, warped into tunnels and spirals, rings a consonant
             bell. Idle, it rests near-silent.
           </span>
-          <span className="mt-2 min-h-[44px] rounded-full border border-violet-300/60 px-6 py-2.5 text-base text-white">
+          <span className="mt-2 min-h-[44px] rounded-full border border-violet-300/60 px-6 py-2.5 text-base text-foreground">
             Start
           </span>
         </button>
@@ -769,7 +769,7 @@ export default function RippleLoomPage() {
       {/* controls */}
       <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-wrap items-end gap-x-5 gap-y-3 bg-gradient-to-t from-black/85 to-transparent px-4 pb-4 pt-10 font-mono">
         <div className="flex flex-col gap-1">
-          <span className="text-xs uppercase tracking-widest text-white/75">Form</span>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">Form</span>
           <div className="flex gap-1.5">
             {FORM_MODES.map((fm) => (
               <button
@@ -777,8 +777,8 @@ export default function RippleLoomPage() {
                 onClick={() => setForm(fm.id)}
                 className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
                   form === fm.id
-                    ? "bg-violet-400/25 text-white ring-1 ring-violet-300/70"
-                    : "bg-white/5 text-white/75 hover:bg-white/10"
+                    ? "bg-violet-400/25 text-foreground ring-1 ring-violet-300/70"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 {fm.label}
@@ -788,7 +788,7 @@ export default function RippleLoomPage() {
         </div>
 
         <label className="flex flex-col gap-1">
-          <span className="text-xs uppercase tracking-widest text-white/75">
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">
             Decay {decay < 0.5 ? "(long ring)" : "(quick)"}
           </span>
           <input
@@ -803,7 +803,7 @@ export default function RippleLoomPage() {
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-xs uppercase tracking-widest text-white/75">Strike strength</span>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">Strike strength</span>
           <input
             type="range"
             min={0}
@@ -816,7 +816,7 @@ export default function RippleLoomPage() {
         </label>
 
         <label className="flex flex-col gap-1">
-          <span className="text-xs uppercase tracking-widest text-white/75">Bells {probeCount}</span>
+          <span className="text-xs uppercase tracking-widest text-muted-foreground">Bells {probeCount}</span>
           <input
             type="range"
             min={2}
@@ -833,8 +833,8 @@ export default function RippleLoomPage() {
             onClick={toggleShimmer}
             className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
               shimmer
-                ? "bg-amber-400/25 text-white ring-1 ring-amber-300/70"
-                : "bg-white/5 text-white/75 hover:bg-white/10"
+                ? "bg-violet-400/25 text-foreground ring-1 ring-violet-300/70"
+                : "bg-muted text-muted-foreground hover:bg-accent"
             }`}
             title="Opt-in slow luminance shimmer (≤3 Hz, photosensitive-safe)"
           >
@@ -842,7 +842,7 @@ export default function RippleLoomPage() {
           </button>
           <button
             onClick={killShimmer}
-            className="min-h-[44px] rounded-md bg-rose-500/20 px-4 py-2.5 text-base text-rose-200 ring-1 ring-rose-400/50 hover:bg-rose-500/30"
+            className="min-h-[44px] rounded-md bg-violet-500/20 px-4 py-2.5 text-base text-violet-200 ring-1 ring-violet-400/50 hover:bg-violet-500/30"
             title="Instantly stop all shimmer"
           >
             Kill
@@ -852,14 +852,14 @@ export default function RippleLoomPage() {
 
       {/* backend / notice */}
       <div className="pointer-events-none absolute right-3 top-3 z-10 flex flex-col items-end gap-1 text-right font-mono">
-        <span className="text-xs uppercase tracking-widest text-white/75">
+        <span className="text-xs uppercase tracking-widest text-muted-foreground">
           {backend === "pending"
             ? "init…"
             : backend === "webgpu"
               ? "WebGPU compute · wave tank"
               : "Canvas2D · wave tank"}
         </span>
-        {note && <span className="max-w-xs text-sm text-amber-300/95">{note}</span>}
+        {note && <span className="max-w-xs text-sm text-violet-300/95">{note}</span>}
       </div>
 
       {/* design notes link */}

@@ -131,7 +131,7 @@ export default function EntityLatticePage() {
   }, [phase]);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#05030f] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#05030f] text-foreground">
       {/* Full-screen three.js canvas mounts here, behind the UI. */}
       <div ref={containerRef} className="absolute inset-0" aria-hidden />
 
@@ -141,11 +141,11 @@ export default function EntityLatticePage() {
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-white/10">
-            <h1 className="font-serif text-3xl tracking-tight text-white sm:text-4xl">
+          <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-border">
+            <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
               Entity Lattice
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               Your whole moving body, multiplied by camera body-tracking into a
               luminous DMT-style hyperspace lattice — recursive kaleidoscopic
               copies of yourself across more directions than there should be. The
@@ -157,22 +157,22 @@ export default function EntityLatticePage() {
               type="button"
               onClick={begin}
               disabled={phase === "starting"}
-              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
             >
               {phase === "starting" ? "Entering…" : "Start · allow camera"}
             </button>
 
             {errorMsg && (
-              <p className="mt-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mt-4 text-base text-violet-300">{errorMsg}</p>
             )}
 
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               Stand back so your body is in frame and move freely. We use the
               camera only to drive the lattice in your browser — nothing is
               recorded or sent anywhere. Without a camera it runs a synthetic demo
               body so the lattice still lives and the ascent still climbs.
             </p>
-            <p className="mt-3 text-base text-white/55">
+            <p className="mt-3 text-base text-muted-foreground">
               Intense by design: fast motion and brightness swells, no hard
               strobing. Use headphones for the rising tone.
             </p>
@@ -183,34 +183,34 @@ export default function EntityLatticePage() {
       {/* ── Running HUD ────────────────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-white/95">Entity Lattice</h1>
+          <h1 className="font-serif text-2xl text-foreground">Entity Lattice</h1>
           {mode === "body" && (
-            <p className="mt-1 font-mono text-base text-emerald-300/95">
+            <p className="mt-1 font-mono text-base text-violet-300/95">
               ● body tracking
             </p>
           )}
           {mode === "demo" && (
-            <p className="mt-1 font-mono text-base text-amber-300/95">
+            <p className="mt-1 font-mono text-base text-violet-300/95">
               ● demo body (no camera)
             </p>
           )}
-          <p className="mt-2 max-w-xs text-base text-white/55">
+          <p className="mt-2 max-w-xs text-base text-muted-foreground">
             Move. Lift your arms. Spread wide. Fast limbs glow gold; sustain the
             intensity and the lattice locks into a held mandala.
           </p>
           {/* Breakthrough meter — fills as you charge, latches at the mandala. */}
           <div className="mt-3 max-w-xs">
             <div className="flex items-center justify-between">
-              <span className="font-mono text-xs text-white/55">breakthrough</span>
+              <span className="font-mono text-xs text-muted-foreground">breakthrough</span>
               {breakLevel >= 0.95 && (
-                <span className="font-mono text-xs text-amber-300/95">
+                <span className="font-mono text-xs text-violet-300/95">
                   ✦ mandala
                 </span>
               )}
             </div>
-            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
+            <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-amber-200 transition-[width] duration-150"
+                className="h-full rounded-full bg-gradient-to-r from-violet-400 to-violet-200 transition-[width] duration-150"
                 style={{ width: `${Math.round(breakLevel * 100)}%` }}
               />
             </div>
@@ -222,18 +222,18 @@ export default function EntityLatticePage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur-md transition hover:text-white"
+        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/85">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The question.</span> What if your
+              <span className="text-foreground">The question.</span> What if your
               whole moving body were multiplied — by camera body-tracking — into a
               luminous DMT-style hyperspace entity-lattice, where the
               &ldquo;entities&rdquo; are recursive kaleidoscopic copies of yourself
@@ -242,12 +242,12 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Technique.</span> MediaPipe Pose
+              <span className="text-foreground">Technique.</span> MediaPipe Pose
               tracks 33 landmarks; 12 key joints are normalised to a centred
               [-1,1] space and passed as a{" "}
-              <span className="font-mono text-white/95">uniform vec3 uJoints[12]</span>{" "}
+              <span className="font-mono text-foreground">uniform vec3 uJoints[12]</span>{" "}
               to a custom GPU point shader. ~200,000{" "}
-              <span className="font-mono text-white/95">THREE.Points</span> each
+              <span className="font-mono text-foreground">THREE.Points</span> each
               carry a joint index, a symmetry slot and a small random offset. In
               the vertex shader each particle&apos;s joint is reflected and rotated
               across a high-fold radial kaleidoscope about the view axis (6→12
@@ -259,7 +259,7 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The ascent.</span> Body motion, arm-lift
+              <span className="text-foreground">The ascent.</span> Body motion, arm-lift
               and arm-spread fold into a single drive 0..1. Drive raises the rate
               and brightness of a Shepard–Risset endless glissando, opens the
               just-intonation drone&apos;s lowpass and saturation, blooms a
@@ -270,7 +270,7 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">References.</span>{" "}
+              <span className="text-foreground">References.</span>{" "}
               <em>&ldquo;Waves of Connection,&rdquo;</em> Osaka Expo 2025 — three.js
               + WebGPU rendering ~1M particles in real time on a 98-inch 4K display
               with Kinect body tracking, the embodied-installation frontier (Safari
@@ -287,7 +287,7 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Cycle 2 — breakthrough &amp; velocity
+              <span className="text-foreground">Cycle 2 — breakthrough &amp; velocity
               colouring.</span> Each particle is now coloured by its joint&apos;s{" "}
               <em>true</em> per-frame speed, so a fast limb paints its copies hot
               gold-white while a still torso stays deep indigo — the lattice is
@@ -302,7 +302,7 @@ export default function EntityLatticePage() {
             </p>
 
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Still ahead.</span> Depth-aware z from the
+              <span className="text-foreground">Still ahead.</span> Depth-aware z from the
               pose so leaning in/out scales the lattice; a WebGPU/TSL compute path
               toward the Osaka million-particle scale; entity &ldquo;gaze&rdquo;
               where the nearest copies orient toward you at peak drive; multi-body

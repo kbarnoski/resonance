@@ -319,22 +319,22 @@ export default function KeyBloomPage() {
   );
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#170a04] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#170a04] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Header */}
       <div className="pointer-events-none absolute left-0 right-0 top-0 z-10 p-5 sm:p-7">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">Key Bloom</h1>
-        <p className="mt-1 max-w-xl text-base text-white/80">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">Key Bloom</h1>
+        <p className="mt-1 max-w-xl text-base text-foreground">
           A keyboard played as a psychedelic organ — each key sounds a
           just-intonation tone and blooms a chrysanthemum of form-constant
           geometry; chords stack into a living mandala.
         </p>
-        <p className="mt-1 font-mono text-sm text-white/55">
+        <p className="mt-1 font-mono text-sm text-muted-foreground">
           state: psilocybin · pole: intense-warm
         </p>
         {midiConnected && (
-          <p className="mt-1 font-mono text-sm text-emerald-300/95">
+          <p className="mt-1 font-mono text-sm text-violet-300/95">
             MIDI keyboard connected — velocity drives bloom size
           </p>
         )}
@@ -346,7 +346,7 @@ export default function KeyBloomPage() {
           <button
             type="button"
             onClick={() => void handleStart()}
-            className="rounded-2xl border border-amber-300/40 bg-amber-300/10 px-6 py-3.5 font-serif text-xl text-amber-300/95 backdrop-blur transition hover:bg-amber-300/20"
+            className="rounded-2xl border border-violet-300/40 bg-violet-300/10 px-6 py-3.5 font-serif text-xl text-violet-300/95 backdrop-blur transition hover:bg-violet-300/20"
           >
             Play — press A–L or tap the keys
           </button>
@@ -356,7 +356,7 @@ export default function KeyBloomPage() {
       {/* Bottom controls + on-screen keyboard */}
       <div className="absolute bottom-0 left-0 right-0 z-10 p-4 sm:p-6">
         <div className="mb-3 flex flex-wrap items-center gap-3">
-          <p className="font-mono text-sm text-white/75">
+          <p className="font-mono text-sm text-muted-foreground">
             Keys A S D F G H J K L = scale · Z / X shift octave · MIDI
             auto-detected if present
           </p>
@@ -366,8 +366,8 @@ export default function KeyBloomPage() {
               onClick={() => setShimmer((s) => !s)}
               className={`rounded-lg border px-4 py-2.5 font-mono text-sm transition ${
                 shimmer
-                  ? "border-amber-300/60 bg-amber-300/15 text-amber-300/95"
-                  : "border-white/20 bg-white/5 text-white/75 hover:bg-white/10"
+                  ? "border-violet-300/60 bg-violet-300/15 text-violet-300/95"
+                  : "border-border bg-muted text-muted-foreground hover:bg-accent"
               }`}
             >
               Shimmer {shimmer ? "on" : "off"}
@@ -378,7 +378,7 @@ export default function KeyBloomPage() {
                 flickerRef.current.kill();
                 setShimmer(false);
               }}
-              className="rounded-lg border border-rose-300/40 bg-rose-300/10 px-4 py-2.5 font-mono text-sm text-rose-300 transition hover:bg-rose-300/20"
+              className="rounded-lg border border-violet-300/40 bg-violet-300/10 px-4 py-2.5 font-mono text-sm text-violet-300 transition hover:bg-violet-300/20"
             >
               Kill
             </button>
@@ -424,7 +424,7 @@ export default function KeyBloomPage() {
       {/* Design notes link */}
       <Link
         href="/dream/1056-key-bloom/README.md"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/55 underline decoration-white/30 underline-offset-4 transition hover:text-white/80"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 transition hover:text-foreground"
       >
         Read the design notes
       </Link>

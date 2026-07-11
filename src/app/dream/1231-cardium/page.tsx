@@ -257,7 +257,7 @@ export default function Page() {
   const ss = Math.floor(elapsed % 60);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#05090c] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#05090c] text-foreground">
       <div
         ref={hostRef}
         className="absolute inset-0 touch-none"
@@ -269,7 +269,7 @@ export default function Page() {
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             This piece needs WebGL to render the excitable sphere, and your
             browser or device does not appear to support it. Try a recent
             desktop browser with hardware acceleration enabled.
@@ -279,8 +279,8 @@ export default function Page() {
 
       {/* Header / intro */}
       <div className="pointer-events-none absolute left-0 top-0 w-full p-6 sm:p-8">
-        <h1 className="font-serif text-2xl text-white sm:text-3xl">cardium</h1>
-        <p className="mt-2 max-w-xl text-base text-white/75">
+        <h1 className="font-serif text-2xl text-foreground sm:text-3xl">cardium</h1>
+        <p className="mt-2 max-w-xl text-base text-muted-foreground">
           A living sheet of excitable tissue wrapped on a sphere that composes
           itself over minutes — from a calm heartbeat, through a spiral rotor,
           into fibrillation, and back.
@@ -293,23 +293,23 @@ export default function Page() {
           {!started ? (
             <button
               onClick={begin}
-              className="pointer-events-auto min-h-[44px] rounded-md border border-white/20 bg-rose-900/60 px-4 py-2.5 text-base text-white transition hover:bg-rose-800/70"
+              className="pointer-events-auto min-h-[44px] rounded-md border border-border bg-violet-900/60 px-4 py-2.5 text-base text-foreground transition hover:bg-violet-800/70"
             >
               Begin — let the tissue wake
             </button>
           ) : (
             <div className="pointer-events-auto flex max-w-xl flex-col gap-3">
-              <div className="font-mono text-base text-white/75">
-                <span className="text-white/95">{PHASE_LABEL[phase]}</span>
-                <span className="text-white/55">
+              <div className="font-mono text-base text-muted-foreground">
+                <span className="text-foreground">{PHASE_LABEL[phase]}</span>
+                <span className="text-muted-foreground">
                   {"  ·  "}
                   {mm}:{ss.toString().padStart(2, "0")}
                 </span>
               </div>
-              <label className="flex flex-col gap-1 text-base text-white/75">
+              <label className="flex flex-col gap-1 text-base text-muted-foreground">
                 <span>
                   refractory period{" "}
-                  <span className="text-white/55">
+                  <span className="text-muted-foreground">
                     (calm heartbeat ↔ fibrillation)
                   </span>
                 </span>
@@ -319,10 +319,10 @@ export default function Page() {
                   max={100}
                   value={refractory}
                   onChange={onSlider}
-                  className="h-2 w-full cursor-pointer accent-rose-500"
+                  className="h-2 w-full cursor-pointer accent-violet-500"
                 />
               </label>
-              <p className="text-base text-white/55">
+              <p className="text-base text-muted-foreground">
                 Drag on the sphere to pace a beat or drop an excitation — it can
                 seed its own reentry.
               </p>
@@ -332,11 +332,11 @@ export default function Page() {
       )}
 
       {/* Design notes */}
-      <details className="pointer-events-auto absolute right-4 top-4 max-w-sm rounded-md border border-white/15 bg-black/50 p-3 font-mono text-white/75 backdrop-blur">
-        <summary className="cursor-pointer text-base text-white/75">
+      <details className="pointer-events-auto absolute right-4 top-4 max-w-sm rounded-md border border-border bg-black/50 p-3 font-mono text-muted-foreground backdrop-blur">
+        <summary className="cursor-pointer text-base text-muted-foreground">
           Design notes
         </summary>
-        <p className="mt-2 text-base text-white/75">
+        <p className="mt-2 text-base text-muted-foreground">
           FitzHugh–Nagumo (Barkley reduction) excitable medium on a geodesic
           icosphere. Per vertex: excitation + recovery, diffusively coupled along
           mesh edges. An internal clock slowly varies refractoriness so waves

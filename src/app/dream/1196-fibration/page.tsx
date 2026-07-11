@@ -358,7 +358,7 @@ export default function FibrationPage() {
 
   return (
     <main
-      className="relative min-h-screen w-full touch-none overflow-hidden bg-[#0b0b16] text-white"
+      className="relative min-h-screen w-full touch-none overflow-hidden bg-[#0b0b16] text-foreground"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
@@ -368,10 +368,10 @@ export default function FibrationPage() {
 
       {/* header */}
       <header className="pointer-events-none relative z-10 px-6 pt-8 sm:px-10">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground drop-shadow-[0_2px_10px_rgba(0,0,0,0.7)] sm:text-3xl">
           Fibration
         </h1>
-        <p className="mt-2 max-w-2xl text-base text-white/80 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
+        <p className="mt-2 max-w-2xl text-base text-foreground drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]">
           Float inside the Hopf fibration — hundreds of interlocked great circles
           nesting into tori, turning through 4D, each ring ringing a shimmering FM
           bell.
@@ -381,24 +381,24 @@ export default function FibrationPage() {
       {/* pre-start overlay */}
       {phase === "idle" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-4">
-          <div className="flex flex-col items-center gap-5 rounded-2xl border border-white/10 bg-black/45 px-8 py-7 text-center backdrop-blur-md">
-            <p className="max-w-md text-base text-white/80">
+          <div className="flex flex-col items-center gap-5 rounded-2xl border border-border bg-black/45 px-8 py-7 text-center backdrop-blur-md">
+            <p className="max-w-md text-base text-foreground">
               A drug-free, boundless cosmic-ambient space. The 3-sphere fibres
               into linked circles; a slow 4D rotation carries you through them
               while the geometry sings in FM bells.
             </p>
             <button
               onClick={handleBegin}
-              className="min-h-[44px] rounded-full bg-indigo-300/90 px-4 py-2.5 text-base font-medium text-[#141024] shadow-lg transition-colors hover:bg-indigo-200"
+              className="min-h-[44px] rounded-full bg-violet-300/90 px-4 py-2.5 text-base font-medium text-[#141024] shadow-lg transition-colors hover:bg-violet-200"
             >
               Enter the fibration
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               Sound + motion start on this tap. On a phone it will ask for motion
               access to let you tilt through 4D.
             </p>
             {audioError && (
-              <p className="max-w-sm text-base text-rose-300">{audioError}</p>
+              <p className="max-w-sm text-base text-violet-300">{audioError}</p>
             )}
           </div>
         </div>
@@ -407,12 +407,12 @@ export default function FibrationPage() {
       {/* running / paused controls */}
       {phase !== "idle" && (
         <div className="absolute bottom-16 left-1/2 z-10 w-[min(94vw,620px)] -translate-x-1/2">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/12 bg-black/50 px-5 py-4 backdrop-blur-md">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-border bg-black/50 px-5 py-4 backdrop-blur-md">
             <div className="min-w-[180px] flex-1">
-              <div className="text-base font-medium text-white/95">
+              <div className="text-base font-medium text-foreground">
                 {phase === "paused" ? "Paused" : "Adrift in S³"}
               </div>
-              <div className="mt-1 font-mono text-base text-white/75">
+              <div className="mt-1 font-mono text-base text-muted-foreground">
                 {modeLabel}
                 {rendererMode === "canvas2d" ? " · canvas2d" : ""}
               </div>
@@ -421,28 +421,28 @@ export default function FibrationPage() {
               {phase === "running" ? (
                 <button
                   onClick={handlePause}
-                  className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/20"
+                  className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
                 >
                   Pause
                 </button>
               ) : (
                 <button
                   onClick={handleResume}
-                  className="min-h-[44px] rounded-full bg-indigo-300/90 px-4 py-2.5 text-base font-medium text-[#141024] transition-colors hover:bg-indigo-200"
+                  className="min-h-[44px] rounded-full bg-violet-300/90 px-4 py-2.5 text-base font-medium text-[#141024] transition-colors hover:bg-violet-200"
                 >
                   Resume
                 </button>
               )}
               <button
                 onClick={handleStop}
-                className="min-h-[44px] rounded-full border border-white/20 bg-white/10 px-4 py-2.5 text-base font-medium text-white/90 transition-colors hover:bg-white/20"
+                className="min-h-[44px] rounded-full border border-border bg-muted px-4 py-2.5 text-base font-medium text-foreground transition-colors hover:bg-accent"
               >
                 Stop
               </button>
             </div>
           </div>
           {notice && (
-            <p className="mt-2 text-center text-base text-rose-300">{notice}</p>
+            <p className="mt-2 text-center text-base text-violet-300">{notice}</p>
           )}
         </div>
       )}
@@ -450,31 +450,31 @@ export default function FibrationPage() {
       {/* design-notes affordance */}
       <button
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base font-medium text-white/80 backdrop-blur-md transition-colors hover:bg-black/60"
+        className="absolute right-4 top-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base font-medium text-foreground backdrop-blur-md transition-colors hover:bg-black/60"
       >
         Design notes
       </button>
       {showNotes && (
-        <div className="absolute right-4 top-20 z-30 w-[min(92vw,420px)] rounded-2xl border border-white/12 bg-black/70 p-5 text-base text-white/85 backdrop-blur-md">
-          <p className="mb-2 font-serif text-xl text-white/95">The fibration sings</p>
+        <div className="absolute right-4 top-20 z-30 w-[min(92vw,420px)] rounded-2xl border border-border bg-black/70 p-5 text-base text-foreground backdrop-blur-md">
+          <p className="mb-2 font-serif text-xl text-foreground">The fibration sings</p>
           <p className="mb-2">
             Each glowing circle is a Hopf fibre — a great circle in the 3-sphere
             S³ — stereographically projected into space, where the fibres over
             each circle of latitude form a nested, linked torus. A slow
             unit-quaternion rotation turns the whole bundle through 4D.
           </p>
-          <p className="mb-2 text-white/75">
+          <p className="mb-2 text-muted-foreground">
             Seven lead fibres drive 2-operator FM bells: base-latitude sets pitch,
             projected radius and motion set brightness and strike vigour. Slow,
             breath-paced, chromatic — no strobe.
           </p>
-          <p className="text-white/75">
+          <p className="text-muted-foreground">
             Refs: Hopf (1931); Niles Johnson&rsquo;s Hopf visualisation;
             Villarceau / Clifford tori; the Young–Radigue drone register, here in
             FM timbre.
           </p>
           <div className="mt-3">
-            <Link href="/dream" className="text-indigo-300 underline hover:text-indigo-200">
+            <Link href="/dream" className="text-violet-300 underline hover:text-violet-200">
               ← back to the lab
             </Link>
           </div>

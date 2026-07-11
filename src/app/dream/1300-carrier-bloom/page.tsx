@@ -453,18 +453,18 @@ export default function CarrierBloomPage() {
   const pct = (x: number) => Math.round(x * 100);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04050a] text-foreground">
       {/* WebGL2 / Canvas2D melt (also the drag surface) */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full touch-none" />
 
       {/* Backend badge */}
       {backend && (
-        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-white/75">
+        <span className="absolute left-4 top-4 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-muted-foreground">
           {backend === "webgl2" ? "WebGL2" : "Canvas2D"}
         </span>
       )}
       {backend === "canvas2d" && (
-        <span className="absolute left-4 top-14 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-amber-300">
+        <span className="absolute left-4 top-14 z-20 rounded-md bg-black/45 px-3 py-1.5 font-mono text-sm text-violet-300">
           WebGL2 unavailable — Canvas2D fallback
         </span>
       )}
@@ -473,7 +473,7 @@ export default function CarrierBloomPage() {
         href="/dream/1300-carrier-bloom/README.md"
         target="_blank"
         rel="noreferrer"
-        className="absolute right-4 top-4 z-20 font-mono text-sm text-white/75 underline decoration-white/40 underline-offset-4 hover:text-white"
+        className="absolute right-4 top-4 z-20 font-mono text-sm text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes ↗
       </a>
@@ -481,10 +481,10 @@ export default function CarrierBloomPage() {
       <div className="relative z-10 flex min-h-screen flex-col justify-between p-6 md:p-10">
         {/* Header */}
         <header className="max-w-2xl">
-          <h1 className="text-2xl font-semibold tracking-tight text-white md:text-3xl">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">
             Carrier Bloom
           </h1>
-          <p className="mt-2 text-base text-white/75">
+          <p className="mt-2 text-base text-muted-foreground">
             Karel&apos;s own recorded piano is the carrier wave for a drug-free
             psychedelic melt — a log-polar form-constant field driven by his real{" "}
             <span className="text-violet-300">Welcome Home</span> piano. Drag your
@@ -498,8 +498,8 @@ export default function CarrierBloomPage() {
               <span
                 className={
                   sourceKind === "piano"
-                    ? "rounded bg-emerald-500/15 px-2 py-0.5 text-emerald-300"
-                    : "rounded bg-amber-500/15 px-2 py-0.5 text-amber-300"
+                    ? "rounded bg-violet-500/15 px-2 py-0.5 text-violet-300"
+                    : "rounded bg-violet-500/15 px-2 py-0.5 text-violet-300"
                 }
               >
                 {sourceKind === "piano" ? "real piano" : "fallback (synth carrier)"}
@@ -507,8 +507,8 @@ export default function CarrierBloomPage() {
             </p>
           )}
 
-          {errorMsg && <p className="mt-2 text-base text-rose-300">{errorMsg}</p>}
-          {sensorMsg && <p className="mt-2 text-base text-rose-300">{sensorMsg}</p>}
+          {errorMsg && <p className="mt-2 text-base text-violet-300">{errorMsg}</p>}
+          {sensorMsg && <p className="mt-2 text-base text-violet-300">{sensorMsg}</p>}
         </header>
 
         {/* Center: Begin / loading */}
@@ -522,12 +522,12 @@ export default function CarrierBloomPage() {
             </button>
           )}
           {phase === "loading" && (
-            <p className="font-mono text-base text-white/75">loading the carrier…</p>
+            <p className="font-mono text-base text-muted-foreground">loading the carrier…</p>
           )}
           {phase === "error" && (
             <button
               onClick={() => setPhase("idle")}
-              className="min-h-[44px] rounded-md border border-rose-400/40 bg-rose-500/15 px-4 py-2.5 text-base font-medium text-rose-100 hover:bg-rose-500/25"
+              className="min-h-[44px] rounded-md border border-violet-400/40 bg-violet-500/15 px-4 py-2.5 text-base font-medium text-violet-100 hover:bg-violet-500/25"
             >
               Try again
             </button>
@@ -537,22 +537,22 @@ export default function CarrierBloomPage() {
         {/* Footer: live readout + controls */}
         {phase === "ready" && (
           <footer className="flex flex-col gap-4">
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-white/75">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-sm text-muted-foreground">
               <span>
                 entropy arc <span className="text-violet-300">{pct(ui.entropy)}%</span>
               </span>
               <span>
-                geometry <span className="text-white/95">{ui.form}</span>
+                geometry <span className="text-foreground">{ui.form}</span>
               </span>
               <span>
-                push <span className="text-emerald-300">{pct(ui.push)}%</span>
+                push <span className="text-violet-300">{pct(ui.push)}%</span>
               </span>
-              <span className="text-white/55">
+              <span className="text-muted-foreground">
                 bass {pct(ui.bass)} · mid {pct(ui.mid)} · high {pct(ui.high)}
               </span>
             </div>
 
-            <p className="max-w-2xl text-base text-white/75">
+            <p className="max-w-2xl text-base text-muted-foreground">
               Drag anywhere on the field to push the warp center under your hand —
               faster drags deepen the trip and lift a Shepard undertow. Slide up for
               honeycomb, down for tunnels. Let go and it drifts on its own.
@@ -563,8 +563,8 @@ export default function CarrierBloomPage() {
                 onClick={toggleFlicker}
                 className={`min-h-[44px] rounded-md px-4 py-2.5 text-base ${
                   flickerOn
-                    ? "bg-white/25 text-white"
-                    : "bg-white/5 text-white/75 hover:bg-white/10"
+                    ? "bg-muted text-foreground"
+                    : "bg-muted text-muted-foreground hover:bg-accent"
                 }`}
               >
                 {flickerOn ? "flicker on (≤3 Hz) — tap to kill" : "add gentle flicker (≤3 Hz)"}
@@ -572,13 +572,13 @@ export default function CarrierBloomPage() {
               {tiltAvailable && !tiltOn && (
                 <button
                   onClick={() => void enableTilt()}
-                  className="min-h-[44px] rounded-md border border-white/20 bg-white/5 px-4 py-2.5 text-base text-white/90 hover:bg-white/10"
+                  className="min-h-[44px] rounded-md border border-border bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
                 >
                   Enable tilt steering (mobile)
                 </button>
               )}
               {tiltOn && (
-                <span className="font-mono text-sm text-emerald-300">
+                <span className="font-mono text-sm text-violet-300">
                   tilt active — lean to steer the melt
                 </span>
               )}

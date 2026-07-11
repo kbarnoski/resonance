@@ -424,7 +424,7 @@ export default function PianoFreezePage() {
       ref={wrapRef}
       onPointerMove={onPointerMove}
       onWheel={onWheel}
-      className="relative h-dvh w-full touch-none overflow-hidden bg-[#07030f] text-white"
+      className="relative h-dvh w-full touch-none overflow-hidden bg-[#07030f] text-foreground"
     >
       <canvas ref={canvasRef} className="absolute inset-0 block" />
       <video ref={videoRef} className="hidden" playsInline muted />
@@ -432,20 +432,20 @@ export default function PianoFreezePage() {
       {/* design-notes link */}
       <button
         onClick={() => setShowNotes(true)}
-        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-white/75 underline decoration-white/30 underline-offset-4 hover:text-white"
+        className="absolute right-3 top-3 z-20 min-h-[44px] rounded-lg px-4 py-2.5 text-base text-muted-foreground underline decoration-muted-foreground underline-offset-4 hover:text-foreground"
       >
         Read the design notes
       </button>
 
       {/* header */}
       <div className="pointer-events-none absolute left-4 top-4 z-10 max-w-xl">
-        <h1 className="font-serif text-2xl font-semibold tracking-tight text-white">Piano Freeze</h1>
-        <p className="mt-1 text-base text-white/75">
+        <h1 className="font-serif text-2xl font-semibold tracking-tight text-foreground">Piano Freeze</h1>
+        <p className="mt-1 text-base text-muted-foreground">
           Reach into Karel&apos;s recorded piano — scrub through it with your hand, then raise up to freeze a
           moment into an infinite shimmer.
         </p>
         {phase === "playing" && (
-          <p className="mt-2 text-base text-white/55">
+          <p className="mt-2 text-base text-muted-foreground">
             {source === "piano"
               ? "Source · Karel — Welcome Home (live recording)"
               : "Source · synthesized piano fallback"}
@@ -455,25 +455,25 @@ export default function PianoFreezePage() {
 
       {/* live gesture legend */}
       {phase === "playing" && camState === "on" && (
-        <p className="pointer-events-none absolute inset-x-0 top-24 z-10 text-center text-base text-white/75">
+        <p className="pointer-events-none absolute inset-x-0 top-24 z-10 text-center text-base text-muted-foreground">
           Move your hand across to scrub · raise up to freeze · pinch/spread to darken/brighten
         </p>
       )}
 
       {/* controls */}
       <div className="absolute inset-x-0 bottom-16 z-10 flex flex-col items-center gap-3 px-4">
-        {notice && <p className="max-w-md text-center text-base text-rose-300">{notice}</p>}
+        {notice && <p className="max-w-md text-center text-base text-violet-300">{notice}</p>}
 
         {phase !== "playing" ? (
           <button
             onClick={begin}
             disabled={phase === "loading"}
-            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-white shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:bg-violet-400 disabled:opacity-60"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-semibold text-foreground shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:bg-violet-400 disabled:opacity-60"
           >
             {phase === "loading" ? "Loading the piano…" : "Start"}
           </button>
         ) : camState === "on" ? (
-          <p className="text-base text-white/75">Hand tracking live — conduct the freeze.</p>
+          <p className="text-base text-muted-foreground">Hand tracking live — conduct the freeze.</p>
         ) : (
           <button
             onClick={enableCamera}
@@ -484,7 +484,7 @@ export default function PianoFreezePage() {
           </button>
         )}
         {phase === "playing" && camState !== "on" && camState !== "loading" && (
-          <p className="max-w-md text-center text-base text-white/55">
+          <p className="max-w-md text-center text-base text-muted-foreground">
             Or drive it now with the mouse — move left/right to scrub, hold near the top to freeze, scroll to
             tilt the tone.
           </p>
@@ -494,8 +494,8 @@ export default function PianoFreezePage() {
       {/* design notes */}
       {showNotes && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/70 p-4">
-          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-white/15 bg-[#0a0518] p-6 text-base text-white/85">
-            <h2 className="text-xl font-semibold text-white">Design notes</h2>
+          <div className="max-h-[80dvh] max-w-lg overflow-y-auto rounded-2xl border border-border bg-[#0a0518] p-6 text-base text-foreground">
+            <h2 className="text-xl font-semibold text-foreground">Design notes</h2>
             <p className="mt-3">
               Karel&apos;s fixed solo-piano recording is fed to a granular resynthesis engine: ~135 ms
               Hann-windowed grains at ~60% overlap, scheduled ~20 ms ahead. The crucial trick is that the
@@ -508,7 +508,7 @@ export default function PianoFreezePage() {
               shimmer. Tiny per-grain read-jitter and detune keep it glistening, and a parallel dry grain path
               fades in so the frozen moment stays legible while it holds.
             </p>
-            <p className="mt-3 text-white/70">
+            <p className="mt-3 text-muted-foreground">
               Lineage: Robert Henke / Monolake&apos;s granular time-stretching, Paulstretch (Nasca Octavian
               Paul) for extreme spectral smearing, and Sampleson&apos;s <em>Aeronaut</em> (2026) for
               spectral-freeze held against a parallel looper so the source never fully disappears. No strobe —
@@ -516,7 +516,7 @@ export default function PianoFreezePage() {
             </p>
             <button
               onClick={() => setShowNotes(false)}
-              className="mt-5 min-h-[44px] rounded-lg bg-white/10 px-4 py-2.5 text-base text-white hover:bg-white/20"
+              className="mt-5 min-h-[44px] rounded-lg bg-muted px-4 py-2.5 text-base text-foreground hover:bg-accent"
             >
               Close
             </button>

@@ -238,17 +238,17 @@ export default function LatticePage() {
   }, []);
 
   return (
-    <main className="relative h-[100dvh] w-screen overflow-hidden bg-[#0d0b18] text-white">
+    <main className="relative h-[100dvh] w-screen overflow-hidden bg-[#0d0b18] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Title + intro + Begin overlay */}
       {phase !== "unsupported" && (
         <div className="pointer-events-none absolute inset-x-0 top-0 flex flex-col items-center gap-3 p-6 text-center">
-          <h1 className="font-serif text-2xl tracking-tight text-white drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:text-3xl">
+          <h1 className="font-serif text-2xl tracking-tight text-foreground drop-shadow-[0_2px_14px_rgba(0,0,0,0.55)] sm:text-3xl">
             Lattice
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/85 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
-            A living membrane <span className="text-white">grown</span> in real time by a
+          <p className="max-w-xl text-base leading-relaxed text-foreground drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
+            A living membrane <span className="text-foreground">grown</span> in real time by a
             GPU reaction-diffusion field — Turing&apos;s morphogenesis warped into a
             psychedelic honeycomb realm. It blooms, replicates, saturates, and breaks
             through, carried by an endlessly rising tone.
@@ -258,26 +258,26 @@ export default function LatticePage() {
             <button
               type="button"
               onClick={begin}
-              className="pointer-events-auto mt-1 min-h-[44px] rounded-full border border-fuchsia-200/50 bg-fuchsia-400/20 px-4 py-2.5 text-base text-white transition hover:bg-fuchsia-400/35 active:scale-95"
+              className="pointer-events-auto mt-1 min-h-[44px] rounded-full border border-violet-200/50 bg-violet-400/20 px-4 py-2.5 text-base text-foreground transition hover:bg-violet-400/35 active:scale-95"
             >
               Begin the ascent
             </button>
           )}
 
           {phase === "live" && (
-            <p className="text-base text-white/80 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
-              <span className="text-white/95">{phaseLabel}</span> · make sound to feed
+            <p className="text-base text-foreground drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
+              <span className="text-foreground">{phaseLabel}</span> · make sound to feed
               the reaction
             </p>
           )}
 
           {notice && (
-            <p className="pointer-events-auto max-w-md text-base text-rose-300 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
+            <p className="pointer-events-auto max-w-md text-base text-violet-300 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
               {notice}
             </p>
           )}
           {micNotice && (
-            <p className="pointer-events-auto max-w-md text-base text-rose-300 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
+            <p className="pointer-events-auto max-w-md text-base text-violet-300 drop-shadow-[0_1px_10px_rgba(0,0,0,0.6)]">
               {micNotice}
             </p>
           )}
@@ -287,7 +287,7 @@ export default function LatticePage() {
       {/* Unsupported fallback */}
       {phase === "unsupported" && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">{notice}</p>
+          <p className="max-w-md text-center text-base text-violet-300">{notice}</p>
         </div>
       )}
 
@@ -295,12 +295,12 @@ export default function LatticePage() {
       {phase === "live" && (
         <div className="pointer-events-none absolute left-0 right-0 bottom-0 flex items-end justify-between p-4">
           <div className="rounded-xl bg-black/35 px-3 py-2 backdrop-blur-sm">
-            <p className="text-sm text-white/85">
-              phase: <span className="text-fuchsia-200">{phaseLabel}</span>
+            <p className="text-sm text-foreground">
+              phase: <span className="text-violet-200">{phaseLabel}</span>
             </p>
-            <div className="mt-1 h-1 w-44 overflow-hidden rounded-full bg-white/15">
+            <div className="mt-1 h-1 w-44 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full bg-fuchsia-300/85"
+                className="h-full bg-violet-300/85"
                 style={{ width: `${Math.round(progress * 100)}%` }}
               />
             </div>
@@ -308,7 +308,7 @@ export default function LatticePage() {
           <button
             type="button"
             onClick={toggleBreathe}
-            className="pointer-events-auto min-h-[44px] rounded-full border border-white/20 bg-black/40 px-4 py-2.5 text-base text-white/85 transition hover:text-white"
+            className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-foreground transition hover:text-foreground"
           >
             {breathe ? "Breathing" : "Breathe"}
           </button>
@@ -320,22 +320,22 @@ export default function LatticePage() {
         <button
           type="button"
           onClick={() => setShowNotes((s) => !s)}
-          className="pointer-events-auto min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/80 transition hover:text-white"
+          className="pointer-events-auto min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-foreground transition hover:text-foreground"
         >
           {showNotes ? "Close notes" : "Read the design notes"}
         </button>
         {showNotes && (
-          <div className="mt-3 max-w-sm rounded-2xl border border-white/10 bg-black/70 p-5 text-left backdrop-blur">
-            <p className="text-base text-white/90">
+          <div className="mt-3 max-w-sm rounded-2xl border border-border bg-black/70 p-5 text-left backdrop-blur">
+            <p className="text-base text-foreground">
               A GPU Gray-Scott reaction-diffusion field (Turing&apos;s morphogenesis)
               runs on ping-pong framebuffers at {renderMode || "capped"} precision. A
               phase arc sweeps feed/kill through Pearson&apos;s regimes — spots →
               mitosis → maze → coherent realm — while the V field is warped through
               log-polar honeycomb symmetry and shaded with thin-film iridescence.
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Louder sound feeds the reaction; onsets seed fresh growth. Full notes and
-              references in <span className="font-mono text-fuchsia-200">README.md</span>{" "}
+              references in <span className="font-mono text-violet-200">README.md</span>{" "}
               (Turing 1952; Gray-Scott / Pearson 1993; the DMT-realm phenomenology;
               Klüver&apos;s lattice form constant).
             </p>

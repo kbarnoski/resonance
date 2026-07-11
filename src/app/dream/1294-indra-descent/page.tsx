@@ -388,24 +388,24 @@ export default function IndraDescentPage() {
     <main className="relative flex h-dvh w-full flex-col overflow-hidden bg-[#060608]">
       <header className="relative z-10 flex flex-col gap-1 p-4 pb-2">
         <div className="flex items-center justify-between gap-3">
-          <h1 className="font-serif text-2xl font-bold text-white">Indra&apos;s Descent</h1>
+          <h1 className="font-serif text-2xl font-bold text-foreground">Indra&apos;s Descent</h1>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-white/75 ring-1 ring-white/15 transition hover:text-white"
+              className="min-h-[44px] rounded px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:text-foreground"
             >
               {showNotes ? "close notes" : "read the design notes"}
             </button>
             <Link
               href="/dream"
-              className="flex min-h-[44px] items-center px-2 font-mono text-base text-white/60 transition hover:text-white/90"
+              className="flex min-h-[44px] items-center px-2 font-mono text-base text-muted-foreground transition hover:text-foreground"
             >
               ← dream lab
             </Link>
           </div>
         </div>
-        <p className="max-w-3xl text-base text-white/75">
+        <p className="max-w-3xl text-base text-muted-foreground">
           Strike a circle: its just-intonation pitch rings, then the tone ripples outward
           along the tangent-neighbour graph — a decaying, self-similar arpeggio cascading
           down the packing. Hold anywhere to <em>dive</em>, and the gasket re-tiles
@@ -414,16 +414,16 @@ export default function IndraDescentPage() {
       </header>
 
       {showNotes && (
-        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-white/75 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="relative z-20 mx-4 mb-2 max-w-3xl overflow-y-auto rounded-lg bg-black/70 p-4 font-mono text-base text-muted-foreground ring-1 ring-border backdrop-blur-sm">
           <p className="mb-2">
-            <strong className="text-white/95">The question:</strong> what if the Apollonian
+            <strong className="text-foreground">The question:</strong> what if the Apollonian
             gasket were a <em>coupled</em> instrument you fall through forever — each circle
             a just-intonation voice wired to its tangent neighbours, so one strike unfolds a
             chord rippling down the packing while a Möbius dive slides you into infinite
             nesting?
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">The math:</strong> circles are a signed bend{" "}
+            <strong className="text-foreground">The math:</strong> circles are a signed bend{" "}
             <span className="text-[#e0402f]">b = ±1/r</span> and a complex centre; every child
             is placed by the <span className="text-[#e0402f]">Descartes Circle Theorem</span>{" "}
             (<em>b₄ = b₁+b₂+b₃ ± 2√(b₁b₂+b₂b₃+b₃b₁)</em>) and its complex companion for the
@@ -434,20 +434,20 @@ export default function IndraDescentPage() {
             camera falls.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Played:</strong> tap a circle to sound it
+            <strong className="text-foreground">Played:</strong> tap a circle to sound it
             (bend → pitch, quantised to a 5-limit just scale); the tone hops outward along
             tangent edges, each hop ~115&nbsp;ms later and ~0.6× quieter, up to five hops — a
             vermilion wave racing the resonance. Hold to fall; drag to pan; scroll or pinch to
             zoom. A low root+fifth drone bed underpins it all.
           </p>
           <p className="mb-2">
-            <strong className="text-white/95">Altered states:</strong> the endless
+            <strong className="text-foreground">Altered states:</strong> the endless
             self-similar regress evokes the fractal / tunnel phenomenology of the Klüver form
             constants — a felt fall into infinite nesting, driven purely by the geometry. No
             strobe: newborn circles ease in, and the ripple is a smooth travelling highlight.
             Respects <em>prefers-reduced-motion</em>.
           </p>
-          <p className="text-white/60">
+          <p className="text-muted-foreground">
             Refs: Descartes (1643); Soddy, &ldquo;The Kiss Precise,&rdquo; <em>Nature</em> (1936);
             Mumford, Series &amp; Wright, <em>Indra&apos;s Pearls: The Vision of Felix Klein</em>{" "}
             (2002); Klüver, <em>Mescal and Mechanisms of Hallucinations</em> (1966). Cycle-2
@@ -471,7 +471,7 @@ export default function IndraDescentPage() {
 
         {noCanvas && (
           <div className="absolute inset-0 z-30 flex items-center justify-center p-8">
-            <p className="max-w-md text-center text-base text-rose-300">
+            <p className="max-w-md text-center text-base text-violet-300">
               Canvas 2D is unavailable in this browser, so the gasket can&apos;t be drawn. Try
               a current desktop or mobile browser.
             </p>
@@ -479,9 +479,9 @@ export default function IndraDescentPage() {
         )}
 
         {/* Live readout */}
-        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-white/80 ring-1 ring-white/10 backdrop-blur-sm">
+        <div className="pointer-events-none absolute left-4 top-4 z-10 rounded bg-black/45 px-3 py-2 font-mono text-base text-foreground ring-1 ring-border backdrop-blur-sm">
           <div className="text-[#f0705f]">circles ≈ {count}</div>
-          <div className="text-white/60">tap = strike + cascade · hold = dive · drag = pan</div>
+          <div className="text-muted-foreground">tap = strike + cascade · hold = dive · drag = pan</div>
         </div>
 
         {/* View controls */}
@@ -497,8 +497,8 @@ export default function IndraDescentPage() {
             onPointerCancel={stopDive}
             className={`min-h-[44px] select-none rounded-full px-4 py-2.5 font-mono text-base ring-1 transition ${
               diving
-                ? "bg-[#e0402f]/90 text-white ring-[#e0402f]"
-                : "text-white/70 ring-white/15 hover:bg-white/10 hover:text-white"
+                ? "bg-[#e0402f]/90 text-foreground ring-[#e0402f]"
+                : "text-muted-foreground ring-border hover:bg-accent hover:text-foreground"
             }`}
           >
             {diving ? "descending…" : "hold to descend ▾"}
@@ -506,14 +506,14 @@ export default function IndraDescentPage() {
           <button
             type="button"
             onClick={resetView}
-            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-white/70 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white"
+            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
           >
             reset
           </button>
           <button
             type="button"
             onClick={reseed}
-            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-white/70 ring-1 ring-white/15 transition hover:bg-white/10 hover:text-white"
+            className="min-h-[44px] rounded-full px-4 py-2.5 font-mono text-base text-muted-foreground ring-1 ring-border transition hover:bg-accent hover:text-foreground"
           >
             reseed
           </button>
@@ -525,11 +525,11 @@ export default function IndraDescentPage() {
             <button
               type="button"
               onClick={begin}
-              className="min-h-[44px] rounded-full bg-[#e0402f]/90 px-4 py-2.5 font-mono text-base font-semibold text-white ring-1 ring-[#e0402f]/50 transition hover:bg-[#e0402f]"
+              className="min-h-[44px] rounded-full bg-[#e0402f]/90 px-4 py-2.5 font-mono text-base font-semibold text-foreground ring-1 ring-[#e0402f]/50 transition hover:bg-[#e0402f]"
             >
               ▶ Begin — ring the packing
             </button>
-            <p className="text-base text-white/60">
+            <p className="text-base text-muted-foreground">
               The gasket is already drawn and silent — Begin lets each circle resonate.
             </p>
           </div>
@@ -537,7 +537,7 @@ export default function IndraDescentPage() {
 
         {audioOn && (
           <div className="pointer-events-none absolute inset-x-0 bottom-4 z-10 flex justify-center px-4">
-            <p className="text-base text-white/55">
+            <p className="text-base text-muted-foreground">
               Tap to strike a cascade · hold anywhere (or the button) to fall toward the cusp.
             </p>
           </div>

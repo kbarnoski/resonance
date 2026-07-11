@@ -263,12 +263,12 @@ export default function Page() {
 
   // ── render ──────────────────────────────────────────────────────────────────
   return (
-    <main className="relative h-screen w-screen overflow-hidden bg-black text-white">
+    <main className="relative h-screen w-screen overflow-hidden bg-black text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {!webglOk && (
         <div className="absolute inset-0 flex items-center justify-center p-8">
-          <p className="max-w-md text-center text-base text-rose-300">
+          <p className="max-w-md text-center text-base text-violet-300">
             WebGL2 is not available in this browser, so the Ganzfeld field cannot
             render. Try a recent desktop Chrome, Edge, or Firefox. (The safe-flicker
             engine and drone are unaffected, but there is nothing to show.)
@@ -283,10 +283,10 @@ export default function Page() {
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-violet-300">
               Resonance · Dream Lab · 1043
             </p>
-            <h1 className="mt-3 font-serif text-3xl text-white sm:text-4xl">
+            <h1 className="mt-3 font-serif text-3xl text-foreground sm:text-4xl">
               Dreamachine
             </h1>
-            <p className="mt-4 text-base leading-relaxed text-white/80">
+            <p className="mt-4 text-base leading-relaxed text-foreground">
               A drug-free altered-states field. Dim your lights, soft-focus the
               center, and let your own visual cortex draw the patterns — spirals,
               tunnels, cobwebs, honeycombs. The screen only offers a uniform glow,
@@ -294,11 +294,11 @@ export default function Page() {
             </p>
 
             {/* epilepsy warning — clearly visible (amber, not dim) */}
-            <div className="mt-6 rounded-xl border border-amber-300/40 bg-amber-300/10 p-4">
-              <p className="font-mono text-sm uppercase tracking-widest text-amber-300/95">
+            <div className="mt-6 rounded-xl border border-violet-300/40 bg-violet-300/10 p-4">
+              <p className="font-mono text-sm uppercase tracking-widest text-violet-300/95">
                 Photosensitive-epilepsy warning
               </p>
-              <p className="mt-2 text-base leading-relaxed text-amber-300/95">
+              <p className="mt-2 text-base leading-relaxed text-violet-300/95">
                 This piece uses rhythmic light. If you have a history of
                 photosensitive epilepsy or seizures, please do not proceed. Rates
                 are hard-capped at {MAX_HZ.toFixed(0)} flashes per second with soft,
@@ -324,7 +324,7 @@ export default function Page() {
             </div>
 
             {showNotes && (
-              <p className="mt-5 text-base leading-relaxed text-white/75">
+              <p className="mt-5 text-base leading-relaxed text-muted-foreground">
                 After Brion Gysin &amp; Ian Sommerville&apos;s Dreamachine (1959) and
                 modern Ganzflicker. Klüver&apos;s four form constants are a property
                 of visual cortex (Bressloff–Cowan); a uniform field plus a slow
@@ -343,11 +343,11 @@ export default function Page() {
           {/* top bar: title + phase + STOP (always visible) */}
           <div className="pointer-events-none absolute left-0 right-0 top-0 flex items-start justify-between gap-3 p-4">
             <div className="rounded-xl bg-black/40 px-3 py-2 backdrop-blur-sm">
-              <p className="font-serif text-xl text-white/95">Dreamachine</p>
-              <p className="font-mono text-sm text-white/75">
+              <p className="font-serif text-xl text-foreground">Dreamachine</p>
+              <p className="font-mono text-sm text-muted-foreground">
                 phase: <span className="text-violet-300">{phaseLabel}</span>
               </p>
-              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-white/15">
+              <div className="mt-1 h-1 w-40 overflow-hidden rounded-full bg-muted">
                 <div
                   className="h-full bg-violet-400/80"
                   style={{ width: `${Math.round(progress * 100)}%` }}
@@ -357,7 +357,7 @@ export default function Page() {
 
             <button
               onClick={onStop}
-              className="pointer-events-auto min-h-[44px] rounded-xl bg-rose-500/25 px-5 py-2.5 text-base font-medium text-rose-100 ring-1 ring-rose-300/50 transition hover:bg-rose-500/40"
+              className="pointer-events-auto min-h-[44px] rounded-xl bg-violet-500/25 px-5 py-2.5 text-base font-medium text-violet-100 ring-1 ring-violet-300/50 transition hover:bg-violet-500/40"
             >
               Stop
             </button>
@@ -366,7 +366,7 @@ export default function Page() {
           {/* bottom controls: mode toggle + capped rate + resume */}
           <div className="pointer-events-auto absolute bottom-0 left-0 right-0 flex flex-col gap-3 p-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="rounded-xl bg-black/45 p-4 backdrop-blur-sm">
-              <p className="font-mono text-sm uppercase tracking-widest text-white/75">
+              <p className="font-mono text-sm uppercase tracking-widest text-muted-foreground">
                 mode
               </p>
               <div className="mt-2 flex gap-2">
@@ -375,7 +375,7 @@ export default function Page() {
                   className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base ring-1 transition ${
                     mode === "drift"
                       ? "bg-violet-500/30 text-violet-100 ring-violet-300/50"
-                      : "bg-white/10 text-white/80 ring-white/20 hover:bg-white/20"
+                      : "bg-muted text-foreground ring-border hover:bg-accent"
                   }`}
                 >
                   Drift (no flicker)
@@ -385,7 +385,7 @@ export default function Page() {
                   className={`min-h-[44px] rounded-lg px-4 py-2.5 text-base ring-1 transition ${
                     mode === "pulse"
                       ? "bg-violet-500/30 text-violet-100 ring-violet-300/50"
-                      : "bg-white/10 text-white/80 ring-white/20 hover:bg-white/20"
+                      : "bg-muted text-foreground ring-border hover:bg-accent"
                   }`}
                 >
                   Gentle pulse
@@ -395,12 +395,12 @@ export default function Page() {
               <div className="mt-4">
                 <label
                   htmlFor="rate"
-                  className="flex items-center justify-between font-mono text-sm text-white/75"
+                  className="flex items-center justify-between font-mono text-sm text-muted-foreground"
                 >
                   <span>pulse rate</span>
                   <span className="text-violet-300">
                     {rateHz.toFixed(1)} Hz{" "}
-                    <span className="text-white/55">(cap {MAX_HZ.toFixed(0)})</span>
+                    <span className="text-muted-foreground">(cap {MAX_HZ.toFixed(0)})</span>
                   </span>
                 </label>
                 <input
@@ -414,7 +414,7 @@ export default function Page() {
                   onChange={(e) => onSetRate(parseFloat(e.target.value))}
                   className="mt-2 w-56 accent-violet-400 disabled:opacity-40"
                 />
-                <p className="mt-1 text-sm text-white/55">
+                <p className="mt-1 text-sm text-muted-foreground">
                   hard-capped well below the 15–20 Hz seizure-risk band
                 </p>
               </div>
@@ -424,7 +424,7 @@ export default function Page() {
               {stopped && (
                 <button
                   onClick={onResume}
-                  className="min-h-[44px] rounded-xl bg-emerald-500/25 px-5 py-2.5 text-base text-emerald-100 ring-1 ring-emerald-300/50 transition hover:bg-emerald-500/40"
+                  className="min-h-[44px] rounded-xl bg-violet-500/25 px-5 py-2.5 text-base text-violet-100 ring-1 ring-violet-300/50 transition hover:bg-violet-500/40"
                 >
                   Resume
                 </button>
@@ -439,20 +439,20 @@ export default function Page() {
           </div>
 
           {!audioOk && (
-            <p className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 rounded-lg bg-black/60 px-3 py-2 text-center text-base text-amber-300/95">
+            <p className="pointer-events-none absolute bottom-24 left-1/2 -translate-x-1/2 rounded-lg bg-black/60 px-3 py-2 text-center text-base text-violet-300/95">
               Audio is unavailable — the visual field and safe pulse continue
               without the drone.
             </p>
           )}
 
           {stopped && (
-            <p className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-black/55 px-5 py-3 text-center text-base text-white/80 backdrop-blur-sm">
+            <p className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-xl bg-black/55 px-5 py-3 text-center text-base text-foreground backdrop-blur-sm">
               Stopped — a calm, steady field. Resume when you are ready.
             </p>
           )}
 
           {showNotes && (
-            <div className="pointer-events-auto absolute bottom-44 right-4 max-w-sm rounded-2xl bg-black/65 p-5 text-base leading-relaxed text-white/75 backdrop-blur-sm">
+            <div className="pointer-events-auto absolute bottom-44 right-4 max-w-sm rounded-2xl bg-black/65 p-5 text-base leading-relaxed text-muted-foreground backdrop-blur-sm">
               <p>
                 The field is uniform on purpose (Ganzfeld); the slow ≤{MAX_HZ.toFixed(0)} Hz
                 soft-sine pulse (Ganzflicker) lets your visual cortex generate the

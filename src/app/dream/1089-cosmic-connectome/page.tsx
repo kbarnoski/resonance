@@ -327,14 +327,14 @@ export default function CosmicConnectomePage() {
           <p className="mb-3 font-mono text-base uppercase tracking-[0.35em] text-violet-300">
             Resonance · dream 1089
           </p>
-          <h1 className="mb-4 font-serif text-3xl text-white md:text-5xl">Cosmic Connectome</h1>
-          <p className="mb-3 max-w-xl text-base leading-relaxed text-white/80 md:text-lg">
+          <h1 className="mb-4 font-serif text-3xl text-foreground md:text-5xl">Cosmic Connectome</h1>
+          <p className="mb-3 max-w-xl text-base leading-relaxed text-foreground md:text-lg">
             The graph-connectivity of a living cosmic-web filament network is the
             thing you hear. A richly-connected super-cluster rings a full chord; a
             lonely node, a single tone. The web thickens into music as it accretes
             over minutes.
           </p>
-          <p className="mb-8 max-w-lg text-base leading-relaxed text-white/75">
+          <p className="mb-8 max-w-lg text-base leading-relaxed text-muted-foreground">
             Tap to seed nutrient wells. A two-species slime-mold simulation grows
             filaments between them; each node&apos;s measured connectivity — how
             many filaments radiate from it — picks its just-intonation chord.
@@ -343,18 +343,18 @@ export default function CosmicConnectomePage() {
 
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full border border-violet-300/40 bg-violet-300/10 px-8 py-2.5 text-base font-medium text-white transition hover:border-violet-300/80 hover:bg-violet-300/20"
+            className="min-h-[44px] rounded-full border border-violet-300/40 bg-violet-300/10 px-8 py-2.5 text-base font-medium text-foreground transition hover:border-violet-300/80 hover:bg-violet-300/20"
           >
             Enter the cosmic web
           </button>
 
           <button
             onClick={() => setShowNotes(true)}
-            className="mt-6 text-base text-white/75 underline-offset-4 hover:text-white hover:underline"
+            className="mt-6 text-base text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
           >
             Read the design notes
           </button>
-          <Link href="/dream" className="mt-8 text-base text-white/55 hover:text-white/80">
+          <Link href="/dream" className="mt-8 text-base text-muted-foreground hover:text-foreground">
             ← back to dream sandbox
           </Link>
         </div>
@@ -363,18 +363,18 @@ export default function CosmicConnectomePage() {
       {phase === "running" && (
         <>
           <div className="pointer-events-none absolute left-4 top-4 flex flex-col gap-1 select-none">
-            <span className="font-serif text-xl text-white/95">Cosmic Connectome</span>
+            <span className="font-serif text-xl text-foreground">Cosmic Connectome</span>
             {path === "gpu" && (
-              <span className="font-mono text-base text-emerald-300/95">● WebGPU compute · {hud.agents.toLocaleString()} agents</span>
+              <span className="font-mono text-base text-violet-300/95">● WebGPU compute · {hud.agents.toLocaleString()} agents</span>
             )}
             {path === "cpu" && (
-              <span className="font-mono text-base text-amber-300/95">● CPU fallback · {hud.agents.toLocaleString()} agents</span>
+              <span className="font-mono text-base text-violet-300/95">● CPU fallback · {hud.agents.toLocaleString()} agents</span>
             )}
-            {!path && <span className="font-mono text-base text-white/55">initialising…</span>}
-            <span className="font-mono text-base text-white/75">
+            {!path && <span className="font-mono text-base text-muted-foreground">initialising…</span>}
+            <span className="font-mono text-base text-muted-foreground">
               {hud.nodes} nodes · Σ connectivity {hud.totalDeg.toFixed(1)}
             </span>
-            <span className="font-mono text-base text-white/55">
+            <span className="font-mono text-base text-muted-foreground">
               peak degree {hud.maxDeg.toFixed(1)} · energy {hud.energy.toFixed(2)}
             </span>
           </div>
@@ -382,27 +382,27 @@ export default function CosmicConnectomePage() {
           <div className="absolute right-4 top-4 flex flex-col items-end gap-2 select-none">
             <button
               onClick={() => setMuted((m) => !m)}
-              className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 transition hover:border-white/60 hover:text-white"
+              className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground transition hover:border-border hover:text-foreground"
             >
               {muted ? "unmute" : "mute"}
             </button>
             <button
               onClick={() => setShowNotes(true)}
-              className="text-base text-white/75 hover:text-white"
+              className="text-base text-muted-foreground hover:text-foreground"
             >
               design notes ↗
             </button>
-            <Link href="/dream" className="text-base text-white/55 hover:text-white/85">
+            <Link href="/dream" className="text-base text-muted-foreground hover:text-foreground">
               ← back
             </Link>
           </div>
 
-          <p className="pointer-events-none absolute bottom-4 left-4 select-none font-mono text-base text-white/55">
+          <p className="pointer-events-none absolute bottom-4 left-4 select-none font-mono text-base text-muted-foreground">
             tap to seed a node · filaments grow between them · gravity merges clusters · it evolves on its own
           </p>
 
           {err && (
-            <p className="absolute bottom-4 right-4 max-w-xs rounded border border-amber-300/30 px-3 py-2 text-base text-amber-300/95">
+            <p className="absolute bottom-4 right-4 max-w-xs rounded border border-violet-300/30 px-3 py-2 text-base text-violet-300/95">
               {err}
             </p>
           )}
@@ -419,15 +419,15 @@ export default function CosmicConnectomePage() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-start justify-between gap-4">
-              <h2 className="font-serif text-2xl text-white">Design notes</h2>
+              <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
               <button
                 onClick={() => setShowNotes(false)}
-                className="min-h-[44px] rounded-full border border-white/25 px-4 py-2.5 text-base text-white/80 hover:border-white/60 hover:text-white"
+                className="min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:border-border hover:text-foreground"
               >
                 close
               </button>
             </div>
-            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-white/80">
+            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-foreground">
               {DESIGN_NOTES}
             </pre>
           </div>

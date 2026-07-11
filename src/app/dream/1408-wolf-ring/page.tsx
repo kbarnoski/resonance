@@ -243,16 +243,16 @@ export default function WolfRingPage() {
           <p className="mb-3 font-mono text-xs uppercase tracking-[0.3em] text-violet-300/80">
             the wolf ring
           </p>
-          <h1 className="mb-4 font-serif text-3xl leading-snug text-white/95">
+          <h1 className="mb-4 font-serif text-3xl leading-snug text-foreground">
             Walk the Circle of Fifths — <br className="hidden sm:block" />
             and Play the Wolf
           </h1>
-          <p className="text-base leading-relaxed text-white/75">
+          <p className="text-base leading-relaxed text-muted-foreground">
             An old temperament buys sweeter thirds and fifths than the piano by
             banking all its error into a single interval — the{" "}
-            <span className="text-rose-300">wolf fifth</span>, which howls. Here
+            <span className="text-violet-300">wolf fifth</span>, which howls. Here
             that wolf is a place on a 3-D ring you can{" "}
-            <span className="text-emerald-300/95">walk into on purpose</span>.
+            <span className="text-violet-300/95">walk into on purpose</span>.
             The wrong note is the point.
           </p>
         </div>
@@ -265,12 +265,12 @@ export default function WolfRingPage() {
         </button>
 
         {audioError && (
-          <p className="text-sm text-rose-300">
+          <p className="text-sm text-violet-300">
             Web Audio unavailable — the ring will still move, silently.
           </p>
         )}
 
-        <p className="max-w-sm text-sm text-white/55">
+        <p className="max-w-sm text-sm text-muted-foreground">
           Tap tiles to walk fifth by fifth. Drag the ring to turn it. Flip the
           temperament to hear the wolf appear and vanish. Idle 5s and it walks
           itself — across the wolf.
@@ -278,7 +278,7 @@ export default function WolfRingPage() {
 
         <a
           href="/dream/1408-wolf-ring/README.md"
-          className="absolute bottom-4 right-4 text-xs text-white/55 transition-colors hover:text-white/80"
+          className="absolute bottom-4 right-4 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           Read the design notes ↗
         </a>
@@ -303,8 +303,8 @@ export default function WolfRingPage() {
       `}</style>
 
       {/* ── Top bar ─────────────────────────────────────────────────── */}
-      <div className="z-10 flex flex-shrink-0 flex-wrap items-center justify-between gap-2 border-b border-white/5 bg-black/25 px-4 py-2.5">
-        <span className="font-serif text-xl text-white/90">The Wolf Ring</span>
+      <div className="z-10 flex flex-shrink-0 flex-wrap items-center justify-between gap-2 border-b border-border bg-black/25 px-4 py-2.5">
+        <span className="font-serif text-xl text-foreground">The Wolf Ring</span>
         <div className="flex flex-wrap gap-1.5">
           {TEMPERAMENTS.map((t, i) => (
             <button
@@ -313,7 +313,7 @@ export default function WolfRingPage() {
               className={`min-h-[44px] rounded-full border px-4 py-2.5 text-sm transition-all ${
                 tempIdx === i
                   ? "border-violet-400/50 bg-violet-500/20 text-violet-200"
-                  : "border-white/10 text-white/55 hover:text-white/85"
+                  : "border-border text-muted-foreground hover:text-foreground"
               }`}
             >
               {t.shortName}
@@ -440,7 +440,7 @@ export default function WolfRingPage() {
                     {note.label}
                   </span>
                   {isWolfTile && (
-                    <span className="mt-1 font-mono text-[9px] uppercase tracking-widest text-rose-300/80">
+                    <span className="mt-1 font-mono text-[9px] uppercase tracking-widest text-violet-300/80">
                       wolf
                     </span>
                   )}
@@ -456,7 +456,7 @@ export default function WolfRingPage() {
         </div>
 
         {isDemo && (
-          <div className="pointer-events-none absolute left-3 top-3 flex select-none items-center gap-1.5 text-xs text-white/55">
+          <div className="pointer-events-none absolute left-3 top-3 flex select-none items-center gap-1.5 text-xs text-muted-foreground">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-violet-400/70" />
             walking itself · tap a tile to take over
           </div>
@@ -464,13 +464,13 @@ export default function WolfRingPage() {
       </div>
 
       {/* ── Readout ─────────────────────────────────────────────────── */}
-      <div className="z-10 flex-shrink-0 border-t border-white/5 bg-black/25 px-4 py-3">
+      <div className="z-10 flex-shrink-0 border-t border-border bg-black/25 px-4 py-3">
         <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 font-mono text-sm">
           <div className="flex items-baseline gap-2">
-            <span className="text-white/55">fifth</span>
+            <span className="text-muted-foreground">fifth</span>
             <span
               className={
-                wolfActive ? "text-lg text-rose-300" : "text-lg text-white/95"
+                wolfActive ? "text-lg text-violet-300" : "text-lg text-foreground"
               }
             >
               {reading
@@ -478,22 +478,22 @@ export default function WolfRingPage() {
                 : "—"}
             </span>
             {wolfActive && (
-              <span className="rounded bg-rose-500/25 px-2 py-0.5 text-xs uppercase tracking-widest text-rose-200">
+              <span className="rounded bg-violet-500/25 px-2 py-0.5 text-xs uppercase tracking-widest text-violet-200">
                 wolf
               </span>
             )}
           </div>
 
           <div className="flex items-baseline gap-2">
-            <span className="text-white/55">size</span>
-            <span className="text-white/90">
+            <span className="text-muted-foreground">size</span>
+            <span className="text-foreground">
               {reading ? `${reading.fifthCents.toFixed(1)}¢` : "—"}
             </span>
             <span
               className={
                 reading && Math.abs(reading.centsFromPure) > 15
-                  ? "text-amber-300/95"
-                  : "text-emerald-300/95"
+                  ? "text-violet-300/95"
+                  : "text-violet-300/95"
               }
             >
               {reading ? `${fmtCents(reading.centsFromPure)}¢ vs pure` : ""}
@@ -501,13 +501,13 @@ export default function WolfRingPage() {
           </div>
 
           <div className="flex min-w-[180px] items-center gap-2">
-            <span className="text-white/55">beat</span>
+            <span className="text-muted-foreground">beat</span>
             <span
-              className={wolfActive ? "text-rose-300" : "text-white/90"}
+              className={wolfActive ? "text-violet-300" : "text-foreground"}
             >
               {reading ? `${reading.beatHz.toFixed(1)} Hz` : "—"}
             </span>
-            <span className="relative h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+            <span className="relative h-2 flex-1 overflow-hidden rounded-full bg-muted">
               <span
                 className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
                 style={{
@@ -524,12 +524,12 @@ export default function WolfRingPage() {
         </div>
 
         <div className="mt-2 flex items-center justify-between gap-3">
-          <p className="truncate text-xs text-white/55">
-            <span className="text-white/75">{temp.name}.</span> {temp.blurb}
+          <p className="truncate text-xs text-muted-foreground">
+            <span className="text-muted-foreground">{temp.name}.</span> {temp.blurb}
           </p>
           <a
             href="/dream/1408-wolf-ring/README.md"
-            className="shrink-0 text-xs text-white/55 transition-colors hover:text-white/80"
+            className="shrink-0 text-xs text-muted-foreground transition-colors hover:text-foreground"
           >
             notes ↗
           </a>
@@ -537,7 +537,7 @@ export default function WolfRingPage() {
       </div>
 
       {audioError && (
-        <div className="pointer-events-none absolute left-1/2 top-16 z-20 -translate-x-1/2 rounded bg-black/70 px-4 py-2 text-sm text-rose-300">
+        <div className="pointer-events-none absolute left-1/2 top-16 z-20 -translate-x-1/2 rounded bg-black/70 px-4 py-2 text-sm text-violet-300">
           Web Audio unavailable — visuals only
         </div>
       )}

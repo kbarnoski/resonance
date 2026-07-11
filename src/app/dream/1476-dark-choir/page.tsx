@@ -120,23 +120,23 @@ export default function DarkChoirPage() {
   }, []);
 
   return (
-    <main className="relative h-dvh w-screen overflow-hidden bg-[#040308] text-white">
+    <main className="relative h-dvh w-screen overflow-hidden bg-[#040308] text-foreground">
       {/* The near-black luminance field. */}
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden />
 
       {/* ── Idle / start panel ─────────────────────────────────────────────── */}
       {phase !== "running" && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
-          <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-white/10">
-            <h1 className="font-serif text-3xl tracking-tight text-white sm:text-4xl">
+          <div className="max-w-xl rounded-2xl bg-black/50 p-8 backdrop-blur-md ring-1 ring-border">
+            <h1 className="font-serif text-3xl tracking-tight text-foreground sm:text-4xl">
               Dark Choir
             </h1>
-            <p className="mt-3 text-base leading-relaxed text-white/80">
+            <p className="mt-3 text-base leading-relaxed text-foreground">
               Close your eyes and hum, sing, or breathe into the dark — the
               darkness answers. Your note lifts off into an endlessly rising choir
               of your own voice that never stops climbing.
             </p>
-            <p className="mt-3 text-base leading-relaxed text-white/75">
+            <p className="mt-3 text-base leading-relaxed text-muted-foreground">
               This one is for the ears. The screen stays almost black on purpose —
               a single halo breathes with you. Best with headphones, eyes closed.
             </p>
@@ -145,16 +145,16 @@ export default function DarkChoirPage() {
               type="button"
               onClick={begin}
               disabled={phase === "starting"}
-              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-white px-4 py-2.5 text-base font-medium text-black transition hover:bg-white/90 disabled:opacity-60"
+              className="mt-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-card px-4 py-2.5 text-base font-medium text-black transition hover:bg-accent disabled:opacity-60"
             >
               {phase === "starting" ? "Listening…" : "Sing into the dark · allow mic"}
             </button>
 
             {errorMsg && (
-              <p className="mt-4 text-base text-rose-300">{errorMsg}</p>
+              <p className="mt-4 text-base text-violet-300">{errorMsg}</p>
             )}
 
-            <p className="mt-4 text-base text-white/75">
+            <p className="mt-4 text-base text-muted-foreground">
               We listen only to steer the choir — nothing is recorded or sent
               anywhere. Without a mic, the choir sings to itself so it is never
               silent.
@@ -166,14 +166,14 @@ export default function DarkChoirPage() {
       {/* ── Running status (sparse) ────────────────────────────────────────── */}
       {phase === "running" && (
         <div className="pointer-events-none absolute left-6 top-6 select-none">
-          <h1 className="font-serif text-2xl text-white/95">Dark Choir</h1>
+          <h1 className="font-serif text-2xl text-foreground">Dark Choir</h1>
           {mode === "mic" && (
-            <p className="mt-1 text-base text-emerald-300/95">
+            <p className="mt-1 text-base text-violet-300/95">
               ● listening — sing, hum, or breathe
             </p>
           )}
           {mode === "auto" && (
-            <p className="mt-1 text-base text-amber-300/95">
+            <p className="mt-1 text-base text-violet-300/95">
               ○ self-singing (no mic)
             </p>
           )}
@@ -187,23 +187,23 @@ export default function DarkChoirPage() {
       <button
         type="button"
         onClick={() => setShowNotes((s) => !s)}
-        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-white/80 ring-1 ring-white/10 backdrop-blur-md transition hover:text-white"
+        className="absolute right-6 top-6 inline-flex min-h-[44px] items-center justify-center rounded-xl bg-black/50 px-4 py-2.5 text-base text-foreground ring-1 ring-border backdrop-blur-md transition hover:text-foreground"
       >
         {showNotes ? "Close notes" : "Read the design notes"}
       </button>
 
       {showNotes && (
         <div className="absolute inset-0 z-10 flex items-start justify-center overflow-y-auto bg-black/75 px-6 py-16 backdrop-blur-md">
-          <div className="max-w-2xl text-white/85">
-            <h2 className="font-serif text-2xl text-white">Design notes</h2>
+          <div className="max-w-2xl text-foreground">
+            <h2 className="font-serif text-2xl text-foreground">Design notes</h2>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">The question:</span> what if you closed
+              <span className="text-foreground">The question:</span> what if you closed
               your eyes, sang into the dark, and the darkness sang back — an
               endlessly, ecstatically rising choir of your own voice that never
               stops climbing?
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Voice as controller.</span> The mic is a
+              <span className="text-foreground">Voice as controller.</span> The mic is a
               pure measurement tap — never routed to the speakers. We extract two
               slow signals: loudness (auto-ranged RMS) and pitch (autocorrelation).
               Loudness drives an always-gliding{" "}
@@ -216,25 +216,25 @@ export default function DarkChoirPage() {
               voices circle your head.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Ascent, not dissolution.</span> A firm
+              <span className="text-foreground">Ascent, not dissolution.</span> A firm
               just-intonation drone (root + fifth) holds the ground while the voices
               keep <em>lifting</em>. The felt sense is being carried endlessly
               upward — boundless but buoyant — not thinning away into a void.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Why the screen is nearly black.</span>{" "}
+              <span className="text-foreground">Why the screen is nearly black.</span>{" "}
               The lab leans on screens. This piece deliberately tests that bias:
               audio is the primary medium and the visual is a companion, one soft
               breathing halo that tracks your voice. It works with your eyes closed.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">References.</span> Pauline Oliveros,{" "}
+              <span className="text-foreground">References.</span> Pauline Oliveros,{" "}
               <em>Deep Listening</em>; La Monte Young&apos;s sustained-drone{" "}
               <em>Dream House</em>; Roger Shepard &amp; Jean-Claude Risset&apos;s
               endless glissando; the jhāna sense of oceanic boundlessness.
             </p>
             <p className="mt-4 text-base leading-relaxed">
-              <span className="text-white">Safety.</span> Only slow luminance drift
+              <span className="text-foreground">Safety.</span> Only slow luminance drift
               (well under 3 Hz), no flicker; honours reduced-motion. Master ramps up
               from silence to a gentle peak through a limiter.
             </p>

@@ -558,7 +558,7 @@ export default function TiltPoolPage() {
   }, []);
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-slate-950 text-foreground">
       <canvas
         ref={canvasRef}
         onPointerMove={onPointer}
@@ -568,22 +568,22 @@ export default function TiltPoolPage() {
 
       {/* ── title + status (top-left) ──────────────────────────────────────── */}
       <div className="pointer-events-none absolute left-0 top-0 z-10 max-w-lg p-5">
-        <h1 className="text-2xl font-semibold tracking-tight text-white/95 drop-shadow">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground drop-shadow">
           Tilt Pool
         </h1>
-        <p className="mt-1 text-base text-white/75 drop-shadow">
+        <p className="mt-1 text-base text-muted-foreground drop-shadow">
           Balance the basin — sound pools like water to the lowest corner.
         </p>
         {phase === "running" && (
-          <p className="mt-2 text-base text-emerald-300 drop-shadow">
+          <p className="mt-2 text-base text-violet-300 drop-shadow">
             Mode: {mode === "tilt" ? "device tilt" : "pointer (move over the pool)"}
           </p>
         )}
         {sensorMsg && (
-          <p className="mt-1 text-base text-emerald-300 drop-shadow">{sensorMsg}</p>
+          <p className="mt-1 text-base text-violet-300 drop-shadow">{sensorMsg}</p>
         )}
         {sensorErr && (
-          <p className="mt-1 text-base text-rose-300 drop-shadow">{sensorErr}</p>
+          <p className="mt-1 text-base text-violet-300 drop-shadow">{sensorErr}</p>
         )}
       </div>
 
@@ -592,7 +592,7 @@ export default function TiltPoolPage() {
         {phase === "idle" ? (
           <button
             onClick={begin}
-            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg transition hover:bg-violet-400"
+            className="min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-400"
           >
             Begin
           </button>
@@ -600,13 +600,13 @@ export default function TiltPoolPage() {
           <>
             <button
               onClick={enableTilt}
-              className="min-h-[44px] rounded-full bg-emerald-500/85 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg transition hover:bg-emerald-400"
+              className="min-h-[44px] rounded-full bg-violet-500/85 px-4 py-2.5 text-base font-medium text-foreground shadow-lg transition hover:bg-violet-400"
             >
               Enable tilt
             </button>
             <button
               onClick={stop}
-              className="min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/95 shadow-lg backdrop-blur transition hover:bg-white/20"
+              className="min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-foreground shadow-lg backdrop-blur transition hover:bg-accent"
             >
               Stop
             </button>
@@ -617,37 +617,37 @@ export default function TiltPoolPage() {
       {/* ── design notes affordance (bottom-right corner) ──────────────────── */}
       <button
         onClick={() => setNotesOpen((v) => !v)}
-        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-white/10 px-4 py-2.5 text-base font-medium text-white/75 shadow backdrop-blur transition hover:bg-white/20"
+        className="absolute bottom-5 right-5 z-20 min-h-[44px] rounded-full bg-muted px-4 py-2.5 text-base font-medium text-muted-foreground shadow backdrop-blur transition hover:bg-accent"
       >
         Read the design notes
       </button>
 
       {notesOpen && (
         <div className="absolute inset-0 z-30 flex items-center justify-center bg-slate-950/70 p-6 backdrop-blur">
-          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-slate-900/90 p-6 shadow-2xl ring-1 ring-white/10">
-            <h2 className="text-2xl font-semibold text-white/95">Tilt Pool — design notes</h2>
-            <p className="mt-3 text-base text-white/75">
+          <div className="max-h-[80vh] max-w-lg overflow-y-auto rounded-2xl bg-slate-900/90 p-6 shadow-2xl ring-1 ring-border">
+            <h2 className="text-2xl font-semibold text-foreground">Tilt Pool — design notes</h2>
+            <p className="mt-3 text-base text-muted-foreground">
               A liquid harmony instrument you play by <em>balancing</em>. The basin holds six
               colored pools, each tuned to a just-intonation degree over F. Tilt your device (or
               move the pointer, on desktop) and the liquid slumps toward the low corner: pools that
               gather there deepen and grow louder; thin pools fade.
             </p>
-            <p className="mt-3 text-base text-white/75">
+            <p className="mt-3 text-base text-muted-foreground">
               Holding near level lets several pools coexist — a full chord. A steep tilt collapses
               everything into one deep, low pool. No touching notes, no dragging: you simply find
               the angle a chord lives at and hold it.
             </p>
-            <p className="mt-3 text-base text-white/55">
+            <p className="mt-3 text-base text-muted-foreground">
               input = tilt / pointer · output = canvas2d-bright · technique =
               shallow-water-pooling + JI-drone · palette = aqueous-daylight
             </p>
-            <p className="mt-3 text-base text-white/55">
+            <p className="mt-3 text-base text-muted-foreground">
               Reference: Toshio Iwai&apos;s playful sensor-instrument lineage (Electroplankton) and
               the &ldquo;pour sound like water&rdquo; metaphor of physical balance instruments.
             </p>
             <button
               onClick={() => setNotesOpen(false)}
-              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-white/95 transition hover:bg-violet-400"
+              className="mt-5 min-h-[44px] rounded-full bg-violet-500/90 px-4 py-2.5 text-base font-medium text-foreground transition hover:bg-violet-400"
             >
               Close
             </button>

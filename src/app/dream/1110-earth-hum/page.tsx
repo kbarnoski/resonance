@@ -153,7 +153,7 @@ export default function EarthHumPage() {
   const showHud = phase === "running" || phase === "noaudio";
 
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0713] text-white">
+    <main className="relative h-dvh w-full overflow-hidden bg-[#0a0713] text-foreground">
       <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
       {/* Idle / Start overlay — tapping anywhere starts, too */}
@@ -162,10 +162,10 @@ export default function EarthHumPage() {
           className="absolute inset-0 z-20 flex cursor-pointer flex-col items-center justify-center gap-6 bg-[#0a0713]/60 px-6 text-center backdrop-blur-sm"
           onClick={() => void begin()}
         >
-          <h1 className="text-3xl font-semibold text-white/95 sm:text-4xl">
+          <h1 className="text-3xl font-semibold text-foreground sm:text-4xl">
             Earth Hum
           </h1>
-          <p className="max-w-xl text-base leading-relaxed text-white/80">
+          <p className="max-w-xl text-base leading-relaxed text-foreground">
             Tune into the planet&apos;s own electromagnetic heartbeat — the real
             Schumann Resonance of the Earth&ndash;ionosphere cavity, sung as a
             warm cosmic drone and driven by live NOAA space-weather data.
@@ -176,11 +176,11 @@ export default function EarthHumPage() {
               e.stopPropagation();
               void begin();
             }}
-            className="min-h-[44px] rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-2.5 text-base text-amber-200 transition hover:bg-amber-300/20"
+            className="min-h-[44px] rounded-full border border-violet-300/40 bg-violet-300/10 px-4 py-2.5 text-base text-violet-200 transition hover:bg-violet-300/20"
           >
             Start listening
           </button>
-          <p className="text-base text-white/75">
+          <p className="text-base text-muted-foreground">
             Headphones or a subwoofer bring out the felt 7.83&nbsp;Hz pulse. One
             tap starts it; it then hums and drifts on its own.
           </p>
@@ -190,7 +190,7 @@ export default function EarthHumPage() {
       {/* WebGL-missing notice */}
       {phase === "nowebgl" && (
         <div className="absolute inset-0 z-20 flex items-center justify-center px-6 text-center">
-          <p className="max-w-md text-base leading-relaxed text-rose-300">
+          <p className="max-w-md text-base leading-relaxed text-violet-300">
             This piece renders a live 3-D globe with WebGL, which your browser
             does not appear to support. Try a recent desktop browser with
             hardware acceleration enabled.
@@ -200,31 +200,31 @@ export default function EarthHumPage() {
 
       {/* Live HUD */}
       {showHud && (
-        <div className="absolute left-4 top-4 z-10 rounded-xl border border-white/10 bg-black/45 px-4 py-3 text-base backdrop-blur-md">
+        <div className="absolute left-4 top-4 z-10 rounded-xl border border-border bg-black/45 px-4 py-3 text-base backdrop-blur-md">
           <div className="mb-1.5 flex items-center gap-2">
             <span
               className={
                 live
-                  ? "inline-block h-2.5 w-2.5 rounded-full bg-emerald-400"
-                  : "inline-block h-2.5 w-2.5 rounded-full bg-amber-400"
+                  ? "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
+                  : "inline-block h-2.5 w-2.5 rounded-full bg-violet-400"
               }
             />
-            <span className={live ? "text-emerald-300" : "text-amber-300"}>
+            <span className={live ? "text-violet-300" : "text-violet-300"}>
               {live ? "LIVE · NOAA SWPC" : "simulated"}
             </span>
           </div>
-          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-white/95">
-            <dt className="text-white/75">Kp index</dt>
+          <dl className="grid grid-cols-[auto_auto] gap-x-4 gap-y-0.5 text-foreground">
+            <dt className="text-muted-foreground">Kp index</dt>
             <dd className="text-right tabular-nums">
               {data ? data.kp.toFixed(1) : "—"} / 9
             </dd>
-            <dt className="text-white/75">wind</dt>
+            <dt className="text-muted-foreground">wind</dt>
             <dd className="text-right tabular-nums">
               {data ? Math.round(data.windSpeed) : "—"} km/s
             </dd>
           </dl>
           {phase === "noaudio" && (
-            <p className="mt-2 max-w-[16rem] text-base leading-snug text-amber-300/95">
+            <p className="mt-2 max-w-[16rem] text-base leading-snug text-violet-300/95">
               Audio could not start in this browser — the globe still runs.
             </p>
           )}
@@ -235,7 +235,7 @@ export default function EarthHumPage() {
       <button
         type="button"
         onClick={() => setNotesOpen((v) => !v)}
-        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-white/15 bg-black/40 px-4 py-2.5 text-base text-white/80 backdrop-blur-md transition hover:text-white/95"
+        className="absolute bottom-4 right-4 z-20 min-h-[44px] rounded-full border border-border bg-black/40 px-4 py-2.5 text-base text-foreground backdrop-blur-md transition hover:text-foreground"
       >
         {notesOpen ? "Close notes" : "Read the design notes"}
       </button>
@@ -246,11 +246,11 @@ export default function EarthHumPage() {
             <button
               type="button"
               onClick={() => setNotesOpen(false)}
-              className="mb-4 min-h-[44px] rounded-full border border-white/15 px-4 py-2.5 text-base text-white/80 hover:text-white/95"
+              className="mb-4 min-h-[44px] rounded-full border border-border px-4 py-2.5 text-base text-foreground hover:text-foreground"
             >
               Close
             </button>
-            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-white/85">
+            <pre className="whitespace-pre-wrap font-mono text-base leading-relaxed text-foreground">
               {README}
             </pre>
           </div>

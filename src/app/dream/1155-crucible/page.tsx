@@ -31,9 +31,9 @@ function targetTemperature(energy: number, cool: number): number {
 }
 
 const PHASE_COLOR: Record<MDStats["phase"], string> = {
-  SOLID: "text-cyan-300",
-  LIQUID: "text-teal-200",
-  GAS: "text-fuchsia-300",
+  SOLID: "text-violet-300",
+  LIQUID: "text-violet-200",
+  GAS: "text-violet-300",
 };
 
 export default function CruciblePage() {
@@ -309,7 +309,7 @@ export default function CruciblePage() {
           : null;
 
   return (
-    <main className="relative min-h-screen w-full overflow-hidden bg-[#04060a] text-white">
+    <main className="relative min-h-screen w-full overflow-hidden bg-[#04060a] text-foreground">
       {/* three.js point-cloud host — drag to inject heat */}
       <div
         ref={canvasHostRef}
@@ -326,13 +326,13 @@ export default function CruciblePage() {
 
       <div className="pointer-events-none relative z-10 flex min-h-screen flex-col justify-between p-6 sm:p-10">
         <header className="pointer-events-auto max-w-2xl">
-          <p className="mb-2 text-sm uppercase tracking-[0.28em] text-cyan-200/80">
+          <p className="mb-2 text-sm uppercase tracking-[0.28em] text-violet-200/80">
             Resonance · Dream Lab
           </p>
-          <h1 className="font-serif text-4xl font-medium leading-tight text-white sm:text-5xl">
+          <h1 className="font-serif text-4xl font-medium leading-tight text-foreground sm:text-5xl">
             The Crucible
           </h1>
-          <p className="mt-3 max-w-xl text-base leading-relaxed text-white/80">
+          <p className="mt-3 max-w-xl text-base leading-relaxed text-foreground">
             Karel&rsquo;s piano is the only heat source. Its moment-to-moment
             energy sets the temperature of a real Lennard-Jones gas — ~900
             particles under genuine molecular dynamics. Quiet passages freeze
@@ -343,9 +343,9 @@ export default function CruciblePage() {
 
         {/* Live phase readout */}
         {readout && (
-          <div className="pointer-events-auto mx-auto mb-2 w-full max-w-md rounded-2xl border border-white/10 bg-black/45 px-5 py-3 backdrop-blur-md">
+          <div className="pointer-events-auto mx-auto mb-2 w-full max-w-md rounded-2xl border border-border bg-black/45 px-5 py-3 backdrop-blur-md">
             <div className="flex items-center justify-between">
-              <span className="text-sm uppercase tracking-widest text-white/60">
+              <span className="text-sm uppercase tracking-widest text-muted-foreground">
                 Phase
               </span>
               <span
@@ -354,22 +354,22 @@ export default function CruciblePage() {
                 {readout.phase}
               </span>
             </div>
-            <div className="mt-2 grid grid-cols-3 gap-2 text-center text-sm text-white/75">
+            <div className="mt-2 grid grid-cols-3 gap-2 text-center text-sm text-muted-foreground">
               <div>
-                <div className="text-white/50">T (now)</div>
-                <div className="tabular-nums text-white/90">
+                <div className="text-muted-foreground">T (now)</div>
+                <div className="tabular-nums text-foreground">
                   {readout.temperature.toFixed(2)}
                 </div>
               </div>
               <div>
-                <div className="text-white/50">T (target)</div>
-                <div className="tabular-nums text-white/90">
+                <div className="text-muted-foreground">T (target)</div>
+                <div className="tabular-nums text-foreground">
                   {readout.targetTemperature.toFixed(2)}
                 </div>
               </div>
               <div>
-                <div className="text-white/50">⟨neighbours⟩</div>
-                <div className="tabular-nums text-white/90">
+                <div className="text-muted-foreground">⟨neighbours⟩</div>
+                <div className="tabular-nums text-foreground">
                   {readout.avgCoordination.toFixed(1)}
                 </div>
               </div>
@@ -380,19 +380,19 @@ export default function CruciblePage() {
         {/* Controls */}
         <section className="pointer-events-auto max-w-xl">
           {phase !== "playing" ? (
-            <div className="rounded-2xl border border-white/10 bg-black/45 p-5 backdrop-blur-md">
+            <div className="rounded-2xl border border-border bg-black/45 p-5 backdrop-blur-md">
               <button
                 type="button"
                 onClick={() => void runPlay()}
                 disabled={phase === "loading" || webglFailed}
-                className="min-h-[44px] w-full rounded-lg bg-cyan-300 px-4 py-2.5 text-base font-semibold text-[#04121a] transition-colors hover:bg-cyan-200 disabled:opacity-60 sm:w-auto"
+                className="min-h-[44px] w-full rounded-lg bg-violet-300 px-4 py-2.5 text-base font-semibold text-[#04121a] transition-colors hover:bg-violet-200 disabled:opacity-60 sm:w-auto"
               >
                 {phase === "loading" ? "Heating…" : "Play — heat the crucible"}
               </button>
 
               <label
                 htmlFor="rec-id"
-                className="mt-4 block text-sm font-medium text-white/75"
+                className="mt-4 block text-sm font-medium text-muted-foreground"
               >
                 Path recording id
               </label>
@@ -402,7 +402,7 @@ export default function CruciblePage() {
                 value={recordingId}
                 onChange={(e) => setRecordingId(e.target.value)}
                 spellCheck={false}
-                className="mt-2 w-full rounded-lg border border-white/15 bg-black/50 px-3 py-2.5 font-mono text-sm text-white/90 outline-none placeholder:text-white/40 focus:border-cyan-300/60"
+                className="mt-2 w-full rounded-lg border border-border bg-black/50 px-3 py-2.5 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground/70 focus:border-violet-300/60"
                 placeholder="recording id"
               />
 
@@ -415,15 +415,15 @@ export default function CruciblePage() {
                 onDrop={onDrop}
                 className={`mt-3 rounded-lg border border-dashed px-3 py-3 text-sm transition-colors ${
                   dragOver
-                    ? "border-cyan-300/70 bg-cyan-300/10 text-white/90"
-                    : "border-white/15 text-white/60"
+                    ? "border-violet-300/70 bg-violet-300/10 text-foreground"
+                    : "border-border text-muted-foreground"
                 }`}
               >
                 Drop an audio file here, or{" "}
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="text-cyan-200 underline underline-offset-2 hover:text-cyan-100"
+                  className="text-violet-200 underline underline-offset-2 hover:text-violet-100"
                 >
                   choose a file
                 </button>
@@ -437,33 +437,33 @@ export default function CruciblePage() {
                 />
               </div>
 
-              {notice && <p className="mt-3 text-sm text-rose-300">{notice}</p>}
+              {notice && <p className="mt-3 text-sm text-violet-300">{notice}</p>}
             </div>
           ) : (
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-4 backdrop-blur-md">
-              <p className="text-base text-white/85">
+            <div className="rounded-2xl border border-border bg-black/40 p-4 backdrop-blur-md">
+              <p className="text-base text-foreground">
                 Heating from{" "}
-                <span className="text-cyan-200">{sourceLabel}</span>.
-                <span className="ml-2 text-white/60">
+                <span className="text-violet-200">{sourceLabel}</span>.
+                <span className="ml-2 text-muted-foreground">
                   {minutes < 1
                     ? "the lattice is finding itself…"
                     : `${minutes.toFixed(1)} min in the crucible`}
                 </span>
               </p>
               {source === "fallback" && (
-                <p className="mt-1 text-sm text-cyan-300">
+                <p className="mt-1 text-sm text-violet-300">
                   Synth fallback — no recording or file loaded.
                 </p>
               )}
-              {notice && <p className="mt-2 text-sm text-rose-300">{notice}</p>}
+              {notice && <p className="mt-2 text-sm text-violet-300">{notice}</p>}
 
               {/* Cool slider — offset the thermostat to force re-crystallization */}
               <label
                 htmlFor="cool"
-                className="mt-4 block text-sm font-medium text-white/75"
+                className="mt-4 block text-sm font-medium text-muted-foreground"
               >
                 Cooling: {cool.toFixed(2)}{" "}
-                <span className="text-white/50">
+                <span className="text-muted-foreground">
                   (drag right to freeze against the music)
                 </span>
               </label>
@@ -475,13 +475,13 @@ export default function CruciblePage() {
                 step={0.01}
                 value={cool}
                 onChange={(e) => setCool(parseFloat(e.target.value))}
-                className="mt-2 w-full accent-cyan-300"
+                className="mt-2 w-full accent-violet-300"
               />
             </div>
           )}
 
           {webglFailed && (
-            <p className="mt-3 text-sm text-rose-300">
+            <p className="mt-3 text-sm text-violet-300">
               WebGL is unavailable in this browser, so the 3D crucible can&rsquo;t
               render. The physics still runs, but you won&rsquo;t see it — try a
               browser with WebGL enabled.
@@ -492,25 +492,25 @@ export default function CruciblePage() {
             <button
               type="button"
               onClick={() => setShowNotes((v) => !v)}
-              className="text-sm text-white/70 underline underline-offset-2 hover:text-white/90"
+              className="text-sm text-muted-foreground underline underline-offset-2 hover:text-foreground"
             >
               {showNotes ? "Hide design notes" : "Design notes"}
             </button>
             <Link
               href="/dream"
-              className="text-sm text-white/60 hover:text-white/85"
+              className="text-sm text-muted-foreground hover:text-foreground"
             >
               ← all prototypes
             </Link>
           </div>
 
           {showNotes && (
-            <div className="mt-3 max-w-xl rounded-2xl border border-white/10 bg-black/50 p-5 text-sm leading-relaxed text-white/75 backdrop-blur-md">
+            <div className="mt-3 max-w-xl rounded-2xl border border-border bg-black/50 p-5 text-sm leading-relaxed text-muted-foreground backdrop-blur-md">
               <p>
                 Real molecular dynamics: ~900 particles interact through the{" "}
-                <span className="text-cyan-200">Lennard-Jones</span> pair
+                <span className="text-violet-200">Lennard-Jones</span> pair
                 potential (John Lennard-Jones, 1924), integrated with{" "}
-                <span className="text-cyan-200">velocity-Verlet</span> (Loup
+                <span className="text-violet-200">velocity-Verlet</span> (Loup
                 Verlet, 1967) at a 2.5σ cutoff via an O(N) cell list. A Berendsen
                 thermostat sets the temperature from the music&rsquo;s RMS
                 energy — the only heat source. Onsets (spectral flux) fire a
