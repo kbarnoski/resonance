@@ -58,7 +58,7 @@ Pick ONE action for this cycle, in priority order:
 2. **Continue**: if a prototype is in-progress (less than ~70% complete), continue it. Pick the highest-priority in-progress one.
 3. **Kid-cycle rotation — PAUSED 2026-06-28.** Karel said "pause on kids dream agent ones." **Do NOT build kids prototypes** until this line is changed back. Skip this step entirely — `cycle_number % 2` no longer routes to kids. Every cycle is now a **psychedelic / altered-states** cycle: read `docs/dreams/PSYCHEDELIC.md` and pick a state + pole from there. (Frozen rule, for when kids resumes: it was every-other via `cycle_number % 2 === 0`, slug `kids-<name>`, reading `docs/dreams/KIDS.md`. KIDS.md is preserved, just not driven.)
 4. **Build new**: if a queued idea is ready (clear spec exists), start its prototype skeleton.
-5. **Research**: if the IDEAS queue is thin (<3 entries) OR you haven't researched in 3+ cycles, do a research cycle (see "Research cycles" below).
+5. **Research**: research is NOT a periodic side-quest — it runs at the START of EVERY cycle (see "The research-first rule"). This step is only about whether to spend the *build budget* on a deeper research-and-queue push when the IDEAS queue is thin (<3 entries). The dated RESEARCH.md dive still happens every cycle regardless.
 6. **Polish**: if there's nothing else, pick the oldest demoable prototype and polish it (better UX, better defaults, fix a rough edge, document it).
 
 Always write your decision + reasoning to STATE.md before acting.
@@ -74,6 +74,18 @@ Do the work. Constraints:
 - Prefer Web Audio API + Canvas/WebGL/shaders. Avoid heavy npm dependencies. If you need one, justify it in STATE.md.
 
 ### 4. Validate (5 min budget)
+- **Normalize to on-brand tokens FIRST.** Before building, run the normalizer on every prototype page you created or edited this cycle:
+  ```
+  docs/dreams/tools/normalize.sh src/app/dream/<n>-<slug>/page.tsx
+  ```
+  (No args = it normalizes every dream page changed vs HEAD.) It is idempotent
+  and rewrites off-brand Tailwind utilities to Resonance semantic tokens:
+  raw `text-white/…`, `bg-white/…`, `fill-white`, etc. → `text-foreground` /
+  `text-muted-foreground` / `bg-muted` / …, and off-brand hues (amber, emerald,
+  rose, sky, …) → the violet ramp at the same shade. This is the DURABLE fix
+  for palette drift — never hand-pick raw white or off-brand hues (see the
+  Typography rules); the normalizer is the safety net if you forget. It leaves
+  violet (brand), red (semantic error), neutrals, and hex/hsl art strings alone.
 - `npm run build` — must pass cleanly. This runs Next.js's full pipeline
   (TypeScript + ESLint + production compile) — the same one Vercel runs.
   `tsc --noEmit` alone misses ESLint errors that fail Vercel.
@@ -122,7 +134,10 @@ Exit. The next fire wakes up in ~1 hour.
 
 ## Research cycles
 
-Once every 3-4 cycles (or when IDEAS is thin), spend a full cycle on research instead of building.
+**Cadence (authoritative):** a dated RESEARCH.md dive happens at the start of **every** cycle — this is the research-first rule (see below), and it OVERRIDES any older "every 3-4 cycles" language anywhere in this file. The distinction:
+
+- **Every cycle**: the 15-minute research dive → one dated RESEARCH.md paragraph. Non-negotiable. If a cycle's STATE.md entry has no matching same-date RESEARCH.md entry, the cycle is malformed.
+- **Occasionally (when IDEAS is thin, <3 entries)**: spend the *build budget* too on a deeper research-and-queue push — scan the full source list below and add several IDEAS.md entries instead of shipping a prototype.
 
 **The freshness mandate** (set 2026-05-21): research must be **cutting edge**. Karel doesn't want recycled knowledge from your training data — he wants what shipped in the **last 90 days**. Filter every search:
 
@@ -170,21 +185,21 @@ Karel asked for bigger, more readable text and more contrast against dark backgr
 - **Body text**: minimum `text-base` (16px). Don't go below this for anything a visitor reads (descriptions, instructions, captions).
 - **Headings / prototype titles**: minimum `text-xl` (20px). Prefer `text-2xl` or larger for the page hero. Use `font-serif` for emphasis on names/titles where the existing dashboard style allows it.
 - **Status labels, badges, footers**: `text-xs` (12px) is acceptable for truly secondary info, but **never** for anything the visitor is supposed to act on.
-- **Contrast on dark backgrounds**: minimum effective opacity for readable text is **70%**. The convention going forward is:
-  - **Primary text** (headings, button labels, instructions): `text-white` or `text-white/95`
-  - **Secondary text** (descriptions, captions): `text-white/75` or `text-white/80`
-  - **Tertiary / hint text** (timestamps, meta): `text-white/55` minimum
-  - **Avoid** `text-white/30`, `text-white/40`, `text-white/50` for any text the visitor reads — that's barely visible and people miss it. Reserve those low-opacity values for non-text elements (separators, dim borders).
+- **Contrast on dark backgrounds**: minimum effective opacity for readable text is **70%**. USE SEMANTIC TOKENS, not raw `text-white/NN`. The design system defines these in `globals.css` (OKLCH) and they are the single source of truth for on-brand color. The convention going forward is:
+  - **Primary text** (headings, button labels, instructions): `text-foreground`
+  - **Secondary text** (descriptions, captions): `text-muted-foreground`
+  - **Tertiary / hint text** (timestamps, meta): `text-muted-foreground` (optionally with a low opacity like `/70` — never below)
+  - **Avoid** any text below ~70% effective opacity for something the visitor reads — that's barely visible and people miss it. Reserve very low opacity for non-text elements (separators, dim borders) only.
+  - **Do NOT hardcode `text-white`, `text-white/95`, `text-white/75`, etc. for UI text.** Raw white is only acceptable *inside* generative art (canvas/WebGL/SVG art layers), never for chrome, labels, buttons, or instructions.
 - **Buttons**: tap-target ≥44×44px on mobile (`min-h-[44px] min-w-[44px]`). Padding `px-4 py-2.5` or larger.
-- **Color tokens**: when using accent colors on dark, pull from these:
-  - violet: `text-violet-300` / bg `bg-violet-500/20` (Resonance brand accent)
-  - rose (love / favorite): `text-rose-300` / `text-rose-400/95`
-  - emerald (positive / success / local): `text-emerald-300/95`
-  - amber (warning / needs-key): `text-amber-300/95`
-  Don't dim these below `/90` for primary use.
-- **Mic / sensor error messages**: `text-rose-300` (not `text-rose-400/40`). Karel needs to actually see when something failed.
+- **Color tokens**: use the Resonance semantic palette. Violet is the ONLY brand accent hue — do NOT introduce off-brand hues (amber, emerald, rose, orange, lime, teal, cyan, sky, green, yellow, pink, fuchsia, indigo, blue) for UI chrome. Map by MEANING, not by picking a random hue:
+  - **Brand accent / primary action**: `text-primary` / `bg-primary/20` (violet, from tokens)
+  - **Positive / success / local / love / favorite**: `text-primary` (do NOT reach for emerald or rose — the palette is monochromatic-violet on dark by design)
+  - **Warning / error / needs-key / failed sensor**: `text-destructive` (the one non-violet accent; red is allowed for genuine errors and is NOT normalized away)
+  - **Neutral art ramp** (when a prototype's *art* needs multiple shades): use the violet ramp `violet-200 … violet-600`. This is art, not chrome — the normalizer preserves the shade, only the hue is fixed to violet.
+- **Mic / sensor error messages**: `text-destructive`. Karel needs to actually see when something failed — but it must be the on-brand red token, not a raw `text-rose-*`.
 
-If you're polishing an existing prototype, the polish task is mostly **bumping these values**. A polish-cycle on `1-live` for example might just be: change `text-white/40` → `text-white/75` throughout, bump `text-xs` → `text-sm` for the band labels, increase button size. Tiny diff, huge readability gain.
+If you're polishing an existing prototype, the polish task is mostly **bumping these values**. A polish-cycle on `1-live` for example might just be: change dim text to `text-muted-foreground` / `text-foreground` throughout, bump `text-xs` → `text-sm` for the band labels, increase button size, and swap any off-brand hue for the semantic token. Tiny diff, huge readability gain.
 
 **Bad prototype** (don't do):
 - Half-built UI with broken buttons
